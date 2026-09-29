@@ -64,6 +64,14 @@ func (c *ClientFactory) NewCapabilityTypesClient() *CapabilityTypesClient {
 	}
 }
 
+// NewConnectionsClient creates a new instance of ConnectionsClient.
+func (c *ClientFactory) NewConnectionsClient() *ConnectionsClient {
+	return &ConnectionsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewDiscoveredResourcesClient creates a new instance of DiscoveredResourcesClient.
 func (c *ClientFactory) NewDiscoveredResourcesClient() *DiscoveredResourcesClient {
 	return &DiscoveredResourcesClient{

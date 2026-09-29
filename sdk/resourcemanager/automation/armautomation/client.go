@@ -30,6 +30,9 @@ type Client struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*Client, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -62,19 +65,14 @@ func (client *Client) ConvertGraphRunbookContent(ctx context.Context, resourceGr
 	if err != nil {
 		return ClientConvertGraphRunbookContentResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ClientConvertGraphRunbookContentResponse{}, err
-	}
-	resp, err := client.convertGraphRunbookContentHandleResponse(httpResp)
-	return resp, err
+	return client.convertGraphRunbookContentHandleResponse(httpResp, http.StatusOK)
 }
 
 // convertGraphRunbookContentCreateRequest creates the ConvertGraphRunbookContent request.
 func (client *Client) convertGraphRunbookContentCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, parameters GraphicalRunbookContent, _ *ClientConvertGraphRunbookContentOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/convertGraphRunbookContent"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -101,8 +99,11 @@ func (client *Client) convertGraphRunbookContentCreateRequest(ctx context.Contex
 }
 
 // convertGraphRunbookContentHandleResponse handles the ConvertGraphRunbookContent response.
-func (client *Client) convertGraphRunbookContentHandleResponse(resp *http.Response) (ClientConvertGraphRunbookContentResponse, error) {
+func (client *Client) convertGraphRunbookContentHandleResponse(resp *http.Response, successCodes ...int) (ClientConvertGraphRunbookContentResponse, error) {
 	result := ClientConvertGraphRunbookContentResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GraphicalRunbookContent); err != nil {
 		return ClientConvertGraphRunbookContentResponse{}, err
 	}

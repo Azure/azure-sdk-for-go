@@ -30,7 +30,7 @@ func ExampleNetworkDeviceSKUsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmanagednetworkfabric.NetworkDeviceSKUsClientGetResponse{
-	// 	NetworkDeviceSKU: &armmanagednetworkfabric.NetworkDeviceSKU{
+	// 	NetworkDeviceSKU: armmanagednetworkfabric.NetworkDeviceSKU{
 	// 		Properties: &armmanagednetworkfabric.NetworkDeviceSKUProperties{
 	// 			Model: to.Ptr("model1"),
 	// 			Manufacturer: to.Ptr("Arista"),
@@ -65,10 +65,10 @@ func ExampleNetworkDeviceSKUsClient_Get() {
 	// 		SystemData: &armmanagednetworkfabric.SystemData{
 	// 			CreatedBy: to.Ptr("email@address.com"),
 	// 			CreatedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-09T04:51:41.251Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2023, time.June, 9, 4, 51, 41, 251000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("UserId"),
 	// 			LastModifiedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-09T04:51:41.251Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.June, 9, 4, 51, 41, 251000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -134,10 +134,10 @@ func ExampleNetworkDeviceSKUsClient_NewListBySubscriptionPager() {
 		// 				SystemData: &armmanagednetworkfabric.SystemData{
 		// 					CreatedBy: to.Ptr("email@address.com"),
 		// 					CreatedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-09T04:51:41.251Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2023, time.June, 9, 4, 51, 41, 251000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("UserId"),
 		// 					LastModifiedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-09T04:51:41.251Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2023, time.June, 9, 4, 51, 41, 251000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},

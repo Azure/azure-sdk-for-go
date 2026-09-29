@@ -87,7 +87,7 @@ func (a *AggregatedCostServerTransport) dispatchGetByManagementGroup(req *http.R
 	if a.srv.GetByManagementGroup == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetByManagementGroup not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.Management/managementGroups/(?P<managementGroupId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Consumption/aggregatedcost`
+	const regexStr = `/providers/Microsoft\.Management/managementGroups/(?P<managementGroupId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Consumption/aggregatedcost`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 2 {
@@ -124,7 +124,7 @@ func (a *AggregatedCostServerTransport) dispatchGetForBillingPeriodByManagementG
 	if a.srv.GetForBillingPeriodByManagementGroup == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetForBillingPeriodByManagementGroup not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.Management/managementGroups/(?P<managementGroupId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Billing/billingPeriods/(?P<billingPeriodName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Consumption/aggregatedCost`
+	const regexStr = `/providers/Microsoft\.Management/managementGroups/(?P<managementGroupId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Billing/billingPeriods/(?P<billingPeriodName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Consumption/aggregatedCost`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {

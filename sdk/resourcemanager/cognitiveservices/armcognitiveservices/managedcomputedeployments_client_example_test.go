@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-05-15-preview/CreateOrUpdateManagedComputeDeployment.json
+// Generated from example definition: 2026-07-15-preview/CreateOrUpdateManagedComputeDeployment.json
 func ExampleManagedComputeDeploymentsClient_BeginCreateOrUpdate_createOrUpdateManagedComputeDeployment() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -64,7 +64,7 @@ func ExampleManagedComputeDeploymentsClient_BeginCreateOrUpdate_createOrUpdateMa
 	// 			ProvisioningState: to.Ptr(armcognitiveservices.ProvisioningStateSucceeded),
 	// 			ProvisioningDetails: &armcognitiveservices.ManagedComputeDeploymentProvisioningDetails{
 	// 				Message: to.Ptr("Deployment provisioned successfully."),
-	// 				LastOperationTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-23T14:45:00Z"); return t}()),
+	// 				LastOperationTimestamp: to.Ptr(time.Date(2026, time.March, 23, 14, 45, 0, 0, time.UTC)),
 	// 			},
 	// 			Routes: &armcognitiveservices.ManagedComputeDeploymentRoutes{
 	// 				ChatCompletionsScoringPath: to.Ptr("/managedComputeDeployments/gpt-oss-120b-gpu/chat/completions"),
@@ -80,7 +80,7 @@ func ExampleManagedComputeDeploymentsClient_BeginCreateOrUpdate_createOrUpdateMa
 	// }
 }
 
-// Generated from example definition: 2026-05-15-preview/CreateOrUpdateVmManagedComputeDeployment.json
+// Generated from example definition: 2026-07-15-preview/CreateOrUpdateVmManagedComputeDeployment.json
 func ExampleManagedComputeDeploymentsClient_BeginCreateOrUpdate_createOrUpdateVMManagedComputeDeployment() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -131,7 +131,7 @@ func ExampleManagedComputeDeploymentsClient_BeginCreateOrUpdate_createOrUpdateVM
 	// 			ProvisioningState: to.Ptr(armcognitiveservices.ProvisioningStateSucceeded),
 	// 			ProvisioningDetails: &armcognitiveservices.ManagedComputeDeploymentProvisioningDetails{
 	// 				Message: to.Ptr("Deployment is healthy and serving traffic."),
-	// 				LastOperationTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-04-12T10:25:00Z"); return t}()),
+	// 				LastOperationTimestamp: to.Ptr(time.Date(2026, time.April, 12, 10, 25, 0, 0, time.UTC)),
 	// 			},
 	// 			Routes: &armcognitiveservices.ManagedComputeDeploymentRoutes{
 	// 				ChatCompletionsScoringPath: to.Ptr("/managed-deployments/gpt-oss-120b-byoc/v1/chat/completions"),
@@ -145,7 +145,7 @@ func ExampleManagedComputeDeploymentsClient_BeginCreateOrUpdate_createOrUpdateVM
 	// }
 }
 
-// Generated from example definition: 2026-05-15-preview/DeleteManagedComputeDeployment.json
+// Generated from example definition: 2026-07-15-preview/DeleteManagedComputeDeployment.json
 func ExampleManagedComputeDeploymentsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -171,7 +171,7 @@ func ExampleManagedComputeDeploymentsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-05-15-preview/GetManagedComputeDeployment.json
+// Generated from example definition: 2026-07-15-preview/GetManagedComputeDeployment.json
 func ExampleManagedComputeDeploymentsClient_Get_getManagedComputeDeployment() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -208,7 +208,7 @@ func ExampleManagedComputeDeploymentsClient_Get_getManagedComputeDeployment() {
 	// 			ProvisioningState: to.Ptr(armcognitiveservices.ProvisioningStateSucceeded),
 	// 			ProvisioningDetails: &armcognitiveservices.ManagedComputeDeploymentProvisioningDetails{
 	// 				Message: to.Ptr("Deployment is healthy and serving traffic."),
-	// 				LastOperationTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-23T14:45:00Z"); return t}()),
+	// 				LastOperationTimestamp: to.Ptr(time.Date(2026, time.March, 23, 14, 45, 0, 0, time.UTC)),
 	// 			},
 	// 			Routes: &armcognitiveservices.ManagedComputeDeploymentRoutes{
 	// 				ChatCompletionsScoringPath: to.Ptr("/managedComputeDeployments/gpt-oss-120b-gpu/chat/completions"),
@@ -224,7 +224,7 @@ func ExampleManagedComputeDeploymentsClient_Get_getManagedComputeDeployment() {
 	// }
 }
 
-// Generated from example definition: 2026-05-15-preview/GetVmManagedComputeDeployment.json
+// Generated from example definition: 2026-07-15-preview/GetVmManagedComputeDeployment.json
 func ExampleManagedComputeDeploymentsClient_Get_getVMManagedComputeDeployment() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -260,7 +260,7 @@ func ExampleManagedComputeDeploymentsClient_Get_getVMManagedComputeDeployment() 
 	// 			ProvisioningState: to.Ptr(armcognitiveservices.ProvisioningStateSucceeded),
 	// 			ProvisioningDetails: &armcognitiveservices.ManagedComputeDeploymentProvisioningDetails{
 	// 				Message: to.Ptr("Deployment is healthy and serving traffic."),
-	// 				LastOperationTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-04-12T10:25:00Z"); return t}()),
+	// 				LastOperationTimestamp: to.Ptr(time.Date(2026, time.April, 12, 10, 25, 0, 0, time.UTC)),
 	// 			},
 	// 			Routes: &armcognitiveservices.ManagedComputeDeploymentRoutes{
 	// 				ChatCompletionsScoringPath: to.Ptr("/managed-deployments/gpt-oss-120b-byoc/v1/chat/completions"),
@@ -274,7 +274,7 @@ func ExampleManagedComputeDeploymentsClient_Get_getVMManagedComputeDeployment() 
 	// }
 }
 
-// Generated from example definition: 2026-05-15-preview/ListManagedComputeDeployments.json
+// Generated from example definition: 2026-07-15-preview/ListManagedComputeDeployments.json
 func ExampleManagedComputeDeploymentsClient_NewListPager_listManagedComputeDeployments() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -379,7 +379,7 @@ func ExampleManagedComputeDeploymentsClient_NewListPager_listManagedComputeDeplo
 	}
 }
 
-// Generated from example definition: 2026-05-15-preview/ListVmManagedComputeDeployments.json
+// Generated from example definition: 2026-07-15-preview/ListVmManagedComputeDeployments.json
 func ExampleManagedComputeDeploymentsClient_NewListPager_listVMManagedComputeDeployments() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -433,7 +433,7 @@ func ExampleManagedComputeDeploymentsClient_NewListPager_listVMManagedComputeDep
 	}
 }
 
-// Generated from example definition: 2026-05-15-preview/UpdateManagedComputeDeployment.json
+// Generated from example definition: 2026-07-15-preview/UpdateManagedComputeDeployment.json
 func ExampleManagedComputeDeploymentsClient_BeginUpdate_updateManagedComputeDeployment() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -479,7 +479,7 @@ func ExampleManagedComputeDeploymentsClient_BeginUpdate_updateManagedComputeDepl
 	// 			ProvisioningState: to.Ptr(armcognitiveservices.ProvisioningStateSucceeded),
 	// 			ProvisioningDetails: &armcognitiveservices.ManagedComputeDeploymentProvisioningDetails{
 	// 				Message: to.Ptr("Scale operation completed successfully."),
-	// 				LastOperationTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-23T15:15:00Z"); return t}()),
+	// 				LastOperationTimestamp: to.Ptr(time.Date(2026, time.March, 23, 15, 15, 0, 0, time.UTC)),
 	// 			},
 	// 			Routes: &armcognitiveservices.ManagedComputeDeploymentRoutes{
 	// 				ChatCompletionsScoringPath: to.Ptr("/managedComputeDeployments/gpt-oss-120b-gpu/chat/completions"),
@@ -495,7 +495,7 @@ func ExampleManagedComputeDeploymentsClient_BeginUpdate_updateManagedComputeDepl
 	// }
 }
 
-// Generated from example definition: 2026-05-15-preview/UpdateVmManagedComputeDeployment.json
+// Generated from example definition: 2026-07-15-preview/UpdateVmManagedComputeDeployment.json
 func ExampleManagedComputeDeploymentsClient_BeginUpdate_updateVMManagedComputeDeployment() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -540,7 +540,7 @@ func ExampleManagedComputeDeploymentsClient_BeginUpdate_updateVMManagedComputeDe
 	// 			ProvisioningState: to.Ptr(armcognitiveservices.ProvisioningStateSucceeded),
 	// 			ProvisioningDetails: &armcognitiveservices.ManagedComputeDeploymentProvisioningDetails{
 	// 				Message: to.Ptr("Scale operation completed successfully."),
-	// 				LastOperationTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-04-12T10:55:00Z"); return t}()),
+	// 				LastOperationTimestamp: to.Ptr(time.Date(2026, time.April, 12, 10, 55, 0, 0, time.UTC)),
 	// 			},
 	// 			Routes: &armcognitiveservices.ManagedComputeDeploymentRoutes{
 	// 				ChatCompletionsScoringPath: to.Ptr("/managed-deployments/gpt-oss-120b-byoc/v1/chat/completions"),

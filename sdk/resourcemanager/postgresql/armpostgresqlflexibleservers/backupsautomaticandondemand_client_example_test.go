@@ -78,7 +78,7 @@ func ExampleBackupsAutomaticAndOnDemandClient_Get() {
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBforPostgreSQL/flexibleServers/exampleserver/backups/backup_638830782181266873"),
 	// 		Properties: &armpostgresqlflexibleservers.BackupAutomaticAndOnDemandProperties{
 	// 			BackupType: to.Ptr(armpostgresqlflexibleservers.BackupTypeFull),
-	// 			CompletedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T14:30:22.123456+00:00"); return t}()),
+	// 			CompletedTime: to.Ptr(time.Date(2025, time.June, 1, 14, 30, 22, 123456000, time.UTC)),
 	// 			Source: to.Ptr("Automatic"),
 	// 		},
 	// 	},
@@ -116,7 +116,7 @@ func ExampleBackupsAutomaticAndOnDemandClient_NewListByServerPager() {
 		// 				ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBforPostgreSQL/flexibleServers/exampleserver/backups/backup_638830782181266873"),
 		// 				Properties: &armpostgresqlflexibleservers.BackupAutomaticAndOnDemandProperties{
 		// 					BackupType: to.Ptr(armpostgresqlflexibleservers.BackupTypeFull),
-		// 					CompletedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T14:30:22.123456+00:00"); return t}()),
+		// 					CompletedTime: to.Ptr(time.Date(2025, time.June, 1, 14, 30, 22, 123456000, time.UTC)),
 		// 					Source: to.Ptr("Automatic"),
 		// 				},
 		// 			},
@@ -126,7 +126,7 @@ func ExampleBackupsAutomaticAndOnDemandClient_NewListByServerPager() {
 		// 				ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBforPostgreSQL/flexibleServers/exampleserver/backups/ondemandbackup-20250601T183022"),
 		// 				Properties: &armpostgresqlflexibleservers.BackupAutomaticAndOnDemandProperties{
 		// 					BackupType: to.Ptr(armpostgresqlflexibleservers.BackupTypeCustomerOnDemand),
-		// 					CompletedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T18:30:22.123456+00:00"); return t}()),
+		// 					CompletedTime: to.Ptr(time.Date(2025, time.June, 1, 18, 30, 22, 123456000, time.UTC)),
 		// 					Source: to.Ptr("Customer Initiated"),
 		// 				},
 		// 			},

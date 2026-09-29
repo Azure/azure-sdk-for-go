@@ -30,6 +30,9 @@ type WorkspacePurgeClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewWorkspacePurgeClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*WorkspacePurgeClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -62,19 +65,14 @@ func (client *WorkspacePurgeClient) GetPurgeStatus(ctx context.Context, resource
 	if err != nil {
 		return WorkspacePurgeClientGetPurgeStatusResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WorkspacePurgeClientGetPurgeStatusResponse{}, err
-	}
-	resp, err := client.getPurgeStatusHandleResponse(httpResp)
-	return resp, err
+	return client.getPurgeStatusHandleResponse(httpResp, http.StatusOK)
 }
 
 // getPurgeStatusCreateRequest creates the GetPurgeStatus request.
 func (client *WorkspacePurgeClient) getPurgeStatusCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, purgeID string, _ *WorkspacePurgeClientGetPurgeStatusOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/operations/{purgeId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -101,8 +99,11 @@ func (client *WorkspacePurgeClient) getPurgeStatusCreateRequest(ctx context.Cont
 }
 
 // getPurgeStatusHandleResponse handles the GetPurgeStatus response.
-func (client *WorkspacePurgeClient) getPurgeStatusHandleResponse(resp *http.Response) (WorkspacePurgeClientGetPurgeStatusResponse, error) {
+func (client *WorkspacePurgeClient) getPurgeStatusHandleResponse(resp *http.Response, successCodes ...int) (WorkspacePurgeClientGetPurgeStatusResponse, error) {
 	result := WorkspacePurgeClientGetPurgeStatusResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkspacePurgeStatusResponse); err != nil {
 		return WorkspacePurgeClientGetPurgeStatusResponse{}, err
 	}
@@ -136,19 +137,14 @@ func (client *WorkspacePurgeClient) Purge(ctx context.Context, resourceGroupName
 	if err != nil {
 		return WorkspacePurgeClientPurgeResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return WorkspacePurgeClientPurgeResponse{}, err
-	}
-	resp, err := client.purgeHandleResponse(httpResp)
-	return resp, err
+	return client.purgeHandleResponse(httpResp, http.StatusAccepted)
 }
 
 // purgeCreateRequest creates the Purge request.
 func (client *WorkspacePurgeClient) purgeCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, body WorkspacePurgeBody, _ *WorkspacePurgeClientPurgeOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/purge"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -175,9 +171,12 @@ func (client *WorkspacePurgeClient) purgeCreateRequest(ctx context.Context, reso
 }
 
 // purgeHandleResponse handles the Purge response.
-func (client *WorkspacePurgeClient) purgeHandleResponse(resp *http.Response) (WorkspacePurgeClientPurgeResponse, error) {
+func (client *WorkspacePurgeClient) purgeHandleResponse(resp *http.Response, successCodes ...int) (WorkspacePurgeClientPurgeResponse, error) {
 	result := WorkspacePurgeClientPurgeResponse{}
-	if val := resp.Header.Get("x-ms-status-location"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("X-Ms-Status-Location"); val != "" {
 		result.XMSStatusLocation = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkspacePurgeResponse); err != nil {

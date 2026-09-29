@@ -30,6 +30,9 @@ type EventClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewEventClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*EventClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -61,19 +64,14 @@ func (client *EventClient) FetchBilllingCommunicationDetailsBySubscriptionIDAndT
 	if err != nil {
 		return EventClientFetchBilllingCommunicationDetailsBySubscriptionIDAndTrackingIDResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return EventClientFetchBilllingCommunicationDetailsBySubscriptionIDAndTrackingIDResponse{}, err
-	}
-	resp, err := client.fetchBilllingCommunicationDetailsBySubscriptionIDAndTrackingIDHandleResponse(httpResp)
-	return resp, err
+	return client.fetchBilllingCommunicationDetailsBySubscriptionIDAndTrackingIDHandleResponse(httpResp, http.StatusOK)
 }
 
 // fetchBilllingCommunicationDetailsBySubscriptionIDAndTrackingIDCreateRequest creates the FetchBilllingCommunicationDetailsBySubscriptionIDAndTrackingID request.
 func (client *EventClient) fetchBilllingCommunicationDetailsBySubscriptionIDAndTrackingIDCreateRequest(ctx context.Context, eventTrackingID string, _ *EventClientFetchBilllingCommunicationDetailsBySubscriptionIDAndTrackingIDOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ResourceHealth/events/{eventTrackingId}/fetchBillingCommunicationDetails"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if eventTrackingID == "" {
@@ -92,8 +90,11 @@ func (client *EventClient) fetchBilllingCommunicationDetailsBySubscriptionIDAndT
 }
 
 // fetchBilllingCommunicationDetailsBySubscriptionIDAndTrackingIDHandleResponse handles the FetchBilllingCommunicationDetailsBySubscriptionIDAndTrackingID response.
-func (client *EventClient) fetchBilllingCommunicationDetailsBySubscriptionIDAndTrackingIDHandleResponse(resp *http.Response) (EventClientFetchBilllingCommunicationDetailsBySubscriptionIDAndTrackingIDResponse, error) {
+func (client *EventClient) fetchBilllingCommunicationDetailsBySubscriptionIDAndTrackingIDHandleResponse(resp *http.Response, successCodes ...int) (EventClientFetchBilllingCommunicationDetailsBySubscriptionIDAndTrackingIDResponse, error) {
 	result := EventClientFetchBilllingCommunicationDetailsBySubscriptionIDAndTrackingIDResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Event); err != nil {
 		return EventClientFetchBilllingCommunicationDetailsBySubscriptionIDAndTrackingIDResponse{}, err
 	}
@@ -120,19 +121,14 @@ func (client *EventClient) FetchDetailsBySubscriptionIDAndTrackingID(ctx context
 	if err != nil {
 		return EventClientFetchDetailsBySubscriptionIDAndTrackingIDResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return EventClientFetchDetailsBySubscriptionIDAndTrackingIDResponse{}, err
-	}
-	resp, err := client.fetchDetailsBySubscriptionIDAndTrackingIDHandleResponse(httpResp)
-	return resp, err
+	return client.fetchDetailsBySubscriptionIDAndTrackingIDHandleResponse(httpResp, http.StatusOK)
 }
 
 // fetchDetailsBySubscriptionIDAndTrackingIDCreateRequest creates the FetchDetailsBySubscriptionIDAndTrackingID request.
 func (client *EventClient) fetchDetailsBySubscriptionIDAndTrackingIDCreateRequest(ctx context.Context, eventTrackingID string, _ *EventClientFetchDetailsBySubscriptionIDAndTrackingIDOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ResourceHealth/events/{eventTrackingId}/fetchEventDetails"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if eventTrackingID == "" {
@@ -151,8 +147,11 @@ func (client *EventClient) fetchDetailsBySubscriptionIDAndTrackingIDCreateReques
 }
 
 // fetchDetailsBySubscriptionIDAndTrackingIDHandleResponse handles the FetchDetailsBySubscriptionIDAndTrackingID response.
-func (client *EventClient) fetchDetailsBySubscriptionIDAndTrackingIDHandleResponse(resp *http.Response) (EventClientFetchDetailsBySubscriptionIDAndTrackingIDResponse, error) {
+func (client *EventClient) fetchDetailsBySubscriptionIDAndTrackingIDHandleResponse(resp *http.Response, successCodes ...int) (EventClientFetchDetailsBySubscriptionIDAndTrackingIDResponse, error) {
 	result := EventClientFetchDetailsBySubscriptionIDAndTrackingIDResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Event); err != nil {
 		return EventClientFetchDetailsBySubscriptionIDAndTrackingIDResponse{}, err
 	}
@@ -179,12 +178,7 @@ func (client *EventClient) FetchDetailsByTenantIDAndTrackingID(ctx context.Conte
 	if err != nil {
 		return EventClientFetchDetailsByTenantIDAndTrackingIDResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return EventClientFetchDetailsByTenantIDAndTrackingIDResponse{}, err
-	}
-	resp, err := client.fetchDetailsByTenantIDAndTrackingIDHandleResponse(httpResp)
-	return resp, err
+	return client.fetchDetailsByTenantIDAndTrackingIDHandleResponse(httpResp, http.StatusOK)
 }
 
 // fetchDetailsByTenantIDAndTrackingIDCreateRequest creates the FetchDetailsByTenantIDAndTrackingID request.
@@ -206,8 +200,11 @@ func (client *EventClient) fetchDetailsByTenantIDAndTrackingIDCreateRequest(ctx 
 }
 
 // fetchDetailsByTenantIDAndTrackingIDHandleResponse handles the FetchDetailsByTenantIDAndTrackingID response.
-func (client *EventClient) fetchDetailsByTenantIDAndTrackingIDHandleResponse(resp *http.Response) (EventClientFetchDetailsByTenantIDAndTrackingIDResponse, error) {
+func (client *EventClient) fetchDetailsByTenantIDAndTrackingIDHandleResponse(resp *http.Response, successCodes ...int) (EventClientFetchDetailsByTenantIDAndTrackingIDResponse, error) {
 	result := EventClientFetchDetailsByTenantIDAndTrackingIDResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Event); err != nil {
 		return EventClientFetchDetailsByTenantIDAndTrackingIDResponse{}, err
 	}
@@ -233,19 +230,14 @@ func (client *EventClient) GetBySubscriptionIDAndTrackingID(ctx context.Context,
 	if err != nil {
 		return EventClientGetBySubscriptionIDAndTrackingIDResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return EventClientGetBySubscriptionIDAndTrackingIDResponse{}, err
-	}
-	resp, err := client.getBySubscriptionIDAndTrackingIDHandleResponse(httpResp)
-	return resp, err
+	return client.getBySubscriptionIDAndTrackingIDHandleResponse(httpResp, http.StatusOK)
 }
 
 // getBySubscriptionIDAndTrackingIDCreateRequest creates the GetBySubscriptionIDAndTrackingID request.
 func (client *EventClient) getBySubscriptionIDAndTrackingIDCreateRequest(ctx context.Context, eventTrackingID string, options *EventClientGetBySubscriptionIDAndTrackingIDOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ResourceHealth/events/{eventTrackingId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if eventTrackingID == "" {
@@ -270,8 +262,11 @@ func (client *EventClient) getBySubscriptionIDAndTrackingIDCreateRequest(ctx con
 }
 
 // getBySubscriptionIDAndTrackingIDHandleResponse handles the GetBySubscriptionIDAndTrackingID response.
-func (client *EventClient) getBySubscriptionIDAndTrackingIDHandleResponse(resp *http.Response) (EventClientGetBySubscriptionIDAndTrackingIDResponse, error) {
+func (client *EventClient) getBySubscriptionIDAndTrackingIDHandleResponse(resp *http.Response, successCodes ...int) (EventClientGetBySubscriptionIDAndTrackingIDResponse, error) {
 	result := EventClientGetBySubscriptionIDAndTrackingIDResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Event); err != nil {
 		return EventClientGetBySubscriptionIDAndTrackingIDResponse{}, err
 	}
@@ -297,12 +292,7 @@ func (client *EventClient) GetByTenantIDAndTrackingID(ctx context.Context, event
 	if err != nil {
 		return EventClientGetByTenantIDAndTrackingIDResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return EventClientGetByTenantIDAndTrackingIDResponse{}, err
-	}
-	resp, err := client.getByTenantIDAndTrackingIDHandleResponse(httpResp)
-	return resp, err
+	return client.getByTenantIDAndTrackingIDHandleResponse(httpResp, http.StatusOK)
 }
 
 // getByTenantIDAndTrackingIDCreateRequest creates the GetByTenantIDAndTrackingID request.
@@ -330,8 +320,11 @@ func (client *EventClient) getByTenantIDAndTrackingIDCreateRequest(ctx context.C
 }
 
 // getByTenantIDAndTrackingIDHandleResponse handles the GetByTenantIDAndTrackingID response.
-func (client *EventClient) getByTenantIDAndTrackingIDHandleResponse(resp *http.Response) (EventClientGetByTenantIDAndTrackingIDResponse, error) {
+func (client *EventClient) getByTenantIDAndTrackingIDHandleResponse(resp *http.Response, successCodes ...int) (EventClientGetByTenantIDAndTrackingIDResponse, error) {
 	result := EventClientGetByTenantIDAndTrackingIDResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Event); err != nil {
 		return EventClientGetByTenantIDAndTrackingIDResponse{}, err
 	}

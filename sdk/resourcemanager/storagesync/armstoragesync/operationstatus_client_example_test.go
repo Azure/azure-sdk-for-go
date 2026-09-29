@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2022-09-01/OperationStatus_Get.json
+// Generated from example definition: 2025-12-01/OperationStatus_Get.json
 func ExampleOperationStatusClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -34,8 +34,8 @@ func ExampleOperationStatusClient_Get() {
 	// 	XMSRequestID: to.Ptr("74e55a4d-1c6f-46de-9a8d-278e53a47403"),
 	// 	OperationStatus: armstoragesync.OperationStatus{
 	// 		Name: to.Ptr("14b50e24-f68d-4b29-a882-38be9dfb8bd1"),
-	// 		EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-05-09T23:53:23.3735483Z"); return t}()),
-	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-05-09T23:53:21.7328715Z"); return t}()),
+	// 		EndTime: to.Ptr(time.Date(2019, time.May, 9, 23, 53, 23, 373548300, time.UTC)),
+	// 		StartTime: to.Ptr(time.Date(2019, time.May, 9, 23, 53, 21, 732871500, time.UTC)),
 	// 		Status: to.Ptr("Succeeded"),
 	// 	},
 	// }

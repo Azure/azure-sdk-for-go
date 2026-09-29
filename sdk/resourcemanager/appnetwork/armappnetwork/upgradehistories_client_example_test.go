@@ -41,8 +41,8 @@ func ExampleUpgradeHistoriesClient_NewListByAppLinkMemberPager() {
 		// 				Name: to.Ptr("upgrade-20231201"),
 		// 				Type: to.Ptr("Microsoft.AppLink/appLinks/appLinkMembers/upgradeHistories"),
 		// 				Properties: &armappnetwork.UpgradeHistoryProperties{
-		// 					StartTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-12-01T10:00:00.000Z"); return t}()),
-		// 					EndTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-12-01T10:15:00.000Z"); return t}()),
+		// 					StartTimestamp: to.Ptr(time.Date(2023, time.December, 1, 10, 0, 0, 0, time.UTC)),
+		// 					EndTimestamp: to.Ptr(time.Date(2023, time.December, 1, 10, 15, 0, 0, time.UTC)),
 		// 					InitiatedBy: to.Ptr("user@example.com"),
 		// 					FromVersion: to.Ptr("1.18"),
 		// 					ToVersion: to.Ptr("1.19"),
@@ -51,10 +51,10 @@ func ExampleUpgradeHistoriesClient_NewListByAppLinkMemberPager() {
 		// 				SystemData: &armappnetwork.SystemData{
 		// 					CreatedBy: to.Ptr("system"),
 		// 					CreatedByType: to.Ptr(armappnetwork.CreatedByTypeApplication),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-12-01T10:00:00.000Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2023, time.December, 1, 10, 0, 0, 0, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("system"),
 		// 					LastModifiedByType: to.Ptr(armappnetwork.CreatedByTypeApplication),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-12-01T10:15:00.000Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2023, time.December, 1, 10, 15, 0, 0, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -62,8 +62,8 @@ func ExampleUpgradeHistoriesClient_NewListByAppLinkMemberPager() {
 		// 				Name: to.Ptr("upgrade-20231115"),
 		// 				Type: to.Ptr("Microsoft.AppLink/appLinks/appLinkMembers/upgradeHistories"),
 		// 				Properties: &armappnetwork.UpgradeHistoryProperties{
-		// 					StartTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-11-15T14:30:00.000Z"); return t}()),
-		// 					EndTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-11-15T14:45:00.000Z"); return t}()),
+		// 					StartTimestamp: to.Ptr(time.Date(2023, time.November, 15, 14, 30, 0, 0, time.UTC)),
+		// 					EndTimestamp: to.Ptr(time.Date(2023, time.November, 15, 14, 45, 0, 0, time.UTC)),
 		// 					InitiatedBy: to.Ptr("Azure Portal"),
 		// 					FromVersion: to.Ptr("1.17"),
 		// 					ToVersion: to.Ptr("1.18"),
@@ -72,10 +72,10 @@ func ExampleUpgradeHistoriesClient_NewListByAppLinkMemberPager() {
 		// 				SystemData: &armappnetwork.SystemData{
 		// 					CreatedBy: to.Ptr("system"),
 		// 					CreatedByType: to.Ptr(armappnetwork.CreatedByTypeApplication),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-11-15T14:30:00.000Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2023, time.November, 15, 14, 30, 0, 0, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("system"),
 		// 					LastModifiedByType: to.Ptr(armappnetwork.CreatedByTypeApplication),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-11-15T14:45:00.000Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2023, time.November, 15, 14, 45, 0, 0, time.UTC)),
 		// 				},
 		// 			},
 		// 		},

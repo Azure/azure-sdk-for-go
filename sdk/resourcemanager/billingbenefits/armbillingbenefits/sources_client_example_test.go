@@ -62,9 +62,9 @@ func ExampleSourcesClient_Create() {
 	// 			Status: to.Ptr(armbillingbenefits.CreditStatusPending),
 	// 		},
 	// 		SystemData: &armbillingbenefits.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-12-12T01:01:01.1075056Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2023, time.December, 12, 1, 1, 1, 107505600, time.UTC)),
 	// 			CreatedByType: to.Ptr(armbillingbenefits.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-12-12T01:01:01.1075056Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.December, 12, 1, 1, 1, 107505600, time.UTC)),
 	// 			LastModifiedByType: to.Ptr(armbillingbenefits.CreatedByTypeUser),
 	// 		},
 	// 		Tags: map[string]*string{
@@ -132,9 +132,9 @@ func ExampleSourcesClient_Get() {
 	// 			Status: to.Ptr(armbillingbenefits.CreditStatusPending),
 	// 		},
 	// 		SystemData: &armbillingbenefits.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-12-12T01:01:01.1075056Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2023, time.December, 12, 1, 1, 1, 107505600, time.UTC)),
 	// 			CreatedByType: to.Ptr(armbillingbenefits.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-12-12T01:01:01.1075056Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.December, 12, 1, 1, 1, 107505600, time.UTC)),
 	// 			LastModifiedByType: to.Ptr(armbillingbenefits.CreatedByTypeUser),
 	// 		},
 	// 		Tags: map[string]*string{
@@ -186,9 +186,9 @@ func ExampleSourcesClient_NewListByCreditPager() {
 		// 					Status: to.Ptr(armbillingbenefits.CreditStatusPending),
 		// 				},
 		// 				SystemData: &armbillingbenefits.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-12-12T01:01:01.1075056Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2023, time.December, 12, 1, 1, 1, 107505600, time.UTC)),
 		// 					CreatedByType: to.Ptr(armbillingbenefits.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-12-12T01:01:01.1075056Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2023, time.December, 12, 1, 1, 1, 107505600, time.UTC)),
 		// 					LastModifiedByType: to.Ptr(armbillingbenefits.CreatedByTypeUser),
 		// 				},
 		// 				Tags: map[string]*string{
@@ -242,9 +242,9 @@ func ExampleSourcesClient_Update() {
 	// 			Status: to.Ptr(armbillingbenefits.CreditStatusPending),
 	// 		},
 	// 		SystemData: &armbillingbenefits.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-12-12T01:01:01.1075056Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2023, time.December, 12, 1, 1, 1, 107505600, time.UTC)),
 	// 			CreatedByType: to.Ptr(armbillingbenefits.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-12-12T01:01:01.1075056Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.December, 12, 1, 1, 1, 107505600, time.UTC)),
 	// 			LastModifiedByType: to.Ptr(armbillingbenefits.CreatedByTypeUser),
 	// 		},
 	// 		Tags: map[string]*string{

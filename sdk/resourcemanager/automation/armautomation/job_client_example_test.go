@@ -64,14 +64,14 @@ func ExampleJobClient_Get() {
 	// 		Type: to.Ptr("Microsoft.Automation/AutomationAccounts/Jobs"),
 	// 		ID: to.Ptr("/subscriptions/51766542-3ed7-4a72-a187-0c8ab644ddab/resourceGroups/mygroup/providers/Microsoft.Automation/automationAccounts/ContoseAutomationAccount/jobs/jobName"),
 	// 		Properties: &armautomation.JobProperties{
-	// 			CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-02-01T05:53:30.243+00:00"); return t}()),
+	// 			CreationTime: to.Ptr(time.Date(2018, time.February, 1, 5, 53, 30, 243000000, time.UTC)),
 	// 			EndTime: nil,
 	// 			JobID: to.Ptr("5b8a3960-e8ab-45f6-bec6-567df8467d1a"),
 	// 			JobRuntimeEnvironment: &armautomation.JobRuntimeEnvironment{
 	// 				RuntimeEnvironmentName: to.Ptr("environmentName"),
 	// 			},
-	// 			LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-02-01T05:53:30.243+00:00"); return t}()),
-	// 			LastStatusModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-02-01T05:53:30.243+00:00"); return t}()),
+	// 			LastModifiedTime: to.Ptr(time.Date(2018, time.February, 1, 5, 53, 30, 243000000, time.UTC)),
+	// 			LastStatusModifiedTime: to.Ptr(time.Date(2018, time.February, 1, 5, 53, 30, 243000000, time.UTC)),
 	// 			Parameters: map[string]*string{
 	// 				"tag01": to.Ptr("value01"),
 	// 				"tag02": to.Ptr("value02"),
@@ -165,13 +165,13 @@ func ExampleJobClient_NewListByAutomationAccountPager() {
 		// 				Type: to.Ptr("Microsoft.Automation/AutomationAccounts/Jobs"),
 		// 				ID: to.Ptr("/subscriptions/51766542-3ed7-4a72-a187-0c8ab644ddab/resourceGroups/mygroup/providers/Microsoft.Automation/automationAccounts/ContosoAutomationAccount/jobs/job1"),
 		// 				Properties: &armautomation.JobCollectionItemProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-30T05:53:30.243+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 30, 5, 53, 30, 243000000, time.UTC)),
 		// 					EndTime: nil,
 		// 					JobID: to.Ptr("45203a94-a8cb-47c3-8ce4-4dcc3a5f7d23"),
 		// 					JobRuntimeEnvironment: &armautomation.JobRuntimeEnvironment{
 		// 						RuntimeEnvironmentName: to.Ptr("environmentName"),
 		// 					},
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-30T05:53:30.243+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 30, 5, 53, 30, 243000000, time.UTC)),
 		// 					ProvisioningState: to.Ptr("Succeeded"),
 		// 					Runbook: &armautomation.RunbookAssociationProperty{
 		// 						Name: to.Ptr("TestRunbook"),
@@ -185,18 +185,18 @@ func ExampleJobClient_NewListByAutomationAccountPager() {
 		// 				Type: to.Ptr("Microsoft.Automation/AutomationAccounts/Jobs"),
 		// 				ID: to.Ptr("/subscriptions/51766542-3ed7-4a72-a187-0c8ab644ddab/resourceGroups/mygroup/providers/Microsoft.Automation/automationAccounts/ContosoAutomationAccount/jobs/job2"),
 		// 				Properties: &armautomation.JobCollectionItemProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-30T05:46:49.37+00:00"); return t}()),
-		// 					EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-30T05:48:38.857+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 30, 5, 46, 49, 370000000, time.UTC)),
+		// 					EndTime: to.Ptr(time.Date(2017, time.March, 30, 5, 48, 38, 857000000, time.UTC)),
 		// 					JobID: to.Ptr("7584055f-5118-460a-a2dd-5176c9c8efe9"),
 		// 					JobRuntimeEnvironment: &armautomation.JobRuntimeEnvironment{
 		// 						RuntimeEnvironmentName: to.Ptr("environmentName"),
 		// 					},
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-30T05:48:38.857+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 30, 5, 48, 38, 857000000, time.UTC)),
 		// 					ProvisioningState: to.Ptr("Succeeded"),
 		// 					Runbook: &armautomation.RunbookAssociationProperty{
 		// 						Name: to.Ptr("TestRunbook"),
 		// 					},
-		// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-30T05:47:35.2+00:00"); return t}()),
+		// 					StartTime: to.Ptr(time.Date(2017, time.March, 30, 5, 47, 35, 200000000, time.UTC)),
 		// 					Status: to.Ptr(armautomation.JobStatusCompleted),
 		// 				},
 		// 			},

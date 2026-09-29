@@ -4,6 +4,10 @@
 
 package armbotservice
 
+const (
+	version20230915Preview string = "2023-09-15-preview"
+)
+
 // AccessMode - Access Mode of the resource association
 type AccessMode string
 

@@ -5,7 +5,7 @@
 package armcontainerservicefleet
 
 const (
-	version20260601 string = "2026-06-01"
+	version20260602Preview string = "2026-06-02-preview"
 )
 
 // ActionType - Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
@@ -110,6 +110,54 @@ func PossibleAutoUpgradeProfileProvisioningStateValues() []AutoUpgradeProfilePro
 	}
 }
 
+// ClusterMeshProfileProvisioningState - The provisioning state of the cluster mesh profile resource.
+type ClusterMeshProfileProvisioningState string
+
+const (
+	// ClusterMeshProfileProvisioningStateCanceled - Resource creation was canceled.
+	ClusterMeshProfileProvisioningStateCanceled ClusterMeshProfileProvisioningState = "Canceled"
+	// ClusterMeshProfileProvisioningStateFailed - Resource creation failed.
+	ClusterMeshProfileProvisioningStateFailed ClusterMeshProfileProvisioningState = "Failed"
+	// ClusterMeshProfileProvisioningStateSucceeded - Resource has been created.
+	ClusterMeshProfileProvisioningStateSucceeded ClusterMeshProfileProvisioningState = "Succeeded"
+)
+
+// PossibleClusterMeshProfileProvisioningStateValues returns the possible values for the ClusterMeshProfileProvisioningState const type.
+func PossibleClusterMeshProfileProvisioningStateValues() []ClusterMeshProfileProvisioningState {
+	return []ClusterMeshProfileProvisioningState{
+		ClusterMeshProfileProvisioningStateCanceled,
+		ClusterMeshProfileProvisioningStateFailed,
+		ClusterMeshProfileProvisioningStateSucceeded,
+	}
+}
+
+// ClusterMeshState - Cluster mesh state.
+type ClusterMeshState string
+
+const (
+	// ClusterMeshStateApplying - The mesh is applying.
+	ClusterMeshStateApplying ClusterMeshState = "Applying"
+	// ClusterMeshStateConnected - The mesh is connected.
+	ClusterMeshStateConnected ClusterMeshState = "Connected"
+	// ClusterMeshStateDegraded - The mesh is degraded.
+	ClusterMeshStateDegraded ClusterMeshState = "Degraded"
+	// ClusterMeshStateFailed - The mesh failed to connect.
+	ClusterMeshStateFailed ClusterMeshState = "Failed"
+	// ClusterMeshStateNotConnected - The mesh is not connected.
+	ClusterMeshStateNotConnected ClusterMeshState = "NotConnected"
+)
+
+// PossibleClusterMeshStateValues returns the possible values for the ClusterMeshState const type.
+func PossibleClusterMeshStateValues() []ClusterMeshState {
+	return []ClusterMeshState{
+		ClusterMeshStateApplying,
+		ClusterMeshStateConnected,
+		ClusterMeshStateDegraded,
+		ClusterMeshStateFailed,
+		ClusterMeshStateNotConnected,
+	}
+}
+
 // CreatedByType - The kind of entity that created the resource.
 type CreatedByType string
 
@@ -131,6 +179,39 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 		CreatedByTypeKey,
 		CreatedByTypeManagedIdentity,
 		CreatedByTypeUser,
+	}
+}
+
+// DayOfWeek - The days of a week.
+type DayOfWeek string
+
+const (
+	// DayOfWeekFriday - The day Friday.
+	DayOfWeekFriday DayOfWeek = "Friday"
+	// DayOfWeekMonday - The day Monday.
+	DayOfWeekMonday DayOfWeek = "Monday"
+	// DayOfWeekSaturday - The day Saturday.
+	DayOfWeekSaturday DayOfWeek = "Saturday"
+	// DayOfWeekSunday - The day Sunday.
+	DayOfWeekSunday DayOfWeek = "Sunday"
+	// DayOfWeekThursday - The day Thursday.
+	DayOfWeekThursday DayOfWeek = "Thursday"
+	// DayOfWeekTuesday - The day Tuesday.
+	DayOfWeekTuesday DayOfWeek = "Tuesday"
+	// DayOfWeekWednesday - The day Wednesday.
+	DayOfWeekWednesday DayOfWeek = "Wednesday"
+)
+
+// PossibleDayOfWeekValues returns the possible values for the DayOfWeek const type.
+func PossibleDayOfWeekValues() []DayOfWeek {
+	return []DayOfWeek{
+		DayOfWeekFriday,
+		DayOfWeekMonday,
+		DayOfWeekSaturday,
+		DayOfWeekSunday,
+		DayOfWeekThursday,
+		DayOfWeekTuesday,
+		DayOfWeekWednesday,
 	}
 }
 
@@ -311,12 +392,15 @@ type GateType string
 const (
 	// GateTypeApproval - An approval gate is completed by setting its state to be Completed.
 	GateTypeApproval GateType = "Approval"
+	// GateTypeScheduledStart - A scheduled start gate is automatically completed when the scheduled time is reached.
+	GateTypeScheduledStart GateType = "ScheduledStart"
 )
 
 // PossibleGateTypeValues returns the possible values for the GateType const type.
 func PossibleGateTypeValues() []GateType {
 	return []GateType{
 		GateTypeApproval,
+		GateTypeScheduledStart,
 	}
 }
 
@@ -389,6 +473,30 @@ func PossibleManagedServiceIdentityTypeValues() []ManagedServiceIdentityType {
 		ManagedServiceIdentityTypeSystemAndUserAssigned,
 		ManagedServiceIdentityTypeSystemAssigned,
 		ManagedServiceIdentityTypeUserAssigned,
+	}
+}
+
+// MeshMemberState - Mesh member state.
+type MeshMemberState string
+
+const (
+	// MeshMemberStateConnected - The member is connected to the mesh.
+	MeshMemberStateConnected MeshMemberState = "Connected"
+	// MeshMemberStateConnecting - The member is connecting to the mesh.
+	MeshMemberStateConnecting MeshMemberState = "Connecting"
+	// MeshMemberStateDisconnecting - The member is disconnecting from the mesh.
+	MeshMemberStateDisconnecting MeshMemberState = "Disconnecting"
+	// MeshMemberStateFailed - The member failed to connect due to an error.
+	MeshMemberStateFailed MeshMemberState = "Failed"
+)
+
+// PossibleMeshMemberStateValues returns the possible values for the MeshMemberState const type.
+func PossibleMeshMemberStateValues() []MeshMemberState {
+	return []MeshMemberState{
+		MeshMemberStateConnected,
+		MeshMemberStateConnecting,
+		MeshMemberStateDisconnecting,
+		MeshMemberStateFailed,
 	}
 }
 
@@ -530,6 +638,24 @@ func PossiblePropertySelectorOperatorValues() []PropertySelectorOperator {
 		PropertySelectorOperatorLe,
 		PropertySelectorOperatorLt,
 		PropertySelectorOperatorNe,
+	}
+}
+
+// RolloutStrategyType - The possible rollout strategy types.
+type RolloutStrategyType string
+
+const (
+	// RolloutStrategyTypeExternal - Use external rollout strategy via Staged Update Run.
+	RolloutStrategyTypeExternal RolloutStrategyType = "External"
+	// RolloutStrategyTypeRollingUpdate - Use rolling update strategy for rollout.
+	RolloutStrategyTypeRollingUpdate RolloutStrategyType = "RollingUpdate"
+)
+
+// PossibleRolloutStrategyTypeValues returns the possible values for the RolloutStrategyType const type.
+func PossibleRolloutStrategyTypeValues() []RolloutStrategyType {
+	return []RolloutStrategyType{
+		RolloutStrategyTypeExternal,
+		RolloutStrategyTypeRollingUpdate,
 	}
 }
 
@@ -676,6 +802,10 @@ const (
 	// UpgradeChannelRapid - Upgrades the clusters kubernetes version to the latest supported patch release on the latest supported
 	// minor version.
 	UpgradeChannelRapid UpgradeChannel = "Rapid"
+	// UpgradeChannelSecurityPatch - Applies security patches to the nodes of the target clusters.
+	// For information on the behavior of update run for security patch upgrade,
+	// see https://learn.microsoft.com/en-us/azure/kubernetes-fleet/update-orchestration?tabs=azure-portal
+	UpgradeChannelSecurityPatch UpgradeChannel = "SecurityPatch"
 	// UpgradeChannelStable - Upgrades the clusters kubernetes version to the latest supported patch release on minor version
 	// N-1, where N is the latest supported minor version.
 	// For example, if a cluster runs version 1.17.7 and versions 1.17.9, 1.18.4, 1.18.6, and 1.19.1 are available, the cluster
@@ -693,6 +823,7 @@ func PossibleUpgradeChannelValues() []UpgradeChannel {
 	return []UpgradeChannel{
 		UpgradeChannelNodeImage,
 		UpgradeChannelRapid,
+		UpgradeChannelSecurityPatch,
 		UpgradeChannelStable,
 		UpgradeChannelTargetKubernetesVersion,
 	}

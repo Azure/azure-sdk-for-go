@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v11"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v12"
 	"log"
 )
 
-// Generated from example definition: 2025-09-01/NetworkManagerPut.json
+// Generated from example definition: 2026-01-01/NetworkManagerPut.json
 func ExampleManagersClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -79,7 +79,7 @@ func ExampleManagersClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/NetworkManagerDelete.json
+// Generated from example definition: 2026-01-01/NetworkManagerDelete.json
 func ExampleManagersClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -106,7 +106,7 @@ func ExampleManagersClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/NetworkManagerGet.json
+// Generated from example definition: 2026-01-01/NetworkManagerGet.json
 func ExampleManagersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -156,7 +156,7 @@ func ExampleManagersClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/NetworkManagerList.json
+// Generated from example definition: 2026-01-01/NetworkManagerList.json
 func ExampleManagersClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -217,7 +217,7 @@ func ExampleManagersClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-09-01/NetworkManagerListAll.json
+// Generated from example definition: 2026-01-01/NetworkManagerListAll.json
 func ExampleManagersClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -278,7 +278,7 @@ func ExampleManagersClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2025-09-01/NetworkManagerPatch.json
+// Generated from example definition: 2026-01-01/NetworkManagerPatch.json
 func ExampleManagersClient_Patch() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

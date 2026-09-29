@@ -87,7 +87,7 @@ func (f *FeaturesServerTransport) dispatchAccountGet(req *http.Request) (*http.R
 	if f.srv.AccountGet == nil {
 		return nil, &nonRetriableError{errors.New("fake for method AccountGet not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Purview/accounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/listFeatures`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Purview/accounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listFeatures`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -124,7 +124,7 @@ func (f *FeaturesServerTransport) dispatchSubscriptionGet(req *http.Request) (*h
 	if f.srv.SubscriptionGet == nil {
 		return nil, &nonRetriableError{errors.New("fake for method SubscriptionGet not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Purview/locations/(?P<locations>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/listFeatures`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Purview/locations/(?P<locations>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listFeatures`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {

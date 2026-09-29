@@ -7,11 +7,11 @@ package armnetwork_test
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v11"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v12"
 	"log"
 )
 
-// Generated from example definition: 2025-09-01/ExpressRouteCircuitAuthorizationCreate.json
+// Generated from example definition: 2026-01-01/ExpressRouteCircuitAuthorizationCreate.json
 func ExampleExpressRouteCircuitAuthorizationsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -48,7 +48,7 @@ func ExampleExpressRouteCircuitAuthorizationsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/ExpressRouteCircuitAuthorizationDelete.json
+// Generated from example definition: 2026-01-01/ExpressRouteCircuitAuthorizationDelete.json
 func ExampleExpressRouteCircuitAuthorizationsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -74,7 +74,7 @@ func ExampleExpressRouteCircuitAuthorizationsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/ExpressRouteCircuitAuthorizationGet.json
+// Generated from example definition: 2026-01-01/ExpressRouteCircuitAuthorizationGet.json
 func ExampleExpressRouteCircuitAuthorizationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -107,7 +107,7 @@ func ExampleExpressRouteCircuitAuthorizationsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/ExpressRouteCircuitAuthorizationList.json
+// Generated from example definition: 2026-01-01/ExpressRouteCircuitAuthorizationList.json
 func ExampleExpressRouteCircuitAuthorizationsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -146,4 +146,29 @@ func ExampleExpressRouteCircuitAuthorizationsClient_NewListPager() {
 		// 	},
 		// }
 	}
+}
+
+// Generated from example definition: 2026-01-01/ExpressRouteCircuitAuthorizationListKeys.json
+func ExampleExpressRouteCircuitAuthorizationsClient_ListKeys() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewExpressRouteCircuitAuthorizationsClient().ListKeys(ctx, "rg1", "circuitName", "authorizationName", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armnetwork.ExpressRouteCircuitAuthorizationsClientListKeysResponse{
+	// 	ExpressRouteAuthorizationKey: armnetwork.ExpressRouteAuthorizationKey{
+	// 		AuthorizationKey: to.Ptr("authkey"),
+	// 	},
+	// }
 }

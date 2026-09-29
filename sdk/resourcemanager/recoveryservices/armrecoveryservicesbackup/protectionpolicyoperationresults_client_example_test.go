@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-07-01/AzureIaasVm/ProtectionPolicyOperationResults_Get.json
+// Generated from example definition: 2026-08-01/AzureIaasVm/ProtectionPolicyOperationResults_Get.json
 func ExampleProtectionPolicyOperationResultsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

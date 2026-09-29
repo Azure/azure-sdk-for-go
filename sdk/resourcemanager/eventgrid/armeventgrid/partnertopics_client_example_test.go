@@ -60,7 +60,7 @@ func ExamplePartnerTopicsClient_CreateOrUpdate() {
 	res, err := clientFactory.NewPartnerTopicsClient().CreateOrUpdate(ctx, "examplerg", "examplePartnerTopicName1", armeventgrid.PartnerTopic{
 		Location: to.Ptr("westus2"),
 		Properties: &armeventgrid.PartnerTopicProperties{
-			ExpirationTimeIfNotActivatedUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-23T23:06:13.109Z"); return t }()),
+			ExpirationTimeIfNotActivatedUTC: to.Ptr(time.Date(2022, time.March, 23, 23, 6, 13, 109000000, time.UTC)),
 			MessageForActivation:            to.Ptr("Example message for activation"),
 			PartnerRegistrationImmutableID:  to.Ptr("6f541064-031d-4cc8-9ec3-a3b4fc0f7185"),
 			PartnerTopicFriendlyDescription: to.Ptr("Example description"),
@@ -81,7 +81,7 @@ func ExamplePartnerTopicsClient_CreateOrUpdate() {
 	// 		Location: to.Ptr("centraluseuap"),
 	// 		Properties: &armeventgrid.PartnerTopicProperties{
 	// 			ActivationState: to.Ptr(armeventgrid.PartnerTopicActivationStateNeverActivated),
-	// 			ExpirationTimeIfNotActivatedUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-23T23:06:13.109Z"); return t}()),
+	// 			ExpirationTimeIfNotActivatedUTC: to.Ptr(time.Date(2022, time.March, 23, 23, 6, 13, 109000000, time.UTC)),
 	// 			MessageForActivation: to.Ptr("Example message for activation"),
 	// 			PartnerRegistrationImmutableID: to.Ptr("6f541064-031d-4cc8-9ec3-a3b4fc0f7185"),
 	// 			PartnerTopicFriendlyDescription: to.Ptr("Example description"),

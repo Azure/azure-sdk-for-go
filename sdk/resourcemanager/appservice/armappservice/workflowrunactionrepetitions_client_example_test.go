@@ -41,7 +41,7 @@ func ExampleWorkflowRunActionRepetitionsClient_Get() {
 	// 				ActionTrackingID: to.Ptr("f84f23eb-b331-4772-9f39-cc307fa83bc3"),
 	// 				ClientTrackingID: to.Ptr("08586775357427610445444523191"),
 	// 			},
-	// 			EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-18T17:05:57.1015421Z"); return t}()),
+	// 			EndTime: to.Ptr(time.Date(2018, time.April, 18, 17, 5, 57, 101542100, time.UTC)),
 	// 			InputsLink: &armappservice.ContentLink{
 	// 				ContentHash: &armappservice.ContentHash{
 	// 					Algorithm: to.Ptr("md5"),
@@ -66,7 +66,7 @@ func ExampleWorkflowRunActionRepetitionsClient_Get() {
 	// 					ScopeName: to.Ptr("For_each"),
 	// 				},
 	// 			},
-	// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-18T17:05:57.0929911Z"); return t}()),
+	// 			StartTime: to.Ptr(time.Date(2018, time.April, 18, 17, 5, 57, 92991100, time.UTC)),
 	// 			Status: to.Ptr(armappservice.WorkflowStatusSucceeded),
 	// 			TrackingID: to.Ptr("f84f23eb-b331-4772-9f39-cc307fa83bc3"),
 	// 		},
@@ -110,7 +110,7 @@ func ExampleWorkflowRunActionRepetitionsClient_NewListPager() {
 		// 						ActionTrackingID: to.Ptr("0d8152bb-e198-44a9-bde8-5138eea16dd4"),
 		// 						ClientTrackingID: to.Ptr("08586775357427610445444523191"),
 		// 					},
-		// 					EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-18T17:05:57.2264835Z"); return t}()),
+		// 					EndTime: to.Ptr(time.Date(2018, time.April, 18, 17, 5, 57, 226483500, time.UTC)),
 		// 					InputsLink: &armappservice.ContentLink{
 		// 						ContentHash: &armappservice.ContentHash{
 		// 							Algorithm: to.Ptr("md5"),
@@ -135,7 +135,7 @@ func ExampleWorkflowRunActionRepetitionsClient_NewListPager() {
 		// 							ScopeName: to.Ptr("For_each"),
 		// 						},
 		// 					},
-		// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-18T17:05:57.217991Z"); return t}()),
+		// 					StartTime: to.Ptr(time.Date(2018, time.April, 18, 17, 5, 57, 217991000, time.UTC)),
 		// 					Status: to.Ptr(armappservice.WorkflowStatusSucceeded),
 		// 					TrackingID: to.Ptr("0d8152bb-e198-44a9-bde8-5138eea16dd4"),
 		// 				},
@@ -151,7 +151,7 @@ func ExampleWorkflowRunActionRepetitionsClient_NewListPager() {
 		// 						ActionTrackingID: to.Ptr("f84f23eb-b331-4772-9f39-cc307fa83bc3"),
 		// 						ClientTrackingID: to.Ptr("08586775357427610445444523191"),
 		// 					},
-		// 					EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-18T17:05:57.1015421Z"); return t}()),
+		// 					EndTime: to.Ptr(time.Date(2018, time.April, 18, 17, 5, 57, 101542100, time.UTC)),
 		// 					InputsLink: &armappservice.ContentLink{
 		// 						ContentHash: &armappservice.ContentHash{
 		// 							Algorithm: to.Ptr("md5"),
@@ -176,7 +176,7 @@ func ExampleWorkflowRunActionRepetitionsClient_NewListPager() {
 		// 							ScopeName: to.Ptr("For_each"),
 		// 						},
 		// 					},
-		// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-18T17:05:57.0929911Z"); return t}()),
+		// 					StartTime: to.Ptr(time.Date(2018, time.April, 18, 17, 5, 57, 92991100, time.UTC)),
 		// 					Status: to.Ptr(armappservice.WorkflowStatusSucceeded),
 		// 					TrackingID: to.Ptr("f84f23eb-b331-4772-9f39-cc307fa83bc3"),
 		// 				},

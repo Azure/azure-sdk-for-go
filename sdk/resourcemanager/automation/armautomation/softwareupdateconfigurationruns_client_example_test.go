@@ -37,16 +37,16 @@ func ExampleSoftwareUpdateConfigurationRunsClient_GetByID() {
 	// 		Properties: &armautomation.SoftwareUpdateConfigurationRunProperties{
 	// 			ComputerCount: to.Ptr[int32](1),
 	// 			ConfiguredDuration: to.Ptr("PT2H"),
-	// 			CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-10-23T02:30:36.2401233+00:00"); return t}()),
-	// 			EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-10-23T02:30:42.8466667+00:00"); return t}()),
+	// 			CreationTime: to.Ptr(time.Date(2017, time.October, 23, 2, 30, 36, 240123300, time.UTC)),
+	// 			EndTime: to.Ptr(time.Date(2017, time.October, 23, 2, 30, 42, 846666700, time.UTC)),
 	// 			FailedCount: to.Ptr[int32](0),
 	// 			LastModifiedBy: to.Ptr(""),
-	// 			LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-10-23T02:31:39.3966667+00:00"); return t}()),
+	// 			LastModifiedTime: to.Ptr(time.Date(2017, time.October, 23, 2, 31, 39, 396666700, time.UTC)),
 	// 			OSType: to.Ptr("Windows"),
 	// 			SoftwareUpdateConfiguration: &armautomation.UpdateConfigurationNavigation{
 	// 				Name: to.Ptr("mypatch"),
 	// 			},
-	// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-10-23T02:30:36.2401233+00:00"); return t}()),
+	// 			StartTime: to.Ptr(time.Date(2017, time.October, 23, 2, 30, 36, 240123300, time.UTC)),
 	// 			Status: to.Ptr("Succeeded"),
 	// 			Tasks: &armautomation.SoftwareUpdateConfigurationRunTasks{
 	// 				PreTask: &armautomation.SoftwareUpdateConfigurationRunTaskProperties{
@@ -89,16 +89,16 @@ func ExampleSoftwareUpdateConfigurationRunsClient_List_listSoftwareUpdateConfigu
 	// 				Properties: &armautomation.SoftwareUpdateConfigurationRunProperties{
 	// 					ComputerCount: to.Ptr[int32](1),
 	// 					ConfiguredDuration: to.Ptr("PT2H"),
-	// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-10-23T02:30:36.2401233+00:00"); return t}()),
-	// 					EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-10-23T02:30:42.8466667+00:00"); return t}()),
+	// 					CreationTime: to.Ptr(time.Date(2017, time.October, 23, 2, 30, 36, 240123300, time.UTC)),
+	// 					EndTime: to.Ptr(time.Date(2017, time.October, 23, 2, 30, 42, 846666700, time.UTC)),
 	// 					FailedCount: to.Ptr[int32](0),
 	// 					LastModifiedBy: to.Ptr(""),
-	// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-10-23T02:31:39.3966667+00:00"); return t}()),
+	// 					LastModifiedTime: to.Ptr(time.Date(2017, time.October, 23, 2, 31, 39, 396666700, time.UTC)),
 	// 					OSType: to.Ptr("Windows"),
 	// 					SoftwareUpdateConfiguration: &armautomation.UpdateConfigurationNavigation{
 	// 						Name: to.Ptr("mypatch"),
 	// 					},
-	// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-10-23T02:30:36.2401233+00:00"); return t}()),
+	// 					StartTime: to.Ptr(time.Date(2017, time.October, 23, 2, 30, 36, 240123300, time.UTC)),
 	// 					Status: to.Ptr("Failed"),
 	// 					Tasks: &armautomation.SoftwareUpdateConfigurationRunTasks{
 	// 						PreTask: &armautomation.SoftwareUpdateConfigurationRunTaskProperties{
@@ -115,16 +115,16 @@ func ExampleSoftwareUpdateConfigurationRunsClient_List_listSoftwareUpdateConfigu
 	// 				Properties: &armautomation.SoftwareUpdateConfigurationRunProperties{
 	// 					ComputerCount: to.Ptr[int32](1),
 	// 					ConfiguredDuration: to.Ptr("PT2H"),
-	// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-10-23T01:33:01.8818952+00:00"); return t}()),
-	// 					EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-10-23T01:33:08.1133333+00:00"); return t}()),
+	// 					CreationTime: to.Ptr(time.Date(2017, time.October, 23, 1, 33, 1, 881895200, time.UTC)),
+	// 					EndTime: to.Ptr(time.Date(2017, time.October, 23, 1, 33, 8, 113333300, time.UTC)),
 	// 					FailedCount: to.Ptr[int32](0),
 	// 					LastModifiedBy: to.Ptr(""),
-	// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-10-23T01:34:03.94+00:00"); return t}()),
+	// 					LastModifiedTime: to.Ptr(time.Date(2017, time.October, 23, 1, 34, 3, 940000000, time.UTC)),
 	// 					OSType: to.Ptr("Windows"),
 	// 					SoftwareUpdateConfiguration: &armautomation.UpdateConfigurationNavigation{
 	// 						Name: to.Ptr("mypatch"),
 	// 					},
-	// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-10-23T01:33:01.8818952+00:00"); return t}()),
+	// 					StartTime: to.Ptr(time.Date(2017, time.October, 23, 1, 33, 1, 881895200, time.UTC)),
 	// 					Status: to.Ptr("Failed"),
 	// 					Tasks: &armautomation.SoftwareUpdateConfigurationRunTasks{
 	// 						PreTask: &armautomation.SoftwareUpdateConfigurationRunTaskProperties{
@@ -168,16 +168,16 @@ func ExampleSoftwareUpdateConfigurationRunsClient_List_listSoftwareUpdateConfigu
 	// 				Properties: &armautomation.SoftwareUpdateConfigurationRunProperties{
 	// 					ComputerCount: to.Ptr[int32](1),
 	// 					ConfiguredDuration: to.Ptr("PT2H"),
-	// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-10-23T02:30:36.2401233+00:00"); return t}()),
-	// 					EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-10-23T02:30:42.8466667+00:00"); return t}()),
+	// 					CreationTime: to.Ptr(time.Date(2017, time.October, 23, 2, 30, 36, 240123300, time.UTC)),
+	// 					EndTime: to.Ptr(time.Date(2017, time.October, 23, 2, 30, 42, 846666700, time.UTC)),
 	// 					FailedCount: to.Ptr[int32](0),
 	// 					LastModifiedBy: to.Ptr(""),
-	// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-10-23T02:31:39.3966667+00:00"); return t}()),
+	// 					LastModifiedTime: to.Ptr(time.Date(2017, time.October, 23, 2, 31, 39, 396666700, time.UTC)),
 	// 					OSType: to.Ptr("Windows"),
 	// 					SoftwareUpdateConfiguration: &armautomation.UpdateConfigurationNavigation{
 	// 						Name: to.Ptr("mypatch"),
 	// 					},
-	// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-10-23T02:30:36.2401233+00:00"); return t}()),
+	// 					StartTime: to.Ptr(time.Date(2017, time.October, 23, 2, 30, 36, 240123300, time.UTC)),
 	// 					Status: to.Ptr("Succeeded"),
 	// 					Tasks: &armautomation.SoftwareUpdateConfigurationRunTasks{
 	// 						PreTask: &armautomation.SoftwareUpdateConfigurationRunTaskProperties{
@@ -194,16 +194,16 @@ func ExampleSoftwareUpdateConfigurationRunsClient_List_listSoftwareUpdateConfigu
 	// 				Properties: &armautomation.SoftwareUpdateConfigurationRunProperties{
 	// 					ComputerCount: to.Ptr[int32](1),
 	// 					ConfiguredDuration: to.Ptr("PT2H"),
-	// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-10-23T01:33:01.8818952+00:00"); return t}()),
-	// 					EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-10-23T01:33:08.1133333+00:00"); return t}()),
+	// 					CreationTime: to.Ptr(time.Date(2017, time.October, 23, 1, 33, 1, 881895200, time.UTC)),
+	// 					EndTime: to.Ptr(time.Date(2017, time.October, 23, 1, 33, 8, 113333300, time.UTC)),
 	// 					FailedCount: to.Ptr[int32](0),
 	// 					LastModifiedBy: to.Ptr(""),
-	// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-10-23T01:34:03.94+00:00"); return t}()),
+	// 					LastModifiedTime: to.Ptr(time.Date(2017, time.October, 23, 1, 34, 3, 940000000, time.UTC)),
 	// 					OSType: to.Ptr("Windows"),
 	// 					SoftwareUpdateConfiguration: &armautomation.UpdateConfigurationNavigation{
 	// 						Name: to.Ptr("mypatch"),
 	// 					},
-	// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-10-23T01:33:01.8818952+00:00"); return t}()),
+	// 					StartTime: to.Ptr(time.Date(2017, time.October, 23, 1, 33, 1, 881895200, time.UTC)),
 	// 					Status: to.Ptr("Succeeded"),
 	// 					Tasks: &armautomation.SoftwareUpdateConfigurationRunTasks{
 	// 						PreTask: &armautomation.SoftwareUpdateConfigurationRunTaskProperties{

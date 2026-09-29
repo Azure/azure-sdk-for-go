@@ -53,12 +53,7 @@ func (client *OperationsClient) List(ctx context.Context, options *OperationsCli
 	if err != nil {
 		return OperationsClientListResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return OperationsClientListResponse{}, err
-	}
-	resp, err := client.listHandleResponse(httpResp)
-	return resp, err
+	return client.listHandleResponse(httpResp, http.StatusOK)
 }
 
 // listCreateRequest creates the List request.
@@ -76,8 +71,11 @@ func (client *OperationsClient) listCreateRequest(ctx context.Context, _ *Operat
 }
 
 // listHandleResponse handles the List response.
-func (client *OperationsClient) listHandleResponse(resp *http.Response) (OperationsClientListResponse, error) {
+func (client *OperationsClient) listHandleResponse(resp *http.Response, successCodes ...int) (OperationsClientListResponse, error) {
 	result := OperationsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OperationListResult); err != nil {
 		return OperationsClientListResponse{}, err
 	}

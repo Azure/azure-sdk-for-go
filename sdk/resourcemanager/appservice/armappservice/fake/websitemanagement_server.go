@@ -207,7 +207,7 @@ func (w *WebSiteManagementServerTransport) dispatchCheckNameAvailability(req *ht
 	if w.srv.CheckNameAvailability == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CheckNameAvailability not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/checknameavailability`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/checknameavailability`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 2 {
@@ -255,7 +255,7 @@ func (w *WebSiteManagementServerTransport) dispatchGetSourceControl(req *http.Re
 	if w.srv.GetSourceControl == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetSourceControl not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.Web/sourcecontrols/(?P<sourceControlType>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/providers/Microsoft\.Web/sourcecontrols/(?P<sourceControlType>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 2 {
@@ -284,7 +284,7 @@ func (w *WebSiteManagementServerTransport) dispatchGetSubscriptionDeploymentLoca
 	if w.srv.GetSubscriptionDeploymentLocations == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetSubscriptionDeploymentLocations not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/deploymentLocations`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/deploymentLocations`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 2 {
@@ -311,7 +311,7 @@ func (w *WebSiteManagementServerTransport) dispatchNewListAseRegionsPager(req *h
 	}
 	newListAseRegionsPager := w.newListAseRegionsPager.get(req)
 	if newListAseRegionsPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/aseRegions`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/aseRegions`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 2 {
@@ -344,7 +344,7 @@ func (w *WebSiteManagementServerTransport) dispatchNewListBillingMetersPager(req
 	}
 	newListBillingMetersPager := w.newListBillingMetersPager.get(req)
 	if newListBillingMetersPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/billingMeters`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/billingMeters`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 2 {
@@ -387,7 +387,7 @@ func (w *WebSiteManagementServerTransport) dispatchNewListCustomHostNameSitesPag
 	}
 	newListCustomHostNameSitesPager := w.newListCustomHostNameSitesPager.get(req)
 	if newListCustomHostNameSitesPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/customhostnameSites`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/customhostnameSites`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 2 {
@@ -428,7 +428,7 @@ func (w *WebSiteManagementServerTransport) dispatchNewListGeoRegionsPager(req *h
 	}
 	newListGeoRegionsPager := w.newListGeoRegionsPager.get(req)
 	if newListGeoRegionsPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/geoRegions`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/geoRegions`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 2 {
@@ -489,7 +489,7 @@ func (w *WebSiteManagementServerTransport) dispatchNewListPremierAddOnOffersPage
 	}
 	newListPremierAddOnOffersPager := w.newListPremierAddOnOffersPager.get(req)
 	if newListPremierAddOnOffersPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/premieraddonoffers`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/premieraddonoffers`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 2 {
@@ -520,7 +520,7 @@ func (w *WebSiteManagementServerTransport) dispatchListSKUs(req *http.Request) (
 	if w.srv.ListSKUs == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ListSKUs not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/skus`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/skus`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 2 {
@@ -547,7 +547,7 @@ func (w *WebSiteManagementServerTransport) dispatchNewListSiteIdentifiersAssigne
 	}
 	newListSiteIdentifiersAssignedToHostNamePager := w.newListSiteIdentifiersAssignedToHostNamePager.get(req)
 	if newListSiteIdentifiersAssignedToHostNamePager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/listSitesAssignedToHostName`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/listSitesAssignedToHostName`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 2 {
@@ -609,7 +609,7 @@ func (w *WebSiteManagementServerTransport) dispatchMove(req *http.Request) (*htt
 	if w.srv.Move == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Move not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/moveResources`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/moveResources`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -642,7 +642,7 @@ func (w *WebSiteManagementServerTransport) dispatchRegionalCheckNameAvailability
 	if w.srv.RegionalCheckNameAvailability == nil {
 		return nil, &nonRetriableError{errors.New("fake for method RegionalCheckNameAvailability not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/checknameavailability`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/checknameavailability`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -698,7 +698,7 @@ func (w *WebSiteManagementServerTransport) dispatchUpdateSourceControl(req *http
 	if w.srv.UpdateSourceControl == nil {
 		return nil, &nonRetriableError{errors.New("fake for method UpdateSourceControl not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.Web/sourcecontrols/(?P<sourceControlType>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/providers/Microsoft\.Web/sourcecontrols/(?P<sourceControlType>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 2 {
@@ -731,7 +731,7 @@ func (w *WebSiteManagementServerTransport) dispatchValidate(req *http.Request) (
 	if w.srv.Validate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Validate not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/validate`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/validate`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -764,7 +764,7 @@ func (w *WebSiteManagementServerTransport) dispatchValidateMove(req *http.Reques
 	if w.srv.ValidateMove == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ValidateMove not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/validateMoveResources`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/validateMoveResources`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -797,7 +797,7 @@ func (w *WebSiteManagementServerTransport) dispatchVerifyHostingEnvironmentVnet(
 	if w.srv.VerifyHostingEnvironmentVnet == nil {
 		return nil, &nonRetriableError{errors.New("fake for method VerifyHostingEnvironmentVnet not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/verifyHostingEnvironmentVnet`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/verifyHostingEnvironmentVnet`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 2 {

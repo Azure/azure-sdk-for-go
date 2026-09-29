@@ -48,7 +48,7 @@ func ExampleKeyValuesClient_CreateOrUpdate() {
 	// 			ETag: to.Ptr("IhDxoa8VkXxPsYsemBlxvV0d5fp"),
 	// 			Key: to.Ptr("myKey"),
 	// 			Label: to.Ptr("myLabel"),
-	// 			LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-23T06:42:24+00:00"); return t}()),
+	// 			LastModified: to.Ptr(time.Date(2020, time.June, 23, 6, 42, 24, 0, time.UTC)),
 	// 			Locked: to.Ptr(false),
 	// 			Tags: map[string]*string{
 	// 				"tag1": to.Ptr("tagValue1"),
@@ -114,7 +114,7 @@ func ExampleKeyValuesClient_Get() {
 	// 			ETag: to.Ptr("IhDxoa8VkXxPsYsemBlxvV0d5fp"),
 	// 			Key: to.Ptr("myKey"),
 	// 			Label: to.Ptr("myLabel"),
-	// 			LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-23T06:42:24+00:00"); return t}()),
+	// 			LastModified: to.Ptr(time.Date(2020, time.June, 23, 6, 42, 24, 0, time.UTC)),
 	// 			Locked: to.Ptr(false),
 	// 			Tags: map[string]*string{
 	// 				"tag1": to.Ptr("tagValue1"),

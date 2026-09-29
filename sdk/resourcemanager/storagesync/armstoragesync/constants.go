@@ -5,7 +5,7 @@
 package armstoragesync
 
 const (
-	version20220901 string = "2022-09-01"
+	version20251201 string = "2025-12-01"
 )
 
 // ChangeDetectionMode - Change Detection Mode. Applies to a directory specified in directoryPath parameter.
@@ -394,6 +394,24 @@ func PossibleServerEndpointSyncModeValues() []ServerEndpointSyncMode {
 		ServerEndpointSyncModeNamespaceDownload,
 		ServerEndpointSyncModeRegular,
 		ServerEndpointSyncModeSnapshotUpload,
+	}
+}
+
+// ServerEndpointSyncSessionWarningType - Warning types for sync sessions.
+type ServerEndpointSyncSessionWarningType string
+
+const (
+	// ServerEndpointSyncSessionWarningTypeBlockedByLargeFile - Sync is blocked by a large file
+	ServerEndpointSyncSessionWarningTypeBlockedByLargeFile ServerEndpointSyncSessionWarningType = "BlockedByLargeFile"
+	// ServerEndpointSyncSessionWarningTypeNoWarning - No warning
+	ServerEndpointSyncSessionWarningTypeNoWarning ServerEndpointSyncSessionWarningType = "NoWarning"
+)
+
+// PossibleServerEndpointSyncSessionWarningTypeValues returns the possible values for the ServerEndpointSyncSessionWarningType const type.
+func PossibleServerEndpointSyncSessionWarningTypeValues() []ServerEndpointSyncSessionWarningType {
+	return []ServerEndpointSyncSessionWarningType{
+		ServerEndpointSyncSessionWarningTypeBlockedByLargeFile,
+		ServerEndpointSyncSessionWarningTypeNoWarning,
 	}
 }
 

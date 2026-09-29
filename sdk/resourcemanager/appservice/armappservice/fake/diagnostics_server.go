@@ -229,7 +229,7 @@ func (d *DiagnosticsServerTransport) dispatchExecuteSiteAnalysis(req *http.Reque
 	if d.srv.ExecuteSiteAnalysis == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ExecuteSiteAnalysis not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/sites/(?P<siteName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/diagnostics/(?P<diagnosticCategory>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/analyses/(?P<analysisName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/execute`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<siteName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/diagnostics/(?P<diagnosticCategory>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/analyses/(?P<analysisName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/execute`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 6 {
@@ -288,7 +288,7 @@ func (d *DiagnosticsServerTransport) dispatchExecuteSiteAnalysisSlot(req *http.R
 	if d.srv.ExecuteSiteAnalysisSlot == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ExecuteSiteAnalysisSlot not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/sites/(?P<siteName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/slots/(?P<slot>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/diagnostics/(?P<diagnosticCategory>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/analyses/(?P<analysisName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/execute`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<siteName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/slots/(?P<slot>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/diagnostics/(?P<diagnosticCategory>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/analyses/(?P<analysisName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/execute`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 7 {
@@ -351,7 +351,7 @@ func (d *DiagnosticsServerTransport) dispatchExecuteSiteDetector(req *http.Reque
 	if d.srv.ExecuteSiteDetector == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ExecuteSiteDetector not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/sites/(?P<siteName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/diagnostics/(?P<diagnosticCategory>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/detectors/(?P<detectorName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/execute`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<siteName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/diagnostics/(?P<diagnosticCategory>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/detectors/(?P<detectorName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/execute`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 6 {
@@ -410,7 +410,7 @@ func (d *DiagnosticsServerTransport) dispatchExecuteSiteDetectorSlot(req *http.R
 	if d.srv.ExecuteSiteDetectorSlot == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ExecuteSiteDetectorSlot not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/sites/(?P<siteName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/slots/(?P<slot>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/diagnostics/(?P<diagnosticCategory>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/detectors/(?P<detectorName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/execute`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<siteName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/slots/(?P<slot>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/diagnostics/(?P<diagnosticCategory>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/detectors/(?P<detectorName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/execute`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 7 {
@@ -473,7 +473,7 @@ func (d *DiagnosticsServerTransport) dispatchGetHostingEnvironmentDetectorRespon
 	if d.srv.GetHostingEnvironmentDetectorResponse == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetHostingEnvironmentDetectorResponse not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/hostingEnvironments/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/detectors/(?P<detectorName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/hostingEnvironments/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/detectors/(?P<detectorName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -528,7 +528,7 @@ func (d *DiagnosticsServerTransport) dispatchGetSiteAnalysis(req *http.Request) 
 	if d.srv.GetSiteAnalysis == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetSiteAnalysis not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/sites/(?P<siteName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/diagnostics/(?P<diagnosticCategory>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/analyses/(?P<analysisName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<siteName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/diagnostics/(?P<diagnosticCategory>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/analyses/(?P<analysisName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 6 {
@@ -569,7 +569,7 @@ func (d *DiagnosticsServerTransport) dispatchGetSiteAnalysisSlot(req *http.Reque
 	if d.srv.GetSiteAnalysisSlot == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetSiteAnalysisSlot not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/sites/(?P<siteName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/slots/(?P<slot>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/diagnostics/(?P<diagnosticCategory>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/analyses/(?P<analysisName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<siteName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/slots/(?P<slot>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/diagnostics/(?P<diagnosticCategory>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/analyses/(?P<analysisName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 7 {
@@ -614,7 +614,7 @@ func (d *DiagnosticsServerTransport) dispatchGetSiteDetector(req *http.Request) 
 	if d.srv.GetSiteDetector == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetSiteDetector not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/sites/(?P<siteName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/diagnostics/(?P<diagnosticCategory>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/detectors/(?P<detectorName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<siteName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/diagnostics/(?P<diagnosticCategory>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/detectors/(?P<detectorName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 6 {
@@ -655,7 +655,7 @@ func (d *DiagnosticsServerTransport) dispatchGetSiteDetectorResponse(req *http.R
 	if d.srv.GetSiteDetectorResponse == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetSiteDetectorResponse not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/sites/(?P<siteName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/detectors/(?P<detectorName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<siteName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/detectors/(?P<detectorName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -710,7 +710,7 @@ func (d *DiagnosticsServerTransport) dispatchGetSiteDetectorResponseSlot(req *ht
 	if d.srv.GetSiteDetectorResponseSlot == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetSiteDetectorResponseSlot not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/sites/(?P<siteName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/slots/(?P<slot>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/detectors/(?P<detectorName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<siteName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/slots/(?P<slot>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/detectors/(?P<detectorName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 6 {
@@ -769,7 +769,7 @@ func (d *DiagnosticsServerTransport) dispatchGetSiteDetectorSlot(req *http.Reque
 	if d.srv.GetSiteDetectorSlot == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetSiteDetectorSlot not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/sites/(?P<siteName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/slots/(?P<slot>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/diagnostics/(?P<diagnosticCategory>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/detectors/(?P<detectorName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<siteName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/slots/(?P<slot>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/diagnostics/(?P<diagnosticCategory>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/detectors/(?P<detectorName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 7 {
@@ -814,7 +814,7 @@ func (d *DiagnosticsServerTransport) dispatchGetSiteDiagnosticCategory(req *http
 	if d.srv.GetSiteDiagnosticCategory == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetSiteDiagnosticCategory not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/sites/(?P<siteName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/diagnostics/(?P<diagnosticCategory>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<siteName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/diagnostics/(?P<diagnosticCategory>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -851,7 +851,7 @@ func (d *DiagnosticsServerTransport) dispatchGetSiteDiagnosticCategorySlot(req *
 	if d.srv.GetSiteDiagnosticCategorySlot == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetSiteDiagnosticCategorySlot not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/sites/(?P<siteName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/slots/(?P<slot>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/diagnostics/(?P<diagnosticCategory>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<siteName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/slots/(?P<slot>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/diagnostics/(?P<diagnosticCategory>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 6 {
@@ -894,7 +894,7 @@ func (d *DiagnosticsServerTransport) dispatchNewListHostingEnvironmentDetectorRe
 	}
 	newListHostingEnvironmentDetectorResponsesPager := d.newListHostingEnvironmentDetectorResponsesPager.get(req)
 	if newListHostingEnvironmentDetectorResponsesPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/hostingEnvironments/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/detectors`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/hostingEnvironments/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/detectors`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -935,7 +935,7 @@ func (d *DiagnosticsServerTransport) dispatchNewListSiteAnalysesPager(req *http.
 	}
 	newListSiteAnalysesPager := d.newListSiteAnalysesPager.get(req)
 	if newListSiteAnalysesPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/sites/(?P<siteName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/diagnostics/(?P<diagnosticCategory>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/analyses`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<siteName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/diagnostics/(?P<diagnosticCategory>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/analyses`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -980,7 +980,7 @@ func (d *DiagnosticsServerTransport) dispatchNewListSiteAnalysesSlotPager(req *h
 	}
 	newListSiteAnalysesSlotPager := d.newListSiteAnalysesSlotPager.get(req)
 	if newListSiteAnalysesSlotPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/sites/(?P<siteName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/slots/(?P<slot>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/diagnostics/(?P<diagnosticCategory>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/analyses`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<siteName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/slots/(?P<slot>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/diagnostics/(?P<diagnosticCategory>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/analyses`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 6 {
@@ -1029,7 +1029,7 @@ func (d *DiagnosticsServerTransport) dispatchNewListSiteDetectorResponsesPager(r
 	}
 	newListSiteDetectorResponsesPager := d.newListSiteDetectorResponsesPager.get(req)
 	if newListSiteDetectorResponsesPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/sites/(?P<siteName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/detectors`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<siteName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/detectors`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -1070,7 +1070,7 @@ func (d *DiagnosticsServerTransport) dispatchNewListSiteDetectorResponsesSlotPag
 	}
 	newListSiteDetectorResponsesSlotPager := d.newListSiteDetectorResponsesSlotPager.get(req)
 	if newListSiteDetectorResponsesSlotPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/sites/(?P<siteName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/slots/(?P<slot>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/detectors`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<siteName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/slots/(?P<slot>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/detectors`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -1115,7 +1115,7 @@ func (d *DiagnosticsServerTransport) dispatchNewListSiteDetectorsPager(req *http
 	}
 	newListSiteDetectorsPager := d.newListSiteDetectorsPager.get(req)
 	if newListSiteDetectorsPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/sites/(?P<siteName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/diagnostics/(?P<diagnosticCategory>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/detectors`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<siteName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/diagnostics/(?P<diagnosticCategory>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/detectors`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -1160,7 +1160,7 @@ func (d *DiagnosticsServerTransport) dispatchNewListSiteDetectorsSlotPager(req *
 	}
 	newListSiteDetectorsSlotPager := d.newListSiteDetectorsSlotPager.get(req)
 	if newListSiteDetectorsSlotPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/sites/(?P<siteName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/slots/(?P<slot>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/diagnostics/(?P<diagnosticCategory>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/detectors`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<siteName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/slots/(?P<slot>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/diagnostics/(?P<diagnosticCategory>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/detectors`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 6 {
@@ -1209,7 +1209,7 @@ func (d *DiagnosticsServerTransport) dispatchNewListSiteDiagnosticCategoriesPage
 	}
 	newListSiteDiagnosticCategoriesPager := d.newListSiteDiagnosticCategoriesPager.get(req)
 	if newListSiteDiagnosticCategoriesPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/sites/(?P<siteName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/diagnostics`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<siteName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/diagnostics`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -1250,7 +1250,7 @@ func (d *DiagnosticsServerTransport) dispatchNewListSiteDiagnosticCategoriesSlot
 	}
 	newListSiteDiagnosticCategoriesSlotPager := d.newListSiteDiagnosticCategoriesSlotPager.get(req)
 	if newListSiteDiagnosticCategoriesSlotPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/sites/(?P<siteName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/slots/(?P<slot>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/diagnostics`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<siteName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/slots/(?P<slot>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/diagnostics`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {

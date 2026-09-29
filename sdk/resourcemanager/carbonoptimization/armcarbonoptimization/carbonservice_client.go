@@ -54,12 +54,7 @@ func (client *CarbonServiceClient) QueryCarbonEmissionDataAvailableDateRange(ctx
 	if err != nil {
 		return CarbonServiceClientQueryCarbonEmissionDataAvailableDateRangeResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return CarbonServiceClientQueryCarbonEmissionDataAvailableDateRangeResponse{}, err
-	}
-	resp, err := client.queryCarbonEmissionDataAvailableDateRangeHandleResponse(httpResp)
-	return resp, err
+	return client.queryCarbonEmissionDataAvailableDateRangeHandleResponse(httpResp, http.StatusOK)
 }
 
 // queryCarbonEmissionDataAvailableDateRangeCreateRequest creates the QueryCarbonEmissionDataAvailableDateRange request.
@@ -77,8 +72,11 @@ func (client *CarbonServiceClient) queryCarbonEmissionDataAvailableDateRangeCrea
 }
 
 // queryCarbonEmissionDataAvailableDateRangeHandleResponse handles the QueryCarbonEmissionDataAvailableDateRange response.
-func (client *CarbonServiceClient) queryCarbonEmissionDataAvailableDateRangeHandleResponse(resp *http.Response) (CarbonServiceClientQueryCarbonEmissionDataAvailableDateRangeResponse, error) {
+func (client *CarbonServiceClient) queryCarbonEmissionDataAvailableDateRangeHandleResponse(resp *http.Response, successCodes ...int) (CarbonServiceClientQueryCarbonEmissionDataAvailableDateRangeResponse, error) {
 	result := CarbonServiceClientQueryCarbonEmissionDataAvailableDateRangeResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CarbonEmissionDataAvailableDateRange); err != nil {
 		return CarbonServiceClientQueryCarbonEmissionDataAvailableDateRangeResponse{}, err
 	}
@@ -104,12 +102,7 @@ func (client *CarbonServiceClient) QueryCarbonEmissionReports(ctx context.Contex
 	if err != nil {
 		return CarbonServiceClientQueryCarbonEmissionReportsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return CarbonServiceClientQueryCarbonEmissionReportsResponse{}, err
-	}
-	resp, err := client.queryCarbonEmissionReportsHandleResponse(httpResp)
-	return resp, err
+	return client.queryCarbonEmissionReportsHandleResponse(httpResp, http.StatusOK)
 }
 
 // queryCarbonEmissionReportsCreateRequest creates the QueryCarbonEmissionReports request.
@@ -131,8 +124,11 @@ func (client *CarbonServiceClient) queryCarbonEmissionReportsCreateRequest(ctx c
 }
 
 // queryCarbonEmissionReportsHandleResponse handles the QueryCarbonEmissionReports response.
-func (client *CarbonServiceClient) queryCarbonEmissionReportsHandleResponse(resp *http.Response) (CarbonServiceClientQueryCarbonEmissionReportsResponse, error) {
+func (client *CarbonServiceClient) queryCarbonEmissionReportsHandleResponse(resp *http.Response, successCodes ...int) (CarbonServiceClientQueryCarbonEmissionReportsResponse, error) {
 	result := CarbonServiceClientQueryCarbonEmissionReportsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CarbonEmissionDataListResult); err != nil {
 		return CarbonServiceClientQueryCarbonEmissionReportsResponse{}, err
 	}

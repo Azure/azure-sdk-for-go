@@ -73,10 +73,10 @@ func ExampleNamespaceDiscoveredDevicesClient_BeginCreateOrReplace() {
 	// 		SystemData: &armdeviceregistry.SystemData{
 	// 			CreatedBy: to.Ptr("2ta23112-4596-44ff-b773-19405922bfc1"),
 	// 			CreatedByType: to.Ptr(armdeviceregistry.CreatedByTypeApplication),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-16T00:36:43.2516899Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2022, time.November, 16, 0, 36, 43, 251689900, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("2ta23112-4596-44ff-b773-19405922bfc1"),
 	// 			LastModifiedByType: to.Ptr(armdeviceregistry.CreatedByTypeApplication),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-16T01:37:16.0922793Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2022, time.November, 16, 1, 37, 16, 92279300, time.UTC)),
 	// 		},
 	// 		Properties: &armdeviceregistry.NamespaceDiscoveredDeviceProperties{
 	// 			Endpoints: &armdeviceregistry.DiscoveredMessagingEndpoints{
@@ -152,10 +152,10 @@ func ExampleNamespaceDiscoveredDevicesClient_Get() {
 	// 		SystemData: &armdeviceregistry.SystemData{
 	// 			CreatedBy: to.Ptr("2ta23112-4596-44ff-b773-19405922bfc1"),
 	// 			CreatedByType: to.Ptr(armdeviceregistry.CreatedByTypeApplication),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-16T00:36:43.2516899Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2022, time.November, 16, 0, 36, 43, 251689900, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("2ta23112-4596-44ff-b773-19405922bfc1"),
 	// 			LastModifiedByType: to.Ptr(armdeviceregistry.CreatedByTypeApplication),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-16T01:37:16.0922793Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2022, time.November, 16, 1, 37, 16, 92279300, time.UTC)),
 	// 		},
 	// 		Properties: &armdeviceregistry.NamespaceDiscoveredDeviceProperties{
 	// 			Endpoints: &armdeviceregistry.DiscoveredMessagingEndpoints{
@@ -220,10 +220,10 @@ func ExampleNamespaceDiscoveredDevicesClient_NewListByResourceGroupPager() {
 		// 				SystemData: &armdeviceregistry.SystemData{
 		// 					CreatedBy: to.Ptr("2ta23112-4596-44ff-b773-19405922bfc1"),
 		// 					CreatedByType: to.Ptr(armdeviceregistry.CreatedByTypeApplication),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-16T00:36:43.2516899Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2022, time.November, 16, 0, 36, 43, 251689900, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("2ta23112-4596-44ff-b773-19405922bfc1"),
 		// 					LastModifiedByType: to.Ptr(armdeviceregistry.CreatedByTypeApplication),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-16T01:37:16.0922793Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2022, time.November, 16, 1, 37, 16, 92279300, time.UTC)),
 		// 				},
 		// 				Properties: &armdeviceregistry.NamespaceDiscoveredDeviceProperties{
 		// 					Endpoints: &armdeviceregistry.DiscoveredMessagingEndpoints{
@@ -256,10 +256,10 @@ func ExampleNamespaceDiscoveredDevicesClient_NewListByResourceGroupPager() {
 		// 				SystemData: &armdeviceregistry.SystemData{
 		// 					CreatedBy: to.Ptr("2ta23112-4596-44ff-b773-19405922bfc1"),
 		// 					CreatedByType: to.Ptr(armdeviceregistry.CreatedByTypeApplication),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-16T00:36:43.2516899Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2022, time.November, 16, 0, 36, 43, 251689900, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("2ta23112-4596-44ff-b773-19405922bfc1"),
 		// 					LastModifiedByType: to.Ptr(armdeviceregistry.CreatedByTypeApplication),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-16T01:37:16.0922793Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2022, time.November, 16, 1, 37, 16, 92279300, time.UTC)),
 		// 				},
 		// 				Properties: &armdeviceregistry.NamespaceDiscoveredDeviceProperties{
 		// 					Endpoints: &armdeviceregistry.DiscoveredMessagingEndpoints{
@@ -338,10 +338,10 @@ func ExampleNamespaceDiscoveredDevicesClient_BeginUpdate() {
 	// 		SystemData: &armdeviceregistry.SystemData{
 	// 			CreatedBy: to.Ptr("2ta23112-4596-44ff-b773-19405922bfc1"),
 	// 			CreatedByType: to.Ptr(armdeviceregistry.CreatedByTypeApplication),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-16T00:36:43.2516899Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2022, time.November, 16, 0, 36, 43, 251689900, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("2ta23112-4596-44ff-b773-19405922bfc1"),
 	// 			LastModifiedByType: to.Ptr(armdeviceregistry.CreatedByTypeApplication),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-16T01:37:16.0922793Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2022, time.November, 16, 1, 37, 16, 92279300, time.UTC)),
 	// 		},
 	// 		Properties: &armdeviceregistry.NamespaceDiscoveredDeviceProperties{
 	// 			Endpoints: &armdeviceregistry.DiscoveredMessagingEndpoints{

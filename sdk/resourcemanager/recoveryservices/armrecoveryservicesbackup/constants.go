@@ -5,7 +5,7 @@
 package armrecoveryservicesbackup
 
 const (
-	version20260701 string = "2026-07-01"
+	version20260801 string = "2026-08-01"
 )
 
 // AccessType - Whether access to the storage account is key-based or identity-based.

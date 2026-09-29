@@ -37,7 +37,7 @@ func ExampleJobStreamClient_Get() {
 	// 			StreamText: to.Ptr(""),
 	// 			StreamType: to.Ptr(armautomation.JobStreamTypeOutput),
 	// 			Summary: nil,
-	// 			Time: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-02-07T02:48:11.0693884+00:00"); return t}()),
+	// 			Time: to.Ptr(time.Date(2018, time.February, 7, 2, 48, 11, 69388400, time.UTC)),
 	// 			Value: map[string]any{
 	// 			},
 	// 		},
@@ -76,7 +76,7 @@ func ExampleJobStreamClient_NewListByJobPager() {
 		// 					JobStreamID: to.Ptr("24456a8a-2857-4af6-932c-3455f38bd05e_00636535675981232703_00000000000000000001"),
 		// 					StreamType: to.Ptr(armautomation.JobStreamTypeOutput),
 		// 					Summary: nil,
-		// 					Time: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-02-07T02:33:18.1232703+00:00"); return t}()),
+		// 					Time: to.Ptr(time.Date(2018, time.February, 7, 2, 33, 18, 123270300, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -85,7 +85,7 @@ func ExampleJobStreamClient_NewListByJobPager() {
 		// 					JobStreamID: to.Ptr("24456a8a-2857-4af6-932c-3455f38bd05e_00636535675984691350_00000000000000000002"),
 		// 					StreamType: to.Ptr(armautomation.JobStreamTypeOutput),
 		// 					Summary: nil,
-		// 					Time: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-02-07T02:33:18.469135+00:00"); return t}()),
+		// 					Time: to.Ptr(time.Date(2018, time.February, 7, 2, 33, 18, 469135000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},

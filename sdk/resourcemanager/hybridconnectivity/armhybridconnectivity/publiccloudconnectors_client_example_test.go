@@ -70,10 +70,10 @@ func ExamplePublicCloudConnectorsClient_BeginCreateOrUpdate() {
 	// 		SystemData: &armhybridconnectivity.SystemData{
 	// 			CreatedBy: to.Ptr("rpxzkcrobprrdvuoqxz"),
 	// 			CreatedByType: to.Ptr(armhybridconnectivity.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-18T22:52:07.890Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2024, time.January, 18, 22, 52, 7, 890000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("jidegyskxi"),
 	// 			LastModifiedByType: to.Ptr(armhybridconnectivity.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-18T22:52:07.890Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.January, 18, 22, 52, 7, 890000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -142,10 +142,10 @@ func ExamplePublicCloudConnectorsClient_Get() {
 	// 		SystemData: &armhybridconnectivity.SystemData{
 	// 			CreatedBy: to.Ptr("rpxzkcrobprrdvuoqxz"),
 	// 			CreatedByType: to.Ptr(armhybridconnectivity.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-18T22:52:07.890Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2024, time.January, 18, 22, 52, 7, 890000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("jidegyskxi"),
 	// 			LastModifiedByType: to.Ptr(armhybridconnectivity.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-18T22:52:07.890Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.January, 18, 22, 52, 7, 890000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -198,10 +198,10 @@ func ExamplePublicCloudConnectorsClient_NewListByResourceGroupPager() {
 		// 				SystemData: &armhybridconnectivity.SystemData{
 		// 					CreatedBy: to.Ptr("rpxzkcrobprrdvuoqxz"),
 		// 					CreatedByType: to.Ptr(armhybridconnectivity.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-18T22:52:07.890Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2024, time.January, 18, 22, 52, 7, 890000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("jidegyskxi"),
 		// 					LastModifiedByType: to.Ptr(armhybridconnectivity.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-18T22:52:07.890Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2024, time.January, 18, 22, 52, 7, 890000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -258,10 +258,10 @@ func ExamplePublicCloudConnectorsClient_NewListBySubscriptionPager() {
 		// 				SystemData: &armhybridconnectivity.SystemData{
 		// 					CreatedBy: to.Ptr("rpxzkcrobprrdvuoqxz"),
 		// 					CreatedByType: to.Ptr(armhybridconnectivity.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-18T22:52:07.890Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2024, time.January, 18, 22, 52, 7, 890000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("jidegyskxi"),
 		// 					LastModifiedByType: to.Ptr(armhybridconnectivity.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-18T22:52:07.890Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2024, time.January, 18, 22, 52, 7, 890000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -300,8 +300,8 @@ func ExamplePublicCloudConnectorsClient_BeginTestPermissions() {
 	// 		Name: to.Ptr("ppeygvsnaspxmpwalpmkqva"),
 	// 		Status: to.Ptr("toyjllkvm"),
 	// 		PercentComplete: to.Ptr[float64](81),
-	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-10-02T18:38:19.143Z"); return t}()),
-	// 		EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-10-02T18:38:19.143Z"); return t}()),
+	// 		StartTime: to.Ptr(time.Date(2024, time.October, 2, 18, 38, 19, 143000000, time.UTC)),
+	// 		EndTime: to.Ptr(time.Date(2024, time.October, 2, 18, 38, 19, 143000000, time.UTC)),
 	// 		Operations: []*armhybridconnectivity.OperationStatusResult{
 	// 			{
 	// 				ID: to.Ptr("/subscriptions/5ACC4579-DB34-4C2F-8F8C-25061168F342/providers/Microsoft.HybridConnectivity/PublicCloudConnectors/esixipkbydb"),
@@ -309,8 +309,8 @@ func ExamplePublicCloudConnectorsClient_BeginTestPermissions() {
 	// 				Name: to.Ptr("svqtraeuwvyvblujlvqilypwpdrt"),
 	// 				Status: to.Ptr("bevmrejij"),
 	// 				PercentComplete: to.Ptr[float64](15),
-	// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-10-02T18:38:19.143Z"); return t}()),
-	// 				EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-10-02T18:38:19.143Z"); return t}()),
+	// 				StartTime: to.Ptr(time.Date(2024, time.October, 2, 18, 38, 19, 143000000, time.UTC)),
+	// 				EndTime: to.Ptr(time.Date(2024, time.October, 2, 18, 38, 19, 143000000, time.UTC)),
 	// 				Operations: []*armhybridconnectivity.OperationStatusResult{
 	// 				},
 	// 				Error: &armhybridconnectivity.ErrorDetail{
@@ -397,10 +397,10 @@ func ExamplePublicCloudConnectorsClient_Update() {
 	// 		SystemData: &armhybridconnectivity.SystemData{
 	// 			CreatedBy: to.Ptr("rpxzkcrobprrdvuoqxz"),
 	// 			CreatedByType: to.Ptr(armhybridconnectivity.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-18T22:52:07.890Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2024, time.January, 18, 22, 52, 7, 890000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("jidegyskxi"),
 	// 			LastModifiedByType: to.Ptr(armhybridconnectivity.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-18T22:52:07.890Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.January, 18, 22, 52, 7, 890000000, time.UTC)),
 	// 		},
 	// 	},
 	// }

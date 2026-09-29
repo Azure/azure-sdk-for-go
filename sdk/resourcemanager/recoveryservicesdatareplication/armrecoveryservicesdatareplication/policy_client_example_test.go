@@ -54,10 +54,10 @@ func ExamplePolicyClient_BeginCreate() {
 	// 		SystemData: &armrecoveryservicesdatareplication.SystemData{
 	// 			CreatedBy: to.Ptr("yiaelkrpuzsfumovsxeb"),
 	// 			CreatedByType: to.Ptr(armrecoveryservicesdatareplication.CreatedByType("qwzrkjsfloruegijrfnfpn")),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-08-25T00:28:54.713Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2023, time.August, 25, 0, 28, 54, 713000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("xy"),
 	// 			LastModifiedByType: to.Ptr(armrecoveryservicesdatareplication.CreatedByType("rnc")),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-08-25T00:28:54.713Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.August, 25, 0, 28, 54, 713000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -116,10 +116,10 @@ func ExamplePolicyClient_Get() {
 	// 		SystemData: &armrecoveryservicesdatareplication.SystemData{
 	// 			CreatedBy: to.Ptr("yiaelkrpuzsfumovsxeb"),
 	// 			CreatedByType: to.Ptr(armrecoveryservicesdatareplication.CreatedByType("qwzrkjsfloruegijrfnfpn")),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-08-25T00:28:54.713Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2023, time.August, 25, 0, 28, 54, 713000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("xy"),
 	// 			LastModifiedByType: to.Ptr(armrecoveryservicesdatareplication.CreatedByType("rnc")),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-08-25T00:28:54.713Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.August, 25, 0, 28, 54, 713000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -163,10 +163,10 @@ func ExamplePolicyClient_NewListPager() {
 		// 				SystemData: &armrecoveryservicesdatareplication.SystemData{
 		// 					CreatedBy: to.Ptr("yiaelkrpuzsfumovsxeb"),
 		// 					CreatedByType: to.Ptr(armrecoveryservicesdatareplication.CreatedByType("qwzrkjsfloruegijrfnfpn")),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-08-25T00:28:54.713Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2023, time.August, 25, 0, 28, 54, 713000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("xy"),
 		// 					LastModifiedByType: to.Ptr(armrecoveryservicesdatareplication.CreatedByType("rnc")),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-08-25T00:28:54.713Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2023, time.August, 25, 0, 28, 54, 713000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},

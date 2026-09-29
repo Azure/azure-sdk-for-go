@@ -43,13 +43,13 @@ func ExampleSchemaRegistryClient_CreateOrUpdate() {
 	// 		ID: to.Ptr("/subscriptions/e8baea74-64ce-459b-bee3-5aa4c47b3ae3/resourceGroups/alitest/providers/Microsoft.EventHub/namespaces/ali-ua-test-eh-system-1/schemagroups/testSchemaGroup1"),
 	// 		Location: to.Ptr("EAST US 2 EUAP"),
 	// 		Properties: &armeventhub.SchemaGroupProperties{
-	// 			CreatedAtUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-10-13T03:08:11.1671879Z"); return t}()),
+	// 			CreatedAtUTC: to.Ptr(time.Date(2021, time.October, 13, 3, 8, 11, 167187900, time.UTC)),
 	// 			ETag: to.Ptr("51ddcff4-a287-423c-b194-7a8ebbfd8366"),
 	// 			GroupProperties: map[string]*string{
 	// 			},
 	// 			SchemaCompatibility: to.Ptr(armeventhub.SchemaCompatibilityForward),
 	// 			SchemaType: to.Ptr(armeventhub.SchemaTypeAvro),
-	// 			UpdatedAtUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-10-13T03:08:11.1671879Z"); return t}()),
+	// 			UpdatedAtUTC: to.Ptr(time.Date(2021, time.October, 13, 3, 8, 11, 167187900, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -102,13 +102,13 @@ func ExampleSchemaRegistryClient_Get() {
 	// 		ID: to.Ptr("/subscriptions/e8baea74-64ce-459b-bee3-5aa4c47b3ae3/resourceGroups/alitest/providers/Microsoft.EventHub/namespaces/ali-ua-test-eh-system-1/schemagroups/testSchemaGroup1"),
 	// 		Location: to.Ptr("EAST US 2 EUAP"),
 	// 		Properties: &armeventhub.SchemaGroupProperties{
-	// 			CreatedAtUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-10-13T03:08:11.1671879Z"); return t}()),
+	// 			CreatedAtUTC: to.Ptr(time.Date(2021, time.October, 13, 3, 8, 11, 167187900, time.UTC)),
 	// 			ETag: to.Ptr("51ddcff4-a287-423c-b194-7a8ebbfd8366"),
 	// 			GroupProperties: map[string]*string{
 	// 			},
 	// 			SchemaCompatibility: to.Ptr(armeventhub.SchemaCompatibilityForward),
 	// 			SchemaType: to.Ptr(armeventhub.SchemaTypeAvro),
-	// 			UpdatedAtUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-10-13T03:08:11.1671879Z"); return t}()),
+	// 			UpdatedAtUTC: to.Ptr(time.Date(2021, time.October, 13, 3, 8, 11, 167187900, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -145,13 +145,13 @@ func ExampleSchemaRegistryClient_NewListByNamespacePager() {
 		// 				ID: to.Ptr("/subscriptions/e8baea74-64ce-459b-bee3-5aa4c47b3ae3/resourceGroups/alitest/providers/Microsoft.EventHub/namespaces/ali-ua-test-eh-system-1/schemagroups/testSchemaGroup1"),
 		// 				Location: to.Ptr("EAST US 2 EUAP"),
 		// 				Properties: &armeventhub.SchemaGroupProperties{
-		// 					CreatedAtUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-10-13T03:08:11.1671879Z"); return t}()),
+		// 					CreatedAtUTC: to.Ptr(time.Date(2021, time.October, 13, 3, 8, 11, 167187900, time.UTC)),
 		// 					ETag: to.Ptr("51ddcff4-a287-423c-b194-7a8ebbfd8366"),
 		// 					GroupProperties: map[string]*string{
 		// 					},
 		// 					SchemaCompatibility: to.Ptr(armeventhub.SchemaCompatibilityForward),
 		// 					SchemaType: to.Ptr(armeventhub.SchemaTypeAvro),
-		// 					UpdatedAtUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-10-13T03:08:11.1671879Z"); return t}()),
+		// 					UpdatedAtUTC: to.Ptr(time.Date(2021, time.October, 13, 3, 8, 11, 167187900, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -160,13 +160,13 @@ func ExampleSchemaRegistryClient_NewListByNamespacePager() {
 		// 				ID: to.Ptr("/subscriptions/e8baea74-64ce-459b-bee3-5aa4c47b3ae3/resourceGroups/alitest/providers/Microsoft.EventHub/namespaces/ali-ua-test-eh-system-1/schemagroups/testSchemaGroup2"),
 		// 				Location: to.Ptr("EAST US 2 EUAP"),
 		// 				Properties: &armeventhub.SchemaGroupProperties{
-		// 					CreatedAtUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-10-13T03:10:33.6974319Z"); return t}()),
+		// 					CreatedAtUTC: to.Ptr(time.Date(2021, time.October, 13, 3, 10, 33, 697431900, time.UTC)),
 		// 					ETag: to.Ptr("d01173a4-08c5-43c9-b30f-d9666196a907"),
 		// 					GroupProperties: map[string]*string{
 		// 					},
 		// 					SchemaCompatibility: to.Ptr(armeventhub.SchemaCompatibilityNone),
 		// 					SchemaType: to.Ptr(armeventhub.SchemaTypeAvro),
-		// 					UpdatedAtUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-10-13T03:10:33.6974319Z"); return t}()),
+		// 					UpdatedAtUTC: to.Ptr(time.Date(2021, time.October, 13, 3, 10, 33, 697431900, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -175,13 +175,13 @@ func ExampleSchemaRegistryClient_NewListByNamespacePager() {
 		// 				ID: to.Ptr("/subscriptions/e8baea74-64ce-459b-bee3-5aa4c47b3ae3/resourceGroups/alitest/providers/Microsoft.EventHub/namespaces/ali-ua-test-eh-system-1/schemagroups/testSchemaGroup3"),
 		// 				Location: to.Ptr("EAST US 2 EUAP"),
 		// 				Properties: &armeventhub.SchemaGroupProperties{
-		// 					CreatedAtUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-10-13T03:13:30.8938585Z"); return t}()),
+		// 					CreatedAtUTC: to.Ptr(time.Date(2021, time.October, 13, 3, 13, 30, 893858500, time.UTC)),
 		// 					ETag: to.Ptr("2c1c3d08-2fb8-4a4e-91f4-6e8b940c1b7c"),
 		// 					GroupProperties: map[string]*string{
 		// 					},
 		// 					SchemaCompatibility: to.Ptr(armeventhub.SchemaCompatibilityBackward),
 		// 					SchemaType: to.Ptr(armeventhub.SchemaTypeAvro),
-		// 					UpdatedAtUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-10-13T03:13:30.8938585Z"); return t}()),
+		// 					UpdatedAtUTC: to.Ptr(time.Date(2021, time.October, 13, 3, 13, 30, 893858500, time.UTC)),
 		// 				},
 		// 			},
 		// 		},

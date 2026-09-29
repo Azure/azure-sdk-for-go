@@ -42,6 +42,12 @@ type ServerFactory struct {
 	// DNSPrivateZonesServer contains the fakes for client DNSPrivateZonesClient
 	DNSPrivateZonesServer DNSPrivateZonesServer
 
+	// DatabaseEditionsServer contains the fakes for client DatabaseEditionsClient
+	DatabaseEditionsServer DatabaseEditionsServer
+
+	// DatabaseSystemShapeResourcesServer contains the fakes for client DatabaseSystemShapeResourcesClient
+	DatabaseSystemShapeResourcesServer DatabaseSystemShapeResourcesServer
+
 	// DbNodesServer contains the fakes for client DbNodesClient
 	DbNodesServer DbNodesServer
 
@@ -74,6 +80,12 @@ type ServerFactory struct {
 
 	// GiVersionsServer contains the fakes for client GiVersionsClient
 	GiVersionsServer GiVersionsServer
+
+	// GoldenGateConnectionsServer contains the fakes for client GoldenGateConnectionsClient
+	GoldenGateConnectionsServer GoldenGateConnectionsServer
+
+	// GoldenGateDeploymentsServer contains the fakes for client GoldenGateDeploymentsClient
+	GoldenGateDeploymentsServer GoldenGateDeploymentsServer
 
 	// NetworkAnchorsServer contains the fakes for client NetworkAnchorsClient
 	NetworkAnchorsServer NetworkAnchorsServer
@@ -117,6 +129,8 @@ type ServerFactoryTransport struct {
 	trCloudVMClustersServer                         *CloudVMClustersServerTransport
 	trDNSPrivateViewsServer                         *DNSPrivateViewsServerTransport
 	trDNSPrivateZonesServer                         *DNSPrivateZonesServerTransport
+	trDatabaseEditionsServer                        *DatabaseEditionsServerTransport
+	trDatabaseSystemShapeResourcesServer            *DatabaseSystemShapeResourcesServerTransport
 	trDbNodesServer                                 *DbNodesServerTransport
 	trDbServersServer                               *DbServersServerTransport
 	trDbSystemShapesServer                          *DbSystemShapesServerTransport
@@ -128,6 +142,8 @@ type ServerFactoryTransport struct {
 	trFlexComponentsServer                          *FlexComponentsServerTransport
 	trGiMinorVersionsServer                         *GiMinorVersionsServerTransport
 	trGiVersionsServer                              *GiVersionsServerTransport
+	trGoldenGateConnectionsServer                   *GoldenGateConnectionsServerTransport
+	trGoldenGateDeploymentsServer                   *GoldenGateDeploymentsServerTransport
 	trNetworkAnchorsServer                          *NetworkAnchorsServerTransport
 	trOperationsServer                              *OperationsServerTransport
 	trOracleSubscriptionsServer                     *OracleSubscriptionsServerTransport
@@ -194,6 +210,16 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewDNSPrivateZonesServerTransport(&s.srv.DNSPrivateZonesServer)
 		})
 		resp, err = s.trDNSPrivateZonesServer.Do(req)
+	case "DatabaseEditionsClient":
+		initServer(&s.trMu, &s.trDatabaseEditionsServer, func() *DatabaseEditionsServerTransport {
+			return NewDatabaseEditionsServerTransport(&s.srv.DatabaseEditionsServer)
+		})
+		resp, err = s.trDatabaseEditionsServer.Do(req)
+	case "DatabaseSystemShapeResourcesClient":
+		initServer(&s.trMu, &s.trDatabaseSystemShapeResourcesServer, func() *DatabaseSystemShapeResourcesServerTransport {
+			return NewDatabaseSystemShapeResourcesServerTransport(&s.srv.DatabaseSystemShapeResourcesServer)
+		})
+		resp, err = s.trDatabaseSystemShapeResourcesServer.Do(req)
 	case "DbNodesClient":
 		initServer(&s.trMu, &s.trDbNodesServer, func() *DbNodesServerTransport { return NewDbNodesServerTransport(&s.srv.DbNodesServer) })
 		resp, err = s.trDbNodesServer.Do(req)
@@ -239,6 +265,16 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "GiVersionsClient":
 		initServer(&s.trMu, &s.trGiVersionsServer, func() *GiVersionsServerTransport { return NewGiVersionsServerTransport(&s.srv.GiVersionsServer) })
 		resp, err = s.trGiVersionsServer.Do(req)
+	case "GoldenGateConnectionsClient":
+		initServer(&s.trMu, &s.trGoldenGateConnectionsServer, func() *GoldenGateConnectionsServerTransport {
+			return NewGoldenGateConnectionsServerTransport(&s.srv.GoldenGateConnectionsServer)
+		})
+		resp, err = s.trGoldenGateConnectionsServer.Do(req)
+	case "GoldenGateDeploymentsClient":
+		initServer(&s.trMu, &s.trGoldenGateDeploymentsServer, func() *GoldenGateDeploymentsServerTransport {
+			return NewGoldenGateDeploymentsServerTransport(&s.srv.GoldenGateDeploymentsServer)
+		})
+		resp, err = s.trGoldenGateDeploymentsServer.Do(req)
 	case "NetworkAnchorsClient":
 		initServer(&s.trMu, &s.trNetworkAnchorsServer, func() *NetworkAnchorsServerTransport {
 			return NewNetworkAnchorsServerTransport(&s.srv.NetworkAnchorsServer)

@@ -58,12 +58,7 @@ func (client *ProblemClassificationsClient) Get(ctx context.Context, serviceName
 	if err != nil {
 		return ProblemClassificationsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ProblemClassificationsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -89,8 +84,11 @@ func (client *ProblemClassificationsClient) getCreateRequest(ctx context.Context
 }
 
 // getHandleResponse handles the Get response.
-func (client *ProblemClassificationsClient) getHandleResponse(resp *http.Response) (ProblemClassificationsClientGetResponse, error) {
+func (client *ProblemClassificationsClient) getHandleResponse(resp *http.Response, successCodes ...int) (ProblemClassificationsClientGetResponse, error) {
 	result := ProblemClassificationsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProblemClassification); err != nil {
 		return ProblemClassificationsClientGetResponse{}, err
 	}
@@ -114,39 +112,53 @@ func (client *ProblemClassificationsClient) NewListPager(serviceName string, opt
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, serviceName, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, serviceName, nextLink, options)
 			if err != nil {
 				return ProblemClassificationsClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ProblemClassificationsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *ProblemClassificationsClient) listCreateRequest(ctx context.Context, serviceName string, _ *ProblemClassificationsClientListOptions) (*policy.Request, error) {
-	urlPath := "/providers/Microsoft.Support/services/{serviceName}/problemClassifications"
-	if serviceName == "" {
-		return nil, errors.New("parameter serviceName cannot be empty")
+func (client *ProblemClassificationsClient) listCreateRequest(ctx context.Context, serviceName string, nextLink string, _ *ProblemClassificationsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/providers/Microsoft.Support/services/{serviceName}/problemClassifications"
+		if serviceName == "" {
+			return nil, errors.New("parameter serviceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{serviceName}", url.PathEscape(serviceName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{serviceName}", url.PathEscape(serviceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240401)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20240401)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *ProblemClassificationsClient) listHandleResponse(resp *http.Response) (ProblemClassificationsClientListResponse, error) {
+func (client *ProblemClassificationsClient) listHandleResponse(resp *http.Response, successCodes ...int) (ProblemClassificationsClientListResponse, error) {
 	result := ProblemClassificationsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProblemClassificationsListResult); err != nil {
 		return ProblemClassificationsClientListResponse{}, err
 	}

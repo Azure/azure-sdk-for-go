@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-02-01-preview/CancelElasticPoolOperation.json
+// Generated from example definition: 2026-08-01-preview/CancelElasticPoolOperation.json
 func ExampleElasticPoolOperationsClient_Cancel() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -33,7 +33,7 @@ func ExampleElasticPoolOperationsClient_Cancel() {
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/ListElasticPoolOperations.json
+// Generated from example definition: 2026-08-01-preview/ListElasticPoolOperations.json
 func ExampleElasticPoolOperationsClient_NewListByElasticPoolPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -68,7 +68,7 @@ func ExampleElasticPoolOperationsClient_NewListByElasticPoolPager() {
 		// 					OperationFriendlyName: to.Ptr("UPDATE"),
 		// 					PercentComplete: to.Ptr[int32](100),
 		// 					ServerName: to.Ptr("sqlcrudtestserver"),
-		// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-10-30T09:10:08.1Z"); return t}()),
+		// 					StartTime: to.Ptr(time.Date(2017, time.October, 30, 9, 10, 8, 100000000, time.UTC)),
 		// 					State: to.Ptr("COMPLETED"),
 		// 				},
 		// 			},
@@ -82,7 +82,7 @@ func ExampleElasticPoolOperationsClient_NewListByElasticPoolPager() {
 		// 					OperationFriendlyName: to.Ptr("UPDATE"),
 		// 					PercentComplete: to.Ptr[int32](0),
 		// 					ServerName: to.Ptr("sqlcrudtestserver"),
-		// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-10-30T10:10:08.1Z"); return t}()),
+		// 					StartTime: to.Ptr(time.Date(2017, time.October, 30, 10, 10, 8, 100000000, time.UTC)),
 		// 					State: to.Ptr("IN_PROGRESS"),
 		// 				},
 		// 			},

@@ -120,7 +120,7 @@ func ExampleTasksClient_Create_tasksCreateWithLoginIdentity() {
 	// 			AgentConfiguration: &armcontainerregistrytasks.AgentProperties{
 	// 				CPU: to.Ptr[int32](2),
 	// 			},
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-25T06:54:23.536Z"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2018, time.January, 25, 6, 54, 23, 536000000, time.UTC)),
 	// 			Credentials: &armcontainerregistrytasks.Credentials{
 	// 				SourceRegistry: &armcontainerregistrytasks.SourceRegistryCredentials{
 	// 					Identity: to.Ptr("[system]"),
@@ -300,7 +300,7 @@ func ExampleTasksClient_Create_tasksCreateWithSystemAndUserIdentities() {
 	// 			AgentConfiguration: &armcontainerregistrytasks.AgentProperties{
 	// 				CPU: to.Ptr[int32](2),
 	// 			},
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-25T06:54:23.536Z"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2018, time.January, 25, 6, 54, 23, 536000000, time.UTC)),
 	// 			IsSystemTask: to.Ptr(false),
 	// 			Platform: &armcontainerregistrytasks.PlatformProperties{
 	// 				Architecture: to.Ptr(armcontainerregistrytasks.ArchitectureAmd64),
@@ -465,7 +465,7 @@ func ExampleTasksClient_Create_tasksCreateWithUserIdentitiesWithSystemIdentity()
 	// 			AgentConfiguration: &armcontainerregistrytasks.AgentProperties{
 	// 				CPU: to.Ptr[int32](2),
 	// 			},
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-25T06:54:23.536Z"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2018, time.January, 25, 6, 54, 23, 536000000, time.UTC)),
 	// 			IsSystemTask: to.Ptr(false),
 	// 			Platform: &armcontainerregistrytasks.PlatformProperties{
 	// 				Architecture: to.Ptr(armcontainerregistrytasks.ArchitectureAmd64),
@@ -643,7 +643,7 @@ func ExampleTasksClient_Create_tasksCreateWithUserIdentities() {
 	// 			AgentConfiguration: &armcontainerregistrytasks.AgentProperties{
 	// 				CPU: to.Ptr[int32](2),
 	// 			},
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-25T06:54:23.536Z"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2018, time.January, 25, 6, 54, 23, 536000000, time.UTC)),
 	// 			IsSystemTask: to.Ptr(false),
 	// 			Platform: &armcontainerregistrytasks.PlatformProperties{
 	// 				Architecture: to.Ptr(armcontainerregistrytasks.ArchitectureAmd64),
@@ -811,7 +811,7 @@ func ExampleTasksClient_Create_tasksCreate() {
 	// 			AgentConfiguration: &armcontainerregistrytasks.AgentProperties{
 	// 				CPU: to.Ptr[int32](2),
 	// 			},
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-25T06:54:23.536Z"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2018, time.January, 25, 6, 54, 23, 536000000, time.UTC)),
 	// 			IsSystemTask: to.Ptr(false),
 	// 			LogTemplate: to.Ptr("acr/tasks:{{.Run.OS}}"),
 	// 			Platform: &armcontainerregistrytasks.PlatformProperties{
@@ -909,7 +909,7 @@ func ExampleTasksClient_Create_tasksCreateQuickTask() {
 	// 		ID: to.Ptr("/subscriptions/4385cf00-2d3a-425a-832f-f4285b1c9dce/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myRegistry/tasks/myTask"),
 	// 		Location: to.Ptr("eastus"),
 	// 		Properties: &armcontainerregistrytasks.TaskProperties{
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-25T06:54:23.536Z"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2018, time.January, 25, 6, 54, 23, 536000000, time.UTC)),
 	// 			IsSystemTask: to.Ptr(true),
 	// 			LogTemplate: to.Ptr("acr/tasks:{{.Run.OS}}"),
 	// 			ProvisioningState: to.Ptr(armcontainerregistrytasks.ProvisioningStateSucceeded),
@@ -977,7 +977,7 @@ func ExampleTasksClient_Get() {
 	// 			AgentConfiguration: &armcontainerregistrytasks.AgentProperties{
 	// 				CPU: to.Ptr[int32](2),
 	// 			},
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-25T06:54:23.536Z"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2018, time.January, 25, 6, 54, 23, 536000000, time.UTC)),
 	// 			Credentials: &armcontainerregistrytasks.Credentials{
 	// 				CustomRegistries: map[string]*armcontainerregistrytasks.CustomRegistryCredentials{
 	// 				},
@@ -1197,7 +1197,7 @@ func ExampleTasksClient_NewListPager() {
 		// 					AgentConfiguration: &armcontainerregistrytasks.AgentProperties{
 		// 						CPU: to.Ptr[int32](2),
 		// 					},
-		// 					CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-25T06:54:23.536Z"); return t}()),
+		// 					CreationDate: to.Ptr(time.Date(2018, time.January, 25, 6, 54, 23, 536000000, time.UTC)),
 		// 					Credentials: &armcontainerregistrytasks.Credentials{
 		// 						CustomRegistries: map[string]*armcontainerregistrytasks.CustomRegistryCredentials{
 		// 						},
@@ -1347,7 +1347,7 @@ func ExampleTasksClient_Update_tasksUpdateWithKeyVaultCustomCredentials() {
 	// 			AgentConfiguration: &armcontainerregistrytasks.AgentProperties{
 	// 				CPU: to.Ptr[int32](3),
 	// 			},
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-25T06:54:23.536Z"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2018, time.January, 25, 6, 54, 23, 536000000, time.UTC)),
 	// 			Credentials: &armcontainerregistrytasks.Credentials{
 	// 				CustomRegistries: map[string]*armcontainerregistrytasks.CustomRegistryCredentials{
 	// 				},
@@ -1484,7 +1484,7 @@ func ExampleTasksClient_Update_tasksUpdateWithLoginIdentity() {
 	// 			AgentConfiguration: &armcontainerregistrytasks.AgentProperties{
 	// 				CPU: to.Ptr[int32](3),
 	// 			},
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-25T06:54:23.536Z"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2018, time.January, 25, 6, 54, 23, 536000000, time.UTC)),
 	// 			Credentials: &armcontainerregistrytasks.Credentials{
 	// 				SourceRegistry: &armcontainerregistrytasks.SourceRegistryCredentials{
 	// 					Identity: to.Ptr("[system]"),
@@ -1622,7 +1622,7 @@ func ExampleTasksClient_Update_tasksUpdateWithMsiCustomCredentials() {
 	// 			AgentConfiguration: &armcontainerregistrytasks.AgentProperties{
 	// 				CPU: to.Ptr[int32](3),
 	// 			},
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-25T06:54:23.536Z"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2018, time.January, 25, 6, 54, 23, 536000000, time.UTC)),
 	// 			Credentials: &armcontainerregistrytasks.Credentials{
 	// 				CustomRegistries: map[string]*armcontainerregistrytasks.CustomRegistryCredentials{
 	// 				},
@@ -1768,7 +1768,7 @@ func ExampleTasksClient_Update_tasksUpdate() {
 	// 			AgentConfiguration: &armcontainerregistrytasks.AgentProperties{
 	// 				CPU: to.Ptr[int32](3),
 	// 			},
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-25T06:54:23.536Z"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2018, time.January, 25, 6, 54, 23, 536000000, time.UTC)),
 	// 			Credentials: &armcontainerregistrytasks.Credentials{
 	// 				CustomRegistries: map[string]*armcontainerregistrytasks.CustomRegistryCredentials{
 	// 				},
@@ -1867,7 +1867,7 @@ func ExampleTasksClient_Update_tasksUpdateQuickTask() {
 	// 		ID: to.Ptr("/subscriptions/4385cf00-2d3a-425a-832f-f4285b1c9dce/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myRegistry/tasks/myTask"),
 	// 		Location: to.Ptr("eastus"),
 	// 		Properties: &armcontainerregistrytasks.TaskProperties{
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-25T06:54:23.536Z"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2018, time.January, 25, 6, 54, 23, 536000000, time.UTC)),
 	// 			LogTemplate: to.Ptr("acr/tasks:{{.Run.OS}}"),
 	// 			ProvisioningState: to.Ptr(armcontainerregistrytasks.ProvisioningStateSucceeded),
 	// 			Status: to.Ptr(armcontainerregistrytasks.TaskStatusEnabled),
@@ -1959,7 +1959,7 @@ func ExampleTasksClient_Update_tasksUpdateWithOpaqueCustomCredentials() {
 	// 			AgentConfiguration: &armcontainerregistrytasks.AgentProperties{
 	// 				CPU: to.Ptr[int32](3),
 	// 			},
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-25T06:54:23.536Z"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2018, time.January, 25, 6, 54, 23, 536000000, time.UTC)),
 	// 			Credentials: &armcontainerregistrytasks.Credentials{
 	// 				CustomRegistries: map[string]*armcontainerregistrytasks.CustomRegistryCredentials{
 	// 				},

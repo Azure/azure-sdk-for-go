@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-02-01-preview/CreateElasticPoolWithAvailabilityZone.json
+// Generated from example definition: 2026-08-01-preview/CreateElasticPoolWithAvailabilityZone.json
 func ExampleElasticPoolsClient_BeginCreateOrUpdate_createOrUpdateAnElasticPoolWithAvailabilityZone() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -55,7 +55,7 @@ func ExampleElasticPoolsClient_BeginCreateOrUpdate_createOrUpdateAnElasticPoolWi
 	// 		Location: to.Ptr("Japan East"),
 	// 		Properties: &armsql.ElasticPoolProperties{
 	// 			AvailabilityZone: to.Ptr(armsql.AvailabilityZoneTypeOne),
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-10T01:25:25.033Z"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2017, time.February, 10, 1, 25, 25, 33000000, time.UTC)),
 	// 			MaxSizeBytes: to.Ptr[int64](102400),
 	// 			PerDatabaseSettings: &armsql.ElasticPoolPerDatabaseSettings{
 	// 				MaxCapacity: to.Ptr[float64](2),
@@ -73,7 +73,7 @@ func ExampleElasticPoolsClient_BeginCreateOrUpdate_createOrUpdateAnElasticPoolWi
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/ElasticPoolCreateOrUpdateMax.json
+// Generated from example definition: 2026-08-01-preview/ElasticPoolCreateOrUpdateMax.json
 func ExampleElasticPoolsClient_BeginCreateOrUpdate_createOrUpdateElasticPoolWithAllParameter() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -115,7 +115,7 @@ func ExampleElasticPoolsClient_BeginCreateOrUpdate_createOrUpdateElasticPoolWith
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/sqlcrudtest-2369/providers/Microsoft.Sql/servers/sqlcrudtest-8069/elasticPools/sqlcrudtest-8102"),
 	// 		Location: to.Ptr("Japan East"),
 	// 		Properties: &armsql.ElasticPoolProperties{
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-10T01:25:25.033Z"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2017, time.February, 10, 1, 25, 25, 33000000, time.UTC)),
 	// 			MaxSizeBytes: to.Ptr[int64](5242880000),
 	// 			PerDatabaseSettings: &armsql.ElasticPoolPerDatabaseSettings{
 	// 				MaxCapacity: to.Ptr[float64](2),
@@ -132,7 +132,7 @@ func ExampleElasticPoolsClient_BeginCreateOrUpdate_createOrUpdateElasticPoolWith
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/ElasticPoolCreateOrUpdateMin.json
+// Generated from example definition: 2026-08-01-preview/ElasticPoolCreateOrUpdateMin.json
 func ExampleElasticPoolsClient_BeginCreateOrUpdate_createOrUpdateElasticPoolWithMinimumParameters() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -163,7 +163,7 @@ func ExampleElasticPoolsClient_BeginCreateOrUpdate_createOrUpdateElasticPoolWith
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/sqlcrudtest-2369/providers/Microsoft.Sql/servers/sqlcrudtest-8069/elasticPools/sqlcrudtest-8102"),
 	// 		Location: to.Ptr("Japan East"),
 	// 		Properties: &armsql.ElasticPoolProperties{
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-10T01:25:25.033Z"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2017, time.February, 10, 1, 25, 25, 33000000, time.UTC)),
 	// 			MaxSizeBytes: to.Ptr[int64](102400),
 	// 			PerDatabaseSettings: &armsql.ElasticPoolPerDatabaseSettings{
 	// 				MaxCapacity: to.Ptr[float64](100),
@@ -180,7 +180,7 @@ func ExampleElasticPoolsClient_BeginCreateOrUpdate_createOrUpdateElasticPoolWith
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/ElasticPoolCreateOrUpdateServerlessProperties.json
+// Generated from example definition: 2026-08-01-preview/ElasticPoolCreateOrUpdateServerlessProperties.json
 func ExampleElasticPoolsClient_BeginCreateOrUpdate_createOrUpdateAnElasticPoolWithServerlessProperties() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -226,7 +226,7 @@ func ExampleElasticPoolsClient_BeginCreateOrUpdate_createOrUpdateAnElasticPoolWi
 	// 		Location: to.Ptr("Japan East"),
 	// 		Properties: &armsql.ElasticPoolProperties{
 	// 			AutoPauseDelay: to.Ptr[int32](60),
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-10T01:25:25.033Z"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2017, time.February, 10, 1, 25, 25, 33000000, time.UTC)),
 	// 			MaxSizeBytes: to.Ptr[int64](102400),
 	// 			MinCapacity: to.Ptr[float64](0.5),
 	// 			PerDatabaseSettings: &armsql.ElasticPoolPerDatabaseSettings{
@@ -245,7 +245,7 @@ func ExampleElasticPoolsClient_BeginCreateOrUpdate_createOrUpdateAnElasticPoolWi
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/ElasticPoolCreateOrUpdateSetMaintenanceConfiguration.json
+// Generated from example definition: 2026-08-01-preview/ElasticPoolCreateOrUpdateSetMaintenanceConfiguration.json
 func ExampleElasticPoolsClient_BeginCreateOrUpdate_createOrUpdateElasticPoolWithMaintenanceConfigurationParameter() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -279,7 +279,7 @@ func ExampleElasticPoolsClient_BeginCreateOrUpdate_createOrUpdateElasticPoolWith
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/sqlcrudtest-2369/providers/Microsoft.Sql/servers/sqlcrudtest-8069/elasticPools/sqlcrudtest-8102"),
 	// 		Location: to.Ptr("Japan East"),
 	// 		Properties: &armsql.ElasticPoolProperties{
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-10T01:25:25.033Z"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2017, time.February, 10, 1, 25, 25, 33000000, time.UTC)),
 	// 			MaintenanceConfigurationID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_JapanEast_1"),
 	// 			MaxSizeBytes: to.Ptr[int64](102400),
 	// 			PerDatabaseSettings: &armsql.ElasticPoolPerDatabaseSettings{
@@ -297,7 +297,7 @@ func ExampleElasticPoolsClient_BeginCreateOrUpdate_createOrUpdateElasticPoolWith
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/ElasticPoolCreateWithDefaultPreferredEnclaveType.json
+// Generated from example definition: 2026-08-01-preview/ElasticPoolCreateWithDefaultPreferredEnclaveType.json
 func ExampleElasticPoolsClient_BeginCreateOrUpdate_createOrUpdateElasticPoolWithPreferredEnclaveTypeParameterAsDefault() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -335,7 +335,7 @@ func ExampleElasticPoolsClient_BeginCreateOrUpdate_createOrUpdateElasticPoolWith
 	// 		Kind: to.Ptr("vcore,pool"),
 	// 		Location: to.Ptr("Japan East"),
 	// 		Properties: &armsql.ElasticPoolProperties{
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-08-26T03:46:20.57Z"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2022, time.August, 26, 3, 46, 20, 570000000, time.UTC)),
 	// 			LicenseType: to.Ptr(armsql.ElasticPoolLicenseTypeLicenseIncluded),
 	// 			MaintenanceConfigurationID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_Default"),
 	// 			MaxSizeBytes: to.Ptr[int64](0),
@@ -357,7 +357,7 @@ func ExampleElasticPoolsClient_BeginCreateOrUpdate_createOrUpdateElasticPoolWith
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/ElasticPoolCreateWithVBSPreferredEnclaveType.json
+// Generated from example definition: 2026-08-01-preview/ElasticPoolCreateWithVBSPreferredEnclaveType.json
 func ExampleElasticPoolsClient_BeginCreateOrUpdate_createOrUpdateElasticPoolWithPreferredEnclaveTypeParameterAsVbs() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -395,7 +395,7 @@ func ExampleElasticPoolsClient_BeginCreateOrUpdate_createOrUpdateElasticPoolWith
 	// 		Kind: to.Ptr("vcore,pool"),
 	// 		Location: to.Ptr("Japan East"),
 	// 		Properties: &armsql.ElasticPoolProperties{
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-08-26T03:46:20.57Z"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2022, time.August, 26, 3, 46, 20, 570000000, time.UTC)),
 	// 			LicenseType: to.Ptr(armsql.ElasticPoolLicenseTypeLicenseIncluded),
 	// 			MaintenanceConfigurationID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_Default"),
 	// 			MaxSizeBytes: to.Ptr[int64](0),
@@ -417,7 +417,7 @@ func ExampleElasticPoolsClient_BeginCreateOrUpdate_createOrUpdateElasticPoolWith
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/HyperscaleElasticPoolCreateOrUpdateSetHighAvailabilityReplicaCount.json
+// Generated from example definition: 2026-08-01-preview/HyperscaleElasticPoolCreateOrUpdateSetHighAvailabilityReplicaCount.json
 func ExampleElasticPoolsClient_BeginCreateOrUpdate_createOrUpdateHyperscaleElasticPoolWithHighAvailabilityReplicaCountParameter() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -455,7 +455,7 @@ func ExampleElasticPoolsClient_BeginCreateOrUpdate_createOrUpdateHyperscaleElast
 	// 		Kind: to.Ptr("vcore,pool"),
 	// 		Location: to.Ptr("Japan East"),
 	// 		Properties: &armsql.ElasticPoolProperties{
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-26T03:46:20.57Z"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2021, time.August, 26, 3, 46, 20, 570000000, time.UTC)),
 	// 			HighAvailabilityReplicaCount: to.Ptr[int32](2),
 	// 			LicenseType: to.Ptr(armsql.ElasticPoolLicenseTypeLicenseIncluded),
 	// 			MaintenanceConfigurationID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_Default"),
@@ -477,7 +477,7 @@ func ExampleElasticPoolsClient_BeginCreateOrUpdate_createOrUpdateHyperscaleElast
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/ElasticPoolDelete.json
+// Generated from example definition: 2026-08-01-preview/ElasticPoolDelete.json
 func ExampleElasticPoolsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -503,7 +503,7 @@ func ExampleElasticPoolsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/FailoverElasticPool.json
+// Generated from example definition: 2026-08-01-preview/FailoverElasticPool.json
 func ExampleElasticPoolsClient_BeginFailover() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -529,7 +529,7 @@ func ExampleElasticPoolsClient_BeginFailover() {
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/ElasticPoolGet.json
+// Generated from example definition: 2026-08-01-preview/ElasticPoolGet.json
 func ExampleElasticPoolsClient_Get_getAnElasticPool() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -554,7 +554,7 @@ func ExampleElasticPoolsClient_Get_getAnElasticPool() {
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/sqlcrudtest-2369/providers/Microsoft.Sql/servers/sqlcrudtest-8069/elasticPools/sqlcrudtest-8102"),
 	// 		Location: to.Ptr("Japan East"),
 	// 		Properties: &armsql.ElasticPoolProperties{
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-10-10T01:25:25.033Z"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2017, time.October, 10, 1, 25, 25, 33000000, time.UTC)),
 	// 			LicenseType: to.Ptr(armsql.ElasticPoolLicenseTypeLicenseIncluded),
 	// 			MaintenanceConfigurationID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_JapanEast_1"),
 	// 			MaxSizeBytes: to.Ptr[int64](5242880000),
@@ -574,7 +574,7 @@ func ExampleElasticPoolsClient_Get_getAnElasticPool() {
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/ElasticPoolGetWithPreferredEnclaveType.json
+// Generated from example definition: 2026-08-01-preview/ElasticPoolGetWithPreferredEnclaveType.json
 func ExampleElasticPoolsClient_Get_getAnElasticPoolWithPreferredEnclaveTypeParameter() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -600,7 +600,7 @@ func ExampleElasticPoolsClient_Get_getAnElasticPoolWithPreferredEnclaveTypeParam
 	// 		Kind: to.Ptr("vcore,pool"),
 	// 		Location: to.Ptr("Japan East"),
 	// 		Properties: &armsql.ElasticPoolProperties{
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-08-26T03:46:20.57Z"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2022, time.August, 26, 3, 46, 20, 570000000, time.UTC)),
 	// 			HighAvailabilityReplicaCount: to.Ptr[int32](2),
 	// 			LicenseType: to.Ptr(armsql.ElasticPoolLicenseTypeLicenseIncluded),
 	// 			MaintenanceConfigurationID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_Default"),
@@ -623,7 +623,7 @@ func ExampleElasticPoolsClient_Get_getAnElasticPoolWithPreferredEnclaveTypeParam
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/GetElasticPoolWithAvailabilityZone.json
+// Generated from example definition: 2026-08-01-preview/GetElasticPoolWithAvailabilityZone.json
 func ExampleElasticPoolsClient_Get_getAnElasticPoolWithAvailabilityZone() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -649,7 +649,7 @@ func ExampleElasticPoolsClient_Get_getAnElasticPoolWithAvailabilityZone() {
 	// 		Location: to.Ptr("Japan East"),
 	// 		Properties: &armsql.ElasticPoolProperties{
 	// 			AvailabilityZone: to.Ptr(armsql.AvailabilityZoneTypeOne),
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-10-10T01:25:25.033Z"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2017, time.October, 10, 1, 25, 25, 33000000, time.UTC)),
 	// 			LicenseType: to.Ptr(armsql.ElasticPoolLicenseTypeLicenseIncluded),
 	// 			MaintenanceConfigurationID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_JapanEast_1"),
 	// 			MaxSizeBytes: to.Ptr[int64](5242880000),
@@ -669,7 +669,7 @@ func ExampleElasticPoolsClient_Get_getAnElasticPoolWithAvailabilityZone() {
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/GetElasticPoolWithServerlessProperties.json
+// Generated from example definition: 2026-08-01-preview/GetElasticPoolWithServerlessProperties.json
 func ExampleElasticPoolsClient_Get_getAnElasticPoolWithServerlessProperties() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -695,7 +695,7 @@ func ExampleElasticPoolsClient_Get_getAnElasticPoolWithServerlessProperties() {
 	// 		Location: to.Ptr("Japan East"),
 	// 		Properties: &armsql.ElasticPoolProperties{
 	// 			AutoPauseDelay: to.Ptr[int32](60),
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-10-10T01:25:25.033Z"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2017, time.October, 10, 1, 25, 25, 33000000, time.UTC)),
 	// 			LicenseType: to.Ptr(armsql.ElasticPoolLicenseTypeLicenseIncluded),
 	// 			MaintenanceConfigurationID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_JapanEast_1"),
 	// 			MaxSizeBytes: to.Ptr[int64](5242880000),
@@ -717,7 +717,7 @@ func ExampleElasticPoolsClient_Get_getAnElasticPoolWithServerlessProperties() {
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/HyperscaleElasticPoolGet.json
+// Generated from example definition: 2026-08-01-preview/HyperscaleElasticPoolGet.json
 func ExampleElasticPoolsClient_Get_getAHyperscaleElasticPool() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -743,7 +743,7 @@ func ExampleElasticPoolsClient_Get_getAHyperscaleElasticPool() {
 	// 		Kind: to.Ptr("vcore,pool"),
 	// 		Location: to.Ptr("Japan East"),
 	// 		Properties: &armsql.ElasticPoolProperties{
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-26T03:46:20.57Z"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2021, time.August, 26, 3, 46, 20, 570000000, time.UTC)),
 	// 			HighAvailabilityReplicaCount: to.Ptr[int32](2),
 	// 			LicenseType: to.Ptr(armsql.ElasticPoolLicenseTypeLicenseIncluded),
 	// 			MaintenanceConfigurationID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_Default"),
@@ -765,7 +765,7 @@ func ExampleElasticPoolsClient_Get_getAHyperscaleElasticPool() {
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/ElasticPoolListByServer.json
+// Generated from example definition: 2026-08-01-preview/ElasticPoolListByServer.json
 func ExampleElasticPoolsClient_NewListByServerPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -796,7 +796,7 @@ func ExampleElasticPoolsClient_NewListByServerPager() {
 		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/sqlcrudtest-2369/providers/Microsoft.Sql/servers/sqlcrudtest-8069/elasticPools/sqlcrudtest-2729"),
 		// 				Location: to.Ptr("Japan East"),
 		// 				Properties: &armsql.ElasticPoolProperties{
-		// 					CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-10T01:27:21.32Z"); return t}()),
+		// 					CreationDate: to.Ptr(time.Date(2017, time.February, 10, 1, 27, 21, 320000000, time.UTC)),
 		// 					LicenseType: to.Ptr(armsql.ElasticPoolLicenseTypeLicenseIncluded),
 		// 					MaxSizeBytes: to.Ptr[int64](5242880000),
 		// 					PerDatabaseSettings: &armsql.ElasticPoolPerDatabaseSettings{
@@ -818,7 +818,7 @@ func ExampleElasticPoolsClient_NewListByServerPager() {
 		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/sqlcrudtest-2369/providers/Microsoft.Sql/servers/sqlcrudtest-8069/elasticPools/sqlcrudtest-3191"),
 		// 				Location: to.Ptr("Japan East"),
 		// 				Properties: &armsql.ElasticPoolProperties{
-		// 					CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-10T01:26:26.45Z"); return t}()),
+		// 					CreationDate: to.Ptr(time.Date(2017, time.February, 10, 1, 26, 26, 450000000, time.UTC)),
 		// 					MaxSizeBytes: to.Ptr[int64](5242880000),
 		// 					PerDatabaseSettings: &armsql.ElasticPoolPerDatabaseSettings{
 		// 						MaxCapacity: to.Ptr[float64](5),
@@ -838,7 +838,7 @@ func ExampleElasticPoolsClient_NewListByServerPager() {
 		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/sqlcrudtest-2369/providers/Microsoft.Sql/servers/sqlcrudtest-8069/elasticPools/sqlcrudtest-8102"),
 		// 				Location: to.Ptr("Japan East"),
 		// 				Properties: &armsql.ElasticPoolProperties{
-		// 					CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-10T01:25:25.033Z"); return t}()),
+		// 					CreationDate: to.Ptr(time.Date(2017, time.February, 10, 1, 25, 25, 33000000, time.UTC)),
 		// 					MaxSizeBytes: to.Ptr[int64](5242880000),
 		// 					PerDatabaseSettings: &armsql.ElasticPoolPerDatabaseSettings{
 		// 						MaxCapacity: to.Ptr[float64](5),
@@ -858,7 +858,7 @@ func ExampleElasticPoolsClient_NewListByServerPager() {
 	}
 }
 
-// Generated from example definition: 2025-02-01-preview/ElasticPoolUpdateAssignMaintenanceConfiguration.json
+// Generated from example definition: 2026-08-01-preview/ElasticPoolUpdateAssignMaintenanceConfiguration.json
 func ExampleElasticPoolsClient_BeginUpdate_assignsMaintenanceConfigurationToAnElasticPool() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -891,7 +891,7 @@ func ExampleElasticPoolsClient_BeginUpdate_assignsMaintenanceConfigurationToAnEl
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/sqlcrudtest-2369/providers/Microsoft.Sql/servers/sqlcrudtest-8069/elasticPools/sqlcrudtest-8102"),
 	// 		Location: to.Ptr("Japan East"),
 	// 		Properties: &armsql.ElasticPoolProperties{
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-10T01:25:25.033Z"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2017, time.February, 10, 1, 25, 25, 33000000, time.UTC)),
 	// 			MaintenanceConfigurationID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_JapanEast_1"),
 	// 			MaxSizeBytes: to.Ptr[int64](5242880000),
 	// 			PerDatabaseSettings: &armsql.ElasticPoolPerDatabaseSettings{
@@ -909,7 +909,7 @@ func ExampleElasticPoolsClient_BeginUpdate_assignsMaintenanceConfigurationToAnEl
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/ElasticPoolUpdateMax.json
+// Generated from example definition: 2026-08-01-preview/ElasticPoolUpdateMax.json
 func ExampleElasticPoolsClient_BeginUpdate_updateAnElasticPoolWithAllParameter() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -952,7 +952,7 @@ func ExampleElasticPoolsClient_BeginUpdate_updateAnElasticPoolWithAllParameter()
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/sqlcrudtest-2369/providers/Microsoft.Sql/servers/sqlcrudtest-8069/elasticPools/sqlcrudtest-8102"),
 	// 		Location: to.Ptr("Japan East"),
 	// 		Properties: &armsql.ElasticPoolProperties{
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-10T01:27:21.32Z"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2017, time.February, 10, 1, 27, 21, 320000000, time.UTC)),
 	// 			LicenseType: to.Ptr(armsql.ElasticPoolLicenseTypeLicenseIncluded),
 	// 			MaxSizeBytes: to.Ptr[int64](5242880000),
 	// 			PerDatabaseSettings: &armsql.ElasticPoolPerDatabaseSettings{
@@ -971,7 +971,7 @@ func ExampleElasticPoolsClient_BeginUpdate_updateAnElasticPoolWithAllParameter()
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/ElasticPoolUpdateMin.json
+// Generated from example definition: 2026-08-01-preview/ElasticPoolUpdateMin.json
 func ExampleElasticPoolsClient_BeginUpdate_updateAnElasticPoolWithMinimumParameters() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1000,7 +1000,7 @@ func ExampleElasticPoolsClient_BeginUpdate_updateAnElasticPoolWithMinimumParamet
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/sqlcrudtest-2369/providers/Microsoft.Sql/servers/sqlcrudtest-8069/elasticPools/sqlcrudtest-8102"),
 	// 		Location: to.Ptr("Japan East"),
 	// 		Properties: &armsql.ElasticPoolProperties{
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-10T01:25:25.033Z"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2017, time.February, 10, 1, 25, 25, 33000000, time.UTC)),
 	// 			MaxSizeBytes: to.Ptr[int64](5242880000),
 	// 			PerDatabaseSettings: &armsql.ElasticPoolPerDatabaseSettings{
 	// 				MaxCapacity: to.Ptr[float64](5),
@@ -1017,7 +1017,7 @@ func ExampleElasticPoolsClient_BeginUpdate_updateAnElasticPoolWithMinimumParamet
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/ElasticPoolUpdateResetMaintenanceConfiguration.json
+// Generated from example definition: 2026-08-01-preview/ElasticPoolUpdateResetMaintenanceConfiguration.json
 func ExampleElasticPoolsClient_BeginUpdate_resetsMaintenanceConfigurationOfAnElasticPoolToDefault() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1050,7 +1050,7 @@ func ExampleElasticPoolsClient_BeginUpdate_resetsMaintenanceConfigurationOfAnEla
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/sqlcrudtest-2369/providers/Microsoft.Sql/servers/sqlcrudtest-8069/elasticPools/sqlcrudtest-8102"),
 	// 		Location: to.Ptr("Japan East"),
 	// 		Properties: &armsql.ElasticPoolProperties{
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-10T01:25:25.033Z"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2017, time.February, 10, 1, 25, 25, 33000000, time.UTC)),
 	// 			MaxSizeBytes: to.Ptr[int64](5242880000),
 	// 			PerDatabaseSettings: &armsql.ElasticPoolPerDatabaseSettings{
 	// 				MaxCapacity: to.Ptr[float64](5),
@@ -1067,7 +1067,7 @@ func ExampleElasticPoolsClient_BeginUpdate_resetsMaintenanceConfigurationOfAnEla
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/ElasticPoolUpdateServerlessProperties.json
+// Generated from example definition: 2026-08-01-preview/ElasticPoolUpdateServerlessProperties.json
 func ExampleElasticPoolsClient_BeginUpdate_updateAnElasticPoolWithServerlessProperties() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1112,7 +1112,7 @@ func ExampleElasticPoolsClient_BeginUpdate_updateAnElasticPoolWithServerlessProp
 	// 		Location: to.Ptr("Japan East"),
 	// 		Properties: &armsql.ElasticPoolProperties{
 	// 			AutoPauseDelay: to.Ptr[int32](60),
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-10T01:25:25.033Z"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2017, time.February, 10, 1, 25, 25, 33000000, time.UTC)),
 	// 			MaxSizeBytes: to.Ptr[int64](102400),
 	// 			MinCapacity: to.Ptr[float64](0.5),
 	// 			PerDatabaseSettings: &armsql.ElasticPoolPerDatabaseSettings{
@@ -1131,7 +1131,7 @@ func ExampleElasticPoolsClient_BeginUpdate_updateAnElasticPoolWithServerlessProp
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/ElasticPoolUpdateWithDefaultPreferredEnclaveType.json
+// Generated from example definition: 2026-08-01-preview/ElasticPoolUpdateWithDefaultPreferredEnclaveType.json
 func ExampleElasticPoolsClient_BeginUpdate_updateAnElasticPoolWithPreferredEnclaveTypeParameterAsDefault() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1168,7 +1168,7 @@ func ExampleElasticPoolsClient_BeginUpdate_updateAnElasticPoolWithPreferredEncla
 	// 		Kind: to.Ptr("vcore,pool"),
 	// 		Location: to.Ptr("Japan East"),
 	// 		Properties: &armsql.ElasticPoolProperties{
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-08-26T03:46:20.57Z"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2022, time.August, 26, 3, 46, 20, 570000000, time.UTC)),
 	// 			LicenseType: to.Ptr(armsql.ElasticPoolLicenseTypeLicenseIncluded),
 	// 			MaintenanceConfigurationID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_Default"),
 	// 			MaxSizeBytes: to.Ptr[int64](0),
@@ -1190,7 +1190,7 @@ func ExampleElasticPoolsClient_BeginUpdate_updateAnElasticPoolWithPreferredEncla
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/ElasticPoolUpdateWithVBSPreferredEnclaveType.json
+// Generated from example definition: 2026-08-01-preview/ElasticPoolUpdateWithVBSPreferredEnclaveType.json
 func ExampleElasticPoolsClient_BeginUpdate_updateAnElasticPoolWithPreferredEnclaveTypeParameterAsVbs() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1227,7 +1227,7 @@ func ExampleElasticPoolsClient_BeginUpdate_updateAnElasticPoolWithPreferredEncla
 	// 		Kind: to.Ptr("vcore,pool"),
 	// 		Location: to.Ptr("Japan East"),
 	// 		Properties: &armsql.ElasticPoolProperties{
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-08-26T03:46:20.57Z"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2022, time.August, 26, 3, 46, 20, 570000000, time.UTC)),
 	// 			LicenseType: to.Ptr(armsql.ElasticPoolLicenseTypeLicenseIncluded),
 	// 			MaintenanceConfigurationID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_Default"),
 	// 			MaxSizeBytes: to.Ptr[int64](0),
@@ -1249,7 +1249,7 @@ func ExampleElasticPoolsClient_BeginUpdate_updateAnElasticPoolWithPreferredEncla
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/HyperscaleElasticPoolUpdateSetHighAvailabilityReplicaCount.json
+// Generated from example definition: 2026-08-01-preview/HyperscaleElasticPoolUpdateSetHighAvailabilityReplicaCount.json
 func ExampleElasticPoolsClient_BeginUpdate_updateHighAvailabilityReplicaCountOfAHyperscaleElasticPool() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1283,7 +1283,7 @@ func ExampleElasticPoolsClient_BeginUpdate_updateHighAvailabilityReplicaCountOfA
 	// 		Kind: to.Ptr("vcore,pool"),
 	// 		Location: to.Ptr("Japan East"),
 	// 		Properties: &armsql.ElasticPoolProperties{
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-26T03:46:20.57Z"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2021, time.August, 26, 3, 46, 20, 570000000, time.UTC)),
 	// 			HighAvailabilityReplicaCount: to.Ptr[int32](2),
 	// 			LicenseType: to.Ptr(armsql.ElasticPoolLicenseTypeLicenseIncluded),
 	// 			MaintenanceConfigurationID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_Default"),

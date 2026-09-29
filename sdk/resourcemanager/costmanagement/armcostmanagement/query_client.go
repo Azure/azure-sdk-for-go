@@ -65,12 +65,7 @@ func (client *QueryClient) Usage(ctx context.Context, scope string, parameters Q
 	if err != nil {
 		return QueryClientUsageResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return QueryClientUsageResponse{}, err
-	}
-	resp, err := client.usageHandleResponse(httpResp)
-	return resp, err
+	return client.usageHandleResponse(httpResp, http.StatusOK, http.StatusNoContent)
 }
 
 // usageCreateRequest creates the Usage request.
@@ -96,8 +91,11 @@ func (client *QueryClient) usageCreateRequest(ctx context.Context, scope string,
 }
 
 // usageHandleResponse handles the Usage response.
-func (client *QueryClient) usageHandleResponse(resp *http.Response) (QueryClientUsageResponse, error) {
+func (client *QueryClient) usageHandleResponse(resp *http.Response, successCodes ...int) (QueryClientUsageResponse, error) {
 	result := QueryClientUsageResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.QueryResult); err != nil {
 		return QueryClientUsageResponse{}, err
 	}
@@ -127,12 +125,7 @@ func (client *QueryClient) UsageByExternalCloudProviderType(ctx context.Context,
 	if err != nil {
 		return QueryClientUsageByExternalCloudProviderTypeResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return QueryClientUsageByExternalCloudProviderTypeResponse{}, err
-	}
-	resp, err := client.usageByExternalCloudProviderTypeHandleResponse(httpResp)
-	return resp, err
+	return client.usageByExternalCloudProviderTypeHandleResponse(httpResp, http.StatusOK)
 }
 
 // usageByExternalCloudProviderTypeCreateRequest creates the UsageByExternalCloudProviderType request.
@@ -162,8 +155,11 @@ func (client *QueryClient) usageByExternalCloudProviderTypeCreateRequest(ctx con
 }
 
 // usageByExternalCloudProviderTypeHandleResponse handles the UsageByExternalCloudProviderType response.
-func (client *QueryClient) usageByExternalCloudProviderTypeHandleResponse(resp *http.Response) (QueryClientUsageByExternalCloudProviderTypeResponse, error) {
+func (client *QueryClient) usageByExternalCloudProviderTypeHandleResponse(resp *http.Response, successCodes ...int) (QueryClientUsageByExternalCloudProviderTypeResponse, error) {
 	result := QueryClientUsageByExternalCloudProviderTypeResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.QueryResult); err != nil {
 		return QueryClientUsageByExternalCloudProviderTypeResponse{}, err
 	}

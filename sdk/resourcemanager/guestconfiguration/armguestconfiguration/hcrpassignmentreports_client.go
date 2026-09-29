@@ -30,6 +30,9 @@ type HCRPAssignmentReportsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewHCRPAssignmentReportsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*HCRPAssignmentReportsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -63,19 +66,14 @@ func (client *HCRPAssignmentReportsClient) Get(ctx context.Context, resourceGrou
 	if err != nil {
 		return HCRPAssignmentReportsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return HCRPAssignmentReportsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *HCRPAssignmentReportsClient) getCreateRequest(ctx context.Context, resourceGroupName string, guestConfigurationAssignmentName string, reportID string, machineName string, _ *HCRPAssignmentReportsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridCompute/machines/{machineName}/providers/Microsoft.GuestConfiguration/guestConfigurationAssignments/{guestConfigurationAssignmentName}/reports/{reportId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -106,8 +104,11 @@ func (client *HCRPAssignmentReportsClient) getCreateRequest(ctx context.Context,
 }
 
 // getHandleResponse handles the Get response.
-func (client *HCRPAssignmentReportsClient) getHandleResponse(resp *http.Response) (HCRPAssignmentReportsClientGetResponse, error) {
+func (client *HCRPAssignmentReportsClient) getHandleResponse(resp *http.Response, successCodes ...int) (HCRPAssignmentReportsClientGetResponse, error) {
 	result := HCRPAssignmentReportsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AssignmentReport); err != nil {
 		return HCRPAssignmentReportsClientGetResponse{}, err
 	}
@@ -135,19 +136,14 @@ func (client *HCRPAssignmentReportsClient) List(ctx context.Context, resourceGro
 	if err != nil {
 		return HCRPAssignmentReportsClientListResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return HCRPAssignmentReportsClientListResponse{}, err
-	}
-	resp, err := client.listHandleResponse(httpResp)
-	return resp, err
+	return client.listHandleResponse(httpResp, http.StatusOK)
 }
 
 // listCreateRequest creates the List request.
 func (client *HCRPAssignmentReportsClient) listCreateRequest(ctx context.Context, resourceGroupName string, guestConfigurationAssignmentName string, machineName string, _ *HCRPAssignmentReportsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridCompute/machines/{machineName}/providers/Microsoft.GuestConfiguration/guestConfigurationAssignments/{guestConfigurationAssignmentName}/reports"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -174,8 +170,11 @@ func (client *HCRPAssignmentReportsClient) listCreateRequest(ctx context.Context
 }
 
 // listHandleResponse handles the List response.
-func (client *HCRPAssignmentReportsClient) listHandleResponse(resp *http.Response) (HCRPAssignmentReportsClientListResponse, error) {
+func (client *HCRPAssignmentReportsClient) listHandleResponse(resp *http.Response, successCodes ...int) (HCRPAssignmentReportsClientListResponse, error) {
 	result := HCRPAssignmentReportsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AssignmentReportList); err != nil {
 		return HCRPAssignmentReportsClientListResponse{}, err
 	}

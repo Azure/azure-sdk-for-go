@@ -19,7 +19,7 @@ import (
 // AIModelsClient contains the methods for the AIModels group.
 // Don't use this type directly, use NewAIModelsClient() instead.
 //
-// Generated from API version 2026-05-02-preview
+// Generated from API version 2026-09-02-preview
 type AIModelsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -30,6 +30,9 @@ type AIModelsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewAIModelsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AIModelsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -49,15 +52,14 @@ func NewAIModelsClient(subscriptionID string, credential azcore.TokenCredential,
 //     hex of the first 8 bytes (16 characters) of `SHA-256(modelId)` (e.g. upstream `microsoft/Phi-4-mini-instruct` produces
 //     `9806f0c862fdd920`). Callers should treat the name as opaque and use the `modelId` property as the human-readable reference.
 //     The encoding is a permanent contract of this resource provider and does not depend on any upstream naming policy.
-//   - body - The content of the action request
 //   - options - AIModelsClientCalculateCostOptions contains the optional parameters for the AIModelsClient.CalculateCost method.
-func (client *AIModelsClient) CalculateCost(ctx context.Context, location string, aiModelName string, body CalculateCostRequest, options *AIModelsClientCalculateCostOptions) (AIModelsClientCalculateCostResponse, error) {
+func (client *AIModelsClient) CalculateCost(ctx context.Context, location string, aiModelName string, options *AIModelsClientCalculateCostOptions) (AIModelsClientCalculateCostResponse, error) {
 	var err error
 	const operationName = "AIModelsClient.CalculateCost"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.calculateCostCreateRequest(ctx, location, aiModelName, body, options)
+	req, err := client.calculateCostCreateRequest(ctx, location, aiModelName, options)
 	if err != nil {
 		return AIModelsClientCalculateCostResponse{}, err
 	}
@@ -65,19 +67,14 @@ func (client *AIModelsClient) CalculateCost(ctx context.Context, location string
 	if err != nil {
 		return AIModelsClientCalculateCostResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return AIModelsClientCalculateCostResponse{}, err
-	}
-	resp, err := client.calculateCostHandleResponse(httpResp)
-	return resp, err
+	return client.calculateCostHandleResponse(httpResp, http.StatusOK)
 }
 
 // calculateCostCreateRequest creates the CalculateCost request.
-func (client *AIModelsClient) calculateCostCreateRequest(ctx context.Context, location string, aiModelName string, body CalculateCostRequest, _ *AIModelsClientCalculateCostOptions) (*policy.Request, error) {
+func (client *AIModelsClient) calculateCostCreateRequest(ctx context.Context, location string, aiModelName string, _ *AIModelsClientCalculateCostOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ContainerService/locations/{location}/aiModels/{aiModelName}/calculateCost"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if location == "" {
@@ -93,19 +90,18 @@ func (client *AIModelsClient) calculateCostCreateRequest(ctx context.Context, lo
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260502Preview)
+	reqQP.Set("api-version", version20260902Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, body); err != nil {
-		return nil, err
-	}
 	return req, nil
 }
 
 // calculateCostHandleResponse handles the CalculateCost response.
-func (client *AIModelsClient) calculateCostHandleResponse(resp *http.Response) (AIModelsClientCalculateCostResponse, error) {
+func (client *AIModelsClient) calculateCostHandleResponse(resp *http.Response, successCodes ...int) (AIModelsClientCalculateCostResponse, error) {
 	result := AIModelsClientCalculateCostResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CalculateCostResponse); err != nil {
 		return AIModelsClientCalculateCostResponse{}, err
 	}
@@ -134,19 +130,14 @@ func (client *AIModelsClient) Get(ctx context.Context, location string, aiModelN
 	if err != nil {
 		return AIModelsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return AIModelsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *AIModelsClient) getCreateRequest(ctx context.Context, location string, aiModelName string, _ *AIModelsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ContainerService/locations/{location}/aiModels/{aiModelName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if location == "" {
@@ -162,15 +153,18 @@ func (client *AIModelsClient) getCreateRequest(ctx context.Context, location str
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260502Preview)
+	reqQP.Set("api-version", version20260902Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *AIModelsClient) getHandleResponse(resp *http.Response) (AIModelsClientGetResponse, error) {
+func (client *AIModelsClient) getHandleResponse(resp *http.Response, successCodes ...int) (AIModelsClientGetResponse, error) {
 	result := AIModelsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AIModel); err != nil {
 		return AIModelsClientGetResponse{}, err
 	}
@@ -191,43 +185,57 @@ func (client *AIModelsClient) NewListPager(location string, options *AIModelsCli
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, location, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, location, nextLink, options)
 			if err != nil {
 				return AIModelsClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return AIModelsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *AIModelsClient) listCreateRequest(ctx context.Context, location string, _ *AIModelsClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ContainerService/locations/{location}/aiModels"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *AIModelsClient) listCreateRequest(ctx context.Context, location string, nextLink string, _ *AIModelsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ContainerService/locations/{location}/aiModels"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if location == "" {
+			return nil, errors.New("parameter location cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if location == "" {
-		return nil, errors.New("parameter location cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260502Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260902Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *AIModelsClient) listHandleResponse(resp *http.Response) (AIModelsClientListResponse, error) {
+func (client *AIModelsClient) listHandleResponse(resp *http.Response, successCodes ...int) (AIModelsClientListResponse, error) {
 	result := AIModelsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AIModelListResult); err != nil {
 		return AIModelsClientListResponse{}, err
 	}

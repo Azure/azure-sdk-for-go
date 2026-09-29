@@ -31,6 +31,9 @@ type PipelineRunsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewPipelineRunsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PipelineRunsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -62,8 +65,7 @@ func (client *PipelineRunsClient) Cancel(ctx context.Context, resourceGroupName 
 		return PipelineRunsClientCancelResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return PipelineRunsClientCancelResponse{}, err
+		return PipelineRunsClientCancelResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return PipelineRunsClientCancelResponse{}, nil
 }
@@ -72,7 +74,7 @@ func (client *PipelineRunsClient) Cancel(ctx context.Context, resourceGroupName 
 func (client *PipelineRunsClient) cancelCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, runID string, options *PipelineRunsClientCancelOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/pipelineruns/{runId}/cancel"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -119,19 +121,14 @@ func (client *PipelineRunsClient) Get(ctx context.Context, resourceGroupName str
 	if err != nil {
 		return PipelineRunsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return PipelineRunsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *PipelineRunsClient) getCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, runID string, _ *PipelineRunsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/pipelineruns/{runId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -158,8 +155,11 @@ func (client *PipelineRunsClient) getCreateRequest(ctx context.Context, resource
 }
 
 // getHandleResponse handles the Get response.
-func (client *PipelineRunsClient) getHandleResponse(resp *http.Response) (PipelineRunsClientGetResponse, error) {
+func (client *PipelineRunsClient) getHandleResponse(resp *http.Response, successCodes ...int) (PipelineRunsClientGetResponse, error) {
 	result := PipelineRunsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PipelineRun); err != nil {
 		return PipelineRunsClientGetResponse{}, err
 	}
@@ -187,19 +187,14 @@ func (client *PipelineRunsClient) QueryByFactory(ctx context.Context, resourceGr
 	if err != nil {
 		return PipelineRunsClientQueryByFactoryResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return PipelineRunsClientQueryByFactoryResponse{}, err
-	}
-	resp, err := client.queryByFactoryHandleResponse(httpResp)
-	return resp, err
+	return client.queryByFactoryHandleResponse(httpResp, http.StatusOK)
 }
 
 // queryByFactoryCreateRequest creates the QueryByFactory request.
 func (client *PipelineRunsClient) queryByFactoryCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, filterParameters RunFilterParameters, _ *PipelineRunsClientQueryByFactoryOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/queryPipelineRuns"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -226,8 +221,11 @@ func (client *PipelineRunsClient) queryByFactoryCreateRequest(ctx context.Contex
 }
 
 // queryByFactoryHandleResponse handles the QueryByFactory response.
-func (client *PipelineRunsClient) queryByFactoryHandleResponse(resp *http.Response) (PipelineRunsClientQueryByFactoryResponse, error) {
+func (client *PipelineRunsClient) queryByFactoryHandleResponse(resp *http.Response, successCodes ...int) (PipelineRunsClientQueryByFactoryResponse, error) {
 	result := PipelineRunsClientQueryByFactoryResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PipelineRunsQueryResponse); err != nil {
 		return PipelineRunsClientQueryByFactoryResponse{}, err
 	}

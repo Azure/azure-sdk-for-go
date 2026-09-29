@@ -30,6 +30,9 @@ type ProtectionGroupsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewProtectionGroupsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ProtectionGroupsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -62,19 +65,14 @@ func (client *ProtectionGroupsClient) Backup(ctx context.Context, resourceGroupN
 	if err != nil {
 		return ProtectionGroupsClientBackupResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ProtectionGroupsClientBackupResponse{}, err
-	}
-	resp, err := client.backupHandleResponse(httpResp)
-	return resp, err
+	return client.backupHandleResponse(httpResp, http.StatusOK)
 }
 
 // backupCreateRequest creates the Backup request.
 func (client *ProtectionGroupsClient) backupCreateRequest(ctx context.Context, resourceGroupName string, cloudAccountName string, protectionGroupName string, request BackupProtectionGroupRequest, _ *ProtectionGroupsClientBackupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Commvault.ContentStore/cloudAccounts/{cloudAccountName}/protectionGroups/{protectionGroupName}/backup"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -105,8 +103,11 @@ func (client *ProtectionGroupsClient) backupCreateRequest(ctx context.Context, r
 }
 
 // backupHandleResponse handles the Backup response.
-func (client *ProtectionGroupsClient) backupHandleResponse(resp *http.Response) (ProtectionGroupsClientBackupResponse, error) {
+func (client *ProtectionGroupsClient) backupHandleResponse(resp *http.Response, successCodes ...int) (ProtectionGroupsClientBackupResponse, error) {
 	result := ProtectionGroupsClientBackupResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BackupProtectionGroupResponse); err != nil {
 		return ProtectionGroupsClientBackupResponse{}, err
 	}
@@ -155,8 +156,7 @@ func (client *ProtectionGroupsClient) createOrupdate(ctx context.Context, resour
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -165,7 +165,7 @@ func (client *ProtectionGroupsClient) createOrupdate(ctx context.Context, resour
 func (client *ProtectionGroupsClient) createOrupdateCreateRequest(ctx context.Context, resourceGroupName string, cloudAccountName string, protectionGroupName string, resource ProtectionGroup, _ *ProtectionGroupsClientBeginCreateOrupdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Commvault.ContentStore/cloudAccounts/{cloudAccountName}/protectionGroups/{protectionGroupName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -236,8 +236,7 @@ func (client *ProtectionGroupsClient) deleteOperation(ctx context.Context, resou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -246,7 +245,7 @@ func (client *ProtectionGroupsClient) deleteOperation(ctx context.Context, resou
 func (client *ProtectionGroupsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, cloudAccountName string, protectionGroupName string, _ *ProtectionGroupsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Commvault.ContentStore/cloudAccounts/{cloudAccountName}/protectionGroups/{protectionGroupName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -291,19 +290,14 @@ func (client *ProtectionGroupsClient) Get(ctx context.Context, resourceGroupName
 	if err != nil {
 		return ProtectionGroupsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ProtectionGroupsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *ProtectionGroupsClient) getCreateRequest(ctx context.Context, resourceGroupName string, cloudAccountName string, protectionGroupName string, _ *ProtectionGroupsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Commvault.ContentStore/cloudAccounts/{cloudAccountName}/protectionGroups/{protectionGroupName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -330,8 +324,11 @@ func (client *ProtectionGroupsClient) getCreateRequest(ctx context.Context, reso
 }
 
 // getHandleResponse handles the Get response.
-func (client *ProtectionGroupsClient) getHandleResponse(resp *http.Response) (ProtectionGroupsClientGetResponse, error) {
+func (client *ProtectionGroupsClient) getHandleResponse(resp *http.Response, successCodes ...int) (ProtectionGroupsClientGetResponse, error) {
 	result := ProtectionGroupsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProtectionGroup); err != nil {
 		return ProtectionGroupsClientGetResponse{}, err
 	}
@@ -354,47 +351,61 @@ func (client *ProtectionGroupsClient) NewListByCloudAccountPager(resourceGroupNa
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByCloudAccountCreateRequest(ctx, resourceGroupName, cloudAccountName, options)
-			}, nil)
+			req, err := client.listByCloudAccountCreateRequest(ctx, resourceGroupName, cloudAccountName, nextLink, options)
 			if err != nil {
 				return ProtectionGroupsClientListByCloudAccountResponse{}, err
 			}
-			return client.listByCloudAccountHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ProtectionGroupsClientListByCloudAccountResponse{}, err
+			}
+			return client.listByCloudAccountHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByCloudAccountCreateRequest creates the ListByCloudAccount request.
-func (client *ProtectionGroupsClient) listByCloudAccountCreateRequest(ctx context.Context, resourceGroupName string, cloudAccountName string, _ *ProtectionGroupsClientListByCloudAccountOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Commvault.ContentStore/cloudAccounts/{cloudAccountName}/protectionGroups"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ProtectionGroupsClient) listByCloudAccountCreateRequest(ctx context.Context, resourceGroupName string, cloudAccountName string, nextLink string, _ *ProtectionGroupsClientListByCloudAccountOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Commvault.ContentStore/cloudAccounts/{cloudAccountName}/protectionGroups"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if cloudAccountName == "" {
+			return nil, errors.New("parameter cloudAccountName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{cloudAccountName}", url.PathEscape(cloudAccountName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if cloudAccountName == "" {
-		return nil, errors.New("parameter cloudAccountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{cloudAccountName}", url.PathEscape(cloudAccountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260703Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260703Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByCloudAccountHandleResponse handles the ListByCloudAccount response.
-func (client *ProtectionGroupsClient) listByCloudAccountHandleResponse(resp *http.Response) (ProtectionGroupsClientListByCloudAccountResponse, error) {
+func (client *ProtectionGroupsClient) listByCloudAccountHandleResponse(resp *http.Response, successCodes ...int) (ProtectionGroupsClientListByCloudAccountResponse, error) {
 	result := ProtectionGroupsClientListByCloudAccountResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProtectionGroupListResult); err != nil {
 		return ProtectionGroupsClientListByCloudAccountResponse{}, err
 	}
@@ -423,19 +434,14 @@ func (client *ProtectionGroupsClient) Restore(ctx context.Context, resourceGroup
 	if err != nil {
 		return ProtectionGroupsClientRestoreResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ProtectionGroupsClientRestoreResponse{}, err
-	}
-	resp, err := client.restoreHandleResponse(httpResp)
-	return resp, err
+	return client.restoreHandleResponse(httpResp, http.StatusOK)
 }
 
 // restoreCreateRequest creates the Restore request.
 func (client *ProtectionGroupsClient) restoreCreateRequest(ctx context.Context, resourceGroupName string, cloudAccountName string, protectionGroupName string, request RestoreProtectionItemRequest, _ *ProtectionGroupsClientRestoreOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Commvault.ContentStore/cloudAccounts/{cloudAccountName}/protectionGroups/{protectionGroupName}/restore"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -466,8 +472,11 @@ func (client *ProtectionGroupsClient) restoreCreateRequest(ctx context.Context, 
 }
 
 // restoreHandleResponse handles the Restore response.
-func (client *ProtectionGroupsClient) restoreHandleResponse(resp *http.Response) (ProtectionGroupsClientRestoreResponse, error) {
+func (client *ProtectionGroupsClient) restoreHandleResponse(resp *http.Response, successCodes ...int) (ProtectionGroupsClientRestoreResponse, error) {
 	result := ProtectionGroupsClientRestoreResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RestoreProtectionItemResponse); err != nil {
 		return ProtectionGroupsClientRestoreResponse{}, err
 	}
@@ -496,8 +505,7 @@ func (client *ProtectionGroupsClient) ResumeBackup(ctx context.Context, resource
 		return ProtectionGroupsClientResumeBackupResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return ProtectionGroupsClientResumeBackupResponse{}, err
+		return ProtectionGroupsClientResumeBackupResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return ProtectionGroupsClientResumeBackupResponse{}, nil
 }
@@ -506,7 +514,7 @@ func (client *ProtectionGroupsClient) ResumeBackup(ctx context.Context, resource
 func (client *ProtectionGroupsClient) resumeBackupCreateRequest(ctx context.Context, resourceGroupName string, cloudAccountName string, protectionGroupName string, _ *ProtectionGroupsClientResumeBackupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Commvault.ContentStore/cloudAccounts/{cloudAccountName}/protectionGroups/{protectionGroupName}/resumeBackup"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -573,8 +581,7 @@ func (client *ProtectionGroupsClient) stopBackup(ctx context.Context, resourceGr
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -583,7 +590,7 @@ func (client *ProtectionGroupsClient) stopBackup(ctx context.Context, resourceGr
 func (client *ProtectionGroupsClient) stopBackupCreateRequest(ctx context.Context, resourceGroupName string, cloudAccountName string, protectionGroupName string, request StopBackupProtectionGroupRequest, _ *ProtectionGroupsClientBeginStopBackupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Commvault.ContentStore/cloudAccounts/{cloudAccountName}/protectionGroups/{protectionGroupName}/stopBackup"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {

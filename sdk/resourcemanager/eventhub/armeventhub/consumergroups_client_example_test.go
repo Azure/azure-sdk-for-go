@@ -40,8 +40,8 @@ func ExampleConsumerGroupsClient_CreateOrUpdate() {
 	// 		Type: to.Ptr("Microsoft.EventHub/Namespaces/EventHubs/ConsumerGroups"),
 	// 		ID: to.Ptr("/subscriptions/5f750a97-50d9-4e36-8081-c9ee4c0210d4/resourceGroups/ArunMonocle/providers/Microsoft.EventHub/namespaces/sdk-Namespace-2661/eventhubs/sdk-EventHub-6681/consumergroups/sdk-ConsumerGroup-5563"),
 	// 		Properties: &armeventhub.ConsumerGroupProperties{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-25T03:43:09.4536234Z"); return t}()),
-	// 			UpdatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-25T03:43:09.4536234Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2017, time.May, 25, 3, 43, 9, 453623400, time.UTC)),
+	// 			UpdatedAt: to.Ptr(time.Date(2017, time.May, 25, 3, 43, 9, 453623400, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -93,8 +93,8 @@ func ExampleConsumerGroupsClient_Get() {
 	// 		Type: to.Ptr("Microsoft.EventHub/Namespaces/EventHubs/ConsumerGroups"),
 	// 		ID: to.Ptr("/subscriptions/5f750a97-50d9-4e36-8081-c9ee4c0210d4/resourceGroups/ArunMonocle/providers/Microsoft.EventHub/namespaces/sdk-Namespace-2661/eventhubs/sdk-EventHub-6681/consumergroups/sdk-ConsumerGroup-5563"),
 	// 		Properties: &armeventhub.ConsumerGroupProperties{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-25T03:43:08.7152556Z"); return t}()),
-	// 			UpdatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-25T03:43:08.7152556Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2017, time.May, 25, 3, 43, 8, 715255600, time.UTC)),
+	// 			UpdatedAt: to.Ptr(time.Date(2017, time.May, 25, 3, 43, 8, 715255600, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -130,8 +130,8 @@ func ExampleConsumerGroupsClient_NewListByEventHubPager() {
 		// 				Type: to.Ptr("Microsoft.EventHub/Namespaces/EventHubs/ConsumerGroups"),
 		// 				ID: to.Ptr("/subscriptions/5f750a97-50d9-4e36-8081-c9ee4c0210d4/resourceGroups/ArunMonocle/providers/Microsoft.EventHub/namespaces/sdk-Namespace-2661/eventhubs/sdk-EventHub-6681/consumergroups/$Default"),
 		// 				Properties: &armeventhub.ConsumerGroupProperties{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-25T03:42:52.287Z"); return t}()),
-		// 					UpdatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-25T03:42:52.287Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2017, time.May, 25, 3, 42, 52, 287000000, time.UTC)),
+		// 					UpdatedAt: to.Ptr(time.Date(2017, time.May, 25, 3, 42, 52, 287000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -139,8 +139,8 @@ func ExampleConsumerGroupsClient_NewListByEventHubPager() {
 		// 				Type: to.Ptr("Microsoft.EventHub/Namespaces/EventHubs/ConsumerGroups"),
 		// 				ID: to.Ptr("/subscriptions/5f750a97-50d9-4e36-8081-c9ee4c0210d4/resourceGroups/ArunMonocle/providers/Microsoft.EventHub/namespaces/sdk-Namespace-2661/eventhubs/sdk-EventHub-6681/consumergroups/sdk-consumergroup-5563"),
 		// 				Properties: &armeventhub.ConsumerGroupProperties{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-25T03:43:09.314Z"); return t}()),
-		// 					UpdatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-25T03:43:09.314Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2017, time.May, 25, 3, 43, 9, 314000000, time.UTC)),
+		// 					UpdatedAt: to.Ptr(time.Date(2017, time.May, 25, 3, 43, 9, 314000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},

@@ -25,13 +25,13 @@ func ExampleTroubleshootClient_BeginTroubleshoot() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewTroubleshootClient().BeginTroubleshoot(ctx, "testrg", "testvm", armsqlvirtualmachine.SQLVMTroubleshooting{
-		EndTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-09T22:10:00Z"); return t }()),
+		EndTimeUTC: to.Ptr(time.Date(2023, time.July, 9, 22, 10, 0, 0, time.UTC)),
 		Properties: &armsqlvirtualmachine.TroubleshootingAdditionalProperties{
 			UnhealthyReplicaInfo: &armsqlvirtualmachine.UnhealthyReplicaInfo{
 				AvailabilityGroupName: to.Ptr("AG1"),
 			},
 		},
-		StartTimeUTC:            to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-09T17:10:00Z"); return t }()),
+		StartTimeUTC:            to.Ptr(time.Date(2023, time.July, 9, 17, 10, 0, 0, time.UTC)),
 		TroubleshootingScenario: to.Ptr(armsqlvirtualmachine.TroubleshootingScenarioUnhealthyReplica),
 	}, nil)
 	if err != nil {
@@ -46,13 +46,13 @@ func ExampleTroubleshootClient_BeginTroubleshoot() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsqlvirtualmachine.TroubleshootClientTroubleshootResponse{
 	// 	SQLVMTroubleshooting: armsqlvirtualmachine.SQLVMTroubleshooting{
-	// 		EndTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-09T22:10:00Z"); return t}()),
+	// 		EndTimeUTC: to.Ptr(time.Date(2023, time.July, 9, 22, 10, 0, 0, time.UTC)),
 	// 		Properties: &armsqlvirtualmachine.TroubleshootingAdditionalProperties{
 	// 			UnhealthyReplicaInfo: &armsqlvirtualmachine.UnhealthyReplicaInfo{
 	// 				AvailabilityGroupName: to.Ptr("AG1"),
 	// 			},
 	// 		},
-	// 		StartTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-09T17:10:00Z"); return t}()),
+	// 		StartTimeUTC: to.Ptr(time.Date(2023, time.July, 9, 17, 10, 0, 0, time.UTC)),
 	// 		TroubleshootingScenario: to.Ptr(armsqlvirtualmachine.TroubleshootingScenarioUnhealthyReplica),
 	// 	},
 	// }

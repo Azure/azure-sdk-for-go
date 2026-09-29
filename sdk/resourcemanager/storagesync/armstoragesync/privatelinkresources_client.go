@@ -19,7 +19,7 @@ import (
 // PrivateLinkResourcesClient contains the methods for the PrivateLinkResources group.
 // Don't use this type directly, use NewPrivateLinkResourcesClient() instead.
 //
-// Generated from API version 2022-09-01
+// Generated from API version 2025-12-01
 type PrivateLinkResourcesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -30,6 +30,9 @@ type PrivateLinkResourcesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewPrivateLinkResourcesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PrivateLinkResourcesClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -61,19 +64,14 @@ func (client *PrivateLinkResourcesClient) ListByStorageSyncService(ctx context.C
 	if err != nil {
 		return PrivateLinkResourcesClientListByStorageSyncServiceResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return PrivateLinkResourcesClientListByStorageSyncServiceResponse{}, err
-	}
-	resp, err := client.listByStorageSyncServiceHandleResponse(httpResp)
-	return resp, err
+	return client.listByStorageSyncServiceHandleResponse(httpResp, http.StatusOK)
 }
 
 // listByStorageSyncServiceCreateRequest creates the ListByStorageSyncService request.
 func (client *PrivateLinkResourcesClient) listByStorageSyncServiceCreateRequest(ctx context.Context, resourceGroupName string, storageSyncServiceName string, _ *PrivateLinkResourcesClientListByStorageSyncServiceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageSync/storageSyncServices/{storageSyncServiceName}/privateLinkResources"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -89,15 +87,18 @@ func (client *PrivateLinkResourcesClient) listByStorageSyncServiceCreateRequest(
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20220901)
+	reqQP.Set("api-version", version20251201)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByStorageSyncServiceHandleResponse handles the ListByStorageSyncService response.
-func (client *PrivateLinkResourcesClient) listByStorageSyncServiceHandleResponse(resp *http.Response) (PrivateLinkResourcesClientListByStorageSyncServiceResponse, error) {
+func (client *PrivateLinkResourcesClient) listByStorageSyncServiceHandleResponse(resp *http.Response, successCodes ...int) (PrivateLinkResourcesClientListByStorageSyncServiceResponse, error) {
 	result := PrivateLinkResourcesClientListByStorageSyncServiceResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateLinkResourceListResult); err != nil {
 		return PrivateLinkResourcesClientListByStorageSyncServiceResponse{}, err
 	}

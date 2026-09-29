@@ -36,17 +36,17 @@ func ExampleReservationOrdersClient_GetByBillingAccount_reservationOrderGetByBil
 	// 		Etag: to.Ptr[int32](27),
 	// 		ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31/reservationOrders/20000000-0000-0000-0000-000000000000"),
 	// 		Properties: &armbilling.ReservationOrderProperty{
-	// 			BenefitStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-25T06:34:12.9266987Z"); return t}()),
+	// 			BenefitStartTime: to.Ptr(time.Date(2021, time.November, 25, 6, 34, 12, 926698700, time.UTC)),
 	// 			BillingAccountID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31"),
 	// 			BillingPlan: to.Ptr(armbilling.ReservationBillingPlanMonthly),
 	// 			BillingProfileID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31/billingProfiles/AAAA-AAAA-AAA-AAA"),
-	// 			CreatedDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-25T06:34:13.9736776Z"); return t}()),
+	// 			CreatedDateTime: to.Ptr(time.Date(2021, time.November, 25, 6, 34, 13, 973677600, time.UTC)),
 	// 			DisplayName: to.Ptr("VM_RI_11-24-2021_22-30"),
-	// 			ExpiryDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-11-25T06:34:12.9266987Z"); return t}()),
+	// 			ExpiryDateTime: to.Ptr(time.Date(2024, time.November, 25, 6, 34, 12, 926698700, time.UTC)),
 	// 			OriginalQuantity: to.Ptr[int32](1),
 	// 			ProductCode: to.Ptr("20000000-0000-0000-0000-000000000005"),
 	// 			ProvisioningState: to.Ptr("Succeeded"),
-	// 			RequestDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-25T06:31:18.3925493Z"); return t}()),
+	// 			RequestDateTime: to.Ptr(time.Date(2021, time.November, 25, 6, 31, 18, 392549300, time.UTC)),
 	// 			Reservations: []*armbilling.Reservation{
 	// 				{
 	// 					ID: to.Ptr("/providers/Microsoft.Capacity/reservationOrders/20000000-0000-0000-0000-000000000000/reservations/20000000-0000-0000-0000-000000000001"),
@@ -87,29 +87,29 @@ func ExampleReservationOrdersClient_GetByBillingAccount_reservationOrderGetByBil
 	// 		Etag: to.Ptr[int32](26),
 	// 		ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31/reservationOrders/20000000-0000-0000-0000-000000000000"),
 	// 		Properties: &armbilling.ReservationOrderProperty{
-	// 			BenefitStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-25T06:34:12.9266987Z"); return t}()),
+	// 			BenefitStartTime: to.Ptr(time.Date(2021, time.November, 25, 6, 34, 12, 926698700, time.UTC)),
 	// 			BillingAccountID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31"),
 	// 			BillingPlan: to.Ptr(armbilling.ReservationBillingPlanMonthly),
 	// 			BillingProfileID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31/billingProfiles/AAAA-AAAA-AAA-AAA"),
-	// 			CreatedDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-25T06:34:13.9736776Z"); return t}()),
+	// 			CreatedDateTime: to.Ptr(time.Date(2021, time.November, 25, 6, 34, 13, 973677600, time.UTC)),
 	// 			DisplayName: to.Ptr("VM_RI_11-24-2021_22-30"),
-	// 			ExpiryDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-11-25T06:34:12.9266987Z"); return t}()),
+	// 			ExpiryDateTime: to.Ptr(time.Date(2024, time.November, 25, 6, 34, 12, 926698700, time.UTC)),
 	// 			OriginalQuantity: to.Ptr[int32](1),
 	// 			PlanInformation: &armbilling.ReservationOrderBillingPlanInformation{
-	// 				NextPaymentDueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2023-01-25"); return t}()),
+	// 				NextPaymentDueDate: to.Ptr(time.Date(2023, time.January, 25, 0, 0, 0, 0, time.UTC)),
 	// 				PricingCurrencyTotal: &armbilling.Price{
 	// 					Amount: to.Ptr[float64](715.68),
 	// 					CurrencyCode: to.Ptr("USD"),
 	// 				},
-	// 				StartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2021-11-25"); return t}()),
+	// 				StartDate: to.Ptr(time.Date(2021, time.November, 25, 0, 0, 0, 0, time.UTC)),
 	// 				Transactions: []*armbilling.ReservationPaymentDetail{
 	// 					{
 	// 						BillingCurrencyTotal: &armbilling.Price{
 	// 							Amount: to.Ptr[float64](19.88),
 	// 							CurrencyCode: to.Ptr("USD"),
 	// 						},
-	// 						DueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2021-11-25"); return t}()),
-	// 						PaymentDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2021-11-25"); return t}()),
+	// 						DueDate: to.Ptr(time.Date(2021, time.November, 25, 0, 0, 0, 0, time.UTC)),
+	// 						PaymentDate: to.Ptr(time.Date(2021, time.November, 25, 0, 0, 0, 0, time.UTC)),
 	// 						PricingCurrencyTotal: &armbilling.Price{
 	// 							Amount: to.Ptr[float64](19.88),
 	// 							CurrencyCode: to.Ptr("USD"),
@@ -121,8 +121,8 @@ func ExampleReservationOrdersClient_GetByBillingAccount_reservationOrderGetByBil
 	// 							Amount: to.Ptr[float64](19.88),
 	// 							CurrencyCode: to.Ptr("USD"),
 	// 						},
-	// 						DueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2021-12-25"); return t}()),
-	// 						PaymentDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2021-12-25"); return t}()),
+	// 						DueDate: to.Ptr(time.Date(2021, time.December, 25, 0, 0, 0, 0, time.UTC)),
+	// 						PaymentDate: to.Ptr(time.Date(2021, time.December, 25, 0, 0, 0, 0, time.UTC)),
 	// 						PricingCurrencyTotal: &armbilling.Price{
 	// 							Amount: to.Ptr[float64](19.88),
 	// 							CurrencyCode: to.Ptr("USD"),
@@ -134,8 +134,8 @@ func ExampleReservationOrdersClient_GetByBillingAccount_reservationOrderGetByBil
 	// 							Amount: to.Ptr[float64](19.88),
 	// 							CurrencyCode: to.Ptr("USD"),
 	// 						},
-	// 						DueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2022-01-25"); return t}()),
-	// 						PaymentDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2022-01-25"); return t}()),
+	// 						DueDate: to.Ptr(time.Date(2022, time.January, 25, 0, 0, 0, 0, time.UTC)),
+	// 						PaymentDate: to.Ptr(time.Date(2022, time.January, 25, 0, 0, 0, 0, time.UTC)),
 	// 						PricingCurrencyTotal: &armbilling.Price{
 	// 							Amount: to.Ptr[float64](19.88),
 	// 							CurrencyCode: to.Ptr("USD"),
@@ -147,8 +147,8 @@ func ExampleReservationOrdersClient_GetByBillingAccount_reservationOrderGetByBil
 	// 							Amount: to.Ptr[float64](19.88),
 	// 							CurrencyCode: to.Ptr("USD"),
 	// 						},
-	// 						DueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2022-02-25"); return t}()),
-	// 						PaymentDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2022-02-25"); return t}()),
+	// 						DueDate: to.Ptr(time.Date(2022, time.February, 25, 0, 0, 0, 0, time.UTC)),
+	// 						PaymentDate: to.Ptr(time.Date(2022, time.February, 25, 0, 0, 0, 0, time.UTC)),
 	// 						PricingCurrencyTotal: &armbilling.Price{
 	// 							Amount: to.Ptr[float64](19.88),
 	// 							CurrencyCode: to.Ptr("USD"),
@@ -160,8 +160,8 @@ func ExampleReservationOrdersClient_GetByBillingAccount_reservationOrderGetByBil
 	// 							Amount: to.Ptr[float64](19.88),
 	// 							CurrencyCode: to.Ptr("USD"),
 	// 						},
-	// 						DueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2022-03-25"); return t}()),
-	// 						PaymentDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2022-03-25"); return t}()),
+	// 						DueDate: to.Ptr(time.Date(2022, time.March, 25, 0, 0, 0, 0, time.UTC)),
+	// 						PaymentDate: to.Ptr(time.Date(2022, time.March, 25, 0, 0, 0, 0, time.UTC)),
 	// 						PricingCurrencyTotal: &armbilling.Price{
 	// 							Amount: to.Ptr[float64](19.88),
 	// 							CurrencyCode: to.Ptr("USD"),
@@ -173,8 +173,8 @@ func ExampleReservationOrdersClient_GetByBillingAccount_reservationOrderGetByBil
 	// 							Amount: to.Ptr[float64](19.88),
 	// 							CurrencyCode: to.Ptr("USD"),
 	// 						},
-	// 						DueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2022-04-25"); return t}()),
-	// 						PaymentDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2022-04-25"); return t}()),
+	// 						DueDate: to.Ptr(time.Date(2022, time.April, 25, 0, 0, 0, 0, time.UTC)),
+	// 						PaymentDate: to.Ptr(time.Date(2022, time.April, 25, 0, 0, 0, 0, time.UTC)),
 	// 						PricingCurrencyTotal: &armbilling.Price{
 	// 							Amount: to.Ptr[float64](19.88),
 	// 							CurrencyCode: to.Ptr("USD"),
@@ -186,8 +186,8 @@ func ExampleReservationOrdersClient_GetByBillingAccount_reservationOrderGetByBil
 	// 							Amount: to.Ptr[float64](19.88),
 	// 							CurrencyCode: to.Ptr("USD"),
 	// 						},
-	// 						DueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2022-05-25"); return t}()),
-	// 						PaymentDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2022-05-25"); return t}()),
+	// 						DueDate: to.Ptr(time.Date(2022, time.May, 25, 0, 0, 0, 0, time.UTC)),
+	// 						PaymentDate: to.Ptr(time.Date(2022, time.May, 25, 0, 0, 0, 0, time.UTC)),
 	// 						PricingCurrencyTotal: &armbilling.Price{
 	// 							Amount: to.Ptr[float64](19.88),
 	// 							CurrencyCode: to.Ptr("USD"),
@@ -199,8 +199,8 @@ func ExampleReservationOrdersClient_GetByBillingAccount_reservationOrderGetByBil
 	// 							Amount: to.Ptr[float64](19.88),
 	// 							CurrencyCode: to.Ptr("USD"),
 	// 						},
-	// 						DueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2022-06-25"); return t}()),
-	// 						PaymentDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2022-06-25"); return t}()),
+	// 						DueDate: to.Ptr(time.Date(2022, time.June, 25, 0, 0, 0, 0, time.UTC)),
+	// 						PaymentDate: to.Ptr(time.Date(2022, time.June, 25, 0, 0, 0, 0, time.UTC)),
 	// 						PricingCurrencyTotal: &armbilling.Price{
 	// 							Amount: to.Ptr[float64](19.88),
 	// 							CurrencyCode: to.Ptr("USD"),
@@ -212,8 +212,8 @@ func ExampleReservationOrdersClient_GetByBillingAccount_reservationOrderGetByBil
 	// 							Amount: to.Ptr[float64](19.88),
 	// 							CurrencyCode: to.Ptr("USD"),
 	// 						},
-	// 						DueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2022-07-25"); return t}()),
-	// 						PaymentDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2022-07-25"); return t}()),
+	// 						DueDate: to.Ptr(time.Date(2022, time.July, 25, 0, 0, 0, 0, time.UTC)),
+	// 						PaymentDate: to.Ptr(time.Date(2022, time.July, 25, 0, 0, 0, 0, time.UTC)),
 	// 						PricingCurrencyTotal: &armbilling.Price{
 	// 							Amount: to.Ptr[float64](19.88),
 	// 							CurrencyCode: to.Ptr("USD"),
@@ -225,8 +225,8 @@ func ExampleReservationOrdersClient_GetByBillingAccount_reservationOrderGetByBil
 	// 							Amount: to.Ptr[float64](19.88),
 	// 							CurrencyCode: to.Ptr("USD"),
 	// 						},
-	// 						DueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2022-08-25"); return t}()),
-	// 						PaymentDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2022-08-25"); return t}()),
+	// 						DueDate: to.Ptr(time.Date(2022, time.August, 25, 0, 0, 0, 0, time.UTC)),
+	// 						PaymentDate: to.Ptr(time.Date(2022, time.August, 25, 0, 0, 0, 0, time.UTC)),
 	// 						PricingCurrencyTotal: &armbilling.Price{
 	// 							Amount: to.Ptr[float64](19.88),
 	// 							CurrencyCode: to.Ptr("USD"),
@@ -238,8 +238,8 @@ func ExampleReservationOrdersClient_GetByBillingAccount_reservationOrderGetByBil
 	// 							Amount: to.Ptr[float64](19.88),
 	// 							CurrencyCode: to.Ptr("USD"),
 	// 						},
-	// 						DueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2022-09-25"); return t}()),
-	// 						PaymentDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2022-09-25"); return t}()),
+	// 						DueDate: to.Ptr(time.Date(2022, time.September, 25, 0, 0, 0, 0, time.UTC)),
+	// 						PaymentDate: to.Ptr(time.Date(2022, time.September, 25, 0, 0, 0, 0, time.UTC)),
 	// 						PricingCurrencyTotal: &armbilling.Price{
 	// 							Amount: to.Ptr[float64](19.88),
 	// 							CurrencyCode: to.Ptr("USD"),
@@ -251,8 +251,8 @@ func ExampleReservationOrdersClient_GetByBillingAccount_reservationOrderGetByBil
 	// 							Amount: to.Ptr[float64](19.88),
 	// 							CurrencyCode: to.Ptr("USD"),
 	// 						},
-	// 						DueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2022-10-25"); return t}()),
-	// 						PaymentDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2022-10-25"); return t}()),
+	// 						DueDate: to.Ptr(time.Date(2022, time.October, 25, 0, 0, 0, 0, time.UTC)),
+	// 						PaymentDate: to.Ptr(time.Date(2022, time.October, 25, 0, 0, 0, 0, time.UTC)),
 	// 						PricingCurrencyTotal: &armbilling.Price{
 	// 							Amount: to.Ptr[float64](19.88),
 	// 							CurrencyCode: to.Ptr("USD"),
@@ -264,8 +264,8 @@ func ExampleReservationOrdersClient_GetByBillingAccount_reservationOrderGetByBil
 	// 							Amount: to.Ptr[float64](19.88),
 	// 							CurrencyCode: to.Ptr("USD"),
 	// 						},
-	// 						DueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2022-11-25"); return t}()),
-	// 						PaymentDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2022-11-25"); return t}()),
+	// 						DueDate: to.Ptr(time.Date(2022, time.November, 25, 0, 0, 0, 0, time.UTC)),
+	// 						PaymentDate: to.Ptr(time.Date(2022, time.November, 25, 0, 0, 0, 0, time.UTC)),
 	// 						PricingCurrencyTotal: &armbilling.Price{
 	// 							Amount: to.Ptr[float64](19.88),
 	// 							CurrencyCode: to.Ptr("USD"),
@@ -277,8 +277,8 @@ func ExampleReservationOrdersClient_GetByBillingAccount_reservationOrderGetByBil
 	// 							Amount: to.Ptr[float64](19.88),
 	// 							CurrencyCode: to.Ptr("USD"),
 	// 						},
-	// 						DueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2022-12-25"); return t}()),
-	// 						PaymentDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2022-12-25"); return t}()),
+	// 						DueDate: to.Ptr(time.Date(2022, time.December, 25, 0, 0, 0, 0, time.UTC)),
+	// 						PaymentDate: to.Ptr(time.Date(2022, time.December, 25, 0, 0, 0, 0, time.UTC)),
 	// 						PricingCurrencyTotal: &armbilling.Price{
 	// 							Amount: to.Ptr[float64](19.88),
 	// 							CurrencyCode: to.Ptr("USD"),
@@ -286,7 +286,7 @@ func ExampleReservationOrdersClient_GetByBillingAccount_reservationOrderGetByBil
 	// 						Status: to.Ptr(armbilling.PaymentStatusCompleted),
 	// 					},
 	// 					{
-	// 						DueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2023-01-25"); return t}()),
+	// 						DueDate: to.Ptr(time.Date(2023, time.January, 25, 0, 0, 0, 0, time.UTC)),
 	// 						PricingCurrencyTotal: &armbilling.Price{
 	// 							Amount: to.Ptr[float64](19.88),
 	// 							CurrencyCode: to.Ptr("USD"),
@@ -294,7 +294,7 @@ func ExampleReservationOrdersClient_GetByBillingAccount_reservationOrderGetByBil
 	// 						Status: to.Ptr(armbilling.PaymentStatusScheduled),
 	// 					},
 	// 					{
-	// 						DueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2023-02-25"); return t}()),
+	// 						DueDate: to.Ptr(time.Date(2023, time.February, 25, 0, 0, 0, 0, time.UTC)),
 	// 						PricingCurrencyTotal: &armbilling.Price{
 	// 							Amount: to.Ptr[float64](19.88),
 	// 							CurrencyCode: to.Ptr("USD"),
@@ -302,7 +302,7 @@ func ExampleReservationOrdersClient_GetByBillingAccount_reservationOrderGetByBil
 	// 						Status: to.Ptr(armbilling.PaymentStatusScheduled),
 	// 					},
 	// 					{
-	// 						DueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2023-03-25"); return t}()),
+	// 						DueDate: to.Ptr(time.Date(2023, time.March, 25, 0, 0, 0, 0, time.UTC)),
 	// 						PricingCurrencyTotal: &armbilling.Price{
 	// 							Amount: to.Ptr[float64](19.88),
 	// 							CurrencyCode: to.Ptr("USD"),
@@ -310,7 +310,7 @@ func ExampleReservationOrdersClient_GetByBillingAccount_reservationOrderGetByBil
 	// 						Status: to.Ptr(armbilling.PaymentStatusScheduled),
 	// 					},
 	// 					{
-	// 						DueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2023-04-25"); return t}()),
+	// 						DueDate: to.Ptr(time.Date(2023, time.April, 25, 0, 0, 0, 0, time.UTC)),
 	// 						PricingCurrencyTotal: &armbilling.Price{
 	// 							Amount: to.Ptr[float64](19.88),
 	// 							CurrencyCode: to.Ptr("USD"),
@@ -318,7 +318,7 @@ func ExampleReservationOrdersClient_GetByBillingAccount_reservationOrderGetByBil
 	// 						Status: to.Ptr(armbilling.PaymentStatusScheduled),
 	// 					},
 	// 					{
-	// 						DueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2023-05-25"); return t}()),
+	// 						DueDate: to.Ptr(time.Date(2023, time.May, 25, 0, 0, 0, 0, time.UTC)),
 	// 						PricingCurrencyTotal: &armbilling.Price{
 	// 							Amount: to.Ptr[float64](19.88),
 	// 							CurrencyCode: to.Ptr("USD"),
@@ -326,7 +326,7 @@ func ExampleReservationOrdersClient_GetByBillingAccount_reservationOrderGetByBil
 	// 						Status: to.Ptr(armbilling.PaymentStatusScheduled),
 	// 					},
 	// 					{
-	// 						DueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2023-06-25"); return t}()),
+	// 						DueDate: to.Ptr(time.Date(2023, time.June, 25, 0, 0, 0, 0, time.UTC)),
 	// 						PricingCurrencyTotal: &armbilling.Price{
 	// 							Amount: to.Ptr[float64](19.88),
 	// 							CurrencyCode: to.Ptr("USD"),
@@ -334,7 +334,7 @@ func ExampleReservationOrdersClient_GetByBillingAccount_reservationOrderGetByBil
 	// 						Status: to.Ptr(armbilling.PaymentStatusScheduled),
 	// 					},
 	// 					{
-	// 						DueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2023-07-25"); return t}()),
+	// 						DueDate: to.Ptr(time.Date(2023, time.July, 25, 0, 0, 0, 0, time.UTC)),
 	// 						PricingCurrencyTotal: &armbilling.Price{
 	// 							Amount: to.Ptr[float64](19.88),
 	// 							CurrencyCode: to.Ptr("USD"),
@@ -342,7 +342,7 @@ func ExampleReservationOrdersClient_GetByBillingAccount_reservationOrderGetByBil
 	// 						Status: to.Ptr(armbilling.PaymentStatusScheduled),
 	// 					},
 	// 					{
-	// 						DueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2023-08-25"); return t}()),
+	// 						DueDate: to.Ptr(time.Date(2023, time.August, 25, 0, 0, 0, 0, time.UTC)),
 	// 						PricingCurrencyTotal: &armbilling.Price{
 	// 							Amount: to.Ptr[float64](19.88),
 	// 							CurrencyCode: to.Ptr("USD"),
@@ -350,7 +350,7 @@ func ExampleReservationOrdersClient_GetByBillingAccount_reservationOrderGetByBil
 	// 						Status: to.Ptr(armbilling.PaymentStatusScheduled),
 	// 					},
 	// 					{
-	// 						DueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2023-09-25"); return t}()),
+	// 						DueDate: to.Ptr(time.Date(2023, time.September, 25, 0, 0, 0, 0, time.UTC)),
 	// 						PricingCurrencyTotal: &armbilling.Price{
 	// 							Amount: to.Ptr[float64](19.88),
 	// 							CurrencyCode: to.Ptr("USD"),
@@ -358,7 +358,7 @@ func ExampleReservationOrdersClient_GetByBillingAccount_reservationOrderGetByBil
 	// 						Status: to.Ptr(armbilling.PaymentStatusScheduled),
 	// 					},
 	// 					{
-	// 						DueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2023-10-25"); return t}()),
+	// 						DueDate: to.Ptr(time.Date(2023, time.October, 25, 0, 0, 0, 0, time.UTC)),
 	// 						PricingCurrencyTotal: &armbilling.Price{
 	// 							Amount: to.Ptr[float64](19.88),
 	// 							CurrencyCode: to.Ptr("USD"),
@@ -366,7 +366,7 @@ func ExampleReservationOrdersClient_GetByBillingAccount_reservationOrderGetByBil
 	// 						Status: to.Ptr(armbilling.PaymentStatusScheduled),
 	// 					},
 	// 					{
-	// 						DueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2023-11-25"); return t}()),
+	// 						DueDate: to.Ptr(time.Date(2023, time.November, 25, 0, 0, 0, 0, time.UTC)),
 	// 						PricingCurrencyTotal: &armbilling.Price{
 	// 							Amount: to.Ptr[float64](19.88),
 	// 							CurrencyCode: to.Ptr("USD"),
@@ -374,7 +374,7 @@ func ExampleReservationOrdersClient_GetByBillingAccount_reservationOrderGetByBil
 	// 						Status: to.Ptr(armbilling.PaymentStatusScheduled),
 	// 					},
 	// 					{
-	// 						DueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2023-12-25"); return t}()),
+	// 						DueDate: to.Ptr(time.Date(2023, time.December, 25, 0, 0, 0, 0, time.UTC)),
 	// 						PricingCurrencyTotal: &armbilling.Price{
 	// 							Amount: to.Ptr[float64](19.88),
 	// 							CurrencyCode: to.Ptr("USD"),
@@ -382,7 +382,7 @@ func ExampleReservationOrdersClient_GetByBillingAccount_reservationOrderGetByBil
 	// 						Status: to.Ptr(armbilling.PaymentStatusScheduled),
 	// 					},
 	// 					{
-	// 						DueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2024-01-25"); return t}()),
+	// 						DueDate: to.Ptr(time.Date(2024, time.January, 25, 0, 0, 0, 0, time.UTC)),
 	// 						PricingCurrencyTotal: &armbilling.Price{
 	// 							Amount: to.Ptr[float64](19.88),
 	// 							CurrencyCode: to.Ptr("USD"),
@@ -390,7 +390,7 @@ func ExampleReservationOrdersClient_GetByBillingAccount_reservationOrderGetByBil
 	// 						Status: to.Ptr(armbilling.PaymentStatusScheduled),
 	// 					},
 	// 					{
-	// 						DueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2024-02-25"); return t}()),
+	// 						DueDate: to.Ptr(time.Date(2024, time.February, 25, 0, 0, 0, 0, time.UTC)),
 	// 						PricingCurrencyTotal: &armbilling.Price{
 	// 							Amount: to.Ptr[float64](19.88),
 	// 							CurrencyCode: to.Ptr("USD"),
@@ -398,7 +398,7 @@ func ExampleReservationOrdersClient_GetByBillingAccount_reservationOrderGetByBil
 	// 						Status: to.Ptr(armbilling.PaymentStatusScheduled),
 	// 					},
 	// 					{
-	// 						DueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2024-03-25"); return t}()),
+	// 						DueDate: to.Ptr(time.Date(2024, time.March, 25, 0, 0, 0, 0, time.UTC)),
 	// 						PricingCurrencyTotal: &armbilling.Price{
 	// 							Amount: to.Ptr[float64](19.88),
 	// 							CurrencyCode: to.Ptr("USD"),
@@ -406,7 +406,7 @@ func ExampleReservationOrdersClient_GetByBillingAccount_reservationOrderGetByBil
 	// 						Status: to.Ptr(armbilling.PaymentStatusScheduled),
 	// 					},
 	// 					{
-	// 						DueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2024-04-25"); return t}()),
+	// 						DueDate: to.Ptr(time.Date(2024, time.April, 25, 0, 0, 0, 0, time.UTC)),
 	// 						PricingCurrencyTotal: &armbilling.Price{
 	// 							Amount: to.Ptr[float64](19.88),
 	// 							CurrencyCode: to.Ptr("USD"),
@@ -414,7 +414,7 @@ func ExampleReservationOrdersClient_GetByBillingAccount_reservationOrderGetByBil
 	// 						Status: to.Ptr(armbilling.PaymentStatusScheduled),
 	// 					},
 	// 					{
-	// 						DueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2024-05-25"); return t}()),
+	// 						DueDate: to.Ptr(time.Date(2024, time.May, 25, 0, 0, 0, 0, time.UTC)),
 	// 						PricingCurrencyTotal: &armbilling.Price{
 	// 							Amount: to.Ptr[float64](19.88),
 	// 							CurrencyCode: to.Ptr("USD"),
@@ -422,7 +422,7 @@ func ExampleReservationOrdersClient_GetByBillingAccount_reservationOrderGetByBil
 	// 						Status: to.Ptr(armbilling.PaymentStatusScheduled),
 	// 					},
 	// 					{
-	// 						DueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2024-06-25"); return t}()),
+	// 						DueDate: to.Ptr(time.Date(2024, time.June, 25, 0, 0, 0, 0, time.UTC)),
 	// 						PricingCurrencyTotal: &armbilling.Price{
 	// 							Amount: to.Ptr[float64](19.88),
 	// 							CurrencyCode: to.Ptr("USD"),
@@ -430,7 +430,7 @@ func ExampleReservationOrdersClient_GetByBillingAccount_reservationOrderGetByBil
 	// 						Status: to.Ptr(armbilling.PaymentStatusScheduled),
 	// 					},
 	// 					{
-	// 						DueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2024-07-25"); return t}()),
+	// 						DueDate: to.Ptr(time.Date(2024, time.July, 25, 0, 0, 0, 0, time.UTC)),
 	// 						PricingCurrencyTotal: &armbilling.Price{
 	// 							Amount: to.Ptr[float64](19.88),
 	// 							CurrencyCode: to.Ptr("USD"),
@@ -438,7 +438,7 @@ func ExampleReservationOrdersClient_GetByBillingAccount_reservationOrderGetByBil
 	// 						Status: to.Ptr(armbilling.PaymentStatusScheduled),
 	// 					},
 	// 					{
-	// 						DueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2024-08-25"); return t}()),
+	// 						DueDate: to.Ptr(time.Date(2024, time.August, 25, 0, 0, 0, 0, time.UTC)),
 	// 						PricingCurrencyTotal: &armbilling.Price{
 	// 							Amount: to.Ptr[float64](19.88),
 	// 							CurrencyCode: to.Ptr("USD"),
@@ -446,7 +446,7 @@ func ExampleReservationOrdersClient_GetByBillingAccount_reservationOrderGetByBil
 	// 						Status: to.Ptr(armbilling.PaymentStatusScheduled),
 	// 					},
 	// 					{
-	// 						DueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2024-09-25"); return t}()),
+	// 						DueDate: to.Ptr(time.Date(2024, time.September, 25, 0, 0, 0, 0, time.UTC)),
 	// 						PricingCurrencyTotal: &armbilling.Price{
 	// 							Amount: to.Ptr[float64](19.88),
 	// 							CurrencyCode: to.Ptr("USD"),
@@ -454,7 +454,7 @@ func ExampleReservationOrdersClient_GetByBillingAccount_reservationOrderGetByBil
 	// 						Status: to.Ptr(armbilling.PaymentStatusScheduled),
 	// 					},
 	// 					{
-	// 						DueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2024-10-25"); return t}()),
+	// 						DueDate: to.Ptr(time.Date(2024, time.October, 25, 0, 0, 0, 0, time.UTC)),
 	// 						PricingCurrencyTotal: &armbilling.Price{
 	// 							Amount: to.Ptr[float64](19.88),
 	// 							CurrencyCode: to.Ptr("USD"),
@@ -465,7 +465,7 @@ func ExampleReservationOrdersClient_GetByBillingAccount_reservationOrderGetByBil
 	// 			},
 	// 			ProductCode: to.Ptr("20000000-0000-0000-0000-000000000005"),
 	// 			ProvisioningState: to.Ptr("Succeeded"),
-	// 			RequestDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-25T06:31:18.3925493Z"); return t}()),
+	// 			RequestDateTime: to.Ptr(time.Date(2021, time.November, 25, 6, 31, 18, 392549300, time.UTC)),
 	// 			Reservations: []*armbilling.Reservation{
 	// 				{
 	// 					ID: to.Ptr("/providers/Microsoft.Capacity/reservationOrders/20000000-0000-0000-0000-000000000000/reservations/20000000-0000-0000-0000-000000000001"),
@@ -512,17 +512,17 @@ func ExampleReservationOrdersClient_NewListByBillingAccountPager() {
 		// 				Etag: to.Ptr[int32](10),
 		// 				ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/400000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31/reservationOrders/20000000-0000-0000-0000-000000000000"),
 		// 				Properties: &armbilling.ReservationOrderProperty{
-		// 					BenefitStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-03T21:26:48.5128969Z"); return t}()),
+		// 					BenefitStartTime: to.Ptr(time.Date(2021, time.August, 3, 21, 26, 48, 512896900, time.UTC)),
 		// 					BillingAccountID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/400000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31"),
 		// 					BillingPlan: to.Ptr(armbilling.ReservationBillingPlanUpfront),
 		// 					BillingProfileID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/400000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31/billingProfiles/AAAA-AAAA-AAA-AAA"),
-		// 					CreatedDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-03T21:26:50.7784836Z"); return t}()),
+		// 					CreatedDateTime: to.Ptr(time.Date(2021, time.August, 3, 21, 26, 50, 778483600, time.UTC)),
 		// 					DisplayName: to.Ptr("SUSE_Plan_08-03-2021_14-22"),
-		// 					ExpiryDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-08-03T21:26:48.5128969Z"); return t}()),
+		// 					ExpiryDateTime: to.Ptr(time.Date(2024, time.August, 3, 21, 26, 48, 512896900, time.UTC)),
 		// 					OriginalQuantity: to.Ptr[int32](1),
 		// 					ProductCode: to.Ptr("20000000-0000-0000-0000-000000000005"),
 		// 					ProvisioningState: to.Ptr("Succeeded"),
-		// 					RequestDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-03T21:23:47.9090964Z"); return t}()),
+		// 					RequestDateTime: to.Ptr(time.Date(2021, time.August, 3, 21, 23, 47, 909096400, time.UTC)),
 		// 					Reservations: []*armbilling.Reservation{
 		// 						{
 		// 							ID: to.Ptr("/providers/Microsoft.Capacity/reservationOrders/20000000-0000-0000-0000-000000000000/reservations/20000000-0000-0000-0000-000000000001"),

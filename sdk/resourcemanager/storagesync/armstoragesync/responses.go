@@ -86,6 +86,12 @@ type CloudEndpointsClientTriggerChangeDetectionResponse struct {
 	// placeholder for future response values
 }
 
+// CloudEndpointsClientUpdateResponse contains the response from method CloudEndpointsClient.BeginUpdate.
+type CloudEndpointsClientUpdateResponse struct {
+	// Cloud Endpoint object.
+	CloudEndpoint
+}
+
 // MicrosoftStorageSyncClientLocationOperationStatusResponse contains the response from method MicrosoftStorageSyncClient.LocationOperationStatus.
 type MicrosoftStorageSyncClientLocationOperationStatusResponse struct {
 	// Operation status object

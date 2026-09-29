@@ -332,10 +332,12 @@ type AuthorizeRequest struct {
 // a) retrieving the bucket server certificate, and
 // b) storing the bucket credentials
 // Notes:
-// 1. If a bucket certificate was previously provided directly using the certificateObject property, it is possible to subsequently
-// use the Azure Key Vault for certificate management by using these 'akvDetails' properties. However, once Azure Key Vault
-// is configured, it is no longer possible to provide the certificate directly via the certificateObject property.
-// 2. These properties are mutually exclusive with the server.certificateObject property.
+//
+//  1. If a bucket certificate was previously provided directly using the certificateObject property, it is possible to subsequently
+//     use the Azure Key Vault for certificate management by using these 'akvDetails' properties. However, once Azure Key Vault
+//     is configured, it is no longer possible to provide the certificate directly via the certificateObject property.
+//
+//  2. These properties are mutually exclusive with the server.certificateObject property.
 type AzureKeyVaultDetails struct {
 	// Specifies the Azure Key Vault settings for retrieving the bucket server certificate.
 	CertificateAkvDetails *CertificateAkvDetails
@@ -719,10 +721,11 @@ type BucketPatchProperties struct {
 	// a) retrieving the bucket server certificate, and
 	// b) storing the bucket credentials
 	// Notes:
-	// 1. If a bucket certificate was previously provided directly using the certificateObject property, it is possible to subsequently
-	// use the Azure Key Vault for certificate management by using these 'akvDetails' properties. However, once Azure Key Vault
-	// is configured, it is no longer possible to provide the certificate directly via the certificateObject property.
-	// 2. These properties are mutually exclusive with the server.certificateObject property.
+	//
+	//  1. If a bucket certificate was previously provided directly using the certificateObject property, it is possible to subsequently
+	//     use the Azure Key Vault for certificate management by using these 'akvDetails' properties. However, once Azure Key Vault
+	//     is configured, it is no longer possible to provide the certificate directly via the certificateObject property.
+	//  2. These properties are mutually exclusive with the server.certificateObject property.
 	AkvDetails *AzureKeyVaultDetails
 
 	// File System user having access to volume data. For Unix, this is the user's uid and gid. For Windows, this is the user's
@@ -746,10 +749,11 @@ type BucketProperties struct {
 	// a) retrieving the bucket server certificate, and
 	// b) storing the bucket credentials
 	// Notes:
-	// 1. If a bucket certificate was previously provided directly using the certificateObject property, it is possible to subsequently
-	// use the Azure Key Vault for certificate management by using these 'akvDetails' properties. However, once Azure Key Vault
-	// is configured, it is no longer possible to provide the certificate directly via the certificateObject property.
-	// 2. These properties are mutually exclusive with the server.certificateObject property.
+	//
+	//  1. If a bucket certificate was previously provided directly using the certificateObject property, it is possible to subsequently
+	//     use the Azure Key Vault for certificate management by using these 'akvDetails' properties. However, once Azure Key Vault
+	//     is configured, it is no longer possible to provide the certificate directly via the certificateObject property.
+	//  2. These properties are mutually exclusive with the server.certificateObject property.
 	AkvDetails *AzureKeyVaultDetails
 
 	// File System user having access to volume data. For Unix, this is the user's uid and gid. For Windows, this is the user's
@@ -2282,9 +2286,6 @@ type LdapConfiguration struct {
 	// This specifies the group DN (Distinguished Name), which overrides the base DN for group lookups.
 	GroupDN *string
 
-	// Specifies whether or not the LDAP traffic needs to be secured via TLS.
-	LdapOverTLS *bool
-
 	// Port number for LDAP communication. Default is 389 for LDAP.
 	LdapPort *int32
 
@@ -2293,6 +2294,9 @@ type LdapConfiguration struct {
 
 	// This specifies the netgroup DN (Distinguished Name), which overrides the base DN for netgroup lookups.
 	NetGroupDN *string
+
+	// Indicates the secure LDAP mode for encrypting communication between ANF storage and customer LDAP servers.
+	SecureLdapType *SecureLdapType
 
 	// When LDAP over SSL/TLS is enabled, the LDAP client is required to have base64 encoded ldap servers CA certificate.
 	ServerCACertificate *string
@@ -2324,9 +2328,6 @@ type LdapConfigurationPatch struct {
 	// This specifies the group DN (Distinguished Name), which overrides the base DN for group lookups.
 	GroupDN *string
 
-	// Specifies whether or not the LDAP traffic needs to be secured via TLS.
-	LdapOverTLS *bool
-
 	// Port number for LDAP communication. Default is 389 for LDAP.
 	LdapPort *int32
 
@@ -2335,6 +2336,9 @@ type LdapConfigurationPatch struct {
 
 	// This specifies the netgroup DN (Distinguished Name), which overrides the base DN for netgroup lookups.
 	NetGroupDN *string
+
+	// Indicates the secure LDAP mode for encrypting communication between ANF storage and customer LDAP servers.
+	SecureLdapType *SecureLdapType
 
 	// When LDAP over SSL/TLS is enabled, the LDAP client is required to have base64 encoded ldap servers CA certificate.
 	ServerCACertificate *string
@@ -2361,7 +2365,9 @@ type ListQuotaReportResponse struct {
 	QuotaReportRecords []*QuotaReport
 }
 
-// ListQuotaReportResult - * Result of ListQuotaReportResponse
+// ListQuotaReportResult -
+//
+//   - Result of ListQuotaReportResponse
 type ListQuotaReportResult struct {
 	// Represents the properties of the ListQuotaReport.
 	Properties *ListQuotaReportResponse
@@ -3711,7 +3717,8 @@ type VolumePatchProperties struct {
 	// Specifies if default quota is enabled for the volume.
 	IsDefaultQuotaEnabled *bool
 
-	// Set of protocol types, default NFSv3, CIFS for SMB protocol
+	// Specify the protocol types for the volume. Supported values are NFSv3, NFSv4.1, and CIFS. For SMB volumes, specify CIFS.
+	// The value SMB isn't supported in the protocolTypes property. Default: NFSv3
 	ProtocolTypes []*string
 
 	// The service level of the file system
@@ -3872,7 +3879,8 @@ type VolumeProperties struct {
 	// Application specific placement rules for the particular volume
 	PlacementRules []*PlacementKeyValuePairs
 
-	// Set of protocol types, default NFSv3, CIFS for SMB protocol
+	// Specify the protocol types for the volume. Supported values are NFSv3, NFSv4.1, and CIFS. For SMB volumes, specify CIFS.
+	// The value SMB isn't supported in the protocolTypes property. Default: NFSv3
 	ProtocolTypes []*string
 
 	// Proximity placement group associated with the volume

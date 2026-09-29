@@ -414,7 +414,7 @@ type ActionsList struct {
 	// REQUIRED; The ActionResponse items on this page
 	Value []*ActionResponse
 
-	// The link to the next page of items
+	// READ-ONLY; The link to the next page of items
 	NextLink *string
 }
 
@@ -731,7 +731,7 @@ type AlertRuleTemplatesList struct {
 	// REQUIRED; The AlertRuleTemplate items on this page
 	Value []AlertRuleTemplateClassification
 
-	// The link to the next page of items
+	// READ-ONLY; The link to the next page of items
 	NextLink *string
 }
 
@@ -740,7 +740,7 @@ type AlertRulesList struct {
 	// REQUIRED; The AlertRule items on this page
 	Value []AlertRuleClassification
 
-	// The link to the next page of items
+	// READ-ONLY; The link to the next page of items
 	NextLink *string
 }
 
@@ -1148,13 +1148,12 @@ type AutomationRuleTriggeringLogic struct {
 	ExpirationTimeUTC *time.Time
 }
 
-// AutomationRulesList - Paged collection of AutomationRule items
 type AutomationRulesList struct {
-	// REQUIRED; The AutomationRule items on this page
-	Value []*AutomationRule
-
 	// The link to the next page of items
 	NextLink *string
+
+	// List of automation rules.
+	Value []*AutomationRule
 }
 
 // Availability - Connector Availability Status
@@ -1493,7 +1492,7 @@ type BookmarkList struct {
 	// REQUIRED; The Bookmark items on this page
 	Value []*Bookmark
 
-	// The link to the next page of items
+	// READ-ONLY; The link to the next page of items
 	NextLink *string
 }
 
@@ -2427,11 +2426,11 @@ func (d *DataConnectorDefinition) GetDataConnectorDefinition() *DataConnectorDef
 
 // DataConnectorDefinitionArmCollectionWrapper - Encapsulate the data connector definition object
 type DataConnectorDefinitionArmCollectionWrapper struct {
-	// REQUIRED; The DataConnectorDefinition items on this page
-	Value []DataConnectorDefinitionClassification
-
 	// The link to the next page of items
 	NextLink *string
+
+	// List of data connector definitions.
+	Value []DataConnectorDefinitionClassification
 }
 
 // DataConnectorList - List all the data connectors.
@@ -2439,7 +2438,7 @@ type DataConnectorList struct {
 	// REQUIRED; The DataConnector items on this page
 	Value []DataConnectorClassification
 
-	// The link to the next page of items
+	// READ-ONLY; The link to the next page of items
 	NextLink *string
 }
 
@@ -4336,7 +4335,7 @@ type IncidentCommentList struct {
 	// REQUIRED; The IncidentComment items on this page
 	Value []*IncidentComment
 
-	// The link to the next page of items
+	// READ-ONLY; The link to the next page of items
 	NextLink *string
 }
 
@@ -4411,7 +4410,7 @@ type IncidentList struct {
 	// REQUIRED; The Incident items on this page
 	Value []*Incident
 
-	// The link to the next page of items
+	// READ-ONLY; The link to the next page of items
 	NextLink *string
 }
 
@@ -4542,11 +4541,11 @@ type IncidentTask struct {
 
 // IncidentTaskList - List of incident tasks
 type IncidentTaskList struct {
-	// REQUIRED; The IncidentTask items on this page
-	Value []*IncidentTask
-
 	// The link to the next page of items
 	NextLink *string
+
+	// List of incident tasks.
+	Value []*IncidentTask
 }
 
 // IncidentTaskProperties - Describes the properties of an incident task
@@ -5054,7 +5053,7 @@ type JobProperties struct {
 	ErrorMessage *string
 
 	// READ-ONLY; State of the job
-	ProvisioningState *ProvisioningState
+	ProvisioningState *JobProvisioningState
 
 	// READ-ONLY; The time the job started
 	StartTime *time.Time
@@ -5898,7 +5897,7 @@ type MetadataDependencies struct {
 	Name *string
 
 	// Operator used for list of dependencies in criteria array.
-	Operator *Operator
+	Operator *MetadataDependencyOperator
 
 	// Version of the the content item we depend on. Can be blank, * or missing to indicate any version fulfills the dependency.
 	// If version does not match our defined numeric format then an exact match is required.
@@ -5910,7 +5909,7 @@ type MetadataList struct {
 	// REQUIRED; The MetadataModel items on this page
 	Value []*MetadataModel
 
-	// The link to the next page of items
+	// READ-ONLY; The link to the next page of items
 	NextLink *string
 }
 
@@ -7150,7 +7149,7 @@ type PackageList struct {
 	// REQUIRED; The PackageModel items on this page
 	Value []*PackageModel
 
-	// The link to the next page of items
+	// READ-ONLY; The link to the next page of items
 	NextLink *string
 }
 
@@ -7429,7 +7428,7 @@ type ProductPackageList struct {
 	// REQUIRED; The ProductPackageModel items on this page
 	Value []*ProductPackageModel
 
-	// The link to the next page of items
+	// READ-ONLY; The link to the next page of items
 	NextLink *string
 }
 
@@ -7540,7 +7539,7 @@ type ProductTemplateList struct {
 	// REQUIRED; The ProductTemplateModel items on this page
 	Value []*ProductTemplateModel
 
-	// The link to the next page of items
+	// READ-ONLY; The link to the next page of items
 	NextLink *string
 }
 
@@ -7712,7 +7711,7 @@ func (p *PropertyConditionProperties) GetAutomationRuleCondition() *AutomationRu
 // PullRequest - Information regarding pull request for protected branches.
 type PullRequest struct {
 	// READ-ONLY; State of the pull request
-	State *State
+	State *PullRequestState
 
 	// READ-ONLY; URL of pull request
 	URL *string
@@ -8157,7 +8156,7 @@ type RepoList struct {
 	// REQUIRED; The Repo items on this page
 	Value []*Repo
 
-	// The link to the next page of items
+	// READ-ONLY; The link to the next page of items
 	NextLink *string
 }
 
@@ -8904,7 +8903,7 @@ type SecurityMLAnalyticsSettingsList struct {
 	// REQUIRED; The SecurityMLAnalyticsSetting items on this page
 	Value []SecurityMLAnalyticsSettingClassification
 
-	// The link to the next page of items
+	// READ-ONLY; The link to the next page of items
 	NextLink *string
 }
 
@@ -9060,7 +9059,7 @@ type SourceControlList struct {
 	// REQUIRED; The SourceControl items on this page
 	Value []*SourceControl
 
-	// The link to the next page of items
+	// READ-ONLY; The link to the next page of items
 	NextLink *string
 }
 
@@ -9365,7 +9364,7 @@ type TemplateList struct {
 	// REQUIRED; The TemplateModel items on this page
 	Value []*TemplateModel
 
-	// The link to the next page of items
+	// READ-ONLY; The link to the next page of items
 	NextLink *string
 }
 
@@ -9912,7 +9911,7 @@ type ThreatIntelligenceInformationList struct {
 	// REQUIRED; The ThreatIntelligenceInformation items on this page
 	Value []ThreatIntelligenceInformationClassification
 
-	// The link to the next page of items
+	// READ-ONLY; The link to the next page of items
 	NextLink *string
 }
 
@@ -10357,7 +10356,7 @@ type WatchlistItemList struct {
 	// REQUIRED; The WatchlistItem items on this page
 	Value []*WatchlistItem
 
-	// The link to the next page of items
+	// READ-ONLY; The link to the next page of items
 	NextLink *string
 }
 
@@ -10399,7 +10398,7 @@ type WatchlistList struct {
 	// REQUIRED; The Watchlist items on this page
 	Value []*Watchlist
 
-	// The link to the next page of items
+	// READ-ONLY; The link to the next page of items
 	NextLink *string
 }
 
@@ -10473,7 +10472,7 @@ type WatchlistProperties struct {
 	WatchlistType *string
 
 	// READ-ONLY; Describes provisioning state
-	ProvisioningState *ProvisioningState
+	ProvisioningState *WatchlistProvisioningState
 }
 
 // Webhook - Detail about the webhook object.
@@ -10551,7 +10550,7 @@ type WorkspaceManagerAssignmentProperties struct {
 	LastJobEndTime *time.Time
 
 	// READ-ONLY; State of the last job associated to this assignment
-	LastJobProvisioningState *ProvisioningState
+	LastJobProvisioningState *JobProvisioningState
 }
 
 // WorkspaceManagerConfiguration - The workspace manager configuration

@@ -78,8 +78,7 @@ func (client *SavingsPlanOrderAliasClient) create(ctx context.Context, savingsPl
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -125,12 +124,7 @@ func (client *SavingsPlanOrderAliasClient) Get(ctx context.Context, savingsPlanO
 	if err != nil {
 		return SavingsPlanOrderAliasClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SavingsPlanOrderAliasClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -152,8 +146,11 @@ func (client *SavingsPlanOrderAliasClient) getCreateRequest(ctx context.Context,
 }
 
 // getHandleResponse handles the Get response.
-func (client *SavingsPlanOrderAliasClient) getHandleResponse(resp *http.Response) (SavingsPlanOrderAliasClientGetResponse, error) {
+func (client *SavingsPlanOrderAliasClient) getHandleResponse(resp *http.Response, successCodes ...int) (SavingsPlanOrderAliasClientGetResponse, error) {
 	result := SavingsPlanOrderAliasClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SavingsPlanOrderAliasModel); err != nil {
 		return SavingsPlanOrderAliasClientGetResponse{}, err
 	}

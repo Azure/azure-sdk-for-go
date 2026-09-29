@@ -81,8 +81,7 @@ func (client *RoleAssignmentsClient) createByBillingAccount(ctx context.Context,
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -152,8 +151,7 @@ func (client *RoleAssignmentsClient) createByBillingProfile(ctx context.Context,
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -228,8 +226,7 @@ func (client *RoleAssignmentsClient) createByCustomer(ctx context.Context, billi
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -308,8 +305,7 @@ func (client *RoleAssignmentsClient) createByInvoiceSection(ctx context.Context,
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -387,8 +383,7 @@ func (client *RoleAssignmentsClient) createOrUpdateByBillingAccount(ctx context.
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -463,8 +458,7 @@ func (client *RoleAssignmentsClient) createOrUpdateByDepartment(ctx context.Cont
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -543,8 +537,7 @@ func (client *RoleAssignmentsClient) createOrUpdateByEnrollmentAccount(ctx conte
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -601,8 +594,7 @@ func (client *RoleAssignmentsClient) DeleteByBillingAccount(ctx context.Context,
 		return RoleAssignmentsClientDeleteByBillingAccountResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return RoleAssignmentsClientDeleteByBillingAccountResponse{}, err
+		return RoleAssignmentsClientDeleteByBillingAccountResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return RoleAssignmentsClientDeleteByBillingAccountResponse{}, nil
 }
@@ -651,8 +643,7 @@ func (client *RoleAssignmentsClient) DeleteByBillingProfile(ctx context.Context,
 		return RoleAssignmentsClientDeleteByBillingProfileResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return RoleAssignmentsClientDeleteByBillingProfileResponse{}, err
+		return RoleAssignmentsClientDeleteByBillingProfileResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return RoleAssignmentsClientDeleteByBillingProfileResponse{}, nil
 }
@@ -706,8 +697,7 @@ func (client *RoleAssignmentsClient) DeleteByCustomer(ctx context.Context, billi
 		return RoleAssignmentsClientDeleteByCustomerResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return RoleAssignmentsClientDeleteByCustomerResponse{}, err
+		return RoleAssignmentsClientDeleteByCustomerResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return RoleAssignmentsClientDeleteByCustomerResponse{}, nil
 }
@@ -764,8 +754,7 @@ func (client *RoleAssignmentsClient) DeleteByDepartment(ctx context.Context, bil
 		return RoleAssignmentsClientDeleteByDepartmentResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return RoleAssignmentsClientDeleteByDepartmentResponse{}, err
+		return RoleAssignmentsClientDeleteByDepartmentResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return RoleAssignmentsClientDeleteByDepartmentResponse{}, nil
 }
@@ -818,8 +807,7 @@ func (client *RoleAssignmentsClient) DeleteByEnrollmentAccount(ctx context.Conte
 		return RoleAssignmentsClientDeleteByEnrollmentAccountResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return RoleAssignmentsClientDeleteByEnrollmentAccountResponse{}, err
+		return RoleAssignmentsClientDeleteByEnrollmentAccountResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return RoleAssignmentsClientDeleteByEnrollmentAccountResponse{}, nil
 }
@@ -873,8 +861,7 @@ func (client *RoleAssignmentsClient) DeleteByInvoiceSection(ctx context.Context,
 		return RoleAssignmentsClientDeleteByInvoiceSectionResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return RoleAssignmentsClientDeleteByInvoiceSectionResponse{}, err
+		return RoleAssignmentsClientDeleteByInvoiceSectionResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return RoleAssignmentsClientDeleteByInvoiceSectionResponse{}, nil
 }
@@ -929,12 +916,7 @@ func (client *RoleAssignmentsClient) GetByBillingAccount(ctx context.Context, bi
 	if err != nil {
 		return RoleAssignmentsClientGetByBillingAccountResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return RoleAssignmentsClientGetByBillingAccountResponse{}, err
-	}
-	resp, err := client.getByBillingAccountHandleResponse(httpResp)
-	return resp, err
+	return client.getByBillingAccountHandleResponse(httpResp, http.StatusOK)
 }
 
 // getByBillingAccountCreateRequest creates the GetByBillingAccount request.
@@ -960,8 +942,11 @@ func (client *RoleAssignmentsClient) getByBillingAccountCreateRequest(ctx contex
 }
 
 // getByBillingAccountHandleResponse handles the GetByBillingAccount response.
-func (client *RoleAssignmentsClient) getByBillingAccountHandleResponse(resp *http.Response) (RoleAssignmentsClientGetByBillingAccountResponse, error) {
+func (client *RoleAssignmentsClient) getByBillingAccountHandleResponse(resp *http.Response, successCodes ...int) (RoleAssignmentsClientGetByBillingAccountResponse, error) {
 	result := RoleAssignmentsClientGetByBillingAccountResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RoleAssignment); err != nil {
 		return RoleAssignmentsClientGetByBillingAccountResponse{}, err
 	}
@@ -990,12 +975,7 @@ func (client *RoleAssignmentsClient) GetByBillingProfile(ctx context.Context, bi
 	if err != nil {
 		return RoleAssignmentsClientGetByBillingProfileResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return RoleAssignmentsClientGetByBillingProfileResponse{}, err
-	}
-	resp, err := client.getByBillingProfileHandleResponse(httpResp)
-	return resp, err
+	return client.getByBillingProfileHandleResponse(httpResp, http.StatusOK)
 }
 
 // getByBillingProfileCreateRequest creates the GetByBillingProfile request.
@@ -1025,8 +1005,11 @@ func (client *RoleAssignmentsClient) getByBillingProfileCreateRequest(ctx contex
 }
 
 // getByBillingProfileHandleResponse handles the GetByBillingProfile response.
-func (client *RoleAssignmentsClient) getByBillingProfileHandleResponse(resp *http.Response) (RoleAssignmentsClientGetByBillingProfileResponse, error) {
+func (client *RoleAssignmentsClient) getByBillingProfileHandleResponse(resp *http.Response, successCodes ...int) (RoleAssignmentsClientGetByBillingProfileResponse, error) {
 	result := RoleAssignmentsClientGetByBillingProfileResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RoleAssignment); err != nil {
 		return RoleAssignmentsClientGetByBillingProfileResponse{}, err
 	}
@@ -1056,12 +1039,7 @@ func (client *RoleAssignmentsClient) GetByCustomer(ctx context.Context, billingA
 	if err != nil {
 		return RoleAssignmentsClientGetByCustomerResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return RoleAssignmentsClientGetByCustomerResponse{}, err
-	}
-	resp, err := client.getByCustomerHandleResponse(httpResp)
-	return resp, err
+	return client.getByCustomerHandleResponse(httpResp, http.StatusOK)
 }
 
 // getByCustomerCreateRequest creates the GetByCustomer request.
@@ -1095,8 +1073,11 @@ func (client *RoleAssignmentsClient) getByCustomerCreateRequest(ctx context.Cont
 }
 
 // getByCustomerHandleResponse handles the GetByCustomer response.
-func (client *RoleAssignmentsClient) getByCustomerHandleResponse(resp *http.Response) (RoleAssignmentsClientGetByCustomerResponse, error) {
+func (client *RoleAssignmentsClient) getByCustomerHandleResponse(resp *http.Response, successCodes ...int) (RoleAssignmentsClientGetByCustomerResponse, error) {
 	result := RoleAssignmentsClientGetByCustomerResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RoleAssignment); err != nil {
 		return RoleAssignmentsClientGetByCustomerResponse{}, err
 	}
@@ -1125,12 +1106,7 @@ func (client *RoleAssignmentsClient) GetByDepartment(ctx context.Context, billin
 	if err != nil {
 		return RoleAssignmentsClientGetByDepartmentResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return RoleAssignmentsClientGetByDepartmentResponse{}, err
-	}
-	resp, err := client.getByDepartmentHandleResponse(httpResp)
-	return resp, err
+	return client.getByDepartmentHandleResponse(httpResp, http.StatusOK)
 }
 
 // getByDepartmentCreateRequest creates the GetByDepartment request.
@@ -1160,8 +1136,11 @@ func (client *RoleAssignmentsClient) getByDepartmentCreateRequest(ctx context.Co
 }
 
 // getByDepartmentHandleResponse handles the GetByDepartment response.
-func (client *RoleAssignmentsClient) getByDepartmentHandleResponse(resp *http.Response) (RoleAssignmentsClientGetByDepartmentResponse, error) {
+func (client *RoleAssignmentsClient) getByDepartmentHandleResponse(resp *http.Response, successCodes ...int) (RoleAssignmentsClientGetByDepartmentResponse, error) {
 	result := RoleAssignmentsClientGetByDepartmentResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RoleAssignment); err != nil {
 		return RoleAssignmentsClientGetByDepartmentResponse{}, err
 	}
@@ -1190,12 +1169,7 @@ func (client *RoleAssignmentsClient) GetByEnrollmentAccount(ctx context.Context,
 	if err != nil {
 		return RoleAssignmentsClientGetByEnrollmentAccountResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return RoleAssignmentsClientGetByEnrollmentAccountResponse{}, err
-	}
-	resp, err := client.getByEnrollmentAccountHandleResponse(httpResp)
-	return resp, err
+	return client.getByEnrollmentAccountHandleResponse(httpResp, http.StatusOK)
 }
 
 // getByEnrollmentAccountCreateRequest creates the GetByEnrollmentAccount request.
@@ -1225,8 +1199,11 @@ func (client *RoleAssignmentsClient) getByEnrollmentAccountCreateRequest(ctx con
 }
 
 // getByEnrollmentAccountHandleResponse handles the GetByEnrollmentAccount response.
-func (client *RoleAssignmentsClient) getByEnrollmentAccountHandleResponse(resp *http.Response) (RoleAssignmentsClientGetByEnrollmentAccountResponse, error) {
+func (client *RoleAssignmentsClient) getByEnrollmentAccountHandleResponse(resp *http.Response, successCodes ...int) (RoleAssignmentsClientGetByEnrollmentAccountResponse, error) {
 	result := RoleAssignmentsClientGetByEnrollmentAccountResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RoleAssignment); err != nil {
 		return RoleAssignmentsClientGetByEnrollmentAccountResponse{}, err
 	}
@@ -1256,12 +1233,7 @@ func (client *RoleAssignmentsClient) GetByInvoiceSection(ctx context.Context, bi
 	if err != nil {
 		return RoleAssignmentsClientGetByInvoiceSectionResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return RoleAssignmentsClientGetByInvoiceSectionResponse{}, err
-	}
-	resp, err := client.getByInvoiceSectionHandleResponse(httpResp)
-	return resp, err
+	return client.getByInvoiceSectionHandleResponse(httpResp, http.StatusOK)
 }
 
 // getByInvoiceSectionCreateRequest creates the GetByInvoiceSection request.
@@ -1295,8 +1267,11 @@ func (client *RoleAssignmentsClient) getByInvoiceSectionCreateRequest(ctx contex
 }
 
 // getByInvoiceSectionHandleResponse handles the GetByInvoiceSection response.
-func (client *RoleAssignmentsClient) getByInvoiceSectionHandleResponse(resp *http.Response) (RoleAssignmentsClientGetByInvoiceSectionResponse, error) {
+func (client *RoleAssignmentsClient) getByInvoiceSectionHandleResponse(resp *http.Response, successCodes ...int) (RoleAssignmentsClientGetByInvoiceSectionResponse, error) {
 	result := RoleAssignmentsClientGetByInvoiceSectionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RoleAssignment); err != nil {
 		return RoleAssignmentsClientGetByInvoiceSectionResponse{}, err
 	}
@@ -1319,48 +1294,62 @@ func (client *RoleAssignmentsClient) NewListByBillingAccountPager(billingAccount
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByBillingAccountCreateRequest(ctx, billingAccountName, options)
-			}, nil)
+			req, err := client.listByBillingAccountCreateRequest(ctx, billingAccountName, nextLink, options)
 			if err != nil {
 				return RoleAssignmentsClientListByBillingAccountResponse{}, err
 			}
-			return client.listByBillingAccountHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return RoleAssignmentsClientListByBillingAccountResponse{}, err
+			}
+			return client.listByBillingAccountHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByBillingAccountCreateRequest creates the ListByBillingAccount request.
-func (client *RoleAssignmentsClient) listByBillingAccountCreateRequest(ctx context.Context, billingAccountName string, options *RoleAssignmentsClientListByBillingAccountOptions) (*policy.Request, error) {
-	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingRoleAssignments"
-	if billingAccountName == "" {
-		return nil, errors.New("parameter billingAccountName cannot be empty")
+func (client *RoleAssignmentsClient) listByBillingAccountCreateRequest(ctx context.Context, billingAccountName string, nextLink string, options *RoleAssignmentsClientListByBillingAccountOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingRoleAssignments"
+		if billingAccountName == "" {
+			return nil, errors.New("parameter billingAccountName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{billingAccountName}", url.PathEscape(billingAccountName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{billingAccountName}", url.PathEscape(billingAccountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240401)
-	if options != nil && options.Filter != nil {
-		reqQP.Set("filter", *options.Filter)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20240401)
+		if options != nil && options.Filter != nil {
+			reqQP.Set("filter", *options.Filter)
+		}
+		if options != nil && options.Skip != nil {
+			reqQP.Set("skip", strconv.FormatInt(*options.Skip, 10))
+		}
+		if options != nil && options.Top != nil {
+			reqQP.Set("top", strconv.FormatInt(*options.Top, 10))
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.Skip != nil {
-		reqQP.Set("skip", strconv.FormatInt(*options.Skip, 10))
-	}
-	if options != nil && options.Top != nil {
-		reqQP.Set("top", strconv.FormatInt(*options.Top, 10))
-	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByBillingAccountHandleResponse handles the ListByBillingAccount response.
-func (client *RoleAssignmentsClient) listByBillingAccountHandleResponse(resp *http.Response) (RoleAssignmentsClientListByBillingAccountResponse, error) {
+func (client *RoleAssignmentsClient) listByBillingAccountHandleResponse(resp *http.Response, successCodes ...int) (RoleAssignmentsClientListByBillingAccountResponse, error) {
 	result := RoleAssignmentsClientListByBillingAccountResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RoleAssignmentListResult); err != nil {
 		return RoleAssignmentsClientListByBillingAccountResponse{}, err
 	}
@@ -1384,52 +1373,66 @@ func (client *RoleAssignmentsClient) NewListByBillingProfilePager(billingAccount
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByBillingProfileCreateRequest(ctx, billingAccountName, billingProfileName, options)
-			}, nil)
+			req, err := client.listByBillingProfileCreateRequest(ctx, billingAccountName, billingProfileName, nextLink, options)
 			if err != nil {
 				return RoleAssignmentsClientListByBillingProfileResponse{}, err
 			}
-			return client.listByBillingProfileHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return RoleAssignmentsClientListByBillingProfileResponse{}, err
+			}
+			return client.listByBillingProfileHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByBillingProfileCreateRequest creates the ListByBillingProfile request.
-func (client *RoleAssignmentsClient) listByBillingProfileCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, options *RoleAssignmentsClientListByBillingProfileOptions) (*policy.Request, error) {
-	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/billingRoleAssignments"
-	if billingAccountName == "" {
-		return nil, errors.New("parameter billingAccountName cannot be empty")
+func (client *RoleAssignmentsClient) listByBillingProfileCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, nextLink string, options *RoleAssignmentsClientListByBillingProfileOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/billingRoleAssignments"
+		if billingAccountName == "" {
+			return nil, errors.New("parameter billingAccountName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{billingAccountName}", url.PathEscape(billingAccountName))
+		if billingProfileName == "" {
+			return nil, errors.New("parameter billingProfileName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{billingProfileName}", url.PathEscape(billingProfileName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{billingAccountName}", url.PathEscape(billingAccountName))
-	if billingProfileName == "" {
-		return nil, errors.New("parameter billingProfileName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{billingProfileName}", url.PathEscape(billingProfileName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240401)
-	if options != nil && options.Filter != nil {
-		reqQP.Set("filter", *options.Filter)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20240401)
+		if options != nil && options.Filter != nil {
+			reqQP.Set("filter", *options.Filter)
+		}
+		if options != nil && options.Skip != nil {
+			reqQP.Set("skip", strconv.FormatInt(*options.Skip, 10))
+		}
+		if options != nil && options.Top != nil {
+			reqQP.Set("top", strconv.FormatInt(*options.Top, 10))
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.Skip != nil {
-		reqQP.Set("skip", strconv.FormatInt(*options.Skip, 10))
-	}
-	if options != nil && options.Top != nil {
-		reqQP.Set("top", strconv.FormatInt(*options.Top, 10))
-	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByBillingProfileHandleResponse handles the ListByBillingProfile response.
-func (client *RoleAssignmentsClient) listByBillingProfileHandleResponse(resp *http.Response) (RoleAssignmentsClientListByBillingProfileResponse, error) {
+func (client *RoleAssignmentsClient) listByBillingProfileHandleResponse(resp *http.Response, successCodes ...int) (RoleAssignmentsClientListByBillingProfileResponse, error) {
 	result := RoleAssignmentsClientListByBillingProfileResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RoleAssignmentListResult); err != nil {
 		return RoleAssignmentsClientListByBillingProfileResponse{}, err
 	}
@@ -1454,56 +1457,70 @@ func (client *RoleAssignmentsClient) NewListByCustomerPager(billingAccountName s
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByCustomerCreateRequest(ctx, billingAccountName, billingProfileName, customerName, options)
-			}, nil)
+			req, err := client.listByCustomerCreateRequest(ctx, billingAccountName, billingProfileName, customerName, nextLink, options)
 			if err != nil {
 				return RoleAssignmentsClientListByCustomerResponse{}, err
 			}
-			return client.listByCustomerHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return RoleAssignmentsClientListByCustomerResponse{}, err
+			}
+			return client.listByCustomerHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByCustomerCreateRequest creates the ListByCustomer request.
-func (client *RoleAssignmentsClient) listByCustomerCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, customerName string, options *RoleAssignmentsClientListByCustomerOptions) (*policy.Request, error) {
-	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/customers/{customerName}/billingRoleAssignments"
-	if billingAccountName == "" {
-		return nil, errors.New("parameter billingAccountName cannot be empty")
+func (client *RoleAssignmentsClient) listByCustomerCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, customerName string, nextLink string, options *RoleAssignmentsClientListByCustomerOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/customers/{customerName}/billingRoleAssignments"
+		if billingAccountName == "" {
+			return nil, errors.New("parameter billingAccountName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{billingAccountName}", url.PathEscape(billingAccountName))
+		if billingProfileName == "" {
+			return nil, errors.New("parameter billingProfileName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{billingProfileName}", url.PathEscape(billingProfileName))
+		if customerName == "" {
+			return nil, errors.New("parameter customerName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{customerName}", url.PathEscape(customerName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{billingAccountName}", url.PathEscape(billingAccountName))
-	if billingProfileName == "" {
-		return nil, errors.New("parameter billingProfileName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{billingProfileName}", url.PathEscape(billingProfileName))
-	if customerName == "" {
-		return nil, errors.New("parameter customerName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{customerName}", url.PathEscape(customerName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240401)
-	if options != nil && options.Filter != nil {
-		reqQP.Set("filter", *options.Filter)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20240401)
+		if options != nil && options.Filter != nil {
+			reqQP.Set("filter", *options.Filter)
+		}
+		if options != nil && options.Skip != nil {
+			reqQP.Set("skip", strconv.FormatInt(*options.Skip, 10))
+		}
+		if options != nil && options.Top != nil {
+			reqQP.Set("top", strconv.FormatInt(*options.Top, 10))
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.Skip != nil {
-		reqQP.Set("skip", strconv.FormatInt(*options.Skip, 10))
-	}
-	if options != nil && options.Top != nil {
-		reqQP.Set("top", strconv.FormatInt(*options.Top, 10))
-	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByCustomerHandleResponse handles the ListByCustomer response.
-func (client *RoleAssignmentsClient) listByCustomerHandleResponse(resp *http.Response) (RoleAssignmentsClientListByCustomerResponse, error) {
+func (client *RoleAssignmentsClient) listByCustomerHandleResponse(resp *http.Response, successCodes ...int) (RoleAssignmentsClientListByCustomerResponse, error) {
 	result := RoleAssignmentsClientListByCustomerResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RoleAssignmentListResult); err != nil {
 		return RoleAssignmentsClientListByCustomerResponse{}, err
 	}
@@ -1527,43 +1544,57 @@ func (client *RoleAssignmentsClient) NewListByDepartmentPager(billingAccountName
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByDepartmentCreateRequest(ctx, billingAccountName, departmentName, options)
-			}, nil)
+			req, err := client.listByDepartmentCreateRequest(ctx, billingAccountName, departmentName, nextLink, options)
 			if err != nil {
 				return RoleAssignmentsClientListByDepartmentResponse{}, err
 			}
-			return client.listByDepartmentHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return RoleAssignmentsClientListByDepartmentResponse{}, err
+			}
+			return client.listByDepartmentHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByDepartmentCreateRequest creates the ListByDepartment request.
-func (client *RoleAssignmentsClient) listByDepartmentCreateRequest(ctx context.Context, billingAccountName string, departmentName string, _ *RoleAssignmentsClientListByDepartmentOptions) (*policy.Request, error) {
-	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/departments/{departmentName}/billingRoleAssignments"
-	if billingAccountName == "" {
-		return nil, errors.New("parameter billingAccountName cannot be empty")
+func (client *RoleAssignmentsClient) listByDepartmentCreateRequest(ctx context.Context, billingAccountName string, departmentName string, nextLink string, _ *RoleAssignmentsClientListByDepartmentOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/departments/{departmentName}/billingRoleAssignments"
+		if billingAccountName == "" {
+			return nil, errors.New("parameter billingAccountName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{billingAccountName}", url.PathEscape(billingAccountName))
+		if departmentName == "" {
+			return nil, errors.New("parameter departmentName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{departmentName}", url.PathEscape(departmentName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{billingAccountName}", url.PathEscape(billingAccountName))
-	if departmentName == "" {
-		return nil, errors.New("parameter departmentName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{departmentName}", url.PathEscape(departmentName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240401)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20240401)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByDepartmentHandleResponse handles the ListByDepartment response.
-func (client *RoleAssignmentsClient) listByDepartmentHandleResponse(resp *http.Response) (RoleAssignmentsClientListByDepartmentResponse, error) {
+func (client *RoleAssignmentsClient) listByDepartmentHandleResponse(resp *http.Response, successCodes ...int) (RoleAssignmentsClientListByDepartmentResponse, error) {
 	result := RoleAssignmentsClientListByDepartmentResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RoleAssignmentListResult); err != nil {
 		return RoleAssignmentsClientListByDepartmentResponse{}, err
 	}
@@ -1587,43 +1618,57 @@ func (client *RoleAssignmentsClient) NewListByEnrollmentAccountPager(billingAcco
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByEnrollmentAccountCreateRequest(ctx, billingAccountName, enrollmentAccountName, options)
-			}, nil)
+			req, err := client.listByEnrollmentAccountCreateRequest(ctx, billingAccountName, enrollmentAccountName, nextLink, options)
 			if err != nil {
 				return RoleAssignmentsClientListByEnrollmentAccountResponse{}, err
 			}
-			return client.listByEnrollmentAccountHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return RoleAssignmentsClientListByEnrollmentAccountResponse{}, err
+			}
+			return client.listByEnrollmentAccountHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByEnrollmentAccountCreateRequest creates the ListByEnrollmentAccount request.
-func (client *RoleAssignmentsClient) listByEnrollmentAccountCreateRequest(ctx context.Context, billingAccountName string, enrollmentAccountName string, _ *RoleAssignmentsClientListByEnrollmentAccountOptions) (*policy.Request, error) {
-	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/enrollmentAccounts/{enrollmentAccountName}/billingRoleAssignments"
-	if billingAccountName == "" {
-		return nil, errors.New("parameter billingAccountName cannot be empty")
+func (client *RoleAssignmentsClient) listByEnrollmentAccountCreateRequest(ctx context.Context, billingAccountName string, enrollmentAccountName string, nextLink string, _ *RoleAssignmentsClientListByEnrollmentAccountOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/enrollmentAccounts/{enrollmentAccountName}/billingRoleAssignments"
+		if billingAccountName == "" {
+			return nil, errors.New("parameter billingAccountName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{billingAccountName}", url.PathEscape(billingAccountName))
+		if enrollmentAccountName == "" {
+			return nil, errors.New("parameter enrollmentAccountName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{enrollmentAccountName}", url.PathEscape(enrollmentAccountName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{billingAccountName}", url.PathEscape(billingAccountName))
-	if enrollmentAccountName == "" {
-		return nil, errors.New("parameter enrollmentAccountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{enrollmentAccountName}", url.PathEscape(enrollmentAccountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240401)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20240401)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByEnrollmentAccountHandleResponse handles the ListByEnrollmentAccount response.
-func (client *RoleAssignmentsClient) listByEnrollmentAccountHandleResponse(resp *http.Response) (RoleAssignmentsClientListByEnrollmentAccountResponse, error) {
+func (client *RoleAssignmentsClient) listByEnrollmentAccountHandleResponse(resp *http.Response, successCodes ...int) (RoleAssignmentsClientListByEnrollmentAccountResponse, error) {
 	result := RoleAssignmentsClientListByEnrollmentAccountResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RoleAssignmentListResult); err != nil {
 		return RoleAssignmentsClientListByEnrollmentAccountResponse{}, err
 	}
@@ -1648,56 +1693,70 @@ func (client *RoleAssignmentsClient) NewListByInvoiceSectionPager(billingAccount
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByInvoiceSectionCreateRequest(ctx, billingAccountName, billingProfileName, invoiceSectionName, options)
-			}, nil)
+			req, err := client.listByInvoiceSectionCreateRequest(ctx, billingAccountName, billingProfileName, invoiceSectionName, nextLink, options)
 			if err != nil {
 				return RoleAssignmentsClientListByInvoiceSectionResponse{}, err
 			}
-			return client.listByInvoiceSectionHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return RoleAssignmentsClientListByInvoiceSectionResponse{}, err
+			}
+			return client.listByInvoiceSectionHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByInvoiceSectionCreateRequest creates the ListByInvoiceSection request.
-func (client *RoleAssignmentsClient) listByInvoiceSectionCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, invoiceSectionName string, options *RoleAssignmentsClientListByInvoiceSectionOptions) (*policy.Request, error) {
-	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/invoiceSections/{invoiceSectionName}/billingRoleAssignments"
-	if billingAccountName == "" {
-		return nil, errors.New("parameter billingAccountName cannot be empty")
+func (client *RoleAssignmentsClient) listByInvoiceSectionCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, invoiceSectionName string, nextLink string, options *RoleAssignmentsClientListByInvoiceSectionOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/invoiceSections/{invoiceSectionName}/billingRoleAssignments"
+		if billingAccountName == "" {
+			return nil, errors.New("parameter billingAccountName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{billingAccountName}", url.PathEscape(billingAccountName))
+		if billingProfileName == "" {
+			return nil, errors.New("parameter billingProfileName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{billingProfileName}", url.PathEscape(billingProfileName))
+		if invoiceSectionName == "" {
+			return nil, errors.New("parameter invoiceSectionName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{invoiceSectionName}", url.PathEscape(invoiceSectionName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{billingAccountName}", url.PathEscape(billingAccountName))
-	if billingProfileName == "" {
-		return nil, errors.New("parameter billingProfileName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{billingProfileName}", url.PathEscape(billingProfileName))
-	if invoiceSectionName == "" {
-		return nil, errors.New("parameter invoiceSectionName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{invoiceSectionName}", url.PathEscape(invoiceSectionName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240401)
-	if options != nil && options.Filter != nil {
-		reqQP.Set("filter", *options.Filter)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20240401)
+		if options != nil && options.Filter != nil {
+			reqQP.Set("filter", *options.Filter)
+		}
+		if options != nil && options.Skip != nil {
+			reqQP.Set("skip", strconv.FormatInt(*options.Skip, 10))
+		}
+		if options != nil && options.Top != nil {
+			reqQP.Set("top", strconv.FormatInt(*options.Top, 10))
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.Skip != nil {
-		reqQP.Set("skip", strconv.FormatInt(*options.Skip, 10))
-	}
-	if options != nil && options.Top != nil {
-		reqQP.Set("top", strconv.FormatInt(*options.Top, 10))
-	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByInvoiceSectionHandleResponse handles the ListByInvoiceSection response.
-func (client *RoleAssignmentsClient) listByInvoiceSectionHandleResponse(resp *http.Response) (RoleAssignmentsClientListByInvoiceSectionResponse, error) {
+func (client *RoleAssignmentsClient) listByInvoiceSectionHandleResponse(resp *http.Response, successCodes ...int) (RoleAssignmentsClientListByInvoiceSectionResponse, error) {
 	result := RoleAssignmentsClientListByInvoiceSectionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RoleAssignmentListResult); err != nil {
 		return RoleAssignmentsClientListByInvoiceSectionResponse{}, err
 	}
@@ -1747,8 +1806,7 @@ func (client *RoleAssignmentsClient) resolveByBillingAccount(ctx context.Context
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -1821,8 +1879,7 @@ func (client *RoleAssignmentsClient) resolveByBillingProfile(ctx context.Context
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -1898,8 +1955,7 @@ func (client *RoleAssignmentsClient) resolveByCustomer(ctx context.Context, bill
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -1979,8 +2035,7 @@ func (client *RoleAssignmentsClient) resolveByInvoiceSection(ctx context.Context
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }

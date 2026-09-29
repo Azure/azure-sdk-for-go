@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-05-02-preview/IdentityBindings_Create_Or_Update.json
+// Generated from example definition: 2026-06-02-preview/IdentityBindings_Create_Or_Update.json
 func ExampleIdentityBindingsClient_BeginCreateOrUpdate_createOrUpdateIdentityBinding() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -62,7 +62,7 @@ func ExampleIdentityBindingsClient_BeginCreateOrUpdate_createOrUpdateIdentityBin
 	// }
 }
 
-// Generated from example definition: 2026-05-02-preview/IdentityBindings_Create_Or_UpdateWithAllowedSubjects.json
+// Generated from example definition: 2026-06-02-preview/IdentityBindings_Create_Or_UpdateWithAllowedSubjects.json
 func ExampleIdentityBindingsClient_BeginCreateOrUpdate_createOrUpdateIdentityBindingWithAllowedSubjects() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -168,7 +168,7 @@ func ExampleIdentityBindingsClient_BeginCreateOrUpdate_createOrUpdateIdentityBin
 	// }
 }
 
-// Generated from example definition: 2026-05-02-preview/IdentityBindings_Delete.json
+// Generated from example definition: 2026-06-02-preview/IdentityBindings_Delete.json
 func ExampleIdentityBindingsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -189,7 +189,7 @@ func ExampleIdentityBindingsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-05-02-preview/IdentityBindings_Get.json
+// Generated from example definition: 2026-06-02-preview/IdentityBindings_Get.json
 func ExampleIdentityBindingsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -229,7 +229,7 @@ func ExampleIdentityBindingsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-05-02-preview/IdentityBindings_List.json
+// Generated from example definition: 2026-06-02-preview/IdentityBindings_List.json
 func ExampleIdentityBindingsClient_NewListByManagedClusterPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

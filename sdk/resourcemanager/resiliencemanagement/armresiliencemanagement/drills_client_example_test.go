@@ -248,7 +248,7 @@ func ExampleDrillsClient_BeginCreate() {
 	// 			LastRunProperties: &armresiliencemanagement.LastRunProperties{
 	// 				LastRunState: to.Ptr(armresiliencemanagement.JobStatusNotStarted),
 	// 				LastRunAttestation: to.Ptr(armresiliencemanagement.DrillAttestationAttestedSuccess),
-	// 				LastRunTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-05-05T05:36:37.151Z"); return t}()),
+	// 				LastRunTime: to.Ptr(time.Date(2025, time.May, 5, 5, 36, 37, 151000000, time.UTC)),
 	// 				LastRunDuration: to.Ptr("PT6M"),
 	// 			},
 	// 			ExecutionReadinessState: to.Ptr(armresiliencemanagement.ExecutionReadinessStateReady),
@@ -296,8 +296,8 @@ func ExampleDrillsClient_BeginCreate() {
 	// 			},
 	// 			ProvisioningState: to.Ptr(armresiliencemanagement.ProvisioningStateSucceeded),
 	// 			ServiceGroupID: to.Ptr("/providers/Microsoft.Management/serviceGroups/sampleServiceGroupName"),
-	// 			LastSyncTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-02-02T10:45:16.573Z"); return t}()),
-	// 			LastResyncReadinessCheckTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-02-02T10:29:02.037Z"); return t}()),
+	// 			LastSyncTime: to.Ptr(time.Date(2026, time.February, 2, 10, 45, 16, 573000000, time.UTC)),
+	// 			LastResyncReadinessCheckTime: to.Ptr(time.Date(2026, time.February, 2, 10, 29, 2, 37000000, time.UTC)),
 	// 		},
 	// 		Identity: &armresiliencemanagement.ManagedServiceIdentity{
 	// 			Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeNone),
@@ -312,10 +312,10 @@ func ExampleDrillsClient_BeginCreate() {
 	// 		SystemData: &armresiliencemanagement.SystemData{
 	// 			CreatedBy: to.Ptr("dvnfxbuyqhvivfjddjccdtlwajfht"),
 	// 			CreatedByType: to.Ptr(armresiliencemanagement.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-02-06T15:03:42.796Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2025, time.February, 6, 15, 3, 42, 796000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("lndhhaimomorael"),
 	// 			LastModifiedByType: to.Ptr(armresiliencemanagement.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-02-06T15:03:42.797Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.February, 6, 15, 3, 42, 797000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -445,7 +445,7 @@ func ExampleDrillsClient_Get() {
 	// 			LastRunProperties: &armresiliencemanagement.LastRunProperties{
 	// 				LastRunState: to.Ptr(armresiliencemanagement.JobStatusNotStarted),
 	// 				LastRunAttestation: to.Ptr(armresiliencemanagement.DrillAttestationAttestedSuccess),
-	// 				LastRunTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-05-05T05:36:37.151Z"); return t}()),
+	// 				LastRunTime: to.Ptr(time.Date(2025, time.May, 5, 5, 36, 37, 151000000, time.UTC)),
 	// 				LastRunDuration: to.Ptr("PT6M"),
 	// 			},
 	// 			ExecutionReadinessState: to.Ptr(armresiliencemanagement.ExecutionReadinessStateReady),
@@ -493,8 +493,8 @@ func ExampleDrillsClient_Get() {
 	// 			},
 	// 			ProvisioningState: to.Ptr(armresiliencemanagement.ProvisioningStateSucceeded),
 	// 			ServiceGroupID: to.Ptr("/providers/Microsoft.Management/serviceGroups/sampleServiceGroupName"),
-	// 			LastSyncTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-02-02T10:45:16.573Z"); return t}()),
-	// 			LastResyncReadinessCheckTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-02-02T10:29:02.037Z"); return t}()),
+	// 			LastSyncTime: to.Ptr(time.Date(2026, time.February, 2, 10, 45, 16, 573000000, time.UTC)),
+	// 			LastResyncReadinessCheckTime: to.Ptr(time.Date(2026, time.February, 2, 10, 29, 2, 37000000, time.UTC)),
 	// 		},
 	// 		Identity: &armresiliencemanagement.ManagedServiceIdentity{
 	// 			Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeNone),
@@ -509,10 +509,10 @@ func ExampleDrillsClient_Get() {
 	// 		SystemData: &armresiliencemanagement.SystemData{
 	// 			CreatedBy: to.Ptr("dvnfxbuyqhvivfjddjccdtlwajfht"),
 	// 			CreatedByType: to.Ptr(armresiliencemanagement.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-02-06T15:03:42.796Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2025, time.February, 6, 15, 3, 42, 796000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("lndhhaimomorael"),
 	// 			LastModifiedByType: to.Ptr(armresiliencemanagement.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-02-06T15:03:42.797Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.February, 6, 15, 3, 42, 797000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -599,7 +599,7 @@ func ExampleDrillsClient_NewListPager() {
 		// 					},
 		// 					DrillType: to.Ptr(armresiliencemanagement.DrillType("DrillProperties")),
 		// 					LastRunProperties: &armresiliencemanagement.LastRunProperties{
-		// 						LastRunTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-05-05T05:36:37.151Z"); return t}()),
+		// 						LastRunTime: to.Ptr(time.Date(2025, time.May, 5, 5, 36, 37, 151000000, time.UTC)),
 		// 						LastRunState: to.Ptr(armresiliencemanagement.JobStatusNotStarted),
 		// 						LastRunDuration: to.Ptr("PT6M"),
 		// 						LastRunAttestation: to.Ptr(armresiliencemanagement.DrillAttestationAttestedSuccess),
@@ -648,8 +648,8 @@ func ExampleDrillsClient_NewListPager() {
 		// 						ChaosResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourceGroups/resourceGroup1/providers/Microsoft.Chaos/workspaces/asdas"),
 		// 						FaultDurationInMin: to.Ptr[int32](0),
 		// 					},
-		// 					LastResyncReadinessCheckTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-02-02T10:29:02.037Z"); return t}()),
-		// 					LastSyncTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-02-02T10:45:16.573Z"); return t}()),
+		// 					LastResyncReadinessCheckTime: to.Ptr(time.Date(2026, time.February, 2, 10, 29, 2, 37000000, time.UTC)),
+		// 					LastSyncTime: to.Ptr(time.Date(2026, time.February, 2, 10, 45, 16, 573000000, time.UTC)),
 		// 				},
 		// 				Identity: &armresiliencemanagement.ManagedServiceIdentity{
 		// 					Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeNone),
@@ -664,10 +664,10 @@ func ExampleDrillsClient_NewListPager() {
 		// 				SystemData: &armresiliencemanagement.SystemData{
 		// 					CreatedBy: to.Ptr("dvnfxbuyqhvivfjddjccdtlwajfht"),
 		// 					CreatedByType: to.Ptr(armresiliencemanagement.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-02-06T15:03:42.796Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2025, time.February, 6, 15, 3, 42, 796000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("lndhhaimomorael"),
 		// 					LastModifiedByType: to.Ptr(armresiliencemanagement.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-02-06T15:03:42.797Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2025, time.February, 6, 15, 3, 42, 797000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},

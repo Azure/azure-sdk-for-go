@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v11"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v12"
 	"log"
 )
 
-// Generated from example definition: 2025-09-01/AddressPrefixSetCreate.json
+// Generated from example definition: 2026-01-01/AddressPrefixSetCreate.json
 func ExampleAddressPrefixSetsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -60,7 +60,7 @@ func ExampleAddressPrefixSetsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/AddressPrefixSetDelete.json
+// Generated from example definition: 2026-01-01/AddressPrefixSetDelete.json
 func ExampleAddressPrefixSetsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -81,7 +81,7 @@ func ExampleAddressPrefixSetsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-09-01/AddressPrefixSetGet.json
+// Generated from example definition: 2026-01-01/AddressPrefixSetGet.json
 func ExampleAddressPrefixSetsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -117,7 +117,7 @@ func ExampleAddressPrefixSetsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/AddressPrefixSetList.json
+// Generated from example definition: 2026-01-01/AddressPrefixSetList.json
 func ExampleAddressPrefixSetsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

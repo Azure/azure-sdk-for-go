@@ -7,11 +7,11 @@ package armchaos_test
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/chaos/armchaos/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/chaos/armchaos/v3"
 	"log"
 )
 
-// Generated from example definition: 2026-05-01-preview/ActionVersions_Get.json
+// Generated from example definition: 2026-08-01-preview/ActionVersions_Get.json
 func ExampleActionVersionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -57,14 +57,14 @@ func ExampleActionVersionsClient_Get() {
 	// 			},
 	// 		},
 	// 		SystemData: &armchaos.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-01T00:00:00.000Z"); return t}()),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-01T00:00:00.000Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2025, time.January, 1, 0, 0, 0, 0, time.UTC)),
+	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.January, 1, 0, 0, 0, 0, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/ActionVersions_List.json
+// Generated from example definition: 2026-08-01-preview/ActionVersions_List.json
 func ExampleActionVersionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -88,7 +88,7 @@ func ExampleActionVersionsClient_NewListPager() {
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page = armchaos.ActionVersionsClientListResponse{
 		// 	ActionVersionListResult: armchaos.ActionVersionListResult{
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/providers/Microsoft.Chaos/locations/westus2/actions/microsoft-compute-shutdown/versions?continuationToken=&api-version=2026-05-01-preview"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/providers/Microsoft.Chaos/locations/westus2/actions/microsoft-compute-shutdown/versions?continuationToken=&api-version=2026-08-01-preview"),
 		// 		Value: []*armchaos.ActionVersion{
 		// 			{
 		// 				Name: to.Ptr("1.0"),
@@ -117,8 +117,8 @@ func ExampleActionVersionsClient_NewListPager() {
 		// 					},
 		// 				},
 		// 				SystemData: &armchaos.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-01T00:00:00.000Z"); return t}()),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-01T00:00:00.000Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2025, time.January, 1, 0, 0, 0, 0, time.UTC)),
+		// 					LastModifiedAt: to.Ptr(time.Date(2025, time.January, 1, 0, 0, 0, 0, time.UTC)),
 		// 				},
 		// 			},
 		// 		},

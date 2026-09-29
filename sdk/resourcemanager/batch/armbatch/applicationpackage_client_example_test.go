@@ -33,13 +33,13 @@ func ExampleApplicationPackageClient_Activate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbatch.ApplicationPackageClientActivateResponse{
-	// 	ApplicationPackage: &armbatch.ApplicationPackage{
+	// 	ApplicationPackage: armbatch.ApplicationPackage{
 	// 		Name: to.Ptr("1"),
 	// 		Type: to.Ptr("Microsoft.Batch/batchAccounts/applications/versions"),
 	// 		ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Batch/batchAccounts/sampleacct/applications/app1/versions/1"),
 	// 		Properties: &armbatch.ApplicationPackageProperties{
 	// 			Format: to.Ptr("zip"),
-	// 			LastActivationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-27T18:48:09.9330991Z"); return t}()),
+	// 			LastActivationTime: to.Ptr(time.Date(2017, time.June, 27, 18, 48, 9, 933099100, time.UTC)),
 	// 			State: to.Ptr(armbatch.PackageStateActive),
 	// 		},
 	// 	},
@@ -65,14 +65,14 @@ func ExampleApplicationPackageClient_Create() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbatch.ApplicationPackageClientCreateResponse{
-	// 	ApplicationPackage: &armbatch.ApplicationPackage{
+	// 	ApplicationPackage: armbatch.ApplicationPackage{
 	// 		Name: to.Ptr("1"),
 	// 		Type: to.Ptr("Microsoft.Batch/batchAccounts/applications/versions"),
 	// 		ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Batch/batchAccounts/sampleacct/applications/app1/versions/1"),
 	// 		Properties: &armbatch.ApplicationPackageProperties{
 	// 			State: to.Ptr(armbatch.PackageStatePending),
 	// 			StorageURL: to.Ptr("http://mystorage1.blob.core.windows.net/myapp?mysas"),
-	// 			StorageURLExpiry: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-27T18:48:09.9330991Z"); return t}()),
+	// 			StorageURLExpiry: to.Ptr(time.Date(2017, time.June, 27, 18, 48, 9, 933099100, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -119,13 +119,13 @@ func ExampleApplicationPackageClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbatch.ApplicationPackageClientGetResponse{
-	// 	ApplicationPackage: &armbatch.ApplicationPackage{
+	// 	ApplicationPackage: armbatch.ApplicationPackage{
 	// 		Name: to.Ptr("1"),
 	// 		Type: to.Ptr("Microsoft.Batch/batchAccounts/applications/versions"),
 	// 		ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Batch/batchAccounts/sampleacct/applications/app1/versions/1"),
 	// 		Properties: &armbatch.ApplicationPackageProperties{
 	// 			Format: to.Ptr("zip"),
-	// 			LastActivationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-27T18:48:09.9330991Z"); return t}()),
+	// 			LastActivationTime: to.Ptr(time.Date(2017, time.June, 27, 18, 48, 9, 933099100, time.UTC)),
 	// 			State: to.Ptr(armbatch.PackageStateActive),
 	// 		},
 	// 	},
@@ -171,7 +171,7 @@ func ExampleApplicationPackageClient_NewListPager() {
 		// 				ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Batch/batchAccounts/sampleacct/applications/app1/versions/2.0"),
 		// 				Properties: &armbatch.ApplicationPackageProperties{
 		// 					Format: to.Ptr("zip"),
-		// 					LastActivationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-27T18:48:09.9330991Z"); return t}()),
+		// 					LastActivationTime: to.Ptr(time.Date(2017, time.June, 27, 18, 48, 9, 933099100, time.UTC)),
 		// 					State: to.Ptr(armbatch.PackageStateActive),
 		// 				},
 		// 			},

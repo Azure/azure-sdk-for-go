@@ -21,11 +21,11 @@ func (a AdditionalCacheNodeProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "aggregatedStatusText", a.AggregatedStatusText)
 	populate(objectMap, "appVersionWsl", a.AppVersionWsl)
 	populate(objectMap, "autoUpdateAppliedVersion", a.AutoUpdateAppliedVersion)
-	populateTime[datetime.RFC3339](objectMap, "autoUpdateLastAppliedDateTime", a.AutoUpdateLastAppliedDateTime)
+	populateTime[datetime.RFC3339](objectMap, "autoUpdateLastAppliedDateTime", a.AutoUpdateLastAppliedDateTime, true)
 	populate(objectMap, "autoUpdateLastAppliedDetails", a.AutoUpdateLastAppliedDetails)
 	populate(objectMap, "autoUpdateLastAppliedState", a.AutoUpdateLastAppliedState)
-	populateTime[datetime.RFC3339](objectMap, "autoUpdateLastTriggeredDateTime", a.AutoUpdateLastTriggeredDateTime)
-	populateTime[datetime.RFC3339](objectMap, "autoUpdateNextAvailableDateTime", a.AutoUpdateNextAvailableDateTime)
+	populateTime[datetime.RFC3339](objectMap, "autoUpdateLastTriggeredDateTime", a.AutoUpdateLastTriggeredDateTime, true)
+	populateTime[datetime.RFC3339](objectMap, "autoUpdateNextAvailableDateTime", a.AutoUpdateNextAvailableDateTime, true)
 	populate(objectMap, "autoUpdateNextAvailableVersion", a.AutoUpdateNextAvailableVersion)
 	populate(objectMap, "autoUpdateVersion", a.AutoUpdateVersion)
 	populate(objectMap, "bgpConfiguration", a.BgpConfiguration)
@@ -62,7 +62,7 @@ func (a AdditionalCacheNodeProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "proxyUrlConfiguration", a.ProxyURLConfiguration)
 	populate(objectMap, "tlsStatus", a.TLSStatus)
 	populate(objectMap, "updateInfoDetails", a.UpdateInfoDetails)
-	populateTime[datetime.RFC3339](objectMap, "updateRequestedDateTime", a.UpdateRequestedDateTime)
+	populateTime[datetime.RFC3339](objectMap, "updateRequestedDateTime", a.UpdateRequestedDateTime, true)
 	return json.Marshal(objectMap)
 }
 
@@ -230,7 +230,7 @@ func (a AdditionalCustomerProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "customerAsn", a.CustomerAsn)
 	populate(objectMap, "customerAsnEstimatedEgressPeekGbps", a.CustomerAsnEstimatedEgressPeekGbps)
 	populate(objectMap, "customerEmail", a.CustomerEmail)
-	populateTime[datetime.RFC3339](objectMap, "customerEntitlementExpiration", a.CustomerEntitlementExpiration)
+	populateTime[datetime.RFC3339](objectMap, "customerEntitlementExpiration", a.CustomerEntitlementExpiration, true)
 	populate(objectMap, "customerEntitlementSkuGuid", a.CustomerEntitlementSKUGUID)
 	populate(objectMap, "customerEntitlementSkuId", a.CustomerEntitlementSKUID)
 	populate(objectMap, "customerEntitlementSkuName", a.CustomerEntitlementSKUName)
@@ -241,9 +241,9 @@ func (a AdditionalCustomerProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "customerPropertiesOverviewCacheNodesHealthyCount", a.CustomerPropertiesOverviewCacheNodesHealthyCount)
 	populate(objectMap, "customerPropertiesOverviewCacheNodesUnhealthyCount", a.CustomerPropertiesOverviewCacheNodesUnhealthyCount)
 	populate(objectMap, "customerPropertiesOverviewEgressMbpsMax", a.CustomerPropertiesOverviewEgressMbpsMax)
-	populateTime[datetime.RFC3339](objectMap, "customerPropertiesOverviewEgressMbpsMaxDateTime", a.CustomerPropertiesOverviewEgressMbpsMaxDateTime)
+	populateTime[datetime.RFC3339](objectMap, "customerPropertiesOverviewEgressMbpsMaxDateTime", a.CustomerPropertiesOverviewEgressMbpsMaxDateTime, true)
 	populate(objectMap, "customerPropertiesOverviewMissMbpsMax", a.CustomerPropertiesOverviewMissMbpsMax)
-	populateTime[datetime.RFC3339](objectMap, "customerPropertiesOverviewMissMbpsMaxDateTime", a.CustomerPropertiesOverviewMissMbpsMaxDateTime)
+	populateTime[datetime.RFC3339](objectMap, "customerPropertiesOverviewMissMbpsMaxDateTime", a.CustomerPropertiesOverviewMissMbpsMaxDateTime, true)
 	populate(objectMap, "customerTransitAsn", a.CustomerTransitAsn)
 	populate(objectMap, "customerTransitState", a.CustomerTransitState)
 	populate(objectMap, "optionalProperty1", a.OptionalProperty1)
@@ -251,7 +251,7 @@ func (a AdditionalCustomerProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "optionalProperty3", a.OptionalProperty3)
 	populate(objectMap, "optionalProperty4", a.OptionalProperty4)
 	populate(objectMap, "optionalProperty5", a.OptionalProperty5)
-	populateTime[datetime.RFC3339](objectMap, "peeringDbLastUpdateDate", a.PeeringDbLastUpdateDate)
+	populateTime[datetime.RFC3339](objectMap, "peeringDbLastUpdateDate", a.PeeringDbLastUpdateDate, true)
 	populate(objectMap, "signupPhaseStatusCode", a.SignupPhaseStatusCode)
 	populate(objectMap, "signupPhaseStatusText", a.SignupPhaseStatusText)
 	populate(objectMap, "signupStatus", a.SignupStatus)
@@ -470,9 +470,9 @@ func (c CacheNodeEntity) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "autoUpdateRingType", c.AutoUpdateRingType)
 	populate(objectMap, "bgpAddressSpace", c.BgpAddressSpace)
 	populate(objectMap, "bgpCidrBlocksCount", c.BgpCidrBlocksCount)
-	populateTime[datetime.RFC3339](objectMap, "bgpCidrCsvLastUpdateTime", c.BgpCidrCSVLastUpdateTime)
+	populateTime[datetime.RFC3339](objectMap, "bgpCidrCsvLastUpdateTime", c.BgpCidrCSVLastUpdateTime, true)
 	populate(objectMap, "bgpFileBytesTruncated", c.BgpFileBytesTruncated)
-	populateTime[datetime.RFC3339](objectMap, "bgpLastReportedTime", c.BgpLastReportedTime)
+	populateTime[datetime.RFC3339](objectMap, "bgpLastReportedTime", c.BgpLastReportedTime, true)
 	populate(objectMap, "bgpNetworkInterface", c.BgpNetworkInterface)
 	populate(objectMap, "bgpNumberOfRecords", c.BgpNumberOfRecords)
 	populate(objectMap, "bgpNumberOfTimesUpdated", c.BgpNumberOfTimesUpdated)
@@ -483,7 +483,7 @@ func (c CacheNodeEntity) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "cacheNodeName", c.CacheNodeName)
 	populate(objectMap, "category", c.Category)
 	populate(objectMap, "cidrCsv", c.CidrCSV)
-	populateTime[datetime.RFC3339](objectMap, "cidrCsvLastUpdateTime", c.CidrCSVLastUpdateTime)
+	populateTime[datetime.RFC3339](objectMap, "cidrCsvLastUpdateTime", c.CidrCSVLastUpdateTime, true)
 	populate(objectMap, "cidrSelectionType", c.CidrSelectionType)
 	populate(objectMap, "clientTenantId", c.ClientTenantID)
 	populate(objectMap, "configurationState", c.ConfigurationState)
@@ -503,8 +503,8 @@ func (c CacheNodeEntity) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "isEnabled", c.IsEnabled)
 	populate(objectMap, "isEnterpriseManaged", c.IsEnterpriseManaged)
 	populate(objectMap, "isFrozen", c.IsFrozen)
-	populateTime[datetime.RFC3339](objectMap, "lastSyncWithAzureTimestamp", c.LastSyncWithAzureTimestamp)
-	populateTime[datetime.RFC3339](objectMap, "lastUpdatedTimestamp", c.LastUpdatedTimestamp)
+	populateTime[datetime.RFC3339](objectMap, "lastSyncWithAzureTimestamp", c.LastSyncWithAzureTimestamp, true)
+	populateTime[datetime.RFC3339](objectMap, "lastUpdatedTimestamp", c.LastUpdatedTimestamp, true)
 	populate(objectMap, "maxAllowableEgressInMbps", c.MaxAllowableEgressInMbps)
 	populate(objectMap, "maxAllowableProbability", c.MaxAllowableProbability)
 	populate(objectMap, "openFirewallPort443", c.OpenFirewallPort443)
@@ -519,7 +519,7 @@ func (c CacheNodeEntity) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "shouldMigrate", c.ShouldMigrate)
 	populate(objectMap, "synchWithAzureAttemptsCount", c.SynchWithAzureAttemptsCount)
 	populate(objectMap, "workerConnections", c.WorkerConnections)
-	populateTime[datetime.RFC3339](objectMap, "workerConnectionsLastUpdatedDateTime", c.WorkerConnectionsLastUpdatedDateTime)
+	populateTime[datetime.RFC3339](objectMap, "workerConnectionsLastUpdatedDateTime", c.WorkerConnectionsLastUpdatedDateTime, true)
 	populate(objectMap, "xCid", c.XCid)
 	return json.Marshal(objectMap)
 }
@@ -839,7 +839,7 @@ func (c CustomerEntity) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "fullyQualifiedResourceId", c.FullyQualifiedResourceID)
 	populate(objectMap, "isEnterpriseManaged", c.IsEnterpriseManaged)
 	populate(objectMap, "isEntitled", c.IsEntitled)
-	populateTime[datetime.RFC3339](objectMap, "lastSyncWithAzureTimestamp", c.LastSyncWithAzureTimestamp)
+	populateTime[datetime.RFC3339](objectMap, "lastSyncWithAzureTimestamp", c.LastSyncWithAzureTimestamp, true)
 	populate(objectMap, "releaseVersion", c.ReleaseVersion)
 	populate(objectMap, "resendSignupCode", c.ResendSignupCode)
 	populate(objectMap, "shouldMigrate", c.ShouldMigrate)
@@ -1470,11 +1470,11 @@ func (m MccCacheNodeAutoUpdateInfo) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "autoUpdateLastAppliedStatusDetailedText", m.AutoUpdateLastAppliedStatusDetailedText)
 	populate(objectMap, "autoUpdateLastAppliedStatusText", m.AutoUpdateLastAppliedStatusText)
 	populate(objectMap, "autoUpdateRingType", m.AutoUpdateRingType)
-	populateTime[datetime.RFC3339](objectMap, "createdDateTimeUtc", m.CreatedDateTimeUTC)
+	populateTime[datetime.RFC3339](objectMap, "createdDateTimeUtc", m.CreatedDateTimeUTC, true)
 	populate(objectMap, "imageUriBeforeUpdate", m.ImageURIBeforeUpdate)
 	populate(objectMap, "imageUriTargeted", m.ImageURITargeted)
 	populate(objectMap, "imageUriTerminal", m.ImageURITerminal)
-	populateTime[datetime.RFC3339](objectMap, "movedToTerminalStateDateTime", m.MovedToTerminalStateDateTime)
+	populateTime[datetime.RFC3339](objectMap, "movedToTerminalStateDateTime", m.MovedToTerminalStateDateTime, true)
 	populate(objectMap, "planChangeLogText", m.PlanChangeLogText)
 	populate(objectMap, "planId", m.PlanID)
 	populate(objectMap, "ruleRequestedDay", m.RuleRequestedDay)
@@ -1482,7 +1482,7 @@ func (m MccCacheNodeAutoUpdateInfo) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "ruleRequestedMinute", m.RuleRequestedMinute)
 	populate(objectMap, "ruleRequestedWeek", m.RuleRequestedWeek)
 	populate(objectMap, "timeToGoLiveDateTime", m.TimeToGoLiveDateTime)
-	populateTime[datetime.RFC3339](objectMap, "updatedRegistryDateTimeUtc", m.UpdatedRegistryDateTimeUTC)
+	populateTime[datetime.RFC3339](objectMap, "updatedRegistryDateTimeUtc", m.UpdatedRegistryDateTimeUTC, true)
 	return json.Marshal(objectMap)
 }
 
@@ -1748,8 +1748,8 @@ func (m MccCacheNodeTLSCertificate) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "actionRequired", m.ActionRequired)
 	populate(objectMap, "certType", m.CertType)
 	populate(objectMap, "certificateFileName", m.CertificateFileName)
-	populateTime[datetime.RFC3339](objectMap, "expiryDate", m.ExpiryDate)
-	populateTime[datetime.RFC3339](objectMap, "notBeforeDate", m.NotBeforeDate)
+	populateTime[datetime.RFC3339](objectMap, "expiryDate", m.ExpiryDate, true)
+	populateTime[datetime.RFC3339](objectMap, "notBeforeDate", m.NotBeforeDate, true)
 	populate(objectMap, "subject", m.Subject)
 	populate(objectMap, "subjectAltName", m.SubjectAltName)
 	populate(objectMap, "thumbprint", m.Thumbprint)
@@ -1888,8 +1888,8 @@ func (m MccIssue) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "detailString", m.DetailString)
 	populate(objectMap, "helpLink", m.HelpLink)
-	populateTime[datetime.RFC3339](objectMap, "issueEndDate", m.IssueEndDate)
-	populateTime[datetime.RFC3339](objectMap, "issueStartDate", m.IssueStartDate)
+	populateTime[datetime.RFC3339](objectMap, "issueEndDate", m.IssueEndDate, true)
+	populateTime[datetime.RFC3339](objectMap, "issueStartDate", m.IssueStartDate, true)
 	populate(objectMap, "mccIssueType", m.MccIssueType)
 	populate(objectMap, "toastString", m.ToastString)
 	return json.Marshal(objectMap)
@@ -2100,10 +2100,10 @@ func (p *ProxyURLConfiguration) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type SystemData.
 func (s SystemData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populateTime[datetime.RFC3339](objectMap, "createdAt", s.CreatedAt)
+	populateTime[datetime.RFC3339](objectMap, "createdAt", s.CreatedAt, true)
 	populate(objectMap, "createdBy", s.CreatedBy)
 	populate(objectMap, "createdByType", s.CreatedByType)
-	populateTime[datetime.RFC3339](objectMap, "lastModifiedAt", s.LastModifiedAt)
+	populateTime[datetime.RFC3339](objectMap, "lastModifiedAt", s.LastModifiedAt, true)
 	populate(objectMap, "lastModifiedBy", s.LastModifiedBy)
 	populate(objectMap, "lastModifiedByType", s.LastModifiedByType)
 	return json.Marshal(objectMap)
@@ -2154,13 +2154,17 @@ func populate(m map[string]any, k string, v any) {
 	}
 }
 
-func populateTime[T dateTimeConstraints](m map[string]any, k string, t *time.Time) {
+func populateTime[T dateTimeConstraints](m map[string]any, k string, t *time.Time, utc bool) {
 	if t == nil {
 		return
 	} else if azcore.IsNullValue(t) {
 		m[k] = nil
 	} else if !reflect.ValueOf(t).IsNil() {
-		newTime := T(*t)
+		tt := *t
+		if utc {
+			tt = tt.UTC()
+		}
+		newTime := T(tt)
 		m[k] = (*T)(&newTime)
 	}
 }
@@ -2180,7 +2184,7 @@ func unpopulate(data json.RawMessage, fn string, v any) error {
 		return nil
 	}
 	if err := json.Unmarshal(data, v); err != nil {
-		return fmt.Errorf("struct field %s: %v", fn, err)
+		return fmt.Errorf("struct field %s: %s", fn, err.Error())
 	}
 	return nil
 }
@@ -2191,7 +2195,7 @@ func unpopulateTime[T dateTimeConstraints](data json.RawMessage, fn string, t **
 	}
 	var aux T
 	if err := json.Unmarshal(data, &aux); err != nil {
-		return fmt.Errorf("struct field %s: %v", fn, err)
+		return fmt.Errorf("struct field %s: %s", fn, err.Error())
 	}
 	newTime := time.Time(aux)
 	*t = &newTime

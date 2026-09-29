@@ -115,10 +115,10 @@ func ExampleRecoveryResourcesClient_Get() {
 	// 		SystemData: &armresiliencemanagement.SystemData{
 	// 			CreatedBy: to.Ptr("wmfonl"),
 	// 			CreatedByType: to.Ptr(armresiliencemanagement.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-02-15T09:19:54.175Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2025, time.February, 15, 9, 19, 54, 175000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("paiugykk"),
 	// 			LastModifiedByType: to.Ptr(armresiliencemanagement.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-02-15T09:19:54.176Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.February, 15, 9, 19, 54, 176000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -219,10 +219,10 @@ func ExampleRecoveryResourcesClient_NewListPager() {
 		// 				SystemData: &armresiliencemanagement.SystemData{
 		// 					CreatedBy: to.Ptr("wmfonl"),
 		// 					CreatedByType: to.Ptr(armresiliencemanagement.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-02-15T09:19:54.175Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2025, time.February, 15, 9, 19, 54, 175000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("paiugykk"),
 		// 					LastModifiedByType: to.Ptr(armresiliencemanagement.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-02-15T09:19:54.176Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2025, time.February, 15, 9, 19, 54, 176000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},

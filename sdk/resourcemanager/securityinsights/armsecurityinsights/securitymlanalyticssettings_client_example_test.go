@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-07-01-preview/securityMLAnalyticsSettings/CreateAnomalySecurityMLAnalyticsSetting.json
+// Generated from example definition: 2025-10-01-preview/securityMLAnalyticsSettings/CreateAnomalySecurityMLAnalyticsSetting.json
 func ExampleSecurityMLAnalyticsSettingsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -161,7 +161,7 @@ func ExampleSecurityMLAnalyticsSettingsClient_CreateOrUpdate() {
 	// 			Enabled: to.Ptr(true),
 	// 			Frequency: to.Ptr("PT1H"),
 	// 			IsDefaultSettings: to.Ptr(true),
-	// 			LastModifiedUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-10-20T13:17:11.5340061Z"); return t}()),
+	// 			LastModifiedUTC: to.Ptr(time.Date(2021, time.October, 20, 13, 17, 11, 534006100, time.UTC)),
 	// 			RequiredDataConnectors: []*armsecurityinsights.SecurityMLAnalyticsSettingsDataSource{
 	// 				{
 	// 					ConnectorID: to.Ptr("AWS"),
@@ -185,7 +185,7 @@ func ExampleSecurityMLAnalyticsSettingsClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/securityMLAnalyticsSettings/DeleteSecurityMLAnalyticsSetting.json
+// Generated from example definition: 2025-10-01-preview/securityMLAnalyticsSettings/DeleteSecurityMLAnalyticsSetting.json
 func ExampleSecurityMLAnalyticsSettingsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -207,7 +207,7 @@ func ExampleSecurityMLAnalyticsSettingsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/securityMLAnalyticsSettings/GetAnomalySecurityMLAnalyticsSetting.json
+// Generated from example definition: 2025-10-01-preview/securityMLAnalyticsSettings/GetAnomalySecurityMLAnalyticsSetting.json
 func ExampleSecurityMLAnalyticsSettingsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -283,7 +283,7 @@ func ExampleSecurityMLAnalyticsSettingsClient_Get() {
 	// 			Enabled: to.Ptr(true),
 	// 			Frequency: to.Ptr("PT1H"),
 	// 			IsDefaultSettings: to.Ptr(true),
-	// 			LastModifiedUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-10-20T13:13:11.5340061Z"); return t}()),
+	// 			LastModifiedUTC: to.Ptr(time.Date(2021, time.October, 20, 13, 13, 11, 534006100, time.UTC)),
 	// 			RequiredDataConnectors: []*armsecurityinsights.SecurityMLAnalyticsSettingsDataSource{
 	// 				{
 	// 					ConnectorID: to.Ptr("AWS"),
@@ -307,7 +307,7 @@ func ExampleSecurityMLAnalyticsSettingsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/securityMLAnalyticsSettings/GetAllSecurityMLAnalyticsSettings.json
+// Generated from example definition: 2025-10-01-preview/securityMLAnalyticsSettings/GetAllSecurityMLAnalyticsSettings.json
 func ExampleSecurityMLAnalyticsSettingsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -389,7 +389,7 @@ func ExampleSecurityMLAnalyticsSettingsClient_NewListPager() {
 		// 					Enabled: to.Ptr(true),
 		// 					Frequency: to.Ptr("PT1H"),
 		// 					IsDefaultSettings: to.Ptr(true),
-		// 					LastModifiedUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-10-20T13:13:11.5340061Z"); return t}()),
+		// 					LastModifiedUTC: to.Ptr(time.Date(2021, time.October, 20, 13, 13, 11, 534006100, time.UTC)),
 		// 					RequiredDataConnectors: []*armsecurityinsights.SecurityMLAnalyticsSettingsDataSource{
 		// 						{
 		// 							ConnectorID: to.Ptr("AWS"),

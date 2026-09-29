@@ -6,7 +6,7 @@ package armnetwork
 
 const (
 	version20181001 string = "2018-10-01"
-	version20250901 string = "2025-09-01"
+	version20260101 string = "2026-01-01"
 )
 
 // Access - Access to be allowed or denied.
@@ -233,6 +233,39 @@ func PossibleAdvertisedPublicPrefixPropertiesValidationStateValues() []Advertise
 		AdvertisedPublicPrefixPropertiesValidationStateSignatureVerificationFailed,
 		AdvertisedPublicPrefixPropertiesValidationStateValidationFailed,
 		AdvertisedPublicPrefixPropertiesValidationStateValidationNeeded,
+	}
+}
+
+// ApplicationGatewayAdvancedRoutingConditionType - The type of request property that an advanced routing condition is evaluated
+// against.
+type ApplicationGatewayAdvancedRoutingConditionType string
+
+const (
+	// ApplicationGatewayAdvancedRoutingConditionTypeClientIP - The condition is evaluated against the client IP address. propertyName
+	// and propertyValueMatcher are not applicable.
+	ApplicationGatewayAdvancedRoutingConditionTypeClientIP ApplicationGatewayAdvancedRoutingConditionType = "ClientIP"
+	// ApplicationGatewayAdvancedRoutingConditionTypeHeader - The condition is evaluated against an HTTP request header identified
+	// by propertyName.
+	ApplicationGatewayAdvancedRoutingConditionTypeHeader ApplicationGatewayAdvancedRoutingConditionType = "Header"
+	// ApplicationGatewayAdvancedRoutingConditionTypeMethod - The condition is evaluated against the HTTP method. propertyName
+	// and propertyValueMatcher are not applicable.
+	ApplicationGatewayAdvancedRoutingConditionTypeMethod ApplicationGatewayAdvancedRoutingConditionType = "Method"
+	// ApplicationGatewayAdvancedRoutingConditionTypePath - The condition is evaluated against the request path. propertyName
+	// is not applicable.
+	ApplicationGatewayAdvancedRoutingConditionTypePath ApplicationGatewayAdvancedRoutingConditionType = "Path"
+	// ApplicationGatewayAdvancedRoutingConditionTypeQueryString - The condition is evaluated against a query string argument
+	// identified by propertyName.
+	ApplicationGatewayAdvancedRoutingConditionTypeQueryString ApplicationGatewayAdvancedRoutingConditionType = "QueryString"
+)
+
+// PossibleApplicationGatewayAdvancedRoutingConditionTypeValues returns the possible values for the ApplicationGatewayAdvancedRoutingConditionType const type.
+func PossibleApplicationGatewayAdvancedRoutingConditionTypeValues() []ApplicationGatewayAdvancedRoutingConditionType {
+	return []ApplicationGatewayAdvancedRoutingConditionType{
+		ApplicationGatewayAdvancedRoutingConditionTypeClientIP,
+		ApplicationGatewayAdvancedRoutingConditionTypeHeader,
+		ApplicationGatewayAdvancedRoutingConditionTypeMethod,
+		ApplicationGatewayAdvancedRoutingConditionTypePath,
+		ApplicationGatewayAdvancedRoutingConditionTypeQueryString,
 	}
 }
 
@@ -517,6 +550,8 @@ func PossibleApplicationGatewayRedirectTypeValues() []ApplicationGatewayRedirect
 type ApplicationGatewayRequestRoutingRuleType string
 
 const (
+	// ApplicationGatewayRequestRoutingRuleTypeAdvancedRouting - AdvancedRouting
+	ApplicationGatewayRequestRoutingRuleTypeAdvancedRouting ApplicationGatewayRequestRoutingRuleType = "AdvancedRouting"
 	// ApplicationGatewayRequestRoutingRuleTypeBasic - Basic
 	ApplicationGatewayRequestRoutingRuleTypeBasic ApplicationGatewayRequestRoutingRuleType = "Basic"
 	// ApplicationGatewayRequestRoutingRuleTypePathBasedRouting - PathBasedRouting
@@ -526,6 +561,7 @@ const (
 // PossibleApplicationGatewayRequestRoutingRuleTypeValues returns the possible values for the ApplicationGatewayRequestRoutingRuleType const type.
 func PossibleApplicationGatewayRequestRoutingRuleTypeValues() []ApplicationGatewayRequestRoutingRuleType {
 	return []ApplicationGatewayRequestRoutingRuleType{
+		ApplicationGatewayRequestRoutingRuleTypeAdvancedRouting,
 		ApplicationGatewayRequestRoutingRuleTypeBasic,
 		ApplicationGatewayRequestRoutingRuleTypePathBasedRouting,
 	}
@@ -579,6 +615,10 @@ type ApplicationGatewaySKUName string
 const (
 	// ApplicationGatewaySKUNameBasic - Basic
 	ApplicationGatewaySKUNameBasic ApplicationGatewaySKUName = "Basic"
+	// ApplicationGatewaySKUNameBasicV2 - Basic tier Application Gateway.
+	ApplicationGatewaySKUNameBasicV2 ApplicationGatewaySKUName = "Basic_v2"
+	// ApplicationGatewaySKUNameBasicWAFV2 - Basic tier Application Gateway with WAF enabled.
+	ApplicationGatewaySKUNameBasicWAFV2 ApplicationGatewaySKUName = "Basic_WAF_v2"
 	// ApplicationGatewaySKUNameStandardLarge - Standard_Large
 	ApplicationGatewaySKUNameStandardLarge ApplicationGatewaySKUName = "Standard_Large"
 	// ApplicationGatewaySKUNameStandardMedium - Standard_Medium
@@ -599,6 +639,8 @@ const (
 func PossibleApplicationGatewaySKUNameValues() []ApplicationGatewaySKUName {
 	return []ApplicationGatewaySKUName{
 		ApplicationGatewaySKUNameBasic,
+		ApplicationGatewaySKUNameBasicV2,
+		ApplicationGatewaySKUNameBasicWAFV2,
 		ApplicationGatewaySKUNameStandardLarge,
 		ApplicationGatewaySKUNameStandardMedium,
 		ApplicationGatewaySKUNameStandardSmall,
@@ -783,6 +825,10 @@ type ApplicationGatewayTier string
 const (
 	// ApplicationGatewayTierBasic - Basic
 	ApplicationGatewayTierBasic ApplicationGatewayTier = "Basic"
+	// ApplicationGatewayTierBasicV2 - Basic tier Application Gateway.
+	ApplicationGatewayTierBasicV2 ApplicationGatewayTier = "Basic_v2"
+	// ApplicationGatewayTierBasicWAFV2 - Basic tier Application Gateway with WAF enabled.
+	ApplicationGatewayTierBasicWAFV2 ApplicationGatewayTier = "Basic_WAF_v2"
 	// ApplicationGatewayTierStandard - Standard
 	ApplicationGatewayTierStandard ApplicationGatewayTier = "Standard"
 	// ApplicationGatewayTierStandardV2 - Standard_v2
@@ -797,6 +843,8 @@ const (
 func PossibleApplicationGatewayTierValues() []ApplicationGatewayTier {
 	return []ApplicationGatewayTier{
 		ApplicationGatewayTierBasic,
+		ApplicationGatewayTierBasicV2,
+		ApplicationGatewayTierBasicWAFV2,
 		ApplicationGatewayTierStandard,
 		ApplicationGatewayTierStandardV2,
 		ApplicationGatewayTierWAF,
@@ -869,6 +917,31 @@ func PossibleApplicationGatewayWafRuleActionTypesValues() []ApplicationGatewayWa
 		ApplicationGatewayWafRuleActionTypesBlock,
 		ApplicationGatewayWafRuleActionTypesLog,
 		ApplicationGatewayWafRuleActionTypesNone,
+	}
+}
+
+// ApplicationGatewayWafRuleParanoiaLevel - OWASP CRS paranoia level of a managed rule. Applicable only for DRS and OWASP
+// rules.
+type ApplicationGatewayWafRuleParanoiaLevel string
+
+const (
+	// ApplicationGatewayWafRuleParanoiaLevelPL1 - Baseline detection rules.
+	ApplicationGatewayWafRuleParanoiaLevelPL1 ApplicationGatewayWafRuleParanoiaLevel = "PL1"
+	// ApplicationGatewayWafRuleParanoiaLevelPL2 - Adds stricter detection rules.
+	ApplicationGatewayWafRuleParanoiaLevelPL2 ApplicationGatewayWafRuleParanoiaLevel = "PL2"
+	// ApplicationGatewayWafRuleParanoiaLevelPL3 - Adds aggressive detection rules.
+	ApplicationGatewayWafRuleParanoiaLevelPL3 ApplicationGatewayWafRuleParanoiaLevel = "PL3"
+	// ApplicationGatewayWafRuleParanoiaLevelPL4 - Strictest detection rules.
+	ApplicationGatewayWafRuleParanoiaLevelPL4 ApplicationGatewayWafRuleParanoiaLevel = "PL4"
+)
+
+// PossibleApplicationGatewayWafRuleParanoiaLevelValues returns the possible values for the ApplicationGatewayWafRuleParanoiaLevel const type.
+func PossibleApplicationGatewayWafRuleParanoiaLevelValues() []ApplicationGatewayWafRuleParanoiaLevel {
+	return []ApplicationGatewayWafRuleParanoiaLevel{
+		ApplicationGatewayWafRuleParanoiaLevelPL1,
+		ApplicationGatewayWafRuleParanoiaLevelPL2,
+		ApplicationGatewayWafRuleParanoiaLevelPL3,
+		ApplicationGatewayWafRuleParanoiaLevelPL4,
 	}
 }
 
@@ -2019,24 +2092,6 @@ func PossibleEffectiveSecurityRuleProtocolValues() []EffectiveSecurityRuleProtoc
 		EffectiveSecurityRuleProtocolAll,
 		EffectiveSecurityRuleProtocolTCP,
 		EffectiveSecurityRuleProtocolUDP,
-	}
-}
-
-// EnableOnlyIPv6PeeringState - The state of IPv6 peering.
-type EnableOnlyIPv6PeeringState string
-
-const (
-	// EnableOnlyIPv6PeeringStateDisabled - IPv6 peering is disabled.
-	EnableOnlyIPv6PeeringStateDisabled EnableOnlyIPv6PeeringState = "Disabled"
-	// EnableOnlyIPv6PeeringStateEnabled - IPv6 peering is enabled.
-	EnableOnlyIPv6PeeringStateEnabled EnableOnlyIPv6PeeringState = "Enabled"
-)
-
-// PossibleEnableOnlyIPv6PeeringStateValues returns the possible values for the EnableOnlyIPv6PeeringState const type.
-func PossibleEnableOnlyIPv6PeeringStateValues() []EnableOnlyIPv6PeeringState {
-	return []EnableOnlyIPv6PeeringState{
-		EnableOnlyIPv6PeeringStateDisabled,
-		EnableOnlyIPv6PeeringStateEnabled,
 	}
 }
 
@@ -4222,6 +4277,28 @@ func PossibleOfficeTrafficCategoryValues() []OfficeTrafficCategory {
 	}
 }
 
+// OnUnauthenticatedRequest - Action to take when a request is unauthenticated.
+type OnUnauthenticatedRequest string
+
+const (
+	// OnUnauthenticatedRequestAllow - Allow the request to pass through without authentication.
+	OnUnauthenticatedRequestAllow OnUnauthenticatedRequest = "allow"
+	// OnUnauthenticatedRequestAuthenticate - Redirect the request to the authentication provider. Only valid for the user authentication
+	// capability.
+	OnUnauthenticatedRequestAuthenticate OnUnauthenticatedRequest = "authenticate"
+	// OnUnauthenticatedRequestDeny - Deny the request when no credential is presented.
+	OnUnauthenticatedRequestDeny OnUnauthenticatedRequest = "deny"
+)
+
+// PossibleOnUnauthenticatedRequestValues returns the possible values for the OnUnauthenticatedRequest const type.
+func PossibleOnUnauthenticatedRequestValues() []OnUnauthenticatedRequest {
+	return []OnUnauthenticatedRequest{
+		OnUnauthenticatedRequestAllow,
+		OnUnauthenticatedRequestAuthenticate,
+		OnUnauthenticatedRequestDeny,
+	}
+}
+
 // Origin - The origin of the issue.
 type Origin string
 
@@ -5506,6 +5583,24 @@ func PossibleServiceUpdateActionValues() []ServiceUpdateAction {
 	}
 }
 
+// SessionRecordingIdentityType - The type of identity to use
+type SessionRecordingIdentityType string
+
+const (
+	// SessionRecordingIdentityTypeSystemAssigned - System assigned identity
+	SessionRecordingIdentityTypeSystemAssigned SessionRecordingIdentityType = "SystemAssigned"
+	// SessionRecordingIdentityTypeUserAssigned - User assigned identity
+	SessionRecordingIdentityTypeUserAssigned SessionRecordingIdentityType = "UserAssigned"
+)
+
+// PossibleSessionRecordingIdentityTypeValues returns the possible values for the SessionRecordingIdentityType const type.
+func PossibleSessionRecordingIdentityTypeValues() []SessionRecordingIdentityType {
+	return []SessionRecordingIdentityType{
+		SessionRecordingIdentityTypeSystemAssigned,
+		SessionRecordingIdentityTypeUserAssigned,
+	}
+}
+
 // Severity - The severity of the issue.
 type Severity string
 
@@ -5687,6 +5782,21 @@ func PossibleUseHubGatewayValues() []UseHubGateway {
 	return []UseHubGateway{
 		UseHubGatewayFalse,
 		UseHubGatewayTrue,
+	}
+}
+
+// UserTrustProviderType - Type of the user trust provider.
+type UserTrustProviderType string
+
+const (
+	// UserTrustProviderTypeEntra - Microsoft Entra trust provider type.
+	UserTrustProviderTypeEntra UserTrustProviderType = "entra"
+)
+
+// PossibleUserTrustProviderTypeValues returns the possible values for the UserTrustProviderType const type.
+func PossibleUserTrustProviderTypeValues() []UserTrustProviderType {
+	return []UserTrustProviderType{
+		UserTrustProviderTypeEntra,
 	}
 }
 
@@ -6108,15 +6218,23 @@ func PossibleVirtualNetworkGatewayMigrationStateValues() []VirtualNetworkGateway
 type VirtualNetworkGatewayMigrationType string
 
 const (
+	// VirtualNetworkGatewayMigrationTypeMigrateGatewayForPointToSiteProfile - Indicates a migration process for the virtual network
+	// gateway's point-to-site profile.
+	VirtualNetworkGatewayMigrationTypeMigrateGatewayForPointToSiteProfile VirtualNetworkGatewayMigrationType = "MigrateGatewayForPointToSiteProfile"
 	// VirtualNetworkGatewayMigrationTypeUpgradeDeploymentToStandardIP - Indicates that it is a migration process from basic IP
 	// CSES to standard IP VMSS.
 	VirtualNetworkGatewayMigrationTypeUpgradeDeploymentToStandardIP VirtualNetworkGatewayMigrationType = "UpgradeDeploymentToStandardIP"
+	// VirtualNetworkGatewayMigrationTypeUpgradeGatewayToDualStack - Indicates a migration process to upgrade the virtual network
+	// gateway to dual stack (IPv4 and IPv6).
+	VirtualNetworkGatewayMigrationTypeUpgradeGatewayToDualStack VirtualNetworkGatewayMigrationType = "UpgradeGatewayToDualStack"
 )
 
 // PossibleVirtualNetworkGatewayMigrationTypeValues returns the possible values for the VirtualNetworkGatewayMigrationType const type.
 func PossibleVirtualNetworkGatewayMigrationTypeValues() []VirtualNetworkGatewayMigrationType {
 	return []VirtualNetworkGatewayMigrationType{
+		VirtualNetworkGatewayMigrationTypeMigrateGatewayForPointToSiteProfile,
 		VirtualNetworkGatewayMigrationTypeUpgradeDeploymentToStandardIP,
+		VirtualNetworkGatewayMigrationTypeUpgradeGatewayToDualStack,
 	}
 }
 
@@ -6572,6 +6690,24 @@ func PossibleWebApplicationFirewallPolicyResourceStateValues() []WebApplicationF
 		WebApplicationFirewallPolicyResourceStateDisabling,
 		WebApplicationFirewallPolicyResourceStateEnabled,
 		WebApplicationFirewallPolicyResourceStateEnabling,
+	}
+}
+
+// WebApplicationFirewallPolicyTier - Tier of a web application firewall policy.
+type WebApplicationFirewallPolicyTier string
+
+const (
+	// WebApplicationFirewallPolicyTierBasic - Basic tier web application firewall policy.
+	WebApplicationFirewallPolicyTierBasic WebApplicationFirewallPolicyTier = "Basic"
+	// WebApplicationFirewallPolicyTierStandard - Standard tier web application firewall policy.
+	WebApplicationFirewallPolicyTierStandard WebApplicationFirewallPolicyTier = "Standard"
+)
+
+// PossibleWebApplicationFirewallPolicyTierValues returns the possible values for the WebApplicationFirewallPolicyTier const type.
+func PossibleWebApplicationFirewallPolicyTierValues() []WebApplicationFirewallPolicyTier {
+	return []WebApplicationFirewallPolicyTier{
+		WebApplicationFirewallPolicyTierBasic,
+		WebApplicationFirewallPolicyTierStandard,
 	}
 }
 

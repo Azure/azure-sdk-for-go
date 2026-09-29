@@ -1,5 +1,24 @@
 # Release History
 
+## 0.4.0 (2026-08-25)
+### Breaking Changes
+
+- Type of `DependenciesSignalGroupV2.AggregationType` has been changed from `*DependenciesAggregationType` to `*AggregationType`
+- Type of `DependenciesSignalGroupV2.Unit` has been changed from `*DependenciesAggregationUnit` to `*AggregationUnit`
+- `HealthStateDeleted` from enum `HealthState` has been removed
+- Enum `DependenciesAggregationType` has been removed
+- Enum `DependenciesAggregationUnit` has been removed
+- Enum `LookBackWindow` has been removed
+- Field `LookBackWindow` of struct `ThresholdRuleV2` has been removed
+
+### Features Added
+
+- New enum type `AggregationType` with values `AggregationTypeBestOf`, `AggregationTypeMaxNotHealthy`, `AggregationTypeMinHealthy`, `AggregationTypeWorstOf`
+- New enum type `AggregationUnit` with values `AggregationUnitAbsolute`, `AggregationUnitPercentage`
+- New struct `SignalAggregationGroup`
+- New field `SignalAggregationGroups` in struct `EntityProperties`
+
+
 ## 0.3.0 (2026-07-12)
 ### Breaking Changes
 

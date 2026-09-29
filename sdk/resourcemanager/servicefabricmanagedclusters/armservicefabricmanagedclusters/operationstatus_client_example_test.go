@@ -32,8 +32,8 @@ func ExampleOperationStatusClient_Get_errorResponseDescribingWhyTheOperationFail
 	// res = armservicefabricmanagedclusters.OperationStatusClientGetResponse{
 	// 	LongRunningOperationResult: armservicefabricmanagedclusters.LongRunningOperationResult{
 	// 		Name: to.Ptr("00000000-0000-0000-0000-000000001234"),
-	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-01-03T23:58:02.2501337Z"); return t}()),
-	// 		EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-01-04T00:13:03.2790951Z"); return t}()),
+	// 		StartTime: to.Ptr(time.Date(2022, time.January, 3, 23, 58, 2, 250133700, time.UTC)),
+	// 		EndTime: to.Ptr(time.Date(2022, time.January, 4, 0, 13, 3, 279095100, time.UTC)),
 	// 		PercentComplete: to.Ptr[float64](100),
 	// 		Status: to.Ptr("Failed"),
 	// 		Error: &armservicefabricmanagedclusters.ErrorModelError{
@@ -65,8 +65,8 @@ func ExampleOperationStatusClient_Get_okTheRequestHasSucceeded() {
 	// res = armservicefabricmanagedclusters.OperationStatusClientGetResponse{
 	// 	LongRunningOperationResult: armservicefabricmanagedclusters.LongRunningOperationResult{
 	// 		Name: to.Ptr("00000000-0000-0000-0000-000000001234"),
-	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-01-03T23:58:02.2501337Z"); return t}()),
-	// 		EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-01-04T00:13:03.2790951Z"); return t}()),
+	// 		StartTime: to.Ptr(time.Date(2022, time.January, 3, 23, 58, 2, 250133700, time.UTC)),
+	// 		EndTime: to.Ptr(time.Date(2022, time.January, 4, 0, 13, 3, 279095100, time.UTC)),
 	// 		PercentComplete: to.Ptr[float64](100),
 	// 		Status: to.Ptr("Succeeded"),
 	// 	},

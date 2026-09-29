@@ -60,8 +60,8 @@ func ExampleRecoveryJobsClient_Get() {
 	// 			ResourceID: to.Ptr("/providers/Microsoft.Management/serviceGroups/sampleServiceGroupName/providers/Microsoft.AzureResilienceManagement/recoveryPlans/samplePlanName"),
 	// 			Operation: to.Ptr("Recovery"),
 	// 			Status: to.Ptr(armresiliencemanagement.JobStatusNotStarted),
-	// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-03-09T10:14:25.588Z"); return t}()),
-	// 			EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-03-09T10:14:25.588Z"); return t}()),
+	// 			StartTime: to.Ptr(time.Date(2025, time.March, 9, 10, 14, 25, 588000000, time.UTC)),
+	// 			EndTime: to.Ptr(time.Date(2025, time.March, 9, 10, 14, 25, 588000000, time.UTC)),
 	// 			Duration: to.Ptr("PT44M"),
 	// 			JobType: to.Ptr(armresiliencemanagement.JobTypeRecoveryPlan),
 	// 			TriggeredBy: to.Ptr(armresiliencemanagement.JobTriggeredBySystem),
@@ -75,8 +75,8 @@ func ExampleRecoveryJobsClient_Get() {
 	// 							to.Ptr("/providers/Microsoft.Management/serviceGroups/sampleServiceGroupName/providers/Microsoft.AzureResilienceManagement/recoveryPlans/samplePlanName/recoveryJobs/dc6998ef-80ed-4001-b6d4-5325a0309beh"),
 	// 						},
 	// 						Status: to.Ptr(armresiliencemanagement.JobStatusNotStarted),
-	// 						StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-05-15T12:20:34.443Z"); return t}()),
-	// 						EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-05-15T12:20:34.443Z"); return t}()),
+	// 						StartTime: to.Ptr(time.Date(2025, time.May, 15, 12, 20, 34, 443000000, time.UTC)),
+	// 						EndTime: to.Ptr(time.Date(2025, time.May, 15, 12, 20, 34, 443000000, time.UTC)),
 	// 						ErrorDetails: &armresiliencemanagement.JobErrorInfo{
 	// 							ErrorCode: to.Ptr("qeh"),
 	// 							ErrorMessage: to.Ptr("xgtvlqabfcgszwkmqzlegdwtr"),
@@ -87,15 +87,15 @@ func ExampleRecoveryJobsClient_Get() {
 	// 						UserComments: []*armresiliencemanagement.JobUserComment{
 	// 							{
 	// 								CommentType: to.Ptr(armresiliencemanagement.CommentTypeDescription),
-	// 								CommentTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-05-15T12:20:34.406Z"); return t}()),
+	// 								CommentTime: to.Ptr(time.Date(2025, time.May, 15, 12, 20, 34, 406000000, time.UTC)),
 	// 								Comments: to.Ptr("lmmybouankjq"),
 	// 							},
 	// 						},
 	// 						SubTasksList: []*armresiliencemanagement.JobTaskDetail{
 	// 							{
 	// 								Status: to.Ptr(armresiliencemanagement.JobStatusNotStarted),
-	// 								StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-05-15T12:20:34.406Z"); return t}()),
-	// 								EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-05-15T12:20:34.406Z"); return t}()),
+	// 								StartTime: to.Ptr(time.Date(2025, time.May, 15, 12, 20, 34, 406000000, time.UTC)),
+	// 								EndTime: to.Ptr(time.Date(2025, time.May, 15, 12, 20, 34, 406000000, time.UTC)),
 	// 								Duration: to.Ptr("PT50M"),
 	// 								ErrorDetails: &armresiliencemanagement.JobErrorInfo{
 	// 									ErrorCode: to.Ptr("qeh"),
@@ -112,7 +112,7 @@ func ExampleRecoveryJobsClient_Get() {
 	// 								UserComments: []*armresiliencemanagement.JobUserComment{
 	// 									{
 	// 										CommentType: to.Ptr(armresiliencemanagement.CommentTypeDescription),
-	// 										CommentTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-05-15T12:20:34.406Z"); return t}()),
+	// 										CommentTime: to.Ptr(time.Date(2025, time.May, 15, 12, 20, 34, 406000000, time.UTC)),
 	// 										Comments: to.Ptr("lmmybouankjq"),
 	// 									},
 	// 								},
@@ -134,8 +134,8 @@ func ExampleRecoveryJobsClient_Get() {
 	// 			RetryDetails: []*armresiliencemanagement.JobRetryDetails{
 	// 				{
 	// 					Status: to.Ptr(armresiliencemanagement.JobStatusNotStarted),
-	// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-05-15T12:20:34.443Z"); return t}()),
-	// 					EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-05-15T12:20:34.443Z"); return t}()),
+	// 					StartTime: to.Ptr(time.Date(2025, time.May, 15, 12, 20, 34, 443000000, time.UTC)),
+	// 					EndTime: to.Ptr(time.Date(2025, time.May, 15, 12, 20, 34, 443000000, time.UTC)),
 	// 					Duration: to.Ptr("PT50M"),
 	// 					ErrorDetails: &armresiliencemanagement.JobErrorInfo{
 	// 						ErrorCode: to.Ptr("qeh"),
@@ -148,7 +148,7 @@ func ExampleRecoveryJobsClient_Get() {
 	// 					UserComments: []*armresiliencemanagement.JobUserComment{
 	// 						{
 	// 							CommentType: to.Ptr(armresiliencemanagement.CommentTypeDescription),
-	// 							CommentTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-05-15T12:21:00.000Z"); return t}()),
+	// 							CommentTime: to.Ptr(time.Date(2025, time.May, 15, 12, 21, 0, 0, time.UTC)),
 	// 							Comments: to.Ptr("Resuming after verification"),
 	// 						},
 	// 					},
@@ -157,7 +157,7 @@ func ExampleRecoveryJobsClient_Get() {
 	// 			UserComments: []*armresiliencemanagement.JobUserComment{
 	// 				{
 	// 					CommentType: to.Ptr(armresiliencemanagement.CommentTypeDescription),
-	// 					CommentTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-02-16T11:28:56.176Z"); return t}()),
+	// 					CommentTime: to.Ptr(time.Date(2026, time.February, 16, 11, 28, 56, 176000000, time.UTC)),
 	// 					Comments: to.Ptr("User comments"),
 	// 				},
 	// 			},
@@ -171,10 +171,10 @@ func ExampleRecoveryJobsClient_Get() {
 	// 		SystemData: &armresiliencemanagement.SystemData{
 	// 			CreatedBy: to.Ptr("sampleUser"),
 	// 			CreatedByType: to.Ptr(armresiliencemanagement.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-02-06T15:03:42.796Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2025, time.February, 6, 15, 3, 42, 796000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("sampleUser"),
 	// 			LastModifiedByType: to.Ptr(armresiliencemanagement.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-02-06T15:03:42.797Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.February, 6, 15, 3, 42, 797000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -211,8 +211,8 @@ func ExampleRecoveryJobsClient_NewListPager() {
 		// 					ResourceID: to.Ptr("/providers/Microsoft.Management/serviceGroups/sampleServiceGroupName/providers/Microsoft.AzureResilienceManagement/recoveryPlans/samplePlanName"),
 		// 					Operation: to.Ptr("Recovery"),
 		// 					Status: to.Ptr(armresiliencemanagement.JobStatusNotStarted),
-		// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-03-09T10:14:25.588Z"); return t}()),
-		// 					EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-03-09T10:14:25.588Z"); return t}()),
+		// 					StartTime: to.Ptr(time.Date(2025, time.March, 9, 10, 14, 25, 588000000, time.UTC)),
+		// 					EndTime: to.Ptr(time.Date(2025, time.March, 9, 10, 14, 25, 588000000, time.UTC)),
 		// 					Duration: to.Ptr("PT44M"),
 		// 					JobType: to.Ptr(armresiliencemanagement.JobTypeRecoveryPlan),
 		// 					TriggeredBy: to.Ptr(armresiliencemanagement.JobTriggeredBySystem),
@@ -226,8 +226,8 @@ func ExampleRecoveryJobsClient_NewListPager() {
 		// 									to.Ptr("/providers/Microsoft.Management/serviceGroups/sampleServiceGroupName/providers/Microsoft.AzureResilienceManagement/recoveryPlans/samplePlanName/recoveryJobs/dc6998ef-80ed-4001-b6d4-5325a0309beh"),
 		// 								},
 		// 								Status: to.Ptr(armresiliencemanagement.JobStatusNotStarted),
-		// 								StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-05-15T12:20:34.443Z"); return t}()),
-		// 								EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-05-15T12:20:34.443Z"); return t}()),
+		// 								StartTime: to.Ptr(time.Date(2025, time.May, 15, 12, 20, 34, 443000000, time.UTC)),
+		// 								EndTime: to.Ptr(time.Date(2025, time.May, 15, 12, 20, 34, 443000000, time.UTC)),
 		// 								ErrorDetails: &armresiliencemanagement.JobErrorInfo{
 		// 									ErrorCode: to.Ptr("qeh"),
 		// 									ErrorMessage: to.Ptr("xgtvlqabfcgszwkmqzlegdwtr"),
@@ -238,15 +238,15 @@ func ExampleRecoveryJobsClient_NewListPager() {
 		// 								UserComments: []*armresiliencemanagement.JobUserComment{
 		// 									{
 		// 										CommentType: to.Ptr(armresiliencemanagement.CommentTypeDescription),
-		// 										CommentTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-05-15T12:20:34.406Z"); return t}()),
+		// 										CommentTime: to.Ptr(time.Date(2025, time.May, 15, 12, 20, 34, 406000000, time.UTC)),
 		// 										Comments: to.Ptr("lmmybouankjq"),
 		// 									},
 		// 								},
 		// 								SubTasksList: []*armresiliencemanagement.JobTaskDetail{
 		// 									{
 		// 										Status: to.Ptr(armresiliencemanagement.JobStatusNotStarted),
-		// 										StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-05-15T12:20:34.406Z"); return t}()),
-		// 										EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-05-15T12:20:34.406Z"); return t}()),
+		// 										StartTime: to.Ptr(time.Date(2025, time.May, 15, 12, 20, 34, 406000000, time.UTC)),
+		// 										EndTime: to.Ptr(time.Date(2025, time.May, 15, 12, 20, 34, 406000000, time.UTC)),
 		// 										Duration: to.Ptr("PT50M"),
 		// 										ErrorDetails: &armresiliencemanagement.JobErrorInfo{
 		// 											ErrorCode: to.Ptr("qeh"),
@@ -263,7 +263,7 @@ func ExampleRecoveryJobsClient_NewListPager() {
 		// 										UserComments: []*armresiliencemanagement.JobUserComment{
 		// 											{
 		// 												CommentType: to.Ptr(armresiliencemanagement.CommentTypeDescription),
-		// 												CommentTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-05-15T12:20:34.406Z"); return t}()),
+		// 												CommentTime: to.Ptr(time.Date(2025, time.May, 15, 12, 20, 34, 406000000, time.UTC)),
 		// 												Comments: to.Ptr("lmmybouankjq"),
 		// 											},
 		// 										},
@@ -285,8 +285,8 @@ func ExampleRecoveryJobsClient_NewListPager() {
 		// 					RetryDetails: []*armresiliencemanagement.JobRetryDetails{
 		// 						{
 		// 							Status: to.Ptr(armresiliencemanagement.JobStatusNotStarted),
-		// 							StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-05-15T12:20:34.443Z"); return t}()),
-		// 							EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-05-15T12:20:34.443Z"); return t}()),
+		// 							StartTime: to.Ptr(time.Date(2025, time.May, 15, 12, 20, 34, 443000000, time.UTC)),
+		// 							EndTime: to.Ptr(time.Date(2025, time.May, 15, 12, 20, 34, 443000000, time.UTC)),
 		// 							Duration: to.Ptr("PT50M"),
 		// 							ErrorDetails: &armresiliencemanagement.JobErrorInfo{
 		// 								ErrorCode: to.Ptr("qeh"),
@@ -299,7 +299,7 @@ func ExampleRecoveryJobsClient_NewListPager() {
 		// 							UserComments: []*armresiliencemanagement.JobUserComment{
 		// 								{
 		// 									CommentType: to.Ptr(armresiliencemanagement.CommentTypeDescription),
-		// 									CommentTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-05-15T12:21:00.000Z"); return t}()),
+		// 									CommentTime: to.Ptr(time.Date(2025, time.May, 15, 12, 21, 0, 0, time.UTC)),
 		// 									Comments: to.Ptr("Resuming after verification"),
 		// 								},
 		// 							},
@@ -308,7 +308,7 @@ func ExampleRecoveryJobsClient_NewListPager() {
 		// 					UserComments: []*armresiliencemanagement.JobUserComment{
 		// 						{
 		// 							CommentType: to.Ptr(armresiliencemanagement.CommentTypeDescription),
-		// 							CommentTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-02-16T11:28:56.176Z"); return t}()),
+		// 							CommentTime: to.Ptr(time.Date(2026, time.February, 16, 11, 28, 56, 176000000, time.UTC)),
 		// 							Comments: to.Ptr("User comments"),
 		// 						},
 		// 					},
@@ -322,10 +322,10 @@ func ExampleRecoveryJobsClient_NewListPager() {
 		// 				SystemData: &armresiliencemanagement.SystemData{
 		// 					CreatedBy: to.Ptr("sampleUser"),
 		// 					CreatedByType: to.Ptr(armresiliencemanagement.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-02-06T15:03:42.796Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2025, time.February, 6, 15, 3, 42, 796000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("sampleUser"),
 		// 					LastModifiedByType: to.Ptr(armresiliencemanagement.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-02-06T15:03:42.797Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2025, time.February, 6, 15, 3, 42, 797000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},

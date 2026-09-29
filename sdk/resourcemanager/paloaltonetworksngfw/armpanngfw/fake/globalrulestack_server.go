@@ -173,7 +173,7 @@ func (g *GlobalRulestackServerTransport) dispatchBeginCommit(req *http.Request) 
 	}
 	beginCommit := g.beginCommit.get(req)
 	if beginCommit == nil {
-		const regexStr = `/providers/PaloAltoNetworks\.Cloudngfw/globalRulestacks/(?P<globalRulestackName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/commit`
+		const regexStr = `/providers/PaloAltoNetworks\.Cloudngfw/globalRulestacks/(?P<globalRulestackName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/commit`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 2 {
@@ -213,7 +213,7 @@ func (g *GlobalRulestackServerTransport) dispatchBeginCreateOrUpdate(req *http.R
 	}
 	beginCreateOrUpdate := g.beginCreateOrUpdate.get(req)
 	if beginCreateOrUpdate == nil {
-		const regexStr = `/providers/PaloAltoNetworks\.Cloudngfw/globalRulestacks/(?P<globalRulestackName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/providers/PaloAltoNetworks\.Cloudngfw/globalRulestacks/(?P<globalRulestackName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 2 {
@@ -257,7 +257,7 @@ func (g *GlobalRulestackServerTransport) dispatchBeginDelete(req *http.Request) 
 	}
 	beginDelete := g.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/providers/PaloAltoNetworks\.Cloudngfw/globalRulestacks/(?P<globalRulestackName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/providers/PaloAltoNetworks\.Cloudngfw/globalRulestacks/(?P<globalRulestackName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 2 {
@@ -295,7 +295,7 @@ func (g *GlobalRulestackServerTransport) dispatchGet(req *http.Request) (*http.R
 	if g.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/providers/PaloAltoNetworks\.Cloudngfw/globalRulestacks/(?P<globalRulestackName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/providers/PaloAltoNetworks\.Cloudngfw/globalRulestacks/(?P<globalRulestackName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 2 {
@@ -324,7 +324,7 @@ func (g *GlobalRulestackServerTransport) dispatchGetChangeLog(req *http.Request)
 	if g.srv.GetChangeLog == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetChangeLog not implemented")}
 	}
-	const regexStr = `/providers/PaloAltoNetworks\.Cloudngfw/globalRulestacks/(?P<globalRulestackName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/getChangeLog`
+	const regexStr = `/providers/PaloAltoNetworks\.Cloudngfw/globalRulestacks/(?P<globalRulestackName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/getChangeLog`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 2 {
@@ -380,7 +380,7 @@ func (g *GlobalRulestackServerTransport) dispatchListAdvancedSecurityObjects(req
 	if g.srv.ListAdvancedSecurityObjects == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ListAdvancedSecurityObjects not implemented")}
 	}
-	const regexStr = `/providers/PaloAltoNetworks\.Cloudngfw/globalRulestacks/(?P<globalRulestackName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/listAdvancedSecurityObjects`
+	const regexStr = `/providers/PaloAltoNetworks\.Cloudngfw/globalRulestacks/(?P<globalRulestackName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listAdvancedSecurityObjects`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 2 {
@@ -428,7 +428,7 @@ func (g *GlobalRulestackServerTransport) dispatchListAppIDs(req *http.Request) (
 	if g.srv.ListAppIDs == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ListAppIDs not implemented")}
 	}
-	const regexStr = `/providers/PaloAltoNetworks\.Cloudngfw/globalRulestacks/(?P<globalRulestackName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/listAppIds`
+	const regexStr = `/providers/PaloAltoNetworks\.Cloudngfw/globalRulestacks/(?P<globalRulestackName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listAppIds`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 2 {
@@ -480,7 +480,7 @@ func (g *GlobalRulestackServerTransport) dispatchListCountries(req *http.Request
 	if g.srv.ListCountries == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ListCountries not implemented")}
 	}
-	const regexStr = `/providers/PaloAltoNetworks\.Cloudngfw/globalRulestacks/(?P<globalRulestackName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/listCountries`
+	const regexStr = `/providers/PaloAltoNetworks\.Cloudngfw/globalRulestacks/(?P<globalRulestackName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listCountries`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 2 {
@@ -528,7 +528,7 @@ func (g *GlobalRulestackServerTransport) dispatchListFirewalls(req *http.Request
 	if g.srv.ListFirewalls == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ListFirewalls not implemented")}
 	}
-	const regexStr = `/providers/PaloAltoNetworks\.Cloudngfw/globalRulestacks/(?P<globalRulestackName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/listFirewalls`
+	const regexStr = `/providers/PaloAltoNetworks\.Cloudngfw/globalRulestacks/(?P<globalRulestackName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listFirewalls`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 2 {
@@ -557,7 +557,7 @@ func (g *GlobalRulestackServerTransport) dispatchListPredefinedURLCategories(req
 	if g.srv.ListPredefinedURLCategories == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ListPredefinedURLCategories not implemented")}
 	}
-	const regexStr = `/providers/PaloAltoNetworks\.Cloudngfw/globalRulestacks/(?P<globalRulestackName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/listPredefinedUrlCategories`
+	const regexStr = `/providers/PaloAltoNetworks\.Cloudngfw/globalRulestacks/(?P<globalRulestackName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listPredefinedUrlCategories`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 2 {
@@ -605,7 +605,7 @@ func (g *GlobalRulestackServerTransport) dispatchListSecurityServices(req *http.
 	if g.srv.ListSecurityServices == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ListSecurityServices not implemented")}
 	}
-	const regexStr = `/providers/PaloAltoNetworks\.Cloudngfw/globalRulestacks/(?P<globalRulestackName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/listSecurityServices`
+	const regexStr = `/providers/PaloAltoNetworks\.Cloudngfw/globalRulestacks/(?P<globalRulestackName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listSecurityServices`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 2 {
@@ -653,7 +653,7 @@ func (g *GlobalRulestackServerTransport) dispatchRevert(req *http.Request) (*htt
 	if g.srv.Revert == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Revert not implemented")}
 	}
-	const regexStr = `/providers/PaloAltoNetworks\.Cloudngfw/globalRulestacks/(?P<globalRulestackName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/revert`
+	const regexStr = `/providers/PaloAltoNetworks\.Cloudngfw/globalRulestacks/(?P<globalRulestackName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/revert`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 2 {
@@ -682,7 +682,7 @@ func (g *GlobalRulestackServerTransport) dispatchUpdate(req *http.Request) (*htt
 	if g.srv.Update == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Update not implemented")}
 	}
-	const regexStr = `/providers/PaloAltoNetworks\.Cloudngfw/globalRulestacks/(?P<globalRulestackName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/providers/PaloAltoNetworks\.Cloudngfw/globalRulestacks/(?P<globalRulestackName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 2 {

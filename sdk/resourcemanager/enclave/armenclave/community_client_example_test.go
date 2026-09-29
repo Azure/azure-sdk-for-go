@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-01-preview/Community_PostCheckAddressSpaceAvailability.json
+// Generated from example definition: 2026-04-01/Community_PostCheckAddressSpaceAvailability.json
 func ExampleCommunityClient_CheckAddressSpaceAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -50,7 +50,7 @@ func ExampleCommunityClient_CheckAddressSpaceAvailability() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/Community_CreateOrUpdate.json
+// Generated from example definition: 2026-04-01/Community_CreateOrUpdate.json
 func ExampleCommunityClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -563,10 +563,10 @@ func ExampleCommunityClient_BeginCreateOrUpdate() {
 	// 					SystemData: &armenclave.SystemData{
 	// 						CreatedBy: to.Ptr("myAlias"),
 	// 						CreatedByType: to.Ptr(armenclave.CreatedByTypeUser),
-	// 						CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-17T20:43:17.760Z"); return t}()),
+	// 						CreatedAt: to.Ptr(time.Date(2023, time.March, 17, 20, 43, 17, 760000000, time.UTC)),
 	// 						LastModifiedBy: to.Ptr("myAlias"),
 	// 						LastModifiedByType: to.Ptr(armenclave.CreatedByTypeUser),
-	// 						LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-17T20:43:17.760Z"); return t}()),
+	// 						LastModifiedAt: to.Ptr(time.Date(2023, time.March, 17, 20, 43, 17, 760000000, time.UTC)),
 	// 					},
 	// 				},
 	// 			},
@@ -585,16 +585,16 @@ func ExampleCommunityClient_BeginCreateOrUpdate() {
 	// 		SystemData: &armenclave.SystemData{
 	// 			CreatedBy: to.Ptr("myAlias"),
 	// 			CreatedByType: to.Ptr(armenclave.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-17T20:43:17.760Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2023, time.March, 17, 20, 43, 17, 760000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("myAlias"),
 	// 			LastModifiedByType: to.Ptr(armenclave.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-17T20:43:17.760Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.March, 17, 20, 43, 17, 760000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/Community_Delete.json
+// Generated from example definition: 2026-04-01/Community_Delete.json
 func ExampleCommunityClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -615,7 +615,7 @@ func ExampleCommunityClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-03-01-preview/Community_Get.json
+// Generated from example definition: 2026-04-01/Community_Get.json
 func ExampleCommunityClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -864,10 +864,10 @@ func ExampleCommunityClient_Get() {
 	// 					SystemData: &armenclave.SystemData{
 	// 						CreatedBy: to.Ptr("myAlias"),
 	// 						CreatedByType: to.Ptr(armenclave.CreatedByTypeUser),
-	// 						CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-17T20:43:17.760Z"); return t}()),
+	// 						CreatedAt: to.Ptr(time.Date(2023, time.March, 17, 20, 43, 17, 760000000, time.UTC)),
 	// 						LastModifiedBy: to.Ptr("myAlias"),
 	// 						LastModifiedByType: to.Ptr(armenclave.CreatedByTypeUser),
-	// 						LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-17T20:43:17.760Z"); return t}()),
+	// 						LastModifiedAt: to.Ptr(time.Date(2023, time.March, 17, 20, 43, 17, 760000000, time.UTC)),
 	// 					},
 	// 				},
 	// 			},
@@ -912,16 +912,16 @@ func ExampleCommunityClient_Get() {
 	// 		SystemData: &armenclave.SystemData{
 	// 			CreatedBy: to.Ptr("myAlias"),
 	// 			CreatedByType: to.Ptr(armenclave.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-17T20:43:17.760Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2023, time.March, 17, 20, 43, 17, 760000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("myAlias"),
 	// 			LastModifiedByType: to.Ptr(armenclave.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-17T20:43:17.760Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.March, 17, 20, 43, 17, 760000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/Community_ListByResourceGroup.json
+// Generated from example definition: 2026-04-01/Community_ListByResourceGroup.json
 func ExampleCommunityClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1169,10 +1169,10 @@ func ExampleCommunityClient_NewListByResourceGroupPager() {
 		// 							SystemData: &armenclave.SystemData{
 		// 								CreatedBy: to.Ptr("myAlias"),
 		// 								CreatedByType: to.Ptr(armenclave.CreatedByTypeUser),
-		// 								CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-17T20:43:17.760Z"); return t}()),
+		// 								CreatedAt: to.Ptr(time.Date(2023, time.March, 17, 20, 43, 17, 760000000, time.UTC)),
 		// 								LastModifiedBy: to.Ptr("myAlias"),
 		// 								LastModifiedByType: to.Ptr(armenclave.CreatedByTypeUser),
-		// 								LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-17T20:43:17.760Z"); return t}()),
+		// 								LastModifiedAt: to.Ptr(time.Date(2023, time.March, 17, 20, 43, 17, 760000000, time.UTC)),
 		// 							},
 		// 						},
 		// 					},
@@ -1191,10 +1191,10 @@ func ExampleCommunityClient_NewListByResourceGroupPager() {
 		// 				SystemData: &armenclave.SystemData{
 		// 					CreatedBy: to.Ptr("myAlias"),
 		// 					CreatedByType: to.Ptr(armenclave.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-17T20:43:17.760Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2023, time.March, 17, 20, 43, 17, 760000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("myAlias"),
 		// 					LastModifiedByType: to.Ptr(armenclave.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-17T20:43:17.760Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2023, time.March, 17, 20, 43, 17, 760000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -1204,7 +1204,7 @@ func ExampleCommunityClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-01-preview/Community_ListBySubscription.json
+// Generated from example definition: 2026-04-01/Community_ListBySubscription.json
 func ExampleCommunityClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1452,10 +1452,10 @@ func ExampleCommunityClient_NewListBySubscriptionPager() {
 		// 							SystemData: &armenclave.SystemData{
 		// 								CreatedBy: to.Ptr("myAlias"),
 		// 								CreatedByType: to.Ptr(armenclave.CreatedByTypeUser),
-		// 								CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-17T20:43:17.760Z"); return t}()),
+		// 								CreatedAt: to.Ptr(time.Date(2023, time.March, 17, 20, 43, 17, 760000000, time.UTC)),
 		// 								LastModifiedBy: to.Ptr("myAlias"),
 		// 								LastModifiedByType: to.Ptr(armenclave.CreatedByTypeUser),
-		// 								LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-17T20:43:17.760Z"); return t}()),
+		// 								LastModifiedAt: to.Ptr(time.Date(2023, time.March, 17, 20, 43, 17, 760000000, time.UTC)),
 		// 							},
 		// 						},
 		// 					},
@@ -1474,10 +1474,10 @@ func ExampleCommunityClient_NewListBySubscriptionPager() {
 		// 				SystemData: &armenclave.SystemData{
 		// 					CreatedBy: to.Ptr("myAlias"),
 		// 					CreatedByType: to.Ptr(armenclave.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-17T20:43:17.760Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2023, time.March, 17, 20, 43, 17, 760000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("myAlias"),
 		// 					LastModifiedByType: to.Ptr(armenclave.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-17T20:43:17.760Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2023, time.March, 17, 20, 43, 17, 760000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -1487,7 +1487,7 @@ func ExampleCommunityClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-01-preview/Community_Update.json
+// Generated from example definition: 2026-04-01/Community_Update.json
 func ExampleCommunityClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1889,10 +1889,10 @@ func ExampleCommunityClient_BeginUpdate() {
 	// 					SystemData: &armenclave.SystemData{
 	// 						CreatedBy: to.Ptr("myAlias"),
 	// 						CreatedByType: to.Ptr(armenclave.CreatedByTypeUser),
-	// 						CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-17T20:43:17.760Z"); return t}()),
+	// 						CreatedAt: to.Ptr(time.Date(2023, time.March, 17, 20, 43, 17, 760000000, time.UTC)),
 	// 						LastModifiedBy: to.Ptr("myAlias"),
 	// 						LastModifiedByType: to.Ptr(armenclave.CreatedByTypeUser),
-	// 						LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-17T20:43:17.760Z"); return t}()),
+	// 						LastModifiedAt: to.Ptr(time.Date(2023, time.March, 17, 20, 43, 17, 760000000, time.UTC)),
 	// 					},
 	// 				},
 	// 			},
@@ -1948,10 +1948,10 @@ func ExampleCommunityClient_BeginUpdate() {
 	// 		SystemData: &armenclave.SystemData{
 	// 			CreatedBy: to.Ptr("myAlias"),
 	// 			CreatedByType: to.Ptr(armenclave.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-17T20:43:17.760Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2023, time.March, 17, 20, 43, 17, 760000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("myAlias"),
 	// 			LastModifiedByType: to.Ptr(armenclave.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-17T20:43:17.760Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.March, 17, 20, 43, 17, 760000000, time.UTC)),
 	// 		},
 	// 	},
 	// }

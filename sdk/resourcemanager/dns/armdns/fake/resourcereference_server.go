@@ -80,7 +80,7 @@ func (r *ResourceReferenceServerTransport) dispatchGetByTargetResources(req *htt
 	if r.srv.GetByTargetResources == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetByTargetResources not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/getDnsResourceReference`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/getDnsResourceReference`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 2 {

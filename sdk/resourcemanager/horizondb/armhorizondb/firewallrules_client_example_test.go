@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-20-preview/FirewallRules_CreateOrUpdate.json
+// Generated from example definition: 2026-05-01-preview/FirewallRules_CreateOrUpdate.json
 func ExampleFirewallRulesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -55,7 +55,7 @@ func ExampleFirewallRulesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-01-20-preview/FirewallRules_Delete.json
+// Generated from example definition: 2026-05-01-preview/FirewallRules_Delete.json
 func ExampleFirewallRulesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -76,7 +76,7 @@ func ExampleFirewallRulesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-01-20-preview/FirewallRules_Get.json
+// Generated from example definition: 2026-05-01-preview/FirewallRules_Get.json
 func ExampleFirewallRulesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -109,7 +109,7 @@ func ExampleFirewallRulesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-20-preview/FirewallRules_List.json
+// Generated from example definition: 2026-05-01-preview/FirewallRules_List.json
 func ExampleFirewallRulesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

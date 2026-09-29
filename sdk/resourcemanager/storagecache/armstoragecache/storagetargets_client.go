@@ -30,6 +30,9 @@ type StorageTargetsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewStorageTargetsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*StorageTargetsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -85,8 +88,7 @@ func (client *StorageTargetsClient) createOrUpdate(ctx context.Context, resource
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -95,7 +97,7 @@ func (client *StorageTargetsClient) createOrUpdate(ctx context.Context, resource
 func (client *StorageTargetsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string, storagetarget StorageTarget, _ *StorageTargetsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageCache/caches/{cacheName}/storageTargets/{storageTargetName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -134,7 +136,7 @@ func (client *StorageTargetsClient) createOrUpdateCreateRequest(ctx context.Cont
 //     method.
 func (client *StorageTargetsClient) BeginDNSRefresh(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string, options *StorageTargetsClientBeginDNSRefreshOptions) (*runtime.Poller[StorageTargetsClientDNSRefreshResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.dNSRefresh(ctx, resourceGroupName, cacheName, storageTargetName, options)
+		resp, err := client.dnsRefresh(ctx, resourceGroupName, cacheName, storageTargetName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -152,7 +154,7 @@ func (client *StorageTargetsClient) BeginDNSRefresh(ctx context.Context, resourc
 
 // DNSRefresh - Tells a storage target to refresh its DNS information.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *StorageTargetsClient) dNSRefresh(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string, options *StorageTargetsClientBeginDNSRefreshOptions) (*http.Response, error) {
+func (client *StorageTargetsClient) dnsRefresh(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string, options *StorageTargetsClientBeginDNSRefreshOptions) (*http.Response, error) {
 	var err error
 	const operationName = "StorageTargetsClient.BeginDNSRefresh"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -167,8 +169,7 @@ func (client *StorageTargetsClient) dNSRefresh(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -177,7 +178,7 @@ func (client *StorageTargetsClient) dNSRefresh(ctx context.Context, resourceGrou
 func (client *StorageTargetsClient) dnsRefreshCreateRequest(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string, _ *StorageTargetsClientBeginDNSRefreshOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageCache/caches/{cacheName}/storageTargets/{storageTargetName}/dnsRefresh"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -247,8 +248,7 @@ func (client *StorageTargetsClient) deleteOperation(ctx context.Context, resourc
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -257,7 +257,7 @@ func (client *StorageTargetsClient) deleteOperation(ctx context.Context, resourc
 func (client *StorageTargetsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string, options *StorageTargetsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageCache/caches/{cacheName}/storageTargets/{storageTargetName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -305,19 +305,14 @@ func (client *StorageTargetsClient) Get(ctx context.Context, resourceGroupName s
 	if err != nil {
 		return StorageTargetsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return StorageTargetsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *StorageTargetsClient) getCreateRequest(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string, _ *StorageTargetsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageCache/caches/{cacheName}/storageTargets/{storageTargetName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -344,8 +339,11 @@ func (client *StorageTargetsClient) getCreateRequest(ctx context.Context, resour
 }
 
 // getHandleResponse handles the Get response.
-func (client *StorageTargetsClient) getHandleResponse(resp *http.Response) (StorageTargetsClientGetResponse, error) {
+func (client *StorageTargetsClient) getHandleResponse(resp *http.Response, successCodes ...int) (StorageTargetsClientGetResponse, error) {
 	result := StorageTargetsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StorageTarget); err != nil {
 		return StorageTargetsClientGetResponse{}, err
 	}
@@ -368,47 +366,61 @@ func (client *StorageTargetsClient) NewListByCachePager(resourceGroupName string
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByCacheCreateRequest(ctx, resourceGroupName, cacheName, options)
-			}, nil)
+			req, err := client.listByCacheCreateRequest(ctx, resourceGroupName, cacheName, nextLink, options)
 			if err != nil {
 				return StorageTargetsClientListByCacheResponse{}, err
 			}
-			return client.listByCacheHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return StorageTargetsClientListByCacheResponse{}, err
+			}
+			return client.listByCacheHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByCacheCreateRequest creates the ListByCache request.
-func (client *StorageTargetsClient) listByCacheCreateRequest(ctx context.Context, resourceGroupName string, cacheName string, _ *StorageTargetsClientListByCacheOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageCache/caches/{cacheName}/storageTargets"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *StorageTargetsClient) listByCacheCreateRequest(ctx context.Context, resourceGroupName string, cacheName string, nextLink string, _ *StorageTargetsClientListByCacheOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageCache/caches/{cacheName}/storageTargets"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if cacheName == "" {
+			return nil, errors.New("parameter cacheName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{cacheName}", url.PathEscape(cacheName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if cacheName == "" {
-		return nil, errors.New("parameter cacheName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{cacheName}", url.PathEscape(cacheName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260101)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByCacheHandleResponse handles the ListByCache response.
-func (client *StorageTargetsClient) listByCacheHandleResponse(resp *http.Response) (StorageTargetsClientListByCacheResponse, error) {
+func (client *StorageTargetsClient) listByCacheHandleResponse(resp *http.Response, successCodes ...int) (StorageTargetsClientListByCacheResponse, error) {
 	result := StorageTargetsClientListByCacheResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StorageTargetsResult); err != nil {
 		return StorageTargetsClientListByCacheResponse{}, err
 	}
@@ -456,8 +468,7 @@ func (client *StorageTargetsClient) restoreDefaults(ctx context.Context, resourc
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -466,7 +477,7 @@ func (client *StorageTargetsClient) restoreDefaults(ctx context.Context, resourc
 func (client *StorageTargetsClient) restoreDefaultsCreateRequest(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string, _ *StorageTargetsClientBeginRestoreDefaultsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageCache/caches/{cacheName}/storageTargets/{storageTargetName}/restoreDefaults"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {

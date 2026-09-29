@@ -30,6 +30,9 @@ type RoleMappingsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewRoleMappingsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RoleMappingsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -62,19 +65,14 @@ func (client *RoleMappingsClient) CreateOrUpdate(ctx context.Context, resourceGr
 	if err != nil {
 		return RoleMappingsClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return RoleMappingsClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
 func (client *RoleMappingsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, cloudAccountName string, resource RoleMapping, _ *RoleMappingsClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Commvault.ContentStore/cloudAccounts/{cloudAccountName}/roleMappings/default"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -101,8 +99,11 @@ func (client *RoleMappingsClient) createOrUpdateCreateRequest(ctx context.Contex
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *RoleMappingsClient) createOrUpdateHandleResponse(resp *http.Response) (RoleMappingsClientCreateOrUpdateResponse, error) {
+func (client *RoleMappingsClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (RoleMappingsClientCreateOrUpdateResponse, error) {
 	result := RoleMappingsClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RoleMapping); err != nil {
 		return RoleMappingsClientCreateOrUpdateResponse{}, err
 	}
@@ -129,8 +130,7 @@ func (client *RoleMappingsClient) Delete(ctx context.Context, resourceGroupName 
 		return RoleMappingsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return RoleMappingsClientDeleteResponse{}, err
+		return RoleMappingsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return RoleMappingsClientDeleteResponse{}, nil
 }
@@ -139,7 +139,7 @@ func (client *RoleMappingsClient) Delete(ctx context.Context, resourceGroupName 
 func (client *RoleMappingsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, cloudAccountName string, _ *RoleMappingsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Commvault.ContentStore/cloudAccounts/{cloudAccountName}/roleMappings/default"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -179,19 +179,14 @@ func (client *RoleMappingsClient) Get(ctx context.Context, resourceGroupName str
 	if err != nil {
 		return RoleMappingsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return RoleMappingsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *RoleMappingsClient) getCreateRequest(ctx context.Context, resourceGroupName string, cloudAccountName string, _ *RoleMappingsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Commvault.ContentStore/cloudAccounts/{cloudAccountName}/roleMappings/default"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -214,8 +209,11 @@ func (client *RoleMappingsClient) getCreateRequest(ctx context.Context, resource
 }
 
 // getHandleResponse handles the Get response.
-func (client *RoleMappingsClient) getHandleResponse(resp *http.Response) (RoleMappingsClientGetResponse, error) {
+func (client *RoleMappingsClient) getHandleResponse(resp *http.Response, successCodes ...int) (RoleMappingsClientGetResponse, error) {
 	result := RoleMappingsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RoleMapping); err != nil {
 		return RoleMappingsClientGetResponse{}, err
 	}
@@ -237,47 +235,61 @@ func (client *RoleMappingsClient) NewListPager(resourceGroupName string, cloudAc
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, resourceGroupName, cloudAccountName, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, resourceGroupName, cloudAccountName, nextLink, options)
 			if err != nil {
 				return RoleMappingsClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return RoleMappingsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *RoleMappingsClient) listCreateRequest(ctx context.Context, resourceGroupName string, cloudAccountName string, _ *RoleMappingsClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Commvault.ContentStore/cloudAccounts/{cloudAccountName}/roleMappings"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *RoleMappingsClient) listCreateRequest(ctx context.Context, resourceGroupName string, cloudAccountName string, nextLink string, _ *RoleMappingsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Commvault.ContentStore/cloudAccounts/{cloudAccountName}/roleMappings"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if cloudAccountName == "" {
+			return nil, errors.New("parameter cloudAccountName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{cloudAccountName}", url.PathEscape(cloudAccountName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if cloudAccountName == "" {
-		return nil, errors.New("parameter cloudAccountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{cloudAccountName}", url.PathEscape(cloudAccountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260703Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260703Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *RoleMappingsClient) listHandleResponse(resp *http.Response) (RoleMappingsClientListResponse, error) {
+func (client *RoleMappingsClient) listHandleResponse(resp *http.Response, successCodes ...int) (RoleMappingsClientListResponse, error) {
 	result := RoleMappingsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RoleMappingListResult); err != nil {
 		return RoleMappingsClientListResponse{}, err
 	}

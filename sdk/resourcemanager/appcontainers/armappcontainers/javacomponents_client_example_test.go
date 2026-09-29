@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-10-02-preview/JavaComponents_CreateOrUpdate.json
+// Generated from example definition: 2026-07-01/JavaComponents_CreateOrUpdate.json
 func ExampleJavaComponentsClient_BeginCreateOrUpdate_createOrUpdateJavaComponent() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -82,7 +82,7 @@ func ExampleJavaComponentsClient_BeginCreateOrUpdate_createOrUpdateJavaComponent
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/JavaComponents_CreateOrUpdate_ServiceBind.json
+// Generated from example definition: 2026-07-01/JavaComponents_CreateOrUpdate_ServiceBind.json
 func ExampleJavaComponentsClient_BeginCreateOrUpdate_createOrUpdateJavaComponentWithServiceBinds() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -161,7 +161,7 @@ func ExampleJavaComponentsClient_BeginCreateOrUpdate_createOrUpdateJavaComponent
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/JavaComponents_Delete.json
+// Generated from example definition: 2026-07-01/JavaComponents_Delete.json
 func ExampleJavaComponentsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -182,7 +182,7 @@ func ExampleJavaComponentsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-10-02-preview/JavaComponents_Get.json
+// Generated from example definition: 2026-07-01/JavaComponents_Get.json
 func ExampleJavaComponentsClient_Get_getJavaComponent() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -230,7 +230,7 @@ func ExampleJavaComponentsClient_Get_getJavaComponent() {
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/JavaComponents_Get_ServiceBind.json
+// Generated from example definition: 2026-07-01/JavaComponents_Get_ServiceBind.json
 func ExampleJavaComponentsClient_Get_getJavaComponentWithServiceBinds() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -281,7 +281,7 @@ func ExampleJavaComponentsClient_Get_getJavaComponentWithServiceBinds() {
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/JavaComponents_List.json
+// Generated from example definition: 2026-07-01/JavaComponents_List.json
 func ExampleJavaComponentsClient_NewListPager_listJavaComponents() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -354,48 +354,13 @@ func ExampleJavaComponentsClient_NewListPager_listJavaComponents() {
 		// 					},
 		// 				},
 		// 			},
-		// 			{
-		// 				Name: to.Ptr("reddog"),
-		// 				Type: to.Ptr("Microsoft.App/managedEnvironments/javaComponents"),
-		// 				ID: to.Ptr("/subscriptions/8efdecc5-919e-44eb-b179-915dca89ebf9/resourceGroups/examplerg/providers/Microsoft.App/managedEnvironments/myenvironment/javaComponents/reddog"),
-		// 				Properties: &armappcontainers.SpringCloudGatewayComponent{
-		// 					ComponentType: to.Ptr(armappcontainers.JavaComponentTypeSpringCloudGateway),
-		// 					Configurations: []*armappcontainers.JavaComponentConfigurationProperty{
-		// 						{
-		// 							PropertyName: to.Ptr("spring.cloud.gateway.enabled"),
-		// 							Value: to.Ptr("true"),
-		// 						},
-		// 					},
-		// 					Ingress: &armappcontainers.JavaComponentIngress{
-		// 						Fqdn: to.Ptr("myjavacomponent.myenvironment.test.net"),
-		// 					},
-		// 					ProvisioningState: to.Ptr(armappcontainers.JavaComponentProvisioningStateSucceeded),
-		// 					Scale: &armappcontainers.JavaComponentPropertiesScale{
-		// 						MaxReplicas: to.Ptr[int32](1),
-		// 						MinReplicas: to.Ptr[int32](1),
-		// 					},
-		// 					SpringCloudGatewayRoutes: []*armappcontainers.ScgRoute{
-		// 						{
-		// 							Filters: []*string{
-		// 								to.Ptr("SetPath=/{path}"),
-		// 							},
-		// 							ID: to.Ptr("route1"),
-		// 							Predicates: []*string{
-		// 								to.Ptr("Path=/v1/{path}"),
-		// 								to.Ptr("After=2024-01-20T17:42:47.789-07:00[America/Denver]"),
-		// 							},
-		// 							URI: to.Ptr("https://otherjavacomponent.myenvironment.test.net"),
-		// 						},
-		// 					},
-		// 				},
-		// 			},
 		// 		},
 		// 	},
 		// }
 	}
 }
 
-// Generated from example definition: 2025-10-02-preview/JavaComponents_List_ServiceBind.json
+// Generated from example definition: 2026-07-01/JavaComponents_List_ServiceBind.json
 func ExampleJavaComponentsClient_NewListPager_listJavaComponentsWithServiceBinds() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -480,7 +445,7 @@ func ExampleJavaComponentsClient_NewListPager_listJavaComponentsWithServiceBinds
 	}
 }
 
-// Generated from example definition: 2025-10-02-preview/JavaComponents_Patch.json
+// Generated from example definition: 2026-07-01/JavaComponents_Patch.json
 func ExampleJavaComponentsClient_BeginUpdate_patchJavaComponent() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -550,7 +515,7 @@ func ExampleJavaComponentsClient_BeginUpdate_patchJavaComponent() {
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/JavaComponents_Patch_ServiceBind.json
+// Generated from example definition: 2026-07-01/JavaComponents_Patch_ServiceBind.json
 func ExampleJavaComponentsClient_BeginUpdate_patchJavaComponentWithServiceBinds() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

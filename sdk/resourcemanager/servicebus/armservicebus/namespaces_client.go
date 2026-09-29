@@ -30,6 +30,9 @@ type NamespacesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewNamespacesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*NamespacesClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -60,19 +63,14 @@ func (client *NamespacesClient) CheckNameAvailability(ctx context.Context, param
 	if err != nil {
 		return NamespacesClientCheckNameAvailabilityResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return NamespacesClientCheckNameAvailabilityResponse{}, err
-	}
-	resp, err := client.checkNameAvailabilityHandleResponse(httpResp)
-	return resp, err
+	return client.checkNameAvailabilityHandleResponse(httpResp, http.StatusOK)
 }
 
 // checkNameAvailabilityCreateRequest creates the CheckNameAvailability request.
 func (client *NamespacesClient) checkNameAvailabilityCreateRequest(ctx context.Context, parameters CheckNameAvailability, _ *NamespacesClientCheckNameAvailabilityOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ServiceBus/checkNameAvailability"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
@@ -91,8 +89,11 @@ func (client *NamespacesClient) checkNameAvailabilityCreateRequest(ctx context.C
 }
 
 // checkNameAvailabilityHandleResponse handles the CheckNameAvailability response.
-func (client *NamespacesClient) checkNameAvailabilityHandleResponse(resp *http.Response) (NamespacesClientCheckNameAvailabilityResponse, error) {
+func (client *NamespacesClient) checkNameAvailabilityHandleResponse(resp *http.Response, successCodes ...int) (NamespacesClientCheckNameAvailabilityResponse, error) {
 	result := NamespacesClientCheckNameAvailabilityResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CheckNameAvailabilityResult); err != nil {
 		return NamespacesClientCheckNameAvailabilityResponse{}, err
 	}
@@ -142,8 +143,7 @@ func (client *NamespacesClient) createOrUpdate(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -152,7 +152,7 @@ func (client *NamespacesClient) createOrUpdate(ctx context.Context, resourceGrou
 func (client *NamespacesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, parameters SBNamespace, _ *NamespacesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -200,19 +200,14 @@ func (client *NamespacesClient) CreateOrUpdateAuthorizationRule(ctx context.Cont
 	if err != nil {
 		return NamespacesClientCreateOrUpdateAuthorizationRuleResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return NamespacesClientCreateOrUpdateAuthorizationRuleResponse{}, err
-	}
-	resp, err := client.createOrUpdateAuthorizationRuleHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateAuthorizationRuleHandleResponse(httpResp, http.StatusOK)
 }
 
 // createOrUpdateAuthorizationRuleCreateRequest creates the CreateOrUpdateAuthorizationRule request.
 func (client *NamespacesClient) createOrUpdateAuthorizationRuleCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, authorizationRuleName string, parameters SBAuthorizationRule, _ *NamespacesClientCreateOrUpdateAuthorizationRuleOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}/AuthorizationRules/{authorizationRuleName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -243,8 +238,11 @@ func (client *NamespacesClient) createOrUpdateAuthorizationRuleCreateRequest(ctx
 }
 
 // createOrUpdateAuthorizationRuleHandleResponse handles the CreateOrUpdateAuthorizationRule response.
-func (client *NamespacesClient) createOrUpdateAuthorizationRuleHandleResponse(resp *http.Response) (NamespacesClientCreateOrUpdateAuthorizationRuleResponse, error) {
+func (client *NamespacesClient) createOrUpdateAuthorizationRuleHandleResponse(resp *http.Response, successCodes ...int) (NamespacesClientCreateOrUpdateAuthorizationRuleResponse, error) {
 	result := NamespacesClientCreateOrUpdateAuthorizationRuleResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SBAuthorizationRule); err != nil {
 		return NamespacesClientCreateOrUpdateAuthorizationRuleResponse{}, err
 	}
@@ -272,19 +270,14 @@ func (client *NamespacesClient) CreateOrUpdateNetworkRuleSet(ctx context.Context
 	if err != nil {
 		return NamespacesClientCreateOrUpdateNetworkRuleSetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return NamespacesClientCreateOrUpdateNetworkRuleSetResponse{}, err
-	}
-	resp, err := client.createOrUpdateNetworkRuleSetHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateNetworkRuleSetHandleResponse(httpResp, http.StatusOK)
 }
 
 // createOrUpdateNetworkRuleSetCreateRequest creates the CreateOrUpdateNetworkRuleSet request.
 func (client *NamespacesClient) createOrUpdateNetworkRuleSetCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, parameters NetworkRuleSet, _ *NamespacesClientCreateOrUpdateNetworkRuleSetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}/networkRuleSets/default"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -311,8 +304,11 @@ func (client *NamespacesClient) createOrUpdateNetworkRuleSetCreateRequest(ctx co
 }
 
 // createOrUpdateNetworkRuleSetHandleResponse handles the CreateOrUpdateNetworkRuleSet response.
-func (client *NamespacesClient) createOrUpdateNetworkRuleSetHandleResponse(resp *http.Response) (NamespacesClientCreateOrUpdateNetworkRuleSetResponse, error) {
+func (client *NamespacesClient) createOrUpdateNetworkRuleSetHandleResponse(resp *http.Response, successCodes ...int) (NamespacesClientCreateOrUpdateNetworkRuleSetResponse, error) {
 	result := NamespacesClientCreateOrUpdateNetworkRuleSetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NetworkRuleSet); err != nil {
 		return NamespacesClientCreateOrUpdateNetworkRuleSetResponse{}, err
 	}
@@ -358,8 +354,7 @@ func (client *NamespacesClient) deleteOperation(ctx context.Context, resourceGro
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -368,7 +363,7 @@ func (client *NamespacesClient) deleteOperation(ctx context.Context, resourceGro
 func (client *NamespacesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, _ *NamespacesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -411,8 +406,7 @@ func (client *NamespacesClient) DeleteAuthorizationRule(ctx context.Context, res
 		return NamespacesClientDeleteAuthorizationRuleResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return NamespacesClientDeleteAuthorizationRuleResponse{}, err
+		return NamespacesClientDeleteAuthorizationRuleResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return NamespacesClientDeleteAuthorizationRuleResponse{}, nil
 }
@@ -421,7 +415,7 @@ func (client *NamespacesClient) DeleteAuthorizationRule(ctx context.Context, res
 func (client *NamespacesClient) deleteAuthorizationRuleCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, authorizationRuleName string, _ *NamespacesClientDeleteAuthorizationRuleOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}/AuthorizationRules/{authorizationRuleName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -488,8 +482,7 @@ func (client *NamespacesClient) failover(ctx context.Context, resourceGroupName 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -498,7 +491,7 @@ func (client *NamespacesClient) failover(ctx context.Context, resourceGroupName 
 func (client *NamespacesClient) failoverCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, parameters FailOver, _ *NamespacesClientBeginFailoverOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}/failover"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -542,19 +535,14 @@ func (client *NamespacesClient) Get(ctx context.Context, resourceGroupName strin
 	if err != nil {
 		return NamespacesClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return NamespacesClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *NamespacesClient) getCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, _ *NamespacesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -577,8 +565,11 @@ func (client *NamespacesClient) getCreateRequest(ctx context.Context, resourceGr
 }
 
 // getHandleResponse handles the Get response.
-func (client *NamespacesClient) getHandleResponse(resp *http.Response) (NamespacesClientGetResponse, error) {
+func (client *NamespacesClient) getHandleResponse(resp *http.Response, successCodes ...int) (NamespacesClientGetResponse, error) {
 	result := NamespacesClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SBNamespace); err != nil {
 		return NamespacesClientGetResponse{}, err
 	}
@@ -606,19 +597,14 @@ func (client *NamespacesClient) GetAuthorizationRule(ctx context.Context, resour
 	if err != nil {
 		return NamespacesClientGetAuthorizationRuleResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return NamespacesClientGetAuthorizationRuleResponse{}, err
-	}
-	resp, err := client.getAuthorizationRuleHandleResponse(httpResp)
-	return resp, err
+	return client.getAuthorizationRuleHandleResponse(httpResp, http.StatusOK)
 }
 
 // getAuthorizationRuleCreateRequest creates the GetAuthorizationRule request.
 func (client *NamespacesClient) getAuthorizationRuleCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, authorizationRuleName string, _ *NamespacesClientGetAuthorizationRuleOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}/AuthorizationRules/{authorizationRuleName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -645,8 +631,11 @@ func (client *NamespacesClient) getAuthorizationRuleCreateRequest(ctx context.Co
 }
 
 // getAuthorizationRuleHandleResponse handles the GetAuthorizationRule response.
-func (client *NamespacesClient) getAuthorizationRuleHandleResponse(resp *http.Response) (NamespacesClientGetAuthorizationRuleResponse, error) {
+func (client *NamespacesClient) getAuthorizationRuleHandleResponse(resp *http.Response, successCodes ...int) (NamespacesClientGetAuthorizationRuleResponse, error) {
 	result := NamespacesClientGetAuthorizationRuleResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SBAuthorizationRule); err != nil {
 		return NamespacesClientGetAuthorizationRuleResponse{}, err
 	}
@@ -673,19 +662,14 @@ func (client *NamespacesClient) GetNetworkRuleSet(ctx context.Context, resourceG
 	if err != nil {
 		return NamespacesClientGetNetworkRuleSetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return NamespacesClientGetNetworkRuleSetResponse{}, err
-	}
-	resp, err := client.getNetworkRuleSetHandleResponse(httpResp)
-	return resp, err
+	return client.getNetworkRuleSetHandleResponse(httpResp, http.StatusOK)
 }
 
 // getNetworkRuleSetCreateRequest creates the GetNetworkRuleSet request.
 func (client *NamespacesClient) getNetworkRuleSetCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, _ *NamespacesClientGetNetworkRuleSetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}/networkRuleSets/default"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -708,8 +692,11 @@ func (client *NamespacesClient) getNetworkRuleSetCreateRequest(ctx context.Conte
 }
 
 // getNetworkRuleSetHandleResponse handles the GetNetworkRuleSet response.
-func (client *NamespacesClient) getNetworkRuleSetHandleResponse(resp *http.Response) (NamespacesClientGetNetworkRuleSetResponse, error) {
+func (client *NamespacesClient) getNetworkRuleSetHandleResponse(resp *http.Response, successCodes ...int) (NamespacesClientGetNetworkRuleSetResponse, error) {
 	result := NamespacesClientGetNetworkRuleSetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NetworkRuleSet); err != nil {
 		return NamespacesClientGetNetworkRuleSetResponse{}, err
 	}
@@ -729,39 +716,53 @@ func (client *NamespacesClient) NewListPager(options *NamespacesClientListOption
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return NamespacesClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return NamespacesClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *NamespacesClient) listCreateRequest(ctx context.Context, _ *NamespacesClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ServiceBus/namespaces"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *NamespacesClient) listCreateRequest(ctx context.Context, nextLink string, _ *NamespacesClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ServiceBus/namespaces"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250501Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *NamespacesClient) listHandleResponse(resp *http.Response) (NamespacesClientListResponse, error) {
+func (client *NamespacesClient) listHandleResponse(resp *http.Response, successCodes ...int) (NamespacesClientListResponse, error) {
 	result := NamespacesClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SBNamespaceListResult); err != nil {
 		return NamespacesClientListResponse{}, err
 	}
@@ -784,47 +785,61 @@ func (client *NamespacesClient) NewListAuthorizationRulesPager(resourceGroupName
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listAuthorizationRulesCreateRequest(ctx, resourceGroupName, namespaceName, options)
-			}, nil)
+			req, err := client.listAuthorizationRulesCreateRequest(ctx, resourceGroupName, namespaceName, nextLink, options)
 			if err != nil {
 				return NamespacesClientListAuthorizationRulesResponse{}, err
 			}
-			return client.listAuthorizationRulesHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return NamespacesClientListAuthorizationRulesResponse{}, err
+			}
+			return client.listAuthorizationRulesHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listAuthorizationRulesCreateRequest creates the ListAuthorizationRules request.
-func (client *NamespacesClient) listAuthorizationRulesCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, _ *NamespacesClientListAuthorizationRulesOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}/AuthorizationRules"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *NamespacesClient) listAuthorizationRulesCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, nextLink string, _ *NamespacesClientListAuthorizationRulesOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}/AuthorizationRules"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if namespaceName == "" {
+			return nil, errors.New("parameter namespaceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{namespaceName}", url.PathEscape(namespaceName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if namespaceName == "" {
-		return nil, errors.New("parameter namespaceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{namespaceName}", url.PathEscape(namespaceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250501Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listAuthorizationRulesHandleResponse handles the ListAuthorizationRules response.
-func (client *NamespacesClient) listAuthorizationRulesHandleResponse(resp *http.Response) (NamespacesClientListAuthorizationRulesResponse, error) {
+func (client *NamespacesClient) listAuthorizationRulesHandleResponse(resp *http.Response, successCodes ...int) (NamespacesClientListAuthorizationRulesResponse, error) {
 	result := NamespacesClientListAuthorizationRulesResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SBAuthorizationRuleListResult); err != nil {
 		return NamespacesClientListAuthorizationRulesResponse{}, err
 	}
@@ -846,43 +861,57 @@ func (client *NamespacesClient) NewListByResourceGroupPager(resourceGroupName st
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
-			}, nil)
+			req, err := client.listByResourceGroupCreateRequest(ctx, resourceGroupName, nextLink, options)
 			if err != nil {
 				return NamespacesClientListByResourceGroupResponse{}, err
 			}
-			return client.listByResourceGroupHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return NamespacesClientListByResourceGroupResponse{}, err
+			}
+			return client.listByResourceGroupHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *NamespacesClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, _ *NamespacesClientListByResourceGroupOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *NamespacesClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, nextLink string, _ *NamespacesClientListByResourceGroupOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250501Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *NamespacesClient) listByResourceGroupHandleResponse(resp *http.Response) (NamespacesClientListByResourceGroupResponse, error) {
+func (client *NamespacesClient) listByResourceGroupHandleResponse(resp *http.Response, successCodes ...int) (NamespacesClientListByResourceGroupResponse, error) {
 	result := NamespacesClientListByResourceGroupResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SBNamespaceListResult); err != nil {
 		return NamespacesClientListByResourceGroupResponse{}, err
 	}
@@ -909,19 +938,14 @@ func (client *NamespacesClient) ListKeys(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return NamespacesClientListKeysResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return NamespacesClientListKeysResponse{}, err
-	}
-	resp, err := client.listKeysHandleResponse(httpResp)
-	return resp, err
+	return client.listKeysHandleResponse(httpResp, http.StatusOK)
 }
 
 // listKeysCreateRequest creates the ListKeys request.
 func (client *NamespacesClient) listKeysCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, authorizationRuleName string, _ *NamespacesClientListKeysOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}/AuthorizationRules/{authorizationRuleName}/listKeys"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -948,8 +972,11 @@ func (client *NamespacesClient) listKeysCreateRequest(ctx context.Context, resou
 }
 
 // listKeysHandleResponse handles the ListKeys response.
-func (client *NamespacesClient) listKeysHandleResponse(resp *http.Response) (NamespacesClientListKeysResponse, error) {
+func (client *NamespacesClient) listKeysHandleResponse(resp *http.Response, successCodes ...int) (NamespacesClientListKeysResponse, error) {
 	result := NamespacesClientListKeysResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccessKeys); err != nil {
 		return NamespacesClientListKeysResponse{}, err
 	}
@@ -972,47 +999,61 @@ func (client *NamespacesClient) NewListNetworkRuleSetsPager(resourceGroupName st
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listNetworkRuleSetsCreateRequest(ctx, resourceGroupName, namespaceName, options)
-			}, nil)
+			req, err := client.listNetworkRuleSetsCreateRequest(ctx, resourceGroupName, namespaceName, nextLink, options)
 			if err != nil {
 				return NamespacesClientListNetworkRuleSetsResponse{}, err
 			}
-			return client.listNetworkRuleSetsHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return NamespacesClientListNetworkRuleSetsResponse{}, err
+			}
+			return client.listNetworkRuleSetsHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listNetworkRuleSetsCreateRequest creates the ListNetworkRuleSets request.
-func (client *NamespacesClient) listNetworkRuleSetsCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, _ *NamespacesClientListNetworkRuleSetsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}/networkRuleSets"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *NamespacesClient) listNetworkRuleSetsCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, nextLink string, _ *NamespacesClientListNetworkRuleSetsOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}/networkRuleSets"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if namespaceName == "" {
+			return nil, errors.New("parameter namespaceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{namespaceName}", url.PathEscape(namespaceName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if namespaceName == "" {
-		return nil, errors.New("parameter namespaceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{namespaceName}", url.PathEscape(namespaceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250501Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listNetworkRuleSetsHandleResponse handles the ListNetworkRuleSets response.
-func (client *NamespacesClient) listNetworkRuleSetsHandleResponse(resp *http.Response) (NamespacesClientListNetworkRuleSetsResponse, error) {
+func (client *NamespacesClient) listNetworkRuleSetsHandleResponse(resp *http.Response, successCodes ...int) (NamespacesClientListNetworkRuleSetsResponse, error) {
 	result := NamespacesClientListNetworkRuleSetsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NetworkRuleSetListResult); err != nil {
 		return NamespacesClientListNetworkRuleSetsResponse{}, err
 	}
@@ -1041,19 +1082,14 @@ func (client *NamespacesClient) RegenerateKeys(ctx context.Context, resourceGrou
 	if err != nil {
 		return NamespacesClientRegenerateKeysResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return NamespacesClientRegenerateKeysResponse{}, err
-	}
-	resp, err := client.regenerateKeysHandleResponse(httpResp)
-	return resp, err
+	return client.regenerateKeysHandleResponse(httpResp, http.StatusOK)
 }
 
 // regenerateKeysCreateRequest creates the RegenerateKeys request.
 func (client *NamespacesClient) regenerateKeysCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, authorizationRuleName string, parameters RegenerateAccessKeyParameters, _ *NamespacesClientRegenerateKeysOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}/AuthorizationRules/{authorizationRuleName}/regenerateKeys"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -1084,8 +1120,11 @@ func (client *NamespacesClient) regenerateKeysCreateRequest(ctx context.Context,
 }
 
 // regenerateKeysHandleResponse handles the RegenerateKeys response.
-func (client *NamespacesClient) regenerateKeysHandleResponse(resp *http.Response) (NamespacesClientRegenerateKeysResponse, error) {
+func (client *NamespacesClient) regenerateKeysHandleResponse(resp *http.Response, successCodes ...int) (NamespacesClientRegenerateKeysResponse, error) {
 	result := NamespacesClientRegenerateKeysResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccessKeys); err != nil {
 		return NamespacesClientRegenerateKeysResponse{}, err
 	}
@@ -1113,19 +1152,14 @@ func (client *NamespacesClient) Update(ctx context.Context, resourceGroupName st
 	if err != nil {
 		return NamespacesClientUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return NamespacesClientUpdateResponse{}, err
-	}
-	resp, err := client.updateHandleResponse(httpResp)
-	return resp, err
+	return client.updateHandleResponse(httpResp, http.StatusOK, http.StatusCreated, http.StatusAccepted)
 }
 
 // updateCreateRequest creates the Update request.
 func (client *NamespacesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, parameters SBNamespaceUpdateParameters, _ *NamespacesClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -1152,8 +1186,11 @@ func (client *NamespacesClient) updateCreateRequest(ctx context.Context, resourc
 }
 
 // updateHandleResponse handles the Update response.
-func (client *NamespacesClient) updateHandleResponse(resp *http.Response) (NamespacesClientUpdateResponse, error) {
+func (client *NamespacesClient) updateHandleResponse(resp *http.Response, successCodes ...int) (NamespacesClientUpdateResponse, error) {
 	result := NamespacesClientUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SBNamespace); err != nil {
 		return NamespacesClientUpdateResponse{}, err
 	}

@@ -193,6 +193,12 @@ type GetTieringCostOperationResultClientGetResponse struct {
 	TieringCostInfoClassification
 }
 
+// ItemLevelRecoveryConnectionsClientListInstantItemRecoveryOperationResultResponse contains the response from method ItemLevelRecoveryConnectionsClient.ListInstantItemRecoveryOperationResult.
+type ItemLevelRecoveryConnectionsClientListInstantItemRecoveryOperationResultResponse struct {
+	// Target details for file / folder restore.
+	InstantItemRecoveryTarget
+}
+
 // ItemLevelRecoveryConnectionsClientProvisionResponse contains the response from method ItemLevelRecoveryConnectionsClient.Provision.
 type ItemLevelRecoveryConnectionsClientProvisionResponse struct {
 	// placeholder for future response values

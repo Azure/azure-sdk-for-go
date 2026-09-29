@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-12-03/sharedGalleryInviteExamples/SharedGalleryInvite_Accept.json
+// Generated from example definition: 2026-03-03/sharedGalleryInviteExamples/SharedGalleryInvite_Accept.json
 func ExampleSharedGalleryInvitesClient_BeginGallerySharingAccept() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -32,7 +32,7 @@ func ExampleSharedGalleryInvitesClient_BeginGallerySharingAccept() {
 	}
 }
 
-// Generated from example definition: 2025-12-03/sharedGalleryInviteExamples/SharedGalleryInvite_Reject.json
+// Generated from example definition: 2026-03-03/sharedGalleryInviteExamples/SharedGalleryInvite_Reject.json
 func ExampleSharedGalleryInvitesClient_BeginGallerySharingReject() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -3,7 +3,7 @@
 ## 1.1.0 (2026-09-29)
 ### Features Added
 
-- New value `TypeLifecycleHookEvents` added to enum type `string`
+- New event type constant `TypeLifecycleHookEvents`
 - New enum type `ACSChatRetentionPolicyKind` with values `ACSChatRetentionPolicyKindNone`, `ACSChatRetentionPolicyKindThreadCreationDate`
 - New enum type `ACSChatThreadDeletedReasonType` with values `ACSChatThreadDeletedReasonTypeDeletedByPolicy`, `ACSChatThreadDeletedReasonTypeDeletedByUser`
 - New enum type `LifecycleHookAction` with values `LifecycleHookActionApprove`, `LifecycleHookActionReject`

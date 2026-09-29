@@ -74,10 +74,10 @@ func (b *BackupRequestProperties) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type BackupRestoreBaseResultProperties.
 func (b BackupRestoreBaseResultProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populateTime[datetime.RFC3339](objectMap, "endTime", b.EndTime)
+	populateTime[datetime.RFC3339](objectMap, "endTime", b.EndTime, true)
 	populate(objectMap, "error", b.Error)
 	populate(objectMap, "jobId", b.JobID)
-	populateTime[datetime.RFC3339](objectMap, "startTime", b.StartTime)
+	populateTime[datetime.RFC3339](objectMap, "startTime", b.StartTime, true)
 	populate(objectMap, "status", b.Status)
 	populate(objectMap, "statusDetails", b.StatusDetails)
 	return json.Marshal(objectMap)
@@ -150,10 +150,10 @@ func (b BackupResultProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "azureStorageBlobContainerUri", b.AzureStorageBlobContainerURI)
 	populate(objectMap, "backupId", b.BackupID)
-	populateTime[datetime.RFC3339](objectMap, "endTime", b.EndTime)
+	populateTime[datetime.RFC3339](objectMap, "endTime", b.EndTime, true)
 	populate(objectMap, "error", b.Error)
 	populate(objectMap, "jobId", b.JobID)
-	populateTime[datetime.RFC3339](objectMap, "startTime", b.StartTime)
+	populateTime[datetime.RFC3339](objectMap, "startTime", b.StartTime, true)
 	populate(objectMap, "status", b.Status)
 	populate(objectMap, "statusDetails", b.StatusDetails)
 	return json.Marshal(objectMap)
@@ -1726,10 +1726,10 @@ func (s *SKU) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type SystemData.
 func (s SystemData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populateTime[datetime.RFC3339](objectMap, "createdAt", s.CreatedAt)
+	populateTime[datetime.RFC3339](objectMap, "createdAt", s.CreatedAt, true)
 	populate(objectMap, "createdBy", s.CreatedBy)
 	populate(objectMap, "createdByType", s.CreatedByType)
-	populateTime[datetime.RFC3339](objectMap, "lastModifiedAt", s.LastModifiedAt)
+	populateTime[datetime.RFC3339](objectMap, "lastModifiedAt", s.LastModifiedAt, true)
 	populate(objectMap, "lastModifiedBy", s.LastModifiedBy)
 	populate(objectMap, "lastModifiedByType", s.LastModifiedByType)
 	return json.Marshal(objectMap)
@@ -1811,13 +1811,17 @@ func populate(m map[string]any, k string, v any) {
 	}
 }
 
-func populateTime[T dateTimeConstraints](m map[string]any, k string, t *time.Time) {
+func populateTime[T dateTimeConstraints](m map[string]any, k string, t *time.Time, utc bool) {
 	if t == nil {
 		return
 	} else if azcore.IsNullValue(t) {
 		m[k] = nil
 	} else if !reflect.ValueOf(t).IsNil() {
-		newTime := T(*t)
+		tt := *t
+		if utc {
+			tt = tt.UTC()
+		}
+		newTime := T(tt)
 		m[k] = (*T)(&newTime)
 	}
 }
@@ -1837,7 +1841,7 @@ func unpopulate(data json.RawMessage, fn string, v any) error {
 		return nil
 	}
 	if err := json.Unmarshal(data, v); err != nil {
-		return fmt.Errorf("struct field %s: %v", fn, err)
+		return fmt.Errorf("struct field %s: %s", fn, err.Error())
 	}
 	return nil
 }
@@ -1848,7 +1852,7 @@ func unpopulateTime[T dateTimeConstraints](data json.RawMessage, fn string, t **
 	}
 	var aux T
 	if err := json.Unmarshal(data, &aux); err != nil {
-		return fmt.Errorf("struct field %s: %v", fn, err)
+		return fmt.Errorf("struct field %s: %s", fn, err.Error())
 	}
 	newTime := time.Time(aux)
 	*t = &newTime

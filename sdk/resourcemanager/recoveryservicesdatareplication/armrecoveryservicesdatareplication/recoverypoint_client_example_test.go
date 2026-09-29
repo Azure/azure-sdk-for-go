@@ -32,7 +32,7 @@ func ExampleRecoveryPointClient_Get() {
 	// res = armrecoveryservicesdatareplication.RecoveryPointClientGetResponse{
 	// 	RecoveryPointModel: armrecoveryservicesdatareplication.RecoveryPointModel{
 	// 		Properties: &armrecoveryservicesdatareplication.RecoveryPointModelProperties{
-	// 			RecoveryPointTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-08-25T00:28:56.403Z"); return t}()),
+	// 			RecoveryPointTime: to.Ptr(time.Date(2023, time.August, 25, 0, 28, 56, 403000000, time.UTC)),
 	// 			RecoveryPointType: to.Ptr(armrecoveryservicesdatareplication.RecoveryPointTypeApplicationConsistent),
 	// 			CustomProperties: &armrecoveryservicesdatareplication.HyperVToAzStackHCIRecoveryPointModelCustomProperties{
 	// 				InstanceType: to.Ptr("RecoveryPointModelCustomProperties"),
@@ -44,10 +44,10 @@ func ExampleRecoveryPointClient_Get() {
 	// 		SystemData: &armrecoveryservicesdatareplication.SystemData{
 	// 			CreatedBy: to.Ptr("nykpygxolffv"),
 	// 			CreatedByType: to.Ptr(armrecoveryservicesdatareplication.CreatedByType("agdgovroryjiwioytnnps")),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-08-25T00:28:56.403Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2023, time.August, 25, 0, 28, 56, 403000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("tipxxgz"),
 	// 			LastModifiedByType: to.Ptr(armrecoveryservicesdatareplication.CreatedByType("v")),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-08-25T00:28:56.404Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.August, 25, 0, 28, 56, 404000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -80,7 +80,7 @@ func ExampleRecoveryPointClient_NewListPager() {
 		// 		Value: []*armrecoveryservicesdatareplication.RecoveryPointModel{
 		// 			{
 		// 				Properties: &armrecoveryservicesdatareplication.RecoveryPointModelProperties{
-		// 					RecoveryPointTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-08-25T00:28:56.403Z"); return t}()),
+		// 					RecoveryPointTime: to.Ptr(time.Date(2023, time.August, 25, 0, 28, 56, 403000000, time.UTC)),
 		// 					RecoveryPointType: to.Ptr(armrecoveryservicesdatareplication.RecoveryPointTypeApplicationConsistent),
 		// 					CustomProperties: &armrecoveryservicesdatareplication.HyperVToAzStackHCIRecoveryPointModelCustomProperties{
 		// 						InstanceType: to.Ptr("RecoveryPointModelCustomProperties"),
@@ -92,10 +92,10 @@ func ExampleRecoveryPointClient_NewListPager() {
 		// 				SystemData: &armrecoveryservicesdatareplication.SystemData{
 		// 					CreatedBy: to.Ptr("nykpygxolffv"),
 		// 					CreatedByType: to.Ptr(armrecoveryservicesdatareplication.CreatedByType("agdgovroryjiwioytnnps")),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-08-25T00:28:56.403Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2023, time.August, 25, 0, 28, 56, 403000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("tipxxgz"),
 		// 					LastModifiedByType: to.Ptr(armrecoveryservicesdatareplication.CreatedByType("v")),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-08-25T00:28:56.404Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2023, time.August, 25, 0, 28, 56, 404000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},

@@ -30,6 +30,9 @@ type SaaSOperationGroupClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewSaaSOperationGroupClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SaaSOperationGroupClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -60,19 +63,14 @@ func (client *SaaSOperationGroupClient) ActivateResource(ctx context.Context, bo
 	if err != nil {
 		return SaaSOperationGroupClientActivateResourceResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SaaSOperationGroupClientActivateResourceResponse{}, err
-	}
-	resp, err := client.activateResourceHandleResponse(httpResp)
-	return resp, err
+	return client.activateResourceHandleResponse(httpResp, http.StatusOK)
 }
 
 // activateResourceCreateRequest creates the ActivateResource request.
 func (client *SaaSOperationGroupClient) activateResourceCreateRequest(ctx context.Context, body ActivateSaaSParameterRequest, _ *SaaSOperationGroupClientActivateResourceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Datadog/activateSaaS"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
@@ -91,8 +89,11 @@ func (client *SaaSOperationGroupClient) activateResourceCreateRequest(ctx contex
 }
 
 // activateResourceHandleResponse handles the ActivateResource response.
-func (client *SaaSOperationGroupClient) activateResourceHandleResponse(resp *http.Response) (SaaSOperationGroupClientActivateResourceResponse, error) {
+func (client *SaaSOperationGroupClient) activateResourceHandleResponse(resp *http.Response, successCodes ...int) (SaaSOperationGroupClientActivateResourceResponse, error) {
 	result := SaaSOperationGroupClientActivateResourceResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SaaSResourceDetailsResponse); err != nil {
 		return SaaSOperationGroupClientActivateResourceResponse{}, err
 	}

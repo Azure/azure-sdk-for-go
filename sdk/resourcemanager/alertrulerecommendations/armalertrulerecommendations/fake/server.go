@@ -13,7 +13,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/alertrulerecommendations/armalertrulerecommendations"
 	"net/http"
-	"net/url"
 	"regexp"
 	"slices"
 )
@@ -95,16 +94,13 @@ func (s *ServerTransport) dispatchNewListByResourcePager(req *http.Request) (*ht
 	}
 	newListByResourcePager := s.newListByResourcePager.get(req)
 	if newListByResourcePager == nil {
-		const regexStr = `/(?P<resourceUri>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AlertsManagement/alertRuleRecommendations`
+		const regexStr = `/(?P<resourceUri>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/providers/Microsoft\.AlertsManagement/alertRuleRecommendations`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
-		if err != nil {
-			return nil, err
-		}
+		resourceURIParam := matches[regex.SubexpIndex("resourceUri")]
 		resp := s.srv.NewListByResourcePager(resourceURIParam, nil)
 		newListByResourcePager = &resp
 		s.newListByResourcePager.add(req, newListByResourcePager)
@@ -132,7 +128,7 @@ func (s *ServerTransport) dispatchNewListByTargetTypePager(req *http.Request) (*
 	}
 	newListByTargetTypePager := s.newListByTargetTypePager.get(req)
 	if newListByTargetTypePager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AlertsManagement/alertRuleRecommendations`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AlertsManagement/alertRuleRecommendations`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 2 {

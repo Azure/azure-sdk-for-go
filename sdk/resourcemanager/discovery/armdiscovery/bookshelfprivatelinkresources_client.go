@@ -30,6 +30,9 @@ type BookshelfPrivateLinkResourcesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewBookshelfPrivateLinkResourcesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*BookshelfPrivateLinkResourcesClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -62,19 +65,14 @@ func (client *BookshelfPrivateLinkResourcesClient) Get(ctx context.Context, reso
 	if err != nil {
 		return BookshelfPrivateLinkResourcesClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return BookshelfPrivateLinkResourcesClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *BookshelfPrivateLinkResourcesClient) getCreateRequest(ctx context.Context, resourceGroupName string, bookshelfName string, privateLinkResourceName string, _ *BookshelfPrivateLinkResourcesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Discovery/bookshelves/{bookshelfName}/privateLinkResources/{privateLinkResourceName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -101,8 +99,11 @@ func (client *BookshelfPrivateLinkResourcesClient) getCreateRequest(ctx context.
 }
 
 // getHandleResponse handles the Get response.
-func (client *BookshelfPrivateLinkResourcesClient) getHandleResponse(resp *http.Response) (BookshelfPrivateLinkResourcesClientGetResponse, error) {
+func (client *BookshelfPrivateLinkResourcesClient) getHandleResponse(resp *http.Response, successCodes ...int) (BookshelfPrivateLinkResourcesClientGetResponse, error) {
 	result := BookshelfPrivateLinkResourcesClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BookshelfPrivateLinkResource); err != nil {
 		return BookshelfPrivateLinkResourcesClientGetResponse{}, err
 	}
@@ -125,47 +126,61 @@ func (client *BookshelfPrivateLinkResourcesClient) NewListByBookshelfPager(resou
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByBookshelfCreateRequest(ctx, resourceGroupName, bookshelfName, options)
-			}, nil)
+			req, err := client.listByBookshelfCreateRequest(ctx, resourceGroupName, bookshelfName, nextLink, options)
 			if err != nil {
 				return BookshelfPrivateLinkResourcesClientListByBookshelfResponse{}, err
 			}
-			return client.listByBookshelfHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return BookshelfPrivateLinkResourcesClientListByBookshelfResponse{}, err
+			}
+			return client.listByBookshelfHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByBookshelfCreateRequest creates the ListByBookshelf request.
-func (client *BookshelfPrivateLinkResourcesClient) listByBookshelfCreateRequest(ctx context.Context, resourceGroupName string, bookshelfName string, _ *BookshelfPrivateLinkResourcesClientListByBookshelfOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Discovery/bookshelves/{bookshelfName}/privateLinkResources"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *BookshelfPrivateLinkResourcesClient) listByBookshelfCreateRequest(ctx context.Context, resourceGroupName string, bookshelfName string, nextLink string, _ *BookshelfPrivateLinkResourcesClientListByBookshelfOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Discovery/bookshelves/{bookshelfName}/privateLinkResources"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if bookshelfName == "" {
+			return nil, errors.New("parameter bookshelfName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{bookshelfName}", url.PathEscape(bookshelfName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if bookshelfName == "" {
-		return nil, errors.New("parameter bookshelfName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{bookshelfName}", url.PathEscape(bookshelfName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260601)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByBookshelfHandleResponse handles the ListByBookshelf response.
-func (client *BookshelfPrivateLinkResourcesClient) listByBookshelfHandleResponse(resp *http.Response) (BookshelfPrivateLinkResourcesClientListByBookshelfResponse, error) {
+func (client *BookshelfPrivateLinkResourcesClient) listByBookshelfHandleResponse(resp *http.Response, successCodes ...int) (BookshelfPrivateLinkResourcesClientListByBookshelfResponse, error) {
 	result := BookshelfPrivateLinkResourcesClientListByBookshelfResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BookshelfPrivateLinkResourceListResult); err != nil {
 		return BookshelfPrivateLinkResourcesClientListByBookshelfResponse{}, err
 	}

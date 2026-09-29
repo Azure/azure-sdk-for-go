@@ -30,6 +30,9 @@ type IacProfilesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewIacProfilesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*IacProfilesClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -63,19 +66,14 @@ func (client *IacProfilesClient) CreateOrUpdate(ctx context.Context, resourceGro
 	if err != nil {
 		return IacProfilesClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return IacProfilesClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
 func (client *IacProfilesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, iacProfileName string, parameters IacProfile, _ *IacProfilesClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevHub/iacProfiles/{iacProfileName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -102,8 +100,11 @@ func (client *IacProfilesClient) createOrUpdateCreateRequest(ctx context.Context
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *IacProfilesClient) createOrUpdateHandleResponse(resp *http.Response) (IacProfilesClientCreateOrUpdateResponse, error) {
+func (client *IacProfilesClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (IacProfilesClientCreateOrUpdateResponse, error) {
 	result := IacProfilesClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IacProfile); err != nil {
 		return IacProfilesClientCreateOrUpdateResponse{}, err
 	}
@@ -132,8 +133,7 @@ func (client *IacProfilesClient) Delete(ctx context.Context, resourceGroupName s
 		return IacProfilesClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return IacProfilesClientDeleteResponse{}, err
+		return IacProfilesClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return IacProfilesClientDeleteResponse{}, nil
 }
@@ -142,7 +142,7 @@ func (client *IacProfilesClient) Delete(ctx context.Context, resourceGroupName s
 func (client *IacProfilesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, iacProfileName string, _ *IacProfilesClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevHub/iacProfiles/{iacProfileName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -184,19 +184,14 @@ func (client *IacProfilesClient) Export(ctx context.Context, resourceGroupName s
 	if err != nil {
 		return IacProfilesClientExportResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return IacProfilesClientExportResponse{}, err
-	}
-	resp, err := client.exportHandleResponse(httpResp)
-	return resp, err
+	return client.exportHandleResponse(httpResp, http.StatusOK)
 }
 
 // exportCreateRequest creates the Export request.
 func (client *IacProfilesClient) exportCreateRequest(ctx context.Context, resourceGroupName string, iacProfileName string, parameters ExportTemplateRequest, _ *IacProfilesClientExportOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevHub/iacProfiles/{iacProfileName}/export"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -223,8 +218,11 @@ func (client *IacProfilesClient) exportCreateRequest(ctx context.Context, resour
 }
 
 // exportHandleResponse handles the Export response.
-func (client *IacProfilesClient) exportHandleResponse(resp *http.Response) (IacProfilesClientExportResponse, error) {
+func (client *IacProfilesClient) exportHandleResponse(resp *http.Response, successCodes ...int) (IacProfilesClientExportResponse, error) {
 	result := IacProfilesClientExportResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrLinkResponse); err != nil {
 		return IacProfilesClientExportResponse{}, err
 	}
@@ -252,19 +250,14 @@ func (client *IacProfilesClient) Get(ctx context.Context, resourceGroupName stri
 	if err != nil {
 		return IacProfilesClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return IacProfilesClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *IacProfilesClient) getCreateRequest(ctx context.Context, resourceGroupName string, iacProfileName string, _ *IacProfilesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevHub/iacProfiles/{iacProfileName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -287,8 +280,11 @@ func (client *IacProfilesClient) getCreateRequest(ctx context.Context, resourceG
 }
 
 // getHandleResponse handles the Get response.
-func (client *IacProfilesClient) getHandleResponse(resp *http.Response) (IacProfilesClientGetResponse, error) {
+func (client *IacProfilesClient) getHandleResponse(resp *http.Response, successCodes ...int) (IacProfilesClientGetResponse, error) {
 	result := IacProfilesClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IacProfile); err != nil {
 		return IacProfilesClientGetResponse{}, err
 	}
@@ -310,39 +306,53 @@ func (client *IacProfilesClient) NewListPager(options *IacProfilesClientListOpti
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return IacProfilesClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return IacProfilesClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *IacProfilesClient) listCreateRequest(ctx context.Context, _ *IacProfilesClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.DevHub/iacProfiles"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *IacProfilesClient) listCreateRequest(ctx context.Context, nextLink string, _ *IacProfilesClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.DevHub/iacProfiles"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250301Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250301Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *IacProfilesClient) listHandleResponse(resp *http.Response) (IacProfilesClientListResponse, error) {
+func (client *IacProfilesClient) listHandleResponse(resp *http.Response, successCodes ...int) (IacProfilesClientListResponse, error) {
 	result := IacProfilesClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IacProfileListResult); err != nil {
 		return IacProfilesClientListResponse{}, err
 	}
@@ -366,43 +376,57 @@ func (client *IacProfilesClient) NewListByResourceGroupPager(resourceGroupName s
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
-			}, nil)
+			req, err := client.listByResourceGroupCreateRequest(ctx, resourceGroupName, nextLink, options)
 			if err != nil {
 				return IacProfilesClientListByResourceGroupResponse{}, err
 			}
-			return client.listByResourceGroupHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return IacProfilesClientListByResourceGroupResponse{}, err
+			}
+			return client.listByResourceGroupHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *IacProfilesClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, _ *IacProfilesClientListByResourceGroupOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevHub/iacProfiles"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *IacProfilesClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, nextLink string, _ *IacProfilesClientListByResourceGroupOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevHub/iacProfiles"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250301Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250301Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *IacProfilesClient) listByResourceGroupHandleResponse(resp *http.Response) (IacProfilesClientListByResourceGroupResponse, error) {
+func (client *IacProfilesClient) listByResourceGroupHandleResponse(resp *http.Response, successCodes ...int) (IacProfilesClientListByResourceGroupResponse, error) {
 	result := IacProfilesClientListByResourceGroupResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IacProfileListResult); err != nil {
 		return IacProfilesClientListByResourceGroupResponse{}, err
 	}
@@ -430,19 +454,14 @@ func (client *IacProfilesClient) Scale(ctx context.Context, resourceGroupName st
 	if err != nil {
 		return IacProfilesClientScaleResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return IacProfilesClientScaleResponse{}, err
-	}
-	resp, err := client.scaleHandleResponse(httpResp)
-	return resp, err
+	return client.scaleHandleResponse(httpResp, http.StatusOK)
 }
 
 // scaleCreateRequest creates the Scale request.
 func (client *IacProfilesClient) scaleCreateRequest(ctx context.Context, resourceGroupName string, iacProfileName string, parameters ScaleTemplateRequest, _ *IacProfilesClientScaleOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevHub/iacProfiles/{iacProfileName}/scale"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -469,8 +488,11 @@ func (client *IacProfilesClient) scaleCreateRequest(ctx context.Context, resourc
 }
 
 // scaleHandleResponse handles the Scale response.
-func (client *IacProfilesClient) scaleHandleResponse(resp *http.Response) (IacProfilesClientScaleResponse, error) {
+func (client *IacProfilesClient) scaleHandleResponse(resp *http.Response, successCodes ...int) (IacProfilesClientScaleResponse, error) {
 	result := IacProfilesClientScaleResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrLinkResponse); err != nil {
 		return IacProfilesClientScaleResponse{}, err
 	}
@@ -499,8 +521,7 @@ func (client *IacProfilesClient) Sync(ctx context.Context, resourceGroupName str
 		return IacProfilesClientSyncResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return IacProfilesClientSyncResponse{}, err
+		return IacProfilesClientSyncResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return IacProfilesClientSyncResponse{}, nil
 }
@@ -509,7 +530,7 @@ func (client *IacProfilesClient) Sync(ctx context.Context, resourceGroupName str
 func (client *IacProfilesClient) syncCreateRequest(ctx context.Context, resourceGroupName string, iacProfileName string, _ *IacProfilesClientSyncOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevHub/iacProfiles/{iacProfileName}/sync"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -552,19 +573,14 @@ func (client *IacProfilesClient) UpdateTags(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return IacProfilesClientUpdateTagsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return IacProfilesClientUpdateTagsResponse{}, err
-	}
-	resp, err := client.updateTagsHandleResponse(httpResp)
-	return resp, err
+	return client.updateTagsHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateTagsCreateRequest creates the UpdateTags request.
 func (client *IacProfilesClient) updateTagsCreateRequest(ctx context.Context, resourceGroupName string, iacProfileName string, parameters TagsObject, _ *IacProfilesClientUpdateTagsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevHub/iacProfiles/{iacProfileName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -591,8 +607,11 @@ func (client *IacProfilesClient) updateTagsCreateRequest(ctx context.Context, re
 }
 
 // updateTagsHandleResponse handles the UpdateTags response.
-func (client *IacProfilesClient) updateTagsHandleResponse(resp *http.Response) (IacProfilesClientUpdateTagsResponse, error) {
+func (client *IacProfilesClient) updateTagsHandleResponse(resp *http.Response, successCodes ...int) (IacProfilesClientUpdateTagsResponse, error) {
 	result := IacProfilesClientUpdateTagsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IacProfile); err != nil {
 		return IacProfilesClientUpdateTagsResponse{}, err
 	}

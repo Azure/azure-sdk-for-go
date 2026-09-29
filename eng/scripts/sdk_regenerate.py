@@ -77,6 +77,10 @@ def find_typespec_go_tgz(typespec_go_root: str) -> Path:
 def update_dev_dependencies(emitter_package: dict, source_deps: dict) -> List[str]:
     """Update devDependencies in emitter_package with versions from source_deps.
 
+    The emitter package publishes its dependencies as caret ranges, while
+    emitter-package.json intentionally uses exact versions for reproducible
+    regeneration.
+
     Returns the list of devDependency names that were not found in source_deps
     (i.e. gen-time libraries outside the emitter's own dependency closure, such as
     @azure-tools/typespec-azure-portal-core and @azure-tools/typespec-liftr-base),
@@ -86,8 +90,10 @@ def update_dev_dependencies(emitter_package: dict, source_deps: dict) -> List[st
         return unresolved
     for package_name in emitter_package["devDependencies"].keys():
         if package_name in source_deps:
-            emitter_package["devDependencies"][package_name] = source_deps[package_name]
-            logging.info(f"Updated {package_name} to version {source_deps[package_name]}")
+            source_version = source_deps[package_name]
+            pinned_version = source_version[1:] if source_version.startswith("^") else source_version
+            emitter_package["devDependencies"][package_name] = pinned_version
+            logging.info(f"Updated {package_name} to version {pinned_version}")
         else:
             unresolved.append(package_name)
     return unresolved

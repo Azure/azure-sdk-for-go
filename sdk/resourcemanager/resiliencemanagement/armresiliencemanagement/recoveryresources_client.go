@@ -58,12 +58,7 @@ func (client *RecoveryResourcesClient) Get(ctx context.Context, serviceGroupName
 	if err != nil {
 		return RecoveryResourcesClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return RecoveryResourcesClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -93,8 +88,11 @@ func (client *RecoveryResourcesClient) getCreateRequest(ctx context.Context, ser
 }
 
 // getHandleResponse handles the Get response.
-func (client *RecoveryResourcesClient) getHandleResponse(resp *http.Response) (RecoveryResourcesClientGetResponse, error) {
+func (client *RecoveryResourcesClient) getHandleResponse(resp *http.Response, successCodes ...int) (RecoveryResourcesClientGetResponse, error) {
 	result := RecoveryResourcesClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RecoveryResource); err != nil {
 		return RecoveryResourcesClientGetResponse{}, err
 	}
@@ -117,43 +115,57 @@ func (client *RecoveryResourcesClient) NewListPager(serviceGroupName string, rec
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, serviceGroupName, recoveryPlanName, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, serviceGroupName, recoveryPlanName, nextLink, options)
 			if err != nil {
 				return RecoveryResourcesClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return RecoveryResourcesClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *RecoveryResourcesClient) listCreateRequest(ctx context.Context, serviceGroupName string, recoveryPlanName string, _ *RecoveryResourcesClientListOptions) (*policy.Request, error) {
-	urlPath := "/providers/Microsoft.Management/serviceGroups/{serviceGroupName}/providers/Microsoft.AzureResilienceManagement/recoveryPlans/{recoveryPlanName}/recoveryResources"
-	if serviceGroupName == "" {
-		return nil, errors.New("parameter serviceGroupName cannot be empty")
+func (client *RecoveryResourcesClient) listCreateRequest(ctx context.Context, serviceGroupName string, recoveryPlanName string, nextLink string, _ *RecoveryResourcesClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/providers/Microsoft.Management/serviceGroups/{serviceGroupName}/providers/Microsoft.AzureResilienceManagement/recoveryPlans/{recoveryPlanName}/recoveryResources"
+		if serviceGroupName == "" {
+			return nil, errors.New("parameter serviceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{serviceGroupName}", url.PathEscape(serviceGroupName))
+		if recoveryPlanName == "" {
+			return nil, errors.New("parameter recoveryPlanName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{recoveryPlanName}", url.PathEscape(recoveryPlanName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{serviceGroupName}", url.PathEscape(serviceGroupName))
-	if recoveryPlanName == "" {
-		return nil, errors.New("parameter recoveryPlanName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{recoveryPlanName}", url.PathEscape(recoveryPlanName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260401Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *RecoveryResourcesClient) listHandleResponse(resp *http.Response) (RecoveryResourcesClientListResponse, error) {
+func (client *RecoveryResourcesClient) listHandleResponse(resp *http.Response, successCodes ...int) (RecoveryResourcesClientListResponse, error) {
 	result := RecoveryResourcesClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RecoveryResourceListResult); err != nil {
 		return RecoveryResourcesClientListResponse{}, err
 	}

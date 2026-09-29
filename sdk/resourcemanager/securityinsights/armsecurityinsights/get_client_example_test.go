@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-07-01-preview/recommendations/GetRecommendation.json
+// Generated from example definition: 2025-10-01-preview/recommendations/GetRecommendation.json
 func ExampleGetClient_SingleRecommendation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -39,9 +39,9 @@ func ExampleGetClient_SingleRecommendation() {
 	// 			AdditionalProperties: map[string]*string{
 	// 				"someKey": to.Ptr("someValue"),
 	// 			},
-	// 			CreationTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-02-19T03:09:03.4888396+00:00"); return t}()),
-	// 			LastEvaluatedTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-02-19T03:09:03.4888396+00:00"); return t}()),
-	// 			LastModifiedTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-02-19T03:57:31.7964447+00:00"); return t}()),
+	// 			CreationTimeUTC: to.Ptr(time.Date(2022, time.February, 19, 3, 9, 3, 488839600, time.UTC)),
+	// 			LastEvaluatedTimeUTC: to.Ptr(time.Date(2022, time.February, 19, 3, 9, 3, 488839600, time.UTC)),
+	// 			LastModifiedTimeUTC: to.Ptr(time.Date(2022, time.February, 19, 3, 57, 31, 796444700, time.UTC)),
 	// 			RecommendationTypeID: to.Ptr("Swagger_Example"),
 	// 			ResourceID: to.Ptr("someId"),
 	// 			State: to.Ptr(armsecurityinsights.StateCompletedBySystem),

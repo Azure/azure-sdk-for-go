@@ -85,10 +85,10 @@ func ExampleClient_BeginCreateOrUpdateAtManagementGroup() {
 	// 		SystemData: &armdeploymentstacks.SystemData{
 	// 			CreatedBy: to.Ptr("string"),
 	// 			CreatedByType: to.Ptr(armdeploymentstacks.CreatedByTypeApplication),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-01T01:01:01.1075056Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2020, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("string"),
 	// 			LastModifiedByType: to.Ptr(armdeploymentstacks.CreatedByTypeApplication),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-02T02:03:01.1974346Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2020, time.February, 2, 2, 3, 1, 197434600, time.UTC)),
 	// 		},
 	// 		Properties: &armdeploymentstacks.DeploymentStackProperties{
 	// 			Description: to.Ptr("my Description"),
@@ -191,10 +191,10 @@ func ExampleClient_BeginCreateOrUpdateAtResourceGroup() {
 	// 		SystemData: &armdeploymentstacks.SystemData{
 	// 			CreatedBy: to.Ptr("string"),
 	// 			CreatedByType: to.Ptr(armdeploymentstacks.CreatedByTypeApplication),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-01T01:01:01.1075056Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2020, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("string"),
 	// 			LastModifiedByType: to.Ptr(armdeploymentstacks.CreatedByTypeApplication),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-02T02:03:01.1974346Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2020, time.February, 2, 2, 3, 1, 197434600, time.UTC)),
 	// 		},
 	// 		Properties: &armdeploymentstacks.DeploymentStackProperties{
 	// 			Description: to.Ptr("my Description"),
@@ -297,10 +297,10 @@ func ExampleClient_BeginCreateOrUpdateAtSubscription() {
 	// 		SystemData: &armdeploymentstacks.SystemData{
 	// 			CreatedBy: to.Ptr("string"),
 	// 			CreatedByType: to.Ptr(armdeploymentstacks.CreatedByTypeApplication),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-01T01:01:01.1075056Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2020, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("string"),
 	// 			LastModifiedByType: to.Ptr(armdeploymentstacks.CreatedByTypeApplication),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-02T02:03:01.1974346Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2020, time.February, 2, 2, 3, 1, 197434600, time.UTC)),
 	// 		},
 	// 		Properties: &armdeploymentstacks.DeploymentStackProperties{
 	// 			Description: to.Ptr("my Description"),
@@ -582,10 +582,10 @@ func ExampleClient_GetAtManagementGroup() {
 	// 		SystemData: &armdeploymentstacks.SystemData{
 	// 			CreatedBy: to.Ptr("string"),
 	// 			CreatedByType: to.Ptr(armdeploymentstacks.CreatedByTypeApplication),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-01T01:01:01.1075056Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2020, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("string"),
 	// 			LastModifiedByType: to.Ptr(armdeploymentstacks.CreatedByTypeApplication),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-02T02:03:01.1974346Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2020, time.February, 2, 2, 3, 1, 197434600, time.UTC)),
 	// 		},
 	// 		Properties: &armdeploymentstacks.DeploymentStackProperties{
 	// 			DeploymentID: to.Ptr("/providers/Microsoft.Management/managementGroups/myMg/providers/Microsoft.Resources/deployments/simpleDeploymentStack-20210301-3f41c"),
@@ -693,10 +693,10 @@ func ExampleClient_GetAtResourceGroup() {
 	// 		SystemData: &armdeploymentstacks.SystemData{
 	// 			CreatedBy: to.Ptr("string"),
 	// 			CreatedByType: to.Ptr(armdeploymentstacks.CreatedByTypeApplication),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-01T01:01:01.1075056Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2020, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("string"),
 	// 			LastModifiedByType: to.Ptr(armdeploymentstacks.CreatedByTypeApplication),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-02T02:03:01.1974346Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2020, time.February, 2, 2, 3, 1, 197434600, time.UTC)),
 	// 		},
 	// 		Properties: &armdeploymentstacks.DeploymentStackProperties{
 	// 			DeploymentID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/deploymentStacksRG/providers/Microsoft.Resources/deployments/simpleDeploymentStack-20210301-3f41c"),
@@ -804,10 +804,10 @@ func ExampleClient_GetAtSubscription() {
 	// 		SystemData: &armdeploymentstacks.SystemData{
 	// 			CreatedBy: to.Ptr("string"),
 	// 			CreatedByType: to.Ptr(armdeploymentstacks.CreatedByTypeApplication),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-01T01:01:01.1075056Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2020, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("string"),
 	// 			LastModifiedByType: to.Ptr(armdeploymentstacks.CreatedByTypeApplication),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-02T02:03:01.1974346Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2020, time.February, 2, 2, 3, 1, 197434600, time.UTC)),
 	// 		},
 	// 		Properties: &armdeploymentstacks.DeploymentStackProperties{
 	// 			DeploymentID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/deploymentStacksRG/providers/Microsoft.Resources/deployments/simpleDeploymentStack-20210301-3f41c"),
@@ -921,10 +921,10 @@ func ExampleClient_NewListAtManagementGroupPager() {
 		// 				SystemData: &armdeploymentstacks.SystemData{
 		// 					CreatedBy: to.Ptr("string"),
 		// 					CreatedByType: to.Ptr(armdeploymentstacks.CreatedByTypeApplication),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-01T01:01:01.1075056Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2020, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("string"),
 		// 					LastModifiedByType: to.Ptr(armdeploymentstacks.CreatedByTypeApplication),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-02T02:03:01.1974346Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2020, time.February, 2, 2, 3, 1, 197434600, time.UTC)),
 		// 				},
 		// 				Properties: &armdeploymentstacks.DeploymentStackProperties{
 		// 					ActionOnUnmanage: &armdeploymentstacks.ActionOnUnmanage{
@@ -964,10 +964,10 @@ func ExampleClient_NewListAtManagementGroupPager() {
 		// 				SystemData: &armdeploymentstacks.SystemData{
 		// 					CreatedBy: to.Ptr("string"),
 		// 					CreatedByType: to.Ptr(armdeploymentstacks.CreatedByTypeApplication),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-01T01:01:01.1075056Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2020, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("string"),
 		// 					LastModifiedByType: to.Ptr(armdeploymentstacks.CreatedByTypeApplication),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-02T02:03:01.1974346Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2020, time.February, 2, 2, 3, 1, 197434600, time.UTC)),
 		// 				},
 		// 				Properties: &armdeploymentstacks.DeploymentStackProperties{
 		// 					DeploymentID: to.Ptr("/providers/Microsoft.Management/managementGroups/myMg/providers/Microsoft.Resources/deployments/simpleDeploymentStack2-20210301-3f41c"),
@@ -1052,10 +1052,10 @@ func ExampleClient_NewListAtResourceGroupPager() {
 		// 				SystemData: &armdeploymentstacks.SystemData{
 		// 					CreatedBy: to.Ptr("string"),
 		// 					CreatedByType: to.Ptr(armdeploymentstacks.CreatedByTypeApplication),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-01T01:01:01.1075056Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2020, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("string"),
 		// 					LastModifiedByType: to.Ptr(armdeploymentstacks.CreatedByTypeApplication),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-02T02:03:01.1974346Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2020, time.February, 2, 2, 3, 1, 197434600, time.UTC)),
 		// 				},
 		// 				Properties: &armdeploymentstacks.DeploymentStackProperties{
 		// 					ActionOnUnmanage: &armdeploymentstacks.ActionOnUnmanage{
@@ -1095,10 +1095,10 @@ func ExampleClient_NewListAtResourceGroupPager() {
 		// 				SystemData: &armdeploymentstacks.SystemData{
 		// 					CreatedBy: to.Ptr("string"),
 		// 					CreatedByType: to.Ptr(armdeploymentstacks.CreatedByTypeApplication),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-01T01:01:01.1075056Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2020, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("string"),
 		// 					LastModifiedByType: to.Ptr(armdeploymentstacks.CreatedByTypeApplication),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-02T02:03:01.1974346Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2020, time.February, 2, 2, 3, 1, 197434600, time.UTC)),
 		// 				},
 		// 				Properties: &armdeploymentstacks.DeploymentStackProperties{
 		// 					DeploymentID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/deploymentStacksRG/providers/Microsoft.Resources/deployments/simpleDeploymentStack2-20210301-3f41c"),
@@ -1183,10 +1183,10 @@ func ExampleClient_NewListAtSubscriptionPager() {
 		// 				SystemData: &armdeploymentstacks.SystemData{
 		// 					CreatedBy: to.Ptr("string"),
 		// 					CreatedByType: to.Ptr(armdeploymentstacks.CreatedByTypeApplication),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-01T01:01:01.1075056Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2020, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("string"),
 		// 					LastModifiedByType: to.Ptr(armdeploymentstacks.CreatedByTypeApplication),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-02T02:03:01.1974346Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2020, time.February, 2, 2, 3, 1, 197434600, time.UTC)),
 		// 				},
 		// 				Properties: &armdeploymentstacks.DeploymentStackProperties{
 		// 					ActionOnUnmanage: &armdeploymentstacks.ActionOnUnmanage{
@@ -1226,10 +1226,10 @@ func ExampleClient_NewListAtSubscriptionPager() {
 		// 				SystemData: &armdeploymentstacks.SystemData{
 		// 					CreatedBy: to.Ptr("string"),
 		// 					CreatedByType: to.Ptr(armdeploymentstacks.CreatedByTypeApplication),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-01T01:01:01.1075056Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2020, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("string"),
 		// 					LastModifiedByType: to.Ptr(armdeploymentstacks.CreatedByTypeApplication),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-02T02:03:01.1974346Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2020, time.February, 2, 2, 3, 1, 197434600, time.UTC)),
 		// 				},
 		// 				Properties: &armdeploymentstacks.DeploymentStackProperties{
 		// 					DeploymentID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/deploymentStacksRG/providers/Microsoft.Resources/deployments/simpleDeploymentStack2-20210301-3f41c"),

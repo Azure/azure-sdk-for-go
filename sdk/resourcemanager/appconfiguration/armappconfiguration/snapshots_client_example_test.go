@@ -51,7 +51,7 @@ func ExampleSnapshotsClient_BeginCreate() {
 	// 		ID: to.Ptr("/subscriptions/c80fb759-c965-4c6a-9110-9b2b2d038882/resourceGroups/myResourceGroup/providers/Microsoft.AppConfiguration/configurationStores/contoso/snapshots/mySnapshot"),
 	// 		Properties: &armappconfiguration.SnapshotProperties{
 	// 			CompositionType: to.Ptr(armappconfiguration.CompositionType("All")),
-	// 			Created: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-08-01T22:19:40+00:00"); return t}()),
+	// 			Created: to.Ptr(time.Date(2022, time.August, 1, 22, 19, 40, 0, time.UTC)),
 	// 			Etag: to.Ptr("4f6dd610dd5e4deebc7fbaef685fb903"),
 	// 			Filters: []*armappconfiguration.KeyValueFilter{
 	// 				{
@@ -95,7 +95,7 @@ func ExampleSnapshotsClient_Get() {
 	// 		ID: to.Ptr("/subscriptions/c80fb759-c965-4c6a-9110-9b2b2d038882/resourceGroups/myResourceGroup/providers/Microsoft.AppConfiguration/configurationStores/contoso/snapshots/mySnapshot"),
 	// 		Properties: &armappconfiguration.SnapshotProperties{
 	// 			CompositionType: to.Ptr(armappconfiguration.CompositionType("All")),
-	// 			Created: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-08-01T22:19:40+00:00"); return t}()),
+	// 			Created: to.Ptr(time.Date(2022, time.August, 1, 22, 19, 40, 0, time.UTC)),
 	// 			Etag: to.Ptr("4f6dd610dd5e4deebc7fbaef685fb903"),
 	// 			Filters: []*armappconfiguration.KeyValueFilter{
 	// 				{

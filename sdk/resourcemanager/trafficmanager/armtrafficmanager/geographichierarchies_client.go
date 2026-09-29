@@ -17,7 +17,7 @@ import (
 // GeographicHierarchiesClient contains the methods for the GeographicHierarchies group.
 // Don't use this type directly, use NewGeographicHierarchiesClient() instead.
 //
-// Generated from API version 2024-04-01-preview
+// Generated from API version 2026-09-01
 type GeographicHierarchiesClient struct {
 	internal *arm.Client
 }
@@ -54,12 +54,7 @@ func (client *GeographicHierarchiesClient) GetDefault(ctx context.Context, optio
 	if err != nil {
 		return GeographicHierarchiesClientGetDefaultResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return GeographicHierarchiesClientGetDefaultResponse{}, err
-	}
-	resp, err := client.getDefaultHandleResponse(httpResp)
-	return resp, err
+	return client.getDefaultHandleResponse(httpResp, http.StatusOK)
 }
 
 // getDefaultCreateRequest creates the GetDefault request.
@@ -70,15 +65,18 @@ func (client *GeographicHierarchiesClient) getDefaultCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240401Preview)
+	reqQP.Set("api-version", version20260901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getDefaultHandleResponse handles the GetDefault response.
-func (client *GeographicHierarchiesClient) getDefaultHandleResponse(resp *http.Response) (GeographicHierarchiesClientGetDefaultResponse, error) {
+func (client *GeographicHierarchiesClient) getDefaultHandleResponse(resp *http.Response, successCodes ...int) (GeographicHierarchiesClientGetDefaultResponse, error) {
 	result := GeographicHierarchiesClientGetDefaultResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GeographicHierarchy); err != nil {
 		return GeographicHierarchiesClientGetDefaultResponse{}, err
 	}

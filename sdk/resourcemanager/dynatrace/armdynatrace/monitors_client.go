@@ -30,6 +30,9 @@ type MonitorsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewMonitorsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*MonitorsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -82,8 +85,7 @@ func (client *MonitorsClient) createOrUpdate(ctx context.Context, resourceGroupN
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -92,7 +94,7 @@ func (client *MonitorsClient) createOrUpdate(ctx context.Context, resourceGroupN
 func (client *MonitorsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, resource MonitorResource, _ *MonitorsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Dynatrace.Observability/monitors/{monitorName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -158,8 +160,7 @@ func (client *MonitorsClient) deleteOperation(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -168,7 +169,7 @@ func (client *MonitorsClient) deleteOperation(ctx context.Context, resourceGroup
 func (client *MonitorsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, _ *MonitorsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Dynatrace.Observability/monitors/{monitorName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -208,19 +209,14 @@ func (client *MonitorsClient) Get(ctx context.Context, resourceGroupName string,
 	if err != nil {
 		return MonitorsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return MonitorsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *MonitorsClient) getCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, _ *MonitorsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Dynatrace.Observability/monitors/{monitorName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -243,8 +239,11 @@ func (client *MonitorsClient) getCreateRequest(ctx context.Context, resourceGrou
 }
 
 // getHandleResponse handles the Get response.
-func (client *MonitorsClient) getHandleResponse(resp *http.Response) (MonitorsClientGetResponse, error) {
+func (client *MonitorsClient) getHandleResponse(resp *http.Response, successCodes ...int) (MonitorsClientGetResponse, error) {
 	result := MonitorsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MonitorResource); err != nil {
 		return MonitorsClientGetResponse{}, err
 	}
@@ -270,19 +269,14 @@ func (client *MonitorsClient) GetAllConnectedResourcesCount(ctx context.Context,
 	if err != nil {
 		return MonitorsClientGetAllConnectedResourcesCountResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return MonitorsClientGetAllConnectedResourcesCountResponse{}, err
-	}
-	resp, err := client.getAllConnectedResourcesCountHandleResponse(httpResp)
-	return resp, err
+	return client.getAllConnectedResourcesCountHandleResponse(httpResp, http.StatusOK)
 }
 
 // getAllConnectedResourcesCountCreateRequest creates the GetAllConnectedResourcesCount request.
 func (client *MonitorsClient) getAllConnectedResourcesCountCreateRequest(ctx context.Context, request MarketplaceSubscriptionIDRequest, _ *MonitorsClientGetAllConnectedResourcesCountOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Dynatrace.Observability/getAllConnectedResourcesCount"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
@@ -301,8 +295,11 @@ func (client *MonitorsClient) getAllConnectedResourcesCountCreateRequest(ctx con
 }
 
 // getAllConnectedResourcesCountHandleResponse handles the GetAllConnectedResourcesCount response.
-func (client *MonitorsClient) getAllConnectedResourcesCountHandleResponse(resp *http.Response) (MonitorsClientGetAllConnectedResourcesCountResponse, error) {
+func (client *MonitorsClient) getAllConnectedResourcesCountHandleResponse(resp *http.Response, successCodes ...int) (MonitorsClientGetAllConnectedResourcesCountResponse, error) {
 	result := MonitorsClientGetAllConnectedResourcesCountResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ConnectedResourcesCountResponse); err != nil {
 		return MonitorsClientGetAllConnectedResourcesCountResponse{}, err
 	}
@@ -328,19 +325,14 @@ func (client *MonitorsClient) GetMarketplaceSaaSResourceDetails(ctx context.Cont
 	if err != nil {
 		return MonitorsClientGetMarketplaceSaaSResourceDetailsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return MonitorsClientGetMarketplaceSaaSResourceDetailsResponse{}, err
-	}
-	resp, err := client.getMarketplaceSaaSResourceDetailsHandleResponse(httpResp)
-	return resp, err
+	return client.getMarketplaceSaaSResourceDetailsHandleResponse(httpResp, http.StatusOK)
 }
 
 // getMarketplaceSaaSResourceDetailsCreateRequest creates the GetMarketplaceSaaSResourceDetails request.
 func (client *MonitorsClient) getMarketplaceSaaSResourceDetailsCreateRequest(ctx context.Context, request MarketplaceSaaSResourceDetailsRequest, _ *MonitorsClientGetMarketplaceSaaSResourceDetailsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Dynatrace.Observability/getMarketplaceSaaSResourceDetails"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
@@ -359,8 +351,11 @@ func (client *MonitorsClient) getMarketplaceSaaSResourceDetailsCreateRequest(ctx
 }
 
 // getMarketplaceSaaSResourceDetailsHandleResponse handles the GetMarketplaceSaaSResourceDetails response.
-func (client *MonitorsClient) getMarketplaceSaaSResourceDetailsHandleResponse(resp *http.Response) (MonitorsClientGetMarketplaceSaaSResourceDetailsResponse, error) {
+func (client *MonitorsClient) getMarketplaceSaaSResourceDetailsHandleResponse(resp *http.Response, successCodes ...int) (MonitorsClientGetMarketplaceSaaSResourceDetailsResponse, error) {
 	result := MonitorsClientGetMarketplaceSaaSResourceDetailsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MarketplaceSaaSResourceDetailsResponse); err != nil {
 		return MonitorsClientGetMarketplaceSaaSResourceDetailsResponse{}, err
 	}
@@ -387,19 +382,14 @@ func (client *MonitorsClient) GetMetricStatus(ctx context.Context, resourceGroup
 	if err != nil {
 		return MonitorsClientGetMetricStatusResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return MonitorsClientGetMetricStatusResponse{}, err
-	}
-	resp, err := client.getMetricStatusHandleResponse(httpResp)
-	return resp, err
+	return client.getMetricStatusHandleResponse(httpResp, http.StatusOK)
 }
 
 // getMetricStatusCreateRequest creates the GetMetricStatus request.
 func (client *MonitorsClient) getMetricStatusCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, options *MonitorsClientGetMetricStatusOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Dynatrace.Observability/monitors/{monitorName}/getMetricStatus"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -429,8 +419,11 @@ func (client *MonitorsClient) getMetricStatusCreateRequest(ctx context.Context, 
 }
 
 // getMetricStatusHandleResponse handles the GetMetricStatus response.
-func (client *MonitorsClient) getMetricStatusHandleResponse(resp *http.Response) (MonitorsClientGetMetricStatusResponse, error) {
+func (client *MonitorsClient) getMetricStatusHandleResponse(resp *http.Response, successCodes ...int) (MonitorsClientGetMetricStatusResponse, error) {
 	result := MonitorsClientGetMetricStatusResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MetricsStatusResponse); err != nil {
 		return MonitorsClientGetMetricStatusResponse{}, err
 	}
@@ -456,19 +449,14 @@ func (client *MonitorsClient) GetSSODetails(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return MonitorsClientGetSSODetailsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return MonitorsClientGetSSODetailsResponse{}, err
-	}
-	resp, err := client.getSSODetailsHandleResponse(httpResp)
-	return resp, err
+	return client.getSSODetailsHandleResponse(httpResp, http.StatusOK)
 }
 
 // getSSODetailsCreateRequest creates the GetSSODetails request.
 func (client *MonitorsClient) getSSODetailsCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, options *MonitorsClientGetSSODetailsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Dynatrace.Observability/monitors/{monitorName}/getSSODetails"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -498,8 +486,11 @@ func (client *MonitorsClient) getSSODetailsCreateRequest(ctx context.Context, re
 }
 
 // getSSODetailsHandleResponse handles the GetSSODetails response.
-func (client *MonitorsClient) getSSODetailsHandleResponse(resp *http.Response) (MonitorsClientGetSSODetailsResponse, error) {
+func (client *MonitorsClient) getSSODetailsHandleResponse(resp *http.Response, successCodes ...int) (MonitorsClientGetSSODetailsResponse, error) {
 	result := MonitorsClientGetSSODetailsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SSODetailsResponse); err != nil {
 		return MonitorsClientGetSSODetailsResponse{}, err
 	}
@@ -527,19 +518,14 @@ func (client *MonitorsClient) GetVMHostPayload(ctx context.Context, resourceGrou
 	if err != nil {
 		return MonitorsClientGetVMHostPayloadResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return MonitorsClientGetVMHostPayloadResponse{}, err
-	}
-	resp, err := client.getVMHostPayloadHandleResponse(httpResp)
-	return resp, err
+	return client.getVMHostPayloadHandleResponse(httpResp, http.StatusOK)
 }
 
 // getVMHostPayloadCreateRequest creates the GetVMHostPayload request.
 func (client *MonitorsClient) getVMHostPayloadCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, _ *MonitorsClientGetVMHostPayloadOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Dynatrace.Observability/monitors/{monitorName}/getVMHostPayload"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -562,8 +548,11 @@ func (client *MonitorsClient) getVMHostPayloadCreateRequest(ctx context.Context,
 }
 
 // getVMHostPayloadHandleResponse handles the GetVMHostPayload response.
-func (client *MonitorsClient) getVMHostPayloadHandleResponse(resp *http.Response) (MonitorsClientGetVMHostPayloadResponse, error) {
+func (client *MonitorsClient) getVMHostPayloadHandleResponse(resp *http.Response, successCodes ...int) (MonitorsClientGetVMHostPayloadResponse, error) {
 	result := MonitorsClientGetVMHostPayloadResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VMExtensionPayload); err != nil {
 		return MonitorsClientGetVMHostPayloadResponse{}, err
 	}
@@ -586,47 +575,61 @@ func (client *MonitorsClient) NewListAppServicesPager(resourceGroupName string, 
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listAppServicesCreateRequest(ctx, resourceGroupName, monitorName, options)
-			}, nil)
+			req, err := client.listAppServicesCreateRequest(ctx, resourceGroupName, monitorName, nextLink, options)
 			if err != nil {
 				return MonitorsClientListAppServicesResponse{}, err
 			}
-			return client.listAppServicesHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return MonitorsClientListAppServicesResponse{}, err
+			}
+			return client.listAppServicesHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listAppServicesCreateRequest creates the ListAppServices request.
-func (client *MonitorsClient) listAppServicesCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, _ *MonitorsClientListAppServicesOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Dynatrace.Observability/monitors/{monitorName}/listAppServices"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *MonitorsClient) listAppServicesCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, nextLink string, _ *MonitorsClientListAppServicesOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Dynatrace.Observability/monitors/{monitorName}/listAppServices"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if monitorName == "" {
+			return nil, errors.New("parameter monitorName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{monitorName}", url.PathEscape(monitorName))
+		req, err = runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if monitorName == "" {
-		return nil, errors.New("parameter monitorName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{monitorName}", url.PathEscape(monitorName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240424)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20240424)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listAppServicesHandleResponse handles the ListAppServices response.
-func (client *MonitorsClient) listAppServicesHandleResponse(resp *http.Response) (MonitorsClientListAppServicesResponse, error) {
+func (client *MonitorsClient) listAppServicesHandleResponse(resp *http.Response, successCodes ...int) (MonitorsClientListAppServicesResponse, error) {
 	result := MonitorsClientListAppServicesResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AppServiceListResponse); err != nil {
 		return MonitorsClientListAppServicesResponse{}, err
 	}
@@ -648,43 +651,57 @@ func (client *MonitorsClient) NewListByResourceGroupPager(resourceGroupName stri
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
-			}, nil)
+			req, err := client.listByResourceGroupCreateRequest(ctx, resourceGroupName, nextLink, options)
 			if err != nil {
 				return MonitorsClientListByResourceGroupResponse{}, err
 			}
-			return client.listByResourceGroupHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return MonitorsClientListByResourceGroupResponse{}, err
+			}
+			return client.listByResourceGroupHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *MonitorsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, _ *MonitorsClientListByResourceGroupOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Dynatrace.Observability/monitors"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *MonitorsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, nextLink string, _ *MonitorsClientListByResourceGroupOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Dynatrace.Observability/monitors"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240424)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20240424)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *MonitorsClient) listByResourceGroupHandleResponse(resp *http.Response) (MonitorsClientListByResourceGroupResponse, error) {
+func (client *MonitorsClient) listByResourceGroupHandleResponse(resp *http.Response, successCodes ...int) (MonitorsClientListByResourceGroupResponse, error) {
 	result := MonitorsClientListByResourceGroupResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MonitorResourceListResult); err != nil {
 		return MonitorsClientListByResourceGroupResponse{}, err
 	}
@@ -705,39 +722,53 @@ func (client *MonitorsClient) NewListBySubscriptionIDPager(options *MonitorsClie
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listBySubscriptionIDCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.listBySubscriptionIDCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return MonitorsClientListBySubscriptionIDResponse{}, err
 			}
-			return client.listBySubscriptionIDHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return MonitorsClientListBySubscriptionIDResponse{}, err
+			}
+			return client.listBySubscriptionIDHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listBySubscriptionIDCreateRequest creates the ListBySubscriptionID request.
-func (client *MonitorsClient) listBySubscriptionIDCreateRequest(ctx context.Context, _ *MonitorsClientListBySubscriptionIDOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Dynatrace.Observability/monitors"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *MonitorsClient) listBySubscriptionIDCreateRequest(ctx context.Context, nextLink string, _ *MonitorsClientListBySubscriptionIDOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Dynatrace.Observability/monitors"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240424)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20240424)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listBySubscriptionIDHandleResponse handles the ListBySubscriptionID response.
-func (client *MonitorsClient) listBySubscriptionIDHandleResponse(resp *http.Response) (MonitorsClientListBySubscriptionIDResponse, error) {
+func (client *MonitorsClient) listBySubscriptionIDHandleResponse(resp *http.Response, successCodes ...int) (MonitorsClientListBySubscriptionIDResponse, error) {
 	result := MonitorsClientListBySubscriptionIDResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MonitorResourceListResult); err != nil {
 		return MonitorsClientListBySubscriptionIDResponse{}, err
 	}
@@ -759,47 +790,61 @@ func (client *MonitorsClient) NewListHostsPager(resourceGroupName string, monito
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listHostsCreateRequest(ctx, resourceGroupName, monitorName, options)
-			}, nil)
+			req, err := client.listHostsCreateRequest(ctx, resourceGroupName, monitorName, nextLink, options)
 			if err != nil {
 				return MonitorsClientListHostsResponse{}, err
 			}
-			return client.listHostsHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return MonitorsClientListHostsResponse{}, err
+			}
+			return client.listHostsHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listHostsCreateRequest creates the ListHosts request.
-func (client *MonitorsClient) listHostsCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, _ *MonitorsClientListHostsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Dynatrace.Observability/monitors/{monitorName}/listHosts"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *MonitorsClient) listHostsCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, nextLink string, _ *MonitorsClientListHostsOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Dynatrace.Observability/monitors/{monitorName}/listHosts"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if monitorName == "" {
+			return nil, errors.New("parameter monitorName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{monitorName}", url.PathEscape(monitorName))
+		req, err = runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if monitorName == "" {
-		return nil, errors.New("parameter monitorName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{monitorName}", url.PathEscape(monitorName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240424)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20240424)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHostsHandleResponse handles the ListHosts response.
-func (client *MonitorsClient) listHostsHandleResponse(resp *http.Response) (MonitorsClientListHostsResponse, error) {
+func (client *MonitorsClient) listHostsHandleResponse(resp *http.Response, successCodes ...int) (MonitorsClientListHostsResponse, error) {
 	result := MonitorsClientListHostsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VMHostsListResponse); err != nil {
 		return MonitorsClientListHostsResponse{}, err
 	}
@@ -823,51 +868,65 @@ func (client *MonitorsClient) NewListLinkableEnvironmentsPager(resourceGroupName
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listLinkableEnvironmentsCreateRequest(ctx, resourceGroupName, monitorName, request, options)
-			}, nil)
+			req, err := client.listLinkableEnvironmentsCreateRequest(ctx, resourceGroupName, monitorName, request, nextLink, options)
 			if err != nil {
 				return MonitorsClientListLinkableEnvironmentsResponse{}, err
 			}
-			return client.listLinkableEnvironmentsHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return MonitorsClientListLinkableEnvironmentsResponse{}, err
+			}
+			return client.listLinkableEnvironmentsHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listLinkableEnvironmentsCreateRequest creates the ListLinkableEnvironments request.
-func (client *MonitorsClient) listLinkableEnvironmentsCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, request LinkableEnvironmentRequest, _ *MonitorsClientListLinkableEnvironmentsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Dynatrace.Observability/monitors/{monitorName}/listLinkableEnvironments"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *MonitorsClient) listLinkableEnvironmentsCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, request LinkableEnvironmentRequest, nextLink string, _ *MonitorsClientListLinkableEnvironmentsOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Dynatrace.Observability/monitors/{monitorName}/listLinkableEnvironments"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if monitorName == "" {
+			return nil, errors.New("parameter monitorName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{monitorName}", url.PathEscape(monitorName))
+		req, err = runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if monitorName == "" {
-		return nil, errors.New("parameter monitorName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{monitorName}", url.PathEscape(monitorName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240424)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, request); err != nil {
-		return nil, err
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20240424)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+		req.Raw().Header["Content-Type"] = []string{"application/json"}
+		if err := runtime.MarshalAsJSON(req, request); err != nil {
+			return nil, err
+		}
 	}
 	return req, nil
 }
 
 // listLinkableEnvironmentsHandleResponse handles the ListLinkableEnvironments response.
-func (client *MonitorsClient) listLinkableEnvironmentsHandleResponse(resp *http.Response) (MonitorsClientListLinkableEnvironmentsResponse, error) {
+func (client *MonitorsClient) listLinkableEnvironmentsHandleResponse(resp *http.Response, successCodes ...int) (MonitorsClientListLinkableEnvironmentsResponse, error) {
 	result := MonitorsClientListLinkableEnvironmentsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LinkableEnvironmentListResponse); err != nil {
 		return MonitorsClientListLinkableEnvironmentsResponse{}, err
 	}
@@ -890,54 +949,68 @@ func (client *MonitorsClient) NewListMonitoredResourcesPager(resourceGroupName s
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listMonitoredResourcesCreateRequest(ctx, resourceGroupName, monitorName, options)
-			}, nil)
+			req, err := client.listMonitoredResourcesCreateRequest(ctx, resourceGroupName, monitorName, nextLink, options)
 			if err != nil {
 				return MonitorsClientListMonitoredResourcesResponse{}, err
 			}
-			return client.listMonitoredResourcesHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return MonitorsClientListMonitoredResourcesResponse{}, err
+			}
+			return client.listMonitoredResourcesHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listMonitoredResourcesCreateRequest creates the ListMonitoredResources request.
-func (client *MonitorsClient) listMonitoredResourcesCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, options *MonitorsClientListMonitoredResourcesOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Dynatrace.Observability/monitors/{monitorName}/listMonitoredResources"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *MonitorsClient) listMonitoredResourcesCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, nextLink string, options *MonitorsClientListMonitoredResourcesOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Dynatrace.Observability/monitors/{monitorName}/listMonitoredResources"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if monitorName == "" {
+			return nil, errors.New("parameter monitorName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{monitorName}", url.PathEscape(monitorName))
+		req, err = runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if monitorName == "" {
-		return nil, errors.New("parameter monitorName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{monitorName}", url.PathEscape(monitorName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240424)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	if options != nil && options.Request != nil {
-		req.Raw().Header["Content-Type"] = []string{"application/json"}
-		if err := runtime.MarshalAsJSON(req, *options.Request); err != nil {
-			return nil, err
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20240424)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+		if options != nil && options.Request != nil {
+			req.Raw().Header["Content-Type"] = []string{"application/json"}
+			if err := runtime.MarshalAsJSON(req, *options.Request); err != nil {
+				return nil, err
+			}
+			return req, nil
 		}
-		return req, nil
 	}
 	return req, nil
 }
 
 // listMonitoredResourcesHandleResponse handles the ListMonitoredResources response.
-func (client *MonitorsClient) listMonitoredResourcesHandleResponse(resp *http.Response) (MonitorsClientListMonitoredResourcesResponse, error) {
+func (client *MonitorsClient) listMonitoredResourcesHandleResponse(resp *http.Response, successCodes ...int) (MonitorsClientListMonitoredResourcesResponse, error) {
 	result := MonitorsClientListMonitoredResourcesResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MonitoredResourceListResponse); err != nil {
 		return MonitorsClientListMonitoredResourcesResponse{}, err
 	}
@@ -967,8 +1040,7 @@ func (client *MonitorsClient) ManageAgentInstallation(ctx context.Context, resou
 		return MonitorsClientManageAgentInstallationResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return MonitorsClientManageAgentInstallationResponse{}, err
+		return MonitorsClientManageAgentInstallationResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return MonitorsClientManageAgentInstallationResponse{}, nil
 }
@@ -977,7 +1049,7 @@ func (client *MonitorsClient) ManageAgentInstallation(ctx context.Context, resou
 func (client *MonitorsClient) manageAgentInstallationCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, request ManageAgentInstallationRequest, _ *MonitorsClientManageAgentInstallationOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Dynatrace.Observability/monitors/{monitorName}/manageAgentInstallation"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -1022,19 +1094,14 @@ func (client *MonitorsClient) Update(ctx context.Context, resourceGroupName stri
 	if err != nil {
 		return MonitorsClientUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return MonitorsClientUpdateResponse{}, err
-	}
-	resp, err := client.updateHandleResponse(httpResp)
-	return resp, err
+	return client.updateHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateCreateRequest creates the Update request.
 func (client *MonitorsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, resource MonitorResourceUpdate, _ *MonitorsClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Dynatrace.Observability/monitors/{monitorName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -1061,8 +1128,11 @@ func (client *MonitorsClient) updateCreateRequest(ctx context.Context, resourceG
 }
 
 // updateHandleResponse handles the Update response.
-func (client *MonitorsClient) updateHandleResponse(resp *http.Response) (MonitorsClientUpdateResponse, error) {
+func (client *MonitorsClient) updateHandleResponse(resp *http.Response, successCodes ...int) (MonitorsClientUpdateResponse, error) {
 	result := MonitorsClientUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MonitorResource); err != nil {
 		return MonitorsClientUpdateResponse{}, err
 	}
@@ -1110,8 +1180,7 @@ func (client *MonitorsClient) upgradePlan(ctx context.Context, resourceGroupName
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -1120,7 +1189,7 @@ func (client *MonitorsClient) upgradePlan(ctx context.Context, resourceGroupName
 func (client *MonitorsClient) upgradePlanCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, request UpgradePlanRequest, _ *MonitorsClientBeginUpgradePlanOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Dynatrace.Observability/monitors/{monitorName}/upgradePlan"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {

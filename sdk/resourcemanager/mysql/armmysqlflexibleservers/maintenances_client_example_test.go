@@ -44,10 +44,10 @@ func ExampleMaintenancesClient_NewListPager() {
 		// 				ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestGroup/providers/Microsoft.DBforMySQL/flexibleServers/testserver/maintenances/YL4X-3CG"),
 		// 				Properties: &armmysqlflexibleservers.MaintenanceProperties{
 		// 					MaintenanceDescription: to.Ptr("Your Azure Database For MySQL routine maintenance has been successfully completed and your instance is running on the upgraded version. If you have any additional questions or concerns, please contact support."),
-		// 					MaintenanceEndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-12-11T05:00:00"); return t}()),
-		// 					MaintenanceExecutionEndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-12-11T04:22:38"); return t}()),
-		// 					MaintenanceExecutionStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-12-11T04:03:21"); return t}()),
-		// 					MaintenanceStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-12-11T04:00:00"); return t}()),
+		// 					MaintenanceEndTime: to.Ptr(time.Time{}),
+		// 					MaintenanceExecutionEndTime: to.Ptr(time.Time{}),
+		// 					MaintenanceExecutionStartTime: to.Ptr(time.Time{}),
+		// 					MaintenanceStartTime: to.Ptr(time.Time{}),
 		// 					MaintenanceState: to.Ptr(armmysqlflexibleservers.MaintenanceStateCompleted),
 		// 					MaintenanceTitle: to.Ptr("Routine Maintenance: Completed on Mon, 11 Dec 2023 04:22:38 GMT"),
 		// 					MaintenanceType: to.Ptr(armmysqlflexibleservers.MaintenanceTypeRoutineMaintenance),
@@ -58,11 +58,11 @@ func ExampleMaintenancesClient_NewListPager() {
 		// 				Type: to.Ptr("Microsoft.DBforMySQL/flexibleServers/maintenances"),
 		// 				ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestGroup/providers/Microsoft.DBforMySQL/flexibleServers/testserver/maintenances/_T9Q-TS8"),
 		// 				Properties: &armmysqlflexibleservers.MaintenanceProperties{
-		// 					MaintenanceAvailableScheduleMaxTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-31T00:00:00"); return t}()),
-		// 					MaintenanceAvailableScheduleMinTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-05T01:23:45"); return t}()),
+		// 					MaintenanceAvailableScheduleMaxTime: to.Ptr(time.Time{}),
+		// 					MaintenanceAvailableScheduleMinTime: to.Ptr(time.Time{}),
 		// 					MaintenanceDescription: to.Ptr("Your Azure Database For MySQL routine maintenance will be performed on the scheduled maintenance window between Mon, 15 Jan 2024 05:00:00 GMT and Mon, 15 Jan 2024 06:00:00 GMT. During the maintenance window, your instance may experience temporary service interruption. Our team will minimize any impact and ensure a smooth transition"),
-		// 					MaintenanceEndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-15T06:00:00"); return t}()),
-		// 					MaintenanceStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-15T05:00:00"); return t}()),
+		// 					MaintenanceEndTime: to.Ptr(time.Time{}),
+		// 					MaintenanceStartTime: to.Ptr(time.Time{}),
 		// 					MaintenanceState: to.Ptr(armmysqlflexibleservers.MaintenanceStateScheduled),
 		// 					MaintenanceTitle: to.Ptr("Routine Maintenance: Scheduled on Mon, 15 Jan 2024 05:00:00 GMT - Mon, 15 Jan 2024 06:00:00 GMT"),
 		// 					MaintenanceType: to.Ptr(armmysqlflexibleservers.MaintenanceTypeRoutineMaintenance),
@@ -98,11 +98,11 @@ func ExampleMaintenancesClient_Read() {
 	// 		Type: to.Ptr("Microsoft.DBforMySQL/flexibleServers/maintenances"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestGroup/providers/Microsoft.DBforMySQL/flexibleServers/testserver/maintenances/_T9Q-TS8"),
 	// 		Properties: &armmysqlflexibleservers.MaintenanceProperties{
-	// 			MaintenanceAvailableScheduleMaxTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-31T00:00:00"); return t}()),
-	// 			MaintenanceAvailableScheduleMinTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-05T01:23:45"); return t}()),
+	// 			MaintenanceAvailableScheduleMaxTime: to.Ptr(time.Time{}),
+	// 			MaintenanceAvailableScheduleMinTime: to.Ptr(time.Time{}),
 	// 			MaintenanceDescription: to.Ptr("Your Azure Database For MySQL routine maintenance will be performed on the scheduled maintenance window between Mon, 15 Jan 2024 05:00:00 GMT and Mon, 15 Jan 2024 06:00:00 GMT. During the maintenance window, your instance may experience temporary service interruption. Our team will minimize any impact and ensure a smooth transition"),
-	// 			MaintenanceEndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-15T06:00:00"); return t}()),
-	// 			MaintenanceStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-15T05:00:00"); return t}()),
+	// 			MaintenanceEndTime: to.Ptr(time.Time{}),
+	// 			MaintenanceStartTime: to.Ptr(time.Time{}),
 	// 			MaintenanceState: to.Ptr(armmysqlflexibleservers.MaintenanceStateScheduled),
 	// 			MaintenanceTitle: to.Ptr("Routine Maintenance: Scheduled on Mon, 15 Jan 2024 05:00:00 GMT - Mon, 15 Jan 2024 06:00:00 GMT"),
 	// 			MaintenanceType: to.Ptr(armmysqlflexibleservers.MaintenanceTypeRoutineMaintenance),
@@ -124,7 +124,7 @@ func ExampleMaintenancesClient_BeginUpdate() {
 	}
 	poller, err := clientFactory.NewMaintenancesClient().BeginUpdate(ctx, "TestGroup", "testserver", "_T9Q-TS8", armmysqlflexibleservers.MaintenanceUpdate{
 		Properties: &armmysqlflexibleservers.MaintenancePropertiesForUpdate{
-			MaintenanceStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-20T00:00:00"); return t }()),
+			MaintenanceStartTime: to.Ptr(time.Time{}),
 		},
 	}, nil)
 	if err != nil {
@@ -143,11 +143,11 @@ func ExampleMaintenancesClient_BeginUpdate() {
 	// 		Type: to.Ptr("Microsoft.DBforMySQL/flexibleServers/maintenances"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestGroup/providers/Microsoft.DBforMySQL/flexibleServers/testserver/maintenances/_T9Q-TS8"),
 	// 		Properties: &armmysqlflexibleservers.MaintenanceProperties{
-	// 			MaintenanceAvailableScheduleMaxTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-31T00:00:00"); return t}()),
-	// 			MaintenanceAvailableScheduleMinTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-05T01:23:45"); return t}()),
+	// 			MaintenanceAvailableScheduleMaxTime: to.Ptr(time.Time{}),
+	// 			MaintenanceAvailableScheduleMinTime: to.Ptr(time.Time{}),
 	// 			MaintenanceDescription: to.Ptr("Your Azure Database For MySQL routine maintenance will be performed on the scheduled maintenance window between Sat, 20 Jan 2024 00:00:00 GMT and Sat, 20 Jan 2024 01:00:00 GMT. During the maintenance window, your instance may experience temporary service interruption. Our team will minimize any impact and ensure a smooth transition"),
-	// 			MaintenanceEndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-20T01:00:00"); return t}()),
-	// 			MaintenanceStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-20T00:00:00"); return t}()),
+	// 			MaintenanceEndTime: to.Ptr(time.Time{}),
+	// 			MaintenanceStartTime: to.Ptr(time.Time{}),
 	// 			MaintenanceState: to.Ptr(armmysqlflexibleservers.MaintenanceStateReScheduled),
 	// 			MaintenanceTitle: to.Ptr("Routine Maintenance: Rescheduled to Sat, 20 Jan 2024 00:00:00 GMT"),
 	// 			MaintenanceType: to.Ptr(armmysqlflexibleservers.MaintenanceTypeRoutineMaintenance),

@@ -15,11 +15,11 @@ import (
 
 // ServerFactory is a fake server for instances of the armbulkactions.ClientFactory type.
 type ServerFactory struct {
+	// BulkCreateServer contains the fakes for client BulkCreateClient
+	BulkCreateServer BulkCreateServer
+
 	// BulkCreateCustomServer contains the fakes for client BulkCreateCustomClient
 	BulkCreateCustomServer BulkCreateCustomServer
-
-	// LaunchBulkInstancesOperationServer contains the fakes for client LaunchBulkInstancesOperationClient
-	LaunchBulkInstancesOperationServer LaunchBulkInstancesOperationServer
 
 	// OccurrenceExtensionServer contains the fakes for client OccurrenceExtensionClient
 	OccurrenceExtensionServer OccurrenceExtensionServer
@@ -57,8 +57,8 @@ func NewServerFactoryTransport(srv *ServerFactory) *ServerFactoryTransport {
 type ServerFactoryTransport struct {
 	srv                                    *ServerFactory
 	trMu                                   sync.Mutex
+	trBulkCreateServer                     *BulkCreateServerTransport
 	trBulkCreateCustomServer               *BulkCreateCustomServerTransport
-	trLaunchBulkInstancesOperationServer   *LaunchBulkInstancesOperationServerTransport
 	trOccurrenceExtensionServer            *OccurrenceExtensionServerTransport
 	trOccurrencesServer                    *OccurrencesServerTransport
 	trOperationsServer                     *OperationsServerTransport
@@ -81,16 +81,14 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	var err error
 
 	switch client {
+	case "BulkCreateClient":
+		initServer(&s.trMu, &s.trBulkCreateServer, func() *BulkCreateServerTransport { return NewBulkCreateServerTransport(&s.srv.BulkCreateServer) })
+		resp, err = s.trBulkCreateServer.Do(req)
 	case "BulkCreateCustomClient":
 		initServer(&s.trMu, &s.trBulkCreateCustomServer, func() *BulkCreateCustomServerTransport {
 			return NewBulkCreateCustomServerTransport(&s.srv.BulkCreateCustomServer)
 		})
 		resp, err = s.trBulkCreateCustomServer.Do(req)
-	case "LaunchBulkInstancesOperationClient":
-		initServer(&s.trMu, &s.trLaunchBulkInstancesOperationServer, func() *LaunchBulkInstancesOperationServerTransport {
-			return NewLaunchBulkInstancesOperationServerTransport(&s.srv.LaunchBulkInstancesOperationServer)
-		})
-		resp, err = s.trLaunchBulkInstancesOperationServer.Do(req)
 	case "OccurrenceExtensionClient":
 		initServer(&s.trMu, &s.trOccurrenceExtensionServer, func() *OccurrenceExtensionServerTransport {
 			return NewOccurrenceExtensionServerTransport(&s.srv.OccurrenceExtensionServer)

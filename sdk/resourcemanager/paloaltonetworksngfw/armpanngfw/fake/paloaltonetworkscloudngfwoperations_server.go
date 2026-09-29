@@ -98,7 +98,7 @@ func (p *PaloAltoNetworksCloudngfwOperationsServerTransport) dispatchCreateProdu
 	if p.srv.CreateProductSerialNumber == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CreateProductSerialNumber not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/PaloAltoNetworks\.Cloudngfw/createProductSerialNumber`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/PaloAltoNetworks\.Cloudngfw/createProductSerialNumber`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 2 {
@@ -123,7 +123,7 @@ func (p *PaloAltoNetworksCloudngfwOperationsServerTransport) dispatchListCloudMa
 	if p.srv.ListCloudManagerTenants == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ListCloudManagerTenants not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/PaloAltoNetworks\.Cloudngfw/listCloudManagerTenants`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/PaloAltoNetworks\.Cloudngfw/listCloudManagerTenants`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 2 {
@@ -148,7 +148,7 @@ func (p *PaloAltoNetworksCloudngfwOperationsServerTransport) dispatchListProduct
 	if p.srv.ListProductSerialNumberStatus == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ListProductSerialNumberStatus not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/PaloAltoNetworks\.Cloudngfw/listProductSerialNumberStatus`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/PaloAltoNetworks\.Cloudngfw/listProductSerialNumberStatus`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 2 {
@@ -173,7 +173,7 @@ func (p *PaloAltoNetworksCloudngfwOperationsServerTransport) dispatchListSupport
 	if p.srv.ListSupportInfo == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ListSupportInfo not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/PaloAltoNetworks\.Cloudngfw/listSupportInfo`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/PaloAltoNetworks\.Cloudngfw/listSupportInfo`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 2 {

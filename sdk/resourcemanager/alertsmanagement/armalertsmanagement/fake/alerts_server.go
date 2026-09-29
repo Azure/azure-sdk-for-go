@@ -152,7 +152,7 @@ func (a *AlertsServerTransport) dispatchChangeState(req *http.Request) (*http.Re
 	if a.srv.ChangeState == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ChangeState not implemented")}
 	}
-	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AlertsManagement/alerts/(?P<alertId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/changestate`
+	const regexStr = `/(?P<scope>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AlertsManagement/alerts/(?P<alertId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/changestate`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -192,7 +192,7 @@ func (a *AlertsServerTransport) dispatchChangeStateTenant(req *http.Request) (*h
 	if a.srv.ChangeStateTenant == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ChangeStateTenant not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.AlertsManagement/alerts/(?P<alertId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/changestate`
+	const regexStr = `/providers/Microsoft\.AlertsManagement/alerts/(?P<alertId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/changestate`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 2 {
@@ -234,7 +234,7 @@ func (a *AlertsServerTransport) dispatchNewGetAllPager(req *http.Request) (*http
 	}
 	newGetAllPager := a.newGetAllPager.get(req)
 	if newGetAllPager == nil {
-		const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AlertsManagement/alerts`
+		const regexStr = `/(?P<scope>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AlertsManagement/alerts`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 2 {
@@ -402,7 +402,7 @@ func (a *AlertsServerTransport) dispatchGetByID(req *http.Request) (*http.Respon
 	if a.srv.GetByID == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetByID not implemented")}
 	}
-	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AlertsManagement/alerts/(?P<alertId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/(?P<scope>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AlertsManagement/alerts/(?P<alertId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -431,7 +431,7 @@ func (a *AlertsServerTransport) dispatchGetByIDTenant(req *http.Request) (*http.
 	if a.srv.GetByIDTenant == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetByIDTenant not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.AlertsManagement/alerts/(?P<alertId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/providers/Microsoft\.AlertsManagement/alerts/(?P<alertId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 2 {
@@ -462,7 +462,7 @@ func (a *AlertsServerTransport) dispatchNewGetEnrichmentsPager(req *http.Request
 	}
 	newGetEnrichmentsPager := a.newGetEnrichmentsPager.get(req)
 	if newGetEnrichmentsPager == nil {
-		const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AlertsManagement/alerts/(?P<alertId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/enrichments`
+		const regexStr = `/(?P<scope>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AlertsManagement/alerts/(?P<alertId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/enrichments`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
@@ -497,7 +497,7 @@ func (a *AlertsServerTransport) dispatchGetHistory(req *http.Request) (*http.Res
 	if a.srv.GetHistory == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetHistory not implemented")}
 	}
-	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AlertsManagement/alerts/(?P<alertId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/history`
+	const regexStr = `/(?P<scope>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AlertsManagement/alerts/(?P<alertId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/history`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -526,7 +526,7 @@ func (a *AlertsServerTransport) dispatchGetHistoryTenant(req *http.Request) (*ht
 	if a.srv.GetHistoryTenant == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetHistoryTenant not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.AlertsManagement/alerts/(?P<alertId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/history`
+	const regexStr = `/providers/Microsoft\.AlertsManagement/alerts/(?P<alertId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/history`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 2 {
@@ -555,7 +555,7 @@ func (a *AlertsServerTransport) dispatchGetSummary(req *http.Request) (*http.Res
 	if a.srv.GetSummary == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetSummary not implemented")}
 	}
-	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AlertsManagement/alertsSummary`
+	const regexStr = `/(?P<scope>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AlertsManagement/alertsSummary`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 2 {

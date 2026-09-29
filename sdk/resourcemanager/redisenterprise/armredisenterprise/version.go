@@ -6,5 +6,5 @@ package armredisenterprise
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redisenterprise/armredisenterprise"
-	moduleVersion = "v4.0.0-beta.1"
+	moduleVersion = "v4.0.0-beta.2"
 )

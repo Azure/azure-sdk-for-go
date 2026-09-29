@@ -19,7 +19,7 @@ import (
 // BillingMetersClient contains the methods for the BillingMeters group.
 // Don't use this type directly, use NewBillingMetersClient() instead.
 //
-// Generated from API version 2025-10-02-preview
+// Generated from API version 2026-07-01
 type BillingMetersClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -30,6 +30,9 @@ type BillingMetersClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewBillingMetersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*BillingMetersClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -45,7 +48,7 @@ func NewBillingMetersClient(subscriptionID string, credential azcore.TokenCreden
 //
 // Get all billingMeters for a location.
 // If the operation fails it returns an *azcore.ResponseError type.
-//   - location - The location name.
+//   - location - The name of the Azure region.
 //   - options - BillingMetersClientGetOptions contains the optional parameters for the BillingMetersClient.Get method.
 func (client *BillingMetersClient) Get(ctx context.Context, location string, options *BillingMetersClientGetOptions) (BillingMetersClientGetResponse, error) {
 	var err error
@@ -61,19 +64,14 @@ func (client *BillingMetersClient) Get(ctx context.Context, location string, opt
 	if err != nil {
 		return BillingMetersClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return BillingMetersClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *BillingMetersClient) getCreateRequest(ctx context.Context, location string, _ *BillingMetersClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.App/locations/{location}/billingMeters"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if location == "" {
@@ -85,15 +83,18 @@ func (client *BillingMetersClient) getCreateRequest(ctx context.Context, locatio
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251002Preview)
+	reqQP.Set("api-version", version20260701)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *BillingMetersClient) getHandleResponse(resp *http.Response) (BillingMetersClientGetResponse, error) {
+func (client *BillingMetersClient) getHandleResponse(resp *http.Response, successCodes ...int) (BillingMetersClientGetResponse, error) {
 	result := BillingMetersClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BillingMeterCollection); err != nil {
 		return BillingMetersClientGetResponse{}, err
 	}

@@ -66,10 +66,10 @@ func ExampleSAPApplicationServerInstancesClient_BeginCreate_sapApplicationServer
 	// 			},
 	// 		},
 	// 		SystemData: &armworkloadssapvirtualinstance.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T15:10:46.196Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.August, 19, 15, 10, 46, 196000000, time.UTC)),
 	// 			CreatedBy: to.Ptr("user@xyz.com"),
 	// 			CreatedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T15:10:46.196Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.August, 19, 15, 10, 46, 196000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user@xyz.com"),
 	// 			LastModifiedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
 	// 		},
@@ -150,10 +150,10 @@ func ExampleSAPApplicationServerInstancesClient_BeginCreate_createSapApplication
 	// 			},
 	// 		},
 	// 		SystemData: &armworkloadssapvirtualinstance.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T15:10:46.196Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.August, 19, 15, 10, 46, 196000000, time.UTC)),
 	// 			CreatedBy: to.Ptr("user@xyz.com"),
 	// 			CreatedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T15:10:46.196Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.August, 19, 15, 10, 46, 196000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user@xyz.com"),
 	// 			LastModifiedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
 	// 		},
@@ -230,10 +230,10 @@ func ExampleSAPApplicationServerInstancesClient_Get() {
 	// 			},
 	// 		},
 	// 		SystemData: &armworkloadssapvirtualinstance.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T15:10:46.196Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.August, 19, 15, 10, 46, 196000000, time.UTC)),
 	// 			CreatedBy: to.Ptr("user@xyz.com"),
 	// 			CreatedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T15:10:46.196Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.August, 19, 15, 10, 46, 196000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user@xyz.com"),
 	// 			LastModifiedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
 	// 		},
@@ -295,10 +295,10 @@ func ExampleSAPApplicationServerInstancesClient_NewListPager() {
 		// 					},
 		// 				},
 		// 				SystemData: &armworkloadssapvirtualinstance.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T15:10:46.196Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2021, time.August, 19, 15, 10, 46, 196000000, time.UTC)),
 		// 					CreatedBy: to.Ptr("user@xyz.com"),
 		// 					CreatedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T15:10:46.196Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2021, time.August, 19, 15, 10, 46, 196000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("user@xyz.com"),
 		// 					LastModifiedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
 		// 				},
@@ -332,10 +332,10 @@ func ExampleSAPApplicationServerInstancesClient_NewListPager() {
 		// 					},
 		// 				},
 		// 				SystemData: &armworkloadssapvirtualinstance.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T15:10:46.196Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2021, time.August, 19, 15, 10, 46, 196000000, time.UTC)),
 		// 					CreatedBy: to.Ptr("user@xyz.com"),
 		// 					CreatedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T15:10:46.196Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2021, time.August, 19, 15, 10, 46, 196000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("user@xyz.com"),
 		// 					LastModifiedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
 		// 				},
@@ -374,9 +374,9 @@ func ExampleSAPApplicationServerInstancesClient_BeginStart_startTheSapApplicatio
 	// res = armworkloadssapvirtualinstance.SAPApplicationServerInstancesClientStartResponse{
 	// 	OperationStatusResult: armworkloadssapvirtualinstance.OperationStatusResult{
 	// 		Name: to.Ptr("app01"),
-	// 		EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T03:38:07.000Z"); return t}()),
+	// 		EndTime: to.Ptr(time.Date(2021, time.August, 19, 3, 38, 7, 0, time.UTC)),
 	// 		ID: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/test-rg/providers/Microsoft.Workloads/sapVirtualInstances/X00/applicationInstances/app01"),
-	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T03:36:07.000Z"); return t}()),
+	// 		StartTime: to.Ptr(time.Date(2021, time.August, 19, 3, 36, 7, 0, time.UTC)),
 	// 		Status: to.Ptr("Succeeded"),
 	// 	},
 	// }
@@ -410,9 +410,9 @@ func ExampleSAPApplicationServerInstancesClient_BeginStart_startVirtualMachineAn
 	// res = armworkloadssapvirtualinstance.SAPApplicationServerInstancesClientStartResponse{
 	// 	OperationStatusResult: armworkloadssapvirtualinstance.OperationStatusResult{
 	// 		Name: to.Ptr("app01"),
-	// 		EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T03:38:07.000Z"); return t}()),
+	// 		EndTime: to.Ptr(time.Date(2021, time.August, 19, 3, 38, 7, 0, time.UTC)),
 	// 		ID: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/test-rg/providers/Microsoft.Workloads/sapVirtualInstances/X00/applicationInstances/app01"),
-	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T03:36:07.000Z"); return t}()),
+	// 		StartTime: to.Ptr(time.Date(2021, time.August, 19, 3, 36, 7, 0, time.UTC)),
 	// 		Status: to.Ptr("Succeeded"),
 	// 	},
 	// }
@@ -446,9 +446,9 @@ func ExampleSAPApplicationServerInstancesClient_BeginStop_stopTheSapApplicationS
 	// res = armworkloadssapvirtualinstance.SAPApplicationServerInstancesClientStopResponse{
 	// 	OperationStatusResult: armworkloadssapvirtualinstance.OperationStatusResult{
 	// 		Name: to.Ptr("app01"),
-	// 		EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T03:38:07.000Z"); return t}()),
+	// 		EndTime: to.Ptr(time.Date(2021, time.August, 19, 3, 38, 7, 0, time.UTC)),
 	// 		ID: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/test-rg/providers/Microsoft.Workloads/sapVirtualInstances/X00/applicationInstances/app01"),
-	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T03:36:07.000Z"); return t}()),
+	// 		StartTime: to.Ptr(time.Date(2021, time.August, 19, 3, 36, 7, 0, time.UTC)),
 	// 		Status: to.Ptr("Succeeded"),
 	// 	},
 	// }
@@ -483,9 +483,9 @@ func ExampleSAPApplicationServerInstancesClient_BeginStop_stopTheSapApplicationS
 	// res = armworkloadssapvirtualinstance.SAPApplicationServerInstancesClientStopResponse{
 	// 	OperationStatusResult: armworkloadssapvirtualinstance.OperationStatusResult{
 	// 		Name: to.Ptr("app01"),
-	// 		EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T03:38:07.000Z"); return t}()),
+	// 		EndTime: to.Ptr(time.Date(2021, time.August, 19, 3, 38, 7, 0, time.UTC)),
 	// 		ID: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/test-rg/providers/Microsoft.Workloads/sapVirtualInstances/X00/applicationInstances/app01"),
-	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T03:36:07.000Z"); return t}()),
+	// 		StartTime: to.Ptr(time.Date(2021, time.August, 19, 3, 36, 7, 0, time.UTC)),
 	// 		Status: to.Ptr("Succeeded"),
 	// 	},
 	// }
@@ -519,9 +519,9 @@ func ExampleSAPApplicationServerInstancesClient_BeginStop_softStopTheSapApplicat
 	// res = armworkloadssapvirtualinstance.SAPApplicationServerInstancesClientStopResponse{
 	// 	OperationStatusResult: armworkloadssapvirtualinstance.OperationStatusResult{
 	// 		Name: to.Ptr("app01"),
-	// 		EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T03:38:07.000Z"); return t}()),
+	// 		EndTime: to.Ptr(time.Date(2021, time.August, 19, 3, 38, 7, 0, time.UTC)),
 	// 		ID: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/test-rg/providers/Microsoft.Workloads/sapVirtualInstances/X00/applicationInstances/app01"),
-	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T03:36:07.000Z"); return t}()),
+	// 		StartTime: to.Ptr(time.Date(2021, time.August, 19, 3, 36, 7, 0, time.UTC)),
 	// 		Status: to.Ptr("Succeeded"),
 	// 	},
 	// }
@@ -556,9 +556,9 @@ func ExampleSAPApplicationServerInstancesClient_BeginStop_softStopTheSapApplicat
 	// res = armworkloadssapvirtualinstance.SAPApplicationServerInstancesClientStopResponse{
 	// 	OperationStatusResult: armworkloadssapvirtualinstance.OperationStatusResult{
 	// 		Name: to.Ptr("app01"),
-	// 		EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T03:38:07.000Z"); return t}()),
+	// 		EndTime: to.Ptr(time.Date(2021, time.August, 19, 3, 38, 7, 0, time.UTC)),
 	// 		ID: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/test-rg/providers/Microsoft.Workloads/sapVirtualInstances/X00/applicationInstances/app01"),
-	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T03:36:07.000Z"); return t}()),
+	// 		StartTime: to.Ptr(time.Date(2021, time.August, 19, 3, 36, 7, 0, time.UTC)),
 	// 		Status: to.Ptr("Succeeded"),
 	// 	},
 	// }
@@ -614,10 +614,10 @@ func ExampleSAPApplicationServerInstancesClient_Update() {
 	// 			},
 	// 		},
 	// 		SystemData: &armworkloadssapvirtualinstance.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T15:10:46.196Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.August, 19, 15, 10, 46, 196000000, time.UTC)),
 	// 			CreatedBy: to.Ptr("user@xyz.com"),
 	// 			CreatedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T15:10:46.196Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.August, 19, 15, 10, 46, 196000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user@xyz.com"),
 	// 			LastModifiedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
 	// 		},

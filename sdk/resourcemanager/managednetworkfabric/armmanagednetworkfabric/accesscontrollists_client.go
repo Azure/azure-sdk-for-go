@@ -18,6 +18,8 @@ import (
 
 // AccessControlListsClient contains the methods for the AccessControlLists group.
 // Don't use this type directly, use NewAccessControlListsClient() instead.
+//
+// Generated from API version 2025-07-15
 type AccessControlListsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -28,6 +30,9 @@ type AccessControlListsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewAccessControlListsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AccessControlListsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -41,8 +46,6 @@ func NewAccessControlListsClient(subscriptionID string, credential azcore.TokenC
 
 // BeginCreate - Implements Access Control List PUT method.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accessControlListName - Name of the Access Control List.
 //   - body - Request payload.
@@ -67,8 +70,6 @@ func (client *AccessControlListsClient) BeginCreate(ctx context.Context, resourc
 
 // Create - Implements Access Control List PUT method.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 func (client *AccessControlListsClient) create(ctx context.Context, resourceGroupName string, accessControlListName string, body AccessControlList, options *AccessControlListsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AccessControlListsClient.BeginCreate"
@@ -84,8 +85,7 @@ func (client *AccessControlListsClient) create(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -94,7 +94,7 @@ func (client *AccessControlListsClient) create(ctx context.Context, resourceGrou
 func (client *AccessControlListsClient) createCreateRequest(ctx context.Context, resourceGroupName string, accessControlListName string, body AccessControlList, _ *AccessControlListsClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/accessControlLists/{accessControlListName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -110,8 +110,8 @@ func (client *AccessControlListsClient) createCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -122,8 +122,6 @@ func (client *AccessControlListsClient) createCreateRequest(ctx context.Context,
 
 // BeginDelete - Implements Access Control List DELETE method.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accessControlListName - Name of the Access Control List.
 //   - options - AccessControlListsClientBeginDeleteOptions contains the optional parameters for the AccessControlListsClient.BeginDelete
@@ -147,8 +145,6 @@ func (client *AccessControlListsClient) BeginDelete(ctx context.Context, resourc
 
 // Delete - Implements Access Control List DELETE method.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 func (client *AccessControlListsClient) deleteOperation(ctx context.Context, resourceGroupName string, accessControlListName string, options *AccessControlListsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AccessControlListsClient.BeginDelete"
@@ -164,8 +160,7 @@ func (client *AccessControlListsClient) deleteOperation(ctx context.Context, res
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -174,7 +169,7 @@ func (client *AccessControlListsClient) deleteOperation(ctx context.Context, res
 func (client *AccessControlListsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accessControlListName string, _ *AccessControlListsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/accessControlLists/{accessControlListName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -190,15 +185,13 @@ func (client *AccessControlListsClient) deleteCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Implements Access Control List GET method.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accessControlListName - Name of the Access Control List.
 //   - options - AccessControlListsClientGetOptions contains the optional parameters for the AccessControlListsClient.Get method.
@@ -216,19 +209,14 @@ func (client *AccessControlListsClient) Get(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return AccessControlListsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return AccessControlListsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *AccessControlListsClient) getCreateRequest(ctx context.Context, resourceGroupName string, accessControlListName string, _ *AccessControlListsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/accessControlLists/{accessControlListName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -244,15 +232,18 @@ func (client *AccessControlListsClient) getCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *AccessControlListsClient) getHandleResponse(resp *http.Response) (AccessControlListsClientGetResponse, error) {
+func (client *AccessControlListsClient) getHandleResponse(resp *http.Response, successCodes ...int) (AccessControlListsClientGetResponse, error) {
 	result := AccessControlListsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccessControlList); err != nil {
 		return AccessControlListsClientGetResponse{}, err
 	}
@@ -260,8 +251,6 @@ func (client *AccessControlListsClient) getHandleResponse(resp *http.Response) (
 }
 
 // NewListByResourceGroupPager - Implements AccessControlLists list by resource group GET method.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - AccessControlListsClientListByResourceGroupOptions contains the optional parameters for the AccessControlListsClient.NewListByResourceGroupPager
 //     method.
@@ -276,43 +265,57 @@ func (client *AccessControlListsClient) NewListByResourceGroupPager(resourceGrou
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
-			}, nil)
+			req, err := client.listByResourceGroupCreateRequest(ctx, resourceGroupName, nextLink, options)
 			if err != nil {
 				return AccessControlListsClientListByResourceGroupResponse{}, err
 			}
-			return client.listByResourceGroupHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return AccessControlListsClientListByResourceGroupResponse{}, err
+			}
+			return client.listByResourceGroupHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *AccessControlListsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, _ *AccessControlListsClientListByResourceGroupOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/accessControlLists"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *AccessControlListsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, nextLink string, _ *AccessControlListsClientListByResourceGroupOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/accessControlLists"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250715)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *AccessControlListsClient) listByResourceGroupHandleResponse(resp *http.Response) (AccessControlListsClientListByResourceGroupResponse, error) {
+func (client *AccessControlListsClient) listByResourceGroupHandleResponse(resp *http.Response, successCodes ...int) (AccessControlListsClientListByResourceGroupResponse, error) {
 	result := AccessControlListsClientListByResourceGroupResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccessControlListsListResult); err != nil {
 		return AccessControlListsClientListByResourceGroupResponse{}, err
 	}
@@ -320,8 +323,6 @@ func (client *AccessControlListsClient) listByResourceGroupHandleResponse(resp *
 }
 
 // NewListBySubscriptionPager - Implements AccessControlLists list by subscription GET method.
-//
-// Generated from API version 2025-07-15
 //   - options - AccessControlListsClientListBySubscriptionOptions contains the optional parameters for the AccessControlListsClient.NewListBySubscriptionPager
 //     method.
 func (client *AccessControlListsClient) NewListBySubscriptionPager(options *AccessControlListsClientListBySubscriptionOptions) *runtime.Pager[AccessControlListsClientListBySubscriptionResponse] {
@@ -335,39 +336,53 @@ func (client *AccessControlListsClient) NewListBySubscriptionPager(options *Acce
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listBySubscriptionCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.listBySubscriptionCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return AccessControlListsClientListBySubscriptionResponse{}, err
 			}
-			return client.listBySubscriptionHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return AccessControlListsClientListBySubscriptionResponse{}, err
+			}
+			return client.listBySubscriptionHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *AccessControlListsClient) listBySubscriptionCreateRequest(ctx context.Context, _ *AccessControlListsClientListBySubscriptionOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ManagedNetworkFabric/accessControlLists"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *AccessControlListsClient) listBySubscriptionCreateRequest(ctx context.Context, nextLink string, _ *AccessControlListsClientListBySubscriptionOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ManagedNetworkFabric/accessControlLists"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250715)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
-func (client *AccessControlListsClient) listBySubscriptionHandleResponse(resp *http.Response) (AccessControlListsClientListBySubscriptionResponse, error) {
+func (client *AccessControlListsClient) listBySubscriptionHandleResponse(resp *http.Response, successCodes ...int) (AccessControlListsClientListBySubscriptionResponse, error) {
 	result := AccessControlListsClientListBySubscriptionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccessControlListsListResult); err != nil {
 		return AccessControlListsClientListBySubscriptionResponse{}, err
 	}
@@ -376,8 +391,6 @@ func (client *AccessControlListsClient) listBySubscriptionHandleResponse(resp *h
 
 // BeginResync - Implements the operation to the underlying resources.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accessControlListName - Name of the Access Control List.
 //   - options - AccessControlListsClientBeginResyncOptions contains the optional parameters for the AccessControlListsClient.BeginResync
@@ -401,8 +414,6 @@ func (client *AccessControlListsClient) BeginResync(ctx context.Context, resourc
 
 // Resync - Implements the operation to the underlying resources.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 func (client *AccessControlListsClient) resync(ctx context.Context, resourceGroupName string, accessControlListName string, options *AccessControlListsClientBeginResyncOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AccessControlListsClient.BeginResync"
@@ -418,8 +429,7 @@ func (client *AccessControlListsClient) resync(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -428,7 +438,7 @@ func (client *AccessControlListsClient) resync(ctx context.Context, resourceGrou
 func (client *AccessControlListsClient) resyncCreateRequest(ctx context.Context, resourceGroupName string, accessControlListName string, _ *AccessControlListsClientBeginResyncOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/accessControlLists/{accessControlListName}/resync"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -444,16 +454,14 @@ func (client *AccessControlListsClient) resyncCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // BeginUpdate - API to update certain properties of the Access Control List resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accessControlListName - Name of the Access Control List.
 //   - body - Access Control List properties to update.
@@ -478,8 +486,6 @@ func (client *AccessControlListsClient) BeginUpdate(ctx context.Context, resourc
 
 // Update - API to update certain properties of the Access Control List resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 func (client *AccessControlListsClient) update(ctx context.Context, resourceGroupName string, accessControlListName string, body AccessControlListPatch, options *AccessControlListsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AccessControlListsClient.BeginUpdate"
@@ -495,8 +501,7 @@ func (client *AccessControlListsClient) update(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -505,7 +510,7 @@ func (client *AccessControlListsClient) update(ctx context.Context, resourceGrou
 func (client *AccessControlListsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, accessControlListName string, body AccessControlListPatch, _ *AccessControlListsClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/accessControlLists/{accessControlListName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -521,8 +526,8 @@ func (client *AccessControlListsClient) updateCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -533,8 +538,6 @@ func (client *AccessControlListsClient) updateCreateRequest(ctx context.Context,
 
 // BeginUpdateAdministrativeState - Implements the operation to the underlying resources.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accessControlListName - Name of the Access Control List.
 //   - body - Request payload.
@@ -559,8 +562,6 @@ func (client *AccessControlListsClient) BeginUpdateAdministrativeState(ctx conte
 
 // UpdateAdministrativeState - Implements the operation to the underlying resources.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 func (client *AccessControlListsClient) updateAdministrativeState(ctx context.Context, resourceGroupName string, accessControlListName string, body UpdateAdministrativeState, options *AccessControlListsClientBeginUpdateAdministrativeStateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AccessControlListsClient.BeginUpdateAdministrativeState"
@@ -576,8 +577,7 @@ func (client *AccessControlListsClient) updateAdministrativeState(ctx context.Co
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -586,7 +586,7 @@ func (client *AccessControlListsClient) updateAdministrativeState(ctx context.Co
 func (client *AccessControlListsClient) updateAdministrativeStateCreateRequest(ctx context.Context, resourceGroupName string, accessControlListName string, body UpdateAdministrativeState, _ *AccessControlListsClientBeginUpdateAdministrativeStateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/accessControlLists/{accessControlListName}/updateAdministrativeState"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -602,8 +602,8 @@ func (client *AccessControlListsClient) updateAdministrativeStateCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -614,8 +614,6 @@ func (client *AccessControlListsClient) updateAdministrativeStateCreateRequest(c
 
 // BeginValidateConfiguration - Implements the operation to the underlying resources.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accessControlListName - Name of the Access Control List.
 //   - options - AccessControlListsClientBeginValidateConfigurationOptions contains the optional parameters for the AccessControlListsClient.BeginValidateConfiguration
@@ -639,8 +637,6 @@ func (client *AccessControlListsClient) BeginValidateConfiguration(ctx context.C
 
 // ValidateConfiguration - Implements the operation to the underlying resources.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 func (client *AccessControlListsClient) validateConfiguration(ctx context.Context, resourceGroupName string, accessControlListName string, options *AccessControlListsClientBeginValidateConfigurationOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AccessControlListsClient.BeginValidateConfiguration"
@@ -656,8 +652,7 @@ func (client *AccessControlListsClient) validateConfiguration(ctx context.Contex
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -666,7 +661,7 @@ func (client *AccessControlListsClient) validateConfiguration(ctx context.Contex
 func (client *AccessControlListsClient) validateConfigurationCreateRequest(ctx context.Context, resourceGroupName string, accessControlListName string, _ *AccessControlListsClientBeginValidateConfigurationOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/accessControlLists/{accessControlListName}/validateConfiguration"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -682,8 +677,8 @@ func (client *AccessControlListsClient) validateConfigurationCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

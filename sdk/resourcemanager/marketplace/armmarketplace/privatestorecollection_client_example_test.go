@@ -6,11 +6,10 @@ package armmarketplace_test
 
 import (
 	"context"
-	"log"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/marketplace/armmarketplace/v2"
+	"log"
 )
 
 // Generated from example definition: 2025-01-01/ApproveAllItems.json
@@ -32,14 +31,14 @@ func ExamplePrivateStoreCollectionClient_ApproveAllItems() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmarketplace.PrivateStoreCollectionClientApproveAllItemsResponse{
-	// 	Collection: &armmarketplace.Collection{
+	// 	Collection: armmarketplace.Collection{
 	// 		Name: to.Ptr("56a1a02d-8cf8-45df-bf37-d5f7120fcb3d"),
 	// 		Type: to.Ptr("Microsoft.Marketplace/privateStores/collections"),
 	// 		ID: to.Ptr("providers/Microsoft.Marketplace/privateStores/a0e28e55-90c4-41d8-8e34-bb7ef7775406/collections/56a1a02d-8cf8-45df-bf37-d5f7120fcb3d"),
 	// 		Properties: &armmarketplace.CollectionProperties{
 	// 			AllSubscriptions: to.Ptr(false),
 	// 			ApproveAllItems: to.Ptr(true),
-	// 			ApproveAllItemsModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-07T14:30:58.566Z"); return t}()),
+	// 			ApproveAllItemsModifiedAt: to.Ptr(time.Date(2022, time.March, 7, 14, 30, 58, 566000000, time.UTC)),
 	// 			Claim: to.Ptr(""),
 	// 			CollectionID: to.Ptr("56a1a02d-8cf8-45df-bf37-d5f7120fcb3d"),
 	// 			CollectionName: to.Ptr("Global"),
@@ -51,10 +50,10 @@ func ExamplePrivateStoreCollectionClient_ApproveAllItems() {
 	// 			},
 	// 		},
 	// 		SystemData: &armmarketplace.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-07T14:00:05.566Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2022, time.March, 7, 14, 0, 5, 566000000, time.UTC)),
 	// 			CreatedBy: to.Ptr("user@somedoamin.com"),
 	// 			CreatedByType: to.Ptr(armmarketplace.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-07T14:30:58.566Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2022, time.March, 7, 14, 30, 58, 566000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user@somedoamin.com"),
 	// 			LastModifiedByType: to.Ptr(armmarketplace.CreatedByTypeUser),
 	// 		},
@@ -91,7 +90,7 @@ func ExamplePrivateStoreCollectionClient_CreateOrUpdate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmarketplace.PrivateStoreCollectionClientCreateOrUpdateResponse{
-	// 	Collection: &armmarketplace.Collection{
+	// 	Collection: armmarketplace.Collection{
 	// 		Name: to.Ptr("d0f5aa2c-ecc3-4d87-906a-f8c486dcc4f1"),
 	// 		Type: to.Ptr("Microsoft.Marketplace/privateStores/collections"),
 	// 		ID: to.Ptr("providers/Microsoft.Marketplace/privateStores/a0e28e55-90c4-41d8-8e34-bb7ef7775406/collections/d0f5aa2c-ecc3-4d87-906a-f8c486dcc4f1"),
@@ -108,10 +107,10 @@ func ExamplePrivateStoreCollectionClient_CreateOrUpdate() {
 	// 			},
 	// 		},
 	// 		SystemData: &armmarketplace.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-01T10:23:17.6571572+02:00"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.April, 1, 8, 23, 17, 657157200, time.UTC)),
 	// 			CreatedBy: to.Ptr("user@somedoamin.com"),
 	// 			CreatedByType: to.Ptr(armmarketplace.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-01T10:23:17.6571572+02:00"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.April, 1, 8, 23, 17, 657157200, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user@somedoamin.com"),
 	// 			LastModifiedByType: to.Ptr(armmarketplace.CreatedByTypeUser),
 	// 		},
@@ -160,7 +159,7 @@ func ExamplePrivateStoreCollectionClient_DisableApproveAllItems() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmarketplace.PrivateStoreCollectionClientDisableApproveAllItemsResponse{
-	// 	Collection: &armmarketplace.Collection{
+	// 	Collection: armmarketplace.Collection{
 	// 		Name: to.Ptr("56a1a02d-8cf8-45df-bf37-d5f7120fcb3d"),
 	// 		Type: to.Ptr("Microsoft.Marketplace/privateStores/collections"),
 	// 		ID: to.Ptr("providers/Microsoft.Marketplace/privateStores/a0e28e55-90c4-41d8-8e34-bb7ef7775406/collections/56a1a02d-8cf8-45df-bf37-d5f7120fcb3d"),
@@ -172,7 +171,7 @@ func ExamplePrivateStoreCollectionClient_DisableApproveAllItems() {
 	// 				},
 	// 			},
 	// 			ApproveAllItems: to.Ptr(false),
-	// 			ApproveAllItemsModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-07T14:30:58.566Z"); return t}()),
+	// 			ApproveAllItemsModifiedAt: to.Ptr(time.Date(2022, time.March, 7, 14, 30, 58, 566000000, time.UTC)),
 	// 			Claim: to.Ptr(""),
 	// 			CollectionID: to.Ptr("56a1a02d-8cf8-45df-bf37-d5f7120fcb3d"),
 	// 			CollectionName: to.Ptr("Global"),
@@ -184,10 +183,10 @@ func ExamplePrivateStoreCollectionClient_DisableApproveAllItems() {
 	// 			},
 	// 		},
 	// 		SystemData: &armmarketplace.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-07T14:00:05.566Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2022, time.March, 7, 14, 0, 5, 566000000, time.UTC)),
 	// 			CreatedBy: to.Ptr("user@somedoamin.com"),
 	// 			CreatedByType: to.Ptr(armmarketplace.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-07T14:30:58.566Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2022, time.March, 7, 14, 30, 58, 566000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user@somedoamin.com"),
 	// 			LastModifiedByType: to.Ptr(armmarketplace.CreatedByTypeUser),
 	// 		},
@@ -214,7 +213,7 @@ func ExamplePrivateStoreCollectionClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmarketplace.PrivateStoreCollectionClientGetResponse{
-	// 	Collection: &armmarketplace.Collection{
+	// 	Collection: armmarketplace.Collection{
 	// 		Name: to.Ptr("56a1a02d-8cf8-45df-bf37-d5f7120fcb3d"),
 	// 		Type: to.Ptr("Microsoft.Marketplace/privateStores/collections"),
 	// 		ID: to.Ptr("providers/Microsoft.Marketplace/privateStores/a0e28e55-90c4-41d8-8e34-bb7ef7775406/collections/56a1a02d-8cf8-45df-bf37-d5f7120fcb3d"),
@@ -235,10 +234,10 @@ func ExamplePrivateStoreCollectionClient_Get() {
 	// 			},
 	// 		},
 	// 		SystemData: &armmarketplace.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-02-01T10:23:17.6571572+02:00"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.February, 1, 8, 23, 17, 657157200, time.UTC)),
 	// 			CreatedBy: to.Ptr("user@somedoamin.com"),
 	// 			CreatedByType: to.Ptr(armmarketplace.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-02-01T10:23:17.6571572+02:00"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.February, 1, 8, 23, 17, 657157200, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user@somedoamin.com"),
 	// 			LastModifiedByType: to.Ptr(armmarketplace.CreatedByTypeUser),
 	// 		},
@@ -265,7 +264,7 @@ func ExamplePrivateStoreCollectionClient_List() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmarketplace.PrivateStoreCollectionClientListResponse{
-	// 	CollectionsList: &armmarketplace.CollectionsList{
+	// 	CollectionsList: armmarketplace.CollectionsList{
 	// 		NextLink: to.Ptr(""),
 	// 		Value: []*armmarketplace.Collection{
 	// 			{
@@ -289,10 +288,10 @@ func ExamplePrivateStoreCollectionClient_List() {
 	// 					},
 	// 				},
 	// 				SystemData: &armmarketplace.SystemData{
-	// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-02-01T10:23:17.6571572+02:00"); return t}()),
+	// 					CreatedAt: to.Ptr(time.Date(2021, time.February, 1, 8, 23, 17, 657157200, time.UTC)),
 	// 					CreatedBy: to.Ptr("user@somedoamin.com"),
 	// 					CreatedByType: to.Ptr(armmarketplace.CreatedByTypeUser),
-	// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-02-01T10:23:17.6571572+02:00"); return t}()),
+	// 					LastModifiedAt: to.Ptr(time.Date(2021, time.February, 1, 8, 23, 17, 657157200, time.UTC)),
 	// 					LastModifiedBy: to.Ptr("user@somedoamin.com"),
 	// 					LastModifiedByType: to.Ptr(armmarketplace.CreatedByTypeUser),
 	// 				},
@@ -306,7 +305,7 @@ func ExamplePrivateStoreCollectionClient_List() {
 	// 					AppliedRules: []*armmarketplace.Rule{
 	// 					},
 	// 					ApproveAllItems: to.Ptr(true),
-	// 					ApproveAllItemsModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-04-25T07:53:01.9685921Z"); return t}()),
+	// 					ApproveAllItemsModifiedAt: to.Ptr(time.Date(2022, time.April, 25, 7, 53, 1, 968592100, time.UTC)),
 	// 					Claim: to.Ptr(""),
 	// 					CollectionID: to.Ptr("56a1a02d-8cf8-45df-bf37-d5f7120fcb3d"),
 	// 					CollectionName: to.Ptr("Dev collection"),
@@ -317,10 +316,10 @@ func ExamplePrivateStoreCollectionClient_List() {
 	// 					},
 	// 				},
 	// 				SystemData: &armmarketplace.SystemData{
-	// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-02-01T10:23:17.6571572+02:00"); return t}()),
+	// 					CreatedAt: to.Ptr(time.Date(2021, time.February, 1, 8, 23, 17, 657157200, time.UTC)),
 	// 					CreatedBy: to.Ptr("user@somedoamin.com"),
 	// 					CreatedByType: to.Ptr(armmarketplace.CreatedByTypeUser),
-	// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-05-01T10:23:17.6571572+02:00"); return t}()),
+	// 					LastModifiedAt: to.Ptr(time.Date(2022, time.May, 1, 8, 23, 17, 657157200, time.UTC)),
 	// 					LastModifiedBy: to.Ptr("user@somedoamin.com"),
 	// 					LastModifiedByType: to.Ptr(armmarketplace.CreatedByTypeUser),
 	// 				},
@@ -384,7 +383,7 @@ func ExamplePrivateStoreCollectionClient_TransferOffers() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmarketplace.PrivateStoreCollectionClientTransferOffersResponse{
-	// 	TransferOffersResponse: &armmarketplace.TransferOffersResponse{
+	// 	TransferOffersResponse: armmarketplace.TransferOffersResponse{
 	// 		Failed: []*armmarketplace.CollectionsDetails{
 	// 			{
 	// 				CollectionID: to.Ptr("f47ef1c7-e908-4f39-ae29-db181634ad8d"),

@@ -103,7 +103,7 @@ func (r *RunbookDraftServerTransport) dispatchGet(req *http.Request) (*http.Resp
 	if r.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Automation/automationAccounts/(?P<automationAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/runbooks/(?P<runbookName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/draft`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Automation/automationAccounts/(?P<automationAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/runbooks/(?P<runbookName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/draft`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -140,7 +140,7 @@ func (r *RunbookDraftServerTransport) dispatchGetContent(req *http.Request) (*ht
 	if r.srv.GetContent == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetContent not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Automation/automationAccounts/(?P<automationAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/runbooks/(?P<runbookName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/draft/content`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Automation/automationAccounts/(?P<automationAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/runbooks/(?P<runbookName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/draft/content`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -179,16 +179,17 @@ func (r *RunbookDraftServerTransport) dispatchBeginReplaceContent(req *http.Requ
 	}
 	beginReplaceContent := r.beginReplaceContent.get(req)
 	if beginReplaceContent == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Automation/automationAccounts/(?P<automationAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/runbooks/(?P<runbookName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/draft/content`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Automation/automationAccounts/(?P<automationAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/runbooks/(?P<runbookName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/draft/content`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		body, err := server.UnmarshalRequestAsText(req)
+		bodyRaw, err := server.UnmarshalRequestAsText(req)
 		if err != nil {
 			return nil, err
 		}
+		body := bodyRaw
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 		if err != nil {
 			return nil, err
@@ -229,7 +230,7 @@ func (r *RunbookDraftServerTransport) dispatchUndoEdit(req *http.Request) (*http
 	if r.srv.UndoEdit == nil {
 		return nil, &nonRetriableError{errors.New("fake for method UndoEdit not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Automation/automationAccounts/(?P<automationAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/runbooks/(?P<runbookName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/draft/undoEdit`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Automation/automationAccounts/(?P<automationAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/runbooks/(?P<runbookName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/draft/undoEdit`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {

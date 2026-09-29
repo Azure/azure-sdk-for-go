@@ -30,6 +30,9 @@ type CreationSupportedClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewCreationSupportedClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CreationSupportedClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -61,19 +64,14 @@ func (client *CreationSupportedClient) Get(ctx context.Context, dynatraceEnviron
 	if err != nil {
 		return CreationSupportedClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return CreationSupportedClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *CreationSupportedClient) getCreateRequest(ctx context.Context, dynatraceEnvironmentID string, _ *CreationSupportedClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Dynatrace.Observability/subscriptionStatuses/{dynatraceEnvironmentId}/default"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if dynatraceEnvironmentID == "" {
@@ -92,8 +90,11 @@ func (client *CreationSupportedClient) getCreateRequest(ctx context.Context, dyn
 }
 
 // getHandleResponse handles the Get response.
-func (client *CreationSupportedClient) getHandleResponse(resp *http.Response) (CreationSupportedClientGetResponse, error) {
+func (client *CreationSupportedClient) getHandleResponse(resp *http.Response, successCodes ...int) (CreationSupportedClientGetResponse, error) {
 	result := CreationSupportedClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CreateResourceSupportedResponse); err != nil {
 		return CreationSupportedClientGetResponse{}, err
 	}
@@ -120,19 +121,14 @@ func (client *CreationSupportedClient) List(ctx context.Context, dynatraceEnviro
 	if err != nil {
 		return CreationSupportedClientListResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return CreationSupportedClientListResponse{}, err
-	}
-	resp, err := client.listHandleResponse(httpResp)
-	return resp, err
+	return client.listHandleResponse(httpResp, http.StatusOK)
 }
 
 // listCreateRequest creates the List request.
 func (client *CreationSupportedClient) listCreateRequest(ctx context.Context, dynatraceEnvironmentID string, _ *CreationSupportedClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Dynatrace.Observability/subscriptionStatuses/{dynatraceEnvironmentId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if dynatraceEnvironmentID == "" {
@@ -151,8 +147,11 @@ func (client *CreationSupportedClient) listCreateRequest(ctx context.Context, dy
 }
 
 // listHandleResponse handles the List response.
-func (client *CreationSupportedClient) listHandleResponse(resp *http.Response) (CreationSupportedClientListResponse, error) {
+func (client *CreationSupportedClient) listHandleResponse(resp *http.Response, successCodes ...int) (CreationSupportedClientListResponse, error) {
 	result := CreationSupportedClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CreateResourceSupportedResponse); err != nil {
 		return CreationSupportedClientListResponse{}, err
 	}

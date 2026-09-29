@@ -599,7 +599,7 @@ func (s *StaticSitesServerTransport) dispatchBeginApproveOrRejectPrivateEndpoint
 	}
 	beginApproveOrRejectPrivateEndpointConnection := s.beginApproveOrRejectPrivateEndpointConnection.get(req)
 	if beginApproveOrRejectPrivateEndpointConnection == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/staticSites/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/privateEndpointConnections/(?P<privateEndpointConnectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/privateEndpointConnections/(?P<privateEndpointConnectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -649,7 +649,7 @@ func (s *StaticSitesServerTransport) dispatchCreateOrUpdateBasicAuth(req *http.R
 	if s.srv.CreateOrUpdateBasicAuth == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdateBasicAuth not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/staticSites/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/basicAuth/(?P<basicAuthName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/basicAuth/(?P<basicAuthName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -696,7 +696,7 @@ func (s *StaticSitesServerTransport) dispatchCreateOrUpdateBuildDatabaseConnecti
 	if s.srv.CreateOrUpdateBuildDatabaseConnection == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdateBuildDatabaseConnection not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/staticSites/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/builds/(?P<environmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/databaseConnections/(?P<databaseConnectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/builds/(?P<environmentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/databaseConnections/(?P<databaseConnectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 6 {
@@ -741,7 +741,7 @@ func (s *StaticSitesServerTransport) dispatchCreateOrUpdateDatabaseConnection(re
 	if s.srv.CreateOrUpdateDatabaseConnection == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdateDatabaseConnection not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/staticSites/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/databaseConnections/(?P<databaseConnectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/databaseConnections/(?P<databaseConnectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -784,7 +784,7 @@ func (s *StaticSitesServerTransport) dispatchBeginCreateOrUpdateStaticSite(req *
 	}
 	beginCreateOrUpdateStaticSite := s.beginCreateOrUpdateStaticSite.get(req)
 	if beginCreateOrUpdateStaticSite == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/staticSites/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -830,7 +830,7 @@ func (s *StaticSitesServerTransport) dispatchCreateOrUpdateStaticSiteAppSettings
 	if s.srv.CreateOrUpdateStaticSiteAppSettings == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdateStaticSiteAppSettings not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/staticSites/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/config/appsettings`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/config/appsettings`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -867,7 +867,7 @@ func (s *StaticSitesServerTransport) dispatchCreateOrUpdateStaticSiteBuildAppSet
 	if s.srv.CreateOrUpdateStaticSiteBuildAppSettings == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdateStaticSiteBuildAppSettings not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/staticSites/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/builds/(?P<environmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/config/appsettings`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/builds/(?P<environmentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/config/appsettings`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -908,7 +908,7 @@ func (s *StaticSitesServerTransport) dispatchCreateOrUpdateStaticSiteBuildFuncti
 	if s.srv.CreateOrUpdateStaticSiteBuildFunctionAppSettings == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdateStaticSiteBuildFunctionAppSettings not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/staticSites/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/builds/(?P<environmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/config/functionappsettings`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/builds/(?P<environmentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/config/functionappsettings`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -951,7 +951,7 @@ func (s *StaticSitesServerTransport) dispatchBeginCreateOrUpdateStaticSiteCustom
 	}
 	beginCreateOrUpdateStaticSiteCustomDomain := s.beginCreateOrUpdateStaticSiteCustomDomain.get(req)
 	if beginCreateOrUpdateStaticSiteCustomDomain == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/staticSites/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/customDomains/(?P<domainName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/customDomains/(?P<domainName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -1001,7 +1001,7 @@ func (s *StaticSitesServerTransport) dispatchCreateOrUpdateStaticSiteFunctionApp
 	if s.srv.CreateOrUpdateStaticSiteFunctionAppSettings == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdateStaticSiteFunctionAppSettings not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/staticSites/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/config/functionappsettings`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/config/functionappsettings`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -1038,7 +1038,7 @@ func (s *StaticSitesServerTransport) dispatchCreateUserRolesInvitationLink(req *
 	if s.srv.CreateUserRolesInvitationLink == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CreateUserRolesInvitationLink not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/staticSites/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/createUserInvitation`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/createUserInvitation`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -1077,7 +1077,7 @@ func (s *StaticSitesServerTransport) dispatchBeginCreateZipDeploymentForStaticSi
 	}
 	beginCreateZipDeploymentForStaticSite := s.beginCreateZipDeploymentForStaticSite.get(req)
 	if beginCreateZipDeploymentForStaticSite == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/staticSites/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/zipdeploy`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/zipdeploy`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -1125,7 +1125,7 @@ func (s *StaticSitesServerTransport) dispatchBeginCreateZipDeploymentForStaticSi
 	}
 	beginCreateZipDeploymentForStaticSiteBuild := s.beginCreateZipDeploymentForStaticSiteBuild.get(req)
 	if beginCreateZipDeploymentForStaticSiteBuild == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/staticSites/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/builds/(?P<environmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/zipdeploy`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/builds/(?P<environmentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/zipdeploy`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -1175,7 +1175,7 @@ func (s *StaticSitesServerTransport) dispatchDeleteBuildDatabaseConnection(req *
 	if s.srv.DeleteBuildDatabaseConnection == nil {
 		return nil, &nonRetriableError{errors.New("fake for method DeleteBuildDatabaseConnection not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/staticSites/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/builds/(?P<environmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/databaseConnections/(?P<databaseConnectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/builds/(?P<environmentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/databaseConnections/(?P<databaseConnectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 6 {
@@ -1216,7 +1216,7 @@ func (s *StaticSitesServerTransport) dispatchDeleteDatabaseConnection(req *http.
 	if s.srv.DeleteDatabaseConnection == nil {
 		return nil, &nonRetriableError{errors.New("fake for method DeleteDatabaseConnection not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/staticSites/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/databaseConnections/(?P<databaseConnectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/databaseConnections/(?P<databaseConnectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -1255,7 +1255,7 @@ func (s *StaticSitesServerTransport) dispatchBeginDeletePrivateEndpointConnectio
 	}
 	beginDeletePrivateEndpointConnection := s.beginDeletePrivateEndpointConnection.get(req)
 	if beginDeletePrivateEndpointConnection == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/staticSites/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/privateEndpointConnections/(?P<privateEndpointConnectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/privateEndpointConnections/(?P<privateEndpointConnectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -1303,7 +1303,7 @@ func (s *StaticSitesServerTransport) dispatchBeginDeleteStaticSite(req *http.Req
 	}
 	beginDeleteStaticSite := s.beginDeleteStaticSite.get(req)
 	if beginDeleteStaticSite == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/staticSites/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -1347,7 +1347,7 @@ func (s *StaticSitesServerTransport) dispatchBeginDeleteStaticSiteBuild(req *htt
 	}
 	beginDeleteStaticSiteBuild := s.beginDeleteStaticSiteBuild.get(req)
 	if beginDeleteStaticSiteBuild == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/staticSites/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/builds/(?P<environmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/builds/(?P<environmentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -1395,7 +1395,7 @@ func (s *StaticSitesServerTransport) dispatchBeginDeleteStaticSiteCustomDomain(r
 	}
 	beginDeleteStaticSiteCustomDomain := s.beginDeleteStaticSiteCustomDomain.get(req)
 	if beginDeleteStaticSiteCustomDomain == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/staticSites/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/customDomains/(?P<domainName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/customDomains/(?P<domainName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -1441,7 +1441,7 @@ func (s *StaticSitesServerTransport) dispatchDeleteStaticSiteUser(req *http.Requ
 	if s.srv.DeleteStaticSiteUser == nil {
 		return nil, &nonRetriableError{errors.New("fake for method DeleteStaticSiteUser not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/staticSites/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/authproviders/(?P<authprovider>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/users/(?P<userid>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/authproviders/(?P<authprovider>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/users/(?P<userid>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 6 {
@@ -1484,7 +1484,7 @@ func (s *StaticSitesServerTransport) dispatchBeginDetachStaticSite(req *http.Req
 	}
 	beginDetachStaticSite := s.beginDetachStaticSite.get(req)
 	if beginDetachStaticSite == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/staticSites/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/detach`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/detach`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -1526,7 +1526,7 @@ func (s *StaticSitesServerTransport) dispatchDetachUserProvidedFunctionAppFromSt
 	if s.srv.DetachUserProvidedFunctionAppFromStaticSite == nil {
 		return nil, &nonRetriableError{errors.New("fake for method DetachUserProvidedFunctionAppFromStaticSite not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/staticSites/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/userProvidedFunctionApps/(?P<functionAppName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/userProvidedFunctionApps/(?P<functionAppName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -1563,7 +1563,7 @@ func (s *StaticSitesServerTransport) dispatchDetachUserProvidedFunctionAppFromSt
 	if s.srv.DetachUserProvidedFunctionAppFromStaticSiteBuild == nil {
 		return nil, &nonRetriableError{errors.New("fake for method DetachUserProvidedFunctionAppFromStaticSiteBuild not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/staticSites/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/builds/(?P<environmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/userProvidedFunctionApps/(?P<functionAppName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/builds/(?P<environmentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/userProvidedFunctionApps/(?P<functionAppName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 6 {
@@ -1604,7 +1604,7 @@ func (s *StaticSitesServerTransport) dispatchGetBasicAuth(req *http.Request) (*h
 	if s.srv.GetBasicAuth == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetBasicAuth not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/staticSites/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/basicAuth/(?P<basicAuthName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/basicAuth/(?P<basicAuthName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -1647,7 +1647,7 @@ func (s *StaticSitesServerTransport) dispatchGetBuildDatabaseConnection(req *htt
 	if s.srv.GetBuildDatabaseConnection == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetBuildDatabaseConnection not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/staticSites/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/builds/(?P<environmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/databaseConnections/(?P<databaseConnectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/builds/(?P<environmentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/databaseConnections/(?P<databaseConnectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 6 {
@@ -1688,7 +1688,7 @@ func (s *StaticSitesServerTransport) dispatchGetBuildDatabaseConnectionWithDetai
 	if s.srv.GetBuildDatabaseConnectionWithDetails == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetBuildDatabaseConnectionWithDetails not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/staticSites/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/builds/(?P<environmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/databaseConnections/(?P<databaseConnectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/show`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/builds/(?P<environmentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/databaseConnections/(?P<databaseConnectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/show`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 6 {
@@ -1731,7 +1731,7 @@ func (s *StaticSitesServerTransport) dispatchNewGetBuildDatabaseConnectionsPager
 	}
 	newGetBuildDatabaseConnectionsPager := s.newGetBuildDatabaseConnectionsPager.get(req)
 	if newGetBuildDatabaseConnectionsPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/staticSites/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/builds/(?P<environmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/databaseConnections`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/builds/(?P<environmentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/databaseConnections`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -1776,7 +1776,7 @@ func (s *StaticSitesServerTransport) dispatchNewGetBuildDatabaseConnectionsWithD
 	}
 	newGetBuildDatabaseConnectionsWithDetailsPager := s.newGetBuildDatabaseConnectionsWithDetailsPager.get(req)
 	if newGetBuildDatabaseConnectionsWithDetailsPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/staticSites/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/builds/(?P<environmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/showDatabaseConnections`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/builds/(?P<environmentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/showDatabaseConnections`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -1819,7 +1819,7 @@ func (s *StaticSitesServerTransport) dispatchGetDatabaseConnection(req *http.Req
 	if s.srv.GetDatabaseConnection == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetDatabaseConnection not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/staticSites/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/databaseConnections/(?P<databaseConnectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/databaseConnections/(?P<databaseConnectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -1856,7 +1856,7 @@ func (s *StaticSitesServerTransport) dispatchGetDatabaseConnectionWithDetails(re
 	if s.srv.GetDatabaseConnectionWithDetails == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetDatabaseConnectionWithDetails not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/staticSites/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/databaseConnections/(?P<databaseConnectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/show`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/databaseConnections/(?P<databaseConnectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/show`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -1895,7 +1895,7 @@ func (s *StaticSitesServerTransport) dispatchNewGetDatabaseConnectionsPager(req 
 	}
 	newGetDatabaseConnectionsPager := s.newGetDatabaseConnectionsPager.get(req)
 	if newGetDatabaseConnectionsPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/staticSites/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/databaseConnections`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/databaseConnections`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -1936,7 +1936,7 @@ func (s *StaticSitesServerTransport) dispatchNewGetDatabaseConnectionsWithDetail
 	}
 	newGetDatabaseConnectionsWithDetailsPager := s.newGetDatabaseConnectionsWithDetailsPager.get(req)
 	if newGetDatabaseConnectionsWithDetailsPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/staticSites/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/showDatabaseConnections`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/showDatabaseConnections`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -1975,7 +1975,7 @@ func (s *StaticSitesServerTransport) dispatchGetLinkedBackend(req *http.Request)
 	if s.srv.GetLinkedBackend == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetLinkedBackend not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/staticSites/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/linkedBackends/(?P<linkedBackendName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/linkedBackends/(?P<linkedBackendName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -2012,7 +2012,7 @@ func (s *StaticSitesServerTransport) dispatchGetLinkedBackendForBuild(req *http.
 	if s.srv.GetLinkedBackendForBuild == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetLinkedBackendForBuild not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/staticSites/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/builds/(?P<environmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/linkedBackends/(?P<linkedBackendName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/builds/(?P<environmentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/linkedBackends/(?P<linkedBackendName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 6 {
@@ -2055,7 +2055,7 @@ func (s *StaticSitesServerTransport) dispatchNewGetLinkedBackendsPager(req *http
 	}
 	newGetLinkedBackendsPager := s.newGetLinkedBackendsPager.get(req)
 	if newGetLinkedBackendsPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/staticSites/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/linkedBackends`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/linkedBackends`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -2096,7 +2096,7 @@ func (s *StaticSitesServerTransport) dispatchNewGetLinkedBackendsForBuildPager(r
 	}
 	newGetLinkedBackendsForBuildPager := s.newGetLinkedBackendsForBuildPager.get(req)
 	if newGetLinkedBackendsForBuildPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/staticSites/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/builds/(?P<environmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/linkedBackends`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/builds/(?P<environmentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/linkedBackends`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -2139,7 +2139,7 @@ func (s *StaticSitesServerTransport) dispatchGetPrivateEndpointConnection(req *h
 	if s.srv.GetPrivateEndpointConnection == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetPrivateEndpointConnection not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/staticSites/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/privateEndpointConnections/(?P<privateEndpointConnectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/privateEndpointConnections/(?P<privateEndpointConnectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -2178,7 +2178,7 @@ func (s *StaticSitesServerTransport) dispatchNewGetPrivateEndpointConnectionList
 	}
 	newGetPrivateEndpointConnectionListPager := s.newGetPrivateEndpointConnectionListPager.get(req)
 	if newGetPrivateEndpointConnectionListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/staticSites/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/privateEndpointConnections`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/privateEndpointConnections`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -2217,7 +2217,7 @@ func (s *StaticSitesServerTransport) dispatchGetPrivateLinkResources(req *http.R
 	if s.srv.GetPrivateLinkResources == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetPrivateLinkResources not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/staticSites/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/privateLinkResources`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/privateLinkResources`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -2250,7 +2250,7 @@ func (s *StaticSitesServerTransport) dispatchGetStaticSite(req *http.Request) (*
 	if s.srv.GetStaticSite == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetStaticSite not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/staticSites/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -2283,7 +2283,7 @@ func (s *StaticSitesServerTransport) dispatchGetStaticSiteBuild(req *http.Reques
 	if s.srv.GetStaticSiteBuild == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetStaticSiteBuild not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/staticSites/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/builds/(?P<environmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/builds/(?P<environmentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -2322,7 +2322,7 @@ func (s *StaticSitesServerTransport) dispatchNewGetStaticSiteBuildsPager(req *ht
 	}
 	newGetStaticSiteBuildsPager := s.newGetStaticSiteBuildsPager.get(req)
 	if newGetStaticSiteBuildsPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/staticSites/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/builds`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/builds`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -2361,7 +2361,7 @@ func (s *StaticSitesServerTransport) dispatchGetStaticSiteCustomDomain(req *http
 	if s.srv.GetStaticSiteCustomDomain == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetStaticSiteCustomDomain not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/staticSites/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/customDomains/(?P<domainName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/customDomains/(?P<domainName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -2400,7 +2400,7 @@ func (s *StaticSitesServerTransport) dispatchNewGetStaticSitesByResourceGroupPag
 	}
 	newGetStaticSitesByResourceGroupPager := s.newGetStaticSitesByResourceGroupPager.get(req)
 	if newGetStaticSitesByResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/staticSites`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
@@ -2435,7 +2435,7 @@ func (s *StaticSitesServerTransport) dispatchGetUserProvidedFunctionAppForStatic
 	if s.srv.GetUserProvidedFunctionAppForStaticSite == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetUserProvidedFunctionAppForStaticSite not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/staticSites/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/userProvidedFunctionApps/(?P<functionAppName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/userProvidedFunctionApps/(?P<functionAppName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -2472,7 +2472,7 @@ func (s *StaticSitesServerTransport) dispatchGetUserProvidedFunctionAppForStatic
 	if s.srv.GetUserProvidedFunctionAppForStaticSiteBuild == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetUserProvidedFunctionAppForStaticSiteBuild not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/staticSites/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/builds/(?P<environmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/userProvidedFunctionApps/(?P<functionAppName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/builds/(?P<environmentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/userProvidedFunctionApps/(?P<functionAppName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 6 {
@@ -2515,7 +2515,7 @@ func (s *StaticSitesServerTransport) dispatchNewGetUserProvidedFunctionAppsForSt
 	}
 	newGetUserProvidedFunctionAppsForStaticSitePager := s.newGetUserProvidedFunctionAppsForStaticSitePager.get(req)
 	if newGetUserProvidedFunctionAppsForStaticSitePager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/staticSites/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/userProvidedFunctionApps`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/userProvidedFunctionApps`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -2556,7 +2556,7 @@ func (s *StaticSitesServerTransport) dispatchNewGetUserProvidedFunctionAppsForSt
 	}
 	newGetUserProvidedFunctionAppsForStaticSiteBuildPager := s.newGetUserProvidedFunctionAppsForStaticSiteBuildPager.get(req)
 	if newGetUserProvidedFunctionAppsForStaticSiteBuildPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/staticSites/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/builds/(?P<environmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/userProvidedFunctionApps`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/builds/(?P<environmentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/userProvidedFunctionApps`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -2601,7 +2601,7 @@ func (s *StaticSitesServerTransport) dispatchBeginLinkBackend(req *http.Request)
 	}
 	beginLinkBackend := s.beginLinkBackend.get(req)
 	if beginLinkBackend == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/staticSites/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/linkedBackends/(?P<linkedBackendName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/linkedBackends/(?P<linkedBackendName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -2653,7 +2653,7 @@ func (s *StaticSitesServerTransport) dispatchBeginLinkBackendToBuild(req *http.R
 	}
 	beginLinkBackendToBuild := s.beginLinkBackendToBuild.get(req)
 	if beginLinkBackendToBuild == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/staticSites/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/builds/(?P<environmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/linkedBackends/(?P<linkedBackendName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/builds/(?P<environmentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/linkedBackends/(?P<linkedBackendName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 6 {
@@ -2709,7 +2709,7 @@ func (s *StaticSitesServerTransport) dispatchNewListPager(req *http.Request) (*h
 	}
 	newListPager := s.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/staticSites`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 2 {
@@ -2742,7 +2742,7 @@ func (s *StaticSitesServerTransport) dispatchNewListBasicAuthPager(req *http.Req
 	}
 	newListBasicAuthPager := s.newListBasicAuthPager.get(req)
 	if newListBasicAuthPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/staticSites/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/basicAuth`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/basicAuth`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -2781,7 +2781,7 @@ func (s *StaticSitesServerTransport) dispatchListStaticSiteAppSettings(req *http
 	if s.srv.ListStaticSiteAppSettings == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ListStaticSiteAppSettings not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/staticSites/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/listAppSettings`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listAppSettings`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -2814,7 +2814,7 @@ func (s *StaticSitesServerTransport) dispatchListStaticSiteBuildAppSettings(req 
 	if s.srv.ListStaticSiteBuildAppSettings == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ListStaticSiteBuildAppSettings not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/staticSites/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/builds/(?P<environmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/listAppSettings`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/builds/(?P<environmentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listAppSettings`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -2851,7 +2851,7 @@ func (s *StaticSitesServerTransport) dispatchListStaticSiteBuildFunctionAppSetti
 	if s.srv.ListStaticSiteBuildFunctionAppSettings == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ListStaticSiteBuildFunctionAppSettings not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/staticSites/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/builds/(?P<environmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/listFunctionAppSettings`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/builds/(?P<environmentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listFunctionAppSettings`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -2890,7 +2890,7 @@ func (s *StaticSitesServerTransport) dispatchNewListStaticSiteBuildFunctionsPage
 	}
 	newListStaticSiteBuildFunctionsPager := s.newListStaticSiteBuildFunctionsPager.get(req)
 	if newListStaticSiteBuildFunctionsPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/staticSites/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/builds/(?P<environmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/functions`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/builds/(?P<environmentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/functions`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -2933,7 +2933,7 @@ func (s *StaticSitesServerTransport) dispatchListStaticSiteConfiguredRoles(req *
 	if s.srv.ListStaticSiteConfiguredRoles == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ListStaticSiteConfiguredRoles not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/staticSites/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/listConfiguredRoles`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listConfiguredRoles`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -2968,7 +2968,7 @@ func (s *StaticSitesServerTransport) dispatchNewListStaticSiteCustomDomainsPager
 	}
 	newListStaticSiteCustomDomainsPager := s.newListStaticSiteCustomDomainsPager.get(req)
 	if newListStaticSiteCustomDomainsPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/staticSites/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/customDomains`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/customDomains`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -3007,7 +3007,7 @@ func (s *StaticSitesServerTransport) dispatchListStaticSiteFunctionAppSettings(r
 	if s.srv.ListStaticSiteFunctionAppSettings == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ListStaticSiteFunctionAppSettings not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/staticSites/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/listFunctionAppSettings`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listFunctionAppSettings`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -3042,7 +3042,7 @@ func (s *StaticSitesServerTransport) dispatchNewListStaticSiteFunctionsPager(req
 	}
 	newListStaticSiteFunctionsPager := s.newListStaticSiteFunctionsPager.get(req)
 	if newListStaticSiteFunctionsPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/staticSites/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/functions`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/functions`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -3081,7 +3081,7 @@ func (s *StaticSitesServerTransport) dispatchListStaticSiteSecrets(req *http.Req
 	if s.srv.ListStaticSiteSecrets == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ListStaticSiteSecrets not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/staticSites/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/listSecrets`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listSecrets`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -3116,7 +3116,7 @@ func (s *StaticSitesServerTransport) dispatchNewListStaticSiteUsersPager(req *ht
 	}
 	newListStaticSiteUsersPager := s.newListStaticSiteUsersPager.get(req)
 	if newListStaticSiteUsersPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/staticSites/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/authproviders/(?P<authprovider>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/listUsers`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/authproviders/(?P<authprovider>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listUsers`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -3159,7 +3159,7 @@ func (s *StaticSitesServerTransport) dispatchPreviewWorkflow(req *http.Request) 
 	if s.srv.PreviewWorkflow == nil {
 		return nil, &nonRetriableError{errors.New("fake for method PreviewWorkflow not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/previewStaticSiteWorkflowFile`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/previewStaticSiteWorkflowFile`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -3194,7 +3194,7 @@ func (s *StaticSitesServerTransport) dispatchBeginRegisterUserProvidedFunctionAp
 	}
 	beginRegisterUserProvidedFunctionAppWithStaticSite := s.beginRegisterUserProvidedFunctionAppWithStaticSite.get(req)
 	if beginRegisterUserProvidedFunctionAppWithStaticSite == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/staticSites/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/userProvidedFunctionApps/(?P<functionAppName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/userProvidedFunctionApps/(?P<functionAppName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -3257,7 +3257,7 @@ func (s *StaticSitesServerTransport) dispatchBeginRegisterUserProvidedFunctionAp
 	}
 	beginRegisterUserProvidedFunctionAppWithStaticSiteBuild := s.beginRegisterUserProvidedFunctionAppWithStaticSiteBuild.get(req)
 	if beginRegisterUserProvidedFunctionAppWithStaticSiteBuild == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/staticSites/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/builds/(?P<environmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/userProvidedFunctionApps/(?P<functionAppName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/builds/(?P<environmentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/userProvidedFunctionApps/(?P<functionAppName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 6 {
@@ -3322,7 +3322,7 @@ func (s *StaticSitesServerTransport) dispatchResetStaticSiteAPIKey(req *http.Req
 	if s.srv.ResetStaticSiteAPIKey == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ResetStaticSiteAPIKey not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/staticSites/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resetapikey`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resetapikey`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -3359,7 +3359,7 @@ func (s *StaticSitesServerTransport) dispatchUnlinkBackend(req *http.Request) (*
 	if s.srv.UnlinkBackend == nil {
 		return nil, &nonRetriableError{errors.New("fake for method UnlinkBackend not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/staticSites/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/linkedBackends/(?P<linkedBackendName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/linkedBackends/(?P<linkedBackendName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -3407,7 +3407,7 @@ func (s *StaticSitesServerTransport) dispatchUnlinkBackendFromBuild(req *http.Re
 	if s.srv.UnlinkBackendFromBuild == nil {
 		return nil, &nonRetriableError{errors.New("fake for method UnlinkBackendFromBuild not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/staticSites/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/builds/(?P<environmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/linkedBackends/(?P<linkedBackendName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/builds/(?P<environmentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/linkedBackends/(?P<linkedBackendName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 6 {
@@ -3459,7 +3459,7 @@ func (s *StaticSitesServerTransport) dispatchUpdateBuildDatabaseConnection(req *
 	if s.srv.UpdateBuildDatabaseConnection == nil {
 		return nil, &nonRetriableError{errors.New("fake for method UpdateBuildDatabaseConnection not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/staticSites/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/builds/(?P<environmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/databaseConnections/(?P<databaseConnectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/builds/(?P<environmentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/databaseConnections/(?P<databaseConnectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 6 {
@@ -3504,7 +3504,7 @@ func (s *StaticSitesServerTransport) dispatchUpdateDatabaseConnection(req *http.
 	if s.srv.UpdateDatabaseConnection == nil {
 		return nil, &nonRetriableError{errors.New("fake for method UpdateDatabaseConnection not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/staticSites/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/databaseConnections/(?P<databaseConnectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/databaseConnections/(?P<databaseConnectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -3545,7 +3545,7 @@ func (s *StaticSitesServerTransport) dispatchUpdateStaticSite(req *http.Request)
 	if s.srv.UpdateStaticSite == nil {
 		return nil, &nonRetriableError{errors.New("fake for method UpdateStaticSite not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/staticSites/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -3582,7 +3582,7 @@ func (s *StaticSitesServerTransport) dispatchUpdateStaticSiteUser(req *http.Requ
 	if s.srv.UpdateStaticSiteUser == nil {
 		return nil, &nonRetriableError{errors.New("fake for method UpdateStaticSiteUser not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/staticSites/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/authproviders/(?P<authprovider>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/users/(?P<userid>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/authproviders/(?P<authprovider>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/users/(?P<userid>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 6 {
@@ -3629,7 +3629,7 @@ func (s *StaticSitesServerTransport) dispatchBeginValidateBackend(req *http.Requ
 	}
 	beginValidateBackend := s.beginValidateBackend.get(req)
 	if beginValidateBackend == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/staticSites/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/linkedBackends/(?P<linkedBackendName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/validate`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/linkedBackends/(?P<linkedBackendName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/validate`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -3681,7 +3681,7 @@ func (s *StaticSitesServerTransport) dispatchBeginValidateBackendForBuild(req *h
 	}
 	beginValidateBackendForBuild := s.beginValidateBackendForBuild.get(req)
 	if beginValidateBackendForBuild == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/staticSites/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/builds/(?P<environmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/linkedBackends/(?P<linkedBackendName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/validate`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/builds/(?P<environmentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/linkedBackends/(?P<linkedBackendName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/validate`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 6 {
@@ -3737,7 +3737,7 @@ func (s *StaticSitesServerTransport) dispatchBeginValidateCustomDomainCanBeAdded
 	}
 	beginValidateCustomDomainCanBeAddedToStaticSite := s.beginValidateCustomDomainCanBeAddedToStaticSite.get(req)
 	if beginValidateCustomDomainCanBeAddedToStaticSite == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/staticSites/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/customDomains/(?P<domainName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/validate`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/customDomains/(?P<domainName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/validate`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {

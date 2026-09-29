@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-07-06-preview/ScheduledActionExtension_ListByVms_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-06-preview/ScheduledActionExtension_ListByVms_MaximumSet_Gen.json
 func ExampleScheduledActionExtensionClient_NewListByVMsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -40,10 +40,10 @@ func ExampleScheduledActionExtensionClient_NewListByVMsPager() {
 		// 				Properties: &armbulkactions.ScheduledActionsExtensionProperties{
 		// 					ResourceType: to.Ptr(armbulkactions.ResourceTypeVirtualMachine),
 		// 					ActionType: to.Ptr(armbulkactions.ScheduledActionTypeStart),
-		// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:55.281Z"); return t}()),
-		// 					EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:55.286Z"); return t}()),
+		// 					StartTime: to.Ptr(time.Date(2026, time.September, 1, 19, 0, 0, 0, time.FixedZone("", -25200))),
+		// 					EndTime: to.Ptr(time.Date(2027, time.September, 1, 19, 0, 0, 0, time.FixedZone("", -25200))),
 		// 					Schedule: &armbulkactions.ScheduledActionsSchedule{
-		// 						ScheduledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.TimeOnly, "19:00:00"); return t}()),
+		// 						ScheduledTime: to.Ptr(time.Date(0, time.January, 1, 19, 0, 0, 0, time.UTC)),
 		// 						TimeZone: to.Ptr("America/Los_Angeles"),
 		// 						RequestedWeekDays: []*armbulkactions.WeekDay{
 		// 							to.Ptr(armbulkactions.WeekDayMonday),
@@ -54,14 +54,12 @@ func ExampleScheduledActionExtensionClient_NewListByVMsPager() {
 		// 						RequestedDaysOfTheMonth: []*int32{
 		// 							to.Ptr[int32](15),
 		// 						},
-		// 						ExecutionParameters: &armbulkactions.RecurringScheduledActionsExecutionParameters{
-		// 							OptimizationPreference: to.Ptr(armbulkactions.OptimizationPreferenceCost),
-		// 							RetryPolicy: &armbulkactions.RecurringScheduledActionsRetryPolicy{
-		// 								RetryCount: to.Ptr[int32](17),
+		// 						ExecutionParameters: &armbulkactions.ScheduledActionsExecutionParameters{
+		// 							RetryPolicy: &armbulkactions.ScheduledActionsRetryPolicy{
 		// 								RetryWindowInMinutes: to.Ptr[int32](29),
 		// 							},
 		// 						},
-		// 						DeadlineType: to.Ptr(armbulkactions.RecurringScheduledActionsDeadlineTypeUnknown),
+		// 						DeadlineType: to.Ptr(armbulkactions.ScheduledActionsDeadlineTypeInitiateAt),
 		// 					},
 		// 					NotificationSettings: []*armbulkactions.NotificationProperties{
 		// 						{
@@ -72,7 +70,7 @@ func ExampleScheduledActionExtensionClient_NewListByVMsPager() {
 		// 						},
 		// 					},
 		// 					Disabled: to.Ptr(true),
-		// 					ProvisioningState: to.Ptr(armbulkactions.RecurringScheduledActionsProvisioningStateSucceeded),
+		// 					ProvisioningState: to.Ptr(armbulkactions.ScheduledActionsProvisioningStateSucceeded),
 		// 					ResourceNotificationSettings: []*armbulkactions.NotificationProperties{
 		// 						{
 		// 							Destination: to.Ptr("admin@contoso.com"),
@@ -82,20 +80,20 @@ func ExampleScheduledActionExtensionClient_NewListByVMsPager() {
 		// 						},
 		// 					},
 		// 				},
-		// 				ID: to.Ptr("/subscriptions/83C27AB3-A7B9-498B-B165-D9440661474F/resourceGroups/myRg/providers/Microsoft.Compute/scheduledActions/myScheduledAction"),
+		// 				ID: to.Ptr("/subscriptions/CB26D7CB-3E27-465F-99C8-EAF7A4118245/resourceGroups/myRg/providers/Microsoft.Compute/scheduledActions/myScheduledAction"),
 		// 				Name: to.Ptr("myScheduledAction"),
 		// 				Type: to.Ptr("Microsoft.Compute/scheduledActions"),
 		// 				SystemData: &armbulkactions.SystemData{
 		// 					CreatedBy: to.Ptr("user@contoso.com"),
 		// 					CreatedByType: to.Ptr(armbulkactions.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:55.288Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2025, time.April, 17, 0, 23, 55, 288000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("user@contoso.com"),
 		// 					LastModifiedByType: to.Ptr(armbulkactions.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:55.288Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2025, time.April, 17, 0, 23, 55, 288000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
-		// 		NextLink: to.Ptr("https://microsoft.com/a"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/CB26D7CB-3E27-465F-99C8-EAF7A4118245/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVm/providers/Microsoft.Compute/associatedScheduledActions?api-version=2026-10-06-preview&$skiptoken=page2"),
 		// 	},
 		// }
 	}

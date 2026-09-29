@@ -50,7 +50,7 @@ func ExampleReplicasClient_NewListByServerPager() {
 		// 					AvailabilityZone: to.Ptr("2"),
 		// 					Backup: &armpostgresqlflexibleservers.Backup{
 		// 						BackupRetentionDays: to.Ptr[int32](7),
-		// 						EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T18:35:22.123456Z"); return t}()),
+		// 						EarliestRestoreDate: to.Ptr(time.Date(2025, time.June, 1, 18, 35, 22, 123456000, time.UTC)),
 		// 						GeoRedundantBackup: to.Ptr(armpostgresqlflexibleservers.GeographicallyRedundantBackupDisabled),
 		// 					},
 		// 					DataEncryption: &armpostgresqlflexibleservers.DataEncryption{

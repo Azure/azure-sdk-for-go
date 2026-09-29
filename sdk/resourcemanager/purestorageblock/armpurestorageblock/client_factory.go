@@ -71,6 +71,14 @@ func (c *ClientFactory) NewOperationsClient() *OperationsClient {
 	}
 }
 
+// NewRecoverableVolumeGroupsClient creates a new instance of RecoverableVolumeGroupsClient.
+func (c *ClientFactory) NewRecoverableVolumeGroupsClient() *RecoverableVolumeGroupsClient {
+	return &RecoverableVolumeGroupsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewReservationsClient creates a new instance of ReservationsClient.
 func (c *ClientFactory) NewReservationsClient() *ReservationsClient {
 	return &ReservationsClient{
@@ -79,9 +87,25 @@ func (c *ClientFactory) NewReservationsClient() *ReservationsClient {
 	}
 }
 
+// NewSaaSOperationGroupClient creates a new instance of SaaSOperationGroupClient.
+func (c *ClientFactory) NewSaaSOperationGroupClient() *SaaSOperationGroupClient {
+	return &SaaSOperationGroupClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewStoragePoolsClient creates a new instance of StoragePoolsClient.
 func (c *ClientFactory) NewStoragePoolsClient() *StoragePoolsClient {
 	return &StoragePoolsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewVolumeGroupSnapshotsClient creates a new instance of VolumeGroupSnapshotsClient.
+func (c *ClientFactory) NewVolumeGroupSnapshotsClient() *VolumeGroupSnapshotsClient {
+	return &VolumeGroupSnapshotsClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}

@@ -13,24 +13,89 @@ import (
 	"time"
 )
 
-// Generated from example definition: 2026-07-06-preview/ScheduledActions_AttachResources_MaximumSet_Gen.json
-func ExampleScheduledActionsClient_BeginAttachResources() {
+// Generated from example definition: 2026-10-06-preview/ScheduledActions_AttachResources_BasicSuccess.json
+func ExampleScheduledActionsClient_BeginAttachResources_oneAttachResourcesToARecurringScheduledAction() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armbulkactions.NewClientFactory("CB26D7CB-3E27-465F-99C8-EAF7A4118245", cred, nil)
+	clientFactory, err := armbulkactions.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewScheduledActionsClient().BeginAttachResources(ctx, "rgcompute", "myScheduledAction", armbulkactions.ResourceAttachRequest{
+	poller, err := clientFactory.NewScheduledActionsClient().BeginAttachResources(ctx, "example-rg", "weekday-start", armbulkactions.ResourceAttachRequest{
 		Resources: []*armbulkactions.ScheduledActionResourceInput{
 			{
-				ResourceID: to.Ptr("/subscriptions/1d04e8f1-ee04-4056-b0b2-718f5bb45b04/resourceGroups/myRg/providers/Microsoft.Compute/virtualMachines/myVm"),
+				ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-01"),
+			},
+			{
+				ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-02"),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armbulkactions.ScheduledActionsClientAttachResourcesResponse{
+	// 	ResourceOperationResponse: armbulkactions.ResourceOperationResponse{
+	// 		TotalResources: to.Ptr[int32](2),
+	// 		ResourcesStatuses: []*armbulkactions.ResourceStatus{
+	// 			{
+	// 				ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-01"),
+	// 				Status: to.Ptr(armbulkactions.ResourceOperationStatusSucceeded),
+	// 			},
+	// 			{
+	// 				ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-02"),
+	// 				Status: to.Ptr(armbulkactions.ResourceOperationStatusSucceeded),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-10-06-preview/ScheduledActions_AttachResources_ComprehensiveSuccess.json
+func ExampleScheduledActionsClient_BeginAttachResources_twoAttachResourcesToARecurringScheduledActionWithIndividualNotificationSettings() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armbulkactions.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewScheduledActionsClient().BeginAttachResources(ctx, "example-rg", "weekday-start", armbulkactions.ResourceAttachRequest{
+		Resources: []*armbulkactions.ScheduledActionResourceInput{
+			{
+				ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-01"),
 				NotificationSettings: []*armbulkactions.NotificationProperties{
 					{
-						Destination: to.Ptr("admin@contoso.com"),
+						Destination: to.Ptr("web-operations@contoso.com"),
+						Type:        to.Ptr(armbulkactions.NotificationTypeEmail),
+						Language:    to.Ptr(armbulkactions.LanguageEnUs),
+						Disabled:    to.Ptr(false),
+					},
+				},
+			},
+			{
+				ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-02"),
+				NotificationSettings: []*armbulkactions.NotificationProperties{
+					{
+						Destination: to.Ptr("service-owners@contoso.com"),
+						Type:        to.Ptr(armbulkactions.NotificationTypeEmail),
+						Language:    to.Ptr(armbulkactions.LanguageEnUs),
+						Disabled:    to.Ptr(false),
+					},
+					{
+						Destination: to.Ptr("audit@contoso.com"),
 						Type:        to.Ptr(armbulkactions.NotificationTypeEmail),
 						Language:    to.Ptr(armbulkactions.LanguageEnUs),
 						Disabled:    to.Ptr(true),
@@ -51,20 +116,66 @@ func ExampleScheduledActionsClient_BeginAttachResources() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbulkactions.ScheduledActionsClientAttachResourcesResponse{
 	// 	ResourceOperationResponse: armbulkactions.ResourceOperationResponse{
-	// 		TotalResources: to.Ptr[int32](11),
+	// 		TotalResources: to.Ptr[int32](2),
 	// 		ResourcesStatuses: []*armbulkactions.ResourceStatus{
 	// 			{
-	// 				ResourceID: to.Ptr("/subscriptions/1d04e8f1-ee04-4056-b0b2-718f5bb45b04/resourceGroups/myRg/providers/Microsoft.Compute/virtualMachines/myVm"),
+	// 				ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-01"),
 	// 				Status: to.Ptr(armbulkactions.ResourceOperationStatusSucceeded),
+	// 			},
+	// 			{
+	// 				ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-02"),
+	// 				Status: to.Ptr(armbulkactions.ResourceOperationStatusSucceeded),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-10-06-preview/ScheduledActions_AttachResources_PartialSuccess.json
+func ExampleScheduledActionsClient_BeginAttachResources_threeResponseWithPartialResultsWhenAttachingResourcesToARecurringScheduledAction() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armbulkactions.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewScheduledActionsClient().BeginAttachResources(ctx, "example-rg", "weekday-start", armbulkactions.ResourceAttachRequest{
+		Resources: []*armbulkactions.ScheduledActionResourceInput{
+			{
+				ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-01"),
+			},
+			{
+				ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-02"),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armbulkactions.ScheduledActionsClientAttachResourcesResponse{
+	// 	ResourceOperationResponse: armbulkactions.ResourceOperationResponse{
+	// 		TotalResources: to.Ptr[int32](2),
+	// 		ResourcesStatuses: []*armbulkactions.ResourceStatus{
+	// 			{
+	// 				ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-01"),
+	// 				Status: to.Ptr(armbulkactions.ResourceOperationStatusSucceeded),
+	// 			},
+	// 			{
+	// 				ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-02"),
+	// 				Status: to.Ptr(armbulkactions.ResourceOperationStatusFailed),
 	// 				Error: &armbulkactions.Error{
-	// 					Code: to.Ptr("InternalServerError"),
-	// 					Message: to.Ptr("An internal error occurred."),
-	// 					Target: to.Ptr("virtualMachines"),
-	// 					Details: []*armbulkactions.Error{
-	// 					},
-	// 					Innererror: &armbulkactions.InnerError{
-	// 						Code: to.Ptr("InnerErrorCode"),
-	// 					},
+	// 					Code: to.Ptr("ResourceAlreadyAttached"),
+	// 					Message: to.Ptr("Resource /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-02 is already attached to scheduled action /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/scheduledActions/weekday-start. Please use the patch API if you intend to update the resource details."),
 	// 				},
 	// 			},
 	// 		},
@@ -72,20 +183,21 @@ func ExampleScheduledActionsClient_BeginAttachResources() {
 	// }
 }
 
-// Generated from example definition: 2026-07-06-preview/ScheduledActions_CancelNextOccurrence_MaximumSet_Gen.json
-func ExampleScheduledActionsClient_BeginCancelNextOccurrence() {
+// Generated from example definition: 2026-10-06-preview/ScheduledActions_CancelNextOccurrence_BasicSuccess.json
+func ExampleScheduledActionsClient_BeginCancelNextOccurrence_oneCancelTheNextRecurringScheduledActionOccurrenceForMultipleResources() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armbulkactions.NewClientFactory("CB26D7CB-3E27-465F-99C8-EAF7A4118245", cred, nil)
+	clientFactory, err := armbulkactions.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewScheduledActionsClient().BeginCancelNextOccurrence(ctx, "rgcompute", "myScheduledAction", armbulkactions.CancelOccurrenceRequest{
+	poller, err := clientFactory.NewScheduledActionsClient().BeginCancelNextOccurrence(ctx, "example-rg", "weekday-start", armbulkactions.CancelOccurrenceRequest{
 		ResourceIDs: []*string{
-			to.Ptr("/subscriptions/1d04e8f1-ee04-4056-b0b2-718f5bb45b04/resourceGroups/myRg/providers/Microsoft.Compute/virtualMachines/myVm"),
+			to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-01"),
+			to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-02"),
 		},
 	}, nil)
 	if err != nil {
@@ -100,20 +212,92 @@ func ExampleScheduledActionsClient_BeginCancelNextOccurrence() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbulkactions.ScheduledActionsClientCancelNextOccurrenceResponse{
 	// 	ResourceOperationResponse: armbulkactions.ResourceOperationResponse{
-	// 		TotalResources: to.Ptr[int32](11),
+	// 		TotalResources: to.Ptr[int32](2),
 	// 		ResourcesStatuses: []*armbulkactions.ResourceStatus{
 	// 			{
-	// 				ResourceID: to.Ptr("/subscriptions/1d04e8f1-ee04-4056-b0b2-718f5bb45b04/resourceGroups/myRg/providers/Microsoft.Compute/virtualMachines/myVm"),
+	// 				ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-01"),
 	// 				Status: to.Ptr(armbulkactions.ResourceOperationStatusSucceeded),
+	// 			},
+	// 			{
+	// 				ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-02"),
+	// 				Status: to.Ptr(armbulkactions.ResourceOperationStatusSucceeded),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-10-06-preview/ScheduledActions_CancelNextOccurrence_EntireOccurrenceSuccess.json
+func ExampleScheduledActionsClient_BeginCancelNextOccurrence_twoCancelAllOperationsInTheNextRecurringScheduledActionOccurrence() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armbulkactions.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewScheduledActionsClient().BeginCancelNextOccurrence(ctx, "example-rg", "weekday-start", armbulkactions.CancelOccurrenceRequest{
+		ResourceIDs: []*string{},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armbulkactions.ScheduledActionsClientCancelNextOccurrenceResponse{
+	// 	ResourceOperationResponse: armbulkactions.ResourceOperationResponse{
+	// 		TotalResources: to.Ptr[int32](2),
+	// 		ResourcesStatuses: []*armbulkactions.ResourceStatus{
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-10-06-preview/ScheduledActions_CancelNextOccurrence_PartialSuccess.json
+func ExampleScheduledActionsClient_BeginCancelNextOccurrence_threeResponseWithPartialResultsWhenCancelingTheNextRecurringScheduledActionOccurrence() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armbulkactions.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewScheduledActionsClient().BeginCancelNextOccurrence(ctx, "example-rg", "weekday-start", armbulkactions.CancelOccurrenceRequest{
+		ResourceIDs: []*string{
+			to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-01"),
+			to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-02"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armbulkactions.ScheduledActionsClientCancelNextOccurrenceResponse{
+	// 	ResourceOperationResponse: armbulkactions.ResourceOperationResponse{
+	// 		TotalResources: to.Ptr[int32](2),
+	// 		ResourcesStatuses: []*armbulkactions.ResourceStatus{
+	// 			{
+	// 				ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-02"),
+	// 				Status: to.Ptr(armbulkactions.ResourceOperationStatusFailed),
 	// 				Error: &armbulkactions.Error{
-	// 					Code: to.Ptr("InternalServerError"),
-	// 					Message: to.Ptr("An internal error occurred."),
-	// 					Target: to.Ptr("virtualMachines"),
-	// 					Details: []*armbulkactions.Error{
-	// 					},
-	// 					Innererror: &armbulkactions.InnerError{
-	// 						Code: to.Ptr("InnerErrorCode"),
-	// 					},
+	// 					Code: to.Ptr("OccurrenceCancelResourceRejected"),
+	// 					Message: to.Ptr("operation already activated; cannot cancel"),
+	// 					Target: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-02"),
 	// 				},
 	// 			},
 	// 		},
@@ -121,56 +305,34 @@ func ExampleScheduledActionsClient_BeginCancelNextOccurrence() {
 	// }
 }
 
-// Generated from example definition: 2026-07-06-preview/ScheduledActions_CreateOrUpdate_MaximumSet_Gen.json
-func ExampleScheduledActionsClient_BeginCreateOrUpdate() {
+// Generated from example definition: 2026-10-06-preview/ScheduledActions_CreateOrUpdate_BasicSuccess.json
+func ExampleScheduledActionsClient_BeginCreateOrUpdate_oneCreateANewRecurringScheduledAction() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armbulkactions.NewClientFactory("CB26D7CB-3E27-465F-99C8-EAF7A4118245", cred, nil)
+	clientFactory, err := armbulkactions.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewScheduledActionsClient().BeginCreateOrUpdate(ctx, "rgcompute", "myScheduledAction", armbulkactions.ScheduledAction{
+	poller, err := clientFactory.NewScheduledActionsClient().BeginCreateOrUpdate(ctx, "example-rg", "weekday-start", armbulkactions.ScheduledAction{
 		Properties: &armbulkactions.ScheduledActionProperties{
 			ResourceType: to.Ptr(armbulkactions.ResourceTypeVirtualMachine),
 			ActionType:   to.Ptr(armbulkactions.ScheduledActionTypeStart),
-			StartTime:    to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:55.281Z"); return t }()),
-			EndTime:      to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:55.286Z"); return t }()),
+			StartTime:    to.Ptr(time.Date(2026, time.September, 15, 7, 0, 0, 0, time.FixedZone("", -25200))),
 			Schedule: &armbulkactions.ScheduledActionsSchedule{
-				ScheduledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.TimeOnly, "19:00:00"); return t }()),
+				ScheduledTime: to.Ptr(time.Date(0, time.January, 1, 7, 0, 0, 0, time.UTC)),
 				TimeZone:      to.Ptr("America/Los_Angeles"),
 				RequestedWeekDays: []*armbulkactions.WeekDay{
 					to.Ptr(armbulkactions.WeekDayMonday),
-				},
-				RequestedMonths: []*armbulkactions.Month{
-					to.Ptr(armbulkactions.MonthJanuary),
-				},
-				RequestedDaysOfTheMonth: []*int32{
-					to.Ptr[int32](15),
-				},
-				ExecutionParameters: &armbulkactions.RecurringScheduledActionsExecutionParameters{
-					OptimizationPreference: to.Ptr(armbulkactions.OptimizationPreferenceCost),
-					RetryPolicy: &armbulkactions.RecurringScheduledActionsRetryPolicy{
-						RetryCount:           to.Ptr[int32](17),
-						RetryWindowInMinutes: to.Ptr[int32](29),
-					},
-				},
-				DeadlineType: to.Ptr(armbulkactions.RecurringScheduledActionsDeadlineTypeUnknown),
-			},
-			NotificationSettings: []*armbulkactions.NotificationProperties{
-				{
-					Destination: to.Ptr("admin@contoso.com"),
-					Type:        to.Ptr(armbulkactions.NotificationTypeEmail),
-					Language:    to.Ptr(armbulkactions.LanguageEnUs),
-					Disabled:    to.Ptr(true),
+					to.Ptr(armbulkactions.WeekDayTuesday),
+					to.Ptr(armbulkactions.WeekDayWednesday),
+					to.Ptr(armbulkactions.WeekDayThursday),
+					to.Ptr(armbulkactions.WeekDayFriday),
 				},
 			},
-			Disabled: to.Ptr(true),
-		},
-		Tags: map[string]*string{
-			"key2102": to.Ptr("myTagValue"),
+			NotificationSettings: []*armbulkactions.NotificationProperties{},
 		},
 		Location: to.Ptr("eastus"),
 	}, nil)
@@ -189,28 +351,111 @@ func ExampleScheduledActionsClient_BeginCreateOrUpdate() {
 	// 		Properties: &armbulkactions.ScheduledActionProperties{
 	// 			ResourceType: to.Ptr(armbulkactions.ResourceTypeVirtualMachine),
 	// 			ActionType: to.Ptr(armbulkactions.ScheduledActionTypeStart),
-	// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:55.281Z"); return t}()),
-	// 			EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:55.286Z"); return t}()),
+	// 			StartTime: to.Ptr(time.Date(2026, time.September, 15, 7, 0, 0, 0, time.FixedZone("", -25200))),
 	// 			Schedule: &armbulkactions.ScheduledActionsSchedule{
-	// 				ScheduledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.TimeOnly, "19:00:00"); return t}()),
+	// 				ScheduledTime: to.Ptr(time.Date(0, time.January, 1, 7, 0, 0, 0, time.UTC)),
 	// 				TimeZone: to.Ptr("America/Los_Angeles"),
 	// 				RequestedWeekDays: []*armbulkactions.WeekDay{
 	// 					to.Ptr(armbulkactions.WeekDayMonday),
+	// 					to.Ptr(armbulkactions.WeekDayTuesday),
+	// 					to.Ptr(armbulkactions.WeekDayWednesday),
+	// 					to.Ptr(armbulkactions.WeekDayThursday),
+	// 					to.Ptr(armbulkactions.WeekDayFriday),
 	// 				},
 	// 				RequestedMonths: []*armbulkactions.Month{
-	// 					to.Ptr(armbulkactions.MonthJanuary),
+	// 					to.Ptr(armbulkactions.MonthAll),
 	// 				},
 	// 				RequestedDaysOfTheMonth: []*int32{
+	// 				},
+	// 			},
+	// 			NotificationSettings: []*armbulkactions.NotificationProperties{
+	// 			},
+	// 			ProvisioningState: to.Ptr(armbulkactions.ScheduledActionsProvisioningStateSucceeded),
+	// 		},
+	// 		Location: to.Ptr("eastus"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/scheduledActions/weekday-start"),
+	// 		Name: to.Ptr("weekday-start"),
+	// 		Type: to.Ptr("Microsoft.Compute/scheduledActions"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-10-06-preview/ScheduledActions_CreateOrUpdate_ComprehensiveSuccess.json
+func ExampleScheduledActionsClient_BeginCreateOrUpdate_twoCreateARecurringScheduledActionWithComprehensiveSettings() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armbulkactions.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewScheduledActionsClient().BeginCreateOrUpdate(ctx, "example-rg", "first-fifteenth-start", armbulkactions.ScheduledAction{
+		Properties: &armbulkactions.ScheduledActionProperties{
+			ResourceType: to.Ptr(armbulkactions.ResourceTypeVirtualMachine),
+			ActionType:   to.Ptr(armbulkactions.ScheduledActionTypeStart),
+			StartTime:    to.Ptr(time.Date(2026, time.September, 1, 19, 0, 0, 0, time.FixedZone("", -25200))),
+			EndTime:      to.Ptr(time.Date(2027, time.September, 1, 19, 0, 0, 0, time.FixedZone("", -25200))),
+			Schedule: &armbulkactions.ScheduledActionsSchedule{
+				ScheduledTime: to.Ptr(time.Date(0, time.January, 1, 19, 0, 0, 0, time.UTC)),
+				TimeZone:      to.Ptr("America/Los_Angeles"),
+				RequestedWeekDays: []*armbulkactions.WeekDay{
+					to.Ptr(armbulkactions.WeekDayAll),
+				},
+				RequestedMonths: []*armbulkactions.Month{
+					to.Ptr(armbulkactions.MonthAll),
+				},
+				RequestedDaysOfTheMonth: []*int32{
+					to.Ptr[int32](1),
+					to.Ptr[int32](15),
+				},
+			},
+			NotificationSettings: []*armbulkactions.NotificationProperties{
+				{
+					Destination: to.Ptr("admin@contoso.com"),
+					Type:        to.Ptr(armbulkactions.NotificationTypeEmail),
+					Language:    to.Ptr(armbulkactions.LanguageEnUs),
+					Disabled:    to.Ptr(true),
+				},
+			},
+			Disabled: to.Ptr(false),
+		},
+		Tags: map[string]*string{
+			"environment": to.Ptr("production"),
+		},
+		Location: to.Ptr("eastus"),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armbulkactions.ScheduledActionsClientCreateOrUpdateResponse{
+	// 	ScheduledAction: armbulkactions.ScheduledAction{
+	// 		Properties: &armbulkactions.ScheduledActionProperties{
+	// 			ResourceType: to.Ptr(armbulkactions.ResourceTypeVirtualMachine),
+	// 			ActionType: to.Ptr(armbulkactions.ScheduledActionTypeStart),
+	// 			StartTime: to.Ptr(time.Date(2026, time.September, 1, 19, 0, 0, 0, time.FixedZone("", -25200))),
+	// 			EndTime: to.Ptr(time.Date(2027, time.September, 1, 19, 0, 0, 0, time.FixedZone("", -25200))),
+	// 			Schedule: &armbulkactions.ScheduledActionsSchedule{
+	// 				ScheduledTime: to.Ptr(time.Date(0, time.January, 1, 19, 0, 0, 0, time.UTC)),
+	// 				TimeZone: to.Ptr("America/Los_Angeles"),
+	// 				RequestedWeekDays: []*armbulkactions.WeekDay{
+	// 					to.Ptr(armbulkactions.WeekDayAll),
+	// 				},
+	// 				RequestedMonths: []*armbulkactions.Month{
+	// 					to.Ptr(armbulkactions.MonthAll),
+	// 				},
+	// 				RequestedDaysOfTheMonth: []*int32{
+	// 					to.Ptr[int32](1),
 	// 					to.Ptr[int32](15),
 	// 				},
-	// 				ExecutionParameters: &armbulkactions.RecurringScheduledActionsExecutionParameters{
-	// 					OptimizationPreference: to.Ptr(armbulkactions.OptimizationPreferenceCost),
-	// 					RetryPolicy: &armbulkactions.RecurringScheduledActionsRetryPolicy{
-	// 						RetryCount: to.Ptr[int32](17),
-	// 						RetryWindowInMinutes: to.Ptr[int32](29),
-	// 					},
-	// 				},
-	// 				DeadlineType: to.Ptr(armbulkactions.RecurringScheduledActionsDeadlineTypeUnknown),
 	// 			},
 	// 			NotificationSettings: []*armbulkactions.NotificationProperties{
 	// 				{
@@ -220,40 +465,40 @@ func ExampleScheduledActionsClient_BeginCreateOrUpdate() {
 	// 					Disabled: to.Ptr(true),
 	// 				},
 	// 			},
-	// 			Disabled: to.Ptr(true),
-	// 			ProvisioningState: to.Ptr(armbulkactions.RecurringScheduledActionsProvisioningStateSucceeded),
+	// 			Disabled: to.Ptr(false),
+	// 			ProvisioningState: to.Ptr(armbulkactions.ScheduledActionsProvisioningStateSucceeded),
 	// 		},
 	// 		Tags: map[string]*string{
-	// 			"key2102": to.Ptr("myTagValue"),
+	// 			"environment": to.Ptr("production"),
 	// 		},
 	// 		Location: to.Ptr("eastus"),
-	// 		ID: to.Ptr("/subscriptions/83C27AB3-A7B9-498B-B165-D9440661474F/resourceGroups/myRg/providers/Microsoft.Compute/scheduledActions/myScheduledAction"),
-	// 		Name: to.Ptr("myScheduledAction"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/scheduledActions/weekday-start"),
+	// 		Name: to.Ptr("weekday-start"),
 	// 		Type: to.Ptr("Microsoft.Compute/scheduledActions"),
 	// 		SystemData: &armbulkactions.SystemData{
 	// 			CreatedBy: to.Ptr("user@contoso.com"),
 	// 			CreatedByType: to.Ptr(armbulkactions.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:55.288Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2025, time.April, 17, 0, 23, 55, 288000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user@contoso.com"),
 	// 			LastModifiedByType: to.Ptr(armbulkactions.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:55.288Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.April, 17, 0, 23, 55, 288000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-07-06-preview/ScheduledActions_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-06-preview/ScheduledActions_Delete_BasicSuccess.json
 func ExampleScheduledActionsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armbulkactions.NewClientFactory("CB26D7CB-3E27-465F-99C8-EAF7A4118245", cred, nil)
+	clientFactory, err := armbulkactions.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewScheduledActionsClient().BeginDelete(ctx, "rgcompute", "myScheduledAction", nil)
+	poller, err := clientFactory.NewScheduledActionsClient().BeginDelete(ctx, "example-rg", "weekday-start", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -263,20 +508,21 @@ func ExampleScheduledActionsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-07-06-preview/ScheduledActions_DetachResources_MaximumSet_Gen.json
-func ExampleScheduledActionsClient_BeginDetachResources() {
+// Generated from example definition: 2026-10-06-preview/ScheduledActions_DetachResources_BasicSuccess.json
+func ExampleScheduledActionsClient_BeginDetachResources_oneDetachResourcesFromARecurringScheduledAction() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armbulkactions.NewClientFactory("CB26D7CB-3E27-465F-99C8-EAF7A4118245", cred, nil)
+	clientFactory, err := armbulkactions.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewScheduledActionsClient().BeginDetachResources(ctx, "rgcompute", "myScheduledAction", armbulkactions.ResourceDetachRequest{
+	poller, err := clientFactory.NewScheduledActionsClient().BeginDetachResources(ctx, "example-rg", "weekday-start", armbulkactions.ResourceDetachRequest{
 		Resources: []*string{
-			to.Ptr("/subscriptions/1d04e8f1-ee04-4056-b0b2-718f5bb45b04/resourceGroups/myRg/providers/Microsoft.Compute/virtualMachines/myVm"),
+			to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-01"),
+			to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-02"),
 		},
 	}, nil)
 	if err != nil {
@@ -291,20 +537,62 @@ func ExampleScheduledActionsClient_BeginDetachResources() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbulkactions.ScheduledActionsClientDetachResourcesResponse{
 	// 	ResourceOperationResponse: armbulkactions.ResourceOperationResponse{
-	// 		TotalResources: to.Ptr[int32](11),
+	// 		TotalResources: to.Ptr[int32](2),
 	// 		ResourcesStatuses: []*armbulkactions.ResourceStatus{
 	// 			{
-	// 				ResourceID: to.Ptr("/subscriptions/1d04e8f1-ee04-4056-b0b2-718f5bb45b04/resourceGroups/myRg/providers/Microsoft.Compute/virtualMachines/myVm"),
+	// 				ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-01"),
 	// 				Status: to.Ptr(armbulkactions.ResourceOperationStatusSucceeded),
+	// 			},
+	// 			{
+	// 				ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-02"),
+	// 				Status: to.Ptr(armbulkactions.ResourceOperationStatusSucceeded),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-10-06-preview/ScheduledActions_DetachResources_PartialSuccess.json
+func ExampleScheduledActionsClient_BeginDetachResources_twoDetachResourcesFromARecurringScheduledActionWithPartialSuccess() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armbulkactions.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewScheduledActionsClient().BeginDetachResources(ctx, "example-rg", "weekday-start", armbulkactions.ResourceDetachRequest{
+		Resources: []*string{
+			to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-01"),
+			to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-02"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armbulkactions.ScheduledActionsClientDetachResourcesResponse{
+	// 	ResourceOperationResponse: armbulkactions.ResourceOperationResponse{
+	// 		TotalResources: to.Ptr[int32](2),
+	// 		ResourcesStatuses: []*armbulkactions.ResourceStatus{
+	// 			{
+	// 				ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-01"),
+	// 				Status: to.Ptr(armbulkactions.ResourceOperationStatusSucceeded),
+	// 			},
+	// 			{
+	// 				ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-02"),
+	// 				Status: to.Ptr(armbulkactions.ResourceOperationStatusFailed),
 	// 				Error: &armbulkactions.Error{
-	// 					Code: to.Ptr("InternalServerError"),
-	// 					Message: to.Ptr("An internal error occurred."),
-	// 					Target: to.Ptr("virtualMachines"),
-	// 					Details: []*armbulkactions.Error{
-	// 					},
-	// 					Innererror: &armbulkactions.InnerError{
-	// 						Code: to.Ptr("InnerErrorCode"),
-	// 					},
+	// 					Code: to.Ptr("ResourceNotAttached"),
+	// 					Message: to.Ptr("Resource '/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-02' is not attached to scheduled action 'weekday-start'."),
 	// 				},
 	// 			},
 	// 		},
@@ -312,18 +600,18 @@ func ExampleScheduledActionsClient_BeginDetachResources() {
 	// }
 }
 
-// Generated from example definition: 2026-07-06-preview/ScheduledActions_Disable_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-06-preview/ScheduledActions_Disable_BasicSuccess.json
 func ExampleScheduledActionsClient_BeginDisable() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armbulkactions.NewClientFactory("CB26D7CB-3E27-465F-99C8-EAF7A4118245", cred, nil)
+	clientFactory, err := armbulkactions.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewScheduledActionsClient().BeginDisable(ctx, "rgcompute", "myScheduledAction", nil)
+	poller, err := clientFactory.NewScheduledActionsClient().BeginDisable(ctx, "example-rg", "weekday-start", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -333,18 +621,18 @@ func ExampleScheduledActionsClient_BeginDisable() {
 	}
 }
 
-// Generated from example definition: 2026-07-06-preview/ScheduledActions_Enable_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-06-preview/ScheduledActions_Enable_BasicSuccess.json
 func ExampleScheduledActionsClient_BeginEnable() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armbulkactions.NewClientFactory("CB26D7CB-3E27-465F-99C8-EAF7A4118245", cred, nil)
+	clientFactory, err := armbulkactions.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewScheduledActionsClient().BeginEnable(ctx, "rgcompute", "myScheduledAction", nil)
+	poller, err := clientFactory.NewScheduledActionsClient().BeginEnable(ctx, "example-rg", "weekday-start", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -354,18 +642,18 @@ func ExampleScheduledActionsClient_BeginEnable() {
 	}
 }
 
-// Generated from example definition: 2026-07-06-preview/ScheduledActions_Get_MaximumSet_Gen.json
-func ExampleScheduledActionsClient_Get() {
+// Generated from example definition: 2026-10-06-preview/ScheduledActions_Get_BasicSuccess.json
+func ExampleScheduledActionsClient_Get_oneGetARecurringScheduledAction() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armbulkactions.NewClientFactory("CB26D7CB-3E27-465F-99C8-EAF7A4118245", cred, nil)
+	clientFactory, err := armbulkactions.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewScheduledActionsClient().Get(ctx, "rgcompute", "myScheduledAction", nil)
+	res, err := clientFactory.NewScheduledActionsClient().Get(ctx, "example-rg", "weekday-start", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -377,10 +665,63 @@ func ExampleScheduledActionsClient_Get() {
 	// 		Properties: &armbulkactions.ScheduledActionProperties{
 	// 			ResourceType: to.Ptr(armbulkactions.ResourceTypeVirtualMachine),
 	// 			ActionType: to.Ptr(armbulkactions.ScheduledActionTypeStart),
-	// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:55.281Z"); return t}()),
-	// 			EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:55.286Z"); return t}()),
+	// 			StartTime: to.Ptr(time.Date(2026, time.September, 15, 7, 0, 0, 0, time.FixedZone("", -25200))),
 	// 			Schedule: &armbulkactions.ScheduledActionsSchedule{
-	// 				ScheduledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.TimeOnly, "19:00:00"); return t}()),
+	// 				ScheduledTime: to.Ptr(time.Date(0, time.January, 1, 7, 0, 0, 0, time.UTC)),
+	// 				TimeZone: to.Ptr("America/Los_Angeles"),
+	// 				RequestedWeekDays: []*armbulkactions.WeekDay{
+	// 					to.Ptr(armbulkactions.WeekDayMonday),
+	// 					to.Ptr(armbulkactions.WeekDayTuesday),
+	// 					to.Ptr(armbulkactions.WeekDayWednesday),
+	// 					to.Ptr(armbulkactions.WeekDayThursday),
+	// 					to.Ptr(armbulkactions.WeekDayFriday),
+	// 				},
+	// 				RequestedMonths: []*armbulkactions.Month{
+	// 					to.Ptr(armbulkactions.MonthAll),
+	// 				},
+	// 				RequestedDaysOfTheMonth: []*int32{
+	// 				},
+	// 			},
+	// 			NotificationSettings: []*armbulkactions.NotificationProperties{
+	// 			},
+	// 			Disabled: to.Ptr(false),
+	// 			ProvisioningState: to.Ptr(armbulkactions.ScheduledActionsProvisioningStateSucceeded),
+	// 		},
+	// 		Location: to.Ptr("eastus"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/scheduledActions/weekday-start"),
+	// 		Name: to.Ptr("weekday-start"),
+	// 		Type: to.Ptr("Microsoft.Compute/scheduledActions"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-10-06-preview/ScheduledActions_Get_ComprehensiveSuccess.json
+func ExampleScheduledActionsClient_Get_twoGetARecurringScheduledActionWithCompleteConfiguration() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armbulkactions.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewScheduledActionsClient().Get(ctx, "example-rg", "weekday-start", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armbulkactions.ScheduledActionsClientGetResponse{
+	// 	ScheduledAction: armbulkactions.ScheduledAction{
+	// 		Properties: &armbulkactions.ScheduledActionProperties{
+	// 			ResourceType: to.Ptr(armbulkactions.ResourceTypeVirtualMachine),
+	// 			ActionType: to.Ptr(armbulkactions.ScheduledActionTypeStart),
+	// 			StartTime: to.Ptr(time.Date(2026, time.September, 1, 19, 0, 0, 0, time.FixedZone("", -25200))),
+	// 			EndTime: to.Ptr(time.Date(2027, time.September, 1, 19, 0, 0, 0, time.FixedZone("", -25200))),
+	// 			Schedule: &armbulkactions.ScheduledActionsSchedule{
+	// 				ScheduledTime: to.Ptr(time.Date(0, time.January, 1, 19, 0, 0, 0, time.UTC)),
 	// 				TimeZone: to.Ptr("America/Los_Angeles"),
 	// 				RequestedWeekDays: []*armbulkactions.WeekDay{
 	// 					to.Ptr(armbulkactions.WeekDayMonday),
@@ -391,14 +732,6 @@ func ExampleScheduledActionsClient_Get() {
 	// 				RequestedDaysOfTheMonth: []*int32{
 	// 					to.Ptr[int32](15),
 	// 				},
-	// 				ExecutionParameters: &armbulkactions.RecurringScheduledActionsExecutionParameters{
-	// 					OptimizationPreference: to.Ptr(armbulkactions.OptimizationPreferenceCost),
-	// 					RetryPolicy: &armbulkactions.RecurringScheduledActionsRetryPolicy{
-	// 						RetryCount: to.Ptr[int32](17),
-	// 						RetryWindowInMinutes: to.Ptr[int32](29),
-	// 					},
-	// 				},
-	// 				DeadlineType: to.Ptr(armbulkactions.RecurringScheduledActionsDeadlineTypeUnknown),
 	// 			},
 	// 			NotificationSettings: []*armbulkactions.NotificationProperties{
 	// 				{
@@ -409,39 +742,39 @@ func ExampleScheduledActionsClient_Get() {
 	// 				},
 	// 			},
 	// 			Disabled: to.Ptr(true),
-	// 			ProvisioningState: to.Ptr(armbulkactions.RecurringScheduledActionsProvisioningStateSucceeded),
+	// 			ProvisioningState: to.Ptr(armbulkactions.ScheduledActionsProvisioningStateSucceeded),
 	// 		},
 	// 		Tags: map[string]*string{
-	// 			"key2102": to.Ptr("myTagValue"),
+	// 			"environment": to.Ptr("production"),
 	// 		},
 	// 		Location: to.Ptr("eastus"),
-	// 		ID: to.Ptr("/subscriptions/83C27AB3-A7B9-498B-B165-D9440661474F/resourceGroups/myRg/providers/Microsoft.Compute/scheduledActions/myScheduledAction"),
-	// 		Name: to.Ptr("myScheduledAction"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/scheduledActions/weekday-start"),
+	// 		Name: to.Ptr("weekday-start"),
 	// 		Type: to.Ptr("Microsoft.Compute/scheduledActions"),
 	// 		SystemData: &armbulkactions.SystemData{
 	// 			CreatedBy: to.Ptr("user@contoso.com"),
 	// 			CreatedByType: to.Ptr(armbulkactions.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:55.288Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2025, time.April, 17, 0, 23, 55, 288000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user@contoso.com"),
 	// 			LastModifiedByType: to.Ptr(armbulkactions.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:55.288Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.April, 17, 0, 23, 55, 288000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-07-06-preview/ScheduledActions_ListByResourceGroup_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-06-preview/ScheduledActions_ListByResourceGroup_PagedSuccess.json
 func ExampleScheduledActionsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armbulkactions.NewClientFactory("CB26D7CB-3E27-465F-99C8-EAF7A4118245", cred, nil)
+	clientFactory, err := armbulkactions.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewScheduledActionsClient().NewListByResourceGroupPager("rgcompute", nil)
+	pager := clientFactory.NewScheduledActionsClient().NewListByResourceGroupPager("example-rg", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -459,71 +792,69 @@ func ExampleScheduledActionsClient_NewListByResourceGroupPager() {
 		// 				Properties: &armbulkactions.ScheduledActionProperties{
 		// 					ResourceType: to.Ptr(armbulkactions.ResourceTypeVirtualMachine),
 		// 					ActionType: to.Ptr(armbulkactions.ScheduledActionTypeStart),
-		// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:55.281Z"); return t}()),
-		// 					EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:55.286Z"); return t}()),
+		// 					StartTime: to.Ptr(time.Date(2026, time.September, 15, 7, 0, 0, 0, time.FixedZone("", -25200))),
 		// 					Schedule: &armbulkactions.ScheduledActionsSchedule{
-		// 						ScheduledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.TimeOnly, "19:00:00"); return t}()),
+		// 						ScheduledTime: to.Ptr(time.Date(0, time.January, 1, 7, 0, 0, 0, time.UTC)),
 		// 						TimeZone: to.Ptr("America/Los_Angeles"),
 		// 						RequestedWeekDays: []*armbulkactions.WeekDay{
 		// 							to.Ptr(armbulkactions.WeekDayMonday),
+		// 							to.Ptr(armbulkactions.WeekDayTuesday),
+		// 							to.Ptr(armbulkactions.WeekDayWednesday),
+		// 							to.Ptr(armbulkactions.WeekDayThursday),
+		// 							to.Ptr(armbulkactions.WeekDayFriday),
 		// 						},
-		// 						RequestedMonths: []*armbulkactions.Month{
-		// 							to.Ptr(armbulkactions.MonthJanuary),
-		// 						},
-		// 						RequestedDaysOfTheMonth: []*int32{
-		// 							to.Ptr[int32](15),
-		// 						},
-		// 						ExecutionParameters: &armbulkactions.RecurringScheduledActionsExecutionParameters{
-		// 							OptimizationPreference: to.Ptr(armbulkactions.OptimizationPreferenceCost),
-		// 							RetryPolicy: &armbulkactions.RecurringScheduledActionsRetryPolicy{
-		// 								RetryCount: to.Ptr[int32](17),
-		// 								RetryWindowInMinutes: to.Ptr[int32](29),
-		// 							},
-		// 						},
-		// 						DeadlineType: to.Ptr(armbulkactions.RecurringScheduledActionsDeadlineTypeUnknown),
 		// 					},
 		// 					NotificationSettings: []*armbulkactions.NotificationProperties{
-		// 						{
-		// 							Destination: to.Ptr("admin@contoso.com"),
-		// 							Type: to.Ptr(armbulkactions.NotificationTypeEmail),
-		// 							Language: to.Ptr(armbulkactions.LanguageEnUs),
-		// 							Disabled: to.Ptr(true),
-		// 						},
 		// 					},
-		// 					Disabled: to.Ptr(true),
-		// 					ProvisioningState: to.Ptr(armbulkactions.RecurringScheduledActionsProvisioningStateSucceeded),
-		// 				},
-		// 				Tags: map[string]*string{
-		// 					"key2102": to.Ptr("myTagValue"),
+		// 					Disabled: to.Ptr(false),
+		// 					ProvisioningState: to.Ptr(armbulkactions.ScheduledActionsProvisioningStateSucceeded),
 		// 				},
 		// 				Location: to.Ptr("eastus"),
-		// 				ID: to.Ptr("/subscriptions/83C27AB3-A7B9-498B-B165-D9440661474F/resourceGroups/myRg/providers/Microsoft.Compute/scheduledActions/myScheduledAction"),
-		// 				Name: to.Ptr("myScheduledAction"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/scheduledActions/weekday-start"),
+		// 				Name: to.Ptr("weekday-start"),
 		// 				Type: to.Ptr("Microsoft.Compute/scheduledActions"),
-		// 				SystemData: &armbulkactions.SystemData{
-		// 					CreatedBy: to.Ptr("user@contoso.com"),
-		// 					CreatedByType: to.Ptr(armbulkactions.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:55.288Z"); return t}()),
-		// 					LastModifiedBy: to.Ptr("user@contoso.com"),
-		// 					LastModifiedByType: to.Ptr(armbulkactions.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:55.288Z"); return t}()),
+		// 			},
+		// 			{
+		// 				Properties: &armbulkactions.ScheduledActionProperties{
+		// 					ResourceType: to.Ptr(armbulkactions.ResourceTypeVirtualMachine),
+		// 					ActionType: to.Ptr(armbulkactions.ScheduledActionTypeDeallocate),
+		// 					StartTime: to.Ptr(time.Date(2026, time.September, 15, 19, 0, 0, 0, time.FixedZone("", -25200))),
+		// 					Schedule: &armbulkactions.ScheduledActionsSchedule{
+		// 						ScheduledTime: to.Ptr(time.Date(0, time.January, 1, 19, 0, 0, 0, time.UTC)),
+		// 						TimeZone: to.Ptr("America/Los_Angeles"),
+		// 						RequestedWeekDays: []*armbulkactions.WeekDay{
+		// 							to.Ptr(armbulkactions.WeekDayMonday),
+		// 							to.Ptr(armbulkactions.WeekDayTuesday),
+		// 							to.Ptr(armbulkactions.WeekDayWednesday),
+		// 							to.Ptr(armbulkactions.WeekDayThursday),
+		// 							to.Ptr(armbulkactions.WeekDayFriday),
+		// 						},
+		// 					},
+		// 					NotificationSettings: []*armbulkactions.NotificationProperties{
+		// 					},
+		// 					Disabled: to.Ptr(false),
+		// 					ProvisioningState: to.Ptr(armbulkactions.ScheduledActionsProvisioningStateSucceeded),
 		// 				},
+		// 				Location: to.Ptr("eastus"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/scheduledActions/weekday-deallocate"),
+		// 				Name: to.Ptr("weekday-deallocate"),
+		// 				Type: to.Ptr("Microsoft.Compute/scheduledActions"),
 		// 			},
 		// 		},
-		// 		NextLink: to.Ptr("https://microsoft.com/a"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/scheduledActions?api-version=2026-10-06-preview&$skiptoken=page2"),
 		// 	},
 		// }
 	}
 }
 
-// Generated from example definition: 2026-07-06-preview/ScheduledActions_ListBySubscription_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-06-preview/ScheduledActions_ListBySubscription_PagedSuccess.json
 func ExampleScheduledActionsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armbulkactions.NewClientFactory("CB26D7CB-3E27-465F-99C8-EAF7A4118245", cred, nil)
+	clientFactory, err := armbulkactions.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -545,75 +876,73 @@ func ExampleScheduledActionsClient_NewListBySubscriptionPager() {
 		// 				Properties: &armbulkactions.ScheduledActionProperties{
 		// 					ResourceType: to.Ptr(armbulkactions.ResourceTypeVirtualMachine),
 		// 					ActionType: to.Ptr(armbulkactions.ScheduledActionTypeStart),
-		// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:55.281Z"); return t}()),
-		// 					EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:55.286Z"); return t}()),
+		// 					StartTime: to.Ptr(time.Date(2026, time.September, 15, 7, 0, 0, 0, time.FixedZone("", -25200))),
 		// 					Schedule: &armbulkactions.ScheduledActionsSchedule{
-		// 						ScheduledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.TimeOnly, "19:00:00"); return t}()),
+		// 						ScheduledTime: to.Ptr(time.Date(0, time.January, 1, 7, 0, 0, 0, time.UTC)),
 		// 						TimeZone: to.Ptr("America/Los_Angeles"),
 		// 						RequestedWeekDays: []*armbulkactions.WeekDay{
 		// 							to.Ptr(armbulkactions.WeekDayMonday),
+		// 							to.Ptr(armbulkactions.WeekDayTuesday),
+		// 							to.Ptr(armbulkactions.WeekDayWednesday),
+		// 							to.Ptr(armbulkactions.WeekDayThursday),
+		// 							to.Ptr(armbulkactions.WeekDayFriday),
 		// 						},
-		// 						RequestedMonths: []*armbulkactions.Month{
-		// 							to.Ptr(armbulkactions.MonthJanuary),
-		// 						},
-		// 						RequestedDaysOfTheMonth: []*int32{
-		// 							to.Ptr[int32](15),
-		// 						},
-		// 						ExecutionParameters: &armbulkactions.RecurringScheduledActionsExecutionParameters{
-		// 							OptimizationPreference: to.Ptr(armbulkactions.OptimizationPreferenceCost),
-		// 							RetryPolicy: &armbulkactions.RecurringScheduledActionsRetryPolicy{
-		// 								RetryCount: to.Ptr[int32](17),
-		// 								RetryWindowInMinutes: to.Ptr[int32](29),
-		// 							},
-		// 						},
-		// 						DeadlineType: to.Ptr(armbulkactions.RecurringScheduledActionsDeadlineTypeUnknown),
 		// 					},
 		// 					NotificationSettings: []*armbulkactions.NotificationProperties{
-		// 						{
-		// 							Destination: to.Ptr("admin@contoso.com"),
-		// 							Type: to.Ptr(armbulkactions.NotificationTypeEmail),
-		// 							Language: to.Ptr(armbulkactions.LanguageEnUs),
-		// 							Disabled: to.Ptr(true),
-		// 						},
 		// 					},
-		// 					Disabled: to.Ptr(true),
-		// 					ProvisioningState: to.Ptr(armbulkactions.RecurringScheduledActionsProvisioningStateSucceeded),
-		// 				},
-		// 				Tags: map[string]*string{
-		// 					"key2102": to.Ptr("myTagValue"),
+		// 					Disabled: to.Ptr(false),
+		// 					ProvisioningState: to.Ptr(armbulkactions.ScheduledActionsProvisioningStateSucceeded),
 		// 				},
 		// 				Location: to.Ptr("eastus"),
-		// 				ID: to.Ptr("/subscriptions/83C27AB3-A7B9-498B-B165-D9440661474F/resourceGroups/myRg/providers/Microsoft.Compute/scheduledActions/myScheduledAction"),
-		// 				Name: to.Ptr("myScheduledAction"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/web-rg/providers/Microsoft.Compute/scheduledActions/weekday-start"),
+		// 				Name: to.Ptr("weekday-start"),
 		// 				Type: to.Ptr("Microsoft.Compute/scheduledActions"),
-		// 				SystemData: &armbulkactions.SystemData{
-		// 					CreatedBy: to.Ptr("user@contoso.com"),
-		// 					CreatedByType: to.Ptr(armbulkactions.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:55.288Z"); return t}()),
-		// 					LastModifiedBy: to.Ptr("user@contoso.com"),
-		// 					LastModifiedByType: to.Ptr(armbulkactions.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:55.288Z"); return t}()),
+		// 			},
+		// 			{
+		// 				Properties: &armbulkactions.ScheduledActionProperties{
+		// 					ResourceType: to.Ptr(armbulkactions.ResourceTypeVirtualMachine),
+		// 					ActionType: to.Ptr(armbulkactions.ScheduledActionTypeDeallocate),
+		// 					StartTime: to.Ptr(time.Date(2026, time.September, 15, 19, 0, 0, 0, time.FixedZone("", -18000))),
+		// 					Schedule: &armbulkactions.ScheduledActionsSchedule{
+		// 						ScheduledTime: to.Ptr(time.Date(0, time.January, 1, 19, 0, 0, 0, time.UTC)),
+		// 						TimeZone: to.Ptr("America/Chicago"),
+		// 						RequestedWeekDays: []*armbulkactions.WeekDay{
+		// 							to.Ptr(armbulkactions.WeekDayMonday),
+		// 							to.Ptr(armbulkactions.WeekDayTuesday),
+		// 							to.Ptr(armbulkactions.WeekDayWednesday),
+		// 							to.Ptr(armbulkactions.WeekDayThursday),
+		// 							to.Ptr(armbulkactions.WeekDayFriday),
+		// 						},
+		// 					},
+		// 					NotificationSettings: []*armbulkactions.NotificationProperties{
+		// 					},
+		// 					Disabled: to.Ptr(false),
+		// 					ProvisioningState: to.Ptr(armbulkactions.ScheduledActionsProvisioningStateSucceeded),
 		// 				},
+		// 				Location: to.Ptr("centralus"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/batch-rg/providers/Microsoft.Compute/scheduledActions/weekday-deallocate"),
+		// 				Name: to.Ptr("weekday-deallocate"),
+		// 				Type: to.Ptr("Microsoft.Compute/scheduledActions"),
 		// 			},
 		// 		},
-		// 		NextLink: to.Ptr("https://microsoft.com/a"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/scheduledActions?api-version=2026-10-06-preview&$skiptoken=page2"),
 		// 	},
 		// }
 	}
 }
 
-// Generated from example definition: 2026-07-06-preview/ScheduledActions_ListResources_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-06-preview/ScheduledActions_ListResources_PagedSuccess.json
 func ExampleScheduledActionsClient_NewListResourcesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armbulkactions.NewClientFactory("CB26D7CB-3E27-465F-99C8-EAF7A4118245", cred, nil)
+	clientFactory, err := armbulkactions.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewScheduledActionsClient().NewListResourcesPager("rgcompute", "myScheduledAction", nil)
+	pager := clientFactory.NewScheduledActionsClient().NewListResourcesPager("example-rg", "weekday-start", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -628,7 +957,7 @@ func ExampleScheduledActionsClient_NewListResourcesPager() {
 		// 	ResourceListResponse: armbulkactions.ResourceListResponse{
 		// 		Value: []*armbulkactions.ScheduledActionResource{
 		// 			{
-		// 				ResourceID: to.Ptr("/subscriptions/1d04e8f1-ee04-4056-b0b2-718f5bb45b04/resourceGroups/myRg/providers/Microsoft.Compute/virtualMachines/myVm"),
+		// 				ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-01"),
 		// 				NotificationSettings: []*armbulkactions.NotificationProperties{
 		// 					{
 		// 						Destination: to.Ptr("admin@contoso.com"),
@@ -637,32 +966,183 @@ func ExampleScheduledActionsClient_NewListResourcesPager() {
 		// 						Disabled: to.Ptr(true),
 		// 					},
 		// 				},
-		// 				ID: to.Ptr("/subscriptions/1d04e8f1-ee04-4056-b0b2-718f5bb45b04/resourceGroups/myRg/providers/Microsoft.Compute/virtualMachines/myVm"),
-		// 				Name: to.Ptr("myVm"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/scheduledActions/weekday-start/resources/web-vm-01"),
+		// 				Name: to.Ptr("web-vm-01"),
+		// 				Type: to.Ptr("Microsoft.Compute/virtualMachines"),
+		// 			},
+		// 			{
+		// 				ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-02"),
+		// 				NotificationSettings: []*armbulkactions.NotificationProperties{
+		// 					{
+		// 						Destination: to.Ptr("operations@contoso.com"),
+		// 						Type: to.Ptr(armbulkactions.NotificationTypeEmail),
+		// 						Language: to.Ptr(armbulkactions.LanguageEnUs),
+		// 						Disabled: to.Ptr(false),
+		// 					},
+		// 				},
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/scheduledActions/weekday-start/resources/web-vm-02"),
+		// 				Name: to.Ptr("web-vm-02"),
 		// 				Type: to.Ptr("Microsoft.Compute/virtualMachines"),
 		// 			},
 		// 		},
-		// 		NextLink: to.Ptr("https://microsoft.com/awac"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/scheduledActions/weekday-start/resources?api-version=2026-10-06-preview&$skiptoken=page2"),
 		// 	},
 		// }
 	}
 }
 
-// Generated from example definition: 2026-07-06-preview/ScheduledActions_PatchResources_MaximumSet_Gen.json
-func ExampleScheduledActionsClient_PatchResources() {
+// Generated from example definition: 2026-10-06-preview/ScheduledActions_PatchResources_BasicSuccess.json
+func ExampleScheduledActionsClient_PatchResources_oneUpdateSettingsForRecurringScheduledActionResources() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armbulkactions.NewClientFactory("CB26D7CB-3E27-465F-99C8-EAF7A4118245", cred, nil)
+	clientFactory, err := armbulkactions.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewScheduledActionsClient().PatchResources(ctx, "rgcompute", "myScheduledAction", armbulkactions.ResourcePatchRequest{
+	res, err := clientFactory.NewScheduledActionsClient().PatchResources(ctx, "example-rg", "weekday-start", armbulkactions.ResourcePatchRequest{
 		Resources: []*armbulkactions.ScheduledActionResourceInput{
 			{
-				ResourceID: to.Ptr("/subscriptions/1d04e8f1-ee04-4056-b0b2-718f5bb45b04/resourceGroups/myRg/providers/Microsoft.Compute/virtualMachines/myVm"),
+				ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-01"),
+				NotificationSettings: []*armbulkactions.NotificationProperties{
+					{
+						Destination: to.Ptr("operations@contoso.com"),
+						Type:        to.Ptr(armbulkactions.NotificationTypeEmail),
+						Language:    to.Ptr(armbulkactions.LanguageEnUs),
+						Disabled:    to.Ptr(false),
+					},
+				},
+			},
+			{
+				ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-02"),
+				NotificationSettings: []*armbulkactions.NotificationProperties{
+					{
+						Destination: to.Ptr("operations@contoso.com"),
+						Type:        to.Ptr(armbulkactions.NotificationTypeEmail),
+						Language:    to.Ptr(armbulkactions.LanguageEnUs),
+						Disabled:    to.Ptr(false),
+					},
+				},
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armbulkactions.ScheduledActionsClientPatchResourcesResponse{
+	// 	ResourceOperationResponse: armbulkactions.ResourceOperationResponse{
+	// 		TotalResources: to.Ptr[int32](2),
+	// 		ResourcesStatuses: []*armbulkactions.ResourceStatus{
+	// 			{
+	// 				ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-01"),
+	// 				Status: to.Ptr(armbulkactions.ResourceOperationStatusSucceeded),
+	// 			},
+	// 			{
+	// 				ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-02"),
+	// 				Status: to.Ptr(armbulkactions.ResourceOperationStatusSucceeded),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-10-06-preview/ScheduledActions_PatchResources_ComprehensiveSuccess.json
+func ExampleScheduledActionsClient_PatchResources_twoUpdateResourceSpecificNotificationSettingsForARecurringScheduledAction() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armbulkactions.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewScheduledActionsClient().PatchResources(ctx, "example-rg", "weekday-start", armbulkactions.ResourcePatchRequest{
+		Resources: []*armbulkactions.ScheduledActionResourceInput{
+			{
+				ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-01"),
+				NotificationSettings: []*armbulkactions.NotificationProperties{
+					{
+						Destination: to.Ptr("web-operations@contoso.com"),
+						Type:        to.Ptr(armbulkactions.NotificationTypeEmail),
+						Language:    to.Ptr(armbulkactions.LanguageEnUs),
+						Disabled:    to.Ptr(false),
+					},
+				},
+			},
+			{
+				ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-02"),
+				NotificationSettings: []*armbulkactions.NotificationProperties{
+					{
+						Destination: to.Ptr("service-owners@contoso.com"),
+						Type:        to.Ptr(armbulkactions.NotificationTypeEmail),
+						Language:    to.Ptr(armbulkactions.LanguageEnUs),
+						Disabled:    to.Ptr(false),
+					},
+					{
+						Destination: to.Ptr("audit@contoso.com"),
+						Type:        to.Ptr(armbulkactions.NotificationTypeEmail),
+						Language:    to.Ptr(armbulkactions.LanguageEnUs),
+						Disabled:    to.Ptr(true),
+					},
+				},
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armbulkactions.ScheduledActionsClientPatchResourcesResponse{
+	// 	ResourceOperationResponse: armbulkactions.ResourceOperationResponse{
+	// 		TotalResources: to.Ptr[int32](2),
+	// 		ResourcesStatuses: []*armbulkactions.ResourceStatus{
+	// 			{
+	// 				ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-01"),
+	// 				Status: to.Ptr(armbulkactions.ResourceOperationStatusSucceeded),
+	// 			},
+	// 			{
+	// 				ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-02"),
+	// 				Status: to.Ptr(armbulkactions.ResourceOperationStatusSucceeded),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-10-06-preview/ScheduledActions_PatchResources_PartialSuccess.json
+func ExampleScheduledActionsClient_PatchResources_threeResponseWithPartialResultsWhenUpdatingRecurringScheduledActionResources() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armbulkactions.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewScheduledActionsClient().PatchResources(ctx, "example-rg", "weekday-start", armbulkactions.ResourcePatchRequest{
+		Resources: []*armbulkactions.ScheduledActionResourceInput{
+			{
+				ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-01"),
+				NotificationSettings: []*armbulkactions.NotificationProperties{
+					{
+						Destination: to.Ptr("admin@contoso.com"),
+						Type:        to.Ptr(armbulkactions.NotificationTypeEmail),
+						Language:    to.Ptr(armbulkactions.LanguageEnUs),
+						Disabled:    to.Ptr(true),
+					},
+				},
+			},
+			{
+				ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-02"),
 				NotificationSettings: []*armbulkactions.NotificationProperties{
 					{
 						Destination: to.Ptr("admin@contoso.com"),
@@ -682,20 +1162,18 @@ func ExampleScheduledActionsClient_PatchResources() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbulkactions.ScheduledActionsClientPatchResourcesResponse{
 	// 	ResourceOperationResponse: armbulkactions.ResourceOperationResponse{
-	// 		TotalResources: to.Ptr[int32](11),
+	// 		TotalResources: to.Ptr[int32](2),
 	// 		ResourcesStatuses: []*armbulkactions.ResourceStatus{
 	// 			{
-	// 				ResourceID: to.Ptr("/subscriptions/1d04e8f1-ee04-4056-b0b2-718f5bb45b04/resourceGroups/myRg/providers/Microsoft.Compute/virtualMachines/myVm"),
+	// 				ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-01"),
 	// 				Status: to.Ptr(armbulkactions.ResourceOperationStatusSucceeded),
+	// 			},
+	// 			{
+	// 				ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-02"),
+	// 				Status: to.Ptr(armbulkactions.ResourceOperationStatusFailed),
 	// 				Error: &armbulkactions.Error{
-	// 					Code: to.Ptr("InternalServerError"),
-	// 					Message: to.Ptr("An internal error occurred."),
-	// 					Target: to.Ptr("virtualMachines"),
-	// 					Details: []*armbulkactions.Error{
-	// 					},
-	// 					Innererror: &armbulkactions.InnerError{
-	// 						Code: to.Ptr("InnerErrorCode"),
-	// 					},
+	// 					Code: to.Ptr("ResourceNotAttached"),
+	// 					Message: to.Ptr("Resource '/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-02' is not attached to scheduled action 'weekday-start'."),
 	// 				},
 	// 			},
 	// 		},
@@ -703,18 +1181,18 @@ func ExampleScheduledActionsClient_PatchResources() {
 	// }
 }
 
-// Generated from example definition: 2026-07-06-preview/ScheduledActions_TriggerManualOccurrence_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-06-preview/ScheduledActions_TriggerManualOccurrence_BasicSuccess.json
 func ExampleScheduledActionsClient_BeginTriggerManualOccurrence() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armbulkactions.NewClientFactory("CB26D7CB-3E27-465F-99C8-EAF7A4118245", cred, nil)
+	clientFactory, err := armbulkactions.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewScheduledActionsClient().BeginTriggerManualOccurrence(ctx, "rgcompute", "myScheduledAction", nil)
+	poller, err := clientFactory.NewScheduledActionsClient().BeginTriggerManualOccurrence(ctx, "example-rg", "weekday-start", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -728,62 +1206,66 @@ func ExampleScheduledActionsClient_BeginTriggerManualOccurrence() {
 	// res = armbulkactions.ScheduledActionsClientTriggerManualOccurrenceResponse{
 	// 	Occurrence: armbulkactions.Occurrence{
 	// 		Properties: &armbulkactions.OccurrenceProperties{
-	// 			ScheduledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:59.243Z"); return t}()),
+	// 			ScheduledTime: to.Ptr(time.Date(2026, time.September, 1, 2, 0, 0, 0, time.UTC)),
 	// 			ResultSummary: &armbulkactions.OccurrenceResultSummary{
-	// 				Total: to.Ptr[int32](25),
+	// 				Total: to.Ptr[int32](2),
 	// 				Statuses: []*armbulkactions.ResourceResultSummary{
-	// 					{
-	// 						Code: to.Ptr("Succeeded"),
-	// 						Count: to.Ptr[int32](4),
-	// 						ErrorDetails: &armbulkactions.Error{
-	// 							Code: to.Ptr("InternalServerError"),
-	// 							Message: to.Ptr("An internal error occurred."),
-	// 							Target: to.Ptr("virtualMachines"),
-	// 							Details: []*armbulkactions.Error{
-	// 							},
-	// 							Innererror: &armbulkactions.InnerError{
-	// 								Code: to.Ptr("InnerErrorCode"),
-	// 							},
-	// 						},
-	// 					},
 	// 				},
 	// 			},
-	// 			ProvisioningState: to.Ptr(armbulkactions.OccurrenceStateCreated),
+	// 			ProvisioningState: to.Ptr(armbulkactions.OccurrenceStateScheduled),
 	// 		},
-	// 		ID: to.Ptr("/subscriptions/83C27AB3-A7B9-498B-B165-D9440661474F/resourceGroups/myRg/providers/Microsoft.Compute/scheduledActions/myScheduledAction"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/scheduledActions/weekday-start/occurrences/67b5bada-4772-43fc-8dbb-402476d98a45"),
 	// 		Name: to.Ptr("67b5bada-4772-43fc-8dbb-402476d98a45"),
 	// 		Type: to.Ptr("Microsoft.Compute/scheduledActions/occurrences"),
-	// 		SystemData: &armbulkactions.SystemData{
-	// 			CreatedBy: to.Ptr("user@contoso.com"),
-	// 			CreatedByType: to.Ptr(armbulkactions.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:55.288Z"); return t}()),
-	// 			LastModifiedBy: to.Ptr("user@contoso.com"),
-	// 			LastModifiedByType: to.Ptr(armbulkactions.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:55.288Z"); return t}()),
-	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-07-06-preview/ScheduledActions_Update_MaximumSet_Gen.json
-func ExampleScheduledActionsClient_BeginUpdate() {
+// Generated from example definition: 2026-10-06-preview/ScheduledActions_Update_BasicSuccess.json
+func ExampleScheduledActionsClient_BeginUpdate_oneUpdateTheActionTypeOfARecurringScheduledAction() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armbulkactions.NewClientFactory("CB26D7CB-3E27-465F-99C8-EAF7A4118245", cred, nil)
+	clientFactory, err := armbulkactions.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewScheduledActionsClient().BeginUpdate(ctx, "rgcompute", "myScheduledAction", armbulkactions.ScheduledActionUpdate{
+	poller, err := clientFactory.NewScheduledActionsClient().BeginUpdate(ctx, "example-rg", "weekday-start", armbulkactions.ScheduledActionUpdate{
 		Properties: &armbulkactions.ScheduledActionUpdateProperties{
-			ResourceType: to.Ptr(armbulkactions.ResourceTypeVirtualMachine),
-			ActionType:   to.Ptr(armbulkactions.ScheduledActionTypeStart),
-			StartTime:    to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:58.149Z"); return t }()),
-			EndTime:      to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:58.149Z"); return t }()),
+			ActionType: to.Ptr(armbulkactions.ScheduledActionTypeDeallocate),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armbulkactions.ScheduledActionsClientUpdateResponse{
+	// }
+}
+
+// Generated from example definition: 2026-10-06-preview/ScheduledActions_Update_ComprehensiveSuccess.json
+func ExampleScheduledActionsClient_BeginUpdate_twoUpdateARecurringScheduledActionSchedule() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armbulkactions.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewScheduledActionsClient().BeginUpdate(ctx, "example-rg", "weekday-start", armbulkactions.ScheduledActionUpdate{
+		Properties: &armbulkactions.ScheduledActionUpdateProperties{
 			Schedule: &armbulkactions.ScheduledActionsScheduleUpdate{
-				ScheduledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.TimeOnly, "19:00:00"); return t }()),
+				ScheduledTime: to.Ptr(time.Date(0, time.January, 1, 19, 0, 0, 0, time.UTC)),
 				TimeZone:      to.Ptr("America/Los_Angeles"),
 				RequestedWeekDays: []*armbulkactions.WeekDay{
 					to.Ptr(armbulkactions.WeekDayMonday),
@@ -794,27 +1276,7 @@ func ExampleScheduledActionsClient_BeginUpdate() {
 				RequestedDaysOfTheMonth: []*int32{
 					to.Ptr[int32](15),
 				},
-				ExecutionParameters: &armbulkactions.RecurringScheduledActionsExecutionParameters{
-					OptimizationPreference: to.Ptr(armbulkactions.OptimizationPreferenceCost),
-					RetryPolicy: &armbulkactions.RecurringScheduledActionsRetryPolicy{
-						RetryCount:           to.Ptr[int32](17),
-						RetryWindowInMinutes: to.Ptr[int32](29),
-					},
-				},
-				DeadlineType: to.Ptr(armbulkactions.RecurringScheduledActionsDeadlineTypeUnknown),
 			},
-			NotificationSettings: []*armbulkactions.NotificationProperties{
-				{
-					Destination: to.Ptr("admin@contoso.com"),
-					Type:        to.Ptr(armbulkactions.NotificationTypeEmail),
-					Language:    to.Ptr(armbulkactions.LanguageEnUs),
-					Disabled:    to.Ptr(true),
-				},
-			},
-			Disabled: to.Ptr(true),
-		},
-		Tags: map[string]*string{
-			"key9989": to.Ptr("myTagValue"),
 		},
 	}, nil)
 	if err != nil {

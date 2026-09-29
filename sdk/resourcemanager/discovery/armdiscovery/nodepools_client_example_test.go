@@ -61,10 +61,10 @@ func ExampleNodePoolsClient_BeginCreateOrUpdate() {
 	// 		SystemData: &armdiscovery.SystemData{
 	// 			CreatedBy: to.Ptr("uymdmmhvojuqtvvxokgefohqpcjw"),
 	// 			CreatedByType: to.Ptr(armdiscovery.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T11:59:49.804Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2026, time.May, 4, 11, 59, 49, 804000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("ucuttxilomgszapozsuit"),
 	// 			LastModifiedByType: to.Ptr(armdiscovery.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T11:59:49.804Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2026, time.May, 4, 11, 59, 49, 804000000, time.UTC)),
 	// 		},
 	// 		Properties: &armdiscovery.NodePoolProperties{
 	// 			ProvisioningState: to.Ptr(armdiscovery.ProvisioningStateSucceeded),
@@ -132,10 +132,10 @@ func ExampleNodePoolsClient_Get() {
 	// 		SystemData: &armdiscovery.SystemData{
 	// 			CreatedBy: to.Ptr("uymdmmhvojuqtvvxokgefohqpcjw"),
 	// 			CreatedByType: to.Ptr(armdiscovery.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T11:59:49.804Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2026, time.May, 4, 11, 59, 49, 804000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("ucuttxilomgszapozsuit"),
 	// 			LastModifiedByType: to.Ptr(armdiscovery.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T11:59:49.804Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2026, time.May, 4, 11, 59, 49, 804000000, time.UTC)),
 	// 		},
 	// 		Properties: &armdiscovery.NodePoolProperties{
 	// 			ProvisioningState: to.Ptr(armdiscovery.ProvisioningStateSucceeded),
@@ -188,10 +188,10 @@ func ExampleNodePoolsClient_NewListBySupercomputerPager() {
 		// 				SystemData: &armdiscovery.SystemData{
 		// 					CreatedBy: to.Ptr("uymdmmhvojuqtvvxokgefohqpcjw"),
 		// 					CreatedByType: to.Ptr(armdiscovery.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T11:59:49.804Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2026, time.May, 4, 11, 59, 49, 804000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("ucuttxilomgszapozsuit"),
 		// 					LastModifiedByType: to.Ptr(armdiscovery.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T11:59:49.804Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2026, time.May, 4, 11, 59, 49, 804000000, time.UTC)),
 		// 				},
 		// 				Properties: &armdiscovery.NodePoolProperties{
 		// 					ProvisioningState: to.Ptr(armdiscovery.ProvisioningStateSucceeded),
@@ -254,10 +254,10 @@ func ExampleNodePoolsClient_BeginUpdate() {
 	// 		SystemData: &armdiscovery.SystemData{
 	// 			CreatedBy: to.Ptr("uymdmmhvojuqtvvxokgefohqpcjw"),
 	// 			CreatedByType: to.Ptr(armdiscovery.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T11:59:49.804Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2026, time.May, 4, 11, 59, 49, 804000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("ucuttxilomgszapozsuit"),
 	// 			LastModifiedByType: to.Ptr(armdiscovery.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T11:59:49.804Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2026, time.May, 4, 11, 59, 49, 804000000, time.UTC)),
 	// 		},
 	// 		Properties: &armdiscovery.NodePoolProperties{
 	// 			ProvisioningState: to.Ptr(armdiscovery.ProvisioningStateSucceeded),

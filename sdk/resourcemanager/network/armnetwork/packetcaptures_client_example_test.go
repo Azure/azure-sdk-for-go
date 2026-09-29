@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v11"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v12"
 	"log"
 )
 
-// Generated from example definition: 2025-09-01/NetworkWatcherPacketCaptureCreate.json
+// Generated from example definition: 2026-01-01/NetworkWatcherPacketCaptureCreate.json
 func ExamplePacketCapturesClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -52,7 +52,7 @@ func ExamplePacketCapturesClient_BeginCreate() {
 	}
 }
 
-// Generated from example definition: 2025-09-01/NetworkWatcherPacketCaptureDelete.json
+// Generated from example definition: 2026-01-01/NetworkWatcherPacketCaptureDelete.json
 func ExamplePacketCapturesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -73,7 +73,7 @@ func ExamplePacketCapturesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-09-01/NetworkWatcherPacketCaptureGet.json
+// Generated from example definition: 2026-01-01/NetworkWatcherPacketCaptureGet.json
 func ExamplePacketCapturesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -119,7 +119,7 @@ func ExamplePacketCapturesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/NetworkWatcherPacketCaptureQueryStatus.json
+// Generated from example definition: 2026-01-01/NetworkWatcherPacketCaptureQueryStatus.json
 func ExamplePacketCapturesClient_BeginGetStatus() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -154,7 +154,7 @@ func ExamplePacketCapturesClient_BeginGetStatus() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/NetworkWatcherPacketCapturesList.json
+// Generated from example definition: 2026-01-01/NetworkWatcherPacketCapturesList.json
 func ExamplePacketCapturesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -228,7 +228,7 @@ func ExamplePacketCapturesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-09-01/NetworkWatcherPacketCaptureStop.json
+// Generated from example definition: 2026-01-01/NetworkWatcherPacketCaptureStop.json
 func ExamplePacketCapturesClient_BeginStop() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

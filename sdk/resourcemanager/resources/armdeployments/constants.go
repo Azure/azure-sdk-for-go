@@ -5,7 +5,7 @@
 package armdeployments
 
 const (
-	version20250401 string = "2025-04-01"
+	version20260601 string = "2026-06-01"
 )
 
 // AliasPathAttributes - The attributes of the token that the alias path is referring to.
@@ -222,38 +222,6 @@ func PossibleExpressionEvaluationOptionsScopeTypeValues() []ExpressionEvaluation
 		ExpressionEvaluationOptionsScopeTypeInner,
 		ExpressionEvaluationOptionsScopeTypeNotSpecified,
 		ExpressionEvaluationOptionsScopeTypeOuter,
-	}
-}
-
-type ExtensionConfigPropertyType string
-
-const (
-	// ExtensionConfigPropertyTypeArray - Property type representing an array value.
-	ExtensionConfigPropertyTypeArray ExtensionConfigPropertyType = "Array"
-	// ExtensionConfigPropertyTypeBool - Property type representing a boolean value.
-	ExtensionConfigPropertyTypeBool ExtensionConfigPropertyType = "Bool"
-	// ExtensionConfigPropertyTypeInt - Property type representing an integer value.
-	ExtensionConfigPropertyTypeInt ExtensionConfigPropertyType = "Int"
-	// ExtensionConfigPropertyTypeObject - Property type representing an object value.
-	ExtensionConfigPropertyTypeObject ExtensionConfigPropertyType = "Object"
-	// ExtensionConfigPropertyTypeSecureObject - Property type representing a secure object value.
-	ExtensionConfigPropertyTypeSecureObject ExtensionConfigPropertyType = "SecureObject"
-	// ExtensionConfigPropertyTypeSecureString - Property type representing a secure string value.
-	ExtensionConfigPropertyTypeSecureString ExtensionConfigPropertyType = "SecureString"
-	// ExtensionConfigPropertyTypeString - Property type representing a string value.
-	ExtensionConfigPropertyTypeString ExtensionConfigPropertyType = "String"
-)
-
-// PossibleExtensionConfigPropertyTypeValues returns the possible values for the ExtensionConfigPropertyType const type.
-func PossibleExtensionConfigPropertyTypeValues() []ExtensionConfigPropertyType {
-	return []ExtensionConfigPropertyType{
-		ExtensionConfigPropertyTypeArray,
-		ExtensionConfigPropertyTypeBool,
-		ExtensionConfigPropertyTypeInt,
-		ExtensionConfigPropertyTypeObject,
-		ExtensionConfigPropertyTypeSecureObject,
-		ExtensionConfigPropertyTypeSecureString,
-		ExtensionConfigPropertyTypeString,
 	}
 }
 

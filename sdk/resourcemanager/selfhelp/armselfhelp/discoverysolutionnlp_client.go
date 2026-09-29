@@ -57,12 +57,7 @@ func (client *DiscoverySolutionNLPClient) DiscoverSolutions(ctx context.Context,
 	if err != nil {
 		return DiscoverySolutionNLPClientDiscoverSolutionsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DiscoverySolutionNLPClientDiscoverSolutionsResponse{}, err
-	}
-	resp, err := client.discoverSolutionsHandleResponse(httpResp)
-	return resp, err
+	return client.discoverSolutionsHandleResponse(httpResp, http.StatusOK)
 }
 
 // discoverSolutionsCreateRequest creates the DiscoverSolutions request.
@@ -87,8 +82,11 @@ func (client *DiscoverySolutionNLPClient) discoverSolutionsCreateRequest(ctx con
 }
 
 // discoverSolutionsHandleResponse handles the DiscoverSolutions response.
-func (client *DiscoverySolutionNLPClient) discoverSolutionsHandleResponse(resp *http.Response) (DiscoverySolutionNLPClientDiscoverSolutionsResponse, error) {
+func (client *DiscoverySolutionNLPClient) discoverSolutionsHandleResponse(resp *http.Response, successCodes ...int) (DiscoverySolutionNLPClientDiscoverSolutionsResponse, error) {
 	result := DiscoverySolutionNLPClientDiscoverSolutionsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DiscoveryNlpResponse); err != nil {
 		return DiscoverySolutionNLPClientDiscoverSolutionsResponse{}, err
 	}
@@ -115,12 +113,7 @@ func (client *DiscoverySolutionNLPClient) DiscoverSolutionsBySubscription(ctx co
 	if err != nil {
 		return DiscoverySolutionNLPClientDiscoverSolutionsBySubscriptionResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DiscoverySolutionNLPClientDiscoverSolutionsBySubscriptionResponse{}, err
-	}
-	resp, err := client.discoverSolutionsBySubscriptionHandleResponse(httpResp)
-	return resp, err
+	return client.discoverSolutionsBySubscriptionHandleResponse(httpResp, http.StatusOK)
 }
 
 // discoverSolutionsBySubscriptionCreateRequest creates the DiscoverSolutionsBySubscription request.
@@ -149,8 +142,11 @@ func (client *DiscoverySolutionNLPClient) discoverSolutionsBySubscriptionCreateR
 }
 
 // discoverSolutionsBySubscriptionHandleResponse handles the DiscoverSolutionsBySubscription response.
-func (client *DiscoverySolutionNLPClient) discoverSolutionsBySubscriptionHandleResponse(resp *http.Response) (DiscoverySolutionNLPClientDiscoverSolutionsBySubscriptionResponse, error) {
+func (client *DiscoverySolutionNLPClient) discoverSolutionsBySubscriptionHandleResponse(resp *http.Response, successCodes ...int) (DiscoverySolutionNLPClientDiscoverSolutionsBySubscriptionResponse, error) {
 	result := DiscoverySolutionNLPClientDiscoverSolutionsBySubscriptionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DiscoveryNlpResponse); err != nil {
 		return DiscoverySolutionNLPClientDiscoverSolutionsBySubscriptionResponse{}, err
 	}

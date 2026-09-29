@@ -52,10 +52,10 @@ func ExamplePrivateLinksClient_NewListByDeidServicePager() {
 		// 				SystemData: &armhealthdataaiservices.SystemData{
 		// 					CreatedBy: to.Ptr("p"),
 		// 					CreatedByType: to.Ptr(armhealthdataaiservices.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-04-13T19:47:24.985Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2024, time.April, 13, 19, 47, 24, 985000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("pmbozfvwrblbknedeb"),
 		// 					LastModifiedByType: to.Ptr(armhealthdataaiservices.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-04-13T19:47:24.986Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2024, time.April, 13, 19, 47, 24, 986000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},

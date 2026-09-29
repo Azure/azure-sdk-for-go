@@ -30,6 +30,9 @@ type StandbyContainerGroupPoolRuntimeViewsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewStandbyContainerGroupPoolRuntimeViewsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*StandbyContainerGroupPoolRuntimeViewsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -63,19 +66,14 @@ func (client *StandbyContainerGroupPoolRuntimeViewsClient) Get(ctx context.Conte
 	if err != nil {
 		return StandbyContainerGroupPoolRuntimeViewsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return StandbyContainerGroupPoolRuntimeViewsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *StandbyContainerGroupPoolRuntimeViewsClient) getCreateRequest(ctx context.Context, resourceGroupName string, standbyContainerGroupPoolName string, runtimeView string, _ *StandbyContainerGroupPoolRuntimeViewsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StandbyPool/standbyContainerGroupPools/{standbyContainerGroupPoolName}/runtimeViews/{runtimeView}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -102,8 +100,11 @@ func (client *StandbyContainerGroupPoolRuntimeViewsClient) getCreateRequest(ctx 
 }
 
 // getHandleResponse handles the Get response.
-func (client *StandbyContainerGroupPoolRuntimeViewsClient) getHandleResponse(resp *http.Response) (StandbyContainerGroupPoolRuntimeViewsClientGetResponse, error) {
+func (client *StandbyContainerGroupPoolRuntimeViewsClient) getHandleResponse(resp *http.Response, successCodes ...int) (StandbyContainerGroupPoolRuntimeViewsClientGetResponse, error) {
 	result := StandbyContainerGroupPoolRuntimeViewsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StandbyContainerGroupPoolRuntimeViewResource); err != nil {
 		return StandbyContainerGroupPoolRuntimeViewsClientGetResponse{}, err
 	}
@@ -126,47 +127,61 @@ func (client *StandbyContainerGroupPoolRuntimeViewsClient) NewListByStandbyPoolP
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByStandbyPoolCreateRequest(ctx, resourceGroupName, standbyContainerGroupPoolName, options)
-			}, nil)
+			req, err := client.listByStandbyPoolCreateRequest(ctx, resourceGroupName, standbyContainerGroupPoolName, nextLink, options)
 			if err != nil {
 				return StandbyContainerGroupPoolRuntimeViewsClientListByStandbyPoolResponse{}, err
 			}
-			return client.listByStandbyPoolHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return StandbyContainerGroupPoolRuntimeViewsClientListByStandbyPoolResponse{}, err
+			}
+			return client.listByStandbyPoolHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByStandbyPoolCreateRequest creates the ListByStandbyPool request.
-func (client *StandbyContainerGroupPoolRuntimeViewsClient) listByStandbyPoolCreateRequest(ctx context.Context, resourceGroupName string, standbyContainerGroupPoolName string, _ *StandbyContainerGroupPoolRuntimeViewsClientListByStandbyPoolOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StandbyPool/standbyContainerGroupPools/{standbyContainerGroupPoolName}/runtimeViews"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *StandbyContainerGroupPoolRuntimeViewsClient) listByStandbyPoolCreateRequest(ctx context.Context, resourceGroupName string, standbyContainerGroupPoolName string, nextLink string, _ *StandbyContainerGroupPoolRuntimeViewsClientListByStandbyPoolOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StandbyPool/standbyContainerGroupPools/{standbyContainerGroupPoolName}/runtimeViews"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if standbyContainerGroupPoolName == "" {
+			return nil, errors.New("parameter standbyContainerGroupPoolName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{standbyContainerGroupPoolName}", url.PathEscape(standbyContainerGroupPoolName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if standbyContainerGroupPoolName == "" {
-		return nil, errors.New("parameter standbyContainerGroupPoolName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{standbyContainerGroupPoolName}", url.PathEscape(standbyContainerGroupPoolName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251001)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20251001)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByStandbyPoolHandleResponse handles the ListByStandbyPool response.
-func (client *StandbyContainerGroupPoolRuntimeViewsClient) listByStandbyPoolHandleResponse(resp *http.Response) (StandbyContainerGroupPoolRuntimeViewsClientListByStandbyPoolResponse, error) {
+func (client *StandbyContainerGroupPoolRuntimeViewsClient) listByStandbyPoolHandleResponse(resp *http.Response, successCodes ...int) (StandbyContainerGroupPoolRuntimeViewsClientListByStandbyPoolResponse, error) {
 	result := StandbyContainerGroupPoolRuntimeViewsClientListByStandbyPoolResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StandbyContainerGroupPoolRuntimeViewResourceListResult); err != nil {
 		return StandbyContainerGroupPoolRuntimeViewsClientListByStandbyPoolResponse{}, err
 	}

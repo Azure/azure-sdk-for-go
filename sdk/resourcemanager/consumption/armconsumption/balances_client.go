@@ -58,12 +58,7 @@ func (client *BalancesClient) GetByBillingAccount(ctx context.Context, billingAc
 	if err != nil {
 		return BalancesClientGetByBillingAccountResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return BalancesClientGetByBillingAccountResponse{}, err
-	}
-	resp, err := client.getByBillingAccountHandleResponse(httpResp)
-	return resp, err
+	return client.getByBillingAccountHandleResponse(httpResp, http.StatusOK)
 }
 
 // getByBillingAccountCreateRequest creates the GetByBillingAccount request.
@@ -85,8 +80,11 @@ func (client *BalancesClient) getByBillingAccountCreateRequest(ctx context.Conte
 }
 
 // getByBillingAccountHandleResponse handles the GetByBillingAccount response.
-func (client *BalancesClient) getByBillingAccountHandleResponse(resp *http.Response) (BalancesClientGetByBillingAccountResponse, error) {
+func (client *BalancesClient) getByBillingAccountHandleResponse(resp *http.Response, successCodes ...int) (BalancesClientGetByBillingAccountResponse, error) {
 	result := BalancesClientGetByBillingAccountResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Balance); err != nil {
 		return BalancesClientGetByBillingAccountResponse{}, err
 	}
@@ -114,12 +112,7 @@ func (client *BalancesClient) GetForBillingPeriodByBillingAccount(ctx context.Co
 	if err != nil {
 		return BalancesClientGetForBillingPeriodByBillingAccountResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return BalancesClientGetForBillingPeriodByBillingAccountResponse{}, err
-	}
-	resp, err := client.getForBillingPeriodByBillingAccountHandleResponse(httpResp)
-	return resp, err
+	return client.getForBillingPeriodByBillingAccountHandleResponse(httpResp, http.StatusOK)
 }
 
 // getForBillingPeriodByBillingAccountCreateRequest creates the GetForBillingPeriodByBillingAccount request.
@@ -145,8 +138,11 @@ func (client *BalancesClient) getForBillingPeriodByBillingAccountCreateRequest(c
 }
 
 // getForBillingPeriodByBillingAccountHandleResponse handles the GetForBillingPeriodByBillingAccount response.
-func (client *BalancesClient) getForBillingPeriodByBillingAccountHandleResponse(resp *http.Response) (BalancesClientGetForBillingPeriodByBillingAccountResponse, error) {
+func (client *BalancesClient) getForBillingPeriodByBillingAccountHandleResponse(resp *http.Response, successCodes ...int) (BalancesClientGetForBillingPeriodByBillingAccountResponse, error) {
 	result := BalancesClientGetForBillingPeriodByBillingAccountResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Balance); err != nil {
 		return BalancesClientGetForBillingPeriodByBillingAccountResponse{}, err
 	}

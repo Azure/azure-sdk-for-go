@@ -16,6 +16,7 @@ import (
 	"net/http"
 	"net/url"
 	"regexp"
+	"slices"
 )
 
 // InternalNetworksServer is a fake server for instances of the armmanagednetworkfabric.InternalNetworksClient type.
@@ -100,9 +101,7 @@ func (i *InternalNetworksServerTransport) Do(req *http.Request) (*http.Response,
 }
 
 func (i *InternalNetworksServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result)
-	defer close(resultChan)
-
+	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
 		var res result
@@ -134,10 +133,7 @@ func (i *InternalNetworksServerTransport) dispatchToMethodFake(req *http.Request
 			}
 
 		}
-		select {
-		case resultChan <- res:
-		case <-req.Context().Done():
-		}
+		resultChan <- res
 	}()
 
 	select {
@@ -154,7 +150,7 @@ func (i *InternalNetworksServerTransport) dispatchBeginCreate(req *http.Request)
 	}
 	beginCreate := i.beginCreate.get(req)
 	if beginCreate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ManagedNetworkFabric/l3IsolationDomains/(?P<l3IsolationDomainName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/internalNetworks/(?P<internalNetworkName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ManagedNetworkFabric/l3IsolationDomains/(?P<l3IsolationDomainName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/internalNetworks/(?P<internalNetworkName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -189,7 +185,7 @@ func (i *InternalNetworksServerTransport) dispatchBeginCreate(req *http.Request)
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
 		i.beginCreate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
 	}
@@ -206,7 +202,7 @@ func (i *InternalNetworksServerTransport) dispatchBeginDelete(req *http.Request)
 	}
 	beginDelete := i.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ManagedNetworkFabric/l3IsolationDomains/(?P<l3IsolationDomainName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/internalNetworks/(?P<internalNetworkName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ManagedNetworkFabric/l3IsolationDomains/(?P<l3IsolationDomainName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/internalNetworks/(?P<internalNetworkName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -237,7 +233,7 @@ func (i *InternalNetworksServerTransport) dispatchBeginDelete(req *http.Request)
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		i.beginDelete.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
@@ -252,7 +248,7 @@ func (i *InternalNetworksServerTransport) dispatchGet(req *http.Request) (*http.
 	if i.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ManagedNetworkFabric/l3IsolationDomains/(?P<l3IsolationDomainName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/internalNetworks/(?P<internalNetworkName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ManagedNetworkFabric/l3IsolationDomains/(?P<l3IsolationDomainName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/internalNetworks/(?P<internalNetworkName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -275,7 +271,7 @@ func (i *InternalNetworksServerTransport) dispatchGet(req *http.Request) (*http.
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).InternalNetwork, req)
@@ -291,7 +287,7 @@ func (i *InternalNetworksServerTransport) dispatchNewListByL3IsolationDomainPage
 	}
 	newListByL3IsolationDomainPager := i.newListByL3IsolationDomainPager.get(req)
 	if newListByL3IsolationDomainPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ManagedNetworkFabric/l3IsolationDomains/(?P<l3IsolationDomainName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/internalNetworks`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ManagedNetworkFabric/l3IsolationDomains/(?P<l3IsolationDomainName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/internalNetworks`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -316,7 +312,7 @@ func (i *InternalNetworksServerTransport) dispatchNewListByL3IsolationDomainPage
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		i.newListByL3IsolationDomainPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
@@ -332,7 +328,7 @@ func (i *InternalNetworksServerTransport) dispatchBeginUpdate(req *http.Request)
 	}
 	beginUpdate := i.beginUpdate.get(req)
 	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ManagedNetworkFabric/l3IsolationDomains/(?P<l3IsolationDomainName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/internalNetworks/(?P<internalNetworkName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ManagedNetworkFabric/l3IsolationDomains/(?P<l3IsolationDomainName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/internalNetworks/(?P<internalNetworkName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -367,7 +363,7 @@ func (i *InternalNetworksServerTransport) dispatchBeginUpdate(req *http.Request)
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		i.beginUpdate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
@@ -384,7 +380,7 @@ func (i *InternalNetworksServerTransport) dispatchBeginUpdateAdministrativeState
 	}
 	beginUpdateAdministrativeState := i.beginUpdateAdministrativeState.get(req)
 	if beginUpdateAdministrativeState == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ManagedNetworkFabric/l3IsolationDomains/(?P<l3IsolationDomainName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/internalNetworks/(?P<internalNetworkName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/updateAdministrativeState`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ManagedNetworkFabric/l3IsolationDomains/(?P<l3IsolationDomainName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/internalNetworks/(?P<internalNetworkName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/updateAdministrativeState`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -419,7 +415,7 @@ func (i *InternalNetworksServerTransport) dispatchBeginUpdateAdministrativeState
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		i.beginUpdateAdministrativeState.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
@@ -436,7 +432,7 @@ func (i *InternalNetworksServerTransport) dispatchBeginUpdateBfdAdministrativeSt
 	}
 	beginUpdateBfdAdministrativeState := i.beginUpdateBfdAdministrativeState.get(req)
 	if beginUpdateBfdAdministrativeState == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ManagedNetworkFabric/l3IsolationDomains/(?P<l3IsolationDomainName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/internalNetworks/(?P<internalNetworkName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/updateBfdAdministrativeState`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ManagedNetworkFabric/l3IsolationDomains/(?P<l3IsolationDomainName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/internalNetworks/(?P<internalNetworkName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/updateBfdAdministrativeState`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -471,7 +467,7 @@ func (i *InternalNetworksServerTransport) dispatchBeginUpdateBfdAdministrativeSt
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		i.beginUpdateBfdAdministrativeState.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
@@ -488,7 +484,7 @@ func (i *InternalNetworksServerTransport) dispatchBeginUpdateBgpAdministrativeSt
 	}
 	beginUpdateBgpAdministrativeState := i.beginUpdateBgpAdministrativeState.get(req)
 	if beginUpdateBgpAdministrativeState == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ManagedNetworkFabric/l3IsolationDomains/(?P<l3IsolationDomainName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/internalNetworks/(?P<internalNetworkName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/updateBgpAdministrativeState`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ManagedNetworkFabric/l3IsolationDomains/(?P<l3IsolationDomainName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/internalNetworks/(?P<internalNetworkName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/updateBgpAdministrativeState`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -523,7 +519,7 @@ func (i *InternalNetworksServerTransport) dispatchBeginUpdateBgpAdministrativeSt
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		i.beginUpdateBgpAdministrativeState.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
@@ -540,7 +536,7 @@ func (i *InternalNetworksServerTransport) dispatchBeginUpdateStaticRouteBfdAdmin
 	}
 	beginUpdateStaticRouteBfdAdministrativeState := i.beginUpdateStaticRouteBfdAdministrativeState.get(req)
 	if beginUpdateStaticRouteBfdAdministrativeState == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ManagedNetworkFabric/l3IsolationDomains/(?P<l3IsolationDomainName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/internalNetworks/(?P<internalNetworkName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/updateStaticRouteBfdAdministrativeState`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ManagedNetworkFabric/l3IsolationDomains/(?P<l3IsolationDomainName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/internalNetworks/(?P<internalNetworkName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/updateStaticRouteBfdAdministrativeState`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -575,7 +571,7 @@ func (i *InternalNetworksServerTransport) dispatchBeginUpdateStaticRouteBfdAdmin
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		i.beginUpdateStaticRouteBfdAdministrativeState.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-01-preview/CacheRuleCreate.json
+// Generated from example definition: 2026-09-01-preview/CacheRuleCreate.json
 func ExampleCacheRulesClient_BeginCreate_cacheRuleCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -49,14 +49,14 @@ func ExampleCacheRulesClient_BeginCreate_cacheRuleCreate() {
 	// 			CredentialSetResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myRegistry/credentialSets/myCredentialSet"),
 	// 			SourceRepository: to.Ptr("docker.io/library/hello-world"),
 	// 			TargetRepository: to.Ptr("cached-docker-hub/hello-world"),
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-07T18:20:33.8374968+00:00"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2022, time.November, 7, 18, 20, 33, 837496800, time.UTC)),
 	// 			ProvisioningState: to.Ptr(armcontainerregistry.ProvisioningStateSucceeded),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/CacheRuleCreateUserAssignedMIAuthentication.json
+// Generated from example definition: 2026-09-01-preview/CacheRuleCreateUserAssignedMIAuthentication.json
 func ExampleCacheRulesClient_BeginCreate_cacheRuleCreateUserAssignedMiAuthentication() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -103,17 +103,11 @@ func ExampleCacheRulesClient_BeginCreate_cacheRuleCreateUserAssignedMiAuthentica
 	// 				},
 	// 			},
 	// 		},
-	// 		Properties: &armcontainerregistry.CacheRuleProperties{
-	// 			SourceRepository: to.Ptr("acr-registry.azurecr.io/library/repository"),
-	// 			TargetRepository: to.Ptr("cached-acr/hello-world"),
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-07T18:20:33.8374968+00:00"); return t}()),
-	// 			ProvisioningState: to.Ptr(armcontainerregistry.ProvisioningStateSucceeded),
-	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/CacheRuleCreateUserAssignedMIGoogle.json
+// Generated from example definition: 2026-09-01-preview/CacheRuleCreateUserAssignedMIGoogle.json
 func ExampleCacheRulesClient_BeginCreate_cacheRuleCreateUserAssignedMiAuthGoogle() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -166,23 +160,11 @@ func ExampleCacheRulesClient_BeginCreate_cacheRuleCreateUserAssignedMiAuthGoogle
 	// 				},
 	// 			},
 	// 		},
-	// 		Properties: &armcontainerregistry.CacheRuleProperties{
-	// 			SourceRepository: to.Ptr("us-west1-docker.pkg.dev/repository/hello-world"),
-	// 			TargetRepository: to.Ptr("cached-acr/hello-world"),
-	// 			AdditionalAuthenticationProperties: &armcontainerregistry.GarAuthenticationProperties{
-	// 				AuthenticationType: to.Ptr(armcontainerregistry.AdditionalAuthenticationTypeGoogleArtifactRegistry),
-	// 				ProjectNumber: to.Ptr("123456789012"),
-	// 				WorkloadIdentityPool: to.Ptr("my-workload-identity-pool"),
-	// 				WorkloadIdentityProvider: to.Ptr("my-workload-identity-provider"),
-	// 			},
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-07T18:20:33.8374968+00:00"); return t}()),
-	// 			ProvisioningState: to.Ptr(armcontainerregistry.ProvisioningStateSucceeded),
-	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/CacheRuleDelete.json
+// Generated from example definition: 2026-09-01-preview/CacheRuleDelete.json
 func ExampleCacheRulesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -203,7 +185,7 @@ func ExampleCacheRulesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-03-01-preview/CacheRuleGet.json
+// Generated from example definition: 2026-09-01-preview/CacheRuleGet.json
 func ExampleCacheRulesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -230,14 +212,14 @@ func ExampleCacheRulesClient_Get() {
 	// 			CredentialSetResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myRegistry/credentialSets/myCredentialSet"),
 	// 			SourceRepository: to.Ptr("docker.io/library/hello-world"),
 	// 			TargetRepository: to.Ptr("cached-docker-hub/hello-world"),
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-07T18:20:33.8374968+00:00"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2022, time.November, 7, 18, 20, 33, 837496800, time.UTC)),
 	// 			ProvisioningState: to.Ptr(armcontainerregistry.ProvisioningStateSucceeded),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/CacheRuleList.json
+// Generated from example definition: 2026-09-01-preview/CacheRuleList.json
 func ExampleCacheRulesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -270,7 +252,7 @@ func ExampleCacheRulesClient_NewListPager() {
 		// 					CredentialSetResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myRegistry/credentialSets/myCredentialSet"),
 		// 					SourceRepository: to.Ptr("docker.io/library/hello-world"),
 		// 					TargetRepository: to.Ptr("cached-docker-hub/hello-world"),
-		// 					CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-07T18:20:33.8374968+00:00"); return t}()),
+		// 					CreationDate: to.Ptr(time.Date(2022, time.November, 7, 18, 20, 33, 837496800, time.UTC)),
 		// 					ProvisioningState: to.Ptr(armcontainerregistry.ProvisioningStateSucceeded),
 		// 				},
 		// 			},
@@ -280,7 +262,7 @@ func ExampleCacheRulesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-01-preview/CacheRuleUpdate.json
+// Generated from example definition: 2026-09-01-preview/CacheRuleUpdate.json
 func ExampleCacheRulesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -315,7 +297,7 @@ func ExampleCacheRulesClient_BeginUpdate() {
 	// 			CredentialSetResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myRegistry/credentialSets/myCredentialSet2"),
 	// 			SourceRepository: to.Ptr("docker.io/library/hello-world"),
 	// 			TargetRepository: to.Ptr("cached-docker-hub/hello-world"),
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-07T18:20:33.8374968+00:00"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2022, time.November, 7, 18, 20, 33, 837496800, time.UTC)),
 	// 			ProvisioningState: to.Ptr(armcontainerregistry.ProvisioningStateSucceeded),
 	// 		},
 	// 	},

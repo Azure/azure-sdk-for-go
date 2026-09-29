@@ -57,12 +57,7 @@ func (client *ExtensionTopicsClient) Get(ctx context.Context, scope string, opti
 	if err != nil {
 		return ExtensionTopicsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ExtensionTopicsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -84,8 +79,11 @@ func (client *ExtensionTopicsClient) getCreateRequest(ctx context.Context, scope
 }
 
 // getHandleResponse handles the Get response.
-func (client *ExtensionTopicsClient) getHandleResponse(resp *http.Response) (ExtensionTopicsClientGetResponse, error) {
+func (client *ExtensionTopicsClient) getHandleResponse(resp *http.Response, successCodes ...int) (ExtensionTopicsClientGetResponse, error) {
 	result := ExtensionTopicsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ExtensionTopic); err != nil {
 		return ExtensionTopicsClientGetResponse{}, err
 	}

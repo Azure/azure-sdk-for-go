@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-// Generated from example definition: 2025-09-01/PrivateClouds_CreateOrUpdate.json
+// Generated from example definition: 2026-03-01/PrivateClouds_CreateOrUpdate.json
 func ExamplePrivateCloudsClient_BeginCreateOrUpdate_privateCloudsCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -40,7 +40,7 @@ func ExamplePrivateCloudsClient_BeginCreateOrUpdate_privateCloudsCreateOrUpdate(
 			VcfLicense: &armavs.Vcf5License{
 				Kind:                   to.Ptr(armavs.VcfLicenseKindVcf5),
 				LicenseKey:             to.Ptr("12345-12345-12345-12345-12345"),
-				EndDate:                to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-12-31T23:59:59Z"); return t }()),
+				EndDate:                to.Ptr(time.Date(2025, time.December, 31, 23, 59, 59, 0, time.UTC)),
 				Cores:                  to.Ptr[int32](16),
 				BroadcomSiteID:         to.Ptr("123456"),
 				BroadcomContractNumber: to.Ptr("123456"),
@@ -110,7 +110,7 @@ func ExamplePrivateCloudsClient_BeginCreateOrUpdate_privateCloudsCreateOrUpdate(
 	// 			Internet: to.Ptr(armavs.InternetEnumDisabled),
 	// 			VcfLicense: &armavs.Vcf5License{
 	// 				Kind: to.Ptr(armavs.VcfLicenseKindVcf5),
-	// 				EndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-12-31T23:59:59Z"); return t}()),
+	// 				EndDate: to.Ptr(time.Date(2025, time.December, 31, 23, 59, 59, 0, time.UTC)),
 	// 				Cores: to.Ptr[int32](16),
 	// 				BroadcomSiteID: to.Ptr("123456"),
 	// 				BroadcomContractNumber: to.Ptr("123456"),
@@ -125,7 +125,7 @@ func ExamplePrivateCloudsClient_BeginCreateOrUpdate_privateCloudsCreateOrUpdate(
 	// }
 }
 
-// Generated from example definition: 2025-09-01/PrivateClouds_CreateOrUpdate_FleetNative.json
+// Generated from example definition: 2026-03-01/PrivateClouds_CreateOrUpdate_FleetNative.json
 func ExamplePrivateCloudsClient_BeginCreateOrUpdate_privateCloudsCreateOrUpdateFleetNative() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -151,7 +151,7 @@ func ExamplePrivateCloudsClient_BeginCreateOrUpdate_privateCloudsCreateOrUpdateF
 			VcfLicense: &armavs.Vcf5License{
 				Kind:                   to.Ptr(armavs.VcfLicenseKindVcf5),
 				LicenseKey:             to.Ptr("12345-12345-12345-12345-12345"),
-				EndDate:                to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-12-31T23:59:59Z"); return t }()),
+				EndDate:                to.Ptr(time.Date(2025, time.December, 31, 23, 59, 59, 0, time.UTC)),
 				Cores:                  to.Ptr[int32](16),
 				BroadcomSiteID:         to.Ptr("123456"),
 				BroadcomContractNumber: to.Ptr("123456"),
@@ -215,7 +215,7 @@ func ExamplePrivateCloudsClient_BeginCreateOrUpdate_privateCloudsCreateOrUpdateF
 	// 			VmotionNetwork: to.Ptr("10.31.2.0/24"),
 	// 			VcfLicense: &armavs.Vcf5License{
 	// 				Kind: to.Ptr(armavs.VcfLicenseKindVcf5),
-	// 				EndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-12-31T23:59:59Z"); return t}()),
+	// 				EndDate: to.Ptr(time.Date(2025, time.December, 31, 23, 59, 59, 0, time.UTC)),
 	// 				Cores: to.Ptr[int32](16),
 	// 				BroadcomSiteID: to.Ptr("123456"),
 	// 				BroadcomContractNumber: to.Ptr("123456"),
@@ -232,7 +232,7 @@ func ExamplePrivateCloudsClient_BeginCreateOrUpdate_privateCloudsCreateOrUpdateF
 	// }
 }
 
-// Generated from example definition: 2025-09-01/PrivateClouds_CreateOrUpdate_Stretched.json
+// Generated from example definition: 2026-03-01/PrivateClouds_CreateOrUpdate_Stretched.json
 func ExamplePrivateCloudsClient_BeginCreateOrUpdate_privateCloudsCreateOrUpdateStretched() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -261,7 +261,7 @@ func ExamplePrivateCloudsClient_BeginCreateOrUpdate_privateCloudsCreateOrUpdateS
 			VcfLicense: &armavs.Vcf5License{
 				Kind:                   to.Ptr(armavs.VcfLicenseKindVcf5),
 				LicenseKey:             to.Ptr("12345-12345-12345-12345-12345"),
-				EndDate:                to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-12-31T23:59:59Z"); return t }()),
+				EndDate:                to.Ptr(time.Date(2025, time.December, 31, 23, 59, 59, 0, time.UTC)),
 				Cores:                  to.Ptr[int32](16),
 				BroadcomSiteID:         to.Ptr("123456"),
 				BroadcomContractNumber: to.Ptr("123456"),
@@ -344,7 +344,7 @@ func ExamplePrivateCloudsClient_BeginCreateOrUpdate_privateCloudsCreateOrUpdateS
 	// 			Internet: to.Ptr(armavs.InternetEnumDisabled),
 	// 			VcfLicense: &armavs.Vcf5License{
 	// 				Kind: to.Ptr(armavs.VcfLicenseKindVcf5),
-	// 				EndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-12-31T23:59:59Z"); return t}()),
+	// 				EndDate: to.Ptr(time.Date(2025, time.December, 31, 23, 59, 59, 0, time.UTC)),
 	// 				Cores: to.Ptr[int32](16),
 	// 				BroadcomSiteID: to.Ptr("123456"),
 	// 				BroadcomContractNumber: to.Ptr("123456"),
@@ -358,7 +358,7 @@ func ExamplePrivateCloudsClient_BeginCreateOrUpdate_privateCloudsCreateOrUpdateS
 	// }
 }
 
-// Generated from example definition: 2025-09-01/PrivateClouds_CreateOrUpdate_StretchedZones.json
+// Generated from example definition: 2026-03-01/PrivateClouds_CreateOrUpdate_StretchedZones.json
 func ExamplePrivateCloudsClient_BeginCreateOrUpdate_privateCloudsCreateOrUpdateStretchedZones() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -386,7 +386,7 @@ func ExamplePrivateCloudsClient_BeginCreateOrUpdate_privateCloudsCreateOrUpdateS
 			VcfLicense: &armavs.Vcf5License{
 				Kind:                   to.Ptr(armavs.VcfLicenseKindVcf5),
 				LicenseKey:             to.Ptr("12345-12345-12345-12345-12345"),
-				EndDate:                to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-12-31T23:59:59Z"); return t }()),
+				EndDate:                to.Ptr(time.Date(2025, time.December, 31, 23, 59, 59, 0, time.UTC)),
 				Cores:                  to.Ptr[int32](16),
 				BroadcomSiteID:         to.Ptr("123456"),
 				BroadcomContractNumber: to.Ptr("123456"),
@@ -469,7 +469,7 @@ func ExamplePrivateCloudsClient_BeginCreateOrUpdate_privateCloudsCreateOrUpdateS
 	// 			Internet: to.Ptr(armavs.InternetEnumDisabled),
 	// 			VcfLicense: &armavs.Vcf5License{
 	// 				Kind: to.Ptr(armavs.VcfLicenseKindVcf5),
-	// 				EndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-12-31T23:59:59Z"); return t}()),
+	// 				EndDate: to.Ptr(time.Date(2025, time.December, 31, 23, 59, 59, 0, time.UTC)),
 	// 				Cores: to.Ptr[int32](16),
 	// 				BroadcomSiteID: to.Ptr("123456"),
 	// 				BroadcomContractNumber: to.Ptr("123456"),
@@ -483,7 +483,7 @@ func ExamplePrivateCloudsClient_BeginCreateOrUpdate_privateCloudsCreateOrUpdateS
 	// }
 }
 
-// Generated from example definition: 2025-09-01/PrivateClouds_Delete.json
+// Generated from example definition: 2026-03-01/PrivateClouds_Delete.json
 func ExamplePrivateCloudsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -509,7 +509,7 @@ func ExamplePrivateCloudsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/PrivateClouds_Get.json
+// Generated from example definition: 2026-03-01/PrivateClouds_Get.json
 func ExamplePrivateCloudsClient_Get_privateCloudsGet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -599,7 +599,7 @@ func ExamplePrivateCloudsClient_Get_privateCloudsGet() {
 	// 			Internet: to.Ptr(armavs.InternetEnumDisabled),
 	// 			VcfLicense: &armavs.Vcf5License{
 	// 				Kind: to.Ptr(armavs.VcfLicenseKindVcf5),
-	// 				EndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-12-31T23:59:59Z"); return t}()),
+	// 				EndDate: to.Ptr(time.Date(2025, time.December, 31, 23, 59, 59, 0, time.UTC)),
 	// 				Cores: to.Ptr[int32](16),
 	// 				BroadcomSiteID: to.Ptr("123456"),
 	// 				BroadcomContractNumber: to.Ptr("123456"),
@@ -614,7 +614,7 @@ func ExamplePrivateCloudsClient_Get_privateCloudsGet() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/PrivateClouds_Get_Stretched.json
+// Generated from example definition: 2026-03-01/PrivateClouds_Get_Stretched.json
 func ExamplePrivateCloudsClient_Get_privateCloudsGetStretched() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -696,7 +696,7 @@ func ExamplePrivateCloudsClient_Get_privateCloudsGetStretched() {
 	// 			Internet: to.Ptr(armavs.InternetEnumDisabled),
 	// 			VcfLicense: &armavs.Vcf5License{
 	// 				Kind: to.Ptr(armavs.VcfLicenseKindVcf5),
-	// 				EndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-12-31T23:59:59Z"); return t}()),
+	// 				EndDate: to.Ptr(time.Date(2025, time.December, 31, 23, 59, 59, 0, time.UTC)),
 	// 				Cores: to.Ptr[int32](16),
 	// 				BroadcomSiteID: to.Ptr("123456"),
 	// 				BroadcomContractNumber: to.Ptr("123456"),
@@ -711,7 +711,7 @@ func ExamplePrivateCloudsClient_Get_privateCloudsGetStretched() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/PrivateClouds_GetVcfLicense.json
+// Generated from example definition: 2026-03-01/PrivateClouds_GetVcfLicense.json
 func ExamplePrivateCloudsClient_GetVcfLicense() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -733,7 +733,7 @@ func ExamplePrivateCloudsClient_GetVcfLicense() {
 	// 	VcfLicenseClassification: &armavs.Vcf5License{
 	// 		Kind: to.Ptr(armavs.VcfLicenseKindVcf5),
 	// 		LicenseKey: to.Ptr("12345-12345-12345-12345-12345"),
-	// 		EndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-12-31T23:59:59Z"); return t}()),
+	// 		EndDate: to.Ptr(time.Date(2025, time.December, 31, 23, 59, 59, 0, time.UTC)),
 	// 		Cores: to.Ptr[int32](16),
 	// 		BroadcomSiteID: to.Ptr("123456"),
 	// 		BroadcomContractNumber: to.Ptr("123456"),
@@ -742,7 +742,7 @@ func ExamplePrivateCloudsClient_GetVcfLicense() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/PrivateClouds_List.json
+// Generated from example definition: 2026-03-01/PrivateClouds_List.json
 func ExamplePrivateCloudsClient_NewListPager_privateCloudsList() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -823,7 +823,7 @@ func ExamplePrivateCloudsClient_NewListPager_privateCloudsList() {
 		// 					Internet: to.Ptr(armavs.InternetEnumDisabled),
 		// 					VcfLicense: &armavs.Vcf5License{
 		// 						Kind: to.Ptr(armavs.VcfLicenseKindVcf5),
-		// 						EndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-12-31T23:59:59Z"); return t}()),
+		// 						EndDate: to.Ptr(time.Date(2025, time.December, 31, 23, 59, 59, 0, time.UTC)),
 		// 						Cores: to.Ptr[int32](16),
 		// 						BroadcomSiteID: to.Ptr("123456"),
 		// 						BroadcomContractNumber: to.Ptr("123456"),
@@ -841,7 +841,7 @@ func ExamplePrivateCloudsClient_NewListPager_privateCloudsList() {
 	}
 }
 
-// Generated from example definition: 2025-09-01/PrivateClouds_List_Stretched.json
+// Generated from example definition: 2026-03-01/PrivateClouds_List_Stretched.json
 func ExamplePrivateCloudsClient_NewListPager_privateCloudsListStretched() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -928,7 +928,7 @@ func ExamplePrivateCloudsClient_NewListPager_privateCloudsListStretched() {
 		// 					Internet: to.Ptr(armavs.InternetEnumDisabled),
 		// 					VcfLicense: &armavs.Vcf5License{
 		// 						Kind: to.Ptr(armavs.VcfLicenseKindVcf5),
-		// 						EndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-12-31T23:59:59Z"); return t}()),
+		// 						EndDate: to.Ptr(time.Date(2025, time.December, 31, 23, 59, 59, 0, time.UTC)),
 		// 						Cores: to.Ptr[int32](16),
 		// 						BroadcomSiteID: to.Ptr("123456"),
 		// 						BroadcomContractNumber: to.Ptr("123456"),
@@ -946,7 +946,7 @@ func ExamplePrivateCloudsClient_NewListPager_privateCloudsListStretched() {
 	}
 }
 
-// Generated from example definition: 2025-09-01/PrivateClouds_ListAdminCredentials.json
+// Generated from example definition: 2026-03-01/PrivateClouds_ListAdminCredentials.json
 func ExamplePrivateCloudsClient_ListAdminCredentials() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -974,7 +974,7 @@ func ExamplePrivateCloudsClient_ListAdminCredentials() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/PrivateClouds_ListInSubscription.json
+// Generated from example definition: 2026-03-01/PrivateClouds_ListInSubscription.json
 func ExamplePrivateCloudsClient_NewListInSubscriptionPager_privateCloudsListInSubscription() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1052,7 +1052,7 @@ func ExamplePrivateCloudsClient_NewListInSubscriptionPager_privateCloudsListInSu
 		// 					Internet: to.Ptr(armavs.InternetEnumDisabled),
 		// 					VcfLicense: &armavs.Vcf5License{
 		// 						Kind: to.Ptr(armavs.VcfLicenseKindVcf5),
-		// 						EndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-12-31T23:59:59Z"); return t}()),
+		// 						EndDate: to.Ptr(time.Date(2025, time.December, 31, 23, 59, 59, 0, time.UTC)),
 		// 						Cores: to.Ptr[int32](16),
 		// 						BroadcomSiteID: to.Ptr("123456"),
 		// 						BroadcomContractNumber: to.Ptr("123456"),
@@ -1070,7 +1070,7 @@ func ExamplePrivateCloudsClient_NewListInSubscriptionPager_privateCloudsListInSu
 	}
 }
 
-// Generated from example definition: 2025-09-01/PrivateClouds_ListInSubscription_Stretched.json
+// Generated from example definition: 2026-03-01/PrivateClouds_ListInSubscription_Stretched.json
 func ExamplePrivateCloudsClient_NewListInSubscriptionPager_privateCloudsListInSubscriptionStretched() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1155,7 +1155,7 @@ func ExamplePrivateCloudsClient_NewListInSubscriptionPager_privateCloudsListInSu
 		// 					Internet: to.Ptr(armavs.InternetEnumDisabled),
 		// 					VcfLicense: &armavs.Vcf5License{
 		// 						Kind: to.Ptr(armavs.VcfLicenseKindVcf5),
-		// 						EndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-12-31T23:59:59Z"); return t}()),
+		// 						EndDate: to.Ptr(time.Date(2025, time.December, 31, 23, 59, 59, 0, time.UTC)),
 		// 						Cores: to.Ptr[int32](16),
 		// 						BroadcomSiteID: to.Ptr("123456"),
 		// 						BroadcomContractNumber: to.Ptr("123456"),
@@ -1173,7 +1173,7 @@ func ExamplePrivateCloudsClient_NewListInSubscriptionPager_privateCloudsListInSu
 	}
 }
 
-// Generated from example definition: 2025-09-01/PrivateClouds_RotateNsxtPassword.json
+// Generated from example definition: 2026-03-01/PrivateClouds_RotateNsxtPassword.json
 func ExamplePrivateCloudsClient_BeginRotateNsxtPassword() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1194,7 +1194,7 @@ func ExamplePrivateCloudsClient_BeginRotateNsxtPassword() {
 	}
 }
 
-// Generated from example definition: 2025-09-01/PrivateClouds_RotateVcenterPassword.json
+// Generated from example definition: 2026-03-01/PrivateClouds_RotateVcenterPassword.json
 func ExamplePrivateCloudsClient_BeginRotateVcenterPassword() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1215,7 +1215,7 @@ func ExamplePrivateCloudsClient_BeginRotateVcenterPassword() {
 	}
 }
 
-// Generated from example definition: 2025-09-01/PrivateClouds_Update.json
+// Generated from example definition: 2026-03-01/PrivateClouds_Update.json
 func ExamplePrivateCloudsClient_BeginUpdate_privateCloudsUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1326,7 +1326,7 @@ func ExamplePrivateCloudsClient_BeginUpdate_privateCloudsUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/PrivateClouds_Update_Stretched.json
+// Generated from example definition: 2026-03-01/PrivateClouds_Update_Stretched.json
 func ExamplePrivateCloudsClient_BeginUpdate_privateCloudsUpdateStretched() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

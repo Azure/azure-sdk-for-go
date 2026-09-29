@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-05-15-preview/VolumeGroups_Create_Custom.json
+// Generated from example definition: 2026-06-15-preview/VolumeGroups_Create_Custom.json
 func ExampleVolumeGroupsClient_BeginCreate_volumeGroupsCreateCustom() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -500,7 +500,7 @@ func ExampleVolumeGroupsClient_BeginCreate_volumeGroupsCreateCustom() {
 	}
 }
 
-// Generated from example definition: 2026-05-15-preview/VolumeGroups_Create_Custom_SMB.json
+// Generated from example definition: 2026-06-15-preview/VolumeGroups_Create_Custom_SMB.json
 func ExampleVolumeGroupsClient_BeginCreate_volumeGroupsCreateCustomSmb() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -808,7 +808,7 @@ func ExampleVolumeGroupsClient_BeginCreate_volumeGroupsCreateCustomSmb() {
 	}
 }
 
-// Generated from example definition: 2026-05-15-preview/VolumeGroups_Create_Oracle.json
+// Generated from example definition: 2026-06-15-preview/VolumeGroups_Create_Oracle.json
 func ExampleVolumeGroupsClient_BeginCreate_volumeGroupsCreateOracle() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1296,7 +1296,7 @@ func ExampleVolumeGroupsClient_BeginCreate_volumeGroupsCreateOracle() {
 	}
 }
 
-// Generated from example definition: 2026-05-15-preview/VolumeGroups_Create_SapHana.json
+// Generated from example definition: 2026-06-15-preview/VolumeGroups_Create_SapHana.json
 func ExampleVolumeGroupsClient_BeginCreate_volumeGroupsCreateSapHana() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1508,7 +1508,7 @@ func ExampleVolumeGroupsClient_BeginCreate_volumeGroupsCreateSapHana() {
 	}
 }
 
-// Generated from example definition: 2026-05-15-preview/VolumeGroups_Delete.json
+// Generated from example definition: 2026-06-15-preview/VolumeGroups_Delete.json
 func ExampleVolumeGroupsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1534,7 +1534,7 @@ func ExampleVolumeGroupsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-05-15-preview/VolumeGroups_Get_Custom.json
+// Generated from example definition: 2026-06-15-preview/VolumeGroups_Get_Custom.json
 func ExampleVolumeGroupsClient_Get_volumeGroupsGetCustom() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2053,7 +2053,7 @@ func ExampleVolumeGroupsClient_Get_volumeGroupsGetCustom() {
 	// }
 }
 
-// Generated from example definition: 2026-05-15-preview/VolumeGroups_Get_Custom_SMB.json
+// Generated from example definition: 2026-06-15-preview/VolumeGroups_Get_Custom_SMB.json
 func ExampleVolumeGroupsClient_Get_volumeGroupsGetCustomSmb() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2380,7 +2380,7 @@ func ExampleVolumeGroupsClient_Get_volumeGroupsGetCustomSmb() {
 	// }
 }
 
-// Generated from example definition: 2026-05-15-preview/VolumeGroups_Get_Oracle.json
+// Generated from example definition: 2026-06-15-preview/VolumeGroups_Get_Oracle.json
 func ExampleVolumeGroupsClient_Get_volumeGroupsGetOracle() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2899,7 +2899,7 @@ func ExampleVolumeGroupsClient_Get_volumeGroupsGetOracle() {
 	// }
 }
 
-// Generated from example definition: 2026-05-15-preview/VolumeGroups_Get_SapHana.json
+// Generated from example definition: 2026-06-15-preview/VolumeGroups_Get_SapHana.json
 func ExampleVolumeGroupsClient_Get_volumeGroupsGetSapHana() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3128,7 +3128,7 @@ func ExampleVolumeGroupsClient_Get_volumeGroupsGetSapHana() {
 	// }
 }
 
-// Generated from example definition: 2026-05-15-preview/VolumeGroups_List_Custom.json
+// Generated from example definition: 2026-06-15-preview/VolumeGroups_List_Custom.json
 func ExampleVolumeGroupsClient_NewListByNetAppAccountPager_volumeGroupsListCustom() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3174,7 +3174,7 @@ func ExampleVolumeGroupsClient_NewListByNetAppAccountPager_volumeGroupsListCusto
 	}
 }
 
-// Generated from example definition: 2026-05-15-preview/VolumeGroups_List_Oracle.json
+// Generated from example definition: 2026-06-15-preview/VolumeGroups_List_Oracle.json
 func ExampleVolumeGroupsClient_NewListByNetAppAccountPager_volumeGroupsListOracle() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3220,7 +3220,7 @@ func ExampleVolumeGroupsClient_NewListByNetAppAccountPager_volumeGroupsListOracl
 	}
 }
 
-// Generated from example definition: 2026-05-15-preview/VolumeGroups_List_SapHana.json
+// Generated from example definition: 2026-06-15-preview/VolumeGroups_List_SapHana.json
 func ExampleVolumeGroupsClient_NewListByNetAppAccountPager_volumeGroupsListSapHana() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

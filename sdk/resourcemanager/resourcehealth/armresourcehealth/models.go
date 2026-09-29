@@ -266,12 +266,13 @@ type EventProperties struct {
 	// A list of metadata tags associated with the event. Possible values include:
 	// -Action Recommended: Action may be required by you to avoid possible disruptions or mitigate risks for your services. It
 	// is recommended to evaluate these actions and the potential impact on your services.
-	// - False Positive: After investigation, we've determined your service is healthy and service issues did not impact your
-	// services as originally communicated.
-	// - Preliminary PIR: For our largest, most impactful service issues a Preliminary Post Incident Review (PIR) is published
-	// generally within 72 hours of mitigation, to summarize what we have learned so far from the still-in-progress investigation.
-	// - Final PIR: For service issues, a Final Post Incident Review (PIR) may be published to provide additional details or learnings.
-	// Sometimes this requires us to complete an internal retrospective, generally within 14 days of mitigation.
+	//
+	//   - False Positive: After investigation, we've determined your service is healthy and service issues did not impact your services
+	//     as originally communicated.
+	//   - Preliminary PIR: For our largest, most impactful service issues a Preliminary Post Incident Review (PIR) is published generally
+	//     within 72 hours of mitigation, to summarize what we have learned so far from the still-in-progress investigation.
+	//   - Final PIR: For service issues, a Final Post Incident Review (PIR) may be published to provide additional details or learnings.
+	//     Sometimes this requires us to complete an internal retrospective, generally within 14 days of mitigation.
 	EventTags []*string
 
 	// Type of event.
@@ -706,12 +707,13 @@ type Update struct {
 	// A list of metadata tags associated with the event. Possible values include:
 	// -Action Recommended: Action may be required by you to avoid possible disruptions or mitigate risks for your services. It
 	// is recommended to evaluate these actions and the potential impact on your services.
-	// - False Positive: After investigation, we've determined your service is healthy and service issues did not impact your
-	// services as originally communicated.
-	// - Preliminary PIR: For our largest, most impactful service issues a Preliminary Post Incident Review (PIR) is published
-	// generally within 72 hours of mitigation, to summarize what we have learned so far from the still-in-progress investigation.
-	// - Final PIR: For service issues, a Final Post Incident Review (PIR) may be published to provide additional details or learnings.
-	// Sometimes this requires us to complete an internal retrospective, generally within 14 days of mitigation.
+	//
+	//   - False Positive: After investigation, we've determined your service is healthy and service issues did not impact your services
+	//     as originally communicated.
+	//   - Preliminary PIR: For our largest, most impactful service issues a Preliminary Post Incident Review (PIR) is published generally
+	//     within 72 hours of mitigation, to summarize what we have learned so far from the still-in-progress investigation.
+	//   - Final PIR: For service issues, a Final Post Incident Review (PIR) may be published to provide additional details or learnings.
+	//     Sometimes this requires us to complete an internal retrospective, generally within 14 days of mitigation.
 	EventTags []*string
 
 	// Summary text for the given update for the service health event.

@@ -30,6 +30,9 @@ type LocationBasedOperationResultsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewLocationBasedOperationResultsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*LocationBasedOperationResultsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -64,19 +67,14 @@ func (client *LocationBasedOperationResultsClient) Get(ctx context.Context, reso
 	if err != nil {
 		return LocationBasedOperationResultsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return LocationBasedOperationResultsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *LocationBasedOperationResultsClient) getCreateRequest(ctx context.Context, resourceGroupName string, location string, operationID string, _ *LocationBasedOperationResultsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/locations/{location}/operationResults/{operationId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -103,8 +101,11 @@ func (client *LocationBasedOperationResultsClient) getCreateRequest(ctx context.
 }
 
 // getHandleResponse handles the Get response.
-func (client *LocationBasedOperationResultsClient) getHandleResponse(resp *http.Response) (LocationBasedOperationResultsClientGetResponse, error) {
+func (client *LocationBasedOperationResultsClient) getHandleResponse(resp *http.Response, successCodes ...int) (LocationBasedOperationResultsClientGetResponse, error) {
 	result := LocationBasedOperationResultsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OperationStatus); err != nil {
 		return LocationBasedOperationResultsClientGetResponse{}, err
 	}

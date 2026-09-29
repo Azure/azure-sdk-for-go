@@ -104,6 +104,11 @@ type AIManagerPatch struct {
 
 // AIManagerProperties - AI Manager properties.
 type AIManagerProperties struct {
+	// The Azure resource ID of an existing AKS cluster to attach (bring-your-own). When omitted, AI Manager provisions and manages
+	// its own underlying cluster. The referenced cluster must be in the same region as this AI Manager, but may reside in a different
+	// subscription within the same Microsoft Entra tenant. This property is immutable after creation.
+	ClusterResourceID *string
+
 	// Delete options of the AI Manager. Defaults to `Delete` if not specified.
 	DeletePolicy *DeletePolicy
 
@@ -164,14 +169,30 @@ type AutoscaleProfile struct {
 	MaxReplicas *int32
 }
 
+// BaseModelReference - The base model a custom model was trained from. A HuggingFace repository supplied by the user because
+// the platform may lack access to private source repositories.
+type BaseModelReference struct {
+	// REQUIRED; The HuggingFace `<org>/<repo>` id of the base model, e.g. `meta-llama/Llama-2-7b-chat`. Immutable after creation.
+	ID *string
+
+	// The verbatim `config.json` of the base model, supplied by the user. Required if the base model is not publicly accessible
+	// on HuggingFace. For more information on CustomAIModel configuration see https://aka.ms/aks/aim-customaimodel.
+	Config map[string]any
+
+	// The total size of the model weights in bytes. eg `28000000000`. Required if the base model is not publicly accessible on
+	// HuggingFace.
+	TotalWeightSizeBytes *int64
+}
+
 // CalculateCostPlan - A GPU SKU pricing plan returned by the `calculateCost` action. Describes the cost of running a single
 // model replica on the specified `vmSize`. To estimate the cost of running multiple replicas, scale `totalHourlyPrice` by
 // the desired replica count, bounded by `maxAvailableReplicas`.
 type CalculateCostPlan struct {
 	// READ-ONLY; Whether the caller can actually deploy this plan today (region availability, GPU quota, model fit, etc.). This
 	// field gates the mutually exclusive properties on this model:
-	// - When `feasible` is `true`: `totalHourlyPrice` is set and `infeasibilityReason` is omitted.
-	// - When `feasible` is `false`: `infeasibilityReason` is set and `totalHourlyPrice` is omitted.
+	//
+	//   - When `feasible` is `true`: `totalHourlyPrice` is set and `infeasibilityReason` is omitted.
+	//   - When `feasible` is `false`: `infeasibilityReason` is set and `totalHourlyPrice` is omitted.
 	Feasible *bool
 
 	// READ-ONLY; Maximum number of replicas the caller's subscription can deploy on this SKU today, computed from the available
@@ -204,10 +225,6 @@ type CalculateCostPlan struct {
 	TotalHourlyPrice *float64
 }
 
-// CalculateCostRequest - Request body for the AI model `calculateCost` action.
-type CalculateCostRequest struct {
-}
-
 // CalculateCostResponse - Response body for the AI model `calculateCost` action.
 type CalculateCostResponse struct {
 	// READ-ONLY; ISO 4217 currency code, e.g. "USD".
@@ -233,18 +250,92 @@ type CredentialResults struct {
 	Kubeconfigs []*CredentialResult
 }
 
-// CredentialValue - A credential value. Exactly one variant must be set.
-// In the current API version, only the `inline` variant is supported. Future
-// API versions are expected to add additional credential kinds (for example,
-// managed identity and Key Vault secret references) as sibling variants on
-// this model.
+// CredentialValue - A credential value used for accessing gated or private models.
 type CredentialValue struct {
 	// An inline credential containing a secret value supplied in the request payload.
 	Inline *InlineCredential
+
+	// A user-assigned managed identity the platform authenticates as. Required for `MicrosoftFoundry` sources and
+	// the user must grant the `Foundry User` role (role definition id 53ca6127-db72-4b80-b1b0-d745d6d5456d) on the Foundry project.
+	// See https://aka.ms/aks/aim-modelsource for more details.
+	// The platform federates this identity to an in-cluster puller ServiceAccount (Workload Identity) at deployment time.
+	ManagedIdentity *ManagedIdentityCredential
+}
+
+// CustomAIModel - A custom AI model registered by the user and scoped to a specific
+// AIManager.
+type CustomAIModel struct {
+	// The resource-specific properties for this resource.
+	Properties *CustomAIModelProperties
+
+	// READ-ONLY; If eTag is provided in the response body, it may also be provided as a header per the normal etag convention.
+	// Entity tags are used for comparing two or more entities from the same requested resource. HTTP/1.1 uses entity tags in
+	// the etag (section 14.19), If-Match (section 14.24), If-None-Match (section 14.26), and If-Range (section 14.27) header
+	// fields.
+	ETag *string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// CustomAIModelListResult - The response of a CustomAIModel list operation.
+type CustomAIModelListResult struct {
+	// REQUIRED; The CustomAIModel items on this page
+	Value []*CustomAIModel
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// CustomAIModelProperties - Custom AI model properties.
+type CustomAIModelProperties struct {
+	// REQUIRED; The base model this custom model was trained from (id + config.json). Immutable after creation.
+	BaseModel *BaseModelReference
+
+	// REQUIRED; The model identifier, interpreted per the referenced ModelSource type.
+	// For `HuggingFace` sources this is the upstream `<org>/<repo>` id, e.g.
+	// `meta-llama/Llama-2-7b-chat`. For `MicrosoftFoundry` sources this is
+	// `modelName/version`, e.g. `private-llama/1`. Immutable after creation.
+	ModelID *string
+
+	// REQUIRED; Azure resource id of the ModelSource to use when pulling artifacts. Used to determine model location and access.
+	// Immutable after creation.
+	ModelSourceResourceID *string
+
+	// Optional. Free-form description of the model. Mutable.
+	Description *string
+
+	// READ-ONLY; The status of the last operation.
+	ProvisioningState *CustomAIModelProvisioningState
+
+	// READ-ONLY; Read-only. Platform-resolved specification of the model.
+	Spec *CustomAIModelSpec
+}
+
+// CustomAIModelSpec - Platform-resolved specification of a custom model. Extends `ModelSpec` with custom model-specific metadata.
+// All fields are read-only. Reserved so custom-model-specific fields can be added without changing the SDK surface.
+type CustomAIModelSpec struct {
+	// READ-ONLY; Whether access to the model is restricted and requires credential.
+	IsRestricted *bool
+
+	// READ-ONLY; The maximum context length supported by the model, in tokens.
+	MaxContextLength *int32
+
+	// READ-ONLY; The license of the model, when known. SPDX license identifier, e.g. `mit`, `apache-2.0`.
+	License *string
 }
 
 // InfeasibilityReason - Reason explaining why a `CalculateCostPlan` is not deployable. This is a per-plan annotation surfaced
-// inside a successful `calculateCost` response, not an ARM error envelope.
+// inside a successful `calculateCost` response, not an Azure Resource Manager error envelope.
 type InfeasibilityReason struct {
 	// READ-ONLY; Machine-readable reason code.
 	Code *InfeasibleCode
@@ -257,6 +348,14 @@ type InfeasibilityReason struct {
 type InlineCredential struct {
 	// REQUIRED; The access token, password, or other secret value.
 	Value *string
+}
+
+// ManagedIdentityCredential - A credential backed by a user-owned user-assigned managed identity. The platform authenticates
+// to the model source as this identity via Workload Identity; no secret is stored.
+type ManagedIdentityCredential struct {
+	// REQUIRED; The Azure resource id of the user-assigned managed identity to authenticate with. Only user-assigned identities
+	// are supported.
+	ResourceID *string
 }
 
 // ManagedServiceIdentity - Managed service identity (system assigned and/or user assigned identities)
@@ -280,6 +379,20 @@ type ManualScalingProfile struct {
 	// REQUIRED; Fixed number of replicas. May be `0` to stop serving traffic while keeping the deployment configuration (see
 	// `ScalingProfile`).
 	Replicas *int32
+}
+
+// MicrosoftFoundrySource - Reference to a Microsoft Foundry project that backs a `MicrosoftFoundry`
+// ModelSource. Only the project Azure id is required; the Foundry account and its
+// data-plane endpoint (`*.services.ai.azure.com`) are resolved by the platform
+// from the project (the account is the project's parent resource).
+// Authentication uses the user-assigned managed identity referenced in the
+// ModelSource `credential.managedIdentity`, which the user must grant the
+// `Foundry User` role (role definition id 53ca6127-db72-4b80-b1b0-d745d6d5456d)
+// on this project. See https://aka.ms/aks/aim-modelsource for more details.
+type MicrosoftFoundrySource struct {
+	// REQUIRED; The ARM resource id of the Foundry project. The scope on which the referenced managed identity must hold the
+	// `Foundry User` role. The account and endpoint host are derived from this id.
+	ProjectResourceID *string
 }
 
 // ModelDeployment - A running deployment of a model in an AI Manager namespace.
@@ -328,13 +441,13 @@ type ModelDeploymentOverrides struct {
 
 // ModelDeploymentProperties - Model deployment properties.
 type ModelDeploymentProperties struct {
-	// REQUIRED; Full ARM resource id of the model to deploy. Phase 1 accepts an `AIModel` resource id only. Immutable after creation.
+	// REQUIRED; Full Azure resource ID of the model to deploy. Immutable after creation.
 	ModelResourceID *string
 
 	// REQUIRED; Azure VM SKU used to host the deployment, e.g. "Standard_NC96ads_A100_v4". Immutable after creation.
 	VMSize *string
 
-	// Full ARM resource id of a `ModelSource` to use when pulling artifacts for this deployment. Immutable after creation.
+	// Full Azure resource ID of a `ModelSource` to use when pulling artifacts for this deployment. Immutable after creation.
 	ModelSourceResourceID *string
 
 	// User overrides layered on top of profile resolution.
@@ -432,6 +545,10 @@ type ModelSourceProperties struct {
 	// An optional, free-form description of the source.
 	Description *string
 
+	// Microsoft Foundry project reference. Required when `sourceType` is `MicrosoftFoundry`; must be omitted otherwise. Immutable
+	// after creation.
+	MicrosoftFoundry *MicrosoftFoundrySource
+
 	// READ-ONLY; The status of the last operation.
 	ProvisioningState *ResourceProvisioningState
 }
@@ -526,12 +643,16 @@ type OperationListResult struct {
 // and `autoscale`, or sets neither, is rejected with HTTP 400 (Bad Request)
 // and an `InvalidScalingProfile` error code;
 // Scale-to-zero semantics differ between the two modes:
-// - `manual` permits `replicas: 0`. This is an explicit operator action to
+//
+//   - `manual` permits `replicas: 0`. This is an explicit operator action to
+//
 // stop serving traffic while keeping the `ModelDeployment` resource (and
 // its configuration) in place. While at zero replicas the endpoint
 // returns errors for inference requests, and the deployment releases its
 // GPU capacity.
-// - `autoscale` does not permit `minReplicas: 0`. Autoscaling decisions are
+//
+//   - `autoscale` does not permit `minReplicas: 0`. Autoscaling decisions are
+//
 // driven by serving-server runtime metrics (request rate, queue depth,
 // GPU utilization); at zero replicas there is no signal for the
 // autoscaler to scale back up from. Combined with GPU cold-start time

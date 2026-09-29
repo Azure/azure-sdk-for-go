@@ -56,12 +56,7 @@ func (client *Client) Get(ctx context.Context, serviceGroupName string, options 
 	if err != nil {
 		return ClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -83,8 +78,11 @@ func (client *Client) getCreateRequest(ctx context.Context, serviceGroupName str
 }
 
 // getHandleResponse handles the Get response.
-func (client *Client) getHandleResponse(resp *http.Response) (ClientGetResponse, error) {
+func (client *Client) getHandleResponse(resp *http.Response, successCodes ...int) (ClientGetResponse, error) {
 	result := ClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServiceGroup); err != nil {
 		return ClientGetResponse{}, err
 	}
@@ -109,12 +107,7 @@ func (client *Client) ListAncestors(ctx context.Context, serviceGroupName string
 	if err != nil {
 		return ClientListAncestorsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ClientListAncestorsResponse{}, err
-	}
-	resp, err := client.listAncestorsHandleResponse(httpResp)
-	return resp, err
+	return client.listAncestorsHandleResponse(httpResp, http.StatusOK)
 }
 
 // listAncestorsCreateRequest creates the ListAncestors request.
@@ -136,8 +129,11 @@ func (client *Client) listAncestorsCreateRequest(ctx context.Context, serviceGro
 }
 
 // listAncestorsHandleResponse handles the ListAncestors response.
-func (client *Client) listAncestorsHandleResponse(resp *http.Response) (ClientListAncestorsResponse, error) {
+func (client *Client) listAncestorsHandleResponse(resp *http.Response, successCodes ...int) (ClientListAncestorsResponse, error) {
 	result := ClientListAncestorsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServiceGroupCollectionResponse); err != nil {
 		return ClientListAncestorsResponse{}, err
 	}

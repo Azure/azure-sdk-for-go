@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-10-02-preview/Replicas_Get.json
+// Generated from example definition: 2026-07-01/Replicas_Get.json
 func ExampleContainerAppsRevisionReplicasClient_GetReplica() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -49,7 +49,7 @@ func ExampleContainerAppsRevisionReplicasClient_GetReplica() {
 	// 					Started: to.Ptr(true),
 	// 				},
 	// 			},
-	// 			CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-01-25T19:42:45Z"); return t}()),
+	// 			CreatedTime: to.Ptr(time.Date(2022, time.January, 25, 19, 42, 45, 0, time.UTC)),
 	// 			InitContainers: []*armappcontainers.ReplicaContainer{
 	// 			},
 	// 			RunningState: to.Ptr(armappcontainers.ContainerAppReplicaRunningStateRunning),
@@ -59,7 +59,7 @@ func ExampleContainerAppsRevisionReplicasClient_GetReplica() {
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/Replicas_List.json
+// Generated from example definition: 2026-07-01/Replicas_List.json
 func ExampleContainerAppsRevisionReplicasClient_ListReplicas() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -99,7 +99,7 @@ func ExampleContainerAppsRevisionReplicasClient_ListReplicas() {
 	// 							Started: to.Ptr(true),
 	// 						},
 	// 					},
-	// 					CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-01-25T19:42:45Z"); return t}()),
+	// 					CreatedTime: to.Ptr(time.Date(2022, time.January, 25, 19, 42, 45, 0, time.UTC)),
 	// 					InitContainers: []*armappcontainers.ReplicaContainer{
 	// 					},
 	// 					RunningState: to.Ptr(armappcontainers.ContainerAppReplicaRunningStateRunning),

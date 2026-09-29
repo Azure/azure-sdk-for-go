@@ -78,8 +78,7 @@ func (client *ReservationOrderAliasClient) create(ctx context.Context, reservati
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -125,12 +124,7 @@ func (client *ReservationOrderAliasClient) Get(ctx context.Context, reservationO
 	if err != nil {
 		return ReservationOrderAliasClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ReservationOrderAliasClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -152,8 +146,11 @@ func (client *ReservationOrderAliasClient) getCreateRequest(ctx context.Context,
 }
 
 // getHandleResponse handles the Get response.
-func (client *ReservationOrderAliasClient) getHandleResponse(resp *http.Response) (ReservationOrderAliasClientGetResponse, error) {
+func (client *ReservationOrderAliasClient) getHandleResponse(resp *http.Response, successCodes ...int) (ReservationOrderAliasClientGetResponse, error) {
 	result := ReservationOrderAliasClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ReservationOrderAliasResponse); err != nil {
 		return ReservationOrderAliasClientGetResponse{}, err
 	}

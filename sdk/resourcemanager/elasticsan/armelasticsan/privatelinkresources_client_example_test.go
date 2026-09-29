@@ -47,10 +47,10 @@ func ExamplePrivateLinkResourcesClient_ListByElasticSan_privateLinkResourcesList
 	// 					},
 	// 				},
 	// 				SystemData: &armelasticsan.SystemData{
-	// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-08-25T17:40:52.453Z"); return t}()),
+	// 					CreatedAt: to.Ptr(time.Date(2023, time.August, 25, 17, 40, 52, 453000000, time.UTC)),
 	// 					CreatedBy: to.Ptr("bgurjvijz"),
 	// 					CreatedByType: to.Ptr(armelasticsan.CreatedByTypeUser),
-	// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-08-25T17:40:52.453Z"); return t}()),
+	// 					LastModifiedAt: to.Ptr(time.Date(2023, time.August, 25, 17, 40, 52, 453000000, time.UTC)),
 	// 					LastModifiedBy: to.Ptr("uvexylihjrtinzkeluohusnaxatfqh"),
 	// 					LastModifiedByType: to.Ptr(armelasticsan.CreatedByTypeUser),
 	// 				},

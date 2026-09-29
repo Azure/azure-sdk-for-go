@@ -126,7 +126,7 @@ func (p *PaymentMethodsServerTransport) dispatchDeleteByUser(req *http.Request) 
 	if p.srv.DeleteByUser == nil {
 		return nil, &nonRetriableError{errors.New("fake for method DeleteByUser not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.Billing/paymentMethods/(?P<paymentMethodName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/providers/Microsoft\.Billing/paymentMethods/(?P<paymentMethodName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 2 {
@@ -155,7 +155,7 @@ func (p *PaymentMethodsServerTransport) dispatchGetByBillingAccount(req *http.Re
 	if p.srv.GetByBillingAccount == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetByBillingAccount not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/paymentMethods/(?P<paymentMethodName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/paymentMethods/(?P<paymentMethodName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -188,7 +188,7 @@ func (p *PaymentMethodsServerTransport) dispatchGetByBillingProfile(req *http.Re
 	if p.srv.GetByBillingProfile == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetByBillingProfile not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingProfiles/(?P<billingProfileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/paymentMethodLinks/(?P<paymentMethodName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/billingProfiles/(?P<billingProfileName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/paymentMethodLinks/(?P<paymentMethodName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -225,7 +225,7 @@ func (p *PaymentMethodsServerTransport) dispatchGetByUser(req *http.Request) (*h
 	if p.srv.GetByUser == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetByUser not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.Billing/paymentMethods/(?P<paymentMethodName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/providers/Microsoft\.Billing/paymentMethods/(?P<paymentMethodName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 2 {
@@ -256,7 +256,7 @@ func (p *PaymentMethodsServerTransport) dispatchNewListByBillingAccountPager(req
 	}
 	newListByBillingAccountPager := p.newListByBillingAccountPager.get(req)
 	if newListByBillingAccountPager == nil {
-		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/paymentMethods`
+		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/paymentMethods`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 2 {
@@ -293,7 +293,7 @@ func (p *PaymentMethodsServerTransport) dispatchNewListByBillingProfilePager(req
 	}
 	newListByBillingProfilePager := p.newListByBillingProfilePager.get(req)
 	if newListByBillingProfilePager == nil {
-		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingProfiles/(?P<billingProfileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/paymentMethodLinks`
+		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/billingProfiles/(?P<billingProfileName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/paymentMethodLinks`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {

@@ -118,7 +118,7 @@ func (i *InstancesServerTransport) dispatchBeginCreateOrUpdate(req *http.Request
 	}
 	beginCreateOrUpdate := i.beginCreateOrUpdate.get(req)
 	if beginCreateOrUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Edge/targets/(?P<targetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/solutions/(?P<solutionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/instances/(?P<instanceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Edge/targets/(?P<targetName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/solutions/(?P<solutionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/instances/(?P<instanceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 6 {
@@ -174,7 +174,7 @@ func (i *InstancesServerTransport) dispatchBeginDelete(req *http.Request) (*http
 	}
 	beginDelete := i.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Edge/targets/(?P<targetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/solutions/(?P<solutionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/instances/(?P<instanceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Edge/targets/(?P<targetName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/solutions/(?P<solutionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/instances/(?P<instanceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 6 {
@@ -224,7 +224,7 @@ func (i *InstancesServerTransport) dispatchGet(req *http.Request) (*http.Respons
 	if i.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Edge/targets/(?P<targetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/solutions/(?P<solutionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/instances/(?P<instanceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Edge/targets/(?P<targetName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/solutions/(?P<solutionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/instances/(?P<instanceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 6 {
@@ -267,7 +267,7 @@ func (i *InstancesServerTransport) dispatchNewListBySolutionPager(req *http.Requ
 	}
 	newListBySolutionPager := i.newListBySolutionPager.get(req)
 	if newListBySolutionPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Edge/targets/(?P<targetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/solutions/(?P<solutionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/instances`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Edge/targets/(?P<targetName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/solutions/(?P<solutionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/instances`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -312,7 +312,7 @@ func (i *InstancesServerTransport) dispatchBeginUpdate(req *http.Request) (*http
 	}
 	beginUpdate := i.beginUpdate.get(req)
 	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Edge/targets/(?P<targetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/solutions/(?P<solutionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/instances/(?P<instanceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Edge/targets/(?P<targetName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/solutions/(?P<solutionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/instances/(?P<instanceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 6 {

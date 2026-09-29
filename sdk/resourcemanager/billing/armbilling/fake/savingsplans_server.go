@@ -115,7 +115,7 @@ func (s *SavingsPlansServerTransport) dispatchGetByBillingAccount(req *http.Requ
 	if s.srv.GetByBillingAccount == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetByBillingAccount not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/savingsPlanOrders/(?P<savingsPlanOrderId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/savingsPlans/(?P<savingsPlanId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/savingsPlanOrders/(?P<savingsPlanOrderId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/savingsPlans/(?P<savingsPlanId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -162,7 +162,7 @@ func (s *SavingsPlansServerTransport) dispatchNewListByBillingAccountPager(req *
 	}
 	newListByBillingAccountPager := s.newListByBillingAccountPager.get(req)
 	if newListByBillingAccountPager == nil {
-		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/savingsPlans`
+		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/savingsPlans`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 2 {
@@ -235,7 +235,7 @@ func (s *SavingsPlansServerTransport) dispatchNewListBySavingsPlanOrderPager(req
 	}
 	newListBySavingsPlanOrderPager := s.newListBySavingsPlanOrderPager.get(req)
 	if newListBySavingsPlanOrderPager == nil {
-		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/savingsPlanOrders/(?P<savingsPlanOrderId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/savingsPlans`
+		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/savingsPlanOrders/(?P<savingsPlanOrderId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/savingsPlans`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
@@ -276,7 +276,7 @@ func (s *SavingsPlansServerTransport) dispatchBeginUpdateByBillingAccount(req *h
 	}
 	beginUpdateByBillingAccount := s.beginUpdateByBillingAccount.get(req)
 	if beginUpdateByBillingAccount == nil {
-		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/savingsPlanOrders/(?P<savingsPlanOrderId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/savingsPlans/(?P<savingsPlanId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/savingsPlanOrders/(?P<savingsPlanOrderId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/savingsPlans/(?P<savingsPlanId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -326,7 +326,7 @@ func (s *SavingsPlansServerTransport) dispatchValidateUpdateByBillingAccount(req
 	if s.srv.ValidateUpdateByBillingAccount == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ValidateUpdateByBillingAccount not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/savingsPlanOrders/(?P<savingsPlanOrderId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/savingsPlans/(?P<savingsPlanId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/validate`
+	const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/savingsPlanOrders/(?P<savingsPlanOrderId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/savingsPlans/(?P<savingsPlanId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/validate`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {

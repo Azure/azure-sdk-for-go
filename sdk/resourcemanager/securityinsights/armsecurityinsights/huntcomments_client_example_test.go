@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-07-01-preview/hunts/CreateHuntComment.json
+// Generated from example definition: 2025-10-01-preview/hunts/CreateHuntComment.json
 func ExampleHuntCommentsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -44,10 +44,10 @@ func ExampleHuntCommentsClient_CreateOrUpdate() {
 	// 			Message: to.Ptr("This is a test comment."),
 	// 		},
 	// 		SystemData: &armsecurityinsights.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-15T16:42:38.8709453Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.August, 15, 16, 42, 38, 870945300, time.UTC)),
 	// 			CreatedBy: to.Ptr("testuser@microsoft.com"),
 	// 			CreatedByType: to.Ptr(armsecurityinsights.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T16:42:38.8709453Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.August, 19, 16, 42, 38, 870945300, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("testuser@microsoft.com"),
 	// 			LastModifiedByType: to.Ptr(armsecurityinsights.CreatedByTypeUser),
 	// 		},
@@ -55,7 +55,7 @@ func ExampleHuntCommentsClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/hunts/DeleteHuntComment.json
+// Generated from example definition: 2025-10-01-preview/hunts/DeleteHuntComment.json
 func ExampleHuntCommentsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -77,7 +77,7 @@ func ExampleHuntCommentsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/hunts/GetHuntCommentById.json
+// Generated from example definition: 2025-10-01-preview/hunts/GetHuntCommentById.json
 func ExampleHuntCommentsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -105,10 +105,10 @@ func ExampleHuntCommentsClient_Get() {
 	// 			Message: to.Ptr("This is a comment."),
 	// 		},
 	// 		SystemData: &armsecurityinsights.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-15T16:42:38.8709453Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.August, 15, 16, 42, 38, 870945300, time.UTC)),
 	// 			CreatedBy: to.Ptr("testuser@microsoft.com"),
 	// 			CreatedByType: to.Ptr(armsecurityinsights.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T16:42:38.8709453Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.August, 19, 16, 42, 38, 870945300, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("testuser@microsoft.com"),
 	// 			LastModifiedByType: to.Ptr(armsecurityinsights.CreatedByTypeUser),
 	// 		},
@@ -116,7 +116,7 @@ func ExampleHuntCommentsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/hunts/GetHuntComments.json
+// Generated from example definition: 2025-10-01-preview/hunts/GetHuntComments.json
 func ExampleHuntCommentsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

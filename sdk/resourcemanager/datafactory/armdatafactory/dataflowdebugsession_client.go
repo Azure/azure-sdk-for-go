@@ -30,6 +30,9 @@ type DataFlowDebugSessionClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewDataFlowDebugSessionClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DataFlowDebugSessionClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -62,19 +65,14 @@ func (client *DataFlowDebugSessionClient) AddDataFlow(ctx context.Context, resou
 	if err != nil {
 		return DataFlowDebugSessionClientAddDataFlowResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DataFlowDebugSessionClientAddDataFlowResponse{}, err
-	}
-	resp, err := client.addDataFlowHandleResponse(httpResp)
-	return resp, err
+	return client.addDataFlowHandleResponse(httpResp, http.StatusOK)
 }
 
 // addDataFlowCreateRequest creates the AddDataFlow request.
 func (client *DataFlowDebugSessionClient) addDataFlowCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, request DataFlowDebugPackage, _ *DataFlowDebugSessionClientAddDataFlowOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/addDataFlowToDebugSession"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -101,8 +99,11 @@ func (client *DataFlowDebugSessionClient) addDataFlowCreateRequest(ctx context.C
 }
 
 // addDataFlowHandleResponse handles the AddDataFlow response.
-func (client *DataFlowDebugSessionClient) addDataFlowHandleResponse(resp *http.Response) (DataFlowDebugSessionClientAddDataFlowResponse, error) {
+func (client *DataFlowDebugSessionClient) addDataFlowHandleResponse(resp *http.Response, successCodes ...int) (DataFlowDebugSessionClientAddDataFlowResponse, error) {
 	result := DataFlowDebugSessionClientAddDataFlowResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AddDataFlowToDebugSessionResponse); err != nil {
 		return DataFlowDebugSessionClientAddDataFlowResponse{}, err
 	}
@@ -150,8 +151,7 @@ func (client *DataFlowDebugSessionClient) create(ctx context.Context, resourceGr
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -160,7 +160,7 @@ func (client *DataFlowDebugSessionClient) create(ctx context.Context, resourceGr
 func (client *DataFlowDebugSessionClient) createCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, request CreateDataFlowDebugSessionRequest, _ *DataFlowDebugSessionClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/createDataFlowDebugSession"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -208,8 +208,7 @@ func (client *DataFlowDebugSessionClient) Delete(ctx context.Context, resourceGr
 		return DataFlowDebugSessionClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DataFlowDebugSessionClientDeleteResponse{}, err
+		return DataFlowDebugSessionClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return DataFlowDebugSessionClientDeleteResponse{}, nil
 }
@@ -218,7 +217,7 @@ func (client *DataFlowDebugSessionClient) Delete(ctx context.Context, resourceGr
 func (client *DataFlowDebugSessionClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, request DeleteDataFlowDebugSessionRequest, _ *DataFlowDebugSessionClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/deleteDataFlowDebugSession"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -284,8 +283,7 @@ func (client *DataFlowDebugSessionClient) executeCommand(ctx context.Context, re
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -294,7 +292,7 @@ func (client *DataFlowDebugSessionClient) executeCommand(ctx context.Context, re
 func (client *DataFlowDebugSessionClient) executeCommandCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, request DataFlowDebugCommandRequest, _ *DataFlowDebugSessionClientBeginExecuteCommandOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/executeDataFlowDebugCommand"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -336,47 +334,61 @@ func (client *DataFlowDebugSessionClient) NewQueryByFactoryPager(resourceGroupNa
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.queryByFactoryCreateRequest(ctx, resourceGroupName, factoryName, options)
-			}, nil)
+			req, err := client.queryByFactoryCreateRequest(ctx, resourceGroupName, factoryName, nextLink, options)
 			if err != nil {
 				return DataFlowDebugSessionClientQueryByFactoryResponse{}, err
 			}
-			return client.queryByFactoryHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return DataFlowDebugSessionClientQueryByFactoryResponse{}, err
+			}
+			return client.queryByFactoryHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // queryByFactoryCreateRequest creates the QueryByFactory request.
-func (client *DataFlowDebugSessionClient) queryByFactoryCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, _ *DataFlowDebugSessionClientQueryByFactoryOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/queryDataFlowDebugSessions"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *DataFlowDebugSessionClient) queryByFactoryCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, nextLink string, _ *DataFlowDebugSessionClientQueryByFactoryOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/queryDataFlowDebugSessions"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if factoryName == "" {
+			return nil, errors.New("parameter factoryName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{factoryName}", url.PathEscape(factoryName))
+		req, err = runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if factoryName == "" {
-		return nil, errors.New("parameter factoryName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{factoryName}", url.PathEscape(factoryName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20180601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20180601)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // queryByFactoryHandleResponse handles the QueryByFactory response.
-func (client *DataFlowDebugSessionClient) queryByFactoryHandleResponse(resp *http.Response) (DataFlowDebugSessionClientQueryByFactoryResponse, error) {
+func (client *DataFlowDebugSessionClient) queryByFactoryHandleResponse(resp *http.Response, successCodes ...int) (DataFlowDebugSessionClientQueryByFactoryResponse, error) {
 	result := DataFlowDebugSessionClientQueryByFactoryResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.QueryDataFlowDebugSessionsResponse); err != nil {
 		return DataFlowDebugSessionClientQueryByFactoryResponse{}, err
 	}

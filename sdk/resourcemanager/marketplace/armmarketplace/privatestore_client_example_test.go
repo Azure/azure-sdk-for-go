@@ -6,11 +6,10 @@ package armmarketplace_test
 
 import (
 	"context"
-	"log"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/marketplace/armmarketplace/v2"
+	"log"
 )
 
 // Generated from example definition: 2025-01-01/AcknowledgeNotification.json
@@ -64,7 +63,7 @@ func ExamplePrivateStoreClient_AdminRequestApprovalsList() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmarketplace.PrivateStoreClientAdminRequestApprovalsListResponse{
-	// 	AdminRequestApprovalsList: &armmarketplace.AdminRequestApprovalsList{
+	// 	AdminRequestApprovalsList: armmarketplace.AdminRequestApprovalsList{
 	// 		Value: []*armmarketplace.AdminRequestApprovalsResource{
 	// 			{
 	// 				Name: to.Ptr("marketplacetestthirdparty.md-test-third-party-2"),
@@ -108,10 +107,10 @@ func ExamplePrivateStoreClient_AdminRequestApprovalsList() {
 	// 					PublisherID: to.Ptr("marketplacetestthirdparty"),
 	// 				},
 	// 				SystemData: &armmarketplace.SystemData{
-	// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-02-01T10:23:17.6571572+02:00"); return t}()),
+	// 					CreatedAt: to.Ptr(time.Date(2021, time.February, 1, 8, 23, 17, 657157200, time.UTC)),
 	// 					CreatedBy: to.Ptr("user@somedoamin.com"),
 	// 					CreatedByType: to.Ptr(armmarketplace.CreatedByTypeUser),
-	// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-02-01T10:23:17.6571572+02:00"); return t}()),
+	// 					LastModifiedAt: to.Ptr(time.Date(2021, time.February, 1, 8, 23, 17, 657157200, time.UTC)),
 	// 					LastModifiedBy: to.Ptr("user@somedoamin.com"),
 	// 					LastModifiedByType: to.Ptr(armmarketplace.CreatedByTypeUser),
 	// 				},
@@ -140,7 +139,7 @@ func ExamplePrivateStoreClient_AnyExistingOffersInTheCollections() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmarketplace.PrivateStoreClientAnyExistingOffersInTheCollectionsResponse{
-	// 	AnyExistingOffersInTheCollectionsResponse: &armmarketplace.AnyExistingOffersInTheCollectionsResponse{
+	// 	AnyExistingOffersInTheCollectionsResponse: armmarketplace.AnyExistingOffersInTheCollectionsResponse{
 	// 		Value: to.Ptr(true),
 	// 	},
 	// }
@@ -165,7 +164,7 @@ func ExamplePrivateStoreClient_BillingAccounts() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmarketplace.PrivateStoreClientBillingAccountsResponse{
-	// 	BillingAccountsResponse: &armmarketplace.BillingAccountsResponse{
+	// 	BillingAccountsResponse: armmarketplace.BillingAccountsResponse{
 	// 		BillingAccounts: []*string{
 	// 			to.Ptr("Billing Account 1"),
 	// 			to.Ptr("Billing Account 2"),
@@ -202,7 +201,7 @@ func ExamplePrivateStoreClient_BulkCollectionsAction() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmarketplace.PrivateStoreClientBulkCollectionsActionResponse{
-	// 	BulkCollectionsResponse: &armmarketplace.BulkCollectionsResponse{
+	// 	BulkCollectionsResponse: armmarketplace.BulkCollectionsResponse{
 	// 		Failed: []*armmarketplace.CollectionsDetails{
 	// 			{
 	// 				CollectionID: to.Ptr("f47ef1c7-e908-4f39-ae29-db181634ad8d"),
@@ -246,7 +245,7 @@ func ExamplePrivateStoreClient_CollectionsToSubscriptionsMapping() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmarketplace.PrivateStoreClientCollectionsToSubscriptionsMappingResponse{
-	// 	CollectionsToSubscriptionsMappingResponse: &armmarketplace.CollectionsToSubscriptionsMappingResponse{
+	// 	CollectionsToSubscriptionsMappingResponse: armmarketplace.CollectionsToSubscriptionsMappingResponse{
 	// 		Details: map[string]*armmarketplace.CollectionsSubscriptionsMappingDetails{
 	// 			"4eb49758-f591-486f-bd58-dff00fb7a8d8": &armmarketplace.CollectionsSubscriptionsMappingDetails{
 	// 				CollectionName: to.Ptr("Test Collection"),
@@ -300,7 +299,7 @@ func ExamplePrivateStoreClient_CreateApprovalRequest() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmarketplace.PrivateStoreClientCreateApprovalRequestResponse{
-	// 	RequestApprovalResource: &armmarketplace.RequestApprovalResource{
+	// 	RequestApprovalResource: armmarketplace.RequestApprovalResource{
 	// 		Name: to.Ptr("marketplacetestthirdparty.md-test-third-party-2"),
 	// 		Type: to.Ptr("Microsoft.Marketplace/privateStores/requestApprovals"),
 	// 		ID: to.Ptr("/providers/Microsoft.Marketplace/privateStores/9afd3c45-5230-4d58-9469-2cacc00bba68/requestApprovals/marketplacetestthirdparty.md-test-third-party-2"),
@@ -330,10 +329,10 @@ func ExamplePrivateStoreClient_CreateApprovalRequest() {
 	// 			PublisherID: to.Ptr("marketplacetestthirdparty"),
 	// 		},
 	// 		SystemData: &armmarketplace.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-02-01T10:23:17.6571572+02:00"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.February, 1, 8, 23, 17, 657157200, time.UTC)),
 	// 			CreatedBy: to.Ptr("user@somedoamin.com"),
 	// 			CreatedByType: to.Ptr(armmarketplace.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-02-01T10:23:17.6571572+02:00"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.February, 1, 8, 23, 17, 657157200, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user@somedoamin.com"),
 	// 			LastModifiedByType: to.Ptr(armmarketplace.CreatedByTypeUser),
 	// 		},
@@ -409,7 +408,7 @@ func ExamplePrivateStoreClient_FetchAllSubscriptionsInTenant() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmarketplace.PrivateStoreClientFetchAllSubscriptionsInTenantResponse{
-	// 	SubscriptionsResponse: &armmarketplace.SubscriptionsResponse{
+	// 	SubscriptionsResponse: armmarketplace.SubscriptionsResponse{
 	// 		Count: to.Ptr[int64](1),
 	// 		Value: []*armmarketplace.Subscription{
 	// 			{
@@ -442,7 +441,7 @@ func ExamplePrivateStoreClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmarketplace.PrivateStoreClientGetResponse{
-	// 	PrivateStore: &armmarketplace.PrivateStore{
+	// 	PrivateStore: armmarketplace.PrivateStore{
 	// 		Name: to.Ptr("a0e28e55-90c4-41d8-8e34-bb7ef7775406"),
 	// 		Type: to.Ptr("Microsoft.Marketplace/privateStores"),
 	// 		ID: to.Ptr("/providers/Microsoft.Marketplace/privateStores/a0e28e55-90c4-41d8-8e34-bb7ef7775406"),
@@ -499,7 +498,7 @@ func ExamplePrivateStoreClient_GetAdminRequestApproval() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmarketplace.PrivateStoreClientGetAdminRequestApprovalResponse{
-	// 	AdminRequestApprovalsResource: &armmarketplace.AdminRequestApprovalsResource{
+	// 	AdminRequestApprovalsResource: armmarketplace.AdminRequestApprovalsResource{
 	// 		Name: to.Ptr("marketplacetestthirdparty.md-test-third-party-2"),
 	// 		Type: to.Ptr("/providers/Microsoft.Marketplace/privateStores/adminRequestApprovals"),
 	// 		ID: to.Ptr("/providers/Microsoft.Marketplace/privateStores/a0e28e55-90c4-41d8-8e34-bb7ef7775406/adminRequestApprovals/marketplacetestthirdparty.md-test-third-party-2"),
@@ -541,10 +540,10 @@ func ExamplePrivateStoreClient_GetAdminRequestApproval() {
 	// 			PublisherID: to.Ptr("marketplacetestthirdparty"),
 	// 		},
 	// 		SystemData: &armmarketplace.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-02-01T10:23:17.6571572+02:00"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.February, 1, 8, 23, 17, 657157200, time.UTC)),
 	// 			CreatedBy: to.Ptr("user@somedoamin.com"),
 	// 			CreatedByType: to.Ptr(armmarketplace.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-02-01T10:23:17.6571572+02:00"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.February, 1, 8, 23, 17, 657157200, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user@somedoamin.com"),
 	// 			LastModifiedByType: to.Ptr(armmarketplace.CreatedByTypeUser),
 	// 		},
@@ -571,7 +570,7 @@ func ExamplePrivateStoreClient_GetApprovalRequestsList() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmarketplace.PrivateStoreClientGetApprovalRequestsListResponse{
-	// 	RequestApprovalsList: &armmarketplace.RequestApprovalsList{
+	// 	RequestApprovalsList: armmarketplace.RequestApprovalsList{
 	// 		Value: []*armmarketplace.RequestApprovalResource{
 	// 			{
 	// 				Name: to.Ptr("marketplacetestthirdparty.md-test-third-party-2"),
@@ -603,10 +602,10 @@ func ExamplePrivateStoreClient_GetApprovalRequestsList() {
 	// 					PublisherID: to.Ptr("marketplacetestthirdparty"),
 	// 				},
 	// 				SystemData: &armmarketplace.SystemData{
-	// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-02-01T10:23:17.6571572+02:00"); return t}()),
+	// 					CreatedAt: to.Ptr(time.Date(2021, time.February, 1, 8, 23, 17, 657157200, time.UTC)),
 	// 					CreatedBy: to.Ptr("user@somedoamin.com"),
 	// 					CreatedByType: to.Ptr(armmarketplace.CreatedByTypeUser),
-	// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-02-01T10:23:17.6571572+02:00"); return t}()),
+	// 					LastModifiedAt: to.Ptr(time.Date(2021, time.February, 1, 8, 23, 17, 657157200, time.UTC)),
 	// 					LastModifiedBy: to.Ptr("user@somedoamin.com"),
 	// 					LastModifiedByType: to.Ptr(armmarketplace.CreatedByTypeUser),
 	// 				},
@@ -635,7 +634,7 @@ func ExamplePrivateStoreClient_GetRequestApproval() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmarketplace.PrivateStoreClientGetRequestApprovalResponse{
-	// 	RequestApprovalResource: &armmarketplace.RequestApprovalResource{
+	// 	RequestApprovalResource: armmarketplace.RequestApprovalResource{
 	// 		Name: to.Ptr("marketplacetestthirdparty.md-test-third-party-2"),
 	// 		Type: to.Ptr("Microsoft.Marketplace/privateStores/requestApprovals"),
 	// 		ID: to.Ptr("/providers/Microsoft.Marketplace/privateStores/a0e28e55-90c4-41d8-8e34-bb7ef7775406/requestApprovals/marketplacetestthirdparty.md-test-third-party-2"),
@@ -665,10 +664,10 @@ func ExamplePrivateStoreClient_GetRequestApproval() {
 	// 			PublisherID: to.Ptr("marketplacetestthirdparty"),
 	// 		},
 	// 		SystemData: &armmarketplace.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-05T17:18:19.1234567Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2020, time.October, 5, 17, 18, 19, 123456700, time.UTC)),
 	// 			CreatedBy: to.Ptr("test@somedomain.com"),
 	// 			CreatedByType: to.Ptr(armmarketplace.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-05T17:18:19.1234567Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2020, time.October, 5, 17, 18, 19, 123456700, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("testuser@somedomail.com"),
 	// 			LastModifiedByType: to.Ptr(armmarketplace.CreatedByTypeUser),
 	// 		},
@@ -761,7 +760,7 @@ func ExamplePrivateStoreClient_ListNewPlansNotifications() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmarketplace.PrivateStoreClientListNewPlansNotificationsResponse{
-	// 	NewPlansNotificationsList: &armmarketplace.NewPlansNotificationsList{
+	// 	NewPlansNotificationsList: armmarketplace.NewPlansNotificationsList{
 	// 		NewPlansNotifications: []*armmarketplace.NewNotifications{
 	// 			{
 	// 				DisplayName: to.Ptr("Offer display name C"),
@@ -800,7 +799,7 @@ func ExamplePrivateStoreClient_ListStopSellOffersPlansNotifications() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmarketplace.PrivateStoreClientListStopSellOffersPlansNotificationsResponse{
-	// 	StopSellOffersPlansNotificationsList: &armmarketplace.StopSellOffersPlansNotificationsList{
+	// 	StopSellOffersPlansNotificationsList: armmarketplace.StopSellOffersPlansNotificationsList{
 	// 		StopSellNotifications: []*armmarketplace.StopSellOffersPlansNotificationsListProperties{
 	// 			{
 	// 				DisplayName: to.Ptr("Offer display name"),
@@ -843,7 +842,7 @@ func ExamplePrivateStoreClient_ListSubscriptionsContext() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmarketplace.PrivateStoreClientListSubscriptionsContextResponse{
-	// 	SubscriptionsContextList: &armmarketplace.SubscriptionsContextList{
+	// 	SubscriptionsContextList: armmarketplace.SubscriptionsContextList{
 	// 		SubscriptionsIDs: []*string{
 	// 			to.Ptr("090dcec8-3415-4e13-9377-07f489cdfeed"),
 	// 			to.Ptr("030dcec2-4323-5e13-9376-96f489cdfeed"),
@@ -885,7 +884,7 @@ func ExamplePrivateStoreClient_QueryApprovedPlans() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmarketplace.PrivateStoreClientQueryApprovedPlansResponse{
-	// 	QueryApprovedPlansResponse: &armmarketplace.QueryApprovedPlansResponse{
+	// 	QueryApprovedPlansResponse: armmarketplace.QueryApprovedPlansResponse{
 	// 		Details: []*armmarketplace.QueryApprovedPlansDetails{
 	// 			{
 	// 				AllSubscriptions: to.Ptr(false),
@@ -931,7 +930,7 @@ func ExamplePrivateStoreClient_QueryNotificationsState() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmarketplace.PrivateStoreClientQueryNotificationsStateResponse{
-	// 	PrivateStoreNotificationsState: &armmarketplace.PrivateStoreNotificationsState{
+	// 	PrivateStoreNotificationsState: armmarketplace.PrivateStoreNotificationsState{
 	// 		ApprovalRequests: []*armmarketplace.RequestApprovalsDetails{
 	// 			{
 	// 				DisplayName: to.Ptr("Offer display name"),
@@ -1011,7 +1010,7 @@ func ExamplePrivateStoreClient_QueryOffers() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmarketplace.PrivateStoreClientQueryOffersResponse{
-	// 	QueryOffers: &armmarketplace.QueryOffers{
+	// 	QueryOffers: armmarketplace.QueryOffers{
 	// 		NextLink: to.Ptr(""),
 	// 		Value: []*armmarketplace.OfferProperties{
 	// 			{
@@ -1075,7 +1074,7 @@ func ExamplePrivateStoreClient_QueryRequestApproval() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmarketplace.PrivateStoreClientQueryRequestApprovalResponse{
-	// 	QueryRequestApproval: &armmarketplace.QueryRequestApproval{
+	// 	QueryRequestApproval: armmarketplace.QueryRequestApproval{
 	// 		MessageCode: to.Ptr[int64](0),
 	// 		PlansDetails: map[string]*armmarketplace.PlanDetails{
 	// 			"*": &armmarketplace.PlanDetails{
@@ -1137,7 +1136,7 @@ func ExamplePrivateStoreClient_QueryUserOffers() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmarketplace.PrivateStoreClientQueryUserOffersResponse{
-	// 	QueryOffers: &armmarketplace.QueryOffers{
+	// 	QueryOffers: armmarketplace.QueryOffers{
 	// 		NextLink: to.Ptr(""),
 	// 		Value: []*armmarketplace.OfferProperties{
 	// 			{
@@ -1202,7 +1201,7 @@ func ExamplePrivateStoreClient_UpdateAdminRequestApproval() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmarketplace.PrivateStoreClientUpdateAdminRequestApprovalResponse{
-	// 	AdminRequestApprovalsResource: &armmarketplace.AdminRequestApprovalsResource{
+	// 	AdminRequestApprovalsResource: armmarketplace.AdminRequestApprovalsResource{
 	// 		Name: to.Ptr("marketplacetestthirdparty.md-test-third-party-2"),
 	// 		Type: to.Ptr("/providers/Microsoft.Marketplace/privateStores/adminRequestApprovals"),
 	// 		ID: to.Ptr("/providers/Microsoft.Marketplace/privateStores/a0e28e55-90c4-41d8-8e34-bb7ef7775406/adminRequestApprovals/marketplacetestthirdparty.md-test-third-party-2"),
@@ -1223,10 +1222,10 @@ func ExamplePrivateStoreClient_UpdateAdminRequestApproval() {
 	// 			PublisherID: to.Ptr("marketplacetestthirdparty"),
 	// 		},
 	// 		SystemData: &armmarketplace.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-05T17:18:19.1234567Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2020, time.October, 5, 17, 18, 19, 123456700, time.UTC)),
 	// 			CreatedBy: to.Ptr("test@somedomain.com"),
 	// 			CreatedByType: to.Ptr(armmarketplace.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-05T17:18:19.1234567Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2020, time.October, 5, 17, 18, 19, 123456700, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("testuser@somedomail.com"),
 	// 			LastModifiedByType: to.Ptr(armmarketplace.CreatedByTypeUser),
 	// 		},

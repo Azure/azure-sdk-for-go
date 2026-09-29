@@ -163,16 +163,16 @@ func ExampleWorkspacesClient_Get() {
 	// 		Properties: &armoperationalinsights.WorkspaceProperties{
 	// 			CustomerID: to.Ptr("5b02755b-5bf4-430c-9487-45502a2a7e62"),
 	// 			Failover: &armoperationalinsights.WorkspaceFailoverProperties{
-	// 				LastModifiedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-07-05T07:35:51Z"); return t}()),
+	// 				LastModifiedDate: to.Ptr(time.Date(2020, time.July, 5, 7, 35, 51, 0, time.UTC)),
 	// 				State: to.Ptr(armoperationalinsights.WorkspaceFailoverStateActive),
 	// 			},
 	// 			ProvisioningState: to.Ptr(armoperationalinsights.WorkspaceEntityStatusSucceeded),
 	// 			PublicNetworkAccessForIngestion: to.Ptr(armoperationalinsights.PublicNetworkAccessTypeEnabled),
 	// 			PublicNetworkAccessForQuery: to.Ptr(armoperationalinsights.PublicNetworkAccessTypeEnabled),
 	// 			Replication: &armoperationalinsights.WorkspaceReplicationProperties{
-	// 				CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-07-04T07:35:51Z"); return t}()),
+	// 				CreatedDate: to.Ptr(time.Date(2020, time.July, 4, 7, 35, 51, 0, time.UTC)),
 	// 				Enabled: to.Ptr(true),
-	// 				LastModifiedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-07-04T07:35:51Z"); return t}()),
+	// 				LastModifiedDate: to.Ptr(time.Date(2020, time.July, 4, 7, 35, 51, 0, time.UTC)),
 	// 				Location: to.Ptr("westus3"),
 	// 				ProvisioningState: to.Ptr(armoperationalinsights.WorkspaceReplicationStateSucceeded),
 	// 			},

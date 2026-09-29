@@ -95,7 +95,7 @@ func (s *SharedGalleryInvitesServerTransport) dispatchBeginGallerySharingAccept(
 	}
 	beginGallerySharingAccept := s.beginGallerySharingAccept.get(req)
 	if beginGallerySharingAccept == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Compute/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/sharedGallerySubscriptions/(?P<sharedGallerySubscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/sharedGalleries/(?P<sharedGalleryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/accept`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Compute/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/sharedGallerySubscriptions/(?P<sharedGallerySubscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/sharedGalleries/(?P<sharedGalleryName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/accept`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -143,7 +143,7 @@ func (s *SharedGalleryInvitesServerTransport) dispatchBeginGallerySharingReject(
 	}
 	beginGallerySharingReject := s.beginGallerySharingReject.get(req)
 	if beginGallerySharingReject == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Compute/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/sharedGallerySubscriptions/(?P<sharedGallerySubscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/sharedGalleries/(?P<sharedGalleryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/reject`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Compute/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/sharedGallerySubscriptions/(?P<sharedGallerySubscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/sharedGalleries/(?P<sharedGalleryName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/reject`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {

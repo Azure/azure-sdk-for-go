@@ -49,35 +49,49 @@ func (client *Client) NewListOperationsPager(options *ClientListOperationsOption
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listOperationsCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.listOperationsCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return ClientListOperationsResponse{}, err
 			}
-			return client.listOperationsHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ClientListOperationsResponse{}, err
+			}
+			return client.listOperationsHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listOperationsCreateRequest creates the ListOperations request.
-func (client *Client) listOperationsCreateRequest(ctx context.Context, _ *ClientListOperationsOptions) (*policy.Request, error) {
-	urlPath := "/providers/Microsoft.Maps/operations"
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+func (client *Client) listOperationsCreateRequest(ctx context.Context, nextLink string, _ *ClientListOperationsOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/providers/Microsoft.Maps/operations"
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251001Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20251001Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listOperationsHandleResponse handles the ListOperations response.
-func (client *Client) listOperationsHandleResponse(resp *http.Response) (ClientListOperationsResponse, error) {
+func (client *Client) listOperationsHandleResponse(resp *http.Response, successCodes ...int) (ClientListOperationsResponse, error) {
 	result := ClientListOperationsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OperationListResult); err != nil {
 		return ClientListOperationsResponse{}, err
 	}

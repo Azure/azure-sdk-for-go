@@ -60,12 +60,7 @@ func (client *LabsClient) CreateOrUpdate(ctx context.Context, billingAccountName
 	if err != nil {
 		return LabsClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return LabsClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -99,8 +94,11 @@ func (client *LabsClient) createOrUpdateCreateRequest(ctx context.Context, billi
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *LabsClient) createOrUpdateHandleResponse(resp *http.Response) (LabsClientCreateOrUpdateResponse, error) {
+func (client *LabsClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (LabsClientCreateOrUpdateResponse, error) {
 	result := LabsClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LabDetails); err != nil {
 		return LabsClientCreateOrUpdateResponse{}, err
 	}
@@ -129,8 +127,7 @@ func (client *LabsClient) Delete(ctx context.Context, billingAccountName string,
 		return LabsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return LabsClientDeleteResponse{}, err
+		return LabsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return LabsClientDeleteResponse{}, nil
 }
@@ -181,12 +178,7 @@ func (client *LabsClient) GenerateInviteCode(ctx context.Context, billingAccount
 	if err != nil {
 		return LabsClientGenerateInviteCodeResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return LabsClientGenerateInviteCodeResponse{}, err
-	}
-	resp, err := client.generateInviteCodeHandleResponse(httpResp)
-	return resp, err
+	return client.generateInviteCodeHandleResponse(httpResp, http.StatusOK)
 }
 
 // generateInviteCodeCreateRequest creates the GenerateInviteCode request.
@@ -223,8 +215,11 @@ func (client *LabsClient) generateInviteCodeCreateRequest(ctx context.Context, b
 }
 
 // generateInviteCodeHandleResponse handles the GenerateInviteCode response.
-func (client *LabsClient) generateInviteCodeHandleResponse(resp *http.Response) (LabsClientGenerateInviteCodeResponse, error) {
+func (client *LabsClient) generateInviteCodeHandleResponse(resp *http.Response, successCodes ...int) (LabsClientGenerateInviteCodeResponse, error) {
 	result := LabsClientGenerateInviteCodeResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LabDetails); err != nil {
 		return LabsClientGenerateInviteCodeResponse{}, err
 	}
@@ -252,12 +247,7 @@ func (client *LabsClient) Get(ctx context.Context, billingAccountName string, bi
 	if err != nil {
 		return LabsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return LabsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -290,8 +280,11 @@ func (client *LabsClient) getCreateRequest(ctx context.Context, billingAccountNa
 }
 
 // getHandleResponse handles the Get response.
-func (client *LabsClient) getHandleResponse(resp *http.Response) (LabsClientGetResponse, error) {
+func (client *LabsClient) getHandleResponse(resp *http.Response, successCodes ...int) (LabsClientGetResponse, error) {
 	result := LabsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LabDetails); err != nil {
 		return LabsClientGetResponse{}, err
 	}
@@ -315,50 +308,64 @@ func (client *LabsClient) NewListPager(billingAccountName string, billingProfile
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, billingAccountName, billingProfileName, invoiceSectionName, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, billingAccountName, billingProfileName, invoiceSectionName, nextLink, options)
 			if err != nil {
 				return LabsClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return LabsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *LabsClient) listCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, invoiceSectionName string, options *LabsClientListOptions) (*policy.Request, error) {
-	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/invoiceSections/{invoiceSectionName}/providers/Microsoft.Education/labs"
-	if billingAccountName == "" {
-		return nil, errors.New("parameter billingAccountName cannot be empty")
+func (client *LabsClient) listCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, invoiceSectionName string, nextLink string, options *LabsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/invoiceSections/{invoiceSectionName}/providers/Microsoft.Education/labs"
+		if billingAccountName == "" {
+			return nil, errors.New("parameter billingAccountName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{billingAccountName}", url.PathEscape(billingAccountName))
+		if billingProfileName == "" {
+			return nil, errors.New("parameter billingProfileName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{billingProfileName}", url.PathEscape(billingProfileName))
+		if invoiceSectionName == "" {
+			return nil, errors.New("parameter invoiceSectionName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{invoiceSectionName}", url.PathEscape(invoiceSectionName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{billingAccountName}", url.PathEscape(billingAccountName))
-	if billingProfileName == "" {
-		return nil, errors.New("parameter billingProfileName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{billingProfileName}", url.PathEscape(billingProfileName))
-	if invoiceSectionName == "" {
-		return nil, errors.New("parameter invoiceSectionName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{invoiceSectionName}", url.PathEscape(invoiceSectionName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20211201Preview)
-	if options != nil && options.IncludeBudget != nil {
-		reqQP.Set("includeBudget", strconv.FormatBool(*options.IncludeBudget))
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20211201Preview)
+		if options != nil && options.IncludeBudget != nil {
+			reqQP.Set("includeBudget", strconv.FormatBool(*options.IncludeBudget))
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *LabsClient) listHandleResponse(resp *http.Response) (LabsClientListResponse, error) {
+func (client *LabsClient) listHandleResponse(resp *http.Response, successCodes ...int) (LabsClientListResponse, error) {
 	result := LabsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LabListResult); err != nil {
 		return LabsClientListResponse{}, err
 	}
@@ -380,49 +387,63 @@ func (client *LabsClient) NewListAllPager(billingAccountName string, billingProf
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listAllCreateRequest(ctx, billingAccountName, billingProfileName, options)
-			}, nil)
+			req, err := client.listAllCreateRequest(ctx, billingAccountName, billingProfileName, nextLink, options)
 			if err != nil {
 				return LabsClientListAllResponse{}, err
 			}
-			return client.listAllHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return LabsClientListAllResponse{}, err
+			}
+			return client.listAllHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listAllCreateRequest creates the ListAll request.
-func (client *LabsClient) listAllCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, options *LabsClientListAllOptions) (*policy.Request, error) {
-	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/providers/Microsoft.Education/labs"
-	if billingAccountName == "" {
-		return nil, errors.New("parameter billingAccountName cannot be empty")
+func (client *LabsClient) listAllCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, nextLink string, options *LabsClientListAllOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/providers/Microsoft.Education/labs"
+		if billingAccountName == "" {
+			return nil, errors.New("parameter billingAccountName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{billingAccountName}", url.PathEscape(billingAccountName))
+		if billingProfileName == "" {
+			return nil, errors.New("parameter billingProfileName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{billingProfileName}", url.PathEscape(billingProfileName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{billingAccountName}", url.PathEscape(billingAccountName))
-	if billingProfileName == "" {
-		return nil, errors.New("parameter billingProfileName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{billingProfileName}", url.PathEscape(billingProfileName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20211201Preview)
-	if options != nil && options.IncludeBudget != nil {
-		reqQP.Set("includeBudget", strconv.FormatBool(*options.IncludeBudget))
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20211201Preview)
+		if options != nil && options.IncludeBudget != nil {
+			reqQP.Set("includeBudget", strconv.FormatBool(*options.IncludeBudget))
+		}
+		if options != nil && options.IncludeDeleted != nil {
+			reqQP.Set("includeDeleted", strconv.FormatBool(*options.IncludeDeleted))
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.IncludeDeleted != nil {
-		reqQP.Set("includeDeleted", strconv.FormatBool(*options.IncludeDeleted))
-	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listAllHandleResponse handles the ListAll response.
-func (client *LabsClient) listAllHandleResponse(resp *http.Response) (LabsClientListAllResponse, error) {
+func (client *LabsClient) listAllHandleResponse(resp *http.Response, successCodes ...int) (LabsClientListAllResponse, error) {
 	result := LabsClientListAllResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LabListResult); err != nil {
 		return LabsClientListAllResponse{}, err
 	}

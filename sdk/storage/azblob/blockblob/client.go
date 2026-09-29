@@ -15,7 +15,6 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
@@ -41,15 +40,9 @@ type Client base.CompositeClient[generated.BlobClient, generated.BlockBlobClient
 //   - cred - an Azure AD credential, typically obtained via the azidentity module
 //   - options - client options; pass nil to accept the default values
 func NewClient(blobURL string, cred azcore.TokenCredential, options *ClientOptions) (*Client, error) {
-	audience := base.GetAudience((*base.ClientOptions)(options))
 	conOptions := shared.GetClientOptions(options)
-	authPolicy := shared.NewStorageChallengePolicy(cred, audience, conOptions.InsecureAllowCredentialWithHTTP)
-	plOpts := runtime.PipelineOptions{PerCall: []policy.Policy{shared.NewRangePolicy()}, PerRetry: []policy.Policy{authPolicy}}
-	if p := base.NewExpectContinuePolicy(conOptions.ExpectContinueBehavior); p != nil {
-		plOpts.PerRetry = append(plOpts.PerRetry, p)
-	}
 
-	azClient, err := azcore.NewClient(exported.ModuleName, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
+	azClient, err := base.GetAzClient(blobURL, cred, nil, (*base.ClientOptions)(conOptions))
 	if err != nil {
 		return nil, err
 	}
@@ -62,12 +55,8 @@ func NewClient(blobURL string, cred azcore.TokenCredential, options *ClientOptio
 //   - options - client options; pass nil to accept the default values
 func NewClientWithNoCredential(blobURL string, options *ClientOptions) (*Client, error) {
 	conOptions := shared.GetClientOptions(options)
-	plOpts := runtime.PipelineOptions{PerCall: []policy.Policy{shared.NewRangePolicy()}}
-	if p := base.NewExpectContinuePolicy(conOptions.ExpectContinueBehavior); p != nil {
-		plOpts.PerRetry = append(plOpts.PerRetry, p)
-	}
 
-	azClient, err := azcore.NewClient(exported.ModuleName, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
+	azClient, err := base.GetAzClient(blobURL, nil, nil, (*base.ClientOptions)(conOptions))
 	if err != nil {
 		return nil, err
 	}
@@ -80,14 +69,9 @@ func NewClientWithNoCredential(blobURL string, options *ClientOptions) (*Client,
 //   - cred - a SharedKeyCredential created with the matching blob's storage account and access key
 //   - options - client options; pass nil to accept the default values
 func NewClientWithSharedKeyCredential(blobURL string, cred *blob.SharedKeyCredential, options *ClientOptions) (*Client, error) {
-	authPolicy := exported.NewSharedKeyCredPolicy(cred)
 	conOptions := shared.GetClientOptions(options)
-	plOpts := runtime.PipelineOptions{PerCall: []policy.Policy{shared.NewRangePolicy()}, PerRetry: []policy.Policy{authPolicy}}
-	if p := base.NewExpectContinuePolicy(conOptions.ExpectContinueBehavior); p != nil {
-		plOpts.PerRetry = append(plOpts.PerRetry, p)
-	}
 
-	azClient, err := azcore.NewClient(exported.ModuleName, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
+	azClient, err := base.GetAzClient(blobURL, nil, cred, (*base.ClientOptions)(conOptions))
 	if err != nil {
 		return nil, err
 	}

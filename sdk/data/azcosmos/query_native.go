@@ -96,7 +96,7 @@ func buildNativeQueryRequest(req *queryRequest, options OperationOptions, contai
 	}
 	releases = append(releases, func() { C.cosmos_partition_key_free(pk) })
 	var feedRange *C.cosmos_feed_range_t
-	if status := C.cosmos_feed_range_for_partition_key(container, pk, &feedRange); status != 0 {
+	if status := C.cosmos_feed_range_for_partition_key(container, pk, &feedRange); status != 0 { //nolint:gocritic // dupSubExpr targets cgo-generated code.
 		return request, release, status
 	}
 	releases = append(releases, func() { C.cosmos_feed_range_free(feedRange) })

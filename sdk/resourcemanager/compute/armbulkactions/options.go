@@ -247,6 +247,12 @@ type ScheduledActionsClientPatchResourcesOptions struct {
 	// placeholder for future optional parameters
 }
 
+// VirtualMachineBulkOperationsClientBulkAcknowledgeOperationErrorsOptions contains the optional parameters for the VirtualMachineBulkOperationsClient.BulkAcknowledgeOperationErrors
+// method.
+type VirtualMachineBulkOperationsClientBulkAcknowledgeOperationErrorsOptions struct {
+	// placeholder for future optional parameters
+}
+
 // VirtualMachineBulkOperationsClientBulkCancelOperationsOptions contains the optional parameters for the VirtualMachineBulkOperationsClient.BulkCancelOperations
 // method.
 type VirtualMachineBulkOperationsClientBulkCancelOperationsOptions struct {

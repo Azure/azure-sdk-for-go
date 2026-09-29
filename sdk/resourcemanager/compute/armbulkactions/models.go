@@ -12,6 +12,24 @@ type APIEntityReference struct {
 	ID *string
 }
 
+// AcknowledgeBulkOperationErrorsRequest - The operations for which errors should be acknowledged.
+type AcknowledgeBulkOperationErrorsRequest struct {
+	// REQUIRED; The Bulk Action Operation Ids that identify operations for which errors should be acknowledged.
+	OperationIDs []*string
+}
+
+// AcknowledgeBulkOperationErrorsResponse - The result of acknowledging errors for specified operations.
+type AcknowledgeBulkOperationErrorsResponse struct {
+	// REQUIRED; The Bulk Action Operation Ids that identify operations with acknowledged errors.
+	Acknowledged []*string
+
+	// REQUIRED; The Bulk Action Operation Ids that were not found or are no longer available.
+	NotFound []*string
+
+	// REQUIRED; The Bulk Action Operation Ids that identify operations with errors that could not be acknowledged.
+	Skipped []*string
+}
+
 // AdditionalCapabilities - Enables or disables a capability on the virtual machine or virtual machine scale set.
 type AdditionalCapabilities struct {
 	// The flag that enables or disables hibernation capability on the VM.

@@ -40,6 +40,68 @@ func (a *APIEntityReference) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// MarshalJSON implements the json.Marshaller interface for type AcknowledgeBulkOperationErrorsRequest.
+func (a AcknowledgeBulkOperationErrorsRequest) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "operationIds", a.OperationIDs)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type AcknowledgeBulkOperationErrorsRequest.
+func (a *AcknowledgeBulkOperationErrorsRequest) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %s", a, err.Error())
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "operationIds":
+			err = unpopulate(val, "OperationIDs", &a.OperationIDs)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %s", a, err.Error())
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type AcknowledgeBulkOperationErrorsResponse.
+func (a AcknowledgeBulkOperationErrorsResponse) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "acknowledged", a.Acknowledged)
+	populate(objectMap, "notFound", a.NotFound)
+	populate(objectMap, "skipped", a.Skipped)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type AcknowledgeBulkOperationErrorsResponse.
+func (a *AcknowledgeBulkOperationErrorsResponse) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %s", a, err.Error())
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "acknowledged":
+			err = unpopulate(val, "Acknowledged", &a.Acknowledged)
+			delete(rawMsg, key)
+		case "notFound":
+			err = unpopulate(val, "NotFound", &a.NotFound)
+			delete(rawMsg, key)
+		case "skipped":
+			err = unpopulate(val, "Skipped", &a.Skipped)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %s", a, err.Error())
+		}
+	}
+	return nil
+}
+
 // MarshalJSON implements the json.Marshaller interface for type AdditionalCapabilities.
 func (a AdditionalCapabilities) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)

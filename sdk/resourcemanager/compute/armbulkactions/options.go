@@ -277,6 +277,13 @@ type VirtualMachineBulkOperationsClientBulkHibernateOperationOptions struct {
 	// placeholder for future optional parameters
 }
 
+// VirtualMachineBulkOperationsClientBulkListOperationErrorsOptions contains the optional parameters for the VirtualMachineBulkOperationsClient.NewBulkListOperationErrorsPager
+// method.
+type VirtualMachineBulkOperationsClientBulkListOperationErrorsOptions struct {
+	// The number of minutes before the current time to include when listing bulk action errors.
+	LookbackInMinutes *int32
+}
+
 // VirtualMachineBulkOperationsClientBulkReimageOperationOptions contains the optional parameters for the VirtualMachineBulkOperationsClient.BulkReimageOperation
 // method.
 type VirtualMachineBulkOperationsClientBulkReimageOperationOptions struct {

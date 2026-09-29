@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2024-04-01-preview/NameAvailabilityV2Test_NameAvailable-POST-example-21.json
+// Generated from example definition: 2026-09-01/NameAvailabilityV2Test_NameAvailable-POST-example-21.json
 func ExampleProfilesClient_CheckTrafficManagerNameAvailabilityV2_nameAvailabilityV2TestNameAvailablePost21() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -42,7 +42,7 @@ func ExampleProfilesClient_CheckTrafficManagerNameAvailabilityV2_nameAvailabilit
 	// }
 }
 
-// Generated from example definition: 2024-04-01-preview/NameAvailabilityV2Test_NameNotAvailable-POST-example-23.json
+// Generated from example definition: 2026-09-01/NameAvailabilityV2Test_NameNotAvailable-POST-example-23.json
 func ExampleProfilesClient_CheckTrafficManagerNameAvailabilityV2_nameAvailabilityV2TestNameNotAvailablePost23() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -74,7 +74,7 @@ func ExampleProfilesClient_CheckTrafficManagerNameAvailabilityV2_nameAvailabilit
 	// }
 }
 
-// Generated from example definition: 2024-04-01-preview/NameAvailabilityTest_NameAvailable-POST-example-21.json
+// Generated from example definition: 2026-09-01/NameAvailabilityTest_NameAvailable-POST-example-21.json
 func ExampleProfilesClient_CheckTrafficManagerRelativeDNSNameAvailability_nameAvailabilityTestNameAvailablePost21() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -104,7 +104,7 @@ func ExampleProfilesClient_CheckTrafficManagerRelativeDNSNameAvailability_nameAv
 	// }
 }
 
-// Generated from example definition: 2024-04-01-preview/NameAvailabilityTest_NameNotAvailable-POST-example-23.json
+// Generated from example definition: 2026-09-01/NameAvailabilityTest_NameNotAvailable-POST-example-23.json
 func ExampleProfilesClient_CheckTrafficManagerRelativeDNSNameAvailability_nameAvailabilityTestNameNotAvailablePost23() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -136,7 +136,7 @@ func ExampleProfilesClient_CheckTrafficManagerRelativeDNSNameAvailability_nameAv
 	// }
 }
 
-// Generated from example definition: 2024-04-01-preview/Profile-PUT-MultiValue.json
+// Generated from example definition: 2026-09-01/Profile-PUT-MultiValue.json
 func ExampleProfilesClient_CreateOrUpdate_profilePutMultiValue() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -203,7 +203,7 @@ func ExampleProfilesClient_CreateOrUpdate_profilePutMultiValue() {
 	// }
 }
 
-// Generated from example definition: 2024-04-01-preview/Profile-PUT-NoEndpoints.json
+// Generated from example definition: 2026-09-01/Profile-PUT-NoEndpoints.json
 func ExampleProfilesClient_CreateOrUpdate_profilePutNoEndpoints() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -266,7 +266,7 @@ func ExampleProfilesClient_CreateOrUpdate_profilePutNoEndpoints() {
 	// }
 }
 
-// Generated from example definition: 2024-04-01-preview/Profile-PUT-WithAliasing.json
+// Generated from example definition: 2026-09-01/Profile-PUT-WithAliasing.json
 func ExampleProfilesClient_CreateOrUpdate_profilePutWithAliasing() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -378,7 +378,7 @@ func ExampleProfilesClient_CreateOrUpdate_profilePutWithAliasing() {
 	// }
 }
 
-// Generated from example definition: 2024-04-01-preview/Profile-PUT-WithCustomHeaders.json
+// Generated from example definition: 2026-09-01/Profile-PUT-WithCustomHeaders.json
 func ExampleProfilesClient_CreateOrUpdate_profilePutWithCustomHeaders() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -512,7 +512,7 @@ func ExampleProfilesClient_CreateOrUpdate_profilePutWithCustomHeaders() {
 	// }
 }
 
-// Generated from example definition: 2024-04-01-preview/Profile-PUT-WithEndpoints.json
+// Generated from example definition: 2026-09-01/Profile-PUT-WithEndpoints.json
 func ExampleProfilesClient_CreateOrUpdate_profilePutWithEndpoints() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -602,7 +602,7 @@ func ExampleProfilesClient_CreateOrUpdate_profilePutWithEndpoints() {
 	// }
 }
 
-// Generated from example definition: 2024-04-01-preview/Profile-PUT-WithEndpointsAndRecordType.json
+// Generated from example definition: 2026-09-01/Profile-PUT-WithEndpointsAndRecordType.json
 func ExampleProfilesClient_CreateOrUpdate_profilePutWithEndpointsAndRecordType() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -694,7 +694,7 @@ func ExampleProfilesClient_CreateOrUpdate_profilePutWithEndpointsAndRecordType()
 	// }
 }
 
-// Generated from example definition: 2024-04-01-preview/Profile-PUT-WithNestedEndpoints.json
+// Generated from example definition: 2026-09-01/Profile-PUT-WithNestedEndpoints.json
 func ExampleProfilesClient_CreateOrUpdate_profilePutWithNestedEndpoints() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -818,7 +818,7 @@ func ExampleProfilesClient_CreateOrUpdate_profilePutWithNestedEndpoints() {
 	// }
 }
 
-// Generated from example definition: 2024-04-01-preview/Profile-DELETE.json
+// Generated from example definition: 2026-09-01/Profile-DELETE.json
 func ExampleProfilesClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -842,7 +842,7 @@ func ExampleProfilesClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2024-04-01-preview/Profile-GET-WithEndpoints.json
+// Generated from example definition: 2026-09-01/Profile-GET-WithEndpoints.json
 func ExampleProfilesClient_Get_profileGetWithEndpoints() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -905,7 +905,7 @@ func ExampleProfilesClient_Get_profileGetWithEndpoints() {
 	// }
 }
 
-// Generated from example definition: 2024-04-01-preview/Profile-GET-WithEndpointsAndRecordType.json
+// Generated from example definition: 2026-09-01/Profile-GET-WithEndpointsAndRecordType.json
 func ExampleProfilesClient_Get_profileGetWithEndpointsAndRecordType() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -969,7 +969,7 @@ func ExampleProfilesClient_Get_profileGetWithEndpointsAndRecordType() {
 	// }
 }
 
-// Generated from example definition: 2024-04-01-preview/Profile-GET-WithTrafficViewDisabled.json
+// Generated from example definition: 2026-09-01/Profile-GET-WithTrafficViewDisabled.json
 func ExampleProfilesClient_Get_profileGetWithTrafficViewDisabled() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1033,7 +1033,7 @@ func ExampleProfilesClient_Get_profileGetWithTrafficViewDisabled() {
 	// }
 }
 
-// Generated from example definition: 2024-04-01-preview/Profile-GET-WithTrafficViewEnabled.json
+// Generated from example definition: 2026-09-01/Profile-GET-WithTrafficViewEnabled.json
 func ExampleProfilesClient_Get_profileGetWithTrafficViewEnabled() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1097,7 +1097,70 @@ func ExampleProfilesClient_Get_profileGetWithTrafficViewEnabled() {
 	// }
 }
 
-// Generated from example definition: 2024-04-01-preview/Profile-GET-ByResourceGroup.json
+// Generated from example definition: 2026-09-01/Profile-GET-WithoutRecordType.json
+func ExampleProfilesClient_Get_profileGetWithoutRecordType() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armtrafficmanager.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewProfilesClient().Get(ctx, "azuresdkfornetautoresttrafficmanager1323", "azuresdkfornetautoresttrafficmanager3880", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armtrafficmanager.ProfilesClientGetResponse{
+	// 	Profile: armtrafficmanager.Profile{
+	// 		Name: to.Ptr("azuresdkfornetautoresttrafficmanager3880"),
+	// 		Type: to.Ptr("Microsoft.Network/trafficManagerProfiles"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/azuresdkfornetautoresttrafficmanager1323/providers/Microsoft.Network/trafficManagerProfiles/azuresdkfornetautoresttrafficmanager3880"),
+	// 		Location: to.Ptr("global"),
+	// 		Properties: &armtrafficmanager.ProfileProperties{
+	// 			DNSConfig: &armtrafficmanager.DNSConfig{
+	// 				Fqdn: to.Ptr("azuresdkfornetautoresttrafficmanager3880.tmpreview.watmtest.azure-test.net"),
+	// 				RelativeName: to.Ptr("azuresdkfornetautoresttrafficmanager3880"),
+	// 				TTL: to.Ptr[int64](35),
+	// 			},
+	// 			Endpoints: []*armtrafficmanager.Endpoint{
+	// 				{
+	// 					Name: to.Ptr("My external endpoint"),
+	// 					Type: to.Ptr("Microsoft.Network/trafficManagerProfiles/externalEndpoints"),
+	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/azuresdkfornetautoresttrafficmanager1323/providers/Microsoft.Network/trafficManagerProfiles/azuresdkfornetautoresttrafficmanager3880/externalEndpoints/My external endpoint"),
+	// 					Properties: &armtrafficmanager.EndpointProperties{
+	// 						EndpointLocation: to.Ptr("North Europe"),
+	// 						EndpointMonitorStatus: to.Ptr(armtrafficmanager.EndpointMonitorStatusCheckingEndpoint),
+	// 						EndpointStatus: to.Ptr(armtrafficmanager.EndpointStatusEnabled),
+	// 						Priority: to.Ptr[int64](1),
+	// 						Target: to.Ptr("foobar.contoso.com"),
+	// 						Weight: to.Ptr[int64](1),
+	// 					},
+	// 				},
+	// 			},
+	// 			MonitorConfig: &armtrafficmanager.MonitorConfig{
+	// 				Path: to.Ptr("/testpath.aspx"),
+	// 				IntervalInSeconds: to.Ptr[int64](30),
+	// 				Port: to.Ptr[int64](80),
+	// 				ProfileMonitorStatus: to.Ptr(armtrafficmanager.ProfileMonitorStatusCheckingEndpoints),
+	// 				TimeoutInSeconds: to.Ptr[int64](10),
+	// 				ToleratedNumberOfFailures: to.Ptr[int64](3),
+	// 				Protocol: to.Ptr(armtrafficmanager.MonitorProtocolHTTP),
+	// 			},
+	// 			ProfileStatus: to.Ptr(armtrafficmanager.ProfileStatusEnabled),
+	// 			TrafficRoutingMethod: to.Ptr(armtrafficmanager.TrafficRoutingMethodPerformance),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-09-01/Profile-GET-ByResourceGroup.json
 func ExampleProfilesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1210,7 +1273,7 @@ func ExampleProfilesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2024-04-01-preview/Profile-GET-BySubscription.json
+// Generated from example definition: 2026-09-01/Profile-GET-BySubscription.json
 func ExampleProfilesClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1353,7 +1416,7 @@ func ExampleProfilesClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2024-04-01-preview/Profile-PATCH-MonitorConfig.json
+// Generated from example definition: 2026-09-01/Profile-PATCH-MonitorConfig.json
 func ExampleProfilesClient_Update_profilePatchMonitorConfig() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1447,7 +1510,7 @@ func ExampleProfilesClient_Update_profilePatchMonitorConfig() {
 	// }
 }
 
-// Generated from example definition: 2024-04-01-preview/Profile-PATCH-RecordType.json
+// Generated from example definition: 2026-09-01/Profile-PATCH-RecordType.json
 func ExampleProfilesClient_Update_profilePatchRecordType() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

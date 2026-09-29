@@ -6,6 +6,54 @@ package armrelationships
 
 import "time"
 
+// ContainsRelationship - Defines a contains relationship resource.
+type ContainsRelationship struct {
+	// The resource-specific properties for this resource.
+	Properties *ContainsRelationshipProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// ContainsRelationshipListResult - The response of a ContainsRelationship list operation.
+type ContainsRelationshipListResult struct {
+	// REQUIRED; The ContainsRelationship items on this page
+	Value []*ContainsRelationship
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// ContainsRelationshipProperties - contains relationship properties.
+type ContainsRelationshipProperties struct {
+	// READ-ONLY; The relationship target resource id.
+	TargetID *string
+
+	// READ-ONLY; Metadata about the relationship.
+	Metadata *RelationshipMetadata
+
+	// READ-ONLY; Information about the origin of the relationship.
+	OriginInformation *RelationshipOriginInformation
+
+	// READ-ONLY; The provisioning state of the relationship.
+	ProvisioningState *ProvisioningState
+
+	// READ-ONLY; The relationship source resource id. Must be a subscription or resource group.
+	SourceID *string
+
+	// READ-ONLY; The relationship target tenant id.
+	TargetTenant *string
+}
+
 // DependencyOfRelationship - Defines a dependencyOf relationship resource.
 type DependencyOfRelationship struct {
 	// The resource-specific properties for this resource.
@@ -24,6 +72,15 @@ type DependencyOfRelationship struct {
 	Type *string
 }
 
+// DependencyOfRelationshipListResult - The response of a DependencyOfRelationship list operation.
+type DependencyOfRelationshipListResult struct {
+	// REQUIRED; The DependencyOfRelationship items on this page
+	Value []*DependencyOfRelationship
+
+	// The link to the next page of items
+	NextLink *string
+}
+
 // DependencyOfRelationshipProperties - dependencyOf relationship properties.
 type DependencyOfRelationshipProperties struct {
 	// REQUIRED; The relationship target resource id.
@@ -38,11 +95,11 @@ type DependencyOfRelationshipProperties struct {
 	// READ-ONLY; Information about the origin of the relationship.
 	OriginInformation *RelationshipOriginInformation
 
-	// READ-ONLY; The relationship source resource id.
-	SourceID *string
-
 	// READ-ONLY; The provisioning state of the relationship.
 	ProvisioningState *ProvisioningState
+
+	// READ-ONLY; The relationship source resource id.
+	SourceID *string
 }
 
 // Operation - REST API Operation
@@ -132,13 +189,22 @@ type ServiceGroupMemberRelationship struct {
 	Type *string
 }
 
+// ServiceGroupMemberRelationshipListResult - The response of a ServiceGroupMemberRelationship list operation.
+type ServiceGroupMemberRelationshipListResult struct {
+	// REQUIRED; The ServiceGroupMemberRelationship items on this page
+	Value []*ServiceGroupMemberRelationship
+
+	// The link to the next page of items
+	NextLink *string
+}
+
 // ServiceGroupMemberRelationshipProperties - ServiceGroupMember relationship properties.
 type ServiceGroupMemberRelationshipProperties struct {
-	// REQUIRED; The relationship target resource id.
-	TargetID *string
+	// REQUIRED; The relationship source resource id. Must be a service group.
+	SourceID *string
 
-	// The relationship target tenant id.
-	TargetTenant *string
+	// The relationship source tenant id.
+	SourceTenant *string
 
 	// READ-ONLY; Metadata about the relationship.
 	Metadata *RelationshipMetadata
@@ -146,11 +212,11 @@ type ServiceGroupMemberRelationshipProperties struct {
 	// READ-ONLY; Information about the origin of the relationship.
 	OriginInformation *RelationshipOriginInformation
 
-	// READ-ONLY; The relationship source resource id.
-	SourceID *string
-
 	// READ-ONLY; The provisioning state of the relationship.
 	ProvisioningState *ProvisioningState
+
+	// READ-ONLY; The relationship target resource id. Server-derived from the scoped resource.
+	TargetID *string
 }
 
 // SystemData - Metadata pertaining to creation and last modification of the resource.

@@ -7,7 +7,6 @@ import (
 	"context"
 	"net/http"
 	"net/url"
-	"strings"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -19,6 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/v2/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/v2/queueerror"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/v2/sas"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/internal/sasurl"
 )
 
 // ServiceClient represents a URL to the Azure Queue Storage service allowing you to manipulate queues.
@@ -216,27 +216,5 @@ func (s *ServiceClient) GetSASURL(resources sas.AccountResourceTypes, permission
 		return "", err
 	}
 
-	endpoint := s.URL()
-	// endpoint may already contain a query string in unusual cases (e.g. a custom endpoint
-	// with pre-existing query parameters). Split it off before normalizing the account path
-	// so the trailing slash is appended to the path and not the query value, then restore
-	// the query string before appending the SAS.
-	path, rawQuery, hasQuery := strings.Cut(endpoint, "?")
-	if !strings.HasSuffix(path, "/") {
-		// add a trailing slash to be consistent with the portal
-		path += "/"
-	}
-	endpoint = path
-	if hasQuery {
-		endpoint += "?" + rawQuery
-	}
-	if encoded := qps.Encode(); encoded != "" {
-		separator := "?"
-		if hasQuery {
-			separator = "&"
-		}
-		endpoint += separator + encoded
-	}
-
-	return endpoint, nil
+	return sasurl.AppendToAccountURL(s.URL(), qps.Encode()), nil
 }

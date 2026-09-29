@@ -25,6 +25,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/path"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/sas"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/internal/sasurl"
 )
 
 // ClientOptions contains the optional parameters when creating a Client.
@@ -588,19 +589,7 @@ func (d *Client) GetSASURL(permissions sas.DirectoryPermissions, expiry time.Tim
 		return "", err
 	}
 
-	// d.BlobURL() may already contain a query string in unusual cases (e.g. a custom
-	// endpoint with pre-existing query parameters). Use the correct separator to avoid
-	// emitting a second "?", which would otherwise produce a malformed URL.
-	endpoint := d.BlobURL()
-	if encoded := qps.Encode(); encoded != "" {
-		separator := "?"
-		if strings.Contains(endpoint, "?") {
-			separator = "&"
-		}
-		endpoint += separator + encoded
-	}
-
-	return endpoint, nil
+	return sasurl.Append(d.BlobURL(), qps.Encode()), nil
 }
 
 // TODO: Undelete()

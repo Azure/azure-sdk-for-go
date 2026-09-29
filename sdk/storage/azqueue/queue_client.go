@@ -5,7 +5,6 @@ package azqueue
 
 import (
 	"context"
-	"strings"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -17,6 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/v2/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/v2/queueerror"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/v2/sas"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/internal/sasurl"
 )
 
 // ClientOptions contains the optional parameters when creating a Client.
@@ -237,17 +237,5 @@ func (q *QueueClient) GetSASURL(permissions sas.QueuePermissions, expiry time.Ti
 		return "", err
 	}
 
-	// q.URL() may already contain a query string in unusual cases (e.g. a custom endpoint
-	// with pre-existing query parameters). Use the correct separator to avoid emitting a
-	// second "?", which would otherwise produce a malformed URL.
-	endpoint := q.URL()
-	if encoded := qps.Encode(); encoded != "" {
-		separator := "?"
-		if strings.Contains(endpoint, "?") {
-			separator = "&"
-		}
-		endpoint += separator + encoded
-	}
-
-	return endpoint, nil
+	return sasurl.Append(q.URL(), qps.Encode()), nil
 }

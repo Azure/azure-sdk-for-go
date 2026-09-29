@@ -27,6 +27,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/generated"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/sas"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/internal/sasurl"
 )
 
 // ClientOptions contains the optional parameters when creating a Client.
@@ -426,19 +427,7 @@ func (f *Client) GetSASURL(permissions sas.FilePermissions, expiry time.Time, o 
 		return "", err
 	}
 
-	// f.URL() may already contain a query string (e.g. "sharesnapshot" if this file client was
-	// derived from a share/directory client scoped to a share snapshot). Merge rather than
-	// blindly appending "?" to avoid producing a malformed URL with a duplicated "?".
-	endpoint := f.URL()
-	if encoded := qps.Encode(); encoded != "" {
-		separator := "?"
-		if strings.Contains(endpoint, "?") {
-			separator = "&"
-		}
-		endpoint += separator + encoded
-	}
-
-	return endpoint, nil
+	return sasurl.Append(f.URL(), qps.Encode()), nil
 }
 
 // Concurrent Upload Functions -----------------------------------------------------------------------------------------

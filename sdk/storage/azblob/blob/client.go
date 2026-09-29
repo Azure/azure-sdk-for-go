@@ -10,7 +10,6 @@ import (
 	"io"
 	"net/http"
 	"os"
-	"strings"
 	"sync"
 	"sync/atomic"
 	"time"
@@ -25,6 +24,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/sas"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/internal/sasurl"
 )
 
 // ClientOptions contains the optional parameters when creating a Client.
@@ -299,20 +299,7 @@ func (b *Client) GetSASURL(permissions sas.BlobPermissions, expiry time.Time, o 
 		return "", err
 	}
 
-	// b.URL() may already contain a query string (e.g. "versionid" or "snapshot" for
-	// versioned/snapshot clients). Use the correct separator to avoid emitting a second "?",
-	// which would otherwise produce a malformed URL and let a caller "recover" a base-blob SAS
-	// suffix by splitting on the final "?" and re-appending it to the base blob path.
-	endpoint := b.URL()
-	if encoded := qps.Encode(); encoded != "" {
-		separator := "?"
-		if strings.Contains(endpoint, "?") {
-			separator = "&"
-		}
-		endpoint += separator + encoded
-	}
-
-	return endpoint, nil
+	return sasurl.Append(b.URL(), qps.Encode()), nil
 }
 
 // Concurrent Download Functions -----------------------------------------------------------------------------------------

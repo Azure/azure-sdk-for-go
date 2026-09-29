@@ -24,6 +24,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/sas"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/internal/sasurl"
 )
 
 // ClientOptions contains the optional parameters when creating a Client.
@@ -293,29 +294,7 @@ func (s *Client) GetSASURL(resources sas.AccountResourceTypes, permissions sas.A
 		return "", err
 	}
 
-	endpoint := s.URL()
-	// endpoint may already contain a query string in unusual cases (e.g. a custom endpoint
-	// with pre-existing query parameters). Split it off before normalizing the account path
-	// so the trailing slash is appended to the path and not the query value, then restore
-	// the query string before appending the SAS.
-	path, rawQuery, hasQuery := strings.Cut(endpoint, "?")
-	if !strings.HasSuffix(path, "/") {
-		// add a trailing slash to be consistent with the portal
-		path += "/"
-	}
-	endpoint = path
-	if hasQuery {
-		endpoint += "?" + rawQuery
-	}
-	if encoded := qps.Encode(); encoded != "" {
-		separator := "?"
-		if hasQuery {
-			separator = "&"
-		}
-		endpoint += separator + encoded
-	}
-
-	return endpoint, nil
+	return sasurl.AppendToAccountURL(s.URL(), qps.Encode()), nil
 }
 
 // FilterBlobs operation finds all blobs in the storage account whose tags match a given search expression.

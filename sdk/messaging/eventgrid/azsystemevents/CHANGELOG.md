@@ -34,6 +34,14 @@
 - New field `ToBsuid` in struct `ACSMessageDeliveryStatusUpdatedEventData`
 - New field `FromBsuid` in struct `ACSMessageReceivedEventData`
 
+### Breaking Changes
+
+The following identifiers introduced in `v1.0.1-beta.1` were renamed to use standard Go initialism casing:
+
+- `AcsChatRetentionPolicy` to `ACSChatRetentionPolicy`
+- `AcsChatRetentionPolicyKind` to `ACSChatRetentionPolicyKind`, including its constants and `PossibleACSChatRetentionPolicyKindValues`
+- `AcsChatThreadDeletedReasonType` to `ACSChatThreadDeletedReasonType`, including its constants and `PossibleACSChatThreadDeletedReasonTypeValues`
+
 
 ## 1.0.1-beta.1 (2026-06-25)
 

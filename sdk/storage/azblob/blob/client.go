@@ -17,6 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/temporal"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/bloberror"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/base"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/exported"
@@ -302,11 +303,26 @@ func (b *Client) downloadBuffer(ctx context.Context, writer io.WriterAt, o downl
 	}
 
 	count := o.Range.Count
-	if count != CountToEnd {
+	// An explicit count with layout routing off has nothing for an initial read to discover,
+	// so it goes straight to the parallel chunks and keeps main's request pattern unchanged.
+	// With routing on, the initial read is still needed: it carries the download hint that
+	// decides whether a layout applies, and the ETag that keeps the chunks consistent.
+	if count != CountToEnd && !o.layoutAwareRoutingEnabled() {
 		return b.parallelDownload(ctx, writer, o, count)
 	}
 
-	dr, err := b.DownloadStream(ctx, o.getDownloadBlobOptions(HTTPRange{Offset: o.Range.Offset, Count: o.BlockSize}, nil))
+	// The initial read never asks for more than the caller wanted.
+	initialCount := o.BlockSize
+	if count != CountToEnd {
+		if count <= 0 {
+			return 0, nil
+		}
+		if count < initialCount {
+			initialCount = count
+		}
+	}
+
+	dr, err := b.DownloadStream(ctx, o.getDownloadBlobOptions(HTTPRange{Offset: o.Range.Offset, Count: initialCount}, nil))
 	if err != nil {
 		if bloberror.HasCode(err, bloberror.InvalidRange) {
 			return 0, nil
@@ -322,21 +338,25 @@ func (b *Client) downloadBuffer(ctx context.Context, writer io.WriterAt, o downl
 		return 0, fmt.Errorf("response contained no content headers; this may indicate a 304 Not Modified due to access conditions")
 	}
 
-	var totalSize int64
-	if dr.ContentRange != nil {
-		totalSize = parseContentRangeTotal(*dr.ContentRange)
-		if totalSize <= 0 {
-			_ = dr.Body.Close()
-			return 0, fmt.Errorf("unable to parse total size from Content-Range header: %s", *dr.ContentRange)
+	// The caller's count already bounds the download when they gave one; only a CountToEnd
+	// download has to learn the size from the response.
+	if count == CountToEnd {
+		var totalSize int64
+		if dr.ContentRange != nil {
+			totalSize = parseContentRangeTotal(*dr.ContentRange)
+			if totalSize <= 0 {
+				_ = dr.Body.Close()
+				return 0, fmt.Errorf("unable to parse total size from Content-Range header: %s", *dr.ContentRange)
+			}
+		} else {
+			totalSize = *dr.ContentLength + o.Range.Offset
 		}
-	} else {
-		totalSize = *dr.ContentLength + o.Range.Offset
-	}
 
-	count = totalSize - o.Range.Offset
-	if count <= 0 {
-		_ = dr.Body.Close()
-		return 0, nil
+		count = totalSize - o.Range.Offset
+		if count <= 0 {
+			_ = dr.Body.Close()
+			return 0, nil
+		}
 	}
 
 	if dr.ETag != nil {
@@ -366,6 +386,9 @@ func (b *Client) downloadBuffer(ctx context.Context, writer io.WriterAt, o downl
 		return 0, nil
 	}
 
+	// The download hint has to be read off the response before the body is consumed. It is what
+	// decides whether the remainder of this download is worth routing with the blob's layout.
+	downloadHint := dr.DownloadHint
 	prog := &downloadProgress{}
 	var body io.ReadCloser = dr.NewRetryReader(ctx, &o.RetryReaderOptionsPerBlock)
 	if o.Progress != nil {
@@ -395,7 +418,18 @@ func (b *Client) downloadBuffer(ctx context.Context, writer io.WriterAt, o downl
 	}
 
 	remaining := count - initialChunkSize
-	remainingDownloaded, err := b.parallelDownloadFrom(ctx, writer, o, initialChunkSize, remaining, prog)
+
+	// More data remains. Layout aware routing applies only when the caller left it enabled and
+	// the service asked for it via the download hint on the initial response.
+	var layoutResource *temporal.Resource[layout, context.Context]
+	if o.layoutAwareRoutingEnabled() && downloadHint != nil && *downloadHint == generated.DownloadHintLayout {
+		layoutResource, err = b.resolveLayout(ctx, o, initialChunkSize, remaining)
+		if err != nil {
+			return 0, err
+		}
+	}
+
+	remainingDownloaded, err := b.parallelDownloadFrom(ctx, writer, o, initialChunkSize, remaining, prog, layoutResource)
 	if err != nil {
 		return 0, err
 	}
@@ -448,7 +482,7 @@ func (b *Client) parallelDownload(ctx context.Context, writer io.WriterAt, o dow
 	return dataDownloaded, nil
 }
 
-func (b *Client) parallelDownloadFrom(ctx context.Context, writer io.WriterAt, o downloadOptions, writerOffset int64, remaining int64, prog *downloadProgress) (int64, error) {
+func (b *Client) parallelDownloadFrom(ctx context.Context, writer io.WriterAt, o downloadOptions, writerOffset int64, remaining int64, prog *downloadProgress, layoutResource *temporal.Resource[layout, context.Context]) (int64, error) {
 	dataDownloaded := int64(0)
 
 	err := shared.DoBatchTransfer(ctx, &shared.BatchTransferOptions{
@@ -458,8 +492,17 @@ func (b *Client) parallelDownloadFrom(ctx context.Context, writer io.WriterAt, o
 		NumChunks:     uint64(((remaining - 1) / o.BlockSize) + 1),
 		Concurrency:   o.Concurrency,
 		Operation: func(ctx context.Context, chunkStart int64, count int64) error {
-			dr, err := b.DownloadStream(ctx, o.getDownloadBlobOptions(HTTPRange{
-				Offset: chunkStart + writerOffset + o.Range.Offset, Count: count}, nil))
+			blobOffset := chunkStart + writerOffset + o.Range.Offset
+			downloadBlobOptions := o.getDownloadBlobOptions(HTTPRange{Offset: blobOffset, Count: count}, nil)
+			// Route this chunk to the endpoint the layout serves it from. A refresh that fails
+			// leaves the chunk on the client's configured endpoint rather than failing the
+			// download.
+			if layoutResource != nil {
+				if chunkLayout, lerr := layoutResource.Get(ctx); lerr == nil && !chunkLayout.fallback {
+					downloadBlobOptions.LayoutEndpoint = getIdealEndpoint(blobOffset, chunkLayout)
+				}
+			}
+			dr, err := b.DownloadStream(ctx, downloadBlobOptions)
 			if err != nil {
 				return err
 			}
@@ -499,6 +542,9 @@ func (b *Client) DownloadStream(ctx context.Context, o *DownloadStreamOptions) (
 	if o == nil {
 		o = &DownloadStreamOptions{}
 	}
+	if o.LayoutEndpoint != "" {
+		ctx = shared.WithLayoutEndpoint(ctx, o.LayoutEndpoint)
+	}
 	dr, err := b.generated().Download(ctx, o.format())
 	var coreErr *azcore.ResponseError
 	if errors.As(err, &coreErr) && coreErr.StatusCode == http.StatusNotModified {
@@ -523,6 +569,8 @@ func (b *Client) DownloadStream(ctx context.Context, o *DownloadStreamOptions) (
 		cpkInfo:                 o.CPKInfo,
 		cpkScope:                o.CPKScopeInfo,
 		transactionalValidation: o.TransactionalValidation,
+		// carried so a retry of this read stays on the endpoint the layout chose for it
+		layoutEndpoint: o.LayoutEndpoint,
 	}, err
 }
 
@@ -558,6 +606,91 @@ func (b *Client) DownloadFile(ctx context.Context, file *os.File, o *DownloadFil
 	}
 
 	return downloaded, nil
+}
+
+// resolveLayout enumerates the layout covering the part of the blob that still has to be
+// downloaded and returns the cache holding it. It returns a nil resource when the layout cannot
+// be used, in which case the remaining chunks go to the client's configured endpoint.
+//
+// The layout is resolved once here rather than on the first chunk, so a fallback or no-layout
+// answer costs a single enumeration instead of one per chunk, and the resource is handed to the
+// chunk downloads so a transfer running past the layout's expiry refreshes it once rather than
+// per chunk.
+//
+// o.AccessConditions already carries the initial read's ETag by the time this is called, so the
+// enumeration is pinned to the same version of the blob as the data.
+func (b *Client) resolveLayout(ctx context.Context, o downloadOptions, writerOffset, remaining int64) (*temporal.Resource[layout, context.Context], error) {
+	layoutOptions := o.getBlobLayoutOptions()
+	if layoutOptions == nil {
+		layoutOptions = &GetLayoutOptions{}
+	}
+	// Only the part of the blob that still has to be read needs a layout.
+	layoutOptions.Range = HTTPRange{Offset: o.Range.Offset + writerOffset, Count: remaining}
+
+	resource := temporal.NewResourceWithOptions(
+		func(ctx context.Context) (layout, time.Time, error) {
+			return getLayout(ctx, b.GetLayoutPager(layoutOptions))
+		}, temporal.ResourceOptions[layout, context.Context]{
+			ShouldRefresh: shouldRefreshLayout,
+		})
+
+	l, err := resource.Get(ctx)
+	if err != nil {
+		// getLayout caches "layout unavailable" as a fallback layout, so any error here is fatal.
+		return nil, err
+	}
+	if l.fallback || len(l.layoutRanges) == 0 {
+		// The service can't supply a layout, or the blob has none: read the remainder from the
+		// client's configured endpoint.
+		return nil, nil
+	}
+	return resource, nil
+}
+
+// GetLayoutPager returns the blob's layout: the set of byte ranges making up the blob and the
+// storage endpoint that serves each one. Pass the endpoint covering a given offset as
+// DownloadStreamOptions.LayoutEndpoint to route that read for better locality.
+//
+// A single enumeration describes the whole requested range, so callers implementing a custom
+// chunked download should enumerate once and reuse the result across chunks rather than paging
+// per chunk. A blob's layout can change over time; refresh the cached layout roughly every
+// 5 minutes, which is the interval Client.DownloadBuffer and Client.DownloadFile use internally.
+//
+// Unless the caller supplies an If-Match condition in options.AccessConditions, the ETag returned
+// by the first page is sent as If-Match on every subsequent page, so that a single enumeration
+// always describes one version of the blob.
+//
+// For more information, see https://docs.microsoft.com/rest/api/storageservices/get-blob-layout.
+func (b *Client) GetLayoutPager(options *GetLayoutOptions) *runtime.Pager[GetLayoutResponse] {
+	opts := options.format()
+	if opts == nil {
+		opts = &generated.BlobClientGetLayoutOptions{}
+	}
+	// Use the caller's If-Match when they supplied one, otherwise capture the ETag from the
+	// first response so every later page is locked to the same version of the blob.
+	initialIfMatch := opts.IfMatch
+
+	return runtime.NewPager(runtime.PagingHandler[GetLayoutResponse]{
+		More: func(page GetLayoutResponse) bool {
+			return page.NextMarker != nil && len(*page.NextMarker) > 0
+		},
+		Fetcher: func(ctx context.Context, page *GetLayoutResponse) (GetLayoutResponse, error) {
+			pageOpts := *opts
+			if page != nil {
+				pageOpts.Marker = page.NextMarker
+				pageOpts.IfMatch = initialIfMatch
+			}
+			result, err := b.generated().GetLayout(ctx, &pageOpts)
+			if err != nil {
+				return GetLayoutResponse{}, err
+			}
+			// Capture the ETag from the first response for every subsequent request.
+			if page == nil && initialIfMatch == nil {
+				initialIfMatch = result.ETag
+			}
+			return result, nil
+		},
+	})
 }
 
 // parseContentRangeLength parses the range length from a Content-Range header value.

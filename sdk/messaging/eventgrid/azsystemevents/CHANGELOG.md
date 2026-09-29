@@ -1,6 +1,6 @@
 # Release History
 
-## 1.1.0 (2026-09-27)
+## 1.1.0 (2026-09-29)
 ### Features Added
 
 - New value `TypeLifecycleHookEvents` added to enum type `string`
@@ -10,7 +10,6 @@
 - New enum type `LifecycleHookActionState` with values `LifecycleHookActionStateApproved`, `LifecycleHookActionStateRejected`, `LifecycleHookActionStateWaiting`
 - New enum type `VirtualMachineScaleSetLifecycleHookEventState` with values `VirtualMachineScaleSetLifecycleHookEventStateActive`, `VirtualMachineScaleSetLifecycleHookEventStateCompleted`
 - New enum type `VirtualMachineScaleSetLifecycleHookEventType` with values `VirtualMachineScaleSetLifecycleHookEventTypeUpgradeAutoOSRollingBatchStarting`, `VirtualMachineScaleSetLifecycleHookEventTypeUpgradeAutoOSScheduling`
-- New function `PossibleLifecycleHookActionValues() []LifecycleHookAction`
 - New struct `ACSChatRetentionPolicy`
 - New struct `APIEntityReference`
 - New struct `LifecycleHookEventsEventData`
@@ -32,8 +31,8 @@
 - New field `RetentionPolicy` in struct `ACSChatThreadPropertiesUpdatedPerUserEventData`
 - New field `SequenceID` in struct `ACSChatTypingIndicatorReceivedInThreadEventData`
 - New field `OnBehalfOf` in struct `ACSIncomingCallEventData`
-- New field `ToBSUID` in struct `ACSMessageDeliveryStatusUpdatedEventData`
-- New field `FromBSUID` in struct `ACSMessageReceivedEventData`
+- New field `ToBsuid` in struct `ACSMessageDeliveryStatusUpdatedEventData`
+- New field `FromBsuid` in struct `ACSMessageReceivedEventData`
 
 
 ## 1.0.1-beta.1 (2026-06-25)

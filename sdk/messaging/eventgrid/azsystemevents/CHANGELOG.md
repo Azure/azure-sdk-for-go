@@ -32,7 +32,6 @@
 - New field `SequenceID` in struct `ACSChatTypingIndicatorReceivedInThreadEventData`
 - New field `OnBehalfOf` in struct `ACSIncomingCallEventData`
 - New field `ToBsuid` in struct `ACSMessageDeliveryStatusUpdatedEventData`
-- New field `FromBsuid` in struct `ACSMessageReceivedEventData`
 
 ### Breaking Changes
 

@@ -50,9 +50,12 @@ Before writing any comment, run through this gate. If any item applies, stay sil
 4. **Restating the diff.** If the comment doesn't ask for a change or flag a risk, don't post it.
 5. **Non-Go changes.** Docs, samples, CI, and tooling PRs are in scope, but judge them on their own terms —
    assess the changed instructions or behavior. Don't apply the Go API checklist below to them.
-6. **Security findings.** Describe the risk and the fix, but never post exploitable detail (working payloads,
-   live endpoints, credentials) in a public review comment. Route those through the private reporting process in
-   [`AGENTS.md`](../../../AGENTS.md#security-and-compliance).
+6. **Security findings.** Flag a security regression introduced by this PR on the changed line before merge,
+   briefly explaining the risk and a safe remedy. Do not include working payloads, attack steps, credentials,
+   live endpoints, or details that could expose a vulnerability in deployed code. If the flaw already affects
+   deployed or released code, do not disclose technical details publicly; ask a maintainer to follow the private
+   reporting process in [`AGENTS.md`](../../../AGENTS.md#security-and-compliance). The reviewer cannot send email,
+   so it must not claim to have reported the vulnerability privately or substitute a public issue for that process.
 
 Prefer a few high-confidence comments over broad coverage. Each comment should name the guideline
 it enforces and suggest the concrete replacement code.
@@ -66,7 +69,7 @@ These are breaking-change risks and deserve a comment every time.
   accept a subscription ID when required, a credential, and `*arm.ClientOptions`. Credential-free and connection-string
   variants use the established `WithNoCredential` and `FromConnectionString` suffixes.
 - **No exported fields on client types.** Client state must be unexported and safe for concurrent use by multiple goroutines.
-- **Methods have pointer receivers.** `func (c *WidgetClient) Get(...)`.
+- **Service client methods have pointer receivers.** `func (c *WidgetClient) Get(...)`.
 - **`context.Context` is the first parameter** of every method that performs I/O, sleeps, or does significant CPU work.
   Required parameters follow it; the final parameter is the options pointer.
 - **Options structs.** Every method takes a `*<Client><Method>Options` as its last parameter, even when it currently has
@@ -213,8 +216,8 @@ would pick up. See the [release checklist](../../../documentation/development/re
 - A user-visible behavior change, new API, bug fix, or breaking change needs a `CHANGELOG.md` entry
   in the module's **Unreleased** section, under the correct heading
   (`Features Added`, `Breaking Changes`, `Bugs Fixed`, `Other Changes`).
-- Breaking changes require a major version bump and a migration note. Call these out explicitly and prominently —
-  a missed breaking change is the most expensive review miss in this repo.
+- Breaking changes to stable public APIs require a major version bump and a migration note. Preview APIs can change
+  between prerelease versions without a major bump, but breaking changes should still be documented.
 - New or changed exported APIs should have accompanying examples and README updates.
 
 ## Comment style

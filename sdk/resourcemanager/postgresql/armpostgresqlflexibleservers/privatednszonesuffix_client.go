@@ -17,7 +17,7 @@ import (
 // PrivateDNSZoneSuffixClient contains the methods for the PrivateDNSZoneSuffix group.
 // Don't use this type directly, use NewPrivateDNSZoneSuffixClient() instead.
 //
-// Generated from API version 2026-04-01-preview
+// Generated from API version 2026-07-01-preview
 type PrivateDNSZoneSuffixClient struct {
 	internal *arm.Client
 }
@@ -65,7 +65,7 @@ func (client *PrivateDNSZoneSuffixClient) getCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401Preview)
+	reqQP.Set("api-version", version20260701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

@@ -12,8 +12,8 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-07-01-preview/DatabasesCreate.json
-func ExampleDatabasesClient_BeginCreate() {
+// Generated from example definition: 2026-07-01-preview/DBAgentUpdateDisable.json
+func ExampleDbAgentsClient_BeginCreateOrUpdate_disableTheSingletonDefaultDatabaseAgentForAServer() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -23,10 +23,9 @@ func ExampleDatabasesClient_BeginCreate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewDatabasesClient().BeginCreate(ctx, "exampleresourcegroup", "exampleserver", "exampledatabase", armpostgresqlflexibleservers.Database{
-		Properties: &armpostgresqlflexibleservers.DatabaseProperties{
-			Charset:   to.Ptr("utf8"),
-			Collation: to.Ptr("en_US.utf8"),
+	poller, err := clientFactory.NewDbAgentsClient().BeginCreateOrUpdate(ctx, "exampleresourcegroup", "exampleserver", armpostgresqlflexibleservers.DbAgentForUpdate{
+		Properties: &armpostgresqlflexibleservers.DbAgentForUpdateProperties{
+			State: to.Ptr(armpostgresqlflexibleservers.DbAgentForUpdateStateDisabled),
 		},
 	}, nil)
 	if err != nil {
@@ -38,8 +37,8 @@ func ExampleDatabasesClient_BeginCreate() {
 	}
 }
 
-// Generated from example definition: 2026-07-01-preview/DatabasesDelete.json
-func ExampleDatabasesClient_BeginDelete() {
+// Generated from example definition: 2026-07-01-preview/DBAgentUpdateEnable.json
+func ExampleDbAgentsClient_BeginCreateOrUpdate_enableTheSingletonDefaultDatabaseAgentForAServer() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -49,7 +48,11 @@ func ExampleDatabasesClient_BeginDelete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewDatabasesClient().BeginDelete(ctx, "exampleresourcegroup", "exampleserver", "exampledatabase", nil)
+	poller, err := clientFactory.NewDbAgentsClient().BeginCreateOrUpdate(ctx, "exampleresourcegroup", "exampleserver", armpostgresqlflexibleservers.DbAgentForUpdate{
+		Properties: &armpostgresqlflexibleservers.DbAgentForUpdateProperties{
+			State: to.Ptr(armpostgresqlflexibleservers.DbAgentForUpdateStateEnabled),
+		},
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -59,8 +62,8 @@ func ExampleDatabasesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-07-01-preview/DatabasesGet.json
-func ExampleDatabasesClient_Get() {
+// Generated from example definition: 2026-07-01-preview/DBAgentGet.json
+func ExampleDbAgentsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -70,28 +73,29 @@ func ExampleDatabasesClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewDatabasesClient().Get(ctx, "exampleresourcegroup", "exampleserver", "exampledatabase", nil)
+	res, err := clientFactory.NewDbAgentsClient().Get(ctx, "exampleresourcegroup", "exampleserver", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armpostgresqlflexibleservers.DatabasesClientGetResponse{
-	// 	Database: armpostgresqlflexibleservers.Database{
-	// 		Name: to.Ptr("exampledatabase"),
-	// 		Type: to.Ptr("Microsoft.DBforPostgreSQL/flexibleServers/databases"),
-	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBforPostgreSQL/flexibleServers/exampleserver/databases/exampledatabase"),
-	// 		Properties: &armpostgresqlflexibleservers.DatabaseProperties{
-	// 			Charset: to.Ptr("utf8"),
-	// 			Collation: to.Ptr("en_US.utf8"),
+	// res = armpostgresqlflexibleservers.DbAgentsClientGetResponse{
+	// 	DbAgent: armpostgresqlflexibleservers.DbAgent{
+	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBforPostgreSQL/flexibleServers/exampleserver/dbAgents/Default"),
+	// 		Name: to.Ptr("Default"),
+	// 		Type: to.Ptr("Microsoft.DBforPostgreSQL/flexibleServers/dbAgents"),
+	// 		Properties: &armpostgresqlflexibleservers.DbAgentProperties{
+	// 			State: to.Ptr(armpostgresqlflexibleservers.DbAgentStateDisabled),
+	// 			ProvisioningState: to.Ptr(armpostgresqlflexibleservers.DbAgentProvisioningStateSucceeded),
+	// 			LastModifiedTime: to.Ptr(time.Date(2026, time.August, 28, 15, 30, 0, 0, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-07-01-preview/DatabasesListByServer.json
-func ExampleDatabasesClient_NewListByServerPager() {
+// Generated from example definition: 2026-07-01-preview/DBAgentList.json
+func ExampleDbAgentsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -101,7 +105,7 @@ func ExampleDatabasesClient_NewListByServerPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewDatabasesClient().NewListByServerPager("exampleresourcegroup", "exampleserver", nil)
+	pager := clientFactory.NewDbAgentsClient().NewListPager("exampleresourcegroup", "exampleserver", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -112,25 +116,17 @@ func ExampleDatabasesClient_NewListByServerPager() {
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armpostgresqlflexibleservers.DatabasesClientListByServerResponse{
-		// 	DatabaseList: armpostgresqlflexibleservers.DatabaseList{
-		// 		Value: []*armpostgresqlflexibleservers.Database{
+		// page = armpostgresqlflexibleservers.DbAgentsClientListResponse{
+		// 	DbAgentListResult: armpostgresqlflexibleservers.DbAgentListResult{
+		// 		Value: []*armpostgresqlflexibleservers.DbAgent{
 		// 			{
-		// 				Name: to.Ptr("exampledatabase1"),
-		// 				Type: to.Ptr("Microsoft.DBforPostgreSQL/flexibleServers/databases"),
-		// 				ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBforPostgreSQL/flexibleServers/exampleserver/databases/exampledatabase1"),
-		// 				Properties: &armpostgresqlflexibleservers.DatabaseProperties{
-		// 					Charset: to.Ptr("utf8"),
-		// 					Collation: to.Ptr("en_US.utf8"),
-		// 				},
-		// 			},
-		// 			{
-		// 				Name: to.Ptr("exampledatabase2"),
-		// 				Type: to.Ptr("Microsoft.DBforPostgreSQL/flexibleServers/databases"),
-		// 				ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBforPostgreSQL/flexibleServers/exampleserver/databases/exampledatabase2"),
-		// 				Properties: &armpostgresqlflexibleservers.DatabaseProperties{
-		// 					Charset: to.Ptr("utf8"),
-		// 					Collation: to.Ptr("en_US.utf8"),
+		// 				ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBforPostgreSQL/flexibleServers/exampleserver/dbAgents/Default"),
+		// 				Name: to.Ptr("Default"),
+		// 				Type: to.Ptr("Microsoft.DBforPostgreSQL/flexibleServers/dbAgents"),
+		// 				Properties: &armpostgresqlflexibleservers.DbAgentProperties{
+		// 					State: to.Ptr(armpostgresqlflexibleservers.DbAgentStateEnabled),
+		// 					ProvisioningState: to.Ptr(armpostgresqlflexibleservers.DbAgentProvisioningStateSucceeded),
+		// 					LastModifiedTime: to.Ptr(time.Date(2026, time.August, 28, 15, 30, 0, 0, time.UTC)),
 		// 				},
 		// 			},
 		// 		},

@@ -1,6 +1,6 @@
-# Azure Secretsstoreextension Module for Go
+# Azure Key Vault Secret Store extension for Kubernetes module for Go
 
-The `armsecretsstoreextension` module provides operations for working with Azure Secretsstoreextension.
+The `armsecretsstoreextension` module provides operations for working with the Azure Key Vault Secret Store extension for Kubernetes.
 
 [Source code](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/resourcemanager/secretsstoreextension/armsecretsstoreextension)
 
@@ -15,7 +15,7 @@ The `armsecretsstoreextension` module provides operations for working with Azure
 
 This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for versioning and dependency management.
 
-Install the Azure Secretsstoreextension module:
+Install the Azure Key Vault Secret Store extension for Kubernetes module:
 
 ```sh
 go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/secretsstoreextension/armsecretsstoreextension
@@ -23,7 +23,7 @@ go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/secretsstoreextensi
 
 ## Authorization
 
-When creating a client, you will need to provide a credential for authenticating with Azure Secretsstoreextension.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
+When creating a client, you will need to provide a credential for authenticating with the Azure Key Vault Secret Store extension for Kubernetes.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
 
 ```go
 cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -33,7 +33,7 @@ For more information on authentication, please see the documentation for `aziden
 
 ## Client Factory
 
-Azure Secretsstoreextension module consists of one or more clients. We provide a client factory which could be used to create any client in this module.
+The Azure Key Vault Secret Store extension for Kubernetes module consists of one or more clients. We provide a client factory which could be used to create any client in this module.
 
 ```go
 clientFactory, err := armsecretsstoreextension.NewClientFactory(<subscription ID>, cred, nil)

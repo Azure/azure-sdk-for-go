@@ -11,6 +11,7 @@ import (
 	"fmt"
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/eventgrid/azsystemevents"
 
@@ -19,6 +20,20 @@ import (
 
 // As close a part as I could get to @JoshLove-msft's tests here:
 //   https://github.com/Azure/azure-sdk-for-net/blob/main/sdk/eventgrid/Azure.Messaging.EventGrid/tests/ConsumeEventTests.cs
+
+func TestEventGridEventMarshalConvertsEventTimeToUTC(t *testing.T) {
+	eventTime := time.Date(2026, time.September, 29, 11, 30, 0, 0, time.FixedZone("IST", 5*60*60+30*60))
+	event := azsystemevents.EventGridEvent{
+		EventTime: &eventTime,
+	}
+
+	data, err := json.Marshal(event)
+	require.NoError(t, err)
+
+	var payload map[string]any
+	require.NoError(t, json.Unmarshal(data, &payload))
+	require.Equal(t, "2026-09-29T06:00:00Z", payload["eventTime"])
+}
 
 func TestParsesEventGridEnvelope(t *testing.T) {
 	requestContent := "[{  \"id\": \"2d1781af-3a4c-4d7c-bd0c-e34b19da4e66\",  \"topic\": \"/subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx\",  \"subject\": \"mySubject\",  \"data\": {    \"validationCode\": \"512d38b6-c7b8-40c8-89fe-f46f9e9622b6\",    \"validationUrl\": \"https://rp-eastus2.eventgrid.azure.net:553/eventsubscriptions/estest/validate?id=B2E34264-7D71-453A-B5FB-B62D0FDC85EE&t=2018-04-26T20:30:54.4538837Z&apiVersion=2018-05-01-preview&token=1BNqCxBBSSE9OnNSfZM4%2b5H9zDegKMY6uJ%2fO2DFRkwQ%3d\"  },  \"eventType\": \"Microsoft.EventGrid.SubscriptionValidationEvent\",  \"eventTime\": \"2018-01-25T22:12:19.4556811Z\",  \"metadataVersion\": \"1\",  \"dataVersion\": \"1\"}]"

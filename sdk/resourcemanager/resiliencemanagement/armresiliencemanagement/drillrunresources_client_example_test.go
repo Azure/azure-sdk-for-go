@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-04-01-preview/DrillRunResources_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-31-preview/DrillRunResources_Get_MaximumSet_Gen.json
 func ExampleDrillRunResourcesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -155,7 +155,7 @@ func ExampleDrillRunResourcesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/DrillRunResources_List_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-31-preview/DrillRunResources_List_MaximumSet_Gen.json
 func ExampleDrillRunResourcesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

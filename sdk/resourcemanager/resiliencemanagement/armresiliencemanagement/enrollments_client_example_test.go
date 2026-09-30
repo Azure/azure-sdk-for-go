@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-04-01-preview/Enrollments_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-31-preview/Enrollments_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleEnrollmentsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -59,7 +59,7 @@ func ExampleEnrollmentsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/Enrollments_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-31-preview/Enrollments_Delete_MaximumSet_Gen.json
 func ExampleEnrollmentsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -80,7 +80,7 @@ func ExampleEnrollmentsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/Enrollments_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-31-preview/Enrollments_Get_MaximumSet_Gen.json
 func ExampleEnrollmentsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -119,7 +119,7 @@ func ExampleEnrollmentsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/Enrollments_List_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-31-preview/Enrollments_List_MaximumSet_Gen.json
 func ExampleEnrollmentsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

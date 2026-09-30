@@ -74,8 +74,15 @@ func (c *Client) executeQuery(ctx context.Context, req *queryRequest) (QueryItem
 	if result.err != nil {
 		return QueryItemsResponse{}, addQuerySetupCharge(result.err, setup)
 	}
+	return result.queryPage(setup)
+}
+
+func (result completionResult) queryPage(setup Response) (QueryItemsResponse, error) {
 	response := result.response.Response
 	response.RequestCharge += setup.RequestCharge
+	if response.ActivityID == "" && setup.RequestCharge != 0 {
+		response.ActivityID = setup.ActivityID
+	}
 	return decodeQueryPage(result.body, response, result.response.SessionToken,
 		result.nextContinuation, result.httpStatus == 0)
 }
@@ -137,6 +144,5 @@ func syntheticQueryCompletion(body []byte, continuation string, status int) (Que
 		next_continuation: nativeToken,
 	}
 	result := translateCompletionOutcome(&completion)
-	return decodeQueryPage(result.body, result.response.Response, result.response.SessionToken,
-		result.nextContinuation, result.httpStatus == 0)
+	return result.queryPage(Response{})
 }

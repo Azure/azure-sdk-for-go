@@ -1,4 +1,4 @@
-# Azure Key Vault Secret Store extension for Kubernetes module for Go
+# [Azure Key Vault Secret Store extension for Kubernetes](https://learn.microsoft.com/azure/azure-arc/kubernetes/secret-store-extension) module for Go
 
 The `armsecretsstoreextension` module provides operations for working with the Azure Key Vault Secret Store extension for Kubernetes.
 

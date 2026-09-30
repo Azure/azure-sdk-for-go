@@ -159,8 +159,12 @@ Judge the changed behavior, not whether a particular helper name appears in the 
   `az` for everything else. Sub-packages within a module take an unprefixed, descriptive name:
   `sdk/storage/azblob` is package `azblob`, but `sdk/storage/azblob/container` is package `container`,
   not `azcontainer`. Don't flag an unprefixed sub-package.
-- Every exported constant, function, type, field, and method has a doc comment starting with its own name.
-  Constructor and method doc comments document each parameter.
+- Every exported **top-level declaration** — constant, function, type, and method — has a doc comment starting
+  with its own name. This does not extend to struct fields, whose comments are descriptive prose and needn't
+  repeat the field name (`// A custom endpoint address that can be used...` above `CustomEndpoint` is fine).
+- Document parameters where it adds information the signature doesn't already convey — a non-obvious format,
+  unit, ownership, or nil-handling. Don't require a mechanical line per parameter; the published guidelines
+  show that style, but maintained handwritten clients in this repo don't follow it.
 
 ## Dependencies (`go.mod`)
 
@@ -203,7 +207,18 @@ would pick up. See the [release checklist](../../../documentation/development/re
 
   Conversely, don't ask for `require` on independent assertions — several `assert` calls that each check an
   unrelated field are good practice, since they report every mismatch in one run.
-- Tests must be deterministic and free of external state; flag sleeps, wall-clock assumptions, and shared globals.
+- **Unit tests** must be deterministic and free of external state — flag a `time.Sleep` standing in for real
+  synchronization, wall-clock or timezone assumptions, and mutable package-level state shared across tests.
+- **Live and recorded suites are different.** They intentionally provision real Azure resources and may wait for
+  eventual consistency, as in `armterraform`'s suite setup. Don't flag that as nondeterminism. Comment only on a
+  concrete timing or interference risk — an unbounded wait, a fixture that leaks between tests, or a resource
+  name that collides when suites run in parallel.
+- **Tests with a playback path wait with `recording.Sleep`, not `time.Sleep`.** `recording.Sleep` sleeps while
+  recording and is a no-op in `PlaybackMode`, so a raw `time.Sleep` makes every playback run pay a delay that
+  only matters against the live service.
+  This applies only where playback exists. **Live-only tests may use `time.Sleep`** — waiting on real resource
+  provisioning is unavoidable and there's no playback run to slow down. Check whether the test actually records
+  and plays back before flagging; if it doesn't, say nothing.
 - Live-test configuration comes from `recording.Getenv()` / `os.Getenv()` backed by a module-root `.env`;
   flag hard-coded endpoints, subscription IDs, or anything resembling a secret.
 

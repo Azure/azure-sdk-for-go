@@ -14,4 +14,5 @@ applyTo: '**/*_test.go'
   assert.Equal(t, "value", *resp.Value)
   assert.Equal(t, 200, resp.StatusCode)
   ```
+- In tests that record and play back, use `recording.Sleep` rather than `time.Sleep` when waiting for eventual consistency or provisioning. `recording.Sleep` sleeps while recording and is a no-op in `PlaybackMode`, so playback runs don't pay a delay that only matters against the live service. Live-only tests, which never play back, may use `time.Sleep` directly.
 - Environment variables required for live testing can be found by looking for recording.Getenv() calls, or os.Getenv() calls in the code. You should place these into a .env file at the root of the module, before testing.

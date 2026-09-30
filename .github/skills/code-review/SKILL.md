@@ -64,10 +64,23 @@ it enforces and suggest the concrete replacement code.
 
 These are breaking-change risks and deserve a comment every time.
 
-- **Client naming.** Service client types end in `Client`, and constructors return the client **by reference**.
-  Data-plane constructors commonly accept an endpoint, credential, and client options. Management-plane constructors
-  accept a subscription ID when required, a credential, and `*arm.ClientOptions`. Credential-free and connection-string
-  variants use the established `WithNoCredential` and `FromConnectionString` suffixes.
+- **Client naming depends on the service family — check which one you're in before flagging anything.**
+  All client types end in `Client`, take unexported state, and are returned **by reference** from their
+  constructor. Beyond that the conventions differ:
+
+  | | Client type | Constructor | Options / response prefix |
+  |---|---|---|---|
+  | Data plane, **single** client | `Client` | `NewClient(endpoint string, cred azcore.TokenCredential, options *ClientOptions)` | **none** — `GetKeyOptions`, `GetKeyResponse` |
+  | Data plane, **multiple** clients | `<Name>Client` | `New<Name>Client(endpoint string, cred azcore.TokenCredential, options *ClientOptions)` | `<Name>Client` — `<Name>ClientGetOptions` |
+  | Management plane (`arm*`) | `<Resource>Client` | `New<Resource>Client(subscriptionID string, cred azcore.TokenCredential, options *arm.ClientOptions)` | `<Resource>Client` — `<Resource>ClientGetOptions` |
+
+  When a data-plane module exposes exactly one client, it is named plain `Client`, and the client name is
+  **not** prefixed onto its options and response types — `azkeys.Client` with `azkeys.CreateKeyOptions`, not
+  `azkeys.ClientCreateKeyOptions`. Don't ask for a prefix there.
+  ARM constructors take `subscriptionID`, not an endpoint, and `*arm.ClientOptions` rather than a
+  module-specific options type. Don't flag a valid ARM constructor for not looking data-plane.
+  Credential-free and connection-string variants follow the same pattern
+  (`NewClientWithNoCredential`, `New<Name>ClientFromConnectionString`).
 - **No exported fields on client types.** Client state must be unexported and safe for concurrent use by multiple goroutines.
 - **Service client methods have pointer receivers.** `func (c *WidgetClient) Get(...)`.
 - **`context.Context` is the first parameter** of every method that performs I/O, sleeps, or does significant CPU work.
@@ -88,7 +101,7 @@ These are breaking-change risks and deserve a comment every time.
 ### Long-running operations
 
 - Return `*runtime.Poller[T]` from a method prefixed with `Begin`.
-- The `<Client>Begin<Method>Options` struct exposes a `ResumeToken string` field.
+- The options struct for the `Begin` method exposes a `ResumeToken string` field.
 - Context cancellation stops **polling only** — flag code that cancels the service-side operation.
 
 ## Error handling

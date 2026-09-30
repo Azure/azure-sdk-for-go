@@ -2,5 +2,15 @@
 applyTo: '**/*_test.go'
 ---
 
-- Use github.com/stretchr/testify/require for assertions. Some commonly used functions: `require.Equal`, `require.NoError`.
+- Use github.com/stretchr/testify for assertions rather than hand-rolled `if got != want { t.Errorf(...) }` checks or custom assertion helpers. Some commonly used functions: `require.Equal`, `require.NoError`, `require.NotNil`.
+- Choose between `require` and `assert` based on what follows the assertion:
+  - Use `require` when the rest of the test depends on the predicate holding, so a failure stops the test instead of panicking or cascading. Typical cases are checking an error before using the result, checking for nil before a dereference, and checking length before indexing.
+  - Use `assert` for independent checks that should each be reported in a single run, for example verifying several unrelated fields on a response.
+
+  ```go
+  require.NoError(t, err)
+  require.NotNil(t, resp.Value)
+  assert.Equal(t, "value", *resp.Value)
+  assert.Equal(t, 200, resp.StatusCode)
+  ```
 - Environment variables required for live testing can be found by looking for recording.Getenv() calls, or os.Getenv() calls in the code. You should place these into a .env file at the root of the module, before testing.

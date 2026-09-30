@@ -1,32 +1,209 @@
 ---
-name: code-review
-description: Use for GitHub Copilot code review of pull requests in Azure/azure-sdk-for-go. Find actionable regressions and relevant Azure SDK for Go guideline violations while respecting generated code.
+name: go-sdk-code-review
+description: Use when reviewing any pull request in the Azure SDK for Go repository, including Go source, go.mod, docs, samples, and CI or tooling changes. Applies the Azure SDK for Go design and implementation guidelines to client constructors, service methods, options structs, pagers, pollers, error handling, models, pipeline and logging, dependencies, docs, tests, and examples, and suppresses comments on generated code.
 ---
 
-# Review Azure SDK for Go pull requests
+# Azure SDK for Go Code Review
 
-Review every PR, including documentation and configuration changes. Apply Go-specific checks only where relevant. Follow [repository instructions](../../copilot-instructions.md), [agent guidance](../../../AGENTS.md), and [contribution guidance](../../../CONTRIBUTING.md). For Go changes, consult the [API design guidelines](https://azure.github.io/azure-sdk/golang_introduction.html) and [implementation guidelines](https://azure.github.io/azure-sdk/golang_implementation.html). More specific repository instructions take precedence when guidance differs.
+Review changes against the Azure SDK for Go
+[design guidelines](https://azure.github.io/azure-sdk/golang_introduction.html) and
+[implementation guidelines](https://azure.github.io/azure-sdk/golang_implementation.html), together with
+[`AGENTS.md`](../../../AGENTS.md), [`CONTRIBUTING.md`](../../../CONTRIBUTING.md), and the repository
+[Copilot instructions](../../copilot-instructions.md).
 
-## Review process
+**Repository-specific instructions win.** Where this skill or a file under `.github/instructions/` contradicts the
+published guidelines, follow the repository. The published guidelines describe the cross-language ideal; this repo
+has deliberate exceptions.
 
-1. Read the PR's purpose, diff, and enough surrounding code to understand changed behavior, callers, affected modules, and compatibility. Distinguish modern `sdk/` modules from legacy `services/` and `profiles/` packages; don't demand a redesign of unchanged legacy APIs.
-2. Identify generated files before applying design or style rules. Review generated changes for clear consumer-impacting regressions, not deviations from handwritten-code conventions.
-3. Check each potential finding against a concrete scenario: the PR must introduce or expose the problem, and its impact and remedy must be demonstrable. Focus on correctness, security/privacy, API compatibility, and consequential guideline violations rather than speculative issues or minor nits.
+Comment only on issues that a Go SDK maintainer would ask to change before merging.
 
-## Go SDK checks, when applicable
+## Step 0 — Decide whether to comment at all
 
-- **API shape and compatibility:** Check new or changed clients, constructors, exported names and documentation, response and error types, and public API compatibility. New clients keep fields private and return a pointer from their constructors; models expose fields for consumers. I/O methods take `context.Context` first; optional parameters use an options pointer whose `nil` and zero-value forms behave alike. Validate client-side parameters, but let the service validate parameters sent directly to it. Pager constructors perform no I/O; long-running operations use pollers and preserve resume behavior. Check concurrency safety when client state changes.
-- **Service implementation:** REST operations use the `azcore` pipeline and existing policies; authentication uses the appropriate `azcore`/`azidentity` mechanisms without persisting credentials. Service calls don't start goroutines. Errors remain diagnosable and preserve the underlying failure and relevant HTTP details. Logging redacts non-allow-listed values, tracing creates spans and propagates the caller's context, and client configuration behaves consistently after construction. Assess changed behavior, not merely whether a particular helper appears in the diff.
-- **Modules and coverage:** For `go.mod` changes, consult the [dependency rules](../../instructions/go-mod-standards.instructions.md); modules being released must not retain `replace` directives ([release checklist](../../../documentation/development/release.md)). Check meaningful regression coverage, relevant README/CHANGELOG updates, and examples for new APIs. Follow the repository's [Go code](../../instructions/go-code.instructions.md), [test](../../instructions/go-tests.instructions.md), and [example](../../instructions/go-examples.instructions.md) rules; for example, don't request `// Output:` comments in examples even though the published guidelines sometimes recommend them.
+Before writing any comment, run through this gate. If any item applies, stay silent.
 
-For documentation-only, tooling, or CI changes, assess the actual changed behavior or instructions instead of applying the Go API checklist.
+1. **Generated code.** If the file contains `// Code generated by Microsoft (R) Go Code Generator.`,
+   do **not** comment on style, naming, doc comments, example values, constants, or any pattern listed in
+   [`.github/instructions/go-code.instructions.md`](../../instructions/go-code.instructions.md).
+   Only report a clear, demonstrable bug not covered by those rules. When in doubt, say nothing —
+   the fix belongs in `azure-rest-api-specs` or the emitter, not in this repo. Never suggest editing generated
+   output directly; it is overwritten on regeneration. Point the fix at the source spec, the generator inputs
+   (e.g. `tsp-location.yaml`), or the generator itself — see
+   [generation guidance](../../../documentation/development/generate.md).
 
-## Generated SDK code
+   **The one exception is acronym casing** (see "Naming and file conventions" below). Go uppercases acronyms
+   in exported identifiers while most other languages don't, so these are routinely missed upstream.
+   Flag them on generated code too, for any exported identifier — types, struct fields, methods, parameters,
+   and enum/constant member names alike. Because generated files are overwritten, the comment must say the fix
+   belongs upstream in `azure-rest-api-specs` (via a client-name customization such as `@clientName`),
+   not in this repository. Never suggest editing the generated file directly.
 
-Treat a file containing `// Code generated by Microsoft (R) Go Code Generator.` as generated. Do not suggest changing the intentional patterns enumerated in the [Go code rules](../../instructions/go-code.instructions.md), including their nil checks, operation names, initial LRO status handling, spec-sourced comments/examples, constant casing, module names, and multi-segment resource paths. Don't suggest directly editing generated output to fix a spec- or generator-owned problem; such edits will be lost on regeneration ([generation guidance](../../../documentation/development/generate.md)).
+   This applies to the **identifier only**, never the string value it is assigned:
+   renaming `S3WithHmac` to `S3WithHMAC` is in scope; changing its `"S3WithHmac"` wire value is not.
+2. **Unchanged code.** Only comment on lines in the diff, or on pre-existing code the diff directly breaks.
+3. **Style nits.** `gofmt`, import ordering, line length, and comment wrapping are handled by tooling. Don't comment.
+4. **Restating the diff.** If the comment doesn't ask for a change or flag a risk, don't post it.
+5. **Non-Go changes.** Docs, samples, CI, and tooling PRs are in scope, but judge them on their own terms —
+   assess the changed instructions or behavior. Don't apply the Go API checklist below to them.
+6. **Security findings.** Describe the risk and the fix, but never post exploitable detail (working payloads,
+   live endpoints, credentials) in a public review comment. Route those through the private reporting process in
+   [`AGENTS.md`](../../../AGENTS.md#security-and-compliance).
 
-If a generated change introduces a clear, consequential regression outside those intentional patterns, explain the consumer impact and point the fix toward the source spec, generator inputs such as `tsp-location.yaml`, or generator implementation as appropriate. Do not assume every apparent oddity is a bug.
+Prefer a few high-confidence comments over broad coverage. Each comment should name the guideline
+it enforces and suggest the concrete replacement code.
 
-## Review comments
+## Public API surface
 
-Leave comments only for substantiated issues, anchored to the relevant changed lines. State the failing scenario, its impact, and an actionable remedy; cite the applicable guideline when the finding depends on it. Avoid duplicates and requests for cosmetic cleanup. If nothing meets this threshold, don't invent findings. Follow the repository's [private reporting guidance](../../../AGENTS.md#security-and-compliance) rather than disclosing exploitable security details in public review comments.
+These are breaking-change risks and deserve a comment every time.
+
+- **Client naming.** Service client types end in `Client`. Constructors are
+  `New<Name>Client(endpoint string, cred azcore.TokenCredential, options *<Name>ClientOptions) (*<Name>Client, error)`
+  and return the client **by reference**. Variants: `New<Name>ClientWithNoCredential`, `New<Name>ClientFromConnectionString`.
+- **No exported fields on client types.** Client state must be unexported and safe for concurrent use by multiple goroutines.
+- **Methods have pointer receivers.** `func (c *WidgetClient) Get(...)`.
+- **`context.Context` is the first parameter** of every method that performs I/O, sleeps, or does significant CPU work.
+  Required parameters follow it; the final parameter is the options pointer.
+- **Options structs.** Every method takes a `*<Client><Method>Options` as its last parameter, even when it currently has
+  no optional parameters (use a placeholder comment). Passing `nil` must be semantically identical to passing a
+  zero-valued struct — flag any code where `nil` and `&Options{}` diverge.
+- **Model types export all fields** (to support mocking) and document read-only fields, which must be omitted when marshalling.
+- **One method per REST endpoint.** Flag added overloads/convenience duplicates of an existing operation.
+- **No goroutines or channels in API calls.** The SDK exposes synchronous methods; concurrency is the caller's choice.
+- **Exchange types come from the standard library or `azcore`.** Flag any exported signature that leaks a third-party type.
+
+### Paging
+
+- Return `*runtime.Pager[T]`, named `New<Operation>Pager`.
+- The pager constructor performs **no I/O**: it takes no `context.Context` and returns no `error`.
+
+### Long-running operations
+
+- Return `*runtime.Poller[T]` from a method prefixed with `Begin`.
+- The `<Client>Begin<Method>Options` struct exposes a `ResumeToken string` field.
+- Context cancellation stops **polling only** — flag code that cancels the service-side operation.
+
+## Error handling
+
+- Errors are the last return value; a method that fails to do its job returns an error.
+- Use `errors.Is` / `errors.As`-friendly wrapping (`%w`) when the underlying cause aids diagnosis.
+- HTTP failures must carry the response and originating request — use `runtime.NewResponseError()`
+  (or `azcore.ResponseError`), not a hand-rolled `fmt.Errorf` that drops the response.
+- **Don't invent error types.** Use types from the service, the standard library, or `azcore`.
+- Use distinct types so callers can tell a client-side parameter error from a transport/marshalling failure.
+- Error messages should be actionable and name the parameter or operation involved.
+
+## Parameter validation
+
+- **Validate client parameters** — values used to build a URI, read a file, or drive client-side logic.
+- **Do not validate service parameters.** Flag added nil/empty-string checks on values passed straight to the service;
+  let the service return the error.
+
+## Service implementation
+
+Judge the changed behavior, not whether a particular helper name appears in the diff.
+
+- **Pipeline.** REST calls go through the `azcore` pipeline with the standard policies (telemetry, retry,
+  authentication, response downloader, distributed tracing, logging, transport). Flag a hand-rolled
+  `http.Client` call path or a custom policy that duplicates an existing `azcore` one.
+- **Authentication.** Use `azcore` / `azidentity` credential types and policies. Credentials must not be
+  persisted, cached to disk, or logged.
+- **Logging.** Log through the `azcore` logging API. Headers and query parameters are redacted unless they're on
+  the allow-list — flag any change that logs a request/response value, URL, or error detail that could carry a
+  token, key, or PII.
+- **Tracing.** Spans propagate the caller's `context.Context` rather than creating a detached root span.
+- **Configuration.** Client behavior must not change in response to configuration mutated after construction.
+  The documented exceptions are log level and tracing on/off, which take effect immediately.
+  Service-specific environment variables are prefixed `AZURE_`.
+
+## Naming and file conventions
+
+- Acronyms in exported identifiers are fully uppercased: `UserID` not `UserId`, `ACSRecordedEvent` not `AcsRecordedEvent`.
+  This does **not** apply to string constant values. This is the one naming rule that also applies to generated code —
+  see "Step 0" above for how to word the comment.
+- Every `.go` file starts with the copyright header (which may follow a `//go:build` directive):
+
+  ```go
+  // Copyright (c) Microsoft Corporation. All rights reserved.
+  // Licensed under the MIT License.
+  ```
+
+- Package names are all lowercase (no uppercase letters, hyphens, or underscores) and match the leaf directory name.
+  The `arm` / `az` prefix applies **only to a module's top-level package** — `arm` for management plane,
+  `az` for everything else. Sub-packages within a module take an unprefixed, descriptive name:
+  `sdk/storage/azblob` is package `azblob`, but `sdk/storage/azblob/container` is package `container`,
+  not `azcontainer`. Don't flag an unprefixed sub-package.
+- Every exported constant, function, type, field, and method has a doc comment starting with its own name.
+  Constructor and method doc comments document each parameter.
+
+## Dependencies (`go.mod`)
+
+Per [`.github/instructions/go-mod-standards.instructions.md`](../../instructions/go-mod-standards.instructions.md),
+flag any new direct requirement outside:
+
+- other `github.com/Azure/azure-sdk-for-go/sdk/...` modules
+- the standard library and `golang.org/x/...`
+- `github.com/stretchr/testify`, `github.com/joho/godotenv`, `go.opentelemetry.io/otel/*`, `github.com/golang/mock`
+- the module-specific allowances (e.g. `azidentity`, `azservicebus`/`azeventhubs`, `azopenai`)
+
+Also flag native (cgo) dependencies, and version bumps that would force a consumer's hand on compatibility.
+
+A module being released must not retain `replace` directives — flag any left in a `go.mod` that a release
+would pick up. See the [release checklist](../../../documentation/development/release.md).
+
+## Tests (`*_test.go`)
+
+- Assertions use `github.com/stretchr/testify` — flag a **hand-rolled replacement**: bare
+  `if got != want { t.Errorf(...) }` chains, custom `assertEqual` helpers, or a home-grown assertion package
+  reimplementing what testify already provides.
+- `require` vs. `assert` is a judgment call, not a style rule. Don't comment on the choice in general —
+  only when the assertion is a **post-condition the following code depends on**, where continuing past a
+  failure would panic or cascade into misleading failures. The common cases are a nil check before a
+  dereference, an error check before using the result, and a length check before indexing:
+
+  ```go
+  // wrong: a nil Value panics the test run rather than failing it
+  assert.NotNil(t, resp.Value)
+  assert.Equal(t, "value", *resp.Value)
+
+  // right
+  require.NotNil(t, resp.Value)
+  assert.Equal(t, "value", *resp.Value)
+  ```
+
+  Conversely, don't ask for `require` on independent assertions — several `assert` calls that each check an
+  unrelated field are good practice, since they report every mismatch in one run.
+- Tests must be deterministic and free of external state; flag sleeps, wall-clock assumptions, and shared globals.
+- Live-test configuration comes from `recording.Getenv()` / `os.Getenv()` backed by a module-root `.env`;
+  flag hard-coded endpoints, subscription IDs, or anything resembling a secret.
+
+## Examples (`example*_test.go`)
+
+- Use `context.TODO()`, never `context.Background()`, so readers know to supply their own context.
+- Error handling uses exactly this form, comment included:
+
+  ```go
+  if err != nil {
+      // TODO: Update the following line with your application specific error handling logic
+      log.Fatalf("ERROR: %s", err)
+  }
+  ```
+
+- No `// Output:` comment — examples in this repo are not executable. This **intentionally contradicts** the
+  published guidelines, which recommend adding one; the repository rule wins. Never ask for an `// Output:`
+  comment, and flag one that's added.
+- One scenario per example; don't chain unrelated operations.
+
+## Changelog and docs
+
+- A user-visible behavior change, new API, bug fix, or breaking change needs a `CHANGELOG.md` entry
+  in the module's **Unreleased** section, under the correct heading
+  (`Features Added`, `Breaking Changes`, `Bugs Fixed`, `Other Changes`).
+- Breaking changes require a major version bump and a migration note. Call these out explicitly and prominently —
+  a missed breaking change is the most expensive review miss in this repo.
+- New or changed exported APIs should have accompanying examples and README updates.
+
+## Comment style
+
+- One issue per comment, anchored to the offending line.
+- State the rule, then the fix: *"Per the Go guidelines, pager constructors perform no I/O — drop the `ctx` parameter and the `error` return, and move the request into `Fetcher`."*
+- Link the relevant guideline section when it isn't obvious.
+- If you are not confident the change is required, don't post the comment.

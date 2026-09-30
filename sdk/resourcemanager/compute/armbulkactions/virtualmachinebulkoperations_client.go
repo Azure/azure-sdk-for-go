@@ -45,6 +45,72 @@ func NewVirtualMachineBulkOperationsClient(subscriptionID string, credential azc
 	return client, nil
 }
 
+// BulkAcknowledgeOperationErrors - Acknowledge errors for specified operations in a resource group.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - location - The location name.
+//   - body - The Bulk Action Operation Ids that identify operations for which errors should be acknowledged.
+//   - options - VirtualMachineBulkOperationsClientBulkAcknowledgeOperationErrorsOptions contains the optional parameters for
+//     the VirtualMachineBulkOperationsClient.BulkAcknowledgeOperationErrors method.
+func (client *VirtualMachineBulkOperationsClient) BulkAcknowledgeOperationErrors(ctx context.Context, resourceGroupName string, location string, body AcknowledgeBulkOperationErrorsRequest, options *VirtualMachineBulkOperationsClientBulkAcknowledgeOperationErrorsOptions) (VirtualMachineBulkOperationsClientBulkAcknowledgeOperationErrorsResponse, error) {
+	var err error
+	const operationName = "VirtualMachineBulkOperationsClient.BulkAcknowledgeOperationErrors"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.bulkAcknowledgeOperationErrorsCreateRequest(ctx, resourceGroupName, location, body, options)
+	if err != nil {
+		return VirtualMachineBulkOperationsClientBulkAcknowledgeOperationErrorsResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return VirtualMachineBulkOperationsClientBulkAcknowledgeOperationErrorsResponse{}, err
+	}
+	return client.bulkAcknowledgeOperationErrorsHandleResponse(httpResp, http.StatusOK)
+}
+
+// bulkAcknowledgeOperationErrorsCreateRequest creates the BulkAcknowledgeOperationErrors request.
+func (client *VirtualMachineBulkOperationsClient) bulkAcknowledgeOperationErrorsCreateRequest(ctx context.Context, resourceGroupName string, location string, body AcknowledgeBulkOperationErrorsRequest, _ *VirtualMachineBulkOperationsClientBulkAcknowledgeOperationErrorsOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/locations/{location}/acknowledgeBulkOperationErrors"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if location == "" {
+		return nil, errors.New("parameter location cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20261006Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// bulkAcknowledgeOperationErrorsHandleResponse handles the BulkAcknowledgeOperationErrors response.
+func (client *VirtualMachineBulkOperationsClient) bulkAcknowledgeOperationErrorsHandleResponse(resp *http.Response, successCodes ...int) (VirtualMachineBulkOperationsClientBulkAcknowledgeOperationErrorsResponse, error) {
+	result := VirtualMachineBulkOperationsClientBulkAcknowledgeOperationErrorsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.AcknowledgeBulkOperationErrorsResponse); err != nil {
+		return VirtualMachineBulkOperationsClientBulkAcknowledgeOperationErrorsResponse{}, err
+	}
+	return result, nil
+}
+
 // BulkCancelOperations - Cancel one or more Bulk Actions operations by Bulk Action Operation Ids. Cancellation is best effort
 // and work that has already completed is not reversed.
 // If the operation fails it returns an *azcore.ResponseError type.

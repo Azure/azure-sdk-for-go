@@ -230,6 +230,12 @@ type ScheduledActionsClientUpdateResponse struct {
 	// placeholder for future response values
 }
 
+// VirtualMachineBulkOperationsClientBulkAcknowledgeOperationErrorsResponse contains the response from method VirtualMachineBulkOperationsClient.BulkAcknowledgeOperationErrors.
+type VirtualMachineBulkOperationsClientBulkAcknowledgeOperationErrorsResponse struct {
+	// The result of acknowledging errors for specified operations.
+	AcknowledgeBulkOperationErrorsResponse
+}
+
 // VirtualMachineBulkOperationsClientBulkCancelOperationsResponse contains the response from method VirtualMachineBulkOperationsClient.BulkCancelOperations.
 type VirtualMachineBulkOperationsClientBulkCancelOperationsResponse struct {
 	// The results of the cancellation requests.

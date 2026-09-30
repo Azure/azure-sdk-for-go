@@ -1,6 +1,6 @@
 # Release History
 
-## 1.12.1-beta.1 (Unreleased)
+## 1.13.0 (2026-09-30)
 
 ### Features Added
 
@@ -18,12 +18,7 @@
   * `--debug` for additional diagnostic output.
   * `--sync`, `--insecure`, `--max-io-completion-threads`, `--max-worker-threads`, `--min-io-completion-threads`, and `--min-worker-threads` are accepted for CLI parity with the .NET runner.
 * The `perf` runner now samples process CPU and memory usage in the background, displaying them in the live status line and including `averageCpuPercent` / `averageMemoryBytes` in run-summary artifacts.
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+* Added the `transport` package and containing types.
 
 ## 1.12.0 (2026-04-01)
 

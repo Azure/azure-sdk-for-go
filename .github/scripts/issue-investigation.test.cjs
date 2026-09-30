@@ -6,7 +6,7 @@ const { test } = require("node:test");
 const fs = require("node:fs");
 const os = require("node:os");
 const path = require("node:path");
-const { issueNumber, isEligible, validateOutputs, checkEligibility, checkOutputs } =
+const { issueNumber, isEligible, validateOutputs, checkEligibility, checkOutputs, prepareOutputs, validateTriageOutputs, nativeCommentPolicy } =
   require("./issue-investigation.cjs");
 
 const repository = "Azure/azure-sdk-for-go";
@@ -155,12 +155,145 @@ test("rechecks eligibility before applying outputs and rejects malformed artifac
     fs.writeFileSync(outputFile, JSON.stringify({ items: [{ ...comment(), item_number: 43 }] }));
     await assert.rejects(checkOutputs(args), /dispatched issue/);
     assert.equal(calls, 2);
-    fs.writeFileSync(outputFile, JSON.stringify({ items: [{ type: "noop" }] }));
+    fs.writeFileSync(outputFile, JSON.stringify({ items: [{ type: "noop", message: "No action needed" }] }));
     await checkOutputs(args);
     assert.equal(calls, 2);
     fs.writeFileSync(outputFile, "{");
     await assert.rejects(checkOutputs(args), SyntaxError);
     await assert.rejects(checkOutputs({ ...args, outputFile: path.join(directory, "missing") }), /ENOENT/);
+  } finally {
+    fs.rmSync(directory, { recursive: true, force: true });
+  }
+});
+
+test("rejects incomplete collection and pending-suggestion investigation plans", () => {
+  for (const errors of ["", {}, ["Invalid preceding output"]]) {
+    assert.throws(() => validateOutputs({ items: [comment()], errors }, 42, repository), /partially collected/);
+  }
+  validateOutputs({ items: [comment()], errors: [] }, 42, repository);
+  for (const item of [close(), assign()]) {
+    const items = item.type === "assign_to_agent" ? [comment(), { ...item, suggest: true }] : [{ ...item, suggest: true }];
+    assert.throws(() => validate(items), /pending suggestions/);
+  }
+  for (const message of [undefined, "", " \n", 42]) {
+    assert.throws(() => validate([{ type: "noop", message }]), /requires an explanation/);
+  }
+});
+
+test("assignment is released only after successful native comment delivery", async () => {
+  const directory = fs.mkdtempSync(path.join(os.tmpdir(), "issue-handoff-"));
+  try {
+    const outputFile = path.join(directory, "output.json");
+    const original = { items: [comment(), assign()], errors: [] };
+    let delivered = 0;
+    const outputs = [];
+    let issue = eligibleIssue();
+    const args = {
+      outputFile, number: "42",
+      context: { repo: { owner: "Azure", repo: "azure-sdk-for-go" } },
+      core: { info() {}, setOutput(name, value) { outputs.push([name, value]); } },
+      github: { rest: { issues: { async get() { return { data: issue }; } } } },
+      async postComment(item) {
+        assert.deepEqual(item, comment());
+        assert.deepEqual(JSON.parse(fs.readFileSync(outputFile, "utf8")), original);
+        delivered++;
+        return { success: true, commentId: 100 };
+      },
+    };
+    const reset = () => fs.writeFileSync(outputFile, JSON.stringify(original));
+    const assertUnchanged = () => assert.deepEqual(JSON.parse(fs.readFileSync(outputFile, "utf8")), original);
+    reset();
+    await prepareOutputs(args);
+    assert.equal(delivered, 1);
+    assert.deepEqual(JSON.parse(fs.readFileSync(outputFile, "utf8")), { items: [assign()], errors: [] });
+    assert.deepEqual(outputs, [["delivered_comment_id", "100"]]);
+
+    for (const result of [undefined, { success: false }, { success: true, skipped: true, commentId: 100 },
+      { success: true, staged: true }, { success: true }]) {
+      reset();
+      await assert.rejects(prepareOutputs({ ...args, postComment: async () => result }), /not delivered/);
+      assertUnchanged();
+    }
+    reset();
+    await assert.rejects(prepareOutputs({ ...args, postComment: async () => { throw new Error("HTTP 403"); } }), /HTTP 403/);
+    assertUnchanged();
+    await assert.rejects(prepareOutputs({ ...args, postComment: undefined }), /Native comment handler is required/);
+    assertUnchanged();
+
+    await prepareOutputs({ ...args, staged: true, postComment: async () => { throw new Error("Must not post in staged mode"); } });
+    assertUnchanged();
+    assert.equal(delivered, 1);
+
+    await assert.rejects(prepareOutputs({ ...args, postComment: async () => {
+      issue = { ...issue, state: "closed" };
+      return { success: true, commentId: 100 };
+    } }), /eligibility changed after comment/);
+    assertUnchanged();
+    issue = eligibleIssue();
+    fs.writeFileSync(outputFile, JSON.stringify({ items: [comment()] }));
+    await prepareOutputs({ ...args, postComment: async () => { throw new Error("Standalone comments stay native"); } });
+    assert.deepEqual(JSON.parse(fs.readFileSync(outputFile, "utf8")), { items: [comment()] });
+    fs.writeFileSync(outputFile, JSON.stringify({ items: [close()] }));
+    await prepareOutputs({ ...args, postComment: async () => { throw new Error("Closure stays native"); } });
+    assert.deepEqual(JSON.parse(fs.readFileSync(outputFile, "utf8")), { items: [close()] });
+  } finally {
+    fs.rmSync(directory, { recursive: true, force: true });
+  }
+});
+
+test("triage dispatch requires a complete same-issue explanation and routing plan", () => {
+  const dispatch = () => ({ type: "dispatch_workflow", workflow_name: "issue-investigation", inputs: { issue_number: "42" } });
+  const mention = () => ({ type: "mention_owners", owners: "owner1, owner2", message: "Routing" });
+  const owner = () => ({ type: "assign_to_user", issue_number: 42, assignees: ["owner1"] });
+  const check = (items, errors = []) => validateTriageOutputs({ items, errors }, 42, repository);
+  check([mention(), comment(), dispatch()]);
+  check([owner(), comment(), comment(), dispatch()]);
+  check([owner(), mention(), comment(), dispatch()]);
+  check([{ type: "noop", message: "Manual triage" }]);
+  check([comment()]);
+  for (const items of [
+    [dispatch()], [comment(), dispatch()], [owner(), comment(), dispatch()],
+    [mention(), dispatch()], [mention(), comment(), comment(), dispatch()],
+    [owner(), owner(), comment(), comment(), dispatch()],
+    [mention(), comment(), { ...dispatch(), workflow_name: "other" }],
+    [mention(), comment(), { ...dispatch(), inputs: { issue_number: "43" } }],
+    [dispatch(), mention(), comment()], [mention(), comment(), dispatch(), dispatch()],
+    [mention(), { ...comment(), item_number: 43 }, dispatch()],
+    [mention(), { ...comment(), repo: "Azure/other" }, dispatch()],
+    [mention(), { ...comment(), body: " " }, dispatch()],
+    [mention(), comment(), close(), dispatch()],
+    [mention(), comment(), { type: "noop" }, dispatch()],
+  ]) {
+    assert.throws(() => check(items));
+  }
+  for (const errors of ["", {}, ["Missing owner output"]]) {
+    assert.throws(() => check([mention(), comment(), dispatch()], errors), /partially collected/);
+  }
+  assert.throws(() => validateTriageOutputs(null, 42, repository), /triage safe-output/);
+});
+
+test("native comment prerequisite reuses the entire compiled policy", () => {
+  const workflowFile = path.join(__dirname, "..", "workflows", "issue-investigation.lock.yml");
+  const workflow = fs.readFileSync(workflowFile, "utf8");
+  const domains = [...workflow.matchAll(/^ +GH_AW_ALLOWED_DOMAINS: ("[^\r\n]*")\r?$/gm)]
+    .map(match => JSON.parse(match[1]));
+  const policy = nativeCommentPolicy(workflowFile, 42);
+  assert.ok(domains.length >= 2);
+  assert.ok(domains.every(value => value === policy.domains));
+  assert.equal(policy.config.target, "42");
+  assert.equal(policy.config.max, 1);
+  for (const host of ["github.com", "api.github.com", "learn.microsoft.com", "feedback.azure.com", "pkg.go.dev", "proxy.golang.org"]) {
+    assert.ok(policy.domains.split(",").includes(host));
+  }
+  const directory = fs.mkdtempSync(path.join(os.tmpdir(), "native-comment-policy-"));
+  try {
+    const file = path.join(directory, "workflow.yml");
+    for (const changed of ["", workflow.replaceAll("GH_AW_ALLOWED_DOMAINS:", "REMOVED_DOMAINS:"),
+      workflow.replaceAll('\\"add_comment\\":{\\"max\\":1', '\\"add_comment\\":{\\"max\\":2'),
+      workflow + '\n          GH_AW_ALLOWED_DOMAINS: "different.example"\n']) {
+      fs.writeFileSync(file, changed);
+      assert.throws(() => nativeCommentPolicy(file, 42));
+    }
   } finally {
     fs.rmSync(directory, { recursive: true, force: true });
   }

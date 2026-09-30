@@ -37,6 +37,10 @@ jobs:
     outputs:
       # Preserve the runtime's authorization gate while adding issue eligibility.
       activated: ${{ steps.check_membership.outputs.is_team_member == 'true' && steps.eligibility.outputs.result == 'true' }}
+  safe_outputs:
+    if: needs.agent.result == 'success' && needs.detection.outputs.detection_conclusion == 'success'
+  conclusion:
+    if: needs.detection.outputs.detection_conclusion == 'success'
 
 concurrency:
   group: "gh-aw-${{ github.workflow }}-${{ github.event.inputs.issue_number }}"
@@ -60,6 +64,7 @@ network:
 
 safe-outputs:
   report-failure-as-issue: false
+  report-failed-jobs: false
   add-comment:
     max: 1
     target: "${{ github.event.inputs.issue_number }}"
@@ -67,12 +72,14 @@ safe-outputs:
     max: 1
     target: "${{ github.event.inputs.issue_number }}"
     state-reason: not_planned
+    issue-intent: false
   assign-to-agent:
     name: copilot
     allowed: [copilot]
     max: 1
     target: "${{ github.event.inputs.issue_number }}"
     ignore-if-error: true
+    issue-intent: false
   noop:
     report-as-issue: false
   steps:
@@ -81,19 +88,34 @@ safe-outputs:
       with:
         ref: ${{ github.workflow_sha }}
         persist-credentials: false
-        sparse-checkout: .github/scripts
+        sparse-checkout-cone-mode: false
+        sparse-checkout: |
+          .github/scripts
+          .github/workflows/issue-investigation.lock.yml
     - name: Validate investigation outputs and current handoff
       uses: actions/github-script@v9
       env:
         ISSUE_NUMBER: ${{ github.event.inputs.issue_number }}
         OUTPUT_FILE: ${{ steps.setup-agent-output-env.outputs.GH_AW_AGENT_OUTPUT }}
       with:
+        github-token: ${{ secrets.GH_AW_GITHUB_TOKEN || secrets.GITHUB_TOKEN }}
         script: |
-          const { checkOutputs } = require('./.github/scripts/issue-investigation.cjs');
-          await checkOutputs({
+          const nativeRoot = '${{ runner.temp }}/gh-aw/actions';
+          const { setupGlobals } = require(`${nativeRoot}/setup_globals.cjs`);
+          setupGlobals(core, github, context, exec, io, getOctokit);
+          const { main: createCommentHandler } = require(`${nativeRoot}/add_comment.cjs`);
+          const { prepareOutputs, nativeCommentPolicy } = require('./.github/scripts/issue-investigation.cjs');
+          await prepareOutputs({
             github, context, core,
             number: process.env.ISSUE_NUMBER,
-            outputFile: process.env.OUTPUT_FILE
+            outputFile: process.env.OUTPUT_FILE,
+            staged: process.env.GH_AW_SAFE_OUTPUTS_STAGED === 'true',
+            postComment: async item => {
+              const policy = nativeCommentPolicy('./.github/workflows/issue-investigation.lock.yml', process.env.ISSUE_NUMBER);
+              process.env.GH_AW_ALLOWED_DOMAINS = policy.domains;
+              const handler = await createCommentHandler(policy.config);
+              return await handler(item, {});
+            }
           });
 
 tools:
@@ -137,7 +159,7 @@ Continue only when all conditions hold:
 - The `customer-reported` label is present.
 - None of `needs-triage`, `needs-team-triage`, `issue-addressed`, or `needs-author-feedback` is present.
 
-Do not require `bug`, `Client`, Key Vault, or an unassigned issue. Category and service eligibility is determined by colors, not a fixed name allowlist. If any condition fails, call `noop` with a short reason and do not comment, close, or assign. The workflow also checks these conditions before analysis and again before applying write outputs.
+Do not require `bug`, `Client`, Key Vault, or an unassigned issue. Category and service eligibility is determined by colors, not a fixed name allowlist. If any condition fails, call `noop` with a short reason and do not comment, close, or assign. The workflow also checks these conditions before analysis and again before applying write outputs. Only successful agent runs with a successful threat-detection conclusion can apply investigation outputs; partial or malformed collected plans are rejected.
 
 ## Investigation Inputs
 
@@ -235,7 +257,7 @@ Do not assign work requiring public API/compatibility decisions, security/privac
 
 If an exclusion applies, request genuinely missing information or call `noop` for human judgment. Do not invent a trivial-looking fix to avoid an exclusion.
 
-For eligible work, first call `add_comment` with the module/API, current source evidence, exact fix area, expected regression test or documentation change, and constraints for the coding agent. Then call `assign_to_agent` with `issue_number` and agent `copilot`. Describe this as a proposed handoff, not a completed fix or a guaranteed successful assignment; inference access and coding-agent assignment permissions are separate.
+For eligible work, first call `add_comment` with the module/API, current source evidence, exact fix area, expected regression test or documentation change, and constraints for the coding agent. Then call `assign_to_agent` with `issue_number` and agent `copilot`. The workflow delivers that explanation through the native comment handler before allowing native assignment, and blocks assignment if delivery fails or is skipped. Describe this as a proposed handoff, not a completed fix or a guaranteed successful assignment; inference access and coding-agent assignment permissions are separate.
 
 ### 6. No Action
 
@@ -245,4 +267,4 @@ Call `noop` with a short reason when none of the preceding rules can safely act.
 
 Produce one investigation explanation at most: either `add_comment` (optionally followed by assignment), or the `body` of `close_issue`. Every explanation must state the decision and next action. A `noop` must be the only output for that outcome.
 
-Do not add automation-state labels, alter human assignees, or use Azure OpenAI secrets/external LLM endpoints. This workflow does not automatically retry assignment or resume on customer replies. A maintainer can explicitly dispatch a new investigation; issue-specific concurrency prevents overlapping runs, not repeated comments across separate runs.
+Do not add automation-state labels, alter human assignees, or use Azure OpenAI secrets/external LLM endpoints. An assignment failure may generate an additional native diagnostic comment; the one-explanation limit does not suppress runtime diagnostics. Failure tracking issues are disabled, and detection warnings remain in run artifacts rather than creating tracking issues. This workflow does not automatically retry assignment or resume on customer replies. A maintainer can explicitly dispatch a new investigation; issue-specific concurrency prevents overlapping runs, not repeated comments across separate runs.

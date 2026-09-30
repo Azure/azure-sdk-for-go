@@ -28,6 +28,7 @@ network:
 
 safe-outputs:
   report-failure-as-issue: false
+  report-failed-jobs: false
   add-labels:
     max: 7
     target: "*"
@@ -48,12 +49,32 @@ safe-outputs:
     max: 1
   noop:
     report-as-issue: false
+  steps:
+    - name: Check out triage handoff guard
+      uses: actions/checkout@v7.0.1
+      with:
+        ref: ${{ github.workflow_sha }}
+        persist-credentials: false
+        sparse-checkout: .github/scripts
+    - name: Validate investigation dispatch plan
+      uses: actions/github-script@v9
+      env:
+        ISSUE_NUMBER: ${{ github.event.issue.number || github.event.inputs.issue_number }}
+        OUTPUT_FILE: ${{ steps.setup-agent-output-env.outputs.GH_AW_AGENT_OUTPUT }}
+      with:
+        script: |
+          const fs = require('node:fs');
+          const { validateTriageOutputs } = require('./.github/scripts/issue-investigation.cjs');
+          const output = JSON.parse(fs.readFileSync(process.env.OUTPUT_FILE, 'utf8'));
+          validateTriageOutputs(output, process.env.ISSUE_NUMBER, `${context.repo.owner}/${context.repo.repo}`);
   jobs:
     mention_owners:
       description: "Post a routing comment @mentioning team owners on the triggering issue; bypasses safe-outputs mention neutralization"
       runs-on: ubuntu-latest
       output: "Owner mention comment posted"
+      if: needs.agent.result == 'success' && needs.detection.outputs.detection_conclusion == 'success'
       permissions:
+        contents: read
         issues: write
       inputs:
         message:
@@ -65,6 +86,12 @@ safe-outputs:
           required: true
           type: string
       steps:
+        - name: Check out triage handoff guard
+          uses: actions/checkout@v7.0.1
+          with:
+            ref: ${{ github.workflow_sha }}
+            persist-credentials: false
+            sparse-checkout: .github/scripts
         - name: Post mention comment
           uses: actions/github-script@v9
           env:
@@ -72,15 +99,15 @@ safe-outputs:
           with:
             script: |
               const fs = require('fs');
+              const { issueNumber: parseIssueNumber, validateTriageOutputs } = require('./.github/scripts/issue-investigation.cjs');
               const outputFile = process.env.GH_AW_AGENT_OUTPUT;
 
               function resolveIssueNumber() {
                 if (Number.isInteger(context.issue?.number) && context.issue.number > 0) {
                   return context.issue.number;
                 }
-                const parsed = parseInt(process.env.DISPATCH_ISSUE_NUMBER, 10);
-                if (Number.isInteger(parsed) && parsed > 0) {
-                  return parsed;
+                if (process.env.DISPATCH_ISSUE_NUMBER) {
+                  return parseIssueNumber(process.env.DISPATCH_ISSUE_NUMBER);
                 }
                 return null;
               }
@@ -133,6 +160,7 @@ safe-outputs:
                 return;
               }
 
+              validateTriageOutputs(agentOutput, issueNumber, `${owner}/${repo}`);
               const items = agentOutput.items.filter(i => i.type === 'mention_owners');
               if (items.length === 0) {
                 await failSafe('No mention_owners items in agent output');
@@ -181,7 +209,9 @@ safe-outputs:
 jobs:
   safe_outputs:
     needs: [mention_owners]
-    if: needs.mention_owners.result == 'success' || needs.mention_owners.result == 'skipped'
+    if: needs.agent.result == 'success' && needs.detection.outputs.detection_conclusion == 'success' && (needs.mention_owners.result == 'success' || needs.mention_owners.result == 'skipped')
+  conclusion:
+    if: needs.detection.outputs.detection_conclusion == 'success'
 
 tools:
   web-fetch:
@@ -572,4 +602,4 @@ Call the generated `issue_investigation` tool last, after the other triage outpu
 }
 ```
 
-The tool wraps these inputs in the native dispatch output; do not call an internal `dispatch_workflow` handler or add a `workflow_name`/`inputs` envelope. The native safe-output job waits for successful owner mentions (or a skipped mention job for other routing paths). The investigation workflow independently rereads the issue and validates the handoff before proceeding.
+The tool wraps these inputs in the native dispatch output; do not call an internal `dispatch_workflow` handler or add a `workflow_name`/`inputs` envelope. The native safe-output job waits for successful owner mentions (or a skipped mention job for other routing paths). A dispatch plan must include a triage explanation and either owner mentions or a single-owner assignment with its routing comment; partial collected plans cannot dispatch. Both write paths require successful analysis and threat detection. The investigation workflow independently rereads the issue and validates the handoff before proceeding.

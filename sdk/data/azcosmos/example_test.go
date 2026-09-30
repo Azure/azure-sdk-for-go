@@ -15,6 +15,30 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/data/azcosmos/v2"
 )
 
+func ExampleContainerClient_NewQueryItemsPager() {
+	container, closeClient := exampleContainer()
+	query, err := azcosmos.NewQuery("SELECT * FROM c WHERE c.price >= @minimum").
+		WithParameter("@minimum", 10)
+	if err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+	scope := azcosmos.NewFeedScopeForPartitionKey(azcosmos.NewPartitionKeyString("catalog"))
+	pager := container.NewQueryItemsPager(query, scope, &azcosmos.QueryOptions{
+		Feed: azcosmos.FeedOptions{PageSizeHint: 25},
+	})
+	for pager.More() {
+		page, err := pager.NextPage(context.TODO())
+		if err != nil {
+			// TODO: Update the following line with your application specific error handling logic
+			log.Fatalf("ERROR: %s", err)
+		}
+		log.Printf("received %d items, charge %.2f RU", len(page.Items), page.RequestCharge)
+		// Save page.ContinuationToken to resume later with the same query and scope.
+	}
+	closeClient()
+}
+
 // exampleContainer builds the client and container the operation examples below work against, so
 // that each of those can show the operation rather than repeating the setup. ExampleNewClient
 // shows the construction it stands in for.

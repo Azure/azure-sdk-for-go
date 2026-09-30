@@ -11,7 +11,7 @@ This client library enables client applications to connect to Azure Cosmos DB vi
 This is the v2 major version of the module and it is **not usable yet**. The v2 surface is being
 assembled incrementally so that it can be reviewed as it lands. This release covers the error and
 response model, partition keys, client construction, and creating, reading, replacing, upserting,
-deleting, and patching single items.
+deleting, and patching single items, plus paged queries within a complete logical partition.
 
 v2 replaces the v1 pure-Go implementation with a binding to the shared Rust Cosmos driver, so that
 routing, retries, session handling, failover behavior and query fan-out are consistent across the
@@ -84,6 +84,40 @@ Client-side execution of a patch that is not intrinsically retry-safe permanentl
 `_azsdkPatchTracking` property to the item. The driver uses it to deduplicate retries within one
 `PatchItem` call. Supplying a stable tracking ID across separate calls is not exposed yet.
 
+### Querying items
+
+`ContainerClient.NewQueryItemsPager` accepts a `Query`, an explicit `FeedScope`, and optional
+`QueryOptions`. Use `NewQuery(sql).WithParameter(name, value)` to capture JSON parameter values,
+and `NewFeedScopeForPartitionKey(pk)` to target a complete logical partition. For hierarchical
+partition keys, supply every component. Query values are immutable; `WithParameter` returns a
+new query and an error if the value cannot be serialized.
+
+The API follows the Rust SDK's separation of query, scope, and feed options, with Go's standard
+`More`/`NextPage` pager. `QueryOptions.Feed.PageSizeHint` is a positive page-size hint; zero leaves
+sizing to the driver, and negative hints are rejected. Results are raw JSON values in
+`QueryItemsResponse.Items`, including scalar `SELECT VALUE` results. An empty page does not
+necessarily end the query: use `More`, not the number of items.
+
+Save `QueryItemsResponse.ContinuationToken` and pass it in `QueryOptions.Feed` to resume with
+the same query and scope. This is an opaque **driver planner token**, not the service's
+`x-ms-continuation` header. Do not parse or modify it. An empty token indicates completion.
+Each fetch resolves its container reference through the native driver's cache, allowing queries
+started after container recreation to use the replacement. Tokens from the deleted container
+cannot be used to resume against the replacement.
+With the currently pinned azcore pager, a failed `NextPage` does not advance the continuation;
+callers must handle the error rather than blindly continuing a `More` loop.
+
+Pager construction performs no network I/O and snapshots its inputs. Each pager's first fetch
+(including a resumed pager) performs an additional container-metadata read to verify that the
+key is complete. Its request charge is included in the first fetch's response or error, and
+it shares the page's context and end-to-end timeout. This requires permission to read container
+metadata. Pagers are not safe for concurrent use; independent pagers can share a client.
+
+Cross-partition and hierarchical-prefix queries are intentionally not exposed yet. The pinned
+native ABI returns only the first item of pre-split driver pages, so those pipelines cannot be
+safely exposed as general query support without a native fix. Complete logical-partition
+queries use the driver's direct request pipeline and return complete JSON feed envelopes.
+
 ### Running the end-to-end tests
 
 The tests in `emulator_test.go` run real operations against a service. They need a driver-backed
@@ -108,7 +142,8 @@ EMULATOR=1 AZCOSMOS_ENDPOINT=http://127.0.0.1:49151/ go test -run TestEmulator .
 
 The container the tests use is declared in `internal/testdata/emulator-config.json`; its ids
 default to `itemdb` and `items` and can be overridden with `AZCOSMOS_DATABASE` and
-`AZCOSMOS_CONTAINER`.
+`AZCOSMOS_CONTAINER`. Query scope tests also use the `query-hierarchical` container declared in
+the same configuration, under the selected database.
 
 ## Getting Started
 

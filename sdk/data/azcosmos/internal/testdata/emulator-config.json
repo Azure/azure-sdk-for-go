@@ -35,6 +35,12 @@
           "partitionKey": { "paths": ["/pk"], "kind": "Hash", "version": 2 },
           "partitionCount": 4,
           "throughput": 400
+        },
+        {
+          "id": "query-hierarchical",
+          "partitionKey": { "paths": ["/pk", "/child"], "kind": "MultiHash", "version": 2 },
+          "partitionCount": 4,
+          "throughput": 400
         }
       ]
     }

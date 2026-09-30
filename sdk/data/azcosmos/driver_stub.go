@@ -46,3 +46,7 @@ func (d *nativeDriver) close() error {
 func (c *Client) execute(context.Context, itemRequest) (ItemResponse, []byte, error) {
 	return ItemResponse{}, nil, newDriverUnavailableError()
 }
+
+func (c *Client) executeQuery(context.Context, *queryRequest) (QueryItemsResponse, error) {
+	return QueryItemsResponse{}, newDriverUnavailableError()
+}

@@ -32,10 +32,16 @@ Before writing any comment, run through this gate. If any item applies, stay sil
 
    **The one exception is acronym casing** (see "Naming and file conventions" below). Go uppercases acronyms
    in exported identifiers while most other languages don't, so these are routinely missed upstream.
-   Flag them on generated code too, for any exported identifier — types, struct fields, methods, parameters,
-   and enum/constant member names alike. Because generated files are overwritten, the comment must say the fix
-   belongs upstream in `azure-rest-api-specs` (via a client-name customization such as `@clientName`),
-   not in this repository. Never suggest editing the generated file directly.
+   Flag them on generated code too, for types, struct fields, methods, enum/constant member names,
+   **and function parameters** — `userId string` should be `userID string`. Parameters aren't public surface,
+   but leaving them inconsistent looks sloppy and spreads. Because generated files are overwritten, the comment
+   must say the fix belongs upstream in `azure-rest-api-specs` (via a client-name customization such as
+   `@clientName`), not in this repository. Never suggest editing the generated file directly.
+
+   Raise casing as a low-priority `nit:` (see "Comment style"), and **consolidate**: one comment per file listing
+   the identifiers, never one comment per occurrence. A spec-wide casing slip can touch dozens of lines, and a
+   correct finding repeated thirty times is still a bad review.
+   Never flag casing of function or method locals, in generated or handwritten code.
 
    This applies to the **identifier only**, never the string value it is assigned:
    renaming `S3WithHmac` to `S3WithHMAC` is in scope; changing its `"S3WithHmac"` wire value is not.
@@ -117,9 +123,14 @@ Judge the changed behavior, not whether a particular helper name appears in the 
 
 ## Naming and file conventions
 
-- Acronyms in exported identifiers are fully uppercased: `UserID` not `UserId`, `ACSRecordedEvent` not `AcsRecordedEvent`.
-  This does **not** apply to string constant values. This is the one naming rule that also applies to generated code —
-  see "Step 0" above for how to word the comment.
+- Acronyms are fully uppercased in every identifier a customer can see: exported types, fields, methods,
+  functions, and constants (`UserID` not `UserId`, `ACSRecordedEvent` not `AcsRecordedEvent`), **plus function
+  and method parameter names** (`userID`, not `userId`) — parameters appear in the published signature and godoc.
+  Parameter casing isn't API surface, so raise it as a low-priority `nit:`, but don't skip it — inconsistency
+  spreads by copy-paste.
+  This rule stops at the signature: **never flag function or method locals**, which customers never see,
+  and it does **not** apply to string constant values.
+  It's also the one naming rule that applies to generated code — see "Step 0" above for how to word the comment.
 - Every `.go` file starts with the copyright header (which may follow a `//go:build` directive):
 
   ```go
@@ -153,8 +164,12 @@ would pick up. See the [release checklist](../../../documentation/development/re
 ## Tests (`*_test.go`)
 
 - Assertions use `github.com/stretchr/testify` — flag a **hand-rolled replacement**: bare
-  `if got != want { t.Errorf(...) }` chains, custom `assertEqual` helpers, or a home-grown assertion package
+  `if got != want { t.Errorf(...) }` chains, a custom `assertEqual`, or a home-grown assertion package
   reimplementing what testify already provides.
+  Do **not** flag domain-specific helpers that compose testify — a `requireEqualAttributes(t, a, b)` asserting a
+  model's fields, or a helper that normalizes recorded values before comparing, is the encouraged pattern.
+  The distinction is reimplementing testify (flag) versus building on it (don't). If such a helper is missing
+  `t.Helper()`, that's worth a comment, since failures will otherwise point at the helper instead of the caller.
 - `require` vs. `assert` is a judgment call, not a style rule. Don't comment on the choice in general —
   only when the assertion is a **post-condition the following code depends on**, where continuing past a
   failure would panic or cascade into misleading failures. The common cases are a nil check before a
@@ -205,6 +220,11 @@ would pick up. See the [release checklist](../../../documentation/development/re
 ## Comment style
 
 - One issue per comment, anchored to the offending line.
+- **Prefix non-blocking findings with `nit:`.** Naming and casing, doc-comment wording, and test-helper
+  ergonomics are nits: real, worth fixing, but they shouldn't read as merge blockers. Correctness, API
+  compatibility, security, and dependency violations are not nits — state those plainly.
+- **Consolidate repeated findings.** When the same nit recurs in a file, leave one comment that lists the
+  occurrences instead of one comment per line.
 - State the rule, then the fix: *"Per the Go guidelines, pager constructors perform no I/O — drop the `ctx` parameter and the `error` return, and move the request into `Fetcher`."*
 - Link the relevant guideline section when it isn't obvious.
 - If you are not confident the change is required, don't post the comment.

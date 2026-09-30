@@ -2,7 +2,8 @@
 applyTo: '**/*_test.go'
 ---
 
-- Use github.com/stretchr/testify for assertions rather than hand-rolled `if got != want { t.Errorf(...) }` checks or custom assertion helpers. Some commonly used functions: `require.Equal`, `require.NoError`, `require.NotNil`.
+- Use github.com/stretchr/testify for assertions rather than hand-rolled `if got != want { t.Errorf(...) }` checks or helpers that reimplement basic assertions testify already provides (a custom `assertEqual`, a home-grown assertion package). Some commonly used functions: `require.Equal`, `require.NoError`, `require.NotNil`.
+- Domain-specific helpers that *compose* testify are encouraged, not discouraged — for example a `requireEqualAttributes(t, a, b)` that asserts the fields of a model, or a `requireEqualCloudEvent` that normalizes recorded values before comparing. Mark them with `t.Helper()` so failures report the caller's line.
 - Choose between `require` and `assert` based on what follows the assertion:
   - Use `require` when the rest of the test depends on the predicate holding, so a failure stops the test instead of panicking or cascading. Typical cases are checking an error before using the result, checking for nil before a dereference, and checking length before indexing.
   - Use `assert` for independent checks that should each be reported in a single run, for example verifying several unrelated fields on a response.

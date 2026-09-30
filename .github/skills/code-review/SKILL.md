@@ -1,5 +1,5 @@
 ---
-name: go-sdk-code-review
+name: code-review
 description: Use when reviewing any pull request in the Azure SDK for Go repository, including Go source, go.mod, docs, samples, and CI or tooling changes. Applies the Azure SDK for Go design and implementation guidelines to client constructors, service methods, options structs, pagers, pollers, error handling, models, pipeline and logging, dependencies, docs, tests, and examples, and suppresses comments on generated code.
 ---
 

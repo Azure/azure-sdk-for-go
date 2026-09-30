@@ -1,0 +1,6 @@
+{
+  "apiVersions": {
+    "Microsoft.Widget": "2024-10-01-preview"
+  },
+  "emitterVersion": "0.17.4"
+}

@@ -55,9 +55,10 @@ it enforces and suggest the concrete replacement code.
 
 These are breaking-change risks and deserve a comment every time.
 
-- **Client naming.** Service client types end in `Client`. Constructors are
-  `New<Name>Client(endpoint string, cred azcore.TokenCredential, options *<Name>ClientOptions) (*<Name>Client, error)`
-  and return the client **by reference**. Variants: `New<Name>ClientWithNoCredential`, `New<Name>ClientFromConnectionString`.
+- **Client naming.** Service client types end in `Client`, and constructors return the client **by reference**.
+  Data-plane constructors commonly accept an endpoint, credential, and client options. Management-plane constructors
+  accept a subscription ID when required, a credential, and `*arm.ClientOptions`. Credential-free and connection-string
+  variants use the established `WithNoCredential` and `FromConnectionString` suffixes.
 - **No exported fields on client types.** Client state must be unexported and safe for concurrent use by multiple goroutines.
 - **Methods have pointer receivers.** `func (c *WidgetClient) Get(...)`.
 - **`context.Context` is the first parameter** of every method that performs I/O, sleeps, or does significant CPU work.

@@ -68,24 +68,33 @@ These are breaking-change risks and deserve a comment every time.
   All client types end in `Client`, take unexported state, and are returned **by reference** from their
   constructor. Beyond that the conventions differ:
 
-  | | Client type | Constructor | Options / response prefix |
+  | | Client type | Constructor options | Operation options / responses |
   |---|---|---|---|
-  | Data plane, **single** client | `Client` | `NewClient(endpoint string, cred azcore.TokenCredential, options *ClientOptions)` | **none** — `GetKeyOptions`, `GetKeyResponse` |
-  | Data plane, **multiple** clients | `<Name>Client` | `New<Name>Client(endpoint string, cred azcore.TokenCredential, options *ClientOptions)` | `<Name>Client` — `<Name>ClientGetOptions` |
-  | Management plane (`arm*`) | `<Resource>Client` | `New<Resource>Client(subscriptionID string, cred azcore.TokenCredential, options *arm.ClientOptions)` | `<Resource>Client` — `<Resource>ClientGetOptions` |
+  | Data plane, **single** client in the package | `Client` | `*ClientOptions` | unprefixed — `CreateKeyOptions`, `CreateKeyResponse` |
+  | Data plane, **multiple** clients in one package | `<Name>Client` | `*<Name>ClientOptions` | prefixed — `<Name>ClientCreateOptions` |
+  | Management plane (`arm*`) | `<Resource>Client` | shared `*arm.ClientOptions` | prefixed — `<Resource>ClientGetOptions` |
 
-  When a data-plane module exposes exactly one client, it is named plain `Client`, and the client name is
-  **not** prefixed onto its options and response types — `azkeys.Client` with `azkeys.CreateKeyOptions`, not
-  `azkeys.ClientCreateKeyOptions`. Don't ask for a prefix there.
-  ARM constructors take `subscriptionID`, not an endpoint, and `*arm.ClientOptions` rather than a
-  module-specific options type. Don't flag a valid ARM constructor for not looking data-plane.
+  **The client prefix exists only to disambiguate within a package.** A data-plane package with one client
+  names it `Client`, which leaves nothing to disambiguate — so its options and responses are unprefixed
+  (`azkeys.CreateKeyOptions`). As soon as a package exposes more than one client, operation names collide and
+  the prefix is required, exactly as in ARM. Multi-client data-plane packages are uncommon; the deciding
+  factor is **how many clients share the package**, not whether the package is data plane or management plane.
+
+  Judge sub-packages independently: `azblob/container` and `azblob/blob` each expose a single `Client`, so
+  each gets unprefixed types.
+
+  Constructors take the endpoint, then any additional **required** parameters, then the credential, then the
+  options pointer — `NewSenderClient(endpoint, topic string, cred azcore.TokenCredential, options *SenderClientOptions)`.
+  ARM constructors instead take `subscriptionID` and the shared `*arm.ClientOptions`; don't flag a valid ARM
+  constructor for not looking data-plane.
   Credential-free and connection-string variants follow the same pattern
   (`NewClientWithNoCredential`, `New<Name>ClientFromConnectionString`).
 - **No exported fields on client types.** Client state must be unexported and safe for concurrent use by multiple goroutines.
 - **Service client methods have pointer receivers.** `func (c *WidgetClient) Get(...)`.
 - **`context.Context` is the first parameter** of every method that performs I/O, sleeps, or does significant CPU work.
   Required parameters follow it; the final parameter is the options pointer.
-- **Options structs.** Every service client method takes a `*<Client><Method>Options` as its last parameter, even when it currently
+- **Options structs.** Every service client method takes an options pointer as its last parameter — named per the
+  table above — even when it currently
   has no optional parameters (use a placeholder comment). Passing `nil` must be semantically identical to passing a
   zero-valued struct — flag any code where `nil` and `&Options{}` diverge.
 - **Model types export all fields** (to support mocking) and document read-only fields, which must be omitted when marshalling.

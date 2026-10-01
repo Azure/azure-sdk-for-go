@@ -1,5 +1,40 @@
 # Release History
 
+## 2.0.0-beta.1 (2026-10-01)
+### Breaking Changes
+
+- Type of `VolumeProperties.ManagedBy` has been changed from `*ManagedByInfo` to `[]*ManagedByResources`
+- Type of `VolumeUpdateProperties.ManagedBy` has been changed from `*ManagedByInfo` to `[]*ManagedByResources`
+- Struct `ManagedByInfo` has been removed
+
+### Features Added
+
+- New value `ProvisioningStatesSoftDeleting` added to enum type `ProvisioningStates`
+- New value `SKUNameElasticSANLRS` added to enum type `SKUName`
+- New value `StorageTargetTypeDirectAttach` added to enum type `StorageTargetType`
+- New enum type `DeleteType` with values `DeleteTypePermanent`
+- New enum type `PolicyState` with values `PolicyStateDisabled`, `PolicyStateEnabled`
+- New enum type `QualityOfService` with values `QualityOfServiceGeneralPurpose`, `QualityOfServicePerformanceCritical`
+- New enum type `SnapshotAccessState` with values `SnapshotAccessStateAvailable`, `SnapshotAccessStateAvailableWithInstantAccess`, `SnapshotAccessStateInstantAccess`, `SnapshotAccessStatePending`, `SnapshotAccessStateUnknown`
+- New enum type `Version` with values `VersionV1`, `VersionV2`
+- New enum type `XMSAccessSoftDeletedResources` with values `XMSAccessSoftDeletedResourcesFalse`, `XMSAccessSoftDeletedResourcesTrue`
+- New function `*ClientFactory.NewManagementClient() *ManagementClient`
+- New function `NewManagementClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ManagementClient, error)`
+- New function `*ManagementClient.BeginRestoreVolume(ctx context.Context, resourceGroupName string, elasticSanName string, volumeGroupName string, volumeName string, options *ManagementClientBeginRestoreVolumeOptions) (*runtime.Poller[ManagementClientRestoreVolumeResponse], error)`
+- New struct `DeleteRetentionPolicy`
+- New struct `ManagedByResources`
+- New struct `SKUZoneDetails`
+- New field `TotalReservedIops`, `TotalReservedMBps`, `UsedCapacityGiB`, `Version` in struct `Properties`
+- New field `ZoneDetails` in struct `SKULocationInfo`
+- New field `CompletionPercent`, `SnapshotAccessState` in struct `SnapshotProperties`
+- New field `TotalIops`, `TotalMBps`, `TotalSizeTiB` in struct `UpdateProperties`
+- New field `DeleteRetentionPolicy`, `EncryptionInTransit`, `QualityOfService`, `ReservedIops`, `ReservedMBps` in struct `VolumeGroupProperties`
+- New field `DeleteRetentionPolicy`, `ReservedIops`, `ReservedMBps` in struct `VolumeGroupUpdateProperties`
+- New field `XMSAccessSoftDeletedResources` in struct `VolumeGroupsClientListByElasticSanOptions`
+- New field `DeleteType` in struct `VolumesClientBeginDeleteOptions`
+- New field `XMSAccessSoftDeletedResources` in struct `VolumesClientListByVolumeGroupOptions`
+
+
 ## 1.2.0 (2025-10-30)
 ### Features Added
 

@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/elasticsan/armelasticsan"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/elasticsan/armelasticsan/v2"
 	"log"
 )
 
-// Generated from example definition: 2025-09-01/PrivateEndpointConnections_Create_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-01-preview/PrivateEndpointConnections_Create_MaximumSet_Gen.json
 func ExamplePrivateEndpointConnectionsClient_BeginCreate_privateEndpointConnectionsCreateMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -77,7 +77,7 @@ func ExamplePrivateEndpointConnectionsClient_BeginCreate_privateEndpointConnecti
 	// }
 }
 
-// Generated from example definition: 2025-09-01/PrivateEndpointConnections_Create_MinimumSet_Gen.json
+// Generated from example definition: 2026-05-01-preview/PrivateEndpointConnections_Create_MinimumSet_Gen.json
 func ExamplePrivateEndpointConnectionsClient_BeginCreate_privateEndpointConnectionsCreateMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -134,7 +134,7 @@ func ExamplePrivateEndpointConnectionsClient_BeginCreate_privateEndpointConnecti
 	// }
 }
 
-// Generated from example definition: 2025-09-01/PrivateEndpointConnections_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-01-preview/PrivateEndpointConnections_Delete_MaximumSet_Gen.json
 func ExamplePrivateEndpointConnectionsClient_BeginDelete_privateEndpointConnectionsDeleteMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -160,7 +160,7 @@ func ExamplePrivateEndpointConnectionsClient_BeginDelete_privateEndpointConnecti
 	// }
 }
 
-// Generated from example definition: 2025-09-01/PrivateEndpointConnections_Delete_MinimumSet_Gen.json
+// Generated from example definition: 2026-05-01-preview/PrivateEndpointConnections_Delete_MinimumSet_Gen.json
 func ExamplePrivateEndpointConnectionsClient_BeginDelete_privateEndpointConnectionsDeleteMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -186,7 +186,7 @@ func ExamplePrivateEndpointConnectionsClient_BeginDelete_privateEndpointConnecti
 	// }
 }
 
-// Generated from example definition: 2025-09-01/PrivateEndpointConnections_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-01-preview/PrivateEndpointConnections_Get_MaximumSet_Gen.json
 func ExamplePrivateEndpointConnectionsClient_Get_privateEndpointConnectionsGetMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -235,7 +235,7 @@ func ExamplePrivateEndpointConnectionsClient_Get_privateEndpointConnectionsGetMa
 	// }
 }
 
-// Generated from example definition: 2025-09-01/PrivateEndpointConnections_Get_MinimumSet_Gen.json
+// Generated from example definition: 2026-05-01-preview/PrivateEndpointConnections_Get_MinimumSet_Gen.json
 func ExamplePrivateEndpointConnectionsClient_Get_privateEndpointConnectionsGetMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -284,7 +284,7 @@ func ExamplePrivateEndpointConnectionsClient_Get_privateEndpointConnectionsGetMi
 	// }
 }
 
-// Generated from example definition: 2025-09-01/PrivateEndpointConnections_List_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-01-preview/PrivateEndpointConnections_List_MaximumSet_Gen.json
 func ExamplePrivateEndpointConnectionsClient_NewListPager_privateEndpointConnectionsListMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -308,7 +308,7 @@ func ExamplePrivateEndpointConnectionsClient_NewListPager_privateEndpointConnect
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page = armelasticsan.PrivateEndpointConnectionsClientListResponse{
 		// 	PrivateEndpointConnectionListResult: armelasticsan.PrivateEndpointConnectionListResult{
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/subscriptionid/resourceGroups/resourcegroupname/providers/Microsoft.ElasticSan/elasticSans/elasticsanname/privateEndpointConnections?api-version=2024-07-01-preview&%24skiptoken=stu901vwx234"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/subscriptionid/resourceGroups/resourcegroupname/providers/Microsoft.ElasticSan/elasticSans/elasticsanname/privateEndpointConnections?api-version=2026-05-01-preview&%24skiptoken=stu901vwx234"),
 		// 		Value: []*armelasticsan.PrivateEndpointConnection{
 		// 			{
 		// 				Name: to.Ptr("vyzqckpcwufpvalbspekxikt"),
@@ -343,7 +343,7 @@ func ExamplePrivateEndpointConnectionsClient_NewListPager_privateEndpointConnect
 	}
 }
 
-// Generated from example definition: 2025-09-01/PrivateEndpointConnections_List_MinimumSet_Gen.json
+// Generated from example definition: 2026-05-01-preview/PrivateEndpointConnections_List_MinimumSet_Gen.json
 func ExamplePrivateEndpointConnectionsClient_NewListPager_privateEndpointConnectionsListMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

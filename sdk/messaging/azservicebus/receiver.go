@@ -266,6 +266,161 @@ func (r *Receiver) ReceiveDeferredMessages(ctx context.Context, sequenceNumbers 
 	return receivedMessages, internal.TransformError(err)
 }
 
+const maxDeleteMessageCount = 500
+const maxDirectDeleteMessageCount = int(1<<31 - 1)
+
+// DeleteMessagesOptions contains options for the [Receiver.DeleteMessages] and
+// [SessionReceiver.DeleteMessages] functions.
+type DeleteMessagesOptions struct {
+	// BeforeEnqueueTime limits deletion to messages enqueued before this time. For
+	// example, 10:00 leaves messages enqueued at or after 10:00. The operation
+	// start time is used when this field is nil.
+	BeforeEnqueueTime *time.Time
+}
+
+// DeleteMessagesResult contains the result of deleting a batch of messages.
+type DeleteMessagesResult struct {
+	// DeletedCount is the number of messages the service actually deleted.
+	DeletedCount int64
+}
+
+// DeleteMessages permanently deletes up to maxMessageCount eligible messages that
+// were enqueued before the configured cutoff. maxMessageCount must be a positive
+// 32-bit integer. The service limit is 500 for Basic and Standard and 4,000 for
+// Premium.
+//
+// Large messages can cause the service to delete fewer messages than requested.
+// Locked, deferred, and scheduled messages are not eligible. A dispatched request
+// is not automatically retried. If the call returns an error, its deletion outcome
+// is unknown.
+//
+// Currently, batch delete is not supported when partitioning is enabled.
+func (r *Receiver) DeleteMessages(ctx context.Context, maxMessageCount int, options *DeleteMessagesOptions) (*DeleteMessagesResult, error) {
+	return r.deleteMessages(ctx, maxMessageCount, options, nil)
+}
+
+func (r *Receiver) deleteMessages(ctx context.Context, maxMessageCount int, options *DeleteMessagesOptions, getSessionID func() *string) (*DeleteMessagesResult, error) {
+	if maxMessageCount < 1 || maxMessageCount > maxDirectDeleteMessageCount {
+		return nil, internal.NewErrNonRetriable(
+			fmt.Sprintf("maxMessageCount must be between 1 and %d", maxDirectDeleteMessageCount))
+	}
+
+	cutoff := time.Now().UTC()
+	if options != nil && options.BeforeEnqueueTime != nil {
+		cutoff = options.BeforeEnqueueTime.UTC()
+	}
+
+	links, err := r.getBatchDeleteLinks(ctx)
+	if err != nil {
+		return nil, internal.TransformError(err)
+	}
+
+	var sessionID *string
+	if getSessionID != nil {
+		sessionID = getSessionID()
+	}
+
+	deletedCount, err := r.executeBatchDelete(
+		ctx, links, int32(maxMessageCount), cutoff, sessionID)
+	if err != nil {
+		return nil, internal.TransformError(err)
+	}
+
+	return &DeleteMessagesResult{DeletedCount: deletedCount}, nil
+}
+
+// PurgeMessagesOptions contains options for the [Receiver.PurgeMessages] and
+// [SessionReceiver.PurgeMessages] functions.
+type PurgeMessagesOptions struct {
+	// BeforeEnqueueTime limits deletion to messages enqueued before this time. The
+	// value stays unchanged for every purge request. The purge start time is used
+	// when this field is nil, so messages enqueued after purge starts remain.
+	BeforeEnqueueTime *time.Time
+
+	// MaxMessageCountPerBatch is the positive number of messages requested in each
+	// batch-delete call. The default is 500. The service limit is 500 for Basic
+	// and Standard and 4,000 for Premium.
+	MaxMessageCountPerBatch *int
+}
+
+// PurgeMessagesResult contains the result of purging messages.
+type PurgeMessagesResult struct {
+	// DeletedCount is the total number of messages the service actually deleted.
+	DeletedCount int64
+}
+
+// PurgeMessages permanently deletes eligible messages enqueued before the purge
+// started, or before BeforeEnqueueTime when provided. Large messages can produce
+// smaller batches, which purge continues processing. Locked, deferred, and scheduled
+// messages remain.
+//
+// Individual destructive requests are not retried after dispatch. If the call
+// returns an error, the purge can be partial and its exact outcome is unknown.
+//
+// Currently, purge is not supported when partitioning is enabled.
+func (r *Receiver) PurgeMessages(ctx context.Context, options *PurgeMessagesOptions) (*PurgeMessagesResult, error) {
+	return r.purgeMessages(ctx, options, nil)
+}
+
+func (r *Receiver) purgeMessages(ctx context.Context, options *PurgeMessagesOptions, getSessionID func() *string) (*PurgeMessagesResult, error) {
+	cutoff := time.Now().UTC()
+	maxMessageCountPerBatch := maxDeleteMessageCount
+	if options != nil {
+		if options.BeforeEnqueueTime != nil {
+			cutoff = options.BeforeEnqueueTime.UTC()
+		}
+		if options.MaxMessageCountPerBatch != nil {
+			maxMessageCountPerBatch = *options.MaxMessageCountPerBatch
+		}
+	}
+	if maxMessageCountPerBatch < 1 || maxMessageCountPerBatch > maxDirectDeleteMessageCount {
+		return nil, internal.NewErrNonRetriable(
+			fmt.Sprintf("MaxMessageCountPerBatch must be between 1 and %d", maxDirectDeleteMessageCount))
+	}
+
+	links, err := r.getBatchDeleteLinks(ctx)
+	if err != nil {
+		return nil, internal.TransformError(err)
+	}
+
+	var sessionID *string
+	if getSessionID != nil {
+		sessionID = getSessionID()
+	}
+
+	var totalDeleted int64
+	for {
+		deletedCount, err := r.executeBatchDelete(
+			ctx, links, int32(maxMessageCountPerBatch), cutoff, sessionID)
+		if err != nil {
+			return nil, internal.TransformError(err)
+		}
+
+		totalDeleted += deletedCount
+		if deletedCount == 0 {
+			return &PurgeMessagesResult{DeletedCount: totalDeleted}, nil
+		}
+	}
+}
+
+func (r *Receiver) executeBatchDelete(ctx context.Context, links *internal.LinksWithID, maxMessageCount int32, cutoff time.Time, sessionID *string) (int64, error) {
+	deletedCount, err := internal.BatchDeleteMessages(
+		ctx, links.RPC, links.Receiver.LinkName(), maxMessageCount, cutoff, sessionID)
+	if err != nil {
+		r.amqpLinks.CloseIfNeeded(context.Background(), err)
+	}
+	return deletedCount, err
+}
+
+func (r *Receiver) getBatchDeleteLinks(ctx context.Context) (*internal.LinksWithID, error) {
+	var links *internal.LinksWithID
+	err := r.amqpLinks.Retry(ctx, EventReceiver, "batchDelete.getlinks", func(ctx context.Context, readyLinks *internal.LinksWithID, args *utils.RetryFnArgs) error {
+		links = readyLinks
+		return nil
+	}, r.retryOptions)
+	return links, err
+}
+
 // PeekMessagesOptions contains options for the `Receiver.PeekMessages`
 // function.
 type PeekMessagesOptions struct {

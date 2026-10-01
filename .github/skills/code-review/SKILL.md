@@ -92,15 +92,28 @@ These are breaking-change risks and deserve a comment every time.
 - **No exported fields on client types.** Client state must be unexported and safe for concurrent use by multiple goroutines.
 - **Service client methods have pointer receivers.** `func (c *WidgetClient) Get(...)`.
 - **`context.Context` is the first parameter** of every method that performs I/O, sleeps, or does significant CPU work.
-  Required parameters follow it; the final parameter is the options pointer.
-- **Options structs.** Every service client method takes an options pointer as its last parameter — named per the
+  Required parameters follow it; where the method takes options, the pointer is last.
+- **Options structs.** Every service **operation** takes an options pointer as its last parameter — named per the
   table above — even when it currently
   has no optional parameters (use a placeholder comment). Passing `nil` must be semantically identical to passing a
   zero-valued struct — flag any code where `nil` and `&Options{}` diverge.
+  This applies to methods that call the service. Lifecycle and accessor methods are established exceptions —
+  don't flag `Close(ctx)`, `Endpoint()`, `URL()` and similar for lacking an options parameter
+  (`ProducerClient.Close` in `sdk/messaging/azeventhubs/producer_client.go`).
 - **Model types export all fields** (to support mocking) and document read-only fields, which must be omitted when marshalling.
 - **One method per REST endpoint.** Flag added overloads/convenience duplicates of an existing operation.
-- **No goroutines or channels in API calls.** The SDK exposes synchronous methods; concurrency is the caller's choice.
+- **A single service operation doesn't spin up goroutines or channels.** One operation maps to one request; don't
+  hide concurrency inside it, and don't return a channel from a public API.
+  This does **not** ban concurrency outright. Higher-level convenience APIs that fan out over many requests —
+  the storage upload/download helpers, for example — intentionally use bounded worker pools driven by a
+  caller-visible `Concurrency` option (`sdk/storage/azblob/internal/shared/batch_transfer.go`,
+  surfaced via `blockblob.UploadFileOptions.Concurrency`). Concurrency the caller opts into and bounds is fine;
+  concurrency the caller can't see or control is not.
 - **Exchange types come from the standard library or `azcore`.** Flag any exported signature that leaks a third-party type.
+  Being allowlisted in `.github/instructions/go-mod-standards.instructions.md` only permits the **dependency**; it does
+  not make that module's types acceptable in public signatures. Keep flagging them by default.
+  The one established exception is `azopenai`, whose public surface intentionally exchanges `github.com/openai/openai-go/v3`
+  types. Don't extend that exception to other modules, or to other dependencies within `azopenai`.
 
 ### Paging
 

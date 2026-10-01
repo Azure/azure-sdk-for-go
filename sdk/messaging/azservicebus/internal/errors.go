@@ -223,6 +223,11 @@ func GetRecoveryKind(err error) RecoveryKind {
 		return RecoveryKindFatal
 	}
 
+	var connErr *amqp.ConnError
+	if errors.As(err, &connErr) && connErr.RemoteErr != nil && connErr.RemoteErr.Condition == amqp.ErrCondNotAllowed {
+		return RecoveryKindConn
+	}
+
 	// check the AMQP condition first since it's usually more specific than just knowing it came
 	// from a link, or a connection.
 	if amqpError := (*amqp.Error)(nil); errors.As(err, &amqpError) {
@@ -239,7 +244,6 @@ func GetRecoveryKind(err error) RecoveryKind {
 		return RecoveryKindLink
 	}
 
-	var connErr *amqp.ConnError
 	var sessionErr *amqp.SessionError
 
 	if errors.As(err, &connErr) ||

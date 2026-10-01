@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-06-01/NetworkSecurityPerimeterConfigurationGet.json
+// Generated from example definition: 2026-09-01/NetworkSecurityPerimeterConfigurationGet.json
 func ExampleNetworkSecurityPerimeterConfigurationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -54,6 +54,16 @@ func ExampleNetworkSecurityPerimeterConfigurationsClient_Get() {
 	// 							},
 	// 						},
 	// 					},
+	// 					{
+	// 						Name: to.Ptr("allowedServiceTags"),
+	// 						Properties: &armstorage.NspAccessRuleProperties{
+	// 							Direction: to.Ptr(armstorage.NspAccessRuleDirectionInbound),
+	// 							ServiceTags: []*string{
+	// 								to.Ptr("AzureCloud"),
+	// 								to.Ptr("Storage"),
+	// 							},
+	// 						},
+	// 					},
 	// 				},
 	// 				AccessRulesVersion: to.Ptr[float32](10),
 	// 				DiagnosticSettingsVersion: to.Ptr[float32](5),
@@ -82,7 +92,7 @@ func ExampleNetworkSecurityPerimeterConfigurationsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-06-01/NetworkSecurityPerimeterConfigurationList.json
+// Generated from example definition: 2026-09-01/NetworkSecurityPerimeterConfigurationList.json
 func ExampleNetworkSecurityPerimeterConfigurationsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -130,6 +140,16 @@ func ExampleNetworkSecurityPerimeterConfigurationsClient_NewListPager() {
 		// 									Direction: to.Ptr(armstorage.NspAccessRuleDirectionInbound),
 		// 								},
 		// 							},
+		// 							{
+		// 								Name: to.Ptr("allowedServiceTags"),
+		// 								Properties: &armstorage.NspAccessRuleProperties{
+		// 									Direction: to.Ptr(armstorage.NspAccessRuleDirectionInbound),
+		// 									ServiceTags: []*string{
+		// 										to.Ptr("AzureCloud"),
+		// 										to.Ptr("Storage"),
+		// 									},
+		// 								},
+		// 							},
 		// 						},
 		// 						AccessRulesVersion: to.Ptr[float32](10),
 		// 						DiagnosticSettingsVersion: to.Ptr[float32](5),
@@ -151,7 +171,7 @@ func ExampleNetworkSecurityPerimeterConfigurationsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-06-01/NetworkSecurityPerimeterConfigurationReconcile.json
+// Generated from example definition: 2026-09-01/NetworkSecurityPerimeterConfigurationReconcile.json
 func ExampleNetworkSecurityPerimeterConfigurationsClient_BeginReconcile() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

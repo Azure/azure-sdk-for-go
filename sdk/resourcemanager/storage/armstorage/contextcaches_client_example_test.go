@@ -12,7 +12,35 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-06-01/StorageContextCacheCRUD/ContextCaches_CreateOrUpdate.json
+// Generated from example definition: 2026-09-01/StorageContextCacheCRUD/ContextCaches_CheckNameAvailability.json
+func ExampleContextCachesClient_CheckNameAvailability() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armstorage.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewContextCachesClient().CheckNameAvailability(ctx, armstorage.ContextCacheCheckNameAvailabilityParameters{
+		Name: to.Ptr("testcontextcache"),
+		Type: to.Ptr("Microsoft.Storage/contextCaches"),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armstorage.ContextCachesClientCheckNameAvailabilityResponse{
+	// 	ContextCacheCheckNameAvailabilityResult: armstorage.ContextCacheCheckNameAvailabilityResult{
+	// 		NameAvailable: to.Ptr(true),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-09-01/StorageContextCacheCRUD/ContextCaches_CreateOrUpdate.json
 func ExampleContextCachesClient_BeginCreateOrUpdate_createAContextCache() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -69,7 +97,97 @@ func ExampleContextCachesClient_BeginCreateOrUpdate_createAContextCache() {
 	// }
 }
 
-// Generated from example definition: 2026-06-01/StorageContextCacheCRUD/ContextCaches_CreateOrUpdate_SystemIdentity.json
+// Generated from example definition: 2026-09-01/StorageContextCacheCRUD/ContextCaches_CreateOrUpdate_SystemAssignedUserAssigned.json
+func ExampleContextCachesClient_BeginCreateOrUpdate_createAContextCacheWithSystemAssignedAndUserAssignedIdentity() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armstorage.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewContextCachesClient().BeginCreateOrUpdate(ctx, "testrg", "testcontextcache", armstorage.ContextCache{
+		Location: to.Ptr("eastus"),
+		Tags: map[string]*string{
+			"environment": to.Ptr("test"),
+		},
+		Identity: &armstorage.ManagedServiceIdentity{
+			Type: to.Ptr(armstorage.ManagedServiceIdentityTypeSystemAssignedUserAssigned),
+			UserAssignedIdentities: map[string]*armstorage.UserAssignedIdentity{
+				"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-uami": {},
+			},
+		},
+		Properties: &armstorage.ContextCacheProperties{
+			AccountKind: to.Ptr(armstorage.ContextCacheAccountKindRegional),
+			Description: to.Ptr("Test context cache"),
+			Encryption: &armstorage.ArmEncryption{
+				CustomerManagedKeyEncryption: &armstorage.CustomerManagedKeyEncryption{
+					KeyEncryptionKeyIdentity: &armstorage.KeyEncryptionKeyIdentity{
+						IdentityType: to.Ptr(armstorage.KeyEncryptionKeyIdentityTypeSystemAssignedIdentity),
+					},
+					KeyEncryptionKeyURL: to.Ptr("https://mykeyvault.vault.azure.net/keys/encryptionKey"),
+				},
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armstorage.ContextCachesClientCreateOrUpdateResponse{
+	// 	ContextCache: armstorage.ContextCache{
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testrg/providers/Microsoft.Storage/contextCaches/testcontextcache"),
+	// 		Name: to.Ptr("testcontextcache"),
+	// 		Type: to.Ptr("Microsoft.Storage/contextCaches"),
+	// 		Location: to.Ptr("eastus"),
+	// 		Tags: map[string]*string{
+	// 			"environment": to.Ptr("test"),
+	// 		},
+	// 		Identity: &armstorage.ManagedServiceIdentity{
+	// 			Type: to.Ptr(armstorage.ManagedServiceIdentityTypeSystemAssignedUserAssigned),
+	// 			PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000001"),
+	// 			TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 			UserAssignedIdentities: map[string]*armstorage.UserAssignedIdentity{
+	// 				"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-uami": &armstorage.UserAssignedIdentity{
+	// 					ClientID: to.Ptr("11111111-1111-1111-1111-111111111111"),
+	// 					PrincipalID: to.Ptr("22222222-2222-2222-2222-222222222222"),
+	// 				},
+	// 			},
+	// 		},
+	// 		Properties: &armstorage.ContextCacheProperties{
+	// 			AccountKind: to.Ptr(armstorage.ContextCacheAccountKindRegional),
+	// 			Description: to.Ptr("Test context cache"),
+	// 			ProvisioningState: to.Ptr(armstorage.ContextCacheProvisioningStateSucceeded),
+	// 			Encryption: &armstorage.ArmEncryption{
+	// 				CustomerManagedKeyEncryption: &armstorage.CustomerManagedKeyEncryption{
+	// 					KeyEncryptionKeyIdentity: &armstorage.KeyEncryptionKeyIdentity{
+	// 						IdentityType: to.Ptr(armstorage.KeyEncryptionKeyIdentityTypeSystemAssignedIdentity),
+	// 					},
+	// 					KeyEncryptionKeyURL: to.Ptr("https://mykeyvault.vault.azure.net/keys/encryptionKey"),
+	// 				},
+	// 			},
+	// 		},
+	// 		SystemData: &armstorage.SystemData{
+	// 			CreatedBy: to.Ptr("user@example.com"),
+	// 			CreatedByType: to.Ptr(armstorage.CreatedByTypeUser),
+	// 			CreatedAt: to.Ptr(time.Date(2026, time.January, 1, 0, 0, 0, 0, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("user@example.com"),
+	// 			LastModifiedByType: to.Ptr(armstorage.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2026, time.January, 1, 0, 0, 0, 0, time.UTC)),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-09-01/StorageContextCacheCRUD/ContextCaches_CreateOrUpdate_SystemIdentity.json
 func ExampleContextCachesClient_BeginCreateOrUpdate_createAAzureContextCacheAccountWithSystemAssignedIdentity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -150,7 +268,97 @@ func ExampleContextCachesClient_BeginCreateOrUpdate_createAAzureContextCacheAcco
 	// }
 }
 
-// Generated from example definition: 2026-06-01/StorageContextCacheCRUD/ContextCaches_Delete.json
+// Generated from example definition: 2026-09-01/StorageContextCacheCRUD/ContextCaches_CreateOrUpdate_UserAssignedIdentity.json
+func ExampleContextCachesClient_BeginCreateOrUpdate_createAContextCacheWithUserAssignedIdentity() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armstorage.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewContextCachesClient().BeginCreateOrUpdate(ctx, "testrg", "testcontextcache", armstorage.ContextCache{
+		Location: to.Ptr("eastus"),
+		Tags: map[string]*string{
+			"environment": to.Ptr("test"),
+		},
+		Identity: &armstorage.ManagedServiceIdentity{
+			Type: to.Ptr(armstorage.ManagedServiceIdentityTypeUserAssigned),
+			UserAssignedIdentities: map[string]*armstorage.UserAssignedIdentity{
+				"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-uami": {},
+			},
+		},
+		Properties: &armstorage.ContextCacheProperties{
+			AccountKind: to.Ptr(armstorage.ContextCacheAccountKindRegional),
+			Description: to.Ptr("Test context cache"),
+			Encryption: &armstorage.ArmEncryption{
+				CustomerManagedKeyEncryption: &armstorage.CustomerManagedKeyEncryption{
+					KeyEncryptionKeyIdentity: &armstorage.KeyEncryptionKeyIdentity{
+						IdentityType:                   to.Ptr(armstorage.KeyEncryptionKeyIdentityTypeUserAssignedIdentity),
+						UserAssignedIdentityResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-uami"),
+					},
+					KeyEncryptionKeyURL: to.Ptr("https://mykeyvault.vault.azure.net/keys/encryptionKey"),
+				},
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armstorage.ContextCachesClientCreateOrUpdateResponse{
+	// 	ContextCache: armstorage.ContextCache{
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testrg/providers/Microsoft.Storage/contextCaches/testcontextcache"),
+	// 		Name: to.Ptr("testcontextcache"),
+	// 		Type: to.Ptr("Microsoft.Storage/contextCaches"),
+	// 		Location: to.Ptr("eastus"),
+	// 		Tags: map[string]*string{
+	// 			"environment": to.Ptr("test"),
+	// 		},
+	// 		Identity: &armstorage.ManagedServiceIdentity{
+	// 			Type: to.Ptr(armstorage.ManagedServiceIdentityTypeUserAssigned),
+	// 			UserAssignedIdentities: map[string]*armstorage.UserAssignedIdentity{
+	// 				"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-uami": &armstorage.UserAssignedIdentity{
+	// 					ClientID: to.Ptr("11111111-1111-1111-1111-111111111111"),
+	// 					PrincipalID: to.Ptr("22222222-2222-2222-2222-222222222222"),
+	// 				},
+	// 			},
+	// 		},
+	// 		Properties: &armstorage.ContextCacheProperties{
+	// 			AccountKind: to.Ptr(armstorage.ContextCacheAccountKindRegional),
+	// 			Description: to.Ptr("Test context cache"),
+	// 			ProvisioningState: to.Ptr(armstorage.ContextCacheProvisioningStateSucceeded),
+	// 			Encryption: &armstorage.ArmEncryption{
+	// 				CustomerManagedKeyEncryption: &armstorage.CustomerManagedKeyEncryption{
+	// 					KeyEncryptionKeyIdentity: &armstorage.KeyEncryptionKeyIdentity{
+	// 						IdentityType: to.Ptr(armstorage.KeyEncryptionKeyIdentityTypeUserAssignedIdentity),
+	// 						UserAssignedIdentityResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-uami"),
+	// 					},
+	// 					KeyEncryptionKeyURL: to.Ptr("https://mykeyvault.vault.azure.net/keys/encryptionKey"),
+	// 				},
+	// 			},
+	// 		},
+	// 		SystemData: &armstorage.SystemData{
+	// 			CreatedBy: to.Ptr("user@example.com"),
+	// 			CreatedByType: to.Ptr(armstorage.CreatedByTypeUser),
+	// 			CreatedAt: to.Ptr(time.Date(2026, time.January, 1, 0, 0, 0, 0, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("user@example.com"),
+	// 			LastModifiedByType: to.Ptr(armstorage.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2026, time.January, 1, 0, 0, 0, 0, time.UTC)),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-09-01/StorageContextCacheCRUD/ContextCaches_Delete.json
 func ExampleContextCachesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -171,7 +379,7 @@ func ExampleContextCachesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-06-01/StorageContextCacheCRUD/ContextCaches_Get.json
+// Generated from example definition: 2026-09-01/StorageContextCacheCRUD/ContextCaches_Get.json
 func ExampleContextCachesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -182,7 +390,7 @@ func ExampleContextCachesClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewContextCachesClient().Get(ctx, "testrg", "testaccount", nil)
+	res, err := clientFactory.NewContextCachesClient().Get(ctx, "testrg", "testcontextcache", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -191,17 +399,36 @@ func ExampleContextCachesClient_Get() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstorage.ContextCachesClientGetResponse{
 	// 	ContextCache: armstorage.ContextCache{
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testrg/providers/Microsoft.Storage/contextCaches/testaccount"),
-	// 		Name: to.Ptr("testaccount"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testrg/providers/Microsoft.Storage/contextCaches/testcontextcache"),
+	// 		Name: to.Ptr("testcontextcache"),
 	// 		Type: to.Ptr("Microsoft.Storage/contextCaches"),
 	// 		Location: to.Ptr("eastus"),
 	// 		Tags: map[string]*string{
 	// 			"environment": to.Ptr("test"),
 	// 		},
+	// 		Identity: &armstorage.ManagedServiceIdentity{
+	// 			Type: to.Ptr(armstorage.ManagedServiceIdentityTypeSystemAssignedUserAssigned),
+	// 			PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000001"),
+	// 			TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 			UserAssignedIdentities: map[string]*armstorage.UserAssignedIdentity{
+	// 				"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-uami": &armstorage.UserAssignedIdentity{
+	// 					ClientID: to.Ptr("11111111-1111-1111-1111-111111111111"),
+	// 					PrincipalID: to.Ptr("22222222-2222-2222-2222-222222222222"),
+	// 				},
+	// 			},
+	// 		},
 	// 		Properties: &armstorage.ContextCacheProperties{
 	// 			AccountKind: to.Ptr(armstorage.ContextCacheAccountKindRegional),
-	// 			Description: to.Ptr("Test Azure Context Cache account"),
+	// 			Description: to.Ptr("Test context cache"),
 	// 			ProvisioningState: to.Ptr(armstorage.ContextCacheProvisioningStateSucceeded),
+	// 			Encryption: &armstorage.ArmEncryption{
+	// 				CustomerManagedKeyEncryption: &armstorage.CustomerManagedKeyEncryption{
+	// 					KeyEncryptionKeyIdentity: &armstorage.KeyEncryptionKeyIdentity{
+	// 						IdentityType: to.Ptr(armstorage.KeyEncryptionKeyIdentityTypeSystemAssignedIdentity),
+	// 					},
+	// 					KeyEncryptionKeyURL: to.Ptr("https://mykeyvault.vault.azure.net/keys/encryptionKey"),
+	// 				},
+	// 			},
 	// 		},
 	// 		SystemData: &armstorage.SystemData{
 	// 			CreatedBy: to.Ptr("user@example.com"),
@@ -215,7 +442,7 @@ func ExampleContextCachesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-06-01/StorageContextCacheCRUD/ContextCaches_ListByResourceGroup.json
+// Generated from example definition: 2026-09-01/StorageContextCacheCRUD/ContextCaches_ListByResourceGroup.json
 func ExampleContextCachesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -241,17 +468,36 @@ func ExampleContextCachesClient_NewListByResourceGroupPager() {
 		// 	ContextCacheListResult: armstorage.ContextCacheListResult{
 		// 		Value: []*armstorage.ContextCache{
 		// 			{
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testrg/providers/Microsoft.Storage/contextCaches/testaccount"),
-		// 				Name: to.Ptr("testaccount"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testrg/providers/Microsoft.Storage/contextCaches/testcontextcache"),
+		// 				Name: to.Ptr("testcontextcache"),
 		// 				Type: to.Ptr("Microsoft.Storage/contextCaches"),
 		// 				Location: to.Ptr("eastus"),
 		// 				Tags: map[string]*string{
 		// 					"environment": to.Ptr("test"),
 		// 				},
+		// 				Identity: &armstorage.ManagedServiceIdentity{
+		// 					Type: to.Ptr(armstorage.ManagedServiceIdentityTypeSystemAssignedUserAssigned),
+		// 					PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000001"),
+		// 					TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+		// 					UserAssignedIdentities: map[string]*armstorage.UserAssignedIdentity{
+		// 						"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-uami": &armstorage.UserAssignedIdentity{
+		// 							ClientID: to.Ptr("11111111-1111-1111-1111-111111111111"),
+		// 							PrincipalID: to.Ptr("22222222-2222-2222-2222-222222222222"),
+		// 						},
+		// 					},
+		// 				},
 		// 				Properties: &armstorage.ContextCacheProperties{
 		// 					AccountKind: to.Ptr(armstorage.ContextCacheAccountKindRegional),
-		// 					Description: to.Ptr("Test Azure Context Cache account"),
+		// 					Description: to.Ptr("Test context cache"),
 		// 					ProvisioningState: to.Ptr(armstorage.ContextCacheProvisioningStateSucceeded),
+		// 					Encryption: &armstorage.ArmEncryption{
+		// 						CustomerManagedKeyEncryption: &armstorage.CustomerManagedKeyEncryption{
+		// 							KeyEncryptionKeyIdentity: &armstorage.KeyEncryptionKeyIdentity{
+		// 								IdentityType: to.Ptr(armstorage.KeyEncryptionKeyIdentityTypeSystemAssignedIdentity),
+		// 							},
+		// 							KeyEncryptionKeyURL: to.Ptr("https://mykeyvault.vault.azure.net/keys/encryptionKey"),
+		// 						},
+		// 					},
 		// 				},
 		// 				SystemData: &armstorage.SystemData{
 		// 					CreatedBy: to.Ptr("user@example.com"),
@@ -268,7 +514,7 @@ func ExampleContextCachesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-06-01/StorageContextCacheCRUD/ContextCaches_ListBySubscription.json
+// Generated from example definition: 2026-09-01/StorageContextCacheCRUD/ContextCaches_ListBySubscription.json
 func ExampleContextCachesClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -294,17 +540,36 @@ func ExampleContextCachesClient_NewListBySubscriptionPager() {
 		// 	ContextCacheListResult: armstorage.ContextCacheListResult{
 		// 		Value: []*armstorage.ContextCache{
 		// 			{
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testrg/providers/Microsoft.Storage/contextCaches/testaccount"),
-		// 				Name: to.Ptr("testaccount"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testrg/providers/Microsoft.Storage/contextCaches/testcontextcache"),
+		// 				Name: to.Ptr("testcontextcache"),
 		// 				Type: to.Ptr("Microsoft.Storage/contextCaches"),
 		// 				Location: to.Ptr("eastus"),
 		// 				Tags: map[string]*string{
 		// 					"environment": to.Ptr("test"),
 		// 				},
+		// 				Identity: &armstorage.ManagedServiceIdentity{
+		// 					Type: to.Ptr(armstorage.ManagedServiceIdentityTypeSystemAssignedUserAssigned),
+		// 					PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000001"),
+		// 					TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+		// 					UserAssignedIdentities: map[string]*armstorage.UserAssignedIdentity{
+		// 						"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-uami": &armstorage.UserAssignedIdentity{
+		// 							ClientID: to.Ptr("11111111-1111-1111-1111-111111111111"),
+		// 							PrincipalID: to.Ptr("22222222-2222-2222-2222-222222222222"),
+		// 						},
+		// 					},
+		// 				},
 		// 				Properties: &armstorage.ContextCacheProperties{
 		// 					AccountKind: to.Ptr(armstorage.ContextCacheAccountKindRegional),
-		// 					Description: to.Ptr("Test Azure Context Cache account"),
+		// 					Description: to.Ptr("Test context cache"),
 		// 					ProvisioningState: to.Ptr(armstorage.ContextCacheProvisioningStateSucceeded),
+		// 					Encryption: &armstorage.ArmEncryption{
+		// 						CustomerManagedKeyEncryption: &armstorage.CustomerManagedKeyEncryption{
+		// 							KeyEncryptionKeyIdentity: &armstorage.KeyEncryptionKeyIdentity{
+		// 								IdentityType: to.Ptr(armstorage.KeyEncryptionKeyIdentityTypeSystemAssignedIdentity),
+		// 							},
+		// 							KeyEncryptionKeyURL: to.Ptr("https://mykeyvault.vault.azure.net/keys/encryptionKey"),
+		// 						},
+		// 					},
 		// 				},
 		// 				SystemData: &armstorage.SystemData{
 		// 					CreatedBy: to.Ptr("user@example.com"),
@@ -321,7 +586,7 @@ func ExampleContextCachesClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2026-06-01/StorageContextCacheCRUD/ContextCaches_Update.json
+// Generated from example definition: 2026-09-01/StorageContextCacheCRUD/ContextCaches_Update.json
 func ExampleContextCachesClient_BeginUpdate_updateAContextCacheTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -332,16 +597,27 @@ func ExampleContextCachesClient_BeginUpdate_updateAContextCacheTags() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewContextCachesClient().BeginUpdate(ctx, "testrg", "testaccount", armstorage.ContextCacheUpdate{
+	poller, err := clientFactory.NewContextCachesClient().BeginUpdate(ctx, "testrg", "testcontextcache", armstorage.ContextCacheUpdate{
 		Tags: map[string]*string{
 			"environment": to.Ptr("production"),
-			"team":        to.Ptr("context-cache"),
+			"team":        to.Ptr("promptservice"),
 		},
 		Identity: &armstorage.ManagedServiceIdentity{
-			Type: to.Ptr(armstorage.ManagedServiceIdentityTypeSystemAssigned),
+			Type: to.Ptr(armstorage.ManagedServiceIdentityTypeSystemAssignedUserAssigned),
+			UserAssignedIdentities: map[string]*armstorage.UserAssignedIdentity{
+				"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-uami": {},
+			},
 		},
 		Properties: &armstorage.ContextCachePropertiesUpdate{
-			Description: to.Ptr("Updated Prompt Service account description"),
+			Description: to.Ptr("Updated context cache"),
+			Encryption: &armstorage.ArmEncryption{
+				CustomerManagedKeyEncryption: &armstorage.CustomerManagedKeyEncryption{
+					KeyEncryptionKeyIdentity: &armstorage.KeyEncryptionKeyIdentity{
+						IdentityType: to.Ptr(armstorage.KeyEncryptionKeyIdentityTypeSystemAssignedIdentity),
+					},
+					KeyEncryptionKeyURL: to.Ptr("https://mykeyvault.vault.azure.net/keys/newEncryptionKey"),
+				},
+			},
 		},
 	}, nil)
 	if err != nil {
@@ -356,28 +632,34 @@ func ExampleContextCachesClient_BeginUpdate_updateAContextCacheTags() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstorage.ContextCachesClientUpdateResponse{
 	// 	ContextCache: armstorage.ContextCache{
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testrg/providers/Microsoft.Storage/contextCaches/testaccount"),
-	// 		Name: to.Ptr("testaccount"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testrg/providers/Microsoft.Storage/contextCaches/testcontextcache"),
+	// 		Name: to.Ptr("testcontextcache"),
 	// 		Type: to.Ptr("Microsoft.Storage/contextCaches"),
 	// 		Location: to.Ptr("eastus"),
 	// 		Tags: map[string]*string{
 	// 			"environment": to.Ptr("production"),
-	// 			"team": to.Ptr("context-cache"),
+	// 			"team": to.Ptr("promptservice"),
 	// 		},
 	// 		Identity: &armstorage.ManagedServiceIdentity{
-	// 			Type: to.Ptr(armstorage.ManagedServiceIdentityTypeSystemAssigned),
-	// 			PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 			Type: to.Ptr(armstorage.ManagedServiceIdentityTypeSystemAssignedUserAssigned),
+	// 			PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000001"),
 	// 			TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 			UserAssignedIdentities: map[string]*armstorage.UserAssignedIdentity{
+	// 				"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-uami": &armstorage.UserAssignedIdentity{
+	// 					ClientID: to.Ptr("11111111-1111-1111-1111-111111111111"),
+	// 					PrincipalID: to.Ptr("22222222-2222-2222-2222-222222222222"),
+	// 				},
+	// 			},
 	// 		},
 	// 		Properties: &armstorage.ContextCacheProperties{
 	// 			AccountKind: to.Ptr(armstorage.ContextCacheAccountKindRegional),
-	// 			Description: to.Ptr("Updated Prompt Service account description"),
+	// 			Description: to.Ptr("Updated context cache"),
 	// 			Encryption: &armstorage.ArmEncryption{
 	// 				CustomerManagedKeyEncryption: &armstorage.CustomerManagedKeyEncryption{
 	// 					KeyEncryptionKeyIdentity: &armstorage.KeyEncryptionKeyIdentity{
 	// 						IdentityType: to.Ptr(armstorage.KeyEncryptionKeyIdentityTypeSystemAssignedIdentity),
 	// 					},
-	// 					KeyEncryptionKeyURL: to.Ptr("https://mykeyvault.vault.azure.net/keys/myEncryptionKey"),
+	// 					KeyEncryptionKeyURL: to.Ptr("https://mykeyvault.vault.azure.net/keys/newEncryptionKey"),
 	// 				},
 	// 			},
 	// 			ProvisioningState: to.Ptr(armstorage.ContextCacheProvisioningStateSucceeded),
@@ -394,7 +676,7 @@ func ExampleContextCachesClient_BeginUpdate_updateAContextCacheTags() {
 	// }
 }
 
-// Generated from example definition: 2026-06-01/StorageContextCacheCRUD/ContextCaches_Update_CustomerManagedKey.json
+// Generated from example definition: 2026-09-01/StorageContextCacheCRUD/ContextCaches_Update_CustomerManagedKey.json
 func ExampleContextCachesClient_BeginUpdate_updateAAzureContextCacheAccountSCustomerManagedKeyEncryptionSettings() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

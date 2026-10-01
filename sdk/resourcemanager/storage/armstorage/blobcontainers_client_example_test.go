@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-06-01/BlobContainersClearLegalHold.json
+// Generated from example definition: 2026-09-01/BlobContainersClearLegalHold.json
 func ExampleBlobContainersClient_ClearLegalHold() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -45,7 +45,7 @@ func ExampleBlobContainersClient_ClearLegalHold() {
 	// }
 }
 
-// Generated from example definition: 2026-06-01/BlobContainersPut.json
+// Generated from example definition: 2026-09-01/BlobContainersPut.json
 func ExampleBlobContainersClient_Create_putContainers() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -72,7 +72,47 @@ func ExampleBlobContainersClient_Create_putContainers() {
 	// }
 }
 
-// Generated from example definition: 2026-06-01/BlobContainersPutDefaultEncryptionScope.json
+// Generated from example definition: 2026-09-01/BlobContainersPutBlobAccessPointConfiguration.json
+func ExampleBlobContainersClient_Create_putContainerWithBlobAccessPointConfiguration() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armstorage.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewBlobContainersClient().Create(ctx, "res3376", "sto328", "container6185", armstorage.BlobContainer{
+		ContainerProperties: &armstorage.ContainerProperties{
+			BlobAccessPointConfiguration: &armstorage.BlobAccessPointConfigurationConnection{
+				BlobAccessPointConfigurationName:     to.Ptr("myAccessPointConfig"),
+				BlobAccessPointConfigurationUniqueID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armstorage.BlobContainersClientCreateResponse{
+	// 	BlobContainer: armstorage.BlobContainer{
+	// 		Name: to.Ptr("container6185"),
+	// 		Type: to.Ptr("Microsoft.Storage/storageAccounts/blobServices/containers"),
+	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res3376/providers/Microsoft.Storage/storageAccounts/sto328/blobServices/default/containers/container6185"),
+	// 		ContainerProperties: &armstorage.ContainerProperties{
+	// 			BlobAccessPointConfiguration: &armstorage.BlobAccessPointConfigurationConnection{
+	// 				BlobAccessPointConfigurationName: to.Ptr("myAccessPointConfig"),
+	// 				BlobAccessPointConfigurationUniqueID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-09-01/BlobContainersPutDefaultEncryptionScope.json
 func ExampleBlobContainersClient_Create_putContainerWithDefaultEncryptionScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -108,7 +148,7 @@ func ExampleBlobContainersClient_Create_putContainerWithDefaultEncryptionScope()
 	// }
 }
 
-// Generated from example definition: 2026-06-01/BlobContainersPutObjectLevelWorm.json
+// Generated from example definition: 2026-09-01/BlobContainersPutObjectLevelWorm.json
 func ExampleBlobContainersClient_Create_putContainerWithObjectLevelWorm() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -146,7 +186,7 @@ func ExampleBlobContainersClient_Create_putContainerWithObjectLevelWorm() {
 	// }
 }
 
-// Generated from example definition: 2026-06-01/BlobContainersPutImmutabilityPolicy.json
+// Generated from example definition: 2026-09-01/BlobContainersPutImmutabilityPolicy.json
 func ExampleBlobContainersClient_CreateOrUpdateImmutabilityPolicy_createOrUpdateImmutabilityPolicy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -184,7 +224,7 @@ func ExampleBlobContainersClient_CreateOrUpdateImmutabilityPolicy_createOrUpdate
 	// }
 }
 
-// Generated from example definition: 2026-06-01/BlobContainersPutImmutabilityPolicyAllowProtectedAppendWritesAll.json
+// Generated from example definition: 2026-09-01/BlobContainersPutImmutabilityPolicyAllowProtectedAppendWritesAll.json
 func ExampleBlobContainersClient_CreateOrUpdateImmutabilityPolicy_createOrUpdateImmutabilityPolicyWithAllowProtectedAppendWritesAll() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -222,7 +262,7 @@ func ExampleBlobContainersClient_CreateOrUpdateImmutabilityPolicy_createOrUpdate
 	// }
 }
 
-// Generated from example definition: 2026-06-01/BlobContainersDelete.json
+// Generated from example definition: 2026-09-01/BlobContainersDelete.json
 func ExampleBlobContainersClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -244,7 +284,7 @@ func ExampleBlobContainersClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2026-06-01/BlobContainersDeleteImmutabilityPolicy.json
+// Generated from example definition: 2026-09-01/BlobContainersDeleteImmutabilityPolicy.json
 func ExampleBlobContainersClient_DeleteImmutabilityPolicy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -276,7 +316,7 @@ func ExampleBlobContainersClient_DeleteImmutabilityPolicy() {
 	// }
 }
 
-// Generated from example definition: 2026-06-01/BlobContainersExtendImmutabilityPolicy.json
+// Generated from example definition: 2026-09-01/BlobContainersExtendImmutabilityPolicy.json
 func ExampleBlobContainersClient_ExtendImmutabilityPolicy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -313,7 +353,7 @@ func ExampleBlobContainersClient_ExtendImmutabilityPolicy() {
 	// }
 }
 
-// Generated from example definition: 2026-06-01/BlobContainersGet.json
+// Generated from example definition: 2026-09-01/BlobContainersGet.json
 func ExampleBlobContainersClient_Get_getContainers() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -402,7 +442,7 @@ func ExampleBlobContainersClient_Get_getContainers() {
 	// }
 }
 
-// Generated from example definition: 2026-06-01/BlobContainersGetWithAllowProtectedAppendWritesAll.json
+// Generated from example definition: 2026-09-01/BlobContainersGetWithAllowProtectedAppendWritesAll.json
 func ExampleBlobContainersClient_Get_getBlobContainersGetWithAllowProtectedAppendWritesAll() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -499,7 +539,7 @@ func ExampleBlobContainersClient_Get_getBlobContainersGetWithAllowProtectedAppen
 	// }
 }
 
-// Generated from example definition: 2026-06-01/BlobContainersGetImmutabilityPolicy.json
+// Generated from example definition: 2026-09-01/BlobContainersGetImmutabilityPolicy.json
 func ExampleBlobContainersClient_GetImmutabilityPolicy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -532,7 +572,7 @@ func ExampleBlobContainersClient_GetImmutabilityPolicy() {
 	// }
 }
 
-// Generated from example definition: 2026-06-01/BlobContainersLease_Acquire.json
+// Generated from example definition: 2026-09-01/BlobContainersLease_Acquire.json
 func ExampleBlobContainersClient_Lease_acquireALeaseOnAContainer() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -561,7 +601,7 @@ func ExampleBlobContainersClient_Lease_acquireALeaseOnAContainer() {
 	// }
 }
 
-// Generated from example definition: 2026-06-01/BlobContainersLease_Break.json
+// Generated from example definition: 2026-09-01/BlobContainersLease_Break.json
 func ExampleBlobContainersClient_Lease_breakALeaseOnAContainer() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -590,7 +630,7 @@ func ExampleBlobContainersClient_Lease_breakALeaseOnAContainer() {
 	// }
 }
 
-// Generated from example definition: 2026-06-01/BlobContainersList.json
+// Generated from example definition: 2026-09-01/BlobContainersList.json
 func ExampleBlobContainersClient_NewListPager_listContainers() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -650,7 +690,7 @@ func ExampleBlobContainersClient_NewListPager_listContainers() {
 	}
 }
 
-// Generated from example definition: 2026-06-01/DeletedBlobContainersList.json
+// Generated from example definition: 2026-09-01/DeletedBlobContainersList.json
 func ExampleBlobContainersClient_NewListPager_listDeletedContainers() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -714,7 +754,7 @@ func ExampleBlobContainersClient_NewListPager_listDeletedContainers() {
 	}
 }
 
-// Generated from example definition: 2026-06-01/BlobContainersLockImmutabilityPolicy.json
+// Generated from example definition: 2026-09-01/BlobContainersLockImmutabilityPolicy.json
 func ExampleBlobContainersClient_LockImmutabilityPolicy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -746,7 +786,7 @@ func ExampleBlobContainersClient_LockImmutabilityPolicy() {
 	// }
 }
 
-// Generated from example definition: 2026-06-01/ObjectLevelWormContainerMigration.json
+// Generated from example definition: 2026-09-01/ObjectLevelWormContainerMigration.json
 func ExampleBlobContainersClient_BeginObjectLevelWorm() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -772,7 +812,7 @@ func ExampleBlobContainersClient_BeginObjectLevelWorm() {
 	// }
 }
 
-// Generated from example definition: 2026-06-01/BlobContainersSetLegalHold.json
+// Generated from example definition: 2026-09-01/BlobContainersSetLegalHold.json
 func ExampleBlobContainersClient_SetLegalHold_setLegalHoldContainers() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -808,7 +848,7 @@ func ExampleBlobContainersClient_SetLegalHold_setLegalHoldContainers() {
 	// }
 }
 
-// Generated from example definition: 2026-06-01/BlobContainersSetLegalHoldAllowProtectedAppendWritesAll.json
+// Generated from example definition: 2026-09-01/BlobContainersSetLegalHoldAllowProtectedAppendWritesAll.json
 func ExampleBlobContainersClient_SetLegalHold_setLegalHoldContainersWithAllowProtectedAppendWritesAll() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -846,7 +886,7 @@ func ExampleBlobContainersClient_SetLegalHold_setLegalHoldContainersWithAllowPro
 	// }
 }
 
-// Generated from example definition: 2026-06-01/BlobContainersPatch.json
+// Generated from example definition: 2026-09-01/BlobContainersPatch.json
 func ExampleBlobContainersClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

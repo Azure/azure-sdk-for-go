@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"strings"
 	"testing"
 	"time"
 
@@ -1298,4 +1299,61 @@ func (s *ServiceUnrecordedTestsSuite) TestDelegationSASRequestHeadersAndQueryPar
 	// Verify roundtrip URL matches original
 	_require.Equal(originalURL, roundtripURL)
 	_require.Equal(sasQueryParams.Encode(), roundtripParts.SAS.Encode())
+}
+
+// TestServiceGetSASURLPreservesCustomQueryParams is a regression test for GetSASURL() appending
+// a duplicated "?" when the service URL already contains a query string. service.Client.GetSASURL
+// delegates to the azblob service client, so this covers the fix picked up from azblob.
+func TestServiceGetSASURLPreservesCustomQueryParams(t *testing.T) {
+	_require := require.New(t)
+	const accountName = "fakestorageaccount"
+	// base64-encoded fake key; not a real secret.
+	const accountKey = "PSA7dl59RwZBFEBhBEtdrsq/g7VpjMFeSPzdC4SoBiQI3xVLg2y8HRoAF3PidfB8/i9v67QCNSAdVdJdKrmqSw=="
+	cred, err := azdatalake.NewSharedKeyCredential(accountName, accountKey)
+	_require.NoError(err)
+
+	serviceURL := fmt.Sprintf("https://%s.dfs.core.windows.net/?customparam=value", accountName)
+	svcClient, err := service.NewClientWithSharedKeyCredential(serviceURL, cred, nil)
+	_require.NoError(err)
+
+	sasURL, err := svcClient.GetSASURL(
+		sas.AccountResourceTypes{Object: true},
+		sas.AccountPermissions{Read: true},
+		time.Now().Add(time.Hour),
+		nil,
+	)
+	_require.NoError(err)
+
+	_require.Equal(1, strings.Count(sasURL, "?"), "SAS URL must not contain a duplicated '?': %s", sasURL)
+	_require.Contains(sasURL, "customparam=value")
+	_require.Contains(sasURL, "sig=")
+}
+
+// TestServiceGetSASURLNoTrailingSlashBeforeQuery is a regression test for GetSASURL() corrupting
+// the query string when the service URL has a query string but no trailing slash after the
+// account path. The trailing slash must be appended to the account path, not the query value.
+func TestServiceGetSASURLNoTrailingSlashBeforeQuery(t *testing.T) {
+	_require := require.New(t)
+	const accountName = "fakestorageaccount"
+	// base64-encoded fake key; not a real secret.
+	const accountKey = "PSA7dl59RwZBFEBhBEtdrsq/g7VpjMFeSPzdC4SoBiQI3xVLg2y8HRoAF3PidfB8/i9v67QCNSAdVdJdKrmqSw=="
+	cred, err := azdatalake.NewSharedKeyCredential(accountName, accountKey)
+	_require.NoError(err)
+
+	serviceURL := fmt.Sprintf("https://%s.dfs.core.windows.net?customparam=value", accountName)
+	svcClient, err := service.NewClientWithSharedKeyCredential(serviceURL, cred, nil)
+	_require.NoError(err)
+
+	sasURL, err := svcClient.GetSASURL(
+		sas.AccountResourceTypes{Object: true},
+		sas.AccountPermissions{Read: true},
+		time.Now().Add(time.Hour),
+		nil,
+	)
+	_require.NoError(err)
+
+	_require.Equal(1, strings.Count(sasURL, "?"), "SAS URL must not contain a duplicated '?': %s", sasURL)
+	_require.Contains(sasURL, "customparam=value&", "query value must not be corrupted with an appended slash: %s", sasURL)
+	_require.NotContains(sasURL, "customparam=value/", "query value must not have a trailing slash appended: %s", sasURL)
+	_require.True(strings.HasPrefix(sasURL, fmt.Sprintf("https://%s.blob.core.windows.net/?", accountName)), "trailing slash must be appended to the account path: %s", sasURL)
 }

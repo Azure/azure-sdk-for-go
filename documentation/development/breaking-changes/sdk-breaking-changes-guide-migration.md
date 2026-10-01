@@ -637,7 +637,7 @@ Type change for ETag fields from `*string` to `*azcore.ETag`:
 
 **Reason**: During TypeSpec migration, ETag fields are emitted using the strongly-typed `azcore.ETag` instead of a plain `*string`.
 
-**Impact**: Low impact since underlaying type of `azure.Etag` is `string`.
+**Impact**: Low impact since underlying type of `azure.Etag` is `string`.
 
 **Resolution**: Accept these breaking changes.
 

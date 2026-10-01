@@ -101,7 +101,7 @@ if err != nil {
 
 ### Synchronized wrapper
 
-If you do not care about the underlaying detail about the LRO, you can use the following generic utility to create an synchronized wrapper for all LRO.
+If you do not care about the underlying detail about the LRO, you can use the following generic utility to create an synchronized wrapper for all LRO.
 
 > NOTE: The error return of `Wait` includes the error of starting LRO and error of interval polling. Also, the wrapper will hide the `poller` which means you cannot recovery from an LRO accidentally interrupt. 
 

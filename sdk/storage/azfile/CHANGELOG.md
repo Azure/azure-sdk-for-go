@@ -1,13 +1,11 @@
 # Release History
 
-## 1.7.1-beta.2 (Unreleased)
+## 1.7.1-beta.2 (2026-10-01)
 
 ### Features Added
 * Exported `ShareNFSSettings` and `ShareNFSSettingsEncryptionInTransit` types.
 * Added structured message (XSM/1.0) CRC64 content validation for `azfile` uploads and downloads via the new `TransferValidationTypeComputeStructuredMessageCRC64` transfer validation option.
 * Added `TransactionalValidation` support on `CreateOptions` for structured message CRC64 content validation when creating a file with initial data.
-
-### Breaking Changes
 
 ### Bugs Fixed
 * Fixed `GetSASURL()` on `share.Client`, `file.Client`, and `service.Client` appending a duplicated `?` to the resulting URL when called on a client whose URL already contained a query string (e.g. a client returned by `WithSnapshot`, a file client derived from a share snapshot, or a custom endpoint with pre-existing query parameters), which produced a malformed SAS URL.

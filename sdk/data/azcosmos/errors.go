@@ -91,8 +91,8 @@ const (
 	// service responded. It differs from [CodeRequestTimeout], which the service reports.
 	CodeClientOperationTimeout Code = "ClientOperationTimeout"
 
-	// CodeOperationCancelled means an operation already in flight was cancelled before it
-	// completed, because the caller's context ended or the native driver cancelled it. An [Error]
+	// CodeOperationCancelled means the caller stopped waiting for an in-flight operation.
+	// Native work continues and a submitted write may still commit. An [Error]
 	// carrying it unwraps to the context error that caused cancellation,
 	// so errors.Is reports it the same way the rest of the standard library does. An operation
 	// started after the client was closed is [CodeClientClosed] instead, since it never ran.
@@ -116,7 +116,8 @@ const (
 // [Error.Code] is part of the published API. The string returned by [Error.Error] is not, and is
 // subject to change.
 type Error struct {
-	// PatchTrackingID identifies a tracked patch, including failed or cancelled execution.
+	// PatchTrackingID identifies a tracked patch. Cancelled waits retain a caller-supplied ID;
+	// a native-generated ID is available only when a completion was received.
 	PatchTrackingID PatchTrackingID
 	// Code classifies the failure. Prefer it over StatusCode and SubStatus, which are reported
 	// verbatim and are harder to interpret correctly.
@@ -206,7 +207,7 @@ func (e *Error) Error() string {
 
 // Unwrap reports the standard library error a failure corresponds to, so that callers can use
 // errors.Is for the conditions Go already has a vocabulary for. A cancelled operation unwraps to
-// its caller's context error, or [context.Canceled] when the native driver initiated cancellation.
+// its caller's context error, or [context.Canceled] for a cancellation without a recorded cause.
 func (e *Error) Unwrap() error {
 	if e.cause != nil {
 		return e.cause
@@ -220,7 +221,7 @@ func (e *Error) Unwrap() error {
 func newOperationCancelledError(cause error, requestCharge float64, activityID string) *Error {
 	return &Error{
 		Code:          CodeOperationCancelled,
-		Message:       "azcosmos: the operation was cancelled",
+		Message:       "azcosmos: stopped waiting for the operation; submitted native work may still complete",
 		RequestCharge: requestCharge,
 		ActivityID:    activityID,
 		cause:         cause,

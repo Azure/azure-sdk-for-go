@@ -3,6 +3,8 @@
 
 //go:build cgo && ((darwin && !ios && arm64) || (linux && !android && amd64))
 
+// cSpell:ignore azsdk
+
 package azcosmos
 
 import (
@@ -56,7 +58,10 @@ func TestEmulatorBinaryDefaultAndHierarchy(t *testing.T) {
 	require.Equal(t, float64(1), item["count"])
 	text.BinaryEncoding.RequestTextResponse = true
 
-	binaryClient := runtimeEmulatorContainer(t, runtime, OperationOptions{BinaryEncoding: &BinaryEncodingOptions{Enabled: true}})
+	clientRuntime, err := NewRuntime(&RuntimeOptions{Operation: text})
+	require.NoError(t, err)
+	t.Cleanup(func() { require.NoError(t, clientRuntime.Close()) })
+	binaryClient := runtimeEmulatorContainer(t, clientRuntime, OperationOptions{BinaryEncoding: &BinaryEncodingOptions{Enabled: true}})
 	response, err = binaryClient.ReadItem(t.Context(), pk, id, nil)
 	require.NoError(t, err)
 	require.Equal(t, byte(0x80), response.Value[0], "client group must replace runtime text-response group")
@@ -152,7 +157,7 @@ func TestEmulatorPatchTrackingAcrossApplicationRetries(t *testing.T) {
 	require.Equal(t, options.TrackingID, cosmosErr.PatchTrackingID)
 }
 
-func TestEmulatorSharedRuntimeKeepsSameEndpointCredentialsIndependent(t *testing.T) {
+func TestEmulatorRuntimeRejectsCachedCredentialReuse(t *testing.T) {
 	endpoint, database, containerID := emulatorConfiguration(t)
 	runtime, err := NewRuntime(nil)
 	require.NoError(t, err)
@@ -161,13 +166,8 @@ func TestEmulatorSharedRuntimeKeepsSameEndpointCredentialsIndependent(t *testing
 	secondCredential := &shortLivedIdentityCredential{identity: "emulator-client-b"}
 	first, err := NewClient(endpoint, firstCredential, &ClientOptions{Runtime: runtime})
 	require.NoError(t, err)
-	second, err := NewClient(endpoint, secondCredential, &ClientOptions{Runtime: runtime})
-	require.NoError(t, err)
 	require.NoError(t, first.Initialize(t.Context()))
-	require.NoError(t, second.Initialize(t.Context()))
 	firstContainer, err := first.NewContainer(database, containerID)
-	require.NoError(t, err)
-	container, err := second.NewContainer(database, containerID)
 	require.NoError(t, err)
 	readMissing := func(container *ContainerClient) {
 		_, err := container.ReadItem(t.Context(), NewPartitionKeyString("missing"), uniqueItemID(t), nil)
@@ -176,14 +176,24 @@ func TestEmulatorSharedRuntimeKeepsSameEndpointCredentialsIndependent(t *testing
 		require.Equal(t, CodeNotFound, cosmosErr.Code)
 	}
 	readMissing(firstContainer)
-	firstCalls, secondCalls := firstCredential.calls.Load(), secondCredential.calls.Load()
-	time.Sleep(1100 * time.Millisecond)
-	readMissing(container)
-	require.Equal(t, firstCalls, firstCredential.calls.Load(), "second client used first client's cached container credential")
-	require.Greater(t, secondCredential.calls.Load(), secondCalls)
+	second, err := NewClient(endpoint, secondCredential, &ClientOptions{Runtime: runtime})
+	require.Nil(t, second)
+	require.ErrorContains(t, err, "already been attached")
+	require.Zero(t, secondCredential.calls.Load())
 	require.NoError(t, first.Close())
+	second, err = NewClient(endpoint, secondCredential, &ClientOptions{Runtime: runtime})
+	require.Nil(t, second)
+	require.ErrorContains(t, err, "already been attached")
+	require.Zero(t, secondCredential.calls.Load())
+
+	second, err = NewClient(endpoint, secondCredential, nil)
+	require.NoError(t, err)
+	t.Cleanup(func() { require.NoError(t, second.Close()) })
+	container, err := second.NewContainer(database, containerID)
+	require.NoError(t, err)
 	time.Sleep(1100 * time.Millisecond)
 	readMissing(container)
+	require.Positive(t, secondCredential.calls.Load())
 }
 
 type shortLivedIdentityCredential struct {

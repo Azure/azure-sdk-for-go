@@ -3,6 +3,8 @@
 
 //go:build cgo && ((darwin && !ios && arm64) || (linux && !android && amd64))
 
+// cSpell:ignore gocritic
+
 package azcosmos
 
 /*
@@ -42,7 +44,7 @@ const driverAvailable = true
 // the account transport.
 //
 // The queue binds to the runtime, not to the driver, so it exists before driver creation and makes
-// that network work cancellable through cosmos_driver_get_or_create_submit.
+// callers can stop waiting without cancelling native work.
 type nativeDriver struct {
 	// cfg is kept across the local setup in openDriver and the asynchronous driver creation that
 	// follows it.
@@ -52,16 +54,15 @@ type nativeDriver struct {
 	account      *C.cosmos_account_ref_t
 
 	tokenProvider *tokenProviderState
+	// pending retains resources for submitted work after its Go caller stops waiting.
+	pending sync.WaitGroup
 
 	// mu guards everything below it. It is deliberately not held across driver creation or
 	// container resolution: both wait on the network, and holding it there would make a second
 	// caller block on the mutex where it cannot honor its own context.
 	//
-	// That means mu does not keep these handles alive for an operation's duration, and close
-	// does not wait for one to finish. Client.mu is what does: Close takes it for write, which
-	// blocks until every operation holding it for read has returned, so close only ever runs
-	// with nothing in flight. Calling into a nativeDriver outside Client.acquire breaks that,
-	// which is why nothing but a test does.
+	// Client.mu protects active callers; pending protects native submissions whose callers
+	// have stopped waiting. Close drains both before freeing handles.
 	mu sync.Mutex
 	// created records that initialization succeeded. Failures are not cached because transport,
 	// service and token acquisition can recover while this long-lived client remains in use.
@@ -342,9 +343,8 @@ func (d *nativeDriver) close() error {
 	if d == nil {
 		return nil
 	}
-	// Freeing here is only safe because the caller guarantees no operation is in flight; see
-	// nativeDriver.mu. The lock below orders this against a concurrent state read, not against
-	// an operation, which it can no longer wait for.
+	d.pending.Wait()
+	// Client.mu prevents new submissions while pending drains; mu orders remaining state reads.
 	d.mu.Lock()
 	defer d.mu.Unlock()
 	d.closed = true

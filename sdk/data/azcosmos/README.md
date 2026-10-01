@@ -20,10 +20,8 @@ Cosmos DB SDKs.
 ### Building with the driver
 
 The driver binding is selected automatically when cgo is enabled on glibc `linux/amd64` or
-`darwin/arm64`. This change requires **native ABI 0.2.0**, which is not yet published.
-Until matching distribution modules are released, use locally staged 0.2.0 modules with
-an external `go -modfile` file; do not commit machine-specific `replace` directives.
-After publication, no build tag or linker environment variable is required:
+`darwin/arm64`. The binding uses the published **native ABI 0.2.0** platform modules.
+No local replacements, build tag, or linker environment variable is required:
 
 ```sh
 go build ./...
@@ -76,8 +74,12 @@ replace rather than extend them. Throughput and throttling members inherit indep
 Binary encoding and availability strategies replace their entire groups.
 
 `NewRuntime` creates shared execution resources. Pass it in `ClientOptions.Runtime` to attach
-multiple independent account clients, including clients for the same endpoint with different
-credentials or defaults. Application identity belongs to the runtime; a conflicting nonempty
+multiple independent account clients for different hostnames. Published native v0.2.0 caches
+credential-bearing container references at runtime scope. To prevent credential reuse across
+clients, Go rejects a second client for the same normalized hostname, even after the first
+client closes. Scheme, port, and path changes do not bypass this restriction. Use separate
+runtimes (or leave `ClientOptions.Runtime` nil) for multiple clients of the same account.
+Application identity belongs to the runtime; a conflicting nonempty
 client `ApplicationID` is rejected. Without a supplied runtime, the client owns a private one.
 The legacy client `EnableContentResponseOnWrite` alias remains supported, but conflicting values
 in it and `Operation.EnableContentResponseOnWrite` are rejected.
@@ -93,6 +95,21 @@ the chosen availability strategy. Environment settings are captured at runtime c
 `Client.Close` affects only that client. `Runtime.Close` rejects new work on all attached clients,
 drains admitted operations, closes the clients, and frees shared resources. Both are idempotent
 and safe to call concurrently. Do not call Close from inside a credential callback.
+
+### Context cancellation
+
+Native ABI 0.2.0 does not support cancelling submitted operations. Cancelling a Go context
+stops the caller's wait, but the native request continues and a write may still commit.
+An already delivered completion takes precedence over cancellation. Otherwise, a cancelled
+wait returns `CodeOperationCancelled` wrapping the context error, with the outcome unknown.
+Response metadata from a later completion cannot be returned to that caller.
+
+The binding drains abandoned waits in the background and retains native handles and credentials
+until completion. `Client.Close` and `Runtime.Close` wait for that drain; they can take longer
+than the caller's context deadline. End-to-end timeout snapshots bound native item execution,
+but a shorter Go deadline does not cancel native initialization or metadata resolution.
+For retryable client-side patches, supply `TrackingID` before submission to retain the identity
+after cancellation; a native-generated tracking ID is only available after completion.
 
 ### Binary response compatibility change
 

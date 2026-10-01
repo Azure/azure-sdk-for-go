@@ -220,8 +220,7 @@ func TestCloseCancelsTokenAcquisition(t *testing.T) {
 	}
 }
 
-// The token callback proves driver creation has been submitted before cancellation. Initialize
-// must cancel the native operation and await its terminal completion before returning.
+// The token callback proves driver creation was submitted. Cancellation ends only the Go wait.
 func TestNativeCancellationAfterSubmission(t *testing.T) {
 	credential := &blockingTokenCredential{
 		started: make(chan struct{}),
@@ -243,14 +242,57 @@ func TestNativeCancellationAfterSubmission(t *testing.T) {
 		require.ErrorAs(t, err, &cosmosErr)
 		require.Equal(t, CodeOperationCancelled, cosmosErr.Code)
 	case <-time.After(time.Second):
-		t.Fatal("Initialize did not await the terminal cancellation completion")
+		t.Fatal("Initialize did not stop waiting after context cancellation")
 	}
 
+	select {
+	case <-credential.stopped:
+		t.Fatal("caller cancellation must not cancel the client-wide credential")
+	default:
+	}
 	require.NoError(t, client.Close())
 	select {
 	case <-credential.stopped:
 	case <-time.After(time.Second):
 		t.Fatal("Close did not stop the deliberately blocked token acquisition")
+	}
+
+}
+
+func TestCloseDrainsNativeWorkAfterCallerCancellation(t *testing.T) {
+	credential := &gatedFailingTokenCredential{
+		started: make(chan struct{}), release: make(chan struct{}),
+	}
+	var releaseOnce sync.Once
+	unblock := func() { releaseOnce.Do(func() { close(credential.release) }) }
+	client, err := NewClient("https://myaccount.documents.azure.com", credential, nil)
+	require.NoError(t, err)
+	t.Cleanup(func() { unblock(); require.NoError(t, client.Close()) })
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+	result := make(chan error, 1)
+	go func() { result <- client.Initialize(ctx) }()
+	<-credential.started
+	cancel()
+	select {
+	case err := <-result:
+		require.ErrorIs(t, err, context.Canceled)
+	case <-time.After(time.Second):
+		t.Fatal("caller cancellation did not return")
+	}
+	closed := make(chan error, 1)
+	go func() { closed <- client.Close() }()
+	select {
+	case <-closed:
+		t.Fatal("Close released native resources while credential work was still in flight")
+	case <-time.After(50 * time.Millisecond):
+	}
+	unblock()
+	select {
+	case err := <-closed:
+		require.NoError(t, err)
+	case <-time.After(5 * time.Second):
+		t.Fatal("Close failed to drain the terminal completion")
 	}
 }
 

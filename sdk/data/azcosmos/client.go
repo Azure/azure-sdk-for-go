@@ -7,11 +7,13 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"net/netip"
 	"net/url"
 	"strings"
 	"sync"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"golang.org/x/net/idna"
 )
 
 // ClientOptions configures a [Client].
@@ -23,7 +25,8 @@ import (
 //
 // A nil *ClientOptions selects the defaults for every field.
 type ClientOptions struct {
-	// Runtime shares execution resources. Nil creates a private runtime owned by this client.
+	// Runtime shares resources across account hostnames. Each hostname may be used only once
+	// per Runtime lifetime. Nil creates a private runtime owned by this client.
 	Runtime *Runtime
 	// Operation supplies account-level defaults for every item operation.
 	Operation OperationOptions
@@ -145,9 +148,14 @@ func newClient(
 		client.options.Operation.EnableContentResponseOnWrite = clonePointer(client.options.EnableContentResponseOnWrite)
 	}
 	client.runtime = client.options.Runtime
+	var accountHost string
 	if client.runtime != nil {
 		if id := client.options.ApplicationID; id != "" && id != client.runtime.applicationID {
 			return nil, errors.New("azcosmos: ClientOptions.ApplicationID conflicts with the shared runtime identity")
+		}
+		accountHost, err = runtimeAccountHost(parsed)
+		if err != nil {
+			return nil, err
 		}
 	} else if driverAvailable {
 		client.runtime, err = NewRuntime(&RuntimeOptions{ApplicationID: client.options.ApplicationID})
@@ -163,6 +171,10 @@ func newClient(
 			client.runtime.mu.Unlock()
 			return nil, &Error{Code: CodeClientClosed, Message: "the runtime is closed or uninitialized"}
 		}
+		if _, exists := client.runtime.accountHosts[accountHost]; !client.privateRuntime && exists {
+			client.runtime.mu.Unlock()
+			return nil, errors.New("azcosmos: this account hostname has already been attached to the runtime; native v0.2.0 retains credentials, so use a separate Runtime")
+		}
 	}
 
 	driver, err := openDriver(driverConfig{
@@ -176,6 +188,9 @@ func newClient(
 	if client.runtime != nil {
 		if err == nil {
 			client.runtime.clients[client] = struct{}{}
+			if !client.privateRuntime {
+				client.runtime.accountHosts[accountHost] = struct{}{}
+			}
 		}
 		client.runtime.mu.Unlock()
 	}
@@ -186,6 +201,27 @@ func newClient(
 		return nil, err
 	}
 	return client, nil
+}
+
+// Ports and paths deliberately do not partition identities on a shared native account cache.
+func runtimeAccountHost(endpoint *url.URL) (string, error) {
+	host := strings.TrimRight(endpoint.Hostname(), ".")
+	if address, err := netip.ParseAddr(host); err == nil {
+		return address.Unmap().String(), nil
+	}
+	ascii, err := idna.Lookup.ToASCII(host)
+	if err != nil || ascii == "" {
+		return "", errors.New("azcosmos: shared runtime requires a valid account hostname")
+	}
+	ascii = strings.TrimRight(strings.ToLower(ascii), ".")
+	if address, err := netip.ParseAddr(ascii); err == nil {
+		return address.Unmap().String(), nil
+	}
+	lastLabel := ascii[strings.LastIndexByte(ascii, '.')+1:]
+	if lastLabel == "" || lastLabel[0] >= '0' && lastLabel[0] <= '9' {
+		return "", errors.New("azcosmos: shared runtime requires canonical IP addresses, not numeric hostname aliases")
+	}
+	return ascii, nil
 }
 
 // Initialize eagerly creates the driver and fills its account-properties and routing caches.
@@ -214,7 +250,8 @@ func (c *Client) Endpoint() string {
 }
 
 // Close releases the driver resources the client owns. It cancels active token acquisition, then
-// waits for the client's in-flight operations to finish. Afterwards every operation on the client
+// waits for all native work, including requests whose callers stopped waiting, to finish.
+// Afterwards every operation on the client
 // fails with [CodeClientClosed] rather than reaching the driver.
 //
 // Close is idempotent and safe to call concurrently; every caller observes the same result. It

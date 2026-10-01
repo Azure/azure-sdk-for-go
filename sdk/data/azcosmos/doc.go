@@ -20,6 +20,8 @@
 // Rust owns resolution and supported environment overrides. Runtime.SetOperationOptions replaces
 // defaults atomically; admitted operations retain a native snapshot and one timeout budget.
 // Client.Close closes only that client; Runtime.Close drains and closes all attached clients.
+// Context cancellation stops waiting, not submitted native work; a write may still commit.
+// Close waits for native work to finish, including operations whose callers stopped waiting.
 //
 // # Response encoding
 //

@@ -19,15 +19,19 @@ type RuntimeOptions struct {
 
 // Runtime owns shared native execution resources and operation defaults.
 // Construct it with NewRuntime; the zero value is not usable. Runtime is concurrency-safe.
+// Native v0.2.0 retains credential-bearing container references, so each account hostname
+// may be attached only once for the lifetime of a Runtime, even after its client closes.
 type Runtime struct {
 	mu            sync.Mutex
 	native        *nativeRuntime
 	applicationID string
 	clients       map[*Client]struct{}
-	closing       bool
-	inflight      sync.WaitGroup
-	closeOnce     sync.Once
-	closeErr      error
+	// Reservations survive client closure because native account caches survive it too.
+	accountHosts map[string]struct{}
+	closing      bool
+	inflight     sync.WaitGroup
+	closeOnce    sync.Once
+	closeErr     error
 }
 
 // NewRuntime creates a runtime without network I/O. Nil options selects driver defaults.
@@ -48,7 +52,10 @@ func NewRuntime(options *RuntimeOptions) (*Runtime, error) {
 	if err != nil {
 		return nil, err
 	}
-	return &Runtime{native: native, applicationID: config.ApplicationID, clients: make(map[*Client]struct{})}, nil
+	return &Runtime{
+		native: native, applicationID: config.ApplicationID,
+		clients: make(map[*Client]struct{}), accountHosts: make(map[string]struct{}),
+	}, nil
 }
 
 // SetOperationOptions atomically replaces all runtime defaults; it does not patch individual fields.

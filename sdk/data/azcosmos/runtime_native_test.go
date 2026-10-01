@@ -3,22 +3,30 @@
 
 //go:build cgo && ((darwin && !ios && arm64) || (linux && !android && amd64))
 
+// cSpell:ignore bcher
+
 package azcosmos
 
 import (
 	"context"
+	"fmt"
+	"net/url"
 	"sync"
+	"sync/atomic"
 	"testing"
 	"time"
 
 	"github.com/stretchr/testify/require"
 )
 
+var sharedTestAccount atomic.Uint64
+
 func sharedTestClient(t *testing.T, runtime *Runtime, options OperationOptions) *Client {
 	t.Helper()
 	key, err := NewKeyCredential(emulatorKey)
 	require.NoError(t, err)
-	client, err := NewClientWithKey("https://myaccount.documents.azure.com", key, &ClientOptions{
+	endpoint := fmt.Sprintf("https://account-%d.documents.azure.com", sharedTestAccount.Add(1))
+	client, err := NewClientWithKey(endpoint, key, &ClientOptions{
 		Runtime: runtime, Operation: options,
 	})
 	require.NoError(t, err)
@@ -200,4 +208,87 @@ func TestRuntimeUpdateDoesNotRestartInitializationBudget(t *testing.T) {
 	case <-time.After(3 * time.Second):
 		t.Fatal("runtime update restarted the initialization budget")
 	}
+}
+
+func TestRuntimeAccountHostCanonicalization(t *testing.T) {
+	for endpoint, want := range map[string]string{
+		"https://ACCOUNT.documents.azure.com:0443/a/../?q=1": "account.documents.azure.com",
+		"https://account.documents.azure.com./":              "account.documents.azure.com",
+		"https://[0:0:0:0:0:0:0:1]:8081/":                    "::1",
+		"https://[::ffff:127.0.0.1]/":                        "127.0.0.1",
+		"https://127.0.0.1:8081/":                            "127.0.0.1",
+		"https://xn--bcher-kva.example/":                     "xn--bcher-kva.example",
+		"https://b\u00fccher.example\u3002/":                 "xn--bcher-kva.example",
+	} {
+		t.Run(endpoint, func(t *testing.T) {
+			parsed, err := url.Parse(endpoint)
+			require.NoError(t, err)
+			host, err := runtimeAccountHost(parsed)
+			require.NoError(t, err)
+			require.Equal(t, want, host)
+		})
+	}
+	for _, host := range []string{"127.1", "2130706433", "0x7f000001", "0177.0.0.1", "127.0.0.01"} {
+		parsed, err := url.Parse("https://" + host)
+		require.NoError(t, err)
+		_, err = runtimeAccountHost(parsed)
+		require.ErrorContains(t, err, "canonical IP")
+	}
+}
+
+func TestRuntimeAccountReservationSurvivesCloseAndRollsBackFailure(t *testing.T) {
+	runtime, err := NewRuntime(nil)
+	require.NoError(t, err)
+	t.Cleanup(func() { require.NoError(t, runtime.Close()) })
+	options := &ClientOptions{Runtime: runtime}
+	key := KeyCredential{accountKey: emulatorKey}
+	failed, err := NewClientWithKey("https://account.documents.azure.com:99999", key, options)
+	require.Error(t, err)
+	require.Nil(t, failed)
+	require.Empty(t, runtime.accountHosts)
+	client, err := NewClientWithKey("https://account.documents.azure.com", key, options)
+	require.NoError(t, err)
+	for _, endpoint := range []string{
+		"https://account.documents.azure.com/",
+		"https://ACCOUNT.documents.azure.com:0443",
+		"https://account.documents.azure.com./a/../",
+	} {
+		duplicate, err := NewClientWithKey(endpoint, key, options)
+		require.Nil(t, duplicate)
+		require.ErrorContains(t, err, "already been attached")
+	}
+	require.NoError(t, client.Close())
+	duplicate, err := NewClientWithKey("https://account.documents.azure.com", key, options)
+	require.Nil(t, duplicate)
+	require.ErrorContains(t, err, "already been attached")
+}
+
+func TestRuntimeAccountReservationIsAtomic(t *testing.T) {
+	runtime, err := NewRuntime(nil)
+	require.NoError(t, err)
+	t.Cleanup(func() { require.NoError(t, runtime.Close()) })
+	const callers = 16
+	type result struct {
+		client *Client
+		err    error
+	}
+	results := make(chan result, callers)
+	for range callers {
+		go func() {
+			client, err := NewClientWithKey("https://account.documents.azure.com",
+				KeyCredential{accountKey: emulatorKey}, &ClientOptions{Runtime: runtime})
+			results <- result{client, err}
+		}()
+	}
+	successes := 0
+	for range callers {
+		result := <-results
+		if result.err == nil {
+			successes++
+			require.NoError(t, result.client.Close())
+		} else {
+			require.ErrorContains(t, result.err, "already been attached")
+		}
+	}
+	require.Equal(t, 1, successes)
 }

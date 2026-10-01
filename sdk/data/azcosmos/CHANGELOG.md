@@ -14,7 +14,8 @@
   runtime drains and closes attached clients; closing one client leaves its siblings usable.
 * Added mutually exclusive If-Match and If-None-Match item preconditions and client-side patch
   attempt, tracking ID, capacity, and retention controls. Effective patch tracking IDs are
-  available on success and error responses, including cancellation.
+  available on native success and error responses. A caller-supplied ID is retained when a
+  submitted patch's Go wait is cancelled.
 * Added the error and response model: `Error` classifies a failure with a `Code` and reports whether
   the service or the client produced it, and `Response`/`ItemResponse` carry what an operation
   returns. See [PR 27339](https://github.com/Azure/azure-sdk-for-go/pull/27339).
@@ -39,6 +40,12 @@
 
 ### Breaking Changes
 
+* Adopted the published native 0.2.0 no-cancellation contract. Context cancellation stops waiting,
+  but submitted native operations continue and writes may still commit. Closing clients or runtimes
+  drains that work before freeing resources.
+* Shared runtimes now reject reusing an account hostname, including after its client closes.
+  This prevents published native 0.2.0's runtime container cache from reusing another client's
+  credentials. Use a separate runtime for each client of the same account.
 * Unset encoding options now inherit the driver's binary JSON default. Raw response bytes can be
   Cosmos binary JSON; select `BinaryEncodingOptions.RequestTextResponse` with `Enabled: true`,
   or explicitly disable binary encoding before decoding with `encoding/json`.
@@ -59,8 +66,9 @@
 
 ### Other Changes
 
-* Requires native ABI/distribution version 0.2.0. Matching platform modules must be published before
-  normal module-based builds can consume this change; local integration uses an external modfile.
+* Uses published native ABI/distribution version 0.2.0 for Darwin ARM64 and Linux AMD64, with
+  verified module checksums and the matching generated header. Local artifact replacements are
+  no longer required.
 
 ## 1.6.0-beta.2 (2026-08-03)
 

@@ -180,8 +180,7 @@ func (r *reactor) deliver(completion *C.cosmos_completion_t) {
 // close stops the reactor and releases the queue. It is idempotent.
 //
 // Shutting the queue down first unblocks its wait call and rejects new submissions; it does not
-// cancel operations already in flight. Client.Close reaches this path only after its lifetime lock
-// has drained every operation.
+// cancel operations already in flight. Client.Close drains callers and pending native work first.
 func (r *reactor) close() {
 	if r == nil {
 		return

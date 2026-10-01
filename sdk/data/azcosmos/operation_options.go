@@ -23,7 +23,8 @@ type OperationOptions struct {
 	// ExcludedRegions replaces inherited exclusions. Nil inherits; an empty non-nil slice clears them.
 	ExcludedRegions []Region
 	// EndToEndTimeout bounds initialization, metadata lookup, and execution. Zero inherits.
-	// Context deadlines can impose a shorter budget than the driver's one-second minimum.
+	// Context deadlines can stop the Go wait sooner than the driver's one-second minimum,
+	// but do not cancel submitted native work.
 	EndToEndTimeout time.Duration
 	// PatchStrategy selects patch execution. A patch-specific Strategy takes precedence.
 	PatchStrategy PatchStrategy

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-04-01-preview/BackupsLongTermRetentionCheckPrerequisites.json
+// Generated from example definition: 2026-07-01-preview/BackupsLongTermRetentionCheckPrerequisites.json
 func ExampleBackupsLongTermRetentionClient_CheckPrerequisites() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -43,7 +43,7 @@ func ExampleBackupsLongTermRetentionClient_CheckPrerequisites() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/BackupsLongTermRetentionGet.json
+// Generated from example definition: 2026-07-01-preview/BackupsLongTermRetentionGet.json
 func ExampleBackupsLongTermRetentionClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -80,7 +80,7 @@ func ExampleBackupsLongTermRetentionClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/BackupsLongTermRetentionListByServer.json
+// Generated from example definition: 2026-07-01-preview/BackupsLongTermRetentionListByServer.json
 func ExampleBackupsLongTermRetentionClient_NewListByServerPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -126,7 +126,7 @@ func ExampleBackupsLongTermRetentionClient_NewListByServerPager() {
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/BackupsLongTermRetentionStart.json
+// Generated from example definition: 2026-07-01-preview/BackupsLongTermRetentionStart.json
 func ExampleBackupsLongTermRetentionClient_BeginStart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

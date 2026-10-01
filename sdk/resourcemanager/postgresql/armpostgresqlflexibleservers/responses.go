@@ -155,6 +155,24 @@ type DatabasesClientListByServerResponse struct {
 	DatabaseList
 }
 
+// DbAgentsClientCreateOrUpdateResponse contains the response from method DbAgentsClient.BeginCreateOrUpdate.
+type DbAgentsClientCreateOrUpdateResponse struct {
+	// The database agent configuration for a PostgreSQL flexible server.
+	DbAgent
+}
+
+// DbAgentsClientGetResponse contains the response from method DbAgentsClient.Get.
+type DbAgentsClientGetResponse struct {
+	// The database agent configuration for a PostgreSQL flexible server.
+	DbAgent
+}
+
+// DbAgentsClientListResponse contains the response from method DbAgentsClient.NewListPager.
+type DbAgentsClientListResponse struct {
+	// The response of a DbAgent list operation.
+	DbAgentListResult
+}
+
 // FirewallRulesClientCreateOrUpdateResponse contains the response from method FirewallRulesClient.BeginCreateOrUpdate.
 type FirewallRulesClientCreateOrUpdateResponse struct {
 	// Firewall rule.

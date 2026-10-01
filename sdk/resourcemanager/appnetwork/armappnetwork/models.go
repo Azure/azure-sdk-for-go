@@ -6,7 +6,7 @@ package armappnetwork
 
 import "time"
 
-// AppLink resource
+// AppLink - An Azure Kubernetes Application Network resource.
 type AppLink struct {
 	// REQUIRED; The geo-location where the resource lives
 	Location *string
@@ -42,7 +42,7 @@ type AppLinkListResult struct {
 	NextLink *string
 }
 
-// AppLinkMember - AppLink Member resource
+// AppLinkMember - A member of an Azure Kubernetes Application Network resource.
 type AppLinkMember struct {
 	// REQUIRED; The geo-location where the resource lives
 	Location *string
@@ -108,13 +108,10 @@ type AppLinkMemberUpdate struct {
 // AppLinkMemberUpdateProperties - The updatable properties of the AppLinkMember.
 type AppLinkMemberUpdateProperties struct {
 	// Connectivity profile.
-	ConnectivityProfile *ConnectivityProfile
-
-	// Observability profile
-	ObservabilityProfile *ObservabilityProfile
+	ConnectivityProfile *ConnectivityProfileUpdate
 
 	// Upgrade profile.
-	UpgradeProfile *UpgradeProfile
+	UpgradeProfile *UpgradeProfileUpdate
 }
 
 // AppLinkProperties - AppLink properties
@@ -125,6 +122,9 @@ type AppLinkProperties struct {
 
 // AppLinkUpdate - The type used for update operations of the AppLink.
 type AppLinkUpdate struct {
+	// The managed service identities assigned to this resource.
+	Identity *ManagedServiceIdentityUpdate
+
 	// Resource tags.
 	Tags map[string]*string
 }
@@ -176,8 +176,20 @@ type ConnectivityProfile struct {
 	// East-West gateway profile.
 	EastWestGateway *EastWestGatewayProfile
 
+	// The network name for an Azure Kubernetes Application Network member.
+	Network *string
+
 	// Private connect profile.
 	PrivateConnect *PrivateConnectProfile
+}
+
+// ConnectivityProfileUpdate - The updatable AppLinkMember connectivity profile.
+type ConnectivityProfileUpdate struct {
+	// East-West gateway profile.
+	EastWestGateway *EastWestGatewayProfileUpdate
+
+	// The network name for an Azure Kubernetes Application Network member.
+	Network *string
 }
 
 // EastWestGatewayProfile - AppLinkMember east-west gateway profile.
@@ -186,9 +198,21 @@ type EastWestGatewayProfile struct {
 	Visibility *EastWestGatewayVisibility
 }
 
+// EastWestGatewayProfileUpdate - The updatable AppLinkMember east-west gateway profile.
+type EastWestGatewayProfileUpdate struct {
+	// East-West gateway visibility.
+	Visibility *EastWestGatewayVisibility
+}
+
 // FullyManagedUpgradeProfile - AppLinkMember fully managed upgrade profile
 type FullyManagedUpgradeProfile struct {
 	// REQUIRED; Release channel
+	ReleaseChannel *UpgradeReleaseChannel
+}
+
+// FullyManagedUpgradeProfileUpdate - The updatable AppLinkMember fully managed upgrade profile.
+type FullyManagedUpgradeProfileUpdate struct {
+	// Release channel
 	ReleaseChannel *UpgradeReleaseChannel
 }
 
@@ -212,6 +236,15 @@ type ManagedServiceIdentity struct {
 
 	// READ-ONLY; The tenant ID of the system assigned identity. This property will only be provided for a system assigned identity.
 	TenantID *string
+}
+
+// ManagedServiceIdentityUpdate - The update-specific managed service identity (all fields optional for PATCH).
+type ManagedServiceIdentityUpdate struct {
+	// The type of managed identity assigned to this resource.
+	Type *ManagedServiceIdentityType
+
+	// The identities assigned to this resource by the user.
+	UserAssignedIdentities map[string]*UserAssignedIdentity
 }
 
 // Metadata - AppLinkMember metadata
@@ -304,6 +337,12 @@ type SelfManagedUpgradeProfile struct {
 	Version *string
 }
 
+// SelfManagedUpgradeProfileUpdate - The updatable AppLinkMember self managed upgrade profile.
+type SelfManagedUpgradeProfileUpdate struct {
+	// Istio version
+	Version *string
+}
+
 // SelfManagedVersions - Self managed versions
 type SelfManagedVersions struct {
 	// REQUIRED; Istio versions
@@ -389,6 +428,18 @@ type UpgradeProfile struct {
 
 	// Self managed upgrade profile.
 	SelfManagedUpgradeProfile *SelfManagedUpgradeProfile
+}
+
+// UpgradeProfileUpdate - The updatable AppLinkMember upgrade profile.
+type UpgradeProfileUpdate struct {
+	// Fully managed upgrade profile.
+	FullyManagedUpgradeProfile *FullyManagedUpgradeProfileUpdate
+
+	// Upgrade mode.
+	Mode *UpgradeMode
+
+	// Self managed upgrade profile.
+	SelfManagedUpgradeProfile *SelfManagedUpgradeProfileUpdate
 }
 
 // UserAssignedIdentity - User assigned identity properties

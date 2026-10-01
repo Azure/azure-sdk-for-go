@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-04-01-preview/RecoveryJobs_Cancel_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-31-preview/RecoveryJobs_Cancel_MaximumSet_Gen.json
 func ExampleRecoveryJobsClient_BeginCancel() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -23,7 +23,7 @@ func ExampleRecoveryJobsClient_BeginCancel() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewRecoveryJobsClient().BeginCancel(ctx, "sampleServiceGroup", "<operationID>", "samplePlanName", "c56888ef-9ced-4001-a6d4-7145a0309bdb", armresiliencemanagement.RecoveryActionRequest{
+	poller, err := clientFactory.NewRecoveryJobsClient().BeginCancel(ctx, "sampleServiceGroup", "qmn", "samplePlanName", "c56888ef-9ced-4001-a6d4-7145a0309bdb", armresiliencemanagement.RecoveryActionRequest{
 		Description: to.Ptr("Cancelling the recovery job due to user request"),
 	}, nil)
 	if err != nil {
@@ -35,7 +35,7 @@ func ExampleRecoveryJobsClient_BeginCancel() {
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/RecoveryJobs_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-31-preview/RecoveryJobs_Get_MaximumSet_Gen.json
 func ExampleRecoveryJobsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -180,7 +180,7 @@ func ExampleRecoveryJobsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/RecoveryJobs_List_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-31-preview/RecoveryJobs_List_MaximumSet_Gen.json
 func ExampleRecoveryJobsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -335,7 +335,7 @@ func ExampleRecoveryJobsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/RecoveryJobs_Resume_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-31-preview/RecoveryJobs_Resume_MaximumSet_Gen.json
 func ExampleRecoveryJobsClient_BeginResume() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -346,7 +346,7 @@ func ExampleRecoveryJobsClient_BeginResume() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewRecoveryJobsClient().BeginResume(ctx, "sampleServiceGroupName", "<operationID>", "samplePlanName", "c56888ef-9ced-4001-a6d4-7145a0309bdb", armresiliencemanagement.RecoveryActionRequest{
+	poller, err := clientFactory.NewRecoveryJobsClient().BeginResume(ctx, "sampleServiceGroupName", "qmn", "samplePlanName", "c56888ef-9ced-4001-a6d4-7145a0309bdb", armresiliencemanagement.RecoveryActionRequest{
 		Description: to.Ptr("Resuming the recovery job after user verification"),
 	}, nil)
 	if err != nil {
@@ -358,7 +358,7 @@ func ExampleRecoveryJobsClient_BeginResume() {
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/RecoveryJobs_Retry_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-31-preview/RecoveryJobs_Retry_MaximumSet_Gen.json
 func ExampleRecoveryJobsClient_BeginRetry() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -369,7 +369,7 @@ func ExampleRecoveryJobsClient_BeginRetry() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewRecoveryJobsClient().BeginRetry(ctx, "sampleServiceGroupName", "<operationID>", "samplePlanName", "c56888ef-9ced-4001-a6d4-7145a0309bdb", nil)
+	poller, err := clientFactory.NewRecoveryJobsClient().BeginRetry(ctx, "sampleServiceGroupName", "qmn", "samplePlanName", "c56888ef-9ced-4001-a6d4-7145a0309bdb", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

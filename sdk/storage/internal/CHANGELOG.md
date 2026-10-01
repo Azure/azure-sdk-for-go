@@ -1,6 +1,6 @@
 # Release History
 
-## 0.1.0 (Unreleased)
+## 0.1.0 (2026-10-01)
 
 ### Features Added
 * Initial release of the shared internal module for Azure Storage

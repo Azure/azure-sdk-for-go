@@ -10,8 +10,8 @@ github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage v1.8.1 
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage v1.8.1/go.mod h1:Ng3urmn6dYe8gnbCMoHHVl5APYz2txho3koEkV2o2HA=
 github.com/Azure/azure-sdk-for-go/sdk/storage/azblob v1.8.1-beta.1 h1:gxaSdakBnt+JSuGp5Zs4z3LYBhyhMbnvA93qtjPqEFk=
 github.com/Azure/azure-sdk-for-go/sdk/storage/azblob v1.8.1-beta.1/go.mod h1:P6M8WR+rDxihJAIfRbz8QgZPvhzISn4L+pWfAr5T0Io=
-github.com/Azure/azure-sdk-for-go/sdk/storage/internal v0.0.0-20260929074332-1d470ff806e7 h1:tA0pNVxBujCSwUg2EeKaq+GfiSIJNx0ray1YA6lQNUw=
-github.com/Azure/azure-sdk-for-go/sdk/storage/internal v0.0.0-20260929074332-1d470ff806e7/go.mod h1:+kX7ahyFelQ42F3RScM2CFgHJljp0phc/FieKLYVpFI=
+github.com/Azure/azure-sdk-for-go/sdk/storage/internal v0.1.0 h1:X/bTwe0qpvmvPPutc+LWo7T4cKMqDP9JHP4k+Co9ZB4=
+github.com/Azure/azure-sdk-for-go/sdk/storage/internal v0.1.0/go.mod h1:+kX7ahyFelQ42F3RScM2CFgHJljp0phc/FieKLYVpFI=
 github.com/AzureAD/microsoft-authentication-extensions-for-go/cache v0.1.1 h1:WJTmL004Abzc5wDB5VtZG2PJk5ndYDgVacGqfirKxjM=
 github.com/AzureAD/microsoft-authentication-extensions-for-go/cache v0.1.1/go.mod h1:tCcJZ0uHAmvjsVYzEFivsRTN00oz5BEsRgQHu5JZ9WE=
 github.com/AzureAD/microsoft-authentication-library-for-go v1.8.0 h1:Nljr4q1GRA/5vCrMONS+g4u4LRHNgOXVSh3O43J2CnI=

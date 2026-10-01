@@ -7,7 +7,7 @@ require (
 	github.com/Azure/azure-sdk-for-go/sdk/azidentity v1.14.0
 	github.com/Azure/azure-sdk-for-go/sdk/internal v1.12.0
 	github.com/Azure/azure-sdk-for-go/sdk/storage/azblob v1.8.0
-	github.com/Azure/azure-sdk-for-go/sdk/storage/internal v0.0.0-20260929074332-1d470ff806e7
+	github.com/Azure/azure-sdk-for-go/sdk/storage/internal v0.1.0
 	github.com/stretchr/testify v1.12.1
 )
 

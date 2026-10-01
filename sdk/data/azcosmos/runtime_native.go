@@ -3,6 +3,8 @@
 
 //go:build cgo && ((darwin && !ios && arm64) || (linux && !android && amd64))
 
+// cSpell:ignore gocritic
+
 package azcosmos
 
 /*
@@ -35,7 +37,7 @@ func openRuntime(config RuntimeOptions) (*nativeRuntime, error) {
 	}
 	native := &nativeRuntime{}
 	var richErr *C.cosmos_error_t
-	status := C.cosmos_runtime_build(&options, &native.handle, &richErr)
+	status := C.cosmos_runtime_build(&options, &native.handle, &richErr) //nolint:gocritic // dupSubExpr is reported against cgo-generated code.
 	if err := statusError(status, richErr, "building runtime (check ApplicationID and Operation options)"); err != nil {
 		return nil, err
 	}
@@ -62,7 +64,7 @@ func (d *nativeDriver) snapshot(ctx context.Context, request OperationOptions) (
 	defer releaseOptions()
 	var snapshot *C.cosmos_operation_options_snapshot_t
 	var timeout C.int64_t
-	status := C.cosmos_operation_options_snapshot_create(d.runtime, client, options, &snapshot, &timeout)
+	status := C.cosmos_operation_options_snapshot_create(d.runtime, client, options, &snapshot, &timeout) //nolint:gocritic // dupSubExpr is reported against cgo-generated code.
 	if err := statusError(status, nil, "capturing operation options"); err != nil {
 		return ctx, nil, func() {}, err
 	}

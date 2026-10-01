@@ -64,7 +64,7 @@ func (d *nativeDriver) execute(ctx context.Context, req itemRequest) (ItemRespon
 			request, release := buildNativeItemRequest(req, container)
 			defer release()
 			request.options_snapshot = snapshot
-			return C.cosmos_submit_singleton_operation(driver, &request, queue, cookie, preError)
+			return C.cosmos_submit_singleton_operation(driver, &request, queue, cookie, preError) //nolint:gocritic // dupSubExpr is reported against cgo-generated code.
 		})
 	if err != nil {
 		var cancelled *Error

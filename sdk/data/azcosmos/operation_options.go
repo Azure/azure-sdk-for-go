@@ -168,8 +168,8 @@ func (o OperationOptions) validate() error {
 		}
 		for i := range len(name) {
 			c := name[i]
-			if !(c >= 'a' && c <= 'z' || c >= 'A' && c <= 'Z' || c >= '0' && c <= '9' ||
-				strings.ContainsRune("!#$%&'*+-.^_`|~", rune(c))) {
+			if (c < 'a' || c > 'z') && (c < 'A' || c > 'Z') && (c < '0' || c > '9') &&
+				!strings.ContainsRune("!#$%&'*+-.^_`|~", rune(c)) {
 				return fmt.Errorf("azcosmos: invalid custom header name %q", name)
 			}
 		}

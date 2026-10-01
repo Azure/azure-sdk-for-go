@@ -85,8 +85,8 @@ These are breaking-change risks and deserve a comment every time.
 - **Service client methods have pointer receivers.** `func (c *WidgetClient) Get(...)`.
 - **`context.Context` is the first parameter** of every method that performs I/O, sleeps, or does significant CPU work.
   Required parameters follow it; the final parameter is the options pointer.
-- **Options structs.** Every method takes a `*<Client><Method>Options` as its last parameter, even when it currently has
-  no optional parameters (use a placeholder comment). Passing `nil` must be semantically identical to passing a
+- **Options structs.** Every service client method takes a `*<Client><Method>Options` as its last parameter, even when it currently
+  has no optional parameters (use a placeholder comment). Passing `nil` must be semantically identical to passing a
   zero-valued struct — flag any code where `nil` and `&Options{}` diverge.
 - **Model types export all fields** (to support mocking) and document read-only fields, which must be omitted when marshalling.
 - **One method per REST endpoint.** Flag added overloads/convenience duplicates of an existing operation.

@@ -39,7 +39,7 @@
 /sdk/resourcemanager/containerservice/                             @elvazhu521 @FumingZhang
 
 # PRLabel: %Cosmos
-/sdk/data/azcosmos/                                                @Azure/azure-cosmos-go-sdk
+/sdk/data/azcosmos/                                                @Azure/azure-cosmos-sdk
 
 # AzureSdkOwners:                                                  @jhendrixMSFT
 # ServiceLabel: %Cosmos

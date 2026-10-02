@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-07-01/ClusterManagers_Create.json
+// Generated from example definition: 2026-08-01-preview/ClusterManagers_Create.json
 func ExampleClusterManagersClient_BeginCreateOrUpdate_createOrUpdateClusterManager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -36,6 +36,7 @@ func ExampleClusterManagersClient_BeginCreateOrUpdate_createOrUpdateClusterManag
 				Location: to.Ptr("East US"),
 				Name:     to.Ptr("my-managed-rg"),
 			},
+			RolloutRing: to.Ptr[int32](1),
 		},
 		Tags: map[string]*string{
 			"key1": to.Ptr("myvalue1"),
@@ -94,6 +95,7 @@ func ExampleClusterManagersClient_BeginCreateOrUpdate_createOrUpdateClusterManag
 	// 			RelayConfiguration: &armnetworkcloud.ClusterManagerRelayConfiguration{
 	// 				RelayNamespaceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/providers/Microsoft.Relay/namespaces/relayNamespaceName"),
 	// 			},
+	// 			RolloutRing: to.Ptr[int32](1),
 	// 			VMSize: to.Ptr("Standard_D8s_v3"),
 	// 		},
 	// 		SystemData: &armnetworkcloud.SystemData{
@@ -113,7 +115,7 @@ func ExampleClusterManagersClient_BeginCreateOrUpdate_createOrUpdateClusterManag
 	// }
 }
 
-// Generated from example definition: 2026-07-01/ClusterManagers_Create_Uami.json
+// Generated from example definition: 2026-08-01-preview/ClusterManagers_Create_Uami.json
 func ExampleClusterManagersClient_BeginCreateOrUpdate_createOrUpdateClusterManagerWithUserAssignedIdentity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -140,6 +142,7 @@ func ExampleClusterManagersClient_BeginCreateOrUpdate_createOrUpdateClusterManag
 				Location: to.Ptr("East US"),
 				Name:     to.Ptr("my-managed-rg"),
 			},
+			RolloutRing: to.Ptr[int32](2),
 		},
 		Tags: map[string]*string{
 			"key1": to.Ptr("myvalue1"),
@@ -202,6 +205,7 @@ func ExampleClusterManagersClient_BeginCreateOrUpdate_createOrUpdateClusterManag
 	// 			RelayConfiguration: &armnetworkcloud.ClusterManagerRelayConfiguration{
 	// 				RelayNamespaceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/providers/Microsoft.Relay/namespaces/relayNamespaceName"),
 	// 			},
+	// 			RolloutRing: to.Ptr[int32](2),
 	// 			VMSize: to.Ptr("Standard_D8s_v3"),
 	// 		},
 	// 		SystemData: &armnetworkcloud.SystemData{
@@ -221,7 +225,7 @@ func ExampleClusterManagersClient_BeginCreateOrUpdate_createOrUpdateClusterManag
 	// }
 }
 
-// Generated from example definition: 2026-07-01/ClusterManagers_Delete.json
+// Generated from example definition: 2026-08-01-preview/ClusterManagers_Delete.json
 func ExampleClusterManagersClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -242,7 +246,7 @@ func ExampleClusterManagersClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-07-01/ClusterManagers_Get.json
+// Generated from example definition: 2026-08-01-preview/ClusterManagers_Get.json
 func ExampleClusterManagersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -321,7 +325,7 @@ func ExampleClusterManagersClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-07-01/ClusterManagers_ListByResourceGroup.json
+// Generated from example definition: 2026-08-01-preview/ClusterManagers_ListByResourceGroup.json
 func ExampleClusterManagersClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -410,7 +414,7 @@ func ExampleClusterManagersClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-07-01/ClusterManagers_ListBySubscription.json
+// Generated from example definition: 2026-08-01-preview/ClusterManagers_ListBySubscription.json
 func ExampleClusterManagersClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -499,8 +503,8 @@ func ExampleClusterManagersClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2026-07-01/ClusterManagers_Patch.json
-func ExampleClusterManagersClient_Update() {
+// Generated from example definition: 2026-08-01-preview/ClusterManagers_Patch.json
+func ExampleClusterManagersClient_Update_patchClusterManager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -517,6 +521,9 @@ func ExampleClusterManagersClient_Update() {
 				"/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedIdentity/userAssignedIdentities/userIdentity1": nil,
 				"/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedIdentity/userAssignedIdentities/userIdentity2": {},
 			},
+		},
+		Properties: &armnetworkcloud.ClusterManagerPatchProperties{
+			RolloutRing: to.Ptr[int32](3),
 		},
 		Tags: map[string]*string{
 			"key1": to.Ptr("myvalue1"),
@@ -575,6 +582,7 @@ func ExampleClusterManagersClient_Update() {
 	// 			RelayConfiguration: &armnetworkcloud.ClusterManagerRelayConfiguration{
 	// 				RelayNamespaceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/providers/Microsoft.Relay/namespaces/relayNamespaceName"),
 	// 			},
+	// 			RolloutRing: to.Ptr[int32](3),
 	// 			VMSize: to.Ptr("Standard_D8s_v3"),
 	// 		},
 	// 		SystemData: &armnetworkcloud.SystemData{
@@ -594,7 +602,95 @@ func ExampleClusterManagersClient_Update() {
 	// }
 }
 
-// Generated from example definition: 2026-07-01/ClusterManagers_UpdateRelayPrivateEndpointConnection_Approve.json
+// Generated from example definition: 2026-08-01-preview/ClusterManagers_Patch_RolloutRing.json
+func ExampleClusterManagersClient_Update_patchClusterManagerRolloutRing() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetworkcloud.NewClientFactory("123e4567-e89b-12d3-a456-426655440000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewClusterManagersClient().Update(ctx, "resourceGroupName", "clusterManagerName", armnetworkcloud.ClusterManagerPatchParameters{
+		Properties: &armnetworkcloud.ClusterManagerPatchProperties{
+			RolloutRing: to.Ptr[int32](2),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armnetworkcloud.ClusterManagersClientUpdateResponse{
+	// 	ClusterManager: armnetworkcloud.ClusterManager{
+	// 		ID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/clusterManagers/clusterManagerName"),
+	// 		Identity: &armnetworkcloud.ManagedServiceIdentity{
+	// 			Type: to.Ptr(armnetworkcloud.ManagedServiceIdentityTypeUserAssigned),
+	// 			UserAssignedIdentities: map[string]*armnetworkcloud.UserAssignedIdentity{
+	// 				"/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedIdentity/userAssignedIdentities/userIdentity2": &armnetworkcloud.UserAssignedIdentity{
+	// 					ClientID: to.Ptr("200e0000-e89b-12d3-a456-426655440000"),
+	// 					PrincipalID: to.Ptr("321e7654-e89b-12d3-a456-426655449999"),
+	// 				},
+	// 			},
+	// 		},
+	// 		Kind: to.Ptr(armnetworkcloud.DeploymentTypeAzureLocal),
+	// 		Location: to.Ptr("location"),
+	// 		Name: to.Ptr("clusterManagerName"),
+	// 		Properties: &armnetworkcloud.ClusterManagerProperties{
+	// 			AnalyticsWorkspaceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.OperationalInsights/workspaces/logAnalyticsWorkspaceName"),
+	// 			AvailabilityZones: []*string{
+	// 				to.Ptr("1"),
+	// 				to.Ptr("2"),
+	// 			},
+	// 			ClusterVersions: []*armnetworkcloud.ClusterAvailableVersion{
+	// 				{
+	// 					SupportExpiryDate: to.Ptr("2023-04-29"),
+	// 					TargetClusterVersion: to.Ptr("1.0.0"),
+	// 				},
+	// 				{
+	// 					SupportExpiryDate: to.Ptr("2025-01-01"),
+	// 					TargetClusterVersion: to.Ptr("1.0.2"),
+	// 				},
+	// 			},
+	// 			DetailedStatus: to.Ptr(armnetworkcloud.ClusterManagerDetailedStatusAvailable),
+	// 			DetailedStatusMessage: to.Ptr("cluster manager is up and running"),
+	// 			FabricControllerID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkFabricControllers/fabricControllerName"),
+	// 			ManagedResourceGroupConfiguration: &armnetworkcloud.ManagedResourceGroupConfiguration{
+	// 				Location: to.Ptr("East US"),
+	// 				Name: to.Ptr("my-managed-rg"),
+	// 			},
+	// 			ManagerExtendedLocation: &armnetworkcloud.ExtendedLocation{
+	// 				Name: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterManagerExtendedLocationName"),
+	// 				Type: to.Ptr("CustomLocation"),
+	// 			},
+	// 			ProvisioningState: to.Ptr(armnetworkcloud.ClusterManagerProvisioningStateSucceeded),
+	// 			RelayConfiguration: &armnetworkcloud.ClusterManagerRelayConfiguration{
+	// 				RelayNamespaceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/providers/Microsoft.Relay/namespaces/relayNamespaceName"),
+	// 			},
+	// 			RolloutRing: to.Ptr[int32](2),
+	// 			VMSize: to.Ptr("Standard_D8s_v3"),
+	// 		},
+	// 		SystemData: &armnetworkcloud.SystemData{
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.January, 22, 13, 27, 3, 8000000, time.UTC)),
+	// 			CreatedBy: to.Ptr("identityA"),
+	// 			CreatedByType: to.Ptr(armnetworkcloud.CreatedByTypeApplication),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.January, 22, 13, 29, 3, 1000000, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("identityB"),
+	// 			LastModifiedByType: to.Ptr(armnetworkcloud.CreatedByTypeUser),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"key1": to.Ptr("myvalue1"),
+	// 			"key2": to.Ptr("myvalue2"),
+	// 		},
+	// 		Type: to.Ptr("Microsoft.NetworkCloud/clusterManagers"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-08-01-preview/ClusterManagers_UpdateRelayPrivateEndpointConnection_Approve.json
 func ExampleClusterManagersClient_BeginUpdateRelayPrivateEndpointConnection_approvePrivateEndpointConnection() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -620,7 +716,7 @@ func ExampleClusterManagersClient_BeginUpdateRelayPrivateEndpointConnection_appr
 	}
 }
 
-// Generated from example definition: 2026-07-01/ClusterManagers_UpdateRelayPrivateEndpointConnection_Reject.json
+// Generated from example definition: 2026-08-01-preview/ClusterManagers_UpdateRelayPrivateEndpointConnection_Reject.json
 func ExampleClusterManagersClient_BeginUpdateRelayPrivateEndpointConnection_rejectPrivateEndpointConnection() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

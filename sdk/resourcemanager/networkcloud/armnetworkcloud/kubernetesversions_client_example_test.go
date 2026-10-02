@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-07-01/KubernetesVersions_Create.json
+// Generated from example definition: 2026-08-01-preview/KubernetesVersions_Create.json
 func ExampleKubernetesVersionsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -84,7 +84,7 @@ func ExampleKubernetesVersionsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-07-01/KubernetesVersions_Delete.json
+// Generated from example definition: 2026-08-01-preview/KubernetesVersions_Delete.json
 func ExampleKubernetesVersionsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -105,7 +105,7 @@ func ExampleKubernetesVersionsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-07-01/KubernetesVersions_Get.json
+// Generated from example definition: 2026-08-01-preview/KubernetesVersions_Get.json
 func ExampleKubernetesVersionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -162,7 +162,7 @@ func ExampleKubernetesVersionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-07-01/KubernetesVersions_ListByResourceGroup.json
+// Generated from example definition: 2026-08-01-preview/KubernetesVersions_ListByResourceGroup.json
 func ExampleKubernetesVersionsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -229,7 +229,7 @@ func ExampleKubernetesVersionsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-07-01/KubernetesVersions_ListBySubscription.json
+// Generated from example definition: 2026-08-01-preview/KubernetesVersions_ListBySubscription.json
 func ExampleKubernetesVersionsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -296,7 +296,7 @@ func ExampleKubernetesVersionsClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2026-07-01/KubernetesVersions_UpdateTags.json
+// Generated from example definition: 2026-08-01-preview/KubernetesVersions_UpdateTags.json
 func ExampleKubernetesVersionsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

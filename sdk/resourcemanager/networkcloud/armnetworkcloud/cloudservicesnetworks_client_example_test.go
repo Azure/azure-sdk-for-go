@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-07-01/CloudServicesNetworks_Create.json
+// Generated from example definition: 2026-08-01-preview/CloudServicesNetworks_Create.json
 func ExampleCloudServicesNetworksClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -134,7 +134,7 @@ func ExampleCloudServicesNetworksClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-07-01/CloudServicesNetworks_Delete.json
+// Generated from example definition: 2026-08-01-preview/CloudServicesNetworks_Delete.json
 func ExampleCloudServicesNetworksClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -155,7 +155,7 @@ func ExampleCloudServicesNetworksClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-07-01/CloudServicesNetworks_Get.json
+// Generated from example definition: 2026-08-01-preview/CloudServicesNetworks_Get.json
 func ExampleCloudServicesNetworksClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -244,7 +244,7 @@ func ExampleCloudServicesNetworksClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-07-01/CloudServicesNetworks_ListByResourceGroup.json
+// Generated from example definition: 2026-08-01-preview/CloudServicesNetworks_ListByResourceGroup.json
 func ExampleCloudServicesNetworksClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -343,7 +343,7 @@ func ExampleCloudServicesNetworksClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-07-01/CloudServicesNetworks_ListBySubscription.json
+// Generated from example definition: 2026-08-01-preview/CloudServicesNetworks_ListBySubscription.json
 func ExampleCloudServicesNetworksClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -442,7 +442,7 @@ func ExampleCloudServicesNetworksClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2026-07-01/CloudServicesNetworks_Patch.json
+// Generated from example definition: 2026-08-01-preview/CloudServicesNetworks_Patch.json
 func ExampleCloudServicesNetworksClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

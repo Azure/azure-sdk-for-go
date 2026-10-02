@@ -6,5 +6,5 @@ package armdataprotection
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dataprotection/armdataprotection"
-	moduleVersion = "v4.2.0"
+	moduleVersion = "v4.3.0-beta.1"
 )

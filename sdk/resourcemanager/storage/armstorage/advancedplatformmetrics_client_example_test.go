@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-06-01/AdvancedPlatformMetricsCRUD/AdvancedPlatformMetricsRules_CreateOrUpdate_AllContainers.json
+// Generated from example definition: 2026-09-01/AdvancedPlatformMetricsCRUD/AdvancedPlatformMetricsRules_CreateOrUpdate_AllContainers.json
 func ExampleAdvancedPlatformMetricsClient_CreateOrUpdate_advancedPlatformMetricsRulesCreateOrUpdateAllContainersCreateAdvancedPlatformMetricsRuleWithAllContainersFilter() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -58,7 +58,7 @@ func ExampleAdvancedPlatformMetricsClient_CreateOrUpdate_advancedPlatformMetrics
 	// }
 }
 
-// Generated from example definition: 2026-06-01/AdvancedPlatformMetricsCRUD/AdvancedPlatformMetricsRules_CreateOrUpdate_ContainerList.json
+// Generated from example definition: 2026-09-01/AdvancedPlatformMetricsCRUD/AdvancedPlatformMetricsRules_CreateOrUpdate_ContainerList.json
 func ExampleAdvancedPlatformMetricsClient_CreateOrUpdate_advancedPlatformMetricsRulesCreateOrUpdateContainerListCreateAdvancedPlatformMetricsRuleWithContainerListFilter() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -114,7 +114,7 @@ func ExampleAdvancedPlatformMetricsClient_CreateOrUpdate_advancedPlatformMetrics
 	// }
 }
 
-// Generated from example definition: 2026-06-01/AdvancedPlatformMetricsCRUD/AdvancedPlatformMetricsRules_CreateOrUpdate_ContainerPrefix.json
+// Generated from example definition: 2026-09-01/AdvancedPlatformMetricsCRUD/AdvancedPlatformMetricsRules_CreateOrUpdate_ContainerPrefix.json
 func ExampleAdvancedPlatformMetricsClient_CreateOrUpdate_advancedPlatformMetricsRulesCreateOrUpdateContainerPrefixCreateAdvancedPlatformMetricsRuleWithContainerPrefixFilter() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -168,7 +168,58 @@ func ExampleAdvancedPlatformMetricsClient_CreateOrUpdate_advancedPlatformMetrics
 	// }
 }
 
-// Generated from example definition: 2026-06-01/AdvancedPlatformMetricsCRUD/AdvancedPlatformMetricsRules_Delete.json
+// Generated from example definition: 2026-09-01/AdvancedPlatformMetricsCRUD/AdvancedPlatformMetricsRules_CreateOrUpdate_MetricLevelEnablement.json
+func ExampleAdvancedPlatformMetricsClient_CreateOrUpdate_advancedPlatformMetricsRulesCreateOrUpdateMetricLevelEnablementCreateAdvancedPlatformMetricsRuleWithSelectedMetrics() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armstorage.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewAdvancedPlatformMetricsClient().CreateOrUpdate(ctx, "res6977", "sto2527", armstorage.AdvancedPlatformMetricsRuleTypeContainerLevelCapacityMetrics, armstorage.AdvancedPlatformMetricsRule{
+		Properties: &armstorage.AdvancedPlatformMetricsRuleProperties{
+			Enabled: to.Ptr(true),
+			MetricsToEmit: []*armstorage.MetricsEmitted{
+				to.Ptr(armstorage.MetricsEmittedContainerUsedSize),
+			},
+			RuleConfig: &armstorage.AdvancedPlatformMetricsRuleConfig{
+				FilterType: to.Ptr(armstorage.AdvancedPlatformMetricsFilterTypeAllContainersFilter),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armstorage.AdvancedPlatformMetricsClientCreateOrUpdateResponse{
+	// 	AdvancedPlatformMetricsRule: armstorage.AdvancedPlatformMetricsRule{
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/res6977/providers/Microsoft.Storage/storageAccounts/sto2527/advancedPlatformMetrics/ContainerLevelCapacityMetrics"),
+	// 		Name: to.Ptr("DefaultAdvancedPlatformMetricsRule"),
+	// 		Type: to.Ptr("Microsoft.Storage/storageAccounts/advancedPlatformMetrics"),
+	// 		Properties: &armstorage.AdvancedPlatformMetricsRuleProperties{
+	// 			RuleType: to.Ptr(armstorage.AdvancedPlatformMetricsRuleTypeContainerLevelCapacityMetrics),
+	// 			Enabled: to.Ptr(true),
+	// 			LastModifiedTime: to.Ptr(time.Date(2025, time.January, 1, 11, 0, 0, 0, time.UTC)),
+	// 			MetricsToEmit: []*armstorage.MetricsEmitted{
+	// 				to.Ptr(armstorage.MetricsEmittedContainerUsedSize),
+	// 			},
+	// 			MetricsEmitted: []*armstorage.MetricsEmitted{
+	// 				to.Ptr(armstorage.MetricsEmittedContainerUsedSize),
+	// 			},
+	// 			RuleConfig: &armstorage.AdvancedPlatformMetricsRuleConfig{
+	// 				FilterType: to.Ptr(armstorage.AdvancedPlatformMetricsFilterTypeAllContainersFilter),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-09-01/AdvancedPlatformMetricsCRUD/AdvancedPlatformMetricsRules_Delete.json
 func ExampleAdvancedPlatformMetricsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -190,7 +241,7 @@ func ExampleAdvancedPlatformMetricsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2026-06-01/AdvancedPlatformMetricsCRUD/AdvancedPlatformMetricsRules_Get.json
+// Generated from example definition: 2026-09-01/AdvancedPlatformMetricsCRUD/AdvancedPlatformMetricsRules_Get.json
 func ExampleAdvancedPlatformMetricsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -229,7 +280,7 @@ func ExampleAdvancedPlatformMetricsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-06-01/AdvancedPlatformMetricsCRUD/AdvancedPlatformMetricsRules_List.json
+// Generated from example definition: 2026-09-01/AdvancedPlatformMetricsCRUD/AdvancedPlatformMetricsRules_List.json
 func ExampleAdvancedPlatformMetricsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

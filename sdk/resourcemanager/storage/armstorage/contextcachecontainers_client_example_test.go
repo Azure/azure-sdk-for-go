@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-06-01/StorageContextCacheContainerCRUD/ContextCacheContainers_CreateOrUpdate.json
+// Generated from example definition: 2026-09-01/StorageContextCacheContainerCRUD/ContextCacheContainers_CreateOrUpdate.json
 func ExampleContextCacheContainersClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -57,7 +57,7 @@ func ExampleContextCacheContainersClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-06-01/StorageContextCacheContainerCRUD/ContextCacheContainers_Delete.json
+// Generated from example definition: 2026-09-01/StorageContextCacheContainerCRUD/ContextCacheContainers_Delete.json
 func ExampleContextCacheContainersClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -78,7 +78,7 @@ func ExampleContextCacheContainersClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-06-01/StorageContextCacheContainerCRUD/ContextCacheContainers_Get.json
+// Generated from example definition: 2026-09-01/StorageContextCacheContainerCRUD/ContextCacheContainers_Get.json
 func ExampleContextCacheContainersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -119,7 +119,7 @@ func ExampleContextCacheContainersClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-06-01/StorageContextCacheContainerCRUD/ContextCacheContainers_ListByContextCache.json
+// Generated from example definition: 2026-09-01/StorageContextCacheContainerCRUD/ContextCacheContainers_ListByContextCache.json
 func ExampleContextCacheContainersClient_NewListByContextCachePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -172,7 +172,7 @@ func ExampleContextCacheContainersClient_NewListByContextCachePager() {
 	}
 }
 
-// Generated from example definition: 2026-06-01/StorageContextCacheContainerCRUD/ContextCacheContainers_Update.json
+// Generated from example definition: 2026-09-01/StorageContextCacheContainerCRUD/ContextCacheContainers_Update.json
 func ExampleContextCacheContainersClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

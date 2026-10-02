@@ -118,7 +118,7 @@ func (c *ContextCacheContainersServerTransport) dispatchBeginCreateOrUpdate(req 
 	}
 	beginCreateOrUpdate := c.beginCreateOrUpdate.get(req)
 	if beginCreateOrUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Storage/contextCaches/(?P<contextCacheName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/contextCacheContainers/(?P<contextCacheContainerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Storage/contextCaches/(?P<contextCacheName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/contextCacheContainers/(?P<contextCacheContainerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -170,7 +170,7 @@ func (c *ContextCacheContainersServerTransport) dispatchBeginDelete(req *http.Re
 	}
 	beginDelete := c.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Storage/contextCaches/(?P<contextCacheName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/contextCacheContainers/(?P<contextCacheContainerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Storage/contextCaches/(?P<contextCacheName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/contextCacheContainers/(?P<contextCacheContainerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -216,7 +216,7 @@ func (c *ContextCacheContainersServerTransport) dispatchGet(req *http.Request) (
 	if c.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Storage/contextCaches/(?P<contextCacheName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/contextCacheContainers/(?P<contextCacheContainerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Storage/contextCaches/(?P<contextCacheName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/contextCacheContainers/(?P<contextCacheContainerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -255,7 +255,7 @@ func (c *ContextCacheContainersServerTransport) dispatchNewListByContextCachePag
 	}
 	newListByContextCachePager := c.newListByContextCachePager.get(req)
 	if newListByContextCachePager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Storage/contextCaches/(?P<contextCacheName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/contextCacheContainers`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Storage/contextCaches/(?P<contextCacheName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/contextCacheContainers`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -296,7 +296,7 @@ func (c *ContextCacheContainersServerTransport) dispatchBeginUpdate(req *http.Re
 	}
 	beginUpdate := c.beginUpdate.get(req)
 	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Storage/contextCaches/(?P<contextCacheName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/contextCacheContainers/(?P<contextCacheContainerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Storage/contextCaches/(?P<contextCacheName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/contextCacheContainers/(?P<contextCacheContainerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {

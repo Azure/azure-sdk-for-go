@@ -32,6 +32,22 @@ func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, 
 	}, nil
 }
 
+// NewConfigTemplateMetadatasClient creates a new instance of ConfigTemplateMetadatasClient.
+func (c *ClientFactory) NewConfigTemplateMetadatasClient() *ConfigTemplateMetadatasClient {
+	return &ConfigTemplateMetadatasClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewConfigTemplateSchemasClient creates a new instance of ConfigTemplateSchemasClient.
+func (c *ClientFactory) NewConfigTemplateSchemasClient() *ConfigTemplateSchemasClient {
+	return &ConfigTemplateSchemasClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewConfigTemplateVersionsClient creates a new instance of ConfigTemplateVersionsClient.
 func (c *ClientFactory) NewConfigTemplateVersionsClient() *ConfigTemplateVersionsClient {
 	return &ConfigTemplateVersionsClient{
@@ -88,6 +104,20 @@ func (c *ClientFactory) NewExecutionsClient() *ExecutionsClient {
 	}
 }
 
+// NewHierarchyConfigurationMetadataVersionsClient creates a new instance of HierarchyConfigurationMetadataVersionsClient.
+func (c *ClientFactory) NewHierarchyConfigurationMetadataVersionsClient() *HierarchyConfigurationMetadataVersionsClient {
+	return &HierarchyConfigurationMetadataVersionsClient{
+		internal: c.internal,
+	}
+}
+
+// NewHierarchyConfigurationMetadatasClient creates a new instance of HierarchyConfigurationMetadatasClient.
+func (c *ClientFactory) NewHierarchyConfigurationMetadatasClient() *HierarchyConfigurationMetadatasClient {
+	return &HierarchyConfigurationMetadatasClient{
+		internal: c.internal,
+	}
+}
+
 // NewInstanceHistoriesClient creates a new instance of InstanceHistoriesClient.
 func (c *ClientFactory) NewInstanceHistoriesClient() *InstanceHistoriesClient {
 	return &InstanceHistoriesClient{
@@ -137,6 +167,36 @@ func (c *ClientFactory) NewSchemasClient() *SchemasClient {
 // NewSiteReferencesClient creates a new instance of SiteReferencesClient.
 func (c *ClientFactory) NewSiteReferencesClient() *SiteReferencesClient {
 	return &SiteReferencesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewSolutionDeploymentsClient creates a new instance of SolutionDeploymentsClient.
+func (c *ClientFactory) NewSolutionDeploymentsClient() *SolutionDeploymentsClient {
+	return &SolutionDeploymentsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewSolutionMetadataVersionsClient creates a new instance of SolutionMetadataVersionsClient.
+func (c *ClientFactory) NewSolutionMetadataVersionsClient() *SolutionMetadataVersionsClient {
+	return &SolutionMetadataVersionsClient{
+		internal: c.internal,
+	}
+}
+
+// NewSolutionMetadatasClient creates a new instance of SolutionMetadatasClient.
+func (c *ClientFactory) NewSolutionMetadatasClient() *SolutionMetadatasClient {
+	return &SolutionMetadatasClient{
+		internal: c.internal,
+	}
+}
+
+// NewSolutionSchemasClient creates a new instance of SolutionSchemasClient.
+func (c *ClientFactory) NewSolutionSchemasClient() *SolutionSchemasClient {
+	return &SolutionSchemasClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}

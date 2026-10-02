@@ -5,7 +5,7 @@
 package armworkloadorchestration
 
 const (
-	version20250601 string = "2025-06-01"
+	version20260501Preview string = "2026-05-01-preview"
 )
 
 // ActiveState - Instance State
@@ -26,6 +26,57 @@ func PossibleActiveStateValues() []ActiveState {
 	}
 }
 
+// CMStages - Stages for Solution Version
+type CMStages string
+
+const (
+	// CMStagesConfiguration - Configuration stage
+	CMStagesConfiguration CMStages = "Configuration"
+	// CMStagesDeployment - Deployment stage
+	CMStagesDeployment CMStages = "Deployment"
+	// CMStagesExternalValidation - External Validation stage
+	CMStagesExternalValidation CMStages = "ExternalValidation"
+	// CMStagesPublish - Publish stage
+	CMStagesPublish CMStages = "Publish"
+	// CMStagesStaging - Staging stage
+	CMStagesStaging CMStages = "Staging"
+	// CMStagesUninstallation - Uninstallation stage
+	CMStagesUninstallation CMStages = "Uninstallation"
+	// CMStagesUnstaging - Unstaging stage
+	CMStagesUnstaging CMStages = "Unstaging"
+)
+
+// PossibleCMStagesValues returns the possible values for the CMStages const type.
+func PossibleCMStagesValues() []CMStages {
+	return []CMStages{
+		CMStagesConfiguration,
+		CMStagesDeployment,
+		CMStagesExternalValidation,
+		CMStagesPublish,
+		CMStagesStaging,
+		CMStagesUninstallation,
+		CMStagesUnstaging,
+	}
+}
+
+// ConfigTemplateConfigurationState - Configuration State Enums
+type ConfigTemplateConfigurationState string
+
+const (
+	// ConfigTemplateConfigurationStateConfigurationCompleted - Configuration Completed
+	ConfigTemplateConfigurationStateConfigurationCompleted ConfigTemplateConfigurationState = "ConfigurationCompleted"
+	// ConfigTemplateConfigurationStateConfigurationPending - Configuration Completed
+	ConfigTemplateConfigurationStateConfigurationPending ConfigTemplateConfigurationState = "ConfigurationPending"
+)
+
+// PossibleConfigTemplateConfigurationStateValues returns the possible values for the ConfigTemplateConfigurationState const type.
+func PossibleConfigTemplateConfigurationStateValues() []ConfigTemplateConfigurationState {
+	return []ConfigTemplateConfigurationState{
+		ConfigTemplateConfigurationStateConfigurationCompleted,
+		ConfigTemplateConfigurationStateConfigurationPending,
+	}
+}
+
 // ConfigurationModel - Available configuration models
 type ConfigurationModel string
 
@@ -41,6 +92,24 @@ func PossibleConfigurationModelValues() []ConfigurationModel {
 	return []ConfigurationModel{
 		ConfigurationModelApplication,
 		ConfigurationModelCommon,
+	}
+}
+
+// ConfigurationState - Configuration State Enums
+type ConfigurationState string
+
+const (
+	// ConfigurationStateConfigurationCompleted - Configuration Completed
+	ConfigurationStateConfigurationCompleted ConfigurationState = "ConfigurationCompleted"
+	// ConfigurationStateConfigurationPending - Configuration Completed
+	ConfigurationStateConfigurationPending ConfigurationState = "ConfigurationPending"
+)
+
+// PossibleConfigurationStateValues returns the possible values for the ConfigurationState const type.
+func PossibleConfigurationStateValues() []ConfigurationState {
+	return []ConfigurationState{
+		ConfigurationStateConfigurationCompleted,
+		ConfigurationStateConfigurationPending,
 	}
 }
 
@@ -125,6 +194,30 @@ func PossibleExtendedLocationTypeValues() []ExtendedLocationType {
 	}
 }
 
+// InternalState - Internal state of resource
+type InternalState string
+
+const (
+	// InternalStatePendingValidation - Resource is pending validation
+	InternalStatePendingValidation InternalState = "PendingValidation"
+	// InternalStateValidated - Resource is validated
+	InternalStateValidated InternalState = "Validated"
+	// InternalStateValidatedWithSchema - Resource is ValidatedWithSchema
+	InternalStateValidatedWithSchema InternalState = "ValidatedWithSchema"
+	// InternalStateValidatedWithoutSchema - Resource is ValidatedWithoutSchema
+	InternalStateValidatedWithoutSchema InternalState = "ValidatedWithoutSchema"
+)
+
+// PossibleInternalStateValues returns the possible values for the InternalState const type.
+func PossibleInternalStateValues() []InternalState {
+	return []InternalState{
+		InternalStatePendingValidation,
+		InternalStateValidated,
+		InternalStateValidatedWithSchema,
+		InternalStateValidatedWithoutSchema,
+	}
+}
+
 // JobStatus - Status of a job or job step.
 type JobStatus string
 
@@ -157,8 +250,12 @@ const (
 	JobTypeDeploy JobType = "deploy"
 	// JobTypeExternalValidation - A validation job.
 	JobTypeExternalValidation JobType = "externalValidation"
+	// JobTypePublish - A publish job.
+	JobTypePublish JobType = "publish"
 	// JobTypeStaging - A staging job.
 	JobTypeStaging JobType = "staging"
+	// JobTypeUninstall - An Uninstall job.
+	JobTypeUninstall JobType = "uninstall"
 )
 
 // PossibleJobTypeValues returns the possible values for the JobType const type.
@@ -166,7 +263,9 @@ func PossibleJobTypeValues() []JobType {
 	return []JobType{
 		JobTypeDeploy,
 		JobTypeExternalValidation,
+		JobTypePublish,
 		JobTypeStaging,
+		JobTypeUninstall,
 	}
 }
 
@@ -265,6 +364,8 @@ const (
 	StateFailed State = "Failed"
 	// StateInReview - Solution Instance is in review
 	StateInReview State = "InReview"
+	// StateNotApplicable - State is not applicable
+	StateNotApplicable State = "NotApplicable"
 	// StatePendingExternalValidation - Solution Instance is pending external validation
 	StatePendingExternalValidation State = "PendingExternalValidation"
 	// StateReadyToDeploy - Solution Instance is ready to deploy
@@ -287,12 +388,40 @@ func PossibleStateValues() []State {
 		StateExternalValidationFailed,
 		StateFailed,
 		StateInReview,
+		StateNotApplicable,
 		StatePendingExternalValidation,
 		StateReadyToDeploy,
 		StateReadyToUpgrade,
 		StateStaging,
 		StateUndeployed,
 		StateUpgradeInReview,
+	}
+}
+
+// StateCategory - State Category for Solution Version
+type StateCategory string
+
+const (
+	// StateCategoryCompleted - Completed state [Terminal]
+	StateCategoryCompleted StateCategory = "Completed"
+	// StateCategoryFailed - Failed state [Terminal]
+	StateCategoryFailed StateCategory = "Failed"
+	// StateCategoryInProgress - InProgress state [Non-Terminal]
+	StateCategoryInProgress StateCategory = "InProgress"
+	// StateCategoryNone - None state [Terminal]
+	StateCategoryNone StateCategory = "None"
+	// StateCategoryPending - Pending state [Non-Terminal]
+	StateCategoryPending StateCategory = "Pending"
+)
+
+// PossibleStateCategoryValues returns the possible values for the StateCategory const type.
+func PossibleStateCategoryValues() []StateCategory {
+	return []StateCategory{
+		StateCategoryCompleted,
+		StateCategoryFailed,
+		StateCategoryInProgress,
+		StateCategoryNone,
+		StateCategoryPending,
 	}
 }
 

@@ -21,6 +21,14 @@ import (
 
 // ConfigTemplateVersionsServer is a fake server for instances of the armworkloadorchestration.ConfigTemplateVersionsClient type.
 type ConfigTemplateVersionsServer struct {
+	// BeginCreateOrUpdate is the fake for method ConfigTemplateVersionsClient.BeginCreateOrUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
+	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, configTemplateName string, configTemplateVersionName string, resource armworkloadorchestration.ConfigTemplateVersion, options *armworkloadorchestration.ConfigTemplateVersionsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armworkloadorchestration.ConfigTemplateVersionsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
+
+	// BeginDelete is the fake for method ConfigTemplateVersionsClient.BeginDelete
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	BeginDelete func(ctx context.Context, resourceGroupName string, configTemplateName string, configTemplateVersionName string, options *armworkloadorchestration.ConfigTemplateVersionsClientBeginDeleteOptions) (resp azfake.PollerResponder[armworkloadorchestration.ConfigTemplateVersionsClientDeleteResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method ConfigTemplateVersionsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, configTemplateName string, configTemplateVersionName string, options *armworkloadorchestration.ConfigTemplateVersionsClientGetOptions) (resp azfake.Responder[armworkloadorchestration.ConfigTemplateVersionsClientGetResponse], errResp azfake.ErrorResponder)
@@ -28,6 +36,10 @@ type ConfigTemplateVersionsServer struct {
 	// NewListByConfigTemplatePager is the fake for method ConfigTemplateVersionsClient.NewListByConfigTemplatePager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByConfigTemplatePager func(resourceGroupName string, configTemplateName string, options *armworkloadorchestration.ConfigTemplateVersionsClientListByConfigTemplateOptions) (resp azfake.PagerResponder[armworkloadorchestration.ConfigTemplateVersionsClientListByConfigTemplateResponse])
+
+	// Update is the fake for method ConfigTemplateVersionsClient.Update
+	// HTTP status codes to indicate success: http.StatusOK
+	Update func(ctx context.Context, resourceGroupName string, configTemplateName string, configTemplateVersionName string, properties armworkloadorchestration.ConfigTemplateVersion, options *armworkloadorchestration.ConfigTemplateVersionsClientUpdateOptions) (resp azfake.Responder[armworkloadorchestration.ConfigTemplateVersionsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewConfigTemplateVersionsServerTransport creates a new instance of ConfigTemplateVersionsServerTransport with the provided implementation.
@@ -36,6 +48,8 @@ type ConfigTemplateVersionsServer struct {
 func NewConfigTemplateVersionsServerTransport(srv *ConfigTemplateVersionsServer) *ConfigTemplateVersionsServerTransport {
 	return &ConfigTemplateVersionsServerTransport{
 		srv:                          srv,
+		beginCreateOrUpdate:          newTracker[azfake.PollerResponder[armworkloadorchestration.ConfigTemplateVersionsClientCreateOrUpdateResponse]](),
+		beginDelete:                  newTracker[azfake.PollerResponder[armworkloadorchestration.ConfigTemplateVersionsClientDeleteResponse]](),
 		newListByConfigTemplatePager: newTracker[azfake.PagerResponder[armworkloadorchestration.ConfigTemplateVersionsClientListByConfigTemplateResponse]](),
 	}
 }
@@ -44,6 +58,8 @@ func NewConfigTemplateVersionsServerTransport(srv *ConfigTemplateVersionsServer)
 // Don't use this type directly, use NewConfigTemplateVersionsServerTransport instead.
 type ConfigTemplateVersionsServerTransport struct {
 	srv                          *ConfigTemplateVersionsServer
+	beginCreateOrUpdate          *tracker[azfake.PollerResponder[armworkloadorchestration.ConfigTemplateVersionsClientCreateOrUpdateResponse]]
+	beginDelete                  *tracker[azfake.PollerResponder[armworkloadorchestration.ConfigTemplateVersionsClientDeleteResponse]]
 	newListByConfigTemplatePager *tracker[azfake.PagerResponder[armworkloadorchestration.ConfigTemplateVersionsClientListByConfigTemplateResponse]]
 }
 
@@ -68,10 +84,16 @@ func (c *ConfigTemplateVersionsServerTransport) dispatchToMethodFake(req *http.R
 		}
 		if !intercepted {
 			switch method {
+			case "ConfigTemplateVersionsClient.BeginCreateOrUpdate":
+				res.resp, res.err = c.dispatchBeginCreateOrUpdate(req)
+			case "ConfigTemplateVersionsClient.BeginDelete":
+				res.resp, res.err = c.dispatchBeginDelete(req)
 			case "ConfigTemplateVersionsClient.Get":
 				res.resp, res.err = c.dispatchGet(req)
 			case "ConfigTemplateVersionsClient.NewListByConfigTemplatePager":
 				res.resp, res.err = c.dispatchNewListByConfigTemplatePager(req)
+			case "ConfigTemplateVersionsClient.Update":
+				res.resp, res.err = c.dispatchUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -86,6 +108,106 @@ func (c *ConfigTemplateVersionsServerTransport) dispatchToMethodFake(req *http.R
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
+}
+
+func (c *ConfigTemplateVersionsServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (*http.Response, error) {
+	if c.srv.BeginCreateOrUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginCreateOrUpdate not implemented")}
+	}
+	beginCreateOrUpdate := c.beginCreateOrUpdate.get(req)
+	if beginCreateOrUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Edge/configTemplates/(?P<configTemplateName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/versions/(?P<configTemplateVersionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armworkloadorchestration.ConfigTemplateVersion](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		configTemplateNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("configTemplateName")])
+		if err != nil {
+			return nil, err
+		}
+		configTemplateVersionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("configTemplateVersionName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := c.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameParam, configTemplateNameParam, configTemplateVersionNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginCreateOrUpdate = &respr
+		c.beginCreateOrUpdate.add(req, beginCreateOrUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginCreateOrUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+		c.beginCreateOrUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginCreateOrUpdate) {
+		c.beginCreateOrUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (c *ConfigTemplateVersionsServerTransport) dispatchBeginDelete(req *http.Request) (*http.Response, error) {
+	if c.srv.BeginDelete == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
+	}
+	beginDelete := c.beginDelete.get(req)
+	if beginDelete == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Edge/configTemplates/(?P<configTemplateName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/versions/(?P<configTemplateVersionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		configTemplateNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("configTemplateName")])
+		if err != nil {
+			return nil, err
+		}
+		configTemplateVersionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("configTemplateVersionName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := c.srv.BeginDelete(req.Context(), resourceGroupNameParam, configTemplateNameParam, configTemplateVersionNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginDelete = &respr
+		c.beginDelete.add(req, beginDelete)
+	}
+
+	resp, err := server.PollerResponderNext(beginDelete, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		c.beginDelete.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginDelete) {
+		c.beginDelete.remove(req)
+	}
+
+	return resp, nil
 }
 
 func (c *ConfigTemplateVersionsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
@@ -162,6 +284,47 @@ func (c *ConfigTemplateVersionsServerTransport) dispatchNewListByConfigTemplateP
 	}
 	if !server.PagerResponderMore(newListByConfigTemplatePager) {
 		c.newListByConfigTemplatePager.remove(req)
+	}
+	return resp, nil
+}
+
+func (c *ConfigTemplateVersionsServerTransport) dispatchUpdate(req *http.Request) (*http.Response, error) {
+	if c.srv.Update == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Update not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Edge/configTemplates/(?P<configTemplateName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/versions/(?P<configTemplateVersionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armworkloadorchestration.ConfigTemplateVersion](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	configTemplateNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("configTemplateName")])
+	if err != nil {
+		return nil, err
+	}
+	configTemplateVersionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("configTemplateVersionName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := c.srv.Update(req.Context(), resourceGroupNameParam, configTemplateNameParam, configTemplateVersionNameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ConfigTemplateVersion, req)
+	if err != nil {
+		return nil, err
 	}
 	return resp, nil
 }

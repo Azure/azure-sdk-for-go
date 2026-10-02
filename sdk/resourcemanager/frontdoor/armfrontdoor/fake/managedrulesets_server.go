@@ -7,14 +7,14 @@ package fake
 import (
 	"errors"
 	"fmt"
-	"net/http"
-	"regexp"
-
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/frontdoor/armfrontdoor/v2"
+	"net/http"
+	"regexp"
+	"slices"
 )
 
 // ManagedRuleSetsServer is a fake server for instances of the armfrontdoor.ManagedRuleSetsClient type.
@@ -53,9 +53,7 @@ func (m *ManagedRuleSetsServerTransport) Do(req *http.Request) (*http.Response, 
 }
 
 func (m *ManagedRuleSetsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result)
-	defer close(resultChan)
-
+	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
 		var res result
@@ -71,10 +69,7 @@ func (m *ManagedRuleSetsServerTransport) dispatchToMethodFake(req *http.Request,
 			}
 
 		}
-		select {
-		case resultChan <- res:
-		case <-req.Context().Done():
-		}
+		resultChan <- res
 	}()
 
 	select {
@@ -91,7 +86,7 @@ func (m *ManagedRuleSetsServerTransport) dispatchNewListPager(req *http.Request)
 	}
 	newListPager := m.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/frontDoorWebApplicationFirewallManagedRuleSets`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/frontDoorWebApplicationFirewallManagedRuleSets`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 2 {
@@ -108,7 +103,7 @@ func (m *ManagedRuleSetsServerTransport) dispatchNewListPager(req *http.Request)
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		m.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}

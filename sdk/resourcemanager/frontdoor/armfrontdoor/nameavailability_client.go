@@ -6,16 +6,18 @@ package armfrontdoor
 
 import (
 	"context"
-	"net/http"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"strings"
 )
 
 // NameAvailabilityClient contains the methods for the NameAvailability group.
 // Don't use this type directly, use NewNameAvailabilityClient() instead.
+//
+// Generated from API version 2026-04-01
 type NameAvailabilityClient struct {
 	internal *arm.Client
 }
@@ -36,8 +38,6 @@ func NewNameAvailabilityClient(credential azcore.TokenCredential, options *arm.C
 
 // Check - Check the availability of a Front Door resource name.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-01
 //   - checkFrontDoorNameAvailabilityInput - The request body
 //   - options - NameAvailabilityClientCheckOptions contains the optional parameters for the NameAvailabilityClient.Check method.
 func (client *NameAvailabilityClient) Check(ctx context.Context, checkFrontDoorNameAvailabilityInput CheckNameAvailabilityInput, options *NameAvailabilityClientCheckOptions) (NameAvailabilityClientCheckResponse, error) {
@@ -54,12 +54,7 @@ func (client *NameAvailabilityClient) Check(ctx context.Context, checkFrontDoorN
 	if err != nil {
 		return NameAvailabilityClientCheckResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return NameAvailabilityClientCheckResponse{}, err
-	}
-	resp, err := client.checkHandleResponse(httpResp)
-	return resp, err
+	return client.checkHandleResponse(httpResp, http.StatusOK)
 }
 
 // checkCreateRequest creates the Check request.
@@ -70,8 +65,8 @@ func (client *NameAvailabilityClient) checkCreateRequest(ctx context.Context, ch
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260401)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, checkFrontDoorNameAvailabilityInput); err != nil {
@@ -81,8 +76,11 @@ func (client *NameAvailabilityClient) checkCreateRequest(ctx context.Context, ch
 }
 
 // checkHandleResponse handles the Check response.
-func (client *NameAvailabilityClient) checkHandleResponse(resp *http.Response) (NameAvailabilityClientCheckResponse, error) {
+func (client *NameAvailabilityClient) checkHandleResponse(resp *http.Response, successCodes ...int) (NameAvailabilityClientCheckResponse, error) {
 	result := NameAvailabilityClientCheckResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CheckNameAvailabilityOutput); err != nil {
 		return NameAvailabilityClientCheckResponse{}, err
 	}

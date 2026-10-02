@@ -9,7 +9,25 @@ import "time"
 // ActivateSaaSParameterRequest - SaaS guid for Activate and Validate SaaS Resource
 type ActivateSaaSParameterRequest struct {
 	// REQUIRED; SaaS guid for Activate and Validate SaaS Resource
-	SaaSGUID *string
+	SaasGUID *string
+
+	// Optional activation request parameters containing user and company details
+	ActivateSaaSRequestParam *ActivateSaaSRequestParam
+
+	// Optional publisher identifier
+	PublisherID *string
+}
+
+// ActivateSaaSRequestParam - Optional activate SaaS request parameters
+type ActivateSaaSRequestParam struct {
+	// Optional company details
+	Company *CompanyProfile
+
+	// Optional Marketplace SaaS resource identifier
+	SaasResourceID *string
+
+	// Optional user details
+	User *UserDetails
 }
 
 // BackupOptions - The backup options for the VM backup
@@ -92,39 +110,17 @@ type CloudAccountProperties struct {
 	// REQUIRED; Details of the user.
 	User *UserDetails
 
-	// The backup administrator principal provided during CCA create. Required on create (enforced by backend), ignored on update.
-	BackupAdminOnCcaCreate *EntityInfo
+	// Optional company details for the cloud account
+	Company *CompanyProfile
 
-	// The multi-person authorization (MPA) administrator principal provided during CCA create. Required on create (enforced by
-	// backend), ignored on update.
-	MultiPersonAuthorizationOnCcaCreate *EntityInfo
+	// Role assignments to provision during CCA creation. Each entry maps a Commvault role to its assigned Entra principals.
+	RoleAssignmentsOnCcaCreate []*RoleAssignment
 
 	// READ-ONLY; Provisioning state of the resource.
 	ProvisioningState *ResourceProvisioningState
 
 	// READ-ONLY; SSO URL for the Commvault Cloud Account
 	SsoURL *string
-}
-
-// CloudAccountUpdate - The type used for update operations of the CloudAccount.
-type CloudAccountUpdate struct {
-	// The managed service identities assigned to this resource.
-	Identity *ManagedServiceIdentity
-
-	// The resource-specific properties for this resource.
-	Properties *CloudAccountUpdateProperties
-
-	// Resource tags.
-	Tags map[string]*string
-}
-
-// CloudAccountUpdateProperties - The updatable properties of the CloudAccount.
-type CloudAccountUpdateProperties struct {
-	// Marketplace details of the resource.
-	Marketplace *MarketplaceDetails
-
-	// Details of the user.
-	User *UserDetails
 }
 
 // CommvaultPlan - A Commvault Plan Resource
@@ -152,6 +148,33 @@ type CommvaultPlanListResult struct {
 
 	// The link to the next page of items
 	NextLink *string
+}
+
+// CompanyProfile - Optional company profile information
+type CompanyProfile struct {
+	// City of the company address.
+	City *string
+
+	// Company name
+	CompanyName *string
+
+	// Country of the company address.
+	Country *string
+
+	// Job title
+	JobTitle *string
+
+	// Postal code
+	PostalCode *string
+
+	// State or province of the company address.
+	State *string
+
+	// Street address
+	Street *string
+
+	// Company website
+	Website *string
 }
 
 // CountProtectedItemsRequest - Request to count protected items for the provided CCA resource IDs across subscriptions.
@@ -404,9 +427,6 @@ type ProtectionGroupProperties struct {
 	// REQUIRED; The resources to be protected under Protection Group
 	Resources *ProtectionGroupResources
 
-	// READ-ONLY; The backup activity status indicating if backup is enabled or not on the protection group
-	BackupActivityStatus *string
-
 	// READ-ONLY; The Commvault Protection Group backup time
 	LastBackUpTime *int64
 
@@ -415,6 +435,9 @@ type ProtectionGroupProperties struct {
 
 	// READ-ONLY; The protection group schedule
 	ProtectionStatus *ProtectionStatus
+
+	// READ-ONLY; The backup activity status indicating if backup is enabled or not on the protection group
+	BackupActivityStatus *string
 
 	// READ-ONLY; Provisioning state of the resource.
 	ProvisioningState *ResourceProvisioningState
@@ -475,10 +498,10 @@ type Retention struct {
 
 // RoleAssignment - A role assignment mapping a Commvault role to one or more Entra entities (users or groups)
 type RoleAssignment struct {
-	// The Entra entities (users or groups) assigned to this role
+	// REQUIRED; The Entra entities (users or groups) assigned to this role
 	Entities []*EntityInfo
 
-	// The name of the Commvault role
+	// REQUIRED; The name of the Commvault role
 	RoleName *RoleName
 }
 
@@ -664,6 +687,9 @@ type StorageProperties struct {
 
 	// REQUIRED; The vendor of Commvault Storage
 	Vendor *Vendor
+
+	// READ-ONLY; The compliance lock status of the storage.
+	ComplianceLockStatus *ComplianceLockStatus
 
 	// READ-ONLY; Provisioning state of the resource.
 	ProvisioningState *ResourceProvisioningState

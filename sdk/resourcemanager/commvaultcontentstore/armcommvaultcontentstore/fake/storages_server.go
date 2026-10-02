@@ -29,6 +29,14 @@ type StoragesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, cloudAccountName string, storageName string, options *armcommvaultcontentstore.StoragesClientBeginDeleteOptions) (resp azfake.PollerResponder[armcommvaultcontentstore.StoragesClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// DisableComplianceLock is the fake for method StoragesClient.DisableComplianceLock
+	// HTTP status codes to indicate success: http.StatusOK
+	DisableComplianceLock func(ctx context.Context, resourceGroupName string, cloudAccountName string, storageName string, options *armcommvaultcontentstore.StoragesClientDisableComplianceLockOptions) (resp azfake.Responder[armcommvaultcontentstore.StoragesClientDisableComplianceLockResponse], errResp azfake.ErrorResponder)
+
+	// EnableComplianceLock is the fake for method StoragesClient.EnableComplianceLock
+	// HTTP status codes to indicate success: http.StatusOK
+	EnableComplianceLock func(ctx context.Context, resourceGroupName string, cloudAccountName string, storageName string, options *armcommvaultcontentstore.StoragesClientEnableComplianceLockOptions) (resp azfake.Responder[armcommvaultcontentstore.StoragesClientEnableComplianceLockResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method StoragesClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, cloudAccountName string, storageName string, options *armcommvaultcontentstore.StoragesClientGetOptions) (resp azfake.Responder[armcommvaultcontentstore.StoragesClientGetResponse], errResp azfake.ErrorResponder)
@@ -36,6 +44,10 @@ type StoragesServer struct {
 	// NewListByCloudAccountPager is the fake for method StoragesClient.NewListByCloudAccountPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByCloudAccountPager func(resourceGroupName string, cloudAccountName string, options *armcommvaultcontentstore.StoragesClientListByCloudAccountOptions) (resp azfake.PagerResponder[armcommvaultcontentstore.StoragesClientListByCloudAccountResponse])
+
+	// Refresh is the fake for method StoragesClient.Refresh
+	// HTTP status codes to indicate success: http.StatusOK
+	Refresh func(ctx context.Context, resourceGroupName string, cloudAccountName string, storageName string, options *armcommvaultcontentstore.StoragesClientRefreshOptions) (resp azfake.Responder[armcommvaultcontentstore.StoragesClientRefreshResponse], errResp azfake.ErrorResponder)
 }
 
 // NewStoragesServerTransport creates a new instance of StoragesServerTransport with the provided implementation.
@@ -84,10 +96,16 @@ func (s *StoragesServerTransport) dispatchToMethodFake(req *http.Request, method
 				res.resp, res.err = s.dispatchBeginCreateOrUpdate(req)
 			case "StoragesClient.BeginDelete":
 				res.resp, res.err = s.dispatchBeginDelete(req)
+			case "StoragesClient.DisableComplianceLock":
+				res.resp, res.err = s.dispatchDisableComplianceLock(req)
+			case "StoragesClient.EnableComplianceLock":
+				res.resp, res.err = s.dispatchEnableComplianceLock(req)
 			case "StoragesClient.Get":
 				res.resp, res.err = s.dispatchGet(req)
 			case "StoragesClient.NewListByCloudAccountPager":
 				res.resp, res.err = s.dispatchNewListByCloudAccountPager(req)
+			case "StoragesClient.Refresh":
+				res.resp, res.err = s.dispatchRefresh(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -204,6 +222,80 @@ func (s *StoragesServerTransport) dispatchBeginDelete(req *http.Request) (*http.
 	return resp, nil
 }
 
+func (s *StoragesServerTransport) dispatchDisableComplianceLock(req *http.Request) (*http.Response, error) {
+	if s.srv.DisableComplianceLock == nil {
+		return nil, &nonRetriableError{errors.New("fake for method DisableComplianceLock not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Commvault\.ContentStore/cloudAccounts/(?P<cloudAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/storages/(?P<storageName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/disableComplianceLock`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	cloudAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("cloudAccountName")])
+	if err != nil {
+		return nil, err
+	}
+	storageNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("storageName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := s.srv.DisableComplianceLock(req.Context(), resourceGroupNameParam, cloudAccountNameParam, storageNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Storage, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (s *StoragesServerTransport) dispatchEnableComplianceLock(req *http.Request) (*http.Response, error) {
+	if s.srv.EnableComplianceLock == nil {
+		return nil, &nonRetriableError{errors.New("fake for method EnableComplianceLock not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Commvault\.ContentStore/cloudAccounts/(?P<cloudAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/storages/(?P<storageName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/enableComplianceLock`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	cloudAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("cloudAccountName")])
+	if err != nil {
+		return nil, err
+	}
+	storageNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("storageName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := s.srv.EnableComplianceLock(req.Context(), resourceGroupNameParam, cloudAccountNameParam, storageNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Storage, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
 func (s *StoragesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if s.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -278,6 +370,43 @@ func (s *StoragesServerTransport) dispatchNewListByCloudAccountPager(req *http.R
 	}
 	if !server.PagerResponderMore(newListByCloudAccountPager) {
 		s.newListByCloudAccountPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (s *StoragesServerTransport) dispatchRefresh(req *http.Request) (*http.Response, error) {
+	if s.srv.Refresh == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Refresh not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Commvault\.ContentStore/cloudAccounts/(?P<cloudAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/storages/(?P<storageName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/refresh`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	cloudAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("cloudAccountName")])
+	if err != nil {
+		return nil, err
+	}
+	storageNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("storageName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := s.srv.Refresh(req.Context(), resourceGroupNameParam, cloudAccountNameParam, storageNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Storage, req)
+	if err != nil {
+		return nil, err
 	}
 	return resp, nil
 }

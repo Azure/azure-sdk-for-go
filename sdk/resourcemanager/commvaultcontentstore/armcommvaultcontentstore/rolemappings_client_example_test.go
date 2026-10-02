@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-07-03-preview/RoleMappings_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-01-preview/RoleMappings_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleRoleMappingsClient_CreateOrUpdate_roleMappingsCreateOrUpdateMaximumSetGeneratedByMaximumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -127,7 +127,7 @@ func ExampleRoleMappingsClient_CreateOrUpdate_roleMappingsCreateOrUpdateMaximumS
 	// }
 }
 
-// Generated from example definition: 2026-07-03-preview/RoleMappings_CreateOrUpdate_MinimumSet_Gen.json
+// Generated from example definition: 2026-08-01-preview/RoleMappings_CreateOrUpdate_MinimumSet_Gen.json
 func ExampleRoleMappingsClient_CreateOrUpdate_roleMappingsCreateOrUpdateMinimumSetSingleBackupAdminRoleOnly() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -192,7 +192,7 @@ func ExampleRoleMappingsClient_CreateOrUpdate_roleMappingsCreateOrUpdateMinimumS
 	// }
 }
 
-// Generated from example definition: 2026-07-03-preview/RoleMappings_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-01-preview/RoleMappings_Delete_MaximumSet_Gen.json
 func ExampleRoleMappingsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -214,7 +214,7 @@ func ExampleRoleMappingsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2026-07-03-preview/RoleMappings_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-01-preview/RoleMappings_Get_MaximumSet_Gen.json
 func ExampleRoleMappingsClient_Get_roleMappingsGetMaximumSetGeneratedByMaximumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -274,7 +274,7 @@ func ExampleRoleMappingsClient_Get_roleMappingsGetMaximumSetGeneratedByMaximumSe
 	// }
 }
 
-// Generated from example definition: 2026-07-03-preview/RoleMappings_Get_MinimumSet_Gen.json
+// Generated from example definition: 2026-08-01-preview/RoleMappings_Get_MinimumSet_Gen.json
 func ExampleRoleMappingsClient_Get_roleMappingsGetMinimumSetGetRoleMappingsWithSingleRole() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -324,7 +324,7 @@ func ExampleRoleMappingsClient_Get_roleMappingsGetMinimumSetGetRoleMappingsWithS
 	// }
 }
 
-// Generated from example definition: 2026-07-03-preview/RoleMappings_List_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-01-preview/RoleMappings_List_MaximumSet_Gen.json
 func ExampleRoleMappingsClient_NewListPager_roleMappingsList() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -393,7 +393,7 @@ func ExampleRoleMappingsClient_NewListPager_roleMappingsList() {
 	}
 }
 
-// Generated from example definition: 2026-07-03-preview/RoleMappings_List_MinimumSet_Gen.json
+// Generated from example definition: 2026-08-01-preview/RoleMappings_List_MinimumSet_Gen.json
 func ExampleRoleMappingsClient_NewListPager_roleMappingsListMinimumSetListRoleMappingsWithSingleRole() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

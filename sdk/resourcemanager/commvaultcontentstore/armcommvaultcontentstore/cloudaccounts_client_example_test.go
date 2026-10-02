@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-07-03-preview/CloudAccounts_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-01-preview/CloudAccounts_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleCloudAccountsClient_BeginCreateOrUpdate_cloudAccountsCreateOrUpdateMaximumSetGeneratedByMaximumSetRuleGeneratedByMaximumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -45,15 +45,62 @@ func ExampleCloudAccountsClient_BeginCreateOrUpdate_cloudAccountsCreateOrUpdateM
 				Upn:          to.Ptr("frlpmyk"),
 				PhoneNumber:  to.Ptr("mpunfyfckyzpqxotsmclzk"),
 			},
-			BackupAdminOnCcaCreate: &armcommvaultcontentstore.EntityInfo{
-				ID:          to.Ptr("aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"),
-				DisplayName: to.Ptr("Tenant Admins"),
-				EntityType:  to.Ptr(armcommvaultcontentstore.EntityTypeGroup),
+			Company: &armcommvaultcontentstore.CompanyProfile{
+				JobTitle:    to.Ptr("Backup Administrator"),
+				CompanyName: to.Ptr("Contoso"),
+				Website:     to.Ptr("https://www.contoso.com"),
+				Street:      to.Ptr("1 Microsoft Way"),
+				City:        to.Ptr("Redmond"),
+				Country:     to.Ptr("USA"),
+				PostalCode:  to.Ptr("98052"),
+				State:       to.Ptr("WA"),
 			},
-			MultiPersonAuthorizationOnCcaCreate: &armcommvaultcontentstore.EntityInfo{
-				ID:          to.Ptr("11111111-2222-3333-4444-555555555555"),
-				DisplayName: to.Ptr("John Smith"),
-				EntityType:  to.Ptr(armcommvaultcontentstore.EntityTypeUser),
+			RoleAssignmentsOnCcaCreate: []*armcommvaultcontentstore.RoleAssignment{
+				{
+					RoleName: to.Ptr(armcommvaultcontentstore.RoleNameBackupAdmin),
+					Entities: []*armcommvaultcontentstore.EntityInfo{
+						{
+							ID:          to.Ptr("aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"),
+							DisplayName: to.Ptr("Tenant Admins"),
+							EntityType:  to.Ptr(armcommvaultcontentstore.EntityTypeGroup),
+						},
+					},
+				},
+				{
+					RoleName: to.Ptr(armcommvaultcontentstore.RoleNameBackupUser),
+					Entities: []*armcommvaultcontentstore.EntityInfo{
+						{
+							ID:          to.Ptr("22222222-3333-4444-5555-666666666666"),
+							DisplayName: to.Ptr("Backup Users SG"),
+							EntityType:  to.Ptr(armcommvaultcontentstore.EntityTypeGroup),
+						},
+						{
+							ID:          to.Ptr("33333333-4444-5555-6666-777777777777"),
+							DisplayName: to.Ptr("Jane Doe"),
+							EntityType:  to.Ptr(armcommvaultcontentstore.EntityTypeUser),
+						},
+					},
+				},
+				{
+					RoleName: to.Ptr(armcommvaultcontentstore.RoleNameBackupOperator),
+					Entities: []*armcommvaultcontentstore.EntityInfo{
+						{
+							ID:          to.Ptr("44444444-5555-6666-7777-888888888888"),
+							DisplayName: to.Ptr("Ops Team"),
+							EntityType:  to.Ptr(armcommvaultcontentstore.EntityTypeGroup),
+						},
+					},
+				},
+				{
+					RoleName: to.Ptr(armcommvaultcontentstore.RoleNameMultiPersonAuthorization),
+					Entities: []*armcommvaultcontentstore.EntityInfo{
+						{
+							ID:          to.Ptr("11111111-2222-3333-4444-555555555555"),
+							DisplayName: to.Ptr("MPA Approvers"),
+							EntityType:  to.Ptr(armcommvaultcontentstore.EntityTypeGroup),
+						},
+					},
+				},
 			},
 		},
 		Identity: &armcommvaultcontentstore.ManagedServiceIdentity{
@@ -96,6 +143,16 @@ func ExampleCloudAccountsClient_BeginCreateOrUpdate_cloudAccountsCreateOrUpdateM
 	// 				Upn: to.Ptr("frlpmyk"),
 	// 				PhoneNumber: to.Ptr("mpunfyfckyzpqxotsmclzk"),
 	// 			},
+	// 			Company: &armcommvaultcontentstore.CompanyProfile{
+	// 				JobTitle: to.Ptr("Backup Administrator"),
+	// 				CompanyName: to.Ptr("Contoso"),
+	// 				Website: to.Ptr("https://www.contoso.com"),
+	// 				Street: to.Ptr("1 Microsoft Way"),
+	// 				City: to.Ptr("Redmond"),
+	// 				Country: to.Ptr("USA"),
+	// 				PostalCode: to.Ptr("98052"),
+	// 				State: to.Ptr("WA"),
+	// 			},
 	// 			ProvisioningState: to.Ptr(armcommvaultcontentstore.ResourceProvisioningStateSucceeded),
 	// 			SsoURL: to.Ptr("o"),
 	// 		},
@@ -124,8 +181,8 @@ func ExampleCloudAccountsClient_BeginCreateOrUpdate_cloudAccountsCreateOrUpdateM
 	// }
 }
 
-// Generated from example definition: 2026-07-03-preview/CloudAccounts_CreateOrUpdate_MinimumSet_Gen.json
-func ExampleCloudAccountsClient_BeginCreateOrUpdate_cloudAccountsCreateOrUpdateMinimumSetCcaCreateWithCreateOnlyRoleBootstrapFieldsOmitted() {
+// Generated from example definition: 2026-08-01-preview/CloudAccounts_CreateOrUpdate_MinimumSet_Gen.json
+func ExampleCloudAccountsClient_BeginCreateOrUpdate_cloudAccountsCreateOrUpdateMinimumSetCcaCreateWithRoleAssignments() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -155,6 +212,53 @@ func ExampleCloudAccountsClient_BeginCreateOrUpdate_cloudAccountsCreateOrUpdateM
 				EmailAddress: to.Ptr("john.doe@contoso.com"),
 				Upn:          to.Ptr("john.doe@contoso.com"),
 				PhoneNumber:  to.Ptr("1234567890"),
+			},
+			RoleAssignmentsOnCcaCreate: []*armcommvaultcontentstore.RoleAssignment{
+				{
+					RoleName: to.Ptr(armcommvaultcontentstore.RoleNameBackupAdmin),
+					Entities: []*armcommvaultcontentstore.EntityInfo{
+						{
+							ID:          to.Ptr("aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"),
+							DisplayName: to.Ptr("Tenant Admins"),
+							EntityType:  to.Ptr(armcommvaultcontentstore.EntityTypeGroup),
+						},
+					},
+				},
+				{
+					RoleName: to.Ptr(armcommvaultcontentstore.RoleNameBackupUser),
+					Entities: []*armcommvaultcontentstore.EntityInfo{
+						{
+							ID:          to.Ptr("22222222-3333-4444-5555-666666666666"),
+							DisplayName: to.Ptr("Backup Users SG"),
+							EntityType:  to.Ptr(armcommvaultcontentstore.EntityTypeGroup),
+						},
+						{
+							ID:          to.Ptr("33333333-4444-5555-6666-777777777777"),
+							DisplayName: to.Ptr("Jane Doe"),
+							EntityType:  to.Ptr(armcommvaultcontentstore.EntityTypeUser),
+						},
+					},
+				},
+				{
+					RoleName: to.Ptr(armcommvaultcontentstore.RoleNameBackupOperator),
+					Entities: []*armcommvaultcontentstore.EntityInfo{
+						{
+							ID:          to.Ptr("44444444-5555-6666-7777-888888888888"),
+							DisplayName: to.Ptr("Ops Team"),
+							EntityType:  to.Ptr(armcommvaultcontentstore.EntityTypeGroup),
+						},
+					},
+				},
+				{
+					RoleName: to.Ptr(armcommvaultcontentstore.RoleNameMultiPersonAuthorization),
+					Entities: []*armcommvaultcontentstore.EntityInfo{
+						{
+							ID:          to.Ptr("11111111-2222-3333-4444-555555555555"),
+							DisplayName: to.Ptr("MPA Approvers"),
+							EntityType:  to.Ptr(armcommvaultcontentstore.EntityTypeGroup),
+						},
+					},
+				},
 			},
 		},
 		Identity: &armcommvaultcontentstore.ManagedServiceIdentity{
@@ -224,7 +328,7 @@ func ExampleCloudAccountsClient_BeginCreateOrUpdate_cloudAccountsCreateOrUpdateM
 	// }
 }
 
-// Generated from example definition: 2026-07-03-preview/CloudAccounts_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-01-preview/CloudAccounts_Delete_MaximumSet_Gen.json
 func ExampleCloudAccountsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -245,7 +349,7 @@ func ExampleCloudAccountsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-07-03-preview/CloudAccounts_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-01-preview/CloudAccounts_Get_MaximumSet_Gen.json
 func ExampleCloudAccountsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -314,7 +418,7 @@ func ExampleCloudAccountsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-07-03-preview/CloudAccounts_LatestLinkedSaaS_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-01-preview/CloudAccounts_LatestLinkedSaaS_MaximumSet_Gen.json
 func ExampleCloudAccountsClient_LatestLinkedSaaS() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -340,7 +444,7 @@ func ExampleCloudAccountsClient_LatestLinkedSaaS() {
 	// }
 }
 
-// Generated from example definition: 2026-07-03-preview/CloudAccounts_LinkSaaS_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-01-preview/CloudAccounts_LinkSaaS_MaximumSet_Gen.json
 func ExampleCloudAccountsClient_BeginLinkSaaS() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -416,7 +520,7 @@ func ExampleCloudAccountsClient_BeginLinkSaaS() {
 	// }
 }
 
-// Generated from example definition: 2026-07-03-preview/CloudAccounts_ListByResourceGroup_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-01-preview/CloudAccounts_ListByResourceGroup_MaximumSet_Gen.json
 func ExampleCloudAccountsClient_NewListByResourceGroupPager_cloudAccountsListByResourceGroupMaximumSetGeneratedByMaximumSetRuleGeneratedByMaximumSetRuleGeneratedByMaximumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -495,7 +599,7 @@ func ExampleCloudAccountsClient_NewListByResourceGroupPager_cloudAccountsListByR
 	}
 }
 
-// Generated from example definition: 2026-07-03-preview/CloudAccounts_ListByResourceGroup_MinimumSet_Gen.json
+// Generated from example definition: 2026-08-01-preview/CloudAccounts_ListByResourceGroup_MinimumSet_Gen.json
 func ExampleCloudAccountsClient_NewListByResourceGroupPager_cloudAccountsListByResourceGroupMaximumSetGeneratedByMaximumSetRuleGeneratedByMaximumSetRuleGeneratedByMinimumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -530,7 +634,7 @@ func ExampleCloudAccountsClient_NewListByResourceGroupPager_cloudAccountsListByR
 	}
 }
 
-// Generated from example definition: 2026-07-03-preview/CloudAccounts_ListBySubscription_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-01-preview/CloudAccounts_ListBySubscription_MaximumSet_Gen.json
 func ExampleCloudAccountsClient_NewListBySubscriptionPager_cloudAccountsListBySubscriptionMaximumSetGeneratedByMaximumSetRuleGeneratedByMaximumSetRuleGeneratedByMaximumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -609,7 +713,7 @@ func ExampleCloudAccountsClient_NewListBySubscriptionPager_cloudAccountsListBySu
 	}
 }
 
-// Generated from example definition: 2026-07-03-preview/CloudAccounts_ListBySubscription_MinimumSet_Gen.json
+// Generated from example definition: 2026-08-01-preview/CloudAccounts_ListBySubscription_MinimumSet_Gen.json
 func ExampleCloudAccountsClient_NewListBySubscriptionPager_cloudAccountsListBySubscriptionMaximumSetGeneratedByMaximumSetRuleGeneratedByMaximumSetRuleGeneratedByMinimumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -644,7 +748,7 @@ func ExampleCloudAccountsClient_NewListBySubscriptionPager_cloudAccountsListBySu
 	}
 }
 
-// Generated from example definition: 2026-07-03-preview/CloudAccounts_Update_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-01-preview/CloudAccounts_Update_MaximumSet_Gen.json
 func ExampleCloudAccountsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -655,8 +759,8 @@ func ExampleCloudAccountsClient_BeginUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewCloudAccountsClient().BeginUpdate(ctx, "rgcommvault", "sample-cloudAccountName", armcommvaultcontentstore.CloudAccountUpdate{
-		Properties: &armcommvaultcontentstore.CloudAccountUpdateProperties{
+	poller, err := clientFactory.NewCloudAccountsClient().BeginUpdate(ctx, "rgcommvault", "sample-cloudAccountName", armcommvaultcontentstore.CloudAccount{
+		Properties: &armcommvaultcontentstore.CloudAccountProperties{
 			Marketplace: &armcommvaultcontentstore.MarketplaceDetails{
 				SubscriptionID: to.Ptr("bojdg"),
 				OfferDetails: &armcommvaultcontentstore.OfferDetails{
@@ -674,6 +778,16 @@ func ExampleCloudAccountsClient_BeginUpdate() {
 				EmailAddress: to.Ptr("user@example.com"),
 				Upn:          to.Ptr("wiwwe"),
 				PhoneNumber:  to.Ptr("ebszyfnuyzk"),
+			},
+			Company: &armcommvaultcontentstore.CompanyProfile{
+				JobTitle:    to.Ptr("Backup Operator"),
+				CompanyName: to.Ptr("Contoso"),
+				Website:     to.Ptr("https://www.contoso.com"),
+				Street:      to.Ptr("1 Microsoft Way"),
+				City:        to.Ptr("Redmond"),
+				Country:     to.Ptr("USA"),
+				PostalCode:  to.Ptr("98052"),
+				State:       to.Ptr("WA"),
 			},
 		},
 		Identity: &armcommvaultcontentstore.ManagedServiceIdentity{
@@ -714,6 +828,16 @@ func ExampleCloudAccountsClient_BeginUpdate() {
 	// 				EmailAddress: to.Ptr("user@example.com"),
 	// 				Upn: to.Ptr("wiwwe"),
 	// 				PhoneNumber: to.Ptr("ebszyfnuyzk"),
+	// 			},
+	// 			Company: &armcommvaultcontentstore.CompanyProfile{
+	// 				JobTitle: to.Ptr("Backup Operator"),
+	// 				CompanyName: to.Ptr("Contoso"),
+	// 				Website: to.Ptr("https://www.contoso.com"),
+	// 				Street: to.Ptr("1 Microsoft Way"),
+	// 				City: to.Ptr("Redmond"),
+	// 				Country: to.Ptr("USA"),
+	// 				PostalCode: to.Ptr("98052"),
+	// 				State: to.Ptr("WA"),
 	// 			},
 	// 			ProvisioningState: to.Ptr(armcommvaultcontentstore.ResourceProvisioningStateSucceeded),
 	// 			SsoURL: to.Ptr("o"),

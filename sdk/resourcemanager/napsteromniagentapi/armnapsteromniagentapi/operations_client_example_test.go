@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-12-24-preview/Operations_List_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-11/Operations_List_MaximumSet_Gen.json
 func ExampleOperationsClient_NewListPager_operationsListMaximumSetGeneratedByMaximumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -49,13 +49,13 @@ func ExampleOperationsClient_NewListPager_operationsListMaximumSetGeneratedByMax
 		// 				ActionType: to.Ptr(armnapsteromniagentapi.ActionTypeInternal),
 		// 			},
 		// 		},
-		// 		NextLink: to.Ptr("https://management.azure.com/providers/Napster.CompanionAPI/operations?api-version=2025-12-24-preview&$skiptoken=X'12345'"),
+		// 		NextLink: to.Ptr("https://management.azure.com/providers/Napster.CompanionAPI/operations?api-version=2026-08-11&$skiptoken=X'12345'"),
 		// 	},
 		// }
 	}
 }
 
-// Generated from example definition: 2025-12-24-preview/Operations_List_MinimumSet_Gen.json
+// Generated from example definition: 2026-08-11/Operations_List_MinimumSet_Gen.json
 func ExampleOperationsClient_NewListPager_operationsListMinimumSetGeneratedByMinimumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-12-24-preview/Organizations_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-11/Organizations_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleOrganizationsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -137,7 +137,7 @@ func ExampleOrganizationsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-12-24-preview/Organizations_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-11/Organizations_Delete_MaximumSet_Gen.json
 func ExampleOrganizationsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -158,7 +158,7 @@ func ExampleOrganizationsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-12-24-preview/Organizations_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-11/Organizations_Get_MaximumSet_Gen.json
 func ExampleOrganizationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -238,7 +238,7 @@ func ExampleOrganizationsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-12-24-preview/Organizations_LatestLinkedSaaS_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-11/Organizations_LatestLinkedSaaS_MaximumSet_Gen.json
 func ExampleOrganizationsClient_LatestLinkedSaaS() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -264,7 +264,7 @@ func ExampleOrganizationsClient_LatestLinkedSaaS() {
 	// }
 }
 
-// Generated from example definition: 2025-12-24-preview/Organizations_LinkSaaS_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-11/Organizations_LinkSaaS_MaximumSet_Gen.json
 func ExampleOrganizationsClient_BeginLinkSaaS() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -350,7 +350,7 @@ func ExampleOrganizationsClient_BeginLinkSaaS() {
 	// }
 }
 
-// Generated from example definition: 2025-12-24-preview/Organizations_ListByResourceGroup_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-11/Organizations_ListByResourceGroup_MaximumSet_Gen.json
 func ExampleOrganizationsClient_NewListByResourceGroupPager_organizationsListByResourceGroupMaximumSetGeneratedByMaximumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -434,13 +434,13 @@ func ExampleOrganizationsClient_NewListByResourceGroupPager_organizationsListByR
 		// 				},
 		// 			},
 		// 		},
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/0F0FBCF9-8374-47FC-B189-B79B84033EA3/providers/Napster.CompanionAPI/organizations?api-version=2025-12-24-preview&$skiptoken=X'12345'"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/0F0FBCF9-8374-47FC-B189-B79B84033EA3/providers/Napster.CompanionAPI/organizations?api-version=2026-08-11&$skiptoken=X'12345'"),
 		// 	},
 		// }
 	}
 }
 
-// Generated from example definition: 2025-12-24-preview/Organizations_ListByResourceGroup_MinimumSet_Gen.json
+// Generated from example definition: 2026-08-11/Organizations_ListByResourceGroup_MinimumSet_Gen.json
 func ExampleOrganizationsClient_NewListByResourceGroupPager_organizationsListByResourceGroupMinimumSetGeneratedByMinimumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -475,7 +475,7 @@ func ExampleOrganizationsClient_NewListByResourceGroupPager_organizationsListByR
 	}
 }
 
-// Generated from example definition: 2025-12-24-preview/Organizations_ListBySubscription_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-11/Organizations_ListBySubscription_MaximumSet_Gen.json
 func ExampleOrganizationsClient_NewListBySubscriptionPager_organizationsListBySubscriptionMaximumSetGeneratedByMaximumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -559,13 +559,13 @@ func ExampleOrganizationsClient_NewListBySubscriptionPager_organizationsListBySu
 		// 				},
 		// 			},
 		// 		},
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/0F0FBCF9-8374-47FC-B189-B79B84033EA3/providers/Napster.CompanionAPI/organizations?api-version=2025-12-24-preview&$skiptoken=X'12345'"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/0F0FBCF9-8374-47FC-B189-B79B84033EA3/providers/Napster.CompanionAPI/organizations?api-version=2026-08-11&$skiptoken=X'12345'"),
 		// 	},
 		// }
 	}
 }
 
-// Generated from example definition: 2025-12-24-preview/Organizations_ListBySubscription_MinimumSet_Gen.json
+// Generated from example definition: 2026-08-11/Organizations_ListBySubscription_MinimumSet_Gen.json
 func ExampleOrganizationsClient_NewListBySubscriptionPager_organizationsListBySubscriptionMinimumSetGeneratedByMinimumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -600,7 +600,7 @@ func ExampleOrganizationsClient_NewListBySubscriptionPager_organizationsListBySu
 	}
 }
 
-// Generated from example definition: 2025-12-24-preview/Organizations_Update_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-11/Organizations_Update_MaximumSet_Gen.json
 func ExampleOrganizationsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

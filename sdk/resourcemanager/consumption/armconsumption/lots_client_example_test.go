@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2024-08-01/LotsListByBillingAccount-Contributor.json
+// Generated from example definition: 2026-06-01/LotsListByBillingAccount-Contributor.json
 func ExampleLotsClient_NewListByBillingAccountPager_lotsListByBillingAccountContributor() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -60,7 +60,7 @@ func ExampleLotsClient_NewListByBillingAccountPager_lotsListByBillingAccountCont
 	}
 }
 
-// Generated from example definition: 2024-08-01/LotsListByBillingAccount-Primary.json
+// Generated from example definition: 2026-06-01/LotsListByBillingAccount-Primary.json
 func ExampleLotsClient_NewListByBillingAccountPager_lotsListByBillingAccountPrimary() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -116,7 +116,7 @@ func ExampleLotsClient_NewListByBillingAccountPager_lotsListByBillingAccountPrim
 	}
 }
 
-// Generated from example definition: 2024-08-01/LotsListByBillingAccount.json
+// Generated from example definition: 2026-06-01/LotsListByBillingAccount.json
 func ExampleLotsClient_NewListByBillingAccountPager_lotsListByBillingAccount() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -187,7 +187,7 @@ func ExampleLotsClient_NewListByBillingAccountPager_lotsListByBillingAccount() {
 	}
 }
 
-// Generated from example definition: 2024-08-01/LotsListByBillingAccountWithFilters-Contributor.json
+// Generated from example definition: 2026-06-01/LotsListByBillingAccountWithFilters-Contributor.json
 func ExampleLotsClient_NewListByBillingAccountPager_lotsListByBillingAccountWithStatusFilterContributor() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -236,7 +236,7 @@ func ExampleLotsClient_NewListByBillingAccountPager_lotsListByBillingAccountWith
 	}
 }
 
-// Generated from example definition: 2024-08-01/LotsListByBillingAccountWithFilters-Primary.json
+// Generated from example definition: 2026-06-01/LotsListByBillingAccountWithFilters-Primary.json
 func ExampleLotsClient_NewListByBillingAccountPager_lotsListByBillingAccountWithStatusFilterPrimary() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -293,7 +293,7 @@ func ExampleLotsClient_NewListByBillingAccountPager_lotsListByBillingAccountWith
 	}
 }
 
-// Generated from example definition: 2024-08-01/LotsListByBillingAccountWithFilters.json
+// Generated from example definition: 2026-06-01/LotsListByBillingAccountWithFilters.json
 func ExampleLotsClient_NewListByBillingAccountPager_lotsListByBillingAccountWithStatusFilter() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -345,7 +345,7 @@ func ExampleLotsClient_NewListByBillingAccountPager_lotsListByBillingAccountWith
 	}
 }
 
-// Generated from example definition: 2024-08-01/LotsListByBillingProfile.json
+// Generated from example definition: 2026-06-01/LotsListByBillingProfile.json
 func ExampleLotsClient_NewListByBillingProfilePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -444,7 +444,7 @@ func ExampleLotsClient_NewListByBillingProfilePager() {
 	}
 }
 
-// Generated from example definition: 2024-08-01/LotsListByCustomer.json
+// Generated from example definition: 2026-06-01/LotsListByCustomer.json
 func ExampleLotsClient_NewListByCustomerPager_lotsListByCustomer() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -515,7 +515,7 @@ func ExampleLotsClient_NewListByCustomerPager_lotsListByCustomer() {
 	}
 }
 
-// Generated from example definition: 2024-08-01/LotsListByCustomerWithFilters.json
+// Generated from example definition: 2026-06-01/LotsListByCustomerWithFilters.json
 func ExampleLotsClient_NewListByCustomerPager_lotsListByCustomerWithFilter() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

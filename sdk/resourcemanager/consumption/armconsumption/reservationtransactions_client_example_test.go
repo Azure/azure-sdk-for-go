@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2024-08-01/ReservationTransactionsListByEnrollmentNumber.json
+// Generated from example definition: 2026-06-01/ReservationTransactionsListByEnrollmentNumber.json
 func ExampleReservationTransactionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -110,7 +110,7 @@ func ExampleReservationTransactionsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2024-08-01/ReservationTransactionsListByBillingProfileId.json
+// Generated from example definition: 2026-06-01/ReservationTransactionsListByBillingProfileId.json
 func ExampleReservationTransactionsClient_NewListByBillingProfilePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

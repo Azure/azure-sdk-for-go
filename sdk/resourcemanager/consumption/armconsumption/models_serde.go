@@ -1136,6 +1136,105 @@ func (l *LegacyChargeSummaryProperties) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// MarshalJSON implements the json.Marshaller interface for type LegacyManagementGroupScopeReservationRecommendationProperties.
+func (l LegacyManagementGroupScopeReservationRecommendationProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "costWithNoReservedInstances", l.CostWithNoReservedInstances)
+	populateTime[datetime.RFC3339](objectMap, "firstUsageDate", l.FirstUsageDate, true)
+	populate(objectMap, "instanceFlexibilityGroup", l.InstanceFlexibilityGroup)
+	populate(objectMap, "instanceFlexibilityRatio", l.InstanceFlexibilityRatio)
+	populateTime[datetime.RFC3339](objectMap, "lastUsageDate", l.LastUsageDate, true)
+	populate(objectMap, "lookBackPeriod", l.LookBackPeriod)
+	populate(objectMap, "managementGroupId", l.ManagementGroupID)
+	populate(objectMap, "meterId", l.MeterID)
+	populate(objectMap, "netSavings", l.NetSavings)
+	populate(objectMap, "normalizedSize", l.NormalizedSize)
+	populate(objectMap, "recommendedQuantity", l.RecommendedQuantity)
+	populate(objectMap, "recommendedQuantityNormalized", l.RecommendedQuantityNormalized)
+	populate(objectMap, "resourceType", l.ResourceType)
+	populate(objectMap, "skuProperties", l.SKUProperties)
+	objectMap["scope"] = "ManagementGroup"
+	populate(objectMap, "tenantId", l.TenantID)
+	populate(objectMap, "term", l.Term)
+	populate(objectMap, "totalCostWithReservedInstances", l.TotalCostWithReservedInstances)
+	populate(objectMap, "totalHours", l.TotalHours)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type LegacyManagementGroupScopeReservationRecommendationProperties.
+func (l *LegacyManagementGroupScopeReservationRecommendationProperties) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %s", l, err.Error())
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "costWithNoReservedInstances":
+			err = unpopulate(val, "CostWithNoReservedInstances", &l.CostWithNoReservedInstances)
+			delete(rawMsg, key)
+		case "firstUsageDate":
+			err = unpopulateTime[datetime.RFC3339](val, "FirstUsageDate", &l.FirstUsageDate)
+			delete(rawMsg, key)
+		case "instanceFlexibilityGroup":
+			err = unpopulate(val, "InstanceFlexibilityGroup", &l.InstanceFlexibilityGroup)
+			delete(rawMsg, key)
+		case "instanceFlexibilityRatio":
+			err = unpopulate(val, "InstanceFlexibilityRatio", &l.InstanceFlexibilityRatio)
+			delete(rawMsg, key)
+		case "lastUsageDate":
+			err = unpopulateTime[datetime.RFC3339](val, "LastUsageDate", &l.LastUsageDate)
+			delete(rawMsg, key)
+		case "lookBackPeriod":
+			err = unpopulate(val, "LookBackPeriod", &l.LookBackPeriod)
+			delete(rawMsg, key)
+		case "managementGroupId":
+			err = unpopulate(val, "ManagementGroupID", &l.ManagementGroupID)
+			delete(rawMsg, key)
+		case "meterId":
+			err = unpopulate(val, "MeterID", &l.MeterID)
+			delete(rawMsg, key)
+		case "netSavings":
+			err = unpopulate(val, "NetSavings", &l.NetSavings)
+			delete(rawMsg, key)
+		case "normalizedSize":
+			err = unpopulate(val, "NormalizedSize", &l.NormalizedSize)
+			delete(rawMsg, key)
+		case "recommendedQuantity":
+			err = unpopulate(val, "RecommendedQuantity", &l.RecommendedQuantity)
+			delete(rawMsg, key)
+		case "recommendedQuantityNormalized":
+			err = unpopulate(val, "RecommendedQuantityNormalized", &l.RecommendedQuantityNormalized)
+			delete(rawMsg, key)
+		case "resourceType":
+			err = unpopulate(val, "ResourceType", &l.ResourceType)
+			delete(rawMsg, key)
+		case "skuProperties":
+			err = unpopulate(val, "SKUProperties", &l.SKUProperties)
+			delete(rawMsg, key)
+		case "scope":
+			err = unpopulate(val, "Scope", &l.Scope)
+			delete(rawMsg, key)
+		case "tenantId":
+			err = unpopulate(val, "TenantID", &l.TenantID)
+			delete(rawMsg, key)
+		case "term":
+			err = unpopulate(val, "Term", &l.Term)
+			delete(rawMsg, key)
+		case "totalCostWithReservedInstances":
+			err = unpopulate(val, "TotalCostWithReservedInstances", &l.TotalCostWithReservedInstances)
+			delete(rawMsg, key)
+		case "totalHours":
+			err = unpopulate(val, "TotalHours", &l.TotalHours)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %s", l, err.Error())
+		}
+	}
+	return nil
+}
+
 // MarshalJSON implements the json.Marshaller interface for type LegacyReservationRecommendation.
 func (l LegacyReservationRecommendation) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
@@ -2560,6 +2659,113 @@ func (m *ModernChargeSummaryProperties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "usageStart":
 			err = unpopulate(val, "UsageStart", &m.UsageStart)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %s", m, err.Error())
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type ModernManagementGroupScopeReservationRecommendationProperties.
+func (m ModernManagementGroupScopeReservationRecommendationProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "costWithNoReservedInstances", m.CostWithNoReservedInstances)
+	populateTime[datetime.RFC3339](objectMap, "firstUsageDate", m.FirstUsageDate, true)
+	populate(objectMap, "instanceFlexibilityGroup", m.InstanceFlexibilityGroup)
+	populate(objectMap, "instanceFlexibilityRatio", m.InstanceFlexibilityRatio)
+	populateTime[datetime.RFC3339](objectMap, "lastUsageDate", m.LastUsageDate, true)
+	populate(objectMap, "location", m.Location)
+	populate(objectMap, "lookBackPeriod", m.LookBackPeriod)
+	populate(objectMap, "managementGroupId", m.ManagementGroupID)
+	populate(objectMap, "meterId", m.MeterID)
+	populate(objectMap, "netSavings", m.NetSavings)
+	populate(objectMap, "normalizedSize", m.NormalizedSize)
+	populate(objectMap, "recommendedQuantity", m.RecommendedQuantity)
+	populate(objectMap, "recommendedQuantityNormalized", m.RecommendedQuantityNormalized)
+	populate(objectMap, "resourceType", m.ResourceType)
+	populate(objectMap, "skuName", m.SKUName)
+	populate(objectMap, "skuProperties", m.SKUProperties)
+	objectMap["scope"] = "ManagementGroup"
+	populate(objectMap, "tenantId", m.TenantID)
+	populate(objectMap, "term", m.Term)
+	populate(objectMap, "totalCostWithReservedInstances", m.TotalCostWithReservedInstances)
+	populate(objectMap, "totalHours", m.TotalHours)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type ModernManagementGroupScopeReservationRecommendationProperties.
+func (m *ModernManagementGroupScopeReservationRecommendationProperties) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %s", m, err.Error())
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "costWithNoReservedInstances":
+			err = unpopulate(val, "CostWithNoReservedInstances", &m.CostWithNoReservedInstances)
+			delete(rawMsg, key)
+		case "firstUsageDate":
+			err = unpopulateTime[datetime.RFC3339](val, "FirstUsageDate", &m.FirstUsageDate)
+			delete(rawMsg, key)
+		case "instanceFlexibilityGroup":
+			err = unpopulate(val, "InstanceFlexibilityGroup", &m.InstanceFlexibilityGroup)
+			delete(rawMsg, key)
+		case "instanceFlexibilityRatio":
+			err = unpopulate(val, "InstanceFlexibilityRatio", &m.InstanceFlexibilityRatio)
+			delete(rawMsg, key)
+		case "lastUsageDate":
+			err = unpopulateTime[datetime.RFC3339](val, "LastUsageDate", &m.LastUsageDate)
+			delete(rawMsg, key)
+		case "location":
+			err = unpopulate(val, "Location", &m.Location)
+			delete(rawMsg, key)
+		case "lookBackPeriod":
+			err = unpopulate(val, "LookBackPeriod", &m.LookBackPeriod)
+			delete(rawMsg, key)
+		case "managementGroupId":
+			err = unpopulate(val, "ManagementGroupID", &m.ManagementGroupID)
+			delete(rawMsg, key)
+		case "meterId":
+			err = unpopulate(val, "MeterID", &m.MeterID)
+			delete(rawMsg, key)
+		case "netSavings":
+			err = unpopulate(val, "NetSavings", &m.NetSavings)
+			delete(rawMsg, key)
+		case "normalizedSize":
+			err = unpopulate(val, "NormalizedSize", &m.NormalizedSize)
+			delete(rawMsg, key)
+		case "recommendedQuantity":
+			err = unpopulate(val, "RecommendedQuantity", &m.RecommendedQuantity)
+			delete(rawMsg, key)
+		case "recommendedQuantityNormalized":
+			err = unpopulate(val, "RecommendedQuantityNormalized", &m.RecommendedQuantityNormalized)
+			delete(rawMsg, key)
+		case "resourceType":
+			err = unpopulate(val, "ResourceType", &m.ResourceType)
+			delete(rawMsg, key)
+		case "skuName":
+			err = unpopulate(val, "SKUName", &m.SKUName)
+			delete(rawMsg, key)
+		case "skuProperties":
+			err = unpopulate(val, "SKUProperties", &m.SKUProperties)
+			delete(rawMsg, key)
+		case "scope":
+			err = unpopulate(val, "Scope", &m.Scope)
+			delete(rawMsg, key)
+		case "tenantId":
+			err = unpopulate(val, "TenantID", &m.TenantID)
+			delete(rawMsg, key)
+		case "term":
+			err = unpopulate(val, "Term", &m.Term)
+			delete(rawMsg, key)
+		case "totalCostWithReservedInstances":
+			err = unpopulate(val, "TotalCostWithReservedInstances", &m.TotalCostWithReservedInstances)
+			delete(rawMsg, key)
+		case "totalHours":
+			err = unpopulate(val, "TotalHours", &m.TotalHours)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -4200,14 +4406,44 @@ func (r *ReservationRecommendationDetailsModel) UnmarshalJSON(data []byte) error
 	return nil
 }
 
+// MarshalJSON implements the json.Marshaller interface for type ReservationRecommendationDetailsProjectedUsageProperties.
+func (r ReservationRecommendationDetailsProjectedUsageProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "totalRetailUsageInCUs", r.TotalRetailUsageInCUs)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type ReservationRecommendationDetailsProjectedUsageProperties.
+func (r *ReservationRecommendationDetailsProjectedUsageProperties) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %s", r, err.Error())
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "totalRetailUsageInCUs":
+			err = unpopulate(val, "TotalRetailUsageInCUs", &r.TotalRetailUsageInCUs)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %s", r, err.Error())
+		}
+	}
+	return nil
+}
+
 // MarshalJSON implements the json.Marshaller interface for type ReservationRecommendationDetailsProperties.
 func (r ReservationRecommendationDetailsProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "currency", r.Currency)
+	populate(objectMap, "managementGroupId", r.ManagementGroupID)
+	populate(objectMap, "projectedUsage", r.ProjectedUsage)
 	populate(objectMap, "resource", r.Resource)
 	populate(objectMap, "resourceGroup", r.ResourceGroup)
 	populate(objectMap, "savings", r.Savings)
 	populate(objectMap, "scope", r.Scope)
+	populate(objectMap, "tenantId", r.TenantID)
 	populate(objectMap, "usage", r.Usage)
 	return json.Marshal(objectMap)
 }
@@ -4224,6 +4460,12 @@ func (r *ReservationRecommendationDetailsProperties) UnmarshalJSON(data []byte) 
 		case "currency":
 			err = unpopulate(val, "Currency", &r.Currency)
 			delete(rawMsg, key)
+		case "managementGroupId":
+			err = unpopulate(val, "ManagementGroupID", &r.ManagementGroupID)
+			delete(rawMsg, key)
+		case "projectedUsage":
+			err = unpopulate(val, "ProjectedUsage", &r.ProjectedUsage)
+			delete(rawMsg, key)
 		case "resource":
 			err = unpopulate(val, "Resource", &r.Resource)
 			delete(rawMsg, key)
@@ -4235,6 +4477,9 @@ func (r *ReservationRecommendationDetailsProperties) UnmarshalJSON(data []byte) 
 			delete(rawMsg, key)
 		case "scope":
 			err = unpopulate(val, "Scope", &r.Scope)
+			delete(rawMsg, key)
+		case "tenantId":
+			err = unpopulate(val, "TenantID", &r.TenantID)
 			delete(rawMsg, key)
 		case "usage":
 			err = unpopulate(val, "Usage", &r.Usage)

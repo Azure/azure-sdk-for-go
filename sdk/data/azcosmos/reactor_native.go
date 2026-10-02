@@ -55,6 +55,29 @@ type reactor struct {
 // goroutine has already abandoned the wait because its context was cancelled.
 type pendingOperation struct {
 	result chan completionResult
+	mu     sync.Mutex
+	closed bool
+}
+
+func (p *pendingOperation) deliver(result completionResult) {
+	p.mu.Lock()
+	defer p.mu.Unlock()
+	if p.closed {
+		result.release()
+		return
+	}
+	p.result <- result
+}
+
+func (p *pendingOperation) abandon() {
+	p.mu.Lock()
+	defer p.mu.Unlock()
+	p.closed = true
+	select {
+	case result := <-p.result:
+		result.release()
+	default:
+	}
 }
 
 // newReactor creates a completion queue on the runtime and starts draining it.
@@ -166,15 +189,7 @@ func (r *reactor) deliver(completion *C.cosmos_completion_t) {
 
 	// Translation copies every field it needs, because the completion's memory is reclaimed as
 	// soon as this drain returns, and detaches any handle the completion carries.
-	result := translateCompletion(completion)
-	select {
-	case pending.result <- result:
-	default:
-		// The buffer is sized for exactly one result, so a full channel means the operation was
-		// already answered. The result still has to be released: dropping one that detached a
-		// driver or container handle would leak it, because the completion no longer owns it.
-		result.release()
-	}
+	pending.deliver(translateCompletion(completion))
 }
 
 // close stops the reactor and releases the queue. It is idempotent.

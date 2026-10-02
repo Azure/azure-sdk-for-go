@@ -13,6 +13,24 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+func TestAbandonedCompletionDoesNotRetainResults(t *testing.T) {
+	for range 100 {
+		pending := &pendingOperation{result: make(chan completionResult, 1)}
+		var wg sync.WaitGroup
+		wg.Add(2)
+		go func() {
+			defer wg.Done()
+			pending.deliver(completionResult{body: []byte("late")})
+		}()
+		go func() {
+			defer wg.Done()
+			pending.abandon()
+		}()
+		wg.Wait()
+		require.Empty(t, pending.result)
+	}
+}
+
 // The reactor owns a completion queue and a goroutine blocked in C. These cover its lifetime
 // without a service, which the emulator tests cannot: they need an account to talk to, and a leak
 // or a hang here would show up there as a timeout rather than as itself.

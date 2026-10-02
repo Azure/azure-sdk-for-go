@@ -102,8 +102,7 @@ func (d *nativeDriver) awaitOperation(
 		return completionResult{}, err
 	}
 
-	// Buffered so the reactor can always deliver without blocking, even after this goroutine has
-	// stopped waiting because the context was cancelled.
+	// Buffered so the reactor can deliver without blocking after cancellation.
 	pending := &pendingOperation{result: make(chan completionResult, 1)}
 	handle := cgo.NewHandle(pending)
 	// Deleted only once the operation is known to be finished, because the driver round-trips the
@@ -182,7 +181,6 @@ func awaitOperationResult(ctx context.Context, results <-chan completionResult, 
 		if err != nil {
 			result.release()
 		}
-		return terminal, err
 	}
 }
 
@@ -196,12 +194,25 @@ func resultAfterCancellation(cause error, result completionResult) (completionRe
 func completionCancellationError(cause error, result completionResult) error {
 	requestCharge := result.response.RequestCharge
 	activityID := result.response.ActivityID
+	diagnostics := result.response.Diagnostics
+	attemptCount := result.response.AttemptCount
+	statusCode := result.response.StatusCode
+	subStatus := result.response.SubStatus
 	var completionErr *Error
 	if errors.As(result.err, &completionErr) {
 		requestCharge = completionErr.RequestCharge
 		activityID = completionErr.ActivityID
+		diagnostics = completionErr.Diagnostics
+		attemptCount = completionErr.AttemptCount
+		statusCode = completionErr.StatusCode
+		subStatus = completionErr.SubStatus
 	}
-	return newOperationCancelledError(cause, requestCharge, activityID)
+	err := newOperationCancelledError(cause, requestCharge, activityID)
+	err.Diagnostics = diagnostics
+	err.AttemptCount = attemptCount
+	err.StatusCode = statusCode
+	err.SubStatus = subStatus
+	return err
 }
 
 // inspectAwaitCompletionSubmission reports whether awaitCompletion invoked its submit closure.

@@ -28,6 +28,22 @@ func TestVerifyDriverVersion(t *testing.T) {
 	require.NoError(t, verifyDriverVersion())
 }
 
+func TestNativeFaultInjectionOptionsBuild(t *testing.T) {
+	d := &nativeDriver{faultRules: []nativeFaultRule{{
+		id: "throttle-read", kind: 1, errorType: 2, hitLimit: 2,
+		delayMS: -1, retryAfter: 1,
+	}}}
+	require.NoError(t, d.buildRuntime())
+	require.NoError(t, d.buildAccount(driverConfig{
+		endpoint: "https://myaccount.documents.azure.com", accountKey: emulatorKey,
+	}))
+	t.Cleanup(func() { require.NoError(t, d.close()) })
+	options, err := d.buildDriverOptions()
+	require.NoError(t, err)
+	require.NotNil(t, options)
+	freeNativeDriverOptions(options)
+}
+
 func TestValidateDriverVersions(t *testing.T) {
 	for _, tt := range []struct {
 		name   string

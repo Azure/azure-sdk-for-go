@@ -35,12 +35,17 @@ func TestResultAfterCancellationReturnsTerminalCompletion(t *testing.T) {
 	})
 
 	t.Run("cancelled", func(t *testing.T) {
+		diagnostics := &Diagnostics{AttemptCount: 2, StatusCode: 429, SubStatus: 3200}
 		result := completionResult{
 			cancelled: true,
 			err: &Error{
 				Code:          CodeOperationCancelled,
 				RequestCharge: 1.5,
 				ActivityID:    "activity-id",
+				Diagnostics:   diagnostics,
+				AttemptCount:  2,
+				StatusCode:    429,
+				SubStatus:     3200,
 			},
 		}
 
@@ -54,6 +59,10 @@ func TestResultAfterCancellationReturnsTerminalCompletion(t *testing.T) {
 		require.Equal(t, CodeOperationCancelled, cosmosErr.Code)
 		require.Equal(t, 1.5, cosmosErr.RequestCharge)
 		require.Equal(t, "activity-id", cosmosErr.ActivityID)
+		require.Same(t, diagnostics, cosmosErr.Diagnostics)
+		require.Equal(t, uint32(2), cosmosErr.AttemptCount)
+		require.Equal(t, 429, cosmosErr.StatusCode)
+		require.Equal(t, 3200, cosmosErr.SubStatus)
 	})
 }
 

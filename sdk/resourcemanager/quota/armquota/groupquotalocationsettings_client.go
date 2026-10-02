@@ -18,6 +18,8 @@ import (
 
 // GroupQuotaLocationSettingsClient contains the methods for the GroupQuotaLocationSettings group.
 // Don't use this type directly, use NewGroupQuotaLocationSettingsClient() instead.
+//
+// Generated from API version 2026-09-01-preview
 type GroupQuotaLocationSettingsClient struct {
 	internal *arm.Client
 }
@@ -43,11 +45,11 @@ func NewGroupQuotaLocationSettingsClient(credential azcore.TokenCredential, opti
 // groupQuotaLimit request for the specific resource - provider/location/resource.
 // Once the GroupQuota Enforcement is enabled then, it cannot be deleted or reverted back. To disable GroupQuota Enforcement
 // -
-// 1. Remove all the subscriptions from the groupQuota using the delete API for Subscriptions (Check the example - GroupQuotaSubscriptions_Delete).
-// 2. Then delete the GroupQuota (Check the example - GroupQuotas_Delete).
-// If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-09-01
+//  1. Remove all the subscriptions from the groupQuota using the delete API for Subscriptions (Check the example - GroupQuotaSubscriptions_Delete).
+//  2. Then delete the GroupQuota (Check the example - GroupQuotas_Delete).
+//
+// If the operation fails it returns an *azcore.ResponseError type.
 //   - managementGroupID - The management group ID.
 //   - groupQuotaName - The GroupQuota name. The name should be unique for the provided context tenantId/MgId.
 //   - resourceProviderName - The resource provider name, such as - Microsoft.Compute. Currently only Microsoft.Compute resource
@@ -80,11 +82,11 @@ func (client *GroupQuotaLocationSettingsClient) BeginCreateOrUpdate(ctx context.
 // groupQuotaLimit request for the specific resource - provider/location/resource.
 // Once the GroupQuota Enforcement is enabled then, it cannot be deleted or reverted back. To disable GroupQuota Enforcement
 // -
-// 1. Remove all the subscriptions from the groupQuota using the delete API for Subscriptions (Check the example - GroupQuotaSubscriptions_Delete).
-// 2. Then delete the GroupQuota (Check the example - GroupQuotas_Delete).
-// If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-09-01
+//  1. Remove all the subscriptions from the groupQuota using the delete API for Subscriptions (Check the example - GroupQuotaSubscriptions_Delete).
+//  2. Then delete the GroupQuota (Check the example - GroupQuotas_Delete).
+//
+// If the operation fails it returns an *azcore.ResponseError type.
 func (client *GroupQuotaLocationSettingsClient) createOrUpdate(ctx context.Context, managementGroupID string, groupQuotaName string, resourceProviderName string, location string, locationSettings GroupQuotasEnforcementStatus, options *GroupQuotaLocationSettingsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "GroupQuotaLocationSettingsClient.BeginCreateOrUpdate"
@@ -100,8 +102,7 @@ func (client *GroupQuotaLocationSettingsClient) createOrUpdate(ctx context.Conte
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -130,8 +131,8 @@ func (client *GroupQuotaLocationSettingsClient) createOrUpdateCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260901Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, locationSettings); err != nil {
@@ -143,8 +144,6 @@ func (client *GroupQuotaLocationSettingsClient) createOrUpdateCreateRequest(ctx 
 // Get - Gets the GroupQuotas enforcement settings for the ResourceProvider/location. The locations, where GroupQuota enforcement
 // is not enabled will return Not Found.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01
 //   - managementGroupID - The management group ID.
 //   - groupQuotaName - The GroupQuota name. The name should be unique for the provided context tenantId/MgId.
 //   - resourceProviderName - The resource provider name, such as - Microsoft.Compute. Currently only Microsoft.Compute resource
@@ -166,12 +165,7 @@ func (client *GroupQuotaLocationSettingsClient) Get(ctx context.Context, managem
 	if err != nil {
 		return GroupQuotaLocationSettingsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return GroupQuotaLocationSettingsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -198,15 +192,18 @@ func (client *GroupQuotaLocationSettingsClient) getCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260901Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *GroupQuotaLocationSettingsClient) getHandleResponse(resp *http.Response) (GroupQuotaLocationSettingsClientGetResponse, error) {
+func (client *GroupQuotaLocationSettingsClient) getHandleResponse(resp *http.Response, successCodes ...int) (GroupQuotaLocationSettingsClientGetResponse, error) {
 	result := GroupQuotaLocationSettingsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GroupQuotasEnforcementStatus); err != nil {
 		return GroupQuotaLocationSettingsClientGetResponse{}, err
 	}
@@ -220,11 +217,11 @@ func (client *GroupQuotaLocationSettingsClient) getHandleResponse(resp *http.Res
 // groupQuotaLimit request for the specific resource - provider/location/resource.
 // Once the GroupQuota Enforcement is enabled then, it cannot be deleted or reverted back. To disable GroupQuota Enforcement
 // -
-// 1. Remove all the subscriptions from the groupQuota using the delete API for Subscriptions (Check the example - GroupQuotaSubscriptions_Delete).
-// 2. Ten delete the GroupQuota (Check the example - GroupQuotas_Delete).
-// If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-09-01
+//  1. Remove all the subscriptions from the groupQuota using the delete API for Subscriptions (Check the example - GroupQuotaSubscriptions_Delete).
+//  2. Ten delete the GroupQuota (Check the example - GroupQuotas_Delete).
+//
+// If the operation fails it returns an *azcore.ResponseError type.
 //   - managementGroupID - The management group ID.
 //   - groupQuotaName - The GroupQuota name. The name should be unique for the provided context tenantId/MgId.
 //   - resourceProviderName - The resource provider name, such as - Microsoft.Compute. Currently only Microsoft.Compute resource
@@ -257,11 +254,11 @@ func (client *GroupQuotaLocationSettingsClient) BeginUpdate(ctx context.Context,
 // groupQuotaLimit request for the specific resource - provider/location/resource.
 // Once the GroupQuota Enforcement is enabled then, it cannot be deleted or reverted back. To disable GroupQuota Enforcement
 // -
-// 1. Remove all the subscriptions from the groupQuota using the delete API for Subscriptions (Check the example - GroupQuotaSubscriptions_Delete).
-// 2. Ten delete the GroupQuota (Check the example - GroupQuotas_Delete).
-// If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-09-01
+//  1. Remove all the subscriptions from the groupQuota using the delete API for Subscriptions (Check the example - GroupQuotaSubscriptions_Delete).
+//  2. Ten delete the GroupQuota (Check the example - GroupQuotas_Delete).
+//
+// If the operation fails it returns an *azcore.ResponseError type.
 func (client *GroupQuotaLocationSettingsClient) update(ctx context.Context, managementGroupID string, groupQuotaName string, resourceProviderName string, location string, locationSettings GroupQuotasEnforcementStatus, options *GroupQuotaLocationSettingsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "GroupQuotaLocationSettingsClient.BeginUpdate"
@@ -277,8 +274,7 @@ func (client *GroupQuotaLocationSettingsClient) update(ctx context.Context, mana
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -307,8 +303,8 @@ func (client *GroupQuotaLocationSettingsClient) updateCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260901Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, locationSettings); err != nil {

@@ -13,7 +13,10 @@ import (
 
 func TestMain(m *testing.M) {
 	if os.Getenv("ENV_FILE") == "" {
-		os.Setenv("ENV_FILE", "../../../../.env")
+		if err := os.Setenv("ENV_FILE", "../../../../.env"); err != nil {
+			log.Printf("Failed to set ENV_FILE: %s", err)
+			return
+		}
 	}
 
 	err := shared.LoadEnvironment()

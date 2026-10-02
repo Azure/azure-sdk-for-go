@@ -33,6 +33,15 @@ func (c *ProcessorPartitionClient) ReceiveEvents(ctx context.Context, count int,
 	return c.innerClient.ReceiveEvents(ctx, count, options)
 }
 
+// GetPartitionProperties gets properties for the partition that this client receives from. This includes
+// data like the last enqueued sequence number, the first sequence number and when an event was last enqueued
+// to the partition.
+//
+// See [PartitionClient.GetPartitionProperties] for more information.
+func (p *ProcessorPartitionClient) GetPartitionProperties(ctx context.Context, options *GetPartitionPropertiesOptions) (PartitionProperties, error) {
+	return p.innerClient.GetPartitionProperties(ctx, options)
+}
+
 // UpdateCheckpoint updates the checkpoint in the CheckpointStore. New Processors will resume after
 // this checkpoint for this partition.
 func (p *ProcessorPartitionClient) UpdateCheckpoint(ctx context.Context, latestEvent *ReceivedEventData, options *UpdateCheckpointOptions) error {

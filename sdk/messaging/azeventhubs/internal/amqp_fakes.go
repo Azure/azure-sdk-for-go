@@ -7,11 +7,12 @@ import (
 	"context"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/v2/internal/amqpwrap"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/v2/internal/auth"
 	"github.com/Azure/go-amqp"
 )
 
 type FakeNSForPartClient struct {
-	NamespaceForAMQPLinks
+	NamespaceForManagementOps
 
 	Receiver          *FakeAMQPReceiver
 	NewReceiverErr    error
@@ -20,6 +21,11 @@ type FakeNSForPartClient struct {
 	Sender          *FakeAMQPSender
 	NewSenderErr    error
 	NewSenderCalled int
+
+	// RPCLink is returned from NewRPCLink. Set this to test management operations.
+	RPCLink        amqpwrap.RPCLink
+	NewRPCLinkErr  error
+	NewRPCLinkCall int
 
 	RecoverFn func(ctx context.Context, clientRevision uint64) error
 }
@@ -61,6 +67,20 @@ func (ns *FakeNSForPartClient) Recover(ctx context.Context, clientRevision uint6
 func (ns *FakeNSForPartClient) NegotiateClaim(ctx context.Context, entityPath string) (context.CancelFunc, <-chan struct{}, error) {
 	ctx, cancel := context.WithCancel(ctx)
 	return cancel, ctx.Done(), nil
+}
+
+func (ns *FakeNSForPartClient) NewRPCLink(ctx context.Context, managementPath string) (amqpwrap.RPCLink, uint64, error) {
+	ns.NewRPCLinkCall++
+
+	if ns.NewRPCLinkErr != nil {
+		return nil, 0, ns.NewRPCLinkErr
+	}
+
+	return ns.RPCLink, 1, nil
+}
+
+func (ns *FakeNSForPartClient) GetTokenForEntity(eventHub string) (*auth.Token, error) {
+	return auth.NewToken(auth.CBSTokenTypeJWT, "fake-token", ""), nil
 }
 
 func (ns *FakeNSForPartClient) NewAMQPSession(ctx context.Context) (amqpwrap.AMQPSession, uint64, error) {
@@ -120,6 +140,45 @@ func (r *FakeAMQPReceiver) Receive(ctx context.Context, o *amqp.ReceiveOptions) 
 func (r *FakeAMQPReceiver) Close(ctx context.Context) error {
 	r.CloseCalled++
 	return r.CloseError
+}
+
+// FakeRPCLink is a fake for the management link. It records each request and
+// returns a canned response.
+type FakeRPCLink struct {
+	// Requests holds each message that was passed to RPC.
+	Requests []*amqp.Message
+
+	// Response is returned from RPC when RPCError is nil.
+	Response *amqpwrap.RPCResponse
+	RPCError error
+
+	NameForLink string
+
+	CloseCalled int
+	CloseError  error
+}
+
+func (l *FakeRPCLink) RPC(ctx context.Context, msg *amqp.Message) (*amqpwrap.RPCResponse, error) {
+	l.Requests = append(l.Requests, msg)
+
+	if l.RPCError != nil {
+		return nil, l.RPCError
+	}
+
+	return l.Response, nil
+}
+
+func (l *FakeRPCLink) ConnID() uint64 {
+	return 1
+}
+
+func (l *FakeRPCLink) LinkName() string {
+	return l.NameForLink
+}
+
+func (l *FakeRPCLink) Close(ctx context.Context) error {
+	l.CloseCalled++
+	return l.CloseError
 }
 
 type FakeAMQPSender struct {

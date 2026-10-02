@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-15-preview/Registry/EnvironmentContainer/createOrUpdate.json
+// Generated from example definition: 2026-07-01/Registry/EnvironmentContainer/createOrUpdate.json
 func ExampleRegistryEnvironmentContainersClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -78,7 +78,7 @@ func ExampleRegistryEnvironmentContainersClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Registry/EnvironmentContainer/delete.json
+// Generated from example definition: 2026-07-01/Registry/EnvironmentContainer/delete.json
 func ExampleRegistryEnvironmentContainersClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -104,7 +104,7 @@ func ExampleRegistryEnvironmentContainersClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Registry/EnvironmentContainer/get.json
+// Generated from example definition: 2026-07-01/Registry/EnvironmentContainer/get.json
 func ExampleRegistryEnvironmentContainersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -146,7 +146,7 @@ func ExampleRegistryEnvironmentContainersClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Registry/EnvironmentContainer/list.json
+// Generated from example definition: 2026-07-01/Registry/EnvironmentContainer/list.json
 func ExampleRegistryEnvironmentContainersClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -170,7 +170,7 @@ func ExampleRegistryEnvironmentContainersClient_NewListPager() {
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page = armmachinelearning.RegistryEnvironmentContainersClientListResponse{
 		// 	EnvironmentContainerResourceArmPaginatedResult: armmachinelearning.EnvironmentContainerResourceArmPaginatedResult{
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.MachineLearningServices/registries/registries123/environments?api-version=2025-07-01-preview&$skip=2"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.MachineLearningServices/registries/registries123/environments?api-version=2026-07-01&$skip=2"),
 		// 		Value: []*armmachinelearning.EnvironmentContainer{
 		// 			{
 		// 				Name: to.Ptr("testEnvironment"),

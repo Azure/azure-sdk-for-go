@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-15-preview/Workspace/MarketplaceSubscription/createOrUpdate.json
+// Generated from example definition: 2026-07-01/Workspace/MarketplaceSubscription/createOrUpdate.json
 func ExampleMarketplaceSubscriptionsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -65,7 +65,7 @@ func ExampleMarketplaceSubscriptionsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Workspace/MarketplaceSubscription/delete.json
+// Generated from example definition: 2026-07-01/Workspace/MarketplaceSubscription/delete.json
 func ExampleMarketplaceSubscriptionsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -86,7 +86,7 @@ func ExampleMarketplaceSubscriptionsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-03-15-preview/Workspace/MarketplaceSubscription/get.json
+// Generated from example definition: 2026-07-01/Workspace/MarketplaceSubscription/get.json
 func ExampleMarketplaceSubscriptionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -131,7 +131,7 @@ func ExampleMarketplaceSubscriptionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Workspace/MarketplaceSubscription/list.json
+// Generated from example definition: 2026-07-01/Workspace/MarketplaceSubscription/list.json
 func ExampleMarketplaceSubscriptionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -155,7 +155,7 @@ func ExampleMarketplaceSubscriptionsClient_NewListPager() {
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page = armmachinelearning.MarketplaceSubscriptionsClientListResponse{
 		// 	MarketplaceSubscriptionResourceArmPaginatedResult: armmachinelearning.MarketplaceSubscriptionResourceArmPaginatedResult{
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.MachineLearningServices/workspaces/my-aml-workspace/marketplaceSubscriptions?api-version=2025-07-01-preview&$skip=2"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.MachineLearningServices/workspaces/my-aml-workspace/marketplaceSubscriptions?api-version=2026-07-01&$skip=2"),
 		// 		Value: []*armmachinelearning.MarketplaceSubscription{
 		// 			{
 		// 				Name: to.Ptr("string"),

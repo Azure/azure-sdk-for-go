@@ -19,7 +19,7 @@ import (
 // ComputeClient contains the methods for the Compute group.
 // Don't use this type directly, use NewComputeClient() instead.
 //
-// Generated from API version 2026-03-15-preview
+// Generated from API version 2026-07-01
 type ComputeClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -30,9 +30,6 @@ type ComputeClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewComputeClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ComputeClient, error) {
-	if subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -98,7 +95,7 @@ func (client *ComputeClient) createOrUpdate(ctx context.Context, resourceGroupNa
 func (client *ComputeClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, parameters ComputeResource, _ *ComputeClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/computes/{computeName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -118,7 +115,7 @@ func (client *ComputeClient) createOrUpdateCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
+	reqQP.Set("api-version", version20260701)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -179,7 +176,7 @@ func (client *ComputeClient) deleteOperation(ctx context.Context, resourceGroupN
 func (client *ComputeClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, underlyingResourceAction UnderlyingResourceAction, _ *ComputeClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/computes/{computeName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -199,7 +196,7 @@ func (client *ComputeClient) deleteCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
+	reqQP.Set("api-version", version20260701)
 	reqQP.Set("underlyingResourceAction", string(underlyingResourceAction))
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
@@ -233,7 +230,7 @@ func (client *ComputeClient) Get(ctx context.Context, resourceGroupName string, 
 func (client *ComputeClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, _ *ComputeClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/computes/{computeName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -253,7 +250,7 @@ func (client *ComputeClient) getCreateRequest(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
+	reqQP.Set("api-version", version20260701)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -267,72 +264,6 @@ func (client *ComputeClient) getHandleResponse(resp *http.Response, successCodes
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ComputeResource); err != nil {
 		return ComputeClientGetResponse{}, err
-	}
-	return result, nil
-}
-
-// GetAllowedResizeSizes - Returns supported virtual machine sizes for resize.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - Azure Machine Learning Workspace Name
-//   - computeName - Name of the Azure Machine Learning compute.
-//   - options - ComputeClientGetAllowedResizeSizesOptions contains the optional parameters for the ComputeClient.GetAllowedResizeSizes
-//     method.
-func (client *ComputeClient) GetAllowedResizeSizes(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, options *ComputeClientGetAllowedResizeSizesOptions) (ComputeClientGetAllowedResizeSizesResponse, error) {
-	var err error
-	const operationName = "ComputeClient.GetAllowedResizeSizes"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.getAllowedResizeSizesCreateRequest(ctx, resourceGroupName, workspaceName, computeName, options)
-	if err != nil {
-		return ComputeClientGetAllowedResizeSizesResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return ComputeClientGetAllowedResizeSizesResponse{}, err
-	}
-	return client.getAllowedResizeSizesHandleResponse(httpResp, http.StatusOK)
-}
-
-// getAllowedResizeSizesCreateRequest creates the GetAllowedResizeSizes request.
-func (client *ComputeClient) getAllowedResizeSizesCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, _ *ComputeClientGetAllowedResizeSizesOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/computes/{computeName}/getAllowedVmSizesForResize"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if workspaceName == "" {
-		return nil, errors.New("parameter workspaceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	if computeName == "" {
-		return nil, errors.New("parameter computeName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{computeName}", url.PathEscape(computeName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// getAllowedResizeSizesHandleResponse handles the GetAllowedResizeSizes response.
-func (client *ComputeClient) getAllowedResizeSizesHandleResponse(resp *http.Response, successCodes ...int) (ComputeClientGetAllowedResizeSizesResponse, error) {
-	result := ComputeClientGetAllowedResizeSizesResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.VirtualMachineSizeListResult); err != nil {
-		return ComputeClientGetAllowedResizeSizesResponse{}, err
 	}
 	return result, nil
 }
@@ -374,7 +305,7 @@ func (client *ComputeClient) listCreateRequest(ctx context.Context, resourceGrou
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/computes"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter subscriptionID cannot be empty")
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -397,7 +328,7 @@ func (client *ComputeClient) listCreateRequest(ctx context.Context, resourceGrou
 		if options != nil && options.Skip != nil {
 			reqQP.Set("$skip", *options.Skip)
 		}
-		reqQP.Set("api-version", version20260315Preview)
+		reqQP.Set("api-version", version20260701)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -443,7 +374,7 @@ func (client *ComputeClient) ListKeys(ctx context.Context, resourceGroupName str
 func (client *ComputeClient) listKeysCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, _ *ComputeClientListKeysOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/computes/{computeName}/listKeys"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -463,7 +394,7 @@ func (client *ComputeClient) listKeysCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
+	reqQP.Set("api-version", version20260701)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -519,7 +450,7 @@ func (client *ComputeClient) listNodesCreateRequest(ctx context.Context, resourc
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/computes/{computeName}/listNodes"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter subscriptionID cannot be empty")
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -543,7 +474,7 @@ func (client *ComputeClient) listNodesCreateRequest(ctx context.Context, resourc
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260315Preview)
+		reqQP.Set("api-version", version20260701)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -560,85 +491,6 @@ func (client *ComputeClient) listNodesHandleResponse(resp *http.Response, succes
 		return ComputeClientListNodesResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginResize - Updates the size of a Compute Instance.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - Azure Machine Learning Workspace Name
-//   - computeName - Name of the Azure Machine Learning compute.
-//   - parameters - The object for updating VM size setting of specified Compute Instance.
-//   - options - ComputeClientBeginResizeOptions contains the optional parameters for the ComputeClient.BeginResize method.
-func (client *ComputeClient) BeginResize(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, parameters ResizeSchema, options *ComputeClientBeginResizeOptions) (*runtime.Poller[ComputeClientResizeResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.resize(ctx, resourceGroupName, workspaceName, computeName, parameters, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ComputeClientResizeResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ComputeClientResizeResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Resize - Updates the size of a Compute Instance.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *ComputeClient) resize(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, parameters ResizeSchema, options *ComputeClientBeginResizeOptions) (*http.Response, error) {
-	var err error
-	const operationName = "ComputeClient.BeginResize"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.resizeCreateRequest(ctx, resourceGroupName, workspaceName, computeName, parameters, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// resizeCreateRequest creates the Resize request.
-func (client *ComputeClient) resizeCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, parameters ResizeSchema, _ *ComputeClientBeginResizeOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/computes/{computeName}/resize"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if workspaceName == "" {
-		return nil, errors.New("parameter workspaceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	if computeName == "" {
-		return nil, errors.New("parameter computeName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{computeName}", url.PathEscape(computeName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
-	return req, nil
 }
 
 // BeginRestart - Posts a restart action to a compute instance
@@ -690,7 +542,7 @@ func (client *ComputeClient) restart(ctx context.Context, resourceGroupName stri
 func (client *ComputeClient) restartCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, _ *ComputeClientBeginRestartOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/computes/{computeName}/restart"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -710,7 +562,7 @@ func (client *ComputeClient) restartCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
+	reqQP.Set("api-version", version20260701)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -764,7 +616,7 @@ func (client *ComputeClient) start(ctx context.Context, resourceGroupName string
 func (client *ComputeClient) startCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, _ *ComputeClientBeginStartOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/computes/{computeName}/start"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -784,7 +636,7 @@ func (client *ComputeClient) startCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
+	reqQP.Set("api-version", version20260701)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -838,7 +690,7 @@ func (client *ComputeClient) stop(ctx context.Context, resourceGroupName string,
 func (client *ComputeClient) stopCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, _ *ComputeClientBeginStopOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/computes/{computeName}/stop"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -858,7 +710,7 @@ func (client *ComputeClient) stopCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
+	reqQP.Set("api-version", version20260701)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -915,7 +767,7 @@ func (client *ComputeClient) update(ctx context.Context, resourceGroupName strin
 func (client *ComputeClient) updateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, parameters ClusterUpdateParameters, _ *ComputeClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/computes/{computeName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -935,194 +787,9 @@ func (client *ComputeClient) updateCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
+	reqQP.Set("api-version", version20260701)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// UpdateCustomServices - Updates the custom services list. The list of custom services provided shall be overwritten.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - Azure Machine Learning Workspace Name
-//   - computeName - Name of the Azure Machine Learning compute.
-//   - customServices - New list of Custom Services.
-//   - options - ComputeClientUpdateCustomServicesOptions contains the optional parameters for the ComputeClient.UpdateCustomServices
-//     method.
-func (client *ComputeClient) UpdateCustomServices(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, customServices []*CustomService, options *ComputeClientUpdateCustomServicesOptions) (ComputeClientUpdateCustomServicesResponse, error) {
-	var err error
-	const operationName = "ComputeClient.UpdateCustomServices"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCustomServicesCreateRequest(ctx, resourceGroupName, workspaceName, computeName, customServices, options)
-	if err != nil {
-		return ComputeClientUpdateCustomServicesResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return ComputeClientUpdateCustomServicesResponse{}, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return ComputeClientUpdateCustomServicesResponse{}, runtime.NewResponseError(httpResp)
-	}
-	return ComputeClientUpdateCustomServicesResponse{}, nil
-}
-
-// updateCustomServicesCreateRequest creates the UpdateCustomServices request.
-func (client *ComputeClient) updateCustomServicesCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, customServices []*CustomService, _ *ComputeClientUpdateCustomServicesOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/computes/{computeName}/customServices"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if workspaceName == "" {
-		return nil, errors.New("parameter workspaceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	if computeName == "" {
-		return nil, errors.New("parameter computeName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{computeName}", url.PathEscape(computeName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, customServices); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// UpdateDataMounts - Update Data Mounts of a Machine Learning compute.
-//
-// Update Data Mounts of a Machine Learning compute.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - Azure Machine Learning Workspace Name
-//   - computeName - Name of the Azure Machine Learning compute.
-//   - dataMounts - The parameters for creating or updating a machine learning workspace.
-//   - options - ComputeClientUpdateDataMountsOptions contains the optional parameters for the ComputeClient.UpdateDataMounts
-//     method.
-func (client *ComputeClient) UpdateDataMounts(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, dataMounts []*ComputeInstanceDataMount, options *ComputeClientUpdateDataMountsOptions) (ComputeClientUpdateDataMountsResponse, error) {
-	var err error
-	const operationName = "ComputeClient.UpdateDataMounts"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateDataMountsCreateRequest(ctx, resourceGroupName, workspaceName, computeName, dataMounts, options)
-	if err != nil {
-		return ComputeClientUpdateDataMountsResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return ComputeClientUpdateDataMountsResponse{}, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return ComputeClientUpdateDataMountsResponse{}, runtime.NewResponseError(httpResp)
-	}
-	return ComputeClientUpdateDataMountsResponse{}, nil
-}
-
-// updateDataMountsCreateRequest creates the UpdateDataMounts request.
-func (client *ComputeClient) updateDataMountsCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, dataMounts []*ComputeInstanceDataMount, _ *ComputeClientUpdateDataMountsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/computes/{computeName}/updateDataMounts"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if workspaceName == "" {
-		return nil, errors.New("parameter workspaceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	if computeName == "" {
-		return nil, errors.New("parameter computeName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{computeName}", url.PathEscape(computeName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, dataMounts); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// UpdateIdleShutdownSetting - Updates the idle shutdown setting of a compute instance.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - Azure Machine Learning Workspace Name
-//   - computeName - Name of the Azure Machine Learning compute.
-//   - parameters - The object for updating idle shutdown setting of specified ComputeInstance.
-//   - options - ComputeClientUpdateIdleShutdownSettingOptions contains the optional parameters for the ComputeClient.UpdateIdleShutdownSetting
-//     method.
-func (client *ComputeClient) UpdateIdleShutdownSetting(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, parameters IdleShutdownSetting, options *ComputeClientUpdateIdleShutdownSettingOptions) (ComputeClientUpdateIdleShutdownSettingResponse, error) {
-	var err error
-	const operationName = "ComputeClient.UpdateIdleShutdownSetting"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateIdleShutdownSettingCreateRequest(ctx, resourceGroupName, workspaceName, computeName, parameters, options)
-	if err != nil {
-		return ComputeClientUpdateIdleShutdownSettingResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return ComputeClientUpdateIdleShutdownSettingResponse{}, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return ComputeClientUpdateIdleShutdownSettingResponse{}, runtime.NewResponseError(httpResp)
-	}
-	return ComputeClientUpdateIdleShutdownSettingResponse{}, nil
-}
-
-// updateIdleShutdownSettingCreateRequest creates the UpdateIdleShutdownSetting request.
-func (client *ComputeClient) updateIdleShutdownSettingCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, parameters IdleShutdownSetting, _ *ComputeClientUpdateIdleShutdownSettingOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/computes/{computeName}/updateIdleShutdownSetting"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if workspaceName == "" {
-		return nil, errors.New("parameter workspaceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	if computeName == "" {
-		return nil, errors.New("parameter computeName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{computeName}", url.PathEscape(computeName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
 		return nil, err

@@ -1,6 +1,6 @@
 # Release History
 
-## 1.1.0-beta.1 (2026-09-28)
+## 1.1.0-beta.1 (2026-10-02)
 ### Features Added
 
 - New enum type `CapabilityStatus` with values `CapabilityStatusDisabled`, `CapabilityStatusEnabled`

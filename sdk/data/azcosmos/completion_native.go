@@ -42,10 +42,12 @@ import (
 // completionResult is everything an operation needs from a completion, copied out of driver-owned
 // memory so it stays valid after the completion is freed.
 type completionResult struct {
-	response  ItemResponse
-	body      []byte
-	err       error
-	cancelled bool
+	response         ItemResponse
+	body             []byte
+	err              error
+	cancelled        bool
+	httpStatus       int
+	nextContinuation string
 
 	// driver and container are detached from the completion rather than copied, because they are
 	// handles and not data. A get_or_create completion carries the first and a resolve_container
@@ -102,8 +104,10 @@ func translateCompletionOutcome(completion *C.cosmos_completion_t) completionRes
 	switch completion.outcome {
 	case C.COSMOS_COMPLETION_OUTCOME_OK:
 		return completionResult{
-			response: response,
-			body:     copyCompletionBody(completion),
+			response:         response,
+			body:             copyCompletionBody(completion),
+			httpStatus:       int(completion.http_status_code),
+			nextContinuation: C.GoString(completion.next_continuation),
 		}
 
 	case C.COSMOS_COMPLETION_OUTCOME_CANCELLED:

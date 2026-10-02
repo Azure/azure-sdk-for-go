@@ -27,6 +27,9 @@ func openRuntime(config RuntimeOptions) (*nativeRuntime, error) {
 		return nil, err
 	}
 	options := C.cosmos_runtime_options_default()
+	identifier, allocation := toNativeString(wrappingSDKIdentifier())
+	defer C.free(allocation)
+	options.wrapping_sdk_identifier = identifier
 	common, release := config.Operation.toNative()
 	defer release()
 	options.operation_options = common
@@ -38,7 +41,7 @@ func openRuntime(config RuntimeOptions) (*nativeRuntime, error) {
 	native := &nativeRuntime{}
 	var richErr *C.cosmos_error_t
 	status := C.cosmos_runtime_build(&options, &native.handle, &richErr) //nolint:gocritic // dupSubExpr is reported against cgo-generated code.
-	if err := statusError(status, richErr, "building runtime (check ApplicationID and Operation options)"); err != nil {
+	if err := statusError(status, richErr, "building runtime (check SDK identity, ApplicationID and Operation options)"); err != nil {
 		return nil, err
 	}
 	return native, nil

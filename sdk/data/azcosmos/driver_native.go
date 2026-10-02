@@ -307,7 +307,7 @@ func (d *nativeDriver) buildRuntime() error {
 	var cosmosErr *Error
 	if errors.As(err, &cosmosErr) &&
 		cosmosErr.SubStatus == int(C.COSMOS_SUB_STATUS_CLIENT_FFI_INVALID_OPTION_VALUE) {
-		cosmosErr.Message = "azcosmos: the Cosmos driver rejected ClientOptions.ApplicationID"
+		cosmosErr.Message = "azcosmos: the Cosmos driver rejected runtime options (SDK identity or ClientOptions.ApplicationID)"
 	}
 	return err
 }

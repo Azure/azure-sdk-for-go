@@ -28,7 +28,7 @@ type ClientOptions struct {
 	// Runtime shares resources across account hostnames. Each hostname may be used only once
 	// per Runtime lifetime. Nil creates a private runtime owned by this client.
 	Runtime *Runtime
-	// Operation supplies account-level defaults for every item operation.
+	// Operation supplies account-level defaults for item operations and query page fetches.
 	Operation OperationOptions
 	// Routing decides the order in which the client considers the account's regions. The zero
 	// value leaves the order to the account; prefer setting it with [PreferredRegions].

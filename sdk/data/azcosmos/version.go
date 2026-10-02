@@ -3,6 +3,10 @@
 
 package azcosmos
 
+// cSpell:ignore azsdk
+
+import "strings"
+
 const (
 	// moduleName intentionally omits the major version suffix; it is reported in telemetry.
 	//
@@ -10,7 +14,9 @@ const (
 	moduleName = "github.com/Azure/azure-sdk-for-go/sdk/data/azcosmos"
 
 	// serviceLibVersion is the semantic version (see http://semver.org) of this module.
-	//
-	//nolint:unused // consumed once client construction lands.
 	serviceLibVersion = "v2.0.0-beta.1"
 )
+
+func wrappingSDKIdentifier() string {
+	return "azsdk-go-azcosmos/" + strings.TrimPrefix(serviceLibVersion, "v")
+}

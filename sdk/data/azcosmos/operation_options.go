@@ -38,7 +38,8 @@ type OperationOptions struct {
 	EndpointUnavailabilityTTL *time.Duration
 	// CustomHeaders replaces inherited custom headers. Nil inherits; an empty map clears them.
 	CustomHeaders map[string]string
-	// BinaryEncoding overrides the entire encoding group. Nil inherits the driver's binary default.
+	// BinaryEncoding overrides the entire encoding group. Nil inherits for point items;
+	// QueryOptions defaults to text so the pager can split the JSON feed envelope.
 	BinaryEncoding *BinaryEncodingOptions
 	// ThroughputControl configures independently inherited throughput controls.
 	ThroughputControl ThroughputControlOptions

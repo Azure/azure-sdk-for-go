@@ -8,7 +8,7 @@
 // This is the v2 major version of the module and it is not usable yet. The v2 surface is being
 // assembled incrementally so that it can be reviewed as it lands. This release covers the error
 // and response model, partition keys, client construction, and creating, reading, replacing,
-// upserting, deleting, and patching single items.
+// upserting, deleting, and patching single items, plus complete logical-partition queries.
 //
 // v2 replaces the v1 pure-Go implementation with a binding to the shared Rust Cosmos driver, so
 // that routing, retries, session handling, failover behavior and query fan-out are consistent
@@ -28,4 +28,5 @@
 // ItemResponse.Value can contain Cosmos binary JSON by default. Select BinaryEncodingOptions with
 // Enabled and RequestTextResponse both true before decoding responses with encoding/json, or
 // explicitly disable binary encoding. Go does not deserialize item schemas.
+// QueryItemsResponse.Items always contains text JSON values; queries default to text wire encoding.
 package azcosmos

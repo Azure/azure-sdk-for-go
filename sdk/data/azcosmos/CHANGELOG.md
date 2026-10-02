@@ -16,6 +16,16 @@
   attempt, tracking ID, capacity, and retention controls. Effective patch tracking IDs are
   available on native success and error responses. A caller-supplied ID is retained when a
   submitted patch's Go wait is cancelled.
+* Added the Go SDK identity to the User-Agent header alongside the native driver identity,
+  preserving the optional `ClientOptions.ApplicationID` suffix. See [PR 27627](https://github.com/Azure/azure-sdk-for-go/pull/27627).
+* Added parameterized queries within a complete logical partition through `Query`, `FeedScope`,
+  `QueryOptions`, and `ContainerClient.NewQueryItemsPager`, including page-size hints, raw JSON
+  results, and resumable driver continuation tokens. Cross-partition and hierarchical-prefix
+  queries remain unsupported.
+  See [PR 27635](https://github.com/Azure/azure-sdk-for-go/pull/27635).
+* Query page fetches use the shared operation-option validation, immutable input copies, and
+  per-page runtime snapshots. Text JSON remains the default; binary wire encoding requires
+  requesting text responses for the pager.
 * Added the error and response model: `Error` classifies a failure with a `Code` and reports whether
   the service or the client produced it, and `Response`/`ItemResponse` carry what an operation
   returns. See [PR 27339](https://github.com/Azure/azure-sdk-for-go/pull/27339).
@@ -55,7 +65,7 @@
   breaking-change list lands here before the beta ships. See [PR 27339](https://github.com/Azure/azure-sdk-for-go/pull/27339).
 * Changed `ClientOptions.EnableContentResponseOnWrite` from `bool` to `*bool`, preserving the
   difference between inheriting the driver's operation-specific default and explicitly enabling or
-  disabling content responses.
+  disabling content responses. See [PR 27597](https://github.com/Azure/azure-sdk-for-go/pull/27597).
 
 ### Bugs Fixed
 

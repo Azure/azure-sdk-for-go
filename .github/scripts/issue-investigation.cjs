@@ -167,51 +167,7 @@ async function prepareOutputs({ postComment, staged = false, ...args }) {
   fs.writeFileSync(args.outputFile, JSON.stringify(output));
 }
 
-function validateTriageOutputs(output, expectedIssue, repository) {
-  if (!output || !Array.isArray(output.items)) {
-    throw new Error("Expected a triage safe-output items array");
-  }
-  const dispatches = output.items.filter(item => item?.type === "dispatch_workflow");
-  if (dispatches.length === 0) return;
-  if (output.errors != null && (!Array.isArray(output.errors) || output.errors.length > 0)) {
-    throw new Error("Cannot dispatch a partially collected triage plan");
-  }
-  const expected = issueNumber(expectedIssue);
-  const dispatch = dispatches[0];
-  if (dispatches.length !== 1 || output.items.at(-1) !== dispatch ||
-      dispatch.workflow_name !== "issue-investigation" ||
-      issueNumber(dispatch.inputs?.issue_number) !== expected) {
-    throw new Error("Investigation dispatch must be last and target the triaged issue");
-  }
-  const mentions = output.items.filter(item => item?.type === "mention_owners");
-  const assignments = output.items.filter(item => item?.type === "assign_to_user");
-  const comments = output.items.filter(item => item?.type === "add_comment");
-  if (assignments.length > 1 ||
-      !((mentions.length === 1 && comments.length === 1) ||
-        (mentions.length === 0 && assignments.length === 1 && comments.length === 2))) {
-    throw new Error("Investigation dispatch requires an owner-routing plan");
-  }
-  if (comments.length === 0 || comments.some(item => typeof item.body !== "string" || !item.body.trim())) {
-    throw new Error("Investigation dispatch requires a triage explanation");
-  }
-  for (const item of output.items) {
-    if (!item || typeof item !== "object") throw new Error("Invalid triage output");
-    if (item.repo != null &&
-        (typeof item.repo !== "string" || item.repo.toLowerCase() !== repository.toLowerCase())) {
-      throw new Error("Triage handoff must stay in the current repository");
-    }
-    for (const key of ["item_number", "issue_number", "pull_number", "pull_request_number", "pr_number", "pr"]) {
-      if (item[key] != null && issueNumber(item[key]) !== expected) {
-        throw new Error("Triage handoff must target only the triaged issue");
-      }
-    }
-    if (["close_issue", "noop"].includes(item.type)) {
-      throw new Error("Closed or no-action triage plans cannot dispatch investigation");
-    }
-  }
-}
-
 module.exports = {
   issueNumber, isEligible, validateOutputs, checkEligibility, checkOutputs,
-  prepareOutputs, validateTriageOutputs, nativeCommentPolicy,
+  prepareOutputs, nativeCommentPolicy,
 };

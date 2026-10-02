@@ -6,7 +6,7 @@ const { test } = require("node:test");
 const fs = require("node:fs");
 const os = require("node:os");
 const path = require("node:path");
-const { issueNumber, isEligible, validateOutputs, checkEligibility, checkOutputs, prepareOutputs, validateTriageOutputs, nativeCommentPolicy } =
+const { issueNumber, isEligible, validateOutputs, checkEligibility, checkOutputs, prepareOutputs, nativeCommentPolicy } =
   require("./issue-investigation.cjs");
 
 const repository = "Azure/azure-sdk-for-go";
@@ -239,37 +239,6 @@ test("assignment is released only after successful native comment delivery", asy
   } finally {
     fs.rmSync(directory, { recursive: true, force: true });
   }
-});
-
-test("triage dispatch requires a complete same-issue explanation and routing plan", () => {
-  const dispatch = () => ({ type: "dispatch_workflow", workflow_name: "issue-investigation", inputs: { issue_number: "42" } });
-  const mention = () => ({ type: "mention_owners", owners: "owner1, owner2", message: "Routing" });
-  const owner = () => ({ type: "assign_to_user", issue_number: 42, assignees: ["owner1"] });
-  const check = (items, errors = []) => validateTriageOutputs({ items, errors }, 42, repository);
-  check([mention(), comment(), dispatch()]);
-  check([owner(), comment(), comment(), dispatch()]);
-  check([owner(), mention(), comment(), dispatch()]);
-  check([{ type: "noop", message: "Manual triage" }]);
-  check([comment()]);
-  for (const items of [
-    [dispatch()], [comment(), dispatch()], [owner(), comment(), dispatch()],
-    [mention(), dispatch()], [mention(), comment(), comment(), dispatch()],
-    [owner(), owner(), comment(), comment(), dispatch()],
-    [mention(), comment(), { ...dispatch(), workflow_name: "other" }],
-    [mention(), comment(), { ...dispatch(), inputs: { issue_number: "43" } }],
-    [dispatch(), mention(), comment()], [mention(), comment(), dispatch(), dispatch()],
-    [mention(), { ...comment(), item_number: 43 }, dispatch()],
-    [mention(), { ...comment(), repo: "Azure/other" }, dispatch()],
-    [mention(), { ...comment(), body: " " }, dispatch()],
-    [mention(), comment(), close(), dispatch()],
-    [mention(), comment(), { type: "noop" }, dispatch()],
-  ]) {
-    assert.throws(() => check(items));
-  }
-  for (const errors of ["", {}, ["Missing owner output"]]) {
-    assert.throws(() => check([mention(), comment(), dispatch()], errors), /partially collected/);
-  }
-  assert.throws(() => validateTriageOutputs(null, 42, repository), /triage safe-output/);
 });
 
 test("native comment prerequisite reuses the entire compiled policy", () => {

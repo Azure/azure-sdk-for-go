@@ -134,11 +134,11 @@ timeout-minutes: 10
 ---
 
 <!-- Copyright (c) Microsoft Corporation. All rights reserved. Licensed under the MIT License. -->
-<!-- Regenerate with gh aw compile issue-investigation issue-triage using the repository's gh-aw version. -->
+<!-- Regenerate this workflow with gh aw compile issue-investigation; the existing triage runtime is unchanged. -->
 
 # Agentic Issue Investigation
 
-You investigate issue #${{ github.event.inputs.issue_number }} in `${{ github.repository }}` after initial triage. This is a single-pass investigation, not a replacement for owner routing or an automatic reply/reopen loop.
+You investigate issue #${{ github.event.inputs.issue_number }} in `${{ github.repository }}` after initial triage. The separate issue-investigation-handoff workflow dispatches this only after completed triage. It is opt-in via the ENABLE_ISSUE_INVESTIGATION repository variable; the original triage source and runtime are unchanged. This is a single-pass investigation, not a replacement for owner routing or an automatic reply/reopen loop.
 
 ## Security and Scope
 
@@ -238,7 +238,7 @@ The explanation must state the decision, the documented behavior, why the SDK ca
 > We are closing this issue as not planned. If we misunderstood the SDK behavior you are reporting, please clarify in a comment so the team can reassess.
 
 Include these approved destinations as plain URLs:
-- Azure support request: `https://learn.microsoft.com/services-hub/unified/support/open-support-requests?pivots=existing`
+- Azure support request: `https://learn.microsoft.com/azure/azure-portal/supportability/how-to-create-azure-support-request`
 - Microsoft Q&A: `https://learn.microsoft.com/answers/questions/`
 - Azure Feedback: `https://feedback.azure.com/d365community`
 

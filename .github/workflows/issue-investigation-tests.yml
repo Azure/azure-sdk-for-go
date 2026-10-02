@@ -29,4 +29,4 @@ jobs:
         with:
           persist-credentials: false
       - name: Test investigation guards
-        run: node --test .github/scripts/issue-investigation.test.cjs
+        run: node --test .github/scripts/issue-investigation.test.cjs .github/scripts/issue-investigation-handoff.test.cjs

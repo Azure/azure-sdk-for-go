@@ -28,7 +28,6 @@ network:
 
 safe-outputs:
   report-failure-as-issue: false
-  report-failed-jobs: false
   add-labels:
     max: 7
     target: "*"
@@ -44,37 +43,14 @@ safe-outputs:
   close-issue:
     max: 1
     target: "*"
-  dispatch-workflow:
-    workflows: [issue-investigation]
-    max: 1
   noop:
     report-as-issue: false
-  steps:
-    - name: Check out triage handoff guard
-      uses: actions/checkout@v7.0.1
-      with:
-        ref: ${{ github.workflow_sha }}
-        persist-credentials: false
-        sparse-checkout: .github/scripts
-    - name: Validate investigation dispatch plan
-      uses: actions/github-script@v9
-      env:
-        ISSUE_NUMBER: ${{ github.event.issue.number || github.event.inputs.issue_number }}
-        OUTPUT_FILE: ${{ steps.setup-agent-output-env.outputs.GH_AW_AGENT_OUTPUT }}
-      with:
-        script: |
-          const fs = require('node:fs');
-          const { validateTriageOutputs } = require('./.github/scripts/issue-investigation.cjs');
-          const output = JSON.parse(fs.readFileSync(process.env.OUTPUT_FILE, 'utf8'));
-          validateTriageOutputs(output, process.env.ISSUE_NUMBER, `${context.repo.owner}/${context.repo.repo}`);
   jobs:
     mention_owners:
       description: "Post a routing comment @mentioning team owners on the triggering issue; bypasses safe-outputs mention neutralization"
       runs-on: ubuntu-latest
       output: "Owner mention comment posted"
-      if: needs.agent.result == 'success' && needs.detection.outputs.detection_conclusion == 'success'
       permissions:
-        contents: read
         issues: write
       inputs:
         message:
@@ -86,12 +62,6 @@ safe-outputs:
           required: true
           type: string
       steps:
-        - name: Check out triage handoff guard
-          uses: actions/checkout@v7.0.1
-          with:
-            ref: ${{ github.workflow_sha }}
-            persist-credentials: false
-            sparse-checkout: .github/scripts
         - name: Post mention comment
           uses: actions/github-script@v9
           env:
@@ -99,15 +69,15 @@ safe-outputs:
           with:
             script: |
               const fs = require('fs');
-              const { issueNumber: parseIssueNumber, validateTriageOutputs } = require('./.github/scripts/issue-investigation.cjs');
               const outputFile = process.env.GH_AW_AGENT_OUTPUT;
 
               function resolveIssueNumber() {
                 if (Number.isInteger(context.issue?.number) && context.issue.number > 0) {
                   return context.issue.number;
                 }
-                if (process.env.DISPATCH_ISSUE_NUMBER) {
-                  return parseIssueNumber(process.env.DISPATCH_ISSUE_NUMBER);
+                const parsed = parseInt(process.env.DISPATCH_ISSUE_NUMBER, 10);
+                if (Number.isInteger(parsed) && parsed > 0) {
+                  return parsed;
                 }
                 return null;
               }
@@ -160,7 +130,6 @@ safe-outputs:
                 return;
               }
 
-              validateTriageOutputs(agentOutput, issueNumber, `${owner}/${repo}`);
               const items = agentOutput.items.filter(i => i.type === 'mention_owners');
               if (items.length === 0) {
                 await failSafe('No mention_owners items in agent output');
@@ -206,16 +175,8 @@ safe-outputs:
                 }
               }
 
-jobs:
-  safe_outputs:
-    needs: [mention_owners]
-    if: needs.agent.result == 'success' && needs.detection.outputs.detection_conclusion == 'success' && (needs.mention_owners.result == 'success' || needs.mention_owners.result == 'skipped')
-  conclusion:
-    if: needs.detection.outputs.detection_conclusion == 'success'
-
 tools:
   web-fetch:
-  bash: false
   github:
     toolsets: [issues]
     # Triage must read issues from all users, including external
@@ -262,7 +223,7 @@ Note the issue number — you must include it in every safe-output tool call:
 - For `add-labels`, `remove-labels`, and `add-comment`: pass it as `item_number`
 - For `assign-to-user` and `close-issue`: pass it as `issue_number`
 
-Retrieve the issue using `issue_read` with `method: get`
+Retrieve the issue using the `get_issue` tool
 
 **Precondition checks** — exit without further action if any are true:
 - The issue already has labels
@@ -286,7 +247,7 @@ If the author matches the bot allowlist, add "bot" label and continue to Step 3
 
 ### Author Association Check
 
-If the author is not on the bot allowlist, use the `author_association` field from the issue data returned by `issue_read` to classify the author
+If the author is not on the bot allowlist, use the `author_association` field from the issue data returned by `get_issue` to classify the author
 
 The `author_association` field indicates the author's relationship to the repository:
 - `OWNER`, `MEMBER`, `COLLABORATOR` → team member (Azure org member or direct repo collaborator)
@@ -582,24 +543,3 @@ Rules for the standard sections:
   - 🔎 Debugging / Reproduction Notes: include diagnostic observations and numbered investigation steps; note similar open issues found via `search_issues` if any
   - 🏷️ Label Confidence: explain category and service label selection; state confidence as High, Medium, or Low with justification; note other labels considered and why they were rejected
   - 👥 Owner Routing: show which CODEOWNERS `# ServiceLabel:` entry matched (with line number) and why; list AzureSdkOwners and ServiceOwners found; state what routing action was taken; briefly note other entries encountered during the bottom-to-top scan and why they were skipped
-
-## Step 7: Dispatch Issue Investigation
-
-After queuing the label changes, ownership routing, and analysis comment, dispatch `issue-investigation` only when the resulting handoff meets every condition:
-- The target is an open issue, not a pull request.
-- Exactly one service label has color `#e99695`.
-- Exactly one category label has color `#ffeb77`.
-- The `customer-reported` label is present.
-- None of `needs-triage`, `needs-team-triage`, `issue-addressed`, or `needs-author-feedback` is present.
-
-Use the resulting label set from this triage, not a reread that cannot yet see queued safe outputs. Do not require `bug`, a particular service/category name, or an unassigned issue. If any condition fails, do not dispatch.
-
-Call the generated `issue_investigation` tool last, after the other triage outputs, with:
-
-```json
-{
-  "issue_number": "${{ github.event.issue.number || github.event.inputs.issue_number }}"
-}
-```
-
-The tool wraps these inputs in the native dispatch output; do not call an internal `dispatch_workflow` handler or add a `workflow_name`/`inputs` envelope. The native safe-output job waits for successful owner mentions (or a skipped mention job for other routing paths). A dispatch plan must include a triage explanation and either owner mentions or a single-owner assignment with its routing comment; partial collected plans cannot dispatch. Both write paths require successful analysis and threat detection. The investigation workflow independently rereads the issue and validates the handoff before proceeding.

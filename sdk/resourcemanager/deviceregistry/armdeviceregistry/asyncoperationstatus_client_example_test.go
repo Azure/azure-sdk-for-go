@@ -11,8 +11,8 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-11-01/Get_OperationStatus.json
-func ExampleOperationStatusClient_Get() {
+// Generated from example definition: 2026-11-01/Get_AsyncOperationStatus.json
+func ExampleAsyncOperationStatusClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -22,16 +22,16 @@ func ExampleOperationStatusClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewOperationStatusClient().Get(ctx, "eastus", "00000000-0000-0000-0000-000000000001", nil)
+	res, err := clientFactory.NewAsyncOperationStatusClient().Get(ctx, "eastus", "00000000-0000-0000-0000-000000000001", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armdeviceregistry.OperationStatusClientGetResponse{
+	// res = armdeviceregistry.AsyncOperationStatusClientGetResponse{
 	// 	OperationStatusResult: armdeviceregistry.OperationStatusResult{
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DeviceRegistry/locations/eastus/operationStatuses/00000000-0000-0000-0000-000000000001"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DeviceRegistry/locations/eastus/asyncOperationStatuses/00000000-0000-0000-0000-000000000001"),
 	// 		Name: to.Ptr("00000000-0000-0000-0000-000000000001"),
 	// 		Status: to.Ptr("Succeeded"),
 	// 		PercentComplete: to.Ptr[float64](100),

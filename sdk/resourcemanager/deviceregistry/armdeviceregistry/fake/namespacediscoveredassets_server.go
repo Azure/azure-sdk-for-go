@@ -12,7 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/deviceregistry/armdeviceregistry/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/deviceregistry/armdeviceregistry/v3"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -33,9 +33,9 @@ type NamespaceDiscoveredAssetsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, namespaceName string, discoveredAssetName string, options *armdeviceregistry.NamespaceDiscoveredAssetsClientGetOptions) (resp azfake.Responder[armdeviceregistry.NamespaceDiscoveredAssetsClientGetResponse], errResp azfake.ErrorResponder)
 
-	// NewListByResourceGroupPager is the fake for method NamespaceDiscoveredAssetsClient.NewListByResourceGroupPager
+	// NewListByNamespacePager is the fake for method NamespaceDiscoveredAssetsClient.NewListByNamespacePager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListByResourceGroupPager func(resourceGroupName string, namespaceName string, options *armdeviceregistry.NamespaceDiscoveredAssetsClientListByResourceGroupOptions) (resp azfake.PagerResponder[armdeviceregistry.NamespaceDiscoveredAssetsClientListByResourceGroupResponse])
+	NewListByNamespacePager func(resourceGroupName string, namespaceName string, options *armdeviceregistry.NamespaceDiscoveredAssetsClientListByNamespaceOptions) (resp azfake.PagerResponder[armdeviceregistry.NamespaceDiscoveredAssetsClientListByNamespaceResponse])
 
 	// BeginUpdate is the fake for method NamespaceDiscoveredAssetsClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
@@ -47,22 +47,22 @@ type NamespaceDiscoveredAssetsServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewNamespaceDiscoveredAssetsServerTransport(srv *NamespaceDiscoveredAssetsServer) *NamespaceDiscoveredAssetsServerTransport {
 	return &NamespaceDiscoveredAssetsServerTransport{
-		srv:                         srv,
-		beginCreateOrReplace:        newTracker[azfake.PollerResponder[armdeviceregistry.NamespaceDiscoveredAssetsClientCreateOrReplaceResponse]](),
-		beginDelete:                 newTracker[azfake.PollerResponder[armdeviceregistry.NamespaceDiscoveredAssetsClientDeleteResponse]](),
-		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armdeviceregistry.NamespaceDiscoveredAssetsClientListByResourceGroupResponse]](),
-		beginUpdate:                 newTracker[azfake.PollerResponder[armdeviceregistry.NamespaceDiscoveredAssetsClientUpdateResponse]](),
+		srv:                     srv,
+		beginCreateOrReplace:    newTracker[azfake.PollerResponder[armdeviceregistry.NamespaceDiscoveredAssetsClientCreateOrReplaceResponse]](),
+		beginDelete:             newTracker[azfake.PollerResponder[armdeviceregistry.NamespaceDiscoveredAssetsClientDeleteResponse]](),
+		newListByNamespacePager: newTracker[azfake.PagerResponder[armdeviceregistry.NamespaceDiscoveredAssetsClientListByNamespaceResponse]](),
+		beginUpdate:             newTracker[azfake.PollerResponder[armdeviceregistry.NamespaceDiscoveredAssetsClientUpdateResponse]](),
 	}
 }
 
 // NamespaceDiscoveredAssetsServerTransport connects instances of armdeviceregistry.NamespaceDiscoveredAssetsClient to instances of NamespaceDiscoveredAssetsServer.
 // Don't use this type directly, use NewNamespaceDiscoveredAssetsServerTransport instead.
 type NamespaceDiscoveredAssetsServerTransport struct {
-	srv                         *NamespaceDiscoveredAssetsServer
-	beginCreateOrReplace        *tracker[azfake.PollerResponder[armdeviceregistry.NamespaceDiscoveredAssetsClientCreateOrReplaceResponse]]
-	beginDelete                 *tracker[azfake.PollerResponder[armdeviceregistry.NamespaceDiscoveredAssetsClientDeleteResponse]]
-	newListByResourceGroupPager *tracker[azfake.PagerResponder[armdeviceregistry.NamespaceDiscoveredAssetsClientListByResourceGroupResponse]]
-	beginUpdate                 *tracker[azfake.PollerResponder[armdeviceregistry.NamespaceDiscoveredAssetsClientUpdateResponse]]
+	srv                     *NamespaceDiscoveredAssetsServer
+	beginCreateOrReplace    *tracker[azfake.PollerResponder[armdeviceregistry.NamespaceDiscoveredAssetsClientCreateOrReplaceResponse]]
+	beginDelete             *tracker[azfake.PollerResponder[armdeviceregistry.NamespaceDiscoveredAssetsClientDeleteResponse]]
+	newListByNamespacePager *tracker[azfake.PagerResponder[armdeviceregistry.NamespaceDiscoveredAssetsClientListByNamespaceResponse]]
+	beginUpdate             *tracker[azfake.PollerResponder[armdeviceregistry.NamespaceDiscoveredAssetsClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for NamespaceDiscoveredAssetsServerTransport.
@@ -92,8 +92,8 @@ func (n *NamespaceDiscoveredAssetsServerTransport) dispatchToMethodFake(req *htt
 				res.resp, res.err = n.dispatchBeginDelete(req)
 			case "NamespaceDiscoveredAssetsClient.Get":
 				res.resp, res.err = n.dispatchGet(req)
-			case "NamespaceDiscoveredAssetsClient.NewListByResourceGroupPager":
-				res.resp, res.err = n.dispatchNewListByResourceGroupPager(req)
+			case "NamespaceDiscoveredAssetsClient.NewListByNamespacePager":
+				res.resp, res.err = n.dispatchNewListByNamespacePager(req)
 			case "NamespaceDiscoveredAssetsClient.BeginUpdate":
 				res.resp, res.err = n.dispatchBeginUpdate(req)
 			default:
@@ -249,12 +249,12 @@ func (n *NamespaceDiscoveredAssetsServerTransport) dispatchGet(req *http.Request
 	return resp, nil
 }
 
-func (n *NamespaceDiscoveredAssetsServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
-	if n.srv.NewListByResourceGroupPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
+func (n *NamespaceDiscoveredAssetsServerTransport) dispatchNewListByNamespacePager(req *http.Request) (*http.Response, error) {
+	if n.srv.NewListByNamespacePager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListByNamespacePager not implemented")}
 	}
-	newListByResourceGroupPager := n.newListByResourceGroupPager.get(req)
-	if newListByResourceGroupPager == nil {
+	newListByNamespacePager := n.newListByNamespacePager.get(req)
+	if newListByNamespacePager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DeviceRegistry/namespaces/(?P<namespaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/discoveredAssets`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -269,23 +269,23 @@ func (n *NamespaceDiscoveredAssetsServerTransport) dispatchNewListByResourceGrou
 		if err != nil {
 			return nil, err
 		}
-		resp := n.srv.NewListByResourceGroupPager(resourceGroupNameParam, namespaceNameParam, nil)
-		newListByResourceGroupPager = &resp
-		n.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
-		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armdeviceregistry.NamespaceDiscoveredAssetsClientListByResourceGroupResponse, createLink func() string) {
+		resp := n.srv.NewListByNamespacePager(resourceGroupNameParam, namespaceNameParam, nil)
+		newListByNamespacePager = &resp
+		n.newListByNamespacePager.add(req, newListByNamespacePager)
+		server.PagerResponderInjectNextLinks(newListByNamespacePager, req, func(page *armdeviceregistry.NamespaceDiscoveredAssetsClientListByNamespaceResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
-	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
+	resp, err := server.PagerResponderNext(newListByNamespacePager, req)
 	if err != nil {
 		return nil, err
 	}
 	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		n.newListByResourceGroupPager.remove(req)
+		n.newListByNamespacePager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PagerResponderMore(newListByResourceGroupPager) {
-		n.newListByResourceGroupPager.remove(req)
+	if !server.PagerResponderMore(newListByNamespacePager) {
+		n.newListByNamespacePager.remove(req)
 	}
 	return resp, nil
 }

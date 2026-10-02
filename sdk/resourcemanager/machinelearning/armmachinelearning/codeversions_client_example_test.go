@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-15-preview/Workspace/CodeVersion/createOrGetStartPendingUpload.json
+// Generated from example definition: 2026-05-15-preview/Workspace/CodeVersion/createOrGetStartPendingUpload.json
 func ExampleCodeVersionsClient_CreateOrGetStartPendingUpload() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -49,7 +49,7 @@ func ExampleCodeVersionsClient_CreateOrGetStartPendingUpload() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Workspace/CodeVersion/createOrUpdate.json
+// Generated from example definition: 2026-05-15-preview/Workspace/CodeVersion/createOrUpdate.json
 func ExampleCodeVersionsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -107,7 +107,7 @@ func ExampleCodeVersionsClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Workspace/CodeVersion/delete.json
+// Generated from example definition: 2026-05-15-preview/Workspace/CodeVersion/delete.json
 func ExampleCodeVersionsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -129,7 +129,7 @@ func ExampleCodeVersionsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Workspace/CodeVersion/get.json
+// Generated from example definition: 2026-05-15-preview/Workspace/CodeVersion/get.json
 func ExampleCodeVersionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -175,7 +175,7 @@ func ExampleCodeVersionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Workspace/CodeVersion/list.json
+// Generated from example definition: 2026-05-15-preview/Workspace/CodeVersion/list.json
 func ExampleCodeVersionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -233,7 +233,7 @@ func ExampleCodeVersionsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-15-preview/Workspace/CodeVersion/publish.json
+// Generated from example definition: 2026-05-15-preview/Workspace/CodeVersion/publish.json
 func ExampleCodeVersionsClient_BeginPublish() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-15-preview/ManagedNetwork/createOrUpdateRule.json
+// Generated from example definition: 2026-05-15-preview/ManagedNetwork/createOrUpdateRule.json
 func ExampleManagedNetworkSettingsRuleClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -56,7 +56,7 @@ func ExampleManagedNetworkSettingsRuleClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/ManagedNetwork/deleteRule.json
+// Generated from example definition: 2026-05-15-preview/ManagedNetwork/deleteRule.json
 func ExampleManagedNetworkSettingsRuleClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -82,7 +82,7 @@ func ExampleManagedNetworkSettingsRuleClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/ManagedNetwork/getRule.json
+// Generated from example definition: 2026-05-15-preview/ManagedNetwork/getRule.json
 func ExampleManagedNetworkSettingsRuleClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -115,7 +115,7 @@ func ExampleManagedNetworkSettingsRuleClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/ManagedNetwork/listRule.json
+// Generated from example definition: 2026-05-15-preview/ManagedNetwork/listRule.json
 func ExampleManagedNetworkSettingsRuleClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

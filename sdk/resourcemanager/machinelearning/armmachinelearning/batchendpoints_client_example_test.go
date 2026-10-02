@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-15-preview/Workspace/BatchEndpoint/createOrUpdate.json
+// Generated from example definition: 2026-05-15-preview/Workspace/BatchEndpoint/createOrUpdate.json
 func ExampleBatchEndpointsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -113,7 +113,7 @@ func ExampleBatchEndpointsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Workspace/BatchEndpoint/delete.json
+// Generated from example definition: 2026-05-15-preview/Workspace/BatchEndpoint/delete.json
 func ExampleBatchEndpointsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -139,7 +139,7 @@ func ExampleBatchEndpointsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Workspace/BatchEndpoint/get.json
+// Generated from example definition: 2026-05-15-preview/Workspace/BatchEndpoint/get.json
 func ExampleBatchEndpointsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -208,7 +208,7 @@ func ExampleBatchEndpointsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Workspace/BatchEndpoint/list.json
+// Generated from example definition: 2026-05-15-preview/Workspace/BatchEndpoint/list.json
 func ExampleBatchEndpointsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -288,7 +288,7 @@ func ExampleBatchEndpointsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-15-preview/Workspace/BatchEndpoint/listKeys.json
+// Generated from example definition: 2026-05-15-preview/Workspace/BatchEndpoint/listKeys.json
 func ExampleBatchEndpointsClient_ListKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -314,7 +314,7 @@ func ExampleBatchEndpointsClient_ListKeys() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Workspace/BatchEndpoint/update.json
+// Generated from example definition: 2026-05-15-preview/Workspace/BatchEndpoint/update.json
 func ExampleBatchEndpointsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

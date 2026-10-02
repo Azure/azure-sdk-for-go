@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-15-preview/Schedule/createOrUpdate.json
+// Generated from example definition: 2026-05-15-preview/Schedule/createOrUpdate.json
 func ExampleSchedulesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -101,7 +101,7 @@ func ExampleSchedulesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Schedule/delete.json
+// Generated from example definition: 2026-05-15-preview/Schedule/delete.json
 func ExampleSchedulesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -127,7 +127,7 @@ func ExampleSchedulesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Schedule/get.json
+// Generated from example definition: 2026-05-15-preview/Schedule/get.json
 func ExampleSchedulesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -187,7 +187,7 @@ func ExampleSchedulesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Schedule/list.json
+// Generated from example definition: 2026-05-15-preview/Schedule/list.json
 func ExampleSchedulesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

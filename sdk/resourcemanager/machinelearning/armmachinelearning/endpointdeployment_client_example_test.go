@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-15-preview/Endpoint/Deployment/create.json
+// Generated from example definition: 2026-05-15-preview/Endpoint/Deployment/create.json
 func ExampleEndpointDeploymentClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -70,7 +70,7 @@ func ExampleEndpointDeploymentClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Endpoint/Deployment/delete.json
+// Generated from example definition: 2026-05-15-preview/Endpoint/Deployment/delete.json
 func ExampleEndpointDeploymentClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -91,7 +91,7 @@ func ExampleEndpointDeploymentClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-03-15-preview/Endpoint/Deployment/get.json
+// Generated from example definition: 2026-05-15-preview/Endpoint/Deployment/get.json
 func ExampleEndpointDeploymentClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -135,7 +135,7 @@ func ExampleEndpointDeploymentClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Endpoint/Deployment/getInWorkspace.json
+// Generated from example definition: 2026-05-15-preview/Endpoint/Deployment/getInWorkspace.json
 func ExampleEndpointDeploymentClient_NewGetInWorkspacePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -188,7 +188,7 @@ func ExampleEndpointDeploymentClient_NewGetInWorkspacePager() {
 	}
 }
 
-// Generated from example definition: 2026-03-15-preview/Endpoint/Deployment/getDeployments.json
+// Generated from example definition: 2026-05-15-preview/Endpoint/Deployment/getDeployments.json
 func ExampleEndpointDeploymentClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

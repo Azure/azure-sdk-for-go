@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-15-preview/Registry/DataVersionBase/createOrGetStartPendingUpload.json
+// Generated from example definition: 2026-05-15-preview/Registry/DataVersionBase/createOrGetStartPendingUpload.json
 func ExampleRegistryDataVersionsClient_CreateOrGetStartPendingUpload() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -49,7 +49,7 @@ func ExampleRegistryDataVersionsClient_CreateOrGetStartPendingUpload() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Registry/DataVersionBase/createOrUpdate.json
+// Generated from example definition: 2026-05-15-preview/Registry/DataVersionBase/createOrUpdate.json
 func ExampleRegistryDataVersionsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -121,7 +121,7 @@ func ExampleRegistryDataVersionsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Registry/DataVersionBase/delete.json
+// Generated from example definition: 2026-05-15-preview/Registry/DataVersionBase/delete.json
 func ExampleRegistryDataVersionsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -147,7 +147,7 @@ func ExampleRegistryDataVersionsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Registry/DataVersionBase/get.json
+// Generated from example definition: 2026-05-15-preview/Registry/DataVersionBase/get.json
 func ExampleRegistryDataVersionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -198,7 +198,7 @@ func ExampleRegistryDataVersionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Registry/DataVersionBase/registryList.json
+// Generated from example definition: 2026-05-15-preview/Registry/DataVersionBase/registryList.json
 func ExampleRegistryDataVersionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

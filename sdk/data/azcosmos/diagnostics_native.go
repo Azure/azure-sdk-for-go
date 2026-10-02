@@ -125,8 +125,8 @@ func copyDiagnostics(d *C.cosmos_diagnostics_t) (*Diagnostics, error) {
 			return nil, fmt.Errorf("azcosmos: allocating diagnostic regions")
 		}
 		regions := C.cosmos_go_regions_t{entries: (**C.char)(ptr), capacity: C.uintptr_t(count)}
-		defer C.cosmos_go_free_regions(&regions)
-		C.cosmos_go_read_regions(d, &regions)
+		defer C.cosmos_go_free_regions(&regions) //nolint:gocritic // dupSubExpr targets cgo-generated code.
+		C.cosmos_go_read_regions(d, &regions)    //nolint:gocritic // dupSubExpr targets cgo-generated code.
 		if regions.failed != 0 {
 			return nil, fmt.Errorf("azcosmos: copying diagnostic regions")
 		}
@@ -143,8 +143,8 @@ func copyDiagnostics(d *C.cosmos_diagnostics_t) (*Diagnostics, error) {
 			return nil, fmt.Errorf("azcosmos: allocating diagnostic attempts")
 		}
 		attempts := C.cosmos_go_attempts_t{entries: (*C.cosmos_go_attempt_t)(ptr), capacity: C.uintptr_t(count)}
-		defer C.cosmos_go_free_attempts(&attempts)
-		C.cosmos_go_read_attempts(d, &attempts)
+		defer C.cosmos_go_free_attempts(&attempts) //nolint:gocritic // dupSubExpr targets cgo-generated code.
+		C.cosmos_go_read_attempts(d, &attempts)    //nolint:gocritic // dupSubExpr targets cgo-generated code.
 		if attempts.failed != 0 {
 			return nil, fmt.Errorf("azcosmos: copying diagnostic attempts")
 		}
@@ -164,7 +164,7 @@ func copyDiagnostics(d *C.cosmos_diagnostics_t) (*Diagnostics, error) {
 
 	var data *C.uint8_t
 	var length C.uintptr_t
-	if status := C.cosmos_diagnostics_to_json(d, C.cosmos_diagnostics_verbosity_t_DETAILED, &data, &length); status != 0 {
+	if status := C.cosmos_diagnostics_to_json(d, C.cosmos_diagnostics_verbosity_t_DETAILED, &data, &length); status != 0 { //nolint:gocritic // dupSubExpr targets cgo-generated code.
 		return nil, fmt.Errorf("azcosmos: rendering native diagnostics (status %d)", int32(status))
 	}
 	if length > 0 {

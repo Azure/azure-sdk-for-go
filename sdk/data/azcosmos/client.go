@@ -175,7 +175,9 @@ func (c *Client) Endpoint() string {
 }
 
 // Close releases the driver resources the client owns. It cancels active token acquisition, then
-// waits for the client's in-flight operations to finish. Afterwards every operation on the client
+// waits for Go operations to return. The v0.2 native driver does not cancel requests already
+// submitted, which may continue under their native budget after a Go context is cancelled.
+// Afterwards every operation on the client
 // fails with [CodeClientClosed] rather than reaching the driver.
 //
 // Close is idempotent and safe to call concurrently; every caller observes the same result. It

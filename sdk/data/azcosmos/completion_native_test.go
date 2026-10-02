@@ -38,4 +38,25 @@ func TestThrottledCompletionCopiesAndClassifiesEveryField(t *testing.T) {
 			require.True(t, err.FromWire)
 		})
 	}
+
+}
+
+func TestNativeResponseCopiesUpdatedSessionToken(t *testing.T) {
+	response := syntheticSessionCompletion()
+	require.Equal(t, SessionToken("0:-1#43"), response.SessionToken)
+	require.Equal(t, http.StatusOK, response.StatusCode)
+	require.Zero(t, response.SubStatus)
+}
+
+func TestAbsentNativeDiagnostics(t *testing.T) {
+	diagnostics, err := copyDiagnostics(nil)
+	require.NoError(t, err)
+	require.Nil(t, diagnostics)
+}
+
+func TestDiagnosticDurationsSaturate(t *testing.T) {
+	require.Equal(t, time.Duration(1<<63-1), durationMicros(^uint64(0)))
+	require.Equal(t, time.Duration(1<<63-1), durationMillis(^uint64(0)))
+	require.Equal(t, 3*time.Microsecond, durationMicros(3))
+	require.Equal(t, 3*time.Millisecond, durationMillis(3))
 }

@@ -10,6 +10,19 @@ import (
 // Response holds the values every Cosmos DB operation reports, whatever it operated on. It is
 // embedded in the per-operation response types, which add the values specific to them.
 type Response struct {
+	// Diagnostics is a copy of the native operation diagnostics, if available.
+	Diagnostics *Diagnostics
+
+	// StatusCode is the final HTTP status reported by the native driver, or zero when unavailable.
+	StatusCode int
+
+	// SubStatus is the final Cosmos sub-status, or zero when none was reported.
+	SubStatus int
+
+	// AttemptCount is the number of native requests made for this operation, including retries.
+	// It is zero when the driver did not attach diagnostics.
+	AttemptCount uint32
+
 	// RequestCharge is the number of request units the operation consumed
 	// (`x-ms-request-charge`). See
 	// https://learn.microsoft.com/azure/cosmos-db/request-units.

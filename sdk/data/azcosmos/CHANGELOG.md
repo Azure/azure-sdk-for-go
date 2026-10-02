@@ -6,6 +6,8 @@
 
 ### Features Added
 
+* Exposed native retry diagnostics and final status on v2 responses and errors, including Go-owned
+  per-attempt details and session-token recovery.
 * Added the Go SDK identity to the User-Agent header alongside the native driver identity,
   preserving the optional `ClientOptions.ApplicationID` suffix. See [PR 27627](https://github.com/Azure/azure-sdk-for-go/pull/27627).
 * Added parameterized queries within a complete logical partition through `Query`, `FeedScope`,

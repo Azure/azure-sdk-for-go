@@ -86,18 +86,38 @@ func translateCompletion(completion *C.cosmos_completion_t) completionResult {
 // translateCompletion.
 func translateCompletionOutcome(completion *C.cosmos_completion_t) completionResult {
 	headers := readCompletionHeaders(completion)
+	diagnostics, diagnosticsErr := copyDiagnostics(completion.diagnostics)
+	subStatus := headers.subStatus
+	if completion.outcome != C.COSMOS_COMPLETION_OUTCOME_OK {
+		if _, packed := unpackStatus(completion.status); packed != 0 {
+			subStatus = packed
+		}
+	}
+	if diagnostics != nil {
+		diagnostics.StatusCode = int(completion.http_status_code)
+		diagnostics.SubStatus = subStatus
+	}
 
 	response := ItemResponse{
 		Response: Response{
+			Diagnostics:   diagnostics,
 			RequestCharge: headers.requestCharge,
 			ActivityID:    headers.activityID,
+			StatusCode:    int(completion.http_status_code),
+			SubStatus:     subStatus,
 		},
 		ETag:         headers.etag,
 		SessionToken: headers.sessionToken,
 	}
+	if diagnostics != nil {
+		response.AttemptCount = diagnostics.AttemptCount
+	}
 
 	switch completion.outcome {
 	case C.COSMOS_COMPLETION_OUTCOME_OK:
+		if diagnosticsErr != nil {
+			return completionResult{err: &Error{Code: CodeClientError, Message: diagnosticsErr.Error()}}
+		}
 		return completionResult{
 			response:         response,
 			body:             copyCompletionBody(completion),
@@ -106,6 +126,9 @@ func translateCompletionOutcome(completion *C.cosmos_completion_t) completionRes
 		}
 
 	case C.COSMOS_COMPLETION_OUTCOME_CANCELLED:
+		if diagnosticsErr != nil {
+			return completionResult{err: &Error{Code: CodeClientError, Message: diagnosticsErr.Error()}}
+		}
 		return completionResult{
 			cancelled: true,
 			err: &Error{
@@ -113,18 +136,25 @@ func translateCompletionOutcome(completion *C.cosmos_completion_t) completionRes
 				Message:       "azcosmos: the operation was cancelled",
 				RequestCharge: headers.requestCharge,
 				ActivityID:    headers.activityID,
+				AttemptCount:  response.AttemptCount,
+				Diagnostics:   diagnostics,
 			},
 		}
 
 	default:
 		// ERROR, and UNKNOWN, which the driver documents as a state the host should treat as a
 		// failure rather than assume anything about.
-		return completionResult{err: completionError(completion, headers)}
+		operationErr := completionError(completion, headers, diagnostics)
+		if diagnosticsErr != nil {
+			operationErr.Message += "; " + diagnosticsErr.Error()
+			operationErr.cause = diagnosticsErr
+		}
+		return completionResult{err: operationErr}
 	}
 }
 
 // completionError builds the [Error] for a failed completion.
-func completionError(completion *C.cosmos_completion_t, headers completionHeaders) *Error {
+func completionError(completion *C.cosmos_completion_t, headers completionHeaders, diagnostics *Diagnostics) *Error {
 	httpStatus := int(completion.http_status_code)
 	fromWire := completion.is_from_wire == 1
 
@@ -138,6 +168,7 @@ func completionError(completion *C.cosmos_completion_t, headers completionHeader
 
 	err := &Error{
 		Code:          codeForRichError(fromWire, httpStatus, subStatus),
+		Diagnostics:   diagnostics,
 		StatusCode:    httpStatus,
 		SubStatus:     subStatus,
 		RequestCharge: headers.requestCharge,
@@ -147,6 +178,9 @@ func completionError(completion *C.cosmos_completion_t, headers completionHeader
 		RetryAfter:    headers.retryAfter,
 		FromWire:      fromWire,
 		Body:          copyCompletionBody(completion),
+	}
+	if diagnostics != nil {
+		err.AttemptCount = diagnostics.AttemptCount
 	}
 	if completion.message != nil {
 		err.Message = C.GoString(completion.message)
@@ -261,6 +295,7 @@ func syntheticThrottledCompletion(packedSubStatus int) *Error {
 		allocations = append(allocations, unsafe.Pointer(ptr))
 		return ptr
 	}
+
 	defer func() {
 		for _, allocation := range allocations {
 			C.free(allocation)
@@ -313,4 +348,20 @@ func syntheticThrottledCompletion(packedSubStatus int) *Error {
 	}
 	result := translateCompletion(&completion)
 	return result.err.(*Error)
+}
+
+func syntheticSessionCompletion() ItemResponse {
+	token := C.CString("0:-1#43")
+	defer C.free(unsafe.Pointer(token))
+	header := C.cosmos_response_header_t{
+		id:    C.COSMOS_HEADER_ID_SESSION_TOKEN,
+		value: C.cosmos_test_string_value(token),
+	}
+	completion := C.cosmos_completion_t{
+		outcome:          C.COSMOS_COMPLETION_OUTCOME_OK,
+		http_status_code: 200,
+		headers:          &header,
+		headers_len:      1,
+	}
+	return translateCompletionOutcome(&completion).response
 }

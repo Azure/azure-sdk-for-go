@@ -19,7 +19,7 @@ import (
 // ConfigurationAssignmentsForSubscriptionsClient contains the methods for the ConfigurationAssignmentsForSubscriptions group.
 // Don't use this type directly, use NewConfigurationAssignmentsForSubscriptionsClient() instead.
 //
-// Generated from API version 2023-10-01-preview
+// Generated from API version 2025-10-01-preview
 type ConfigurationAssignmentsForSubscriptionsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -83,7 +83,7 @@ func (client *ConfigurationAssignmentsForSubscriptionsClient) createOrUpdateCrea
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20231001Preview)
+	reqQP.Set("api-version", version20251001Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -143,7 +143,7 @@ func (client *ConfigurationAssignmentsForSubscriptionsClient) deleteCreateReques
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20231001Preview)
+	reqQP.Set("api-version", version20251001Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -199,7 +199,7 @@ func (client *ConfigurationAssignmentsForSubscriptionsClient) getCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20231001Preview)
+	reqQP.Set("api-version", version20251001Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -256,7 +256,7 @@ func (client *ConfigurationAssignmentsForSubscriptionsClient) updateCreateReques
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20231001Preview)
+	reqQP.Set("api-version", version20251001Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

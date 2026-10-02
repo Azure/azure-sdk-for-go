@@ -259,10 +259,16 @@ type OperationsListResult struct {
 	Value []*Operation
 }
 
-// ScheduledEventApproveResponse - Response of scheduled event acknowledge
-type ScheduledEventApproveResponse struct {
+// ScheduledEventsApproveResponse - Response of ScheduledEvents acknowledge
+type ScheduledEventsApproveResponse struct {
 	// Successfully Approved
 	Value *string
+}
+
+// ScheduledEventsIDList - ScheduledEvents Id List
+type ScheduledEventsIDList struct {
+	// REQUIRED; The list of ScheduledEvents Id.
+	Value []*string
 }
 
 // SystemData - Metadata pertaining to creation and last modification of the resource.

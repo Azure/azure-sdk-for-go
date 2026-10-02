@@ -7,11 +7,11 @@ package armmaintenance_test
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/maintenance/armmaintenance"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/maintenance/armmaintenance/v2"
 	"log"
 )
 
-// Generated from example definition: 2023-10-01-preview/PublicMaintenanceConfigurations_GetForResource.json
+// Generated from example definition: 2025-10-01-preview/PublicMaintenanceConfigurations_GetForResource.json
 func ExamplePublicMaintenanceConfigurationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -50,7 +50,7 @@ func ExamplePublicMaintenanceConfigurationsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2023-10-01-preview/PublicMaintenanceConfigurations_List.json
+// Generated from example definition: 2025-10-01-preview/PublicMaintenanceConfigurations_List.json
 func ExamplePublicMaintenanceConfigurationsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -402,6 +402,13 @@ type UsagesClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
+// WorkspacePurgeClientBeginPurgeLakeDataOptions contains the optional parameters for the WorkspacePurgeClient.BeginPurgeLakeData
+// method.
+type WorkspacePurgeClientBeginPurgeLakeDataOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
 // WorkspacePurgeClientGetPurgeStatusOptions contains the optional parameters for the WorkspacePurgeClient.GetPurgeStatus
 // method.
 type WorkspacePurgeClientGetPurgeStatusOptions struct {

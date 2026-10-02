@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-// Generated from example definition: 2025-07-01/SummaryLogsUpsert.json
+// Generated from example definition: 2026-03-01/SummaryLogsUpsert.json
 func ExampleSummaryLogsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -34,6 +34,12 @@ func ExampleSummaryLogsClient_BeginCreateOrUpdate() {
 				Query:            to.Ptr("MyTable_CL"),
 			},
 			RuleType: to.Ptr(armoperationalinsights.RuleTypeEnumUser),
+		},
+		Identity: &armoperationalinsights.SummaryLogsIdentity{
+			Type: to.Ptr(armoperationalinsights.SummaryLogsIdentityTypeUserAssigned),
+			UserAssignedIdentities: map[string]*armoperationalinsights.SummaryLogsUserIdentityProperties{
+				"/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/oiautorest6685/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myIdentity": {},
+			},
 		},
 	}, nil)
 	if err != nil {
@@ -66,11 +72,20 @@ func ExampleSummaryLogsClient_BeginCreateOrUpdate() {
 	// 			CreatedAt: to.Ptr(time.Date(2020, time.February, 3, 4, 5, 6, 0, time.UTC)),
 	// 			CreatedBy: to.Ptr("22222222-2222-2222-2222-222222222222"),
 	// 		},
+	// 		Identity: &armoperationalinsights.SummaryLogsIdentity{
+	// 			Type: to.Ptr(armoperationalinsights.SummaryLogsIdentityTypeUserAssigned),
+	// 			UserAssignedIdentities: map[string]*armoperationalinsights.SummaryLogsUserIdentityProperties{
+	// 				"/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/oiautorest6685/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myIdentity": &armoperationalinsights.SummaryLogsUserIdentityProperties{
+	// 					PrincipalID: to.Ptr("356d057d-cba5-44dd-8a30-b2e547bc416b"),
+	// 					ClientID: to.Ptr("11111111-1111-1111-1111-111111111111"),
+	// 				},
+	// 			},
+	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-07-01/SummaryLogsDelete.json
+// Generated from example definition: 2026-03-01/SummaryLogsDelete.json
 func ExampleSummaryLogsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -91,7 +106,7 @@ func ExampleSummaryLogsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-07-01/SummaryLogsGet.json
+// Generated from example definition: 2026-03-01/SummaryLogsGet.json
 func ExampleSummaryLogsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -130,11 +145,20 @@ func ExampleSummaryLogsClient_Get() {
 	// 			CreatedAt: to.Ptr(time.Date(2020, time.February, 3, 4, 5, 6, 0, time.UTC)),
 	// 			CreatedBy: to.Ptr("22222222-2222-2222-2222-222222222222"),
 	// 		},
+	// 		Identity: &armoperationalinsights.SummaryLogsIdentity{
+	// 			Type: to.Ptr(armoperationalinsights.SummaryLogsIdentityTypeUserAssigned),
+	// 			UserAssignedIdentities: map[string]*armoperationalinsights.SummaryLogsUserIdentityProperties{
+	// 				"/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/oiautorest6685/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myIdentity": &armoperationalinsights.SummaryLogsUserIdentityProperties{
+	// 					PrincipalID: to.Ptr("356d057d-cba5-44dd-8a30-b2e547bc416b"),
+	// 					ClientID: to.Ptr("11111111-1111-1111-1111-111111111111"),
+	// 				},
+	// 			},
+	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-07-01/SummaryLogsList.json
+// Generated from example definition: 2026-03-01/SummaryLogsList.json
 func ExampleSummaryLogsClient_NewListByWorkspacePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -179,6 +203,15 @@ func ExampleSummaryLogsClient_NewListByWorkspacePager() {
 		// 					CreatedAt: to.Ptr(time.Date(2023, time.February, 3, 4, 5, 6, 0, time.UTC)),
 		// 					CreatedBy: to.Ptr("22222222-2222-2222-2222-222222222222"),
 		// 				},
+		// 				Identity: &armoperationalinsights.SummaryLogsIdentity{
+		// 					Type: to.Ptr(armoperationalinsights.SummaryLogsIdentityTypeUserAssigned),
+		// 					UserAssignedIdentities: map[string]*armoperationalinsights.SummaryLogsUserIdentityProperties{
+		// 						"/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/oiautorest6685/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myIdentity": &armoperationalinsights.SummaryLogsUserIdentityProperties{
+		// 							PrincipalID: to.Ptr("356d057d-cba5-44dd-8a30-b2e547bc416b"),
+		// 							ClientID: to.Ptr("11111111-1111-1111-1111-111111111111"),
+		// 						},
+		// 					},
+		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("summarylogs2"),
@@ -198,6 +231,17 @@ func ExampleSummaryLogsClient_NewListByWorkspacePager() {
 		// 					CreatedAt: to.Ptr(time.Date(2023, time.April, 3, 4, 5, 6, 0, time.UTC)),
 		// 					CreatedBy: to.Ptr("22222222-2222-2222-2222-222222222222"),
 		// 				},
+		// 				Identity: &armoperationalinsights.SummaryLogsIdentity{
+		// 					PrincipalID: to.Ptr("356d057d-cba5-44dd-8a30-b2e547bc416b"),
+		// 					TenantID: to.Ptr("72f988bf-86f1-41af-91ab-2d7cd011db47"),
+		// 					Type: to.Ptr(armoperationalinsights.SummaryLogsIdentityTypeUserAssigned),
+		// 					UserAssignedIdentities: map[string]*armoperationalinsights.SummaryLogsUserIdentityProperties{
+		// 						"/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/oiautorest6685/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myIdentity": &armoperationalinsights.SummaryLogsUserIdentityProperties{
+		// 							PrincipalID: to.Ptr("356d057d-cba5-44dd-8a30-b2e547bc416b"),
+		// 							ClientID: to.Ptr("11111111-1111-1111-1111-111111111111"),
+		// 						},
+		// 					},
+		// 				},
 		// 			},
 		// 		},
 		// 	},
@@ -205,7 +249,7 @@ func ExampleSummaryLogsClient_NewListByWorkspacePager() {
 	}
 }
 
-// Generated from example definition: 2025-07-01/SummaryLogsRetryBin.json
+// Generated from example definition: 2026-03-01/SummaryLogsRetryBin.json
 func ExampleSummaryLogsClient_BeginRetryBin() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -230,7 +274,7 @@ func ExampleSummaryLogsClient_BeginRetryBin() {
 	}
 }
 
-// Generated from example definition: 2025-07-01/SummaryLogsStart.json
+// Generated from example definition: 2026-03-01/SummaryLogsStart.json
 func ExampleSummaryLogsClient_BeginStart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -251,7 +295,7 @@ func ExampleSummaryLogsClient_BeginStart() {
 	}
 }
 
-// Generated from example definition: 2025-07-01/SummaryLogsStop.json
+// Generated from example definition: 2026-03-01/SummaryLogsStop.json
 func ExampleSummaryLogsClient_Stop() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

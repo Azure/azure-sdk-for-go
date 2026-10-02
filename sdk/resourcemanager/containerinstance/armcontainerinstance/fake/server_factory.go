@@ -36,6 +36,9 @@ type ServerFactory struct {
 	// OperationsServer contains the fakes for client OperationsClient
 	OperationsServer OperationsServer
 
+	// SandboxGroupsServer contains the fakes for client SandboxGroupsClient
+	SandboxGroupsServer SandboxGroupsServer
+
 	// SubnetServiceAssociationLinkServer contains the fakes for client SubnetServiceAssociationLinkClient
 	SubnetServiceAssociationLinkServer SubnetServiceAssociationLinkServer
 }
@@ -61,6 +64,7 @@ type ServerFactoryTransport struct {
 	trLocationServer                     *LocationServerTransport
 	trNGroupsServer                      *NGroupsServerTransport
 	trOperationsServer                   *OperationsServerTransport
+	trSandboxGroupsServer                *SandboxGroupsServerTransport
 	trSubnetServiceAssociationLinkServer *SubnetServiceAssociationLinkServerTransport
 }
 
@@ -100,6 +104,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "OperationsClient":
 		initServer(&s.trMu, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)
+	case "SandboxGroupsClient":
+		initServer(&s.trMu, &s.trSandboxGroupsServer, func() *SandboxGroupsServerTransport {
+			return NewSandboxGroupsServerTransport(&s.srv.SandboxGroupsServer)
+		})
+		resp, err = s.trSandboxGroupsServer.Do(req)
 	case "SubnetServiceAssociationLinkClient":
 		initServer(&s.trMu, &s.trSubnetServiceAssociationLinkServer, func() *SubnetServiceAssociationLinkServerTransport {
 			return NewSubnetServiceAssociationLinkServerTransport(&s.srv.SubnetServiceAssociationLinkServer)

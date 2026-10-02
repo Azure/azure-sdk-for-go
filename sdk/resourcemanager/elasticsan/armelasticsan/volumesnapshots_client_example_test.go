@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/elasticsan/armelasticsan"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/elasticsan/armelasticsan/v2"
 	"log"
 )
 
-// Generated from example definition: 2025-09-01/VolumeSnapshots_Create_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-01-preview/VolumeSnapshots_Create_MaximumSet_Gen.json
 func ExampleVolumeSnapshotsClient_BeginCreate_volumeSnapshotsCreateMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -52,6 +52,8 @@ func ExampleVolumeSnapshotsClient_BeginCreate_volumeSnapshotsCreateMaximumSetGen
 	// 			ProvisioningState: to.Ptr(armelasticsan.ProvisioningStatesSucceeded),
 	// 			SourceVolumeSizeGiB: to.Ptr[int64](28),
 	// 			VolumeName: to.Ptr("volumename"),
+	// 			SnapshotAccessState: to.Ptr(armelasticsan.SnapshotAccessStateAvailable),
+	// 			CompletionPercent: to.Ptr[float32](100),
 	// 		},
 	// 		SystemData: &armelasticsan.SystemData{
 	// 			CreatedAt: to.Ptr(time.Date(2023, time.September, 6, 6, 58, 45, 864000000, time.UTC)),
@@ -65,7 +67,7 @@ func ExampleVolumeSnapshotsClient_BeginCreate_volumeSnapshotsCreateMaximumSetGen
 	// }
 }
 
-// Generated from example definition: 2025-09-01/VolumeSnapshots_Create_MinimumSet_Gen.json
+// Generated from example definition: 2026-05-01-preview/VolumeSnapshots_Create_MinimumSet_Gen.json
 func ExampleVolumeSnapshotsClient_BeginCreate_volumeSnapshotsCreateMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -118,7 +120,7 @@ func ExampleVolumeSnapshotsClient_BeginCreate_volumeSnapshotsCreateMinimumSetGen
 	// }
 }
 
-// Generated from example definition: 2025-09-01/VolumeSnapshots_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-01-preview/VolumeSnapshots_Delete_MaximumSet_Gen.json
 func ExampleVolumeSnapshotsClient_BeginDelete_volumeSnapshotsDeleteMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -144,7 +146,7 @@ func ExampleVolumeSnapshotsClient_BeginDelete_volumeSnapshotsDeleteMaximumSetGen
 	// }
 }
 
-// Generated from example definition: 2025-09-01/VolumeSnapshots_Delete_MinimumSet_Gen.json
+// Generated from example definition: 2026-05-01-preview/VolumeSnapshots_Delete_MinimumSet_Gen.json
 func ExampleVolumeSnapshotsClient_BeginDelete_volumeSnapshotsDeleteMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -170,7 +172,7 @@ func ExampleVolumeSnapshotsClient_BeginDelete_volumeSnapshotsDeleteMinimumSetGen
 	// }
 }
 
-// Generated from example definition: 2025-09-01/VolumeSnapshots_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-01-preview/VolumeSnapshots_Get_MaximumSet_Gen.json
 func ExampleVolumeSnapshotsClient_Get_volumeSnapshotsGetMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -200,6 +202,8 @@ func ExampleVolumeSnapshotsClient_Get_volumeSnapshotsGetMaximumSetGen() {
 	// 			ProvisioningState: to.Ptr(armelasticsan.ProvisioningStatesSucceeded),
 	// 			SourceVolumeSizeGiB: to.Ptr[int64](28),
 	// 			VolumeName: to.Ptr("volumename"),
+	// 			SnapshotAccessState: to.Ptr(armelasticsan.SnapshotAccessStateAvailable),
+	// 			CompletionPercent: to.Ptr[float32](100),
 	// 		},
 	// 		SystemData: &armelasticsan.SystemData{
 	// 			CreatedAt: to.Ptr(time.Date(2023, time.September, 6, 6, 58, 45, 864000000, time.UTC)),
@@ -213,7 +217,7 @@ func ExampleVolumeSnapshotsClient_Get_volumeSnapshotsGetMaximumSetGen() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/VolumeSnapshots_Get_MinimumSet_Gen.json
+// Generated from example definition: 2026-05-01-preview/VolumeSnapshots_Get_MinimumSet_Gen.json
 func ExampleVolumeSnapshotsClient_Get_volumeSnapshotsGetMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -256,7 +260,7 @@ func ExampleVolumeSnapshotsClient_Get_volumeSnapshotsGetMinimumSetGen() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/VolumeSnapshots_ListByVolumeGroup_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-01-preview/VolumeSnapshots_ListByVolumeGroup_MaximumSet_Gen.json
 func ExampleVolumeSnapshotsClient_NewListByVolumeGroupPager_volumeSnapshotsListByVolumeGroupMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -281,7 +285,7 @@ func ExampleVolumeSnapshotsClient_NewListByVolumeGroupPager_volumeSnapshotsListB
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page = armelasticsan.VolumeSnapshotsClientListByVolumeGroupResponse{
 		// 	SnapshotList: armelasticsan.SnapshotList{
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/subscriptionid/resourceGroups/resourcegroupname/providers/Microsoft.ElasticSan/elasticSans/elasticsanname/volumegroups/volumegroupname/snapshots?api-version=2024-07-01-preview&%24skiptoken=def123ghi456"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/subscriptionid/resourceGroups/resourcegroupname/providers/Microsoft.ElasticSan/elasticSans/elasticsanname/volumegroups/volumegroupname/snapshots?api-version=2026-05-01-preview&%24skiptoken=def123ghi456"),
 		// 		Value: []*armelasticsan.Snapshot{
 		// 			{
 		// 				Name: to.Ptr("qukfugetqthsufp"),
@@ -294,6 +298,8 @@ func ExampleVolumeSnapshotsClient_NewListByVolumeGroupPager_volumeSnapshotsListB
 		// 					ProvisioningState: to.Ptr(armelasticsan.ProvisioningStatesSucceeded),
 		// 					SourceVolumeSizeGiB: to.Ptr[int64](28),
 		// 					VolumeName: to.Ptr("volumename"),
+		// 					SnapshotAccessState: to.Ptr(armelasticsan.SnapshotAccessStateAvailable),
+		// 					CompletionPercent: to.Ptr[float32](100),
 		// 				},
 		// 				SystemData: &armelasticsan.SystemData{
 		// 					CreatedAt: to.Ptr(time.Date(2023, time.September, 6, 6, 58, 45, 864000000, time.UTC)),
@@ -310,7 +316,7 @@ func ExampleVolumeSnapshotsClient_NewListByVolumeGroupPager_volumeSnapshotsListB
 	}
 }
 
-// Generated from example definition: 2025-09-01/VolumeSnapshots_ListByVolumeGroup_MinimumSet_Gen.json
+// Generated from example definition: 2026-05-01-preview/VolumeSnapshots_ListByVolumeGroup_MinimumSet_Gen.json
 func ExampleVolumeSnapshotsClient_NewListByVolumeGroupPager_volumeSnapshotsListByVolumeGroupMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -1,5 +1,23 @@
 # Release History
 
+## 0.5.0 (2026-09-25)
+### Breaking Changes
+
+- Field `AggregationType`, `DimensionFilter`, `MetricName`, `MetricNamespace`, `TimeGrain`, `Unit` of struct `SignalConfiguration` has been removed
+
+### Features Added
+
+- New enum type `SignalRecommendationKind` with values `SignalRecommendationKindAzureResourceMetric`, `SignalRecommendationKindLogAnalyticsQuery`, `SignalRecommendationKindPrometheusMetricsQuery`
+- New function `*AzureResourceMetricRecommendationConfiguration.GetSignalRecommendationConfiguration() *SignalRecommendationConfiguration`
+- New function `*LogAnalyticsQueryRecommendationConfiguration.GetSignalRecommendationConfiguration() *SignalRecommendationConfiguration`
+- New function `*PrometheusMetricsRecommendationConfiguration.GetSignalRecommendationConfiguration() *SignalRecommendationConfiguration`
+- New function `*SignalRecommendationConfiguration.GetSignalRecommendationConfiguration() *SignalRecommendationConfiguration`
+- New struct `AzureResourceMetricRecommendationConfiguration`
+- New struct `LogAnalyticsQueryRecommendationConfiguration`
+- New struct `PrometheusMetricsRecommendationConfiguration`
+- New field `ApplicableResourceTypes`, `Configuration`, `DataUnit`, `Description`, `DisplayName`, `RefreshInterval` in struct `SignalConfiguration`
+
+
 ## 0.4.0 (2026-08-25)
 ### Breaking Changes
 

@@ -239,7 +239,7 @@ func (tracker *StressContext) Assert(condition bool, message string) {
 
 func (tracker *StressContext) Equal(val1 any, val2 any) {
 	if val1 != val2 {
-		panic(fmt.Errorf("Expected %v, got %v", val1, val2))
+		panic(fmt.Errorf("expected %v, got %v", val1, val2))
 	}
 }
 

@@ -35,7 +35,7 @@ func ReceiveCancellation(remainingArgs []string) {
 			receiver, err := shared.NewTrackingReceiverForQueue(sc.TC, client, queueName, nil)
 			sc.PanicOnError("failed to create receiver", err)
 
-			defer receiver.Close(context.Background())
+			defer func() { _ = receiver.Close(context.Background()) }()
 
 			ctx, cancel := context.WithTimeout(context.Background(), time.Duration(i)*time.Millisecond)
 			defer cancel()

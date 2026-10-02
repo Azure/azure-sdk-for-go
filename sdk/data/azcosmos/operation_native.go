@@ -74,9 +74,8 @@ func (d *nativeDriver) execute(ctx context.Context, req itemRequest) (ItemRespon
 // to, the cookie to round-trip onto it, and somewhere to report a pre-flight rejection. It returns
 // NULL when the operation was rejected before it started, which posts no completion.
 //
-// Cancelling the context cancels the operation at the driver rather than abandoning it, and then
-// still waits for the completion. The operation owns the cookie, so returning before it has been
-// posted would delete a handle the reactor is about to dereference.
+// The v0.2 driver has no on-demand cancellation. On context cancellation the waiter abandons the
+// completion, while the native operation continues under its own timeout/retry budget.
 func (d *nativeDriver) awaitCompletion(
 	ctx context.Context,
 	doing string,
@@ -86,12 +85,11 @@ func (d *nativeDriver) awaitCompletion(
 		return completionResult{}, err
 	}
 
-	// Buffered so the reactor can always deliver without blocking, even after this goroutine has
-	// stopped waiting because the context was cancelled.
+	// Buffered so the reactor can deliver without blocking after cancellation.
 	pending := &pendingOperation{result: make(chan completionResult, 1)}
 	handle := cgo.NewHandle(pending)
-	// Deleted only once the operation is known to be finished, because the driver round-trips the
-	// cookie onto the completion and the reactor dereferences it.
+	// The reactor drops completions with deleted cookies. If it looked up this pending operation
+	// before deletion, abandon and deliver synchronize ownership of detached native handles.
 	defer handle.Delete()
 
 	var preError C.cosmos_status_code_t
@@ -121,15 +119,19 @@ func (d *nativeDriver) awaitCompletion(
 		return result, nil
 
 	case <-ctx.Done():
-		C.cosmos_operation_handle_cancel(op)
-		// The terminal result is authoritative when completion and cancellation race. In
-		// particular, a successful write must not be reported as cancelled after it committed.
-		result := <-pending.result
-		terminal, err := resultAfterCancellation(ctx.Err(), result)
-		if err != nil {
-			result.release()
+		// v0.2 has no native operation cancellation. Return promptly without leaking the cgo
+		// cookie or completion payload; the native request continues until its own budget ends.
+		select {
+		case result := <-pending.result:
+			terminal, err := resultAfterCancellation(ctx.Err(), result)
+			if err != nil {
+				result.release()
+			}
+			return terminal, err
+		default:
+			pending.abandon()
+			return completionResult{}, newOperationCancelledError(ctx.Err(), 0, "")
 		}
-		return terminal, err
 	}
 }
 
@@ -139,12 +141,25 @@ func resultAfterCancellation(cause error, result completionResult) (completionRe
 	}
 	requestCharge := result.response.RequestCharge
 	activityID := result.response.ActivityID
+	diagnostics := result.response.Diagnostics
+	attemptCount := result.response.AttemptCount
+	statusCode := result.response.StatusCode
+	subStatus := result.response.SubStatus
 	var completionErr *Error
 	if errors.As(result.err, &completionErr) {
 		requestCharge = completionErr.RequestCharge
 		activityID = completionErr.ActivityID
+		diagnostics = completionErr.Diagnostics
+		attemptCount = completionErr.AttemptCount
+		statusCode = completionErr.StatusCode
+		subStatus = completionErr.SubStatus
 	}
-	return completionResult{}, newOperationCancelledError(cause, requestCharge, activityID)
+	err := newOperationCancelledError(cause, requestCharge, activityID)
+	err.Diagnostics = diagnostics
+	err.AttemptCount = attemptCount
+	err.StatusCode = statusCode
+	err.SubStatus = subStatus
+	return completionResult{}, err
 }
 
 // inspectAwaitCompletionSubmission reports whether awaitCompletion invoked its submit closure.

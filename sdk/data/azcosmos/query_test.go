@@ -9,6 +9,7 @@ import (
 	"errors"
 	"math"
 	"testing"
+	"time"
 
 	"github.com/stretchr/testify/require"
 )
@@ -61,7 +62,7 @@ func TestQueryRequestOwnsOptions(t *testing.T) {
 			EnableContentResponseOnWrite: &enabled,
 			ExcludedRegions:              []Region{RegionEastUS},
 			CustomHeaders:                map[string]string{"x-test": "original"},
-			BinaryEncoding:               &BinaryEncodingOptions{Enabled: true, RequestTextResponse: true},
+			BinaryEncoding:               &BinaryEncodingOptions{Enabled: to(true), RequestTextResponse: true},
 			MaxFailoverRetryCount:        to(uint32(3)),
 			ThrottlingRetry:              ThrottlingRetryOptions{MaxRetryCount: to(uint32(1))},
 			ThroughputControl:            ThroughputControlOptions{ThroughputBucket: to(uint32(2))},
@@ -74,7 +75,7 @@ func TestQueryRequestOwnsOptions(t *testing.T) {
 	enabled = false
 	options.Operation.ExcludedRegions[0] = RegionWestUS
 	options.Operation.CustomHeaders["x-test"] = "changed"
-	options.Operation.BinaryEncoding.Enabled = false
+	options.Operation.BinaryEncoding.Enabled = to(false)
 	*options.Operation.MaxFailoverRetryCount = 9
 	*options.Operation.ThrottlingRetry.MaxRetryCount = 9
 	*options.Operation.ThroughputControl.ThroughputBucket = 9
@@ -83,7 +84,7 @@ func TestQueryRequestOwnsOptions(t *testing.T) {
 	require.True(t, *req.options.Operation.EnableContentResponseOnWrite)
 	require.Equal(t, []Region{RegionEastUS}, req.options.Operation.ExcludedRegions)
 	require.Equal(t, "original", req.options.Operation.CustomHeaders["x-test"])
-	require.True(t, req.options.Operation.BinaryEncoding.Enabled)
+	require.True(t, req.options.Operation.BinaryEncoding.enabled())
 	require.Equal(t, uint32(3), *req.options.Operation.MaxFailoverRetryCount)
 	require.Equal(t, uint32(1), *req.options.Operation.ThrottlingRetry.MaxRetryCount)
 	require.Equal(t, uint32(2), *req.options.Operation.ThroughputControl.ThroughputBucket)
@@ -110,10 +111,10 @@ func TestQueryPagerArgumentAndLifetimeOrdering(t *testing.T) {
 		{"negative hint", NewQuery("SELECT * FROM c"), scope, &QueryOptions{Feed: FeedOptions{PageSizeHint: -1}}, "page size hint"},
 		{"invalid token", NewQuery("SELECT * FROM c"), scope, &QueryOptions{Feed: FeedOptions{ContinuationToken: "a\x00b"}}, "continuation token"},
 		{"invalid consistency", NewQuery("SELECT * FROM c"), scope, &QueryOptions{Operation: OperationOptions{ConsistencyStrategy: "invalid"}}, "consistency"},
-		{"invalid timeout", NewQuery("SELECT * FROM c"), scope, &QueryOptions{Operation: OperationOptions{EndToEndTimeout: -1}}, "EndToEndTimeout"},
+		{"invalid timeout", NewQuery("SELECT * FROM c"), scope, &QueryOptions{Operation: OperationOptions{EndToEndTimeout: to(time.Duration(-1))}}, "EndToEndTimeout"},
 		{"invalid header", NewQuery("SELECT * FROM c"), scope, &QueryOptions{Operation: OperationOptions{CustomHeaders: map[string]string{"x-test": "\r\n"}}}, "custom header"},
 		{"invalid availability", NewQuery("SELECT * FROM c"), scope, &QueryOptions{Operation: OperationOptions{AvailabilityStrategy: HedgingAvailability(0)}}, "positive threshold"},
-		{"raw binary", NewQuery("SELECT * FROM c"), scope, &QueryOptions{Operation: OperationOptions{BinaryEncoding: &BinaryEncodingOptions{Enabled: true}}}, "queries require text JSON"},
+		{"raw binary", NewQuery("SELECT * FROM c"), scope, &QueryOptions{Operation: OperationOptions{BinaryEncoding: &BinaryEncodingOptions{Enabled: to(true)}}}, "queries require text JSON"},
 		{"invalid session", NewQuery("SELECT * FROM c"), scope, &QueryOptions{SessionToken: "a\x00b"}, "session"},
 	} {
 		t.Run(tt.name, func(t *testing.T) {

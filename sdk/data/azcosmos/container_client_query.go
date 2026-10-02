@@ -54,9 +54,9 @@ func newQueryRequest(query Query, scope FeedScope, options *QueryOptions) (query
 	}
 	// The pager splits a text JSON envelope; unlike point items it cannot return opaque binary.
 	if req.options.Operation.BinaryEncoding == nil {
-		req.options.Operation.BinaryEncoding = &BinaryEncodingOptions{}
+		req.options.Operation.BinaryEncoding = &BinaryEncodingOptions{Enabled: new(bool)}
 	}
-	if encoding := req.options.Operation.BinaryEncoding; encoding.Enabled && !encoding.RequestTextResponse {
+	if encoding := req.options.Operation.BinaryEncoding; encoding.enabled() && !encoding.RequestTextResponse {
 		return req, errors.New("azcosmos: queries require text JSON responses; enable RequestTextResponse or disable binary encoding")
 	}
 	if err := req.options.SessionToken.validate(); err != nil {

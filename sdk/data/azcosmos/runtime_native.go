@@ -33,6 +33,9 @@ func openRuntime(config RuntimeOptions) (*nativeRuntime, error) {
 	common, release := config.Operation.toNative()
 	defer release()
 	options.operation_options = common
+	if config.CPURefreshInterval != nil {
+		options.cpu_refresh_interval_ms = C.uint64_t(config.CPURefreshInterval.Milliseconds())
+	}
 	if config.ApplicationID != "" {
 		value, allocation := toNativeString(config.ApplicationID)
 		defer C.free(allocation)
@@ -45,12 +48,6 @@ func openRuntime(config RuntimeOptions) (*nativeRuntime, error) {
 		return nil, err
 	}
 	return native, nil
-}
-
-func (r *nativeRuntime) setOperationOptions(options OperationOptions) error {
-	native, release := options.toNative()
-	defer release()
-	return statusError(C.cosmos_runtime_set_operation_options(r.handle, native), nil, "replacing runtime operation options")
 }
 
 func (r *nativeRuntime) close() {
@@ -71,7 +68,6 @@ func (d *nativeDriver) snapshot(ctx context.Context, request OperationOptions) (
 	if err := statusError(status, nil, "capturing operation options"); err != nil {
 		return ctx, nil, func() {}, err
 	}
-	ctx, cancelRequest := contextWithEndToEndTimeout(ctx, request.EndToEndTimeout)
 	var budget time.Duration
 	if timeout > 0 {
 		// Native milliseconds can exceed Go's duration range through environment configuration.
@@ -81,7 +77,6 @@ func (d *nativeDriver) snapshot(ctx context.Context, request OperationOptions) (
 	ctx, cancelSnapshot := contextWithEndToEndTimeout(ctx, budget)
 	return ctx, snapshot, func() {
 		cancelSnapshot()
-		cancelRequest()
 		C.cosmos_operation_options_snapshot_free(snapshot)
 	}, nil
 }

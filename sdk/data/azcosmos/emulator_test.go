@@ -73,7 +73,10 @@ func emulatorClientConfigured(
 		configured = *options
 	}
 	if configured.Operation.BinaryEncoding == nil {
-		configured.Operation.BinaryEncoding = &BinaryEncodingOptions{Enabled: true, RequestTextResponse: true}
+		configured.Operation.BinaryEncoding = &BinaryEncodingOptions{Enabled: to(true), RequestTextResponse: true}
+	}
+	if configured.BinaryEncoding == nil {
+		configured.BinaryEncoding = configured.Operation.BinaryEncoding.clone()
 	}
 	options = &configured
 	client, err := NewClientWithKey(endpoint, cred, options)
@@ -582,7 +585,7 @@ func TestEmulatorPatchContentResponse(t *testing.T) {
 	} {
 		t.Run(tt.name, func(t *testing.T) {
 			container := emulatorContainerWithOptions(t, &ClientOptions{
-				EnableContentResponseOnWrite: tt.clientEnabled,
+				Operation: OperationOptions{EnableContentResponseOnWrite: tt.clientEnabled},
 			})
 			id := uniqueItemID(t)
 			pk := NewPartitionKeyString(id)
@@ -978,7 +981,7 @@ func TestEmulatorClientContentResponseOnWrite(t *testing.T) {
 		{"enabled", to(true), true},
 	} {
 		t.Run(tt.name, func(t *testing.T) {
-			container := emulatorContainerWithOptions(t, &ClientOptions{EnableContentResponseOnWrite: tt.enabled})
+			container := emulatorContainerWithOptions(t, &ClientOptions{Operation: OperationOptions{EnableContentResponseOnWrite: tt.enabled}})
 
 			require.Equal(t, tt.want, createForClientOptions(t, container, nil),
 				"an operation that sets nothing inherits the client's setting")
@@ -989,7 +992,7 @@ func TestEmulatorClientContentResponseOnWrite(t *testing.T) {
 // An operation that sets the value overrides the client, which is what makes the client value a
 // default rather than a policy.
 func TestEmulatorOperationContentResponseOverridesTheClient(t *testing.T) {
-	container := emulatorContainerWithOptions(t, &ClientOptions{EnableContentResponseOnWrite: to(true)})
+	container := emulatorContainerWithOptions(t, &ClientOptions{Operation: OperationOptions{EnableContentResponseOnWrite: to(true)}})
 
 	require.False(t, createForClientOptions(t, container, &OperationOptions{
 		EnableContentResponseOnWrite: to(false),
@@ -1049,7 +1052,10 @@ func TestEmulatorRoutingStrategiesRouteReads(t *testing.T) {
 // driver accepts survives initialization and a request.
 func TestEmulatorApplicationID(t *testing.T) {
 	// At the driver's 25-byte limit, so a regression in the limit shows up here too.
-	container := emulatorContainerWithOptions(t, &ClientOptions{ApplicationID: "azcosmos-go-v2-e2e-testin"})
+	runtime, err := NewRuntime(&RuntimeOptions{ApplicationID: "azcosmos-go-v2-e2e-testin"})
+	require.NoError(t, err)
+	t.Cleanup(func() { require.NoError(t, runtime.Close()) })
+	container := emulatorContainerWithOptions(t, &ClientOptions{Runtime: runtime})
 
 	createForClientOptions(t, container, nil)
 }

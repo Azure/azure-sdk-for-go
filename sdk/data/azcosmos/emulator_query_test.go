@@ -352,6 +352,8 @@ func TestEmulatorQueryCancellationAndClose(t *testing.T) {
 			} else {
 				closed := make(chan error, 1)
 				go func() { closed <- client.Close() }()
+				// Runtime-cached credentials outlive an individual client.
+				close(credential.release)
 				select {
 				case err := <-closed:
 					require.NoError(t, err)
@@ -361,10 +363,13 @@ func TestEmulatorQueryCancellationAndClose(t *testing.T) {
 			}
 			select {
 			case got := <-results:
-				require.Error(t, got.err)
-				require.Zero(t, got.page)
 				if action == "cancel" {
+					require.Error(t, got.err)
+					require.Zero(t, got.page)
 					require.ErrorIs(t, got.err, context.Canceled)
+					close(credential.release)
+				} else {
+					require.NoError(t, got.err, "Close drains admitted work rather than cancelling it")
 				}
 			case <-time.After(10 * time.Second):
 				t.Fatal("query did not finish after cancellation")
@@ -375,8 +380,8 @@ func TestEmulatorQueryCancellationAndClose(t *testing.T) {
 
 func TestEmulatorQueryEncodingAndRuntimeDefaults(t *testing.T) {
 	shared, err := NewRuntime(&RuntimeOptions{Operation: OperationOptions{
-		BinaryEncoding:  &BinaryEncodingOptions{Enabled: true},
-		EndToEndTimeout: 10 * time.Second,
+		BinaryEncoding:  &BinaryEncodingOptions{Enabled: to(true)},
+		EndToEndTimeout: to(time.Duration(10 * time.Second)),
 	}})
 	require.NoError(t, err)
 	t.Cleanup(func() { require.NoError(t, shared.Close()) })
@@ -388,8 +393,8 @@ func TestEmulatorQueryEncodingAndRuntimeDefaults(t *testing.T) {
 	trackEmulatorItem(t, container, pk, id)
 	for _, encoding := range []*BinaryEncodingOptions{
 		nil,
-		{},
-		{Enabled: true, RequestTextResponse: true},
+		{Enabled: to(false)},
+		{Enabled: to(true), RequestTextResponse: true},
 	} {
 		pager := container.NewQueryItemsPager(NewQuery("SELECT VALUE c.value FROM c"),
 			NewFeedScopeForPartitionKey(pk), &QueryOptions{Operation: OperationOptions{BinaryEncoding: encoding}})

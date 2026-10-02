@@ -17,16 +17,16 @@
 // # Options and lifetime
 //
 // OperationOptions applies at runtime, client, and request scope, with requests taking precedence.
-// Rust owns resolution and supported environment overrides. Runtime.SetOperationOptions replaces
-// defaults atomically; admitted operations retain a native snapshot and one timeout budget.
-// Client.Close closes only that client; Runtime.Close drains and closes all attached clients.
+// Rust owns resolution and supported environment overrides; defaults are fixed at construction.
+// Clients without an explicit Runtime use a process-wide runtime and share native account caches.
+// Client.Close closes only that client; Runtime.Close releases ownership without closing attached clients.
 // Context cancellation stops waiting, not submitted native work; a write may still commit.
 // Close waits for native work to finish, including operations whose callers stopped waiting.
 //
 // # Response encoding
 //
 // ItemResponse.Value can contain Cosmos binary JSON by default. Select BinaryEncodingOptions with
-// Enabled and RequestTextResponse both true before decoding responses with encoding/json, or
-// explicitly disable binary encoding. Go does not deserialize item schemas.
+// RequestTextResponse true before decoding responses with encoding/json, or explicitly set Enabled
+// to false. A nil Enabled defaults to true. Go does not deserialize item schemas.
 // QueryItemsResponse.Items always contains text JSON values; queries default to text wire encoding.
 package azcosmos

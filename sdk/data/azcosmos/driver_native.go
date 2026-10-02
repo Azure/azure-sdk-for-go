@@ -23,6 +23,7 @@ import (
 	"fmt"
 	"sync"
 	"time"
+	"unsafe"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
@@ -103,13 +104,6 @@ func (d *nativeDriver) initialize(ctx context.Context) error {
 	defer release()
 	_, err = d.ensureDriver(ctx)
 	return err
-}
-
-// cancel stops host token acquisition before Close waits for in-flight operations.
-func (d *nativeDriver) cancel() {
-	if d != nil && d.tokenProvider != nil {
-		d.tokenProvider.cancel()
-	}
 }
 
 // verifyDriverVersion checks header and library versions before any struct-sensitive ABI call.
@@ -286,7 +280,16 @@ func (d *nativeDriver) buildDriverOptions() (*C.cosmos_driver_options_t, error) 
 	defer release()
 
 	var options *C.cosmos_driver_options_t
-	status := C.cosmos_driver_options_build(d.account, config, &options) //nolint:gocritic // dupSubExpr is reported against cgo-generated code, not this call.
+	versioned := C.cosmos_driver_options_config_v2_default()
+	versioned.preferred_regions = config.preferred_regions
+	versioned.preferred_regions_len = config.preferred_regions_len
+	versioned.operation_options = config.operation_options
+	rules, releaseRules := nativeFaultInjectionRules(d.cfg.options.FaultInjectionRules)
+	defer releaseRules()
+	versioned.fault_injection_rules = rules
+	versioned.fault_injection_rules_len = C.uintptr_t(len(d.cfg.options.FaultInjectionRules))
+	versioned.fault_injection_rule_stride = C.uintptr_t(unsafe.Sizeof(C.cosmos_fault_injection_rule_t{}))
+	status := C.cosmos_driver_options_build_v2(d.account, &versioned, &options) //nolint:gocritic // dupSubExpr is reported against cgo-generated code.
 	if err := statusError(status, nil, "building the driver options"); err != nil {
 		return nil, err
 	}
@@ -294,20 +297,12 @@ func (d *nativeDriver) buildDriverOptions() (*C.cosmos_driver_options_t, error) 
 }
 
 // buildRuntime creates the Tokio runtime the driver executes on.
-//
-// ApplicationID is applied here rather than with the other client options because the C ABI carries
-// the user agent on the runtime, not on the driver.
 func (d *nativeDriver) buildRuntime() error {
-	native, err := openRuntime(RuntimeOptions{ApplicationID: d.cfg.options.ApplicationID})
+	native, err := openRuntime(RuntimeOptions{})
 	if err == nil {
 		d.ownedRuntime = native
 		d.runtime = native.handle
 		return nil
-	}
-	var cosmosErr *Error
-	if errors.As(err, &cosmosErr) &&
-		cosmosErr.SubStatus == int(C.COSMOS_SUB_STATUS_CLIENT_FFI_INVALID_OPTION_VALUE) {
-		cosmosErr.Message = "azcosmos: the Cosmos driver rejected runtime options (SDK identity or ClientOptions.ApplicationID)"
 	}
 	return err
 }

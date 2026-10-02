@@ -116,6 +116,8 @@ const (
 // [Error.Code] is part of the published API. The string returned by [Error.Error] is not, and is
 // subject to change.
 type Error struct {
+	// Diagnostics is the native snapshot when a completion was received.
+	Diagnostics Diagnostics
 	// PatchTrackingID identifies a tracked patch. Cancelled waits retain a caller-supplied ID;
 	// a native-generated ID is available only when a completion was received.
 	PatchTrackingID PatchTrackingID

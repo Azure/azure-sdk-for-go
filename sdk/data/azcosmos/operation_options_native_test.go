@@ -16,10 +16,10 @@ import (
 func TestFullOperationOptionsNativePresence(t *testing.T) {
 	options := OperationOptions{
 		ConsistencyStrategy: ReadConsistencyStrategyDefault, EnableContentResponseOnWrite: to(false),
-		ExcludedRegions: []Region{}, EndToEndTimeout: 3 * time.Second, PatchStrategy: PatchStrategyClientSide,
+		ExcludedRegions: []Region{}, EndToEndTimeout: to(time.Duration(3 * time.Second)), PatchStrategy: PatchStrategyClientSide,
 		SessionCapturingDisabled: to(false), MaxFailoverRetryCount: to(uint32(math.MaxUint32)),
 		MaxSessionRetryCount: to(uint32(0)), EndpointUnavailabilityTTL: to(time.Duration(0)),
-		CustomHeaders: map[string]string{"X-Test": "value"}, BinaryEncoding: &BinaryEncodingOptions{Enabled: true, RequestTextResponse: true},
+		CustomHeaders: map[string]string{"X-Test": "value"}, BinaryEncoding: &BinaryEncodingOptions{Enabled: to(true), RequestTextResponse: true},
 		ThroughputControl: ThroughputControlOptions{ThroughputBucket: to(uint32(math.MaxUint32)), PriorityLevel: PriorityLevelLow},
 		ThrottlingRetry:   ThrottlingRetryOptions{MaxRetryCount: to(uint32(0)), MaxRetryWaitTime: to(time.Duration(0))},
 		HedgingEnabled:    to(false), AvailabilityStrategy: HedgingAvailability(time.Nanosecond),
@@ -53,7 +53,7 @@ func TestFullOperationOptionsNativePresence(t *testing.T) {
 }
 
 func TestPatchTrackingNativeFieldsAndPrecedence(t *testing.T) {
-	for _, retention := range []time.Duration{0, time.Nanosecond, 1900 * time.Millisecond, 2 * time.Second} {
+	for _, retention := range []time.Duration{0, time.Nanosecond, 1900 * time.Millisecond, 2 * time.Second, time.Duration(math.MaxInt64)} {
 		request, release := inspectNativeItemRequest(itemRequest{
 			kind:          operationKindPatchItem,
 			options:       OperationOptions{PatchStrategy: PatchStrategyServerSide},
@@ -66,7 +66,7 @@ func TestPatchTrackingNativeFieldsAndPrecedence(t *testing.T) {
 		require.Equal(t, uint8(255), request.patchMaxAttempts)
 		require.Equal(t, "00112233-4455-6677-8899-aabbccddeeff", request.patchTrackingID)
 		require.Equal(t, uint16(65535), request.patchTrackingCapacity)
-		require.Equal(t, uint32(max(1, retention/time.Second)), request.patchTrackingRetention)
+		require.Equal(t, uint32(min(math.MaxUint32, max(1, retention/time.Second))), request.patchTrackingRetention)
 		release()
 	}
 }

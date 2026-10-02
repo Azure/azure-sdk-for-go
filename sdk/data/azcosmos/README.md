@@ -73,28 +73,26 @@ custom-header maps inherit; non-nil empty values clear the inherited list/map. N
 replace rather than extend them. Throughput and throttling members inherit independently.
 Binary encoding and availability strategies replace their entire groups.
 
-`NewRuntime` creates shared execution resources. Pass it in `ClientOptions.Runtime` to attach
-multiple independent account clients for different hostnames. Published native v0.2.0 caches
-credential-bearing container references at runtime scope. To prevent credential reuse across
-clients, Go rejects a second client for the same normalized hostname, even after the first
-client closes. Scheme, port, and path changes do not bypass this restriction. Use separate
-runtimes (or leave `ClientOptions.Runtime` nil) for multiple clients of the same account.
-Application identity belongs to the runtime; a conflicting nonempty
-client `ApplicationID` is rejected. Without a supplied runtime, the client owns a private one.
-The legacy client `EnableContentResponseOnWrite` alias remains supported, but conflicting values
-in it and `Operation.EnableContentResponseOnWrite` are rejected.
+Leaving `ClientOptions.Runtime` nil uses a lazily initialized process-wide runtime, as in Rust.
+`NewRuntime` creates an explicit runtime with construction-time defaults. Multiple clients for the
+same account may share it, including after another client closes. Native caches retain account
+references and their credentials: a cached container may use the identity that first resolved it,
+not the identity supplied to a later client. Use different explicit runtimes when credentials
+must be isolated. The global runtime is retained for the process lifetime.
+Configure client content-response defaults through `ClientOptions.Operation.EnableContentResponseOnWrite`.
 
-`Runtime.SetOperationOptions` atomically replaces the whole default group. Requests capture a
-native snapshot before lazy initialization: concurrent updates affect later requests, not an
-already captured generation. One timeout budget covers initialization, metadata lookup, retries,
-and execution. The Rust timeout policy has a one-second minimum; Go context deadlines and explicit
-request timeouts may be stricter. Throttling retry budgets apply per transport invocation, not to
+Runtime defaults cannot be updated after construction. Requests capture a native snapshot before
+lazy initialization. `EndToEndTimeout` is optional: nil inherits; explicit zero or subsecond values
+clamp to one second at every scope. A caller's context deadline can stop waiting earlier without
+cancelling native work. Throttling retry budgets apply per transport invocation, not to
 the entire logical operation. The hedging master switch and its environment override can override
 the chosen availability strategy. Environment settings are captured at runtime construction.
 
-`Client.Close` affects only that client. `Runtime.Close` rejects new work on all attached clients,
-drains admitted operations, closes the clients, and frees shared resources. Both are idempotent
-and safe to call concurrently. Do not call Close from inside a credential callback.
+`Client.Close` drains and closes only that client. It does not cancel credentials retained by a
+shared native cache. `Runtime.Close` releases the owner's reference and rejects new attachments;
+existing clients keep working until they close. Native resources are freed after the last owner
+and attached client release them. Both methods are idempotent and concurrency-safe.
+Do not call Close from inside a credential callback.
 
 ### Context cancellation
 
@@ -105,7 +103,7 @@ wait returns `CodeOperationCancelled` wrapping the context error, with the outco
 Response metadata from a later completion cannot be returned to that caller.
 
 The binding drains abandoned waits in the background and retains native handles and credentials
-until completion. `Client.Close` and `Runtime.Close` wait for that drain; they can take longer
+until completion. `Client.Close` waits for that drain and can take longer
 than the caller's context deadline. End-to-end timeout snapshots bound native item execution,
 but a shorter Go deadline does not cancel native initialization or metadata resolution.
 For retryable client-side patches, supply `TrackingID` before submission to retain the identity
@@ -114,25 +112,50 @@ after cancellation; a native-generated tracking ID is only available after compl
 ### Binary response compatibility change
 
 **Raw item response bytes now use the driver's binary JSON default**, including for existing
-callers that leave options unset. Before using `encoding/json`, select text responses at any scope:
+callers that leave options unset. Rust-compatible `ClientOptions.BinaryEncoding` resolves once from
+an explicit group, then `AZURE_COSMOS_BINARY_ENCODING_ENABLED`, then enabled by default.
+Create/read/replace/upsert resolve request encoding over that SDK client default rather than
+runtime/client `Operation.BinaryEncoding`. PATCH and delete retain native layered resolution.
+Before using `encoding/json`, select text responses on the request or dedicated client group:
 
 ```go
 options := azcosmos.OperationOptions{
     BinaryEncoding: &azcosmos.BinaryEncodingOptions{
-        Enabled: true, RequestTextResponse: true,
+        RequestTextResponse: true,
     },
 }
 ```
 
 This keeps binary wire encoding while asking the driver to return text JSON. Alternatively,
-`&azcosmos.BinaryEncodingOptions{}` disables binary wire encoding. Text conversion preserves JSON
+`&azcosmos.BinaryEncodingOptions{Enabled: to.Ptr(false)}` disables binary wire encoding
+(`to` is `github.com/Azure/azure-sdk-for-go/sdk/azcore/to`).
+The zero-valued group enables binary, as Rust's default does. Text conversion preserves JSON
 values, not necessarily byte-for-byte formatting. Go never decodes application item schemas.
 
 ### SDK identity
 
 Service requests include `azsdk-go-azcosmos/<version>` in the User-Agent header alongside the native
-Cosmos driver identity and feature flags. `ClientOptions.ApplicationID` remains an optional,
-unchanged application suffix; SDK identity does not consume its length allowance.
+Cosmos driver identity and feature flags. `RuntimeOptions.ApplicationID` is the optional application
+suffix; SDK identity does not consume its length allowance. Per-client suffix overrides require
+native support not present in v0.2.0, so they are not exposed.
+
+### Additional configuration
+
+`RuntimeOptions.CPURefreshInterval` configures the existing native CPU/memory sampler (one to sixty
+seconds). `ClientOptions.FaultInjectionRules` forwards copied, typed test rules through the existing
+versioned native driver-options API. Rules can select item or metadata operations, transport and
+region, predefined failures or custom HTTP responses, delays, probability, hit limits, and lifetime.
+
+`Response.Diagnostics` and `Error.Diagnostics` contain immutable native snapshots when available.
+`ClientOptions.DiagnosticsHandler` observes completed Go item calls after the client lifetime guard
+is released. It receives absent native diagnostics when a call stops waiting before completion.
+JSON rendering errors are reported through `Diagnostics.Err()` without changing operation outcomes.
+Snapshot JSON uses native default verbosity and a driver-defined schema.
+
+Connection-pool configuration, partition-failover tuning, backup endpoints, runtime diagnostic
+retention/verbosity configuration, and per-client identity overrides remain deferred: the published
+ABI cannot carry those settings. Submillisecond precision is also limited by its millisecond fields.
+Constructors stay network-free; use `Initialize(ctx)` for eager account initialization.
 
 ### Patching items
 
@@ -150,15 +173,16 @@ back to read-modify-write when a request exceeds the service limit.
 
 Client-side execution of a patch that is not intrinsically retry-safe permanently adds the
 `_azsdkPatchTracking` property to the item. The driver uses it to deduplicate retries within one
-`PatchItem` call. `PatchItemOptions.TrackingID` accepts a stable hyphenated UUID to reuse across
+`PatchItem` call. `PatchItemOptions.TrackingID` accepts a UUID (simple, hyphenated, braced, or URN) to reuse across
 application retries after an ambiguous outcome. The effective ID is returned on `ItemResponse`
 or `Error`, including cancellation, when supplied by the driver. Duplicate suppression is bounded
 by tracking capacity and retention; it is not a permanent exactly-once guarantee.
 
 `MaxAttempts` (1..255), `TrackingCapacity` (1..65535), and `TrackingRetention` configure client-side
 patching and are inert for server-side execution. Retention floors to whole seconds with a minimum
-of one second even for explicit zero; nil uses the driver default. Capacity pressure can evict
-tracking entries sooner. All item APIs expose mutually exclusive If-Match and If-None-Match
+of one second even for explicit zero and a maximum of uint32 seconds; larger values clamp.
+Nil uses the driver default. Capacity pressure can evict tracking entries sooner.
+PATCH exposes only If-Match. Other item APIs expose mutually exclusive If-Match and If-None-Match
 preconditions, whose service support depends on the operation. Patch-specific `Strategy` overrides
 the shared `Operation.PatchStrategy`.
 

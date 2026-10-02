@@ -103,8 +103,6 @@ type DeleteItemOptions struct {
 // PatchItemOptions is provisional. It may change or be removed before azcosmos/v2 reaches a stable
 // release.
 type PatchItemOptions struct {
-	// IfNoneMatchETag applies an If-None-Match precondition. It cannot accompany IfMatchETag.
-	IfNoneMatchETag *azcore.ETag
 	// MaxAttempts limits client-side read-modify-write attempts to 1..255. Nil inherits.
 	MaxAttempts *uint8
 	// TrackingID reuses a UUID for bounded duplicate suppression after an ambiguous result.
@@ -113,7 +111,8 @@ type PatchItemOptions struct {
 	// TrackingCapacity limits retained tracking entries to 1..65535. Nil uses the driver default.
 	TrackingCapacity *uint16
 	// TrackingRetention floors to whole seconds with a minimum of one second, including zero.
-	// Nil uses the default. Capacity pressure can evict entries sooner.
+	// Values above uint32 seconds clamp to that maximum. Nil uses the default.
+	// Capacity pressure can evict entries sooner.
 	TrackingRetention *time.Duration
 	// Operation holds the settings every operation accepts. PatchItem returns the updated item by
 	// default unless content responses are explicitly disabled at the client or operation level.
@@ -195,8 +194,7 @@ func (c *ContainerClient) ReadItem(ctx context.Context, partitionKey PartitionKe
 //
 // When an item with the same id already exists the returned error is an [Error] with [Error.Code]
 // set to [CodeConflict]. The response carries the created item only when content responses are
-// enabled, on the client through [ClientOptions.EnableContentResponseOnWrite] or per operation
-// through [OperationOptions.EnableContentResponseOnWrite].
+// enabled through [OperationOptions.EnableContentResponseOnWrite] at runtime, client, or request scope.
 func (c *ContainerClient) CreateItem(ctx context.Context, partitionKey PartitionKey, id string, item []byte, options *CreateItemOptions) (ItemResponse, error) {
 	if err := validateItemArguments(partitionKey); err != nil {
 		return ItemResponse{}, err
@@ -355,7 +353,7 @@ func (c *ContainerClient) PatchItem(ctx context.Context, partitionKey PartitionK
 		return ItemResponse{}, err
 	}
 	if options != nil {
-		if err := validateItemWriteOptions(options.SessionToken, options.IfMatchETag, options.IfNoneMatchETag); err != nil {
+		if err := validateItemWriteOptions(options.SessionToken, options.IfMatchETag, nil); err != nil {
 			return ItemResponse{}, err
 		}
 		if err := options.Strategy.validate(); err != nil {
@@ -379,16 +377,18 @@ func (c *ContainerClient) PatchItem(ctx context.Context, partitionKey PartitionK
 		req.sessionToken = options.SessionToken
 		req.patchStrategy = options.Strategy
 		req.patchMaxAttempts = clonePointer(options.MaxAttempts)
-		req.patchTrackingID = options.TrackingID
+		req.patchTrackingID, err = options.TrackingID.normalized()
+		if err != nil {
+			return ItemResponse{}, err
+		}
 		req.patchTrackingCapacity = clonePointer(options.TrackingCapacity)
 		req.patchTrackingRetention = clonePointer(options.TrackingRetention)
 		setIfMatchPrecondition(&req, options.IfMatchETag)
-		setIfNoneMatchPrecondition(&req, options.IfNoneMatchETag)
 	}
 	return c.executeItem(ctx, req, true)
 }
 
-func (c *ContainerClient) executeItem(ctx context.Context, req itemRequest, includeValue bool) (ItemResponse, error) {
+func (c *ContainerClient) executeItem(ctx context.Context, req itemRequest, includeValue bool) (response ItemResponse, resultErr error) {
 	if err := req.options.validate(); err != nil {
 		return ItemResponse{}, err
 	}
@@ -406,7 +406,20 @@ func (c *ContainerClient) executeItem(ctx context.Context, req itemRequest, incl
 	if err != nil {
 		return ItemResponse{}, err
 	}
-	defer release()
+	defer func() {
+		release()
+		if handler := c.database.client.options.DiagnosticsHandler; handler != nil {
+			diagnostics := response.Diagnostics
+			var operationErr *Error
+			if errors.As(resultErr, &operationErr) {
+				diagnostics = operationErr.Diagnostics
+			}
+			handler(ctx, OperationDiagnostic{
+				Operation: req.kind.name(), DatabaseID: req.databaseID, ContainerID: req.containerID,
+				Diagnostics: diagnostics, Error: resultErr,
+			})
+		}
+	}()
 
 	if err := ctx.Err(); err != nil {
 		return ItemResponse{}, err

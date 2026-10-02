@@ -11,8 +11,4 @@ func openRuntime(RuntimeOptions) (*nativeRuntime, error) {
 	return nil, newDriverUnavailableError()
 }
 
-func (r *nativeRuntime) setOperationOptions(OperationOptions) error {
-	return newDriverUnavailableError()
-}
-
 func (r *nativeRuntime) close() {}

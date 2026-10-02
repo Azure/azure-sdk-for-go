@@ -54,8 +54,8 @@ func TestNativeUserAgentOnWire(t *testing.T) {
 
 			credential, err := NewKeyCredential(emulatorKey)
 			require.NoError(t, err)
-			options := &ClientOptions{ApplicationID: tt.applicationID}
-			if tt.shared {
+			options := &ClientOptions{}
+			if tt.shared || tt.applicationID != "" {
 				shared, err := NewRuntime(&RuntimeOptions{ApplicationID: tt.applicationID})
 				require.NoError(t, err)
 				t.Cleanup(func() { require.NoError(t, shared.Close()) })

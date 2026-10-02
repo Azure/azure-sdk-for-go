@@ -21,6 +21,25 @@ const (
 	operationKindPatchItem   operationKind = 24
 )
 
+func (kind operationKind) name() string {
+	switch kind {
+	case operationKindReadItem:
+		return "ReadItem"
+	case operationKindCreateItem:
+		return "CreateItem"
+	case operationKindReplaceItem:
+		return "ReplaceItem"
+	case operationKindUpsertItem:
+		return "UpsertItem"
+	case operationKindDeleteItem:
+		return "DeleteItem"
+	case operationKindPatchItem:
+		return "PatchItem"
+	default:
+		return "Unknown"
+	}
+}
+
 // preconditionKind identifies the conditional request header the driver should send. The values
 // mirror the driver's precondition kinds so the binding can pass them through directly.
 type preconditionKind int32

@@ -18,5 +18,4 @@ func TestRuntimeUnavailableDiagnostic(t *testing.T) {
 	var zero Runtime
 	require.NoError(t, zero.Close())
 	require.NoError(t, zero.Close())
-	require.Error(t, zero.SetOperationOptions(OperationOptions{}))
 }

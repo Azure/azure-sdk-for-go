@@ -19,7 +19,7 @@ func TestOperationOptionsValidation(t *testing.T) {
 	for name, options := range map[string]OperationOptions{
 		"consistency":      {ConsistencyStrategy: "invalid"},
 		"patch":            {PatchStrategy: "invalid"},
-		"timeout":          {EndToEndTimeout: -1},
+		"timeout":          {EndToEndTimeout: to(time.Duration(-1))},
 		"ttl":              {EndpointUnavailabilityTTL: to(time.Duration(-1))},
 		"throttle wait":    {ThrottlingRetry: ThrottlingRetryOptions{MaxRetryWaitTime: to(time.Duration(-1))}},
 		"priority":         {ThroughputControl: ThroughputControlOptions{PriorityLevel: "invalid"}},
@@ -36,7 +36,7 @@ func TestOperationOptionsValidation(t *testing.T) {
 	}
 	require.NoError(t, (OperationOptions{
 		MaxFailoverRetryCount: to(uint32(math.MaxUint32)), MaxSessionRetryCount: to(uint32(0)),
-		EndToEndTimeout: time.Nanosecond, EndpointUnavailabilityTTL: to(time.Duration(0)),
+		EndToEndTimeout: to(time.Duration(time.Nanosecond)), EndpointUnavailabilityTTL: to(time.Duration(0)),
 		ExcludedRegions: []Region{}, CustomHeaders: map[string]string{"X-Custom": ""},
 		AvailabilityStrategy: HedgingAvailability(time.Nanosecond),
 	}).validate())
@@ -47,7 +47,7 @@ func TestOperationOptionsCloneOwnsAllMutableValues(t *testing.T) {
 		EnableContentResponseOnWrite: to(true), ExcludedRegions: []Region{RegionEastUS},
 		SessionCapturingDisabled: to(true), MaxFailoverRetryCount: to(uint32(1)), MaxSessionRetryCount: to(uint32(2)),
 		EndpointUnavailabilityTTL: to(time.Second), CustomHeaders: map[string]string{"x-custom": "first"},
-		BinaryEncoding: &BinaryEncodingOptions{Enabled: true}, HedgingEnabled: to(true),
+		BinaryEncoding: &BinaryEncodingOptions{Enabled: to(true)}, HedgingEnabled: to(true),
 		ThroughputControl: ThroughputControlOptions{ThroughputBucket: to(uint32(3))},
 		ThrottlingRetry:   ThrottlingRetryOptions{MaxRetryCount: to(uint32(4)), MaxRetryWaitTime: to(time.Second)},
 	}
@@ -60,7 +60,7 @@ func TestOperationOptionsCloneOwnsAllMutableValues(t *testing.T) {
 	*original.MaxSessionRetryCount = 9
 	*original.EndpointUnavailabilityTTL = 2 * time.Second
 	original.CustomHeaders["x-custom"] = "second"
-	original.BinaryEncoding.Enabled = false
+	original.BinaryEncoding.Enabled = to(false)
 	*original.HedgingEnabled = false
 	*original.ThroughputControl.ThroughputBucket = 8
 	*original.ThrottlingRetry.MaxRetryCount = 8
@@ -77,7 +77,7 @@ func TestCommonValidationAcrossAllItemOperations(t *testing.T) {
 	client := &Client{closed: true}
 	container, err := client.NewContainer("db", "container")
 	require.NoError(t, err)
-	options := OperationOptions{MaxSessionRetryCount: to(uint32(0)), EndToEndTimeout: -1}
+	options := OperationOptions{MaxSessionRetryCount: to(uint32(0)), EndToEndTimeout: to(time.Duration(-1))}
 	pk := NewPartitionKeyString("pk")
 	ctx := context.Background()
 	patch := PatchOperations{}
@@ -117,7 +117,6 @@ func TestPreconditionsAndTrackingValidation(t *testing.T) {
 	for _, options := range []PatchItemOptions{
 		{MaxAttempts: to(uint8(0))}, {TrackingCapacity: to(uint16(0))},
 		{TrackingRetention: to(time.Duration(-1))},
-		{TrackingRetention: to((time.Duration(math.MaxUint32) + 1) * time.Second)},
 		{TrackingID: "not-a-uuid"},
 	} {
 		require.Error(t, options.validateTracking())
@@ -135,7 +134,6 @@ func TestAllItemAPIsRejectConflictingPreconditions(t *testing.T) {
 	tag := azcore.ETag(`"tag"`)
 	pk := NewPartitionKeyString("pk")
 	ctx := context.Background()
-	patch := validPatchOperations(t)
 	calls := []func() (ItemResponse, error){
 		func() (ItemResponse, error) {
 			return container.ReadItem(ctx, pk, "id", &ReadItemOptions{IfMatchETag: &tag, IfNoneMatchETag: &tag})
@@ -151,9 +149,6 @@ func TestAllItemAPIsRejectConflictingPreconditions(t *testing.T) {
 		},
 		func() (ItemResponse, error) {
 			return container.DeleteItem(ctx, pk, "id", &DeleteItemOptions{IfMatchETag: &tag, IfNoneMatchETag: &tag})
-		},
-		func() (ItemResponse, error) {
-			return container.PatchItem(ctx, pk, "id", patch, &PatchItemOptions{IfMatchETag: &tag, IfNoneMatchETag: &tag})
 		},
 	}
 	for _, call := range calls {

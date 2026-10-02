@@ -123,7 +123,7 @@ func (o OperationOptions) toNative() (*C.cosmos_operation_options_t, func()) {
 		options.endpoint_unavailability_ttl_ms = C.int64_t(o.EndpointUnavailabilityTTL.Milliseconds())
 	}
 	if o.BinaryEncoding != nil {
-		options.binary_encoding_enabled = nativeBool(o.BinaryEncoding.Enabled)
+		options.binary_encoding_enabled = nativeBool(o.BinaryEncoding.enabled())
 		options.binary_encoding_request_text_response = nativeBool(o.BinaryEncoding.RequestTextResponse)
 	}
 	if o.ThroughputControl.ThroughputBucket != nil {
@@ -172,8 +172,8 @@ func (o OperationOptions) toNative() (*C.cosmos_operation_options_t, func()) {
 		}
 
 	}
-	if o.EndToEndTimeout > 0 {
-		milliseconds := max(o.EndToEndTimeout.Milliseconds(), 1)
+	if o.EndToEndTimeout != nil {
+		milliseconds := max(o.EndToEndTimeout.Milliseconds(), 1000)
 		options.end_to_end_timeout_ms = C.int64_t(milliseconds)
 	}
 	if o.ExcludedRegions != nil {
@@ -368,17 +368,13 @@ func nativePatchStrategy(s PatchStrategy) (int32, bool) {
 // toNative builds the driver's per-client options config. The returned function releases it.
 //
 // The config is flat: preferred regions plus the operation options every operation starts from.
-// [ClientOptions.ApplicationID] is not here because the ABI carries the user agent on the runtime;
+// Application identity is not here because the ABI carries the user agent on the runtime;
 // see nativeDriver.buildRuntime.
 func (o ClientOptions) toNative() (*C.cosmos_driver_options_config_t, func(), error) {
 	config := (*C.cosmos_driver_options_config_t)(C.malloc(C.size_t(unsafe.Sizeof(C.cosmos_driver_options_config_t{}))))
 	*config = C.cosmos_driver_options_config_default()
 
-	common := o.Operation
-	if o.EnableContentResponseOnWrite != nil {
-		common.EnableContentResponseOnWrite = o.EnableContentResponseOnWrite
-	}
-	operationOptions, releaseOperationOptions := common.toNative()
+	operationOptions, releaseOperationOptions := o.Operation.toNative()
 	config.operation_options = operationOptions
 
 	var allocations []unsafe.Pointer

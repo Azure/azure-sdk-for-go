@@ -7,6 +7,7 @@ import (
 	"errors"
 	"fmt"
 	"maps"
+	"os"
 	"slices"
 	"strings"
 	"time"
@@ -22,10 +23,9 @@ type OperationOptions struct {
 	EnableContentResponseOnWrite *bool
 	// ExcludedRegions replaces inherited exclusions. Nil inherits; an empty non-nil slice clears them.
 	ExcludedRegions []Region
-	// EndToEndTimeout bounds initialization, metadata lookup, and execution. Zero inherits.
-	// Context deadlines can stop the Go wait sooner than the driver's one-second minimum,
-	// but do not cancel submitted native work.
-	EndToEndTimeout time.Duration
+	// EndToEndTimeout bounds the operation. Nil inherits; explicit values below one second
+	// clamp to one second, including zero. Context deadlines can stop waiting earlier.
+	EndToEndTimeout *time.Duration
 	// PatchStrategy selects patch execution. A patch-specific Strategy takes precedence.
 	PatchStrategy PatchStrategy
 	// SessionCapturingDisabled disables automatic session capture/resolution, not explicit tokens.
@@ -97,12 +97,38 @@ func HedgingAvailability(threshold time.Duration) AvailabilityStrategy {
 }
 
 // BinaryEncodingOptions controls Cosmos binary JSON wire encoding and response conversion.
-// A supplied zero value disables binary encoding. Raw responses may be binary when enabled.
+// A supplied zero value enables binary encoding, matching Rust's default options.
 type BinaryEncodingOptions struct {
-	// Enabled permits binary JSON on the wire.
-	Enabled bool
+	// Enabled permits binary JSON on the wire. Nil defaults to true; false explicitly disables it.
+	Enabled *bool
 	// RequestTextResponse converts binary responses to text JSON without disabling binary wire encoding.
 	RequestTextResponse bool
+}
+
+func (o *BinaryEncodingOptions) clone() *BinaryEncodingOptions {
+	if o == nil {
+		return nil
+	}
+	return &BinaryEncodingOptions{Enabled: clonePointer(o.Enabled), RequestTextResponse: o.RequestTextResponse}
+}
+
+func (o BinaryEncodingOptions) enabled() bool {
+	return o.Enabled == nil || *o.Enabled
+}
+
+func resolveClientBinaryEncoding(explicit *BinaryEncodingOptions) BinaryEncodingOptions {
+	if explicit != nil {
+		return *explicit.clone()
+	}
+	enabled := true
+	if value, set := os.LookupEnv("AZURE_COSMOS_BINARY_ENCODING_ENABLED"); set {
+		switch strings.ToLower(strings.TrimSpace(value)) {
+		case "1", "true", "yes", "on":
+		default:
+			enabled = false
+		}
+	}
+	return BinaryEncodingOptions{Enabled: &enabled}
 }
 
 func clonePointer[T any](value *T) *T {
@@ -115,12 +141,13 @@ func clonePointer[T any](value *T) *T {
 
 func (o OperationOptions) clone() OperationOptions {
 	o.EnableContentResponseOnWrite = clonePointer(o.EnableContentResponseOnWrite)
+	o.EndToEndTimeout = clonePointer(o.EndToEndTimeout)
 	o.ExcludedRegions = slices.Clone(o.ExcludedRegions)
 	o.SessionCapturingDisabled = clonePointer(o.SessionCapturingDisabled)
 	o.MaxFailoverRetryCount = clonePointer(o.MaxFailoverRetryCount)
 	o.MaxSessionRetryCount = clonePointer(o.MaxSessionRetryCount)
 	o.EndpointUnavailabilityTTL = clonePointer(o.EndpointUnavailabilityTTL)
-	o.BinaryEncoding = clonePointer(o.BinaryEncoding)
+	o.BinaryEncoding = o.BinaryEncoding.clone()
 	o.CustomHeaders = maps.Clone(o.CustomHeaders)
 	o.ThroughputControl.ThroughputBucket = clonePointer(o.ThroughputControl.ThroughputBucket)
 	o.ThrottlingRetry.MaxRetryCount = clonePointer(o.ThrottlingRetry.MaxRetryCount)
@@ -136,7 +163,7 @@ func (o OperationOptions) validate() error {
 	if err := o.PatchStrategy.validate(); err != nil {
 		return err
 	}
-	if o.EndToEndTimeout < 0 {
+	if o.EndToEndTimeout != nil && *o.EndToEndTimeout < 0 {
 		return errors.New("azcosmos: EndToEndTimeout must not be negative")
 	}
 	if o.EndpointUnavailabilityTTL != nil && *o.EndpointUnavailabilityTTL < 0 {

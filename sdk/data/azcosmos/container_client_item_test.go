@@ -250,7 +250,7 @@ func TestItemOptionsShareOperationOptions(t *testing.T) {
 	shared := OperationOptions{
 		ConsistencyStrategy: ReadConsistencyStrategySession,
 		ExcludedRegions:     []Region{RegionEastUS},
-		EndToEndTimeout:     5 * time.Second,
+		EndToEndTimeout:     to(time.Duration(5 * time.Second)),
 	}
 
 	read := ReadItemOptions{Operation: shared}

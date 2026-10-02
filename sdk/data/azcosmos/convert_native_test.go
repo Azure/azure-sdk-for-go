@@ -134,7 +134,7 @@ func TestOperationOptionsToNativeCarriesEveryField(t *testing.T) {
 
 	options, release := inspectNativeOperationOptions(OperationOptions{
 		ConsistencyStrategy: ReadConsistencyStrategySession,
-		EndToEndTimeout:     3 * time.Second,
+		EndToEndTimeout:     to(time.Duration(3 * time.Second)),
 		ExcludedRegions:     []Region{RegionEastUS, RegionWestEurope},
 	})
 	t.Cleanup(release)
@@ -147,11 +147,11 @@ func TestOperationOptionsToNativeCarriesEveryField(t *testing.T) {
 
 func TestOperationOptionsClampsSubMillisecondTimeout(t *testing.T) {
 	options, release := inspectNativeOperationOptions(OperationOptions{
-		EndToEndTimeout: time.Nanosecond,
+		EndToEndTimeout: to(time.Duration(time.Nanosecond)),
 	})
 	t.Cleanup(release)
 
-	require.Equal(t, int64(1), options.endToEndTimeoutMillis)
+	require.Equal(t, int64(1000), options.endToEndTimeoutMillis)
 }
 
 // Every strategy has to map to a distinct discriminant, which catches both a mis-mapping and two
@@ -347,7 +347,7 @@ func TestClientOptionsConvertToTheDriversConfig(t *testing.T) {
 		} {
 			t.Run(tt.name, func(t *testing.T) {
 				options, release, err := inspectNativeClientOptions(ClientOptions{
-					EnableContentResponseOnWrite: tt.enabled,
+					Operation: OperationOptions{EnableContentResponseOnWrite: tt.enabled},
 				})
 				require.NoError(t, err)
 				defer release()

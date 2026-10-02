@@ -16,6 +16,7 @@ import "C"
 import (
 	"context"
 	"errors"
+	"math"
 	"runtime/cgo"
 	"time"
 	"unsafe"
@@ -35,6 +36,12 @@ const unsetMaxItemCount = -1
 // handles alive for the operation's duration: Close cannot take the write lock until every
 // operation has released it.
 func (c *Client) execute(ctx context.Context, req itemRequest) (ItemResponse, []byte, error) {
+	switch req.kind {
+	case operationKindCreateItem, operationKindReadItem, operationKindReplaceItem, operationKindUpsertItem:
+		if req.options.BinaryEncoding == nil {
+			req.options.BinaryEncoding = c.binaryEncoding.clone()
+		}
+	}
 	return c.driver.execute(ctx, req)
 }
 
@@ -238,7 +245,7 @@ func buildNativeItemRequest(req itemRequest, container *C.cosmos_container_ref_t
 		request.patch_tracking_capacity = C.uint16_t(*req.patchTrackingCapacity)
 	}
 	if req.patchTrackingRetention != nil {
-		request.patch_tracking_retention_seconds = C.uint32_t(max(1, *req.patchTrackingRetention/time.Second))
+		request.patch_tracking_retention_seconds = C.uint32_t(min(math.MaxUint32, max(1, *req.patchTrackingRetention/time.Second)))
 	}
 	if req.patchTrackingID != "" {
 		id, allocation := toNativeString(string(req.patchTrackingID))

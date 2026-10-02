@@ -7,13 +7,10 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/netip"
 	"net/url"
-	"strings"
 	"sync"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"golang.org/x/net/idna"
 )
 
 // ClientOptions configures a [Client].
@@ -25,8 +22,8 @@ import (
 //
 // A nil *ClientOptions selects the defaults for every field.
 type ClientOptions struct {
-	// Runtime shares resources across account hostnames. Each hostname may be used only once
-	// per Runtime lifetime. Nil creates a private runtime owned by this client.
+	// Runtime shares execution resources and same-account caches, including credentials.
+	// Nil uses the process-wide runtime. Supply separate runtimes for identity isolation.
 	Runtime *Runtime
 	// Operation supplies account-level defaults for item operations and query page fetches.
 	Operation OperationOptions
@@ -36,17 +33,15 @@ type ClientOptions struct {
 	// [ProximityTo] expands a known application region to the SDK's estimated proximity order.
 	Routing RoutingStrategy
 
-	// ApplicationID is an application-specific identifier appended to the user agent sent with
-	// every request. Keep it free of personally identifiable information.
-	//
-	// The value is passed unchanged to the driver, which validates it when the client is
-	// constructed. Prefer a stable, low-cardinality name such as "order-service" over anything
-	// per instance.
-	ApplicationID string
-
-	// EnableContentResponseOnWrite is a compatibility alias for Operation.EnableContentResponseOnWrite.
-	// Conflicting non-nil values are rejected. Nil inherits runtime and driver defaults.
-	EnableContentResponseOnWrite *bool
+	// BinaryEncoding sets the SDK's client encoding default for create/read/replace/upsert.
+	// Nil resolves AZURE_COSMOS_BINARY_ENCODING_ENABLED at construction, then defaults to enabled.
+	// Explicit request encoding overrides this value. PATCH and delete use Operation inheritance.
+	BinaryEncoding *BinaryEncodingOptions
+	// FaultInjectionRules configures client-specific native fault injection for testing.
+	FaultInjectionRules []FaultInjectionRule
+	// DiagnosticsHandler observes completed item calls after their lifetime guard is released.
+	// It must be safe for concurrent calls. Query-specific diagnostics are not configured here.
+	DiagnosticsHandler func(context.Context, OperationDiagnostic)
 }
 
 // Client is a client for an Azure Cosmos DB account. It is the entry point to the databases and
@@ -59,7 +54,7 @@ type Client struct {
 	endpoint       string
 	options        ClientOptions
 	runtime        *Runtime
-	privateRuntime bool
+	binaryEncoding BinaryEncodingOptions
 	// mu guards the client's lifetime rather than its fields. Operations hold it for read while
 	// they run, so Close taking it for write is exactly "wait for in-flight operations to
 	// finish". That matters more here than it would in a pure-Go client: closing releases handles
@@ -136,44 +131,26 @@ func newClient(
 		client.options = *options
 		client.options.Routing = options.Routing.clone()
 		client.options.Operation = options.Operation.clone()
-		if options.EnableContentResponseOnWrite != nil {
-			enabled := *options.EnableContentResponseOnWrite
-			client.options.EnableContentResponseOnWrite = &enabled
-		}
+		client.options.BinaryEncoding = options.BinaryEncoding.clone()
+		client.options.FaultInjectionRules = cloneFaultInjectionRules(options.FaultInjectionRules)
 	}
 	if err := client.options.validate(); err != nil {
 		return nil, err
 	}
-	if client.options.EnableContentResponseOnWrite != nil {
-		client.options.Operation.EnableContentResponseOnWrite = clonePointer(client.options.EnableContentResponseOnWrite)
-	}
+	client.binaryEncoding = resolveClientBinaryEncoding(client.options.BinaryEncoding)
 	client.runtime = client.options.Runtime
-	var accountHost string
-	if client.runtime != nil {
-		if id := client.options.ApplicationID; id != "" && id != client.runtime.applicationID {
-			return nil, errors.New("azcosmos: ClientOptions.ApplicationID conflicts with the shared runtime identity")
-		}
-		accountHost, err = runtimeAccountHost(parsed)
+	if client.runtime == nil && driverAvailable {
+		client.runtime, err = defaultRuntime()
 		if err != nil {
 			return nil, err
 		}
-	} else if driverAvailable {
-		client.runtime, err = NewRuntime(&RuntimeOptions{ApplicationID: client.options.ApplicationID})
-		if err != nil {
-			return nil, err
-		}
-		client.privateRuntime = true
 	}
 	// Registration and local handle construction are one transaction against runtime shutdown.
 	if client.runtime != nil {
 		client.runtime.mu.Lock()
-		if client.runtime.closing || client.runtime.native == nil {
+		if client.runtime.closed || client.runtime.native == nil {
 			client.runtime.mu.Unlock()
 			return nil, &Error{Code: CodeClientClosed, Message: "the runtime is closed or uninitialized"}
-		}
-		if _, exists := client.runtime.accountHosts[accountHost]; !client.privateRuntime && exists {
-			client.runtime.mu.Unlock()
-			return nil, errors.New("azcosmos: this account hostname has already been attached to the runtime; native v0.2.0 retains credentials, so use a separate Runtime")
 		}
 	}
 
@@ -187,41 +164,14 @@ func newClient(
 	client.driver = driver
 	if client.runtime != nil {
 		if err == nil {
-			client.runtime.clients[client] = struct{}{}
-			if !client.privateRuntime {
-				client.runtime.accountHosts[accountHost] = struct{}{}
-			}
+			client.runtime.clients++
 		}
 		client.runtime.mu.Unlock()
 	}
 	if err != nil {
-		if client.privateRuntime {
-			_ = client.runtime.Close()
-		}
 		return nil, err
 	}
 	return client, nil
-}
-
-// Ports and paths deliberately do not partition identities on a shared native account cache.
-func runtimeAccountHost(endpoint *url.URL) (string, error) {
-	host := strings.TrimRight(endpoint.Hostname(), ".")
-	if address, err := netip.ParseAddr(host); err == nil {
-		return address.Unmap().String(), nil
-	}
-	ascii, err := idna.Lookup.ToASCII(host)
-	if err != nil || ascii == "" {
-		return "", errors.New("azcosmos: shared runtime requires a valid account hostname")
-	}
-	ascii = strings.TrimRight(strings.ToLower(ascii), ".")
-	if address, err := netip.ParseAddr(ascii); err == nil {
-		return address.Unmap().String(), nil
-	}
-	lastLabel := ascii[strings.LastIndexByte(ascii, '.')+1:]
-	if lastLabel == "" || lastLabel[0] >= '0' && lastLabel[0] <= '9' {
-		return "", errors.New("azcosmos: shared runtime requires canonical IP addresses, not numeric hostname aliases")
-	}
-	return ascii, nil
 }
 
 // Initialize eagerly creates the driver and fills its account-properties and routing caches.
@@ -249,8 +199,8 @@ func (c *Client) Endpoint() string {
 	return c.endpoint
 }
 
-// Close releases the driver resources the client owns. It cancels active token acquisition, then
-// waits for all native work, including requests whose callers stopped waiting, to finish.
+// Close releases this client's driver resources after all submitted native work finishes.
+// Cached credentials remain alive with the runtime and are not cancelled by closing one client.
 // Afterwards every operation on the client
 // fails with [CodeClientClosed] rather than reaching the driver.
 //
@@ -258,18 +208,11 @@ func (c *Client) Endpoint() string {
 // returns an error only when the client could not be torn down cleanly, in which case the
 // resources are released anyway, so there is nothing to retry.
 func (c *Client) Close() error {
-	err := c.close()
-	if c.privateRuntime {
-		err = errors.Join(err, c.runtime.Close())
-	}
-	return err
+	return c.close()
 }
 
 func (c *Client) close() error {
 	c.closeOnce.Do(func() {
-		// Signal host token acquisition before waiting for operations. Initialize can be holding
-		// the read lock while GetToken waits on this cancellation.
-		c.driver.cancel()
 		// Taking the write lock blocks until every operation holding it for read has finished,
 		// and keeps later operations out once closed is set.
 		c.mu.Lock()
@@ -280,7 +223,7 @@ func (c *Client) close() error {
 		c.closeErr = c.driver.close()
 		c.driver = nil
 		if c.runtime != nil {
-			c.runtime.detach(c)
+			c.runtime.detach()
 		}
 	})
 	return c.closeErr
@@ -293,17 +236,6 @@ func (c *Client) acquire() (release func(), err error) {
 	if c.closed {
 		c.mu.RUnlock()
 		return nil, &Error{Code: CodeClientClosed, Message: "the client has been closed"}
-	}
-	if c.runtime != nil {
-		releaseRuntime, err := c.runtime.acquire()
-		if err != nil {
-			c.mu.RUnlock()
-			return nil, err
-		}
-		return func() {
-			releaseRuntime()
-			c.mu.RUnlock()
-		}, nil
 	}
 	return c.mu.RUnlock, nil
 }
@@ -330,13 +262,8 @@ func (c *Client) NewContainer(databaseID string, containerID string) (*Container
 // validate reports option values that cannot be passed through the C ABI. Values the driver
 // understands are passed through and validated there, so this package does not duplicate its rules.
 func (o ClientOptions) validate() error {
-	// The driver rejects embedded NUL bytes in this counted UTF-8 field.
-	if strings.IndexByte(o.ApplicationID, 0) >= 0 {
-		return errors.New("azcosmos: ClientOptions.ApplicationID must not contain a NUL byte")
-	}
-	if o.EnableContentResponseOnWrite != nil && o.Operation.EnableContentResponseOnWrite != nil &&
-		*o.EnableContentResponseOnWrite != *o.Operation.EnableContentResponseOnWrite {
-		return errors.New("azcosmos: conflicting EnableContentResponseOnWrite client options")
+	if err := validateFaultInjectionRules(o.FaultInjectionRules); err != nil {
+		return err
 	}
 	return o.Operation.validate()
 }

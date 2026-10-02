@@ -15,12 +15,13 @@ import (
 )
 
 func TestQuerySnapshotTimeoutIncludesLazyInitialization(t *testing.T) {
-	shared, err := NewRuntime(&RuntimeOptions{Operation: OperationOptions{EndToEndTimeout: time.Second}})
+	shared, err := NewRuntime(&RuntimeOptions{Operation: OperationOptions{EndToEndTimeout: to(time.Duration(time.Second))}})
 	require.NoError(t, err)
 	t.Cleanup(func() { require.NoError(t, shared.Close()) })
 	credential := &blockingTokenCredential{started: make(chan struct{}), stopped: make(chan struct{})}
 	client, err := NewClient("https://myaccount.documents.azure.com", credential, &ClientOptions{Runtime: shared})
 	require.NoError(t, err)
+	t.Cleanup(func() { client.driver.tokenProvider.cancel(); require.NoError(t, client.Close()) })
 	container, err := client.NewContainer("db", "items")
 	require.NoError(t, err)
 	pager := container.NewQueryItemsPager(NewQuery("SELECT * FROM c"),
@@ -40,13 +41,12 @@ func TestQuerySnapshotTimeoutIncludesLazyInitialization(t *testing.T) {
 	case <-time.After(3 * time.Second):
 		t.Fatal("query did not reach lazy initialization")
 	}
-	require.NoError(t, shared.SetOperationOptions(OperationOptions{EndToEndTimeout: 10 * time.Second}))
 	select {
 	case err := <-done:
 		require.ErrorIs(t, err, context.DeadlineExceeded)
 		require.Less(t, time.Since(start), 3*time.Second)
 	case <-time.After(3 * time.Second):
-		t.Fatal("runtime update replaced the admitted query budget")
+		t.Fatal("query did not honor its runtime budget")
 	}
 }
 

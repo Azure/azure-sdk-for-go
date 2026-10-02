@@ -86,17 +86,15 @@ func TestNativeRuntimeRejectsInvalidApplicationID(t *testing.T) {
 		"abcdefghijklmnopqrstuvwxyz",
 	} {
 		t.Run(applicationID, func(t *testing.T) {
-			d := &nativeDriver{cfg: driverConfig{options: ClientOptions{ApplicationID: applicationID}}}
-
-			err := d.buildRuntime()
+			runtime, err := NewRuntime(&RuntimeOptions{ApplicationID: applicationID})
 
 			var cosmosErr *Error
 			require.ErrorAs(t, err, &cosmosErr)
 			require.Equal(t, CodeClientError, cosmosErr.Code)
 			require.Equal(t, nativeInvalidOptionSubStatus(), cosmosErr.SubStatus)
-			require.Equal(t, "azcosmos: the Cosmos driver rejected runtime options (SDK identity or ClientOptions.ApplicationID)", cosmosErr.Message)
+			require.Contains(t, cosmosErr.Message, "ApplicationID")
 			require.NotContains(t, cosmosErr.Message, applicationID, "do not echo telemetry identifiers")
-			require.Nil(t, d.runtime)
+			require.Nil(t, runtime)
 		})
 	}
 }
@@ -187,11 +185,10 @@ func (c *blockingTokenCredential) GetToken(
 	return azcore.AccessToken{}, ctx.Err()
 }
 
-// Close signals client-lifetime token cancellation before it waits for Initialize's read lock.
-func TestCloseCancelsTokenAcquisition(t *testing.T) {
-	credential := &blockingTokenCredential{
-		started: make(chan struct{}),
-		stopped: make(chan struct{}),
+// Closing a client must not cancel credentials still retained by a shared native cache.
+func TestCloseWaitsForTokenAcquisition(t *testing.T) {
+	credential := &gatedFailingTokenCredential{
+		started: make(chan struct{}), release: make(chan struct{}),
 	}
 	client, err := NewClient("https://myaccount.documents.azure.com", credential, nil)
 	require.NoError(t, err)
@@ -204,18 +201,24 @@ func TestCloseCancelsTokenAcquisition(t *testing.T) {
 	go func() { closed <- client.Close() }()
 
 	select {
+	case <-closed:
+		t.Fatal("Close returned before token acquisition completed")
+	case <-time.After(20 * time.Millisecond):
+	}
+	close(credential.release)
+	select {
 	case err := <-initialized:
 		var cosmosErr *Error
 		require.ErrorAs(t, err, &cosmosErr)
 		require.Equal(t, CodeAuthenticationFailed, cosmosErr.Code)
 	case <-time.After(time.Second):
-		t.Fatal("Initialize did not return after Close cancelled token acquisition")
+		t.Fatal("Initialize did not return after token acquisition completed")
 	}
 	select {
 	case err := <-closed:
 		require.NoError(t, err)
 	case <-time.After(time.Second):
-		t.Fatal("Close did not return after token acquisition stopped")
+		t.Fatal("Close did not return after token acquisition completed")
 	}
 }
 
@@ -249,6 +252,8 @@ func TestNativeCancellationAfterSubmission(t *testing.T) {
 		t.Fatal("caller cancellation must not cancel the client-wide credential")
 	default:
 	}
+	// This test credential must be explicitly released; client closure does not cancel it.
+	client.driver.tokenProvider.cancel()
 	require.NoError(t, client.Close())
 	select {
 	case <-credential.stopped:
@@ -531,7 +536,7 @@ func TestNativeEndToEndTimeoutBoundsLazyInitialization(t *testing.T) {
 		context.Background(),
 		NewPartitionKeyString("pk"),
 		"item-1",
-		&ReadItemOptions{Operation: OperationOptions{EndToEndTimeout: 200 * time.Millisecond}},
+		&ReadItemOptions{Operation: OperationOptions{EndToEndTimeout: to(time.Duration(200 * time.Millisecond))}},
 	)
 	elapsed := time.Since(start)
 

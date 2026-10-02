@@ -6,14 +6,33 @@ package azcosmos
 import (
 	"encoding/hex"
 	"errors"
-	"math"
 	"strings"
-	"time"
 )
 
 // PatchTrackingID is a UUID identifying a logical client-side patch across application retries.
 // Tracking modifies reserved item metadata; it is bounded by retention and capacity, not permanent.
 type PatchTrackingID string
+
+func (id PatchTrackingID) normalized() (PatchTrackingID, error) {
+	if id == "" {
+		return "", nil
+	}
+	value := string(id)
+	if strings.HasPrefix(value, "urn:uuid:") {
+		value = strings.TrimPrefix(value, "urn:uuid:")
+	} else if len(value) == 38 && value[0] == '{' && value[37] == '}' {
+		value = value[1:37]
+	}
+	if len(value) == 36 && value[8] == '-' && value[13] == '-' && value[18] == '-' && value[23] == '-' {
+		value = strings.ReplaceAll(value, "-", "")
+	}
+	decoded, err := hex.DecodeString(value)
+	if err != nil || len(value) != 32 || len(decoded) != 16 {
+		return "", errors.New("azcosmos: TrackingID must be a UUID")
+	}
+	value = strings.ToLower(value)
+	return PatchTrackingID(value[:8] + "-" + value[8:12] + "-" + value[12:16] + "-" + value[16:20] + "-" + value[20:]), nil
+}
 
 func (o PatchItemOptions) validateTracking() error {
 	if o.MaxAttempts != nil && *o.MaxAttempts == 0 {
@@ -22,17 +41,9 @@ func (o PatchItemOptions) validateTracking() error {
 	if o.TrackingCapacity != nil && *o.TrackingCapacity == 0 {
 		return errors.New("azcosmos: TrackingCapacity must be between 1 and 65535")
 	}
-	if o.TrackingRetention != nil && (*o.TrackingRetention < 0 || *o.TrackingRetention/time.Second > math.MaxUint32) {
-		return errors.New("azcosmos: TrackingRetention must be nonnegative and fit uint32 seconds")
+	if o.TrackingRetention != nil && *o.TrackingRetention < 0 {
+		return errors.New("azcosmos: TrackingRetention must not be negative")
 	}
-	if o.TrackingID != "" {
-		id := string(o.TrackingID)
-		if len(id) != 36 || id[8] != '-' || id[13] != '-' || id[18] != '-' || id[23] != '-' {
-			return errors.New("azcosmos: TrackingID must be a hyphenated UUID")
-		}
-		if decoded, err := hex.DecodeString(strings.ReplaceAll(id, "-", "")); err != nil || len(decoded) != 16 {
-			return errors.New("azcosmos: TrackingID must be a hyphenated UUID")
-		}
-	}
-	return nil
+	_, err := o.TrackingID.normalized()
+	return err
 }

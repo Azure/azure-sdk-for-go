@@ -12,6 +12,7 @@ import (
 	"log"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/data/azcosmos/v2"
 )
@@ -181,7 +182,7 @@ func ExampleContainerClient_ReadItem() {
 
 	response, err := container.ReadItem(context.TODO(), pk, "item-1", &azcosmos.ReadItemOptions{
 		Operation: azcosmos.OperationOptions{
-			BinaryEncoding: &azcosmos.BinaryEncodingOptions{Enabled: true, RequestTextResponse: true},
+			BinaryEncoding: &azcosmos.BinaryEncodingOptions{RequestTextResponse: true},
 		},
 	})
 	if err != nil {
@@ -201,7 +202,7 @@ func ExampleContainerClient_ReadItem() {
 func ExampleNewRuntime() {
 	runtime, err := azcosmos.NewRuntime(&azcosmos.RuntimeOptions{
 		ApplicationID: "order-service",
-		Operation:     azcosmos.OperationOptions{EndToEndTimeout: 10 * time.Second},
+		Operation:     azcosmos.OperationOptions{EndToEndTimeout: to.Ptr(10 * time.Second)},
 	})
 	if err != nil {
 		// TODO: Update the following line with your application specific error handling logic
@@ -213,10 +214,8 @@ func ExampleNewRuntime() {
 		log.Fatalf("ERROR: %s", err)
 	}
 	client, err := azcosmos.NewClient("https://myaccount.documents.azure.com", credential, &azcosmos.ClientOptions{
-		Runtime: runtime,
-		Operation: azcosmos.OperationOptions{
-			BinaryEncoding: &azcosmos.BinaryEncodingOptions{Enabled: true, RequestTextResponse: true},
-		},
+		Runtime:        runtime,
+		BinaryEncoding: &azcosmos.BinaryEncodingOptions{RequestTextResponse: true},
 	})
 	if err != nil {
 		// TODO: Update the following line with your application specific error handling logic
@@ -228,13 +227,13 @@ func ExampleNewRuntime() {
 		log.Fatalf("ERROR: %s", err)
 	}
 	_, err = container.ReadItem(context.TODO(), azcosmos.NewPartitionKeyString("partition"), "item", &azcosmos.ReadItemOptions{
-		Operation: azcosmos.OperationOptions{EndToEndTimeout: 2 * time.Second},
+		Operation: azcosmos.OperationOptions{EndToEndTimeout: to.Ptr(2 * time.Second)},
 	})
 	if err != nil {
 		// TODO: Update the following line with your application specific error handling logic
 		log.Fatalf("ERROR: %s", err)
 	}
-	if err := runtime.SetOperationOptions(azcosmos.OperationOptions{EndToEndTimeout: 5 * time.Second}); err != nil {
+	if err := client.Close(); err != nil {
 		// TODO: Update the following line with your application specific error handling logic
 		log.Fatalf("ERROR: %s", err)
 	}

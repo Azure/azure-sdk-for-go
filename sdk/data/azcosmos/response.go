@@ -10,6 +10,8 @@ import (
 // Response holds the values every Cosmos DB operation reports, whatever it operated on. It is
 // embedded in the per-operation response types, which add the values specific to them.
 type Response struct {
+	// Diagnostics is an immutable native snapshot when provided by the driver.
+	Diagnostics Diagnostics
 	// RequestCharge is the number of request units the operation consumed
 	// (`x-ms-request-charge`). See
 	// https://learn.microsoft.com/azure/cosmos-db/request-units.

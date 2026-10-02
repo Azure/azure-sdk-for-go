@@ -1,6 +1,6 @@
 # Release History
 
-## 2.0.0-beta.1 (2026-10-01)
+## 2.0.0-beta.1 (2026-10-02)
 ### Breaking Changes
 
 - Type of `VolumeProperties.ManagedBy` has been changed from `*ManagedByInfo` to `[]*ManagedByResources`

@@ -16,7 +16,9 @@ import "C"
 import (
 	"context"
 	"errors"
+	"math"
 	"runtime/cgo"
+	"time"
 	"unsafe"
 )
 
@@ -34,13 +36,25 @@ const unsetMaxItemCount = -1
 // handles alive for the operation's duration: Close cannot take the write lock until every
 // operation has released it.
 func (c *Client) execute(ctx context.Context, req itemRequest) (ItemResponse, []byte, error) {
+	switch req.kind {
+	case operationKindCreateItem, operationKindReadItem, operationKindReplaceItem, operationKindUpsertItem:
+		if req.options.BinaryEncoding == nil {
+			req.options.BinaryEncoding = c.binaryEncoding.clone()
+		}
+	}
 	return c.driver.execute(ctx, req)
 }
 
 // execute runs one operation to completion and returns its result.
 func (d *nativeDriver) execute(ctx context.Context, req itemRequest) (ItemResponse, []byte, error) {
-	ctx, cancel := contextWithEndToEndTimeout(ctx, req.options.EndToEndTimeout)
-	defer cancel()
+	if req.patchStrategy != PatchStrategyUnset {
+		req.options.PatchStrategy = req.patchStrategy
+	}
+	ctx, snapshot, releaseSnapshot, err := d.snapshot(ctx, req.options)
+	if err != nil {
+		return ItemResponse{}, nil, err
+	}
+	defer releaseSnapshot()
 
 	driver, err := d.ensureDriver(ctx)
 	if err != nil {
@@ -52,15 +66,18 @@ func (d *nativeDriver) execute(ctx context.Context, req itemRequest) (ItemRespon
 		return ItemResponse{}, nil, err
 	}
 
-	// Initialization and resolution have already spent part of the budget, so the operation gets
-	// only what remains rather than restarting the configured duration.
-	req.options.EndToEndTimeout = endToEndTimeout(ctx, 0)
-
 	result, err := d.awaitCompletion(ctx, "submitting the operation",
 		func(queue *C.cosmos_completion_queue_t, cookie C.intptr_t, preError *C.cosmos_status_code_t) *C.cosmos_operation_handle_t {
-			return d.submit(driver, container, req, queue, cookie, preError)
+			request, release := buildNativeItemRequest(req, container)
+			defer release()
+			request.options_snapshot = snapshot
+			return C.cosmos_submit_singleton_operation(driver, &request, queue, cookie, preError) //nolint:gocritic // dupSubExpr is reported against cgo-generated code.
 		})
 	if err != nil {
+		var cancelled *Error
+		if errors.As(err, &cancelled) && cancelled.Code == CodeOperationCancelled {
+			cancelled.PatchTrackingID = req.patchTrackingID
+		}
 		return ItemResponse{}, nil, err
 	}
 	return result.response, result.body, result.err
@@ -74,9 +91,8 @@ func (d *nativeDriver) execute(ctx context.Context, req itemRequest) (ItemRespon
 // to, the cookie to round-trip onto it, and somewhere to report a pre-flight rejection. It returns
 // NULL when the operation was rejected before it started, which posts no completion.
 //
-// Cancelling the context cancels the operation at the driver rather than abandoning it, and then
-// still waits for the completion. The operation owns the cookie, so returning before it has been
-// posted would delete a handle the reactor is about to dereference.
+// The published ABI cannot cancel submitted work. On context cancellation a background waiter
+// owns the cookie and operation handle until completion; Close drains these waiters.
 func (d *nativeDriver) awaitCompletion(
 	ctx context.Context,
 	doing string,
@@ -90,12 +106,22 @@ func (d *nativeDriver) awaitCompletion(
 	// stopped waiting because the context was cancelled.
 	pending := &pendingOperation{result: make(chan completionResult, 1)}
 	handle := cgo.NewHandle(pending)
-	// Deleted only once the operation is known to be finished, because the driver round-trips the
-	// cookie onto the completion and the reactor dereferences it.
-	defer handle.Delete()
+	d.pending.Add(1)
+	var op *C.cosmos_operation_handle_t
+	release := func() {
+		C.cosmos_operation_handle_free(op)
+		handle.Delete()
+		d.pending.Done()
+	}
+	owned := true
+	defer func() {
+		if owned {
+			release()
+		}
+	}()
 
 	var preError C.cosmos_status_code_t
-	op := submit(d.reactor.queue, C.intptr_t(handle), &preError)
+	op = submit(d.reactor.queue, C.intptr_t(handle), &preError)
 	if op == nil {
 		// A pre-flight rejection posts no completion, so it is reported here rather than through
 		// the queue.
@@ -107,7 +133,6 @@ func (d *nativeDriver) awaitCompletion(
 			Message:    "azcosmos: " + doing,
 		}
 	}
-	defer C.cosmos_operation_handle_free(op)
 
 	select {
 	case result := <-pending.result:
@@ -121,15 +146,19 @@ func (d *nativeDriver) awaitCompletion(
 		return result, nil
 
 	case <-ctx.Done():
-		C.cosmos_operation_handle_cancel(op)
-		// The terminal result is authoritative when completion and cancellation race. In
-		// particular, a successful write must not be reported as cancelled after it committed.
-		result := <-pending.result
-		terminal, err := resultAfterCancellation(ctx.Err(), result)
-		if err != nil {
-			result.release()
+		// Prefer an already delivered result. Otherwise a write's outcome remains unknown.
+		select {
+		case result := <-pending.result:
+			return result, nil
+		default:
 		}
-		return terminal, err
+		owned = false
+		go func() {
+			defer release()
+			result := <-pending.result
+			result.release()
+		}()
+		return completionResult{}, newOperationCancelledError(ctx.Err(), 0, "")
 	}
 }
 
@@ -144,7 +173,12 @@ func resultAfterCancellation(cause error, result completionResult) (completionRe
 		requestCharge = completionErr.RequestCharge
 		activityID = completionErr.ActivityID
 	}
-	return completionResult{}, newOperationCancelledError(cause, requestCharge, activityID)
+	err := newOperationCancelledError(cause, requestCharge, activityID)
+	err.PatchTrackingID = result.response.PatchTrackingID
+	if completionErr != nil {
+		err.PatchTrackingID = completionErr.PatchTrackingID
+	}
+	return completionResult{}, err
 }
 
 // inspectAwaitCompletionSubmission reports whether awaitCompletion invoked its submit closure.
@@ -204,6 +238,20 @@ func (d *nativeDriver) submit(
 func buildNativeItemRequest(req itemRequest, container *C.cosmos_container_ref_t) (C.cosmos_operation_request_t, func()) {
 	request := newOperationRequest(req.kind, container)
 	var releases []func()
+	if req.patchMaxAttempts != nil {
+		request.patch_max_attempts = C.uint8_t(*req.patchMaxAttempts)
+	}
+	if req.patchTrackingCapacity != nil {
+		request.patch_tracking_capacity = C.uint16_t(*req.patchTrackingCapacity)
+	}
+	if req.patchTrackingRetention != nil {
+		request.patch_tracking_retention_seconds = C.uint32_t(min(math.MaxUint32, max(1, *req.patchTrackingRetention/time.Second)))
+	}
+	if req.patchTrackingID != "" {
+		id, allocation := toNativeString(string(req.patchTrackingID))
+		releases = append(releases, func() { C.free(allocation) })
+		request.patch_tracking_id = id
+	}
 
 	if req.itemID != "" {
 		itemID, allocation := toNativeString(req.itemID)
@@ -253,29 +301,37 @@ func buildNativeItemRequest(req itemRequest, container *C.cosmos_container_ref_t
 
 // nativeItemRequest is a converted request in Go types, for tests that cannot import C.
 type nativeItemRequest struct {
-	kind                 int32
-	itemID               string
-	partitionKeyLen      int
-	body                 []byte
-	sessionToken         string
-	maxItemCount         int32
-	preconditionKind     int32
-	preconditionETag     string
-	contentResponseWrite int32
-	patchStrategy        int32
+	kind                   int32
+	itemID                 string
+	partitionKeyLen        int
+	body                   []byte
+	sessionToken           string
+	maxItemCount           int32
+	preconditionKind       int32
+	preconditionETag       string
+	contentResponseWrite   int32
+	patchStrategy          int32
+	patchMaxAttempts       uint8
+	patchTrackingID        string
+	patchTrackingCapacity  uint16
+	patchTrackingRetention uint32
 }
 
 // inspectNativeItemRequest converts a request and reads it back before releasing its C memory.
 func inspectNativeItemRequest(req itemRequest) (nativeItemRequest, func()) {
 	request, release := buildNativeItemRequest(req, nil)
 	converted := nativeItemRequest{
-		kind:             int32(request.kind),
-		itemID:           fromNativeString(request.item_id),
-		partitionKeyLen:  int(request.partition_key_len),
-		sessionToken:     fromNativeString(request.session_token),
-		maxItemCount:     int32(request.max_item_count),
-		preconditionKind: int32(request.precondition_kind),
-		preconditionETag: fromNativeString(request.precondition_etag),
+		kind:                   int32(request.kind),
+		itemID:                 fromNativeString(request.item_id),
+		partitionKeyLen:        int(request.partition_key_len),
+		sessionToken:           fromNativeString(request.session_token),
+		maxItemCount:           int32(request.max_item_count),
+		preconditionKind:       int32(request.precondition_kind),
+		preconditionETag:       fromNativeString(request.precondition_etag),
+		patchMaxAttempts:       uint8(request.patch_max_attempts),
+		patchTrackingID:        fromNativeString(request.patch_tracking_id),
+		patchTrackingCapacity:  uint16(request.patch_tracking_capacity),
+		patchTrackingRetention: uint32(request.patch_tracking_retention_seconds),
 	}
 	if request.body != nil {
 		converted.body = C.GoBytes(unsafe.Pointer(request.body), C.int(request.body_len))

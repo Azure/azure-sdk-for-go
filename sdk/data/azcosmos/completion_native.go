@@ -3,6 +3,8 @@
 
 //go:build cgo && ((darwin && !ios && arm64) || (linux && !android && amd64))
 
+// cSpell:ignore gocritic
+
 package azcosmos
 
 /*
@@ -73,6 +75,11 @@ func (r completionResult) release() {
 // end of the drain, so every string and byte slice is copied rather than referenced.
 func translateCompletion(completion *C.cosmos_completion_t) completionResult {
 	result := translateCompletionOutcome(completion)
+	diagnostics := copyNativeDiagnostics(completion.diagnostics)
+	result.response.Diagnostics = diagnostics
+	if err, ok := result.err.(*Error); ok {
+		err.Diagnostics = diagnostics
+	}
 
 	// Taken here rather than by the waiter, because the completion is freed at the end of this
 	// drain and a handle left on it would be reclaimed with it. Both return NULL when the
@@ -82,18 +89,45 @@ func translateCompletion(completion *C.cosmos_completion_t) completionResult {
 	return result
 }
 
+func copyNativeDiagnostics(native *C.cosmos_diagnostics_t) Diagnostics {
+	if native == nil {
+		return Diagnostics{}
+	}
+	const maxMicros = uint64((1<<63 - 1) / time.Microsecond)
+	snapshot := Diagnostics{
+		elapsed:       time.Duration(min(uint64(C.cosmos_diagnostics_total_elapsed_micros(native)), maxMicros)) * time.Microsecond,
+		requestCharge: float64(C.cosmos_diagnostics_total_request_charge(native)),
+		requestCount:  uint32(C.cosmos_diagnostics_request_count(native)),
+		compacted:     bool(C.cosmos_diagnostics_is_compacted(native)),
+		failure:       bool(C.cosmos_diagnostics_is_failure(native)),
+	}
+	var data *C.uint8_t
+	var length C.uintptr_t
+	status := C.cosmos_diagnostics_to_json(native, C.cosmos_diagnostics_verbosity_t_DEFAULT, &data, &length) //nolint:gocritic // dupSubExpr targets cgo-generated code.
+	snapshot.err = statusError(status, nil, "rendering native diagnostics")
+	if snapshot.err == nil && data != nil {
+		snapshot.json = string(unsafe.Slice((*byte)(unsafe.Pointer(data)), int(length)))
+	}
+	return snapshot
+}
+
 // translateCompletionOutcome copies the data half of a completion, leaving the handles to
 // translateCompletion.
 func translateCompletionOutcome(completion *C.cosmos_completion_t) completionResult {
 	headers := readCompletionHeaders(completion)
+	var trackingID PatchTrackingID
+	if id := C.cosmos_completion_patch_tracking_id(completion); id != nil {
+		trackingID = PatchTrackingID(C.GoString(id))
+	}
 
 	response := ItemResponse{
 		Response: Response{
 			RequestCharge: headers.requestCharge,
 			ActivityID:    headers.activityID,
 		},
-		ETag:         headers.etag,
-		SessionToken: headers.sessionToken,
+		ETag:            headers.etag,
+		SessionToken:    headers.sessionToken,
+		PatchTrackingID: trackingID,
 	}
 
 	switch completion.outcome {
@@ -109,17 +143,20 @@ func translateCompletionOutcome(completion *C.cosmos_completion_t) completionRes
 		return completionResult{
 			cancelled: true,
 			err: &Error{
-				Code:          CodeOperationCancelled,
-				Message:       "azcosmos: the operation was cancelled",
-				RequestCharge: headers.requestCharge,
-				ActivityID:    headers.activityID,
+				Code:            CodeOperationCancelled,
+				Message:         "azcosmos: the operation was cancelled",
+				RequestCharge:   headers.requestCharge,
+				ActivityID:      headers.activityID,
+				PatchTrackingID: trackingID,
 			},
 		}
 
 	default:
 		// ERROR, and UNKNOWN, which the driver documents as a state the host should treat as a
 		// failure rather than assume anything about.
-		return completionResult{err: completionError(completion, headers)}
+		err := completionError(completion, headers)
+		err.PatchTrackingID = trackingID
+		return completionResult{err: err}
 	}
 }
 

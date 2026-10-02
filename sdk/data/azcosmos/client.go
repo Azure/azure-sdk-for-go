@@ -8,7 +8,6 @@ import (
 	"errors"
 	"fmt"
 	"net/url"
-	"strings"
 	"sync"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -23,24 +22,26 @@ import (
 //
 // A nil *ClientOptions selects the defaults for every field.
 type ClientOptions struct {
+	// Runtime shares execution resources and same-account caches, including credentials.
+	// Nil uses the process-wide runtime. Supply separate runtimes for identity isolation.
+	Runtime *Runtime
+	// Operation supplies account-level defaults for item operations and query page fetches.
+	Operation OperationOptions
 	// Routing decides the order in which the client considers the account's regions. The zero
 	// value leaves the order to the account; prefer setting it with [PreferredRegions].
 	//
 	// [ProximityTo] expands a known application region to the SDK's estimated proximity order.
 	Routing RoutingStrategy
 
-	// ApplicationID is an application-specific identifier appended to the user agent sent with
-	// every request. Keep it free of personally identifiable information.
-	//
-	// The value is passed unchanged to the driver, which validates it when the client is
-	// constructed. Prefer a stable, low-cardinality name such as "order-service" over anything
-	// per instance.
-	ApplicationID string
-
-	// EnableContentResponseOnWrite controls whether writes return the resulting item. Nil inherits
-	// the driver's operation-specific default; a non-nil value explicitly enables or disables
-	// content responses. It can be overridden per operation.
-	EnableContentResponseOnWrite *bool
+	// BinaryEncoding sets the SDK's client encoding default for create/read/replace/upsert.
+	// Nil resolves AZURE_COSMOS_BINARY_ENCODING_ENABLED at construction, then defaults to enabled.
+	// Explicit request encoding overrides this value. PATCH and delete use Operation inheritance.
+	BinaryEncoding *BinaryEncodingOptions
+	// FaultInjectionRules configures client-specific native fault injection for testing.
+	FaultInjectionRules []FaultInjectionRule
+	// DiagnosticsHandler observes completed item calls after their lifetime guard is released.
+	// It must be safe for concurrent calls. Query-specific diagnostics are not configured here.
+	DiagnosticsHandler func(context.Context, OperationDiagnostic)
 }
 
 // Client is a client for an Azure Cosmos DB account. It is the entry point to the databases and
@@ -50,8 +51,10 @@ type ClientOptions struct {
 // resources backing it, along with the routing and metadata caches that make requests cheap, so
 // creating one per operation is expensive and defeats them. Call [Client.Close] when done.
 type Client struct {
-	endpoint string
-	options  ClientOptions
+	endpoint       string
+	options        ClientOptions
+	runtime        *Runtime
+	binaryEncoding BinaryEncodingOptions
 	// mu guards the client's lifetime rather than its fields. Operations hold it for read while
 	// they run, so Close taking it for write is exactly "wait for in-flight operations to
 	// finish". That matters more here than it would in a pure-Go client: closing releases handles
@@ -127,13 +130,28 @@ func newClient(
 	if options != nil {
 		client.options = *options
 		client.options.Routing = options.Routing.clone()
-		if options.EnableContentResponseOnWrite != nil {
-			enabled := *options.EnableContentResponseOnWrite
-			client.options.EnableContentResponseOnWrite = &enabled
-		}
+		client.options.Operation = options.Operation.clone()
+		client.options.BinaryEncoding = options.BinaryEncoding.clone()
+		client.options.FaultInjectionRules = cloneFaultInjectionRules(options.FaultInjectionRules)
 	}
 	if err := client.options.validate(); err != nil {
 		return nil, err
+	}
+	client.binaryEncoding = resolveClientBinaryEncoding(client.options.BinaryEncoding)
+	client.runtime = client.options.Runtime
+	if client.runtime == nil && driverAvailable {
+		client.runtime, err = defaultRuntime()
+		if err != nil {
+			return nil, err
+		}
+	}
+	// Registration and local handle construction are one transaction against runtime shutdown.
+	if client.runtime != nil {
+		client.runtime.mu.Lock()
+		if client.runtime.closed || client.runtime.native == nil {
+			client.runtime.mu.Unlock()
+			return nil, &Error{Code: CodeClientClosed, Message: "the runtime is closed or uninitialized"}
+		}
 	}
 
 	driver, err := openDriver(driverConfig{
@@ -141,11 +159,18 @@ func newClient(
 		accountKey:      accountKey,
 		tokenCredential: tokenCredential,
 		options:         client.options,
+		runtime:         client.runtime,
 	})
+	client.driver = driver
+	if client.runtime != nil {
+		if err == nil {
+			client.runtime.clients++
+		}
+		client.runtime.mu.Unlock()
+	}
 	if err != nil {
 		return nil, err
 	}
-	client.driver = driver
 	return client, nil
 }
 
@@ -174,18 +199,20 @@ func (c *Client) Endpoint() string {
 	return c.endpoint
 }
 
-// Close releases the driver resources the client owns. It cancels active token acquisition, then
-// waits for the client's in-flight operations to finish. Afterwards every operation on the client
+// Close releases this client's driver resources after all submitted native work finishes.
+// Cached credentials remain alive with the runtime and are not cancelled by closing one client.
+// Afterwards every operation on the client
 // fails with [CodeClientClosed] rather than reaching the driver.
 //
 // Close is idempotent and safe to call concurrently; every caller observes the same result. It
 // returns an error only when the client could not be torn down cleanly, in which case the
 // resources are released anyway, so there is nothing to retry.
 func (c *Client) Close() error {
+	return c.close()
+}
+
+func (c *Client) close() error {
 	c.closeOnce.Do(func() {
-		// Signal host token acquisition before waiting for operations. Initialize can be holding
-		// the read lock while GetToken waits on this cancellation.
-		c.driver.cancel()
 		// Taking the write lock blocks until every operation holding it for read has finished,
 		// and keeps later operations out once closed is set.
 		c.mu.Lock()
@@ -195,6 +222,9 @@ func (c *Client) Close() error {
 		// subsequent callers see it too.
 		c.closeErr = c.driver.close()
 		c.driver = nil
+		if c.runtime != nil {
+			c.runtime.detach()
+		}
 	})
 	return c.closeErr
 }
@@ -232,9 +262,8 @@ func (c *Client) NewContainer(databaseID string, containerID string) (*Container
 // validate reports option values that cannot be passed through the C ABI. Values the driver
 // understands are passed through and validated there, so this package does not duplicate its rules.
 func (o ClientOptions) validate() error {
-	// The driver rejects embedded NUL bytes in this counted UTF-8 field.
-	if strings.IndexByte(o.ApplicationID, 0) >= 0 {
-		return errors.New("azcosmos: ClientOptions.ApplicationID must not contain a NUL byte")
+	if err := validateFaultInjectionRules(o.FaultInjectionRules); err != nil {
+		return err
 	}
-	return nil
+	return o.Operation.validate()
 }

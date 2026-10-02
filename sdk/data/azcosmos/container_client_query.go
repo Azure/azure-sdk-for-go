@@ -8,7 +8,6 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"slices"
 	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
@@ -48,14 +47,17 @@ func newQueryRequest(query Query, scope FeedScope, options *QueryOptions) (query
 	}
 	if options != nil {
 		req.options = *options
-		req.options.Operation.ExcludedRegions = slices.Clone(options.Operation.ExcludedRegions)
-		if value := options.Operation.EnableContentResponseOnWrite; value != nil {
-			copied := *value
-			req.options.Operation.EnableContentResponseOnWrite = &copied
-		}
+		req.options.Operation = options.Operation.clone()
 	}
-	if err := req.options.Operation.ConsistencyStrategy.validate(); err != nil {
+	if err := req.options.Operation.validate(); err != nil {
 		return req, err
+	}
+	// The pager splits a text JSON envelope; unlike point items it cannot return opaque binary.
+	if req.options.Operation.BinaryEncoding == nil {
+		req.options.Operation.BinaryEncoding = &BinaryEncodingOptions{Enabled: new(bool)}
+	}
+	if encoding := req.options.Operation.BinaryEncoding; encoding.enabled() && !encoding.RequestTextResponse {
+		return req, errors.New("azcosmos: queries require text JSON responses; enable RequestTextResponse or disable binary encoding")
 	}
 	if err := req.options.SessionToken.validate(); err != nil {
 		return req, err
@@ -85,6 +87,9 @@ func newQueryItemsPager(req queryRequest, validationErr error, fetch func(contex
 }
 
 func (c *ContainerClient) queryItems(ctx context.Context, req *queryRequest) (QueryItemsResponse, error) {
+	if ctx == nil {
+		return QueryItemsResponse{}, errors.New("azcosmos: context must not be nil")
+	}
 	client := c.database.client
 	release, err := client.acquire()
 	if err != nil {

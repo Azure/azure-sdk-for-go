@@ -20,7 +20,8 @@ Cosmos DB SDKs.
 ### Building with the driver
 
 The driver binding is selected automatically when cgo is enabled on glibc `linux/amd64` or
-`darwin/arm64`. No build tag or linker environment variable is required:
+`darwin/arm64`. The binding uses the published **native ABI 0.2.0** platform modules.
+No local replacements, build tag, or linker environment variable is required:
 
 ```sh
 go build ./...
@@ -60,11 +61,101 @@ container's metadata.
 
 One limit applies to the driver-backed build today: v1's WebAssembly support does not carry over.
 
+### Operation defaults and shared runtimes
+
+`OperationOptions` is accepted by each item request, query page fetch, `ClientOptions.Operation`, and
+`RuntimeOptions.Operation`. The Rust driver resolves declared environment overrides above request,
+client, runtime, ordinary supported environment settings, and driver defaults, in that order.
+Database and container handles do not introduce extra configuration layers.
+
+Nil pointers inherit; explicit false and zero values override. Nil excluded-region slices and
+custom-header maps inherit; non-nil empty values clear the inherited list/map. Nonempty values
+replace rather than extend them. Throughput and throttling members inherit independently.
+Binary encoding and availability strategies replace their entire groups.
+
+Leaving `ClientOptions.Runtime` nil uses a lazily initialized process-wide runtime, as in Rust.
+`NewRuntime` creates an explicit runtime with construction-time defaults. Multiple clients for the
+same account may share it, including after another client closes. Native caches retain account
+references and their credentials: a cached container may use the identity that first resolved it,
+not the identity supplied to a later client. Use different explicit runtimes when credentials
+must be isolated. The global runtime is retained for the process lifetime.
+Configure client content-response defaults through `ClientOptions.Operation.EnableContentResponseOnWrite`.
+
+Runtime defaults cannot be updated after construction. Requests capture a native snapshot before
+lazy initialization. `EndToEndTimeout` is optional: nil inherits; explicit zero or subsecond values
+clamp to one second at every scope. A caller's context deadline can stop waiting earlier without
+cancelling native work. Throttling retry budgets apply per transport invocation, not to
+the entire logical operation. The hedging master switch and its environment override can override
+the chosen availability strategy. Environment settings are captured at runtime construction.
+
+`Client.Close` drains and closes only that client. It does not cancel credentials retained by a
+shared native cache. `Runtime.Close` releases the owner's reference and rejects new attachments;
+existing clients keep working until they close. Native resources are freed after the last owner
+and attached client release them. Both methods are idempotent and concurrency-safe.
+Do not call Close from inside a credential callback.
+
+### Context cancellation
+
+Native ABI 0.2.0 does not support cancelling submitted operations. Cancelling a Go context
+stops the caller's wait, but the native request continues and a write may still commit.
+An already delivered completion takes precedence over cancellation. Otherwise, a cancelled
+wait returns `CodeOperationCancelled` wrapping the context error, with the outcome unknown.
+Response metadata from a later completion cannot be returned to that caller.
+
+The binding drains abandoned waits in the background and retains native handles and credentials
+until completion. `Client.Close` waits for that drain and can take longer
+than the caller's context deadline. End-to-end timeout snapshots bound native item execution,
+but a shorter Go deadline does not cancel native initialization or metadata resolution.
+For retryable client-side patches, supply `TrackingID` before submission to retain the identity
+after cancellation; a native-generated tracking ID is only available after completion.
+
+### Binary response compatibility change
+
+**Raw item response bytes now use the driver's binary JSON default**, including for existing
+callers that leave options unset. Rust-compatible `ClientOptions.BinaryEncoding` resolves once from
+an explicit group, then `AZURE_COSMOS_BINARY_ENCODING_ENABLED`, then enabled by default.
+Create/read/replace/upsert resolve request encoding over that SDK client default rather than
+runtime/client `Operation.BinaryEncoding`. PATCH and delete retain native layered resolution.
+Before using `encoding/json`, select text responses on the request or dedicated client group:
+
+```go
+options := azcosmos.OperationOptions{
+    BinaryEncoding: &azcosmos.BinaryEncodingOptions{
+        RequestTextResponse: true,
+    },
+}
+```
+
+This keeps binary wire encoding while asking the driver to return text JSON. Alternatively,
+`&azcosmos.BinaryEncodingOptions{Enabled: to.Ptr(false)}` disables binary wire encoding
+(`to` is `github.com/Azure/azure-sdk-for-go/sdk/azcore/to`).
+The zero-valued group enables binary, as Rust's default does. Text conversion preserves JSON
+values, not necessarily byte-for-byte formatting. Go never decodes application item schemas.
+
 ### SDK identity
 
 Service requests include `azsdk-go-azcosmos/<version>` in the User-Agent header alongside the native
-Cosmos driver identity and feature flags. `ClientOptions.ApplicationID` remains an optional,
-unchanged application suffix; SDK identity does not consume its length allowance.
+Cosmos driver identity and feature flags. `RuntimeOptions.ApplicationID` is the optional application
+suffix; SDK identity does not consume its length allowance. Per-client suffix overrides require
+native support not present in v0.2.0, so they are not exposed.
+
+### Additional configuration
+
+`RuntimeOptions.CPURefreshInterval` configures the existing native CPU/memory sampler (one to sixty
+seconds). `ClientOptions.FaultInjectionRules` forwards copied, typed test rules through the existing
+versioned native driver-options API. Rules can select item or metadata operations, transport and
+region, predefined failures or custom HTTP responses, delays, probability, hit limits, and lifetime.
+
+`Response.Diagnostics` and `Error.Diagnostics` contain immutable native snapshots when available.
+`ClientOptions.DiagnosticsHandler` observes completed Go item calls after the client lifetime guard
+is released. It receives absent native diagnostics when a call stops waiting before completion.
+JSON rendering errors are reported through `Diagnostics.Err()` without changing operation outcomes.
+Snapshot JSON uses native default verbosity and a driver-defined schema.
+
+Connection-pool configuration, partition-failover tuning, backup endpoints, runtime diagnostic
+retention/verbosity configuration, and per-client identity overrides remain deferred: the published
+ABI cannot carry those settings. Submillisecond precision is also limited by its millisecond fields.
+Constructors stay network-free; use `Initialize(ctx)` for eager account initialization.
 
 ### Patching items
 
@@ -82,7 +173,18 @@ back to read-modify-write when a request exceeds the service limit.
 
 Client-side execution of a patch that is not intrinsically retry-safe permanently adds the
 `_azsdkPatchTracking` property to the item. The driver uses it to deduplicate retries within one
-`PatchItem` call. Supplying a stable tracking ID across separate calls is not exposed yet.
+`PatchItem` call. `PatchItemOptions.TrackingID` accepts a UUID (simple, hyphenated, braced, or URN) to reuse across
+application retries after an ambiguous outcome. The effective ID is returned on `ItemResponse`
+or `Error`, including cancellation, when supplied by the driver. Duplicate suppression is bounded
+by tracking capacity and retention; it is not a permanent exactly-once guarantee.
+
+`MaxAttempts` (1..255), `TrackingCapacity` (1..65535), and `TrackingRetention` configure client-side
+patching and are inert for server-side execution. Retention floors to whole seconds with a minimum
+of one second even for explicit zero and a maximum of uint32 seconds; larger values clamp.
+Nil uses the driver default. Capacity pressure can evict tracking entries sooner.
+PATCH exposes only If-Match. Other item APIs expose mutually exclusive If-Match and If-None-Match
+preconditions, whose service support depends on the operation. Patch-specific `Strategy` overrides
+the shared `Operation.PatchStrategy`.
 
 ### Querying items
 
@@ -97,6 +199,12 @@ The API follows the Rust SDK's separation of query, scope, and feed options, wit
 sizing to the driver, and negative hints are rejected. Results are raw JSON values in
 `QueryItemsResponse.Items`, including scalar `SELECT VALUE` results. An empty page does not
 necessarily end the query: use `More`, not the number of items.
+
+Queries default to text wire encoding, overriding inherited binary-encoding preferences so the
+pager can split the JSON feed envelope. To enable binary wire encoding for a query, set both
+`QueryOptions.Operation.BinaryEncoding.Enabled` and `RequestTextResponse` to true.
+Explicit raw binary responses are rejected. Other operation options inherit normally; each
+`NextPage` captures a fresh runtime snapshot and one budget for initialization, metadata, and query.
 
 Save `QueryItemsResponse.ContinuationToken` and pass it in `QueryOptions.Feed` to resume with
 the same query and scope. This is an opaque **driver planner token**, not the service's

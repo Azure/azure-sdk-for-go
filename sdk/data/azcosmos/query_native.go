@@ -19,9 +19,12 @@ import (
 )
 
 func (c *Client) executeQuery(ctx context.Context, req *queryRequest) (QueryItemsResponse, error) {
-	ctx, cancel := contextWithEndToEndTimeout(ctx, req.options.Operation.EndToEndTimeout)
-	defer cancel()
 	d := c.driver
+	ctx, snapshot, releaseSnapshot, err := d.snapshot(ctx, req.options.Operation)
+	if err != nil {
+		return QueryItemsResponse{}, err
+	}
+	defer releaseSnapshot()
 	driver, err := d.ensureDriver(ctx)
 	if err != nil {
 		return QueryItemsResponse{}, err
@@ -36,13 +39,13 @@ func (c *Client) executeQuery(ctx context.Context, req *queryRequest) (QueryItem
 	options := req.options.Operation
 	var setup Response
 	if !req.scopeValidated {
-		options.EndToEndTimeout = endToEndTimeout(ctx, 0)
 		metadata, err := d.awaitCompletion(ctx, "reading query scope metadata",
 			func(queue *C.cosmos_completion_queue_t, cookie C.intptr_t, preError *C.cosmos_status_code_t) *C.cosmos_operation_handle_t {
 				request := newOperationRequest(operationKind(C.COSMOS_OPERATION_KIND_READ_CONTAINER), container)
 				nativeOptions, freeOptions := options.toNative()
 				defer freeOptions()
 				request.options = nativeOptions
+				request.options_snapshot = snapshot
 				return C.cosmos_submit_singleton_operation(driver, &request, queue, cookie, preError) //nolint:gocritic // dupSubExpr targets cgo-generated code.
 			})
 		if err != nil {
@@ -57,7 +60,6 @@ func (c *Client) executeQuery(ctx context.Context, req *queryRequest) (QueryItem
 		}
 		req.scopeValidated = true
 	}
-	options.EndToEndTimeout = endToEndTimeout(ctx, 0)
 	result, err := d.awaitCompletion(ctx, "submitting query",
 		func(queue *C.cosmos_completion_queue_t, cookie C.intptr_t, preError *C.cosmos_status_code_t) *C.cosmos_operation_handle_t {
 			request, release, status := buildNativeQueryRequest(req, options, container)
@@ -66,6 +68,7 @@ func (c *Client) executeQuery(ctx context.Context, req *queryRequest) (QueryItem
 				*preError = status
 				return nil
 			}
+			request.options_snapshot = snapshot
 			return C.cosmos_submit_operation(driver, &request, queue, cookie, preError) //nolint:gocritic // dupSubExpr targets cgo-generated code.
 		})
 	if err != nil {

@@ -37,9 +37,10 @@ func TestResultAfterCancellationReturnsTerminalCompletion(t *testing.T) {
 		result := completionResult{
 			cancelled: true,
 			err: &Error{
-				Code:          CodeOperationCancelled,
-				RequestCharge: 1.5,
-				ActivityID:    "activity-id",
+				Code:            CodeOperationCancelled,
+				RequestCharge:   1.5,
+				ActivityID:      "activity-id",
+				PatchTrackingID: "00112233-4455-6677-8899-aabbccddeeff",
 			},
 		}
 
@@ -53,5 +54,6 @@ func TestResultAfterCancellationReturnsTerminalCompletion(t *testing.T) {
 		require.Equal(t, CodeOperationCancelled, cosmosErr.Code)
 		require.Equal(t, 1.5, cosmosErr.RequestCharge)
 		require.Equal(t, "activity-id", cosmosErr.ActivityID)
+		require.Equal(t, PatchTrackingID("00112233-4455-6677-8899-aabbccddeeff"), cosmosErr.PatchTrackingID)
 	})
 }

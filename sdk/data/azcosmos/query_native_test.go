@@ -6,10 +6,49 @@
 package azcosmos
 
 import (
+	"context"
+	"errors"
 	"testing"
+	"time"
 
 	"github.com/stretchr/testify/require"
 )
+
+func TestQuerySnapshotTimeoutIncludesLazyInitialization(t *testing.T) {
+	shared, err := NewRuntime(&RuntimeOptions{Operation: OperationOptions{EndToEndTimeout: to(time.Duration(time.Second))}})
+	require.NoError(t, err)
+	t.Cleanup(func() { require.NoError(t, shared.Close()) })
+	credential := &blockingTokenCredential{started: make(chan struct{}), stopped: make(chan struct{})}
+	client, err := NewClient("https://myaccount.documents.azure.com", credential, &ClientOptions{Runtime: shared})
+	require.NoError(t, err)
+	t.Cleanup(func() { client.driver.tokenProvider.cancel(); require.NoError(t, client.Close()) })
+	container, err := client.NewContainer("db", "items")
+	require.NoError(t, err)
+	pager := container.NewQueryItemsPager(NewQuery("SELECT * FROM c"),
+		NewFeedScopeForPartitionKey(NewPartitionKeyString("pk")), nil)
+	done := make(chan error, 1)
+	start := time.Now()
+	go func() {
+		page, err := pager.NextPage(context.Background())
+		if len(page.Items) != 0 {
+			done <- errors.New("failed query returned items")
+			return
+		}
+		done <- err
+	}()
+	select {
+	case <-credential.started:
+	case <-time.After(3 * time.Second):
+		t.Fatal("query did not reach lazy initialization")
+	}
+	select {
+	case err := <-done:
+		require.ErrorIs(t, err, context.DeadlineExceeded)
+		require.Less(t, time.Since(start), 3*time.Second)
+	case <-time.After(3 * time.Second):
+		t.Fatal("query did not honor its runtime budget")
+	}
+}
 
 func TestQueryCompletionCopiesPageAndPlannerToken(t *testing.T) {
 	page, err := syntheticQueryCompletion([]byte(`{"Documents":[{"id":"first"},{"id":"second"}]}`), "planner-token", 200)

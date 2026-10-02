@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-04-01-preview/OperationStatus_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-31-preview/OperationStatus_Get_MaximumSet_Gen.json
 func ExampleOperationStatusClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -32,8 +32,8 @@ func ExampleOperationStatusClient_Get() {
 	// res = armresiliencemanagement.OperationStatusClientGetResponse{
 	// 	OperationStatusResult: armresiliencemanagement.OperationStatusResult{
 	// 		Status: to.Ptr("Succeeded"),
-	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-02-01T12:00:00Z"); return t}()),
-	// 		EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-02-01T12:05:00Z"); return t}()),
+	// 		StartTime: to.Ptr(time.Date(2025, time.February, 1, 12, 0, 0, 0, time.UTC)),
+	// 		EndTime: to.Ptr(time.Date(2025, time.February, 1, 12, 5, 0, 0, time.UTC)),
 	// 	},
 	// }
 }

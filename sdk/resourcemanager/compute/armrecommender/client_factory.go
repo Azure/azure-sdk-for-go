@@ -39,6 +39,14 @@ func (c *ClientFactory) NewOperationsClient() *OperationsClient {
 	}
 }
 
+// NewSKUMixPlacementScoresClient creates a new instance of SKUMixPlacementScoresClient.
+func (c *ClientFactory) NewSKUMixPlacementScoresClient() *SKUMixPlacementScoresClient {
+	return &SKUMixPlacementScoresClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewSpotPlacementScoresClient creates a new instance of SpotPlacementScoresClient.
 func (c *ClientFactory) NewSpotPlacementScoresClient() *SpotPlacementScoresClient {
 	return &SpotPlacementScoresClient{

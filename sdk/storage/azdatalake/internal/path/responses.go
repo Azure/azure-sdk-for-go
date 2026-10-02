@@ -33,6 +33,22 @@ type CreateResponse = generated.PathClientCreateResponse
 // DeleteResponse contains the response fields for the Delete operation.
 type DeleteResponse = generated.PathClientDeleteResponse
 
+// FormatDeleteResponse translates the generated response envelope to the hand-written one.
+func FormatDeleteResponse(resp generated.PathClientDeleteResponseInternal) DeleteResponse {
+	// note propagation of duplicate response headers Continuation, RequestID, and Version
+	return DeleteResponse{
+		ClientRequestID: resp.ClientRequestID,
+		Continuation:    resp.Continuation,
+		Date:            resp.Date,
+		DeletionID:      resp.DeletionID,
+		RequestID:       resp.RequestID,
+		Version:         resp.Version,
+		XMSContinuation: resp.Continuation,
+		XMSRequestID:    resp.RequestID,
+		XMSVersion:      resp.Version,
+	}
+}
+
 type RenameResponse struct {
 	// ContentLength contains the information returned from the Content-Length header response.
 	ContentLength *int64
@@ -287,23 +303,27 @@ func FormatGetPropertiesResponse(r *blob.GetPropertiesResponse, rawResponse *htt
 	newResp.TagCount = r.TagCount
 	newResp.Version = r.Version
 	newResp.VersionID = r.VersionID
-	if val := rawResponse.Header.Get("x-ms-owner"); val != "" {
-		newResp.Owner = &val
-	}
-	if val := rawResponse.Header.Get("x-ms-group"); val != "" {
-		newResp.Group = &val
-	}
-	if val := rawResponse.Header.Get("x-ms-permissions"); val != "" {
-		newResp.Permissions = &val
-	}
-	if val := rawResponse.Header.Get("x-ms-acl"); val != "" {
-		newResp.AccessControlList = &val
-	}
-	if val := rawResponse.Header.Get("x-ms-resource-type"); val != "" {
-		newResp.ResourceType = &val
-	}
-	if val := rawResponse.Header.Get("x-ms-encryption-context"); val != "" {
-		newResp.EncryptionContext = &val
+	// rawResponse is only populated when the IncludeBlobResponsePolicy captured it.
+	// Guard against nil so the datalake-specific headers below never panic.
+	if rawResponse != nil {
+		if val := rawResponse.Header.Get("x-ms-owner"); val != "" {
+			newResp.Owner = &val
+		}
+		if val := rawResponse.Header.Get("x-ms-group"); val != "" {
+			newResp.Group = &val
+		}
+		if val := rawResponse.Header.Get("x-ms-permissions"); val != "" {
+			newResp.Permissions = &val
+		}
+		if val := rawResponse.Header.Get("x-ms-acl"); val != "" {
+			newResp.AccessControlList = &val
+		}
+		if val := rawResponse.Header.Get("x-ms-resource-type"); val != "" {
+			newResp.ResourceType = &val
+		}
+		if val := rawResponse.Header.Get("x-ms-encryption-context"); val != "" {
+			newResp.EncryptionContext = &val
+		}
 	}
 	return newResp
 }

@@ -47,7 +47,7 @@ func ExampleRoleAssignmentsClient_BeginCreateByBillingAccount() {
 	// 		Properties: &armbilling.RoleAssignmentProperties{
 	// 			CreatedByPrincipalID: to.Ptr("47309529-17e6-4104-b9e8-39f62fa1e5ed"),
 	// 			CreatedByPrincipalTenantID: to.Ptr("076915e7-de10-4323-bb34-a58c904068bb"),
-	// 			CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-19T20:10:50.1028398Z"); return t}()),
+	// 			CreatedOn: to.Ptr(time.Date(2023, time.October, 19, 20, 10, 50, 102839800, time.UTC)),
 	// 			PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 			PrincipalType: to.Ptr(armbilling.PrincipalTypeUser),
 	// 			RoleDefinitionID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30/billingRoleDefinitions/10000000-aaaa-bbbb-cccc-100000000000"),
@@ -92,7 +92,7 @@ func ExampleRoleAssignmentsClient_BeginCreateByBillingProfile() {
 	// 		Properties: &armbilling.RoleAssignmentProperties{
 	// 			CreatedByPrincipalID: to.Ptr("47309529-17e6-4104-b9e8-39f62fa1e5ed"),
 	// 			CreatedByPrincipalTenantID: to.Ptr("076915e7-de10-4323-bb34-a58c904068bb"),
-	// 			CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-19T20:10:50.1028398Z"); return t}()),
+	// 			CreatedOn: to.Ptr(time.Date(2023, time.October, 19, 20, 10, 50, 102839800, time.UTC)),
 	// 			PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 			PrincipalType: to.Ptr(armbilling.PrincipalTypeUser),
 	// 			RoleDefinitionID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30/billingRoleDefinitions/10000000-aaaa-bbbb-cccc-100000000000"),
@@ -137,7 +137,7 @@ func ExampleRoleAssignmentsClient_BeginCreateByCustomer() {
 	// 		Properties: &armbilling.RoleAssignmentProperties{
 	// 			CreatedByPrincipalID: to.Ptr("47309529-17e6-4104-b9e8-39f62fa1e5ed"),
 	// 			CreatedByPrincipalTenantID: to.Ptr("076915e7-de10-4323-bb34-a58c904068bb"),
-	// 			CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-19T20:10:50.1028398Z"); return t}()),
+	// 			CreatedOn: to.Ptr(time.Date(2023, time.October, 19, 20, 10, 50, 102839800, time.UTC)),
 	// 			PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 			PrincipalType: to.Ptr(armbilling.PrincipalTypeUser),
 	// 			RoleDefinitionID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30/billingProfileName/BKM6-54VH-BG7-PGB/customers/703ab484-dda2-4402-827b-a74513b61e2d/billingRoleDefinitions/30000000-aaaa-bbbb-cccc-100000000000"),
@@ -182,7 +182,7 @@ func ExampleRoleAssignmentsClient_BeginCreateByInvoiceSection() {
 	// 		Properties: &armbilling.RoleAssignmentProperties{
 	// 			CreatedByPrincipalID: to.Ptr("47309529-17e6-4104-b9e8-39f62fa1e5ed"),
 	// 			CreatedByPrincipalTenantID: to.Ptr("076915e7-de10-4323-bb34-a58c904068bb"),
-	// 			CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-19T20:10:50.1028398Z"); return t}()),
+	// 			CreatedOn: to.Ptr(time.Date(2023, time.October, 19, 20, 10, 50, 102839800, time.UTC)),
 	// 			PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 			PrincipalType: to.Ptr(armbilling.PrincipalTypeUser),
 	// 			RoleDefinitionID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30/billingProfiles/BKM6-54VH-BG7-PGB/invoiceSections/xxxx-xxxx-xxx-xxx/billingRoleDefinitions/10000000-aaaa-bbbb-cccc-100000000000"),
@@ -229,7 +229,7 @@ func ExampleRoleAssignmentsClient_BeginCreateOrUpdateByBillingAccount() {
 	// 		Properties: &armbilling.RoleAssignmentProperties{
 	// 			CreatedByPrincipalID: to.Ptr("60d97094-2be4-46cc-a4fe-3633021a25b9"),
 	// 			CreatedByPrincipalTenantID: to.Ptr("076915e7-de10-4323-bb34-a58c904068bb"),
-	// 			CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-19T20:10:50.1028398Z"); return t}()),
+	// 			CreatedOn: to.Ptr(time.Date(2023, time.October, 19, 20, 10, 50, 102839800, time.UTC)),
 	// 			PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 			PrincipalTenantID: to.Ptr("7ca289b9-c32d-4f01-8566-7ff93261d76f"),
 	// 			RoleDefinitionID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/7898901/billingRoleDefinitions/9f1983cb-2574-400c-87e9-34cf8e2280db"),
@@ -276,7 +276,7 @@ func ExampleRoleAssignmentsClient_BeginCreateOrUpdateByDepartment() {
 	// 		Properties: &armbilling.RoleAssignmentProperties{
 	// 			CreatedByPrincipalID: to.Ptr("60d97094-2be4-46cc-a4fe-3633021a25b9"),
 	// 			CreatedByPrincipalTenantID: to.Ptr("076915e7-de10-4323-bb34-a58c904068bb"),
-	// 			CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-19T20:10:50.1028398Z"); return t}()),
+	// 			CreatedOn: to.Ptr(time.Date(2023, time.October, 19, 20, 10, 50, 102839800, time.UTC)),
 	// 			PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 			PrincipalTenantID: to.Ptr("7ca289b9-c32d-4f01-8566-7ff93261d76f"),
 	// 			RoleDefinitionID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/7898901/departments/12345/billingRoleDefinitions/9f1983cb-2574-400c-87e9-34cf8e2280db"),
@@ -323,7 +323,7 @@ func ExampleRoleAssignmentsClient_BeginCreateOrUpdateByEnrollmentAccount() {
 	// 		Properties: &armbilling.RoleAssignmentProperties{
 	// 			CreatedByPrincipalID: to.Ptr("60d97094-2be4-46cc-a4fe-3633021a25b9"),
 	// 			CreatedByPrincipalTenantID: to.Ptr("076915e7-de10-4323-bb34-a58c904068bb"),
-	// 			CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-19T20:10:50.1028398Z"); return t}()),
+	// 			CreatedOn: to.Ptr(time.Date(2023, time.October, 19, 20, 10, 50, 102839800, time.UTC)),
 	// 			PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 			PrincipalTenantID: to.Ptr("7ca289b9-c32d-4f01-8566-7ff93261d76f"),
 	// 			RoleDefinitionID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/7898901/enrollmentAccounts/123456/billingRoleDefinitions/9f1983cb-2574-400c-87e9-34cf8e2280db"),
@@ -491,7 +491,7 @@ func ExampleRoleAssignmentsClient_GetByBillingAccount() {
 	// 		Properties: &armbilling.RoleAssignmentProperties{
 	// 			CreatedByPrincipalID: to.Ptr(""),
 	// 			CreatedByPrincipalTenantID: to.Ptr("076915e7-de10-4323-bb34-a58c904068bb"),
-	// 			CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-01-04T22:39:34.2606750Z"); return t}()),
+	// 			CreatedOn: to.Ptr(time.Date(2023, time.January, 4, 22, 39, 34, 260675000, time.UTC)),
 	// 			PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 			PrincipalType: to.Ptr(armbilling.PrincipalTypeUser),
 	// 			RoleDefinitionID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30/billingRoleDefinitions/00000000-0000-0000-0000-000000000000"),
@@ -527,7 +527,7 @@ func ExampleRoleAssignmentsClient_GetByBillingProfile() {
 	// 		Properties: &armbilling.RoleAssignmentProperties{
 	// 			CreatedByPrincipalID: to.Ptr("46b831ec-42b2-4f1a-8b54-3fd5ff9d6aa1"),
 	// 			CreatedByPrincipalTenantID: to.Ptr("076915e7-de10-4323-bb34-a58c904068bb"),
-	// 			CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-01-04T22:39:34.2606750Z"); return t}()),
+	// 			CreatedOn: to.Ptr(time.Date(2023, time.January, 4, 22, 39, 34, 260675000, time.UTC)),
 	// 			PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 			PrincipalType: to.Ptr(armbilling.PrincipalTypeUser),
 	// 			RoleDefinitionID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30/billingProfiles/xxxx-xxxx-xxx-xxx/billingRoleDefinitions/00000000-0000-0000-0000-000000000000"),
@@ -563,7 +563,7 @@ func ExampleRoleAssignmentsClient_GetByCustomer() {
 	// 		Properties: &armbilling.RoleAssignmentProperties{
 	// 			CreatedByPrincipalID: to.Ptr(""),
 	// 			CreatedByPrincipalTenantID: to.Ptr("076915e7-de10-4323-bb34-a58c904068bb"),
-	// 			CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-01-04T22:39:34.2606750Z"); return t}()),
+	// 			CreatedOn: to.Ptr(time.Date(2023, time.January, 4, 22, 39, 34, 260675000, time.UTC)),
 	// 			PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 			PrincipalType: to.Ptr(armbilling.PrincipalTypeUser),
 	// 			RoleDefinitionID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30/billingProfiles/xxxx-xxxx-xxx-xxx/customers/703ab484-dda2-4402-827b-a74513b61e2d/billingRoleDefinitions/30000000-aaaa-bbbb-cccc-100000000000"),
@@ -598,7 +598,7 @@ func ExampleRoleAssignmentsClient_GetByDepartment() {
 	// 		ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/7898901/departments/225314/billingRoleAssignments/9dfd08c2-62a3-4d47-85bd-1cdba1408402"),
 	// 		Properties: &armbilling.RoleAssignmentProperties{
 	// 			CreatedByUserEmailAddress: to.Ptr("test@billtest900006.onmicrosoft.com"),
-	// 			CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-19T20:10:50.1028398Z"); return t}()),
+	// 			CreatedOn: to.Ptr(time.Date(2023, time.October, 19, 20, 10, 50, 102839800, time.UTC)),
 	// 			RoleDefinitionID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/7898901/departments/225314/billingRoleDefinitions/c15c22c0-9faf-424c-9b7e-bd91c06a240b"),
 	// 			Scope: to.Ptr("/providers/Microsoft.Billing/billingAccounts/7898901/departments/225314"),
 	// 			UserAuthenticationType: to.Ptr("Organization"),
@@ -633,7 +633,7 @@ func ExampleRoleAssignmentsClient_GetByEnrollmentAccount() {
 	// 		ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/7898901/enrollmentAccounts/225314/billingRoleAssignments/9dfd08c2-62a3-4d47-85bd-1cdba1408402"),
 	// 		Properties: &armbilling.RoleAssignmentProperties{
 	// 			CreatedByUserEmailAddress: to.Ptr("test@billtest900006.onmicrosoft.com"),
-	// 			CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-19T20:10:50.1028398Z"); return t}()),
+	// 			CreatedOn: to.Ptr(time.Date(2023, time.October, 19, 20, 10, 50, 102839800, time.UTC)),
 	// 			RoleDefinitionID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/7898901/enrollmentAccounts/225314/billingRoleDefinitions/c15c22c0-9faf-424c-9b7e-bd91c06a240b"),
 	// 			Scope: to.Ptr("/providers/Microsoft.Billing/billingAccounts/7898901/enrollmentAccounts/225314"),
 	// 			UserAuthenticationType: to.Ptr("Organization"),
@@ -669,7 +669,7 @@ func ExampleRoleAssignmentsClient_GetByInvoiceSection() {
 	// 		Properties: &armbilling.RoleAssignmentProperties{
 	// 			CreatedByPrincipalID: to.Ptr("46b831ec-42b2-4f1a-8b54-3fd5ff9d6aa1"),
 	// 			CreatedByPrincipalTenantID: to.Ptr("076915e7-de10-4323-bb34-a58c904068bb"),
-	// 			CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-19T20:10:50.1028398Z"); return t}()),
+	// 			CreatedOn: to.Ptr(time.Date(2023, time.October, 19, 20, 10, 50, 102839800, time.UTC)),
 	// 			PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 			PrincipalType: to.Ptr(armbilling.PrincipalTypeUser),
 	// 			RoleDefinitionID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30/billingProfiles/BKM6-54VH-BG7-PGB/invoiceSections/xxxx-xxxx-xxx-xxx/billingRoleDefinitions/50000000-aaaa-bbbb-cccc-100000000000"),
@@ -711,7 +711,7 @@ func ExampleRoleAssignmentsClient_NewListByBillingAccountPager() {
 		// 				Properties: &armbilling.RoleAssignmentProperties{
 		// 					CreatedByPrincipalID: to.Ptr("00000000-0000-0000-0000-000000000001"),
 		// 					CreatedByPrincipalTenantID: to.Ptr("076915e7-de10-4323-bb34-a58c904068bb"),
-		// 					CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-19T20:10:50.1028398Z"); return t}()),
+		// 					CreatedOn: to.Ptr(time.Date(2023, time.October, 19, 20, 10, 50, 102839800, time.UTC)),
 		// 					PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 		// 					PrincipalType: to.Ptr(armbilling.PrincipalTypeUser),
 		// 					RoleDefinitionID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30/billingRoleDefinitions/00000000-0000-0000-0000-000000000000"),
@@ -725,7 +725,7 @@ func ExampleRoleAssignmentsClient_NewListByBillingAccountPager() {
 		// 				Properties: &armbilling.RoleAssignmentProperties{
 		// 					CreatedByPrincipalID: to.Ptr("00000000-0000-0000-0000-000000000001"),
 		// 					CreatedByPrincipalTenantID: to.Ptr("076915e7-de10-4323-bb34-a58c904068bb"),
-		// 					CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-19T20:10:50.1028398Z"); return t}()),
+		// 					CreatedOn: to.Ptr(time.Date(2023, time.October, 19, 20, 10, 50, 102839800, time.UTC)),
 		// 					PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 		// 					PrincipalType: to.Ptr(armbilling.PrincipalTypeUser),
 		// 					RoleDefinitionID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30/billingRoleDefinitions/00000000-0000-0000-0000-000000000001"),
@@ -770,7 +770,7 @@ func ExampleRoleAssignmentsClient_NewListByBillingProfilePager() {
 		// 				Properties: &armbilling.RoleAssignmentProperties{
 		// 					CreatedByPrincipalID: to.Ptr("00000000-0000-0000-0000-000000000001"),
 		// 					CreatedByPrincipalTenantID: to.Ptr("076915e7-de10-4323-bb34-a58c904068bb"),
-		// 					CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-19T20:10:50.1028398Z"); return t}()),
+		// 					CreatedOn: to.Ptr(time.Date(2023, time.October, 19, 20, 10, 50, 102839800, time.UTC)),
 		// 					PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 		// 					PrincipalType: to.Ptr(armbilling.PrincipalTypeUser),
 		// 					RoleDefinitionID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30/billingProfiles/xxxx-xxxx-xxx-xxx/billingRoleDefinitions/00000000-0000-0000-0000-000000000000"),
@@ -784,7 +784,7 @@ func ExampleRoleAssignmentsClient_NewListByBillingProfilePager() {
 		// 				Properties: &armbilling.RoleAssignmentProperties{
 		// 					CreatedByPrincipalID: to.Ptr("00000000-0000-0000-0000-000000000001"),
 		// 					CreatedByPrincipalTenantID: to.Ptr("076915e7-de10-4323-bb34-a58c904068bb"),
-		// 					CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-19T20:10:50.1028398Z"); return t}()),
+		// 					CreatedOn: to.Ptr(time.Date(2023, time.October, 19, 20, 10, 50, 102839800, time.UTC)),
 		// 					PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 		// 					PrincipalType: to.Ptr(armbilling.PrincipalTypeUser),
 		// 					RoleDefinitionID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30/billingProfiles/xxxx-xxxx-xxx-xxx/billingRoleDefinitions/00000000-0000-0000-0000-000000000001"),
@@ -829,7 +829,7 @@ func ExampleRoleAssignmentsClient_NewListByCustomerPager() {
 		// 				Properties: &armbilling.RoleAssignmentProperties{
 		// 					CreatedByPrincipalID: to.Ptr(""),
 		// 					CreatedByPrincipalTenantID: to.Ptr("076915e7-de10-4323-bb34-a58c904068bb"),
-		// 					CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-19T20:10:50.1028398Z"); return t}()),
+		// 					CreatedOn: to.Ptr(time.Date(2023, time.October, 19, 20, 10, 50, 102839800, time.UTC)),
 		// 					PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 		// 					PrincipalType: to.Ptr(armbilling.PrincipalTypeUser),
 		// 					RoleDefinitionID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30/billingProfiles/BKM6-54VH-BG7-PGB/customers/703ab484-dda2-4402-827b-a74513b61e2d/billingRoleDefinitions/30000000-aaaa-bbbb-cccc-100000000000"),
@@ -843,7 +843,7 @@ func ExampleRoleAssignmentsClient_NewListByCustomerPager() {
 		// 				Properties: &armbilling.RoleAssignmentProperties{
 		// 					CreatedByPrincipalID: to.Ptr(""),
 		// 					CreatedByPrincipalTenantID: to.Ptr("076915e7-de10-4323-bb34-a58c904068bb"),
-		// 					CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-19T20:10:50.1028398Z"); return t}()),
+		// 					CreatedOn: to.Ptr(time.Date(2023, time.October, 19, 20, 10, 50, 102839800, time.UTC)),
 		// 					PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 		// 					PrincipalType: to.Ptr(armbilling.PrincipalTypeUser),
 		// 					RoleDefinitionID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30/billingProfiles/BKM6-54VH-BG7-PGB/customers/703ab484-dda2-4402-827b-a74513b61e2d/billingRoleDefinitions/30000000-aaaa-bbbb-cccc-100000000000"),
@@ -888,7 +888,7 @@ func ExampleRoleAssignmentsClient_NewListByDepartmentPager() {
 		// 				Properties: &armbilling.RoleAssignmentProperties{
 		// 					CreatedByPrincipalID: to.Ptr("00000000-0000-0000-0000-000000000001"),
 		// 					CreatedByPrincipalTenantID: to.Ptr("076915e7-de10-4323-bb34-a58c904068bb"),
-		// 					CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-19T20:10:50.1028398Z"); return t}()),
+		// 					CreatedOn: to.Ptr(time.Date(2023, time.October, 19, 20, 10, 50, 102839800, time.UTC)),
 		// 					PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 		// 					PrincipalType: to.Ptr(armbilling.PrincipalTypeUser),
 		// 					RoleDefinitionID: to.Ptr("providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30/departments/12345/billingRoleDefinitions/00000000-0000-0000-0000-000000000000"),
@@ -902,7 +902,7 @@ func ExampleRoleAssignmentsClient_NewListByDepartmentPager() {
 		// 				Properties: &armbilling.RoleAssignmentProperties{
 		// 					CreatedByPrincipalID: to.Ptr("00000000-0000-0000-0000-000000000001"),
 		// 					CreatedByPrincipalTenantID: to.Ptr("076915e7-de10-4323-bb34-a58c904068bb"),
-		// 					CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-19T20:10:50.1028398Z"); return t}()),
+		// 					CreatedOn: to.Ptr(time.Date(2023, time.October, 19, 20, 10, 50, 102839800, time.UTC)),
 		// 					PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 		// 					PrincipalType: to.Ptr(armbilling.PrincipalTypeUser),
 		// 					RoleDefinitionID: to.Ptr("\"/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30/departments/12345/billingRoleDefinitions/00000000-0000-0000-0000-000000000001"),
@@ -947,7 +947,7 @@ func ExampleRoleAssignmentsClient_NewListByEnrollmentAccountPager() {
 		// 				Properties: &armbilling.RoleAssignmentProperties{
 		// 					CreatedByPrincipalID: to.Ptr("00000000-0000-0000-0000-000000000001"),
 		// 					CreatedByPrincipalTenantID: to.Ptr("076915e7-de10-4323-bb34-a58c904068bb"),
-		// 					CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-19T20:10:50.1028398Z"); return t}()),
+		// 					CreatedOn: to.Ptr(time.Date(2023, time.October, 19, 20, 10, 50, 102839800, time.UTC)),
 		// 					PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 		// 					PrincipalType: to.Ptr(armbilling.PrincipalTypeUser),
 		// 					RoleDefinitionID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/6100092/enrollmentAccounts/123456/billingRoleDefinitions/50000000-0000-0000-0000-000000000000"),
@@ -961,7 +961,7 @@ func ExampleRoleAssignmentsClient_NewListByEnrollmentAccountPager() {
 		// 				Properties: &armbilling.RoleAssignmentProperties{
 		// 					CreatedByPrincipalID: to.Ptr("00000000-0000-0000-0000-000000000001"),
 		// 					CreatedByPrincipalTenantID: to.Ptr("076915e7-de10-4323-bb34-a58c904068bb"),
-		// 					CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-19T20:10:50.1028398Z"); return t}()),
+		// 					CreatedOn: to.Ptr(time.Date(2023, time.October, 19, 20, 10, 50, 102839800, time.UTC)),
 		// 					PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 		// 					PrincipalType: to.Ptr(armbilling.PrincipalTypeUser),
 		// 					RoleDefinitionID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/6100092/enrollmentAccounts/123456/billingRoleDefinitions/50000000-0000-0000-0000-000000000001"),
@@ -1006,7 +1006,7 @@ func ExampleRoleAssignmentsClient_NewListByInvoiceSectionPager() {
 		// 				Properties: &armbilling.RoleAssignmentProperties{
 		// 					CreatedByPrincipalID: to.Ptr("00000000-0000-0000-0000-000000000001"),
 		// 					CreatedByPrincipalTenantID: to.Ptr("076915e7-de10-4323-bb34-a58c904068bb"),
-		// 					CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-19T20:10:50.1028398Z"); return t}()),
+		// 					CreatedOn: to.Ptr(time.Date(2023, time.October, 19, 20, 10, 50, 102839800, time.UTC)),
 		// 					PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 		// 					PrincipalType: to.Ptr(armbilling.PrincipalTypeUser),
 		// 					RoleDefinitionID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30/billingProfiles/BKM6-54VH-BG7-PGB/invoiceSections/xxxx-xxxx-xxx-xxx/billingRoleDefinitions/30000000-aaaa-bbbb-cccc-100000000002"),
@@ -1020,7 +1020,7 @@ func ExampleRoleAssignmentsClient_NewListByInvoiceSectionPager() {
 		// 				Properties: &armbilling.RoleAssignmentProperties{
 		// 					CreatedByPrincipalID: to.Ptr("00000000-0000-0000-0000-000000000001"),
 		// 					CreatedByPrincipalTenantID: to.Ptr("076915e7-de10-4323-bb34-a58c904068bb"),
-		// 					CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-19T20:10:50.1028398Z"); return t}()),
+		// 					CreatedOn: to.Ptr(time.Date(2023, time.October, 19, 20, 10, 50, 102839800, time.UTC)),
 		// 					PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 		// 					PrincipalType: to.Ptr(armbilling.PrincipalTypeUser),
 		// 					RoleDefinitionID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30/billingProfiles/BKM6-54VH-BG7-PGB/invoiceSections/xxxx-xxxx-xxx-xxx/billingRoleDefinitions/30000000-aaaa-bbbb-cccc-100000000001"),
@@ -1065,7 +1065,7 @@ func ExampleRoleAssignmentsClient_BeginResolveByBillingAccount() {
 	// 				Properties: &armbilling.RoleAssignmentProperties{
 	// 					CreatedByPrincipalID: to.Ptr("00000000-0000-0000-0000-000000000001"),
 	// 					CreatedByPrincipalTenantID: to.Ptr("076915e7-de10-4323-bb34-a58c904068bb"),
-	// 					CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-19T20:10:50.1028398Z"); return t}()),
+	// 					CreatedOn: to.Ptr(time.Date(2023, time.October, 19, 20, 10, 50, 102839800, time.UTC)),
 	// 					PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 					PrincipalType: to.Ptr(armbilling.PrincipalTypeUser),
 	// 					RoleDefinitionID: to.Ptr("providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30/billingRoleDefinitions/00000000-0000-0000-0000-000000000000"),
@@ -1079,7 +1079,7 @@ func ExampleRoleAssignmentsClient_BeginResolveByBillingAccount() {
 	// 				Properties: &armbilling.RoleAssignmentProperties{
 	// 					CreatedByPrincipalID: to.Ptr("00000000-0000-0000-0000-000000000001"),
 	// 					CreatedByPrincipalTenantID: to.Ptr("076915e7-de10-4323-bb34-a58c904068bb"),
-	// 					CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-19T20:10:50.1028398Z"); return t}()),
+	// 					CreatedOn: to.Ptr(time.Date(2023, time.October, 19, 20, 10, 50, 102839800, time.UTC)),
 	// 					PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 					PrincipalType: to.Ptr(armbilling.PrincipalTypeUser),
 	// 					RoleDefinitionID: to.Ptr("providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30/billingRoleDefinitions/00000000-0000-0000-0000-000000000001"),
@@ -1123,7 +1123,7 @@ func ExampleRoleAssignmentsClient_BeginResolveByBillingProfile() {
 	// 				Properties: &armbilling.RoleAssignmentProperties{
 	// 					CreatedByPrincipalID: to.Ptr("00000000-0000-0000-0000-000000000001"),
 	// 					CreatedByPrincipalTenantID: to.Ptr("076915e7-de10-4323-bb34-a58c904068bb"),
-	// 					CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-19T20:10:50.1028398Z"); return t}()),
+	// 					CreatedOn: to.Ptr(time.Date(2023, time.October, 19, 20, 10, 50, 102839800, time.UTC)),
 	// 					PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 					PrincipalType: to.Ptr(armbilling.PrincipalTypeUser),
 	// 					RoleDefinitionID: to.Ptr("providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30/billingProfiles/xxxx-xxxx-xxx-xxx/billingRoleDefinitions/00000000-0000-0000-0000-000000000000"),
@@ -1137,7 +1137,7 @@ func ExampleRoleAssignmentsClient_BeginResolveByBillingProfile() {
 	// 				Properties: &armbilling.RoleAssignmentProperties{
 	// 					CreatedByPrincipalID: to.Ptr("00000000-0000-0000-0000-000000000001"),
 	// 					CreatedByPrincipalTenantID: to.Ptr("076915e7-de10-4323-bb34-a58c904068bb"),
-	// 					CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-19T20:10:50.1028398Z"); return t}()),
+	// 					CreatedOn: to.Ptr(time.Date(2023, time.October, 19, 20, 10, 50, 102839800, time.UTC)),
 	// 					PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 					PrincipalType: to.Ptr(armbilling.PrincipalTypeUser),
 	// 					RoleDefinitionID: to.Ptr("providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30/billingProfiles/xxxx-xxxx-xxx-xxx/billingRoleDefinitions/00000000-0000-0000-0000-000000000001"),
@@ -1181,7 +1181,7 @@ func ExampleRoleAssignmentsClient_BeginResolveByCustomer() {
 	// 				Properties: &armbilling.RoleAssignmentProperties{
 	// 					CreatedByPrincipalID: to.Ptr("00000000-0000-0000-0000-000000000001"),
 	// 					CreatedByPrincipalTenantID: to.Ptr("076915e7-de10-4323-bb34-a58c904068bb"),
-	// 					CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-19T20:10:50.1028398Z"); return t}()),
+	// 					CreatedOn: to.Ptr(time.Date(2023, time.October, 19, 20, 10, 50, 102839800, time.UTC)),
 	// 					PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 					PrincipalTenantID: to.Ptr("c360d6f1-2709-476d-81bb-d075b213d9fc"),
 	// 					PrincipalTenantName: to.Ptr("Foo Bar"),
@@ -1198,7 +1198,7 @@ func ExampleRoleAssignmentsClient_BeginResolveByCustomer() {
 	// 				Properties: &armbilling.RoleAssignmentProperties{
 	// 					CreatedByPrincipalID: to.Ptr("00000000-0000-0000-0000-000000000001"),
 	// 					CreatedByPrincipalTenantID: to.Ptr("076915e7-de10-4323-bb34-a58c904068bb"),
-	// 					CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-19T20:10:50.1028398Z"); return t}()),
+	// 					CreatedOn: to.Ptr(time.Date(2023, time.October, 19, 20, 10, 50, 102839800, time.UTC)),
 	// 					PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 					PrincipalTenantID: to.Ptr("c360d6f1-2709-476d-81bb-d075b213d9fc"),
 	// 					PrincipalTenantName: to.Ptr("Foo Bar"),
@@ -1245,7 +1245,7 @@ func ExampleRoleAssignmentsClient_BeginResolveByInvoiceSection() {
 	// 				Properties: &armbilling.RoleAssignmentProperties{
 	// 					CreatedByPrincipalID: to.Ptr("00000000-0000-0000-0000-000000000001"),
 	// 					CreatedByPrincipalTenantID: to.Ptr("076915e7-de10-4323-bb34-a58c904068bb"),
-	// 					CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-19T20:10:50.1028398Z"); return t}()),
+	// 					CreatedOn: to.Ptr(time.Date(2023, time.October, 19, 20, 10, 50, 102839800, time.UTC)),
 	// 					PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 					PrincipalType: to.Ptr(armbilling.PrincipalTypeUser),
 	// 					RoleDefinitionID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30/billingProfiles/BKM6-54VH-BG7-PGB/invoiceSections/xxxx-xxxx-xxx-xxx/billingRoleDefinitions/30000000-aaaa-bbbb-cccc-100000000000"),
@@ -1259,7 +1259,7 @@ func ExampleRoleAssignmentsClient_BeginResolveByInvoiceSection() {
 	// 				Properties: &armbilling.RoleAssignmentProperties{
 	// 					CreatedByPrincipalID: to.Ptr("00000000-0000-0000-0000-000000000001"),
 	// 					CreatedByPrincipalTenantID: to.Ptr("076915e7-de10-4323-bb34-a58c904068bb"),
-	// 					CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-19T20:10:50.1028398Z"); return t}()),
+	// 					CreatedOn: to.Ptr(time.Date(2023, time.October, 19, 20, 10, 50, 102839800, time.UTC)),
 	// 					PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 					PrincipalType: to.Ptr(armbilling.PrincipalTypeUser),
 	// 					RoleDefinitionID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2018-09-30/billingProfiles/BKM6-54VH-BG7-PGB/invoiceSections/xxxx-xxxx-xxx-xxx/billingRoleDefinitions/30000000-aaaa-bbbb-cccc-100000000000"),

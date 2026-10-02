@@ -93,7 +93,7 @@ func (g *GlobalServerTransport) dispatchGetDeletedWebApp(req *http.Request) (*ht
 	if g.srv.GetDeletedWebApp == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetDeletedWebApp not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/deletedSites/(?P<deletedSiteId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/deletedSites/(?P<deletedSiteId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -122,7 +122,7 @@ func (g *GlobalServerTransport) dispatchGetDeletedWebAppSnapshots(req *http.Requ
 	if g.srv.GetDeletedWebAppSnapshots == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetDeletedWebAppSnapshots not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/deletedSites/(?P<deletedSiteId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/snapshots`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/deletedSites/(?P<deletedSiteId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/snapshots`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -151,7 +151,7 @@ func (g *GlobalServerTransport) dispatchGetSubscriptionOperationWithAsyncRespons
 	if g.srv.GetSubscriptionOperationWithAsyncResponse == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetSubscriptionOperationWithAsyncResponse not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/operations/(?P<operationId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/operations/(?P<operationId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {

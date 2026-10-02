@@ -177,7 +177,7 @@ func (s *ScheduledActionsServerTransport) dispatchCheckNameAvailabilityByScope(r
 	if s.srv.CheckNameAvailabilityByScope == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CheckNameAvailabilityByScope not implemented")}
 	}
-	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CostManagement/checkNameAvailability`
+	const regexStr = `/(?P<scope>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.CostManagement/checkNameAvailability`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 2 {
@@ -210,7 +210,7 @@ func (s *ScheduledActionsServerTransport) dispatchCreateOrUpdate(req *http.Reque
 	if s.srv.CreateOrUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.CostManagement/scheduledActions/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/providers/Microsoft\.CostManagement/scheduledActions/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 2 {
@@ -250,7 +250,7 @@ func (s *ScheduledActionsServerTransport) dispatchCreateOrUpdateByScope(req *htt
 	if s.srv.CreateOrUpdateByScope == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdateByScope not implemented")}
 	}
-	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CostManagement/scheduledActions/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/(?P<scope>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.CostManagement/scheduledActions/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -294,7 +294,7 @@ func (s *ScheduledActionsServerTransport) dispatchDelete(req *http.Request) (*ht
 	if s.srv.Delete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Delete not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.CostManagement/scheduledActions/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/providers/Microsoft\.CostManagement/scheduledActions/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 2 {
@@ -323,7 +323,7 @@ func (s *ScheduledActionsServerTransport) dispatchDeleteByScope(req *http.Reques
 	if s.srv.DeleteByScope == nil {
 		return nil, &nonRetriableError{errors.New("fake for method DeleteByScope not implemented")}
 	}
-	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CostManagement/scheduledActions/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/(?P<scope>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.CostManagement/scheduledActions/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -356,7 +356,7 @@ func (s *ScheduledActionsServerTransport) dispatchGet(req *http.Request) (*http.
 	if s.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.CostManagement/scheduledActions/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/providers/Microsoft\.CostManagement/scheduledActions/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 2 {
@@ -385,7 +385,7 @@ func (s *ScheduledActionsServerTransport) dispatchGetByScope(req *http.Request) 
 	if s.srv.GetByScope == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetByScope not implemented")}
 	}
-	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CostManagement/scheduledActions/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/(?P<scope>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.CostManagement/scheduledActions/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -455,7 +455,7 @@ func (s *ScheduledActionsServerTransport) dispatchNewListByScopePager(req *http.
 	}
 	newListByScopePager := s.newListByScopePager.get(req)
 	if newListByScopePager == nil {
-		const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CostManagement/scheduledActions`
+		const regexStr = `/(?P<scope>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.CostManagement/scheduledActions`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 2 {
@@ -498,7 +498,7 @@ func (s *ScheduledActionsServerTransport) dispatchRun(req *http.Request) (*http.
 	if s.srv.Run == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Run not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.CostManagement/scheduledActions/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/execute`
+	const regexStr = `/providers/Microsoft\.CostManagement/scheduledActions/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/execute`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 2 {
@@ -527,7 +527,7 @@ func (s *ScheduledActionsServerTransport) dispatchRunByScope(req *http.Request) 
 	if s.srv.RunByScope == nil {
 		return nil, &nonRetriableError{errors.New("fake for method RunByScope not implemented")}
 	}
-	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CostManagement/scheduledActions/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/execute`
+	const regexStr = `/(?P<scope>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.CostManagement/scheduledActions/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/execute`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {

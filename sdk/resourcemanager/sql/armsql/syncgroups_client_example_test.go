@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-02-01-preview/SyncGroupCancelSync.json
+// Generated from example definition: 2026-08-01-preview/SyncGroupCancelSync.json
 func ExampleSyncGroupsClient_CancelSync() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -34,7 +34,7 @@ func ExampleSyncGroupsClient_CancelSync() {
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/SyncGroupCreate.json
+// Generated from example definition: 2026-08-01-preview/SyncGroupCreate.json
 func ExampleSyncGroupsClient_BeginCreateOrUpdate_createASyncGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -73,7 +73,7 @@ func ExampleSyncGroupsClient_BeginCreateOrUpdate_createASyncGroup() {
 	// 			ConflictResolutionPolicy: to.Ptr(armsql.SyncConflictResolutionPolicyHubWin),
 	// 			HubDatabaseUserName: to.Ptr("hubUser"),
 	// 			Interval: to.Ptr[int32](-1),
-	// 			LastSyncTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T08:00:00Z"); return t}()),
+	// 			LastSyncTime: to.Ptr(time.Date(1, time.January, 1, 8, 0, 0, 0, time.UTC)),
 	// 			PrivateEndpointName: to.Ptr("PE_67FDBBD6-B2D8-4014-9CC6-C68ABBCFD481_syncgroupcrud-8475"),
 	// 			SyncDatabaseID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/syncgroupcrud-3521/providers/Microsoft.Sql/servers/syncgroupcrud-8475/databases/syncgroupcrud-4328"),
 	// 			SyncState: to.Ptr(armsql.SyncGroupStateNotReady),
@@ -83,7 +83,7 @@ func ExampleSyncGroupsClient_BeginCreateOrUpdate_createASyncGroup() {
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/SyncGroupCreateWithIdentity.json
+// Generated from example definition: 2026-08-01-preview/SyncGroupCreateWithIdentity.json
 func ExampleSyncGroupsClient_BeginCreateOrUpdate_createASyncGroupWithUserAssignedIdentity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -131,7 +131,7 @@ func ExampleSyncGroupsClient_BeginCreateOrUpdate_createASyncGroupWithUserAssigne
 	// 		},
 	// 		Properties: &armsql.SyncGroupProperties{
 	// 			Interval: to.Ptr[int32](-1),
-	// 			LastSyncTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T08:00:00Z"); return t}()),
+	// 			LastSyncTime: to.Ptr(time.Date(1, time.January, 1, 8, 0, 0, 0, time.UTC)),
 	// 			ConflictResolutionPolicy: to.Ptr(armsql.SyncConflictResolutionPolicyHubWin),
 	// 			SyncDatabaseID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/syncgroupcrud-3521/providers/Microsoft.Sql/servers/syncgroupcrud-8475/databases/syncgroupcrud-4328"),
 	// 			SyncState: to.Ptr(armsql.SyncGroupStateNotReady),
@@ -144,7 +144,7 @@ func ExampleSyncGroupsClient_BeginCreateOrUpdate_createASyncGroupWithUserAssigne
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/SyncGroupUpdate.json
+// Generated from example definition: 2026-08-01-preview/SyncGroupUpdate.json
 func ExampleSyncGroupsClient_BeginCreateOrUpdate_updateASyncGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -183,7 +183,7 @@ func ExampleSyncGroupsClient_BeginCreateOrUpdate_updateASyncGroup() {
 	// 			ConflictResolutionPolicy: to.Ptr(armsql.SyncConflictResolutionPolicyHubWin),
 	// 			HubDatabaseUserName: to.Ptr("hubUser"),
 	// 			Interval: to.Ptr[int32](-1),
-	// 			LastSyncTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T08:00:00Z"); return t}()),
+	// 			LastSyncTime: to.Ptr(time.Date(1, time.January, 1, 8, 0, 0, 0, time.UTC)),
 	// 			PrivateEndpointName: to.Ptr("PE_67FDBBD6-B2D8-4014-9CC6-C68ABBCFD481_syncgroupcrud-3187"),
 	// 			SyncDatabaseID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/syncgroupcrud-3521/providers/Microsoft.Sql/servers/syncgroupcrud-8475/databases/syncgroupcrud-4328"),
 	// 			SyncState: to.Ptr(armsql.SyncGroupStateNotReady),
@@ -193,7 +193,7 @@ func ExampleSyncGroupsClient_BeginCreateOrUpdate_updateASyncGroup() {
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/SyncGroupDelete.json
+// Generated from example definition: 2026-08-01-preview/SyncGroupDelete.json
 func ExampleSyncGroupsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -219,7 +219,7 @@ func ExampleSyncGroupsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/SyncGroupGet.json
+// Generated from example definition: 2026-08-01-preview/SyncGroupGet.json
 func ExampleSyncGroupsClient_Get_getASyncGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -246,7 +246,7 @@ func ExampleSyncGroupsClient_Get_getASyncGroup() {
 	// 			ConflictResolutionPolicy: to.Ptr(armsql.SyncConflictResolutionPolicyHubWin),
 	// 			HubDatabaseUserName: to.Ptr("hubUser"),
 	// 			Interval: to.Ptr[int32](-1),
-	// 			LastSyncTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T08:00:00Z"); return t}()),
+	// 			LastSyncTime: to.Ptr(time.Date(1, time.January, 1, 8, 0, 0, 0, time.UTC)),
 	// 			PrivateEndpointName: to.Ptr("PE_67FDBBD6-B2D8-4014-9CC6-C68ABBCFD481_syncgroupcrud-3187"),
 	// 			SyncDatabaseID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/syncgroupcrud-3521/providers/Microsoft.Sql/servers/syncgroupcrud-8475/databases/syncgroupcrud-4328"),
 	// 			SyncState: to.Ptr(armsql.SyncGroupStateNotReady),
@@ -256,7 +256,7 @@ func ExampleSyncGroupsClient_Get_getASyncGroup() {
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/SyncGroupGetWithIdentity.json
+// Generated from example definition: 2026-08-01-preview/SyncGroupGetWithIdentity.json
 func ExampleSyncGroupsClient_Get_getASyncGroupWithUserAssignedIdentity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -287,7 +287,7 @@ func ExampleSyncGroupsClient_Get_getASyncGroupWithUserAssignedIdentity() {
 	// 		},
 	// 		Properties: &armsql.SyncGroupProperties{
 	// 			Interval: to.Ptr[int32](-1),
-	// 			LastSyncTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T08:00:00Z"); return t}()),
+	// 			LastSyncTime: to.Ptr(time.Date(1, time.January, 1, 8, 0, 0, 0, time.UTC)),
 	// 			ConflictResolutionPolicy: to.Ptr(armsql.SyncConflictResolutionPolicyHubWin),
 	// 			SyncDatabaseID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/syncgroupcrud-3521/providers/Microsoft.Sql/servers/syncgroupcrud-8475/databases/syncgroupcrud-4328"),
 	// 			SyncState: to.Ptr(armsql.SyncGroupStateNotReady),
@@ -301,7 +301,7 @@ func ExampleSyncGroupsClient_Get_getASyncGroupWithUserAssignedIdentity() {
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/SyncGroupListByDatabase.json
+// Generated from example definition: 2026-08-01-preview/SyncGroupListByDatabase.json
 func ExampleSyncGroupsClient_NewListByDatabasePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -334,7 +334,7 @@ func ExampleSyncGroupsClient_NewListByDatabasePager() {
 		// 					ConflictResolutionPolicy: to.Ptr(armsql.SyncConflictResolutionPolicyHubWin),
 		// 					HubDatabaseUserName: to.Ptr("hubUser"),
 		// 					Interval: to.Ptr[int32](-1),
-		// 					LastSyncTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T08:00:00Z"); return t}()),
+		// 					LastSyncTime: to.Ptr(time.Date(1, time.January, 1, 8, 0, 0, 0, time.UTC)),
 		// 					PrivateEndpointName: to.Ptr("PE_67FDBBD6-B2D8-4014-9CC6-C68ABBCFD481_syncgroupcrud-3187"),
 		// 					SyncDatabaseID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/syncgroupcrud-3521/providers/Microsoft.Sql/servers/syncgroupcrud-8475/databases/syncgroupcrud-4328"),
 		// 					SyncState: to.Ptr(armsql.SyncGroupStateNotReady),
@@ -349,7 +349,7 @@ func ExampleSyncGroupsClient_NewListByDatabasePager() {
 		// 					ConflictResolutionPolicy: to.Ptr(armsql.SyncConflictResolutionPolicyHubWin),
 		// 					HubDatabaseUserName: to.Ptr("hubUser"),
 		// 					Interval: to.Ptr[int32](-1),
-		// 					LastSyncTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T08:00:00Z"); return t}()),
+		// 					LastSyncTime: to.Ptr(time.Date(1, time.January, 1, 8, 0, 0, 0, time.UTC)),
 		// 					PrivateEndpointName: to.Ptr("PE_67FDBBD6-B2D8-4014-9CC6-C68ABBCFD481_syncgroupcrud-5374"),
 		// 					SyncDatabaseID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/syncgroupcrud-3521/providers/Microsoft.Sql/servers/syncgroupcrud-8475/databases/syncgroupcrud-4328"),
 		// 					SyncState: to.Ptr(armsql.SyncGroupStateNotReady),
@@ -362,7 +362,7 @@ func ExampleSyncGroupsClient_NewListByDatabasePager() {
 	}
 }
 
-// Generated from example definition: 2025-02-01-preview/SyncGroupGetHubSchema.json
+// Generated from example definition: 2026-08-01-preview/SyncGroupGetHubSchema.json
 func ExampleSyncGroupsClient_NewListHubSchemasPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -388,7 +388,7 @@ func ExampleSyncGroupsClient_NewListHubSchemasPager() {
 		// 	SyncFullSchemaPropertiesListResult: armsql.SyncFullSchemaPropertiesListResult{
 		// 		Value: []*armsql.SyncFullSchemaProperties{
 		// 			{
-		// 				LastUpdateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-30T07:16:08.21Z"); return t}()),
+		// 				LastUpdateTime: to.Ptr(time.Date(2017, time.May, 30, 7, 16, 8, 210000000, time.UTC)),
 		// 				Tables: []*armsql.SyncFullSchemaTable{
 		// 					{
 		// 						Name: to.Ptr("dbo.myTable"),
@@ -422,7 +422,7 @@ func ExampleSyncGroupsClient_NewListHubSchemasPager() {
 	}
 }
 
-// Generated from example definition: 2025-02-01-preview/SyncGroupGetLog.json
+// Generated from example definition: 2026-08-01-preview/SyncGroupGetLog.json
 func ExampleSyncGroupsClient_NewListLogsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -451,7 +451,7 @@ func ExampleSyncGroupsClient_NewListLogsPager() {
 		// 				Type: to.Ptr(armsql.SyncGroupLogTypeSuccess),
 		// 				OperationStatus: to.Ptr("SchemaRefreshSuccess"),
 		// 				Source: to.Ptr("syncgroupcrud-8475.database.windows.net/hub"),
-		// 				Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-30T07:16:08.25Z"); return t}()),
+		// 				Timestamp: to.Ptr(time.Date(2017, time.May, 30, 7, 16, 8, 250000000, time.UTC)),
 		// 				TracingID: to.Ptr("c0480c8e-6269-424e-9404-b00efce0ebae"),
 		// 				Details: to.Ptr("Schema information obtained successfully."),
 		// 			},
@@ -459,7 +459,7 @@ func ExampleSyncGroupsClient_NewListLogsPager() {
 		// 				Type: to.Ptr(armsql.SyncGroupLogTypeError),
 		// 				OperationStatus: to.Ptr("SchemaRefreshFailure"),
 		// 				Source: to.Ptr("syncgroupcrud-8475.database.windows.net/member"),
-		// 				Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-30T07:03:37.5733333Z"); return t}()),
+		// 				Timestamp: to.Ptr(time.Date(2017, time.May, 30, 7, 3, 37, 573333300, time.UTC)),
 		// 				TracingID: to.Ptr("cd3aa28c-0c31-471f-8a77-f1b21c908cbd"),
 		// 				Details: to.Ptr("Getting schema information for the database failed with the exception \"Failed to connect to server .\nInner exception: SqlException Error Code: -2146232060 - SqlError Number:53, Message: A network-related or instance-specific error occurred while establishing a connection to SQL Server. The server was not found or was not accessible. Verify that the instance name is correct and that SQL Server is configured to allow remote connections. (provider: Named Pipes Provider, error: 40 - Could not open a connection to SQL Server) \nInner exception: The network path was not found\n For more information, provide tracing ID ‘cd3aa28c-0c31-471f-8a77-f1b21c908cbd’ to customer support.\""),
 		// 			},
@@ -469,7 +469,7 @@ func ExampleSyncGroupsClient_NewListLogsPager() {
 	}
 }
 
-// Generated from example definition: 2025-02-01-preview/SyncGroupGetSyncDatabaseId.json
+// Generated from example definition: 2026-08-01-preview/SyncGroupGetSyncDatabaseId.json
 func ExampleSyncGroupsClient_NewListSyncDatabaseIDsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -503,7 +503,7 @@ func ExampleSyncGroupsClient_NewListSyncDatabaseIDsPager() {
 	}
 }
 
-// Generated from example definition: 2025-02-01-preview/SyncGroupRefreshHubSchema.json
+// Generated from example definition: 2026-08-01-preview/SyncGroupRefreshHubSchema.json
 func ExampleSyncGroupsClient_BeginRefreshHubSchema() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -529,7 +529,7 @@ func ExampleSyncGroupsClient_BeginRefreshHubSchema() {
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/SyncGroupTriggerSync.json
+// Generated from example definition: 2026-08-01-preview/SyncGroupTriggerSync.json
 func ExampleSyncGroupsClient_TriggerSync() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -551,7 +551,7 @@ func ExampleSyncGroupsClient_TriggerSync() {
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/SyncGroupPatch.json
+// Generated from example definition: 2026-08-01-preview/SyncGroupPatch.json
 func ExampleSyncGroupsClient_BeginUpdate_updateASyncGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -591,7 +591,7 @@ func ExampleSyncGroupsClient_BeginUpdate_updateASyncGroup() {
 	// 			ConflictResolutionPolicy: to.Ptr(armsql.SyncConflictResolutionPolicyHubWin),
 	// 			HubDatabaseUserName: to.Ptr("hubUser"),
 	// 			Interval: to.Ptr[int32](-1),
-	// 			LastSyncTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T08:00:00Z"); return t}()),
+	// 			LastSyncTime: to.Ptr(time.Date(1, time.January, 1, 8, 0, 0, 0, time.UTC)),
 	// 			PrivateEndpointName: to.Ptr("PE_67FDBBD6-B2D8-4014-9CC6-C68ABBCFD481_syncgroupcrud-3187"),
 	// 			SyncDatabaseID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/syncgroupcrud-3521/providers/Microsoft.Sql/servers/syncgroupcrud-8475/databases/syncgroupcrud-4328"),
 	// 			SyncState: to.Ptr(armsql.SyncGroupStateNotReady),
@@ -601,7 +601,7 @@ func ExampleSyncGroupsClient_BeginUpdate_updateASyncGroup() {
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/SyncGroupPatchAddAndRemoveIdentity.json
+// Generated from example definition: 2026-08-01-preview/SyncGroupPatchAddAndRemoveIdentity.json
 func ExampleSyncGroupsClient_BeginUpdate_updateASyncGroupWithNewUserAssignedIdentityAndRemoveOlderAssignedIdentity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -649,7 +649,7 @@ func ExampleSyncGroupsClient_BeginUpdate_updateASyncGroupWithNewUserAssignedIden
 	// 		},
 	// 		Properties: &armsql.SyncGroupProperties{
 	// 			Interval: to.Ptr[int32](-1),
-	// 			LastSyncTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T08:00:00Z"); return t}()),
+	// 			LastSyncTime: to.Ptr(time.Date(1, time.January, 1, 8, 0, 0, 0, time.UTC)),
 	// 			ConflictResolutionPolicy: to.Ptr(armsql.SyncConflictResolutionPolicyHubWin),
 	// 			SyncDatabaseID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/syncgroupcrud-3521/providers/Microsoft.Sql/servers/syncgroupcrud-8475/databases/syncgroupcrud-4328"),
 	// 			SyncState: to.Ptr(armsql.SyncGroupStateNotReady),
@@ -662,7 +662,7 @@ func ExampleSyncGroupsClient_BeginUpdate_updateASyncGroupWithNewUserAssignedIden
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/SyncGroupPatchWithIdentity.json
+// Generated from example definition: 2026-08-01-preview/SyncGroupPatchWithIdentity.json
 func ExampleSyncGroupsClient_BeginUpdate_updateASyncGroupWithUserAssignedIdentity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -710,7 +710,7 @@ func ExampleSyncGroupsClient_BeginUpdate_updateASyncGroupWithUserAssignedIdentit
 	// 		},
 	// 		Properties: &armsql.SyncGroupProperties{
 	// 			Interval: to.Ptr[int32](-1),
-	// 			LastSyncTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T08:00:00Z"); return t}()),
+	// 			LastSyncTime: to.Ptr(time.Date(1, time.January, 1, 8, 0, 0, 0, time.UTC)),
 	// 			ConflictResolutionPolicy: to.Ptr(armsql.SyncConflictResolutionPolicyHubWin),
 	// 			SyncDatabaseID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/syncgroupcrud-3521/providers/Microsoft.Sql/servers/syncgroupcrud-8475/databases/syncgroupcrud-4328"),
 	// 			SyncState: to.Ptr(armsql.SyncGroupStateNotReady),

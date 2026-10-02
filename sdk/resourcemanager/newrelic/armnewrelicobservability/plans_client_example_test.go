@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-05-01-preview/Plans_List_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-01/Plans_List_MaximumSet_Gen.json
 func ExamplePlansClient_NewListPager_plansListMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -47,7 +47,7 @@ func ExamplePlansClient_NewListPager_plansListMaximumSetGen() {
 		// 					OrgCreationSource: to.Ptr(armnewrelicobservability.OrgCreationSourceLIFTR),
 		// 					PlanData: &armnewrelicobservability.PlanData{
 		// 						BillingCycle: to.Ptr("Yearly"),
-		// 						EffectiveDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-12-05T14:11:37.786Z"); return t}()),
+		// 						EffectiveDate: to.Ptr(time.Date(2022, time.December, 5, 14, 11, 37, 786000000, time.UTC)),
 		// 						PlanDetails: to.Ptr("tbbiaga"),
 		// 						UsageType: to.Ptr(armnewrelicobservability.UsageTypePAYG),
 		// 					},
@@ -59,7 +59,7 @@ func ExamplePlansClient_NewListPager_plansListMaximumSetGen() {
 	}
 }
 
-// Generated from example definition: 2025-05-01-preview/Plans_List_MinimumSet_Gen.json
+// Generated from example definition: 2026-06-01/Plans_List_MinimumSet_Gen.json
 func ExamplePlansClient_NewListPager_plansListMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

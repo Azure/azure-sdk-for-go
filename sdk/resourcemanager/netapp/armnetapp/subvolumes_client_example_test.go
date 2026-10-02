@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp/v10"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp/v11"
 	"log"
 )
 
-// Generated from example definition: 2026-05-01/Subvolumes_Create.json
+// Generated from example definition: 2026-06-15-preview/Subvolumes_Create.json
 func ExampleSubvolumesClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -52,7 +52,7 @@ func ExampleSubvolumesClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01/Subvolumes_Delete.json
+// Generated from example definition: 2026-06-15-preview/Subvolumes_Delete.json
 func ExampleSubvolumesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -78,7 +78,7 @@ func ExampleSubvolumesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01/Subvolumes_Get.json
+// Generated from example definition: 2026-06-15-preview/Subvolumes_Get.json
 func ExampleSubvolumesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -109,7 +109,7 @@ func ExampleSubvolumesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01/Subvolumes_Metadata.json
+// Generated from example definition: 2026-06-15-preview/Subvolumes_Metadata.json
 func ExampleSubvolumesClient_BeginGetMetadata() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -138,11 +138,11 @@ func ExampleSubvolumesClient_BeginGetMetadata() {
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/volumes/volume1/subvolumes/subvolume1/metadata"),
 	// 		Properties: &armnetapp.SubvolumeModelProperties{
 	// 			Path: to.Ptr("/pathToSubvol"),
-	// 			AccessedTimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-15T13:23:33Z"); return t}()),
+	// 			AccessedTimeStamp: to.Ptr(time.Date(2017, time.August, 15, 13, 23, 33, 0, time.UTC)),
 	// 			BytesUsed: to.Ptr[int64](5),
-	// 			ChangedTimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-15T13:23:33Z"); return t}()),
-	// 			CreationTimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-15T13:23:33Z"); return t}()),
-	// 			ModifiedTimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-15T13:23:33Z"); return t}()),
+	// 			ChangedTimeStamp: to.Ptr(time.Date(2017, time.August, 15, 13, 23, 33, 0, time.UTC)),
+	// 			CreationTimeStamp: to.Ptr(time.Date(2017, time.August, 15, 13, 23, 33, 0, time.UTC)),
+	// 			ModifiedTimeStamp: to.Ptr(time.Date(2017, time.August, 15, 13, 23, 33, 0, time.UTC)),
 	// 			Permissions: to.Ptr("777"),
 	// 			Size: to.Ptr[int64](5),
 	// 		},
@@ -150,7 +150,7 @@ func ExampleSubvolumesClient_BeginGetMetadata() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01/Subvolumes_List.json
+// Generated from example definition: 2026-06-15-preview/Subvolumes_List.json
 func ExampleSubvolumesClient_NewListByVolumePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -190,7 +190,7 @@ func ExampleSubvolumesClient_NewListByVolumePager() {
 	}
 }
 
-// Generated from example definition: 2026-05-01/Subvolumes_Update.json
+// Generated from example definition: 2026-06-15-preview/Subvolumes_Update.json
 func ExampleSubvolumesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

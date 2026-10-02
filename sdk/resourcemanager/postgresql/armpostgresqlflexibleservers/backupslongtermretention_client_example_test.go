@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-04-01-preview/BackupsLongTermRetentionCheckPrerequisites.json
+// Generated from example definition: 2026-07-01-preview/BackupsLongTermRetentionCheckPrerequisites.json
 func ExampleBackupsLongTermRetentionClient_CheckPrerequisites() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -43,7 +43,7 @@ func ExampleBackupsLongTermRetentionClient_CheckPrerequisites() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/BackupsLongTermRetentionGet.json
+// Generated from example definition: 2026-07-01-preview/BackupsLongTermRetentionGet.json
 func ExampleBackupsLongTermRetentionClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -71,16 +71,16 @@ func ExampleBackupsLongTermRetentionClient_Get() {
 	// 			BackupName: to.Ptr("exampleltrbackup"),
 	// 			DataTransferredInBytes: to.Ptr[int64](9),
 	// 			DatasourceSizeInBytes: to.Ptr[int64](21),
-	// 			EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T18:35:22.123Z"); return t}()),
+	// 			EndTime: to.Ptr(time.Date(2025, time.June, 1, 18, 35, 22, 123000000, time.UTC)),
 	// 			PercentComplete: to.Ptr[float64](4),
-	// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T18:30:22.123Z"); return t}()),
+	// 			StartTime: to.Ptr(time.Date(2025, time.June, 1, 18, 30, 22, 123000000, time.UTC)),
 	// 			Status: to.Ptr(armpostgresqlflexibleservers.ExecutionStatusRunning),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/BackupsLongTermRetentionListByServer.json
+// Generated from example definition: 2026-07-01-preview/BackupsLongTermRetentionListByServer.json
 func ExampleBackupsLongTermRetentionClient_NewListByServerPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -114,9 +114,9 @@ func ExampleBackupsLongTermRetentionClient_NewListByServerPager() {
 		// 					BackupName: to.Ptr("exampleltrbackup"),
 		// 					DataTransferredInBytes: to.Ptr[int64](9),
 		// 					DatasourceSizeInBytes: to.Ptr[int64](21),
-		// 					EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T18:35:22.123Z"); return t}()),
+		// 					EndTime: to.Ptr(time.Date(2025, time.June, 1, 18, 35, 22, 123000000, time.UTC)),
 		// 					PercentComplete: to.Ptr[float64](4),
-		// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T18:30:22.123Z"); return t}()),
+		// 					StartTime: to.Ptr(time.Date(2025, time.June, 1, 18, 30, 22, 123000000, time.UTC)),
 		// 					Status: to.Ptr(armpostgresqlflexibleservers.ExecutionStatusRunning),
 		// 				},
 		// 			},
@@ -126,7 +126,7 @@ func ExampleBackupsLongTermRetentionClient_NewListByServerPager() {
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/BackupsLongTermRetentionStart.json
+// Generated from example definition: 2026-07-01-preview/BackupsLongTermRetentionStart.json
 func ExampleBackupsLongTermRetentionClient_BeginStart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -163,9 +163,9 @@ func ExampleBackupsLongTermRetentionClient_BeginStart() {
 	// 			BackupMetadata: to.Ptr("backupmetadata"),
 	// 			DataTransferredInBytes: to.Ptr[int64](23),
 	// 			DatasourceSizeInBytes: to.Ptr[int64](23),
-	// 			EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T18:35:22.123Z"); return t}()),
+	// 			EndTime: to.Ptr(time.Date(2025, time.June, 1, 18, 35, 22, 123000000, time.UTC)),
 	// 			PercentComplete: to.Ptr[float64](100),
-	// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T18:30:22.123Z"); return t}()),
+	// 			StartTime: to.Ptr(time.Date(2025, time.June, 1, 18, 30, 22, 123000000, time.UTC)),
 	// 			Status: to.Ptr(armpostgresqlflexibleservers.ExecutionStatusRunning),
 	// 		},
 	// 	},

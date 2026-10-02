@@ -58,12 +58,7 @@ func (client *SolutionSelfHelpClient) Get(ctx context.Context, solutionID string
 	if err != nil {
 		return SolutionSelfHelpClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SolutionSelfHelpClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -85,8 +80,11 @@ func (client *SolutionSelfHelpClient) getCreateRequest(ctx context.Context, solu
 }
 
 // getHandleResponse handles the Get response.
-func (client *SolutionSelfHelpClient) getHandleResponse(resp *http.Response) (SolutionSelfHelpClientGetResponse, error) {
+func (client *SolutionSelfHelpClient) getHandleResponse(resp *http.Response, successCodes ...int) (SolutionSelfHelpClientGetResponse, error) {
 	result := SolutionSelfHelpClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SolutionResourceSelfHelp); err != nil {
 		return SolutionSelfHelpClientGetResponse{}, err
 	}

@@ -30,6 +30,9 @@ type DecompileOperationGroupClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewDecompileOperationGroupClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DecompileOperationGroupClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -60,19 +63,14 @@ func (client *DecompileOperationGroupClient) Bicep(ctx context.Context, decompil
 	if err != nil {
 		return DecompileOperationGroupClientBicepResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DecompileOperationGroupClientBicepResponse{}, err
-	}
-	resp, err := client.bicepHandleResponse(httpResp)
-	return resp, err
+	return client.bicepHandleResponse(httpResp, http.StatusOK)
 }
 
 // bicepCreateRequest creates the Bicep request.
 func (client *DecompileOperationGroupClient) bicepCreateRequest(ctx context.Context, decompileOperationRequest DecompileOperationRequest, _ *DecompileOperationGroupClientBicepOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Resources/decompileBicep"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
@@ -91,8 +89,11 @@ func (client *DecompileOperationGroupClient) bicepCreateRequest(ctx context.Cont
 }
 
 // bicepHandleResponse handles the Bicep response.
-func (client *DecompileOperationGroupClient) bicepHandleResponse(resp *http.Response) (DecompileOperationGroupClientBicepResponse, error) {
+func (client *DecompileOperationGroupClient) bicepHandleResponse(resp *http.Response, successCodes ...int) (DecompileOperationGroupClientBicepResponse, error) {
 	result := DecompileOperationGroupClientBicepResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DecompileOperationSuccessResponse); err != nil {
 		return DecompileOperationGroupClientBicepResponse{}, err
 	}

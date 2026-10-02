@@ -15,6 +15,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resiliencemanagement/armresiliencemanagement"
 	"net/http"
 	"net/url"
+	"reflect"
 	"regexp"
 	"slices"
 )
@@ -27,7 +28,11 @@ type DrillRunsServer struct {
 
 	// BeginFailOver is the fake for method DrillRunsClient.BeginFailOver
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginFailOver func(ctx context.Context, serviceGroupName string, operationID string, drillName string, drillRunName string, body armresiliencemanagement.DrillRunFailoverRequest, options *armresiliencemanagement.DrillRunsClientBeginFailOverOptions) (resp azfake.PollerResponder[armresiliencemanagement.DrillRunsClientFailOverResponse], errResp azfake.ErrorResponder)
+	BeginFailOver func(ctx context.Context, serviceGroupName string, operationID string, drillName string, drillRunName string, options *armresiliencemanagement.DrillRunsClientBeginFailOverOptions) (resp azfake.PollerResponder[armresiliencemanagement.DrillRunsClientFailOverResponse], errResp azfake.ErrorResponder)
+
+	// BeginGenerateReport is the fake for method DrillRunsClient.BeginGenerateReport
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginGenerateReport func(ctx context.Context, serviceGroupName string, operationID string, drillName string, drillRunName string, options *armresiliencemanagement.DrillRunsClientBeginGenerateReportOptions) (resp azfake.PollerResponder[armresiliencemanagement.DrillRunsClientGenerateReportResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method DrillRunsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
@@ -36,6 +41,10 @@ type DrillRunsServer struct {
 	// NewListPager is the fake for method DrillRunsClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListPager func(serviceGroupName string, drillName string, options *armresiliencemanagement.DrillRunsClientListOptions) (resp azfake.PagerResponder[armresiliencemanagement.DrillRunsClientListResponse])
+
+	// BeginListReportDownloadURL is the fake for method DrillRunsClient.BeginListReportDownloadURL
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginListReportDownloadURL func(ctx context.Context, serviceGroupName string, operationID string, drillName string, drillRunName string, body armresiliencemanagement.ListReportDownloadURLRequest, options *armresiliencemanagement.DrillRunsClientBeginListReportDownloadURLOptions) (resp azfake.PollerResponder[armresiliencemanagement.DrillRunsClientListReportDownloadURLResponse], errResp azfake.ErrorResponder)
 
 	// BeginMarkAsComplete is the fake for method DrillRunsClient.BeginMarkAsComplete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
@@ -55,26 +64,30 @@ type DrillRunsServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewDrillRunsServerTransport(srv *DrillRunsServer) *DrillRunsServerTransport {
 	return &DrillRunsServerTransport{
-		srv:                 srv,
-		beginAddNotes:       newTracker[azfake.PollerResponder[armresiliencemanagement.DrillRunsClientAddNotesResponse]](),
-		beginFailOver:       newTracker[azfake.PollerResponder[armresiliencemanagement.DrillRunsClientFailOverResponse]](),
-		newListPager:        newTracker[azfake.PagerResponder[armresiliencemanagement.DrillRunsClientListResponse]](),
-		beginMarkAsComplete: newTracker[azfake.PollerResponder[armresiliencemanagement.DrillRunsClientMarkAsCompleteResponse]](),
-		beginReprotect:      newTracker[azfake.PollerResponder[armresiliencemanagement.DrillRunsClientReprotectResponse]](),
-		beginResume:         newTracker[azfake.PollerResponder[armresiliencemanagement.DrillRunsClientResumeResponse]](),
+		srv:                        srv,
+		beginAddNotes:              newTracker[azfake.PollerResponder[armresiliencemanagement.DrillRunsClientAddNotesResponse]](),
+		beginFailOver:              newTracker[azfake.PollerResponder[armresiliencemanagement.DrillRunsClientFailOverResponse]](),
+		beginGenerateReport:        newTracker[azfake.PollerResponder[armresiliencemanagement.DrillRunsClientGenerateReportResponse]](),
+		newListPager:               newTracker[azfake.PagerResponder[armresiliencemanagement.DrillRunsClientListResponse]](),
+		beginListReportDownloadURL: newTracker[azfake.PollerResponder[armresiliencemanagement.DrillRunsClientListReportDownloadURLResponse]](),
+		beginMarkAsComplete:        newTracker[azfake.PollerResponder[armresiliencemanagement.DrillRunsClientMarkAsCompleteResponse]](),
+		beginReprotect:             newTracker[azfake.PollerResponder[armresiliencemanagement.DrillRunsClientReprotectResponse]](),
+		beginResume:                newTracker[azfake.PollerResponder[armresiliencemanagement.DrillRunsClientResumeResponse]](),
 	}
 }
 
 // DrillRunsServerTransport connects instances of armresiliencemanagement.DrillRunsClient to instances of DrillRunsServer.
 // Don't use this type directly, use NewDrillRunsServerTransport instead.
 type DrillRunsServerTransport struct {
-	srv                 *DrillRunsServer
-	beginAddNotes       *tracker[azfake.PollerResponder[armresiliencemanagement.DrillRunsClientAddNotesResponse]]
-	beginFailOver       *tracker[azfake.PollerResponder[armresiliencemanagement.DrillRunsClientFailOverResponse]]
-	newListPager        *tracker[azfake.PagerResponder[armresiliencemanagement.DrillRunsClientListResponse]]
-	beginMarkAsComplete *tracker[azfake.PollerResponder[armresiliencemanagement.DrillRunsClientMarkAsCompleteResponse]]
-	beginReprotect      *tracker[azfake.PollerResponder[armresiliencemanagement.DrillRunsClientReprotectResponse]]
-	beginResume         *tracker[azfake.PollerResponder[armresiliencemanagement.DrillRunsClientResumeResponse]]
+	srv                        *DrillRunsServer
+	beginAddNotes              *tracker[azfake.PollerResponder[armresiliencemanagement.DrillRunsClientAddNotesResponse]]
+	beginFailOver              *tracker[azfake.PollerResponder[armresiliencemanagement.DrillRunsClientFailOverResponse]]
+	beginGenerateReport        *tracker[azfake.PollerResponder[armresiliencemanagement.DrillRunsClientGenerateReportResponse]]
+	newListPager               *tracker[azfake.PagerResponder[armresiliencemanagement.DrillRunsClientListResponse]]
+	beginListReportDownloadURL *tracker[azfake.PollerResponder[armresiliencemanagement.DrillRunsClientListReportDownloadURLResponse]]
+	beginMarkAsComplete        *tracker[azfake.PollerResponder[armresiliencemanagement.DrillRunsClientMarkAsCompleteResponse]]
+	beginReprotect             *tracker[azfake.PollerResponder[armresiliencemanagement.DrillRunsClientReprotectResponse]]
+	beginResume                *tracker[azfake.PollerResponder[armresiliencemanagement.DrillRunsClientResumeResponse]]
 }
 
 // Do implements the policy.Transporter interface for DrillRunsServerTransport.
@@ -102,10 +115,14 @@ func (d *DrillRunsServerTransport) dispatchToMethodFake(req *http.Request, metho
 				res.resp, res.err = d.dispatchBeginAddNotes(req)
 			case "DrillRunsClient.BeginFailOver":
 				res.resp, res.err = d.dispatchBeginFailOver(req)
+			case "DrillRunsClient.BeginGenerateReport":
+				res.resp, res.err = d.dispatchBeginGenerateReport(req)
 			case "DrillRunsClient.Get":
 				res.resp, res.err = d.dispatchGet(req)
 			case "DrillRunsClient.NewListPager":
 				res.resp, res.err = d.dispatchNewListPager(req)
+			case "DrillRunsClient.BeginListReportDownloadURL":
+				res.resp, res.err = d.dispatchBeginListReportDownloadURL(req)
 			case "DrillRunsClient.BeginMarkAsComplete":
 				res.resp, res.err = d.dispatchBeginMarkAsComplete(req)
 			case "DrillRunsClient.BeginReprotect":
@@ -134,7 +151,7 @@ func (d *DrillRunsServerTransport) dispatchBeginAddNotes(req *http.Request) (*ht
 	}
 	beginAddNotes := d.beginAddNotes.get(req)
 	if beginAddNotes == nil {
-		const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/drills/(?P<drillName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/drillRuns/(?P<drillRunName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/addNotes`
+		const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AzureResilienceManagement/drills/(?P<drillName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/drillRuns/(?P<drillRunName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/addNotes`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -186,7 +203,7 @@ func (d *DrillRunsServerTransport) dispatchBeginFailOver(req *http.Request) (*ht
 	}
 	beginFailOver := d.beginFailOver.get(req)
 	if beginFailOver == nil {
-		const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/drills/(?P<drillName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/drillRuns/(?P<drillRunName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/failOver`
+		const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AzureResilienceManagement/drills/(?P<drillName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/drillRuns/(?P<drillRunName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/failOver`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -208,7 +225,13 @@ func (d *DrillRunsServerTransport) dispatchBeginFailOver(req *http.Request) (*ht
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := d.srv.BeginFailOver(req.Context(), serviceGroupNameParam, getHeaderValue(req.Header, "operation-id"), drillNameParam, drillRunNameParam, body, nil)
+		var options *armresiliencemanagement.DrillRunsClientBeginFailOverOptions
+		if !reflect.ValueOf(body).IsZero() {
+			options = &armresiliencemanagement.DrillRunsClientBeginFailOverOptions{
+				Body: &body,
+			}
+		}
+		respr, errRespr := d.srv.BeginFailOver(req.Context(), serviceGroupNameParam, getHeaderValue(req.Header, "operation-id"), drillNameParam, drillRunNameParam, options)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -232,11 +255,59 @@ func (d *DrillRunsServerTransport) dispatchBeginFailOver(req *http.Request) (*ht
 	return resp, nil
 }
 
+func (d *DrillRunsServerTransport) dispatchBeginGenerateReport(req *http.Request) (*http.Response, error) {
+	if d.srv.BeginGenerateReport == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginGenerateReport not implemented")}
+	}
+	beginGenerateReport := d.beginGenerateReport.get(req)
+	if beginGenerateReport == nil {
+		const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AzureResilienceManagement/drills/(?P<drillName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/drillRuns/(?P<drillRunName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/generateReport`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		serviceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		drillNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("drillName")])
+		if err != nil {
+			return nil, err
+		}
+		drillRunNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("drillRunName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := d.srv.BeginGenerateReport(req.Context(), serviceGroupNameParam, getHeaderValue(req.Header, "operation-id"), drillNameParam, drillRunNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginGenerateReport = &respr
+		d.beginGenerateReport.add(req, beginGenerateReport)
+	}
+
+	resp, err := server.PollerResponderNext(beginGenerateReport, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		d.beginGenerateReport.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginGenerateReport) {
+		d.beginGenerateReport.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (d *DrillRunsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if d.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/drills/(?P<drillName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/drillRuns/(?P<drillRunName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AzureResilienceManagement/drills/(?P<drillName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/drillRuns/(?P<drillRunName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -275,7 +346,7 @@ func (d *DrillRunsServerTransport) dispatchNewListPager(req *http.Request) (*htt
 	}
 	newListPager := d.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/drills/(?P<drillName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/drillRuns`
+		const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AzureResilienceManagement/drills/(?P<drillName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/drillRuns`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
@@ -310,13 +381,65 @@ func (d *DrillRunsServerTransport) dispatchNewListPager(req *http.Request) (*htt
 	return resp, nil
 }
 
+func (d *DrillRunsServerTransport) dispatchBeginListReportDownloadURL(req *http.Request) (*http.Response, error) {
+	if d.srv.BeginListReportDownloadURL == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginListReportDownloadURL not implemented")}
+	}
+	beginListReportDownloadURL := d.beginListReportDownloadURL.get(req)
+	if beginListReportDownloadURL == nil {
+		const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AzureResilienceManagement/drills/(?P<drillName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/drillRuns/(?P<drillRunName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listReportDownloadUrl`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armresiliencemanagement.ListReportDownloadURLRequest](req)
+		if err != nil {
+			return nil, err
+		}
+		serviceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		drillNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("drillName")])
+		if err != nil {
+			return nil, err
+		}
+		drillRunNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("drillRunName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := d.srv.BeginListReportDownloadURL(req.Context(), serviceGroupNameParam, getHeaderValue(req.Header, "operation-id"), drillNameParam, drillRunNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginListReportDownloadURL = &respr
+		d.beginListReportDownloadURL.add(req, beginListReportDownloadURL)
+	}
+
+	resp, err := server.PollerResponderNext(beginListReportDownloadURL, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		d.beginListReportDownloadURL.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginListReportDownloadURL) {
+		d.beginListReportDownloadURL.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (d *DrillRunsServerTransport) dispatchBeginMarkAsComplete(req *http.Request) (*http.Response, error) {
 	if d.srv.BeginMarkAsComplete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginMarkAsComplete not implemented")}
 	}
 	beginMarkAsComplete := d.beginMarkAsComplete.get(req)
 	if beginMarkAsComplete == nil {
-		const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/drills/(?P<drillName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/drillRuns/(?P<drillRunName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/markAsComplete`
+		const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AzureResilienceManagement/drills/(?P<drillName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/drillRuns/(?P<drillRunName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/markAsComplete`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -368,11 +491,15 @@ func (d *DrillRunsServerTransport) dispatchBeginReprotect(req *http.Request) (*h
 	}
 	beginReprotect := d.beginReprotect.get(req)
 	if beginReprotect == nil {
-		const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/drills/(?P<drillName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/drillRuns/(?P<drillRunName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/reprotect`
+		const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AzureResilienceManagement/drills/(?P<drillName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/drillRuns/(?P<drillRunName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/reprotect`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armresiliencemanagement.DrillRunReprotectRequest](req)
+		if err != nil {
+			return nil, err
 		}
 		serviceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceGroupName")])
 		if err != nil {
@@ -386,7 +513,13 @@ func (d *DrillRunsServerTransport) dispatchBeginReprotect(req *http.Request) (*h
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := d.srv.BeginReprotect(req.Context(), serviceGroupNameParam, getHeaderValue(req.Header, "operation-id"), drillNameParam, drillRunNameParam, nil)
+		var options *armresiliencemanagement.DrillRunsClientBeginReprotectOptions
+		if !reflect.ValueOf(body).IsZero() {
+			options = &armresiliencemanagement.DrillRunsClientBeginReprotectOptions{
+				Body: &body,
+			}
+		}
+		respr, errRespr := d.srv.BeginReprotect(req.Context(), serviceGroupNameParam, getHeaderValue(req.Header, "operation-id"), drillNameParam, drillRunNameParam, options)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -416,7 +549,7 @@ func (d *DrillRunsServerTransport) dispatchBeginResume(req *http.Request) (*http
 	}
 	beginResume := d.beginResume.get(req)
 	if beginResume == nil {
-		const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/drills/(?P<drillName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/drillRuns/(?P<drillRunName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resume`
+		const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AzureResilienceManagement/drills/(?P<drillName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/drillRuns/(?P<drillRunName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resume`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {

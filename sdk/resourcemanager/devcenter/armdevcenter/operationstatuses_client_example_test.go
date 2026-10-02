@@ -31,10 +31,10 @@ func ExampleOperationStatusesClient_Get() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdevcenter.OperationStatusesClientGetResponse{
 	// 	OperationStatus: armdevcenter.OperationStatus{
-	// 		EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-01T15:16:55.100Z"); return t}()),
+	// 		EndTime: to.Ptr(time.Date(2020, time.December, 1, 15, 16, 55, 100000000, time.UTC)),
 	// 		ID: to.Ptr("/subscriptions/0ac520ee-14c0-480f-b6c9-0a90c58ffff/providers/Microsoft.DevCenter/locations/CENTRALUS/operationStatuses/722e7bc4-60fa-4e6b-864f-d5bf12b9adc4"),
 	// 		PercentComplete: to.Ptr[float64](100),
-	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-01T15:16:29.500Z"); return t}()),
+	// 		StartTime: to.Ptr(time.Date(2020, time.December, 1, 15, 16, 29, 500000000, time.UTC)),
 	// 		Status: to.Ptr("Succeeded"),
 	// 	},
 	// }

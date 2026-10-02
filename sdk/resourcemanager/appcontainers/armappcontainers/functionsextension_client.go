@@ -19,7 +19,7 @@ import (
 // FunctionsExtensionClient contains the methods for the FunctionsExtension group.
 // Don't use this type directly, use NewFunctionsExtensionClient() instead.
 //
-// Generated from API version 2025-10-02-preview
+// Generated from API version 2026-07-01
 type FunctionsExtensionClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -30,6 +30,9 @@ type FunctionsExtensionClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewFunctionsExtensionClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*FunctionsExtensionClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -65,19 +68,14 @@ func (client *FunctionsExtensionClient) InvokeFunctionsHost(ctx context.Context,
 	if err != nil {
 		return FunctionsExtensionClientInvokeFunctionsHostResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return FunctionsExtensionClientInvokeFunctionsHostResponse{}, err
-	}
-	resp, err := client.invokeFunctionsHostHandleResponse(httpResp)
-	return resp, err
+	return client.invokeFunctionsHostHandleResponse(httpResp, http.StatusOK)
 }
 
 // invokeFunctionsHostCreateRequest creates the InvokeFunctionsHost request.
 func (client *FunctionsExtensionClient) invokeFunctionsHostCreateRequest(ctx context.Context, resourceGroupName string, containerAppName string, revisionName string, functionAppName string, _ *FunctionsExtensionClientInvokeFunctionsHostOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}/revisions/{revisionName}/providers/Microsoft.App/functions/{functionAppName}/invoke"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -101,15 +99,18 @@ func (client *FunctionsExtensionClient) invokeFunctionsHostCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251002Preview)
+	reqQP.Set("api-version", version20260701)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"text/plain"}
 	return req, nil
 }
 
 // invokeFunctionsHostHandleResponse handles the InvokeFunctionsHost response.
-func (client *FunctionsExtensionClient) invokeFunctionsHostHandleResponse(resp *http.Response) (FunctionsExtensionClientInvokeFunctionsHostResponse, error) {
+func (client *FunctionsExtensionClient) invokeFunctionsHostHandleResponse(resp *http.Response, successCodes ...int) (FunctionsExtensionClientInvokeFunctionsHostResponse, error) {
 	result := FunctionsExtensionClientInvokeFunctionsHostResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	body, err := runtime.Payload(resp)
 	if err != nil {
 		return FunctionsExtensionClientInvokeFunctionsHostResponse{}, err

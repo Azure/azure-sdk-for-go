@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01/autoImportJobs_CreateOrUpdate.json
+// Generated from example definition: 2026-08-01/autoImportJobs_CreateOrUpdate.json
 func ExampleAutoImportJobsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -69,8 +69,8 @@ func ExampleAutoImportJobsClient_BeginCreateOrUpdate() {
 	// 					ImportedDirectories: to.Ptr[int64](100),
 	// 					ImportedFiles: to.Ptr[int64](500),
 	// 					ImportedSymlinks: to.Ptr[int64](50),
-	// 					LastChangeFeedEventConsumedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-03-21T18:35:43.511Z"); return t}()),
-	// 					LastTimeFullySynchronized: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-03-21T18:25:43.511Z"); return t}()),
+	// 					LastChangeFeedEventConsumedTime: to.Ptr(time.Date(2024, time.March, 21, 18, 35, 43, 511000000, time.UTC)),
+	// 					LastTimeFullySynchronized: to.Ptr(time.Date(2024, time.March, 21, 18, 25, 43, 511000000, time.UTC)),
 	// 					PreexistingDirectories: to.Ptr[int64](1000),
 	// 					PreexistingFiles: to.Ptr[int64](10000),
 	// 					PreexistingSymlinks: to.Ptr[int64](200),
@@ -82,14 +82,14 @@ func ExampleAutoImportJobsClient_BeginCreateOrUpdate() {
 	// 				ImportedDirectories: to.Ptr[int64](1000),
 	// 				ImportedFiles: to.Ptr[int64](8000),
 	// 				ImportedSymlinks: to.Ptr[int64](1000),
-	// 				LastStartedTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-03-21T17:25:43.511Z"); return t}()),
+	// 				LastStartedTimeUTC: to.Ptr(time.Date(2024, time.March, 21, 17, 25, 43, 511000000, time.UTC)),
 	// 				PreexistingDirectories: to.Ptr[int64](80000),
 	// 				PreexistingFiles: to.Ptr[int64](800000),
 	// 				PreexistingSymlinks: to.Ptr[int64](10000),
 	// 				RateOfBlobImport: to.Ptr[int64](4000),
 	// 				RateOfBlobWalk: to.Ptr[int64](10000),
-	// 				ScanEndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-03-21T18:25:43.511Z"); return t}()),
-	// 				ScanStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-03-21T17:25:43.511Z"); return t}()),
+	// 				ScanEndTime: to.Ptr(time.Date(2024, time.March, 21, 18, 25, 43, 511000000, time.UTC)),
+	// 				ScanStartTime: to.Ptr(time.Date(2024, time.March, 21, 17, 25, 43, 511000000, time.UTC)),
 	// 				State: to.Ptr(armstoragecache.AutoImportJobStateInProgress),
 	// 				TotalBlobsImported: to.Ptr[int64](900000),
 	// 				TotalBlobsWalked: to.Ptr[int64](1000000),
@@ -104,7 +104,7 @@ func ExampleAutoImportJobsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/autoImportJobs_Delete.json
+// Generated from example definition: 2026-08-01/autoImportJobs_Delete.json
 func ExampleAutoImportJobsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -125,7 +125,7 @@ func ExampleAutoImportJobsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-01-01/autoImportJobs_Get.json
+// Generated from example definition: 2026-08-01/autoImportJobs_Get.json
 func ExampleAutoImportJobsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -164,8 +164,8 @@ func ExampleAutoImportJobsClient_Get() {
 	// 					ImportedDirectories: to.Ptr[int64](100),
 	// 					ImportedFiles: to.Ptr[int64](500),
 	// 					ImportedSymlinks: to.Ptr[int64](50),
-	// 					LastChangeFeedEventConsumedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-03-21T18:35:43.511Z"); return t}()),
-	// 					LastTimeFullySynchronized: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-03-21T18:25:43.511Z"); return t}()),
+	// 					LastChangeFeedEventConsumedTime: to.Ptr(time.Date(2024, time.March, 21, 18, 35, 43, 511000000, time.UTC)),
+	// 					LastTimeFullySynchronized: to.Ptr(time.Date(2024, time.March, 21, 18, 25, 43, 511000000, time.UTC)),
 	// 					PreexistingDirectories: to.Ptr[int64](1000),
 	// 					PreexistingFiles: to.Ptr[int64](10000),
 	// 					PreexistingSymlinks: to.Ptr[int64](200),
@@ -177,14 +177,14 @@ func ExampleAutoImportJobsClient_Get() {
 	// 				ImportedDirectories: to.Ptr[int64](1000),
 	// 				ImportedFiles: to.Ptr[int64](8000),
 	// 				ImportedSymlinks: to.Ptr[int64](1000),
-	// 				LastStartedTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-03-21T17:25:43.511Z"); return t}()),
+	// 				LastStartedTimeUTC: to.Ptr(time.Date(2024, time.March, 21, 17, 25, 43, 511000000, time.UTC)),
 	// 				PreexistingDirectories: to.Ptr[int64](80000),
 	// 				PreexistingFiles: to.Ptr[int64](800000),
 	// 				PreexistingSymlinks: to.Ptr[int64](10000),
 	// 				RateOfBlobImport: to.Ptr[int64](4000),
 	// 				RateOfBlobWalk: to.Ptr[int64](10000),
-	// 				ScanEndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-03-21T18:25:43.511Z"); return t}()),
-	// 				ScanStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-03-21T17:25:43.511Z"); return t}()),
+	// 				ScanEndTime: to.Ptr(time.Date(2024, time.March, 21, 18, 25, 43, 511000000, time.UTC)),
+	// 				ScanStartTime: to.Ptr(time.Date(2024, time.March, 21, 17, 25, 43, 511000000, time.UTC)),
 	// 				State: to.Ptr(armstoragecache.AutoImportJobStateInProgress),
 	// 				TotalBlobsImported: to.Ptr[int64](900000),
 	// 				TotalBlobsWalked: to.Ptr[int64](1000000),
@@ -199,7 +199,7 @@ func ExampleAutoImportJobsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/autoImportJobs_ListByAmlFilesystem.json
+// Generated from example definition: 2026-08-01/autoImportJobs_ListByAmlFilesystem.json
 func ExampleAutoImportJobsClient_NewListByAmlFilesystemPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -223,7 +223,7 @@ func ExampleAutoImportJobsClient_NewListByAmlFilesystemPager() {
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page = armstoragecache.AutoImportJobsClientListByAmlFilesystemResponse{
 		// 	AutoImportJobsListResult: armstoragecache.AutoImportJobsListResult{
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/scgroup/providers/Microsoft.StorageCache/amlFilesystems/fs1/autoImportJobs?$skipToken=autojob2&api-version=2026-01-01"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/scgroup/providers/Microsoft.StorageCache/amlFilesystems/fs1/autoImportJobs?$skipToken=autojob2&api-version=2026-08-01"),
 		// 		Value: []*armstoragecache.AutoImportJob{
 		// 			{
 		// 				Name: to.Ptr("autojob1"),
@@ -245,8 +245,8 @@ func ExampleAutoImportJobsClient_NewListByAmlFilesystemPager() {
 		// 							ImportedDirectories: to.Ptr[int64](100),
 		// 							ImportedFiles: to.Ptr[int64](500),
 		// 							ImportedSymlinks: to.Ptr[int64](50),
-		// 							LastChangeFeedEventConsumedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-03-21T18:35:43.511Z"); return t}()),
-		// 							LastTimeFullySynchronized: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-03-21T18:25:43.511Z"); return t}()),
+		// 							LastChangeFeedEventConsumedTime: to.Ptr(time.Date(2024, time.March, 21, 18, 35, 43, 511000000, time.UTC)),
+		// 							LastTimeFullySynchronized: to.Ptr(time.Date(2024, time.March, 21, 18, 25, 43, 511000000, time.UTC)),
 		// 							PreexistingDirectories: to.Ptr[int64](1000),
 		// 							PreexistingFiles: to.Ptr[int64](10000),
 		// 							PreexistingSymlinks: to.Ptr[int64](200),
@@ -258,14 +258,14 @@ func ExampleAutoImportJobsClient_NewListByAmlFilesystemPager() {
 		// 						ImportedDirectories: to.Ptr[int64](1000),
 		// 						ImportedFiles: to.Ptr[int64](8000),
 		// 						ImportedSymlinks: to.Ptr[int64](1000),
-		// 						LastStartedTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-03-21T17:25:43.511Z"); return t}()),
+		// 						LastStartedTimeUTC: to.Ptr(time.Date(2024, time.March, 21, 17, 25, 43, 511000000, time.UTC)),
 		// 						PreexistingDirectories: to.Ptr[int64](80000),
 		// 						PreexistingFiles: to.Ptr[int64](800000),
 		// 						PreexistingSymlinks: to.Ptr[int64](10000),
 		// 						RateOfBlobImport: to.Ptr[int64](4000),
 		// 						RateOfBlobWalk: to.Ptr[int64](10000),
-		// 						ScanEndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-03-21T18:25:43.511Z"); return t}()),
-		// 						ScanStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-03-21T17:25:43.511Z"); return t}()),
+		// 						ScanEndTime: to.Ptr(time.Date(2024, time.March, 21, 18, 25, 43, 511000000, time.UTC)),
+		// 						ScanStartTime: to.Ptr(time.Date(2024, time.March, 21, 17, 25, 43, 511000000, time.UTC)),
 		// 						State: to.Ptr(armstoragecache.AutoImportJobStateInProgress),
 		// 						TotalBlobsImported: to.Ptr[int64](900000),
 		// 						TotalBlobsWalked: to.Ptr[int64](1000000),
@@ -297,8 +297,8 @@ func ExampleAutoImportJobsClient_NewListByAmlFilesystemPager() {
 		// 							ImportedDirectories: to.Ptr[int64](80),
 		// 							ImportedFiles: to.Ptr[int64](300),
 		// 							ImportedSymlinks: to.Ptr[int64](20),
-		// 							LastChangeFeedEventConsumedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-03-19T18:35:43.511Z"); return t}()),
-		// 							LastTimeFullySynchronized: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-03-19T18:25:43.511Z"); return t}()),
+		// 							LastChangeFeedEventConsumedTime: to.Ptr(time.Date(2024, time.March, 19, 18, 35, 43, 511000000, time.UTC)),
+		// 							LastTimeFullySynchronized: to.Ptr(time.Date(2024, time.March, 19, 18, 25, 43, 511000000, time.UTC)),
 		// 							PreexistingDirectories: to.Ptr[int64](800),
 		// 							PreexistingFiles: to.Ptr[int64](8000),
 		// 							PreexistingSymlinks: to.Ptr[int64](150),
@@ -310,15 +310,15 @@ func ExampleAutoImportJobsClient_NewListByAmlFilesystemPager() {
 		// 						ImportedDirectories: to.Ptr[int64](800),
 		// 						ImportedFiles: to.Ptr[int64](7000),
 		// 						ImportedSymlinks: to.Ptr[int64](500),
-		// 						LastCompletionTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-03-21T18:25:43.511Z"); return t}()),
-		// 						LastStartedTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-03-21T17:25:43.511Z"); return t}()),
+		// 						LastCompletionTimeUTC: to.Ptr(time.Date(2024, time.March, 21, 18, 25, 43, 511000000, time.UTC)),
+		// 						LastStartedTimeUTC: to.Ptr(time.Date(2024, time.March, 21, 17, 25, 43, 511000000, time.UTC)),
 		// 						PreexistingDirectories: to.Ptr[int64](70000),
 		// 						PreexistingFiles: to.Ptr[int64](700000),
 		// 						PreexistingSymlinks: to.Ptr[int64](8000),
 		// 						RateOfBlobImport: to.Ptr[int64](0),
 		// 						RateOfBlobWalk: to.Ptr[int64](0),
-		// 						ScanEndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-03-19T18:25:43.511Z"); return t}()),
-		// 						ScanStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-03-19T17:25:43.511Z"); return t}()),
+		// 						ScanEndTime: to.Ptr(time.Date(2024, time.March, 19, 18, 25, 43, 511000000, time.UTC)),
+		// 						ScanStartTime: to.Ptr(time.Date(2024, time.March, 19, 17, 25, 43, 511000000, time.UTC)),
 		// 						State: to.Ptr(armstoragecache.AutoImportJobStateDisabled),
 		// 						StatusMessage: to.Ptr("Disabled"),
 		// 						TotalBlobsImported: to.Ptr[int64](750000),
@@ -337,7 +337,7 @@ func ExampleAutoImportJobsClient_NewListByAmlFilesystemPager() {
 	}
 }
 
-// Generated from example definition: 2026-01-01/autoImportJobs_Update.json
+// Generated from example definition: 2026-08-01/autoImportJobs_Update.json
 func ExampleAutoImportJobsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -384,8 +384,8 @@ func ExampleAutoImportJobsClient_BeginUpdate() {
 	// 					ImportedDirectories: to.Ptr[int64](100),
 	// 					ImportedFiles: to.Ptr[int64](500),
 	// 					ImportedSymlinks: to.Ptr[int64](50),
-	// 					LastChangeFeedEventConsumedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-03-21T18:35:43.511Z"); return t}()),
-	// 					LastTimeFullySynchronized: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-03-21T18:25:43.511Z"); return t}()),
+	// 					LastChangeFeedEventConsumedTime: to.Ptr(time.Date(2024, time.March, 21, 18, 35, 43, 511000000, time.UTC)),
+	// 					LastTimeFullySynchronized: to.Ptr(time.Date(2024, time.March, 21, 18, 25, 43, 511000000, time.UTC)),
 	// 					PreexistingDirectories: to.Ptr[int64](1000),
 	// 					PreexistingFiles: to.Ptr[int64](10000),
 	// 					PreexistingSymlinks: to.Ptr[int64](200),
@@ -397,15 +397,15 @@ func ExampleAutoImportJobsClient_BeginUpdate() {
 	// 				ImportedDirectories: to.Ptr[int64](1000),
 	// 				ImportedFiles: to.Ptr[int64](8000),
 	// 				ImportedSymlinks: to.Ptr[int64](1000),
-	// 				LastCompletionTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-03-21T18:25:43.511Z"); return t}()),
-	// 				LastStartedTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-03-21T17:25:43.511Z"); return t}()),
+	// 				LastCompletionTimeUTC: to.Ptr(time.Date(2024, time.March, 21, 18, 25, 43, 511000000, time.UTC)),
+	// 				LastStartedTimeUTC: to.Ptr(time.Date(2024, time.March, 21, 17, 25, 43, 511000000, time.UTC)),
 	// 				PreexistingDirectories: to.Ptr[int64](80000),
 	// 				PreexistingFiles: to.Ptr[int64](800000),
 	// 				PreexistingSymlinks: to.Ptr[int64](10000),
 	// 				RateOfBlobImport: to.Ptr[int64](0),
 	// 				RateOfBlobWalk: to.Ptr[int64](0),
-	// 				ScanEndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-03-21T18:25:43.511Z"); return t}()),
-	// 				ScanStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-03-21T17:25:43.511Z"); return t}()),
+	// 				ScanEndTime: to.Ptr(time.Date(2024, time.March, 21, 18, 25, 43, 511000000, time.UTC)),
+	// 				ScanStartTime: to.Ptr(time.Date(2024, time.March, 21, 17, 25, 43, 511000000, time.UTC)),
 	// 				State: to.Ptr(armstoragecache.AutoImportJobStateDisabling),
 	// 				StatusMessage: to.Ptr("Auto import job is being disabled."),
 	// 				TotalBlobsImported: to.Ptr[int64](900000),

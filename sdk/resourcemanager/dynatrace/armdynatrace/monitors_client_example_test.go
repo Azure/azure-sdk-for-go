@@ -40,7 +40,7 @@ func ExampleMonitorsClient_BeginCreateOrUpdate_monitorsCreateOrUpdateMaximumSetG
 			MonitoringStatus:              to.Ptr(armdynatrace.MonitoringStatusEnabled),
 			PlanData: &armdynatrace.PlanData{
 				BillingCycle:  to.Ptr("Monthly"),
-				EffectiveDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-08-30T15:14:33+02:00"); return t }()),
+				EffectiveDate: to.Ptr(time.Date(2019, time.August, 30, 13, 14, 33, 0, time.UTC)),
 				PlanDetails:   to.Ptr("dynatraceapitestplan"),
 				UsageType:     to.Ptr("Committed"),
 			},
@@ -106,7 +106,7 @@ func ExampleMonitorsClient_BeginCreateOrUpdate_monitorsCreateOrUpdateMaximumSetG
 	// 			MonitoringStatus: to.Ptr(armdynatrace.MonitoringStatusEnabled),
 	// 			PlanData: &armdynatrace.PlanData{
 	// 				BillingCycle: to.Ptr("Monthly"),
-	// 				EffectiveDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-08-30T15:14:33+02:00"); return t}()),
+	// 				EffectiveDate: to.Ptr(time.Date(2019, time.August, 30, 13, 14, 33, 0, time.UTC)),
 	// 				PlanDetails: to.Ptr("dynatraceapitestplan"),
 	// 				UsageType: to.Ptr("Committed"),
 	// 			},
@@ -120,10 +120,10 @@ func ExampleMonitorsClient_BeginCreateOrUpdate_monitorsCreateOrUpdateMaximumSetG
 	// 			},
 	// 		},
 	// 		SystemData: &armdynatrace.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-16T04:25:21.040Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.July, 16, 4, 25, 21, 40000000, time.UTC)),
 	// 			CreatedBy: to.Ptr("alice@microsoft.com"),
 	// 			CreatedByType: to.Ptr(armdynatrace.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-16T04:25:21.040Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.July, 16, 4, 25, 21, 40000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("alice@microsoft.com"),
 	// 			LastModifiedByType: to.Ptr(armdynatrace.CreatedByTypeUser),
 	// 		},
@@ -269,7 +269,7 @@ func ExampleMonitorsClient_Get_monitorsGetMaximumSetGen() {
 	// 			MonitoringStatus: to.Ptr(armdynatrace.MonitoringStatusEnabled),
 	// 			PlanData: &armdynatrace.PlanData{
 	// 				BillingCycle: to.Ptr("Monthly"),
-	// 				EffectiveDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-08-30T15:14:33+02:00"); return t}()),
+	// 				EffectiveDate: to.Ptr(time.Date(2019, time.August, 30, 13, 14, 33, 0, time.UTC)),
 	// 				PlanDetails: to.Ptr("dynatraceapitestplan"),
 	// 				UsageType: to.Ptr("Committed"),
 	// 			},
@@ -283,10 +283,10 @@ func ExampleMonitorsClient_Get_monitorsGetMaximumSetGen() {
 	// 			},
 	// 		},
 	// 		SystemData: &armdynatrace.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-16T04:25:21.040Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.July, 16, 4, 25, 21, 40000000, time.UTC)),
 	// 			CreatedBy: to.Ptr("alice@microsoft.com"),
 	// 			CreatedByType: to.Ptr(armdynatrace.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-16T04:25:21.040Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.July, 16, 4, 25, 21, 40000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("alice@microsoft.com"),
 	// 			LastModifiedByType: to.Ptr(armdynatrace.CreatedByTypeUser),
 	// 		},
@@ -741,7 +741,7 @@ func ExampleMonitorsClient_NewListByResourceGroupPager_monitorsListByResourceGro
 		// 					MonitoringStatus: to.Ptr(armdynatrace.MonitoringStatusEnabled),
 		// 					PlanData: &armdynatrace.PlanData{
 		// 						BillingCycle: to.Ptr("Monthly"),
-		// 						EffectiveDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-08-30T15:14:33+02:00"); return t}()),
+		// 						EffectiveDate: to.Ptr(time.Date(2019, time.August, 30, 13, 14, 33, 0, time.UTC)),
 		// 						PlanDetails: to.Ptr("dynatraceapitestplan"),
 		// 						UsageType: to.Ptr("Committed"),
 		// 					},
@@ -755,10 +755,10 @@ func ExampleMonitorsClient_NewListByResourceGroupPager_monitorsListByResourceGro
 		// 					},
 		// 				},
 		// 				SystemData: &armdynatrace.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-16T04:25:21.040Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2021, time.July, 16, 4, 25, 21, 40000000, time.UTC)),
 		// 					CreatedBy: to.Ptr("alice@microsoft.com"),
 		// 					CreatedByType: to.Ptr(armdynatrace.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-16T04:25:21.040Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2021, time.July, 16, 4, 25, 21, 40000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("alice@microsoft.com"),
 		// 					LastModifiedByType: to.Ptr(armdynatrace.CreatedByTypeUser),
 		// 				},
@@ -875,7 +875,7 @@ func ExampleMonitorsClient_NewListBySubscriptionIDPager_monitorsListBySubscripti
 		// 					MonitoringStatus: to.Ptr(armdynatrace.MonitoringStatusEnabled),
 		// 					PlanData: &armdynatrace.PlanData{
 		// 						BillingCycle: to.Ptr("Monthly"),
-		// 						EffectiveDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-08-30T15:14:33+02:00"); return t}()),
+		// 						EffectiveDate: to.Ptr(time.Date(2019, time.August, 30, 13, 14, 33, 0, time.UTC)),
 		// 						PlanDetails: to.Ptr("dynatraceapitestplan"),
 		// 						UsageType: to.Ptr("Committed"),
 		// 					},
@@ -889,10 +889,10 @@ func ExampleMonitorsClient_NewListBySubscriptionIDPager_monitorsListBySubscripti
 		// 					},
 		// 				},
 		// 				SystemData: &armdynatrace.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-16T04:25:21.040Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2021, time.July, 16, 4, 25, 21, 40000000, time.UTC)),
 		// 					CreatedBy: to.Ptr("alice@microsoft.com"),
 		// 					CreatedByType: to.Ptr(armdynatrace.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-16T04:25:21.040Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2021, time.July, 16, 4, 25, 21, 40000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("alice@microsoft.com"),
 		// 					LastModifiedByType: to.Ptr(armdynatrace.CreatedByTypeUser),
 		// 				},
@@ -1053,7 +1053,7 @@ func ExampleMonitorsClient_NewListLinkableEnvironmentsPager_monitorsListLinkable
 		// 				EnvironmentName: to.Ptr("myEnv"),
 		// 				PlanData: &armdynatrace.PlanData{
 		// 					BillingCycle: to.Ptr("Monthly"),
-		// 					EffectiveDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-08-30T15:14:33+02:00"); return t}()),
+		// 					EffectiveDate: to.Ptr(time.Date(2019, time.August, 30, 13, 14, 33, 0, time.UTC)),
 		// 					PlanDetails: to.Ptr("dynatraceapitestplan"),
 		// 					UsageType: to.Ptr("Committed"),
 		// 				},
@@ -1240,7 +1240,7 @@ func ExampleMonitorsClient_Update_monitorsUpdateMaximumSetGen() {
 		Properties: &armdynatrace.MonitorUpdateProperties{
 			PlanData: &armdynatrace.PlanData{
 				BillingCycle:  to.Ptr("Monthly"),
-				EffectiveDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-08-30T15:14:33+02:00"); return t }()),
+				EffectiveDate: to.Ptr(time.Date(2019, time.August, 30, 13, 14, 33, 0, time.UTC)),
 				PlanDetails:   to.Ptr("dynatraceapitestplan"),
 				UsageType:     to.Ptr("Committed"),
 			},
@@ -1295,7 +1295,7 @@ func ExampleMonitorsClient_Update_monitorsUpdateMaximumSetGen() {
 	// 			MonitoringStatus: to.Ptr(armdynatrace.MonitoringStatusEnabled),
 	// 			PlanData: &armdynatrace.PlanData{
 	// 				BillingCycle: to.Ptr("Monthly"),
-	// 				EffectiveDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-08-30T15:14:33+02:00"); return t}()),
+	// 				EffectiveDate: to.Ptr(time.Date(2019, time.August, 30, 13, 14, 33, 0, time.UTC)),
 	// 				PlanDetails: to.Ptr("dynatraceapitestplan"),
 	// 				UsageType: to.Ptr("Committed"),
 	// 			},
@@ -1309,10 +1309,10 @@ func ExampleMonitorsClient_Update_monitorsUpdateMaximumSetGen() {
 	// 			},
 	// 		},
 	// 		SystemData: &armdynatrace.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-16T04:25:21.040Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.July, 16, 4, 25, 21, 40000000, time.UTC)),
 	// 			CreatedBy: to.Ptr("alice@microsoft.com"),
 	// 			CreatedByType: to.Ptr(armdynatrace.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-16T04:25:21.040Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.July, 16, 4, 25, 21, 40000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("alice@microsoft.com"),
 	// 			LastModifiedByType: to.Ptr(armdynatrace.CreatedByTypeUser),
 	// 		},
@@ -1364,7 +1364,7 @@ func ExampleMonitorsClient_BeginUpgradePlan_monitorsUpgradePlanMaximumSetGen() {
 	poller, err := clientFactory.NewMonitorsClient().BeginUpgradePlan(ctx, "myResourceGroup", "myMonitor", armdynatrace.UpgradePlanRequest{
 		PlanData: &armdynatrace.PlanData{
 			BillingCycle:  to.Ptr("Monthly"),
-			EffectiveDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-08-30T15:14:33+02:00"); return t }()),
+			EffectiveDate: to.Ptr(time.Date(2019, time.August, 30, 13, 14, 33, 0, time.UTC)),
 			PlanDetails:   to.Ptr("dynatraceapitestplan"),
 			UsageType:     to.Ptr("Committed"),
 		},
@@ -1392,7 +1392,7 @@ func ExampleMonitorsClient_BeginUpgradePlan_monitorsUpgradePlanMinimumSetGen() {
 	poller, err := clientFactory.NewMonitorsClient().BeginUpgradePlan(ctx, "myResourceGroup", "myMonitor", armdynatrace.UpgradePlanRequest{
 		PlanData: &armdynatrace.PlanData{
 			BillingCycle:  to.Ptr("Monthly"),
-			EffectiveDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-08-30T15:14:33+02:00"); return t }()),
+			EffectiveDate: to.Ptr(time.Date(2019, time.August, 30, 13, 14, 33, 0, time.UTC)),
 			PlanDetails:   to.Ptr("dynatraceapitestplan"),
 			UsageType:     to.Ptr("Committed"),
 		},

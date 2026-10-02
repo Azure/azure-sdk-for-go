@@ -42,8 +42,8 @@ func ExampleQueryPacksClient_CreateOrUpdate_queryPackCreate() {
 	// 		Properties: &armoperationalinsights.LogAnalyticsQueryPackProperties{
 	// 			ProvisioningState: to.Ptr("Succeeded"),
 	// 			QueryPackID: to.Ptr("d1c8fc00-2b68-441e-8f9b-ded8748dc635"),
-	// 			TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-08-04T12:37:56.8543652Z"); return t}()),
-	// 			TimeModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-08-04T12:37:56.8543652Z"); return t}()),
+	// 			TimeCreated: to.Ptr(time.Date(2019, time.August, 4, 12, 37, 56, 854365200, time.UTC)),
+	// 			TimeModified: to.Ptr(time.Date(2019, time.August, 4, 12, 37, 56, 854365200, time.UTC)),
 	// 		},
 	// 		Tags: map[string]*string{
 	// 		},
@@ -84,8 +84,8 @@ func ExampleQueryPacksClient_CreateOrUpdate_queryPackUpdate() {
 	// 		Properties: &armoperationalinsights.LogAnalyticsQueryPackProperties{
 	// 			ProvisioningState: to.Ptr("Succeeded"),
 	// 			QueryPackID: to.Ptr("aac8fc00-2b68-441e-8f9b-ded8748dc635"),
-	// 			TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-06-04T12:37:56.8543652Z"); return t}()),
-	// 			TimeModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-08-04T12:37:56.8543652Z"); return t}()),
+	// 			TimeCreated: to.Ptr(time.Date(2019, time.June, 4, 12, 37, 56, 854365200, time.UTC)),
+	// 			TimeModified: to.Ptr(time.Date(2019, time.August, 4, 12, 37, 56, 854365200, time.UTC)),
 	// 		},
 	// 		Tags: map[string]*string{
 	// 			"Tag1": to.Ptr("Value1"),
@@ -186,8 +186,8 @@ func ExampleQueryPacksClient_Get() {
 	// 		Properties: &armoperationalinsights.LogAnalyticsQueryPackProperties{
 	// 			ProvisioningState: to.Ptr("Succeeded"),
 	// 			QueryPackID: to.Ptr("d1c8fc00-2b68-441e-8f9b-ded8748dc635"),
-	// 			TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-08-04T12:37:56.8543652Z"); return t}()),
-	// 			TimeModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-08-04T12:37:56.8543652Z"); return t}()),
+	// 			TimeCreated: to.Ptr(time.Date(2019, time.August, 4, 12, 37, 56, 854365200, time.UTC)),
+	// 			TimeModified: to.Ptr(time.Date(2019, time.August, 4, 12, 37, 56, 854365200, time.UTC)),
 	// 		},
 	// 		Tags: map[string]*string{
 	// 		},
@@ -228,8 +228,8 @@ func ExampleQueryPacksClient_NewListPager() {
 		// 				Properties: &armoperationalinsights.LogAnalyticsQueryPackProperties{
 		// 					ProvisioningState: to.Ptr("Succeeded"),
 		// 					QueryPackID: to.Ptr("d1c8fc00-2b68-441e-8f9b-ded8748dc6aa"),
-		// 					TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-08-04T12:37:56.8543652Z"); return t}()),
-		// 					TimeModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-08-04T12:37:56.8543652Z"); return t}()),
+		// 					TimeCreated: to.Ptr(time.Date(2019, time.August, 4, 12, 37, 56, 854365200, time.UTC)),
+		// 					TimeModified: to.Ptr(time.Date(2019, time.August, 4, 12, 37, 56, 854365200, time.UTC)),
 		// 				},
 		// 				Tags: map[string]*string{
 		// 				},
@@ -242,8 +242,8 @@ func ExampleQueryPacksClient_NewListPager() {
 		// 				Properties: &armoperationalinsights.LogAnalyticsQueryPackProperties{
 		// 					ProvisioningState: to.Ptr("Succeeded"),
 		// 					QueryPackID: to.Ptr("aac8fc00-2b68-441e-8f9b-ded8748dc635"),
-		// 					TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-06-04T12:37:56.8543652Z"); return t}()),
-		// 					TimeModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-08-04T12:37:56.8543652Z"); return t}()),
+		// 					TimeCreated: to.Ptr(time.Date(2019, time.June, 4, 12, 37, 56, 854365200, time.UTC)),
+		// 					TimeModified: to.Ptr(time.Date(2019, time.August, 4, 12, 37, 56, 854365200, time.UTC)),
 		// 				},
 		// 				Tags: map[string]*string{
 		// 				},
@@ -287,8 +287,8 @@ func ExampleQueryPacksClient_NewListByResourceGroupPager() {
 		// 				Properties: &armoperationalinsights.LogAnalyticsQueryPackProperties{
 		// 					ProvisioningState: to.Ptr("Succeeded"),
 		// 					QueryPackID: to.Ptr("d1c8fc00-2b68-441e-8f9b-ded8748dc6aa"),
-		// 					TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-08-04T12:37:56.8543652Z"); return t}()),
-		// 					TimeModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-08-04T12:37:56.8543652Z"); return t}()),
+		// 					TimeCreated: to.Ptr(time.Date(2019, time.August, 4, 12, 37, 56, 854365200, time.UTC)),
+		// 					TimeModified: to.Ptr(time.Date(2019, time.August, 4, 12, 37, 56, 854365200, time.UTC)),
 		// 				},
 		// 				Tags: map[string]*string{
 		// 				},
@@ -301,8 +301,8 @@ func ExampleQueryPacksClient_NewListByResourceGroupPager() {
 		// 				Properties: &armoperationalinsights.LogAnalyticsQueryPackProperties{
 		// 					ProvisioningState: to.Ptr("Succeeded"),
 		// 					QueryPackID: to.Ptr("aac8fc00-2b68-441e-8f9b-ded8748dc635"),
-		// 					TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-06-04T12:37:56.8543652Z"); return t}()),
-		// 					TimeModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-08-04T12:37:56.8543652Z"); return t}()),
+		// 					TimeCreated: to.Ptr(time.Date(2019, time.June, 4, 12, 37, 56, 854365200, time.UTC)),
+		// 					TimeModified: to.Ptr(time.Date(2019, time.August, 4, 12, 37, 56, 854365200, time.UTC)),
 		// 				},
 		// 				Tags: map[string]*string{
 		// 				},
@@ -345,8 +345,8 @@ func ExampleQueryPacksClient_UpdateTags() {
 	// 		Properties: &armoperationalinsights.LogAnalyticsQueryPackProperties{
 	// 			ProvisioningState: to.Ptr("Succeeded"),
 	// 			QueryPackID: to.Ptr("aac8fc00-2b68-441e-8f9b-ded8748dc635"),
-	// 			TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-06-04T12:37:56.8543652Z"); return t}()),
-	// 			TimeModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-08-04T12:37:56.8543652Z"); return t}()),
+	// 			TimeCreated: to.Ptr(time.Date(2019, time.June, 4, 12, 37, 56, 854365200, time.UTC)),
+	// 			TimeModified: to.Ptr(time.Date(2019, time.August, 4, 12, 37, 56, 854365200, time.UTC)),
 	// 		},
 	// 		Tags: map[string]*string{
 	// 			"Tag1": to.Ptr("Value1"),

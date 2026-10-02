@@ -35,8 +35,11 @@
 # ServiceLabel: %Azure.Identity
 # ServiceOwners:                                                   @Azure/azure-sdk-write-identity @rickwinter @xirzec
 
+# PRLabel: %Container Service
+/sdk/resourcemanager/containerservice/                             @elvazhu521 @FumingZhang
+
 # PRLabel: %Cosmos
-/sdk/data/azcosmos/                                                @Azure/azure-cosmos-go-sdk
+/sdk/data/azcosmos/                                                @Azure/azure-cosmos-sdk
 
 # AzureSdkOwners:                                                  @jhendrixMSFT
 # ServiceLabel: %Cosmos
@@ -118,7 +121,7 @@
 # ServiceOwners:                                                   @EldertGrootenboer @skarri-microsoft @j7nw4r @SwayGom @sagar0207
 
 # PRLabel: %Storage
-/sdk/storage/                                                      @gapra-msft @jhendrixMSFT @souravgupta-msft @tanyasethi-msft
+/sdk/storage/                                                      @gapra-msft @gunjansingh-msft @jhendrixMSFT @tanyasethi-msft
 
 # AzureSdkOwners:                                                  @jhendrixMSFT
 # ServiceLabel: %Storage
@@ -310,7 +313,7 @@
 # ServiceOwners:                                                   @northtyphoon @toddysm
 
 # ServiceLabel: %Container Service
-# ServiceOwners:                                                   @jwilder @qike-ms @seanmck @thomas1206
+# ServiceOwners:                                                   @elvazhu521 @FumingZhang
 
 # ServiceLabel: %Cost Management - Billing
 # ServiceOwners:                                                   @ccmbpxpcrew

@@ -30,6 +30,9 @@ type TestJobClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewTestJobClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*TestJobClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -62,19 +65,14 @@ func (client *TestJobClient) Create(ctx context.Context, resourceGroupName strin
 	if err != nil {
 		return TestJobClientCreateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return TestJobClientCreateResponse{}, err
-	}
-	resp, err := client.createHandleResponse(httpResp)
-	return resp, err
+	return client.createHandleResponse(httpResp, http.StatusCreated)
 }
 
 // createCreateRequest creates the Create request.
 func (client *TestJobClient) createCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, runbookName string, parameters TestJobCreateParameters, _ *TestJobClientCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/runbooks/{runbookName}/draft/testJob"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -105,8 +103,11 @@ func (client *TestJobClient) createCreateRequest(ctx context.Context, resourceGr
 }
 
 // createHandleResponse handles the Create response.
-func (client *TestJobClient) createHandleResponse(resp *http.Response) (TestJobClientCreateResponse, error) {
+func (client *TestJobClient) createHandleResponse(resp *http.Response, successCodes ...int) (TestJobClientCreateResponse, error) {
 	result := TestJobClientCreateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TestJob); err != nil {
 		return TestJobClientCreateResponse{}, err
 	}
@@ -133,19 +134,14 @@ func (client *TestJobClient) Get(ctx context.Context, resourceGroupName string, 
 	if err != nil {
 		return TestJobClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return TestJobClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *TestJobClient) getCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, runbookName string, _ *TestJobClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/runbooks/{runbookName}/draft/testJob"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -172,8 +168,11 @@ func (client *TestJobClient) getCreateRequest(ctx context.Context, resourceGroup
 }
 
 // getHandleResponse handles the Get response.
-func (client *TestJobClient) getHandleResponse(resp *http.Response) (TestJobClientGetResponse, error) {
+func (client *TestJobClient) getHandleResponse(resp *http.Response, successCodes ...int) (TestJobClientGetResponse, error) {
 	result := TestJobClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TestJob); err != nil {
 		return TestJobClientGetResponse{}, err
 	}
@@ -201,8 +200,7 @@ func (client *TestJobClient) Resume(ctx context.Context, resourceGroupName strin
 		return TestJobClientResumeResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return TestJobClientResumeResponse{}, err
+		return TestJobClientResumeResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return TestJobClientResumeResponse{}, nil
 }
@@ -211,7 +209,7 @@ func (client *TestJobClient) Resume(ctx context.Context, resourceGroupName strin
 func (client *TestJobClient) resumeCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, runbookName string, _ *TestJobClientResumeOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/runbooks/{runbookName}/draft/testJob/resume"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -257,8 +255,7 @@ func (client *TestJobClient) Stop(ctx context.Context, resourceGroupName string,
 		return TestJobClientStopResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return TestJobClientStopResponse{}, err
+		return TestJobClientStopResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return TestJobClientStopResponse{}, nil
 }
@@ -267,7 +264,7 @@ func (client *TestJobClient) Stop(ctx context.Context, resourceGroupName string,
 func (client *TestJobClient) stopCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, runbookName string, _ *TestJobClientStopOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/runbooks/{runbookName}/draft/testJob/stop"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -313,8 +310,7 @@ func (client *TestJobClient) Suspend(ctx context.Context, resourceGroupName stri
 		return TestJobClientSuspendResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return TestJobClientSuspendResponse{}, err
+		return TestJobClientSuspendResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return TestJobClientSuspendResponse{}, nil
 }
@@ -323,7 +319,7 @@ func (client *TestJobClient) Suspend(ctx context.Context, resourceGroupName stri
 func (client *TestJobClient) suspendCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, runbookName string, _ *TestJobClientSuspendOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/runbooks/{runbookName}/draft/testJob/suspend"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {

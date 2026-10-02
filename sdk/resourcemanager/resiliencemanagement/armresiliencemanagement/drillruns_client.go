@@ -19,7 +19,7 @@ import (
 // DrillRunsClient contains the methods for the DrillRuns group.
 // Don't use this type directly, use NewDrillRunsClient() instead.
 //
-// Generated from API version 2026-04-01-preview
+// Generated from API version 2026-08-31-preview
 type DrillRunsClient struct {
 	internal *arm.Client
 }
@@ -80,8 +80,7 @@ func (client *DrillRunsClient) addNotes(ctx context.Context, serviceGroupName st
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -106,7 +105,7 @@ func (client *DrillRunsClient) addNotesCreateRequest(ctx context.Context, servic
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401Preview)
+	reqQP.Set("api-version", version20260831Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["operation-id"] = []string{operationID}
@@ -123,11 +122,10 @@ func (client *DrillRunsClient) addNotesCreateRequest(ctx context.Context, servic
 //   - operationID - A GUID that represents the Long Running OperationId.
 //   - drillName - The name of the Drill
 //   - drillRunName - The name of the DrillRun (GUID).
-//   - body - The content of the action request
 //   - options - DrillRunsClientBeginFailOverOptions contains the optional parameters for the DrillRunsClient.BeginFailOver method.
-func (client *DrillRunsClient) BeginFailOver(ctx context.Context, serviceGroupName string, operationID string, drillName string, drillRunName string, body DrillRunFailoverRequest, options *DrillRunsClientBeginFailOverOptions) (*runtime.Poller[DrillRunsClientFailOverResponse], error) {
+func (client *DrillRunsClient) BeginFailOver(ctx context.Context, serviceGroupName string, operationID string, drillName string, drillRunName string, options *DrillRunsClientBeginFailOverOptions) (*runtime.Poller[DrillRunsClientFailOverResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.failOver(ctx, serviceGroupName, operationID, drillName, drillRunName, body, options)
+		resp, err := client.failOver(ctx, serviceGroupName, operationID, drillName, drillRunName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -144,13 +142,13 @@ func (client *DrillRunsClient) BeginFailOver(ctx context.Context, serviceGroupNa
 
 // FailOver - This initiates a new Failover operation on this Drill Run.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *DrillRunsClient) failOver(ctx context.Context, serviceGroupName string, operationID string, drillName string, drillRunName string, body DrillRunFailoverRequest, options *DrillRunsClientBeginFailOverOptions) (*http.Response, error) {
+func (client *DrillRunsClient) failOver(ctx context.Context, serviceGroupName string, operationID string, drillName string, drillRunName string, options *DrillRunsClientBeginFailOverOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DrillRunsClient.BeginFailOver"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.failOverCreateRequest(ctx, serviceGroupName, operationID, drillName, drillRunName, body, options)
+	req, err := client.failOverCreateRequest(ctx, serviceGroupName, operationID, drillName, drillRunName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -159,14 +157,13 @@ func (client *DrillRunsClient) failOver(ctx context.Context, serviceGroupName st
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
 
 // failOverCreateRequest creates the FailOver request.
-func (client *DrillRunsClient) failOverCreateRequest(ctx context.Context, serviceGroupName string, operationID string, drillName string, drillRunName string, body DrillRunFailoverRequest, _ *DrillRunsClientBeginFailOverOptions) (*policy.Request, error) {
+func (client *DrillRunsClient) failOverCreateRequest(ctx context.Context, serviceGroupName string, operationID string, drillName string, drillRunName string, options *DrillRunsClientBeginFailOverOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Management/serviceGroups/{serviceGroupName}/providers/Microsoft.AzureResilienceManagement/drills/{drillName}/drillRuns/{drillRunName}/failOver"
 	if serviceGroupName == "" {
 		return nil, errors.New("parameter serviceGroupName cannot be empty")
@@ -185,14 +182,95 @@ func (client *DrillRunsClient) failOverCreateRequest(ctx context.Context, servic
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401Preview)
+	reqQP.Set("api-version", version20260831Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["operation-id"] = []string{operationID}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, body); err != nil {
+	if options != nil && options.Body != nil {
+		req.Raw().Header["Content-Type"] = []string{"application/json"}
+		if err := runtime.MarshalAsJSON(req, *options.Body); err != nil {
+			return nil, err
+		}
+		return req, nil
+	}
+	return req, nil
+}
+
+// BeginGenerateReport - This generates, or regenerates, the report for this Drill Run. The action is idempotent and is safe
+// to call at any time: a call that arrives while a generation is already running joins it, and a call made after a failed
+// attempt retries it. A report that has been finalized is never regenerated.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - serviceGroupName - The name of the service group.
+//   - operationID - A GUID that represents the Long Running OperationId.
+//   - drillName - The name of the Drill
+//   - drillRunName - The name of the DrillRun (GUID).
+//   - options - DrillRunsClientBeginGenerateReportOptions contains the optional parameters for the DrillRunsClient.BeginGenerateReport
+//     method.
+func (client *DrillRunsClient) BeginGenerateReport(ctx context.Context, serviceGroupName string, operationID string, drillName string, drillRunName string, options *DrillRunsClientBeginGenerateReportOptions) (*runtime.Poller[DrillRunsClientGenerateReportResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.generateReport(ctx, serviceGroupName, operationID, drillName, drillRunName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DrillRunsClientGenerateReportResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[DrillRunsClientGenerateReportResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// GenerateReport - This generates, or regenerates, the report for this Drill Run. The action is idempotent and is safe to
+// call at any time: a call that arrives while a generation is already running joins it, and a call made after a failed attempt
+// retries it. A report that has been finalized is never regenerated.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *DrillRunsClient) generateReport(ctx context.Context, serviceGroupName string, operationID string, drillName string, drillRunName string, options *DrillRunsClientBeginGenerateReportOptions) (*http.Response, error) {
+	var err error
+	const operationName = "DrillRunsClient.BeginGenerateReport"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.generateReportCreateRequest(ctx, serviceGroupName, operationID, drillName, drillRunName, options)
+	if err != nil {
 		return nil, err
 	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// generateReportCreateRequest creates the GenerateReport request.
+func (client *DrillRunsClient) generateReportCreateRequest(ctx context.Context, serviceGroupName string, operationID string, drillName string, drillRunName string, _ *DrillRunsClientBeginGenerateReportOptions) (*policy.Request, error) {
+	urlPath := "/providers/Microsoft.Management/serviceGroups/{serviceGroupName}/providers/Microsoft.AzureResilienceManagement/drills/{drillName}/drillRuns/{drillRunName}/generateReport"
+	if serviceGroupName == "" {
+		return nil, errors.New("parameter serviceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{serviceGroupName}", url.PathEscape(serviceGroupName))
+	if drillName == "" {
+		return nil, errors.New("parameter drillName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{drillName}", url.PathEscape(drillName))
+	if drillRunName == "" {
+		return nil, errors.New("parameter drillRunName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{drillRunName}", url.PathEscape(drillRunName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260831Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["operation-id"] = []string{operationID}
 	return req, nil
 }
 
@@ -216,12 +294,7 @@ func (client *DrillRunsClient) Get(ctx context.Context, serviceGroupName string,
 	if err != nil {
 		return DrillRunsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DrillRunsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -244,15 +317,18 @@ func (client *DrillRunsClient) getCreateRequest(ctx context.Context, serviceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401Preview)
+	reqQP.Set("api-version", version20260831Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *DrillRunsClient) getHandleResponse(resp *http.Response) (DrillRunsClientGetResponse, error) {
+func (client *DrillRunsClient) getHandleResponse(resp *http.Response, successCodes ...int) (DrillRunsClientGetResponse, error) {
 	result := DrillRunsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DrillRun); err != nil {
 		return DrillRunsClientGetResponse{}, err
 	}
@@ -274,21 +350,116 @@ func (client *DrillRunsClient) NewListPager(serviceGroupName string, drillName s
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, serviceGroupName, drillName, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, serviceGroupName, drillName, nextLink, options)
 			if err != nil {
 				return DrillRunsClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return DrillRunsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *DrillRunsClient) listCreateRequest(ctx context.Context, serviceGroupName string, drillName string, _ *DrillRunsClientListOptions) (*policy.Request, error) {
-	urlPath := "/providers/Microsoft.Management/serviceGroups/{serviceGroupName}/providers/Microsoft.AzureResilienceManagement/drills/{drillName}/drillRuns"
+func (client *DrillRunsClient) listCreateRequest(ctx context.Context, serviceGroupName string, drillName string, nextLink string, _ *DrillRunsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/providers/Microsoft.Management/serviceGroups/{serviceGroupName}/providers/Microsoft.AzureResilienceManagement/drills/{drillName}/drillRuns"
+		if serviceGroupName == "" {
+			return nil, errors.New("parameter serviceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{serviceGroupName}", url.PathEscape(serviceGroupName))
+		if drillName == "" {
+			return nil, errors.New("parameter drillName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{drillName}", url.PathEscape(drillName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260831Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// listHandleResponse handles the List response.
+func (client *DrillRunsClient) listHandleResponse(resp *http.Response, successCodes ...int) (DrillRunsClientListResponse, error) {
+	result := DrillRunsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.DrillRunListResult); err != nil {
+		return DrillRunsClientListResponse{}, err
+	}
+	return result, nil
+}
+
+// BeginListReportDownloadURL - This returns a short-lived, read-only URL to download the report for this Drill Run. The URL
+// expires at the returned expiryTimestamp and grants access to that single report only.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - serviceGroupName - The name of the service group.
+//   - operationID - A GUID that represents the Long Running OperationId.
+//   - drillName - The name of the Drill
+//   - drillRunName - The name of the DrillRun (GUID).
+//   - body - The content of the action request
+//   - options - DrillRunsClientBeginListReportDownloadURLOptions contains the optional parameters for the DrillRunsClient.BeginListReportDownloadURL
+//     method.
+func (client *DrillRunsClient) BeginListReportDownloadURL(ctx context.Context, serviceGroupName string, operationID string, drillName string, drillRunName string, body ListReportDownloadURLRequest, options *DrillRunsClientBeginListReportDownloadURLOptions) (*runtime.Poller[DrillRunsClientListReportDownloadURLResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.listReportDownloadURL(ctx, serviceGroupName, operationID, drillName, drillRunName, body, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DrillRunsClientListReportDownloadURLResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[DrillRunsClientListReportDownloadURLResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// ListReportDownloadURL - This returns a short-lived, read-only URL to download the report for this Drill Run. The URL expires
+// at the returned expiryTimestamp and grants access to that single report only.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *DrillRunsClient) listReportDownloadURL(ctx context.Context, serviceGroupName string, operationID string, drillName string, drillRunName string, body ListReportDownloadURLRequest, options *DrillRunsClientBeginListReportDownloadURLOptions) (*http.Response, error) {
+	var err error
+	const operationName = "DrillRunsClient.BeginListReportDownloadURL"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.listReportDownloadURLCreateRequest(ctx, serviceGroupName, operationID, drillName, drillRunName, body, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// listReportDownloadURLCreateRequest creates the ListReportDownloadURL request.
+func (client *DrillRunsClient) listReportDownloadURLCreateRequest(ctx context.Context, serviceGroupName string, operationID string, drillName string, drillRunName string, body ListReportDownloadURLRequest, _ *DrillRunsClientBeginListReportDownloadURLOptions) (*policy.Request, error) {
+	urlPath := "/providers/Microsoft.Management/serviceGroups/{serviceGroupName}/providers/Microsoft.AzureResilienceManagement/drills/{drillName}/drillRuns/{drillRunName}/listReportDownloadUrl"
 	if serviceGroupName == "" {
 		return nil, errors.New("parameter serviceGroupName cannot be empty")
 	}
@@ -297,24 +468,24 @@ func (client *DrillRunsClient) listCreateRequest(ctx context.Context, serviceGro
 		return nil, errors.New("parameter drillName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{drillName}", url.PathEscape(drillName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if drillRunName == "" {
+		return nil, errors.New("parameter drillRunName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{drillRunName}", url.PathEscape(drillRunName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401Preview)
+	reqQP.Set("api-version", version20260831Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// listHandleResponse handles the List response.
-func (client *DrillRunsClient) listHandleResponse(resp *http.Response) (DrillRunsClientListResponse, error) {
-	result := DrillRunsClientListResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.DrillRunListResult); err != nil {
-		return DrillRunsClientListResponse{}, err
+	req.Raw().Header["operation-id"] = []string{operationID}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
 	}
-	return result, nil
+	return req, nil
 }
 
 // BeginMarkAsComplete - This enables the user to mark this stage as complete, disabling further retries on it.
@@ -360,8 +531,7 @@ func (client *DrillRunsClient) markAsComplete(ctx context.Context, serviceGroupN
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -386,7 +556,7 @@ func (client *DrillRunsClient) markAsCompleteCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401Preview)
+	reqQP.Set("api-version", version20260831Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["operation-id"] = []string{operationID}
@@ -439,14 +609,13 @@ func (client *DrillRunsClient) reprotect(ctx context.Context, serviceGroupName s
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
 
 // reprotectCreateRequest creates the Reprotect request.
-func (client *DrillRunsClient) reprotectCreateRequest(ctx context.Context, serviceGroupName string, operationID string, drillName string, drillRunName string, _ *DrillRunsClientBeginReprotectOptions) (*policy.Request, error) {
+func (client *DrillRunsClient) reprotectCreateRequest(ctx context.Context, serviceGroupName string, operationID string, drillName string, drillRunName string, options *DrillRunsClientBeginReprotectOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Management/serviceGroups/{serviceGroupName}/providers/Microsoft.AzureResilienceManagement/drills/{drillName}/drillRuns/{drillRunName}/reprotect"
 	if serviceGroupName == "" {
 		return nil, errors.New("parameter serviceGroupName cannot be empty")
@@ -465,10 +634,17 @@ func (client *DrillRunsClient) reprotectCreateRequest(ctx context.Context, servi
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401Preview)
+	reqQP.Set("api-version", version20260831Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["operation-id"] = []string{operationID}
+	if options != nil && options.Body != nil {
+		req.Raw().Header["Content-Type"] = []string{"application/json"}
+		if err := runtime.MarshalAsJSON(req, *options.Body); err != nil {
+			return nil, err
+		}
+		return req, nil
+	}
 	return req, nil
 }
 
@@ -513,8 +689,7 @@ func (client *DrillRunsClient) resume(ctx context.Context, serviceGroupName stri
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -539,7 +714,7 @@ func (client *DrillRunsClient) resumeCreateRequest(ctx context.Context, serviceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401Preview)
+	reqQP.Set("api-version", version20260831Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["operation-id"] = []string{operationID}

@@ -30,6 +30,9 @@ type ConfigTemplateVersionsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewConfigTemplateVersionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ConfigTemplateVersionsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -62,19 +65,14 @@ func (client *ConfigTemplateVersionsClient) Get(ctx context.Context, resourceGro
 	if err != nil {
 		return ConfigTemplateVersionsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ConfigTemplateVersionsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *ConfigTemplateVersionsClient) getCreateRequest(ctx context.Context, resourceGroupName string, configTemplateName string, configTemplateVersionName string, _ *ConfigTemplateVersionsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/configTemplates/{configTemplateName}/versions/{configTemplateVersionName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -101,8 +99,11 @@ func (client *ConfigTemplateVersionsClient) getCreateRequest(ctx context.Context
 }
 
 // getHandleResponse handles the Get response.
-func (client *ConfigTemplateVersionsClient) getHandleResponse(resp *http.Response) (ConfigTemplateVersionsClientGetResponse, error) {
+func (client *ConfigTemplateVersionsClient) getHandleResponse(resp *http.Response, successCodes ...int) (ConfigTemplateVersionsClientGetResponse, error) {
 	result := ConfigTemplateVersionsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ConfigTemplateVersion); err != nil {
 		return ConfigTemplateVersionsClientGetResponse{}, err
 	}
@@ -125,47 +126,61 @@ func (client *ConfigTemplateVersionsClient) NewListByConfigTemplatePager(resourc
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByConfigTemplateCreateRequest(ctx, resourceGroupName, configTemplateName, options)
-			}, nil)
+			req, err := client.listByConfigTemplateCreateRequest(ctx, resourceGroupName, configTemplateName, nextLink, options)
 			if err != nil {
 				return ConfigTemplateVersionsClientListByConfigTemplateResponse{}, err
 			}
-			return client.listByConfigTemplateHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ConfigTemplateVersionsClientListByConfigTemplateResponse{}, err
+			}
+			return client.listByConfigTemplateHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByConfigTemplateCreateRequest creates the ListByConfigTemplate request.
-func (client *ConfigTemplateVersionsClient) listByConfigTemplateCreateRequest(ctx context.Context, resourceGroupName string, configTemplateName string, _ *ConfigTemplateVersionsClientListByConfigTemplateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/configTemplates/{configTemplateName}/versions"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ConfigTemplateVersionsClient) listByConfigTemplateCreateRequest(ctx context.Context, resourceGroupName string, configTemplateName string, nextLink string, _ *ConfigTemplateVersionsClientListByConfigTemplateOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/configTemplates/{configTemplateName}/versions"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if configTemplateName == "" {
+			return nil, errors.New("parameter configTemplateName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{configTemplateName}", url.PathEscape(configTemplateName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if configTemplateName == "" {
-		return nil, errors.New("parameter configTemplateName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{configTemplateName}", url.PathEscape(configTemplateName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250601)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByConfigTemplateHandleResponse handles the ListByConfigTemplate response.
-func (client *ConfigTemplateVersionsClient) listByConfigTemplateHandleResponse(resp *http.Response) (ConfigTemplateVersionsClientListByConfigTemplateResponse, error) {
+func (client *ConfigTemplateVersionsClient) listByConfigTemplateHandleResponse(resp *http.Response, successCodes ...int) (ConfigTemplateVersionsClientListByConfigTemplateResponse, error) {
 	result := ConfigTemplateVersionsClientListByConfigTemplateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ConfigTemplateVersionListResult); err != nil {
 		return ConfigTemplateVersionsClientListByConfigTemplateResponse{}, err
 	}

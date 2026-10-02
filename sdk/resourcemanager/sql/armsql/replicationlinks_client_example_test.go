@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-02-01-preview/ReplicationLinkCreateOrUpdate.json
+// Generated from example definition: 2026-08-01-preview/ReplicationLinkCreateOrUpdate.json
 func ExampleReplicationLinksClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -54,13 +54,13 @@ func ExampleReplicationLinksClient_BeginCreateOrUpdate() {
 	// 			ReplicationMode: to.Ptr("ASYNC"),
 	// 			ReplicationState: to.Ptr(armsql.ReplicationStateCATCHUP),
 	// 			Role: to.Ptr(armsql.ReplicationRolePrimary),
-	// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-21T08:12:43.783Z"); return t}()),
+	// 			StartTime: to.Ptr(time.Date(2018, time.June, 21, 8, 12, 43, 783000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/ReplicationLinkDelete.json
+// Generated from example definition: 2026-08-01-preview/ReplicationLinkDelete.json
 func ExampleReplicationLinksClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -86,7 +86,7 @@ func ExampleReplicationLinksClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/ReplicationLinkFailover.json
+// Generated from example definition: 2026-08-01-preview/ReplicationLinkFailover.json
 func ExampleReplicationLinksClient_BeginFailover() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -124,13 +124,13 @@ func ExampleReplicationLinksClient_BeginFailover() {
 	// 			ReplicationMode: to.Ptr("ASYNC"),
 	// 			ReplicationState: to.Ptr(armsql.ReplicationStateCATCHUP),
 	// 			Role: to.Ptr(armsql.ReplicationRolePrimary),
-	// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-21T08:12:43.783Z"); return t}()),
+	// 			StartTime: to.Ptr(time.Date(2018, time.June, 21, 8, 12, 43, 783000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/ReplicationLinkFailoverAllowDataLoss.json
+// Generated from example definition: 2026-08-01-preview/ReplicationLinkFailoverAllowDataLoss.json
 func ExampleReplicationLinksClient_BeginFailoverAllowDataLoss() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -168,13 +168,13 @@ func ExampleReplicationLinksClient_BeginFailoverAllowDataLoss() {
 	// 			ReplicationMode: to.Ptr("ASYNC"),
 	// 			ReplicationState: to.Ptr(armsql.ReplicationStateCATCHUP),
 	// 			Role: to.Ptr(armsql.ReplicationRolePrimary),
-	// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-21T08:12:43.783Z"); return t}()),
+	// 			StartTime: to.Ptr(time.Date(2018, time.June, 21, 8, 12, 43, 783000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/ReplicationLinkGet.json
+// Generated from example definition: 2026-08-01-preview/ReplicationLinkGet.json
 func ExampleReplicationLinksClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -208,13 +208,13 @@ func ExampleReplicationLinksClient_Get() {
 	// 			ReplicationMode: to.Ptr("ASYNC"),
 	// 			ReplicationState: to.Ptr(armsql.ReplicationStateCATCHUP),
 	// 			Role: to.Ptr(armsql.ReplicationRolePrimary),
-	// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-21T08:12:43.783Z"); return t}()),
+	// 			StartTime: to.Ptr(time.Date(2018, time.June, 21, 8, 12, 43, 783000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/ReplicationLinkListByDatabase.json
+// Generated from example definition: 2026-08-01-preview/ReplicationLinkListByDatabase.json
 func ExampleReplicationLinksClient_NewListByDatabasePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -254,7 +254,7 @@ func ExampleReplicationLinksClient_NewListByDatabasePager() {
 		// 					ReplicationMode: to.Ptr("ASYNC"),
 		// 					ReplicationState: to.Ptr(armsql.ReplicationStateCATCHUP),
 		// 					Role: to.Ptr(armsql.ReplicationRolePrimary),
-		// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-21T08:11:46.907Z"); return t}()),
+		// 					StartTime: to.Ptr(time.Date(2018, time.June, 21, 8, 11, 46, 907000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -272,7 +272,7 @@ func ExampleReplicationLinksClient_NewListByDatabasePager() {
 		// 					ReplicationMode: to.Ptr("ASYNC"),
 		// 					ReplicationState: to.Ptr(armsql.ReplicationStateCATCHUP),
 		// 					Role: to.Ptr(armsql.ReplicationRolePrimary),
-		// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-21T08:11:34.423Z"); return t}()),
+		// 					StartTime: to.Ptr(time.Date(2018, time.June, 21, 8, 11, 34, 423000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -281,7 +281,7 @@ func ExampleReplicationLinksClient_NewListByDatabasePager() {
 	}
 }
 
-// Generated from example definition: 2025-02-01-preview/ReplicationLinkListByServer.json
+// Generated from example definition: 2026-08-01-preview/ReplicationLinkListByServer.json
 func ExampleReplicationLinksClient_NewListByServerPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -321,7 +321,7 @@ func ExampleReplicationLinksClient_NewListByServerPager() {
 		// 					ReplicationMode: to.Ptr("ASYNC"),
 		// 					ReplicationState: to.Ptr(armsql.ReplicationStateCATCHUP),
 		// 					Role: to.Ptr(armsql.ReplicationRolePrimary),
-		// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-21T08:11:46.907Z"); return t}()),
+		// 					StartTime: to.Ptr(time.Date(2018, time.June, 21, 8, 11, 46, 907000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -339,7 +339,7 @@ func ExampleReplicationLinksClient_NewListByServerPager() {
 		// 					ReplicationMode: to.Ptr("ASYNC"),
 		// 					ReplicationState: to.Ptr(armsql.ReplicationStateCATCHUP),
 		// 					Role: to.Ptr(armsql.ReplicationRolePrimary),
-		// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-21T08:11:34.423Z"); return t}()),
+		// 					StartTime: to.Ptr(time.Date(2018, time.June, 21, 8, 11, 34, 423000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -357,7 +357,7 @@ func ExampleReplicationLinksClient_NewListByServerPager() {
 		// 					ReplicationMode: to.Ptr("ASYNC"),
 		// 					ReplicationState: to.Ptr(armsql.ReplicationStateCATCHUP),
 		// 					Role: to.Ptr(armsql.ReplicationRolePrimary),
-		// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-21T08:12:43.783Z"); return t}()),
+		// 					StartTime: to.Ptr(time.Date(2018, time.June, 21, 8, 12, 43, 783000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -366,7 +366,7 @@ func ExampleReplicationLinksClient_NewListByServerPager() {
 	}
 }
 
-// Generated from example definition: 2025-02-01-preview/ReplicationLinkUpdate.json
+// Generated from example definition: 2026-08-01-preview/ReplicationLinkUpdate.json
 func ExampleReplicationLinksClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -408,7 +408,7 @@ func ExampleReplicationLinksClient_BeginUpdate() {
 	// 			ReplicationMode: to.Ptr("ASYNC"),
 	// 			ReplicationState: to.Ptr(armsql.ReplicationStateCATCHUP),
 	// 			Role: to.Ptr(armsql.ReplicationRolePrimary),
-	// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-21T08:12:43.783Z"); return t}()),
+	// 			StartTime: to.Ptr(time.Date(2018, time.June, 21, 8, 12, 43, 783000000, time.UTC)),
 	// 		},
 	// 	},
 	// }

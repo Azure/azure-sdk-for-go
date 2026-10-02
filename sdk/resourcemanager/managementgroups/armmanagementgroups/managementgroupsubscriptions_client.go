@@ -58,12 +58,7 @@ func (client *ManagementGroupSubscriptionsClient) Create(ctx context.Context, gr
 	if err != nil {
 		return ManagementGroupSubscriptionsClientCreateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ManagementGroupSubscriptionsClientCreateResponse{}, err
-	}
-	resp, err := client.createHandleResponse(httpResp)
-	return resp, err
+	return client.createHandleResponse(httpResp, http.StatusOK)
 }
 
 // createCreateRequest creates the Create request.
@@ -92,8 +87,11 @@ func (client *ManagementGroupSubscriptionsClient) createCreateRequest(ctx contex
 }
 
 // createHandleResponse handles the Create response.
-func (client *ManagementGroupSubscriptionsClient) createHandleResponse(resp *http.Response) (ManagementGroupSubscriptionsClientCreateResponse, error) {
+func (client *ManagementGroupSubscriptionsClient) createHandleResponse(resp *http.Response, successCodes ...int) (ManagementGroupSubscriptionsClientCreateResponse, error) {
 	result := ManagementGroupSubscriptionsClientCreateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SubscriptionUnderManagementGroup); err != nil {
 		return ManagementGroupSubscriptionsClientCreateResponse{}, err
 	}
@@ -121,8 +119,7 @@ func (client *ManagementGroupSubscriptionsClient) Delete(ctx context.Context, gr
 		return ManagementGroupSubscriptionsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return ManagementGroupSubscriptionsClientDeleteResponse{}, err
+		return ManagementGroupSubscriptionsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return ManagementGroupSubscriptionsClientDeleteResponse{}, nil
 }
@@ -171,12 +168,7 @@ func (client *ManagementGroupSubscriptionsClient) GetSubscription(ctx context.Co
 	if err != nil {
 		return ManagementGroupSubscriptionsClientGetSubscriptionResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ManagementGroupSubscriptionsClientGetSubscriptionResponse{}, err
-	}
-	resp, err := client.getSubscriptionHandleResponse(httpResp)
-	return resp, err
+	return client.getSubscriptionHandleResponse(httpResp, http.StatusOK)
 }
 
 // getSubscriptionCreateRequest creates the GetSubscription request.
@@ -205,8 +197,11 @@ func (client *ManagementGroupSubscriptionsClient) getSubscriptionCreateRequest(c
 }
 
 // getSubscriptionHandleResponse handles the GetSubscription response.
-func (client *ManagementGroupSubscriptionsClient) getSubscriptionHandleResponse(resp *http.Response) (ManagementGroupSubscriptionsClientGetSubscriptionResponse, error) {
+func (client *ManagementGroupSubscriptionsClient) getSubscriptionHandleResponse(resp *http.Response, successCodes ...int) (ManagementGroupSubscriptionsClientGetSubscriptionResponse, error) {
 	result := ManagementGroupSubscriptionsClientGetSubscriptionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SubscriptionUnderManagementGroup); err != nil {
 		return ManagementGroupSubscriptionsClientGetSubscriptionResponse{}, err
 	}
@@ -229,42 +224,56 @@ func (client *ManagementGroupSubscriptionsClient) NewGetSubscriptionsUnderManage
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.getSubscriptionsUnderManagementGroupCreateRequest(ctx, groupID, options)
-			}, nil)
+			req, err := client.getSubscriptionsUnderManagementGroupCreateRequest(ctx, groupID, nextLink, options)
 			if err != nil {
 				return ManagementGroupSubscriptionsClientGetSubscriptionsUnderManagementGroupResponse{}, err
 			}
-			return client.getSubscriptionsUnderManagementGroupHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ManagementGroupSubscriptionsClientGetSubscriptionsUnderManagementGroupResponse{}, err
+			}
+			return client.getSubscriptionsUnderManagementGroupHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // getSubscriptionsUnderManagementGroupCreateRequest creates the GetSubscriptionsUnderManagementGroup request.
-func (client *ManagementGroupSubscriptionsClient) getSubscriptionsUnderManagementGroupCreateRequest(ctx context.Context, groupID string, options *ManagementGroupSubscriptionsClientGetSubscriptionsUnderManagementGroupOptions) (*policy.Request, error) {
-	urlPath := "/providers/Microsoft.Management/managementGroups/{groupId}/subscriptions"
-	if groupID == "" {
-		return nil, errors.New("parameter groupID cannot be empty")
+func (client *ManagementGroupSubscriptionsClient) getSubscriptionsUnderManagementGroupCreateRequest(ctx context.Context, groupID string, nextLink string, options *ManagementGroupSubscriptionsClientGetSubscriptionsUnderManagementGroupOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/providers/Microsoft.Management/managementGroups/{groupId}/subscriptions"
+		if groupID == "" {
+			return nil, errors.New("parameter groupID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{groupId}", url.PathEscape(groupID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{groupId}", url.PathEscape(groupID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Skiptoken != nil {
-		reqQP.Set("$skiptoken", *options.Skiptoken)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Skiptoken != nil {
+			reqQP.Set("$skiptoken", *options.Skiptoken)
+		}
+		reqQP.Set("api-version", version20230401)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	reqQP.Set("api-version", version20230401)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getSubscriptionsUnderManagementGroupHandleResponse handles the GetSubscriptionsUnderManagementGroup response.
-func (client *ManagementGroupSubscriptionsClient) getSubscriptionsUnderManagementGroupHandleResponse(resp *http.Response) (ManagementGroupSubscriptionsClientGetSubscriptionsUnderManagementGroupResponse, error) {
+func (client *ManagementGroupSubscriptionsClient) getSubscriptionsUnderManagementGroupHandleResponse(resp *http.Response, successCodes ...int) (ManagementGroupSubscriptionsClientGetSubscriptionsUnderManagementGroupResponse, error) {
 	result := ManagementGroupSubscriptionsClientGetSubscriptionsUnderManagementGroupResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ListSubscriptionUnderManagementGroup); err != nil {
 		return ManagementGroupSubscriptionsClientGetSubscriptionsUnderManagementGroupResponse{}, err
 	}

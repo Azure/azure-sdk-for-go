@@ -104,6 +104,14 @@ func (c *ClientFactory) NewDatabasesClient() *DatabasesClient {
 	}
 }
 
+// NewDbAgentsClient creates a new instance of DbAgentsClient.
+func (c *ClientFactory) NewDbAgentsClient() *DbAgentsClient {
+	return &DbAgentsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewFirewallRulesClient creates a new instance of FirewallRulesClient.
 func (c *ClientFactory) NewFirewallRulesClient() *FirewallRulesClient {
 	return &FirewallRulesClient{

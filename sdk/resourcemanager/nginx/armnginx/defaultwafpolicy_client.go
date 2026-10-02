@@ -30,6 +30,9 @@ type DefaultWafPolicyClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewDefaultWafPolicyClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DefaultWafPolicyClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -60,19 +63,14 @@ func (client *DefaultWafPolicyClient) List(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return DefaultWafPolicyClientListResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DefaultWafPolicyClientListResponse{}, err
-	}
-	resp, err := client.listHandleResponse(httpResp)
-	return resp, err
+	return client.listHandleResponse(httpResp, http.StatusOK)
 }
 
 // listCreateRequest creates the List request.
 func (client *DefaultWafPolicyClient) listCreateRequest(ctx context.Context, resourceGroupName string, deploymentName string, _ *DefaultWafPolicyClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Nginx.NginxPlus/nginxDeployments/{deploymentName}/listDefaultWafPolicies"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -95,8 +93,11 @@ func (client *DefaultWafPolicyClient) listCreateRequest(ctx context.Context, res
 }
 
 // listHandleResponse handles the List response.
-func (client *DefaultWafPolicyClient) listHandleResponse(resp *http.Response) (DefaultWafPolicyClientListResponse, error) {
+func (client *DefaultWafPolicyClient) listHandleResponse(resp *http.Response, successCodes ...int) (DefaultWafPolicyClientListResponse, error) {
 	result := DefaultWafPolicyClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeploymentDefaultWafPolicyListResponse); err != nil {
 		return DefaultWafPolicyClientListResponse{}, err
 	}

@@ -80,7 +80,7 @@ func (r *ResourceProviderCommonServerTransport) dispatchGetSubscriptionQuota(req
 	if r.srv.GetSubscriptionQuota == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetSubscriptionQuota not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Devices/usages`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Devices/usages`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 2 {

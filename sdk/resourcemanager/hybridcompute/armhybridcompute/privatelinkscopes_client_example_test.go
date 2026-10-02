@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-06-16-preview/privateLinkScope/PrivateLinkScopes_Create.json
+// Generated from example definition: 2026-07-15/privateLinkScope/PrivateLinkScopes_Create.json
 func ExamplePrivateLinkScopesClient_CreateOrUpdate_privateLinkScopeCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -73,7 +73,7 @@ func ExamplePrivateLinkScopesClient_CreateOrUpdate_privateLinkScopeCreate() {
 	// }
 }
 
-// Generated from example definition: 2026-06-16-preview/privateLinkScope/PrivateLinkScopes_Update.json
+// Generated from example definition: 2026-07-15/privateLinkScope/PrivateLinkScopes_Update.json
 func ExamplePrivateLinkScopesClient_CreateOrUpdate_privateLinkScopeUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -138,7 +138,7 @@ func ExamplePrivateLinkScopesClient_CreateOrUpdate_privateLinkScopeUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-06-16-preview/privateLinkScope/PrivateLinkScopes_Delete.json
+// Generated from example definition: 2026-07-15/privateLinkScope/PrivateLinkScopes_Delete.json
 func ExamplePrivateLinkScopesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -164,7 +164,7 @@ func ExamplePrivateLinkScopesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-06-16-preview/privateLinkScope/PrivateLinkScopes_Get.json
+// Generated from example definition: 2026-07-15/privateLinkScope/PrivateLinkScopes_Get.json
 func ExamplePrivateLinkScopesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -223,7 +223,7 @@ func ExamplePrivateLinkScopesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-06-16-preview/privateLinkScope/PrivateLinkScopes_GetValidation.json
+// Generated from example definition: 2026-07-15/privateLinkScope/PrivateLinkScopes_GetValidation.json
 func ExamplePrivateLinkScopesClient_GetValidationDetails() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -258,7 +258,7 @@ func ExamplePrivateLinkScopesClient_GetValidationDetails() {
 	// }
 }
 
-// Generated from example definition: 2026-06-16-preview/privateLinkScope/PrivateLinkScopes_GetValidationForMachine.json
+// Generated from example definition: 2026-07-15/privateLinkScope/PrivateLinkScopes_GetValidationForMachine.json
 func ExamplePrivateLinkScopesClient_GetValidationDetailsForMachine() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -293,7 +293,7 @@ func ExamplePrivateLinkScopesClient_GetValidationDetailsForMachine() {
 	// }
 }
 
-// Generated from example definition: 2026-06-16-preview/privateLinkScope/PrivateLinkScopes_List.json
+// Generated from example definition: 2026-07-15/privateLinkScope/PrivateLinkScopes_List.json
 func ExamplePrivateLinkScopesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -380,7 +380,7 @@ func ExamplePrivateLinkScopesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-06-16-preview/privateLinkScope/PrivateLinkScopes_ListByResourceGroup.json
+// Generated from example definition: 2026-07-15/privateLinkScope/PrivateLinkScopes_ListByResourceGroup.json
 func ExamplePrivateLinkScopesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -485,7 +485,7 @@ func ExamplePrivateLinkScopesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-06-16-preview/privateLinkScope/PrivateLinkScopes_UpdateTagsOnly.json
+// Generated from example definition: 2026-07-15/privateLinkScope/PrivateLinkScopes_UpdateTagsOnly.json
 func ExamplePrivateLinkScopesClient_UpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

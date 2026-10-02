@@ -28,6 +28,9 @@ type Setting struct {
 	// Providing a proper content-type can enable transformations of values when they are retrieved by applications.
 	ContentType *string
 
+	// A description of the configuration setting.
+	Description *string
+
 	// An ETag indicating the state of a configuration setting within a configuration store.
 	ETag *azcore.ETag
 
@@ -49,6 +52,7 @@ func settingFromGenerated(kv generated.KeyValue) Setting {
 		Value:        kv.Value,
 		Label:        kv.Label,
 		ContentType:  kv.ContentType,
+		Description:  kv.Description,
 		ETag:         (*azcore.ETag)(kv.Etag),
 		Tags:         kv.Tags,
 		LastModified: kv.LastModified,
@@ -68,6 +72,7 @@ func toGeneratedETagString(etag *azcore.ETag) *string {
 func (cs Setting) toGenerated() generated.KeyValue {
 	return generated.KeyValue{
 		ContentType:  cs.ContentType,
+		Description:  cs.Description,
 		Etag:         (*string)(cs.ETag),
 		Key:          cs.Key,
 		Label:        cs.Label,

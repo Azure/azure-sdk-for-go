@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2024-04-01-preview/TrafficManagerUserMetricsKeys-PUT.json
+// Generated from example definition: 2026-09-01/TrafficManagerUserMetricsKeys-PUT.json
 func ExampleUserMetricsKeysClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -28,7 +28,7 @@ func ExampleUserMetricsKeysClient_CreateOrUpdate() {
 	}
 }
 
-// Generated from example definition: 2024-04-01-preview/TrafficManagerUserMetricsKeys-DELETE.json
+// Generated from example definition: 2026-09-01/TrafficManagerUserMetricsKeys-DELETE.json
 func ExampleUserMetricsKeysClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -52,7 +52,7 @@ func ExampleUserMetricsKeysClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2024-04-01-preview/TrafficManagerUserMetricsKeys-GET.json
+// Generated from example definition: 2026-09-01/TrafficManagerUserMetricsKeys-GET.json
 func ExampleUserMetricsKeysClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

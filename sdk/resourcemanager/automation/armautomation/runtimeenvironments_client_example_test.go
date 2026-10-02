@@ -57,8 +57,8 @@ func ExampleRuntimeEnvironmentsClient_Create() {
 	// 			},
 	// 		},
 	// 		SystemData: &armautomation.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-05T07:32:41.4389914+00:00"); return t}()),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-05T07:33:07.5597465+00:00"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2023, time.July, 5, 7, 32, 41, 438991400, time.UTC)),
+	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.July, 5, 7, 33, 7, 559746500, time.UTC)),
 	// 		},
 	// 		Tags: map[string]*string{
 	// 		},
@@ -123,8 +123,8 @@ func ExampleRuntimeEnvironmentsClient_Get() {
 	// 			},
 	// 		},
 	// 		SystemData: &armautomation.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-05T07:32:41.4389914+00:00"); return t}()),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-05T07:33:07.5597465+00:00"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2023, time.July, 5, 7, 32, 41, 438991400, time.UTC)),
+	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.July, 5, 7, 33, 7, 559746500, time.UTC)),
 	// 		},
 	// 		Tags: map[string]*string{
 	// 		},
@@ -173,8 +173,8 @@ func ExampleRuntimeEnvironmentsClient_NewListByAutomationAccountPager() {
 		// 					},
 		// 				},
 		// 				SystemData: &armautomation.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-05T07:32:41.4389914+00:00"); return t}()),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-05T07:33:07.5597465+00:00"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2023, time.July, 5, 7, 32, 41, 438991400, time.UTC)),
+		// 					LastModifiedAt: to.Ptr(time.Date(2023, time.July, 5, 7, 33, 7, 559746500, time.UTC)),
 		// 				},
 		// 				Tags: map[string]*string{
 		// 				},
@@ -195,8 +195,8 @@ func ExampleRuntimeEnvironmentsClient_NewListByAutomationAccountPager() {
 		// 					},
 		// 				},
 		// 				SystemData: &armautomation.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-05T07:32:41.4389914+00:00"); return t}()),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-05T07:33:07.5597465+00:00"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2023, time.July, 5, 7, 32, 41, 438991400, time.UTC)),
+		// 					LastModifiedAt: to.Ptr(time.Date(2023, time.July, 5, 7, 33, 7, 559746500, time.UTC)),
 		// 				},
 		// 				Tags: map[string]*string{
 		// 				},
@@ -217,8 +217,8 @@ func ExampleRuntimeEnvironmentsClient_NewListByAutomationAccountPager() {
 		// 					},
 		// 				},
 		// 				SystemData: &armautomation.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-05T07:32:41.4389914+00:00"); return t}()),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-05T07:33:07.5597465+00:00"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2023, time.July, 5, 7, 32, 41, 438991400, time.UTC)),
+		// 					LastModifiedAt: to.Ptr(time.Date(2023, time.July, 5, 7, 33, 7, 559746500, time.UTC)),
 		// 				},
 		// 				Tags: map[string]*string{
 		// 				},
@@ -270,8 +270,8 @@ func ExampleRuntimeEnvironmentsClient_Update() {
 	// 			},
 	// 		},
 	// 		SystemData: &armautomation.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-05T07:32:41.4389914+00:00"); return t}()),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-05T07:33:07.5597465+00:00"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2023, time.July, 5, 7, 32, 41, 438991400, time.UTC)),
+	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.July, 5, 7, 33, 7, 559746500, time.UTC)),
 	// 		},
 	// 		Tags: map[string]*string{
 	// 		},

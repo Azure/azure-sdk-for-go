@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-20-preview/Replicas_CreateOrUpdate.json
+// Generated from example definition: 2026-05-01-preview/Replicas_CreateOrUpdate.json
 func ExampleReplicasClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -55,7 +55,7 @@ func ExampleReplicasClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-01-20-preview/Replicas_Delete.json
+// Generated from example definition: 2026-05-01-preview/Replicas_Delete.json
 func ExampleReplicasClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -76,7 +76,7 @@ func ExampleReplicasClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-01-20-preview/Replicas_Get.json
+// Generated from example definition: 2026-05-01-preview/Replicas_Get.json
 func ExampleReplicasClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -110,7 +110,7 @@ func ExampleReplicasClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-20-preview/Replicas_List.json
+// Generated from example definition: 2026-05-01-preview/Replicas_List.json
 func ExampleReplicasClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -165,7 +165,7 @@ func ExampleReplicasClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-01-20-preview/Replicas_Update.json
+// Generated from example definition: 2026-05-01-preview/Replicas_Update.json
 func ExampleReplicasClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

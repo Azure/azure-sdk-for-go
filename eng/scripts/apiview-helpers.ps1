@@ -1,3 +1,4 @@
+# cSpell:ignore gosource gosources
 Write-Host "$PSScriptRoot"
 . (Join-Path $PSScriptRoot .. common scripts common.ps1)
 
@@ -5,11 +6,11 @@ Write-Host "$PSScriptRoot"
 .DESCRIPTION
     Create .gosource APIVIew artifact for go
 .PARAMETER ServiceDirectory
-    Thee name of the ServiceDirectory
+    The name of the ServiceDirectory
 .PARAMETER OutputDirectory
     Base output Directory path for the generated gosource artifacts
 .PARAMETER DirectoryToPublish
-    Directory containing all artifacts to be publisehd to the pipeline
+    Directory containing all artifacts to be published to the pipeline
 #>
 function New-APIViewArtifacts {
         Param(
@@ -31,8 +32,9 @@ function New-APIViewArtifacts {
         Compress-Archive -Path $sdk.DirectoryPath -DestinationPath $compressedArchivePath -force
         Rename-Item $compressedArchivePath -NewName "$fileName.gosource"
 
-        $artifactParentDirectory = $sdk.Name -Split "/" | Select-Object -First 1
-        Copy-Item -Force "$OutputDirectory/$artifactParentDirectory" -Destination "$DirectoryToPublish/$artifactParentDirectory" -Recurse
+        $directoryToPublishForSdk = Join-Path $DirectoryToPublish $sdk.Name
+        New-Item -ItemType Directory -Path $directoryToPublishForSdk -Force | Out-Null
+        Copy-Item -Force (Join-Path $sdkDirectoryPath "$fileName.gosource") -Destination $directoryToPublishForSdk
     }
 }
 
@@ -40,7 +42,7 @@ function New-APIViewArtifacts {
 .DESCRIPTION
     Create new automatic APIView from a CI run
 .PARAMETER ServiceDirectory
-    Thee name of the ServiceDirectory
+    The name of the ServiceDirectory
 .PARAMETER ArtifactPath
     Directory containing the gosources artifact
 .PARAMETER ApiKey

@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-// Generated from example definition: 2025-07-01-preview/incidents/Incidents_CreateOrUpdate.json
+// Generated from example definition: 2025-10-01-preview/incidents/Incidents_CreateOrUpdate.json
 func ExampleIncidentsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -31,8 +31,8 @@ func ExampleIncidentsClient_CreateOrUpdate() {
 			Classification:        to.Ptr(armsecurityinsights.IncidentClassificationFalsePositive),
 			ClassificationComment: to.Ptr("Not a malicious activity"),
 			ClassificationReason:  to.Ptr(armsecurityinsights.IncidentClassificationReasonInaccurateData),
-			FirstActivityTimeUTC:  to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-01-01T13:00:30Z"); return t }()),
-			LastActivityTimeUTC:   to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-01-01T13:05:30Z"); return t }()),
+			FirstActivityTimeUTC:  to.Ptr(time.Date(2019, time.January, 1, 13, 0, 30, 0, time.UTC)),
+			LastActivityTimeUTC:   to.Ptr(time.Date(2019, time.January, 1, 13, 5, 30, 0, time.UTC)),
 			Owner: &armsecurityinsights.IncidentOwnerInfo{
 				ObjectID: to.Ptr("2046feea-040d-4a46-9e2b-91c2941bfa70"),
 			},
@@ -75,14 +75,14 @@ func ExampleIncidentsClient_CreateOrUpdate() {
 	// 			Classification: to.Ptr(armsecurityinsights.IncidentClassificationFalsePositive),
 	// 			ClassificationComment: to.Ptr("Not a malicious activity"),
 	// 			ClassificationReason: to.Ptr(armsecurityinsights.IncidentClassificationReasonInaccurateData),
-	// 			CreatedTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-01-01T13:15:30Z"); return t}()),
-	// 			FirstActivityTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-01-01T13:00:30Z"); return t}()),
+	// 			CreatedTimeUTC: to.Ptr(time.Date(2019, time.January, 1, 13, 15, 30, 0, time.UTC)),
+	// 			FirstActivityTimeUTC: to.Ptr(time.Date(2019, time.January, 1, 13, 0, 30, 0, time.UTC)),
 	// 			IncidentNumber: to.Ptr[int32](3177),
 	// 			IncidentURL: to.Ptr("https://portal.azure.com/#asset/Microsoft_Azure_Security_Insights/Incident/subscriptions/d0cfe6b2-9ac0-4464-9919-dccaee2e48c0/resourceGroups/myRg/providers/Microsoft.OperationalIinsights/workspaces/myWorkspace/providers/Microsoft.SecurityInsights/incidents/73e01a99-5cd7-4139-a149-9f2736ff2ab5"),
 	// 			Labels: []*armsecurityinsights.IncidentLabel{
 	// 			},
-	// 			LastActivityTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-01-01T13:05:30Z"); return t}()),
-	// 			LastModifiedTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-01-01T13:15:30Z"); return t}()),
+	// 			LastActivityTimeUTC: to.Ptr(time.Date(2019, time.January, 1, 13, 5, 30, 0, time.UTC)),
+	// 			LastModifiedTimeUTC: to.Ptr(time.Date(2019, time.January, 1, 13, 15, 30, 0, time.UTC)),
 	// 			Owner: &armsecurityinsights.IncidentOwnerInfo{
 	// 				AssignedTo: to.Ptr("john doe"),
 	// 				Email: to.Ptr("john.doe@contoso.com"),
@@ -103,7 +103,7 @@ func ExampleIncidentsClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/incidents/Incidents_Delete.json
+// Generated from example definition: 2025-10-01-preview/incidents/Incidents_Delete.json
 func ExampleIncidentsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -125,7 +125,7 @@ func ExampleIncidentsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/incidents/Incidents_Get.json
+// Generated from example definition: 2025-10-01-preview/incidents/Incidents_Get.json
 func ExampleIncidentsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -171,14 +171,14 @@ func ExampleIncidentsClient_Get() {
 	// 			Classification: to.Ptr(armsecurityinsights.IncidentClassificationFalsePositive),
 	// 			ClassificationComment: to.Ptr("Not a malicious activity"),
 	// 			ClassificationReason: to.Ptr(armsecurityinsights.IncidentClassificationReasonInaccurateData),
-	// 			CreatedTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-01-01T13:15:30Z"); return t}()),
-	// 			FirstActivityTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-01-01T13:00:30Z"); return t}()),
+	// 			CreatedTimeUTC: to.Ptr(time.Date(2019, time.January, 1, 13, 15, 30, 0, time.UTC)),
+	// 			FirstActivityTimeUTC: to.Ptr(time.Date(2019, time.January, 1, 13, 0, 30, 0, time.UTC)),
 	// 			IncidentNumber: to.Ptr[int32](3177),
 	// 			IncidentURL: to.Ptr("https://portal.azure.com/#asset/Microsoft_Azure_Security_Insights/Incident/subscriptions/d0cfe6b2-9ac0-4464-9919-dccaee2e48c0/resourceGroups/myRg/providers/Microsoft.OperationalIinsights/workspaces/myWorkspace/providers/Microsoft.SecurityInsights/incidents/73e01a99-5cd7-4139-a149-9f2736ff2ab5"),
 	// 			Labels: []*armsecurityinsights.IncidentLabel{
 	// 			},
-	// 			LastActivityTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-01-01T13:05:30Z"); return t}()),
-	// 			LastModifiedTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-01-01T13:15:30Z"); return t}()),
+	// 			LastActivityTimeUTC: to.Ptr(time.Date(2019, time.January, 1, 13, 5, 30, 0, time.UTC)),
+	// 			LastModifiedTimeUTC: to.Ptr(time.Date(2019, time.January, 1, 13, 15, 30, 0, time.UTC)),
 	// 			Owner: &armsecurityinsights.IncidentOwnerInfo{
 	// 				AssignedTo: to.Ptr("john doe"),
 	// 				Email: to.Ptr("john.doe@contoso.com"),
@@ -199,7 +199,7 @@ func ExampleIncidentsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/incidents/Incidents_List.json
+// Generated from example definition: 2025-10-01-preview/incidents/Incidents_List.json
 func ExampleIncidentsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -253,14 +253,14 @@ func ExampleIncidentsClient_NewListPager() {
 		// 					Classification: to.Ptr(armsecurityinsights.IncidentClassificationFalsePositive),
 		// 					ClassificationComment: to.Ptr("Not a malicious activity"),
 		// 					ClassificationReason: to.Ptr(armsecurityinsights.IncidentClassificationReasonInaccurateData),
-		// 					CreatedTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-01-01T13:15:30Z"); return t}()),
-		// 					FirstActivityTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-01-01T13:00:30Z"); return t}()),
+		// 					CreatedTimeUTC: to.Ptr(time.Date(2019, time.January, 1, 13, 15, 30, 0, time.UTC)),
+		// 					FirstActivityTimeUTC: to.Ptr(time.Date(2019, time.January, 1, 13, 0, 30, 0, time.UTC)),
 		// 					IncidentNumber: to.Ptr[int32](3177),
 		// 					IncidentURL: to.Ptr("https://portal.azure.com/#asset/Microsoft_Azure_Security_Insights/Incident/subscriptions/d0cfe6b2-9ac0-4464-9919-dccaee2e48c0/resourceGroups/myRg/providers/Microsoft.OperationalIinsights/workspaces/myWorkspace/providers/Microsoft.SecurityInsights/incidents/73e01a99-5cd7-4139-a149-9f2736ff2ab5"),
 		// 					Labels: []*armsecurityinsights.IncidentLabel{
 		// 					},
-		// 					LastActivityTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-01-01T13:05:30Z"); return t}()),
-		// 					LastModifiedTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-01-01T13:15:30Z"); return t}()),
+		// 					LastActivityTimeUTC: to.Ptr(time.Date(2019, time.January, 1, 13, 5, 30, 0, time.UTC)),
+		// 					LastModifiedTimeUTC: to.Ptr(time.Date(2019, time.January, 1, 13, 15, 30, 0, time.UTC)),
 		// 					Owner: &armsecurityinsights.IncidentOwnerInfo{
 		// 						AssignedTo: to.Ptr("john doe"),
 		// 						Email: to.Ptr("john.doe@contoso.com"),
@@ -284,7 +284,7 @@ func ExampleIncidentsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-01-preview/incidents/IncidentAlerts/Incidents_ListAlerts.json
+// Generated from example definition: 2025-10-01-preview/incidents/IncidentAlerts/Incidents_ListAlerts.json
 func ExampleIncidentsClient_ListAlerts() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -317,9 +317,9 @@ func ExampleIncidentsClient_ListAlerts() {
 	// 					AlertDisplayName: to.Ptr("myAlert"),
 	// 					AlertType: to.Ptr("myAlert"),
 	// 					ConfidenceLevel: to.Ptr(armsecurityinsights.ConfidenceLevelUnknown),
-	// 					EndTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-07-20T18:21:53.615Z"); return t}()),
+	// 					EndTimeUTC: to.Ptr(time.Date(2020, time.July, 20, 18, 21, 53, 615000000, time.UTC)),
 	// 					FriendlyName: to.Ptr("myAlert"),
-	// 					ProcessingEndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-07-20T18:21:53.615Z"); return t}()),
+	// 					ProcessingEndTime: to.Ptr(time.Date(2020, time.July, 20, 18, 21, 53, 615000000, time.UTC)),
 	// 					ProductName: to.Ptr("Azure Security Center"),
 	// 					ResourceIdentifiers: []any{
 	// 						map[string]any{
@@ -330,12 +330,12 @@ func ExampleIncidentsClient_ListAlerts() {
 	// 						},
 	// 					},
 	// 					Severity: to.Ptr(armsecurityinsights.AlertSeverityLow),
-	// 					StartTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-07-20T18:21:53.615Z"); return t}()),
+	// 					StartTimeUTC: to.Ptr(time.Date(2020, time.July, 20, 18, 21, 53, 615000000, time.UTC)),
 	// 					Status: to.Ptr(armsecurityinsights.AlertStatusNew),
 	// 					SystemAlertID: to.Ptr("baa8a239-6fde-4ab7-a093-d09f7b75c58c"),
 	// 					Tactics: []*armsecurityinsights.AttackTactic{
 	// 					},
-	// 					TimeGenerated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-07-20T18:21:53.615Z"); return t}()),
+	// 					TimeGenerated: to.Ptr(time.Date(2020, time.July, 20, 18, 21, 53, 615000000, time.UTC)),
 	// 					VendorName: to.Ptr("Microsoft"),
 	// 				},
 	// 			},
@@ -344,7 +344,7 @@ func ExampleIncidentsClient_ListAlerts() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/incidents/IncidentBookmarks/Incidents_ListBookmarks.json
+// Generated from example definition: 2025-10-01-preview/incidents/IncidentBookmarks/Incidents_ListBookmarks.json
 func ExampleIncidentsClient_ListBookmarks() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -375,20 +375,20 @@ func ExampleIncidentsClient_ListBookmarks() {
 	// 						"eTag": "\"3b00acab-0000-0d00-0000-5f15e4ed0000\"",
 	// 						"entityId": "afbd324f-6c48-459c-8710-8d1e1cd03812",
 	// 					},
-	// 					Created: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-17T15:34:01.426+00:00"); return t}()),
+	// 					Created: to.Ptr(time.Date(2020, time.June, 17, 15, 34, 1, 426000000, time.UTC)),
 	// 					CreatedBy: &armsecurityinsights.UserInfo{
 	// 						Name: to.Ptr("user"),
 	// 						Email: to.Ptr("user@contoso.com"),
 	// 						ObjectID: to.Ptr("b03ca914-5eb6-45e5-9417-fe0797c372fd"),
 	// 					},
 	// 					DisplayName: to.Ptr("SecurityEvent - 868f40f4698d"),
-	// 					EventTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-17T15:34:01.426+00:00"); return t}()),
+	// 					EventTime: to.Ptr(time.Date(2020, time.June, 17, 15, 34, 1, 426000000, time.UTC)),
 	// 					FriendlyName: to.Ptr("SecurityEvent - 868f40f4698d"),
 	// 					Labels: []*string{
 	// 					},
 	// 					Query: to.Ptr("SecurityEvent\r\n| take 1\n"),
 	// 					QueryResult: to.Ptr("{\"TimeGenerated\":\"2020-05-24T01:24:25.67Z\",\"Account\":\"\\\\ADMINISTRATOR\",\"AccountType\":\"User\",\"Computer\":\"SecurityEvents\",\"EventSourceName\":\"Microsoft-Windows-Security-Auditing\",\"Channel\":\"Security\",\"Task\":12544,\"Level\":\"16\",\"EventID\":4625,\"Activity\":\"4625 - An account failed to log on.\",\"AuthenticationPackageName\":\"NTLM\",\"FailureReason\":\"%%2313\",\"IpAddress\":\"176.113.115.73\",\"IpPort\":\"0\",\"LmPackageName\":\"-\",\"LogonProcessName\":\"NtLmSsp \",\"LogonType\":3,\"LogonTypeName\":\"3 - Network\",\"Process\":\"-\",\"ProcessId\":\"0x0\",\"__entityMapping\":{\"\\\\ADMINISTRATOR\":\"Account\",\"SecurityEvents\":\"Host\"}}"),
-	// 					Updated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-17T15:34:01.426+00:00"); return t}()),
+	// 					Updated: to.Ptr(time.Date(2020, time.June, 17, 15, 34, 1, 426000000, time.UTC)),
 	// 					UpdatedBy: &armsecurityinsights.UserInfo{
 	// 						Name: to.Ptr("user"),
 	// 						Email: to.Ptr("user@contoso.com"),
@@ -401,7 +401,7 @@ func ExampleIncidentsClient_ListBookmarks() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/incidents/IncidentEntities/Incidents_ListEntities.json
+// Generated from example definition: 2025-10-01-preview/incidents/IncidentEntities/Incidents_ListEntities.json
 func ExampleIncidentsClient_ListEntities() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -444,7 +444,7 @@ func ExampleIncidentsClient_ListEntities() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/manualTrigger/Incidents_RunPlaybook.json
+// Generated from example definition: 2025-10-01-preview/manualTrigger/Incidents_RunPlaybook.json
 func ExampleIncidentsClient_RunPlaybook() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

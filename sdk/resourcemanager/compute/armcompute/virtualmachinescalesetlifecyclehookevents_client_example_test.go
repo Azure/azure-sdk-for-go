@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetLifeCycleHookEvent_Get.json
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetLifeCycleHookEvent_Get.json
 func ExampleVirtualMachineScaleSetLifeCycleHookEventsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -34,6 +34,7 @@ func ExampleVirtualMachineScaleSetLifeCycleHookEventsClient_Get() {
 	// 	VMScaleSetLifecycleHookEvent: armcompute.VMScaleSetLifecycleHookEvent{
 	// 		Name: to.Ptr("2e2e3046-f85f-4966-8fd2-5fd7bf6ea717"),
 	// 		ID: to.Ptr("/subscriptions/2167b012-c9f9-4b04-83b2-0ff304e7d51d/resourceGroups/RG01/providers/Microsoft.Compute/virtualMachineScaleSets/VMSS01/lifecycleHookEvents/2e2e3046-f85f-4966-8fd2-5fd7bf6ea717"),
+	// 		Type: to.Ptr("Microsoft.Compute/virtualMachineScaleSets/lifecycleHookEvents"),
 	// 		Properties: &armcompute.VMScaleSetLifecycleHookEventProperties{
 	// 			Type: to.Ptr(armcompute.VMScaleSetLifecycleHookEventTypeUpgradeAutoOSRollingBatchStarting),
 	// 			WaitUntil: to.Ptr("2025-05-08T09:17:55.6844555+00:00"),
@@ -60,7 +61,7 @@ func ExampleVirtualMachineScaleSetLifeCycleHookEventsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetLifeCycleHookEvent_List.json
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetLifeCycleHookEvent_List.json
 func ExampleVirtualMachineScaleSetLifeCycleHookEventsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -88,6 +89,7 @@ func ExampleVirtualMachineScaleSetLifeCycleHookEventsClient_NewListPager() {
 		// 			{
 		// 				Name: to.Ptr("2167b012-c9f9-4b04-83b2-0ff304e7d51d"),
 		// 				ID: to.Ptr("/subscriptions/2e2e3046-f85f-4966-8fd2-5fd7bf6ea717/resourceGroups/RG01/providers/Microsoft.Compute/virtualMachineScaleSets/VMSS01/lifecycleHookEvents/2167b012-c9f9-4b04-83b2-0ff304e7d51d"),
+		// 				Type: to.Ptr("Microsoft.Compute/virtualMachineScaleSets/lifecycleHookEvents"),
 		// 				Properties: &armcompute.VMScaleSetLifecycleHookEventProperties{
 		// 					Type: to.Ptr(armcompute.VMScaleSetLifecycleHookEventTypeUpgradeAutoOSScheduling),
 		// 					WaitUntil: to.Ptr("2025-05-08T09:17:55.6844555+00:00"),
@@ -108,6 +110,7 @@ func ExampleVirtualMachineScaleSetLifeCycleHookEventsClient_NewListPager() {
 		// 			{
 		// 				Name: to.Ptr("445c0a08-cfc5-4ef6-bb89-fe77c5178628"),
 		// 				ID: to.Ptr("/subscriptions/2e2e3046-f85f-4966-8fd2-5fd7bf6ea717/resourceGroups/RG01/providers/Microsoft.Compute/virtualMachineScaleSets/VMSS01/lifecycleHookEvents/445c0a08-cfc5-4ef6-bb89-fe77c5178628"),
+		// 				Type: to.Ptr("Microsoft.Compute/virtualMachineScaleSets/lifecycleHookEvents"),
 		// 				Properties: &armcompute.VMScaleSetLifecycleHookEventProperties{
 		// 					Type: to.Ptr(armcompute.VMScaleSetLifecycleHookEventTypeUpgradeAutoOSRollingBatchStarting),
 		// 					WaitUntil: to.Ptr("2025-05-08T10:17:55.6844555+00:00"),
@@ -137,7 +140,7 @@ func ExampleVirtualMachineScaleSetLifeCycleHookEventsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetLifeCycleHookEvent_Update.json
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetLifeCycleHookEvent_Update.json
 func ExampleVirtualMachineScaleSetLifeCycleHookEventsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -170,7 +173,8 @@ func ExampleVirtualMachineScaleSetLifeCycleHookEventsClient_Update() {
 	// res = armcompute.VirtualMachineScaleSetLifeCycleHookEventsClientUpdateResponse{
 	// 	VMScaleSetLifecycleHookEvent: armcompute.VMScaleSetLifecycleHookEvent{
 	// 		Name: to.Ptr("445c0a08-cfc5-4ef6-bb89-fe77c5178628"),
-	// 		ID: to.Ptr("/subscriptions/445c0a08-cfc5-4ef6-bb89-fe77c5178628/resourceGroups/RG01/providers/Microsoft.Compute/virtualMachineScaleSets/VMSS01/lifecycleHookEvents/445c0a08-cfc5-4ef6-bb89-fe77c5178628"),
+	// 		ID: to.Ptr("/subscriptions/2167b012-c9f9-4b04-83b2-0ff304e7d51d/resourceGroups/RG01/providers/Microsoft.Compute/virtualMachineScaleSets/VMSS01/lifecycleHookEvents/445c0a08-cfc5-4ef6-bb89-fe77c5178628"),
+	// 		Type: to.Ptr("Microsoft.Compute/virtualMachineScaleSets/lifecycleHookEvents"),
 	// 		Properties: &armcompute.VMScaleSetLifecycleHookEventProperties{
 	// 			Type: to.Ptr(armcompute.VMScaleSetLifecycleHookEventTypeUpgradeAutoOSRollingBatchStarting),
 	// 			WaitUntil: to.Ptr("2025-05-08T11:17:55.6844555+00:00"),

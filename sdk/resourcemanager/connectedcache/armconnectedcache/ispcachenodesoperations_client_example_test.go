@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2024-11-30-preview/IspCacheNodesOperations_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-01/IspCacheNodesOperations_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleIspCacheNodesOperationsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -112,15 +112,15 @@ func ExampleIspCacheNodesOperationsClient_BeginCreateOrUpdate() {
 	// 				ClientTenantID: to.Ptr("ds"),
 	// 				Category: to.Ptr("rixlfzbl"),
 	// 				ReleaseVersion: to.Ptr[int32](30),
-	// 				LastSyncWithAzureTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-30T00:54:04.777Z"); return t}()),
+	// 				LastSyncWithAzureTimestamp: to.Ptr(time.Date(2024, time.January, 30, 0, 54, 4, 777000000, time.UTC)),
 	// 				SynchWithAzureAttemptsCount: to.Ptr[int32](11),
 	// 				ContainerConfigurations: to.Ptr("waygqqgfzvnvlbufilldsqavwlshzt"),
 	// 				CidrCSV: []*string{
 	// 					to.Ptr("nlqlvrthafvvljuupcbcw"),
 	// 				},
-	// 				CidrCSVLastUpdateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-30T00:54:04.777Z"); return t}()),
-	// 				BgpCidrCSVLastUpdateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-30T00:54:04.777Z"); return t}()),
-	// 				BgpLastReportedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-30T00:54:04.777Z"); return t}()),
+	// 				CidrCSVLastUpdateTime: to.Ptr(time.Date(2024, time.January, 30, 0, 54, 4, 777000000, time.UTC)),
+	// 				BgpCidrCSVLastUpdateTime: to.Ptr(time.Date(2024, time.January, 30, 0, 54, 4, 777000000, time.UTC)),
+	// 				BgpLastReportedTime: to.Ptr(time.Date(2024, time.January, 30, 0, 54, 4, 777000000, time.UTC)),
 	// 				BgpReviewStateText: to.Ptr("xduneialocyri"),
 	// 				BgpReviewState: to.Ptr(armconnectedcache.BgpReviewStateEnumNotConfigured),
 	// 				BgpReviewFeedback: to.Ptr("us"),
@@ -139,7 +139,7 @@ func ExampleIspCacheNodesOperationsClient_BeginCreateOrUpdate() {
 	// 				ConfigurationStateText: to.Ptr("arugukqjcxmkbgfambg"),
 	// 				AddressSpace: to.Ptr[int32](11),
 	// 				WorkerConnections: to.Ptr[int32](18),
-	// 				WorkerConnectionsLastUpdatedDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-30T00:54:04.777Z"); return t}()),
+	// 				WorkerConnectionsLastUpdatedDateTime: to.Ptr(time.Date(2024, time.January, 30, 0, 54, 4, 777000000, time.UTC)),
 	// 				ContainerResyncTrigger: to.Ptr[int32](13),
 	// 				ImageURI: to.Ptr("ezbwyfaainatxtlplyoailzxlhxy"),
 	// 			},
@@ -186,16 +186,16 @@ func ExampleIspCacheNodesOperationsClient_BeginCreateOrUpdate() {
 	// 		SystemData: &armconnectedcache.SystemData{
 	// 			CreatedBy: to.Ptr("gambtqj"),
 	// 			CreatedByType: to.Ptr(armconnectedcache.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-30T00:54:04.771Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2024, time.January, 30, 0, 54, 4, 771000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("qomgaceiessgnuogz"),
 	// 			LastModifiedByType: to.Ptr(armconnectedcache.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-30T00:54:04.771Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.January, 30, 0, 54, 4, 771000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2024-11-30-preview/IspCacheNodesOperations_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-01/IspCacheNodesOperations_Delete_MaximumSet_Gen.json
 func ExampleIspCacheNodesOperationsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -216,7 +216,7 @@ func ExampleIspCacheNodesOperationsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2024-11-30-preview/IspCacheNodesOperations_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-01/IspCacheNodesOperations_Get_MaximumSet_Gen.json
 func ExampleIspCacheNodesOperationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -260,15 +260,15 @@ func ExampleIspCacheNodesOperationsClient_Get() {
 	// 				ClientTenantID: to.Ptr("ds"),
 	// 				Category: to.Ptr("rixlfzbl"),
 	// 				ReleaseVersion: to.Ptr[int32](30),
-	// 				LastSyncWithAzureTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-30T00:54:04.777Z"); return t}()),
+	// 				LastSyncWithAzureTimestamp: to.Ptr(time.Date(2024, time.January, 30, 0, 54, 4, 777000000, time.UTC)),
 	// 				SynchWithAzureAttemptsCount: to.Ptr[int32](11),
 	// 				ContainerConfigurations: to.Ptr("waygqqgfzvnvlbufilldsqavwlshzt"),
 	// 				CidrCSV: []*string{
 	// 					to.Ptr("nlqlvrthafvvljuupcbcw"),
 	// 				},
-	// 				CidrCSVLastUpdateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-30T00:54:04.777Z"); return t}()),
-	// 				BgpCidrCSVLastUpdateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-30T00:54:04.777Z"); return t}()),
-	// 				BgpLastReportedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-30T00:54:04.777Z"); return t}()),
+	// 				CidrCSVLastUpdateTime: to.Ptr(time.Date(2024, time.January, 30, 0, 54, 4, 777000000, time.UTC)),
+	// 				BgpCidrCSVLastUpdateTime: to.Ptr(time.Date(2024, time.January, 30, 0, 54, 4, 777000000, time.UTC)),
+	// 				BgpLastReportedTime: to.Ptr(time.Date(2024, time.January, 30, 0, 54, 4, 777000000, time.UTC)),
 	// 				BgpReviewStateText: to.Ptr("xduneialocyri"),
 	// 				BgpReviewState: to.Ptr(armconnectedcache.BgpReviewStateEnumNotConfigured),
 	// 				BgpReviewFeedback: to.Ptr("us"),
@@ -287,7 +287,7 @@ func ExampleIspCacheNodesOperationsClient_Get() {
 	// 				ConfigurationStateText: to.Ptr("arugukqjcxmkbgfambg"),
 	// 				AddressSpace: to.Ptr[int32](11),
 	// 				WorkerConnections: to.Ptr[int32](18),
-	// 				WorkerConnectionsLastUpdatedDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-30T00:54:04.777Z"); return t}()),
+	// 				WorkerConnectionsLastUpdatedDateTime: to.Ptr(time.Date(2024, time.January, 30, 0, 54, 4, 777000000, time.UTC)),
 	// 				ContainerResyncTrigger: to.Ptr[int32](13),
 	// 				ImageURI: to.Ptr("ezbwyfaainatxtlplyoailzxlhxy"),
 	// 			},
@@ -340,16 +340,16 @@ func ExampleIspCacheNodesOperationsClient_Get() {
 	// 		SystemData: &armconnectedcache.SystemData{
 	// 			CreatedBy: to.Ptr("gambtqj"),
 	// 			CreatedByType: to.Ptr(armconnectedcache.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-30T00:54:04.771Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2024, time.January, 30, 0, 54, 4, 771000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("qomgaceiessgnuogz"),
 	// 			LastModifiedByType: to.Ptr(armconnectedcache.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-30T00:54:04.771Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.January, 30, 0, 54, 4, 771000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2024-11-30-preview/IspCacheNodesOperations_GetBgpCidrs_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-01/IspCacheNodesOperations_GetBgpCidrs_MaximumSet_Gen.json
 func ExampleIspCacheNodesOperationsClient_GetBgpCidrs() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -384,16 +384,16 @@ func ExampleIspCacheNodesOperationsClient_GetBgpCidrs() {
 	// 		SystemData: &armconnectedcache.SystemData{
 	// 			CreatedBy: to.Ptr("gambtqj"),
 	// 			CreatedByType: to.Ptr(armconnectedcache.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-30T00:54:04.771Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2024, time.January, 30, 0, 54, 4, 771000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("qomgaceiessgnuogz"),
 	// 			LastModifiedByType: to.Ptr(armconnectedcache.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-30T00:54:04.771Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.January, 30, 0, 54, 4, 771000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2024-11-30-preview/IspCacheNodesOperations_GetCacheNodeAutoUpdateHistory_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-01/IspCacheNodesOperations_GetCacheNodeAutoUpdateHistory_MaximumSet_Gen.json
 func ExampleIspCacheNodesOperationsClient_GetCacheNodeAutoUpdateHistory() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -422,11 +422,11 @@ func ExampleIspCacheNodesOperationsClient_GetCacheNodeAutoUpdateHistory() {
 	// 					ImageURITargeted: to.Ptr("zqgjxlqoucwyjf"),
 	// 					ImageURITerminal: to.Ptr("akng"),
 	// 					AutoUpdateRingType: to.Ptr[int32](16),
-	// 					MovedToTerminalStateDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-08T07:01:45.657Z"); return t}()),
+	// 					MovedToTerminalStateDateTime: to.Ptr(time.Date(2025, time.April, 8, 7, 1, 45, 657000000, time.UTC)),
 	// 					RuleRequestedWeek: to.Ptr[int32](1),
 	// 					RuleRequestedDay: to.Ptr[int32](9),
-	// 					CreatedDateTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-08T07:01:45.657Z"); return t}()),
-	// 					UpdatedRegistryDateTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-08T07:01:45.657Z"); return t}()),
+	// 					CreatedDateTimeUTC: to.Ptr(time.Date(2025, time.April, 8, 7, 1, 45, 657000000, time.UTC)),
+	// 					UpdatedRegistryDateTimeUTC: to.Ptr(time.Date(2025, time.April, 8, 7, 1, 45, 657000000, time.UTC)),
 	// 					PlanChangeLogText: to.Ptr("uhfsokrwx"),
 	// 					AutoUpdateLastAppliedStatus: to.Ptr[int32](24),
 	// 					AutoUpdateLastAppliedStatusText: to.Ptr("cwoy"),
@@ -448,16 +448,16 @@ func ExampleIspCacheNodesOperationsClient_GetCacheNodeAutoUpdateHistory() {
 	// 		SystemData: &armconnectedcache.SystemData{
 	// 			CreatedBy: to.Ptr("gambtqj"),
 	// 			CreatedByType: to.Ptr(armconnectedcache.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-30T00:54:04.771Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2024, time.January, 30, 0, 54, 4, 771000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("qomgaceiessgnuogz"),
 	// 			LastModifiedByType: to.Ptr(armconnectedcache.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-30T00:54:04.771Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.January, 30, 0, 54, 4, 771000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2024-11-30-preview/IspCacheNodesOperations_GetCacheNodeInstallDetails_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-01/IspCacheNodesOperations_GetCacheNodeInstallDetails_MaximumSet_Gen.json
 func ExampleIspCacheNodesOperationsClient_GetCacheNodeInstallDetails() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -493,16 +493,16 @@ func ExampleIspCacheNodesOperationsClient_GetCacheNodeInstallDetails() {
 	// 		SystemData: &armconnectedcache.SystemData{
 	// 			CreatedBy: to.Ptr("gambtqj"),
 	// 			CreatedByType: to.Ptr(armconnectedcache.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-30T00:54:04.771Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2024, time.January, 30, 0, 54, 4, 771000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("qomgaceiessgnuogz"),
 	// 			LastModifiedByType: to.Ptr(armconnectedcache.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-30T00:54:04.771Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.January, 30, 0, 54, 4, 771000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2024-11-30-preview/IspCacheNodesOperations_GetCacheNodeMccIssueDetailsHistory_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-01/IspCacheNodesOperations_GetCacheNodeMccIssueDetailsHistory_MaximumSet_Gen.json
 func ExampleIspCacheNodesOperationsClient_GetCacheNodeMccIssueDetailsHistory() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -531,8 +531,8 @@ func ExampleIspCacheNodesOperationsClient_GetCacheNodeMccIssueDetailsHistory() {
 	// 					ToastString: to.Ptr("tkaajhrpptywiwfjnh"),
 	// 					DetailString: to.Ptr("rziwfs"),
 	// 					HelpLink: to.Ptr("fd"),
-	// 					IssueStartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-08T07:01:40.167Z"); return t}()),
-	// 					IssueEndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-08T07:01:40.167Z"); return t}()),
+	// 					IssueStartDate: to.Ptr(time.Date(2025, time.April, 8, 7, 1, 40, 167000000, time.UTC)),
+	// 					IssueEndDate: to.Ptr(time.Date(2025, time.April, 8, 7, 1, 40, 167000000, time.UTC)),
 	// 				},
 	// 			},
 	// 		},
@@ -546,16 +546,16 @@ func ExampleIspCacheNodesOperationsClient_GetCacheNodeMccIssueDetailsHistory() {
 	// 		SystemData: &armconnectedcache.SystemData{
 	// 			CreatedBy: to.Ptr("gambtqj"),
 	// 			CreatedByType: to.Ptr(armconnectedcache.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-30T00:54:04.771Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2024, time.January, 30, 0, 54, 4, 771000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("qomgaceiessgnuogz"),
 	// 			LastModifiedByType: to.Ptr(armconnectedcache.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-30T00:54:04.771Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.January, 30, 0, 54, 4, 771000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2024-11-30-preview/IspCacheNodesOperations_ListByIspCustomerResource_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-01/IspCacheNodesOperations_ListByIspCustomerResource_MaximumSet_Gen.json
 func ExampleIspCacheNodesOperationsClient_NewListByIspCustomerResourcePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -605,15 +605,15 @@ func ExampleIspCacheNodesOperationsClient_NewListByIspCustomerResourcePager() {
 		// 						ClientTenantID: to.Ptr("ds"),
 		// 						Category: to.Ptr("rixlfzbl"),
 		// 						ReleaseVersion: to.Ptr[int32](30),
-		// 						LastSyncWithAzureTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-30T00:54:04.777Z"); return t}()),
+		// 						LastSyncWithAzureTimestamp: to.Ptr(time.Date(2024, time.January, 30, 0, 54, 4, 777000000, time.UTC)),
 		// 						SynchWithAzureAttemptsCount: to.Ptr[int32](11),
 		// 						ContainerConfigurations: to.Ptr("waygqqgfzvnvlbufilldsqavwlshzt"),
 		// 						CidrCSV: []*string{
 		// 							to.Ptr("nlqlvrthafvvljuupcbcw"),
 		// 						},
-		// 						CidrCSVLastUpdateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-30T00:54:04.777Z"); return t}()),
-		// 						BgpCidrCSVLastUpdateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-30T00:54:04.777Z"); return t}()),
-		// 						BgpLastReportedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-30T00:54:04.777Z"); return t}()),
+		// 						CidrCSVLastUpdateTime: to.Ptr(time.Date(2024, time.January, 30, 0, 54, 4, 777000000, time.UTC)),
+		// 						BgpCidrCSVLastUpdateTime: to.Ptr(time.Date(2024, time.January, 30, 0, 54, 4, 777000000, time.UTC)),
+		// 						BgpLastReportedTime: to.Ptr(time.Date(2024, time.January, 30, 0, 54, 4, 777000000, time.UTC)),
 		// 						BgpReviewStateText: to.Ptr("xduneialocyri"),
 		// 						BgpReviewState: to.Ptr(armconnectedcache.BgpReviewStateEnumNotConfigured),
 		// 						BgpReviewFeedback: to.Ptr("us"),
@@ -632,7 +632,7 @@ func ExampleIspCacheNodesOperationsClient_NewListByIspCustomerResourcePager() {
 		// 						ConfigurationStateText: to.Ptr("arugukqjcxmkbgfambg"),
 		// 						AddressSpace: to.Ptr[int32](11),
 		// 						WorkerConnections: to.Ptr[int32](18),
-		// 						WorkerConnectionsLastUpdatedDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-30T00:54:04.777Z"); return t}()),
+		// 						WorkerConnectionsLastUpdatedDateTime: to.Ptr(time.Date(2024, time.January, 30, 0, 54, 4, 777000000, time.UTC)),
 		// 						ContainerResyncTrigger: to.Ptr[int32](13),
 		// 						ImageURI: to.Ptr("ezbwyfaainatxtlplyoailzxlhxy"),
 		// 					},
@@ -685,10 +685,10 @@ func ExampleIspCacheNodesOperationsClient_NewListByIspCustomerResourcePager() {
 		// 				SystemData: &armconnectedcache.SystemData{
 		// 					CreatedBy: to.Ptr("gambtqj"),
 		// 					CreatedByType: to.Ptr(armconnectedcache.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-30T00:54:04.771Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2024, time.January, 30, 0, 54, 4, 771000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("qomgaceiessgnuogz"),
 		// 					LastModifiedByType: to.Ptr(armconnectedcache.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-30T00:54:04.771Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2024, time.January, 30, 0, 54, 4, 771000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -698,7 +698,7 @@ func ExampleIspCacheNodesOperationsClient_NewListByIspCustomerResourcePager() {
 	}
 }
 
-// Generated from example definition: 2024-11-30-preview/IspCacheNodesOperations_Update_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-01/IspCacheNodesOperations_Update_MaximumSet_Gen.json
 func ExampleIspCacheNodesOperationsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -746,15 +746,15 @@ func ExampleIspCacheNodesOperationsClient_Update() {
 	// 				ClientTenantID: to.Ptr("ds"),
 	// 				Category: to.Ptr("rixlfzbl"),
 	// 				ReleaseVersion: to.Ptr[int32](30),
-	// 				LastSyncWithAzureTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-30T00:54:04.777Z"); return t}()),
+	// 				LastSyncWithAzureTimestamp: to.Ptr(time.Date(2024, time.January, 30, 0, 54, 4, 777000000, time.UTC)),
 	// 				SynchWithAzureAttemptsCount: to.Ptr[int32](11),
 	// 				ContainerConfigurations: to.Ptr("waygqqgfzvnvlbufilldsqavwlshzt"),
 	// 				CidrCSV: []*string{
 	// 					to.Ptr("127.0.0.1/20"),
 	// 				},
-	// 				CidrCSVLastUpdateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-30T00:54:04.777Z"); return t}()),
-	// 				BgpCidrCSVLastUpdateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-30T00:54:04.777Z"); return t}()),
-	// 				BgpLastReportedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-30T00:54:04.777Z"); return t}()),
+	// 				CidrCSVLastUpdateTime: to.Ptr(time.Date(2024, time.January, 30, 0, 54, 4, 777000000, time.UTC)),
+	// 				BgpCidrCSVLastUpdateTime: to.Ptr(time.Date(2024, time.January, 30, 0, 54, 4, 777000000, time.UTC)),
+	// 				BgpLastReportedTime: to.Ptr(time.Date(2024, time.January, 30, 0, 54, 4, 777000000, time.UTC)),
 	// 				BgpReviewStateText: to.Ptr("xduneialocyri"),
 	// 				BgpReviewState: to.Ptr(armconnectedcache.BgpReviewStateEnumNotConfigured),
 	// 				BgpReviewFeedback: to.Ptr("us"),
@@ -773,7 +773,7 @@ func ExampleIspCacheNodesOperationsClient_Update() {
 	// 				ConfigurationStateText: to.Ptr("arugukqjcxmkbgfambg"),
 	// 				AddressSpace: to.Ptr[int32](11),
 	// 				WorkerConnections: to.Ptr[int32](18),
-	// 				WorkerConnectionsLastUpdatedDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-30T00:54:04.777Z"); return t}()),
+	// 				WorkerConnectionsLastUpdatedDateTime: to.Ptr(time.Date(2024, time.January, 30, 0, 54, 4, 777000000, time.UTC)),
 	// 				ContainerResyncTrigger: to.Ptr[int32](13),
 	// 				ImageURI: to.Ptr("ezbwyfaainatxtlplyoailzxlhxy"),
 	// 			},
@@ -826,10 +826,10 @@ func ExampleIspCacheNodesOperationsClient_Update() {
 	// 		SystemData: &armconnectedcache.SystemData{
 	// 			CreatedBy: to.Ptr("gambtqj"),
 	// 			CreatedByType: to.Ptr(armconnectedcache.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-30T00:54:04.771Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2024, time.January, 30, 0, 54, 4, 771000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("qomgaceiessgnuogz"),
 	// 			LastModifiedByType: to.Ptr(armconnectedcache.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-30T00:54:04.771Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.January, 30, 0, 54, 4, 771000000, time.UTC)),
 	// 		},
 	// 	},
 	// }

@@ -58,12 +58,7 @@ func (client *TopicTypesClient) Get(ctx context.Context, topicTypeName string, o
 	if err != nil {
 		return TopicTypesClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return TopicTypesClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -85,8 +80,11 @@ func (client *TopicTypesClient) getCreateRequest(ctx context.Context, topicTypeN
 }
 
 // getHandleResponse handles the Get response.
-func (client *TopicTypesClient) getHandleResponse(resp *http.Response) (TopicTypesClientGetResponse, error) {
+func (client *TopicTypesClient) getHandleResponse(resp *http.Response, successCodes ...int) (TopicTypesClientGetResponse, error) {
 	result := TopicTypesClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TopicTypeInfo); err != nil {
 		return TopicTypesClientGetResponse{}, err
 	}
@@ -108,35 +106,49 @@ func (client *TopicTypesClient) NewListPager(options *TopicTypesClientListOption
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return TopicTypesClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return TopicTypesClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *TopicTypesClient) listCreateRequest(ctx context.Context, _ *TopicTypesClientListOptions) (*policy.Request, error) {
-	urlPath := "/providers/Microsoft.EventGrid/topicTypes"
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+func (client *TopicTypesClient) listCreateRequest(ctx context.Context, nextLink string, _ *TopicTypesClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/providers/Microsoft.EventGrid/topicTypes"
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250715Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250715Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *TopicTypesClient) listHandleResponse(resp *http.Response) (TopicTypesClientListResponse, error) {
+func (client *TopicTypesClient) listHandleResponse(resp *http.Response, successCodes ...int) (TopicTypesClientListResponse, error) {
 	result := TopicTypesClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TopicTypesListResult); err != nil {
 		return TopicTypesClientListResponse{}, err
 	}
@@ -160,39 +172,53 @@ func (client *TopicTypesClient) NewListEventTypesPager(topicTypeName string, opt
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listEventTypesCreateRequest(ctx, topicTypeName, options)
-			}, nil)
+			req, err := client.listEventTypesCreateRequest(ctx, topicTypeName, nextLink, options)
 			if err != nil {
 				return TopicTypesClientListEventTypesResponse{}, err
 			}
-			return client.listEventTypesHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return TopicTypesClientListEventTypesResponse{}, err
+			}
+			return client.listEventTypesHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listEventTypesCreateRequest creates the ListEventTypes request.
-func (client *TopicTypesClient) listEventTypesCreateRequest(ctx context.Context, topicTypeName string, _ *TopicTypesClientListEventTypesOptions) (*policy.Request, error) {
-	urlPath := "/providers/Microsoft.EventGrid/topicTypes/{topicTypeName}/eventTypes"
-	if topicTypeName == "" {
-		return nil, errors.New("parameter topicTypeName cannot be empty")
+func (client *TopicTypesClient) listEventTypesCreateRequest(ctx context.Context, topicTypeName string, nextLink string, _ *TopicTypesClientListEventTypesOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/providers/Microsoft.EventGrid/topicTypes/{topicTypeName}/eventTypes"
+		if topicTypeName == "" {
+			return nil, errors.New("parameter topicTypeName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{topicTypeName}", url.PathEscape(topicTypeName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{topicTypeName}", url.PathEscape(topicTypeName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250715Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250715Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listEventTypesHandleResponse handles the ListEventTypes response.
-func (client *TopicTypesClient) listEventTypesHandleResponse(resp *http.Response) (TopicTypesClientListEventTypesResponse, error) {
+func (client *TopicTypesClient) listEventTypesHandleResponse(resp *http.Response, successCodes ...int) (TopicTypesClientListEventTypesResponse, error) {
 	result := TopicTypesClientListEventTypesResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EventTypesListResult); err != nil {
 		return TopicTypesClientListEventTypesResponse{}, err
 	}

@@ -93,7 +93,7 @@ func (g *GoalResourcesServerTransport) dispatchGet(req *http.Request) (*http.Res
 	if g.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/goalAssignments/(?P<goalAssignmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/goalResources/(?P<goalResourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AzureResilienceManagement/goalAssignments/(?P<goalAssignmentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/goalResources/(?P<goalResourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -132,7 +132,7 @@ func (g *GoalResourcesServerTransport) dispatchNewListPager(req *http.Request) (
 	}
 	newListPager := g.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/goalAssignments/(?P<goalAssignmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/goalResources`
+		const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AzureResilienceManagement/goalAssignments/(?P<goalAssignmentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/goalResources`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {

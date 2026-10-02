@@ -42,6 +42,8 @@ func snapshotFlags(t *testing.T) func() {
 		workloadConfigPath     string
 		workloadName           string
 		outputFilePrefix       string
+		profile                bool
+		profilePath            string
 		maxIOCompletionThreads int
 		maxWorkerThreads       int
 		minIOCompletionThreads int
@@ -51,6 +53,7 @@ func snapshotFlags(t *testing.T) func() {
 		jobStatistics, numProcesses, debug, syncMode, resourceTelemetry,
 		enableOperationLatency, noCleanup, insecureSkipVerify, testProxyURLs,
 		resultsFilePath, maxResults, workloadConfigPath, workloadName, outputFilePrefix,
+		profile, profilePath,
 		maxIOCompletionThreads, maxWorkerThreads, minIOCompletionThreads, minWorkerThreads,
 	}
 	return func() {
@@ -74,6 +77,8 @@ func snapshotFlags(t *testing.T) func() {
 		workloadConfigPath = saved.workloadConfigPath
 		workloadName = saved.workloadName
 		outputFilePrefix = saved.outputFilePrefix
+		profile = saved.profile
+		profilePath = saved.profilePath
 		maxIOCompletionThreads = saved.maxIOCompletionThreads
 		maxWorkerThreads = saved.maxWorkerThreads
 		minIOCompletionThreads = saved.minIOCompletionThreads
@@ -113,6 +118,8 @@ func TestDefaults(t *testing.T) {
 	require.Equal(t, "", resultsFilePath, "--results-file default")
 	require.Equal(t, defaultMaxOperationResults, maxResults, "--max-results default")
 	require.Equal(t, "", outputFilePrefix, "--output-file-prefix default")
+	require.False(t, profile, "--profile default")
+	require.Equal(t, "", profilePath, "--profile-path default")
 	require.Equal(t, 0, maxIOCompletionThreads, "--max-io-completion-threads default")
 	require.Equal(t, 0, maxWorkerThreads, "--max-worker-threads default")
 	require.Equal(t, 0, minIOCompletionThreads, "--min-io-completion-threads default")
@@ -147,6 +154,8 @@ func TestFlagLongForms(t *testing.T) {
 		{"results-file", []string{"--results-file", "/tmp/out.json"}, func(t *testing.T) { require.Equal(t, "/tmp/out.json", resultsFilePath) }},
 		{"max-results", []string{"--max-results", "500"}, func(t *testing.T) { require.Equal(t, 500, maxResults) }},
 		{"output-file-prefix", []string{"--output-file-prefix", "/tmp/run"}, func(t *testing.T) { require.Equal(t, "/tmp/run", outputFilePrefix) }},
+		{"profile", []string{"--profile"}, func(t *testing.T) { require.True(t, profile) }},
+		{"profile-path", []string{"--profile-path", "/tmp/cpu.pprof"}, func(t *testing.T) { require.Equal(t, "/tmp/cpu.pprof", profilePath) }},
 		{"config", []string{"--config", "wl.json"}, func(t *testing.T) { require.Equal(t, "wl.json", workloadConfigPath) }},
 		{"workload", []string{"--workload", "wl-upload"}, func(t *testing.T) { require.Equal(t, "wl-upload", workloadName) }},
 		{"debug", []string{"--debug"}, func(t *testing.T) { require.True(t, debug) }},
@@ -307,6 +316,57 @@ func TestOperationResultsMergeBounded(t *testing.T) {
 	require.Equal(t, int64(4_000), shared.seen, "seen must aggregate every worker's observed count")
 }
 
+func TestPerWorkerSampleLimitBoundsAggregateMemory(t *testing.T) {
+	const (
+		limit   = 100
+		workers = 8
+	)
+	total := 0
+	for worker := 0; worker < workers; worker++ {
+		quota := perWorkerSampleLimit(limit, workers, worker)
+		if quota > 0 {
+			total += quota
+		}
+	}
+	require.Equal(t, limit, total)
+	require.Equal(t, 1, perWorkerSampleLimit(3, 10, 0))
+	require.Equal(t, -1, perWorkerSampleLimit(3, 10, 3))
+	require.Zero(t, perWorkerSampleLimit(0, workers, 0), "zero preserves unbounded operation-result mode")
+}
+
+func TestLatencyCollectorsAreBounded(t *testing.T) {
+	latency := newLatencyCollector(25)
+	callTypes := newBoundedCallTypeLatencyCollector(25)
+	for i := 0; i < 10_000; i++ {
+		d := time.Duration(i) * time.Nanosecond
+		latency.Add(d)
+		callTypes.Add("operation", d)
+	}
+	require.Len(t, latency.durations, 25)
+	require.Equal(t, int64(10_000), latency.seen)
+	require.Len(t, callTypes.values["operation"], 25)
+	require.Equal(t, int64(10_000), callTypes.seen["operation"])
+}
+
+func TestOperationResultsMergeRepresentsAllWorkers(t *testing.T) {
+	shared := newOperationResultsCollector(100)
+	for _, operation := range []string{"worker-a", "worker-b"} {
+		worker := newOperationResultsCollector(50)
+		for i := 0; i < 10_000; i++ {
+			worker.Add(operation, time.Millisecond, 0)
+		}
+		shared.MergeFrom(worker)
+	}
+
+	counts := map[string]int{}
+	for _, result := range shared.results {
+		counts[result.Operation]++
+	}
+	require.Greater(t, counts["worker-a"], 20)
+	require.Greater(t, counts["worker-b"], 20)
+	require.Equal(t, int64(20_000), shared.seen)
+}
+
 // TestCollectorsAcceptZeroRejectNegative verifies the collectors record
 // legitimate zero-duration operations (an op can complete within the timer's
 // resolution) and ignore only negative samples.
@@ -437,8 +497,14 @@ func TestOutputFilePrefixWritesAllArtifacts(t *testing.T) {
 	require.NoError(t, json.Unmarshal(raw, &got))
 	require.Equal(t, "TestX", got.TestName)
 	require.Equal(t, int64(100), got.TotalOperations)
+	require.Equal(t, iterations, got.Iterations)
 	require.InDelta(t, 50.0, got.OpsPerSecond, 0.001)
 	require.InDelta(t, 25.5, got.AverageCPUPercent, 0.001)
+}
+
+func TestWriteRunArtifactsReturnsPathError(t *testing.T) {
+	prefix := filepath.Join(t.TempDir(), "missing", "run")
+	require.Error(t, writeRunArtifacts(prefix, newRunSummary("T", 1, 1, "", "", "")))
 }
 
 // TestStatusColumnFormatters covers the helpers used to render the

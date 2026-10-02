@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-04-01-preview/GoalTemplates_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-31-preview/GoalTemplates_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleGoalTemplatesClient_BeginCreateOrUpdate_goalTemplatesCreateOrUpdateMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -58,16 +58,16 @@ func ExampleGoalTemplatesClient_BeginCreateOrUpdate_goalTemplatesCreateOrUpdateM
 	// 		SystemData: &armresiliencemanagement.SystemData{
 	// 			CreatedBy: to.Ptr("admin@contoso.com"),
 	// 			CreatedByType: to.Ptr(armresiliencemanagement.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-02-06T15:03:42.796Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2025, time.February, 6, 15, 3, 42, 796000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("admin@contoso.com"),
 	// 			LastModifiedByType: to.Ptr(armresiliencemanagement.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-02-06T15:03:42.797Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.February, 6, 15, 3, 42, 797000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/GoalTemplates_CreateOrUpdate_MinimumSet_Gen.json
+// Generated from example definition: 2026-08-31-preview/GoalTemplates_CreateOrUpdate_MinimumSet_Gen.json
 func ExampleGoalTemplatesClient_BeginCreateOrUpdate_goalTemplatesCreateOrUpdateMinimumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -105,16 +105,16 @@ func ExampleGoalTemplatesClient_BeginCreateOrUpdate_goalTemplatesCreateOrUpdateM
 	// 		SystemData: &armresiliencemanagement.SystemData{
 	// 			CreatedBy: to.Ptr("admin@contoso.com"),
 	// 			CreatedByType: to.Ptr(armresiliencemanagement.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-02-06T15:03:42.796Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2025, time.February, 6, 15, 3, 42, 796000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("admin@contoso.com"),
 	// 			LastModifiedByType: to.Ptr(armresiliencemanagement.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-02-06T15:03:42.797Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.February, 6, 15, 3, 42, 797000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/GoalTemplates_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-31-preview/GoalTemplates_Delete_MaximumSet_Gen.json
 func ExampleGoalTemplatesClient_BeginDelete_goalTemplatesDeleteMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -135,7 +135,7 @@ func ExampleGoalTemplatesClient_BeginDelete_goalTemplatesDeleteMaximumSet() {
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/GoalTemplates_Delete_MinimumSet_Gen.json
+// Generated from example definition: 2026-08-31-preview/GoalTemplates_Delete_MinimumSet_Gen.json
 func ExampleGoalTemplatesClient_BeginDelete_goalTemplatesDeleteMinimumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -156,7 +156,7 @@ func ExampleGoalTemplatesClient_BeginDelete_goalTemplatesDeleteMinimumSet() {
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/GoalTemplates_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-31-preview/GoalTemplates_Get_MaximumSet_Gen.json
 func ExampleGoalTemplatesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -190,16 +190,16 @@ func ExampleGoalTemplatesClient_Get() {
 	// 		SystemData: &armresiliencemanagement.SystemData{
 	// 			CreatedBy: to.Ptr("dvnfxbuyqhvivfjddjccdtlwajfht"),
 	// 			CreatedByType: to.Ptr(armresiliencemanagement.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-02-06T15:03:42.796Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2025, time.February, 6, 15, 3, 42, 796000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("lndhhaimomorael"),
 	// 			LastModifiedByType: to.Ptr(armresiliencemanagement.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-02-06T15:03:42.797Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.February, 6, 15, 3, 42, 797000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/GoalTemplates_List_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-31-preview/GoalTemplates_List_MaximumSet_Gen.json
 func ExampleGoalTemplatesClient_NewListPager_goalTemplatesListMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -241,10 +241,10 @@ func ExampleGoalTemplatesClient_NewListPager_goalTemplatesListMaximumSet() {
 		// 				SystemData: &armresiliencemanagement.SystemData{
 		// 					CreatedBy: to.Ptr("dvnfxbuyqhvivfjddjccdtlwajfht"),
 		// 					CreatedByType: to.Ptr(armresiliencemanagement.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-02-06T15:03:42.796Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2025, time.February, 6, 15, 3, 42, 796000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("lndhhaimomorael"),
 		// 					LastModifiedByType: to.Ptr(armresiliencemanagement.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-02-06T15:03:42.797Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2025, time.February, 6, 15, 3, 42, 797000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -254,7 +254,7 @@ func ExampleGoalTemplatesClient_NewListPager_goalTemplatesListMaximumSet() {
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/GoalTemplates_List_MinimumSet_Gen.json
+// Generated from example definition: 2026-08-31-preview/GoalTemplates_List_MinimumSet_Gen.json
 func ExampleGoalTemplatesClient_NewListPager_goalTemplatesListMinimumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -290,10 +290,10 @@ func ExampleGoalTemplatesClient_NewListPager_goalTemplatesListMinimumSet() {
 		// 				SystemData: &armresiliencemanagement.SystemData{
 		// 					CreatedBy: to.Ptr("admin@contoso.com"),
 		// 					CreatedByType: to.Ptr(armresiliencemanagement.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-02-06T15:03:42.796Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2025, time.February, 6, 15, 3, 42, 796000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("admin@contoso.com"),
 		// 					LastModifiedByType: to.Ptr(armresiliencemanagement.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-02-06T15:03:42.797Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2025, time.February, 6, 15, 3, 42, 797000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -302,7 +302,7 @@ func ExampleGoalTemplatesClient_NewListPager_goalTemplatesListMinimumSet() {
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/GoalTemplates_Update_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-31-preview/GoalTemplates_Update_MaximumSet_Gen.json
 func ExampleGoalTemplatesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

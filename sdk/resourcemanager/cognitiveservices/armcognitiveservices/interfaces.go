@@ -13,6 +13,15 @@ type AgentDeploymentPropertiesClassification interface {
 	GetAgentDeploymentProperties() *AgentDeploymentProperties
 }
 
+// AgentHostingConfigurationClassification provides polymorphic access to related types.
+// Call the interface's GetAgentHostingConfiguration() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *AgentHostingConfiguration, *ManagedClusterAgentHostingConfiguration
+type AgentHostingConfigurationClassification interface {
+	// GetAgentHostingConfiguration returns the AgentHostingConfiguration content of the underlying type.
+	GetAgentHostingConfiguration() *AgentHostingConfiguration
+}
+
 // ApplicationAuthorizationPolicyClassification provides polymorphic access to related types.
 // Call the interface's GetApplicationAuthorizationPolicy() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:

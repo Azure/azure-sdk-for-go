@@ -87,6 +87,30 @@ func (c *ClientFactory) NewOperationsClient() *OperationsClient {
 	}
 }
 
+// NewPaymentHsmClusterPrivateEndpointConnectionsClient creates a new instance of PaymentHsmClusterPrivateEndpointConnectionsClient.
+func (c *ClientFactory) NewPaymentHsmClusterPrivateEndpointConnectionsClient() *PaymentHsmClusterPrivateEndpointConnectionsClient {
+	return &PaymentHsmClusterPrivateEndpointConnectionsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewPaymentHsmClusterPrivateLinkResourcesClient creates a new instance of PaymentHsmClusterPrivateLinkResourcesClient.
+func (c *ClientFactory) NewPaymentHsmClusterPrivateLinkResourcesClient() *PaymentHsmClusterPrivateLinkResourcesClient {
+	return &PaymentHsmClusterPrivateLinkResourcesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewPaymentHsmClustersClient creates a new instance of PaymentHsmClustersClient.
+func (c *ClientFactory) NewPaymentHsmClustersClient() *PaymentHsmClustersClient {
+	return &PaymentHsmClustersClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewPrivateEndpointConnectionsClient creates a new instance of PrivateEndpointConnectionsClient.
 func (c *ClientFactory) NewPrivateEndpointConnectionsClient() *PrivateEndpointConnectionsClient {
 	return &PrivateEndpointConnectionsClient{

@@ -46,6 +46,72 @@ type ApexDetailsType struct {
 	OrdsVersion *string
 }
 
+// AssignUnassignConnection - The payload for assigning or unassigning a connection on a deployment.
+type AssignUnassignConnection struct {
+	// REQUIRED; The Azure resource ID of the connection to assign or unassign.
+	ConnectionID *string
+}
+
+// AssignUnassignDeployment - The payload for assigning or unassigning a deployment on a connection.
+type AssignUnassignDeployment struct {
+	// REQUIRED; The Azure resource ID of the deployment to assign or unassign.
+	DeploymentID *string
+}
+
+// AssignedConnection - Assigned Connection resource belonging to GoldenGate Deployment.
+type AssignedConnection struct {
+	// The resource-specific properties for this resource.
+	Properties *DeploymentConnectionAssignmentProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// AssignedConnectionListResult - The response of a AssignedConnection list operation.
+type AssignedConnectionListResult struct {
+	// REQUIRED; The AssignedConnection items on this page
+	Value []*AssignedConnection
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// AssignedDeployment - Assigned Deployment resource belonging to GoldenGate Connection.
+type AssignedDeployment struct {
+	// The resource-specific properties for this resource.
+	Properties *DeploymentConnectionAssignmentProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// AssignedDeploymentListResult - The response of a AssignedDeployment list operation.
+type AssignedDeploymentListResult struct {
+	// REQUIRED; The AssignedDeployment items on this page
+	Value []*AssignedDeployment
+
+	// The link to the next page of items
+	NextLink *string
+}
+
 // AutonomousDatabase - Autonomous Database resource model.
 type AutonomousDatabase struct {
 	// REQUIRED; The geo-location where the resource lives
@@ -107,6 +173,9 @@ type AutonomousDatabaseBackupProperties struct {
 
 	// READ-ONLY; The OCID of the Autonomous Database.
 	AutonomousDatabaseOcid *string
+
+	// READ-ONLY; The destination where this backup is stored.
+	BackupDestination *BackupDestinationType
 
 	// READ-ONLY; The type of backup.
 	BackupType *AutonomousDatabaseBackupType
@@ -174,6 +243,10 @@ type AutonomousDatabaseBaseProperties struct {
 	// The maintenance schedule type of the Autonomous Database Serverless.
 	AutonomousMaintenanceScheduleType *AutonomousMaintenanceScheduleType
 
+	// Backup destination for auto and long-term backups. Existing backups stay in their original destination when this value
+	// changes.
+	BackupDestination *BackupDestinationType
+
 	// Retention period, in days, for long-term backups
 	BackupRetentionPeriodInDays *int32
 
@@ -225,6 +298,9 @@ type AutonomousDatabaseBaseProperties struct {
 	// Specifies if the Autonomous Database preview version is being provisioned.
 	IsPreviewVersionWithServiceTermsAccepted *bool
 
+	// Update AZ at the earliest available opportunity
+	IsScheduleAzUpdateToEarliest *bool
+
 	// The Oracle license model that applies to the Oracle Autonomous Database. The default is LICENSE_INCLUDED.
 	LicenseModel *LicenseModel
 
@@ -237,6 +313,9 @@ type AutonomousDatabaseBaseProperties struct {
 
 	// The character set for the Autonomous Database.
 	NcharacterSet *string
+
+	// Azure Network Anchor ID
+	NetworkAnchorID *string
 
 	// Indicates the Autonomous Database mode.
 	OpenMode *OpenModeType
@@ -254,6 +333,9 @@ type AutonomousDatabaseBaseProperties struct {
 	// The resource's private endpoint label.
 	PrivateEndpointLabel *string
 
+	// Azure Resource Anchor ID
+	ResourceAnchorID *string
+
 	// The Data Guard role of the Autonomous Container Database or Autonomous Database, if Autonomous Data Guard is enabled.
 	Role *RoleType
 
@@ -263,12 +345,18 @@ type AutonomousDatabaseBaseProperties struct {
 	// Client subnet
 	SubnetID *string
 
+	// The date and time when the Autonomous Database availability zone is to be updated.
+	TimeScheduledAzUpdate *string
+
 	// VNET for network connectivity
 	VnetID *string
 
 	// The client IP access control list (ACL). This is an array of CIDR notations and/or IP addresses. Values should be separate
 	// strings, separated by commas. Example: ['1.1.1.1','1.1.1.0/24','1.1.2.25']
 	WhitelistedIPs []*string
+
+	// The logical zone where the Autonomous Database is provisioned.
+	Zone *string
 
 	// READ-ONLY; The current amount of storage in use for user and system data, in terabytes (TB).
 	ActualUsedDataStorageSizeInTbs *float64
@@ -464,6 +552,10 @@ type AutonomousDatabaseCloneProperties struct {
 	// The maintenance schedule type of the Autonomous Database Serverless.
 	AutonomousMaintenanceScheduleType *AutonomousMaintenanceScheduleType
 
+	// Backup destination for auto and long-term backups. Existing backups stay in their original destination when this value
+	// changes.
+	BackupDestination *BackupDestinationType
+
 	// Retention period, in days, for long-term backups
 	BackupRetentionPeriodInDays *int32
 
@@ -515,6 +607,9 @@ type AutonomousDatabaseCloneProperties struct {
 	// Specifies if the Autonomous Database preview version is being provisioned.
 	IsPreviewVersionWithServiceTermsAccepted *bool
 
+	// Update AZ at the earliest available opportunity
+	IsScheduleAzUpdateToEarliest *bool
+
 	// The Oracle license model that applies to the Oracle Autonomous Database. The default is LICENSE_INCLUDED.
 	LicenseModel *LicenseModel
 
@@ -527,6 +622,9 @@ type AutonomousDatabaseCloneProperties struct {
 
 	// The character set for the Autonomous Database.
 	NcharacterSet *string
+
+	// Azure Network Anchor ID
+	NetworkAnchorID *string
 
 	// Indicates the Autonomous Database mode.
 	OpenMode *OpenModeType
@@ -547,6 +645,9 @@ type AutonomousDatabaseCloneProperties struct {
 	// The refresh mode of the clone.
 	RefreshableModel *RefreshableModelType
 
+	// Azure Resource Anchor ID
+	ResourceAnchorID *string
+
 	// The Data Guard role of the Autonomous Container Database or Autonomous Database, if Autonomous Data Guard is enabled.
 	Role *RoleType
 
@@ -559,6 +660,9 @@ type AutonomousDatabaseCloneProperties struct {
 	// Client subnet
 	SubnetID *string
 
+	// The date and time when the Autonomous Database availability zone is to be updated.
+	TimeScheduledAzUpdate *string
+
 	// The time and date as an RFC3339 formatted string, e.g., 2022-01-01T12:00:00.000Z, to set the limit for a refreshable clone
 	// to be reconnected to its source database.
 	TimeUntilReconnectCloneEnabled *string
@@ -569,6 +673,9 @@ type AutonomousDatabaseCloneProperties struct {
 	// The client IP access control list (ACL). This is an array of CIDR notations and/or IP addresses. Values should be separate
 	// strings, separated by commas. Example: ['1.1.1.1','1.1.1.0/24','1.1.2.25']
 	WhitelistedIPs []*string
+
+	// The logical zone where the Autonomous Database is provisioned.
+	Zone *string
 
 	// READ-ONLY; The current amount of storage in use for user and system data, in terabytes (TB).
 	ActualUsedDataStorageSizeInTbs *float64
@@ -724,6 +831,7 @@ func (a *AutonomousDatabaseCloneProperties) GetAutonomousDatabaseBaseProperties(
 		AutonomousDatabaseID:                     a.AutonomousDatabaseID,
 		AutonomousMaintenanceScheduleType:        a.AutonomousMaintenanceScheduleType,
 		AvailableUpgradeVersions:                 a.AvailableUpgradeVersions,
+		BackupDestination:                        a.BackupDestination,
 		BackupRetentionPeriodInDays:              a.BackupRetentionPeriodInDays,
 		CPUCoreCount:                             a.CPUCoreCount,
 		CharacterSet:                             a.CharacterSet,
@@ -749,6 +857,7 @@ func (a *AutonomousDatabaseCloneProperties) GetAutonomousDatabaseBaseProperties(
 		IsPreview:                                a.IsPreview,
 		IsPreviewVersionWithServiceTermsAccepted: a.IsPreviewVersionWithServiceTermsAccepted,
 		IsRemoteDataGuardEnabled:                 a.IsRemoteDataGuardEnabled,
+		IsScheduleAzUpdateToEarliest:             a.IsScheduleAzUpdateToEarliest,
 		LicenseModel:                             a.LicenseModel,
 		LifecycleDetails:                         a.LifecycleDetails,
 		LifecycleState:                           a.LifecycleState,
@@ -758,6 +867,7 @@ func (a *AutonomousDatabaseCloneProperties) GetAutonomousDatabaseBaseProperties(
 		LongTermBackupSchedule:                   a.LongTermBackupSchedule,
 		MemoryPerOracleComputeUnitInGbs:          a.MemoryPerOracleComputeUnitInGbs,
 		NcharacterSet:                            a.NcharacterSet,
+		NetworkAnchorID:                          a.NetworkAnchorID,
 		NextLongTermBackupTimeStamp:              a.NextLongTermBackupTimeStamp,
 		OciURL:                                   a.OciURL,
 		Ocid:                                     a.Ocid,
@@ -772,6 +882,7 @@ func (a *AutonomousDatabaseCloneProperties) GetAutonomousDatabaseBaseProperties(
 		ProvisionableCpus:                        a.ProvisionableCpus,
 		ProvisioningState:                        a.ProvisioningState,
 		RemoteDisasterRecoveryConfiguration:      a.RemoteDisasterRecoveryConfiguration,
+		ResourceAnchorID:                         a.ResourceAnchorID,
 		Role:                                     a.Role,
 		SQLWebDeveloperURL:                       a.SQLWebDeveloperURL,
 		ScheduledOperationsList:                  a.ScheduledOperationsList,
@@ -790,10 +901,12 @@ func (a *AutonomousDatabaseCloneProperties) GetAutonomousDatabaseBaseProperties(
 		TimeOfLastRefreshPoint:                   a.TimeOfLastRefreshPoint,
 		TimeOfLastSwitchover:                     a.TimeOfLastSwitchover,
 		TimeReclamationOfFreeAutonomousDatabase:  a.TimeReclamationOfFreeAutonomousDatabase,
+		TimeScheduledAzUpdate:                    a.TimeScheduledAzUpdate,
 		UsedDataStorageSizeInGbs:                 a.UsedDataStorageSizeInGbs,
 		UsedDataStorageSizeInTbs:                 a.UsedDataStorageSizeInTbs,
 		VnetID:                                   a.VnetID,
 		WhitelistedIPs:                           a.WhitelistedIPs,
+		Zone:                                     a.Zone,
 	}
 }
 
@@ -823,6 +936,10 @@ type AutonomousDatabaseCrossRegionDisasterRecoveryProperties struct {
 
 	// The maintenance schedule type of the Autonomous Database Serverless.
 	AutonomousMaintenanceScheduleType *AutonomousMaintenanceScheduleType
+
+	// Backup destination for auto and long-term backups. Existing backups stay in their original destination when this value
+	// changes.
+	BackupDestination *BackupDestinationType
 
 	// Retention period, in days, for long-term backups
 	BackupRetentionPeriodInDays *int32
@@ -879,6 +996,9 @@ type AutonomousDatabaseCrossRegionDisasterRecoveryProperties struct {
 	// and Standby. If false, the backups taken on the Primary are not replicated to the Standby database.
 	IsReplicateAutomaticBackups *bool
 
+	// Update AZ at the earliest available opportunity
+	IsScheduleAzUpdateToEarliest *bool
+
 	// The Oracle license model that applies to the Oracle Autonomous Database. The default is LICENSE_INCLUDED.
 	LicenseModel *LicenseModel
 
@@ -891,6 +1011,9 @@ type AutonomousDatabaseCrossRegionDisasterRecoveryProperties struct {
 
 	// The character set for the Autonomous Database.
 	NcharacterSet *string
+
+	// Azure Network Anchor ID
+	NetworkAnchorID *string
 
 	// Indicates the Autonomous Database mode.
 	OpenMode *OpenModeType
@@ -908,6 +1031,9 @@ type AutonomousDatabaseCrossRegionDisasterRecoveryProperties struct {
 	// The resource's private endpoint label.
 	PrivateEndpointLabel *string
 
+	// Azure Resource Anchor ID
+	ResourceAnchorID *string
+
 	// The Data Guard role of the Autonomous Container Database or Autonomous Database, if Autonomous Data Guard is enabled.
 	Role *RoleType
 
@@ -923,12 +1049,18 @@ type AutonomousDatabaseCrossRegionDisasterRecoveryProperties struct {
 	// Client subnet
 	SubnetID *string
 
+	// The date and time when the Autonomous Database availability zone is to be updated.
+	TimeScheduledAzUpdate *string
+
 	// VNET for network connectivity
 	VnetID *string
 
 	// The client IP access control list (ACL). This is an array of CIDR notations and/or IP addresses. Values should be separate
 	// strings, separated by commas. Example: ['1.1.1.1','1.1.1.0/24','1.1.2.25']
 	WhitelistedIPs []*string
+
+	// The logical zone where the Autonomous Database is provisioned.
+	Zone *string
 
 	// READ-ONLY; The current amount of storage in use for user and system data, in terabytes (TB).
 	ActualUsedDataStorageSizeInTbs *float64
@@ -1075,6 +1207,7 @@ func (a *AutonomousDatabaseCrossRegionDisasterRecoveryProperties) GetAutonomousD
 		AutonomousDatabaseID:                     a.AutonomousDatabaseID,
 		AutonomousMaintenanceScheduleType:        a.AutonomousMaintenanceScheduleType,
 		AvailableUpgradeVersions:                 a.AvailableUpgradeVersions,
+		BackupDestination:                        a.BackupDestination,
 		BackupRetentionPeriodInDays:              a.BackupRetentionPeriodInDays,
 		CPUCoreCount:                             a.CPUCoreCount,
 		CharacterSet:                             a.CharacterSet,
@@ -1100,6 +1233,7 @@ func (a *AutonomousDatabaseCrossRegionDisasterRecoveryProperties) GetAutonomousD
 		IsPreview:                                a.IsPreview,
 		IsPreviewVersionWithServiceTermsAccepted: a.IsPreviewVersionWithServiceTermsAccepted,
 		IsRemoteDataGuardEnabled:                 a.IsRemoteDataGuardEnabled,
+		IsScheduleAzUpdateToEarliest:             a.IsScheduleAzUpdateToEarliest,
 		LicenseModel:                             a.LicenseModel,
 		LifecycleDetails:                         a.LifecycleDetails,
 		LifecycleState:                           a.LifecycleState,
@@ -1109,6 +1243,7 @@ func (a *AutonomousDatabaseCrossRegionDisasterRecoveryProperties) GetAutonomousD
 		LongTermBackupSchedule:                   a.LongTermBackupSchedule,
 		MemoryPerOracleComputeUnitInGbs:          a.MemoryPerOracleComputeUnitInGbs,
 		NcharacterSet:                            a.NcharacterSet,
+		NetworkAnchorID:                          a.NetworkAnchorID,
 		NextLongTermBackupTimeStamp:              a.NextLongTermBackupTimeStamp,
 		OciURL:                                   a.OciURL,
 		Ocid:                                     a.Ocid,
@@ -1123,6 +1258,7 @@ func (a *AutonomousDatabaseCrossRegionDisasterRecoveryProperties) GetAutonomousD
 		ProvisionableCpus:                        a.ProvisionableCpus,
 		ProvisioningState:                        a.ProvisioningState,
 		RemoteDisasterRecoveryConfiguration:      a.RemoteDisasterRecoveryConfiguration,
+		ResourceAnchorID:                         a.ResourceAnchorID,
 		Role:                                     a.Role,
 		SQLWebDeveloperURL:                       a.SQLWebDeveloperURL,
 		ScheduledOperationsList:                  a.ScheduledOperationsList,
@@ -1141,10 +1277,12 @@ func (a *AutonomousDatabaseCrossRegionDisasterRecoveryProperties) GetAutonomousD
 		TimeOfLastRefreshPoint:                   a.TimeOfLastRefreshPoint,
 		TimeOfLastSwitchover:                     a.TimeOfLastSwitchover,
 		TimeReclamationOfFreeAutonomousDatabase:  a.TimeReclamationOfFreeAutonomousDatabase,
+		TimeScheduledAzUpdate:                    a.TimeScheduledAzUpdate,
 		UsedDataStorageSizeInGbs:                 a.UsedDataStorageSizeInGbs,
 		UsedDataStorageSizeInTbs:                 a.UsedDataStorageSizeInTbs,
 		VnetID:                                   a.VnetID,
 		WhitelistedIPs:                           a.WhitelistedIPs,
+		Zone:                                     a.Zone,
 	}
 }
 
@@ -1172,6 +1310,10 @@ type AutonomousDatabaseFromBackupTimestampProperties struct {
 
 	// The maintenance schedule type of the Autonomous Database Serverless.
 	AutonomousMaintenanceScheduleType *AutonomousMaintenanceScheduleType
+
+	// Backup destination for auto and long-term backups. Existing backups stay in their original destination when this value
+	// changes.
+	BackupDestination *BackupDestinationType
 
 	// Retention period, in days, for long-term backups
 	BackupRetentionPeriodInDays *int32
@@ -1224,6 +1366,9 @@ type AutonomousDatabaseFromBackupTimestampProperties struct {
 	// Specifies if the Autonomous Database preview version is being provisioned.
 	IsPreviewVersionWithServiceTermsAccepted *bool
 
+	// Update AZ at the earliest available opportunity
+	IsScheduleAzUpdateToEarliest *bool
+
 	// The Oracle license model that applies to the Oracle Autonomous Database. The default is LICENSE_INCLUDED.
 	LicenseModel *LicenseModel
 
@@ -1236,6 +1381,9 @@ type AutonomousDatabaseFromBackupTimestampProperties struct {
 
 	// The character set for the Autonomous Database.
 	NcharacterSet *string
+
+	// Azure Network Anchor ID
+	NetworkAnchorID *string
 
 	// Indicates the Autonomous Database mode.
 	OpenMode *OpenModeType
@@ -1253,6 +1401,9 @@ type AutonomousDatabaseFromBackupTimestampProperties struct {
 	// The resource's private endpoint label.
 	PrivateEndpointLabel *string
 
+	// Azure Resource Anchor ID
+	ResourceAnchorID *string
+
 	// The Data Guard role of the Autonomous Container Database or Autonomous Database, if Autonomous Data Guard is enabled.
 	Role *RoleType
 
@@ -1261,6 +1412,9 @@ type AutonomousDatabaseFromBackupTimestampProperties struct {
 
 	// Client subnet
 	SubnetID *string
+
+	// The date and time when the Autonomous Database availability zone is to be updated.
+	TimeScheduledAzUpdate *string
 
 	// The timestamp specified for the point-in-time clone of the source Autonomous Database. The timestamp must be in the past.
 	Timestamp *time.Time
@@ -1274,6 +1428,9 @@ type AutonomousDatabaseFromBackupTimestampProperties struct {
 	// The client IP access control list (ACL). This is an array of CIDR notations and/or IP addresses. Values should be separate
 	// strings, separated by commas. Example: ['1.1.1.1','1.1.1.0/24','1.1.2.25']
 	WhitelistedIPs []*string
+
+	// The logical zone where the Autonomous Database is provisioned.
+	Zone *string
 
 	// READ-ONLY; The current amount of storage in use for user and system data, in terabytes (TB).
 	ActualUsedDataStorageSizeInTbs *float64
@@ -1420,6 +1577,7 @@ func (a *AutonomousDatabaseFromBackupTimestampProperties) GetAutonomousDatabaseB
 		AutonomousDatabaseID:                     a.AutonomousDatabaseID,
 		AutonomousMaintenanceScheduleType:        a.AutonomousMaintenanceScheduleType,
 		AvailableUpgradeVersions:                 a.AvailableUpgradeVersions,
+		BackupDestination:                        a.BackupDestination,
 		BackupRetentionPeriodInDays:              a.BackupRetentionPeriodInDays,
 		CPUCoreCount:                             a.CPUCoreCount,
 		CharacterSet:                             a.CharacterSet,
@@ -1445,6 +1603,7 @@ func (a *AutonomousDatabaseFromBackupTimestampProperties) GetAutonomousDatabaseB
 		IsPreview:                                a.IsPreview,
 		IsPreviewVersionWithServiceTermsAccepted: a.IsPreviewVersionWithServiceTermsAccepted,
 		IsRemoteDataGuardEnabled:                 a.IsRemoteDataGuardEnabled,
+		IsScheduleAzUpdateToEarliest:             a.IsScheduleAzUpdateToEarliest,
 		LicenseModel:                             a.LicenseModel,
 		LifecycleDetails:                         a.LifecycleDetails,
 		LifecycleState:                           a.LifecycleState,
@@ -1454,6 +1613,7 @@ func (a *AutonomousDatabaseFromBackupTimestampProperties) GetAutonomousDatabaseB
 		LongTermBackupSchedule:                   a.LongTermBackupSchedule,
 		MemoryPerOracleComputeUnitInGbs:          a.MemoryPerOracleComputeUnitInGbs,
 		NcharacterSet:                            a.NcharacterSet,
+		NetworkAnchorID:                          a.NetworkAnchorID,
 		NextLongTermBackupTimeStamp:              a.NextLongTermBackupTimeStamp,
 		OciURL:                                   a.OciURL,
 		Ocid:                                     a.Ocid,
@@ -1468,6 +1628,7 @@ func (a *AutonomousDatabaseFromBackupTimestampProperties) GetAutonomousDatabaseB
 		ProvisionableCpus:                        a.ProvisionableCpus,
 		ProvisioningState:                        a.ProvisioningState,
 		RemoteDisasterRecoveryConfiguration:      a.RemoteDisasterRecoveryConfiguration,
+		ResourceAnchorID:                         a.ResourceAnchorID,
 		Role:                                     a.Role,
 		SQLWebDeveloperURL:                       a.SQLWebDeveloperURL,
 		ScheduledOperationsList:                  a.ScheduledOperationsList,
@@ -1486,10 +1647,12 @@ func (a *AutonomousDatabaseFromBackupTimestampProperties) GetAutonomousDatabaseB
 		TimeOfLastRefreshPoint:                   a.TimeOfLastRefreshPoint,
 		TimeOfLastSwitchover:                     a.TimeOfLastSwitchover,
 		TimeReclamationOfFreeAutonomousDatabase:  a.TimeReclamationOfFreeAutonomousDatabase,
+		TimeScheduledAzUpdate:                    a.TimeScheduledAzUpdate,
 		UsedDataStorageSizeInGbs:                 a.UsedDataStorageSizeInGbs,
 		UsedDataStorageSizeInTbs:                 a.UsedDataStorageSizeInTbs,
 		VnetID:                                   a.VnetID,
 		WhitelistedIPs:                           a.WhitelistedIPs,
+		Zone:                                     a.Zone,
 	}
 }
 
@@ -1556,6 +1719,10 @@ type AutonomousDatabaseProperties struct {
 	// The maintenance schedule type of the Autonomous Database Serverless.
 	AutonomousMaintenanceScheduleType *AutonomousMaintenanceScheduleType
 
+	// Backup destination for auto and long-term backups. Existing backups stay in their original destination when this value
+	// changes.
+	BackupDestination *BackupDestinationType
+
 	// Retention period, in days, for long-term backups
 	BackupRetentionPeriodInDays *int32
 
@@ -1607,6 +1774,9 @@ type AutonomousDatabaseProperties struct {
 	// Specifies if the Autonomous Database preview version is being provisioned.
 	IsPreviewVersionWithServiceTermsAccepted *bool
 
+	// Update AZ at the earliest available opportunity
+	IsScheduleAzUpdateToEarliest *bool
+
 	// The Oracle license model that applies to the Oracle Autonomous Database. The default is LICENSE_INCLUDED.
 	LicenseModel *LicenseModel
 
@@ -1619,6 +1789,9 @@ type AutonomousDatabaseProperties struct {
 
 	// The character set for the Autonomous Database.
 	NcharacterSet *string
+
+	// Azure Network Anchor ID
+	NetworkAnchorID *string
 
 	// Indicates the Autonomous Database mode.
 	OpenMode *OpenModeType
@@ -1636,6 +1809,9 @@ type AutonomousDatabaseProperties struct {
 	// The resource's private endpoint label.
 	PrivateEndpointLabel *string
 
+	// Azure Resource Anchor ID
+	ResourceAnchorID *string
+
 	// The Data Guard role of the Autonomous Container Database or Autonomous Database, if Autonomous Data Guard is enabled.
 	Role *RoleType
 
@@ -1645,12 +1821,18 @@ type AutonomousDatabaseProperties struct {
 	// Client subnet
 	SubnetID *string
 
+	// The date and time when the Autonomous Database availability zone is to be updated.
+	TimeScheduledAzUpdate *string
+
 	// VNET for network connectivity
 	VnetID *string
 
 	// The client IP access control list (ACL). This is an array of CIDR notations and/or IP addresses. Values should be separate
 	// strings, separated by commas. Example: ['1.1.1.1','1.1.1.0/24','1.1.2.25']
 	WhitelistedIPs []*string
+
+	// The logical zone where the Autonomous Database is provisioned.
+	Zone *string
 
 	// READ-ONLY; The current amount of storage in use for user and system data, in terabytes (TB).
 	ActualUsedDataStorageSizeInTbs *float64
@@ -1797,6 +1979,7 @@ func (a *AutonomousDatabaseProperties) GetAutonomousDatabaseBaseProperties() *Au
 		AutonomousDatabaseID:                     a.AutonomousDatabaseID,
 		AutonomousMaintenanceScheduleType:        a.AutonomousMaintenanceScheduleType,
 		AvailableUpgradeVersions:                 a.AvailableUpgradeVersions,
+		BackupDestination:                        a.BackupDestination,
 		BackupRetentionPeriodInDays:              a.BackupRetentionPeriodInDays,
 		CPUCoreCount:                             a.CPUCoreCount,
 		CharacterSet:                             a.CharacterSet,
@@ -1822,6 +2005,7 @@ func (a *AutonomousDatabaseProperties) GetAutonomousDatabaseBaseProperties() *Au
 		IsPreview:                                a.IsPreview,
 		IsPreviewVersionWithServiceTermsAccepted: a.IsPreviewVersionWithServiceTermsAccepted,
 		IsRemoteDataGuardEnabled:                 a.IsRemoteDataGuardEnabled,
+		IsScheduleAzUpdateToEarliest:             a.IsScheduleAzUpdateToEarliest,
 		LicenseModel:                             a.LicenseModel,
 		LifecycleDetails:                         a.LifecycleDetails,
 		LifecycleState:                           a.LifecycleState,
@@ -1831,6 +2015,7 @@ func (a *AutonomousDatabaseProperties) GetAutonomousDatabaseBaseProperties() *Au
 		LongTermBackupSchedule:                   a.LongTermBackupSchedule,
 		MemoryPerOracleComputeUnitInGbs:          a.MemoryPerOracleComputeUnitInGbs,
 		NcharacterSet:                            a.NcharacterSet,
+		NetworkAnchorID:                          a.NetworkAnchorID,
 		NextLongTermBackupTimeStamp:              a.NextLongTermBackupTimeStamp,
 		OciURL:                                   a.OciURL,
 		Ocid:                                     a.Ocid,
@@ -1845,6 +2030,7 @@ func (a *AutonomousDatabaseProperties) GetAutonomousDatabaseBaseProperties() *Au
 		ProvisionableCpus:                        a.ProvisionableCpus,
 		ProvisioningState:                        a.ProvisioningState,
 		RemoteDisasterRecoveryConfiguration:      a.RemoteDisasterRecoveryConfiguration,
+		ResourceAnchorID:                         a.ResourceAnchorID,
 		Role:                                     a.Role,
 		SQLWebDeveloperURL:                       a.SQLWebDeveloperURL,
 		ScheduledOperationsList:                  a.ScheduledOperationsList,
@@ -1863,10 +2049,12 @@ func (a *AutonomousDatabaseProperties) GetAutonomousDatabaseBaseProperties() *Au
 		TimeOfLastRefreshPoint:                   a.TimeOfLastRefreshPoint,
 		TimeOfLastSwitchover:                     a.TimeOfLastSwitchover,
 		TimeReclamationOfFreeAutonomousDatabase:  a.TimeReclamationOfFreeAutonomousDatabase,
+		TimeScheduledAzUpdate:                    a.TimeScheduledAzUpdate,
 		UsedDataStorageSizeInGbs:                 a.UsedDataStorageSizeInGbs,
 		UsedDataStorageSizeInTbs:                 a.UsedDataStorageSizeInTbs,
 		VnetID:                                   a.VnetID,
 		WhitelistedIPs:                           a.WhitelistedIPs,
+		Zone:                                     a.Zone,
 	}
 }
 
@@ -2033,6 +2221,27 @@ type AzureSubscriptions struct {
 	AzureSubscriptionIDs []*string
 }
 
+// BackupScheduleType - Backup schedule type.
+type BackupScheduleType struct {
+	// Bucket name.
+	BucketName *string
+
+	// Compartment ID.
+	CompartmentID *string
+
+	// Backup schedule frequency.
+	FrequencyBackupScheduled *FrequencyType
+
+	// Indicates whether the backup contains metadata only.
+	IsMetadataOnly *bool
+
+	// Namespace.
+	NamespaceName *string
+
+	// Scheduled backup time.
+	TimeBackupScheduled *string
+}
+
 // CloudAccountDetails - Cloud Account Details model
 type CloudAccountDetails struct {
 	// READ-ONLY; Cloud Account Home region
@@ -2100,6 +2309,12 @@ type CloudExadataInfrastructureProperties struct {
 
 	// maintenanceWindow property
 	MaintenanceWindow *MaintenanceWindow
+
+	// Proximity placement group settings
+	ProximityPlacementGroup *ProximityPlacementGroup
+
+	// Azure Resource Anchor ID
+	ResourceAnchorID *string
 
 	// The number of storage servers for the cloud Exadata infrastructure.
 	StorageCount *int32
@@ -2274,7 +2489,7 @@ type CloudVMClusterProperties struct {
 	GiVersion *string
 
 	// REQUIRED; The hostname for the cloud VM cluster.
-	Hostname *string
+	HostnameV2 *string
 
 	// REQUIRED; The public key portion of one or more key pairs used for SSH access to the cloud VM cluster.
 	SSHPublicKeys []*string
@@ -2322,6 +2537,10 @@ type CloudVMClusterProperties struct {
 	// Array of mount path and size.
 	FileSystemConfigurationDetails []*FileSystemConfigurationDetails
 
+	// Indicates if the Accelerated Networking feature is enabled or disabled for provisioning an Exadata VM cluster. The default
+	// value is: false.
+	IsAcceleratedNetworkEnabled *bool
+
 	// If true, database backup on local Exadata storage is configured for the cloud VM cluster. If false, database backup on
 	// local Exadata storage is not available in the cloud VM cluster.
 	IsLocalBackupEnabled *bool
@@ -2335,17 +2554,35 @@ type CloudVMClusterProperties struct {
 	// The memory to be allocated in GBs.
 	MemorySizeInGbs *int32
 
+	// Azure Network Anchor ID
+	NetworkAnchorID *string
+
 	// CIDR blocks for additional NSG ingress rules. The VNET CIDRs used to provision the VM Cluster will be added by default.
 	NsgCidrs []*NsgCidr
 
 	// The number of OCPU cores to enable on the cloud VM cluster. Only 1 decimal place is allowed for the fractional part.
 	OcpuCount *float32
 
+	// Proximity placement group settings
+	ProximityPlacementGroup *ProximityPlacementGroup
+
+	// The percentage assigned to RECO storage (database redo logs, archive logs, and recovery manager backups). See [Storage
+	// Configuration](/Content/Database/Concepts/exaoverview.htm#Exadata) in the Exadata documentation for details on the impact
+	// of the configuration settings on storage.
+	RecoStoragePercentage *int32
+
+	// Azure Resource Anchor ID
+	ResourceAnchorID *string
+
 	// The TCP Single Client Access Name (SCAN) port. The default port is 1521.
 	ScanListenerPortTCP *int32
 
 	// The TCPS Single Client Access Name (SCAN) port. The default port is 2484.
 	ScanListenerPortTCPSSL *int32
+
+	// The percentage assigned to SPARSE storage (Exadata snapshots). See [Storage Configuration](/Content/Database/Concepts/exaoverview.htm#Exadata)
+	// in the Exadata documentation for details on the impact of the configuration settings on storage.
+	SparseStoragePercentage *int32
 
 	// The data disk group size to be allocated in GBs per VM.
 	StorageSizeInGbs *int32
@@ -2399,7 +2636,7 @@ type CloudVMClusterProperties struct {
 	ProvisioningState *AzureResourceProvisioningState
 
 	// READ-ONLY; The FQDN of the DNS record for the SCAN IP addresses that are associated with the cloud VM cluster.
-	ScanDNSName *string
+	ScanDNSNameV2 *string
 
 	// READ-ONLY; The OCID of the DNS record for the SCAN IP addresses that are associated with the cloud VM cluster.
 	ScanDNSRecordID *string
@@ -2459,6 +2696,10 @@ type CloudVMClusterUpdateProperties struct {
 	// Array of mount path and size.
 	FileSystemConfigurationDetails []*FileSystemConfigurationDetails
 
+	// Indicates if the Accelerated Networking feature is enabled or disabled for provisioning an Exadata VM cluster. The default
+	// value is: false.
+	IsAcceleratedNetworkEnabled *bool
+
 	// The Oracle license model that applies to the cloud VM cluster. The default is LICENSE_INCLUDED.
 	LicenseModel *LicenseModel
 
@@ -2480,6 +2721,57 @@ type ConfigureExascaleCloudExadataInfrastructureDetails struct {
 	// REQUIRED; Storage size needed for Exascale in GBs.
 	TotalStorageInGbs *int32
 }
+
+// ConnectionBaseProperties - GoldenGate Connection base resource model.
+type ConnectionBaseProperties struct {
+	// REQUIRED; The connection type to be created.
+	ConnectionType *ConnectionType
+
+	// REQUIRED; The connection display name.
+	DisplayName *string
+
+	// REQUIRED; The corresponding network anchor Azure ID.
+	NetworkAnchorID *string
+
+	// REQUIRED; The corresponding resource anchor Azure ID.
+	ResourceAnchorID *string
+
+	// Indicates whether secret OCIDs are used for credential fields.
+	DoesUseSecretIDs *bool
+
+	// The customer's master key OCID.
+	KeyID *string
+
+	// Controls the network traffic direction to the target.
+	RoutingMethod *RoutingMethod
+
+	// The customer's vault OCID.
+	VaultID *string
+
+	// READ-ONLY; The OCID of the compartment being referenced.
+	CompartmentID *string
+
+	// READ-ONLY; The description of lifecycle state in detail.
+	LifecycleDetails *string
+
+	// READ-ONLY; The connection lifecycle state.
+	LifecycleState *ConnectionLifecycleState
+
+	// READ-ONLY; The OCID of the connection being referenced.
+	Ocid *string
+
+	// READ-ONLY; Connection provisioning state.
+	ProvisioningState *AzureResourceProvisioningState
+
+	// READ-ONLY; The date time the resource was created in OCI.
+	TimeCreated *string
+
+	// READ-ONLY; The date time the resource was last updated in OCI.
+	TimeUpdated *string
+}
+
+// GetConnectionBaseProperties implements the ConnectionBasePropertiesClassification interface for type ConnectionBaseProperties.
+func (c *ConnectionBaseProperties) GetConnectionBaseProperties() *ConnectionBaseProperties { return c }
 
 // ConnectionStringType - Connection strings to connect to an Oracle Autonomous Database.
 type ConnectionStringType struct {
@@ -2673,6 +2965,145 @@ type DataCollectionOptions struct {
 
 	// Indicates whether incident logs and trace collection are enabled for the VM cluster / Cloud VM cluster / VMBM DBCS.
 	IsIncidentLogsEnabled *bool
+}
+
+// DatabaseEdition resource definition
+type DatabaseEdition struct {
+	// The resource-specific properties for this resource.
+	Properties *DatabaseEditionProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// DatabaseEditionListResult - The response of a DatabaseEdition list operation.
+type DatabaseEditionListResult struct {
+	// REQUIRED; The DatabaseEdition items on this page
+	Value []*DatabaseEdition
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// DatabaseEditionProperties - DatabaseEdition resource model
+type DatabaseEditionProperties struct {
+	// REQUIRED; The Oracle database edition.
+	DatabaseEdition *DbSystemDatabaseEditionType
+}
+
+// DatabaseSystemShape resource definition
+type DatabaseSystemShape struct {
+	// The resource-specific properties for this resource.
+	Properties *DatabaseSystemShapeProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// DatabaseSystemShapeListResult - The response of a DatabaseSystemShape list operation.
+type DatabaseSystemShapeListResult struct {
+	// REQUIRED; The DatabaseSystemShape items on this page
+	Value []*DatabaseSystemShape
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// DatabaseSystemShapeProperties - DatabaseSystemShape resource model
+type DatabaseSystemShapeProperties struct {
+	// REQUIRED; The maximum number of CPU cores that can be enabled on the DB system for this shape.
+	AvailableCoreCount *int32
+
+	// REQUIRED; The shape used for the DB system.
+	ShapeName *string
+
+	// Indicates if the shape supports database and storage server types
+	AreServerTypesSupported *bool
+
+	// The maximum number of CPU cores per database node that can be enabled for this shape. Only applicable to the flex Exadata
+	// shape and ExaCC Elastic shapes.
+	AvailableCoreCountPerNode *int32
+
+	// The maximum DATA storage that can be enabled for this shape.
+	AvailableDataStorageInTbs *int32
+
+	// The maximum data storage available per storage server for this shape. Only applicable to ExaCC Elastic shapes.
+	AvailableDataStoragePerServerInTbs *float64
+
+	// The maximum Db Node storage available per database node for this shape. Only applicable to ExaCC Elastic shapes.
+	AvailableDbNodePerNodeInGbs *int32
+
+	// The maximum Db Node storage that can be enabled for this shape.
+	AvailableDbNodeStorageInGbs *int32
+
+	// The maximum memory that can be enabled for this shape.
+	AvailableMemoryInGbs *int32
+
+	// The maximum memory available per database node for this shape. Only applicable to ExaCC Elastic shapes.
+	AvailableMemoryPerNodeInGbs *int32
+
+	// The compute model of the DB system for this shape
+	ComputeModel *ComputeModel
+
+	// The discrete number by which the CPU core count for this shape can be increased or decreased.
+	CoreCountIncrement *int32
+
+	// The display name of the shape used for the DB system
+	DisplayName *string
+
+	// The maximum number of Exadata storage servers available for the Exadata infrastructure.
+	MaxStorageCount *int32
+
+	// The maximum number of database nodes available for this shape.
+	MaximumNodeCount *int32
+
+	// The minimum number of CPU cores that can be enabled per node for this shape.
+	MinCoreCountPerNode *int32
+
+	// The minimum data storage that need be allocated for this shape.
+	MinDataStorageInTbs *int32
+
+	// The minimum Db Node storage that need be allocated per node for this shape.
+	MinDbNodeStoragePerNodeInGbs *int32
+
+	// The minimum memory that need be allocated per node for this shape.
+	MinMemoryPerNodeInGbs *int32
+
+	// The minimum number of Exadata storage servers available for the Exadata infrastructure.
+	MinStorageCount *int32
+
+	// The minimum number of CPU cores that can be enabled on the DB system for this shape.
+	MinimumCoreCount *int32
+
+	// The minimum number of database nodes available for this shape.
+	MinimumNodeCount *int32
+
+	// The runtime minimum number of CPU cores that can be enabled on the DB system for this shape.
+	RuntimeMinimumCoreCount *int32
+
+	// The shapeAttributes of the DB system shape..
+	ShapeAttributes []*string
+
+	// The family of the shape used for the DB system.
+	ShapeFamily *string
 }
 
 // DayOfWeek resource properties
@@ -2970,6 +3401,9 @@ type DbSystemBaseProperties struct {
 	// shapes, the number of CPU cores and memory. For bare metal and Exadata shapes, the number of CPU cores, storage, and memory.
 	Shape *string
 
+	// The character set for the DB system. The default is AL32UTF8
+	CharacterSet *string
+
 	// The cluster name for Exadata and 2-node RAC virtual machine DB systems. The cluster name must begin with an alphabetic
 	// character, and may contain hyphens (-). Underscores (_) are not permitted. The cluster name can be no longer than 11 characters
 	// and is not case sensitive.
@@ -2982,6 +3416,9 @@ type DbSystemBaseProperties struct {
 	// then it is an error to specify `computeModel` to a non-null value. The ECPU compute model is the recommended model, and
 	// the OCPU compute model is legacy.
 	ComputeModel *ComputeModel
+
+	// Indicates user preferences for the various diagnostic collection options for the Base DB.
+	DataCollectionOptions *DataCollectionOptions
 
 	// The DB system options.
 	DbSystemOptions *DbSystemOptions
@@ -3002,6 +3439,9 @@ type DbSystemBaseProperties struct {
 
 	// The Oracle license model that applies to all the databases on the DB system. The default is LicenseIncluded.
 	LicenseModelV2 *LicenseModel
+
+	// The national character set for the DB system. The default is AL16UTF16
+	NcharacterSet *string
 
 	// The number of nodes in the DB system. For RAC DB systems, the value is greater than 1.
 	NodeCount *int32
@@ -3107,6 +3547,9 @@ type DbSystemProperties struct {
 	// uppercase, two lowercase, two numbers, and two special characters. The special characters must be _, #, or -.
 	AdminPassword *string
 
+	// The character set for the DB system. The default is AL32UTF8
+	CharacterSet *string
+
 	// The cluster name for Exadata and 2-node RAC virtual machine DB systems. The cluster name must begin with an alphabetic
 	// character, and may contain hyphens (-). Underscores (_) are not permitted. The cluster name can be no longer than 11 characters
 	// and is not case sensitive.
@@ -3119,6 +3562,9 @@ type DbSystemProperties struct {
 	// then it is an error to specify `computeModel` to a non-null value. The ECPU compute model is the recommended model, and
 	// the OCPU compute model is legacy.
 	ComputeModel *ComputeModel
+
+	// Indicates user preferences for the various diagnostic collection options for the Base DB.
+	DataCollectionOptions *DataCollectionOptions
 
 	// The DB system options.
 	DbSystemOptions *DbSystemOptions
@@ -3139,6 +3585,9 @@ type DbSystemProperties struct {
 
 	// The Oracle license model that applies to all the databases on the DB system. The default is LicenseIncluded.
 	LicenseModelV2 *LicenseModel
+
+	// The national character set for the DB system. The default is AL16UTF16
+	NcharacterSet *string
 
 	// The number of nodes in the DB system. For RAC DB systems, the value is greater than 1.
 	NodeCount *int32
@@ -3197,9 +3646,11 @@ type DbSystemProperties struct {
 // GetDbSystemBaseProperties implements the DbSystemBasePropertiesClassification interface for type DbSystemProperties.
 func (d *DbSystemProperties) GetDbSystemBaseProperties() *DbSystemBaseProperties {
 	return &DbSystemBaseProperties{
+		CharacterSet:                 d.CharacterSet,
 		ClusterName:                  d.ClusterName,
 		ComputeCount:                 d.ComputeCount,
 		ComputeModel:                 d.ComputeModel,
+		DataCollectionOptions:        d.DataCollectionOptions,
 		DataStorageSizeInGbs:         d.DataStorageSizeInGbs,
 		DbSystemOptions:              d.DbSystemOptions,
 		DiskRedundancy:               d.DiskRedundancy,
@@ -3213,6 +3664,7 @@ func (d *DbSystemProperties) GetDbSystemBaseProperties() *DbSystemBaseProperties
 		LifecycleState:               d.LifecycleState,
 		ListenerPort:                 d.ListenerPort,
 		MemorySizeInGbs:              d.MemorySizeInGbs,
+		NcharacterSet:                d.NcharacterSet,
 		NetworkAnchorID:              d.NetworkAnchorID,
 		NodeCount:                    d.NodeCount,
 		OciURL:                       d.OciURL,
@@ -3415,6 +3867,127 @@ type DefinedFileSystemConfiguration struct {
 	MountPoint *string
 }
 
+// DeploymentConnectionAssignmentProperties - Deployment-connection assignment properties.
+type DeploymentConnectionAssignmentProperties struct {
+	// READ-ONLY; The OCID of the connection being referenced.
+	ConnectionID *string
+
+	// READ-ONLY; The OCID of the deployment being referenced.
+	DeploymentID *string
+
+	// READ-ONLY; The assignment alias name.
+	AliasName *string
+
+	// READ-ONLY; The OCID of the compartment being referenced.
+	CompartmentID *string
+
+	// READ-ONLY; The connection name.
+	ConnectionName *string
+
+	// READ-ONLY; The deployment name.
+	DeploymentName *string
+
+	// READ-ONLY; The assignment lifecycle state.
+	LifecycleState *GoldenGateConnectionAssignmentLifecycleState
+
+	// READ-ONLY; The OCID of the assignment being referenced.
+	Ocid *string
+
+	// READ-ONLY; Deployment-connection assignment provisioning state.
+	ProvisioningState *AzureResourceProvisioningState
+
+	// READ-ONLY; The time the assignment was created.
+	TimeCreated *string
+
+	// READ-ONLY; The time the assignment was last updated.
+	TimeUpdated *string
+}
+
+// DeploymentProperties - GoldenGate Deployment resource model.
+type DeploymentProperties struct {
+	// REQUIRED; Display name.
+	DisplayName *string
+
+	// REQUIRED; Azure network anchor ID.
+	NetworkAnchorID *string
+
+	// REQUIRED; Corresponding Azure resource anchor ID.
+	ResourceAnchorID *string
+
+	// Backup schedule.
+	BackupSchedule *BackupScheduleType
+
+	// The minimum number of OCPUs to be made available for this deployment.
+	CPUCoreCount *int32
+
+	// The deployment category.
+	Category *CategoryType
+
+	// The type of deployment.
+	DeploymentType *DeploymentType
+
+	// Environment type.
+	EnvironmentType *SetupType
+
+	// Indicates if auto scaling is enabled for the deployment's CPU core count.
+	IsAutoScalingEnabled *bool
+
+	// True if this object is publicly available.
+	IsPublic *bool
+
+	// The Oracle license model that applies to a Deployment.
+	LicenseModel *LicenseModel
+
+	// Maintenance configuration.
+	MaintenanceConfiguration *MaintenanceConfigurationType
+
+	// Maintenance window.
+	MaintenanceWindow *MaintenanceWindowType
+
+	// Deployment data for creating an OGG deployment.
+	OggData *OggDeploymentDetails
+
+	// The time zone of the deployment, for example, UTC.
+	TimeZone *string
+
+	// The current version.
+	Version *string
+
+	// READ-ONLY; OCI compartment.
+	Compartment *string
+
+	// READ-ONLY; HTTPS link to OCI resource exposed to Azure Customer via Azure Interface.
+	DeploymentURL *string
+
+	// READ-ONLY; Connection IP address.
+	IngressIPs []*string
+
+	// READ-ONLY; Describes the object's current state in detail.
+	LifecycleDetails *string
+
+	// READ-ONLY; Possible lifecycle states.
+	LifecycleState *DeploymentLifecycleState
+
+	// READ-ONLY; The OCID of the deployment being referenced.
+	Ocid *string
+
+	// READ-ONLY; The private IP address of VCN representing the access point for the associated endpoint service in the GoldenGate
+	// service VCN
+	PrivateIPAddress *string
+
+	// READ-ONLY; Deployment provisioning state.
+	ProvisioningState *AzureResourceProvisioningState
+
+	// READ-ONLY; Storage utilization in bytes.
+	StorageUtilizationInBytes *int32
+
+	// READ-ONLY; The date time the resource was created in OCI.
+	TimeCreated *string
+
+	// READ-ONLY; The date time the resource was last updated in OCI.
+	TimeUpdated *string
+}
+
 // DisasterRecoveryConfigurationDetails - Configurations of a Disaster Recovery Details
 type DisasterRecoveryConfigurationDetails struct {
 	// Indicates the disaster recovery (DR) type of the Autonomous Database Serverless instance. Autonomous Data Guard (ADG) DR
@@ -3514,7 +4087,7 @@ type ExadbVMClusterProperties struct {
 	ExascaleDbStorageVaultID *string
 
 	// REQUIRED; The hostname for the Exadata VM cluster on Exascale Infrastructure.
-	Hostname *string
+	HostnameV2 *string
 
 	// REQUIRED; The number of nodes in the Exadata VM cluster on Exascale Infrastructure.
 	NodeCount *int32
@@ -3616,7 +4189,7 @@ type ExadbVMClusterProperties struct {
 
 	// READ-ONLY; The FQDN of the DNS record for the SCAN IP addresses that are associated with the Exadata VM cluster on Exascale
 	// Infrastructure.
-	ScanDNSName *string
+	ScanDNSNameV2 *string
 
 	// READ-ONLY; The OCID of the DNS record for the SCAN IP addresses that are associated with the Exadata VM cluster on Exascale
 	// Infrastructure.
@@ -3811,11 +4384,17 @@ type ExascaleDbStorageVaultProperties struct {
 	// The size of additional Flash Cache in percentage of High Capacity database storage.
 	AdditionalFlashCacheInPercent *int32
 
+	// Maximum limit storage size in gigabytes, that is applicable for the Database Storage Vault.
+	AutoscaleLimitInGbs *int32
+
 	// Exadata Database Storage Vault description.
 	Description *string
 
 	// Cloud Exadata infrastructure ID
 	ExadataInfrastructureID *string
+
+	// Indicates if autoscale feature is enabled for the Storage Vault. The default value is: false.
+	IsAutoscaleEnabled *bool
 
 	// The time zone that you want to use for the Exadata Database Storage Vault
 	TimeZone *string
@@ -4001,6 +4580,291 @@ type GiVersionProperties struct {
 	Version *string
 }
 
+// GoldenGateConnection - GoldenGate Connection resource model.
+type GoldenGateConnection struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
+	// The resource-specific properties for this resource.
+	Properties ConnectionBasePropertiesClassification
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// The availability zones.
+	Zones []*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// GoldenGateConnectionListResult - The response of a GoldenGateConnection list operation.
+type GoldenGateConnectionListResult struct {
+	// REQUIRED; The GoldenGateConnection items on this page
+	Value []*GoldenGateConnection
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// GoldenGateConnectionUpdate - The type used for update operations of the GoldenGateConnection.
+type GoldenGateConnectionUpdate struct {
+	// The resource-specific properties for this resource.
+	Properties *GoldenGateConnectionUpdateProperties
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// The availability zones.
+	Zones []*string
+}
+
+// GoldenGateConnectionUpdateProperties - The updatable properties of the GoldenGateConnection.
+type GoldenGateConnectionUpdateProperties struct {
+	// The connection type to be created.
+	ConnectionType *ConnectionType
+
+	// The connection display name.
+	DisplayName *string
+
+	// Indicates whether secret OCIDs are used for credential fields.
+	DoesUseSecretIDs *bool
+
+	// The customer's master key OCID.
+	KeyID *string
+
+	// Controls the network traffic direction to the target.
+	RoutingMethod *RoutingMethod
+
+	// The customer's vault OCID.
+	VaultID *string
+}
+
+// GoldenGateDeployment - GoldenGate Deployment resource definition.
+type GoldenGateDeployment struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
+	// The resource-specific properties for this resource.
+	Properties *DeploymentProperties
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// The availability zones.
+	Zones []*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// GoldenGateDeploymentListResult - The response of a GoldenGateDeployment list operation.
+type GoldenGateDeploymentListResult struct {
+	// REQUIRED; The GoldenGateDeployment items on this page
+	Value []*GoldenGateDeployment
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// GoldenGateDeploymentUpdate - The type used for update operations of the GoldenGateDeployment.
+type GoldenGateDeploymentUpdate struct {
+	// The resource-specific properties for this resource.
+	Properties *GoldenGateDeploymentUpdateProperties
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// The availability zones.
+	Zones []*string
+}
+
+// GoldenGateDeploymentUpdateProperties - The updatable properties of the GoldenGateDeployment.
+type GoldenGateDeploymentUpdateProperties struct {
+	// Backup schedule.
+	BackupSchedule *BackupScheduleType
+
+	// The minimum number of OCPUs to be made available for this deployment.
+	CPUCoreCount *int32
+
+	// The Oracle license model that applies to a Deployment.
+	LicenseModel *LicenseModel
+
+	// Maintenance configuration.
+	MaintenanceConfiguration *MaintenanceConfigurationType
+
+	// Maintenance window.
+	MaintenanceWindow *MaintenanceWindowType
+}
+
+// GroupToRolesMappingDetails - Group-to-roles mapping properties.
+type GroupToRolesMappingDetails struct {
+	// The OCID of the IDP group which will be mapped to goldengate role administratorGroup.It grants full access to the user,
+	// including the ability to alter general, non-security related operational parameters and profiles of the server.
+	AdministratorGroupID *string
+
+	// The OCID of the Identity Domain when IAM credential store is used.
+	IdentityDomainID *string
+
+	// The base64 encoded content of the PEM file containing the private key.
+	Key *string
+
+	// The OCID of the IDP group which will be mapped to goldengate role operatorGroup.It allows users to perform only operational
+	// actions, like starting and stopping resources. Operators cannot alter the operational parameters or profiles of the MA
+	// server.
+	OperatorGroupID *string
+
+	// The OCID of the IDP group which will be mapped to goldengate role securityGroup.It grants administration of security related
+	// objects and invoke security related service requests. This role has full privileges.
+	SecurityGroupID *string
+
+	// The OCID of the IDP group which will be mapped to goldengate role userGroup. It allows information-only service requests,
+	// which do not alter or affect the operation of either the MA. Examples of query and read-only information include performance
+	// metric information and resource status and monitoring information
+	UserGroupID *string
+}
+
+// KafkaBootstrapServer - The Kafka bootstrap server with host name, and an optional port.
+type KafkaBootstrapServer struct {
+	// REQUIRED; The name or address of a host.
+	Host *string
+
+	// The port of an endpoint usually specified for a connection.
+	Port *int32
+}
+
+// KafkaConnectionDetails - The metadata of a Kafka Connection.
+type KafkaConnectionDetails struct {
+	// CONSTANT; Field has constant value ConnectionTypeKafka, any specified value is ignored.
+	ConnectionType *ConnectionType
+
+	// REQUIRED; The connection display name.
+	DisplayName *string
+
+	// REQUIRED; The corresponding network anchor Azure ID.
+	NetworkAnchorID *string
+
+	// REQUIRED; The corresponding resource anchor Azure ID.
+	ResourceAnchorID *string
+
+	// REQUIRED; The Kafka technology type.
+	TechnologyType *KafkaConnectionTechnologyType
+
+	// The list of KafkaBootstrapServer objects specified by host/port.
+	BootstrapServers []*KafkaBootstrapServer
+
+	// The OCID of the Kafka cluster being referenced.
+	ClusterID *string
+
+	// The additional consumer properties in string format.
+	ConsumerProperties *string
+
+	// Indicates whether secret OCIDs are used for credential fields.
+	DoesUseSecretIDs *bool
+
+	// The customer's master key OCID.
+	KeyID *string
+
+	// The OCID of the Secret where the keystore password is stored.
+	KeyStorePasswordSecretID *string
+
+	// The OCID of the Secret where the keystore is stored.
+	KeyStoreSecretID *string
+
+	// The OCID of the Secret where the password is stored.
+	PasswordSecretID *string
+
+	// The additional producer properties in string format.
+	ProducerProperties *string
+
+	// Controls the network traffic direction to the target.
+	RoutingMethod *RoutingMethod
+
+	// The OCID of the Secret where the SSL key password is stored.
+	SSLKeyPasswordSecretID *string
+
+	// The Kafka security protocol used to connect to the broker.
+	SecurityProtocol *string
+
+	// Indicates if resource principal should be used for authentication.
+	ShouldUseResourcePrincipal *bool
+
+	// The OCID of the stream pool being referenced.
+	StreamPoolID *string
+
+	// The OCID of the Secret where the truststore password is stored.
+	TrustStorePasswordSecretID *string
+
+	// The OCID of the Secret where the truststore is stored.
+	TrustStoreSecretID *string
+
+	// The username used to authenticate to Kafka.
+	Username *string
+
+	// The customer's vault OCID.
+	VaultID *string
+
+	// READ-ONLY; The OCID of the compartment being referenced.
+	CompartmentID *string
+
+	// READ-ONLY; The description of lifecycle state in detail.
+	LifecycleDetails *string
+
+	// READ-ONLY; The connection lifecycle state.
+	LifecycleState *ConnectionLifecycleState
+
+	// READ-ONLY; The OCID of the connection being referenced.
+	Ocid *string
+
+	// READ-ONLY; Connection provisioning state.
+	ProvisioningState *AzureResourceProvisioningState
+
+	// READ-ONLY; The date time the resource was created in OCI.
+	TimeCreated *string
+
+	// READ-ONLY; The date time the resource was last updated in OCI.
+	TimeUpdated *string
+}
+
+// GetConnectionBaseProperties implements the ConnectionBasePropertiesClassification interface for type KafkaConnectionDetails.
+func (k *KafkaConnectionDetails) GetConnectionBaseProperties() *ConnectionBaseProperties {
+	return &ConnectionBaseProperties{
+		CompartmentID:     k.CompartmentID,
+		ConnectionType:    k.ConnectionType,
+		DisplayName:       k.DisplayName,
+		DoesUseSecretIDs:  k.DoesUseSecretIDs,
+		KeyID:             k.KeyID,
+		LifecycleDetails:  k.LifecycleDetails,
+		LifecycleState:    k.LifecycleState,
+		NetworkAnchorID:   k.NetworkAnchorID,
+		Ocid:              k.Ocid,
+		ProvisioningState: k.ProvisioningState,
+		ResourceAnchorID:  k.ResourceAnchorID,
+		RoutingMethod:     k.RoutingMethod,
+		TimeCreated:       k.TimeCreated,
+		TimeUpdated:       k.TimeUpdated,
+		VaultID:           k.VaultID,
+	}
+}
+
 // LongTermBackUpScheduleDetails - Details for the long-term backup schedule.
 type LongTermBackUpScheduleDetails struct {
 	// Indicates if the long-term backup schedule should be deleted. The default value is `FALSE`.
@@ -4015,6 +4879,24 @@ type LongTermBackUpScheduleDetails struct {
 	// The timestamp for the long-term backup schedule. For a MONTHLY cadence, months having fewer days than the provided date
 	// will have the backup taken on the last day of that month.
 	TimeOfBackup *time.Time
+}
+
+// MaintenanceConfigurationType - Maintenance configuration type.
+type MaintenanceConfigurationType struct {
+	// Bundle release period.
+	BundleReleaseUpgradePeriodInDays *int32
+
+	// Interim release upgrade period in days.
+	InterimReleaseUpgradePeriodInDays *int32
+
+	// Indicates whether interim release auto-upgrade is enabled.
+	IsInterimReleaseAutoUpgradeEnabled *bool
+
+	// Major release upgrade period in days.
+	MajorReleaseUpgradePeriodInDays *int32
+
+	// Security patch upgrade period in days.
+	SecurityPatchUpgradePeriodInDays *int32
 }
 
 // MaintenanceWindow resource properties
@@ -4058,6 +4940,99 @@ type MaintenanceWindow struct {
 	// with the daysOfWeek and hoursOfDay parameters to allow you to specify specific days of the week and hours that maintenance
 	// will be performed.
 	WeeksOfMonth []*int32
+}
+
+// MaintenanceWindowType - Maintenance window.
+type MaintenanceWindowType struct {
+	// The day of week.
+	Day *DayOfWeekName
+
+	// Start time in UTC.
+	StartHour *int32
+}
+
+// MicrosoftFabricConnectionDetails - The metadata of a Microsoft Fabric Connection.
+type MicrosoftFabricConnectionDetails struct {
+	// REQUIRED; Azure client ID of the application.
+	ClientID *string
+
+	// CONSTANT; Field has constant value ConnectionTypeMicrosoftFabric, any specified value is ignored.
+	ConnectionType *ConnectionType
+
+	// REQUIRED; The connection display name.
+	DisplayName *string
+
+	// REQUIRED; The corresponding network anchor Azure ID.
+	NetworkAnchorID *string
+
+	// REQUIRED; The corresponding resource anchor Azure ID.
+	ResourceAnchorID *string
+
+	// REQUIRED; The Microsoft Fabric technology type.
+	TechnologyType *MicrosoftFabricConnectionTechnologyType
+
+	// REQUIRED; Azure tenant ID of the application.
+	TenantID *string
+
+	// The OCID of the Secret where the client secret is stored.
+	ClientSecretSecretID *string
+
+	// Indicates whether secret OCIDs are used for credential fields.
+	DoesUseSecretIDs *bool
+
+	// The Microsoft Fabric service endpoint.
+	Endpoint *string
+
+	// The customer's master key OCID.
+	KeyID *string
+
+	// Controls the network traffic direction to the target.
+	RoutingMethod *RoutingMethod
+
+	// The customer's vault OCID.
+	VaultID *string
+
+	// READ-ONLY; The OCID of the compartment being referenced.
+	CompartmentID *string
+
+	// READ-ONLY; The description of lifecycle state in detail.
+	LifecycleDetails *string
+
+	// READ-ONLY; The connection lifecycle state.
+	LifecycleState *ConnectionLifecycleState
+
+	// READ-ONLY; The OCID of the connection being referenced.
+	Ocid *string
+
+	// READ-ONLY; Connection provisioning state.
+	ProvisioningState *AzureResourceProvisioningState
+
+	// READ-ONLY; The date time the resource was created in OCI.
+	TimeCreated *string
+
+	// READ-ONLY; The date time the resource was last updated in OCI.
+	TimeUpdated *string
+}
+
+// GetConnectionBaseProperties implements the ConnectionBasePropertiesClassification interface for type MicrosoftFabricConnectionDetails.
+func (m *MicrosoftFabricConnectionDetails) GetConnectionBaseProperties() *ConnectionBaseProperties {
+	return &ConnectionBaseProperties{
+		CompartmentID:     m.CompartmentID,
+		ConnectionType:    m.ConnectionType,
+		DisplayName:       m.DisplayName,
+		DoesUseSecretIDs:  m.DoesUseSecretIDs,
+		KeyID:             m.KeyID,
+		LifecycleDetails:  m.LifecycleDetails,
+		LifecycleState:    m.LifecycleState,
+		NetworkAnchorID:   m.NetworkAnchorID,
+		Ocid:              m.Ocid,
+		ProvisioningState: m.ProvisioningState,
+		ResourceAnchorID:  m.ResourceAnchorID,
+		RoutingMethod:     m.RoutingMethod,
+		TimeCreated:       m.TimeCreated,
+		TimeUpdated:       m.TimeUpdated,
+		VaultID:           m.VaultID,
+	}
 }
 
 // Month resource properties
@@ -4131,6 +5106,9 @@ type NetworkAnchorProperties struct {
 	// OCI DNS label. This is optional if DNS config is provided.
 	OciVcnDNSLabel *string
 
+	// Proximity placement group settings
+	ProximityPlacementGroup *ProximityPlacementGroup
+
 	// READ-ONLY; Delegated Azure subnet cidr block.
 	CidrBlock *string
 
@@ -4198,6 +5176,35 @@ type NsgCidr struct {
 	DestinationPortRange *PortRange
 }
 
+// OggDeploymentDetails - OGG deployment details.
+type OggDeploymentDetails struct {
+	// REQUIRED; The name given to the GoldenGate service deployment.
+	DeploymentName *string
+
+	// The password associated with the GoldenGate deployment console username. The password must be 8 to 30 characters long and
+	// must contain at least 1 uppercase, 1 lowercase, 1 numeric, and 1 special character. Special characters such as '$', '^',
+	// or '?' are not allowed.
+	AdminPassword *string
+
+	// The GoldenGate deployment console username.
+	AdminUsername *string
+
+	// The base64 encoded content of the PEM file containing the SSL certificate.
+	Certificate *string
+
+	// The type of credential store for OGG.
+	CredentialStore *CredentialType
+
+	// Defines the IDP Groups to GoldenGate roles mapping.
+	GroupToRolesMapping *GroupToRolesMappingDetails
+
+	// OGG version.
+	OggVersion *string
+
+	// The OCID of the Secret where the deployment password is stored.
+	PasswordSecretID *string
+}
+
 // Operation - REST API Operation
 //
 // Details of a REST API operation, returned from the Resource Provider Operations API
@@ -4247,6 +5254,102 @@ type OperationListResult struct {
 
 	// The link to the next page of items
 	NextLink *string
+}
+
+// OracleConnectionDetails - The metadata of an Oracle Database Connection.
+type OracleConnectionDetails struct {
+	// CONSTANT; Field has constant value ConnectionTypeOracle, any specified value is ignored.
+	ConnectionType *ConnectionType
+
+	// REQUIRED; The connection display name.
+	DisplayName *string
+
+	// REQUIRED; The corresponding network anchor Azure ID.
+	NetworkAnchorID *string
+
+	// REQUIRED; The corresponding resource anchor Azure ID.
+	ResourceAnchorID *string
+
+	// REQUIRED; The Oracle technology type.
+	TechnologyType *OracleConnectionTechnologyType
+
+	// REQUIRED; The username that is used to connect the associated system of the given technology.
+	Username *string
+
+	// The authentication mode used to connect the associated database.
+	AuthenticationMode *string
+
+	// The connection string used to connect the associated database.
+	ConnectionString *string
+
+	// The OCID of the associated database.
+	DatabaseID *string
+
+	// Indicates whether secret OCIDs are used for credential fields.
+	DoesUseSecretIDs *bool
+
+	// The customer's master key OCID.
+	KeyID *string
+
+	// The OCID of the Secret where the password is stored.
+	PasswordSecretID *string
+
+	// The private IP of the associated database endpoint.
+	PrivateIP *string
+
+	// Controls the network traffic direction to the target.
+	RoutingMethod *RoutingMethod
+
+	// The mode of the database connection session to be established by the data client.
+	SessionMode *SessionMode
+
+	// The customer's vault OCID.
+	VaultID *string
+
+	// The OCID of the Secret where the wallet is stored.
+	WalletSecretID *string
+
+	// READ-ONLY; The OCID of the compartment being referenced.
+	CompartmentID *string
+
+	// READ-ONLY; The description of lifecycle state in detail.
+	LifecycleDetails *string
+
+	// READ-ONLY; The connection lifecycle state.
+	LifecycleState *ConnectionLifecycleState
+
+	// READ-ONLY; The OCID of the connection being referenced.
+	Ocid *string
+
+	// READ-ONLY; Connection provisioning state.
+	ProvisioningState *AzureResourceProvisioningState
+
+	// READ-ONLY; The date time the resource was created in OCI.
+	TimeCreated *string
+
+	// READ-ONLY; The date time the resource was last updated in OCI.
+	TimeUpdated *string
+}
+
+// GetConnectionBaseProperties implements the ConnectionBasePropertiesClassification interface for type OracleConnectionDetails.
+func (o *OracleConnectionDetails) GetConnectionBaseProperties() *ConnectionBaseProperties {
+	return &ConnectionBaseProperties{
+		CompartmentID:     o.CompartmentID,
+		ConnectionType:    o.ConnectionType,
+		DisplayName:       o.DisplayName,
+		DoesUseSecretIDs:  o.DoesUseSecretIDs,
+		KeyID:             o.KeyID,
+		LifecycleDetails:  o.LifecycleDetails,
+		LifecycleState:    o.LifecycleState,
+		NetworkAnchorID:   o.NetworkAnchorID,
+		Ocid:              o.Ocid,
+		ProvisioningState: o.ProvisioningState,
+		ResourceAnchorID:  o.ResourceAnchorID,
+		RoutingMethod:     o.RoutingMethod,
+		TimeCreated:       o.TimeCreated,
+		TimeUpdated:       o.TimeUpdated,
+		VaultID:           o.VaultID,
+	}
 }
 
 // OracleSubscription resource definition
@@ -4448,6 +5551,18 @@ type ProfileType struct {
 
 	// Specifies whether the TLS handshake is using one-way (SERVER) or mutual (MUTUAL) authentication.
 	TLSAuthentication *TLSAuthenticationType
+}
+
+// ProximityPlacementGroup - Proximity placement group properties
+type ProximityPlacementGroup struct {
+	// REQUIRED; Entity type intended to use the proximity placement group
+	EntityTypeIntendedToUse *ProximityPlacementGroupEntityType
+
+	// REQUIRED; Proximity placement group ID
+	ProximityPlacementGroupID *string
+
+	// Proximity Anchor ID
+	ProximityAnchorID *string
 }
 
 // RemoveVirtualMachineFromExadbVMClusterDetails - Details of removing Virtual Machines from the Exadata VM cluster on Exascale

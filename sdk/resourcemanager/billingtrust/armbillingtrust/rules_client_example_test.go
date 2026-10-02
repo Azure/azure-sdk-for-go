@@ -66,10 +66,10 @@ func ExampleRulesClient_CreateOrUpdate() {
 	// 		SystemData: &armbillingtrust.SystemData{
 	// 			CreatedBy: to.Ptr("edu-admin@contoso.com"),
 	// 			CreatedByType: to.Ptr(armbillingtrust.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-17T10:00:00.000Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2026, time.March, 17, 10, 0, 0, 0, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("edu-admin@contoso.com"),
 	// 			LastModifiedByType: to.Ptr(armbillingtrust.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-17T10:15:00.000Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2026, time.March, 17, 10, 15, 0, 0, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -116,10 +116,10 @@ func ExampleRulesClient_Get() {
 	// 		SystemData: &armbillingtrust.SystemData{
 	// 			CreatedBy: to.Ptr("edu-admin@contoso.com"),
 	// 			CreatedByType: to.Ptr(armbillingtrust.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-17T10:00:00.000Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2026, time.March, 17, 10, 0, 0, 0, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("edu-admin@contoso.com"),
 	// 			LastModifiedByType: to.Ptr(armbillingtrust.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-17T10:15:00.000Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2026, time.March, 17, 10, 15, 0, 0, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -171,10 +171,10 @@ func ExampleRulesClient_NewListPager() {
 		// 				SystemData: &armbillingtrust.SystemData{
 		// 					CreatedBy: to.Ptr("edu-admin@contoso.com"),
 		// 					CreatedByType: to.Ptr(armbillingtrust.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-17T10:00:00.000Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2026, time.March, 17, 10, 0, 0, 0, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("edu-admin@contoso.com"),
 		// 					LastModifiedByType: to.Ptr(armbillingtrust.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-17T10:05:00.000Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2026, time.March, 17, 10, 5, 0, 0, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -231,10 +231,10 @@ func ExampleRulesClient_Update_updateAnEduQualificationRuleWithSupplementalDocum
 	// 		SystemData: &armbillingtrust.SystemData{
 	// 			CreatedBy: to.Ptr("edu-admin@contoso.com"),
 	// 			CreatedByType: to.Ptr(armbillingtrust.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-17T10:00:00.000Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2026, time.March, 17, 10, 0, 0, 0, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("edu-admin@contoso.com"),
 	// 			LastModifiedByType: to.Ptr(armbillingtrust.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-17T11:30:00.000Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2026, time.March, 17, 11, 30, 0, 0, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -314,10 +314,10 @@ func ExampleRulesClient_Update_patchABusinessVerificationRuleWithExternalIdWhenA
 	// 		SystemData: &armbillingtrust.SystemData{
 	// 			CreatedBy: to.Ptr("billing-admin@contoso.com"),
 	// 			CreatedByType: to.Ptr(armbillingtrust.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-17T10:00:00.000Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2026, time.March, 17, 10, 0, 0, 0, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("billing-admin@contoso.com"),
 	// 			LastModifiedByType: to.Ptr(armbillingtrust.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-17T11:30:00.000Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2026, time.March, 17, 11, 30, 0, 0, time.UTC)),
 	// 		},
 	// 	},
 	// }

@@ -35,7 +35,7 @@ func ExampleInstancesClient_BeginCreateOrUpdate() {
 			},
 			SolutionScope: to.Ptr("testname"),
 			Status: &armworkloadorchestration.DeploymentStatus{
-				LastModified:         to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-09T10:12:04.224Z"); return t }()),
+				LastModified:         to.Ptr(time.Date(2025, time.June, 9, 10, 12, 4, 224000000, time.UTC)),
 				Deployed:             to.Ptr[int32](24),
 				ExpectedRunningJobID: to.Ptr[int32](19),
 				RunningJobID:         to.Ptr[int32](6),
@@ -83,7 +83,7 @@ func ExampleInstancesClient_BeginCreateOrUpdate() {
 	// 			},
 	// 			SolutionScope: to.Ptr("testname"),
 	// 			Status: &armworkloadorchestration.DeploymentStatus{
-	// 				LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-09T10:12:04.224Z"); return t}()),
+	// 				LastModified: to.Ptr(time.Date(2025, time.June, 9, 10, 12, 4, 224000000, time.UTC)),
 	// 				Deployed: to.Ptr[int32](24),
 	// 				ExpectedRunningJobID: to.Ptr[int32](19),
 	// 				RunningJobID: to.Ptr[int32](6),
@@ -117,10 +117,10 @@ func ExampleInstancesClient_BeginCreateOrUpdate() {
 	// 		SystemData: &armworkloadorchestration.SystemData{
 	// 			CreatedBy: to.Ptr("nvjczgdguyvllp"),
 	// 			CreatedByType: to.Ptr(armworkloadorchestration.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-09T10:11:50.747Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2025, time.June, 9, 10, 11, 50, 747000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("uzbznzjgvaspvtqhyg"),
 	// 			LastModifiedByType: to.Ptr(armworkloadorchestration.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-09T10:11:50.747Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.June, 9, 10, 11, 50, 747000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -177,7 +177,7 @@ func ExampleInstancesClient_Get() {
 	// 			},
 	// 			SolutionScope: to.Ptr("testname"),
 	// 			Status: &armworkloadorchestration.DeploymentStatus{
-	// 				LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-09T10:12:04.224Z"); return t}()),
+	// 				LastModified: to.Ptr(time.Date(2025, time.June, 9, 10, 12, 4, 224000000, time.UTC)),
 	// 				Deployed: to.Ptr[int32](24),
 	// 				ExpectedRunningJobID: to.Ptr[int32](19),
 	// 				RunningJobID: to.Ptr[int32](6),
@@ -211,10 +211,10 @@ func ExampleInstancesClient_Get() {
 	// 		SystemData: &armworkloadorchestration.SystemData{
 	// 			CreatedBy: to.Ptr("nvjczgdguyvllp"),
 	// 			CreatedByType: to.Ptr(armworkloadorchestration.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-09T10:11:50.747Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2025, time.June, 9, 10, 11, 50, 747000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("uzbznzjgvaspvtqhyg"),
 	// 			LastModifiedByType: to.Ptr(armworkloadorchestration.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-09T10:11:50.747Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.June, 9, 10, 11, 50, 747000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -256,7 +256,7 @@ func ExampleInstancesClient_NewListBySolutionPager() {
 		// 					},
 		// 					SolutionScope: to.Ptr("testname"),
 		// 					Status: &armworkloadorchestration.DeploymentStatus{
-		// 						LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-09T10:12:04.224Z"); return t}()),
+		// 						LastModified: to.Ptr(time.Date(2025, time.June, 9, 10, 12, 4, 224000000, time.UTC)),
 		// 						Deployed: to.Ptr[int32](24),
 		// 						ExpectedRunningJobID: to.Ptr[int32](19),
 		// 						RunningJobID: to.Ptr[int32](6),
@@ -290,10 +290,10 @@ func ExampleInstancesClient_NewListBySolutionPager() {
 		// 				SystemData: &armworkloadorchestration.SystemData{
 		// 					CreatedBy: to.Ptr("nvjczgdguyvllp"),
 		// 					CreatedByType: to.Ptr(armworkloadorchestration.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-09T10:11:50.747Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2025, time.June, 9, 10, 11, 50, 747000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("uzbznzjgvaspvtqhyg"),
 		// 					LastModifiedByType: to.Ptr(armworkloadorchestration.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-09T10:11:50.747Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2025, time.June, 9, 10, 11, 50, 747000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -348,7 +348,7 @@ func ExampleInstancesClient_BeginUpdate() {
 	// 			},
 	// 			SolutionScope: to.Ptr("testname"),
 	// 			Status: &armworkloadorchestration.DeploymentStatus{
-	// 				LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-09T10:12:04.224Z"); return t}()),
+	// 				LastModified: to.Ptr(time.Date(2025, time.June, 9, 10, 12, 4, 224000000, time.UTC)),
 	// 				Deployed: to.Ptr[int32](24),
 	// 				ExpectedRunningJobID: to.Ptr[int32](19),
 	// 				RunningJobID: to.Ptr[int32](6),
@@ -382,10 +382,10 @@ func ExampleInstancesClient_BeginUpdate() {
 	// 		SystemData: &armworkloadorchestration.SystemData{
 	// 			CreatedBy: to.Ptr("nvjczgdguyvllp"),
 	// 			CreatedByType: to.Ptr(armworkloadorchestration.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-09T10:11:50.747Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2025, time.June, 9, 10, 11, 50, 747000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("uzbznzjgvaspvtqhyg"),
 	// 			LastModifiedByType: to.Ptr(armworkloadorchestration.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-09T10:11:50.747Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.June, 9, 10, 11, 50, 747000000, time.UTC)),
 	// 		},
 	// 	},
 	// }

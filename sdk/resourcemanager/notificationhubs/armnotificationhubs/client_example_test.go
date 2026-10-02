@@ -114,8 +114,8 @@ func ExampleClient_CreateOrUpdateAuthorizationRule() {
 	// 		Type: to.Ptr("Microsoft.NotificationHubs/namespaces/notificationHubs/authorizationRules"),
 	// 		ID: to.Ptr("/subscriptions/29cfa613-cbbc-4512-b1d6-1b3a92c7fa40/resourceGroups/5ktrial/providers/Microsoft.NotificationHubs/namespaces/nh-sdk-ns/notificationHubs/test/authorizationRules/MyManageSharedAccessKey"),
 	// 		Properties: &armnotificationhubs.SharedAccessAuthorizationRuleProperties{
-	// 			CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-04-26T12:24:40.5863818+00:00"); return t}()),
-	// 			ModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-04-26T12:24:40.5863818+00:00"); return t}()),
+	// 			CreatedTime: to.Ptr(time.Date(2023, time.April, 26, 12, 24, 40, 586381800, time.UTC)),
+	// 			ModifiedTime: to.Ptr(time.Date(2023, time.April, 26, 12, 24, 40, 586381800, time.UTC)),
 	// 			Rights: []*armnotificationhubs.AccessRights{
 	// 				to.Ptr(armnotificationhubs.AccessRightsListen),
 	// 				to.Ptr(armnotificationhubs.AccessRightsSend),
@@ -263,8 +263,8 @@ func ExampleClient_GetAuthorizationRule() {
 	// 		Type: to.Ptr("Microsoft.NotificationHubs/namespaces/notificationHubs/authorizationRules"),
 	// 		ID: to.Ptr("/subscriptions/29cfa613-cbbc-4512-b1d6-1b3a92c7fa40/resourceGroups/5ktrial/providers/Microsoft.NotificationHubs/namespaces/nh-sdk-ns/notificationHubs/test/authorizationRules/DefaultListenSharedAccessSignature"),
 	// 		Properties: &armnotificationhubs.SharedAccessAuthorizationRuleProperties{
-	// 			CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-04-26T12:24:40.5863818+00:00"); return t}()),
-	// 			ModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-04-26T12:24:40.5863818+00:00"); return t}()),
+	// 			CreatedTime: to.Ptr(time.Date(2023, time.April, 26, 12, 24, 40, 586381800, time.UTC)),
+	// 			ModifiedTime: to.Ptr(time.Date(2023, time.April, 26, 12, 24, 40, 586381800, time.UTC)),
 	// 			Rights: []*armnotificationhubs.AccessRights{
 	// 				to.Ptr(armnotificationhubs.AccessRightsListen),
 	// 				to.Ptr(armnotificationhubs.AccessRightsSend),
@@ -385,8 +385,8 @@ func ExampleClient_NewListAuthorizationRulesPager() {
 		// 				Type: to.Ptr("Microsoft.NotificationHubs/namespaces/notificationHubs/authorizationRules"),
 		// 				ID: to.Ptr("/subscriptions/29cfa613-cbbc-4512-b1d6-1b3a92c7fa40/resourceGroups/5ktrial/providers/Microsoft.NotificationHubs/namespaces/nh-sdk-ns/notificationHubs/test/authorizationRules/DefaultListenSharedAccessSignature"),
 		// 				Properties: &armnotificationhubs.SharedAccessAuthorizationRuleProperties{
-		// 					CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-04-26T10:43:00.5320365+00:00"); return t}()),
-		// 					ModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-04-26T10:43:00.5320368+00:00"); return t}()),
+		// 					CreatedTime: to.Ptr(time.Date(2023, time.April, 26, 10, 43, 0, 532036500, time.UTC)),
+		// 					ModifiedTime: to.Ptr(time.Date(2023, time.April, 26, 10, 43, 0, 532036800, time.UTC)),
 		// 					Rights: []*armnotificationhubs.AccessRights{
 		// 						to.Ptr(armnotificationhubs.AccessRightsListen),
 		// 					},
@@ -397,8 +397,8 @@ func ExampleClient_NewListAuthorizationRulesPager() {
 		// 				Type: to.Ptr("Microsoft.NotificationHubs/namespaces/notificationHubs/authorizationRules"),
 		// 				ID: to.Ptr("/subscriptions/29cfa613-cbbc-4512-b1d6-1b3a92c7fa40/resourceGroups/5ktrial/providers/Microsoft.NotificationHubs/namespaces/nh-sdk-ns/notificationHubs/test/authorizationRules/DefaultFullSharedAccessSignature"),
 		// 				Properties: &armnotificationhubs.SharedAccessAuthorizationRuleProperties{
-		// 					CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-04-26T10:43:00.5320386+00:00"); return t}()),
-		// 					ModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-04-26T10:43:00.5320387+00:00"); return t}()),
+		// 					CreatedTime: to.Ptr(time.Date(2023, time.April, 26, 10, 43, 0, 532038600, time.UTC)),
+		// 					ModifiedTime: to.Ptr(time.Date(2023, time.April, 26, 10, 43, 0, 532038700, time.UTC)),
 		// 					Rights: []*armnotificationhubs.AccessRights{
 		// 						to.Ptr(armnotificationhubs.AccessRightsManage),
 		// 						to.Ptr(armnotificationhubs.AccessRightsListen),

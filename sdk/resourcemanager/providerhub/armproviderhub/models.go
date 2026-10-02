@@ -14,6 +14,15 @@ type APIProfile struct {
 	ProfileVersion *string
 }
 
+// ActionConfiguration - Batch action configuration.
+type ActionConfiguration struct {
+	// Authorization action.
+	AuthorizationAction *string
+
+	// The maximum batch size.
+	MaxBatchSize *int64
+}
+
 type AdditionalAuthorization struct {
 	ApplicationID    *string
 	RoleDefinitionID *string
@@ -41,6 +50,9 @@ type ApplicationDataAuthorization struct {
 	// such as read/write on internal metadata.
 	Role *Role
 
+	// Exclude application id from 'providerAuthorizations' section of manifest?
+	ExcludeApplicationIDFromManifest *bool
+
 	// The resource types from the defined resource types in the provider namespace that the application can access. If no resource
 	// types are specified and the role is service owner, the default is * which is all resource types
 	ResourceTypes []*string
@@ -52,6 +64,21 @@ type ApplicationProviderAuthorization struct {
 
 	// The role definition ID for the application.
 	RoleDefinitionID *string
+}
+
+// AppliedManifestInfo - Information about a manifest applied to a region.
+type AppliedManifestInfo struct {
+	// Commit id of manifest being applied.
+	AppliedCommitID *string
+
+	// Time at which the manifest was applied.
+	ManifestAppliedAt *time.Time
+
+	// Commit id of previous manifest.
+	PreviousCommitID *string
+
+	// Region to which the manifest was applied.
+	Region *string
 }
 
 type AsyncOperationPollingRules struct {
@@ -180,6 +207,9 @@ type CustomRolloutPropertiesSpecification struct {
 	// The canary region configuration.
 	Canary *CustomRolloutSpecificationCanary
 
+	// The manifest checkin specification.
+	ManifestCheckinSpecification *ManifestCheckinSpecification
+
 	// The provider registration.
 	ProviderRegistration *CustomRolloutSpecificationProviderRegistration
 
@@ -192,6 +222,9 @@ type CustomRolloutPropertiesSpecification struct {
 	// The resource type registrations.
 	ResourceTypeRegistrations []*ResourceTypeRegistration
 
+	// The rollout id.
+	RolloutID *string
+
 	// Whether release scope validation should be skipped.
 	SkipReleaseScopeValidation *bool
 }
@@ -200,6 +233,9 @@ type CustomRolloutPropertiesSpecification struct {
 type CustomRolloutPropertiesStatus struct {
 	// The completed regions.
 	CompletedRegions []*string
+
+	// Information about the manifests applied to the completed regions.
+	CompletedRegionsInfo []*AppliedManifestInfo
 
 	// The failed or skipped regions.
 	FailedOrSkippedRegions map[string]*ExtendedErrorInfo
@@ -308,6 +344,9 @@ type DefaultRolloutPropertiesSpecification struct {
 
 	// The low traffic region configuration.
 	LowTraffic *DefaultRolloutSpecificationLowTraffic
+
+	// The manifest checkin specification.
+	ManifestCheckinSpecification *ManifestCheckinSpecification
 
 	// The medium traffic region configuration.
 	MediumTraffic *DefaultRolloutSpecificationMediumTraffic
@@ -496,23 +535,11 @@ type FanoutLinkedNotificationRule struct {
 	// The actions.
 	Actions []*string
 
-	// The dsts configuration.
-	DstsConfiguration *FanoutLinkedNotificationRuleDstsConfiguration
-
 	// The endpoints.
 	Endpoints []*ResourceProviderEndpoint
 
 	// The token auth configuration.
 	TokenAuthConfiguration *TokenAuthConfiguration
-}
-
-// FanoutLinkedNotificationRuleDstsConfiguration - The dsts configuration.
-type FanoutLinkedNotificationRuleDstsConfiguration struct {
-	// REQUIRED; The service name.
-	ServiceName *string
-
-	// This is a URI property.
-	ServiceDNSName *string
 }
 
 type FilterRule struct {
@@ -523,89 +550,18 @@ type FilterRule struct {
 	FilterQuery *string
 }
 
-type FrontloadPayload struct {
-	// REQUIRED; Properties of the frontload payload.
-	Properties *FrontloadPayloadProperties
-}
+type GroupConnectivityInformation struct {
+	// REQUIRED; The group id.
+	GroupID *string
 
-type FrontloadPayloadProperties struct {
-	// REQUIRED; The copy from location.
-	CopyFromLocation *string
+	// REQUIRED; List of required members for the group id.
+	RequiredMembers []*string
 
-	// REQUIRED; The environment type.
-	EnvironmentType *AvailableCheckInManifestEnvironment
+	// REQUIRED; List of required zone names for the group id.
+	RequiredZoneNames []*string
 
-	// REQUIRED; The resource types to exclude.
-	ExcludeResourceTypes []*string
-
-	// REQUIRED; The frontload location.
-	FrontloadLocation *string
-
-	// REQUIRED; The fields to ignore.
-	IgnoreFields []*string
-
-	// REQUIRED; The resource types to include.
-	IncludeResourceTypes []*string
-
-	// REQUIRED; The operation type.
-	OperationType *string
-
-	// REQUIRED; The endpoint level fields to override.
-	OverrideEndpointLevelFields *FrontloadPayloadPropertiesOverrideEndpointLevelFields
-
-	// REQUIRED; The manifest level fields to override.
-	OverrideManifestLevelFields *FrontloadPayloadPropertiesOverrideManifestLevelFields
-
-	// REQUIRED; The provider namespace.
-	ProviderNamespace *string
-
-	// REQUIRED; The service feature flag.
-	ServiceFeatureFlag *ServiceFeatureFlagAction
-}
-
-// FrontloadPayloadPropertiesOverrideEndpointLevelFields - The endpoint level fields to override.
-type FrontloadPayloadPropertiesOverrideEndpointLevelFields struct {
-	// REQUIRED; The api version.
-	APIVersion *string
-
-	// REQUIRED; The api versions.
-	APIVersions []*string
-
-	// REQUIRED; The dsts configuration.
-	DstsConfiguration *ResourceTypeEndpointBaseDstsConfiguration
-
-	// REQUIRED; Whether it's enabled.
-	Enabled *bool
-
-	// REQUIRED; The endpoint type.
-	EndpointType *EndpointType
-
-	// REQUIRED; The endpoint uri.
-	EndpointURI *string
-
-	// REQUIRED; The features rule.
-	FeaturesRule *ResourceTypeEndpointBaseFeaturesRule
-
-	// REQUIRED; The locations.
-	Locations []*string
-
-	// REQUIRED; The required features.
-	RequiredFeatures []*string
-
-	// REQUIRED; The sku link.
-	SKULink *string
-
-	// REQUIRED; This is a TimeSpan property.
-	Timeout *string
-
-	// REQUIRED; The zones.
-	Zones []*string
-}
-
-// FrontloadPayloadPropertiesOverrideManifestLevelFields - The manifest level fields to override.
-type FrontloadPayloadPropertiesOverrideManifestLevelFields struct {
-	// The resource hydration accounts.
-	ResourceHydrationAccounts []*ResourceHydrationAccount
+	// The redirect map id.
+	RedirectMapID *string
 }
 
 type LegacyDisallowedCondition struct {
@@ -639,6 +595,9 @@ type LinkedAccessCheck struct {
 
 	// The linked type.
 	LinkedType *string
+
+	// READ-ONLY; The options for the linked access check.
+	Options *LinkedAccessCheckOptions
 }
 
 type LinkedNotificationRule struct {
@@ -684,6 +643,9 @@ type LocalizedOperationDefinition struct {
 
 	// The origin.
 	Origin *OperationOrigins
+
+	// Anything
+	Properties any
 }
 
 // LocalizedOperationDefinitionDisplay - Display information of the operation.
@@ -729,6 +691,9 @@ type LocalizedOperationDefinitionDisplay struct {
 
 	// Display information of the operation for pt-BR locale.
 	PtBR *LocalizedOperationDisplayDefinitionPtBR
+
+	// Display information of the operation for qps-Ploc pseudo locale.
+	QPSPloc *LocalizedOperationDisplayDefinitionQPSPloc
 
 	// Display information of the operation for ru locale.
 	Ru *LocalizedOperationDisplayDefinitionRu
@@ -953,6 +918,21 @@ type LocalizedOperationDisplayDefinitionPtBR struct {
 	Resource *string
 }
 
+// LocalizedOperationDisplayDefinitionQPSPloc - Display information of the operation for qps-Ploc pseudo locale.
+type LocalizedOperationDisplayDefinitionQPSPloc struct {
+	// REQUIRED; The description.
+	Description *string
+
+	// REQUIRED; The operation.
+	Operation *string
+
+	// REQUIRED; The provider.
+	Provider *string
+
+	// REQUIRED; The resource.
+	Resource *string
+}
+
 // LocalizedOperationDisplayDefinitionRu - Display information of the operation for ru locale.
 type LocalizedOperationDisplayDefinitionRu struct {
 	// REQUIRED; The description.
@@ -1045,6 +1025,54 @@ type LoggingRuleHiddenPropertyPaths struct {
 
 	// The hidden paths on response.
 	HiddenPathsOnResponse []*string
+}
+
+// ManagedResourceGroupDenyAssignmentConfiguration - The deny assignment configuration for the managed resource group.
+type ManagedResourceGroupDenyAssignmentConfiguration struct {
+	// Indicates whether the deny assignment configuration is enabled.
+	Enabled *bool
+
+	// The actions excluded from the deny assignment.
+	NotActions []*string
+}
+
+// ManifestCheckinSpecification - The manifest checkin specification.
+type ManifestCheckinSpecification struct {
+	// The manifest checkin option.
+	ManifestCheckinOption *ManifestCheckinOption
+
+	// The manifest checkin params.
+	ManifestCheckinParams *CheckinManifestParams
+}
+
+// ManifestInfo - Concrete proxy resource types can be created by aliasing this type using a specific property type.
+type ManifestInfo struct {
+	// The manifest properties.
+	Properties *ManifestInfoProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// ManifestInfoProperties - The manifest properties.
+type ManifestInfoProperties struct {
+	// The manifest.
+	Manifest *string
+
+	// The URI the manifest content is read from when the manifest is not supplied inline.
+	ManifestURI *string
+
+	// READ-ONLY; The manifest commit identifier.
+	CommitID *string
 }
 
 // MetadataProviderAuthentication - The provider authentication.
@@ -1198,6 +1226,15 @@ type OperationsPutContentProperties struct {
 	Contents []*LocalizedOperationDefinition
 }
 
+// PrivateEndpointConfiguration - The private endpoint configuration.
+type PrivateEndpointConfiguration struct {
+	// REQUIRED; The list of group connectivity information.
+	GroupConnectivityInformation []*GroupConnectivityInformation
+
+	// REQUIRED; The first api version that support private endpoint.
+	MinAPIVersion *string
+}
+
 // ProviderMonitorSetting - Concrete tracked resource types can be created by aliasing this type using a specific property
 // type.
 type ProviderMonitorSetting struct {
@@ -1274,8 +1311,8 @@ type ProviderRegistrationProperties struct {
 	// Custom manifest version.
 	CustomManifestVersion *string
 
-	// The dsts configuration.
-	DstsConfiguration *ResourceProviderManifestPropertiesDstsConfiguration
+	// Indicates whether automatic registration for the preset resource types is enabled or disabled.
+	EnablePresetResourceTypes *bool
 
 	// The enable tenant linked notification.
 	EnableTenantLinkedNotification *bool
@@ -1315,6 +1352,9 @@ type ProviderRegistrationProperties struct {
 
 	// The notifications.
 	Notifications []*Notification
+
+	// The on behalf of subscription id for the resource provider.
+	OboSubscriptionID *string
 
 	// Optional features.
 	OptionalFeatures []*string
@@ -1433,6 +1473,24 @@ type ResourceAccessRole struct {
 type ResourceConcurrencyControlOption struct {
 	// The policy.
 	Policy *Policy
+}
+
+// ResourceDeletionPolicyAndProperties - The individual resource deletion policy.
+type ResourceDeletionPolicyAndProperties struct {
+	// The resource deletion policy name.
+	PolicyName *ResourceDeletionPolicy
+
+	// The resource deletion policy properties.
+	Properties *ResourceDeletionPolicyProperties
+}
+
+// ResourceDeletionPolicyProperties - The resource deletion policy properties.
+type ResourceDeletionPolicyProperties struct {
+	// The maximum retention time.
+	MaximumRetentionTime *string
+
+	// The minimum retention time.
+	MinimumRetentionTime *string
 }
 
 type ResourceHydrationAccount struct {
@@ -1628,6 +1686,9 @@ type ResourceProviderManifest struct {
 
 	// The services.
 	Services []*ResourceProviderService
+
+	// The token auth configuration.
+	TokenAuthConfiguration *TokenAuthConfiguration
 }
 
 // ResourceProviderManifestFeaturesRule - The features rule.
@@ -1653,6 +1714,9 @@ type ResourceProviderManifestManagement struct {
 	// List of expedited rollout submitters.
 	ExpeditedRolloutSubmitters []*string
 
+	// List of feature management owners.
+	FeatureManagementOwners []*string
+
 	// The incident contact email.
 	IncidentContactEmail *string
 
@@ -1679,18 +1743,6 @@ type ResourceProviderManifestManagement struct {
 
 	// The schema owners.
 	SchemaOwners []*string
-
-	// The service tree infos.
-	ServiceTreeInfos []*ServiceTreeInfo
-}
-
-// ResourceProviderManifestPropertiesDstsConfiguration - The dsts configuration.
-type ResourceProviderManifestPropertiesDstsConfiguration struct {
-	// REQUIRED; The service name.
-	ServiceName *string
-
-	// This is a URI property.
-	ServiceDNSName *string
 }
 
 // ResourceProviderManifestPropertiesFeaturesRule - The features rule.
@@ -1716,6 +1768,9 @@ type ResourceProviderManifestPropertiesManagement struct {
 	// List of expedited rollout submitters.
 	ExpeditedRolloutSubmitters []*string
 
+	// List of feature management owners.
+	FeatureManagementOwners []*string
+
 	// The incident contact email.
 	IncidentContactEmail *string
 
@@ -1742,9 +1797,6 @@ type ResourceProviderManifestPropertiesManagement struct {
 
 	// The schema owners.
 	SchemaOwners []*string
-
-	// The service tree infos.
-	ServiceTreeInfos []*ServiceTreeInfo
 }
 
 // ResourceProviderManifestPropertiesNotificationSettings - Notification settings.
@@ -1887,8 +1939,11 @@ type ResourceType struct {
 	// The required features.
 	RequiredFeatures []*string
 
+	// List of resource deletion policies added.
+	ResourceDeletionPolicies []*ResourceDeletionPolicyAndProperties
+
 	// The resource deletion policy.
-	ResourceDeletionPolicy *ManifestResourceDeletionPolicy
+	ResourceDeletionPolicy *ResourceDeletionPolicy
 
 	// The resource provider authorization rules.
 	ResourceProviderAuthorizationRules *ResourceProviderAuthorizationRules
@@ -1901,9 +1956,6 @@ type ResourceType struct {
 
 	// The sku link.
 	SKULink *string
-
-	// The service tree infos.
-	ServiceTreeInfos []*ServiceTreeInfo
 
 	// The subscription state rules.
 	SubscriptionStateRules []*SubscriptionStateRule
@@ -1924,9 +1976,6 @@ type ResourceTypeEndpoint struct {
 
 	// The data boundary.
 	DataBoundary *DataBoundary
-
-	// The dsts configuration.
-	DstsConfiguration *ResourceTypeEndpointDstsConfiguration
 
 	// Whether the endpoint is enabled.
 	Enabled *bool
@@ -1966,30 +2015,6 @@ type ResourceTypeEndpoint struct {
 	Zones []*string
 }
 
-// ResourceTypeEndpointBaseDstsConfiguration - The dsts configuration.
-type ResourceTypeEndpointBaseDstsConfiguration struct {
-	// REQUIRED; The service name.
-	ServiceName *string
-
-	// This is a URI property.
-	ServiceDNSName *string
-}
-
-// ResourceTypeEndpointBaseFeaturesRule - The features rule.
-type ResourceTypeEndpointBaseFeaturesRule struct {
-	// REQUIRED; The required feature policy.
-	RequiredFeaturesPolicy *FeaturesPolicy
-}
-
-// ResourceTypeEndpointDstsConfiguration - The dsts configuration.
-type ResourceTypeEndpointDstsConfiguration struct {
-	// REQUIRED; The service name.
-	ServiceName *string
-
-	// This is a URI property.
-	ServiceDNSName *string
-}
-
 // ResourceTypeEndpointFeaturesRule - The features rule.
 type ResourceTypeEndpointFeaturesRule struct {
 	// REQUIRED; The required feature policy.
@@ -2026,6 +2051,21 @@ type ResourceTypeFeaturesRule struct {
 type ResourceTypeIdentityManagement struct {
 	// The type.
 	Type *IdentityManagementTypes
+}
+
+// ResourceTypeManagedResourceGroupConfiguration - The managed resource group configuration for the resource type.
+type ResourceTypeManagedResourceGroupConfiguration struct {
+	// The application ids.
+	ApplicationIDs []*string
+
+	// The deny assignment configuration.
+	DenyAssignmentConfiguration *ManagedResourceGroupDenyAssignmentConfiguration
+
+	// Indicates whether the managed resource group configuration is enabled.
+	Enabled *bool
+
+	// The resource group location override.
+	ResourceGroupLocationOverride *string
 }
 
 type ResourceTypeOnBehalfOfToken struct {
@@ -2127,9 +2167,6 @@ type ResourceTypeRegistrationProperties struct {
 	// The disallowed end user operations.
 	DisallowedEndUserOperations []*string
 
-	// The dsts configuration.
-	DstsConfiguration *ResourceTypeRegistrationPropertiesDstsConfiguration
-
 	// Whether async operation is enabled.
 	EnableAsyncOperation *bool
 
@@ -2181,6 +2218,9 @@ type ResourceTypeRegistrationProperties struct {
 	// The logging rules.
 	LoggingRules []*LoggingRule
 
+	// The managed resource group configuration.
+	ManagedResourceGroupConfiguration *ResourceTypeManagedResourceGroupConfiguration
+
 	// The resource provider management.
 	Management *ResourceTypeRegistrationPropertiesManagement
 
@@ -2208,6 +2248,9 @@ type ResourceTypeRegistrationProperties struct {
 	// The policy execution type.
 	PolicyExecutionType *PolicyExecutionType
 
+	// The private endpoint configuration.
+	PrivateEndpointConfiguration *PrivateEndpointConfiguration
+
 	// The quota rule.
 	QuotaRule *QuotaRule
 
@@ -2226,8 +2269,11 @@ type ResourceTypeRegistrationProperties struct {
 	// The resource concurrency control options.
 	ResourceConcurrencyControlOptions map[string]*ResourceConcurrencyControlOption
 
+	// List of resource deletion policies added.
+	ResourceDeletionPolicies []*ResourceDeletionPolicyAndProperties
+
 	// The resource deletion policy.
-	ResourceDeletionPolicy *ResourceDeletionPolicy
+	ResourceDeletionPolicy *RPaaSResourceDeletionPolicy
 
 	// The resource graph configuration.
 	ResourceGraphConfiguration *ResourceTypeRegistrationPropertiesResourceGraphConfiguration
@@ -2262,14 +2308,14 @@ type ResourceTypeRegistrationProperties struct {
 	// The sku link.
 	SKULink *string
 
-	// The service tree infos.
-	ServiceTreeInfos []*ServiceTreeInfo
-
 	// The subscription lifecycle notification specifications.
 	SubscriptionLifecycleNotificationSpecifications *ResourceTypeRegistrationPropertiesSubscriptionLifecycleNotificationSpecifications
 
 	// The subscription state rules.
 	SubscriptionStateRules []*SubscriptionStateRule
+
+	// Indicates whether super scale is enabled.
+	SuperScaleEnabled *bool
 
 	// Whether tags are supported.
 	SupportsTags *bool
@@ -2288,6 +2334,9 @@ type ResourceTypeRegistrationProperties struct {
 
 	// The token auth configuration.
 	TokenAuthConfiguration *TokenAuthConfiguration
+
+	// The write lock configuration.
+	WriteLock *WriteLockConfiguration
 
 	// READ-ONLY; The provisioning state.
 	ProvisioningState *ProvisioningState
@@ -2314,15 +2363,6 @@ type ResourceTypeRegistrationPropertiesCheckNameAvailabilitySpecifications struc
 
 	// The resource types with custom validation.
 	ResourceTypesWithCustomValidation []*string
-}
-
-// ResourceTypeRegistrationPropertiesDstsConfiguration - The dsts configuration.
-type ResourceTypeRegistrationPropertiesDstsConfiguration struct {
-	// REQUIRED; The service name.
-	ServiceName *string
-
-	// This is a URI property.
-	ServiceDNSName *string
 }
 
 // ResourceTypeRegistrationPropertiesExtensionOptions - The extension options.
@@ -2375,6 +2415,9 @@ type ResourceTypeRegistrationPropertiesManagement struct {
 	// List of expedited rollout submitters.
 	ExpeditedRolloutSubmitters []*string
 
+	// List of feature management owners.
+	FeatureManagementOwners []*string
+
 	// The incident contact email.
 	IncidentContactEmail *string
 
@@ -2401,9 +2444,6 @@ type ResourceTypeRegistrationPropertiesManagement struct {
 
 	// The schema owners.
 	SchemaOwners []*string
-
-	// The service tree infos.
-	ServiceTreeInfos []*ServiceTreeInfo
 }
 
 // ResourceTypeRegistrationPropertiesMarketplaceOptions - Marketplace options.
@@ -2453,6 +2493,21 @@ type ResourceTypeRegistrationPropertiesResourceManagementOptions struct {
 
 // ResourceTypeRegistrationPropertiesResourceManagementOptionsBatchProvisioningSupport - Batch provisioning support.
 type ResourceTypeRegistrationPropertiesResourceManagementOptionsBatchProvisioningSupport struct {
+	// Action Configurations.
+	ActionConfigurations []*ActionConfiguration
+
+	// Batch contract version.
+	BatchContractVersion *string
+
+	// The maximum batch size.
+	MaxBatchSize *int64
+
+	// The maximum nested batch size.
+	MaxNestedBatchSize *int64
+
+	// The required features.
+	RequiredFeatures []*string
+
 	// Supported operations.
 	SupportedOperations *SupportedOperations
 }
@@ -2676,17 +2731,6 @@ type SKUZoneDetail struct {
 	Name []*string
 }
 
-type ServiceTreeInfo struct {
-	// The component id.
-	ComponentID *string
-
-	// The readiness.
-	Readiness *Readiness
-
-	// The service id.
-	ServiceID *string
-}
-
 type SubscriberSetting struct {
 	// The filter rules.
 	FilterRules []*FilterRule
@@ -2749,6 +2793,9 @@ type ThrottlingMetric struct {
 	// REQUIRED; The throttling metric type
 	Type *ThrottlingMetricType
 
+	// The bucket size.
+	BucketSize *string
+
 	// The interval.
 	Interval *string
 }
@@ -2785,4 +2832,11 @@ type TypedErrorInfo struct {
 
 	// READ-ONLY; The error information.
 	Info any
+}
+
+// WriteLockConfiguration - The write lock configuration.
+type WriteLockConfiguration struct {
+	// The state of write lock feature. The feature will ensure a deterministic sequence of write-operation within and across
+	// the verbs. Also the feature will ensure that the semantics of synchronous and long-running operations are honored.
+	State *WriteLockState
 }

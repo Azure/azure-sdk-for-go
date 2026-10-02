@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armdeployments/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armdeployments/v3"
 	"log"
 )
 
-// Generated from example definition: 2025-04-01/CalculateTemplateHash.json
+// Generated from example definition: 2026-06-01/CalculateTemplateHash.json
 func ExampleDeploymentsClient_CalculateTemplateHash() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -70,7 +70,7 @@ func ExampleDeploymentsClient_CalculateTemplateHash() {
 	// }
 }
 
-// Generated from example definition: 2025-04-01/PutDeploymentResourceGroup.json
+// Generated from example definition: 2026-06-01/PutDeploymentResourceGroup.json
 func ExampleDeploymentsClient_BeginCreateOrUpdate_createADeploymentThatWillDeployATemplateWithAUriAndQueryString() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -138,13 +138,13 @@ func ExampleDeploymentsClient_BeginCreateOrUpdate_createADeploymentThatWillDeplo
 	// 				ContentVersion: to.Ptr("1.0.0.0"),
 	// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000001/resourceGroups/my-resource-group/providers/Microsoft.Resources/TemplateSpecs/TemplateSpec-Name/versions/v1"),
 	// 			},
-	// 			Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-05T01:20:01.723776Z"); return t}()),
+	// 			Timestamp: to.Ptr(time.Date(2020, time.June, 5, 1, 20, 1, 723776000, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-04-01/PutDeploymentResourceGroupTemplateSpecsWithId.json
+// Generated from example definition: 2026-06-01/PutDeploymentResourceGroupTemplateSpecsWithId.json
 func ExampleDeploymentsClient_BeginCreateOrUpdate_createADeploymentThatWillDeployATemplateSpecWithTheGivenResourceId() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -211,13 +211,13 @@ func ExampleDeploymentsClient_BeginCreateOrUpdate_createADeploymentThatWillDeplo
 	// 				ContentVersion: to.Ptr("1.0.0.0"),
 	// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000001/resourceGroups/my-resource-group/providers/Microsoft.Resources/TemplateSpecs/TemplateSpec-Name/versions/v1"),
 	// 			},
-	// 			Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-05T01:20:01.723776Z"); return t}()),
+	// 			Timestamp: to.Ptr(time.Date(2020, time.June, 5, 1, 20, 1, 723776000, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-04-01/PutDeploymentWithExternalInputs.json
+// Generated from example definition: 2026-06-01/PutDeploymentWithExternalInputs.json
 func ExampleDeploymentsClient_BeginCreateOrUpdate_createDeploymentUsingExternalInputs() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -307,13 +307,13 @@ func ExampleDeploymentsClient_BeginCreateOrUpdate_createDeploymentUsingExternalI
 	// 			},
 	// 			ProvisioningState: to.Ptr(armdeployments.ProvisioningStateSucceeded),
 	// 			TemplateHash: to.Ptr("17686481789412793580"),
-	// 			Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-09T14:36:48.2047169Z"); return t}()),
+	// 			Timestamp: to.Ptr(time.Date(2025, time.April, 9, 14, 36, 48, 204716900, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-04-01/PutDeploymentWithOnErrorDeploymentLastSuccessful.json
+// Generated from example definition: 2026-06-01/PutDeploymentWithOnErrorDeploymentLastSuccessful.json
 func ExampleDeploymentsClient_BeginCreateOrUpdate_createADeploymentThatWillRedeployTheLastSuccessfulDeploymentOnFailure() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -416,13 +416,13 @@ func ExampleDeploymentsClient_BeginCreateOrUpdate_createADeploymentThatWillRedep
 	// 				ContentVersion: to.Ptr("1.0.0.0"),
 	// 				URI: to.Ptr("https://example.com/exampleTemplate.json"),
 	// 			},
-	// 			Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-03-01T00:00:00.0000000Z"); return t}()),
+	// 			Timestamp: to.Ptr(time.Date(2019, time.March, 1, 0, 0, 0, 0, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-04-01/PutDeploymentWithOnErrorDeploymentSpecificDeployment.json
+// Generated from example definition: 2026-06-01/PutDeploymentWithOnErrorDeploymentSpecificDeployment.json
 func ExampleDeploymentsClient_BeginCreateOrUpdate_createADeploymentThatWillRedeployAnotherDeploymentOnFailure() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -526,13 +526,13 @@ func ExampleDeploymentsClient_BeginCreateOrUpdate_createADeploymentThatWillRedep
 	// 				ContentVersion: to.Ptr("1.0.0.0"),
 	// 				URI: to.Ptr("https://example.com/exampleTemplate.json"),
 	// 			},
-	// 			Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-03-01T00:00:00.0000000Z"); return t}()),
+	// 			Timestamp: to.Ptr(time.Date(2019, time.March, 1, 0, 0, 0, 0, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-04-01/PutDeploymentAtManagementGroup.json
+// Generated from example definition: 2026-06-01/PutDeploymentAtManagementGroup.json
 func ExampleDeploymentsClient_BeginCreateOrUpdateAtManagementGroupScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -618,13 +618,13 @@ func ExampleDeploymentsClient_BeginCreateOrUpdateAtManagementGroupScope() {
 	// 				},
 	// 			},
 	// 			ProvisioningState: to.Ptr(armdeployments.ProvisioningStateAccepted),
-	// 			Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-24T22:52:38.7895563Z"); return t}()),
+	// 			Timestamp: to.Ptr(time.Date(2019, time.April, 24, 22, 52, 38, 789556300, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-04-01/PutDeploymentAtScope.json
+// Generated from example definition: 2026-06-01/PutDeploymentAtScope.json
 func ExampleDeploymentsClient_BeginCreateOrUpdateAtScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -714,7 +714,7 @@ func ExampleDeploymentsClient_BeginCreateOrUpdateAtScope() {
 	// 				},
 	// 			},
 	// 			ProvisioningState: to.Ptr(armdeployments.ProvisioningStateAccepted),
-	// 			Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-24T22:52:38.7895563Z"); return t}()),
+	// 			Timestamp: to.Ptr(time.Date(2019, time.April, 24, 22, 52, 38, 789556300, time.UTC)),
 	// 		},
 	// 		Tags: map[string]*string{
 	// 			"tagKey1": to.Ptr("tag-value-1"),
@@ -724,7 +724,7 @@ func ExampleDeploymentsClient_BeginCreateOrUpdateAtScope() {
 	// }
 }
 
-// Generated from example definition: 2025-04-01/PutDeploymentSubscriptionTemplateSpecsWithId.json
+// Generated from example definition: 2026-06-01/PutDeploymentSubscriptionTemplateSpecsWithId.json
 func ExampleDeploymentsClient_BeginCreateOrUpdateAtSubscriptionScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -779,13 +779,13 @@ func ExampleDeploymentsClient_BeginCreateOrUpdateAtSubscriptionScope() {
 	// 				ContentVersion: to.Ptr("1.0.0.0"),
 	// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000001/resourceGroups/my-resource-group/providers/Microsoft.Resources/TemplateSpecs/TemplateSpec-Name/versions/v1"),
 	// 			},
-	// 			Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-05T01:51:58.6288067Z"); return t}()),
+	// 			Timestamp: to.Ptr(time.Date(2020, time.June, 5, 1, 51, 58, 628806700, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-04-01/PutDeploymentAtTenant.json
+// Generated from example definition: 2026-06-01/PutDeploymentAtTenant.json
 func ExampleDeploymentsClient_BeginCreateOrUpdateAtTenantScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -875,7 +875,7 @@ func ExampleDeploymentsClient_BeginCreateOrUpdateAtTenantScope() {
 	// 				},
 	// 			},
 	// 			ProvisioningState: to.Ptr(armdeployments.ProvisioningStateAccepted),
-	// 			Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-24T22:52:38.7895563Z"); return t}()),
+	// 			Timestamp: to.Ptr(time.Date(2019, time.April, 24, 22, 52, 38, 789556300, time.UTC)),
 	// 		},
 	// 		Tags: map[string]*string{
 	// 			"tagKey1": to.Ptr("tag-value-1"),
@@ -885,7 +885,7 @@ func ExampleDeploymentsClient_BeginCreateOrUpdateAtTenantScope() {
 	// }
 }
 
-// Generated from example definition: 2025-04-01/PostDeploymentValidateOnResourceGroup.json
+// Generated from example definition: 2026-06-01/PostDeploymentValidateOnResourceGroup.json
 func ExampleDeploymentsClient_BeginValidate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -965,7 +965,7 @@ func ExampleDeploymentsClient_BeginValidate() {
 	// 				ContentVersion: to.Ptr("1.0.0.0"),
 	// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000001/resourceGroups/my-resource-group/providers/Microsoft.Resources/TemplateSpecs/TemplateSpec-Name/versions/v1"),
 	// 			},
-	// 			Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-05T01:20:01.723776Z"); return t}()),
+	// 			Timestamp: to.Ptr(time.Date(2020, time.June, 5, 1, 20, 1, 723776000, time.UTC)),
 	// 			ValidatedResources: []*armdeployments.ResourceReference{
 	// 				{
 	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000001/resourceGroups/my-resource-group/providers/Microsoft.Storage/storageAccounts/my-storage-account"),
@@ -976,7 +976,7 @@ func ExampleDeploymentsClient_BeginValidate() {
 	// }
 }
 
-// Generated from example definition: 2025-04-01/PostDeploymentValidateOnManagementGroup.json
+// Generated from example definition: 2026-06-01/PostDeploymentValidateOnManagementGroup.json
 func ExampleDeploymentsClient_BeginValidateAtManagementGroupScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1055,7 +1055,7 @@ func ExampleDeploymentsClient_BeginValidateAtManagementGroupScope() {
 	// 				ContentVersion: to.Ptr("1.0.0.0"),
 	// 				URI: to.Ptr("https://example.com/exampleTemplate.json"),
 	// 			},
-	// 			Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-05T01:20:01.723776Z"); return t}()),
+	// 			Timestamp: to.Ptr(time.Date(2020, time.June, 5, 1, 20, 1, 723776000, time.UTC)),
 	// 			ValidatedResources: []*armdeployments.ResourceReference{
 	// 				{
 	// 					ID: to.Ptr("/providers/Microsoft.Management/managementGroups/myManagementGroup/providers/Microsoft.Authorization/policyAssignments/myPolicyAssignment"),
@@ -1066,7 +1066,7 @@ func ExampleDeploymentsClient_BeginValidateAtManagementGroupScope() {
 	// }
 }
 
-// Generated from example definition: 2025-04-01/PostDeploymentValidateOnScope.json
+// Generated from example definition: 2026-06-01/PostDeploymentValidateOnScope.json
 func ExampleDeploymentsClient_BeginValidateAtScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1146,7 +1146,7 @@ func ExampleDeploymentsClient_BeginValidateAtScope() {
 	// 				ContentVersion: to.Ptr("1.0.0.0"),
 	// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000001/resourceGroups/my-resource-group/providers/Microsoft.Resources/TemplateSpecs/TemplateSpec-Name/versions/v1"),
 	// 			},
-	// 			Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-05T01:20:01.723776Z"); return t}()),
+	// 			Timestamp: to.Ptr(time.Date(2020, time.June, 5, 1, 20, 1, 723776000, time.UTC)),
 	// 			ValidatedResources: []*armdeployments.ResourceReference{
 	// 				{
 	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000001/resourceGroups/my-resource-group/providers/Microsoft.Storage/storageAccounts/my-storage-account"),
@@ -1157,7 +1157,7 @@ func ExampleDeploymentsClient_BeginValidateAtScope() {
 	// }
 }
 
-// Generated from example definition: 2025-04-01/PostDeploymentValidateOnSubscription.json
+// Generated from example definition: 2026-06-01/PostDeploymentValidateOnSubscription.json
 func ExampleDeploymentsClient_BeginValidateAtSubscriptionScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1237,7 +1237,7 @@ func ExampleDeploymentsClient_BeginValidateAtSubscriptionScope() {
 	// 				ContentVersion: to.Ptr("1.0.0.0"),
 	// 				URI: to.Ptr("https://example.com/exampleTemplate.json"),
 	// 			},
-	// 			Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-05T01:20:01.723776Z"); return t}()),
+	// 			Timestamp: to.Ptr(time.Date(2020, time.June, 5, 1, 20, 1, 723776000, time.UTC)),
 	// 			ValidatedResources: []*armdeployments.ResourceReference{
 	// 				{
 	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000001/resourceGroups/my-resource-group2"),
@@ -1248,7 +1248,7 @@ func ExampleDeploymentsClient_BeginValidateAtSubscriptionScope() {
 	// }
 }
 
-// Generated from example definition: 2025-04-01/PostDeploymentValidateOnTenant.json
+// Generated from example definition: 2026-06-01/PostDeploymentValidateOnTenant.json
 func ExampleDeploymentsClient_BeginValidateAtTenantScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1327,7 +1327,7 @@ func ExampleDeploymentsClient_BeginValidateAtTenantScope() {
 	// 				ContentVersion: to.Ptr("1.0.0.0"),
 	// 				URI: to.Ptr("https://example.com/exampleTemplate.json"),
 	// 			},
-	// 			Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-05T01:20:01.723776Z"); return t}()),
+	// 			Timestamp: to.Ptr(time.Date(2020, time.June, 5, 1, 20, 1, 723776000, time.UTC)),
 	// 			ValidatedResources: []*armdeployments.ResourceReference{
 	// 				{
 	// 					ID: to.Ptr("/providers/Microsoft.Authorization/policyDefinitions/policy-definition-name"),
@@ -1338,7 +1338,7 @@ func ExampleDeploymentsClient_BeginValidateAtTenantScope() {
 	// }
 }
 
-// Generated from example definition: 2025-04-01/PostDeploymentWhatIfOnResourceGroup.json
+// Generated from example definition: 2026-06-01/PostDeploymentWhatIfOnResourceGroup.json
 func ExampleDeploymentsClient_BeginWhatIf() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1421,7 +1421,7 @@ func ExampleDeploymentsClient_BeginWhatIf() {
 	// }
 }
 
-// Generated from example definition: 2025-04-01/PostDeploymentWhatIfOnManagementGroup.json
+// Generated from example definition: 2026-06-01/PostDeploymentWhatIfOnManagementGroup.json
 func ExampleDeploymentsClient_BeginWhatIfAtManagementGroupScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1519,7 +1519,7 @@ func ExampleDeploymentsClient_BeginWhatIfAtManagementGroupScope() {
 	// }
 }
 
-// Generated from example definition: 2025-04-01/PostDeploymentWhatIfOnSubscription.json
+// Generated from example definition: 2026-06-01/PostDeploymentWhatIfOnSubscription.json
 func ExampleDeploymentsClient_BeginWhatIfAtSubscriptionScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1614,7 +1614,7 @@ func ExampleDeploymentsClient_BeginWhatIfAtSubscriptionScope() {
 	// }
 }
 
-// Generated from example definition: 2025-04-01/PostDeploymentWhatIfOnTenant.json
+// Generated from example definition: 2026-06-01/PostDeploymentWhatIfOnTenant.json
 func ExampleDeploymentsClient_BeginWhatIfAtTenantScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

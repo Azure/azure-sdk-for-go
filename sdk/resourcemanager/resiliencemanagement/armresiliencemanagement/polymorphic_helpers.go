@@ -85,6 +85,8 @@ func unmarshalResourceBaseProtectionSolutionSettingClassification(rawMsg json.Ra
 		b = &ResourceNativeProtectionSolutionSetting{}
 	case string(ResourceProtectionSolutionTypeAzureSiteRecovery):
 		b = &ResourceSiteRecoveryProtectionSetting{}
+	case string(ResourceProtectionSolutionTypeCrossZoneVMRecovery):
+		b = &ResourceCrossZoneVMRecoveryProtectionSetting{}
 	case string(ResourceProtectionSolutionTypeCustomRunbook):
 		b = &ResourceCustomProtectionSetting{}
 	default:

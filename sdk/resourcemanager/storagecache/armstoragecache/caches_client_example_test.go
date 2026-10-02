@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-// Generated from example definition: 2026-01-01/Caches_CreateOrUpdate.json
+// Generated from example definition: 2026-08-01/Caches_CreateOrUpdate.json
 func ExampleCachesClient_BeginCreateOrUpdate_cachesCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -83,7 +83,7 @@ func ExampleCachesClient_BeginCreateOrUpdate_cachesCreateOrUpdate() {
 			},
 			Subnet: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/scgroup/providers/Microsoft.Network/virtualNetworks/scvnet/subnets/sub1"),
 			UpgradeSettings: &armstoragecache.CacheUpgradeSettings{
-				ScheduledTime:          to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-04-26T18:25:43.511Z"); return t }()),
+				ScheduledTime:          to.Ptr(time.Date(2022, time.April, 26, 18, 25, 43, 511000000, time.UTC)),
 				UpgradeScheduleEnabled: to.Ptr(true),
 			},
 		},
@@ -147,7 +147,7 @@ func ExampleCachesClient_BeginCreateOrUpdate_cachesCreateOrUpdate() {
 	// 				Conditions: []*armstoragecache.Condition{
 	// 					{
 	// 						Message: to.Ptr("Cannot contact DNS server"),
-	// 						Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-21T18:25:43.511Z"); return t}()),
+	// 						Timestamp: to.Ptr(time.Date(2021, time.April, 21, 18, 25, 43, 511000000, time.UTC)),
 	// 					},
 	// 				},
 	// 				State: to.Ptr(armstoragecache.HealthStateTypeTransitioning),
@@ -205,14 +205,14 @@ func ExampleCachesClient_BeginCreateOrUpdate_cachesCreateOrUpdate() {
 	// 			},
 	// 			Subnet: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/scgroup/providers/Microsoft.Network/virtualNetworks/scvnet/subnets/sub1"),
 	// 			UpgradeSettings: &armstoragecache.CacheUpgradeSettings{
-	// 				ScheduledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-04-26T18:25:43.511Z"); return t}()),
+	// 				ScheduledTime: to.Ptr(time.Date(2022, time.April, 26, 18, 25, 43, 511000000, time.UTC)),
 	// 				UpgradeScheduleEnabled: to.Ptr(true),
 	// 			},
 	// 			UpgradeStatus: &armstoragecache.CacheUpgradeStatus{
 	// 				CurrentFirmwareVersion: to.Ptr("2022.08.1"),
-	// 				FirmwareUpdateDeadline: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-21T18:25:43.511Z"); return t}()),
+	// 				FirmwareUpdateDeadline: to.Ptr(time.Date(2019, time.April, 21, 18, 25, 43, 511000000, time.UTC)),
 	// 				FirmwareUpdateStatus: to.Ptr(armstoragecache.FirmwareStatusTypeAvailable),
-	// 				LastFirmwareUpdate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-01-21T18:25:43.511Z"); return t}()),
+	// 				LastFirmwareUpdate: to.Ptr(time.Date(2019, time.January, 21, 18, 25, 43, 511000000, time.UTC)),
 	// 				PendingFirmwareVersion: to.Ptr("2022.08.1"),
 	// 			},
 	// 			Zones: []*string{
@@ -223,10 +223,10 @@ func ExampleCachesClient_BeginCreateOrUpdate_cachesCreateOrUpdate() {
 	// 			Name: to.Ptr("Standard_2G"),
 	// 		},
 	// 		SystemData: &armstoragecache.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.1234567Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2020, time.January, 1, 17, 18, 19, 123456700, time.UTC)),
 	// 			CreatedBy: to.Ptr("user1"),
 	// 			CreatedByType: to.Ptr(armstoragecache.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-02T17:18:19.1234567Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2020, time.January, 2, 17, 18, 19, 123456700, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user2"),
 	// 			LastModifiedByType: to.Ptr(armstoragecache.CreatedByTypeUser),
 	// 		},
@@ -237,7 +237,7 @@ func ExampleCachesClient_BeginCreateOrUpdate_cachesCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/Caches_CreateOrUpdate_ldap_only.json
+// Generated from example definition: 2026-08-01/Caches_CreateOrUpdate_ldap_only.json
 func ExampleCachesClient_BeginCreateOrUpdate_cachesCreateOrUpdateLdapOnly() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -290,7 +290,7 @@ func ExampleCachesClient_BeginCreateOrUpdate_cachesCreateOrUpdateLdapOnly() {
 			},
 			Subnet: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/scgroup/providers/Microsoft.Network/virtualNetworks/scvnet/subnets/sub1"),
 			UpgradeSettings: &armstoragecache.CacheUpgradeSettings{
-				ScheduledTime:          to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-04-26T18:25:43.511Z"); return t }()),
+				ScheduledTime:          to.Ptr(time.Date(2022, time.April, 26, 18, 25, 43, 511000000, time.UTC)),
 				UpgradeScheduleEnabled: to.Ptr(true),
 			},
 		},
@@ -346,7 +346,7 @@ func ExampleCachesClient_BeginCreateOrUpdate_cachesCreateOrUpdateLdapOnly() {
 	// 				Conditions: []*armstoragecache.Condition{
 	// 					{
 	// 						Message: to.Ptr("Cannot contact DNS server"),
-	// 						Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-21T18:25:43.511Z"); return t}()),
+	// 						Timestamp: to.Ptr(time.Date(2021, time.April, 21, 18, 25, 43, 511000000, time.UTC)),
 	// 					},
 	// 				},
 	// 				State: to.Ptr(armstoragecache.HealthStateTypeTransitioning),
@@ -404,14 +404,14 @@ func ExampleCachesClient_BeginCreateOrUpdate_cachesCreateOrUpdateLdapOnly() {
 	// 			},
 	// 			Subnet: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/scgroup/providers/Microsoft.Network/virtualNetworks/scvnet/subnets/sub1"),
 	// 			UpgradeSettings: &armstoragecache.CacheUpgradeSettings{
-	// 				ScheduledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-04-26T18:25:43.511Z"); return t}()),
+	// 				ScheduledTime: to.Ptr(time.Date(2022, time.April, 26, 18, 25, 43, 511000000, time.UTC)),
 	// 				UpgradeScheduleEnabled: to.Ptr(true),
 	// 			},
 	// 			UpgradeStatus: &armstoragecache.CacheUpgradeStatus{
 	// 				CurrentFirmwareVersion: to.Ptr("2022.08.1"),
-	// 				FirmwareUpdateDeadline: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-21T18:25:43.511Z"); return t}()),
+	// 				FirmwareUpdateDeadline: to.Ptr(time.Date(2019, time.April, 21, 18, 25, 43, 511000000, time.UTC)),
 	// 				FirmwareUpdateStatus: to.Ptr(armstoragecache.FirmwareStatusTypeAvailable),
-	// 				LastFirmwareUpdate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-01-21T18:25:43.511Z"); return t}()),
+	// 				LastFirmwareUpdate: to.Ptr(time.Date(2019, time.January, 21, 18, 25, 43, 511000000, time.UTC)),
 	// 				PendingFirmwareVersion: to.Ptr("2022.08.1"),
 	// 			},
 	// 			Zones: []*string{
@@ -422,10 +422,10 @@ func ExampleCachesClient_BeginCreateOrUpdate_cachesCreateOrUpdateLdapOnly() {
 	// 			Name: to.Ptr("Standard_2G"),
 	// 		},
 	// 		SystemData: &armstoragecache.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.1234567Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2020, time.January, 1, 17, 18, 19, 123456700, time.UTC)),
 	// 			CreatedBy: to.Ptr("user1"),
 	// 			CreatedByType: to.Ptr(armstoragecache.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-02T17:18:19.1234567Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2020, time.January, 2, 17, 18, 19, 123456700, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user2"),
 	// 			LastModifiedByType: to.Ptr(armstoragecache.CreatedByTypeUser),
 	// 		},
@@ -436,7 +436,7 @@ func ExampleCachesClient_BeginCreateOrUpdate_cachesCreateOrUpdateLdapOnly() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/Caches_DebugInfo.json
+// Generated from example definition: 2026-08-01/Caches_DebugInfo.json
 func ExampleCachesClient_BeginDebugInfo() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -462,7 +462,7 @@ func ExampleCachesClient_BeginDebugInfo() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/Caches_Delete.json
+// Generated from example definition: 2026-08-01/Caches_Delete.json
 func ExampleCachesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -488,7 +488,7 @@ func ExampleCachesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/Caches_Flush.json
+// Generated from example definition: 2026-08-01/Caches_Flush.json
 func ExampleCachesClient_BeginFlush() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -514,7 +514,7 @@ func ExampleCachesClient_BeginFlush() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/Caches_Get.json
+// Generated from example definition: 2026-08-01/Caches_Get.json
 func ExampleCachesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -575,7 +575,7 @@ func ExampleCachesClient_Get() {
 	// 				Conditions: []*armstoragecache.Condition{
 	// 					{
 	// 						Message: to.Ptr("Cannot contact DNS server"),
-	// 						Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-21T18:25:43.511Z"); return t}()),
+	// 						Timestamp: to.Ptr(time.Date(2021, time.April, 21, 18, 25, 43, 511000000, time.UTC)),
 	// 					},
 	// 				},
 	// 				State: to.Ptr(armstoragecache.HealthStateTypeTransitioning),
@@ -645,14 +645,14 @@ func ExampleCachesClient_Get() {
 	// 			},
 	// 			Subnet: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/scgroup/providers/Microsoft.Network/virtualNetworks/scvnet/subnets/sub1"),
 	// 			UpgradeSettings: &armstoragecache.CacheUpgradeSettings{
-	// 				ScheduledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-04-26T18:25:43.511Z"); return t}()),
+	// 				ScheduledTime: to.Ptr(time.Date(2022, time.April, 26, 18, 25, 43, 511000000, time.UTC)),
 	// 				UpgradeScheduleEnabled: to.Ptr(true),
 	// 			},
 	// 			UpgradeStatus: &armstoragecache.CacheUpgradeStatus{
 	// 				CurrentFirmwareVersion: to.Ptr("2022.08.1"),
-	// 				FirmwareUpdateDeadline: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-21T18:25:43.511Z"); return t}()),
+	// 				FirmwareUpdateDeadline: to.Ptr(time.Date(2019, time.April, 21, 18, 25, 43, 511000000, time.UTC)),
 	// 				FirmwareUpdateStatus: to.Ptr(armstoragecache.FirmwareStatusTypeAvailable),
-	// 				LastFirmwareUpdate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-01-21T18:25:43.511Z"); return t}()),
+	// 				LastFirmwareUpdate: to.Ptr(time.Date(2019, time.January, 21, 18, 25, 43, 511000000, time.UTC)),
 	// 				PendingFirmwareVersion: to.Ptr("2022.08.1"),
 	// 			},
 	// 			Zones: []*string{
@@ -663,10 +663,10 @@ func ExampleCachesClient_Get() {
 	// 			Name: to.Ptr("Standard_2G"),
 	// 		},
 	// 		SystemData: &armstoragecache.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.1234567Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2020, time.January, 1, 17, 18, 19, 123456700, time.UTC)),
 	// 			CreatedBy: to.Ptr("user1"),
 	// 			CreatedByType: to.Ptr(armstoragecache.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-02T17:18:19.1234567Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2020, time.January, 2, 17, 18, 19, 123456700, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user2"),
 	// 			LastModifiedByType: to.Ptr(armstoragecache.CreatedByTypeUser),
 	// 		},
@@ -677,7 +677,7 @@ func ExampleCachesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/Caches_List.json
+// Generated from example definition: 2026-08-01/Caches_List.json
 func ExampleCachesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -744,7 +744,7 @@ func ExampleCachesClient_NewListPager() {
 		// 						Conditions: []*armstoragecache.Condition{
 		// 							{
 		// 								Message: to.Ptr("Cannot contact DNS server"),
-		// 								Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-21T18:25:43.511Z"); return t}()),
+		// 								Timestamp: to.Ptr(time.Date(2021, time.April, 21, 18, 25, 43, 511000000, time.UTC)),
 		// 							},
 		// 						},
 		// 						State: to.Ptr(armstoragecache.HealthStateTypeTransitioning),
@@ -798,14 +798,14 @@ func ExampleCachesClient_NewListPager() {
 		// 					},
 		// 					Subnet: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/scgroup/providers/Microsoft.Network/virtualNetworks/scvnet/subnets/sub1"),
 		// 					UpgradeSettings: &armstoragecache.CacheUpgradeSettings{
-		// 						ScheduledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-04-26T18:25:43.511Z"); return t}()),
+		// 						ScheduledTime: to.Ptr(time.Date(2022, time.April, 26, 18, 25, 43, 511000000, time.UTC)),
 		// 						UpgradeScheduleEnabled: to.Ptr(true),
 		// 					},
 		// 					UpgradeStatus: &armstoragecache.CacheUpgradeStatus{
 		// 						CurrentFirmwareVersion: to.Ptr("2022.08.1"),
-		// 						FirmwareUpdateDeadline: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-21T18:25:43.511Z"); return t}()),
+		// 						FirmwareUpdateDeadline: to.Ptr(time.Date(2019, time.April, 21, 18, 25, 43, 511000000, time.UTC)),
 		// 						FirmwareUpdateStatus: to.Ptr(armstoragecache.FirmwareStatusTypeAvailable),
-		// 						LastFirmwareUpdate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-01-21T18:25:43.511Z"); return t}()),
+		// 						LastFirmwareUpdate: to.Ptr(time.Date(2019, time.January, 21, 18, 25, 43, 511000000, time.UTC)),
 		// 						PendingFirmwareVersion: to.Ptr("2022.08.1"),
 		// 					},
 		// 				},
@@ -813,10 +813,10 @@ func ExampleCachesClient_NewListPager() {
 		// 					Name: to.Ptr("Standard_2G"),
 		// 				},
 		// 				SystemData: &armstoragecache.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.1234567Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2020, time.January, 1, 17, 18, 19, 123456700, time.UTC)),
 		// 					CreatedBy: to.Ptr("user1"),
 		// 					CreatedByType: to.Ptr(armstoragecache.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-02T17:18:19.1234567Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2020, time.January, 2, 17, 18, 19, 123456700, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("user2"),
 		// 					LastModifiedByType: to.Ptr(armstoragecache.CreatedByTypeUser),
 		// 				},
@@ -866,7 +866,7 @@ func ExampleCachesClient_NewListPager() {
 		// 						Conditions: []*armstoragecache.Condition{
 		// 							{
 		// 								Message: to.Ptr("Cannot contact DNS server"),
-		// 								Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-21T18:25:43.511Z"); return t}()),
+		// 								Timestamp: to.Ptr(time.Date(2021, time.April, 21, 18, 25, 43, 511000000, time.UTC)),
 		// 							},
 		// 						},
 		// 						State: to.Ptr(armstoragecache.HealthStateTypeTransitioning),
@@ -924,14 +924,14 @@ func ExampleCachesClient_NewListPager() {
 		// 					},
 		// 					Subnet: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/scgroup/providers/Microsoft.Network/virtualNetworks/scvnet/subnets/sub2"),
 		// 					UpgradeSettings: &armstoragecache.CacheUpgradeSettings{
-		// 						ScheduledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-04-26T18:25:43.511Z"); return t}()),
+		// 						ScheduledTime: to.Ptr(time.Date(2022, time.April, 26, 18, 25, 43, 511000000, time.UTC)),
 		// 						UpgradeScheduleEnabled: to.Ptr(true),
 		// 					},
 		// 					UpgradeStatus: &armstoragecache.CacheUpgradeStatus{
 		// 						CurrentFirmwareVersion: to.Ptr("2022.08.1"),
-		// 						FirmwareUpdateDeadline: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-21T18:25:43.511Z"); return t}()),
+		// 						FirmwareUpdateDeadline: to.Ptr(time.Date(2019, time.April, 21, 18, 25, 43, 511000000, time.UTC)),
 		// 						FirmwareUpdateStatus: to.Ptr(armstoragecache.FirmwareStatusTypeAvailable),
-		// 						LastFirmwareUpdate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-01-21T18:25:43.511Z"); return t}()),
+		// 						LastFirmwareUpdate: to.Ptr(time.Date(2019, time.January, 21, 18, 25, 43, 511000000, time.UTC)),
 		// 						PendingFirmwareVersion: to.Ptr("2022.08.1"),
 		// 					},
 		// 					Zones: []*string{
@@ -942,10 +942,10 @@ func ExampleCachesClient_NewListPager() {
 		// 					Name: to.Ptr("Standard_2G"),
 		// 				},
 		// 				SystemData: &armstoragecache.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.1234567Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2020, time.January, 1, 17, 18, 19, 123456700, time.UTC)),
 		// 					CreatedBy: to.Ptr("user1"),
 		// 					CreatedByType: to.Ptr(armstoragecache.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-02T17:18:19.1234567Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2020, time.January, 2, 17, 18, 19, 123456700, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("user2"),
 		// 					LastModifiedByType: to.Ptr(armstoragecache.CreatedByTypeUser),
 		// 				},
@@ -959,7 +959,7 @@ func ExampleCachesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-01-01/Caches_ListByResourceGroup.json
+// Generated from example definition: 2026-08-01/Caches_ListByResourceGroup.json
 func ExampleCachesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1026,7 +1026,7 @@ func ExampleCachesClient_NewListByResourceGroupPager() {
 		// 						Conditions: []*armstoragecache.Condition{
 		// 							{
 		// 								Message: to.Ptr("Cannot contact DNS server"),
-		// 								Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-21T18:25:43.511Z"); return t}()),
+		// 								Timestamp: to.Ptr(time.Date(2021, time.April, 21, 18, 25, 43, 511000000, time.UTC)),
 		// 							},
 		// 						},
 		// 						State: to.Ptr(armstoragecache.HealthStateTypeTransitioning),
@@ -1080,14 +1080,14 @@ func ExampleCachesClient_NewListByResourceGroupPager() {
 		// 					},
 		// 					Subnet: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/scgroup/providers/Microsoft.Network/virtualNetworks/scvnet/subnets/sub1"),
 		// 					UpgradeSettings: &armstoragecache.CacheUpgradeSettings{
-		// 						ScheduledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-04-26T18:25:43.511Z"); return t}()),
+		// 						ScheduledTime: to.Ptr(time.Date(2022, time.April, 26, 18, 25, 43, 511000000, time.UTC)),
 		// 						UpgradeScheduleEnabled: to.Ptr(true),
 		// 					},
 		// 					UpgradeStatus: &armstoragecache.CacheUpgradeStatus{
 		// 						CurrentFirmwareVersion: to.Ptr("2022.08.1"),
-		// 						FirmwareUpdateDeadline: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-21T18:25:43.511Z"); return t}()),
+		// 						FirmwareUpdateDeadline: to.Ptr(time.Date(2019, time.April, 21, 18, 25, 43, 511000000, time.UTC)),
 		// 						FirmwareUpdateStatus: to.Ptr(armstoragecache.FirmwareStatusTypeAvailable),
-		// 						LastFirmwareUpdate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-01-21T18:25:43.511Z"); return t}()),
+		// 						LastFirmwareUpdate: to.Ptr(time.Date(2019, time.January, 21, 18, 25, 43, 511000000, time.UTC)),
 		// 						PendingFirmwareVersion: to.Ptr("2022.08.1"),
 		// 					},
 		// 					Zones: []*string{
@@ -1098,10 +1098,10 @@ func ExampleCachesClient_NewListByResourceGroupPager() {
 		// 					Name: to.Ptr("Standard_2G"),
 		// 				},
 		// 				SystemData: &armstoragecache.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.1234567Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2020, time.January, 1, 17, 18, 19, 123456700, time.UTC)),
 		// 					CreatedBy: to.Ptr("user1"),
 		// 					CreatedByType: to.Ptr(armstoragecache.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-02T17:18:19.1234567Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2020, time.January, 2, 17, 18, 19, 123456700, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("user2"),
 		// 					LastModifiedByType: to.Ptr(armstoragecache.CreatedByTypeUser),
 		// 				},
@@ -1151,7 +1151,7 @@ func ExampleCachesClient_NewListByResourceGroupPager() {
 		// 						Conditions: []*armstoragecache.Condition{
 		// 							{
 		// 								Message: to.Ptr("Cannot contact DNS server"),
-		// 								Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-21T18:25:43.511Z"); return t}()),
+		// 								Timestamp: to.Ptr(time.Date(2021, time.April, 21, 18, 25, 43, 511000000, time.UTC)),
 		// 							},
 		// 						},
 		// 						State: to.Ptr(armstoragecache.HealthStateTypeTransitioning),
@@ -1209,14 +1209,14 @@ func ExampleCachesClient_NewListByResourceGroupPager() {
 		// 					},
 		// 					Subnet: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/scgroup/providers/Microsoft.Network/virtualNetworks/scvnet/subnets/sub2"),
 		// 					UpgradeSettings: &armstoragecache.CacheUpgradeSettings{
-		// 						ScheduledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-04-26T18:25:43.511Z"); return t}()),
+		// 						ScheduledTime: to.Ptr(time.Date(2022, time.April, 26, 18, 25, 43, 511000000, time.UTC)),
 		// 						UpgradeScheduleEnabled: to.Ptr(true),
 		// 					},
 		// 					UpgradeStatus: &armstoragecache.CacheUpgradeStatus{
 		// 						CurrentFirmwareVersion: to.Ptr("2022.08.1"),
-		// 						FirmwareUpdateDeadline: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-21T18:25:43.511Z"); return t}()),
+		// 						FirmwareUpdateDeadline: to.Ptr(time.Date(2019, time.April, 21, 18, 25, 43, 511000000, time.UTC)),
 		// 						FirmwareUpdateStatus: to.Ptr(armstoragecache.FirmwareStatusTypeAvailable),
-		// 						LastFirmwareUpdate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-01-21T18:25:43.511Z"); return t}()),
+		// 						LastFirmwareUpdate: to.Ptr(time.Date(2019, time.January, 21, 18, 25, 43, 511000000, time.UTC)),
 		// 						PendingFirmwareVersion: to.Ptr("2022.08.1"),
 		// 					},
 		// 					Zones: []*string{
@@ -1227,10 +1227,10 @@ func ExampleCachesClient_NewListByResourceGroupPager() {
 		// 					Name: to.Ptr("Standard_2G"),
 		// 				},
 		// 				SystemData: &armstoragecache.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.1234567Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2020, time.January, 1, 17, 18, 19, 123456700, time.UTC)),
 		// 					CreatedBy: to.Ptr("user1"),
 		// 					CreatedByType: to.Ptr(armstoragecache.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-02T17:18:19.1234567Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2020, time.January, 2, 17, 18, 19, 123456700, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("user2"),
 		// 					LastModifiedByType: to.Ptr(armstoragecache.CreatedByTypeUser),
 		// 				},
@@ -1244,7 +1244,7 @@ func ExampleCachesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-01-01/PausePrimingJob.json
+// Generated from example definition: 2026-08-01/PausePrimingJob.json
 func ExampleCachesClient_BeginPausePrimingJob() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1268,7 +1268,7 @@ func ExampleCachesClient_BeginPausePrimingJob() {
 	}
 }
 
-// Generated from example definition: 2026-01-01/ResumePrimingJob.json
+// Generated from example definition: 2026-08-01/ResumePrimingJob.json
 func ExampleCachesClient_BeginResumePrimingJob() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1292,7 +1292,7 @@ func ExampleCachesClient_BeginResumePrimingJob() {
 	}
 }
 
-// Generated from example definition: 2026-01-01/SpaceAllocation_Post.json
+// Generated from example definition: 2026-08-01/SpaceAllocation_Post.json
 func ExampleCachesClient_BeginSpaceAllocation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1327,7 +1327,7 @@ func ExampleCachesClient_BeginSpaceAllocation() {
 	}
 }
 
-// Generated from example definition: 2026-01-01/Caches_Start.json
+// Generated from example definition: 2026-08-01/Caches_Start.json
 func ExampleCachesClient_BeginStart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1353,7 +1353,7 @@ func ExampleCachesClient_BeginStart() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/StartPrimingJob.json
+// Generated from example definition: 2026-08-01/StartPrimingJob.json
 func ExampleCachesClient_BeginStartPrimingJob() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1378,7 +1378,7 @@ func ExampleCachesClient_BeginStartPrimingJob() {
 	}
 }
 
-// Generated from example definition: 2026-01-01/Caches_Stop.json
+// Generated from example definition: 2026-08-01/Caches_Stop.json
 func ExampleCachesClient_BeginStop() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1404,7 +1404,7 @@ func ExampleCachesClient_BeginStop() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/StopPrimingJob.json
+// Generated from example definition: 2026-08-01/StopPrimingJob.json
 func ExampleCachesClient_BeginStopPrimingJob() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1428,7 +1428,7 @@ func ExampleCachesClient_BeginStopPrimingJob() {
 	}
 }
 
-// Generated from example definition: 2026-01-01/Caches_Update.json
+// Generated from example definition: 2026-08-01/Caches_Update.json
 func ExampleCachesClient_BeginUpdate_cachesUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1513,7 +1513,7 @@ func ExampleCachesClient_BeginUpdate_cachesUpdate() {
 			},
 			Subnet: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/scgroup/providers/Microsoft.Network/virtualNetworks/scvnet/subnets/sub1"),
 			UpgradeSettings: &armstoragecache.CacheUpgradeSettings{
-				ScheduledTime:          to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-04-26T18:25:43.511Z"); return t }()),
+				ScheduledTime:          to.Ptr(time.Date(2022, time.April, 26, 18, 25, 43, 511000000, time.UTC)),
 				UpgradeScheduleEnabled: to.Ptr(true),
 			},
 		},
@@ -1569,7 +1569,7 @@ func ExampleCachesClient_BeginUpdate_cachesUpdate() {
 	// 				Conditions: []*armstoragecache.Condition{
 	// 					{
 	// 						Message: to.Ptr("Cannot contact DNS server"),
-	// 						Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-21T18:25:43.511Z"); return t}()),
+	// 						Timestamp: to.Ptr(time.Date(2021, time.April, 21, 18, 25, 43, 511000000, time.UTC)),
 	// 					},
 	// 				},
 	// 				State: to.Ptr(armstoragecache.HealthStateTypeTransitioning),
@@ -1669,14 +1669,14 @@ func ExampleCachesClient_BeginUpdate_cachesUpdate() {
 	// 			},
 	// 			Subnet: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/scgroup/providers/Microsoft.Network/virtualNetworks/scvnet/subnets/sub1"),
 	// 			UpgradeSettings: &armstoragecache.CacheUpgradeSettings{
-	// 				ScheduledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-04-26T18:25:43.511Z"); return t}()),
+	// 				ScheduledTime: to.Ptr(time.Date(2022, time.April, 26, 18, 25, 43, 511000000, time.UTC)),
 	// 				UpgradeScheduleEnabled: to.Ptr(true),
 	// 			},
 	// 			UpgradeStatus: &armstoragecache.CacheUpgradeStatus{
 	// 				CurrentFirmwareVersion: to.Ptr("2022.08.1"),
-	// 				FirmwareUpdateDeadline: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-21T18:25:43.511Z"); return t}()),
+	// 				FirmwareUpdateDeadline: to.Ptr(time.Date(2019, time.April, 21, 18, 25, 43, 511000000, time.UTC)),
 	// 				FirmwareUpdateStatus: to.Ptr(armstoragecache.FirmwareStatusTypeAvailable),
-	// 				LastFirmwareUpdate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-01-21T18:25:43.511Z"); return t}()),
+	// 				LastFirmwareUpdate: to.Ptr(time.Date(2019, time.January, 21, 18, 25, 43, 511000000, time.UTC)),
 	// 				PendingFirmwareVersion: to.Ptr("2022.08.1"),
 	// 			},
 	// 		},
@@ -1684,10 +1684,10 @@ func ExampleCachesClient_BeginUpdate_cachesUpdate() {
 	// 			Name: to.Ptr("Standard_2G"),
 	// 		},
 	// 		SystemData: &armstoragecache.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.1234567Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2020, time.January, 1, 17, 18, 19, 123456700, time.UTC)),
 	// 			CreatedBy: to.Ptr("user1"),
 	// 			CreatedByType: to.Ptr(armstoragecache.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-02T17:18:19.1234567Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2020, time.January, 2, 17, 18, 19, 123456700, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user2"),
 	// 			LastModifiedByType: to.Ptr(armstoragecache.CreatedByTypeUser),
 	// 		},
@@ -1698,7 +1698,7 @@ func ExampleCachesClient_BeginUpdate_cachesUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/Caches_Update_ldap_only.json
+// Generated from example definition: 2026-08-01/Caches_Update_ldap_only.json
 func ExampleCachesClient_BeginUpdate_cachesUpdateLdapOnly() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1782,7 +1782,7 @@ func ExampleCachesClient_BeginUpdate_cachesUpdateLdapOnly() {
 			},
 			Subnet: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/scgroup/providers/Microsoft.Network/virtualNetworks/scvnet/subnets/sub1"),
 			UpgradeSettings: &armstoragecache.CacheUpgradeSettings{
-				ScheduledTime:          to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-04-26T18:25:43.511Z"); return t }()),
+				ScheduledTime:          to.Ptr(time.Date(2022, time.April, 26, 18, 25, 43, 511000000, time.UTC)),
 				UpgradeScheduleEnabled: to.Ptr(true),
 			},
 		},
@@ -1830,7 +1830,7 @@ func ExampleCachesClient_BeginUpdate_cachesUpdateLdapOnly() {
 	// 				Conditions: []*armstoragecache.Condition{
 	// 					{
 	// 						Message: to.Ptr("Cannot contact DNS server"),
-	// 						Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-21T18:25:43.511Z"); return t}()),
+	// 						Timestamp: to.Ptr(time.Date(2021, time.April, 21, 18, 25, 43, 511000000, time.UTC)),
 	// 					},
 	// 				},
 	// 				State: to.Ptr(armstoragecache.HealthStateTypeTransitioning),
@@ -1918,14 +1918,14 @@ func ExampleCachesClient_BeginUpdate_cachesUpdateLdapOnly() {
 	// 			},
 	// 			Subnet: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/scgroup/providers/Microsoft.Network/virtualNetworks/scvnet/subnets/sub1"),
 	// 			UpgradeSettings: &armstoragecache.CacheUpgradeSettings{
-	// 				ScheduledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-04-26T18:25:43.511Z"); return t}()),
+	// 				ScheduledTime: to.Ptr(time.Date(2022, time.April, 26, 18, 25, 43, 511000000, time.UTC)),
 	// 				UpgradeScheduleEnabled: to.Ptr(true),
 	// 			},
 	// 			UpgradeStatus: &armstoragecache.CacheUpgradeStatus{
 	// 				CurrentFirmwareVersion: to.Ptr("2022.08.1"),
-	// 				FirmwareUpdateDeadline: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-21T18:25:43.511Z"); return t}()),
+	// 				FirmwareUpdateDeadline: to.Ptr(time.Date(2019, time.April, 21, 18, 25, 43, 511000000, time.UTC)),
 	// 				FirmwareUpdateStatus: to.Ptr(armstoragecache.FirmwareStatusTypeAvailable),
-	// 				LastFirmwareUpdate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-01-21T18:25:43.511Z"); return t}()),
+	// 				LastFirmwareUpdate: to.Ptr(time.Date(2019, time.January, 21, 18, 25, 43, 511000000, time.UTC)),
 	// 				PendingFirmwareVersion: to.Ptr("2022.08.1"),
 	// 			},
 	// 		},
@@ -1933,10 +1933,10 @@ func ExampleCachesClient_BeginUpdate_cachesUpdateLdapOnly() {
 	// 			Name: to.Ptr("Standard_2G"),
 	// 		},
 	// 		SystemData: &armstoragecache.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.1234567Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2020, time.January, 1, 17, 18, 19, 123456700, time.UTC)),
 	// 			CreatedBy: to.Ptr("user1"),
 	// 			CreatedByType: to.Ptr(armstoragecache.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-02T17:18:19.1234567Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2020, time.January, 2, 17, 18, 19, 123456700, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user2"),
 	// 			LastModifiedByType: to.Ptr(armstoragecache.CreatedByTypeUser),
 	// 		},
@@ -1947,7 +1947,7 @@ func ExampleCachesClient_BeginUpdate_cachesUpdateLdapOnly() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/Caches_UpgradeFirmware.json
+// Generated from example definition: 2026-08-01/Caches_UpgradeFirmware.json
 func ExampleCachesClient_BeginUpgradeFirmware() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

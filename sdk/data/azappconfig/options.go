@@ -14,6 +14,9 @@ type AddSettingOptions struct {
 	// Configuration setting content type.
 	ContentType *string
 
+	// A description of the configuration setting.
+	Description *string
+
 	// Configuration setting label.
 	Label *string
 
@@ -84,6 +87,9 @@ type SetSettingOptions struct {
 	// Configuration setting content type.
 	ContentType *string
 
+	// A description of the configuration setting.
+	Description *string
+
 	// Configuration setting label.
 	Label *string
 
@@ -107,6 +113,9 @@ type BeginCreateSnapshotOptions struct {
 	// there are no two key-values containing the same key. The 'key_label' composition
 	// type ensures there are no two key-values containing the same key and label.
 	CompositionType *CompositionType
+
+	// A description of the snapshot.
+	Description *string
 
 	// The amount of time, in seconds, that a snapshot will remain in the archived state before expiring. This property is only
 	// writable during the creation of a snapshot. If not specified, the default

@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-// Generated from example definition: 2026-04-01-preview/MaintenanceEventsApplyNow.json
+// Generated from example definition: 2026-07-01-preview/MaintenanceEventsApplyNow.json
 func ExampleMaintenanceEventsClient_BeginApplyNow() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -40,15 +40,15 @@ func ExampleMaintenanceEventsClient_BeginApplyNow() {
 	// 		MaintenanceEventID: to.Ptr("XXXX-111"),
 	// 		ServerID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBforPostgreSQL/flexibleServers/exampleserver"),
 	// 		Status: to.Ptr(armpostgresqlflexibleservers.MaintenanceEventStatusRescheduled),
-	// 		PlannedStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-04-15T10:00:00Z"); return t}()),
-	// 		PlannedEndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-04-15T10:05:00Z"); return t}()),
+	// 		PlannedStartTime: to.Ptr(time.Date(2026, time.April, 15, 10, 0, 0, 0, time.UTC)),
+	// 		PlannedEndTime: to.Ptr(time.Date(2026, time.April, 15, 10, 5, 0, 0, time.UTC)),
 	// 		AppliedNow: to.Ptr(true),
-	// 		LastUpdatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-04-15T10:05:00Z"); return t}()),
+	// 		LastUpdatedTime: to.Ptr(time.Date(2026, time.April, 15, 10, 5, 0, 0, time.UTC)),
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/MaintenanceEventsGet.json
+// Generated from example definition: 2026-07-01-preview/MaintenanceEventsGet.json
 func ExampleMaintenanceEventsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -71,14 +71,14 @@ func ExampleMaintenanceEventsClient_Get() {
 	// 		Properties: &armpostgresqlflexibleservers.MaintenanceEventResourceProperties{
 	// 			MaintenanceEventID: to.Ptr("XXXX-111"),
 	// 			MaintenanceType: to.Ptr(armpostgresqlflexibleservers.MaintenanceTypePlannedMaintenance),
-	// 			OriginalStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-04-02T07:23:00Z"); return t}()),
+	// 			OriginalStartTime: to.Ptr(time.Date(2026, time.April, 2, 7, 23, 0, 0, time.UTC)),
 	// 			Status: to.Ptr(armpostgresqlflexibleservers.MaintenanceEventStatusInProgress),
-	// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-04-02T07:23:00Z"); return t}()),
-	// 			EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-04-02T08:23:00Z"); return t}()),
+	// 			StartTime: to.Ptr(time.Date(2026, time.April, 2, 7, 23, 0, 0, time.UTC)),
+	// 			EndTime: to.Ptr(time.Date(2026, time.April, 2, 8, 23, 0, 0, time.UTC)),
 	// 			EstimatedDowntime: to.Ptr("PT3600S"),
 	// 			Deferrable: to.Ptr(true),
-	// 			DeferralDeadline: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-04-16T07:23:00Z"); return t}()),
-	// 			LastUpdatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-04-01T07:23:15.9626227Z"); return t}()),
+	// 			DeferralDeadline: to.Ptr(time.Date(2026, time.April, 16, 7, 23, 0, 0, time.UTC)),
+	// 			LastUpdatedTime: to.Ptr(time.Date(2026, time.April, 1, 7, 23, 15, 962622700, time.UTC)),
 	// 		},
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBforPostgreSQL/flexibleServers/exampleserver/maintenanceEvents/XXXX-111"),
 	// 		Name: to.Ptr("XXXX-111"),
@@ -87,7 +87,7 @@ func ExampleMaintenanceEventsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/MaintenanceEventsListByServer.json
+// Generated from example definition: 2026-07-01-preview/MaintenanceEventsListByServer.json
 func ExampleMaintenanceEventsClient_NewListPager_listOngoingAndScheduledMaintenanceEventsForAServer() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -116,14 +116,14 @@ func ExampleMaintenanceEventsClient_NewListPager_listOngoingAndScheduledMaintena
 		// 				Properties: &armpostgresqlflexibleservers.MaintenanceEventResourceProperties{
 		// 					MaintenanceEventID: to.Ptr("XXXX-111"),
 		// 					MaintenanceType: to.Ptr(armpostgresqlflexibleservers.MaintenanceTypePlannedMaintenance),
-		// 					OriginalStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-04-02T07:23:00Z"); return t}()),
+		// 					OriginalStartTime: to.Ptr(time.Date(2026, time.April, 2, 7, 23, 0, 0, time.UTC)),
 		// 					Status: to.Ptr(armpostgresqlflexibleservers.MaintenanceEventStatusPlanned),
-		// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-04-02T07:23:00Z"); return t}()),
-		// 					EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-04-02T08:23:00Z"); return t}()),
+		// 					StartTime: to.Ptr(time.Date(2026, time.April, 2, 7, 23, 0, 0, time.UTC)),
+		// 					EndTime: to.Ptr(time.Date(2026, time.April, 2, 8, 23, 0, 0, time.UTC)),
 		// 					EstimatedDowntime: to.Ptr("PT3600S"),
 		// 					Deferrable: to.Ptr(true),
-		// 					DeferralDeadline: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-04-16T07:23:00Z"); return t}()),
-		// 					LastUpdatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-04-01T07:23:15.9626227Z"); return t}()),
+		// 					DeferralDeadline: to.Ptr(time.Date(2026, time.April, 16, 7, 23, 0, 0, time.UTC)),
+		// 					LastUpdatedTime: to.Ptr(time.Date(2026, time.April, 1, 7, 23, 15, 962622700, time.UTC)),
 		// 				},
 		// 				ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBforPostgreSQL/flexibleServers/exampleserver/maintenanceEvents/XXXX-111"),
 		// 				Name: to.Ptr("XXXX-111"),
@@ -133,14 +133,14 @@ func ExampleMaintenanceEventsClient_NewListPager_listOngoingAndScheduledMaintena
 		// 				Properties: &armpostgresqlflexibleservers.MaintenanceEventResourceProperties{
 		// 					MaintenanceEventID: to.Ptr("XXXX-222"),
 		// 					MaintenanceType: to.Ptr(armpostgresqlflexibleservers.MaintenanceTypePlannedMaintenance),
-		// 					OriginalStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-04-03T07:23:00Z"); return t}()),
+		// 					OriginalStartTime: to.Ptr(time.Date(2026, time.April, 3, 7, 23, 0, 0, time.UTC)),
 		// 					Status: to.Ptr(armpostgresqlflexibleservers.MaintenanceEventStatusPlanned),
-		// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-04-03T08:23:00Z"); return t}()),
-		// 					EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-04-03T09:23:00Z"); return t}()),
+		// 					StartTime: to.Ptr(time.Date(2026, time.April, 3, 8, 23, 0, 0, time.UTC)),
+		// 					EndTime: to.Ptr(time.Date(2026, time.April, 3, 9, 23, 0, 0, time.UTC)),
 		// 					EstimatedDowntime: to.Ptr("PT3540S"),
 		// 					Deferrable: to.Ptr(true),
-		// 					DeferralDeadline: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-04-18T18:31:00Z"); return t}()),
-		// 					LastUpdatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-04-02T07:23:15.9626227Z"); return t}()),
+		// 					DeferralDeadline: to.Ptr(time.Date(2026, time.April, 18, 18, 31, 0, 0, time.UTC)),
+		// 					LastUpdatedTime: to.Ptr(time.Date(2026, time.April, 2, 7, 23, 15, 962622700, time.UTC)),
 		// 				},
 		// 				ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBforPostgreSQL/flexibleServers/exampleserver/maintenanceEvents/XXXX-222"),
 		// 				Name: to.Ptr("XXXX-222"),
@@ -152,7 +152,7 @@ func ExampleMaintenanceEventsClient_NewListPager_listOngoingAndScheduledMaintena
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/MaintenanceEventsListByServerWithFilter.json
+// Generated from example definition: 2026-07-01-preview/MaintenanceEventsListByServerWithFilter.json
 func ExampleMaintenanceEventsClient_NewListPager_listMaintenanceEventsFilteredByStatusForAServer() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -182,14 +182,14 @@ func ExampleMaintenanceEventsClient_NewListPager_listMaintenanceEventsFilteredBy
 		// 				Properties: &armpostgresqlflexibleservers.MaintenanceEventResourceProperties{
 		// 					MaintenanceEventID: to.Ptr("XXXX-111"),
 		// 					MaintenanceType: to.Ptr(armpostgresqlflexibleservers.MaintenanceTypePlannedMaintenance),
-		// 					OriginalStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-04-02T07:23:00Z"); return t}()),
+		// 					OriginalStartTime: to.Ptr(time.Date(2026, time.April, 2, 7, 23, 0, 0, time.UTC)),
 		// 					Status: to.Ptr(armpostgresqlflexibleservers.MaintenanceEventStatusPlanned),
-		// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-04-02T07:23:00Z"); return t}()),
-		// 					EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-04-02T08:23:00Z"); return t}()),
+		// 					StartTime: to.Ptr(time.Date(2026, time.April, 2, 7, 23, 0, 0, time.UTC)),
+		// 					EndTime: to.Ptr(time.Date(2026, time.April, 2, 8, 23, 0, 0, time.UTC)),
 		// 					EstimatedDowntime: to.Ptr("PT3600S"),
 		// 					Deferrable: to.Ptr(true),
-		// 					DeferralDeadline: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-04-16T07:23:00Z"); return t}()),
-		// 					LastUpdatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-04-01T07:23:15.9626227Z"); return t}()),
+		// 					DeferralDeadline: to.Ptr(time.Date(2026, time.April, 16, 7, 23, 0, 0, time.UTC)),
+		// 					LastUpdatedTime: to.Ptr(time.Date(2026, time.April, 1, 7, 23, 15, 962622700, time.UTC)),
 		// 				},
 		// 				ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBforPostgreSQL/flexibleServers/exampleserver/maintenanceEvents/XXXX-111"),
 		// 				Name: to.Ptr("XXXX-111"),
@@ -199,14 +199,14 @@ func ExampleMaintenanceEventsClient_NewListPager_listMaintenanceEventsFilteredBy
 		// 				Properties: &armpostgresqlflexibleservers.MaintenanceEventResourceProperties{
 		// 					MaintenanceEventID: to.Ptr("XXXX-222"),
 		// 					MaintenanceType: to.Ptr(armpostgresqlflexibleservers.MaintenanceTypePlannedMaintenance),
-		// 					OriginalStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-04-03T07:23:00Z"); return t}()),
+		// 					OriginalStartTime: to.Ptr(time.Date(2026, time.April, 3, 7, 23, 0, 0, time.UTC)),
 		// 					Status: to.Ptr(armpostgresqlflexibleservers.MaintenanceEventStatusPlanned),
-		// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-04-03T08:23:00Z"); return t}()),
-		// 					EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-04-03T09:23:00Z"); return t}()),
+		// 					StartTime: to.Ptr(time.Date(2026, time.April, 3, 8, 23, 0, 0, time.UTC)),
+		// 					EndTime: to.Ptr(time.Date(2026, time.April, 3, 9, 23, 0, 0, time.UTC)),
 		// 					EstimatedDowntime: to.Ptr("PT3540S"),
 		// 					Deferrable: to.Ptr(true),
-		// 					DeferralDeadline: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-04-18T18:31:00Z"); return t}()),
-		// 					LastUpdatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-04-02T07:23:15.9626227Z"); return t}()),
+		// 					DeferralDeadline: to.Ptr(time.Date(2026, time.April, 18, 18, 31, 0, 0, time.UTC)),
+		// 					LastUpdatedTime: to.Ptr(time.Date(2026, time.April, 2, 7, 23, 15, 962622700, time.UTC)),
 		// 				},
 		// 				ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBforPostgreSQL/flexibleServers/exampleserver/maintenanceEvents/XXXX-222"),
 		// 				Name: to.Ptr("XXXX-222"),
@@ -218,7 +218,7 @@ func ExampleMaintenanceEventsClient_NewListPager_listMaintenanceEventsFilteredBy
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/MaintenanceEventsReschedule.json
+// Generated from example definition: 2026-07-01-preview/MaintenanceEventsReschedule.json
 func ExampleMaintenanceEventsClient_BeginReschedule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -230,7 +230,7 @@ func ExampleMaintenanceEventsClient_BeginReschedule() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewMaintenanceEventsClient().BeginReschedule(ctx, "exampleresourcegroup", "exampleserver", "XXXX-111", armpostgresqlflexibleservers.MaintenanceEventRescheduleRequest{
-		PostponeToDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-04-10T10:00:00+00:00"); return t }()),
+		PostponeToDateTime: to.Ptr(time.Date(2026, time.April, 10, 10, 0, 0, 0, time.UTC)),
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -247,10 +247,10 @@ func ExampleMaintenanceEventsClient_BeginReschedule() {
 	// 		MaintenanceEventID: to.Ptr("XXXX-111"),
 	// 		ServerID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBforPostgreSQL/flexibleServers/exampleserver"),
 	// 		Status: to.Ptr(armpostgresqlflexibleservers.MaintenanceEventStatus("Accepted")),
-	// 		PlannedStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-04-10T10:00:00Z"); return t}()),
-	// 		PlannedEndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-04-10T10:05:00Z"); return t}()),
+	// 		PlannedStartTime: to.Ptr(time.Date(2026, time.April, 10, 10, 0, 0, 0, time.UTC)),
+	// 		PlannedEndTime: to.Ptr(time.Date(2026, time.April, 10, 10, 5, 0, 0, time.UTC)),
 	// 		AppliedNow: to.Ptr(false),
-	// 		LastUpdatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-04-07T12:00:00Z"); return t}()),
+	// 		LastUpdatedTime: to.Ptr(time.Date(2026, time.April, 7, 12, 0, 0, 0, time.UTC)),
 	// 	},
 	// }
 }

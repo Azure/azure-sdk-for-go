@@ -14,6 +14,15 @@ type AutonomousDatabaseBasePropertiesClassification interface {
 	GetAutonomousDatabaseBaseProperties() *AutonomousDatabaseBaseProperties
 }
 
+// ConnectionBasePropertiesClassification provides polymorphic access to related types.
+// Call the interface's GetConnectionBaseProperties() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *ConnectionBaseProperties, *KafkaConnectionDetails, *MicrosoftFabricConnectionDetails, *OracleConnectionDetails
+type ConnectionBasePropertiesClassification interface {
+	// GetConnectionBaseProperties returns the ConnectionBaseProperties content of the underlying type.
+	GetConnectionBaseProperties() *ConnectionBaseProperties
+}
+
 // DbSystemBasePropertiesClassification provides polymorphic access to related types.
 // Call the interface's GetDbSystemBaseProperties() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:

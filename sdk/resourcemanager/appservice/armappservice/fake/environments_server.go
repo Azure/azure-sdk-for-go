@@ -427,7 +427,7 @@ func (e *EnvironmentsServerTransport) dispatchBeginApproveOrRejectPrivateEndpoin
 	}
 	beginApproveOrRejectPrivateEndpointConnection := e.beginApproveOrRejectPrivateEndpointConnection.get(req)
 	if beginApproveOrRejectPrivateEndpointConnection == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/hostingEnvironments/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/privateEndpointConnections/(?P<privateEndpointConnectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/hostingEnvironments/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/privateEndpointConnections/(?P<privateEndpointConnectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -479,7 +479,7 @@ func (e *EnvironmentsServerTransport) dispatchBeginChangeVnet(req *http.Request)
 	}
 	beginChangeVnet := e.beginChangeVnet.get(req)
 	if beginChangeVnet == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/hostingEnvironments/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/changeVirtualNetwork`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/hostingEnvironments/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/changeVirtualNetwork`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -527,7 +527,7 @@ func (e *EnvironmentsServerTransport) dispatchBeginCreateOrUpdate(req *http.Requ
 	}
 	beginCreateOrUpdate := e.beginCreateOrUpdate.get(req)
 	if beginCreateOrUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/hostingEnvironments/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/hostingEnvironments/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -575,7 +575,7 @@ func (e *EnvironmentsServerTransport) dispatchBeginCreateOrUpdateMultiRolePool(r
 	}
 	beginCreateOrUpdateMultiRolePool := e.beginCreateOrUpdateMultiRolePool.get(req)
 	if beginCreateOrUpdateMultiRolePool == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/hostingEnvironments/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/multiRolePools/default`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/hostingEnvironments/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/multiRolePools/default`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -623,7 +623,7 @@ func (e *EnvironmentsServerTransport) dispatchBeginCreateOrUpdateWorkerPool(req 
 	}
 	beginCreateOrUpdateWorkerPool := e.beginCreateOrUpdateWorkerPool.get(req)
 	if beginCreateOrUpdateWorkerPool == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/hostingEnvironments/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/workerPools/(?P<workerPoolName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/hostingEnvironments/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/workerPools/(?P<workerPoolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -675,7 +675,7 @@ func (e *EnvironmentsServerTransport) dispatchBeginDelete(req *http.Request) (*h
 	}
 	beginDelete := e.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/hostingEnvironments/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/hostingEnvironments/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -728,7 +728,7 @@ func (e *EnvironmentsServerTransport) dispatchDeleteAseCustomDNSSuffixConfigurat
 	if e.srv.DeleteAseCustomDNSSuffixConfiguration == nil {
 		return nil, &nonRetriableError{errors.New("fake for method DeleteAseCustomDNSSuffixConfiguration not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/hostingEnvironments/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/configurations/customdnssuffix`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/hostingEnvironments/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/configurations/customdnssuffix`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -763,7 +763,7 @@ func (e *EnvironmentsServerTransport) dispatchBeginDeletePrivateEndpointConnecti
 	}
 	beginDeletePrivateEndpointConnection := e.beginDeletePrivateEndpointConnection.get(req)
 	if beginDeletePrivateEndpointConnection == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/hostingEnvironments/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/privateEndpointConnections/(?P<privateEndpointConnectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/hostingEnvironments/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/privateEndpointConnections/(?P<privateEndpointConnectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -809,7 +809,7 @@ func (e *EnvironmentsServerTransport) dispatchGet(req *http.Request) (*http.Resp
 	if e.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/hostingEnvironments/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/hostingEnvironments/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -842,7 +842,7 @@ func (e *EnvironmentsServerTransport) dispatchGetAseCustomDNSSuffixConfiguration
 	if e.srv.GetAseCustomDNSSuffixConfiguration == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetAseCustomDNSSuffixConfiguration not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/hostingEnvironments/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/configurations/customdnssuffix`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/hostingEnvironments/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/configurations/customdnssuffix`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -875,7 +875,7 @@ func (e *EnvironmentsServerTransport) dispatchGetAseV3NetworkingConfiguration(re
 	if e.srv.GetAseV3NetworkingConfiguration == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetAseV3NetworkingConfiguration not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/hostingEnvironments/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/configurations/networking`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/hostingEnvironments/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/configurations/networking`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -908,7 +908,7 @@ func (e *EnvironmentsServerTransport) dispatchGetDiagnosticsItem(req *http.Reque
 	if e.srv.GetDiagnosticsItem == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetDiagnosticsItem not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/hostingEnvironments/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/diagnostics/(?P<diagnosticsName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/hostingEnvironments/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/diagnostics/(?P<diagnosticsName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -947,7 +947,7 @@ func (e *EnvironmentsServerTransport) dispatchNewGetInboundNetworkDependenciesEn
 	}
 	newGetInboundNetworkDependenciesEndpointsPager := e.newGetInboundNetworkDependenciesEndpointsPager.get(req)
 	if newGetInboundNetworkDependenciesEndpointsPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/hostingEnvironments/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/inboundNetworkDependenciesEndpoints`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/hostingEnvironments/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/inboundNetworkDependenciesEndpoints`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -986,7 +986,7 @@ func (e *EnvironmentsServerTransport) dispatchGetMultiRolePool(req *http.Request
 	if e.srv.GetMultiRolePool == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetMultiRolePool not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/hostingEnvironments/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/multiRolePools/default`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/hostingEnvironments/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/multiRolePools/default`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -1021,7 +1021,7 @@ func (e *EnvironmentsServerTransport) dispatchNewGetOutboundNetworkDependenciesE
 	}
 	newGetOutboundNetworkDependenciesEndpointsPager := e.newGetOutboundNetworkDependenciesEndpointsPager.get(req)
 	if newGetOutboundNetworkDependenciesEndpointsPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/hostingEnvironments/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/outboundNetworkDependenciesEndpoints`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/hostingEnvironments/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/outboundNetworkDependenciesEndpoints`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -1060,7 +1060,7 @@ func (e *EnvironmentsServerTransport) dispatchGetPrivateEndpointConnection(req *
 	if e.srv.GetPrivateEndpointConnection == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetPrivateEndpointConnection not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/hostingEnvironments/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/privateEndpointConnections/(?P<privateEndpointConnectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/hostingEnvironments/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/privateEndpointConnections/(?P<privateEndpointConnectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -1099,7 +1099,7 @@ func (e *EnvironmentsServerTransport) dispatchNewGetPrivateEndpointConnectionLis
 	}
 	newGetPrivateEndpointConnectionListPager := e.newGetPrivateEndpointConnectionListPager.get(req)
 	if newGetPrivateEndpointConnectionListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/hostingEnvironments/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/privateEndpointConnections`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/hostingEnvironments/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/privateEndpointConnections`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -1138,7 +1138,7 @@ func (e *EnvironmentsServerTransport) dispatchGetPrivateLinkResources(req *http.
 	if e.srv.GetPrivateLinkResources == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetPrivateLinkResources not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/hostingEnvironments/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/privateLinkResources`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/hostingEnvironments/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/privateLinkResources`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -1171,7 +1171,7 @@ func (e *EnvironmentsServerTransport) dispatchGetVipInfo(req *http.Request) (*ht
 	if e.srv.GetVipInfo == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetVipInfo not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/hostingEnvironments/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/capacities/virtualip`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/hostingEnvironments/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/capacities/virtualip`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -1204,7 +1204,7 @@ func (e *EnvironmentsServerTransport) dispatchGetWorkerPool(req *http.Request) (
 	if e.srv.GetWorkerPool == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetWorkerPool not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/hostingEnvironments/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/workerPools/(?P<workerPoolName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/hostingEnvironments/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/workerPools/(?P<workerPoolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -1243,7 +1243,7 @@ func (e *EnvironmentsServerTransport) dispatchNewListPager(req *http.Request) (*
 	}
 	newListPager := e.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/hostingEnvironments`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/hostingEnvironments`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 2 {
@@ -1276,7 +1276,7 @@ func (e *EnvironmentsServerTransport) dispatchNewListAppServicePlansPager(req *h
 	}
 	newListAppServicePlansPager := e.newListAppServicePlansPager.get(req)
 	if newListAppServicePlansPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/hostingEnvironments/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/serverfarms`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/hostingEnvironments/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/serverfarms`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -1317,7 +1317,7 @@ func (e *EnvironmentsServerTransport) dispatchNewListByResourceGroupPager(req *h
 	}
 	newListByResourceGroupPager := e.newListByResourceGroupPager.get(req)
 	if newListByResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/hostingEnvironments`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/hostingEnvironments`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
@@ -1354,7 +1354,7 @@ func (e *EnvironmentsServerTransport) dispatchNewListCapacitiesPager(req *http.R
 	}
 	newListCapacitiesPager := e.newListCapacitiesPager.get(req)
 	if newListCapacitiesPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/hostingEnvironments/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/capacities/compute`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/hostingEnvironments/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/capacities/compute`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -1393,7 +1393,7 @@ func (e *EnvironmentsServerTransport) dispatchListDiagnostics(req *http.Request)
 	if e.srv.ListDiagnostics == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ListDiagnostics not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/hostingEnvironments/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/diagnostics`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/hostingEnvironments/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/diagnostics`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -1428,7 +1428,7 @@ func (e *EnvironmentsServerTransport) dispatchNewListMultiRoleMetricDefinitionsP
 	}
 	newListMultiRoleMetricDefinitionsPager := e.newListMultiRoleMetricDefinitionsPager.get(req)
 	if newListMultiRoleMetricDefinitionsPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/hostingEnvironments/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/multiRolePools/default/metricdefinitions`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/hostingEnvironments/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/multiRolePools/default/metricdefinitions`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -1469,7 +1469,7 @@ func (e *EnvironmentsServerTransport) dispatchNewListMultiRolePoolInstanceMetric
 	}
 	newListMultiRolePoolInstanceMetricDefinitionsPager := e.newListMultiRolePoolInstanceMetricDefinitionsPager.get(req)
 	if newListMultiRolePoolInstanceMetricDefinitionsPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/hostingEnvironments/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/multiRolePools/default/instances/(?P<instance>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/metricdefinitions`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/hostingEnvironments/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/multiRolePools/default/instances/(?P<instance>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/metricdefinitions`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -1514,7 +1514,7 @@ func (e *EnvironmentsServerTransport) dispatchNewListMultiRolePoolSKUsPager(req 
 	}
 	newListMultiRolePoolSKUsPager := e.newListMultiRolePoolSKUsPager.get(req)
 	if newListMultiRolePoolSKUsPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/hostingEnvironments/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/multiRolePools/default/skus`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/hostingEnvironments/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/multiRolePools/default/skus`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -1555,7 +1555,7 @@ func (e *EnvironmentsServerTransport) dispatchNewListMultiRolePoolsPager(req *ht
 	}
 	newListMultiRolePoolsPager := e.newListMultiRolePoolsPager.get(req)
 	if newListMultiRolePoolsPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/hostingEnvironments/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/multiRolePools`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/hostingEnvironments/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/multiRolePools`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -1596,7 +1596,7 @@ func (e *EnvironmentsServerTransport) dispatchNewListMultiRoleUsagesPager(req *h
 	}
 	newListMultiRoleUsagesPager := e.newListMultiRoleUsagesPager.get(req)
 	if newListMultiRoleUsagesPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/hostingEnvironments/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/multiRolePools/default/usages`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/hostingEnvironments/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/multiRolePools/default/usages`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -1635,7 +1635,7 @@ func (e *EnvironmentsServerTransport) dispatchListOperations(req *http.Request) 
 	if e.srv.ListOperations == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ListOperations not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/hostingEnvironments/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/operations`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/hostingEnvironments/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/operations`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -1670,7 +1670,7 @@ func (e *EnvironmentsServerTransport) dispatchNewListUsagesPager(req *http.Reque
 	}
 	newListUsagesPager := e.newListUsagesPager.get(req)
 	if newListUsagesPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/hostingEnvironments/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/usages`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/hostingEnvironments/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/usages`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -1719,7 +1719,7 @@ func (e *EnvironmentsServerTransport) dispatchNewListWebAppsPager(req *http.Requ
 	}
 	newListWebAppsPager := e.newListWebAppsPager.get(req)
 	if newListWebAppsPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/hostingEnvironments/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/sites`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/hostingEnvironments/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/sites`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -1768,7 +1768,7 @@ func (e *EnvironmentsServerTransport) dispatchNewListWebWorkerMetricDefinitionsP
 	}
 	newListWebWorkerMetricDefinitionsPager := e.newListWebWorkerMetricDefinitionsPager.get(req)
 	if newListWebWorkerMetricDefinitionsPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/hostingEnvironments/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/workerPools/(?P<workerPoolName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/metricdefinitions`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/hostingEnvironments/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/workerPools/(?P<workerPoolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/metricdefinitions`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -1813,7 +1813,7 @@ func (e *EnvironmentsServerTransport) dispatchNewListWebWorkerUsagesPager(req *h
 	}
 	newListWebWorkerUsagesPager := e.newListWebWorkerUsagesPager.get(req)
 	if newListWebWorkerUsagesPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/hostingEnvironments/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/workerPools/(?P<workerPoolName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/usages`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/hostingEnvironments/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/workerPools/(?P<workerPoolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/usages`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -1858,7 +1858,7 @@ func (e *EnvironmentsServerTransport) dispatchNewListWorkerPoolInstanceMetricDef
 	}
 	newListWorkerPoolInstanceMetricDefinitionsPager := e.newListWorkerPoolInstanceMetricDefinitionsPager.get(req)
 	if newListWorkerPoolInstanceMetricDefinitionsPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/hostingEnvironments/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/workerPools/(?P<workerPoolName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/instances/(?P<instance>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/metricdefinitions`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/hostingEnvironments/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/workerPools/(?P<workerPoolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/instances/(?P<instance>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/metricdefinitions`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 6 {
@@ -1907,7 +1907,7 @@ func (e *EnvironmentsServerTransport) dispatchNewListWorkerPoolSKUsPager(req *ht
 	}
 	newListWorkerPoolSKUsPager := e.newListWorkerPoolSKUsPager.get(req)
 	if newListWorkerPoolSKUsPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/hostingEnvironments/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/workerPools/(?P<workerPoolName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/skus`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/hostingEnvironments/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/workerPools/(?P<workerPoolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/skus`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -1952,7 +1952,7 @@ func (e *EnvironmentsServerTransport) dispatchNewListWorkerPoolsPager(req *http.
 	}
 	newListWorkerPoolsPager := e.newListWorkerPoolsPager.get(req)
 	if newListWorkerPoolsPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/hostingEnvironments/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/workerPools`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/hostingEnvironments/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/workerPools`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -1991,7 +1991,7 @@ func (e *EnvironmentsServerTransport) dispatchReboot(req *http.Request) (*http.R
 	if e.srv.Reboot == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Reboot not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/hostingEnvironments/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/reboot`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/hostingEnvironments/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/reboot`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -2026,7 +2026,7 @@ func (e *EnvironmentsServerTransport) dispatchBeginResume(req *http.Request) (*h
 	}
 	beginResume := e.beginResume.get(req)
 	if beginResume == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/hostingEnvironments/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resume`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/hostingEnvironments/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resume`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -2070,7 +2070,7 @@ func (e *EnvironmentsServerTransport) dispatchBeginSuspend(req *http.Request) (*
 	}
 	beginSuspend := e.beginSuspend.get(req)
 	if beginSuspend == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/hostingEnvironments/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/suspend`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/hostingEnvironments/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/suspend`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -2112,7 +2112,7 @@ func (e *EnvironmentsServerTransport) dispatchTestUpgradeAvailableNotification(r
 	if e.srv.TestUpgradeAvailableNotification == nil {
 		return nil, &nonRetriableError{errors.New("fake for method TestUpgradeAvailableNotification not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/hostingEnvironments/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/testUpgradeAvailableNotification`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/hostingEnvironments/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/testUpgradeAvailableNotification`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -2145,7 +2145,7 @@ func (e *EnvironmentsServerTransport) dispatchUpdate(req *http.Request) (*http.R
 	if e.srv.Update == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Update not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/hostingEnvironments/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/hostingEnvironments/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -2182,7 +2182,7 @@ func (e *EnvironmentsServerTransport) dispatchUpdateAseCustomDNSSuffixConfigurat
 	if e.srv.UpdateAseCustomDNSSuffixConfiguration == nil {
 		return nil, &nonRetriableError{errors.New("fake for method UpdateAseCustomDNSSuffixConfiguration not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/hostingEnvironments/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/configurations/customdnssuffix`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/hostingEnvironments/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/configurations/customdnssuffix`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -2219,7 +2219,7 @@ func (e *EnvironmentsServerTransport) dispatchUpdateAseNetworkingConfiguration(r
 	if e.srv.UpdateAseNetworkingConfiguration == nil {
 		return nil, &nonRetriableError{errors.New("fake for method UpdateAseNetworkingConfiguration not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/hostingEnvironments/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/configurations/networking`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/hostingEnvironments/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/configurations/networking`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -2256,7 +2256,7 @@ func (e *EnvironmentsServerTransport) dispatchUpdateMultiRolePool(req *http.Requ
 	if e.srv.UpdateMultiRolePool == nil {
 		return nil, &nonRetriableError{errors.New("fake for method UpdateMultiRolePool not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/hostingEnvironments/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/multiRolePools/default`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/hostingEnvironments/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/multiRolePools/default`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -2293,7 +2293,7 @@ func (e *EnvironmentsServerTransport) dispatchUpdateWorkerPool(req *http.Request
 	if e.srv.UpdateWorkerPool == nil {
 		return nil, &nonRetriableError{errors.New("fake for method UpdateWorkerPool not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/hostingEnvironments/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/workerPools/(?P<workerPoolName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/hostingEnvironments/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/workerPools/(?P<workerPoolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -2336,7 +2336,7 @@ func (e *EnvironmentsServerTransport) dispatchBeginUpgrade(req *http.Request) (*
 	}
 	beginUpgrade := e.beginUpgrade.get(req)
 	if beginUpgrade == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/hostingEnvironments/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/upgrade`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/hostingEnvironments/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/upgrade`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {

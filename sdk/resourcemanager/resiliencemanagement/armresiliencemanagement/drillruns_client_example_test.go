@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-04-01-preview/DrillRuns_AddNotes_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-31-preview/DrillRuns_AddNotes_MaximumSet_Gen.json
 func ExampleDrillRunsClient_BeginAddNotes() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -40,7 +40,7 @@ func ExampleDrillRunsClient_BeginAddNotes() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/DrillRuns_FailOver_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-31-preview/DrillRuns_FailOver_MaximumSet_Gen.json
 func ExampleDrillRunsClient_BeginFailOver() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -51,17 +51,18 @@ func ExampleDrillRunsClient_BeginFailOver() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewDrillRunsClient().BeginFailOver(ctx, "sampleServiceGroupName", "qmn", "drill1", "ca92602e-53bf-43d2-ae62-d3fc940474b3", armresiliencemanagement.DrillRunFailoverRequest{
-		FailoverProperties: &armresiliencemanagement.FailoverRequest{
-			FailoverDirection: to.Ptr(armresiliencemanagement.FailoverDirectionTypesFromSpecificLocations),
-			FailoverRequestProperties: &armresiliencemanagement.FailoverRequestProperties{
-				SourceLocations: []*string{
-					to.Ptr("westus"),
+	poller, err := clientFactory.NewDrillRunsClient().BeginFailOver(ctx, "sampleServiceGroupName", "qmn", "drill1", "ca92602e-53bf-43d2-ae62-d3fc940474b3", &armresiliencemanagement.DrillRunsClientBeginFailOverOptions{
+		Body: &armresiliencemanagement.DrillRunFailoverRequest{
+			FailoverProperties: &armresiliencemanagement.FailoverRequest{
+				FailoverDirection: to.Ptr(armresiliencemanagement.FailoverDirectionTypesFromSpecificLocations),
+				FailoverRequestProperties: &armresiliencemanagement.FailoverRequestProperties{
+					SourceLocations: []*string{
+						to.Ptr("westus"),
+					},
 				},
 			},
-		},
-		AutoFailover: to.Ptr(armresiliencemanagement.AutoFailoverEnable),
-	}, nil)
+			AutoFailover: to.Ptr(armresiliencemanagement.AutoFailoverEnable),
+		}})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -76,7 +77,49 @@ func ExampleDrillRunsClient_BeginFailOver() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/DrillRuns_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-31-preview/DrillRuns_GenerateReport_MaximumSet_Gen.json
+func ExampleDrillRunsClient_BeginGenerateReport() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armresiliencemanagement.NewClientFactory("<subscriptionID>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewDrillRunsClient().BeginGenerateReport(ctx, "sampleServiceGroupName", "qmn", "drill1", "ca92602e-53bf-43d2-ae62-d3fc940474b3", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armresiliencemanagement.DrillRunsClientGenerateReportResponse{
+	// 	DrillReportSummary: armresiliencemanagement.DrillReportSummary{
+	// 		GenerationStatus: to.Ptr(armresiliencemanagement.DrillReportGenerationStatusSucceeded),
+	// 		StageStatuses: []*armresiliencemanagement.ReportStageStatus{
+	// 			{
+	// 				DrillRunStage: to.Ptr(armresiliencemanagement.DrillRunSubtasksFaultInjection),
+	// 				GenerationStatus: to.Ptr(armresiliencemanagement.DrillReportGenerationStatusSucceeded),
+	// 				LastAttemptTimestamp: to.Ptr(time.Date(2026, time.August, 31, 10, 35, 0, 0, time.UTC)),
+	// 			},
+	// 		},
+	// 		AvailableFormats: []*armresiliencemanagement.DrillReportFormat{
+	// 			to.Ptr(armresiliencemanagement.DrillReportFormatHTML),
+	// 		},
+	// 		LastGeneratedTimestamp: to.Ptr(time.Date(2026, time.August, 31, 10, 35, 0, 0, time.UTC)),
+	// 		SchemaVersion: to.Ptr("1.0"),
+	// 		FinalizationState: to.Ptr(armresiliencemanagement.DrillReportFinalizationStateNotFinalized),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-08-31-preview/DrillRuns_Get_MaximumSet_Gen.json
 func ExampleDrillRunsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -101,8 +144,8 @@ func ExampleDrillRunsClient_Get() {
 	// 			ResourceID: to.Ptr("/subscriptions/f2edfd5d-5496-4683-b94f-b3588c579009/resourceGroups/testRG/providers/Microsoft.Compute/virtualMachines/drillResource1"),
 	// 			Operation: to.Ptr("ooberValidation"),
 	// 			Status: to.Ptr(armresiliencemanagement.JobStatusNotStarted),
-	// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-22T11:57:19.140Z"); return t}()),
-	// 			EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-22T11:57:19.140Z"); return t}()),
+	// 			StartTime: to.Ptr(time.Date(2025, time.April, 22, 11, 57, 19, 140000000, time.UTC)),
+	// 			EndTime: to.Ptr(time.Date(2025, time.April, 22, 11, 57, 19, 140000000, time.UTC)),
 	// 			Duration: to.Ptr("PT27M"),
 	// 			ErrorDetails: &armresiliencemanagement.JobErrorInfo{
 	// 				ErrorCode: to.Ptr("SampleErrorCode"),
@@ -115,8 +158,8 @@ func ExampleDrillRunsClient_Get() {
 	// 				{
 	// 					RetryAttempt: to.Ptr[int32](20),
 	// 					Status: to.Ptr(armresiliencemanagement.JobStatusNotStarted),
-	// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-22T11:57:11.753Z"); return t}()),
-	// 					EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-22T11:57:11.753Z"); return t}()),
+	// 					StartTime: to.Ptr(time.Date(2025, time.April, 22, 11, 57, 11, 753000000, time.UTC)),
+	// 					EndTime: to.Ptr(time.Date(2025, time.April, 22, 11, 57, 11, 753000000, time.UTC)),
 	// 					ErrorDetails: &armresiliencemanagement.JobErrorInfo{
 	// 						ErrorCode: to.Ptr("r"),
 	// 						ErrorMessage: to.Ptr("tecbakdadoucxrprmnaeoted"),
@@ -128,7 +171,7 @@ func ExampleDrillRunsClient_Get() {
 	// 					UserComments: []*armresiliencemanagement.JobUserComment{
 	// 						{
 	// 							CommentType: to.Ptr(armresiliencemanagement.CommentTypeDescription),
-	// 							CommentTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-22T12:00:00.000Z"); return t}()),
+	// 							CommentTime: to.Ptr(time.Date(2025, time.April, 22, 12, 0, 0, 0, time.UTC)),
 	// 							Comments: to.Ptr("Retry comment"),
 	// 						},
 	// 					},
@@ -145,8 +188,8 @@ func ExampleDrillRunsClient_Get() {
 	// 							to.Ptr("/providers/Microsoft.Management/serviceGroups/sampleServiceGroupName/providers/Microsoft.AzureResilienceManagement/recoveryPlans/samplePlanName/recoveryJobs/dc6998ef-80ed-4001-b6d4-5325a0309beh"),
 	// 						},
 	// 						Status: to.Ptr(armresiliencemanagement.JobStatusNotStarted),
-	// 						StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-05-15T12:20:34.406Z"); return t}()),
-	// 						EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-05-15T12:20:34.406Z"); return t}()),
+	// 						StartTime: to.Ptr(time.Date(2025, time.May, 15, 12, 20, 34, 406000000, time.UTC)),
+	// 						EndTime: to.Ptr(time.Date(2025, time.May, 15, 12, 20, 34, 406000000, time.UTC)),
 	// 						ErrorDetails: &armresiliencemanagement.JobErrorInfo{
 	// 							ErrorCode: to.Ptr("qeh"),
 	// 							ErrorMessage: to.Ptr("xgtvlqabfcgszwkmqzlegdwtr"),
@@ -157,15 +200,15 @@ func ExampleDrillRunsClient_Get() {
 	// 						UserComments: []*armresiliencemanagement.JobUserComment{
 	// 							{
 	// 								CommentType: to.Ptr(armresiliencemanagement.CommentTypeDescription),
-	// 								CommentTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-05-15T12:20:34.406Z"); return t}()),
+	// 								CommentTime: to.Ptr(time.Date(2025, time.May, 15, 12, 20, 34, 406000000, time.UTC)),
 	// 								Comments: to.Ptr("lmmybouankjq"),
 	// 							},
 	// 						},
 	// 						SubTasksList: []*armresiliencemanagement.JobTaskDetail{
 	// 							{
 	// 								Status: to.Ptr(armresiliencemanagement.JobStatusNotStarted),
-	// 								StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-05-15T12:20:34.406Z"); return t}()),
-	// 								EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-05-15T12:20:34.406Z"); return t}()),
+	// 								StartTime: to.Ptr(time.Date(2025, time.May, 15, 12, 20, 34, 406000000, time.UTC)),
+	// 								EndTime: to.Ptr(time.Date(2025, time.May, 15, 12, 20, 34, 406000000, time.UTC)),
 	// 								Duration: to.Ptr("PT50M"),
 	// 								ErrorDetails: &armresiliencemanagement.JobErrorInfo{
 	// 									ErrorCode: to.Ptr("qeh"),
@@ -182,7 +225,7 @@ func ExampleDrillRunsClient_Get() {
 	// 								UserComments: []*armresiliencemanagement.JobUserComment{
 	// 									{
 	// 										CommentType: to.Ptr(armresiliencemanagement.CommentTypeDescription),
-	// 										CommentTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-05-15T12:20:34.406Z"); return t}()),
+	// 										CommentTime: to.Ptr(time.Date(2025, time.May, 15, 12, 20, 34, 406000000, time.UTC)),
 	// 										Comments: to.Ptr("lmmybouankjq"),
 	// 									},
 	// 								},
@@ -194,8 +237,8 @@ func ExampleDrillRunsClient_Get() {
 	// 							{
 	// 								RetryAttempt: to.Ptr[int32](1),
 	// 								Status: to.Ptr(armresiliencemanagement.JobStatusFailed),
-	// 								StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-05-15T11:00:00.000Z"); return t}()),
-	// 								EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-05-15T11:30:00.000Z"); return t}()),
+	// 								StartTime: to.Ptr(time.Date(2025, time.May, 15, 11, 0, 0, 0, time.UTC)),
+	// 								EndTime: to.Ptr(time.Date(2025, time.May, 15, 11, 30, 0, 0, time.UTC)),
 	// 								Duration: to.Ptr("PT30M"),
 	// 								ErrorDetails: &armresiliencemanagement.JobErrorInfo{
 	// 									ErrorCode: to.Ptr("RetryableError"),
@@ -207,7 +250,7 @@ func ExampleDrillRunsClient_Get() {
 	// 								UserComments: []*armresiliencemanagement.JobUserComment{
 	// 									{
 	// 										CommentType: to.Ptr(armresiliencemanagement.CommentTypeDescription),
-	// 										CommentTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-05-15T11:30:00.000Z"); return t}()),
+	// 										CommentTime: to.Ptr(time.Date(2025, time.May, 15, 11, 30, 0, 0, time.UTC)),
 	// 										Comments: to.Ptr("First retry attempt failed"),
 	// 									},
 	// 								},
@@ -233,7 +276,7 @@ func ExampleDrillRunsClient_Get() {
 	// 			UserComments: []*armresiliencemanagement.JobUserComment{
 	// 				{
 	// 					CommentType: to.Ptr(armresiliencemanagement.CommentTypeDescription),
-	// 					CommentTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-29T12:28:11.731Z"); return t}()),
+	// 					CommentTime: to.Ptr(time.Date(2025, time.August, 29, 12, 28, 11, 731000000, time.UTC)),
 	// 					Comments: to.Ptr("dyllxzzhihwakpwybjajwbs"),
 	// 				},
 	// 			},
@@ -245,16 +288,16 @@ func ExampleDrillRunsClient_Get() {
 	// 		SystemData: &armresiliencemanagement.SystemData{
 	// 			CreatedBy: to.Ptr("dvnfxbuyqhvivfjddjccdtlwajfht"),
 	// 			CreatedByType: to.Ptr(armresiliencemanagement.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-02-06T15:03:42.796Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2025, time.February, 6, 15, 3, 42, 796000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("lndhhaimomorael"),
 	// 			LastModifiedByType: to.Ptr(armresiliencemanagement.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-02-06T15:03:42.797Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.February, 6, 15, 3, 42, 797000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/DrillRuns_List_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-31-preview/DrillRuns_List_MaximumSet_Gen.json
 func ExampleDrillRunsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -285,8 +328,8 @@ func ExampleDrillRunsClient_NewListPager() {
 		// 					ResourceID: to.Ptr("/subscriptions/f2edfd5d-5496-4683-b94f-b3588c579009/resourceGroups/testRG/providers/Microsoft.Compute/virtualMachines/drillResource1"),
 		// 					Operation: to.Ptr("ooberValidation"),
 		// 					Status: to.Ptr(armresiliencemanagement.JobStatusNotStarted),
-		// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-22T11:57:19.140Z"); return t}()),
-		// 					EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-22T11:57:19.140Z"); return t}()),
+		// 					StartTime: to.Ptr(time.Date(2025, time.April, 22, 11, 57, 19, 140000000, time.UTC)),
+		// 					EndTime: to.Ptr(time.Date(2025, time.April, 22, 11, 57, 19, 140000000, time.UTC)),
 		// 					Duration: to.Ptr("PT27M"),
 		// 					ErrorDetails: &armresiliencemanagement.JobErrorInfo{
 		// 						ErrorCode: to.Ptr("SampleErrorCode"),
@@ -299,8 +342,8 @@ func ExampleDrillRunsClient_NewListPager() {
 		// 						{
 		// 							RetryAttempt: to.Ptr[int32](20),
 		// 							Status: to.Ptr(armresiliencemanagement.JobStatusNotStarted),
-		// 							StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-22T11:57:11.753Z"); return t}()),
-		// 							EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-22T11:57:11.753Z"); return t}()),
+		// 							StartTime: to.Ptr(time.Date(2025, time.April, 22, 11, 57, 11, 753000000, time.UTC)),
+		// 							EndTime: to.Ptr(time.Date(2025, time.April, 22, 11, 57, 11, 753000000, time.UTC)),
 		// 							ErrorDetails: &armresiliencemanagement.JobErrorInfo{
 		// 								ErrorCode: to.Ptr("r"),
 		// 								ErrorMessage: to.Ptr("tecbakdadoucxrprmnaeoted"),
@@ -312,7 +355,7 @@ func ExampleDrillRunsClient_NewListPager() {
 		// 							UserComments: []*armresiliencemanagement.JobUserComment{
 		// 								{
 		// 									CommentType: to.Ptr(armresiliencemanagement.CommentTypeDescription),
-		// 									CommentTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-22T12:00:00.000Z"); return t}()),
+		// 									CommentTime: to.Ptr(time.Date(2025, time.April, 22, 12, 0, 0, 0, time.UTC)),
 		// 									Comments: to.Ptr("Retry comment"),
 		// 								},
 		// 							},
@@ -329,8 +372,8 @@ func ExampleDrillRunsClient_NewListPager() {
 		// 									to.Ptr("/providers/Microsoft.Management/serviceGroups/sampleServiceGroupName/providers/Microsoft.AzureResilienceManagement/recoveryPlans/samplePlanName/recoveryJobs/dc6998ef-80ed-4001-b6d4-5325a0309beh"),
 		// 								},
 		// 								Status: to.Ptr(armresiliencemanagement.JobStatusNotStarted),
-		// 								StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-05-15T12:20:34.406Z"); return t}()),
-		// 								EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-05-15T12:20:34.406Z"); return t}()),
+		// 								StartTime: to.Ptr(time.Date(2025, time.May, 15, 12, 20, 34, 406000000, time.UTC)),
+		// 								EndTime: to.Ptr(time.Date(2025, time.May, 15, 12, 20, 34, 406000000, time.UTC)),
 		// 								ErrorDetails: &armresiliencemanagement.JobErrorInfo{
 		// 									ErrorCode: to.Ptr("qeh"),
 		// 									ErrorMessage: to.Ptr("xgtvlqabfcgszwkmqzlegdwtr"),
@@ -341,15 +384,15 @@ func ExampleDrillRunsClient_NewListPager() {
 		// 								UserComments: []*armresiliencemanagement.JobUserComment{
 		// 									{
 		// 										CommentType: to.Ptr(armresiliencemanagement.CommentTypeDescription),
-		// 										CommentTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-05-15T12:20:34.406Z"); return t}()),
+		// 										CommentTime: to.Ptr(time.Date(2025, time.May, 15, 12, 20, 34, 406000000, time.UTC)),
 		// 										Comments: to.Ptr("lmmybouankjq"),
 		// 									},
 		// 								},
 		// 								SubTasksList: []*armresiliencemanagement.JobTaskDetail{
 		// 									{
 		// 										Status: to.Ptr(armresiliencemanagement.JobStatusNotStarted),
-		// 										StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-05-15T12:20:34.406Z"); return t}()),
-		// 										EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-05-15T12:20:34.406Z"); return t}()),
+		// 										StartTime: to.Ptr(time.Date(2025, time.May, 15, 12, 20, 34, 406000000, time.UTC)),
+		// 										EndTime: to.Ptr(time.Date(2025, time.May, 15, 12, 20, 34, 406000000, time.UTC)),
 		// 										Duration: to.Ptr("PT50M"),
 		// 										ErrorDetails: &armresiliencemanagement.JobErrorInfo{
 		// 											ErrorCode: to.Ptr("qeh"),
@@ -366,7 +409,7 @@ func ExampleDrillRunsClient_NewListPager() {
 		// 										UserComments: []*armresiliencemanagement.JobUserComment{
 		// 											{
 		// 												CommentType: to.Ptr(armresiliencemanagement.CommentTypeDescription),
-		// 												CommentTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-05-15T12:20:34.406Z"); return t}()),
+		// 												CommentTime: to.Ptr(time.Date(2025, time.May, 15, 12, 20, 34, 406000000, time.UTC)),
 		// 												Comments: to.Ptr("lmmybouankjq"),
 		// 											},
 		// 										},
@@ -394,7 +437,7 @@ func ExampleDrillRunsClient_NewListPager() {
 		// 					UserComments: []*armresiliencemanagement.JobUserComment{
 		// 						{
 		// 							CommentType: to.Ptr(armresiliencemanagement.CommentTypeDescription),
-		// 							CommentTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-29T12:28:11.731Z"); return t}()),
+		// 							CommentTime: to.Ptr(time.Date(2025, time.August, 29, 12, 28, 11, 731000000, time.UTC)),
 		// 							Comments: to.Ptr("dyllxzzhihwakpwybjajwbs"),
 		// 						},
 		// 					},
@@ -406,10 +449,10 @@ func ExampleDrillRunsClient_NewListPager() {
 		// 				SystemData: &armresiliencemanagement.SystemData{
 		// 					CreatedBy: to.Ptr("dvnfxbuyqhvivfjddjccdtlwajfht"),
 		// 					CreatedByType: to.Ptr(armresiliencemanagement.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-02-06T15:03:42.796Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2025, time.February, 6, 15, 3, 42, 796000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("lndhhaimomorael"),
 		// 					LastModifiedByType: to.Ptr(armresiliencemanagement.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-02-06T15:03:42.797Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2025, time.February, 6, 15, 3, 42, 797000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -419,7 +462,40 @@ func ExampleDrillRunsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/DrillRuns_MarkAsComplete_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-31-preview/DrillRuns_ListReportDownloadUrl_MaximumSet_Gen.json
+func ExampleDrillRunsClient_BeginListReportDownloadURL() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armresiliencemanagement.NewClientFactory("<subscriptionID>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewDrillRunsClient().BeginListReportDownloadURL(ctx, "sampleServiceGroupName", "3f2b1c4d-5e6f-4a7b-8c9d-0e1f2a3b4c5d", "drill1", "ca92602e-53bf-43d2-ae62-d3fc940474b3", armresiliencemanagement.ListReportDownloadURLRequest{
+		Format: to.Ptr(armresiliencemanagement.DrillReportFormatHTML),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armresiliencemanagement.DrillRunsClientListReportDownloadURLResponse{
+	// 	ListReportDownloadURLResponse: armresiliencemanagement.ListReportDownloadURLResponse{
+	// 		Format: to.Ptr(armresiliencemanagement.DrillReportFormatHTML),
+	// 		DownloadURL: to.Ptr("https://contoso.blob.core.windows.net/drill-reports/drill1/ca92602e-53bf-43d2-ae62-d3fc940474b3/report.html?sv=2025-01-05&sr=b&sig=redacted&se=2026-08-31T10%3A45%3A00Z&sp=r"),
+	// 		ExpiryTimestamp: to.Ptr(time.Date(2026, time.August, 31, 10, 45, 0, 0, time.UTC)),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-08-31-preview/DrillRuns_MarkAsComplete_MaximumSet_Gen.json
 func ExampleDrillRunsClient_BeginMarkAsComplete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -447,7 +523,7 @@ func ExampleDrillRunsClient_BeginMarkAsComplete() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/DrillRuns_Reprotect_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-31-preview/DrillRuns_Reprotect_MaximumSet_Gen.json
 func ExampleDrillRunsClient_BeginReprotect() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -473,7 +549,7 @@ func ExampleDrillRunsClient_BeginReprotect() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/DrillRuns_Resume_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-31-preview/DrillRuns_Resume_MaximumSet_Gen.json
 func ExampleDrillRunsClient_BeginResume() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

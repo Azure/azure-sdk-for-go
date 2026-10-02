@@ -9,6 +9,16 @@ type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
+// SKUMixPlacementScoresClientGetOptions contains the optional parameters for the SKUMixPlacementScoresClient.Get method.
+type SKUMixPlacementScoresClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SKUMixPlacementScoresClientPostOptions contains the optional parameters for the SKUMixPlacementScoresClient.Post method.
+type SKUMixPlacementScoresClientPostOptions struct {
+	// placeholder for future optional parameters
+}
+
 // SpotPlacementScoresClientGetOptions contains the optional parameters for the SpotPlacementScoresClient.Get method.
 type SpotPlacementScoresClientGetOptions struct {
 	// placeholder for future optional parameters

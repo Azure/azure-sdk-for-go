@@ -32,11 +32,11 @@ func ExampleInsightsClient_Create() {
 			},
 			Category:        to.Ptr("repair"),
 			Status:          to.Ptr("resolved"),
-			EventTime:       to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-15T04:00:00.009223Z"); return t }()),
+			EventTime:       to.Ptr(time.Date(2023, time.June, 15, 4, 0, 0, 9223000, time.UTC)),
 			InsightUniqueID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 			Impact: &armimpactreporting.ImpactDetails{
 				ImpactedResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resource-rg/providers/Microsoft.Sql/sqlserver/dbservername"),
-				StartTime:          to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-15T01:00:00.009223Z"); return t }()),
+				StartTime:          to.Ptr(time.Date(2023, time.June, 15, 1, 0, 0, 9223000, time.UTC)),
 				ImpactID:           to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/microsoft.Impact/workloadImpacts/impactid22"),
 			},
 		},
@@ -53,7 +53,7 @@ func ExampleInsightsClient_Create() {
 	// 		Name: to.Ptr("insightId12"),
 	// 		Type: to.Ptr("Microsoft.Impact/insights"),
 	// 		Properties: &armimpactreporting.InsightProperties{
-	// 			EventTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-15T04:00:00.009223Z"); return t}()),
+	// 			EventTime: to.Ptr(time.Date(2023, time.June, 15, 4, 0, 0, 9223000, time.UTC)),
 	// 			Content: &armimpactreporting.Content{
 	// 				Title: to.Ptr("Impact Has been correlated to an outage"),
 	// 				Description: to.Ptr("At 2018-11-08T00:00:00Z UTC, your services dependent on these resources <link href=”…”>VM1</link> may have experienced an issue. <br/><div>We have identified an outage that affected these resources(s). You can look at outage information on <link href=\"https:// portal.azure.com/#view/Microsoft_Azure_Health/AzureHealthBrowseBlade/~/serviceIssues/trackingId/NL2W-VCZ\">NL2W-VCZ</link> link.<div>"),
@@ -63,7 +63,7 @@ func ExampleInsightsClient_Create() {
 	// 			InsightUniqueID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 			Impact: &armimpactreporting.ImpactDetails{
 	// 				ImpactedResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resource-rg/providers/Microsoft.Sql/sqlserver/dbservername"),
-	// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-15T01:00:00.009223Z"); return t}()),
+	// 				StartTime: to.Ptr(time.Date(2023, time.June, 15, 1, 0, 0, 9223000, time.UTC)),
 	// 				ImpactID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/microsoft.Impact/workloadImpacts/impactid22"),
 	// 			},
 	// 		},
@@ -121,8 +121,8 @@ func ExampleInsightsClient_Get_getInsightSampleForDiagnosticsCategory() {
 	// 			Impact: &armimpactreporting.ImpactDetails{
 	// 				ImpactID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Impact/workloadimpacts/impactid"),
 	// 				ImpactedResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/virtualamchine/vm"),
-	// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-08T00:00:00Z"); return t}()),
-	// 				EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-08T00:00:00Z"); return t}()),
+	// 				StartTime: to.Ptr(time.Date(2018, time.November, 8, 0, 0, 0, 0, time.UTC)),
+	// 				EndTime: to.Ptr(time.Date(2018, time.November, 8, 0, 0, 0, 0, time.UTC)),
 	// 			},
 	// 			InsightUniqueID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 			Content: &armimpactreporting.Content{
@@ -159,13 +159,13 @@ func ExampleInsightsClient_Get_getInsightSampleForMitigationActionCategory() {
 	// 		Type: to.Ptr("Microsoft.impact/workloadimpacts/insights"),
 	// 		Properties: &armimpactreporting.InsightProperties{
 	// 			Category: to.Ptr("MitigationAction"),
-	// 			EventTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-15T04:00:00.009223Z"); return t}()),
+	// 			EventTime: to.Ptr(time.Date(2023, time.June, 15, 4, 0, 0, 9223000, time.UTC)),
 	// 			InsightUniqueID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 			Impact: &armimpactreporting.ImpactDetails{
 	// 				ImpactID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Impact/workloadimpacts/impactId"),
 	// 				ImpactedResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/virtualMachine/vm"),
-	// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-08T00:00:00Z"); return t}()),
-	// 				EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-08T00:00:00Z"); return t}()),
+	// 				StartTime: to.Ptr(time.Date(2018, time.November, 8, 0, 0, 0, 0, time.UTC)),
+	// 				EndTime: to.Ptr(time.Date(2018, time.November, 8, 0, 0, 0, 0, time.UTC)),
 	// 			},
 	// 			Content: &armimpactreporting.Content{
 	// 				Title: to.Ptr("Node was flagged for inspection"),
@@ -204,12 +204,12 @@ func ExampleInsightsClient_Get_getInsightSampleForServiceHealthCategory() {
 	// 		Properties: &armimpactreporting.InsightProperties{
 	// 			Category: to.Ptr("ServiceHealth"),
 	// 			EventID: to.Ptr("ABC-123"),
-	// 			EventTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-15T04:00:00.009223Z"); return t}()),
+	// 			EventTime: to.Ptr(time.Date(2023, time.June, 15, 4, 0, 0, 9223000, time.UTC)),
 	// 			Impact: &armimpactreporting.ImpactDetails{
 	// 				ImpactID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Impact/workloadimpacts/impactid"),
 	// 				ImpactedResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.compute/virtualmachines/vm1"),
-	// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-08T00:00:00Z"); return t}()),
-	// 				EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-08T00:00:00Z"); return t}()),
+	// 				StartTime: to.Ptr(time.Date(2018, time.November, 8, 0, 0, 0, 0, time.UTC)),
+	// 				EndTime: to.Ptr(time.Date(2018, time.November, 8, 0, 0, 0, 0, time.UTC)),
 	// 			},
 	// 			InsightUniqueID: to.Ptr("a3d91a07-698b-4044-a230-e918252c4c59"),
 	// 			Content: &armimpactreporting.Content{
@@ -251,7 +251,7 @@ func ExampleInsightsClient_NewListBySubscriptionPager() {
 		// 				Name: to.Ptr("insightId12"),
 		// 				Type: to.Ptr("Microsoft.Impact/insights"),
 		// 				Properties: &armimpactreporting.InsightProperties{
-		// 					EventTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-15T04:00:00.009223Z"); return t}()),
+		// 					EventTime: to.Ptr(time.Date(2023, time.June, 15, 4, 0, 0, 9223000, time.UTC)),
 		// 					Content: &armimpactreporting.Content{
 		// 						Title: to.Ptr("Impact Has been correlated to an outage"),
 		// 						Description: to.Ptr("At 2018-11-08T00:00:00Z UTC, your services dependent on these resources <link href=”…”>VM1</link> may have experienced an issue. <br/><div>We have identified an outage that affected these resources(s). You can look at outage information on <link href=\"https:// portal.azure.com/#view/Microsoft_Azure_Health/AzureHealthBrowseBlade/~/serviceIssues/trackingId/NL2W-VCZ\">NL2W-VCZ</link> link.<div>"),
@@ -261,7 +261,7 @@ func ExampleInsightsClient_NewListBySubscriptionPager() {
 		// 					InsightUniqueID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 		// 					Impact: &armimpactreporting.ImpactDetails{
 		// 						ImpactedResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resource-rg/providers/Microsoft.Sql/sqlserver/dbservername"),
-		// 						StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-15T01:00:00.009223Z"); return t}()),
+		// 						StartTime: to.Ptr(time.Date(2023, time.June, 15, 1, 0, 0, 9223000, time.UTC)),
 		// 						ImpactID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/microsoft.Impact/workloadImpacts/impactid22"),
 		// 					},
 		// 				},

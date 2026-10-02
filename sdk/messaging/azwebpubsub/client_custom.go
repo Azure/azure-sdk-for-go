@@ -109,9 +109,22 @@ type GenerateClientAccessURLResponse struct {
 //   - hub - The hub name.
 //   - options - GenerateClientAccessUrlOptions contains the optional parameters for the Client.GenerateClientAccessURL method.
 func (c *Client) GenerateClientAccessURL(ctx context.Context, hub string, options *GenerateClientAccessURLOptions) (*GenerateClientAccessURLResponse, error) {
-	endpoint := c.endpoint
 	if hub == "" {
 		return nil, errors.New("empty hub name is not allowed")
+	}
+	if options == nil {
+		options = &GenerateClientAccessURLOptions{}
+	}
+	if options.ExpirationTimeInMinutes < 0 {
+		return nil, errors.New("the value of ExpirationTimeInMinutes is out of range")
+	}
+
+	// The audience and the client URL are formed by appending to the endpoint, so it must
+	// end with a slash. NewClientFromConnectionString normalizes this, but an endpoint
+	// passed to NewClient may not have a trailing slash.
+	endpoint := c.endpoint
+	if !strings.HasSuffix(endpoint, "/") {
+		endpoint += "/"
 	}
 	hubPath := url.PathEscape(hub)
 	parsedURL, err := url.Parse(endpoint)
@@ -131,14 +144,22 @@ func (c *Client) GenerateClientAccessURL(ctx context.Context, hub string, option
 			return nil, err
 		}
 	} else {
-		var userId *string
-		if options.UserID == "" {
-			userId = nil
-		} else {
-			userId = &options.UserID
+		var userID *string
+		if options.UserID != "" {
+			userID = &options.UserID
 		}
-		// Replace with your logic to generate the token using a webPubSub method
-		resp, err := c.generateClientToken(ctx, hub, &GenerateClientTokenOptions{UserID: userId, Role: options.Roles, Group: options.Groups, MinutesToExpire: &options.ExpirationTimeInMinutes})
+		// The service rejects minutesToExpire=0, so fall back to the same default the
+		// key-based path uses instead of forwarding the zero value.
+		minutesToExpire := int32(defaultExpirationTime / time.Minute)
+		if options.ExpirationTimeInMinutes > 0 {
+			minutesToExpire = options.ExpirationTimeInMinutes
+		}
+		resp, err := c.generateClientToken(ctx, hub, &GenerateClientTokenOptions{
+			UserID:          userID,
+			Role:            options.Roles,
+			Group:           options.Groups,
+			MinutesToExpire: &minutesToExpire,
+		})
 		if err != nil {
 			return nil, err
 		}

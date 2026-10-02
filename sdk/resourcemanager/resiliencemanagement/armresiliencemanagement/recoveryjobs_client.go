@@ -19,7 +19,7 @@ import (
 // RecoveryJobsClient - Operations for managing recovery jobs.
 // Don't use this type directly, use NewRecoveryJobsClient() instead.
 //
-// Generated from API version 2026-04-01-preview
+// Generated from API version 2026-08-31-preview
 type RecoveryJobsClient struct {
 	internal *arm.Client
 }
@@ -81,8 +81,7 @@ func (client *RecoveryJobsClient) cancel(ctx context.Context, serviceGroupName s
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -107,7 +106,7 @@ func (client *RecoveryJobsClient) cancelCreateRequest(ctx context.Context, servi
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401Preview)
+	reqQP.Set("api-version", version20260831Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["operation-id"] = []string{operationID}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -137,12 +136,7 @@ func (client *RecoveryJobsClient) Get(ctx context.Context, serviceGroupName stri
 	if err != nil {
 		return RecoveryJobsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return RecoveryJobsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -165,15 +159,18 @@ func (client *RecoveryJobsClient) getCreateRequest(ctx context.Context, serviceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401Preview)
+	reqQP.Set("api-version", version20260831Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *RecoveryJobsClient) getHandleResponse(resp *http.Response) (RecoveryJobsClientGetResponse, error) {
+func (client *RecoveryJobsClient) getHandleResponse(resp *http.Response, successCodes ...int) (RecoveryJobsClientGetResponse, error) {
 	result := RecoveryJobsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RecoveryJob); err != nil {
 		return RecoveryJobsClientGetResponse{}, err
 	}
@@ -195,43 +192,57 @@ func (client *RecoveryJobsClient) NewListPager(serviceGroupName string, recovery
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, serviceGroupName, recoveryPlanName, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, serviceGroupName, recoveryPlanName, nextLink, options)
 			if err != nil {
 				return RecoveryJobsClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return RecoveryJobsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *RecoveryJobsClient) listCreateRequest(ctx context.Context, serviceGroupName string, recoveryPlanName string, _ *RecoveryJobsClientListOptions) (*policy.Request, error) {
-	urlPath := "/providers/Microsoft.Management/serviceGroups/{serviceGroupName}/providers/Microsoft.AzureResilienceManagement/recoveryPlans/{recoveryPlanName}/recoveryJobs"
-	if serviceGroupName == "" {
-		return nil, errors.New("parameter serviceGroupName cannot be empty")
+func (client *RecoveryJobsClient) listCreateRequest(ctx context.Context, serviceGroupName string, recoveryPlanName string, nextLink string, _ *RecoveryJobsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/providers/Microsoft.Management/serviceGroups/{serviceGroupName}/providers/Microsoft.AzureResilienceManagement/recoveryPlans/{recoveryPlanName}/recoveryJobs"
+		if serviceGroupName == "" {
+			return nil, errors.New("parameter serviceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{serviceGroupName}", url.PathEscape(serviceGroupName))
+		if recoveryPlanName == "" {
+			return nil, errors.New("parameter recoveryPlanName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{recoveryPlanName}", url.PathEscape(recoveryPlanName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{serviceGroupName}", url.PathEscape(serviceGroupName))
-	if recoveryPlanName == "" {
-		return nil, errors.New("parameter recoveryPlanName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{recoveryPlanName}", url.PathEscape(recoveryPlanName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260831Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *RecoveryJobsClient) listHandleResponse(resp *http.Response) (RecoveryJobsClientListResponse, error) {
+func (client *RecoveryJobsClient) listHandleResponse(resp *http.Response, successCodes ...int) (RecoveryJobsClientListResponse, error) {
 	result := RecoveryJobsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RecoveryJobListResult); err != nil {
 		return RecoveryJobsClientListResponse{}, err
 	}
@@ -281,8 +292,7 @@ func (client *RecoveryJobsClient) resume(ctx context.Context, serviceGroupName s
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -307,7 +317,7 @@ func (client *RecoveryJobsClient) resumeCreateRequest(ctx context.Context, servi
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401Preview)
+	reqQP.Set("api-version", version20260831Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["operation-id"] = []string{operationID}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -358,8 +368,7 @@ func (client *RecoveryJobsClient) retry(ctx context.Context, serviceGroupName st
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -384,7 +393,7 @@ func (client *RecoveryJobsClient) retryCreateRequest(ctx context.Context, servic
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401Preview)
+	reqQP.Set("api-version", version20260831Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["operation-id"] = []string{operationID}
 	return req, nil

@@ -144,10 +144,10 @@ jobs:
           WorkingDirectory: $(sdkRoot)
           RepoOwner: Azure
           RepoName: azure-sdk-for-go
-          PROwner: azure-sdk
+          PROwner: Azure
           BaseBranchName: 'refs/heads/main'
           PRBranchName: typespec-go-regenerate-${{ parameters.TypeSpecAzureRef }}
           CommitMsg: 'Regenerate SDK based on typespec-go (${{ parameters.TypeSpecAzureRef }})'
-          PRTitle: '[Automation] Regenerate SDK based on typespec-go (${{ parameters.TypeSpecAzureRef }})'
+          PRTitle: '[skip ci] [Automation] Regenerate SDK based on typespec-go (${{ parameters.TypeSpecAzureRef }})'
           OpenAsDraft: true
           PushArgs: '--force'

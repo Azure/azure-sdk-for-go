@@ -101,6 +101,7 @@ The following examples cover common tasks using Azure Service Bus:
 
 - [Send messages](#send-messages)
 - [Receive messages](#receive-messages)
+- [Unit test code that uses receivers](#unit-test-code-that-uses-receivers)
 - [Dead lettering and subqueues](#dead-letter-queue)
 
 ### Send messages
@@ -244,6 +245,24 @@ for _, message := range messages {
 }
 ```
 
+### Unit test code that uses receivers
+
+Define an interface containing only the receiver operations that your
+application uses. Pass an `*azservicebus.Receiver` to the application in
+production and use a test implementation of the interface in unit tests.
+
+If the application creates receivers through an `azservicebus.Client`, inject
+a function that wraps `Client.NewReceiverForQueue` or
+`Client.NewReceiverForSubscription`. This keeps the application independent of
+the concrete receiver while preserving the SDK's client construction path.
+
+The public fields on `ReceivedMessage` let unit tests create messages with the
+values needed for each scenario. See the
+[unit-testing example][unit_testing_example] for a complete pattern.
+
+Use an integration test when the code under test needs the SDK to create other
+concrete values, such as `MessageBatch`.
+
 ### Dead letter queue
 
 The dead letter queue is a **sub-queue**. Each queue or subscription has its own dead letter queue. Dead letter queues store
@@ -334,3 +353,4 @@ If you'd like to contribute to this library, please read the [contributing guide
 [godoc_newreceiver_queue]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/#Client.NewReceiverForQueue
 [godoc_newreceiver_subscription]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/#Client.NewReceiverForSubscription
 [servicebus_troubleshooting]: https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/messaging/azservicebus/TROUBLESHOOTING.md
+[unit_testing_example]: https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/messaging/azservicebus/example_mocking_test.go

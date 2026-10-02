@@ -5,7 +5,7 @@
 package armiothub
 
 const (
-	version20260301Preview string = "2026-03-01-preview"
+	version20260501Preview string = "2026-05-01-preview"
 )
 
 // AccessRights - The permissions assigned to the shared access policy.
@@ -176,6 +176,21 @@ func PossibleEndpointHealthStatusValues() []EndpointHealthStatus {
 	}
 }
 
+// EventStreamAuthenticationType - Specifies authentication type being used for connecting to the event stream account.
+type EventStreamAuthenticationType string
+
+const (
+	// EventStreamAuthenticationTypeIdentityBased - identityBased authentication
+	EventStreamAuthenticationTypeIdentityBased EventStreamAuthenticationType = "identityBased"
+)
+
+// PossibleEventStreamAuthenticationTypeValues returns the possible values for the EventStreamAuthenticationType const type.
+func PossibleEventStreamAuthenticationTypeValues() []EventStreamAuthenticationType {
+	return []EventStreamAuthenticationType{
+		EventStreamAuthenticationTypeIdentityBased,
+	}
+}
+
 // GatewayVersion - The IoT hub Gateway version.
 type GatewayVersion string
 
@@ -283,8 +298,6 @@ const (
 	IotHubSKUB3 IotHubSKU = "B3"
 	// IotHubSKUF1 - F1
 	IotHubSKUF1 IotHubSKU = "F1"
-	// IotHubSKUGEN2 - GEN2
-	IotHubSKUGEN2 IotHubSKU = "GEN2"
 	// IotHubSKUS1 - S1
 	IotHubSKUS1 IotHubSKU = "S1"
 	// IotHubSKUS2 - S2
@@ -300,7 +313,6 @@ func PossibleIotHubSKUValues() []IotHubSKU {
 		IotHubSKUB2,
 		IotHubSKUB3,
 		IotHubSKUF1,
-		IotHubSKUGEN2,
 		IotHubSKUS1,
 		IotHubSKUS2,
 		IotHubSKUS3,
@@ -315,8 +327,6 @@ const (
 	IotHubSKUTierBasic IotHubSKUTier = "Basic"
 	// IotHubSKUTierFree - Free
 	IotHubSKUTierFree IotHubSKUTier = "Free"
-	// IotHubSKUTierGeneration2 - Generation2
-	IotHubSKUTierGeneration2 IotHubSKUTier = "Generation2"
 	// IotHubSKUTierStandard - Standard
 	IotHubSKUTierStandard IotHubSKUTier = "Standard"
 )
@@ -326,7 +336,6 @@ func PossibleIotHubSKUTierValues() []IotHubSKUTier {
 	return []IotHubSKUTier{
 		IotHubSKUTierBasic,
 		IotHubSKUTierFree,
-		IotHubSKUTierGeneration2,
 		IotHubSKUTierStandard,
 	}
 }

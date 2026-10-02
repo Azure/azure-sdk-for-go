@@ -29,6 +29,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/file"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/fileerror"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/generated"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/testcommon"
@@ -5179,6 +5180,159 @@ func TestDownloadSmallChunkSize(t *testing.T) {
 	_require.Equal(atomic.LoadUint64(&fbb.numChunks), numChunks)
 }
 
+// captureBodyTransport records the request body and headers of the last request it handled.
+type captureBodyTransport struct {
+	capturedBody    []byte
+	capturedHeaders http.Header
+}
+
+func (c *captureBodyTransport) Do(req *http.Request) (*http.Response, error) {
+	if req.Body != nil {
+		b, err := io.ReadAll(req.Body)
+		if err != nil {
+			return nil, err
+		}
+		c.capturedBody = b
+	}
+	c.capturedHeaders = req.Header.Clone()
+	return &http.Response{
+		Request:    req,
+		Status:     "201 Created",
+		StatusCode: http.StatusCreated,
+		Header:     http.Header{},
+		Body:       http.NoBody,
+	}, nil
+}
+
+// foldedHeaderValues looks up a header value using a case-insensitive key match. The generated
+// storage client writes some request headers with non-canonical keys (e.g. "x-ms-structured-body")
+// via direct map assignment, so http.Header.Get (which canonicalizes) would not find them.
+func foldedHeaderValues(h http.Header, key string) []string {
+	for k, v := range h {
+		if strings.EqualFold(k, key) {
+			return v
+		}
+	}
+	return nil
+}
+
+// TestFileUploadRangeStructuredMessageBody is a regression test for PR #27263: when a structured
+// message CRC64 TransferValidationType is used, UploadRange must send the SM-encoded (framed) body
+// produced by Apply, not the original unframed reader. Previously the transformed reader was
+// discarded because it was never assigned back onto uploadRangeOptions.Optionalbody.
+func TestFileUploadRangeStructuredMessageBody(t *testing.T) {
+	_require := require.New(t)
+
+	log.SetListener(nil) // no logging
+
+	const contentSize = 2048
+	const segmentSize = 512
+	content := make([]byte, contentSize)
+	_, err := rand.Read(content)
+	_require.NoError(err)
+
+	// Independently compute what the framed structured-message body should look like.
+	encoder := shared.NewSMEncoder(streaming.NopCloser(bytes.NewReader(content)), int64(contentSize), segmentSize)
+	expectedBody, err := io.ReadAll(encoder)
+	_require.NoError(err)
+	_require.Greater(len(expectedBody), contentSize) // framing adds headers and CRC64 values
+
+	transport := &captureBodyTransport{}
+	fileClient, err := file.NewClientWithNoCredential("https://fake/share/file", &file.ClientOptions{
+		ClientOptions: policy.ClientOptions{
+			Transport: transport,
+		},
+	})
+	_require.NoError(err)
+
+	_, err = fileClient.UploadRange(context.Background(), 0, streaming.NopCloser(bytes.NewReader(content)), &file.UploadRangeOptions{
+		TransactionalValidation: file.TransferValidationTypeComputeStructuredMessageCRC64(segmentSize),
+	})
+	_require.NoError(err)
+
+	// The bytes actually sent must be the framed SM body, not the raw content.
+	_require.Equal(expectedBody, transport.capturedBody)
+
+	// The structured-message framing metadata must accompany the request.
+	sbHeader := foldedHeaderValues(transport.capturedHeaders, "x-ms-structured-body")
+	_require.Len(sbHeader, 1)
+	_require.Equal(shared.SMHeaderValue, sbHeader[0])
+	sclHeader := foldedHeaderValues(transport.capturedHeaders, "x-ms-structured-content-length")
+	_require.Len(sclHeader, 1)
+	_require.Equal(strconv.Itoa(contentSize), sclHeader[0])
+}
+
+func TestFileCreateStructuredMessageBody(t *testing.T) {
+	_require := require.New(t)
+
+	log.SetListener(nil)
+
+	const contentSize = 2048
+	const segmentSize = 512
+	content := make([]byte, contentSize)
+	_, err := rand.Read(content)
+	_require.NoError(err)
+
+	encoder := shared.NewSMEncoder(streaming.NopCloser(bytes.NewReader(content)), int64(contentSize), segmentSize)
+	expectedBody, err := io.ReadAll(encoder)
+	_require.NoError(err)
+	_require.Greater(len(expectedBody), contentSize)
+
+	transport := &captureBodyTransport{}
+	fileClient, err := file.NewClientWithNoCredential("https://fake/share/file", &file.ClientOptions{
+		ClientOptions: policy.ClientOptions{
+			Transport: transport,
+		},
+	})
+	_require.NoError(err)
+
+	_, err = fileClient.Create(context.Background(), int64(contentSize), &file.CreateOptions{
+		OptionalBody:            streaming.NopCloser(bytes.NewReader(content)),
+		TransactionalValidation: file.TransferValidationTypeComputeStructuredMessageCRC64(segmentSize),
+	})
+	_require.NoError(err)
+
+	_require.Equal(expectedBody, transport.capturedBody)
+
+	sbHeader := foldedHeaderValues(transport.capturedHeaders, "x-ms-structured-body")
+	_require.Len(sbHeader, 1)
+	_require.Equal(shared.SMHeaderValue, sbHeader[0])
+	sclHeader := foldedHeaderValues(transport.capturedHeaders, "x-ms-structured-content-length")
+	_require.Len(sclHeader, 1)
+	_require.Equal(strconv.Itoa(contentSize), sclHeader[0])
+}
+
+func TestFileCreateRejectsUnsupportedValidationType(t *testing.T) {
+	_require := require.New(t)
+
+	transport := &captureBodyTransport{}
+	fileClient, err := file.NewClientWithNoCredential("https://fake/share/file", &file.ClientOptions{
+		ClientOptions: policy.ClientOptions{
+			Transport: transport,
+		},
+	})
+	_require.NoError(err)
+
+	body := streaming.NopCloser(bytes.NewReader([]byte("data")))
+
+	// Precomputed CRC64
+	_, err = fileClient.Create(context.Background(), 4, &file.CreateOptions{
+		OptionalBody:            body,
+		TransactionalValidation: exported.TransferValidationTypeCRC64(123),
+	})
+	_require.Error(err)
+	_require.Contains(err.Error(), "unsupported TransactionalValidation type")
+
+	// Computed CRC64
+	body = streaming.NopCloser(bytes.NewReader([]byte("data")))
+	_, err = fileClient.Create(context.Background(), 4, &file.CreateOptions{
+		OptionalBody:            body,
+		TransactionalValidation: exported.TransferValidationTypeComputeCRC64(),
+	})
+	_require.Error(err)
+	_require.Contains(err.Error(), "unsupported TransactionalValidation type")
+}
+
 // TODO: Add tests for retry header options
 
 func (f *FileRecordedTestsSuite) TestCreateHardLinkNFS() {
@@ -5842,4 +5996,289 @@ func (f *FileRecordedTestsSuite) TestFileCreateDataWithMD5Validation() {
 		_require.NotNil(resp.ETag)
 		_require.EqualValues(contentMD5, resp.ContentMD5)
 	}
+}
+
+// ===== Content Validation (Structured Message CRC64) Tests =====
+
+func (f *FileUnrecordedTestsSuite) TestUploadRangeWithStructuredMessageCRC64() {
+	_require := require.New(f.T())
+	testName := f.T().Name()
+
+	svcClient, err := testcommon.GetServiceClient(f.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, testcommon.GenerateShareName(testName), svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	contentSize := int64(8 * 1024)
+	fClient := testcommon.CreateNewFileFromShare(context.Background(), _require, testcommon.GenerateFileName(testName), contentSize, shareClient)
+
+	contentR, contentD := testcommon.GenerateData(int(contentSize))
+
+	_, err = fClient.UploadRange(context.Background(), 0, contentR, &file.UploadRangeOptions{
+		TransactionalValidation: file.TransferValidationTypeComputeStructuredMessageCRC64(0),
+	})
+	_require.NoError(err)
+
+	resp, err := fClient.DownloadStream(context.Background(), nil)
+	_require.NoError(err)
+
+	downloadedData, err := io.ReadAll(resp.Body)
+	_require.NoError(err)
+	_require.EqualValues(contentD, downloadedData)
+}
+
+func (f *FileUnrecordedTestsSuite) TestUploadRangeWithSMThenDownloadWithSMRoundTrip() {
+	_require := require.New(f.T())
+	testName := f.T().Name()
+
+	svcClient, err := testcommon.GetServiceClient(f.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, testcommon.GenerateShareName(testName), svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	contentSize := int64(4 * 1024)
+	fClient := testcommon.CreateNewFileFromShare(context.Background(), _require, testcommon.GenerateFileName(testName), contentSize, shareClient)
+
+	contentR, contentD := testcommon.GenerateData(int(contentSize))
+
+	_, err = fClient.UploadRange(context.Background(), 0, contentR, &file.UploadRangeOptions{
+		TransactionalValidation: file.TransferValidationTypeComputeStructuredMessageCRC64(0),
+	})
+	_require.NoError(err)
+
+	downloadResp, err := fClient.DownloadStream(context.Background(), &file.DownloadStreamOptions{
+		TransactionalValidation: file.TransferValidationTypeComputeStructuredMessageCRC64(0),
+	})
+	_require.NoError(err)
+
+	downloadedData, err := io.ReadAll(downloadResp.Body)
+	_require.NoError(err)
+	_require.EqualValues(contentD, downloadedData)
+}
+
+func (f *FileUnrecordedTestsSuite) TestUploadRangeEmptyWithStructuredMessageCRC64() {
+	_require := require.New(f.T())
+	testName := f.T().Name()
+
+	svcClient, err := testcommon.GetServiceClient(f.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, testcommon.GenerateShareName(testName), svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	fClient := testcommon.CreateNewFileFromShare(context.Background(), _require, testcommon.GenerateFileName(testName), 0, shareClient)
+
+	_, err = fClient.UploadRange(context.Background(), 0, streaming.NopCloser(bytes.NewReader([]byte{})), &file.UploadRangeOptions{
+		TransactionalValidation: file.TransferValidationTypeComputeStructuredMessageCRC64(0),
+	})
+	_require.Error(err)
+}
+
+func (f *FileUnrecordedTestsSuite) TestUploadRangeSingleByteWithStructuredMessageCRC64() {
+	_require := require.New(f.T())
+	testName := f.T().Name()
+
+	svcClient, err := testcommon.GetServiceClient(f.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, testcommon.GenerateShareName(testName), svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	fClient := testcommon.CreateNewFileFromShare(context.Background(), _require, testcommon.GenerateFileName(testName), 1, shareClient)
+
+	content := []byte{0x42}
+	_, err = fClient.UploadRange(context.Background(), 0, streaming.NopCloser(bytes.NewReader(content)), &file.UploadRangeOptions{
+		TransactionalValidation: file.TransferValidationTypeComputeStructuredMessageCRC64(0),
+	})
+	_require.NoError(err)
+
+	downloadResp, err := fClient.DownloadStream(context.Background(), &file.DownloadStreamOptions{
+		TransactionalValidation: file.TransferValidationTypeComputeStructuredMessageCRC64(0),
+	})
+	_require.NoError(err)
+
+	downloadedData, err := io.ReadAll(downloadResp.Body)
+	_require.NoError(err)
+	_require.EqualValues(content, downloadedData)
+}
+
+func (f *FileUnrecordedTestsSuite) TestUploadRangeCustomSegmentSizeWithStructuredMessageCRC64() {
+	_require := require.New(f.T())
+	testName := f.T().Name()
+
+	svcClient, err := testcommon.GetServiceClient(f.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, testcommon.GenerateShareName(testName), svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	contentSize := int64(8 * 1024)
+	fClient := testcommon.CreateNewFileFromShare(context.Background(), _require, testcommon.GenerateFileName(testName), contentSize, shareClient)
+
+	contentR, contentD := testcommon.GenerateData(int(contentSize))
+
+	_, err = fClient.UploadRange(context.Background(), 0, contentR, &file.UploadRangeOptions{
+		TransactionalValidation: file.TransferValidationTypeComputeStructuredMessageCRC64(2 * 1024),
+	})
+	_require.NoError(err)
+
+	resp, err := fClient.DownloadStream(context.Background(), nil)
+	_require.NoError(err)
+
+	downloadedData, err := io.ReadAll(resp.Body)
+	_require.NoError(err)
+	_require.EqualValues(contentD, downloadedData)
+}
+
+// ===== Create with Data + Structured Message CRC64 Tests =====
+
+func (f *FileUnrecordedTestsSuite) TestFileCreateDataWithStructuredMessageCRC64() {
+	_require := require.New(f.T())
+	testName := f.T().Name()
+
+	svcClient, err := testcommon.GetServiceClient(f.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, testcommon.GenerateShareName(testName), svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	fileName := testcommon.GenerateFileName(testName)
+	fileClient := shareClient.NewRootDirectoryClient().NewFileClient(fileName)
+
+	body, data := testcommon.GenerateData(1024)
+
+	_, err = fileClient.Create(context.Background(), int64(len(data)), &file.CreateOptions{
+		OptionalBody:            body,
+		TransactionalValidation: file.TransferValidationTypeComputeStructuredMessageCRC64(0),
+	})
+	_require.NoError(err)
+
+	downloadResp, err := fileClient.DownloadStream(context.Background(), nil)
+	_require.NoError(err)
+	downloaded, err := io.ReadAll(downloadResp.Body)
+	_require.NoError(err)
+	_require.EqualValues(data, downloaded)
+}
+
+func (f *FileUnrecordedTestsSuite) TestFileCreateDataWithSMCRC64ThenDownloadWithSM() {
+	_require := require.New(f.T())
+	testName := f.T().Name()
+
+	svcClient, err := testcommon.GetServiceClient(f.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, testcommon.GenerateShareName(testName), svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	fileName := testcommon.GenerateFileName(testName)
+	fileClient := shareClient.NewRootDirectoryClient().NewFileClient(fileName)
+
+	body, data := testcommon.GenerateData(4 * 1024)
+
+	_, err = fileClient.Create(context.Background(), int64(len(data)), &file.CreateOptions{
+		OptionalBody:            body,
+		TransactionalValidation: file.TransferValidationTypeComputeStructuredMessageCRC64(0),
+	})
+	_require.NoError(err)
+
+	downloadResp, err := fileClient.DownloadStream(context.Background(), &file.DownloadStreamOptions{
+		TransactionalValidation: file.TransferValidationTypeComputeStructuredMessageCRC64(0),
+	})
+	_require.NoError(err)
+	downloaded, err := io.ReadAll(downloadResp.Body)
+	_require.NoError(err)
+	_require.EqualValues(data, downloaded)
+}
+
+func (f *FileUnrecordedTestsSuite) TestFileCreateDataSingleByteWithSMCRC64() {
+	_require := require.New(f.T())
+	testName := f.T().Name()
+
+	svcClient, err := testcommon.GetServiceClient(f.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, testcommon.GenerateShareName(testName), svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	fileName := testcommon.GenerateFileName(testName)
+	fileClient := shareClient.NewRootDirectoryClient().NewFileClient(fileName)
+
+	content := []byte{0x42}
+	_, err = fileClient.Create(context.Background(), 1, &file.CreateOptions{
+		OptionalBody:            streaming.NopCloser(bytes.NewReader(content)),
+		TransactionalValidation: file.TransferValidationTypeComputeStructuredMessageCRC64(0),
+	})
+	_require.NoError(err)
+
+	downloadResp, err := fileClient.DownloadStream(context.Background(), &file.DownloadStreamOptions{
+		TransactionalValidation: file.TransferValidationTypeComputeStructuredMessageCRC64(0),
+	})
+	_require.NoError(err)
+	downloaded, err := io.ReadAll(downloadResp.Body)
+	_require.NoError(err)
+	_require.EqualValues(content, downloaded)
+}
+
+func (f *FileUnrecordedTestsSuite) TestFileCreateDataExactly4MiBWithSMCRC64() {
+	_require := require.New(f.T())
+	testName := f.T().Name()
+
+	svcClient, err := testcommon.GetServiceClient(f.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, testcommon.GenerateShareName(testName), svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	fileName := testcommon.GenerateFileName(testName)
+	fileClient := shareClient.NewRootDirectoryClient().NewFileClient(fileName)
+
+	dataSize := 4 * 1024 * 1024
+	data := make([]byte, dataSize)
+	_, err = rand.Read(data)
+	_require.NoError(err)
+
+	body := readSeekNopCloser{bytes.NewReader(data)}
+
+	_, err = fileClient.Create(context.Background(), int64(dataSize), &file.CreateOptions{
+		OptionalBody:            body,
+		TransactionalValidation: file.TransferValidationTypeComputeStructuredMessageCRC64(0),
+	})
+	_require.NoError(err)
+
+	downloadResp, err := fileClient.DownloadStream(context.Background(), nil)
+	_require.NoError(err)
+	downloaded, err := io.ReadAll(downloadResp.Body)
+	_require.NoError(err)
+	_require.Equal(dataSize, len(downloaded))
+	_require.EqualValues(data, downloaded)
+}
+
+func (f *FileUnrecordedTestsSuite) TestFileCreateDataMultiSegmentWithSMCRC64() {
+	_require := require.New(f.T())
+	testName := f.T().Name()
+
+	svcClient, err := testcommon.GetServiceClient(f.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, testcommon.GenerateShareName(testName), svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	fileName := testcommon.GenerateFileName(testName)
+	fileClient := shareClient.NewRootDirectoryClient().NewFileClient(fileName)
+
+	body, data := testcommon.GenerateData(2048)
+
+	_, err = fileClient.Create(context.Background(), int64(len(data)), &file.CreateOptions{
+		OptionalBody:            body,
+		TransactionalValidation: file.TransferValidationTypeComputeStructuredMessageCRC64(512),
+	})
+	_require.NoError(err)
+
+	downloadResp, err := fileClient.DownloadStream(context.Background(), nil)
+	_require.NoError(err)
+	downloaded, err := io.ReadAll(downloadResp.Body)
+	_require.NoError(err)
+	_require.EqualValues(data, downloaded)
 }

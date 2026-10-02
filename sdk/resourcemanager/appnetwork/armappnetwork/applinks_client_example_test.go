@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-08-01-preview/AppLinks_CreateOrUpdate.json
+// Generated from example definition: 2026-08-01-preview/AppLinks_CreateOrUpdate.json
 func ExampleAppLinksClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -63,16 +63,16 @@ func ExampleAppLinksClient_BeginCreateOrUpdate() {
 	// 		SystemData: &armappnetwork.SystemData{
 	// 			CreatedBy: to.Ptr("user01"),
 	// 			CreatedByType: to.Ptr(armappnetwork.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-05-19T00:28:48.610Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2023, time.May, 19, 0, 28, 48, 610000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user02"),
 	// 			LastModifiedByType: to.Ptr(armappnetwork.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-05-19T00:28:48.610Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.May, 19, 0, 28, 48, 610000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-08-01-preview/AppLinks_Delete.json
+// Generated from example definition: 2026-08-01-preview/AppLinks_Delete.json
 func ExampleAppLinksClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -93,7 +93,7 @@ func ExampleAppLinksClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-08-01-preview/AppLinks_Get.json
+// Generated from example definition: 2026-08-01-preview/AppLinks_Get.json
 func ExampleAppLinksClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -131,16 +131,16 @@ func ExampleAppLinksClient_Get() {
 	// 		SystemData: &armappnetwork.SystemData{
 	// 			CreatedBy: to.Ptr("user01"),
 	// 			CreatedByType: to.Ptr(armappnetwork.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-05-19T00:28:48.610Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2023, time.May, 19, 0, 28, 48, 610000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user02"),
 	// 			LastModifiedByType: to.Ptr(armappnetwork.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-05-19T00:28:48.610Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.May, 19, 0, 28, 48, 610000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-08-01-preview/AppLinks_ListByResourceGroup.json
+// Generated from example definition: 2026-08-01-preview/AppLinks_ListByResourceGroup.json
 func ExampleAppLinksClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -184,10 +184,10 @@ func ExampleAppLinksClient_NewListByResourceGroupPager() {
 		// 				SystemData: &armappnetwork.SystemData{
 		// 					CreatedBy: to.Ptr("user01"),
 		// 					CreatedByType: to.Ptr(armappnetwork.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-05-19T00:28:48.610Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2023, time.May, 19, 0, 28, 48, 610000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("user02"),
 		// 					LastModifiedByType: to.Ptr(armappnetwork.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-05-19T00:28:48.610Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2023, time.May, 19, 0, 28, 48, 610000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -213,20 +213,20 @@ func ExampleAppLinksClient_NewListByResourceGroupPager() {
 		// 				SystemData: &armappnetwork.SystemData{
 		// 					CreatedBy: to.Ptr("user01"),
 		// 					CreatedByType: to.Ptr(armappnetwork.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-05-19T00:28:48.610Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2023, time.May, 19, 0, 28, 48, 610000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("user02"),
 		// 					LastModifiedByType: to.Ptr(armappnetwork.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-05-19T00:28:48.610Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2023, time.May, 19, 0, 28, 48, 610000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/11809CA1-E126-4017-945E-AA795CD5C5A9/resourceGroups/test_rg/providers/Microsoft.AppLink/appLinks?api-version=2025-08-01-preview&$skiptoken=eyJjb250aW51YXRpb24iOiAiYXBwbGluay10ZXN0LTAzIn0%3D"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/11809CA1-E126-4017-945E-AA795CD5C5A9/resourceGroups/test_rg/providers/Microsoft.AppLink/appLinks?api-version=2026-08-01-preview&$skiptoken=eyJjb250aW51YXRpb24iOiAiYXBwbGluay10ZXN0LTAzIn0%3D"),
 		// 	},
 		// }
 	}
 }
 
-// Generated from example definition: 2025-08-01-preview/AppLinks_ListBySubscription.json
+// Generated from example definition: 2026-08-01-preview/AppLinks_ListBySubscription.json
 func ExampleAppLinksClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -271,10 +271,10 @@ func ExampleAppLinksClient_NewListBySubscriptionPager() {
 		// 				SystemData: &armappnetwork.SystemData{
 		// 					CreatedBy: to.Ptr("user01"),
 		// 					CreatedByType: to.Ptr(armappnetwork.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-05-19T00:28:48.610Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2023, time.May, 19, 0, 28, 48, 610000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("user02"),
 		// 					LastModifiedByType: to.Ptr(armappnetwork.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-05-19T00:28:48.610Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2023, time.May, 19, 0, 28, 48, 610000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -301,10 +301,10 @@ func ExampleAppLinksClient_NewListBySubscriptionPager() {
 		// 				SystemData: &armappnetwork.SystemData{
 		// 					CreatedBy: to.Ptr("dev-user"),
 		// 					CreatedByType: to.Ptr(armappnetwork.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-10T14:22:30.000Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2023, time.June, 10, 14, 22, 30, 0, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("dev-user"),
 		// 					LastModifiedByType: to.Ptr(armappnetwork.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-15T09:15:45.000Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2023, time.June, 15, 9, 15, 45, 0, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -326,20 +326,20 @@ func ExampleAppLinksClient_NewListBySubscriptionPager() {
 		// 				SystemData: &armappnetwork.SystemData{
 		// 					CreatedBy: to.Ptr("staging-user"),
 		// 					CreatedByType: to.Ptr(armappnetwork.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-01T08:30:00.000Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2023, time.July, 1, 8, 30, 0, 0, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("staging-user"),
 		// 					LastModifiedByType: to.Ptr(armappnetwork.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-01T08:30:00.000Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2023, time.July, 1, 8, 30, 0, 0, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/11809CA1-E126-4017-945E-AA795CD5C5A9/providers/Microsoft.AppLink/appLinks?api-version=2025-08-01-preview&$skiptoken=eyJjb250aW51YXRpb24iOiAiYXBwbGluay1zdGFnaW5nLTAyIn0%3D"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/11809CA1-E126-4017-945E-AA795CD5C5A9/providers/Microsoft.AppLink/appLinks?api-version=2026-08-01-preview&$skiptoken=eyJjb250aW51YXRpb24iOiAiYXBwbGluay1zdGFnaW5nLTAyIn0%3D"),
 		// 	},
 		// }
 	}
 }
 
-// Generated from example definition: 2025-08-01-preview/AppLinks_Update.json
+// Generated from example definition: 2026-08-01-preview/AppLinks_Update.json
 func ExampleAppLinksClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -354,6 +354,12 @@ func ExampleAppLinksClient_BeginUpdate() {
 		Tags: map[string]*string{
 			"environment": to.Ptr("production"),
 			"cost-center": to.Ptr("platform"),
+		},
+		Identity: &armappnetwork.ManagedServiceIdentityUpdate{
+			Type: to.Ptr(armappnetwork.ManagedServiceIdentityTypeUserAssigned),
+			UserAssignedIdentities: map[string]*armappnetwork.UserAssignedIdentity{
+				"/subscriptions/11809CA1-E126-4017-945E-AA795CD5C5A9/resourceGroups/test_rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/applink-identity": {},
+			},
 		},
 	}, nil)
 	if err != nil {
@@ -391,10 +397,10 @@ func ExampleAppLinksClient_BeginUpdate() {
 	// 		SystemData: &armappnetwork.SystemData{
 	// 			CreatedBy: to.Ptr("user01"),
 	// 			CreatedByType: to.Ptr(armappnetwork.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-05-19T00:28:48.610Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2023, time.May, 19, 0, 28, 48, 610000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user02"),
 	// 			LastModifiedByType: to.Ptr(armappnetwork.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-05-19T00:28:48.610Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.May, 19, 0, 28, 48, 610000000, time.UTC)),
 	// 		},
 	// 	},
 	// }

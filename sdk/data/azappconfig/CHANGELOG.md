@@ -3,6 +3,9 @@
 ## 2.2.1-beta.1 (Unreleased)
 
 ### Features Added
+* Added `Description` field to the `Setting` and `Snapshot` structs.
+* Added `Description` field to `AddSettingOptions`, `SetSettingOptions`, and `BeginCreateSnapshotOptions`.
+* Added `SettingFieldsDescription` and `SnapshotFieldsDescription` field selector constants.
 
 ### Breaking Changes
 
@@ -11,6 +14,7 @@
 ### Other Changes
 * Updated to API version `2026-04-01`.
 * Updated dependencies.
+* Improved authentication for sovereign clouds when using a token credential. When `ClientOptions.Cloud` doesn't specify an audience, the client now infers it from the App Configuration endpoint.
 
 ## 2.2.0 (2026-04-14)
 

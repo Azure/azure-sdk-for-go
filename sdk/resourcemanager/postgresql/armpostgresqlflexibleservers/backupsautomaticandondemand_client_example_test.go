@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-04-01-preview/BackupsAutomaticAndOnDemandCreate.json
+// Generated from example definition: 2026-07-01-preview/BackupsAutomaticAndOnDemandCreate.json
 func ExampleBackupsAutomaticAndOnDemandClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -32,7 +32,7 @@ func ExampleBackupsAutomaticAndOnDemandClient_BeginCreate() {
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/BackupsAutomaticAndOnDemandDelete.json
+// Generated from example definition: 2026-07-01-preview/BackupsAutomaticAndOnDemandDelete.json
 func ExampleBackupsAutomaticAndOnDemandClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -53,7 +53,7 @@ func ExampleBackupsAutomaticAndOnDemandClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/BackupsAutomaticAndOnDemandGet.json
+// Generated from example definition: 2026-07-01-preview/BackupsAutomaticAndOnDemandGet.json
 func ExampleBackupsAutomaticAndOnDemandClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -78,14 +78,14 @@ func ExampleBackupsAutomaticAndOnDemandClient_Get() {
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBforPostgreSQL/flexibleServers/exampleserver/backups/backup_638830782181266873"),
 	// 		Properties: &armpostgresqlflexibleservers.BackupAutomaticAndOnDemandProperties{
 	// 			BackupType: to.Ptr(armpostgresqlflexibleservers.BackupTypeFull),
-	// 			CompletedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T14:30:22.123456+00:00"); return t}()),
+	// 			CompletedTime: to.Ptr(time.Date(2025, time.June, 1, 14, 30, 22, 123456000, time.UTC)),
 	// 			Source: to.Ptr("Automatic"),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/BackupsAutomaticAndOnDemandListByServer.json
+// Generated from example definition: 2026-07-01-preview/BackupsAutomaticAndOnDemandListByServer.json
 func ExampleBackupsAutomaticAndOnDemandClient_NewListByServerPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -116,7 +116,7 @@ func ExampleBackupsAutomaticAndOnDemandClient_NewListByServerPager() {
 		// 				ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBforPostgreSQL/flexibleServers/exampleserver/backups/backup_638830782181266873"),
 		// 				Properties: &armpostgresqlflexibleservers.BackupAutomaticAndOnDemandProperties{
 		// 					BackupType: to.Ptr(armpostgresqlflexibleservers.BackupTypeFull),
-		// 					CompletedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T14:30:22.123456+00:00"); return t}()),
+		// 					CompletedTime: to.Ptr(time.Date(2025, time.June, 1, 14, 30, 22, 123456000, time.UTC)),
 		// 					Source: to.Ptr("Automatic"),
 		// 				},
 		// 			},
@@ -126,7 +126,7 @@ func ExampleBackupsAutomaticAndOnDemandClient_NewListByServerPager() {
 		// 				ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBforPostgreSQL/flexibleServers/exampleserver/backups/ondemandbackup-20250601T183022"),
 		// 				Properties: &armpostgresqlflexibleservers.BackupAutomaticAndOnDemandProperties{
 		// 					BackupType: to.Ptr(armpostgresqlflexibleservers.BackupTypeCustomerOnDemand),
-		// 					CompletedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T18:30:22.123456+00:00"); return t}()),
+		// 					CompletedTime: to.Ptr(time.Date(2025, time.June, 1, 18, 30, 22, 123456000, time.UTC)),
 		// 					Source: to.Ptr("Customer Initiated"),
 		// 				},
 		// 			},

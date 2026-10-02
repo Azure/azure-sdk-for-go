@@ -35,8 +35,8 @@ func ExampleWorkflowTriggersClient_Get() {
 	// 		Type: to.Ptr("Microsoft.Web/sites/workflows/triggers"),
 	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/test-resource-group/providers/Microsoft.Web/sites/test-name/workflows/test-workflow/triggers/manual"),
 	// 		Properties: &armappservice.WorkflowTriggerProperties{
-	// 			ChangedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-10T18:47:49.5288666Z"); return t}()),
-	// 			CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-10T17:32:30.2496336Z"); return t}()),
+	// 			ChangedTime: to.Ptr(time.Date(2018, time.August, 10, 18, 47, 49, 528866600, time.UTC)),
+	// 			CreatedTime: to.Ptr(time.Date(2018, time.August, 10, 17, 32, 30, 249633600, time.UTC)),
 	// 			ProvisioningState: to.Ptr(armappservice.WorkflowTriggerProvisioningStateSucceeded),
 	// 			State: to.Ptr(armappservice.WorkflowStateEnabled),
 	// 			Workflow: &armappservice.ResourceReference{
@@ -105,8 +105,8 @@ func ExampleWorkflowTriggersClient_NewListPager() {
 		// 				Type: to.Ptr("Microsoft.Web/sites/workflows/triggers"),
 		// 				ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/test-resource-group/providers/Microsoft.Web/sites/test-name/workflows/test-workflow/triggers/manual"),
 		// 				Properties: &armappservice.WorkflowTriggerProperties{
-		// 					ChangedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-10T18:47:49.5288666Z"); return t}()),
-		// 					CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-10T17:32:30.2496336Z"); return t}()),
+		// 					ChangedTime: to.Ptr(time.Date(2018, time.August, 10, 18, 47, 49, 528866600, time.UTC)),
+		// 					CreatedTime: to.Ptr(time.Date(2018, time.August, 10, 17, 32, 30, 249633600, time.UTC)),
 		// 					ProvisioningState: to.Ptr(armappservice.WorkflowTriggerProvisioningStateSucceeded),
 		// 					State: to.Ptr(armappservice.WorkflowStateEnabled),
 		// 					Workflow: &armappservice.ResourceReference{

@@ -44,9 +44,9 @@ func ExampleWatcherClient_CreateOrUpdate() {
 	// 		ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/MyTestAutomationAccount/watchers/MyTestWatcher"),
 	// 		Properties: &armautomation.WatcherProperties{
 	// 			Description: to.Ptr("This is a test watcher."),
-	// 			CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-05-14T21:14:09.607+00:00"); return t}()),
+	// 			CreationTime: to.Ptr(time.Date(2018, time.May, 14, 21, 14, 9, 607000000, time.UTC)),
 	// 			ExecutionFrequencyInSeconds: to.Ptr[int64](60),
-	// 			LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-05-14T21:14:09.607+00:00"); return t}()),
+	// 			LastModifiedTime: to.Ptr(time.Date(2018, time.May, 14, 21, 14, 9, 607000000, time.UTC)),
 	// 			ScriptName: to.Ptr("MyTestWatcherRunbook"),
 	// 			ScriptRunOn: to.Ptr("MyTestHybridWorkerGroup"),
 	// 			Status: to.Ptr("New"),
@@ -103,9 +103,9 @@ func ExampleWatcherClient_Get() {
 	// 		ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/MyTestAutomationAccount/watchers/MyTestWatcher"),
 	// 		Properties: &armautomation.WatcherProperties{
 	// 			Description: to.Ptr(""),
-	// 			CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-30T18:50:17.163+00:00"); return t}()),
+	// 			CreationTime: to.Ptr(time.Date(2017, time.November, 30, 18, 50, 17, 163000000, time.UTC)),
 	// 			ExecutionFrequencyInSeconds: to.Ptr[int64](60),
-	// 			LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-30T18:50:17.163+00:00"); return t}()),
+	// 			LastModifiedTime: to.Ptr(time.Date(2017, time.November, 30, 18, 50, 17, 163000000, time.UTC)),
 	// 			ScriptName: to.Ptr("MyTestWatcherRunbook"),
 	// 			ScriptParameters: map[string]*string{
 	// 			},
@@ -148,9 +148,9 @@ func ExampleWatcherClient_NewListByAutomationAccountPager() {
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/MyTestAutomationAccount/watchers/MyTestWatcher"),
 		// 				Properties: &armautomation.WatcherProperties{
 		// 					Description: to.Ptr("This is a test watcher."),
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-12-20T21:36:48.597+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2016, time.December, 20, 21, 36, 48, 597000000, time.UTC)),
 		// 					ExecutionFrequencyInSeconds: to.Ptr[int64](60),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-12-20T21:36:48.597+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2016, time.December, 20, 21, 36, 48, 597000000, time.UTC)),
 		// 					ScriptName: to.Ptr("MyTestWatcher"),
 		// 					ScriptRunOn: to.Ptr("MyTestHybridWorkerGroup"),
 		// 				},
@@ -160,9 +160,9 @@ func ExampleWatcherClient_NewListByAutomationAccountPager() {
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/MyTestAutomationAccount/watchers/MyTestWatcher01"),
 		// 				Properties: &armautomation.WatcherProperties{
 		// 					Description: to.Ptr("This is a test watcher."),
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-12-20T20:47:24.697+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2016, time.December, 20, 20, 47, 24, 697000000, time.UTC)),
 		// 					ExecutionFrequencyInSeconds: to.Ptr[int64](60),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-12-20T20:47:24.697+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2016, time.December, 20, 20, 47, 24, 697000000, time.UTC)),
 		// 					ScriptName: to.Ptr("MyTestWatcher"),
 		// 					ScriptRunOn: to.Ptr("MyTestHybridWorkerGroup"),
 		// 				},
@@ -172,9 +172,9 @@ func ExampleWatcherClient_NewListByAutomationAccountPager() {
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/MyTestAutomationAccount/watchers/MyTestWatcher02"),
 		// 				Properties: &armautomation.WatcherProperties{
 		// 					Description: to.Ptr("This is a test watcher."),
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-12-20T21:26:35.647+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2016, time.December, 20, 21, 26, 35, 647000000, time.UTC)),
 		// 					ExecutionFrequencyInSeconds: to.Ptr[int64](60),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-12-20T21:26:35.647+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2016, time.December, 20, 21, 26, 35, 647000000, time.UTC)),
 		// 					ScriptName: to.Ptr("MyTestWatcher"),
 		// 					ScriptRunOn: to.Ptr("MyTestHybridWorkerGroup"),
 		// 				},
@@ -258,9 +258,9 @@ func ExampleWatcherClient_Update() {
 	// 		ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/MyTestAutomationAccount/watchers/MyTestWatcher"),
 	// 		Properties: &armautomation.WatcherProperties{
 	// 			Description: to.Ptr("This is a test watcher."),
-	// 			CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-05-14T21:33:02.197+00:00"); return t}()),
+	// 			CreationTime: to.Ptr(time.Date(2018, time.May, 14, 21, 33, 2, 197000000, time.UTC)),
 	// 			ExecutionFrequencyInSeconds: to.Ptr[int64](600),
-	// 			LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-05-14T22:29:57.65+00:00"); return t}()),
+	// 			LastModifiedTime: to.Ptr(time.Date(2018, time.May, 14, 22, 29, 57, 650000000, time.UTC)),
 	// 			ScriptName: to.Ptr("MyTestWatcherRunbook"),
 	// 			ScriptParameters: map[string]*string{
 	// 			},

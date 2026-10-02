@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-05-01-preview/ActivateSaaS.json
+// Generated from example definition: 2026-06-01/ActivateSaaS.json
 func ExampleSaaSClient_ActivateResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

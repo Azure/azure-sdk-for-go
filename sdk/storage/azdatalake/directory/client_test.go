@@ -5,8 +5,10 @@ package directory_test
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 	"strconv"
+	"strings"
 	"testing"
 	"time"
 
@@ -1260,7 +1262,8 @@ func (s *RecordedTestSuite) TestDirSetAccessControlIfUnmodifiedSinceTrue() {
 			ModifiedAccessConditions: &directory.ModifiedAccessConditions{
 				IfUnmodifiedSince: &currentTime,
 			},
-		}}
+		},
+	}
 
 	_, err = dirClient.SetAccessControl(context.Background(), opts)
 	_require.NoError(err)
@@ -1379,7 +1382,8 @@ func (s *RecordedTestSuite) TestDirSetAccessControlIfETagMatchFalse() {
 			ModifiedAccessConditions: &directory.ModifiedAccessConditions{
 				IfNoneMatch: etag,
 			},
-		}}
+		},
+	}
 
 	_, err = dirClient.SetAccessControl(context.Background(), opts)
 	_require.Error(err)
@@ -1766,7 +1770,8 @@ func (s *RecordedTestSuite) TestDirGetAccessControlIfUnmodifiedSinceTrue() {
 			ModifiedAccessConditions: &directory.ModifiedAccessConditions{
 				IfUnmodifiedSince: &currentTime,
 			},
-		}}
+		},
+	}
 
 	getACLResp, err := dirClient.GetAccessControl(context.Background(), opts)
 	_require.NoError(err)
@@ -1881,7 +1886,8 @@ func (s *RecordedTestSuite) TestDirGetAccessControlIfETagMatchFalse() {
 			ModifiedAccessConditions: &directory.ModifiedAccessConditions{
 				IfNoneMatch: etag,
 			},
-		}}
+		},
+	}
 
 	_, err = dirClient.GetAccessControl(context.Background(), opts)
 	_require.Error(err)
@@ -3818,6 +3824,42 @@ func (s *UnrecordedTestSuite) TestDirGetSetTagsDirIdentitySas() {
 	_require.Equal(tags["tagKey1"], tagMap["tagKey1"])
 }
 
+type captureTransport struct {
+	req *http.Request
+}
+
+func (c *captureTransport) Do(req *http.Request) (*http.Response, error) {
+	c.req = req
+	return &http.Response{
+		Request:    req,
+		Status:     "Created",
+		StatusCode: http.StatusCreated,
+		Header:     http.Header{},
+		Body:       http.NoBody,
+	}, nil
+}
+
+func TestDirectoryRenameEncodesSourcePath(t *testing.T) {
+	_require := require.New(t)
+	ct := &captureTransport{}
+
+	srcURL := "https://fake.dfs.core.windows.net/myfs/my%20dir"
+	dClient, err := directory.NewClientWithNoCredential(srcURL, &directory.ClientOptions{
+		ClientOptions: policy.ClientOptions{Transport: ct},
+	})
+	_require.NoError(err)
+
+	_, err = dClient.Rename(context.Background(), "renameddir", nil)
+	_require.NoError(err)
+	_require.NotNil(ct.req)
+
+	renameSourceVals := ct.req.Header["x-ms-rename-source"] //nolint:staticcheck // SA1008: the generated client stores this header under a non-canonical key, so it must be read with the same raw key.
+	_require.NotEmpty(renameSourceVals)
+	renameSource := renameSourceVals[0]
+	_require.Contains(renameSource, "my%20dir")
+	_require.NotContains(renameSource, "my dir")
+}
+
 func (s *UnrecordedTestSuite) TestDirGetSetTagsFileSystemIdentitySas() {
 	// Datalake tags is currently in public preview and not GA yet, skipping this test for now.
 	s.T().Skip("Datalake tags is in public preview and not GA yet")
@@ -3882,4 +3924,28 @@ func (s *UnrecordedTestSuite) TestDirGetSetTagsFileSystemIdentitySas() {
 	}
 	_require.Equal(tags["tagKey0"], tagMap["tagKey0"])
 	_require.Equal(tags["tagKey1"], tagMap["tagKey1"])
+}
+
+// TestDirectoryGetSASURLPreservesCustomQueryParams is a regression test for GetSASURL()
+// appending a duplicated "?" to the resulting URL when the client's underlying blob URL
+// already contained a query string (e.g. a customer-provided endpoint with pre-existing
+// custom query parameters), which previously produced a malformed SAS URL.
+func TestDirectoryGetSASURLPreservesCustomQueryParams(t *testing.T) {
+	_require := require.New(t)
+	const accountName = "fakestorageaccount"
+	// base64-encoded fake key; not a real secret.
+	const accountKey = "PSA7dl59RwZBFEBhBEtdrsq/g7VpjMFeSPzdC4SoBiQI3xVLg2y8HRoAF3PidfB8/i9v67QCNSAdVdJdKrmqSw=="
+	cred, err := azdatalake.NewSharedKeyCredential(accountName, accountKey)
+	_require.NoError(err)
+
+	dirURL := fmt.Sprintf("https://%s.dfs.core.windows.net/filesystem/dir?customparam=value", accountName)
+	dirClient, err := directory.NewClientWithSharedKeyCredential(dirURL, cred, nil)
+	_require.NoError(err)
+
+	sasURL, err := dirClient.GetSASURL(sas.DirectoryPermissions{Read: true}, time.Now().Add(time.Hour), nil)
+	_require.NoError(err)
+
+	_require.Equal(1, strings.Count(sasURL, "?"), "SAS URL must not contain a duplicated '?': %s", sasURL)
+	_require.Contains(sasURL, "customparam=value")
+	_require.Contains(sasURL, "sig=")
 }

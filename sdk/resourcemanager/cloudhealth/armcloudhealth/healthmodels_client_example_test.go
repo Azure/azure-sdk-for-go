@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-05-01-preview/HealthModels_Create.json
+// Generated from example definition: 2026-09-01-preview/HealthModels_Create.json
 func ExampleHealthModelsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -65,16 +65,16 @@ func ExampleHealthModelsClient_BeginCreate() {
 	// 		SystemData: &armcloudhealth.SystemData{
 	// 			CreatedBy: to.Ptr("admin@contoso.com"),
 	// 			CreatedByType: to.Ptr(armcloudhealth.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T08:15:00.000Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2026, time.May, 4, 8, 15, 0, 0, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("admin@contoso.com"),
 	// 			LastModifiedByType: to.Ptr(armcloudhealth.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T09:30:00.000Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2026, time.May, 4, 9, 30, 0, 0, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/HealthModels_Delete.json
+// Generated from example definition: 2026-09-01-preview/HealthModels_Delete.json
 func ExampleHealthModelsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -95,7 +95,7 @@ func ExampleHealthModelsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/HealthModels_Get.json
+// Generated from example definition: 2026-09-01-preview/HealthModels_Get.json
 func ExampleHealthModelsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -134,16 +134,16 @@ func ExampleHealthModelsClient_Get() {
 	// 		SystemData: &armcloudhealth.SystemData{
 	// 			CreatedBy: to.Ptr("admin@contoso.com"),
 	// 			CreatedByType: to.Ptr(armcloudhealth.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T08:15:00.000Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2026, time.May, 4, 8, 15, 0, 0, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("admin@contoso.com"),
 	// 			LastModifiedByType: to.Ptr(armcloudhealth.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T09:30:00.000Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2026, time.May, 4, 9, 30, 0, 0, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/HealthModels_ListByResourceGroup.json
+// Generated from example definition: 2026-09-01-preview/HealthModels_ListByResourceGroup.json
 func ExampleHealthModelsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -188,10 +188,10 @@ func ExampleHealthModelsClient_NewListByResourceGroupPager() {
 		// 				SystemData: &armcloudhealth.SystemData{
 		// 					CreatedBy: to.Ptr("admin@contoso.com"),
 		// 					CreatedByType: to.Ptr(armcloudhealth.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T08:15:00.000Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2026, time.May, 4, 8, 15, 0, 0, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("admin@contoso.com"),
 		// 					LastModifiedByType: to.Ptr(armcloudhealth.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T09:30:00.000Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2026, time.May, 4, 9, 30, 0, 0, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -218,10 +218,10 @@ func ExampleHealthModelsClient_NewListByResourceGroupPager() {
 		// 				SystemData: &armcloudhealth.SystemData{
 		// 					CreatedBy: to.Ptr("admin@contoso.com"),
 		// 					CreatedByType: to.Ptr(armcloudhealth.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T08:15:00.000Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2026, time.May, 4, 8, 15, 0, 0, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("admin@contoso.com"),
 		// 					LastModifiedByType: to.Ptr(armcloudhealth.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T09:30:00.000Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2026, time.May, 4, 9, 30, 0, 0, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -230,7 +230,7 @@ func ExampleHealthModelsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/HealthModels_ListBySubscription.json
+// Generated from example definition: 2026-09-01-preview/HealthModels_ListBySubscription.json
 func ExampleHealthModelsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -275,10 +275,10 @@ func ExampleHealthModelsClient_NewListBySubscriptionPager() {
 		// 				SystemData: &armcloudhealth.SystemData{
 		// 					CreatedBy: to.Ptr("admin@contoso.com"),
 		// 					CreatedByType: to.Ptr(armcloudhealth.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T08:15:00.000Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2026, time.May, 4, 8, 15, 0, 0, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("admin@contoso.com"),
 		// 					LastModifiedByType: to.Ptr(armcloudhealth.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T09:30:00.000Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2026, time.May, 4, 9, 30, 0, 0, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -305,10 +305,10 @@ func ExampleHealthModelsClient_NewListBySubscriptionPager() {
 		// 				SystemData: &armcloudhealth.SystemData{
 		// 					CreatedBy: to.Ptr("admin@contoso.com"),
 		// 					CreatedByType: to.Ptr(armcloudhealth.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T08:15:00.000Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2026, time.May, 4, 8, 15, 0, 0, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("admin@contoso.com"),
 		// 					LastModifiedByType: to.Ptr(armcloudhealth.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T09:30:00.000Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2026, time.May, 4, 9, 30, 0, 0, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -317,7 +317,7 @@ func ExampleHealthModelsClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/HealthModels_Update.json
+// Generated from example definition: 2026-09-01-preview/HealthModels_Update.json
 func ExampleHealthModelsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -367,10 +367,10 @@ func ExampleHealthModelsClient_BeginUpdate() {
 	// 		SystemData: &armcloudhealth.SystemData{
 	// 			CreatedBy: to.Ptr("admin@contoso.com"),
 	// 			CreatedByType: to.Ptr(armcloudhealth.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T08:15:00.000Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2026, time.May, 4, 8, 15, 0, 0, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("admin@contoso.com"),
 	// 			LastModifiedByType: to.Ptr(armcloudhealth.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T09:30:00.000Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2026, time.May, 4, 9, 30, 0, 0, time.UTC)),
 	// 		},
 	// 	},
 	// }

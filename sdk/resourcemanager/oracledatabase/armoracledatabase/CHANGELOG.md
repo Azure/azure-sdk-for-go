@@ -1,5 +1,118 @@
 # Release History
 
+## 3.0.0 (2026-09-17)
+### Breaking Changes
+
+- Field `Hostname`, `ScanDNSName` of struct `CloudVMClusterProperties` has been removed
+- Field `Hostname`, `ScanDNSName` of struct `ExadbVMClusterProperties` has been removed
+
+### Features Added
+
+- New value `BaseDbSystemShapesVMBaseDBX86` added to enum type `BaseDbSystemShapes`
+- New value `SystemShapesExadataX11MV` added to enum type `SystemShapes`
+- New value `WorkloadTypeLH` added to enum type `WorkloadType`
+- New enum type `BackupDestinationType` with values `BackupDestinationTypeAzure`, `BackupDestinationTypeOci`
+- New enum type `CategoryType` with values `CategoryTypeDataReplication`, `CategoryTypeDataTransforms`, `CategoryTypeStreamAnalytics`
+- New enum type `ConnectionLifecycleState` with values `ConnectionLifecycleStateActive`, `ConnectionLifecycleStateCreating`, `ConnectionLifecycleStateDeleted`, `ConnectionLifecycleStateDeleting`, `ConnectionLifecycleStateFailed`, `ConnectionLifecycleStateUpdating`
+- New enum type `ConnectionType` with values `ConnectionTypeAmazonKinesis`, `ConnectionTypeAmazonRedshift`, `ConnectionTypeAmazonS3`, `ConnectionTypeAzureDataLakeStorage`, `ConnectionTypeAzureSynapseAnalytics`, `ConnectionTypeDatabricks`, `ConnectionTypeDb2Connection`, `ConnectionTypeElasticsearch`, `ConnectionTypeGeneric`, `ConnectionTypeGoldenGate`, `ConnectionTypeGoogleBigQuery`, `ConnectionTypeGoogleCloudStorage`, `ConnectionTypeGooglePubSub`, `ConnectionTypeHdfs`, `ConnectionTypeIceberg`, `ConnectionTypeJavaMessageService`, `ConnectionTypeKafka`, `ConnectionTypeKafkaSchemaRegistry`, `ConnectionTypeMicrosoftFabric`, `ConnectionTypeMicrosoftSQLServer`, `ConnectionTypeMongoDbConnection`, `ConnectionTypeMySQL`, `ConnectionTypeOciObjectStorage`, `ConnectionTypeOracle`, `ConnectionTypeOracleNoSQL`, `ConnectionTypePostgreSQL`, `ConnectionTypeRedis`, `ConnectionTypeSnowflake`
+- New enum type `CredentialType` with values `CredentialTypeGoldenGate`, `CredentialTypeIam`
+- New enum type `DeploymentLifecycleState` with values `DeploymentLifecycleStateActive`, `DeploymentLifecycleStateCanceled`, `DeploymentLifecycleStateCanceling`, `DeploymentLifecycleStateCreating`, `DeploymentLifecycleStateDeleted`, `DeploymentLifecycleStateDeleting`, `DeploymentLifecycleStateFailed`, `DeploymentLifecycleStateInActive`, `DeploymentLifecycleStateInProgress`, `DeploymentLifecycleStateNeedsAttention`, `DeploymentLifecycleStateSucceeded`, `DeploymentLifecycleStateUpdating`, `DeploymentLifecycleStateWaiting`
+- New enum type `DeploymentType` with values `DeploymentTypeBigData`, `DeploymentTypeDataTransforms`, `DeploymentTypeDatabaseDB2I`, `DeploymentTypeDatabaseDB2ZOS`, `DeploymentTypeDatabaseMicrosoftSQLServer`, `DeploymentTypeDatabaseMySQL`, `DeploymentTypeDatabaseOracle`, `DeploymentTypeDatabasePostGreSQL`, `DeploymentTypeGgsa`, `DeploymentTypeOgg`
+- New enum type `FrequencyType` with values `FrequencyTypeDaily`, `FrequencyTypeMonthly`, `FrequencyTypeWeekly`
+- New enum type `GiMinorVersionSortOrder` with values `GiMinorVersionSortOrderAsc`, `GiMinorVersionSortOrderDesc`
+- New enum type `GoldenGateConnectionAssignmentLifecycleState` with values `GoldenGateConnectionAssignmentLifecycleStateActive`, `GoldenGateConnectionAssignmentLifecycleStateCreating`, `GoldenGateConnectionAssignmentLifecycleStateDeleted`, `GoldenGateConnectionAssignmentLifecycleStateDeleting`, `GoldenGateConnectionAssignmentLifecycleStateFailed`, `GoldenGateConnectionAssignmentLifecycleStateUpdating`
+- New enum type `KafkaConnectionTechnologyType` with values `KafkaConnectionTechnologyTypeApacheKafka`, `KafkaConnectionTechnologyTypeAzureEventHubs`, `KafkaConnectionTechnologyTypeConfluentKafka`, `KafkaConnectionTechnologyTypeOciStreaming`
+- New enum type `MicrosoftFabricConnectionTechnologyType` with values `MicrosoftFabricConnectionTechnologyTypeMicrosoftFabricLakehouse`, `MicrosoftFabricConnectionTechnologyTypeMicrosoftFabricMirror`
+- New enum type `OracleConnectionTechnologyType` with values `OracleConnectionTechnologyTypeAmazonRdsOracle`, `OracleConnectionTechnologyTypeOciAutonomousDatabase`, `OracleConnectionTechnologyTypeOracleAutonomousDatabaseAtAws`, `OracleConnectionTechnologyTypeOracleAutonomousDatabaseAtAzure`, `OracleConnectionTechnologyTypeOracleAutonomousDatabaseAtGoogleCloud`, `OracleConnectionTechnologyTypeOracleDatabase`, `OracleConnectionTechnologyTypeOracleExadata`, `OracleConnectionTechnologyTypeOracleExadataDatabaseAtAws`, `OracleConnectionTechnologyTypeOracleExadataDatabaseAtAzure`, `OracleConnectionTechnologyTypeOracleExadataDatabaseAtGoogleCloud`
+- New enum type `ProximityPlacementGroupEntityType` with values `ProximityPlacementGroupEntityTypeCloudExadataInfrastructure`, `ProximityPlacementGroupEntityTypeOtherProducts`
+- New enum type `RoutingMethod` with values `RoutingMethodDedicatedEndpoint`, `RoutingMethodSharedDeploymentEndpoint`, `RoutingMethodSharedServiceEndpoint`
+- New enum type `SessionMode` with values `SessionModeDirect`, `SessionModeRedirect`
+- New enum type `SetupType` with values `SetupTypeDevelopmentOrTesting`, `SetupTypeProduction`
+- New function `*ClientFactory.NewDatabaseEditionsClient() *DatabaseEditionsClient`
+- New function `*ClientFactory.NewDatabaseSystemShapeResourcesClient() *DatabaseSystemShapeResourcesClient`
+- New function `*ClientFactory.NewGoldenGateConnectionsClient() *GoldenGateConnectionsClient`
+- New function `*ClientFactory.NewGoldenGateDeploymentsClient() *GoldenGateDeploymentsClient`
+- New function `*ConnectionBaseProperties.GetConnectionBaseProperties() *ConnectionBaseProperties`
+- New function `NewDatabaseEditionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DatabaseEditionsClient, error)`
+- New function `*DatabaseEditionsClient.Get(ctx context.Context, location string, databaseeditionname string, options *DatabaseEditionsClientGetOptions) (DatabaseEditionsClientGetResponse, error)`
+- New function `*DatabaseEditionsClient.NewListByLocationPager(location string, options *DatabaseEditionsClientListByLocationOptions) *runtime.Pager[DatabaseEditionsClientListByLocationResponse]`
+- New function `NewDatabaseSystemShapeResourcesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DatabaseSystemShapeResourcesClient, error)`
+- New function `*DatabaseSystemShapeResourcesClient.Get(ctx context.Context, location string, databasesystemshapename string, options *DatabaseSystemShapeResourcesClientGetOptions) (DatabaseSystemShapeResourcesClientGetResponse, error)`
+- New function `*DatabaseSystemShapeResourcesClient.NewListByLocationPager(location string, options *DatabaseSystemShapeResourcesClientListByLocationOptions) *runtime.Pager[DatabaseSystemShapeResourcesClientListByLocationResponse]`
+- New function `NewGoldenGateConnectionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*GoldenGateConnectionsClient, error)`
+- New function `*GoldenGateConnectionsClient.BeginAssignDeployment(ctx context.Context, resourceGroupName string, goldenGateConnectionName string, body AssignUnassignDeployment, options *GoldenGateConnectionsClientBeginAssignDeploymentOptions) (*runtime.Poller[GoldenGateConnectionsClientAssignDeploymentResponse], error)`
+- New function `*GoldenGateConnectionsClient.BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, goldenGateConnectionName string, resource GoldenGateConnection, options *GoldenGateConnectionsClientBeginCreateOrUpdateOptions) (*runtime.Poller[GoldenGateConnectionsClientCreateOrUpdateResponse], error)`
+- New function `*GoldenGateConnectionsClient.BeginDelete(ctx context.Context, resourceGroupName string, goldenGateConnectionName string, options *GoldenGateConnectionsClientBeginDeleteOptions) (*runtime.Poller[GoldenGateConnectionsClientDeleteResponse], error)`
+- New function `*GoldenGateConnectionsClient.Get(ctx context.Context, resourceGroupName string, goldenGateConnectionName string, options *GoldenGateConnectionsClientGetOptions) (GoldenGateConnectionsClientGetResponse, error)`
+- New function `*GoldenGateConnectionsClient.GetAssignedDeployment(ctx context.Context, resourceGroupName string, goldenGateConnectionName string, assignmentID string, options *GoldenGateConnectionsClientGetAssignedDeploymentOptions) (GoldenGateConnectionsClientGetAssignedDeploymentResponse, error)`
+- New function `*GoldenGateConnectionsClient.NewListAssignedDeploymentsByParentPager(resourceGroupName string, goldenGateConnectionName string, options *GoldenGateConnectionsClientListAssignedDeploymentsByParentOptions) *runtime.Pager[GoldenGateConnectionsClientListAssignedDeploymentsByParentResponse]`
+- New function `*GoldenGateConnectionsClient.NewListByResourceGroupPager(resourceGroupName string, options *GoldenGateConnectionsClientListByResourceGroupOptions) *runtime.Pager[GoldenGateConnectionsClientListByResourceGroupResponse]`
+- New function `*GoldenGateConnectionsClient.NewListBySubscriptionPager(options *GoldenGateConnectionsClientListBySubscriptionOptions) *runtime.Pager[GoldenGateConnectionsClientListBySubscriptionResponse]`
+- New function `*GoldenGateConnectionsClient.BeginUnassignDeployment(ctx context.Context, resourceGroupName string, goldenGateConnectionName string, body AssignUnassignDeployment, options *GoldenGateConnectionsClientBeginUnassignDeploymentOptions) (*runtime.Poller[GoldenGateConnectionsClientUnassignDeploymentResponse], error)`
+- New function `*GoldenGateConnectionsClient.BeginUpdate(ctx context.Context, resourceGroupName string, goldenGateConnectionName string, properties GoldenGateConnectionUpdate, options *GoldenGateConnectionsClientBeginUpdateOptions) (*runtime.Poller[GoldenGateConnectionsClientUpdateResponse], error)`
+- New function `NewGoldenGateDeploymentsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*GoldenGateDeploymentsClient, error)`
+- New function `*GoldenGateDeploymentsClient.BeginAssignConnection(ctx context.Context, resourceGroupName string, goldenGateDeploymentName string, body AssignUnassignConnection, options *GoldenGateDeploymentsClientBeginAssignConnectionOptions) (*runtime.Poller[GoldenGateDeploymentsClientAssignConnectionResponse], error)`
+- New function `*GoldenGateDeploymentsClient.BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, goldenGateDeploymentName string, resource GoldenGateDeployment, options *GoldenGateDeploymentsClientBeginCreateOrUpdateOptions) (*runtime.Poller[GoldenGateDeploymentsClientCreateOrUpdateResponse], error)`
+- New function `*GoldenGateDeploymentsClient.BeginDelete(ctx context.Context, resourceGroupName string, goldenGateDeploymentName string, options *GoldenGateDeploymentsClientBeginDeleteOptions) (*runtime.Poller[GoldenGateDeploymentsClientDeleteResponse], error)`
+- New function `*GoldenGateDeploymentsClient.Get(ctx context.Context, resourceGroupName string, goldenGateDeploymentName string, options *GoldenGateDeploymentsClientGetOptions) (GoldenGateDeploymentsClientGetResponse, error)`
+- New function `*GoldenGateDeploymentsClient.GetAssignedConnection(ctx context.Context, resourceGroupName string, goldenGateDeploymentName string, assignmentID string, options *GoldenGateDeploymentsClientGetAssignedConnectionOptions) (GoldenGateDeploymentsClientGetAssignedConnectionResponse, error)`
+- New function `*GoldenGateDeploymentsClient.NewListAssignedConnectionsByParentPager(resourceGroupName string, goldenGateDeploymentName string, options *GoldenGateDeploymentsClientListAssignedConnectionsByParentOptions) *runtime.Pager[GoldenGateDeploymentsClientListAssignedConnectionsByParentResponse]`
+- New function `*GoldenGateDeploymentsClient.NewListByResourceGroupPager(resourceGroupName string, options *GoldenGateDeploymentsClientListByResourceGroupOptions) *runtime.Pager[GoldenGateDeploymentsClientListByResourceGroupResponse]`
+- New function `*GoldenGateDeploymentsClient.NewListBySubscriptionPager(options *GoldenGateDeploymentsClientListBySubscriptionOptions) *runtime.Pager[GoldenGateDeploymentsClientListBySubscriptionResponse]`
+- New function `*GoldenGateDeploymentsClient.BeginUnassignConnection(ctx context.Context, resourceGroupName string, goldenGateDeploymentName string, body AssignUnassignConnection, options *GoldenGateDeploymentsClientBeginUnassignConnectionOptions) (*runtime.Poller[GoldenGateDeploymentsClientUnassignConnectionResponse], error)`
+- New function `*GoldenGateDeploymentsClient.BeginUpdate(ctx context.Context, resourceGroupName string, goldenGateDeploymentName string, properties GoldenGateDeploymentUpdate, options *GoldenGateDeploymentsClientBeginUpdateOptions) (*runtime.Poller[GoldenGateDeploymentsClientUpdateResponse], error)`
+- New function `*KafkaConnectionDetails.GetConnectionBaseProperties() *ConnectionBaseProperties`
+- New function `*MicrosoftFabricConnectionDetails.GetConnectionBaseProperties() *ConnectionBaseProperties`
+- New function `*OracleConnectionDetails.GetConnectionBaseProperties() *ConnectionBaseProperties`
+- New struct `AssignUnassignConnection`
+- New struct `AssignUnassignDeployment`
+- New struct `AssignedConnection`
+- New struct `AssignedConnectionListResult`
+- New struct `AssignedDeployment`
+- New struct `AssignedDeploymentListResult`
+- New struct `BackupScheduleType`
+- New struct `DatabaseEdition`
+- New struct `DatabaseEditionListResult`
+- New struct `DatabaseEditionProperties`
+- New struct `DatabaseSystemShape`
+- New struct `DatabaseSystemShapeListResult`
+- New struct `DatabaseSystemShapeProperties`
+- New struct `DeploymentConnectionAssignmentProperties`
+- New struct `DeploymentProperties`
+- New struct `GoldenGateConnection`
+- New struct `GoldenGateConnectionListResult`
+- New struct `GoldenGateConnectionUpdate`
+- New struct `GoldenGateConnectionUpdateProperties`
+- New struct `GoldenGateDeployment`
+- New struct `GoldenGateDeploymentListResult`
+- New struct `GoldenGateDeploymentUpdate`
+- New struct `GoldenGateDeploymentUpdateProperties`
+- New struct `GroupToRolesMappingDetails`
+- New struct `KafkaBootstrapServer`
+- New struct `KafkaConnectionDetails`
+- New struct `MaintenanceConfigurationType`
+- New struct `MaintenanceWindowType`
+- New struct `MicrosoftFabricConnectionDetails`
+- New struct `OggDeploymentDetails`
+- New struct `OracleConnectionDetails`
+- New struct `ProximityPlacementGroup`
+- New field `BackupDestination` in struct `AutonomousDatabaseBackupProperties`
+- New field `BackupDestination`, `IsScheduleAzUpdateToEarliest`, `NetworkAnchorID`, `ResourceAnchorID`, `TimeScheduledAzUpdate`, `Zone` in struct `AutonomousDatabaseBaseProperties`
+- New field `BackupDestination`, `IsScheduleAzUpdateToEarliest`, `NetworkAnchorID`, `ResourceAnchorID`, `TimeScheduledAzUpdate`, `Zone` in struct `AutonomousDatabaseCloneProperties`
+- New field `BackupDestination`, `IsScheduleAzUpdateToEarliest`, `NetworkAnchorID`, `ResourceAnchorID`, `TimeScheduledAzUpdate`, `Zone` in struct `AutonomousDatabaseCrossRegionDisasterRecoveryProperties`
+- New field `BackupDestination`, `IsScheduleAzUpdateToEarliest`, `NetworkAnchorID`, `ResourceAnchorID`, `TimeScheduledAzUpdate`, `Zone` in struct `AutonomousDatabaseFromBackupTimestampProperties`
+- New field `BackupDestination`, `IsScheduleAzUpdateToEarliest`, `NetworkAnchorID`, `ResourceAnchorID`, `TimeScheduledAzUpdate`, `Zone` in struct `AutonomousDatabaseProperties`
+- New field `ProximityPlacementGroup`, `ResourceAnchorID` in struct `CloudExadataInfrastructureProperties`
+- New field `HostnameV2`, `IsAcceleratedNetworkEnabled`, `NetworkAnchorID`, `ProximityPlacementGroup`, `RecoStoragePercentage`, `ResourceAnchorID`, `ScanDNSNameV2`, `SparseStoragePercentage` in struct `CloudVMClusterProperties`
+- New field `IsAcceleratedNetworkEnabled` in struct `CloudVMClusterUpdateProperties`
+- New field `CharacterSet`, `DataCollectionOptions`, `NcharacterSet` in struct `DbSystemBaseProperties`
+- New field `CharacterSet`, `DataCollectionOptions`, `NcharacterSet` in struct `DbSystemProperties`
+- New field `HostnameV2`, `ScanDNSNameV2` in struct `ExadbVMClusterProperties`
+- New field `AutoscaleLimitInGbs`, `IsAutoscaleEnabled` in struct `ExascaleDbStorageVaultProperties`
+- New field `IsGiVersionForProvisioning`, `Shape`, `SortOrder` in struct `GiMinorVersionsClientListByParentOptions`
+- New field `ProximityPlacementGroup` in struct `NetworkAnchorProperties`
+
+
 ## 2.0.0 (2025-09-23)
 ### Breaking Changes
 

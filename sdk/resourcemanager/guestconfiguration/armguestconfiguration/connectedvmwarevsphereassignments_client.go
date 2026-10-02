@@ -30,6 +30,9 @@ type ConnectedVMwarevSphereAssignmentsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewConnectedVMwarevSphereAssignmentsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ConnectedVMwarevSphereAssignmentsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -63,19 +66,14 @@ func (client *ConnectedVMwarevSphereAssignmentsClient) CreateOrUpdate(ctx contex
 	if err != nil {
 		return ConnectedVMwarevSphereAssignmentsClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return ConnectedVMwarevSphereAssignmentsClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
 func (client *ConnectedVMwarevSphereAssignmentsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, vmName string, guestConfigurationAssignmentName string, parameters Assignment, _ *ConnectedVMwarevSphereAssignmentsClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedVMwarevSphere/virtualmachines/{vmName}/providers/Microsoft.GuestConfiguration/guestConfigurationAssignments/{guestConfigurationAssignmentName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -106,8 +104,11 @@ func (client *ConnectedVMwarevSphereAssignmentsClient) createOrUpdateCreateReque
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *ConnectedVMwarevSphereAssignmentsClient) createOrUpdateHandleResponse(resp *http.Response) (ConnectedVMwarevSphereAssignmentsClientCreateOrUpdateResponse, error) {
+func (client *ConnectedVMwarevSphereAssignmentsClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (ConnectedVMwarevSphereAssignmentsClientCreateOrUpdateResponse, error) {
 	result := ConnectedVMwarevSphereAssignmentsClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Assignment); err != nil {
 		return ConnectedVMwarevSphereAssignmentsClientCreateOrUpdateResponse{}, err
 	}
@@ -136,8 +137,7 @@ func (client *ConnectedVMwarevSphereAssignmentsClient) Delete(ctx context.Contex
 		return ConnectedVMwarevSphereAssignmentsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return ConnectedVMwarevSphereAssignmentsClientDeleteResponse{}, err
+		return ConnectedVMwarevSphereAssignmentsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return ConnectedVMwarevSphereAssignmentsClientDeleteResponse{}, nil
 }
@@ -146,7 +146,7 @@ func (client *ConnectedVMwarevSphereAssignmentsClient) Delete(ctx context.Contex
 func (client *ConnectedVMwarevSphereAssignmentsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, vmName string, guestConfigurationAssignmentName string, _ *ConnectedVMwarevSphereAssignmentsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedVMwarevSphere/virtualmachines/{vmName}/providers/Microsoft.GuestConfiguration/guestConfigurationAssignments/{guestConfigurationAssignmentName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -192,19 +192,14 @@ func (client *ConnectedVMwarevSphereAssignmentsClient) Get(ctx context.Context, 
 	if err != nil {
 		return ConnectedVMwarevSphereAssignmentsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ConnectedVMwarevSphereAssignmentsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *ConnectedVMwarevSphereAssignmentsClient) getCreateRequest(ctx context.Context, resourceGroupName string, vmName string, guestConfigurationAssignmentName string, _ *ConnectedVMwarevSphereAssignmentsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedVMwarevSphere/virtualmachines/{vmName}/providers/Microsoft.GuestConfiguration/guestConfigurationAssignments/{guestConfigurationAssignmentName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -231,8 +226,11 @@ func (client *ConnectedVMwarevSphereAssignmentsClient) getCreateRequest(ctx cont
 }
 
 // getHandleResponse handles the Get response.
-func (client *ConnectedVMwarevSphereAssignmentsClient) getHandleResponse(resp *http.Response) (ConnectedVMwarevSphereAssignmentsClientGetResponse, error) {
+func (client *ConnectedVMwarevSphereAssignmentsClient) getHandleResponse(resp *http.Response, successCodes ...int) (ConnectedVMwarevSphereAssignmentsClientGetResponse, error) {
 	result := ConnectedVMwarevSphereAssignmentsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Assignment); err != nil {
 		return ConnectedVMwarevSphereAssignmentsClientGetResponse{}, err
 	}
@@ -255,47 +253,61 @@ func (client *ConnectedVMwarevSphereAssignmentsClient) NewListPager(resourceGrou
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, resourceGroupName, vmName, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, resourceGroupName, vmName, nextLink, options)
 			if err != nil {
 				return ConnectedVMwarevSphereAssignmentsClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ConnectedVMwarevSphereAssignmentsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *ConnectedVMwarevSphereAssignmentsClient) listCreateRequest(ctx context.Context, resourceGroupName string, vmName string, _ *ConnectedVMwarevSphereAssignmentsClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedVMwarevSphere/virtualmachines/{vmName}/providers/Microsoft.GuestConfiguration/guestConfigurationAssignments"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ConnectedVMwarevSphereAssignmentsClient) listCreateRequest(ctx context.Context, resourceGroupName string, vmName string, nextLink string, _ *ConnectedVMwarevSphereAssignmentsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedVMwarevSphere/virtualmachines/{vmName}/providers/Microsoft.GuestConfiguration/guestConfigurationAssignments"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if vmName == "" {
+			return nil, errors.New("parameter vmName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{vmName}", url.PathEscape(vmName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if vmName == "" {
-		return nil, errors.New("parameter vmName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{vmName}", url.PathEscape(vmName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240405)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20240405)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *ConnectedVMwarevSphereAssignmentsClient) listHandleResponse(resp *http.Response) (ConnectedVMwarevSphereAssignmentsClientListResponse, error) {
+func (client *ConnectedVMwarevSphereAssignmentsClient) listHandleResponse(resp *http.Response, successCodes ...int) (ConnectedVMwarevSphereAssignmentsClientListResponse, error) {
 	result := ConnectedVMwarevSphereAssignmentsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AssignmentList); err != nil {
 		return ConnectedVMwarevSphereAssignmentsClientListResponse{}, err
 	}

@@ -101,9 +101,9 @@ func ExampleCostAllocationRulesClient_CreateOrUpdate_costAllocationRulesCreateRe
 	// 		ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/100/providers/Microsoft.CostManagement/costAllocationRules/testRule"),
 	// 		Properties: &armcostmanagement.CostAllocationRuleProperties{
 	// 			Description: to.Ptr("This is a testRule"),
-	// 			CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-18T22:21:51.1287144Z"); return t}()),
+	// 			CreatedDate: to.Ptr(time.Date(2020, time.June, 18, 22, 21, 51, 128714400, time.UTC)),
 	// 			Status: to.Ptr(armcostmanagement.RuleStatus("Creating")),
-	// 			UpdatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-18T22:21:51.1287144Z"); return t}()),
+	// 			UpdatedDate: to.Ptr(time.Date(2020, time.June, 18, 22, 21, 51, 128714400, time.UTC)),
 	// 			Details: &armcostmanagement.CostAllocationRuleDetails{
 	// 				SourceResources: []*armcostmanagement.SourceCostAllocationResource{
 	// 					{
@@ -199,9 +199,9 @@ func ExampleCostAllocationRulesClient_CreateOrUpdate_costAllocationRulesCreateTa
 	// 		ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/100/providers/Microsoft.CostManagement/costAllocationRules/testRule"),
 	// 		Properties: &armcostmanagement.CostAllocationRuleProperties{
 	// 			Description: to.Ptr("This is a testRule"),
-	// 			CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-18T22:21:51.1287144Z"); return t}()),
+	// 			CreatedDate: to.Ptr(time.Date(2020, time.June, 18, 22, 21, 51, 128714400, time.UTC)),
 	// 			Status: to.Ptr(armcostmanagement.RuleStatus("Creating")),
-	// 			UpdatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-18T22:21:51.1287144Z"); return t}()),
+	// 			UpdatedDate: to.Ptr(time.Date(2020, time.June, 18, 22, 21, 51, 128714400, time.UTC)),
 	// 			Details: &armcostmanagement.CostAllocationRuleDetails{
 	// 				SourceResources: []*armcostmanagement.SourceCostAllocationResource{
 	// 					{
@@ -282,9 +282,9 @@ func ExampleCostAllocationRulesClient_Get() {
 	// 		ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/100/providers/Microsoft.CostManagement/costAllocationRules/testRule"),
 	// 		Properties: &armcostmanagement.CostAllocationRuleProperties{
 	// 			Description: to.Ptr("This is a testRule"),
-	// 			CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-18T22:21:51.1287144Z"); return t}()),
+	// 			CreatedDate: to.Ptr(time.Date(2020, time.June, 18, 22, 21, 51, 128714400, time.UTC)),
 	// 			Status: to.Ptr(armcostmanagement.RuleStatusNotActive),
-	// 			UpdatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-18T22:21:51.1287144Z"); return t}()),
+	// 			UpdatedDate: to.Ptr(time.Date(2020, time.June, 18, 22, 21, 51, 128714400, time.UTC)),
 	// 			Details: &armcostmanagement.CostAllocationRuleDetails{
 	// 				SourceResources: []*armcostmanagement.SourceCostAllocationResource{
 	// 					{
@@ -349,9 +349,9 @@ func ExampleCostAllocationRulesClient_NewListPager() {
 		// 				ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/100/providers/Microsoft.CostManagement/costAllocationRules/testRule"),
 		// 				Properties: &armcostmanagement.CostAllocationRuleProperties{
 		// 					Description: to.Ptr("This is a testRule"),
-		// 					CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-18T22:21:51.1287144Z"); return t}()),
+		// 					CreatedDate: to.Ptr(time.Date(2020, time.June, 18, 22, 21, 51, 128714400, time.UTC)),
 		// 					Status: to.Ptr(armcostmanagement.RuleStatusNotActive),
-		// 					UpdatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-18T22:21:51.1287144Z"); return t}()),
+		// 					UpdatedDate: to.Ptr(time.Date(2020, time.June, 18, 22, 21, 51, 128714400, time.UTC)),
 		// 					Details: &armcostmanagement.CostAllocationRuleDetails{
 		// 						SourceResources: []*armcostmanagement.SourceCostAllocationResource{
 		// 							{
@@ -388,9 +388,9 @@ func ExampleCostAllocationRulesClient_NewListPager() {
 		// 				ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/100/providers/Microsoft.CostManagement/costAllocationRules/testRule2"),
 		// 				Properties: &armcostmanagement.CostAllocationRuleProperties{
 		// 					Description: to.Ptr("This is a second test Rule"),
-		// 					CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-18T22:21:51.1287144Z"); return t}()),
+		// 					CreatedDate: to.Ptr(time.Date(2020, time.June, 18, 22, 21, 51, 128714400, time.UTC)),
 		// 					Status: to.Ptr(armcostmanagement.RuleStatusActive),
-		// 					UpdatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-18T22:21:51.1287144Z"); return t}()),
+		// 					UpdatedDate: to.Ptr(time.Date(2020, time.June, 18, 22, 21, 51, 128714400, time.UTC)),
 		// 					Details: &armcostmanagement.CostAllocationRuleDetails{
 		// 						SourceResources: []*armcostmanagement.SourceCostAllocationResource{
 		// 							{
@@ -423,9 +423,9 @@ func ExampleCostAllocationRulesClient_NewListPager() {
 		// 				ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/100/providers/Microsoft.CostManagement/costAllocationRules/testRule3"),
 		// 				Properties: &armcostmanagement.CostAllocationRuleProperties{
 		// 					Description: to.Ptr("This is a third test Rule"),
-		// 					CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-18T22:21:51.1287144Z"); return t}()),
+		// 					CreatedDate: to.Ptr(time.Date(2020, time.June, 18, 22, 21, 51, 128714400, time.UTC)),
 		// 					Status: to.Ptr(armcostmanagement.RuleStatusActive),
-		// 					UpdatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-18T22:21:51.1287144Z"); return t}()),
+		// 					UpdatedDate: to.Ptr(time.Date(2020, time.June, 18, 22, 21, 51, 128714400, time.UTC)),
 		// 					Details: &armcostmanagement.CostAllocationRuleDetails{
 		// 						SourceResources: []*armcostmanagement.SourceCostAllocationResource{
 		// 							{

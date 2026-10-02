@@ -267,43 +267,73 @@ type CapabilityTypePropertiesRuntimeProperties struct {
 	Kind *string
 }
 
-// ConfigurationExclusions - Model that represents exclusion criteria for protecting resources from fault injection.
-// Uses union (OR) logic - a resource is excluded if it matches ANY criteria.
-type ConfigurationExclusions struct {
-	// Array of specific resource IDs to exclude from fault injection.
-	Resources []*string
+// Connection - Model that represents a connection between a workspace and a target resource.
+// A connection provisions and tracks the trust relationship that authorizes the
+// actor to reach the Chaos Studio data plane for the workspace and target during
+// fault injection.
+type Connection struct {
+	// The properties of the connection.
+	Properties *ConnectionProperties
 
-	// Array of tag key-value pairs. Resources with matching tags are excluded.
-	Tags []*KeyValuePair
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
 
-	// Array of resource types. All resources of these types are excluded.
-	Types []*string
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
 }
 
-// ConfigurationFilters - Model that represents filter criteria for constraining which discovered
-// resources participate in fault injection.
-// Uses intersection (AND) logic — a resource is included only if it matches all criteria.
-type ConfigurationFilters struct {
-	// Array of Azure location strings. Only resources in these locations are included.
-	// Null or omitted means all locations (no filter). Empty array means include nothing.
-	Locations []*string
+// ConnectionListResult - Model that represents a list of connections and a link for pagination.
+type ConnectionListResult struct {
+	// REQUIRED; The Connection items on this page
+	Value []*Connection
 
-	// Array of physical availability zone identifiers in `{region}-az{N}` format
-	// (e.g., `"westus2-az1"`). Only resources in the corresponding logical zone
-	// for each subscription are included.
-	// At execution time, each physical zone is resolved to per-subscription
-	// logical zones via the Azure locations API. The resolved mapping is surfaced
-	// on the scenario run response (`zoneResolution`).
-	// Null or omitted means physical zone targeting is not used.
-	// Only one physical zone is supported in preview.
-	// Mutually exclusive with `zones` — set one or the other, not both.
-	PhysicalZones []*string
+	// The link to the next page of items
+	NextLink *string
+}
 
-	// Array of availability zone identifiers ("1", "2", "3", "zone-redundant").
-	// Only resources whose zones intersect this list are included.
-	// Null or omitted means all zones (including non-zonal). Empty array means include nothing.
-	// Mutually exclusive with `physicalZones` — set one or the other, not both.
-	Zones []*string
+// ConnectionProperties - Model that represents the properties of a connection.
+// The schema is flat and discriminated by `kind`. Optional fields form the
+// superset across all connection kinds; which fields are required is
+// validated by the service per kind.
+type ConnectionProperties struct {
+	// REQUIRED; The kind of connection, indicating the actor type authorized to reach the Chaos Studio data plane for the workspace
+	// and target.
+	Kind *ConnectionKind
+
+	// REQUIRED; The fully qualified Azure resource ID of the target resource this connection is established with.
+	TargetResourceID *string
+
+	// The issuer of the certificate used to authenticate the connection.
+	CertificateIssuer *string
+
+	// The subject name of the certificate used to authenticate the connection.
+	CertificateSubjectName *string
+
+	// The dSTS principal name used to authenticate the connection.
+	DstsPrincipal *string
+
+	// The Microsoft Entra principal (object) ID of the identity used by the connection.
+	PrincipalID *string
+
+	// The Microsoft Entra tenant ID that the connection identity belongs to.
+	TenantID *string
+
+	// READ-ONLY; The regional Chaos Studio data-plane endpoint assigned to this connection.
+	// Clients and agents use this endpoint to reach the Chaos Studio data plane
+	// for the connection.
+	DataPlaneEndpoint *string
+
+	// READ-ONLY; The most recent provisioning state for the connection resource.
+	ProvisioningState *ProvisioningState
+
+	// READ-ONLY; The current status of the connection.
+	Status *ConnectionStatus
 }
 
 // ContinuousAction - Model that represents a continuous action.
@@ -817,6 +847,11 @@ type PermissionError struct {
 	// READ-ONLY; The resource id for the affected resource.
 	ResourceID *string
 
+	// READ-ONLY; The error message describing the permission validation failure, when the
+	// failure carries a distinct message (for example, when the target could not
+	// be read to evaluate access).
+	ErrorMessage *string
+
 	// READ-ONLY; The identity.
 	Identity *EntraIdentity
 }
@@ -1069,6 +1104,52 @@ type ResourceStateError struct {
 	ResourceID *string
 }
 
+// ResourceTargeting - Model that represents unified resource targeting with symmetric include/exclude criteria.
+// Both sides support the same set of dimensions.
+type ResourceTargeting struct {
+	// Exclusion criteria. Resources matching ANY active dimension are removed.
+	// Null or omitted means no exclusions applied.
+	Exclude *ResourceTargetingCriteria
+
+	// Inclusion criteria. Resources must match ALL active dimensions to be candidates.
+	// Null or omitted means no inclusion filtering (all resources are candidates).
+	Include *ResourceTargetingCriteria
+}
+
+// ResourceTargetingCriteria - Model that represents a set of targeting criteria for resource selection.
+// Used on both the include and exclude sides of ResourceTargeting.
+// All dimensions use unified null/empty semantics:
+//
+//   - Null or omitted means "no constraint" (this dimension is inactive).
+//   - Empty array is treated the same as null (no constraint).
+//   - Non-empty array means the dimension is active.
+type ResourceTargetingCriteria struct {
+	// Array of Azure location strings (e.g., "eastus", "westeurope", "global").
+	// Case-insensitive, normalized form only (e.g., "eastus" not "East US").
+	Locations []*string
+
+	// Array of physical datacenter zone identifiers in `{region}-az{N}` format
+	// (e.g., "westus2-az1"). Resolved to logical zones per-subscription at execution time.
+	// Mutually exclusive with `zones` — set one or the other, not both.
+	PhysicalZones []*string
+
+	// Array of fully qualified Azure resource IDs. Case-insensitive equality.
+	Resources []*string
+
+	// Array of tag key-value pairs for filtering by Azure resource tags.
+	// Key and value are matched case-insensitively. Use "*" as value to match any value for a key.
+	Tags []*KeyValuePair
+
+	// Array of Azure resource type strings (e.g., "Microsoft.Compute/virtualMachines").
+	// Case-insensitive equality. Supports trailing wildcard (e.g., "Microsoft.Compute/*").
+	Types []*string
+
+	// Array of logical availability zone identifiers (e.g., "1", "2", "3", "zone-redundant").
+	// Mutually exclusive with `physicalZones` — set one or the other, not both.
+	// When set, `locations` must also be set on the same side (zone IDs are only meaningful within a region).
+	Zones []*string
+}
+
 // RoleAssignmentError - Error details for a failed role assignment.
 type RoleAssignmentError struct {
 	// READ-ONLY; Azure error code.
@@ -1194,14 +1275,17 @@ type ScenarioConfigurationProperties struct {
 	// REQUIRED; Resource ID of the scenario this configuration applies to.
 	ScenarioID *string
 
-	// Exclusion criteria for protecting resources from fault injection.
-	Exclusions *ConfigurationExclusions
-
-	// Filter criteria used to constrain which discovered resources participate in fault injection.
-	Filters *ConfigurationFilters
-
 	// Runtime parameter values for the scenario. Keys must match parameter names defined in the scenario.
 	Parameters []*KeyValuePair
+
+	// Unified resource targeting policy that controls which discovered resources participate
+	// in fault injection. Replaces the separate `exclusions` and `filters` properties with
+	// symmetric include/exclude criteria.
+	// Include uses AND logic — a resource must match ALL active include dimensions.
+	// Exclude uses OR logic — a resource is removed if it matches ANY exclude dimension.
+	// When include and exclude conflict on the same resource, exclude wins.
+	// Null or omitted means all discovered resources participate (no targeting constraints).
+	ResourceTargeting *ResourceTargeting
 
 	// READ-ONLY; Most recent provisioning state for the given scenario resource.
 	ProvisioningState *ProvisioningState
@@ -1220,15 +1304,6 @@ type ScenarioErrors struct {
 
 	// Error message for internal server errors.
 	ErrorMessage *string
-}
-
-// ScenarioEvaluationResultItem - Model that represents a single scenario evaluation result.
-type ScenarioEvaluationResultItem struct {
-	// REQUIRED; The evaluation result for this scenario.
-	EvaluationResult *RecommendationStatus
-
-	// REQUIRED; The name of the scenario that was evaluated.
-	ScenarioName *string
 }
 
 // ScenarioListResult - Model that represents a list of scenarios and a link for pagination.
@@ -1338,8 +1413,19 @@ type ScenarioRunProperties struct {
 	// READ-ONLY; System or infrastructure errors encountered during the scenario run.
 	Errors []*OperationError
 
+	// READ-ONLY; Resources that matched the scenario's target resource types but were excluded
+	// from fault injection by the configuration's resource-targeting filters
+	// (for example zone, location, or explicit exclusions). These resources will not be impacted by the run.
+	ExcludedResources []*ScenarioRunResource
+
 	// READ-ONLY; Business errors from fault injection — permission and resource state issues.
 	ExecutionErrors *ScenarioErrors
+
+	// READ-ONLY; The resource snapshot ID this run is pinned to. Resolved from the scenario's
+	// pinned evaluation snapshot (template scenarios) or the latest discovery
+	// snapshot (custom scenarios) at run creation, ensuring the run executes against
+	// the same set of discovered resources that produced the recommendation.
+	ResourceSnapshotID *string
 
 	// READ-ONLY; The scenario run json.
 	ScenarioRunJSON *string
@@ -1594,6 +1680,21 @@ type TargetTypeProperties struct {
 	ResourceTypes []*string
 }
 
+// TemplateEvaluationResultItem - Model that represents a single template evaluation result.
+type TemplateEvaluationResultItem struct {
+	// REQUIRED; The evaluation result for this template.
+	EvaluationResult *RecommendationStatus
+
+	// The template ID that was evaluated. Optional because the underlying BE field may
+	// be null for legacy evaluations created before template-centric persistence landed;
+	// the GW falls back to `scenarioName` in that case (`scenario.Id == templateId` by BE
+	// convention), so ARM responses are typically populated in practice.
+	TemplateID *string
+
+	// The template name that was evaluated. Optional for the same reason as `templateId`.
+	TemplateName *string
+}
+
 // UserAssignedIdentity - User assigned identity properties
 type UserAssignedIdentity struct {
 	// READ-ONLY; The client ID of the assigned identity.
@@ -1623,6 +1724,9 @@ type Validation struct {
 
 // ValidationProperties - Model that represents the properties of the scenario validation.
 type ValidationProperties struct {
+	// Business errors from validation — permission and resource state issues.
+	ValidationErrors *ScenarioErrors
+
 	// READ-ONLY; The scenario validation UTC start time.
 	StartTime *time.Time
 
@@ -1632,14 +1736,20 @@ type ValidationProperties struct {
 	// Execution plan created from validation. This plan will be executed as-is on next scenario execution.
 	ExecutionPlanJSON *string
 
-	// Business errors from validation — permission and resource state issues.
-	ValidationErrors *ScenarioErrors
-
 	// READ-ONLY; The scenario validation UTC end time.
 	EndTime *time.Time
 
 	// READ-ONLY; System or infrastructure errors encountered during validation.
 	Errors []*OperationError
+
+	// READ-ONLY; Resources that matched the scenario's target resource types but were excluded
+	// from fault injection by the configuration's resource-targeting filters
+	// (for example zone, location, or explicit exclusions). These resources will not be impacted.
+	ExcludedResources []*ScenarioRunResource
+
+	// READ-ONLY; Resources that matched the scenario's target resource types and will be impacted
+	// by the run, resolved after applying the configuration's resource-targeting filters.
+	Resources []*ScenarioRunResource
 }
 
 // Workspace - Model that represents a Workspace resource.
@@ -1667,6 +1777,45 @@ type Workspace struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
+}
+
+// WorkspaceDiscovery - Model that represents the latest workspace discovery result.
+type WorkspaceDiscovery struct {
+	// The resource-specific properties for this resource.
+	Properties *WorkspaceDiscoveryProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// WorkspaceDiscoveryProperties - Model that represents the properties of the workspace discovery.
+type WorkspaceDiscoveryProperties struct {
+	// READ-ONLY; The discovery status.
+	Status *WorkspaceDiscoveryStatus
+
+	// READ-ONLY; The workspace ID this discovery belongs to.
+	WorkspaceID *string
+
+	// READ-ONLY; The discovery UTC end time.
+	EndTime *time.Time
+
+	// READ-ONLY; System or infrastructure errors encountered during discovery.
+	Errors []*OperationError
+
+	// READ-ONLY; The resource snapshot ID produced by this discovery.
+	ResourceSnapshotID *string
+
+	// READ-ONLY; The discovery UTC start time.
+	StartTime *time.Time
 }
 
 // WorkspaceEvaluation - Model that represents the latest workspace evaluation result.
@@ -1704,20 +1853,23 @@ type WorkspaceEvaluationProperties struct {
 	// READ-ONLY; The overall evaluation result.
 	EvaluationResult *RecommendationStatus
 
-	// READ-ONLY; The number of scenarios that were cancelled during evaluation.
-	NumScenariosEvaluatedCancelled *int32
+	// READ-ONLY; The number of templates that were cancelled during evaluation.
+	NumTemplatesEvaluatedCancelled *int32
 
-	// READ-ONLY; The number of scenarios that failed evaluation.
-	NumScenariosEvaluatedFailed *int32
+	// READ-ONLY; The number of templates that failed evaluation.
+	NumTemplatesEvaluatedFailed *int32
 
-	// READ-ONLY; The number of scenarios that evaluated successfully.
-	NumScenariosEvaluatedSucceeded *int32
+	// READ-ONLY; The number of templates that evaluated successfully.
+	NumTemplatesEvaluatedSucceeded *int32
 
-	// READ-ONLY; The number of scenarios to evaluate.
-	NumScenariosToEvaluate *int32
+	// READ-ONLY; The number of templates to evaluate.
+	NumTemplatesToEvaluate *int32
 
-	// READ-ONLY; Per-scenario evaluation results.
-	Results []*ScenarioEvaluationResultItem
+	// READ-ONLY; The resource snapshot ID used for this evaluation.
+	ResourceSnapshotID *string
+
+	// READ-ONLY; Per-template evaluation results.
+	Results []*TemplateEvaluationResultItem
 
 	// READ-ONLY; The evaluation UTC start time.
 	StartTime *time.Time

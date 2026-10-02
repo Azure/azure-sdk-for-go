@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v10"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v12"
 	"log"
 )
 
-// Generated from example definition: 2025-07-01/FirewallPolicyRuleCollectionGroupDraftPut.json
+// Generated from example definition: 2026-01-01/FirewallPolicyRuleCollectionGroupDraftPut.json
 func ExampleFirewallPolicyRuleCollectionGroupDraftsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -49,6 +49,13 @@ func ExampleFirewallPolicyRuleCollectionGroupDraftsClient_CreateOrUpdate() {
 							RuleType: to.Ptr(armnetwork.FirewallPolicyRuleTypeNetworkRule),
 							SourceAddresses: []*string{
 								to.Ptr("10.1.25.0/24"),
+							},
+							SourceGeoLocations: []*string{
+								to.Ptr("CA"),
+								to.Ptr("US"),
+							},
+							DestinationGeoLocations: []*string{
+								to.Ptr("US"),
 							},
 						},
 					},
@@ -92,6 +99,13 @@ func ExampleFirewallPolicyRuleCollectionGroupDraftsClient_CreateOrUpdate() {
 	// 							SourceAddresses: []*string{
 	// 								to.Ptr("10.1.25.0/24"),
 	// 							},
+	// 							SourceGeoLocations: []*string{
+	// 								to.Ptr("CA"),
+	// 								to.Ptr("US"),
+	// 							},
+	// 							DestinationGeoLocations: []*string{
+	// 								to.Ptr("US"),
+	// 							},
 	// 						},
 	// 					},
 	// 				},
@@ -101,7 +115,7 @@ func ExampleFirewallPolicyRuleCollectionGroupDraftsClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/FirewallPolicyRuleCollectionGroupDraftDelete.json
+// Generated from example definition: 2026-01-01/FirewallPolicyRuleCollectionGroupDraftDelete.json
 func ExampleFirewallPolicyRuleCollectionGroupDraftsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -123,7 +137,7 @@ func ExampleFirewallPolicyRuleCollectionGroupDraftsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/FirewallPolicyRuleCollectionGroupDraftGet.json
+// Generated from example definition: 2026-01-01/FirewallPolicyRuleCollectionGroupDraftGet.json
 func ExampleFirewallPolicyRuleCollectionGroupDraftsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -170,6 +184,14 @@ func ExampleFirewallPolicyRuleCollectionGroupDraftsClient_Get() {
 	// 							RuleType: to.Ptr(armnetwork.FirewallPolicyRuleTypeNetworkRule),
 	// 							SourceAddresses: []*string{
 	// 								to.Ptr("10.1.25.0/24"),
+	// 							},
+	// 							SourceGeoLocations: []*string{
+	// 								to.Ptr("CA"),
+	// 								to.Ptr("US"),
+	// 								to.Ptr("GB"),
+	// 							},
+	// 							DestinationGeoLocations: []*string{
+	// 								to.Ptr("US"),
 	// 							},
 	// 						},
 	// 					},

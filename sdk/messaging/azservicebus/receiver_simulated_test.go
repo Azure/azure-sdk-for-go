@@ -672,6 +672,74 @@ func TestSessionReceiver_ConnectionDeadForAccept(t *testing.T) {
 	require.Nil(t, receiver)
 }
 
+func TestSessionReceiver_AcceptNextTimeoutProperty(t *testing.T) {
+	tests := []struct {
+		name          string
+		acceptNext    bool
+		withDeadline  bool
+		expectTimeout bool
+	}{
+		{
+			name:          "next session with deadline",
+			acceptNext:    true,
+			withDeadline:  true,
+			expectTimeout: true,
+		},
+		{
+			name:         "next session without deadline",
+			acceptNext:   true,
+			withDeadline: false,
+		},
+		{
+			name:         "named session with deadline",
+			withDeadline: true,
+		},
+	}
+
+	for _, testCase := range tests {
+		t.Run(testCase.name, func(t *testing.T) {
+			var sessionLinkOptions *amqp.ReceiverOptions
+			_, client, cleanup := newClientWithMockedConn(t, &emulation.MockDataOptions{
+				PreReceiverMock: func(mr *emulation.MockReceiver, ctx context.Context) error {
+					if mr.Source == "queue" {
+						sessionLinkOptions = mr.Opts
+						mr.EXPECT().LinkSourceFilterValue("com.microsoft:session-filter").Return("session ID").AnyTimes()
+						mr.EXPECT().Properties().Return(map[string]any{}).AnyTimes()
+					}
+
+					return nil
+				},
+			}, nil)
+			defer cleanup()
+
+			ctx := context.Background()
+			if testCase.withDeadline {
+				var cancel context.CancelFunc
+				ctx, cancel = context.WithTimeout(ctx, time.Minute)
+				defer cancel()
+			}
+
+			var receiver *SessionReceiver
+			var err error
+			if testCase.acceptNext {
+				receiver, err = client.AcceptNextSessionForQueue(ctx, "queue", nil)
+			} else {
+				receiver, err = client.AcceptSessionForQueue(ctx, "queue", "session ID", nil)
+			}
+			require.NoError(t, err)
+			require.NotNil(t, receiver)
+			require.NotNil(t, sessionLinkOptions)
+
+			timeout, hasTimeout := sessionLinkOptions.Properties["com.microsoft:timeout"]
+			require.Equal(t, testCase.expectTimeout, hasTimeout)
+			if testCase.expectTimeout {
+				require.IsType(t, uint32(0), timeout)
+				require.NotZero(t, timeout)
+			}
+		})
+	}
+}
+
 func TestSessionReceiverUserFacingErrors_Methods(t *testing.T) {
 	lockLost := false
 

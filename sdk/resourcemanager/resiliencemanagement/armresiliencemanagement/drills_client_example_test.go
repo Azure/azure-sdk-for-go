@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-04-01-preview/Drills_AddOrUpdateResources_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-31-preview/Drills_AddOrUpdateResources_MaximumSet_Gen.json
 func ExampleDrillsClient_BeginAddOrUpdateResources() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -83,7 +83,7 @@ func ExampleDrillsClient_BeginAddOrUpdateResources() {
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/Drills_Create_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-31-preview/Drills_Create_MaximumSet_Gen.json
 func ExampleDrillsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -98,47 +98,6 @@ func ExampleDrillsClient_BeginCreate() {
 		Properties: &armresiliencemanagement.DrillProperties{
 			ExecutionState: to.Ptr(armresiliencemanagement.ExecutionStateNotRunning),
 			RbacSetupMode:  to.Ptr(armresiliencemanagement.RBACSetupModeAutomatedCustomRole),
-			AttentionReason: &armresiliencemanagement.AttentionReason{
-				RoReadiness:             to.Ptr(armresiliencemanagement.RecoveryPlanStateUnderEdit),
-				DrillUserMsi:            to.Ptr(armresiliencemanagement.ExtensionObjectStateExists),
-				DrillRbacOnRecoveryPlan: to.Ptr(armresiliencemanagement.RBACStateSet),
-				RbacNeededForDrillOnRecoveryPlan: []*string{
-					to.Ptr("ayfyepziwdyxuwuexlamaadey"),
-				},
-				RecoveryPlanAndDrillResourcesState: to.Ptr(armresiliencemanagement.RelativeResourceCompositionStateInSync),
-				ServiceGroupAndDrillResourcesState: to.Ptr(armresiliencemanagement.RelativeResourceCompositionStateInSync),
-				RunbookFaultRbacOnTargets:          to.Ptr(armresiliencemanagement.RBACStateSet),
-				IncludedResourceInDrill:            to.Ptr(armresiliencemanagement.ExtensionObjectStateExists),
-				DrillRbacOnMonitoringResources:     to.Ptr(armresiliencemanagement.RBACStateSet),
-				DrillMonitoringErrors: []*armresiliencemanagement.ErrorDetails{
-					{
-						Code:    to.Ptr("14123903"),
-						Message: to.Ptr("Unable to assign Monitoring RBAC on target resource."),
-					},
-				},
-				DrillMonitoringResources:       to.Ptr(armresiliencemanagement.ExtensionObjectStateExists),
-				MonitoringRbacOnDrillResources: to.Ptr(armresiliencemanagement.RBACStateSet),
-				RbacNeededForDrillOnDrillMonitoringResources: []*string{
-					to.Ptr("lyffvljvuhwvxcuzyzlyo"),
-				},
-				RbacNeededForDrillOnDrillResources: []*string{
-					to.Ptr("sajsgcweakvzfunxfzzxe"),
-				},
-				MissingRequiredResourceProviders: []*string{
-					to.Ptr("Microsoft.Chaos"),
-					to.Ptr("Microsoft.Automation"),
-				},
-				DrillRbacOnChaosResource: to.Ptr(armresiliencemanagement.RBACStateSet),
-				RbacNeededForDrillOnChaosResource: []*string{
-					to.Ptr("zabszxqjflfjgifyrtttvdpipw"),
-				},
-				ChaosResource:         to.Ptr(armresiliencemanagement.ExtensionObjectStateExists),
-				ChaosResourceUserMsi:  to.Ptr(armresiliencemanagement.ExtensionObjectStateExists),
-				RbacOnTargetResources: to.Ptr(armresiliencemanagement.RBACStateSet),
-				ChaosResourceCreationFailureReasons: []*string{
-					to.Ptr("cjqkzeqcktfqcpmdwoloqb"),
-				},
-			},
 			SystemMetadata: &armresiliencemanagement.SystemMetadata{
 				InitialConfig: to.Ptr(armresiliencemanagement.InitialConfigPending),
 			},
@@ -147,8 +106,7 @@ func ExampleDrillsClient_BeginCreate() {
 				LastRunState:       to.Ptr(armresiliencemanagement.JobStatusNotStarted),
 				LastRunAttestation: to.Ptr(armresiliencemanagement.DrillAttestationAttestedSuccess),
 			},
-			ExecutionReadinessState:        to.Ptr(armresiliencemanagement.ExecutionReadinessStateReady),
-			ManagedOnBehalfOfConfiguration: &armresiliencemanagement.ManagedOnBehalfOfConfiguration{},
+			ExecutionReadinessState: to.Ptr(armresiliencemanagement.ExecutionReadinessStateReady),
 			RecoveryPlanProperties: &armresiliencemanagement.RecoveryPlanPropertiesOfDrill{
 				Identity: &armresiliencemanagement.AssociatedIdentity{
 					Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
@@ -174,6 +132,29 @@ func ExampleDrillsClient_BeginCreate() {
 				ChaosResourceIdentityForFaults: &armresiliencemanagement.AssociatedIdentity{
 					Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
 					UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
+				},
+			},
+			HealthModelMonitoringProperties: &armresiliencemanagement.HealthModelMonitoringProperties{
+				Identity: &armresiliencemanagement.AssociatedIdentity{
+					Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+					UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
+				},
+				DiscoveryRuleID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourceGroups/contoso-health/providers/Microsoft.CloudHealth/healthmodels/contoso-payments-hm/discoveryrules/payments-frontend-rule"),
+			},
+			SliMonitoringProperties: &armresiliencemanagement.SliMonitoringProperties{
+				Identity: &armresiliencemanagement.AssociatedIdentity{
+					Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+					UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
+				},
+				Slis: []*armresiliencemanagement.SliSelection{
+					{
+						SliID: to.Ptr("/providers/Microsoft.Management/serviceGroups/sampleServiceGroupName/providers/Microsoft.Monitor/slis/checkout-availability"),
+						Type:  to.Ptr(armresiliencemanagement.SliTypeAvailability),
+					},
+					{
+						SliID: to.Ptr("/providers/Microsoft.Management/serviceGroups/sampleServiceGroupName/providers/Microsoft.Monitor/slis/checkout-latency"),
+						Type:  to.Ptr(armresiliencemanagement.SliTypeLatency),
+					},
 				},
 			},
 		},
@@ -237,6 +218,33 @@ func ExampleDrillsClient_BeginCreate() {
 	// 				ChaosResourceCreationFailureReasons: []*string{
 	// 					to.Ptr("cjqkzeqcktfqcpmdwoloqb"),
 	// 				},
+	// 				MonitoringSourceNotConfigured: to.Ptr(false),
+	// 				HealthModelExists: to.Ptr(armresiliencemanagement.ExtensionObjectStateExists),
+	// 				DiscoveryRuleExists: to.Ptr(armresiliencemanagement.ExtensionObjectStateExists),
+	// 				DrillRbacOnHealthModel: to.Ptr(armresiliencemanagement.RBACStateSet),
+	// 				RbacNeededForDrillOnHealthModel: []*string{
+	// 				},
+	// 				DrillRbacOnSli: to.Ptr(armresiliencemanagement.RBACStateSet),
+	// 				SliAttentionStatuses: []*armresiliencemanagement.SliAttentionStatus{
+	// 					{
+	// 						SliID: to.Ptr("/providers/Microsoft.Management/serviceGroups/sampleServiceGroupName/providers/Microsoft.Monitor/slis/checkout-availability"),
+	// 						Type: to.Ptr(armresiliencemanagement.SliTypeAvailability),
+	// 						Exists: to.Ptr(armresiliencemanagement.ExtensionObjectStateExists),
+	// 						TypeMatch: to.Ptr(armresiliencemanagement.SliTypeMatchStateMatched),
+	// 						DrillRbacOnDestinationAmw: to.Ptr(armresiliencemanagement.RBACStateSet),
+	// 						RbacNeededOnDestinationAmws: []*string{
+	// 						},
+	// 					},
+	// 					{
+	// 						SliID: to.Ptr("/providers/Microsoft.Management/serviceGroups/sampleServiceGroupName/providers/Microsoft.Monitor/slis/checkout-latency"),
+	// 						Type: to.Ptr(armresiliencemanagement.SliTypeLatency),
+	// 						Exists: to.Ptr(armresiliencemanagement.ExtensionObjectStateExists),
+	// 						TypeMatch: to.Ptr(armresiliencemanagement.SliTypeMatchStateMatched),
+	// 						DrillRbacOnDestinationAmw: to.Ptr(armresiliencemanagement.RBACStateSet),
+	// 						RbacNeededOnDestinationAmws: []*string{
+	// 						},
+	// 					},
+	// 				},
 	// 			},
 	// 			SystemMetadata: &armresiliencemanagement.SystemMetadata{
 	// 				InitialConfig: to.Ptr(armresiliencemanagement.InitialConfigPending),
@@ -248,17 +256,10 @@ func ExampleDrillsClient_BeginCreate() {
 	// 			LastRunProperties: &armresiliencemanagement.LastRunProperties{
 	// 				LastRunState: to.Ptr(armresiliencemanagement.JobStatusNotStarted),
 	// 				LastRunAttestation: to.Ptr(armresiliencemanagement.DrillAttestationAttestedSuccess),
-	// 				LastRunTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-05-05T05:36:37.151Z"); return t}()),
+	// 				LastRunTime: to.Ptr(time.Date(2025, time.May, 5, 5, 36, 37, 151000000, time.UTC)),
 	// 				LastRunDuration: to.Ptr("PT6M"),
 	// 			},
 	// 			ExecutionReadinessState: to.Ptr(armresiliencemanagement.ExecutionReadinessStateReady),
-	// 			ManagedOnBehalfOfConfiguration: &armresiliencemanagement.ManagedOnBehalfOfConfiguration{
-	// 				MoboBrokerResources: []*armresiliencemanagement.MoboBrokerResource{
-	// 					{
-	// 						ID: to.Ptr("lvukttgzvssiupnypauorkyzvzf"),
-	// 					},
-	// 				},
-	// 			},
 	// 			RecoveryPlanProperties: &armresiliencemanagement.RecoveryPlanPropertiesOfDrill{
 	// 				Identity: &armresiliencemanagement.AssociatedIdentity{
 	// 					Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
@@ -296,8 +297,31 @@ func ExampleDrillsClient_BeginCreate() {
 	// 			},
 	// 			ProvisioningState: to.Ptr(armresiliencemanagement.ProvisioningStateSucceeded),
 	// 			ServiceGroupID: to.Ptr("/providers/Microsoft.Management/serviceGroups/sampleServiceGroupName"),
-	// 			LastSyncTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-02-02T10:45:16.573Z"); return t}()),
-	// 			LastResyncReadinessCheckTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-02-02T10:29:02.037Z"); return t}()),
+	// 			LastSyncTime: to.Ptr(time.Date(2026, time.February, 2, 10, 45, 16, 573000000, time.UTC)),
+	// 			LastResyncReadinessCheckTime: to.Ptr(time.Date(2026, time.February, 2, 10, 29, 2, 37000000, time.UTC)),
+	// 			HealthModelMonitoringProperties: &armresiliencemanagement.HealthModelMonitoringProperties{
+	// 				Identity: &armresiliencemanagement.AssociatedIdentity{
+	// 					Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+	// 					UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
+	// 				},
+	// 				DiscoveryRuleID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourceGroups/contoso-health/providers/Microsoft.CloudHealth/healthmodels/contoso-payments-hm/discoveryrules/payments-frontend-rule"),
+	// 			},
+	// 			SliMonitoringProperties: &armresiliencemanagement.SliMonitoringProperties{
+	// 				Identity: &armresiliencemanagement.AssociatedIdentity{
+	// 					Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+	// 					UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
+	// 				},
+	// 				Slis: []*armresiliencemanagement.SliSelection{
+	// 					{
+	// 						SliID: to.Ptr("/providers/Microsoft.Management/serviceGroups/sampleServiceGroupName/providers/Microsoft.Monitor/slis/checkout-availability"),
+	// 						Type: to.Ptr(armresiliencemanagement.SliTypeAvailability),
+	// 					},
+	// 					{
+	// 						SliID: to.Ptr("/providers/Microsoft.Management/serviceGroups/sampleServiceGroupName/providers/Microsoft.Monitor/slis/checkout-latency"),
+	// 						Type: to.Ptr(armresiliencemanagement.SliTypeLatency),
+	// 					},
+	// 				},
+	// 			},
 	// 		},
 	// 		Identity: &armresiliencemanagement.ManagedServiceIdentity{
 	// 			Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeNone),
@@ -312,16 +336,16 @@ func ExampleDrillsClient_BeginCreate() {
 	// 		SystemData: &armresiliencemanagement.SystemData{
 	// 			CreatedBy: to.Ptr("dvnfxbuyqhvivfjddjccdtlwajfht"),
 	// 			CreatedByType: to.Ptr(armresiliencemanagement.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-02-06T15:03:42.796Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2025, time.February, 6, 15, 3, 42, 796000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("lndhhaimomorael"),
 	// 			LastModifiedByType: to.Ptr(armresiliencemanagement.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-02-06T15:03:42.797Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.February, 6, 15, 3, 42, 797000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/Drills_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-31-preview/Drills_Delete_MaximumSet_Gen.json
 func ExampleDrillsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -342,7 +366,7 @@ func ExampleDrillsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/Drills_End_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-31-preview/Drills_End_MaximumSet_Gen.json
 func ExampleDrillsClient_BeginEnd() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -371,7 +395,7 @@ func ExampleDrillsClient_BeginEnd() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/Drills_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-31-preview/Drills_Get_MaximumSet_Gen.json
 func ExampleDrillsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -434,6 +458,33 @@ func ExampleDrillsClient_Get() {
 	// 				ChaosResourceCreationFailureReasons: []*string{
 	// 					to.Ptr("cjqkzeqcktfqcpmdwoloqb"),
 	// 				},
+	// 				MonitoringSourceNotConfigured: to.Ptr(false),
+	// 				HealthModelExists: to.Ptr(armresiliencemanagement.ExtensionObjectStateExists),
+	// 				DiscoveryRuleExists: to.Ptr(armresiliencemanagement.ExtensionObjectStateExists),
+	// 				DrillRbacOnHealthModel: to.Ptr(armresiliencemanagement.RBACStateSet),
+	// 				RbacNeededForDrillOnHealthModel: []*string{
+	// 				},
+	// 				DrillRbacOnSli: to.Ptr(armresiliencemanagement.RBACStateSet),
+	// 				SliAttentionStatuses: []*armresiliencemanagement.SliAttentionStatus{
+	// 					{
+	// 						SliID: to.Ptr("/providers/Microsoft.Management/serviceGroups/sampleServiceGroupName/providers/Microsoft.Monitor/slis/checkout-availability"),
+	// 						Type: to.Ptr(armresiliencemanagement.SliTypeAvailability),
+	// 						Exists: to.Ptr(armresiliencemanagement.ExtensionObjectStateExists),
+	// 						TypeMatch: to.Ptr(armresiliencemanagement.SliTypeMatchStateMatched),
+	// 						DrillRbacOnDestinationAmw: to.Ptr(armresiliencemanagement.RBACStateSet),
+	// 						RbacNeededOnDestinationAmws: []*string{
+	// 						},
+	// 					},
+	// 					{
+	// 						SliID: to.Ptr("/providers/Microsoft.Management/serviceGroups/sampleServiceGroupName/providers/Microsoft.Monitor/slis/checkout-latency"),
+	// 						Type: to.Ptr(armresiliencemanagement.SliTypeLatency),
+	// 						Exists: to.Ptr(armresiliencemanagement.ExtensionObjectStateExists),
+	// 						TypeMatch: to.Ptr(armresiliencemanagement.SliTypeMatchStateMatched),
+	// 						DrillRbacOnDestinationAmw: to.Ptr(armresiliencemanagement.RBACStateSet),
+	// 						RbacNeededOnDestinationAmws: []*string{
+	// 						},
+	// 					},
+	// 				},
 	// 			},
 	// 			SystemMetadata: &armresiliencemanagement.SystemMetadata{
 	// 				InitialConfig: to.Ptr(armresiliencemanagement.InitialConfigPending),
@@ -445,17 +496,10 @@ func ExampleDrillsClient_Get() {
 	// 			LastRunProperties: &armresiliencemanagement.LastRunProperties{
 	// 				LastRunState: to.Ptr(armresiliencemanagement.JobStatusNotStarted),
 	// 				LastRunAttestation: to.Ptr(armresiliencemanagement.DrillAttestationAttestedSuccess),
-	// 				LastRunTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-05-05T05:36:37.151Z"); return t}()),
+	// 				LastRunTime: to.Ptr(time.Date(2025, time.May, 5, 5, 36, 37, 151000000, time.UTC)),
 	// 				LastRunDuration: to.Ptr("PT6M"),
 	// 			},
 	// 			ExecutionReadinessState: to.Ptr(armresiliencemanagement.ExecutionReadinessStateReady),
-	// 			ManagedOnBehalfOfConfiguration: &armresiliencemanagement.ManagedOnBehalfOfConfiguration{
-	// 				MoboBrokerResources: []*armresiliencemanagement.MoboBrokerResource{
-	// 					{
-	// 						ID: to.Ptr("lvukttgzvssiupnypauorkyzvzf"),
-	// 					},
-	// 				},
-	// 			},
 	// 			RecoveryPlanProperties: &armresiliencemanagement.RecoveryPlanPropertiesOfDrill{
 	// 				Identity: &armresiliencemanagement.AssociatedIdentity{
 	// 					Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
@@ -493,8 +537,31 @@ func ExampleDrillsClient_Get() {
 	// 			},
 	// 			ProvisioningState: to.Ptr(armresiliencemanagement.ProvisioningStateSucceeded),
 	// 			ServiceGroupID: to.Ptr("/providers/Microsoft.Management/serviceGroups/sampleServiceGroupName"),
-	// 			LastSyncTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-02-02T10:45:16.573Z"); return t}()),
-	// 			LastResyncReadinessCheckTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-02-02T10:29:02.037Z"); return t}()),
+	// 			LastSyncTime: to.Ptr(time.Date(2026, time.February, 2, 10, 45, 16, 573000000, time.UTC)),
+	// 			LastResyncReadinessCheckTime: to.Ptr(time.Date(2026, time.February, 2, 10, 29, 2, 37000000, time.UTC)),
+	// 			HealthModelMonitoringProperties: &armresiliencemanagement.HealthModelMonitoringProperties{
+	// 				Identity: &armresiliencemanagement.AssociatedIdentity{
+	// 					Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+	// 					UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
+	// 				},
+	// 				DiscoveryRuleID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourceGroups/contoso-health/providers/Microsoft.CloudHealth/healthmodels/contoso-payments-hm/discoveryrules/payments-frontend-rule"),
+	// 			},
+	// 			SliMonitoringProperties: &armresiliencemanagement.SliMonitoringProperties{
+	// 				Identity: &armresiliencemanagement.AssociatedIdentity{
+	// 					Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+	// 					UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
+	// 				},
+	// 				Slis: []*armresiliencemanagement.SliSelection{
+	// 					{
+	// 						SliID: to.Ptr("/providers/Microsoft.Management/serviceGroups/sampleServiceGroupName/providers/Microsoft.Monitor/slis/checkout-availability"),
+	// 						Type: to.Ptr(armresiliencemanagement.SliTypeAvailability),
+	// 					},
+	// 					{
+	// 						SliID: to.Ptr("/providers/Microsoft.Management/serviceGroups/sampleServiceGroupName/providers/Microsoft.Monitor/slis/checkout-latency"),
+	// 						Type: to.Ptr(armresiliencemanagement.SliTypeLatency),
+	// 					},
+	// 				},
+	// 			},
 	// 		},
 	// 		Identity: &armresiliencemanagement.ManagedServiceIdentity{
 	// 			Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeNone),
@@ -509,16 +576,16 @@ func ExampleDrillsClient_Get() {
 	// 		SystemData: &armresiliencemanagement.SystemData{
 	// 			CreatedBy: to.Ptr("dvnfxbuyqhvivfjddjccdtlwajfht"),
 	// 			CreatedByType: to.Ptr(armresiliencemanagement.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-02-06T15:03:42.796Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2025, time.February, 6, 15, 3, 42, 796000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("lndhhaimomorael"),
 	// 			LastModifiedByType: to.Ptr(armresiliencemanagement.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-02-06T15:03:42.797Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.February, 6, 15, 3, 42, 797000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/Drills_List_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-31-preview/Drills_List_MaximumSet_Gen.json
 func ExampleDrillsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -590,6 +657,33 @@ func ExampleDrillsClient_NewListPager() {
 		// 						ChaosResourceCreationFailureReasons: []*string{
 		// 							to.Ptr("tpngufudxyoim"),
 		// 						},
+		// 						MonitoringSourceNotConfigured: to.Ptr(false),
+		// 						HealthModelExists: to.Ptr(armresiliencemanagement.ExtensionObjectStateExists),
+		// 						DiscoveryRuleExists: to.Ptr(armresiliencemanagement.ExtensionObjectStateExists),
+		// 						DrillRbacOnHealthModel: to.Ptr(armresiliencemanagement.RBACStateSet),
+		// 						RbacNeededForDrillOnHealthModel: []*string{
+		// 						},
+		// 						DrillRbacOnSli: to.Ptr(armresiliencemanagement.RBACStateSet),
+		// 						SliAttentionStatuses: []*armresiliencemanagement.SliAttentionStatus{
+		// 							{
+		// 								SliID: to.Ptr("/providers/Microsoft.Management/serviceGroups/sampleServiceGroupName/providers/Microsoft.Monitor/slis/checkout-availability"),
+		// 								Type: to.Ptr(armresiliencemanagement.SliTypeAvailability),
+		// 								Exists: to.Ptr(armresiliencemanagement.ExtensionObjectStateExists),
+		// 								TypeMatch: to.Ptr(armresiliencemanagement.SliTypeMatchStateMatched),
+		// 								DrillRbacOnDestinationAmw: to.Ptr(armresiliencemanagement.RBACStateSet),
+		// 								RbacNeededOnDestinationAmws: []*string{
+		// 								},
+		// 							},
+		// 							{
+		// 								SliID: to.Ptr("/providers/Microsoft.Management/serviceGroups/sampleServiceGroupName/providers/Microsoft.Monitor/slis/checkout-latency"),
+		// 								Type: to.Ptr(armresiliencemanagement.SliTypeLatency),
+		// 								Exists: to.Ptr(armresiliencemanagement.ExtensionObjectStateExists),
+		// 								TypeMatch: to.Ptr(armresiliencemanagement.SliTypeMatchStateMatched),
+		// 								DrillRbacOnDestinationAmw: to.Ptr(armresiliencemanagement.RBACStateSet),
+		// 								RbacNeededOnDestinationAmws: []*string{
+		// 								},
+		// 							},
+		// 						},
 		// 					},
 		// 					SystemMetadata: &armresiliencemanagement.SystemMetadata{
 		// 						InitialConfig: to.Ptr(armresiliencemanagement.InitialConfigPending),
@@ -599,17 +693,10 @@ func ExampleDrillsClient_NewListPager() {
 		// 					},
 		// 					DrillType: to.Ptr(armresiliencemanagement.DrillType("DrillProperties")),
 		// 					LastRunProperties: &armresiliencemanagement.LastRunProperties{
-		// 						LastRunTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-05-05T05:36:37.151Z"); return t}()),
+		// 						LastRunTime: to.Ptr(time.Date(2025, time.May, 5, 5, 36, 37, 151000000, time.UTC)),
 		// 						LastRunState: to.Ptr(armresiliencemanagement.JobStatusNotStarted),
 		// 						LastRunDuration: to.Ptr("PT6M"),
 		// 						LastRunAttestation: to.Ptr(armresiliencemanagement.DrillAttestationAttestedSuccess),
-		// 					},
-		// 					ManagedOnBehalfOfConfiguration: &armresiliencemanagement.ManagedOnBehalfOfConfiguration{
-		// 						MoboBrokerResources: []*armresiliencemanagement.MoboBrokerResource{
-		// 							{
-		// 								ID: to.Ptr("lvukttgzvssiupnypauorkyzvzf"),
-		// 							},
-		// 						},
 		// 					},
 		// 					ExecutionReadinessState: to.Ptr(armresiliencemanagement.ExecutionReadinessStateReady),
 		// 					ServiceGroupID: to.Ptr("/providers/Microsoft.Management/serviceGroups/sampleServiceGroupName"),
@@ -648,8 +735,31 @@ func ExampleDrillsClient_NewListPager() {
 		// 						ChaosResourceID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourceGroups/resourceGroup1/providers/Microsoft.Chaos/workspaces/asdas"),
 		// 						FaultDurationInMin: to.Ptr[int32](0),
 		// 					},
-		// 					LastResyncReadinessCheckTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-02-02T10:29:02.037Z"); return t}()),
-		// 					LastSyncTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-02-02T10:45:16.573Z"); return t}()),
+		// 					LastResyncReadinessCheckTime: to.Ptr(time.Date(2026, time.February, 2, 10, 29, 2, 37000000, time.UTC)),
+		// 					LastSyncTime: to.Ptr(time.Date(2026, time.February, 2, 10, 45, 16, 573000000, time.UTC)),
+		// 					HealthModelMonitoringProperties: &armresiliencemanagement.HealthModelMonitoringProperties{
+		// 						Identity: &armresiliencemanagement.AssociatedIdentity{
+		// 							Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+		// 							UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
+		// 						},
+		// 						DiscoveryRuleID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourceGroups/contoso-health/providers/Microsoft.CloudHealth/healthmodels/contoso-payments-hm/discoveryrules/payments-frontend-rule"),
+		// 					},
+		// 					SliMonitoringProperties: &armresiliencemanagement.SliMonitoringProperties{
+		// 						Identity: &armresiliencemanagement.AssociatedIdentity{
+		// 							Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+		// 							UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
+		// 						},
+		// 						Slis: []*armresiliencemanagement.SliSelection{
+		// 							{
+		// 								SliID: to.Ptr("/providers/Microsoft.Management/serviceGroups/sampleServiceGroupName/providers/Microsoft.Monitor/slis/checkout-availability"),
+		// 								Type: to.Ptr(armresiliencemanagement.SliTypeAvailability),
+		// 							},
+		// 							{
+		// 								SliID: to.Ptr("/providers/Microsoft.Management/serviceGroups/sampleServiceGroupName/providers/Microsoft.Monitor/slis/checkout-latency"),
+		// 								Type: to.Ptr(armresiliencemanagement.SliTypeLatency),
+		// 							},
+		// 						},
+		// 					},
 		// 				},
 		// 				Identity: &armresiliencemanagement.ManagedServiceIdentity{
 		// 					Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeNone),
@@ -664,10 +774,10 @@ func ExampleDrillsClient_NewListPager() {
 		// 				SystemData: &armresiliencemanagement.SystemData{
 		// 					CreatedBy: to.Ptr("dvnfxbuyqhvivfjddjccdtlwajfht"),
 		// 					CreatedByType: to.Ptr(armresiliencemanagement.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-02-06T15:03:42.796Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2025, time.February, 6, 15, 3, 42, 796000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("lndhhaimomorael"),
 		// 					LastModifiedByType: to.Ptr(armresiliencemanagement.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-02-06T15:03:42.797Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2025, time.February, 6, 15, 3, 42, 797000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -677,7 +787,7 @@ func ExampleDrillsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/Drills_ResyncReadinessCheck_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-31-preview/Drills_ResyncReadinessCheck_MaximumSet_Gen.json
 func ExampleDrillsClient_BeginResyncReadinessCheck() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -698,7 +808,7 @@ func ExampleDrillsClient_BeginResyncReadinessCheck() {
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/Drills_Start_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-31-preview/Drills_Start_MaximumSet_Gen.json
 func ExampleDrillsClient_BeginStart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -726,7 +836,7 @@ func ExampleDrillsClient_BeginStart() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/Drills_Update_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-31-preview/Drills_Update_MaximumSet_Gen.json
 func ExampleDrillsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -766,6 +876,25 @@ func ExampleDrillsClient_BeginUpdate() {
 				Subscription: to.Ptr("pxlmwjuhcif"),
 				Region:       to.Ptr("zuvwzxnbqyzdkthrewruw"),
 			},
+			HealthModelMonitoringProperties: &armresiliencemanagement.HealthModelMonitoringProperties{
+				Identity: &armresiliencemanagement.AssociatedIdentity{
+					Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+					UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
+				},
+				DiscoveryRuleID: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourceGroups/contoso-health/providers/Microsoft.CloudHealth/healthmodels/contoso-payments-hm/discoveryrules/payments-frontend-rule"),
+			},
+			SliMonitoringProperties: &armresiliencemanagement.SliMonitoringProperties{
+				Identity: &armresiliencemanagement.AssociatedIdentity{
+					Type:                 to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+					UserAssignedIdentity: to.Ptr("/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"),
+				},
+				Slis: []*armresiliencemanagement.SliSelection{
+					{
+						SliID: to.Ptr("/providers/Microsoft.Management/serviceGroups/sampleServiceGroupName/providers/Microsoft.Monitor/slis/checkout-availability"),
+						Type:  to.Ptr(armresiliencemanagement.SliTypeAvailability),
+					},
+				},
+			},
 		},
 		Identity: &armresiliencemanagement.ManagedServiceIdentity{
 			Type:                   to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeNone),
@@ -786,7 +915,7 @@ func ExampleDrillsClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/Drills_ValidateForExecution_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-31-preview/Drills_ValidateForExecution_MaximumSet_Gen.json
 func ExampleDrillsClient_BeginValidateForExecution() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

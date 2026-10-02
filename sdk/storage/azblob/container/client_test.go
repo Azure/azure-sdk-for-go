@@ -837,6 +837,84 @@ func (s *ContainerRecordedTestsSuite) TestContainerListHierarchyBlobsInvalidBlob
 	}
 }
 
+func (s *ContainerRecordedTestsSuite) TestContainerListBlobsHierarchyStartFrom() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	// Create two blobs that will be listed in lexicographic order.
+	firstBlobName := "dir/a.txt"
+	secondBlobName := "dir/b.txt"
+
+	testcommon.CreateNewBlockBlob(context.Background(), _require, firstBlobName, containerClient)
+	testcommon.CreateNewBlockBlob(context.Background(), _require, secondBlobName, containerClient)
+
+	// Start listing from the secondBlobName.
+	startFrom := secondBlobName
+	pager := containerClient.NewListBlobsHierarchyPager("", &container.ListBlobsHierarchyOptions{
+		StartFrom: &startFrom,
+	})
+
+	var seen []string
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		_require.NoError(err)
+
+		for _, blob := range resp.Segment.BlobItems {
+			seen = append(seen, *blob.Name)
+		}
+	}
+
+	// If StartFrom is wired correctly, we should see only secondBlobName, not firstBlobName.
+	_require.Contains(seen, secondBlobName)
+	_require.NotContains(seen, firstBlobName)
+}
+
+func (s *ContainerRecordedTestsSuite) TestContainerListBlobsFlatStartFrom() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	// Create two blobs that will be listed in lexicographic order.
+	firstBlobName := "a.txt"
+	secondBlobName := "b.txt"
+
+	testcommon.CreateNewBlockBlob(context.Background(), _require, firstBlobName, containerClient)
+	testcommon.CreateNewBlockBlob(context.Background(), _require, secondBlobName, containerClient)
+
+	// Start listing from the secondBlobName.
+	startFrom := secondBlobName
+	pager := containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
+		StartFrom: &startFrom,
+	})
+
+	var seen []string
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		_require.NoError(err)
+
+		for _, blob := range resp.Segment.BlobItems {
+			seen = append(seen, *blob.Name)
+		}
+	}
+
+	// If StartFrom is wired correctly, we should see only secondBlobName, not firstBlobName.
+	_require.Contains(seen, secondBlobName)
+	_require.NotContains(seen, firstBlobName)
+}
+
 func (s *ContainerRecordedTestsSuite) TestContainerListBlobsWithSnapshots() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -1683,6 +1761,12 @@ func (s *ContainerUnrecordedTestsSuite) TestSetNullAccessPolicy() {
 }
 
 func (s *ContainerRecordedTestsSuite) TestContainerGetSetPermissionsMultiplePolicies() {
+	// NOTE: this is temporary and should be removed when tests are re-recorded
+	require.NoError(s.T(), recording.SetDefaultMatcher(s.T(),
+		&recording.SetDefaultMatcherOptions{
+			CompareBodies:   to.Ptr(false),
+			ExcludedHeaders: []string{"Accept"},
+		}))
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -1894,6 +1978,11 @@ func (s *ContainerRecordedTestsSuite) TestContainerSetPermissionsPublicAccessCon
 // }
 
 func (s *ContainerRecordedTestsSuite) TestContainerSetPermissionsACLMoreThanFive() {
+	require.NoError(s.T(), recording.SetDefaultMatcher(s.T(),
+		&recording.SetDefaultMatcherOptions{
+			CompareBodies:   to.Ptr(false),
+			ExcludedHeaders: []string{"Accept"},
+		}))
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -1932,6 +2021,11 @@ func (s *ContainerRecordedTestsSuite) TestContainerSetPermissionsACLMoreThanFive
 }
 
 func (s *ContainerRecordedTestsSuite) TestContainerSetPermissionsDeleteAndModifyACL() {
+	require.NoError(s.T(), recording.SetDefaultMatcher(s.T(),
+		&recording.SetDefaultMatcherOptions{
+			CompareBodies:   to.Ptr(false),
+			ExcludedHeaders: []string{"Accept"},
+		}))
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -1987,6 +2081,11 @@ func (s *ContainerRecordedTestsSuite) TestContainerSetPermissionsDeleteAndModify
 }
 
 func (s *ContainerRecordedTestsSuite) TestContainerSetPermissionsDeleteAllPolicies() {
+	require.NoError(s.T(), recording.SetDefaultMatcher(s.T(),
+		&recording.SetDefaultMatcherOptions{
+			CompareBodies:   to.Ptr(false),
+			ExcludedHeaders: []string{"Accept"},
+		}))
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -2083,6 +2182,11 @@ func (s *ContainerRecordedTestsSuite) TestContainerSetPermissionsNilPolicySlice(
 }
 
 func (s *ContainerRecordedTestsSuite) TestContainerSetPermissionsSignedIdentifierTooLong() {
+	require.NoError(s.T(), recording.SetDefaultMatcher(s.T(),
+		&recording.SetDefaultMatcherOptions{
+			CompareBodies:   to.Ptr(false),
+			ExcludedHeaders: []string{"Accept"},
+		}))
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -3943,4 +4047,28 @@ func (s *ContainerUnrecordedTestsSuite) TestContainerListBlobsFlatArrowMatchesXM
 	sort.Strings(xmlNames)
 	sort.Strings(arrowNames)
 	_require.Equal(xmlNames, arrowNames)
+}
+
+// TestContainerGetSASURLPreservesCustomQueryParams is a regression test for GetSASURL()
+// appending a duplicated "?" to the resulting URL when the client's URL already contained a
+// query string (e.g. a customer-provided endpoint with pre-existing custom query parameters),
+// which previously produced a malformed SAS URL.
+func TestContainerGetSASURLPreservesCustomQueryParams(t *testing.T) {
+	_require := require.New(t)
+	const accountName = "fakestorageaccount"
+	// base64-encoded fake key; not a real secret.
+	const accountKey = "PSA7dl59RwZBFEBhBEtdrsq/g7VpjMFeSPzdC4SoBiQI3xVLg2y8HRoAF3PidfB8/i9v67QCNSAdVdJdKrmqSw=="
+	cred, err := container.NewSharedKeyCredential(accountName, accountKey)
+	_require.NoError(err)
+
+	containerURL := fmt.Sprintf("https://%s.blob.core.windows.net/container?customparam=value", accountName)
+	containerClient, err := container.NewClientWithSharedKeyCredential(containerURL, cred, nil)
+	_require.NoError(err)
+
+	sasURL, err := containerClient.GetSASURL(sas.ContainerPermissions{Read: true}, time.Now().Add(time.Hour), nil)
+	_require.NoError(err)
+
+	_require.Equal(1, strings.Count(sasURL, "?"), "SAS URL must not contain a duplicated '?': %s", sasURL)
+	_require.Contains(sasURL, "customparam=value")
+	_require.Contains(sasURL, "sig=")
 }

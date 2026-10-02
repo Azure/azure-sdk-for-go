@@ -5,7 +5,7 @@
 package armbulkactions
 
 const (
-	version20260606 string = "2026-06-06"
+	version20261006Preview string = "2026-10-06-preview"
 )
 
 // ActionType - Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
@@ -23,16 +23,105 @@ func PossibleActionTypeValues() []ActionType {
 	}
 }
 
-// DeadlineType - The types of deadlines supported by Bulkactions
+// CachingTypes - Specifies the caching requirements. Possible values are: **None,** **ReadOnly,** **ReadWrite.** The default
+// values are: **None for Standard storage. ReadOnly for Premium storage**
+type CachingTypes string
+
+const (
+	// CachingTypesNone - Caching type:None
+	CachingTypesNone CachingTypes = "None"
+	// CachingTypesReadOnly - Caching type:ReadOnly
+	CachingTypesReadOnly CachingTypes = "ReadOnly"
+	// CachingTypesReadWrite - Caching type:ReadWrite
+	CachingTypesReadWrite CachingTypes = "ReadWrite"
+)
+
+// PossibleCachingTypesValues returns the possible values for the CachingTypes const type.
+func PossibleCachingTypesValues() []CachingTypes {
+	return []CachingTypes{
+		CachingTypesNone,
+		CachingTypesReadOnly,
+		CachingTypesReadWrite,
+	}
+}
+
+// CapacityRecommendationStatus - The lifecycle status of the capacity recommendation for an operation
+type CapacityRecommendationStatus string
+
+const (
+	// CapacityRecommendationStatusFailed - The capacity recommendation failed
+	CapacityRecommendationStatusFailed CapacityRecommendationStatus = "Failed"
+	// CapacityRecommendationStatusNotInitiated - The capacity recommendation has not been initiated
+	CapacityRecommendationStatusNotInitiated CapacityRecommendationStatus = "NotInitiated"
+	// CapacityRecommendationStatusSkipped - The capacity recommendation was skipped
+	CapacityRecommendationStatusSkipped CapacityRecommendationStatus = "Skipped"
+	// CapacityRecommendationStatusSucceeded - The capacity recommendation completed successfully
+	CapacityRecommendationStatusSucceeded CapacityRecommendationStatus = "Succeeded"
+)
+
+// PossibleCapacityRecommendationStatusValues returns the possible values for the CapacityRecommendationStatus const type.
+func PossibleCapacityRecommendationStatusValues() []CapacityRecommendationStatus {
+	return []CapacityRecommendationStatus{
+		CapacityRecommendationStatusFailed,
+		CapacityRecommendationStatusNotInitiated,
+		CapacityRecommendationStatusSkipped,
+		CapacityRecommendationStatusSucceeded,
+	}
+}
+
+// CapacityType - Capacity types for LaunchBulkInstancesOperation.
+type CapacityType string
+
+const (
+	// CapacityTypeVCPU - VCpu is the capacity type for LaunchBulkInstancesOperation where capacity is provisioned in terms of
+	// VCpus. If VCpu capacity is not exactly divisible by VCpu count in VMSizes, capacity in VCpus will be overprovisioned by
+	// default.
+	CapacityTypeVCPU CapacityType = "VCpu"
+	// CapacityTypeVM - Default. VM is the default capacity type for LaunchBulkInstancesOperation where capacity is provisioned
+	// in terms of VMs.
+	CapacityTypeVM CapacityType = "VM"
+)
+
+// PossibleCapacityTypeValues returns the possible values for the CapacityType const type.
+func PossibleCapacityTypeValues() []CapacityType {
+	return []CapacityType{
+		CapacityTypeVCPU,
+		CapacityTypeVM,
+	}
+}
+
+// CreatedByType - The kind of entity that created the resource.
+type CreatedByType string
+
+const (
+	// CreatedByTypeApplication - The entity was created by an application.
+	CreatedByTypeApplication CreatedByType = "Application"
+	// CreatedByTypeKey - The entity was created by a key.
+	CreatedByTypeKey CreatedByType = "Key"
+	// CreatedByTypeManagedIdentity - The entity was created by a managed identity.
+	CreatedByTypeManagedIdentity CreatedByType = "ManagedIdentity"
+	// CreatedByTypeUser - The entity was created by a user.
+	CreatedByTypeUser CreatedByType = "User"
+)
+
+// PossibleCreatedByTypeValues returns the possible values for the CreatedByType const type.
+func PossibleCreatedByTypeValues() []CreatedByType {
+	return []CreatedByType{
+		CreatedByTypeApplication,
+		CreatedByTypeKey,
+		CreatedByTypeManagedIdentity,
+		CreatedByTypeUser,
+	}
+}
+
+// DeadlineType - The deadline behavior for a bulk action.
 type DeadlineType string
 
 const (
-	// DeadlineTypeCompleteBy - Complete the operation by the given deadline.
+	// DeadlineTypeCompleteBy - Bulk Actions attempts to complete the operation by the specified deadline.
 	DeadlineTypeCompleteBy DeadlineType = "CompleteBy"
-	// DeadlineTypeInitiateAt - Initiate the operation at the given deadline.
+	// DeadlineTypeInitiateAt - Bulk Actions attempts to start the operation at the specified deadline.
 	DeadlineTypeInitiateAt DeadlineType = "InitiateAt"
-	// DeadlineTypeUnknown - Default value of Unknown.
-	DeadlineTypeUnknown DeadlineType = "Unknown"
 )
 
 // PossibleDeadlineTypeValues returns the possible values for the DeadlineType const type.
@@ -40,32 +129,612 @@ func PossibleDeadlineTypeValues() []DeadlineType {
 	return []DeadlineType{
 		DeadlineTypeCompleteBy,
 		DeadlineTypeInitiateAt,
-		DeadlineTypeUnknown,
 	}
 }
 
-// OperationState - Values that define the states of operations in Bulkactions
+// DeleteOptions - Specify what happens to the network interface when the VM is deleted
+type DeleteOptions string
+
+const (
+	// DeleteOptionsDelete - Delete network interface when the VM is deleted
+	DeleteOptionsDelete DeleteOptions = "Delete"
+	// DeleteOptionsDetach - Detach network interface when the VM is deleted
+	DeleteOptionsDetach DeleteOptions = "Detach"
+)
+
+// PossibleDeleteOptionsValues returns the possible values for the DeleteOptions const type.
+func PossibleDeleteOptionsValues() []DeleteOptions {
+	return []DeleteOptions{
+		DeleteOptionsDelete,
+		DeleteOptionsDetach,
+	}
+}
+
+// DiffDiskOptions - Specifies the ephemeral disk option for operating system disk.
+type DiffDiskOptions string
+
+const (
+	// DiffDiskOptionsLocal - Local Ephemeral disk option: Local
+	DiffDiskOptionsLocal DiffDiskOptions = "Local"
+)
+
+// PossibleDiffDiskOptionsValues returns the possible values for the DiffDiskOptions const type.
+func PossibleDiffDiskOptionsValues() []DiffDiskOptions {
+	return []DiffDiskOptions{
+		DiffDiskOptionsLocal,
+	}
+}
+
+// DiffDiskPlacement - Specifies the ephemeral disk placement for operating system disk. This property can be used by user
+// in the request to choose the location i.e, cache disk, resource disk or nvme disk space for Ephemeral OS disk provisioning.
+// For more information on Ephemeral OS disk size requirements, please refer Ephemeral OS disk size requirements for Windows
+// VM at https://docs.microsoft.com/azure/virtual-machines/windows/ephemeral-os-disks#size-requirements and Linux VM at https://docs.microsoft.com/azure/virtual-machines/linux/ephemeral-os-disks#size-requirements.
+// Minimum api-version for NvmeDisk: 2024-03-01.
+type DiffDiskPlacement string
+
+const (
+	// DiffDiskPlacementCacheDisk - CacheDisk disk placement
+	DiffDiskPlacementCacheDisk DiffDiskPlacement = "CacheDisk"
+	// DiffDiskPlacementNvmeDisk - NvmeDisk disk placement
+	DiffDiskPlacementNvmeDisk DiffDiskPlacement = "NvmeDisk"
+	// DiffDiskPlacementResourceDisk - ResourceDisk disk placement
+	DiffDiskPlacementResourceDisk DiffDiskPlacement = "ResourceDisk"
+)
+
+// PossibleDiffDiskPlacementValues returns the possible values for the DiffDiskPlacement const type.
+func PossibleDiffDiskPlacementValues() []DiffDiskPlacement {
+	return []DiffDiskPlacement{
+		DiffDiskPlacementCacheDisk,
+		DiffDiskPlacementNvmeDisk,
+		DiffDiskPlacementResourceDisk,
+	}
+}
+
+// DiskControllerTypes - Specifies the disk controller type configured for the VM and VirtualMachineScaleSet. This property
+// is only supported for virtual machines whose operating system disk and VM sku supports Generation 2 (https://docs.microsoft.com/en-us/azure/virtual-machines/generation-2),
+// please check the HyperVGenerations capability returned as part of VM sku capabilities in the response of Microsoft.Compute
+// SKUs api for the region contains V2 (https://docs.microsoft.com/rest/api/compute/resourceskus/list). For more information
+// about Disk Controller Types supported please refer to https://aka.ms/azure-diskcontrollertypes.
+type DiskControllerTypes string
+
+const (
+	// DiskControllerTypesNVMe - NVMe disk controller type
+	DiskControllerTypesNVMe DiskControllerTypes = "NVMe"
+	// DiskControllerTypesSCSI - SCSI disk controller type
+	DiskControllerTypesSCSI DiskControllerTypes = "SCSI"
+)
+
+// PossibleDiskControllerTypesValues returns the possible values for the DiskControllerTypes const type.
+func PossibleDiskControllerTypesValues() []DiskControllerTypes {
+	return []DiskControllerTypes{
+		DiskControllerTypesNVMe,
+		DiskControllerTypesSCSI,
+	}
+}
+
+// DiskCreateOptionTypes - Specifies how the virtual machine disk should be created. Possible values are **Attach:** This
+// value is used when you are using a specialized disk to create the virtual machine. **FromImage:** This value is used when
+// you are using an image to create the virtual machine. If you are using a platform image, you should also use the imageReference
+// element described above. If you are using a marketplace image, you should also use the plan element previously described.
+// **Empty:** This value is used when creating an empty data disk. **Copy:** This value is used to create a data disk from
+// a snapshot or another disk. **Restore:** This value is used to create a data disk from a disk restore point.
+type DiskCreateOptionTypes string
+
+const (
+	// DiskCreateOptionTypesAttach - Create disk by Attach
+	DiskCreateOptionTypesAttach DiskCreateOptionTypes = "Attach"
+	// DiskCreateOptionTypesCopy - Create disk by Copy
+	DiskCreateOptionTypesCopy DiskCreateOptionTypes = "Copy"
+	// DiskCreateOptionTypesEmpty - Empty value
+	DiskCreateOptionTypesEmpty DiskCreateOptionTypes = "Empty"
+	// DiskCreateOptionTypesFromImage - Create disk FromImage
+	DiskCreateOptionTypesFromImage DiskCreateOptionTypes = "FromImage"
+	// DiskCreateOptionTypesRestore - Create disk by Restore
+	DiskCreateOptionTypesRestore DiskCreateOptionTypes = "Restore"
+)
+
+// PossibleDiskCreateOptionTypesValues returns the possible values for the DiskCreateOptionTypes const type.
+func PossibleDiskCreateOptionTypesValues() []DiskCreateOptionTypes {
+	return []DiskCreateOptionTypes{
+		DiskCreateOptionTypesAttach,
+		DiskCreateOptionTypesCopy,
+		DiskCreateOptionTypesEmpty,
+		DiskCreateOptionTypesFromImage,
+		DiskCreateOptionTypesRestore,
+	}
+}
+
+// DiskDeleteOptionTypes - Specifies the behavior of the managed disk when the VM gets deleted, for example whether the managed
+// disk is deleted or detached. Supported values are: **Delete.** If this value is used, the managed disk is deleted when
+// VM gets deleted. **Detach.** If this value is used, the managed disk is retained after VM gets deleted. Minimum api-version:
+// 2021-03-01.
+type DiskDeleteOptionTypes string
+
+const (
+	// DiskDeleteOptionTypesDelete - Delete the disk upon VM deletion
+	DiskDeleteOptionTypesDelete DiskDeleteOptionTypes = "Delete"
+	// DiskDeleteOptionTypesDetach - Detach the disk upon VM deletion
+	DiskDeleteOptionTypesDetach DiskDeleteOptionTypes = "Detach"
+)
+
+// PossibleDiskDeleteOptionTypesValues returns the possible values for the DiskDeleteOptionTypes const type.
+func PossibleDiskDeleteOptionTypesValues() []DiskDeleteOptionTypes {
+	return []DiskDeleteOptionTypes{
+		DiskDeleteOptionTypesDelete,
+		DiskDeleteOptionTypesDetach,
+	}
+}
+
+// DiskDetachOptionTypes - Specifies the detach behavior to be used while detaching a disk or which is already in the process
+// of detachment from the virtual machine. Supported values are: **ForceDetach.** detachOption: **ForceDetach** is applicable
+// only for managed data disks. If a previous detachment attempt of the data disk did not complete due to an unexpected failure
+// from the virtual machine and the disk is still not released then use force-detach as a last resort option to detach the
+// disk forcibly from the VM. All writes might not have been flushed when using this detach behavior. **This feature is still
+// in preview**. To force-detach a data disk update toBeDetached to 'true' along with setting detachOption: 'ForceDetach'.
+type DiskDetachOptionTypes string
+
+const (
+	// DiskDetachOptionTypesForceDetach - ForceDetach the disk
+	DiskDetachOptionTypesForceDetach DiskDetachOptionTypes = "ForceDetach"
+)
+
+// PossibleDiskDetachOptionTypesValues returns the possible values for the DiskDetachOptionTypes const type.
+func PossibleDiskDetachOptionTypesValues() []DiskDetachOptionTypes {
+	return []DiskDetachOptionTypes{
+		DiskDetachOptionTypesForceDetach,
+	}
+}
+
+// DomainNameLabelScopeTypes - The Domain name label scope.The concatenation of the hashed domain name label that generated
+// according to the policy from domain name label scope and vm index will be the domain name labels of the PublicIPAddress
+// resources that will be created
+type DomainNameLabelScopeTypes string
+
+const (
+	// DomainNameLabelScopeTypesNoReuse - NoReuse scope type
+	DomainNameLabelScopeTypesNoReuse DomainNameLabelScopeTypes = "NoReuse"
+	// DomainNameLabelScopeTypesResourceGroupReuse - ResourceGroupReuse scope type
+	DomainNameLabelScopeTypesResourceGroupReuse DomainNameLabelScopeTypes = "ResourceGroupReuse"
+	// DomainNameLabelScopeTypesSubscriptionReuse - SubscriptionReuse scope type
+	DomainNameLabelScopeTypesSubscriptionReuse DomainNameLabelScopeTypes = "SubscriptionReuse"
+	// DomainNameLabelScopeTypesTenantReuse - TenantReuse scope type
+	DomainNameLabelScopeTypesTenantReuse DomainNameLabelScopeTypes = "TenantReuse"
+)
+
+// PossibleDomainNameLabelScopeTypesValues returns the possible values for the DomainNameLabelScopeTypes const type.
+func PossibleDomainNameLabelScopeTypesValues() []DomainNameLabelScopeTypes {
+	return []DomainNameLabelScopeTypes{
+		DomainNameLabelScopeTypesNoReuse,
+		DomainNameLabelScopeTypesResourceGroupReuse,
+		DomainNameLabelScopeTypesSubscriptionReuse,
+		DomainNameLabelScopeTypesTenantReuse,
+	}
+}
+
+// EvictionPolicy - Different kind of eviction policies
+type EvictionPolicy string
+
+const (
+	// EvictionPolicyDeallocate - When evicted, the Spot VM will be deallocated/stopped
+	EvictionPolicyDeallocate EvictionPolicy = "Deallocate"
+	// EvictionPolicyDelete - When evicted, the Spot VM will be deleted and the corresponding capacity will be updated to reflect
+	// this.
+	EvictionPolicyDelete EvictionPolicy = "Delete"
+)
+
+// PossibleEvictionPolicyValues returns the possible values for the EvictionPolicy const type.
+func PossibleEvictionPolicyValues() []EvictionPolicy {
+	return []EvictionPolicy{
+		EvictionPolicyDeallocate,
+		EvictionPolicyDelete,
+	}
+}
+
+// IPVersions - Available from compute Api-Version 2017-03-30 onwards, it represents whether the specific ipconfiguration
+// is IPv4 or IPv6. Default is taken as IPv4. Possible values are: 'IPv4' and 'IPv6'.
+type IPVersions string
+
+const (
+	// IPVersionsIPv4 - IPv4 version
+	IPVersionsIPv4 IPVersions = "IPv4"
+	// IPVersionsIPv6 - IPv6 version
+	IPVersionsIPv6 IPVersions = "IPv6"
+)
+
+// PossibleIPVersionsValues returns the possible values for the IPVersions const type.
+func PossibleIPVersionsValues() []IPVersions {
+	return []IPVersions{
+		IPVersionsIPv4,
+		IPVersionsIPv6,
+	}
+}
+
+// Language - The language used for scheduled action notifications.
+type Language string
+
+const (
+	// LanguageEnUs - English (United States).
+	LanguageEnUs Language = "en-us"
+)
+
+// PossibleLanguageValues returns the possible values for the Language const type.
+func PossibleLanguageValues() []Language {
+	return []Language{
+		LanguageEnUs,
+	}
+}
+
+// LinuxPatchAssessmentMode - Specifies the mode of VM Guest Patch Assessment for the IaaS virtual machine.<br /><br /> Possible
+// values are:<br /><br /> **ImageDefault** - You control the timing of patch assessments on a virtual machine. <br /><br
+// /> **AutomaticByPlatform** - The platform will trigger periodic patch assessments. The property provisionVMAgent must be
+// true.
+type LinuxPatchAssessmentMode string
+
+const (
+	// LinuxPatchAssessmentModeAutomaticByPlatform - AutomaticByPlatform mode
+	LinuxPatchAssessmentModeAutomaticByPlatform LinuxPatchAssessmentMode = "AutomaticByPlatform"
+	// LinuxPatchAssessmentModeImageDefault - ImageDefault mode
+	LinuxPatchAssessmentModeImageDefault LinuxPatchAssessmentMode = "ImageDefault"
+)
+
+// PossibleLinuxPatchAssessmentModeValues returns the possible values for the LinuxPatchAssessmentMode const type.
+func PossibleLinuxPatchAssessmentModeValues() []LinuxPatchAssessmentMode {
+	return []LinuxPatchAssessmentMode{
+		LinuxPatchAssessmentModeAutomaticByPlatform,
+		LinuxPatchAssessmentModeImageDefault,
+	}
+}
+
+// LinuxVMGuestPatchAutomaticByPlatformRebootSetting - Specifies the reboot setting for all AutomaticByPlatform patch installation
+// operations.
+type LinuxVMGuestPatchAutomaticByPlatformRebootSetting string
+
+const (
+	// LinuxVMGuestPatchAutomaticByPlatformRebootSettingAlways - Always reboot
+	LinuxVMGuestPatchAutomaticByPlatformRebootSettingAlways LinuxVMGuestPatchAutomaticByPlatformRebootSetting = "Always"
+	// LinuxVMGuestPatchAutomaticByPlatformRebootSettingIfRequired - Reboot if required
+	LinuxVMGuestPatchAutomaticByPlatformRebootSettingIfRequired LinuxVMGuestPatchAutomaticByPlatformRebootSetting = "IfRequired"
+	// LinuxVMGuestPatchAutomaticByPlatformRebootSettingNever - Never reboot
+	LinuxVMGuestPatchAutomaticByPlatformRebootSettingNever LinuxVMGuestPatchAutomaticByPlatformRebootSetting = "Never"
+	// LinuxVMGuestPatchAutomaticByPlatformRebootSettingUnknown - Unknown reboot setting
+	LinuxVMGuestPatchAutomaticByPlatformRebootSettingUnknown LinuxVMGuestPatchAutomaticByPlatformRebootSetting = "Unknown"
+)
+
+// PossibleLinuxVMGuestPatchAutomaticByPlatformRebootSettingValues returns the possible values for the LinuxVMGuestPatchAutomaticByPlatformRebootSetting const type.
+func PossibleLinuxVMGuestPatchAutomaticByPlatformRebootSettingValues() []LinuxVMGuestPatchAutomaticByPlatformRebootSetting {
+	return []LinuxVMGuestPatchAutomaticByPlatformRebootSetting{
+		LinuxVMGuestPatchAutomaticByPlatformRebootSettingAlways,
+		LinuxVMGuestPatchAutomaticByPlatformRebootSettingIfRequired,
+		LinuxVMGuestPatchAutomaticByPlatformRebootSettingNever,
+		LinuxVMGuestPatchAutomaticByPlatformRebootSettingUnknown,
+	}
+}
+
+// LinuxVMGuestPatchMode - Specifies the mode of VM Guest Patching to IaaS virtual machine or virtual machines associated
+// to virtual machine scale set with OrchestrationMode as Flexible.<br /><br /> Possible values are:<br /><br /> **ImageDefault**
+// - The virtual machine's default patching configuration is used. <br /><br /> **AutomaticByPlatform** - The virtual machine
+// will be automatically updated by the platform. The property provisionVMAgent must be true
+type LinuxVMGuestPatchMode string
+
+const (
+	// LinuxVMGuestPatchModeAutomaticByPlatform - AutomaticByPlatform linux VM guest patch mode
+	LinuxVMGuestPatchModeAutomaticByPlatform LinuxVMGuestPatchMode = "AutomaticByPlatform"
+	// LinuxVMGuestPatchModeImageDefault - ImageDefault linux VM guest patch mode
+	LinuxVMGuestPatchModeImageDefault LinuxVMGuestPatchMode = "ImageDefault"
+)
+
+// PossibleLinuxVMGuestPatchModeValues returns the possible values for the LinuxVMGuestPatchMode const type.
+func PossibleLinuxVMGuestPatchModeValues() []LinuxVMGuestPatchMode {
+	return []LinuxVMGuestPatchMode{
+		LinuxVMGuestPatchModeAutomaticByPlatform,
+		LinuxVMGuestPatchModeImageDefault,
+	}
+}
+
+// ManagedServiceIdentityType - Type of managed service identity (where both SystemAssigned and UserAssigned types are allowed).
+type ManagedServiceIdentityType string
+
+const (
+	// ManagedServiceIdentityTypeNone - No managed identity.
+	ManagedServiceIdentityTypeNone ManagedServiceIdentityType = "None"
+	// ManagedServiceIdentityTypeSystemAssigned - System assigned managed identity.
+	ManagedServiceIdentityTypeSystemAssigned ManagedServiceIdentityType = "SystemAssigned"
+	// ManagedServiceIdentityTypeSystemAssignedUserAssigned - System and user assigned managed identity.
+	ManagedServiceIdentityTypeSystemAssignedUserAssigned ManagedServiceIdentityType = "SystemAssigned,UserAssigned"
+	// ManagedServiceIdentityTypeUserAssigned - User assigned managed identity.
+	ManagedServiceIdentityTypeUserAssigned ManagedServiceIdentityType = "UserAssigned"
+)
+
+// PossibleManagedServiceIdentityTypeValues returns the possible values for the ManagedServiceIdentityType const type.
+func PossibleManagedServiceIdentityTypeValues() []ManagedServiceIdentityType {
+	return []ManagedServiceIdentityType{
+		ManagedServiceIdentityTypeNone,
+		ManagedServiceIdentityTypeSystemAssigned,
+		ManagedServiceIdentityTypeSystemAssignedUserAssigned,
+		ManagedServiceIdentityTypeUserAssigned,
+	}
+}
+
+// Mode - Specifies the mode that ProxyAgent will execute on if the feature is enabled. ProxyAgent will start to audit or
+// monitor but not enforce access control over requests to host endpoints in Audit mode, while in Enforce mode it will enforce
+// access control. The default value is Enforce mode.
+type Mode string
+
+const (
+	// ModeAudit - Audit mode
+	ModeAudit Mode = "Audit"
+	// ModeEnforce - Enforce mode
+	ModeEnforce Mode = "Enforce"
+)
+
+// PossibleModeValues returns the possible values for the Mode const type.
+func PossibleModeValues() []Mode {
+	return []Mode{
+		ModeAudit,
+		ModeEnforce,
+	}
+}
+
+// Modes - Specifies the execution mode. In Audit mode, the system acts as if it is enforcing the access control policy, including
+// emitting access denial entries in the logs but it does not actually deny any requests to host endpoints. In Enforce mode,
+// the system will enforce the access control and it is the recommended mode of operation.
+type Modes string
+
+const (
+	// ModesAudit - Audit mode
+	ModesAudit Modes = "Audit"
+	// ModesDisabled - Disabled mode
+	ModesDisabled Modes = "Disabled"
+	// ModesEnforce - Enforce mode
+	ModesEnforce Modes = "Enforce"
+)
+
+// PossibleModesValues returns the possible values for the Modes const type.
+func PossibleModesValues() []Modes {
+	return []Modes{
+		ModesAudit,
+		ModesDisabled,
+		ModesEnforce,
+	}
+}
+
+// Month - A month in which the scheduled action can run.
+type Month string
+
+const (
+	// MonthAll - Every month.
+	MonthAll Month = "All"
+	// MonthApril - The scheduled action can run in April.
+	MonthApril Month = "April"
+	// MonthAugust - The scheduled action can run in August.
+	MonthAugust Month = "August"
+	// MonthDecember - The scheduled action can run in December.
+	MonthDecember Month = "December"
+	// MonthFebruary - The scheduled action can run in February.
+	MonthFebruary Month = "February"
+	// MonthJanuary - The scheduled action can run in January.
+	MonthJanuary Month = "January"
+	// MonthJuly - The scheduled action can run in July.
+	MonthJuly Month = "July"
+	// MonthJune - The scheduled action can run in June.
+	MonthJune Month = "June"
+	// MonthMarch - The scheduled action can run in March.
+	MonthMarch Month = "March"
+	// MonthMay - The scheduled action can run in May.
+	MonthMay Month = "May"
+	// MonthNovember - The scheduled action can run in November.
+	MonthNovember Month = "November"
+	// MonthOctober - The scheduled action can run in October.
+	MonthOctober Month = "October"
+	// MonthSeptember - The scheduled action can run in September.
+	MonthSeptember Month = "September"
+)
+
+// PossibleMonthValues returns the possible values for the Month const type.
+func PossibleMonthValues() []Month {
+	return []Month{
+		MonthAll,
+		MonthApril,
+		MonthAugust,
+		MonthDecember,
+		MonthFebruary,
+		MonthJanuary,
+		MonthJuly,
+		MonthJune,
+		MonthMarch,
+		MonthMay,
+		MonthNovember,
+		MonthOctober,
+		MonthSeptember,
+	}
+}
+
+// NetworkAPIVersion - Specifies the Microsoft.Network API version used when creating networking resources in the Network
+// Interface Configurations
+type NetworkAPIVersion string
+
+const (
+	// NetworkAPIVersion20201101 - 2020-11-01 version
+	NetworkAPIVersion20201101 NetworkAPIVersion = "2020-11-01"
+	// NetworkAPIVersion20221101 - 2022-11-01 version
+	NetworkAPIVersion20221101 NetworkAPIVersion = "2022-11-01"
+)
+
+// PossibleNetworkAPIVersionValues returns the possible values for the NetworkAPIVersion const type.
+func PossibleNetworkAPIVersionValues() []NetworkAPIVersion {
+	return []NetworkAPIVersion{
+		NetworkAPIVersion20201101,
+		NetworkAPIVersion20221101,
+	}
+}
+
+// NetworkInterfaceAuxiliaryMode - Specifies whether the Auxiliary mode is enabled for the Network Interface resource.
+type NetworkInterfaceAuxiliaryMode string
+
+const (
+	// NetworkInterfaceAuxiliaryModeAcceleratedConnections - AcceleratedConnections mode
+	NetworkInterfaceAuxiliaryModeAcceleratedConnections NetworkInterfaceAuxiliaryMode = "AcceleratedConnections"
+	// NetworkInterfaceAuxiliaryModeFloating - Floating mode
+	NetworkInterfaceAuxiliaryModeFloating NetworkInterfaceAuxiliaryMode = "Floating"
+	// NetworkInterfaceAuxiliaryModeNone - None mode
+	NetworkInterfaceAuxiliaryModeNone NetworkInterfaceAuxiliaryMode = "None"
+)
+
+// PossibleNetworkInterfaceAuxiliaryModeValues returns the possible values for the NetworkInterfaceAuxiliaryMode const type.
+func PossibleNetworkInterfaceAuxiliaryModeValues() []NetworkInterfaceAuxiliaryMode {
+	return []NetworkInterfaceAuxiliaryMode{
+		NetworkInterfaceAuxiliaryModeAcceleratedConnections,
+		NetworkInterfaceAuxiliaryModeFloating,
+		NetworkInterfaceAuxiliaryModeNone,
+	}
+}
+
+// NetworkInterfaceAuxiliarySKU - Specifies whether the Auxiliary sku is enabled for the Network Interface resource.
+type NetworkInterfaceAuxiliarySKU string
+
+const (
+	// NetworkInterfaceAuxiliarySKUA1 - A1 sku
+	NetworkInterfaceAuxiliarySKUA1 NetworkInterfaceAuxiliarySKU = "A1"
+	// NetworkInterfaceAuxiliarySKUA2 - A2 sku
+	NetworkInterfaceAuxiliarySKUA2 NetworkInterfaceAuxiliarySKU = "A2"
+	// NetworkInterfaceAuxiliarySKUA4 - A4 sku
+	NetworkInterfaceAuxiliarySKUA4 NetworkInterfaceAuxiliarySKU = "A4"
+	// NetworkInterfaceAuxiliarySKUA8 - A8 sku
+	NetworkInterfaceAuxiliarySKUA8 NetworkInterfaceAuxiliarySKU = "A8"
+	// NetworkInterfaceAuxiliarySKUNone - None: None sku
+	NetworkInterfaceAuxiliarySKUNone NetworkInterfaceAuxiliarySKU = "None"
+)
+
+// PossibleNetworkInterfaceAuxiliarySKUValues returns the possible values for the NetworkInterfaceAuxiliarySKU const type.
+func PossibleNetworkInterfaceAuxiliarySKUValues() []NetworkInterfaceAuxiliarySKU {
+	return []NetworkInterfaceAuxiliarySKU{
+		NetworkInterfaceAuxiliarySKUA1,
+		NetworkInterfaceAuxiliarySKUA2,
+		NetworkInterfaceAuxiliarySKUA4,
+		NetworkInterfaceAuxiliarySKUA8,
+		NetworkInterfaceAuxiliarySKUNone,
+	}
+}
+
+// NotificationType - The delivery method for scheduled action notifications.
+type NotificationType string
+
+const (
+	// NotificationTypeEmail - Sends notifications by email.
+	NotificationTypeEmail NotificationType = "Email"
+)
+
+// PossibleNotificationTypeValues returns the possible values for the NotificationType const type.
+func PossibleNotificationTypeValues() []NotificationType {
+	return []NotificationType{
+		NotificationTypeEmail,
+	}
+}
+
+// OccurrenceResourceProvisioningState - The provisioning state of a scheduled-action resource within an occurrence.
+type OccurrenceResourceProvisioningState string
+
+const (
+	// OccurrenceResourceProvisioningStateCanceled - Resource creation was canceled.
+	OccurrenceResourceProvisioningStateCanceled OccurrenceResourceProvisioningState = "Canceled"
+	// OccurrenceResourceProvisioningStateCancelling - The resource is going through cancellation
+	OccurrenceResourceProvisioningStateCancelling OccurrenceResourceProvisioningState = "Cancelling"
+	// OccurrenceResourceProvisioningStateCreated - The resource has been created
+	OccurrenceResourceProvisioningStateCreated OccurrenceResourceProvisioningState = "Created"
+	// OccurrenceResourceProvisioningStateFailed - Resource creation failed.
+	OccurrenceResourceProvisioningStateFailed OccurrenceResourceProvisioningState = "Failed"
+	// OccurrenceResourceProvisioningStateInvalidState - The resource is in an invalid state
+	OccurrenceResourceProvisioningStateInvalidState OccurrenceResourceProvisioningState = "InvalidState"
+	// OccurrenceResourceProvisioningStateRescheduling - The resource is being rescheduled
+	OccurrenceResourceProvisioningStateRescheduling OccurrenceResourceProvisioningState = "Rescheduling"
+	// OccurrenceResourceProvisioningStateScheduled - The resource has been scheduled
+	OccurrenceResourceProvisioningStateScheduled OccurrenceResourceProvisioningState = "Scheduled"
+	// OccurrenceResourceProvisioningStateSucceeded - Resource has been created.
+	OccurrenceResourceProvisioningStateSucceeded OccurrenceResourceProvisioningState = "Succeeded"
+)
+
+// PossibleOccurrenceResourceProvisioningStateValues returns the possible values for the OccurrenceResourceProvisioningState const type.
+func PossibleOccurrenceResourceProvisioningStateValues() []OccurrenceResourceProvisioningState {
+	return []OccurrenceResourceProvisioningState{
+		OccurrenceResourceProvisioningStateCanceled,
+		OccurrenceResourceProvisioningStateCancelling,
+		OccurrenceResourceProvisioningStateCreated,
+		OccurrenceResourceProvisioningStateFailed,
+		OccurrenceResourceProvisioningStateInvalidState,
+		OccurrenceResourceProvisioningStateRescheduling,
+		OccurrenceResourceProvisioningStateScheduled,
+		OccurrenceResourceProvisioningStateSucceeded,
+	}
+}
+
+// OccurrenceState - The current state of a scheduled action occurrence.
+type OccurrenceState string
+
+const (
+	// OccurrenceStateCanceled - The occurrence was canceled.
+	OccurrenceStateCanceled OccurrenceState = "Canceled"
+	// OccurrenceStateCancelling - Cancellation of the occurrence is in progress.
+	OccurrenceStateCancelling OccurrenceState = "Cancelling"
+	// OccurrenceStateCreated - The occurrence has been created.
+	OccurrenceStateCreated OccurrenceState = "Created"
+	// OccurrenceStateFailed - One or more of the occurrence operations failed.
+	OccurrenceStateFailed OccurrenceState = "Failed"
+	// OccurrenceStateRescheduling - The scheduled time for the occurrence is being updated.
+	OccurrenceStateRescheduling OccurrenceState = "Rescheduling"
+	// OccurrenceStateScheduled - The occurrence has been scheduled.
+	OccurrenceStateScheduled OccurrenceState = "Scheduled"
+	// OccurrenceStateSucceeded - The occurrence operations completed successfully.
+	OccurrenceStateSucceeded OccurrenceState = "Succeeded"
+)
+
+// PossibleOccurrenceStateValues returns the possible values for the OccurrenceState const type.
+func PossibleOccurrenceStateValues() []OccurrenceState {
+	return []OccurrenceState{
+		OccurrenceStateCanceled,
+		OccurrenceStateCancelling,
+		OccurrenceStateCreated,
+		OccurrenceStateFailed,
+		OccurrenceStateRescheduling,
+		OccurrenceStateScheduled,
+		OccurrenceStateSucceeded,
+	}
+}
+
+// OperatingSystemTypes - This property allows you to specify the supported type of the OS that application is built for.
+// Possible values are: **Windows,** **Linux.**
+type OperatingSystemTypes string
+
+const (
+	// OperatingSystemTypesLinux - Linux OS
+	OperatingSystemTypesLinux OperatingSystemTypes = "Linux"
+	// OperatingSystemTypesWindows - Windows OS
+	OperatingSystemTypesWindows OperatingSystemTypes = "Windows"
+)
+
+// PossibleOperatingSystemTypesValues returns the possible values for the OperatingSystemTypes const type.
+func PossibleOperatingSystemTypesValues() []OperatingSystemTypes {
+	return []OperatingSystemTypes{
+		OperatingSystemTypesLinux,
+		OperatingSystemTypesWindows,
+	}
+}
+
+// OperationState - The current state of a bulk action.
 type OperationState string
 
 const (
-	// OperationStateBlocked - Operations that are blocked
+	// OperationStateBlocked - The operation cannot currently make progress.
 	OperationStateBlocked OperationState = "Blocked"
-	// OperationStateCancelled - Operations that have been Cancelled by the user
+	// OperationStateCancelled - The operation was canceled by the caller.
 	OperationStateCancelled OperationState = "Cancelled"
-	// OperationStateExecuting - Operations that are in the process of being executed
+	// OperationStateExecuting - The operation is in progress.
 	OperationStateExecuting OperationState = "Executing"
-	// OperationStateFailed - Operations that have failed
+	// OperationStateFailed - The operation failed.
 	OperationStateFailed OperationState = "Failed"
-	// OperationStatePendingExecution - Operations that are waiting to be executed
-	OperationStatePendingExecution OperationState = "PendingExecution"
-	// OperationStatePendingScheduling - Operations that are pending scheduling
-	OperationStatePendingScheduling OperationState = "PendingScheduling"
-	// OperationStateScheduled - Operations that have been scheduled
+	// OperationStateScheduled - The operation has been scheduled.
 	OperationStateScheduled OperationState = "Scheduled"
-	// OperationStateSucceeded - Operations that succeeded
+	// OperationStateSucceeded - The operation completed successfully.
 	OperationStateSucceeded OperationState = "Succeeded"
-	// OperationStateUnknown - The default value for the operation state enum
-	OperationStateUnknown OperationState = "Unknown"
 )
 
 // PossibleOperationStateValues returns the possible values for the OperationState const type.
@@ -75,11 +744,8 @@ func PossibleOperationStateValues() []OperationState {
 		OperationStateCancelled,
 		OperationStateExecuting,
 		OperationStateFailed,
-		OperationStatePendingExecution,
-		OperationStatePendingScheduling,
 		OperationStateScheduled,
 		OperationStateSucceeded,
-		OperationStateUnknown,
 	}
 }
 
@@ -105,22 +771,219 @@ func PossibleOriginValues() []Origin {
 	}
 }
 
-// ResourceOperationType - The kind of bulk operation that can be performed on resources using Bulkactions API
+// PartialFulfillmentMode - Whether the service may launch fewer instances than requested when the full capacity cannot be
+// satisfied.
+type PartialFulfillmentMode string
+
+const (
+	// PartialFulfillmentModeDisabled - Partial fulfillment is not allowed.
+	PartialFulfillmentModeDisabled PartialFulfillmentMode = "Disabled"
+	// PartialFulfillmentModeEnabled - Partial fulfillment is allowed.
+	PartialFulfillmentModeEnabled PartialFulfillmentMode = "Enabled"
+)
+
+// PossiblePartialFulfillmentModeValues returns the possible values for the PartialFulfillmentMode const type.
+func PossiblePartialFulfillmentModeValues() []PartialFulfillmentMode {
+	return []PartialFulfillmentMode{
+		PartialFulfillmentModeDisabled,
+		PartialFulfillmentModeEnabled,
+	}
+}
+
+// PartialFulfillmentReason - The reason the requested capacity could only be partially fulfilled.
+type PartialFulfillmentReason string
+
+const (
+	// PartialFulfillmentReasonInsufficientCapacity - The requested capacity could not be fully satisfied due to insufficient
+	// capacity in the region.
+	PartialFulfillmentReasonInsufficientCapacity PartialFulfillmentReason = "InsufficientCapacity"
+	// PartialFulfillmentReasonInsufficientQuota - The requested capacity could not be fully satisfied due to insufficient quota
+	// in the subscription.
+	PartialFulfillmentReasonInsufficientQuota PartialFulfillmentReason = "InsufficientQuota"
+	// PartialFulfillmentReasonNone - The requested capacity was successfully satisfied without any partial fulfillment.
+	PartialFulfillmentReasonNone PartialFulfillmentReason = "None"
+)
+
+// PossiblePartialFulfillmentReasonValues returns the possible values for the PartialFulfillmentReason const type.
+func PossiblePartialFulfillmentReasonValues() []PartialFulfillmentReason {
+	return []PartialFulfillmentReason{
+		PartialFulfillmentReasonInsufficientCapacity,
+		PartialFulfillmentReasonInsufficientQuota,
+		PartialFulfillmentReasonNone,
+	}
+}
+
+// PriorityType - The priority type for virtual machine allocation.
+type PriorityType string
+
+const (
+	// PriorityTypeRegular - Regular, non-Spot virtual machines.
+	PriorityTypeRegular PriorityType = "Regular"
+	// PriorityTypeSpot - Azure Spot Virtual Machines.
+	PriorityTypeSpot PriorityType = "Spot"
+)
+
+// PossiblePriorityTypeValues returns the possible values for the PriorityType const type.
+func PossiblePriorityTypeValues() []PriorityType {
+	return []PriorityType{
+		PriorityTypeRegular,
+		PriorityTypeSpot,
+	}
+}
+
+// ProtocolTypes - Specifies the protocol of WinRM listener. Possible values are: **http,** **https.**
+type ProtocolTypes string
+
+const (
+	// ProtocolTypesHTTP - Http protocol
+	ProtocolTypesHTTP ProtocolTypes = "Http"
+	// ProtocolTypesHTTPS - Https protocol
+	ProtocolTypesHTTPS ProtocolTypes = "Https"
+)
+
+// PossibleProtocolTypesValues returns the possible values for the ProtocolTypes const type.
+func PossibleProtocolTypesValues() []ProtocolTypes {
+	return []ProtocolTypes{
+		ProtocolTypesHTTP,
+		ProtocolTypesHTTPS,
+	}
+}
+
+// ProvisioningState - The status of the LaunchBulkInstancesOperation.
+type ProvisioningState string
+
+const (
+	// ProvisioningStateCanceled - The operation has been canceled.
+	ProvisioningStateCanceled ProvisioningState = "Canceled"
+	// ProvisioningStateCreating - Initial creation in progress.
+	ProvisioningStateCreating ProvisioningState = "Creating"
+	// ProvisioningStateDeleting - Deletion in progress.
+	ProvisioningStateDeleting ProvisioningState = "Deleting"
+	// ProvisioningStateFailed - The operation has failed.
+	ProvisioningStateFailed ProvisioningState = "Failed"
+	// ProvisioningStateSucceeded - The operation has completed successfully.
+	ProvisioningStateSucceeded ProvisioningState = "Succeeded"
+)
+
+// PossibleProvisioningStateValues returns the possible values for the ProvisioningState const type.
+func PossibleProvisioningStateValues() []ProvisioningState {
+	return []ProvisioningState{
+		ProvisioningStateCanceled,
+		ProvisioningStateCreating,
+		ProvisioningStateDeleting,
+		ProvisioningStateFailed,
+		ProvisioningStateSucceeded,
+	}
+}
+
+// PublicIPAddressSKUName - Specify public IP sku name
+type PublicIPAddressSKUName string
+
+const (
+	// PublicIPAddressSKUNameBasic - Basic IP sku name
+	PublicIPAddressSKUNameBasic PublicIPAddressSKUName = "Basic"
+	// PublicIPAddressSKUNameStandard - Standard IP sku name
+	PublicIPAddressSKUNameStandard PublicIPAddressSKUName = "Standard"
+)
+
+// PossiblePublicIPAddressSKUNameValues returns the possible values for the PublicIPAddressSKUName const type.
+func PossiblePublicIPAddressSKUNameValues() []PublicIPAddressSKUName {
+	return []PublicIPAddressSKUName{
+		PublicIPAddressSKUNameBasic,
+		PublicIPAddressSKUNameStandard,
+	}
+}
+
+// PublicIPAddressSKUTier - Specify public IP sku tier
+type PublicIPAddressSKUTier string
+
+const (
+	// PublicIPAddressSKUTierGlobal - Global IP address sku tier
+	PublicIPAddressSKUTierGlobal PublicIPAddressSKUTier = "Global"
+	// PublicIPAddressSKUTierRegional - Regional IP address sku tier
+	PublicIPAddressSKUTierRegional PublicIPAddressSKUTier = "Regional"
+)
+
+// PossiblePublicIPAddressSKUTierValues returns the possible values for the PublicIPAddressSKUTier const type.
+func PossiblePublicIPAddressSKUTierValues() []PublicIPAddressSKUTier {
+	return []PublicIPAddressSKUTier{
+		PublicIPAddressSKUTierGlobal,
+		PublicIPAddressSKUTierRegional,
+	}
+}
+
+// PublicIPAllocationMethod - Specify the public IP allocation type
+type PublicIPAllocationMethod string
+
+const (
+	// PublicIPAllocationMethodDynamic - Dynamic IP allocation
+	PublicIPAllocationMethodDynamic PublicIPAllocationMethod = "Dynamic"
+	// PublicIPAllocationMethodStatic - Static IP allocation
+	PublicIPAllocationMethodStatic PublicIPAllocationMethod = "Static"
+)
+
+// PossiblePublicIPAllocationMethodValues returns the possible values for the PublicIPAllocationMethod const type.
+func PossiblePublicIPAllocationMethodValues() []PublicIPAllocationMethod {
+	return []PublicIPAllocationMethod{
+		PublicIPAllocationMethodDynamic,
+		PublicIPAllocationMethodStatic,
+	}
+}
+
+// ResourceIdentityType - The type of identity used for the virtual machine scale set. The type 'SystemAssigned, UserAssigned'
+// includes both an implicitly created identity and a set of user assigned identities. The type 'None' will remove any identities
+// from the virtual machine scale set.
+type ResourceIdentityType string
+
+const (
+	ResourceIdentityTypeNone                       ResourceIdentityType = "None"
+	ResourceIdentityTypeSystemAssigned             ResourceIdentityType = "SystemAssigned"
+	ResourceIdentityTypeSystemAssignedUserAssigned ResourceIdentityType = "SystemAssigned, UserAssigned"
+	ResourceIdentityTypeUserAssigned               ResourceIdentityType = "UserAssigned"
+)
+
+// PossibleResourceIdentityTypeValues returns the possible values for the ResourceIdentityType const type.
+func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
+	return []ResourceIdentityType{
+		ResourceIdentityTypeNone,
+		ResourceIdentityTypeSystemAssigned,
+		ResourceIdentityTypeSystemAssignedUserAssigned,
+		ResourceIdentityTypeUserAssigned,
+	}
+}
+
+// ResourceOperationStatus - Current status of an operation for the specific occurrence and resource
+type ResourceOperationStatus string
+
+const (
+	// ResourceOperationStatusFailed - The operation failed for the resource.
+	ResourceOperationStatusFailed ResourceOperationStatus = "Failed"
+	// ResourceOperationStatusSucceeded - The operation completed successfully for the resource.
+	ResourceOperationStatusSucceeded ResourceOperationStatus = "Succeeded"
+)
+
+// PossibleResourceOperationStatusValues returns the possible values for the ResourceOperationStatus const type.
+func PossibleResourceOperationStatusValues() []ResourceOperationStatus {
+	return []ResourceOperationStatus{
+		ResourceOperationStatusFailed,
+		ResourceOperationStatusSucceeded,
+	}
+}
+
+// ResourceOperationType - The type of operation performed by Bulk Actions.
 type ResourceOperationType string
 
 const (
-	// ResourceOperationTypeCreate - Create operations on the resources
+	// ResourceOperationTypeCreate - Creates the specified virtual machines.
 	ResourceOperationTypeCreate ResourceOperationType = "Create"
-	// ResourceOperationTypeDeallocate - Deallocate operations on the resources
+	// ResourceOperationTypeDeallocate - Deallocates the specified virtual machines.
 	ResourceOperationTypeDeallocate ResourceOperationType = "Deallocate"
-	// ResourceOperationTypeDelete - Delete operations on the resources
+	// ResourceOperationTypeDelete - Deletes the specified virtual machines.
 	ResourceOperationTypeDelete ResourceOperationType = "Delete"
-	// ResourceOperationTypeHibernate - Hibernate operations on the resources
+	// ResourceOperationTypeHibernate - Hibernates the specified virtual machines.
 	ResourceOperationTypeHibernate ResourceOperationType = "Hibernate"
-	// ResourceOperationTypeStart - Start operations on the resources
+	// ResourceOperationTypeStart - Starts the specified virtual machines.
 	ResourceOperationTypeStart ResourceOperationType = "Start"
-	// ResourceOperationTypeUnknown - The default value for this enum type
-	ResourceOperationTypeUnknown ResourceOperationType = "Unknown"
 )
 
 // PossibleResourceOperationTypeValues returns the possible values for the ResourceOperationType const type.
@@ -131,6 +994,324 @@ func PossibleResourceOperationTypeValues() []ResourceOperationType {
 		ResourceOperationTypeDelete,
 		ResourceOperationTypeHibernate,
 		ResourceOperationTypeStart,
-		ResourceOperationTypeUnknown,
+	}
+}
+
+// ResourceType - The type of compute resource targeted by the scheduled action.
+type ResourceType string
+
+const (
+	// ResourceTypeVirtualMachine - Azure virtual machines.
+	ResourceTypeVirtualMachine ResourceType = "VirtualMachine"
+	// ResourceTypeVirtualMachineScaleSet - Azure Virtual Machine Scale Sets.
+	ResourceTypeVirtualMachineScaleSet ResourceType = "VirtualMachineScaleSet"
+)
+
+// PossibleResourceTypeValues returns the possible values for the ResourceType const type.
+func PossibleResourceTypeValues() []ResourceType {
+	return []ResourceType{
+		ResourceTypeVirtualMachine,
+		ResourceTypeVirtualMachineScaleSet,
+	}
+}
+
+// ScheduledActionType - The operation performed by the scheduled action.
+type ScheduledActionType string
+
+const (
+	// ScheduledActionTypeDeallocate - Deallocates the targeted resources.
+	ScheduledActionTypeDeallocate ScheduledActionType = "Deallocate"
+	// ScheduledActionTypeHibernate - Hibernates the targeted resources.
+	ScheduledActionTypeHibernate ScheduledActionType = "Hibernate"
+	// ScheduledActionTypeStart - Starts the targeted resources.
+	ScheduledActionTypeStart ScheduledActionType = "Start"
+)
+
+// PossibleScheduledActionTypeValues returns the possible values for the ScheduledActionType const type.
+func PossibleScheduledActionTypeValues() []ScheduledActionType {
+	return []ScheduledActionType{
+		ScheduledActionTypeDeallocate,
+		ScheduledActionTypeHibernate,
+		ScheduledActionTypeStart,
+	}
+}
+
+// ScheduledActionsDeadlineType - How the scheduled time is interpreted for the resource operation.
+type ScheduledActionsDeadlineType string
+
+const (
+	// ScheduledActionsDeadlineTypeCompleteBy - Completes the operation by the scheduled time.
+	ScheduledActionsDeadlineTypeCompleteBy ScheduledActionsDeadlineType = "CompleteBy"
+	// ScheduledActionsDeadlineTypeInitiateAt - Starts the operation at the scheduled time.
+	ScheduledActionsDeadlineTypeInitiateAt ScheduledActionsDeadlineType = "InitiateAt"
+)
+
+// PossibleScheduledActionsDeadlineTypeValues returns the possible values for the ScheduledActionsDeadlineType const type.
+func PossibleScheduledActionsDeadlineTypeValues() []ScheduledActionsDeadlineType {
+	return []ScheduledActionsDeadlineType{
+		ScheduledActionsDeadlineTypeCompleteBy,
+		ScheduledActionsDeadlineTypeInitiateAt,
+	}
+}
+
+// ScheduledActionsProvisioningState - The provisioning state of the scheduled action.
+type ScheduledActionsProvisioningState string
+
+const (
+	// ScheduledActionsProvisioningStateCanceled - Resource creation was canceled.
+	ScheduledActionsProvisioningStateCanceled ScheduledActionsProvisioningState = "Canceled"
+	// ScheduledActionsProvisioningStateDeleting - The scheduled action is being deleted.
+	ScheduledActionsProvisioningStateDeleting ScheduledActionsProvisioningState = "Deleting"
+	// ScheduledActionsProvisioningStateFailed - Resource creation failed.
+	ScheduledActionsProvisioningStateFailed ScheduledActionsProvisioningState = "Failed"
+	// ScheduledActionsProvisioningStateSucceeded - Resource has been created.
+	ScheduledActionsProvisioningStateSucceeded ScheduledActionsProvisioningState = "Succeeded"
+	// ScheduledActionsProvisioningStateUpdating - The scheduled action is being updated.
+	ScheduledActionsProvisioningStateUpdating ScheduledActionsProvisioningState = "Updating"
+)
+
+// PossibleScheduledActionsProvisioningStateValues returns the possible values for the ScheduledActionsProvisioningState const type.
+func PossibleScheduledActionsProvisioningStateValues() []ScheduledActionsProvisioningState {
+	return []ScheduledActionsProvisioningState{
+		ScheduledActionsProvisioningStateCanceled,
+		ScheduledActionsProvisioningStateDeleting,
+		ScheduledActionsProvisioningStateFailed,
+		ScheduledActionsProvisioningStateSucceeded,
+		ScheduledActionsProvisioningStateUpdating,
+	}
+}
+
+// ScheduledActionsResourceOperationType - The operation to retry when a scheduled action fails.
+type ScheduledActionsResourceOperationType string
+
+const (
+	// ScheduledActionsResourceOperationTypeCreate - Creates the resources.
+	ScheduledActionsResourceOperationTypeCreate ScheduledActionsResourceOperationType = "Create"
+	// ScheduledActionsResourceOperationTypeDeallocate - Deallocates the resources.
+	ScheduledActionsResourceOperationTypeDeallocate ScheduledActionsResourceOperationType = "Deallocate"
+	// ScheduledActionsResourceOperationTypeDelete - Deletes the resources.
+	ScheduledActionsResourceOperationTypeDelete ScheduledActionsResourceOperationType = "Delete"
+	// ScheduledActionsResourceOperationTypeHibernate - Hibernates the resources.
+	ScheduledActionsResourceOperationTypeHibernate ScheduledActionsResourceOperationType = "Hibernate"
+	// ScheduledActionsResourceOperationTypeStart - Starts the resources.
+	ScheduledActionsResourceOperationTypeStart ScheduledActionsResourceOperationType = "Start"
+)
+
+// PossibleScheduledActionsResourceOperationTypeValues returns the possible values for the ScheduledActionsResourceOperationType const type.
+func PossibleScheduledActionsResourceOperationTypeValues() []ScheduledActionsResourceOperationType {
+	return []ScheduledActionsResourceOperationType{
+		ScheduledActionsResourceOperationTypeCreate,
+		ScheduledActionsResourceOperationTypeDeallocate,
+		ScheduledActionsResourceOperationTypeDelete,
+		ScheduledActionsResourceOperationTypeHibernate,
+		ScheduledActionsResourceOperationTypeStart,
+	}
+}
+
+// SecurityEncryptionTypes - Specifies the EncryptionType of the managed disk. It is set to DiskWithVMGuestState for encryption
+// of the managed disk along with VMGuestState blob, VMGuestStateOnly for encryption of just the VMGuestState blob, and NonPersistedTPM
+// for not persisting firmware state in the VMGuestState blob.. **Note:** It can be set for only Confidential VMs.
+type SecurityEncryptionTypes string
+
+const (
+	// SecurityEncryptionTypesDiskWithVMGuestState - DiskWithVMGuestState encryption
+	SecurityEncryptionTypesDiskWithVMGuestState SecurityEncryptionTypes = "DiskWithVMGuestState"
+	// SecurityEncryptionTypesNonPersistedTPM - NonPersistedTPM encryption
+	SecurityEncryptionTypesNonPersistedTPM SecurityEncryptionTypes = "NonPersistedTPM"
+	// SecurityEncryptionTypesVMGuestStateOnly - VMGuestStateOnly encryption
+	SecurityEncryptionTypesVMGuestStateOnly SecurityEncryptionTypes = "VMGuestStateOnly"
+)
+
+// PossibleSecurityEncryptionTypesValues returns the possible values for the SecurityEncryptionTypes const type.
+func PossibleSecurityEncryptionTypesValues() []SecurityEncryptionTypes {
+	return []SecurityEncryptionTypes{
+		SecurityEncryptionTypesDiskWithVMGuestState,
+		SecurityEncryptionTypesNonPersistedTPM,
+		SecurityEncryptionTypesVMGuestStateOnly,
+	}
+}
+
+// SecurityTypes - Specifies the SecurityType of the virtual machine. It has to be set to any specified value to enable UefiSettings.
+// The default behavior is: UefiSettings will not be enabled unless this property is set.
+type SecurityTypes string
+
+const (
+	// SecurityTypesConfidentialVM - ConfidentialVM security type
+	SecurityTypesConfidentialVM SecurityTypes = "ConfidentialVM"
+	// SecurityTypesTrustedLaunch - TrustedLaunch security type
+	SecurityTypesTrustedLaunch SecurityTypes = "TrustedLaunch"
+)
+
+// PossibleSecurityTypesValues returns the possible values for the SecurityTypes const type.
+func PossibleSecurityTypesValues() []SecurityTypes {
+	return []SecurityTypes{
+		SecurityTypesConfidentialVM,
+		SecurityTypesTrustedLaunch,
+	}
+}
+
+// SettingNames - Specifies the name of the setting to which the content applies. Possible values are: FirstLogonCommands
+// and AutoLogon.
+type SettingNames string
+
+const (
+	// SettingNamesAutoLogon - AutoLogon mode
+	SettingNamesAutoLogon SettingNames = "AutoLogon"
+	// SettingNamesFirstLogonCommands - FirstLogonCommands mode
+	SettingNamesFirstLogonCommands SettingNames = "FirstLogonCommands"
+)
+
+// PossibleSettingNamesValues returns the possible values for the SettingNames const type.
+func PossibleSettingNamesValues() []SettingNames {
+	return []SettingNames{
+		SettingNamesAutoLogon,
+		SettingNamesFirstLogonCommands,
+	}
+}
+
+// StorageAccountTypes - Specifies the storage account type for the managed disk. Managed OS disk storage account type can
+// only be set when you create the scale set. NOTE: UltraSSD_LRS can only be used with data disks. It cannot be used with
+// OS Disk. Standard_LRS uses Standard HDD. StandardSSD_LRS uses Standard SSD. Premium_LRS uses Premium SSD. UltraSSD_LRS
+// uses Ultra disk. Premium_ZRS uses Premium SSD zone redundant storage. StandardSSD_ZRS uses Standard SSD zone redundant
+// storage. For more information regarding disks supported for Windows Virtual Machines, refer to https://docs.microsoft.com/azure/virtual-machines/windows/disks-types
+// and, for Linux Virtual Machines, refer to https://docs.microsoft.com/azure/virtual-machines/linux/disks-types
+type StorageAccountTypes string
+
+const (
+	// StorageAccountTypesPremiumLRS - Premium_LRS storage account type
+	StorageAccountTypesPremiumLRS StorageAccountTypes = "Premium_LRS"
+	// StorageAccountTypesPremiumV2LRS - PremiumV2_LRS storage account type
+	StorageAccountTypesPremiumV2LRS StorageAccountTypes = "PremiumV2_LRS"
+	// StorageAccountTypesPremiumZRS - Premium_ZRS storage account type
+	StorageAccountTypesPremiumZRS StorageAccountTypes = "Premium_ZRS"
+	// StorageAccountTypesStandardLRS - Standard_LRS storage account type
+	StorageAccountTypesStandardLRS StorageAccountTypes = "Standard_LRS"
+	// StorageAccountTypesStandardSSDLRS - StandardSSD_LRS storage account type
+	StorageAccountTypesStandardSSDLRS StorageAccountTypes = "StandardSSD_LRS"
+	// StorageAccountTypesStandardSSDZRS - StandardSSD_ZRS storage account type
+	StorageAccountTypesStandardSSDZRS StorageAccountTypes = "StandardSSD_ZRS"
+	// StorageAccountTypesUltraSSDLRS - UltraSSD_LRS storage account type
+	StorageAccountTypesUltraSSDLRS StorageAccountTypes = "UltraSSD_LRS"
+)
+
+// PossibleStorageAccountTypesValues returns the possible values for the StorageAccountTypes const type.
+func PossibleStorageAccountTypesValues() []StorageAccountTypes {
+	return []StorageAccountTypes{
+		StorageAccountTypesPremiumLRS,
+		StorageAccountTypesPremiumV2LRS,
+		StorageAccountTypesPremiumZRS,
+		StorageAccountTypesStandardLRS,
+		StorageAccountTypesStandardSSDLRS,
+		StorageAccountTypesStandardSSDZRS,
+		StorageAccountTypesUltraSSDLRS,
+	}
+}
+
+// WeekDay - A day of the week on which the scheduled action can run.
+type WeekDay string
+
+const (
+	// WeekDayAll - Every day of the week.
+	WeekDayAll WeekDay = "All"
+	// WeekDayFriday - The scheduled action can run on Friday.
+	WeekDayFriday WeekDay = "Friday"
+	// WeekDayMonday - The scheduled action can run on Monday.
+	WeekDayMonday WeekDay = "Monday"
+	// WeekDaySaturday - The scheduled action can run on Saturday.
+	WeekDaySaturday WeekDay = "Saturday"
+	// WeekDaySunday - The scheduled action can run on Sunday.
+	WeekDaySunday WeekDay = "Sunday"
+	// WeekDayThursday - The scheduled action can run on Thursday.
+	WeekDayThursday WeekDay = "Thursday"
+	// WeekDayTuesday - The scheduled action can run on Tuesday.
+	WeekDayTuesday WeekDay = "Tuesday"
+	// WeekDayWednesday - The scheduled action can run on Wednesday.
+	WeekDayWednesday WeekDay = "Wednesday"
+)
+
+// PossibleWeekDayValues returns the possible values for the WeekDay const type.
+func PossibleWeekDayValues() []WeekDay {
+	return []WeekDay{
+		WeekDayAll,
+		WeekDayFriday,
+		WeekDayMonday,
+		WeekDaySaturday,
+		WeekDaySunday,
+		WeekDayThursday,
+		WeekDayTuesday,
+		WeekDayWednesday,
+	}
+}
+
+// WindowsPatchAssessmentMode - Specifies the mode of VM Guest patch assessment for the IaaS virtual machine.<br /><br />
+// Possible values are:<br /><br /> **ImageDefault** - You control the timing of patch assessments on a virtual machine.<br
+// /><br /> **AutomaticByPlatform** - The platform will trigger periodic patch assessments. The property provisionVMAgent
+// must be true.
+type WindowsPatchAssessmentMode string
+
+const (
+	// WindowsPatchAssessmentModeAutomaticByPlatform - AutomaticByPlatform patch assessment mode
+	WindowsPatchAssessmentModeAutomaticByPlatform WindowsPatchAssessmentMode = "AutomaticByPlatform"
+	// WindowsPatchAssessmentModeImageDefault - ImageDefault patch assessment mode
+	WindowsPatchAssessmentModeImageDefault WindowsPatchAssessmentMode = "ImageDefault"
+)
+
+// PossibleWindowsPatchAssessmentModeValues returns the possible values for the WindowsPatchAssessmentMode const type.
+func PossibleWindowsPatchAssessmentModeValues() []WindowsPatchAssessmentMode {
+	return []WindowsPatchAssessmentMode{
+		WindowsPatchAssessmentModeAutomaticByPlatform,
+		WindowsPatchAssessmentModeImageDefault,
+	}
+}
+
+// WindowsVMGuestPatchAutomaticByPlatformRebootSetting - Specifies the reboot setting for all AutomaticByPlatform patch installation
+// operations.
+type WindowsVMGuestPatchAutomaticByPlatformRebootSetting string
+
+const (
+	// WindowsVMGuestPatchAutomaticByPlatformRebootSettingAlways - Reboot setting for Always
+	WindowsVMGuestPatchAutomaticByPlatformRebootSettingAlways WindowsVMGuestPatchAutomaticByPlatformRebootSetting = "Always"
+	// WindowsVMGuestPatchAutomaticByPlatformRebootSettingIfRequired - Reboot setting for IfRequired
+	WindowsVMGuestPatchAutomaticByPlatformRebootSettingIfRequired WindowsVMGuestPatchAutomaticByPlatformRebootSetting = "IfRequired"
+	// WindowsVMGuestPatchAutomaticByPlatformRebootSettingNever - Reboot setting for Never
+	WindowsVMGuestPatchAutomaticByPlatformRebootSettingNever WindowsVMGuestPatchAutomaticByPlatformRebootSetting = "Never"
+	// WindowsVMGuestPatchAutomaticByPlatformRebootSettingUnknown - Reboot setting for Unknown
+	WindowsVMGuestPatchAutomaticByPlatformRebootSettingUnknown WindowsVMGuestPatchAutomaticByPlatformRebootSetting = "Unknown"
+)
+
+// PossibleWindowsVMGuestPatchAutomaticByPlatformRebootSettingValues returns the possible values for the WindowsVMGuestPatchAutomaticByPlatformRebootSetting const type.
+func PossibleWindowsVMGuestPatchAutomaticByPlatformRebootSettingValues() []WindowsVMGuestPatchAutomaticByPlatformRebootSetting {
+	return []WindowsVMGuestPatchAutomaticByPlatformRebootSetting{
+		WindowsVMGuestPatchAutomaticByPlatformRebootSettingAlways,
+		WindowsVMGuestPatchAutomaticByPlatformRebootSettingIfRequired,
+		WindowsVMGuestPatchAutomaticByPlatformRebootSettingNever,
+		WindowsVMGuestPatchAutomaticByPlatformRebootSettingUnknown,
+	}
+}
+
+// WindowsVMGuestPatchMode - Specifies the mode of VM Guest Patching to IaaS virtual machine or virtual machines associated
+// to virtual machine scale set with OrchestrationMode as Flexible.<br /><br /> Possible values are:<br /><br /> **Manual**
+// - You control the application of patches to a virtual machine. You do this by applying patches manually inside the VM.
+// In this mode, automatic updates are disabled; the property WindowsConfiguration.enableAutomaticUpdates must be false<br
+// /><br /> **AutomaticByOS** - The virtual machine will automatically be updated by the OS. The property WindowsConfiguration.enableAutomaticUpdates
+// must be true. <br /><br /> **AutomaticByPlatform** - the virtual machine will automatically updated by the platform. The
+// properties provisionVMAgent and WindowsConfiguration.enableAutomaticUpdates must be true
+type WindowsVMGuestPatchMode string
+
+const (
+	// WindowsVMGuestPatchModeAutomaticByOS - AutomaticByOS VM guest patch mode
+	WindowsVMGuestPatchModeAutomaticByOS WindowsVMGuestPatchMode = "AutomaticByOS"
+	// WindowsVMGuestPatchModeAutomaticByPlatform - AutomaticByPlatform VM guest patch mode
+	WindowsVMGuestPatchModeAutomaticByPlatform WindowsVMGuestPatchMode = "AutomaticByPlatform"
+	// WindowsVMGuestPatchModeManual - Manual VM guest patch mode
+	WindowsVMGuestPatchModeManual WindowsVMGuestPatchMode = "Manual"
+)
+
+// PossibleWindowsVMGuestPatchModeValues returns the possible values for the WindowsVMGuestPatchMode const type.
+func PossibleWindowsVMGuestPatchModeValues() []WindowsVMGuestPatchMode {
+	return []WindowsVMGuestPatchMode{
+		WindowsVMGuestPatchModeAutomaticByOS,
+		WindowsVMGuestPatchModeAutomaticByPlatform,
+		WindowsVMGuestPatchModeManual,
 	}
 }

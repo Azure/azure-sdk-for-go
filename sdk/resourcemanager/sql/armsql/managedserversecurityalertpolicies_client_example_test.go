@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-02-01-preview/ManagedServerSecurityAlertCreateMax.json
+// Generated from example definition: 2026-08-01-preview/ManagedServerSecurityAlertCreateMax.json
 func ExampleManagedServerSecurityAlertPoliciesClient_BeginCreateOrUpdate_updateAManagedServerSThreatDetectionPolicyWithAllParameters() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -69,10 +69,10 @@ func ExampleManagedServerSecurityAlertPoliciesClient_BeginCreateOrUpdate_updateA
 	// 			StorageEndpoint: to.Ptr("https://mystorage.blob.core.windows.net"),
 	// 		},
 	// 		SystemData: &armsql.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-04-03T04:41:33.937Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2020, time.April, 3, 4, 41, 33, 937000000, time.UTC)),
 	// 			CreatedBy: to.Ptr("string"),
 	// 			CreatedByType: to.Ptr(armsql.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-04-03T04:41:33.937Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2020, time.April, 3, 4, 41, 33, 937000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("string"),
 	// 			LastModifiedByType: to.Ptr(armsql.CreatedByTypeUser),
 	// 		},
@@ -80,7 +80,7 @@ func ExampleManagedServerSecurityAlertPoliciesClient_BeginCreateOrUpdate_updateA
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/ManagedServerSecurityAlertCreateMin.json
+// Generated from example definition: 2026-08-01-preview/ManagedServerSecurityAlertCreateMin.json
 func ExampleManagedServerSecurityAlertPoliciesClient_BeginCreateOrUpdate_updateAManagedServerSThreatDetectionPolicyWithMinimalParameters() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -123,10 +123,10 @@ func ExampleManagedServerSecurityAlertPoliciesClient_BeginCreateOrUpdate_updateA
 	// 			StorageEndpoint: to.Ptr(""),
 	// 		},
 	// 		SystemData: &armsql.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-04-03T04:41:33.937Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2020, time.April, 3, 4, 41, 33, 937000000, time.UTC)),
 	// 			CreatedBy: to.Ptr("string"),
 	// 			CreatedByType: to.Ptr(armsql.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-04-03T04:41:33.937Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2020, time.April, 3, 4, 41, 33, 937000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("string"),
 	// 			LastModifiedByType: to.Ptr(armsql.CreatedByTypeUser),
 	// 		},
@@ -134,7 +134,7 @@ func ExampleManagedServerSecurityAlertPoliciesClient_BeginCreateOrUpdate_updateA
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/ManagedServerSecurityAlertGet.json
+// Generated from example definition: 2026-08-01-preview/ManagedServerSecurityAlertGet.json
 func ExampleManagedServerSecurityAlertPoliciesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -158,7 +158,7 @@ func ExampleManagedServerSecurityAlertPoliciesClient_Get() {
 	// 		Type: to.Ptr("Microsoft.Sql/managedInstances/securityAlertPolicies"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/securityalert-4799/providers/Microsoft.Sql/managedInstances/securityalert-6440"),
 	// 		Properties: &armsql.SecurityAlertsPolicyProperties{
-	// 			CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-04-03T04:41:33.937Z"); return t}()),
+	// 			CreationTime: to.Ptr(time.Date(2020, time.April, 3, 4, 41, 33, 937000000, time.UTC)),
 	// 			DisabledAlerts: []*string{
 	// 				to.Ptr("Access_Anomaly"),
 	// 			},
@@ -172,10 +172,10 @@ func ExampleManagedServerSecurityAlertPoliciesClient_Get() {
 	// 			StorageEndpoint: to.Ptr(""),
 	// 		},
 	// 		SystemData: &armsql.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-04-03T04:41:33.937Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2020, time.April, 3, 4, 41, 33, 937000000, time.UTC)),
 	// 			CreatedBy: to.Ptr("string"),
 	// 			CreatedByType: to.Ptr(armsql.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-04-03T04:41:33.937Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2020, time.April, 3, 4, 41, 33, 937000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("string"),
 	// 			LastModifiedByType: to.Ptr(armsql.CreatedByTypeUser),
 	// 		},
@@ -183,7 +183,7 @@ func ExampleManagedServerSecurityAlertPoliciesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/ManagedServerSecurityAlertListByInstance.json
+// Generated from example definition: 2026-08-01-preview/ManagedServerSecurityAlertListByInstance.json
 func ExampleManagedServerSecurityAlertPoliciesClient_NewListByInstancePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -213,7 +213,7 @@ func ExampleManagedServerSecurityAlertPoliciesClient_NewListByInstancePager() {
 		// 				Type: to.Ptr("Microsoft.Sql/managedInstances/securityAlertPolicies"),
 		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/securityalert-4799/providers/Microsoft.Sql/managedInstances/securityalert-6440"),
 		// 				Properties: &armsql.SecurityAlertsPolicyProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-04-03T04:41:33.937Z"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2020, time.April, 3, 4, 41, 33, 937000000, time.UTC)),
 		// 					DisabledAlerts: []*string{
 		// 						to.Ptr("Access_Anomaly"),
 		// 					},
@@ -227,10 +227,10 @@ func ExampleManagedServerSecurityAlertPoliciesClient_NewListByInstancePager() {
 		// 					StorageEndpoint: to.Ptr(""),
 		// 				},
 		// 				SystemData: &armsql.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-04-03T04:41:33.937Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2020, time.April, 3, 4, 41, 33, 937000000, time.UTC)),
 		// 					CreatedBy: to.Ptr("string"),
 		// 					CreatedByType: to.Ptr(armsql.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-04-03T04:41:33.937Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2020, time.April, 3, 4, 41, 33, 937000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("string"),
 		// 					LastModifiedByType: to.Ptr(armsql.CreatedByTypeUser),
 		// 				},

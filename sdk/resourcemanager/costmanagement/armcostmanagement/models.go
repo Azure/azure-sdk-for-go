@@ -420,8 +420,9 @@ type BudgetFilter struct {
 	// Has comparison expression for a dimension.
 	// Supported for CategoryType(s): Cost, ReservationUtilization.
 	// Supported dimension names for **CategoryType: ReservationUtilization**
-	// - ReservationId
-	// - ReservedResourceType
+	//
+	//   - ReservationId
+	//   - ReservedResourceType
 	Dimensions *BudgetComparisonExpression
 
 	// Has comparison expression for a tag.
@@ -435,8 +436,9 @@ type BudgetFilterProperties struct {
 	// Has comparison expression for a dimension.
 	// Supported for CategoryType(s): Cost, ReservationUtilization.
 	// Supported dimension names for **CategoryType: ReservationUtilization**
-	// - ReservationId
-	// - ReservedResourceType
+	//
+	//   - ReservationId
+	//   - ReservedResourceType
 	Dimensions *BudgetComparisonExpression
 
 	// Has comparison expression for a tag.
@@ -447,23 +449,28 @@ type BudgetFilterProperties struct {
 // BudgetProperties - The properties of the budget.
 type BudgetProperties struct {
 	// REQUIRED; The category of the budget.
-	// - 'Cost' defines a Budget.
-	// - 'ReservationUtilization' defines a Reservation Utilization Alert Rule.
+	//
+	//   - 'Cost' defines a Budget.
+	//   - 'ReservationUtilization' defines a Reservation Utilization Alert Rule.
 	Category *CategoryType
 
 	// REQUIRED; The time covered by a budget. Tracking of the amount will be reset based on the time grain.
 	// Supported for CategoryType(s): Cost, ReservationUtilization.
 	// Supported timeGrainTypes for **CategoryType: Cost**
-	// - Monthly
-	// - Quarterly
-	// - Annually
-	// - BillingMonth*
-	// - BillingQuarter*
-	// - BillingAnnual*
+	//
+	//   - Monthly
+	//   - Quarterly
+	//   - Annually
+	//   - BillingMonth*
+	//   - BillingQuarter*
+	//   - BillingAnnual*
+	//
 	// *only supported for Web Direct customers.
 	// Supported timeGrainTypes for **CategoryType: ReservationUtilization**
-	// - Last7Days
-	// - Last30Days
+	//
+	//   - Last7Days
+	//   - Last30Days
+	//
 	// Required for CategoryType(s): Cost, ReservationUtilization.
 	TimeGrain *TimeGrainType
 
@@ -484,9 +491,10 @@ type BudgetProperties struct {
 
 	// Dictionary of notifications associated with the budget.
 	// Supported for CategoryType(s): Cost, ReservationUtilization.
-	// - Constraints for **CategoryType: Cost** - Budget can have up to 5 notifications with thresholdType: Actual and 5 notifications
-	// with thresholdType: Forecasted.
-	// - Constraints for **CategoryType: ReservationUtilization** - Only one notification allowed. thresholdType is not applicable.
+	//
+	//   - Constraints for **CategoryType: Cost** - Budget can have up to 5 notifications with thresholdType: Actual and 5 notifications
+	//     with thresholdType: Forecasted.
+	//   - Constraints for **CategoryType: ReservationUtilization** - Only one notification allowed. thresholdType is not applicable.
 	Notifications map[string]*Notification
 
 	// READ-ONLY; The current amount of cost which is being tracked for a budget.
@@ -504,17 +512,19 @@ type BudgetProperties struct {
 // Required for CategoryType(s): Cost, ReservationUtilization.
 type BudgetTimePeriod struct {
 	// REQUIRED; The start date for the budget.
-	// - Constraints for **CategoryType: Cost** - Must be first of the month and should be less than the end date. Budget start
-	// date must be on or after June 1, 2017. Future start date should not be more than twelve months. Past start date should
-	// be selected within the timegrain period.
-	// - Constraints for **CategoryType: ReservationUtilization** - Must be on or after the current date and less than the end
-	// date.
+	//
+	//   - Constraints for **CategoryType: Cost** - Must be first of the month and should be less than the end date. Budget start
+	//     date must be on or after June 1, 2017. Future start date should not be more than twelve months. Past start date should
+	//     be selected within the timegrain period.
+	//
+	//   - Constraints for **CategoryType: ReservationUtilization** - Must be on or after the current date and less than the end date.
 	StartDate *time.Time
 
 	// The end date for the budget.
-	// - Constraints for **CategoryType: Cost** - No constraints. If not provided, we default this to 10 years from the start
-	// date.
-	// - Constraints for **CategoryType: ReservationUtilization** - End date cannot be more than 3 years after the start date.
+	//
+	//   - Constraints for **CategoryType: Cost** - No constraints. If not provided, we default this to 10 years from the start date.
+	//
+	//   - Constraints for **CategoryType: ReservationUtilization** - End date cannot be more than 3 years after the start date.
 	EndDate *time.Time
 }
 
@@ -1527,10 +1537,13 @@ type Notification struct {
 	// REQUIRED; The comparison operator.
 	// Supported for CategoryType(s): Cost, ReservationUtilization.
 	// Supported operators for **CategoryType: Cost**
-	// - GreaterThan
-	// - GreaterThanOrEqualTo
+	//
+	//   - GreaterThan
+	//   - GreaterThanOrEqualTo
+	//
 	// Supported operators for **CategoryType: ReservationUtilization**
-	// - LessThan
+	//
+	//   - LessThan
 	Operator *BudgetNotificationOperatorType
 
 	// REQUIRED; Threshold value associated with a notification. It is always percent with a maximum of 2 decimal places.

@@ -36,6 +36,23 @@ type DrillRunsClientBeginAddNotesOptions struct {
 
 // DrillRunsClientBeginFailOverOptions contains the optional parameters for the DrillRunsClient.BeginFailOver method.
 type DrillRunsClientBeginFailOverOptions struct {
+	// The content of the action request
+	Body *DrillRunFailoverRequest
+
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// DrillRunsClientBeginGenerateReportOptions contains the optional parameters for the DrillRunsClient.BeginGenerateReport
+// method.
+type DrillRunsClientBeginGenerateReportOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// DrillRunsClientBeginListReportDownloadURLOptions contains the optional parameters for the DrillRunsClient.BeginListReportDownloadURL
+// method.
+type DrillRunsClientBeginListReportDownloadURLOptions struct {
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
@@ -49,6 +66,9 @@ type DrillRunsClientBeginMarkAsCompleteOptions struct {
 
 // DrillRunsClientBeginReprotectOptions contains the optional parameters for the DrillRunsClient.BeginReprotect method.
 type DrillRunsClientBeginReprotectOptions struct {
+	// The content of the action request
+	Body *DrillRunReprotectRequest
+
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }

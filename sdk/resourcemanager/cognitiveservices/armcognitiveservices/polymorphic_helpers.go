@@ -29,6 +29,46 @@ func unmarshalAgentDeploymentPropertiesClassification(rawMsg json.RawMessage) (A
 	return b, nil
 }
 
+func unmarshalAgentHostingConfigurationClassification(rawMsg json.RawMessage) (AgentHostingConfigurationClassification, error) {
+	if rawMsg == nil || string(rawMsg) == "null" {
+		return nil, nil
+	}
+	var m map[string]any
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b AgentHostingConfigurationClassification
+	switch m["hostingType"] {
+	case string(AgentHostingTypeManagedCluster):
+		b = &ManagedClusterAgentHostingConfiguration{}
+	default:
+		b = &AgentHostingConfiguration{}
+	}
+	if err := json.Unmarshal(rawMsg, b); err != nil {
+		return nil, err
+	}
+	return b, nil
+}
+
+func unmarshalAgentHostingConfigurationClassificationArray(rawMsg json.RawMessage) ([]AgentHostingConfigurationClassification, error) {
+	if rawMsg == nil || string(rawMsg) == "null" {
+		return nil, nil
+	}
+	var rawMessages []json.RawMessage
+	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
+		return nil, err
+	}
+	fArray := make([]AgentHostingConfigurationClassification, len(rawMessages))
+	for index, rawMessage := range rawMessages {
+		f, err := unmarshalAgentHostingConfigurationClassification(rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		fArray[index] = f
+	}
+	return fArray, nil
+}
+
 func unmarshalApplicationAuthorizationPolicyClassification(rawMsg json.RawMessage) (ApplicationAuthorizationPolicyClassification, error) {
 	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil

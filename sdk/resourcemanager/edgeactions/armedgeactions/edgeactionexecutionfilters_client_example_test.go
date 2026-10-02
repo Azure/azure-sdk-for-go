@@ -52,7 +52,7 @@ func ExampleEdgeActionExecutionFiltersClient_BeginCreate() {
 	// 			ExecutionFilterIdentifierHeaderName: to.Ptr("header-key"),
 	// 			ExecutionFilterIdentifierHeaderValue: to.Ptr("header-value"),
 	// 			ProvisioningState: to.Ptr(armedgeactions.ProvisioningStateSucceeded),
-	// 			LastUpdateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-04-25T15:19:23Z"); return t}()),
+	// 			LastUpdateTime: to.Ptr(time.Date(2024, time.April, 25, 15, 19, 23, 0, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -113,7 +113,7 @@ func ExampleEdgeActionExecutionFiltersClient_Get() {
 	// 			ExecutionFilterIdentifierHeaderName: to.Ptr("header-key"),
 	// 			ExecutionFilterIdentifierHeaderValue: to.Ptr("header-value"),
 	// 			ProvisioningState: to.Ptr(armedgeactions.ProvisioningStateSucceeded),
-	// 			LastUpdateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-04-25T15:19:23Z"); return t}()),
+	// 			LastUpdateTime: to.Ptr(time.Date(2024, time.April, 25, 15, 19, 23, 0, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -154,7 +154,7 @@ func ExampleEdgeActionExecutionFiltersClient_NewListByEdgeActionPager() {
 		// 					ExecutionFilterIdentifierHeaderName: to.Ptr("header-key"),
 		// 					ExecutionFilterIdentifierHeaderValue: to.Ptr("header-value"),
 		// 					ProvisioningState: to.Ptr(armedgeactions.ProvisioningStateSucceeded),
-		// 					LastUpdateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-04-25T15:19:23Z"); return t}()),
+		// 					LastUpdateTime: to.Ptr(time.Date(2024, time.April, 25, 15, 19, 23, 0, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -167,7 +167,7 @@ func ExampleEdgeActionExecutionFiltersClient_NewListByEdgeActionPager() {
 		// 					ExecutionFilterIdentifierHeaderName: to.Ptr("header-key2"),
 		// 					ExecutionFilterIdentifierHeaderValue: to.Ptr("header-value2"),
 		// 					ProvisioningState: to.Ptr(armedgeactions.ProvisioningStateSucceeded),
-		// 					LastUpdateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-04-25T15:19:23Z"); return t}()),
+		// 					LastUpdateTime: to.Ptr(time.Date(2024, time.April, 25, 15, 19, 23, 0, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -213,7 +213,7 @@ func ExampleEdgeActionExecutionFiltersClient_BeginUpdate() {
 	// 			ExecutionFilterIdentifierHeaderName: to.Ptr("header-key"),
 	// 			ExecutionFilterIdentifierHeaderValue: to.Ptr("header-value2"),
 	// 			ProvisioningState: to.Ptr(armedgeactions.ProvisioningStateSucceeded),
-	// 			LastUpdateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-04-25T15:19:23Z"); return t}()),
+	// 			LastUpdateTime: to.Ptr(time.Date(2024, time.April, 25, 15, 19, 23, 0, time.UTC)),
 	// 		},
 	// 	},
 	// }

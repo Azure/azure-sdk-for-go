@@ -1,5 +1,23 @@
 # Release History
 
+## 1.1.0-beta.2 (2026-09-16)
+### Other Changes
+
+- Updated the service API version to `2026-09-01-preview`.
+
+## 1.1.0-beta.1 (2026-08-10)
+### Features Added
+
+- New enum type `CapacityOverageState` with values `CapacityOverageStateDisabled`, `CapacityOverageStateEnabled`
+- New function `*CapacitiesClient.NewListUsagesPager(location string, options *CapacitiesClientListUsagesOptions) *runtime.Pager[CapacitiesClientListUsagesResponse]`
+- New struct `CapacityOverageProperties`
+- New struct `PagedQuota`
+- New struct `Quota`
+- New struct `QuotaName`
+- New field `Overage` in struct `CapacityProperties`
+- New field `Overage` in struct `CapacityUpdateProperties`
+
+
 ## 1.0.0 (2024-10-22)
 ### Other Changes
 

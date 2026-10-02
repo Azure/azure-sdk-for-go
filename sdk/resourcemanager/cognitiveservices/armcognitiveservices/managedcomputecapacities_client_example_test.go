@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-05-15-preview/ListManagedComputeCapacities.json
+// Generated from example definition: 2026-07-15-preview/ListManagedComputeCapacities.json
 func ExampleManagedComputeCapacitiesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-02-01-preview/ServerKeyCreateOrUpdate.json
+// Generated from example definition: 2026-08-01-preview/ServerKeyCreateOrUpdate.json
 func ExampleServerKeysClient_BeginCreateOrUpdate_createsOrUpdatesAServerKey() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -48,14 +48,14 @@ func ExampleServerKeysClient_BeginCreateOrUpdate_createsOrUpdatesAServerKey() {
 	// 		Location: to.Ptr("Japan East"),
 	// 		Properties: &armsql.ServerKeyProperties{
 	// 			ServerKeyType: to.Ptr(armsql.ServerKeyTypeAzureKeyVault),
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-11-15T00:00:00Z"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2024, time.November, 15, 0, 0, 0, 0, time.UTC)),
 	// 			Thumbprint: to.Ptr("00112233445566778899AABBCCDDEEFFAABBCCDD"),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/ServerKeyCreateOrUpdateWithVersionlessKey.json
+// Generated from example definition: 2026-08-01-preview/ServerKeyCreateOrUpdateWithVersionlessKey.json
 func ExampleServerKeysClient_BeginCreateOrUpdate_createsOrUpdatesAServerKeyWithVersionlessKey() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -91,14 +91,14 @@ func ExampleServerKeysClient_BeginCreateOrUpdate_createsOrUpdatesAServerKeyWithV
 	// 		Location: to.Ptr("Japan East"),
 	// 		Properties: &armsql.ServerKeyProperties{
 	// 			ServerKeyType: to.Ptr(armsql.ServerKeyTypeAzureKeyVault),
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-11-15T00:00:00Z"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2024, time.November, 15, 0, 0, 0, 0, time.UTC)),
 	// 			Thumbprint: to.Ptr("00112233445566778899AABBCCDDEEFFAABBCCDD"),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/ServerKeyDelete.json
+// Generated from example definition: 2026-08-01-preview/ServerKeyDelete.json
 func ExampleServerKeysClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -124,7 +124,7 @@ func ExampleServerKeysClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/ServerKeyGet.json
+// Generated from example definition: 2026-08-01-preview/ServerKeyGet.json
 func ExampleServerKeysClient_Get_getTheServerKey() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -151,14 +151,14 @@ func ExampleServerKeysClient_Get_getTheServerKey() {
 	// 		Location: to.Ptr("Japan East"),
 	// 		Properties: &armsql.ServerKeyProperties{
 	// 			ServerKeyType: to.Ptr(armsql.ServerKeyTypeAzureKeyVault),
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-11-15T00:00:00Z"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2024, time.November, 15, 0, 0, 0, 0, time.UTC)),
 	// 			Thumbprint: to.Ptr("00112233445566778899AABBCCDDEEFFAABBCCDD"),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/ServerKeyGetWithVersionlessKey.json
+// Generated from example definition: 2026-08-01-preview/ServerKeyGetWithVersionlessKey.json
 func ExampleServerKeysClient_Get_getTheServerKeyWithVersionlessKey() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -185,7 +185,7 @@ func ExampleServerKeysClient_Get_getTheServerKeyWithVersionlessKey() {
 	// 		Location: to.Ptr("Japan East"),
 	// 		Properties: &armsql.ServerKeyProperties{
 	// 			ServerKeyType: to.Ptr(armsql.ServerKeyTypeAzureKeyVault),
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-11-15T00:00:00Z"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2024, time.November, 15, 0, 0, 0, 0, time.UTC)),
 	// 			KeyVersion: to.Ptr("01234567890123456789012345678901"),
 	// 			Thumbprint: to.Ptr("00112233445566778899AABBCCDDEEFFAABBCCDD"),
 	// 		},
@@ -193,7 +193,7 @@ func ExampleServerKeysClient_Get_getTheServerKeyWithVersionlessKey() {
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/ServerKeyList.json
+// Generated from example definition: 2026-08-01-preview/ServerKeyList.json
 func ExampleServerKeysClient_NewListByServerPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -226,7 +226,7 @@ func ExampleServerKeysClient_NewListByServerPager() {
 		// 				Location: to.Ptr("Japan East"),
 		// 				Properties: &armsql.ServerKeyProperties{
 		// 					ServerKeyType: to.Ptr(armsql.ServerKeyTypeAzureKeyVault),
-		// 					CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-11-15T00:00:00Z"); return t}()),
+		// 					CreationDate: to.Ptr(time.Date(2024, time.November, 15, 0, 0, 0, 0, time.UTC)),
 		// 					Thumbprint: to.Ptr("00112233445566778899AABBCCDDEEFFAABBCCDD"),
 		// 				},
 		// 			},
@@ -238,7 +238,7 @@ func ExampleServerKeysClient_NewListByServerPager() {
 		// 				Location: to.Ptr("Japan East"),
 		// 				Properties: &armsql.ServerKeyProperties{
 		// 					ServerKeyType: to.Ptr(armsql.ServerKeyTypeAzureKeyVault),
-		// 					CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-11-15T00:00:00Z"); return t}()),
+		// 					CreationDate: to.Ptr(time.Date(2024, time.November, 15, 0, 0, 0, 0, time.UTC)),
 		// 					Thumbprint: to.Ptr("AAAAAAAAAAAAAAABBBBBBBBBBBBBBBBBBBBBBBBB"),
 		// 				},
 		// 			},

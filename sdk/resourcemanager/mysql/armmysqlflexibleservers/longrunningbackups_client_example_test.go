@@ -36,7 +36,7 @@ func ExampleLongRunningBackupsClient_Get() {
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestGroup/providers/Microsoft.DBforMySQL/flexibleServers/mysqltestserver/backupsV2/daily_20210615T160516"),
 	// 		Properties: &armmysqlflexibleservers.ServerBackupPropertiesV2{
 	// 			BackupType: to.Ptr(armmysqlflexibleservers.BackupTypeFULL),
-	// 			CompletedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-15T16:05:19.902522+00:00"); return t}()),
+	// 			CompletedTime: to.Ptr(time.Date(2021, time.June, 15, 16, 5, 19, 902522000, time.UTC)),
 	// 			ProvisioningState: to.Ptr(armmysqlflexibleservers.ProvisioningState("Ready")),
 	// 			Source: to.Ptr("Automatic"),
 	// 		},
@@ -75,7 +75,7 @@ func ExampleLongRunningBackupsClient_NewListPager() {
 		// 				ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestGroup/providers/Microsoft.DBforMySQL/flexibleServers/mysqltestserver/backupsV2/daily_20210615T160516"),
 		// 				Properties: &armmysqlflexibleservers.ServerBackupPropertiesV2{
 		// 					BackupType: to.Ptr(armmysqlflexibleservers.BackupTypeFULL),
-		// 					CompletedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-15T16:05:19.902522+00:00"); return t}()),
+		// 					CompletedTime: to.Ptr(time.Date(2021, time.June, 15, 16, 5, 19, 902522000, time.UTC)),
 		// 					ProvisioningState: to.Ptr(armmysqlflexibleservers.ProvisioningState("Ready")),
 		// 					Source: to.Ptr("Automatic"),
 		// 				},

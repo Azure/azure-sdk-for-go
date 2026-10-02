@@ -7,6 +7,7 @@ import (
 	"errors"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/datalakeerror"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/exported"
@@ -166,20 +167,28 @@ type GetSystemPropertiesOptions struct {
 	AccessConditions *AccessConditions
 }
 
-func FormatGetSystemPropertiesOptions(o *GetSystemPropertiesOptions) (*generated.PathClientGetPropertiesOptions, *generated.LeaseAccessConditions, *generated.ModifiedAccessConditions) {
-	action := generated.PathGetPropertiesActionGetStatus
+func FormatGetSystemPropertiesOptions(o *GetSystemPropertiesOptions) *generated.PathClientGetPropertiesOptions {
+	opts := &generated.PathClientGetPropertiesOptions{
+		Action: to.Ptr(generated.PathGetPropertiesActionGetStatus),
+	}
 	if o == nil {
-		return &generated.PathClientGetPropertiesOptions{
-			Action: &action,
-		}, nil, nil
+		return opts
 	}
 
-	// call path formatter since we're hitting dfs in this operation
-	leaseAccessConditions, modifiedAccessConditions := exported.FormatPathAccessConditions(o.AccessConditions)
-	return &generated.PathClientGetPropertiesOptions{
-		Upn:    o.UPN,
-		Action: &action,
-	}, leaseAccessConditions, modifiedAccessConditions
+	opts.Upn = o.UPN
+	if o.AccessConditions != nil {
+		if o.AccessConditions.LeaseAccessConditions != nil {
+			opts.LeaseID = o.AccessConditions.LeaseAccessConditions.LeaseID
+		}
+		if o.AccessConditions.ModifiedAccessConditions != nil {
+			opts.IfMatch = o.AccessConditions.ModifiedAccessConditions.IfMatch
+			opts.IfModifiedSince = o.AccessConditions.ModifiedAccessConditions.IfModifiedSince
+			opts.IfNoneMatch = o.AccessConditions.ModifiedAccessConditions.IfNoneMatch
+			opts.IfUnmodifiedSince = o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince
+		}
+	}
+
+	return opts
 }
 
 // CPKInfo contains CPK related information.

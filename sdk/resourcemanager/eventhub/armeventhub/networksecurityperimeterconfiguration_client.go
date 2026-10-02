@@ -30,6 +30,9 @@ type NetworkSecurityPerimeterConfigurationClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewNetworkSecurityPerimeterConfigurationClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*NetworkSecurityPerimeterConfigurationClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -61,19 +64,14 @@ func (client *NetworkSecurityPerimeterConfigurationClient) List(ctx context.Cont
 	if err != nil {
 		return NetworkSecurityPerimeterConfigurationClientListResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return NetworkSecurityPerimeterConfigurationClientListResponse{}, err
-	}
-	resp, err := client.listHandleResponse(httpResp)
-	return resp, err
+	return client.listHandleResponse(httpResp, http.StatusOK)
 }
 
 // listCreateRequest creates the List request.
 func (client *NetworkSecurityPerimeterConfigurationClient) listCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, _ *NetworkSecurityPerimeterConfigurationClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/networkSecurityPerimeterConfigurations"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -96,8 +94,11 @@ func (client *NetworkSecurityPerimeterConfigurationClient) listCreateRequest(ctx
 }
 
 // listHandleResponse handles the List response.
-func (client *NetworkSecurityPerimeterConfigurationClient) listHandleResponse(resp *http.Response) (NetworkSecurityPerimeterConfigurationClientListResponse, error) {
+func (client *NetworkSecurityPerimeterConfigurationClient) listHandleResponse(resp *http.Response, successCodes ...int) (NetworkSecurityPerimeterConfigurationClientListResponse, error) {
 	result := NetworkSecurityPerimeterConfigurationClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NetworkSecurityPerimeterConfigurationList); err != nil {
 		return NetworkSecurityPerimeterConfigurationClientListResponse{}, err
 	}

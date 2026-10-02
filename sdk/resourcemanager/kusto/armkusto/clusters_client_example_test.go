@@ -582,10 +582,10 @@ func ExampleClustersClient_Get() {
 	// 			Tier: to.Ptr(armkusto.AzureSKUTierStandard),
 	// 		},
 	// 		SystemData: &armkusto.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-29T15:06:54.2757906Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.June, 29, 15, 6, 54, 275790600, time.UTC)),
 	// 			CreatedBy: to.Ptr("user@microsoft.com"),
 	// 			CreatedByType: to.Ptr(armkusto.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-29T15:06:54.2757906Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.June, 29, 15, 6, 54, 275790600, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user@microsoft.com"),
 	// 			LastModifiedByType: to.Ptr(armkusto.CreatedByTypeUser),
 	// 		},

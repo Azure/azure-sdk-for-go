@@ -51,6 +51,13 @@ func TransferValidationTypeComputeCRC64() TransferValidationType {
 	return exported.TransferValidationTypeComputeCRC64()
 }
 
+// TransferValidationTypeComputeStructuredMessageCRC64 is a TransferValidationType that computes
+// per-segment CRC64 checksums using the structured message binary format (XSM/1.0).
+// segmentSize specifies the maximum segment size in bytes. Values <= 0 use the default (4 MB).
+func TransferValidationTypeComputeStructuredMessageCRC64(segmentSize int) TransferValidationType {
+	return exported.TransferValidationTypeComputeStructuredMessageCRC64(segmentSize)
+}
+
 // SetExpiryType defines the values for modes of file expiration.
 type SetExpiryType = generated_blob.ExpiryOptions
 

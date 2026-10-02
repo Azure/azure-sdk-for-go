@@ -53,8 +53,7 @@ type LookingGlassClientInvokeResponse struct {
 
 // ManagementClientCheckServiceProviderAvailabilityResponse contains the response from method ManagementClient.CheckServiceProviderAvailability.
 type ManagementClientCheckServiceProviderAvailabilityResponse struct {
-	ContentType *string
-	Value       *Enum0
+	Value *Enum0
 }
 
 // OperationsClientListResponse contains the response from method OperationsClient.NewListPager.

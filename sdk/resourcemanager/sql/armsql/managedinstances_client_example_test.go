@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-02-01-preview/ManagedInstanceCreateMax.json
+// Generated from example definition: 2026-08-01-preview/ManagedInstanceCreateMax.json
 func ExampleManagedInstancesClient_BeginCreateOrUpdate_createManagedInstanceWithAllProperties() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -131,7 +131,7 @@ func ExampleManagedInstancesClient_BeginCreateOrUpdate_createManagedInstanceWith
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/ManagedInstanceCreateMin.json
+// Generated from example definition: 2026-08-01-preview/ManagedInstanceCreateMin.json
 func ExampleManagedInstancesClient_BeginCreateOrUpdate_createManagedInstanceWithMinimalProperties() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -204,7 +204,7 @@ func ExampleManagedInstancesClient_BeginCreateOrUpdate_createManagedInstanceWith
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/ManagedInstanceDelete.json
+// Generated from example definition: 2026-08-01-preview/ManagedInstanceDelete.json
 func ExampleManagedInstancesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -230,7 +230,7 @@ func ExampleManagedInstancesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/FailoverManagedInstance.json
+// Generated from example definition: 2026-08-01-preview/FailoverManagedInstance.json
 func ExampleManagedInstancesClient_BeginFailover() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -257,7 +257,7 @@ func ExampleManagedInstancesClient_BeginFailover() {
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/ManagedInstanceGet.json
+// Generated from example definition: 2026-08-01-preview/ManagedInstanceGet.json
 func ExampleManagedInstancesClient_Get_getManagedInstance() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -285,7 +285,7 @@ func ExampleManagedInstancesClient_Get_getManagedInstance() {
 	// 			AdministratorLogin: to.Ptr("dummylogin"),
 	// 			AuthenticationMetadata: to.Ptr(armsql.AuthMetadataLookupModesWindows),
 	// 			Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-	// 			CreateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-01T01:01:01.011Z"); return t}()),
+	// 			CreateTime: to.Ptr(time.Date(2022, time.November, 1, 1, 1, 1, 11000000, time.UTC)),
 	// 			CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
 	// 			DatabaseFormat: to.Ptr(armsql.ManagedInstanceDatabaseFormatSQLServer2022),
 	// 			DNSZone: to.Ptr("1b4e2caff2530"),
@@ -327,7 +327,7 @@ func ExampleManagedInstancesClient_Get_getManagedInstance() {
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/ManagedInstanceGetWhileUpdating.json
+// Generated from example definition: 2026-08-01-preview/ManagedInstanceGetWhileUpdating.json
 func ExampleManagedInstancesClient_Get_getManagedInstanceWhileResourceIsUpdating() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -355,7 +355,7 @@ func ExampleManagedInstancesClient_Get_getManagedInstanceWhileResourceIsUpdating
 	// 			AdministratorLogin: to.Ptr("dummylogin"),
 	// 			AuthenticationMetadata: to.Ptr(armsql.AuthMetadataLookupModesWindows),
 	// 			Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-	// 			CreateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-01T01:01:01.011Z"); return t}()),
+	// 			CreateTime: to.Ptr(time.Date(2022, time.November, 1, 1, 1, 1, 11000000, time.UTC)),
 	// 			DatabaseFormat: to.Ptr(armsql.ManagedInstanceDatabaseFormatSQLServer2022),
 	// 			DNSZone: to.Ptr("1b4e2caff2530"),
 	// 			ExternalGovernanceStatus: to.Ptr(armsql.ExternalGovernanceStatusEnabled),
@@ -388,7 +388,7 @@ func ExampleManagedInstancesClient_Get_getManagedInstanceWhileResourceIsUpdating
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/ManagedInstanceGetWithExpandEqualsAdministrators.json
+// Generated from example definition: 2026-08-01-preview/ManagedInstanceGetWithExpandEqualsAdministrators.json
 func ExampleManagedInstancesClient_Get_getManagedInstanceWithExpandAdministratorsActivedirectory() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -423,7 +423,7 @@ func ExampleManagedInstancesClient_Get_getManagedInstanceWithExpandAdministrator
 	// 			},
 	// 			AuthenticationMetadata: to.Ptr(armsql.AuthMetadataLookupModesWindows),
 	// 			Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-	// 			CreateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-01T01:01:01.011Z"); return t}()),
+	// 			CreateTime: to.Ptr(time.Date(2022, time.November, 1, 1, 1, 1, 11000000, time.UTC)),
 	// 			CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
 	// 			DatabaseFormat: to.Ptr(armsql.ManagedInstanceDatabaseFormatSQLServer2022),
 	// 			DNSZone: to.Ptr("1b4e2caff2530"),
@@ -459,7 +459,7 @@ func ExampleManagedInstancesClient_Get_getManagedInstanceWithExpandAdministrator
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/ManagedInstanceList.json
+// Generated from example definition: 2026-08-01-preview/ManagedInstanceList.json
 func ExampleManagedInstancesClient_NewListPager_listManagedInstances() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -493,7 +493,7 @@ func ExampleManagedInstancesClient_NewListPager_listManagedInstances() {
 		// 					AdministratorLogin: to.Ptr("dummylogin"),
 		// 					AuthenticationMetadata: to.Ptr(armsql.AuthMetadataLookupModesWindows),
 		// 					Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-		// 					CreateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-01T01:01:01.011Z"); return t}()),
+		// 					CreateTime: to.Ptr(time.Date(2022, time.November, 1, 1, 1, 1, 11000000, time.UTC)),
 		// 					CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
 		// 					DatabaseFormat: to.Ptr(armsql.ManagedInstanceDatabaseFormatSQLServer2022),
 		// 					DNSZone: to.Ptr("1b4e2caff2530"),
@@ -531,7 +531,7 @@ func ExampleManagedInstancesClient_NewListPager_listManagedInstances() {
 		// 					AdministratorLogin: to.Ptr("dummylogin"),
 		// 					AuthenticationMetadata: to.Ptr(armsql.AuthMetadataLookupModesWindows),
 		// 					Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-		// 					CreateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-01T01:01:01.011Z"); return t}()),
+		// 					CreateTime: to.Ptr(time.Date(2022, time.November, 1, 1, 1, 1, 11000000, time.UTC)),
 		// 					CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
 		// 					DatabaseFormat: to.Ptr(armsql.ManagedInstanceDatabaseFormatSQLServer2022),
 		// 					DNSZone: to.Ptr("2c3d1bdae3412"),
@@ -566,7 +566,7 @@ func ExampleManagedInstancesClient_NewListPager_listManagedInstances() {
 	}
 }
 
-// Generated from example definition: 2025-02-01-preview/ManagedInstanceListWithExpandEqualsAdministrators.json
+// Generated from example definition: 2026-08-01-preview/ManagedInstanceListWithExpandEqualsAdministrators.json
 func ExampleManagedInstancesClient_NewListPager_listManagedInstancesWithExpandAdministratorsActivedirectory() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -607,7 +607,7 @@ func ExampleManagedInstancesClient_NewListPager_listManagedInstancesWithExpandAd
 		// 					},
 		// 					AuthenticationMetadata: to.Ptr(armsql.AuthMetadataLookupModesWindows),
 		// 					Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-		// 					CreateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-01T01:01:01.011Z"); return t}()),
+		// 					CreateTime: to.Ptr(time.Date(2022, time.November, 1, 1, 1, 1, 11000000, time.UTC)),
 		// 					CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
 		// 					DatabaseFormat: to.Ptr(armsql.ManagedInstanceDatabaseFormatSQLServer2022),
 		// 					DNSZone: to.Ptr("1b4e2caff2530"),
@@ -652,7 +652,7 @@ func ExampleManagedInstancesClient_NewListPager_listManagedInstancesWithExpandAd
 		// 					},
 		// 					AuthenticationMetadata: to.Ptr(armsql.AuthMetadataLookupModesWindows),
 		// 					Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-		// 					CreateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-01T01:01:01.011Z"); return t}()),
+		// 					CreateTime: to.Ptr(time.Date(2022, time.November, 1, 1, 1, 1, 11000000, time.UTC)),
 		// 					CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
 		// 					DatabaseFormat: to.Ptr(armsql.ManagedInstanceDatabaseFormatSQLServer2022),
 		// 					DNSZone: to.Ptr("2c3d1bdae3412"),
@@ -687,7 +687,7 @@ func ExampleManagedInstancesClient_NewListPager_listManagedInstancesWithExpandAd
 	}
 }
 
-// Generated from example definition: 2025-02-01-preview/ManagedInstanceListByInstancePool.json
+// Generated from example definition: 2026-08-01-preview/ManagedInstanceListByInstancePool.json
 func ExampleManagedInstancesClient_NewListByInstancePoolPager_listManagedInstancesByInstancePool() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -721,7 +721,7 @@ func ExampleManagedInstancesClient_NewListByInstancePoolPager_listManagedInstanc
 		// 					AdministratorLogin: to.Ptr("dummylogin"),
 		// 					AuthenticationMetadata: to.Ptr(armsql.AuthMetadataLookupModesWindows),
 		// 					Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-		// 					CreateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-01T01:01:01.011Z"); return t}()),
+		// 					CreateTime: to.Ptr(time.Date(2022, time.November, 1, 1, 1, 1, 11000000, time.UTC)),
 		// 					CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
 		// 					DatabaseFormat: to.Ptr(armsql.ManagedInstanceDatabaseFormatSQLServer2022),
 		// 					DNSZone: to.Ptr("1b4e2caff2530"),
@@ -759,7 +759,7 @@ func ExampleManagedInstancesClient_NewListByInstancePoolPager_listManagedInstanc
 		// 					AdministratorLogin: to.Ptr("dummylogin"),
 		// 					AuthenticationMetadata: to.Ptr(armsql.AuthMetadataLookupModesWindows),
 		// 					Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-		// 					CreateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-01T01:01:01.011Z"); return t}()),
+		// 					CreateTime: to.Ptr(time.Date(2022, time.November, 1, 1, 1, 1, 11000000, time.UTC)),
 		// 					CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
 		// 					DatabaseFormat: to.Ptr(armsql.ManagedInstanceDatabaseFormatSQLServer2022),
 		// 					DNSZone: to.Ptr("2c3d1bdae3412"),
@@ -794,7 +794,7 @@ func ExampleManagedInstancesClient_NewListByInstancePoolPager_listManagedInstanc
 	}
 }
 
-// Generated from example definition: 2025-02-01-preview/ManagedInstanceListByInstancePoolWithExpandEqualsAdministrators.json
+// Generated from example definition: 2026-08-01-preview/ManagedInstanceListByInstancePoolWithExpandEqualsAdministrators.json
 func ExampleManagedInstancesClient_NewListByInstancePoolPager_listManagedInstancesByInstancePoolWithExpandAdministratorsActivedirectory() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -835,7 +835,7 @@ func ExampleManagedInstancesClient_NewListByInstancePoolPager_listManagedInstanc
 		// 					},
 		// 					AuthenticationMetadata: to.Ptr(armsql.AuthMetadataLookupModesWindows),
 		// 					Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-		// 					CreateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-01T01:01:01.011Z"); return t}()),
+		// 					CreateTime: to.Ptr(time.Date(2022, time.November, 1, 1, 1, 1, 11000000, time.UTC)),
 		// 					CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
 		// 					DatabaseFormat: to.Ptr(armsql.ManagedInstanceDatabaseFormatSQLServer2022),
 		// 					DNSZone: to.Ptr("1b4e2caff2530"),
@@ -880,7 +880,7 @@ func ExampleManagedInstancesClient_NewListByInstancePoolPager_listManagedInstanc
 		// 					},
 		// 					AuthenticationMetadata: to.Ptr(armsql.AuthMetadataLookupModesWindows),
 		// 					Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-		// 					CreateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-01T01:01:01.011Z"); return t}()),
+		// 					CreateTime: to.Ptr(time.Date(2022, time.November, 1, 1, 1, 1, 11000000, time.UTC)),
 		// 					CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
 		// 					DatabaseFormat: to.Ptr(armsql.ManagedInstanceDatabaseFormatSQLServer2022),
 		// 					DNSZone: to.Ptr("2c3d1bdae3412"),
@@ -915,7 +915,7 @@ func ExampleManagedInstancesClient_NewListByInstancePoolPager_listManagedInstanc
 	}
 }
 
-// Generated from example definition: 2025-02-01-preview/ManagedInstanceTopQueriesList.json
+// Generated from example definition: 2026-08-01-preview/ManagedInstanceTopQueriesList.json
 func ExampleManagedInstancesClient_NewListByManagedInstancePager_obtainListOfInstanceSTopResourceConsumingQueries() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1168,7 +1168,7 @@ func ExampleManagedInstancesClient_NewListByManagedInstancePager_obtainListOfIns
 	}
 }
 
-// Generated from example definition: 2025-02-01-preview/ManagedInstanceTopQueriesListMax.json
+// Generated from example definition: 2026-08-01-preview/ManagedInstanceTopQueriesListMax.json
 func ExampleManagedInstancesClient_NewListByManagedInstancePager_obtainListOfInstanceSTopResourceConsumingQueriesFullBlownRequestAndResponse() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1424,7 +1424,7 @@ func ExampleManagedInstancesClient_NewListByManagedInstancePager_obtainListOfIns
 	}
 }
 
-// Generated from example definition: 2025-02-01-preview/ManagedInstanceTopQueriesListMin.json
+// Generated from example definition: 2026-08-01-preview/ManagedInstanceTopQueriesListMin.json
 func ExampleManagedInstancesClient_NewListByManagedInstancePager_obtainListOfInstanceSTopResourceConsumingQueriesMinimalRequestAndResponse() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1465,7 +1465,7 @@ func ExampleManagedInstancesClient_NewListByManagedInstancePager_obtainListOfIns
 	}
 }
 
-// Generated from example definition: 2025-02-01-preview/ManagedInstanceListByResourceGroup.json
+// Generated from example definition: 2026-08-01-preview/ManagedInstanceListByResourceGroup.json
 func ExampleManagedInstancesClient_NewListByResourceGroupPager_listManagedInstancesByResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1499,7 +1499,7 @@ func ExampleManagedInstancesClient_NewListByResourceGroupPager_listManagedInstan
 		// 					AdministratorLogin: to.Ptr("dummylogin"),
 		// 					AuthenticationMetadata: to.Ptr(armsql.AuthMetadataLookupModesWindows),
 		// 					Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-		// 					CreateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-01T01:01:01.011Z"); return t}()),
+		// 					CreateTime: to.Ptr(time.Date(2022, time.November, 1, 1, 1, 1, 11000000, time.UTC)),
 		// 					CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
 		// 					DatabaseFormat: to.Ptr(armsql.ManagedInstanceDatabaseFormatSQLServer2022),
 		// 					DNSZone: to.Ptr("1b4e2caff2530"),
@@ -1537,7 +1537,7 @@ func ExampleManagedInstancesClient_NewListByResourceGroupPager_listManagedInstan
 		// 					AdministratorLogin: to.Ptr("dummylogin"),
 		// 					AuthenticationMetadata: to.Ptr(armsql.AuthMetadataLookupModesWindows),
 		// 					Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-		// 					CreateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-01T01:01:01.011Z"); return t}()),
+		// 					CreateTime: to.Ptr(time.Date(2022, time.November, 1, 1, 1, 1, 11000000, time.UTC)),
 		// 					CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
 		// 					DatabaseFormat: to.Ptr(armsql.ManagedInstanceDatabaseFormatSQLServer2022),
 		// 					DNSZone: to.Ptr("2c3d1bdae3412"),
@@ -1572,7 +1572,7 @@ func ExampleManagedInstancesClient_NewListByResourceGroupPager_listManagedInstan
 	}
 }
 
-// Generated from example definition: 2025-02-01-preview/ManagedInstanceListByResourceGroupWithExpandEqualsAdministrators.json
+// Generated from example definition: 2026-08-01-preview/ManagedInstanceListByResourceGroupWithExpandEqualsAdministrators.json
 func ExampleManagedInstancesClient_NewListByResourceGroupPager_listManagedInstancesByResourceGroupWithExpandAdministratorsActivedirectory() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1613,7 +1613,7 @@ func ExampleManagedInstancesClient_NewListByResourceGroupPager_listManagedInstan
 		// 					},
 		// 					AuthenticationMetadata: to.Ptr(armsql.AuthMetadataLookupModesWindows),
 		// 					Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-		// 					CreateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-01T01:01:01.011Z"); return t}()),
+		// 					CreateTime: to.Ptr(time.Date(2022, time.November, 1, 1, 1, 1, 11000000, time.UTC)),
 		// 					CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
 		// 					DatabaseFormat: to.Ptr(armsql.ManagedInstanceDatabaseFormatSQLServer2022),
 		// 					DNSZone: to.Ptr("1b4e2caff2530"),
@@ -1658,7 +1658,7 @@ func ExampleManagedInstancesClient_NewListByResourceGroupPager_listManagedInstan
 		// 					},
 		// 					AuthenticationMetadata: to.Ptr(armsql.AuthMetadataLookupModesWindows),
 		// 					Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-		// 					CreateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-01T01:01:01.011Z"); return t}()),
+		// 					CreateTime: to.Ptr(time.Date(2022, time.November, 1, 1, 1, 1, 11000000, time.UTC)),
 		// 					CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
 		// 					DatabaseFormat: to.Ptr(armsql.ManagedInstanceDatabaseFormatSQLServer2022),
 		// 					DNSZone: to.Ptr("2c3d1bdae3412"),
@@ -1693,7 +1693,7 @@ func ExampleManagedInstancesClient_NewListByResourceGroupPager_listManagedInstan
 	}
 }
 
-// Generated from example definition: 2025-02-01-preview/ListOutboundNetworkDependenciesByManagedInstance.json
+// Generated from example definition: 2026-08-01-preview/ListOutboundNetworkDependenciesByManagedInstance.json
 func ExampleManagedInstancesClient_NewListOutboundNetworkDependenciesByManagedInstancePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1837,7 +1837,7 @@ func ExampleManagedInstancesClient_NewListOutboundNetworkDependenciesByManagedIn
 	}
 }
 
-// Generated from example definition: 2025-02-01-preview/ManagedInstanceReevaluateInaccessibleDatabaseState.json
+// Generated from example definition: 2026-08-01-preview/ManagedInstanceReevaluateInaccessibleDatabaseState.json
 func ExampleManagedInstancesClient_BeginReevaluateInaccessibleDatabaseState() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1863,7 +1863,7 @@ func ExampleManagedInstancesClient_BeginReevaluateInaccessibleDatabaseState() {
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/ManagedInstanceRefreshExternalGovernanceStatus.json
+// Generated from example definition: 2026-08-01-preview/ManagedInstanceRefreshExternalGovernanceStatus.json
 func ExampleManagedInstancesClient_BeginRefreshStatus() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1901,7 +1901,7 @@ func ExampleManagedInstancesClient_BeginRefreshStatus() {
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/StartManagedInstance.json
+// Generated from example definition: 2026-08-01-preview/StartManagedInstance.json
 func ExampleManagedInstancesClient_BeginStart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1972,7 +1972,7 @@ func ExampleManagedInstancesClient_BeginStart() {
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/StopManagedInstance.json
+// Generated from example definition: 2026-08-01-preview/StopManagedInstance.json
 func ExampleManagedInstancesClient_BeginStop() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2043,7 +2043,7 @@ func ExampleManagedInstancesClient_BeginStop() {
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/ManagedInstanceRemoveMaintenanceConfiguration.json
+// Generated from example definition: 2026-08-01-preview/ManagedInstanceRemoveMaintenanceConfiguration.json
 func ExampleManagedInstancesClient_BeginUpdate_removeMaintenancePolicyFromManagedInstanceSelectDefaultMaintenancePolicy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2105,7 +2105,7 @@ func ExampleManagedInstancesClient_BeginUpdate_removeMaintenancePolicyFromManage
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/ManagedInstanceUpdateMax.json
+// Generated from example definition: 2026-08-01-preview/ManagedInstanceUpdateMax.json
 func ExampleManagedInstancesClient_BeginUpdate_updateManagedInstanceWithAllProperties() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2195,7 +2195,7 @@ func ExampleManagedInstancesClient_BeginUpdate_updateManagedInstanceWithAllPrope
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/ManagedInstanceUpdateMin.json
+// Generated from example definition: 2026-08-01-preview/ManagedInstanceUpdateMin.json
 func ExampleManagedInstancesClient_BeginUpdate_updateManagedInstanceWithMinimalProperties() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2262,7 +2262,7 @@ func ExampleManagedInstancesClient_BeginUpdate_updateManagedInstanceWithMinimalP
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/ManagedInstancValidateAzureKeyVaultEncryptionKey.json
+// Generated from example definition: 2026-08-01-preview/ManagedInstancValidateAzureKeyVaultEncryptionKey.json
 func ExampleManagedInstancesClient_BeginValidateAzureKeyVaultEncryptionKey() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -87,7 +87,7 @@ func (a *AvailableVersionsServerTransport) dispatchNewListByLocationPager(req *h
 	}
 	newListByLocationPager := a.newListByLocationPager.get(req)
 	if newListByLocationPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AppLink/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/availableVersions`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AppLink/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/availableVersions`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {

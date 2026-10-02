@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-04-01-preview/GoalAssignments_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-31-preview/GoalAssignments_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleGoalAssignmentsClient_BeginCreateOrUpdate_goalAssignmentsCreateOrUpdateMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -49,7 +49,7 @@ func ExampleGoalAssignmentsClient_BeginCreateOrUpdate_goalAssignmentsCreateOrUpd
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/GoalAssignments_CreateOrUpdate_MinimumSet_Gen.json
+// Generated from example definition: 2026-08-31-preview/GoalAssignments_CreateOrUpdate_MinimumSet_Gen.json
 func ExampleGoalAssignmentsClient_BeginCreateOrUpdate_goalAssignmentsCreateOrUpdateMinimumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -80,7 +80,7 @@ func ExampleGoalAssignmentsClient_BeginCreateOrUpdate_goalAssignmentsCreateOrUpd
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/GoalAssignments_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-31-preview/GoalAssignments_Delete_MaximumSet_Gen.json
 func ExampleGoalAssignmentsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -101,7 +101,7 @@ func ExampleGoalAssignmentsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/GoalAssignments_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-31-preview/GoalAssignments_Get_MaximumSet_Gen.json
 func ExampleGoalAssignmentsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -138,16 +138,16 @@ func ExampleGoalAssignmentsClient_Get() {
 	// 		SystemData: &armresiliencemanagement.SystemData{
 	// 			CreatedBy: to.Ptr("dvnfxbuyqhvivfjddjccdtlwajfht"),
 	// 			CreatedByType: to.Ptr(armresiliencemanagement.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-02-06T15:03:42.796Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2025, time.February, 6, 15, 3, 42, 796000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("lndhhaimomorael"),
 	// 			LastModifiedByType: to.Ptr(armresiliencemanagement.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-02-06T15:03:42.797Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.February, 6, 15, 3, 42, 797000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/GoalAssignments_List_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-31-preview/GoalAssignments_List_MaximumSet_Gen.json
 func ExampleGoalAssignmentsClient_NewListPager_goalAssignmentsListMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -192,10 +192,10 @@ func ExampleGoalAssignmentsClient_NewListPager_goalAssignmentsListMaximumSet() {
 		// 				SystemData: &armresiliencemanagement.SystemData{
 		// 					CreatedBy: to.Ptr("dvnfxbuyqhvivfjddjccdtlwajfht"),
 		// 					CreatedByType: to.Ptr(armresiliencemanagement.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-02-06T15:03:42.796Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2025, time.February, 6, 15, 3, 42, 796000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("lndhhaimomorael"),
 		// 					LastModifiedByType: to.Ptr(armresiliencemanagement.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-02-06T15:03:42.797Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2025, time.February, 6, 15, 3, 42, 797000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -205,7 +205,7 @@ func ExampleGoalAssignmentsClient_NewListPager_goalAssignmentsListMaximumSet() {
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/GoalAssignments_List_MinimumSet_Gen.json
+// Generated from example definition: 2026-08-31-preview/GoalAssignments_List_MinimumSet_Gen.json
 func ExampleGoalAssignmentsClient_NewListPager_goalAssignmentsListMinimumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -242,10 +242,10 @@ func ExampleGoalAssignmentsClient_NewListPager_goalAssignmentsListMinimumSet() {
 		// 				SystemData: &armresiliencemanagement.SystemData{
 		// 					CreatedBy: to.Ptr("admin@contoso.com"),
 		// 					CreatedByType: to.Ptr(armresiliencemanagement.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-02-06T15:03:42.796Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2025, time.February, 6, 15, 3, 42, 796000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("admin@contoso.com"),
 		// 					LastModifiedByType: to.Ptr(armresiliencemanagement.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-02-06T15:03:42.797Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2025, time.February, 6, 15, 3, 42, 797000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -254,7 +254,7 @@ func ExampleGoalAssignmentsClient_NewListPager_goalAssignmentsListMinimumSet() {
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/GoalAssignments_RecommendCapacity_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-31-preview/GoalAssignments_RecommendCapacity_MaximumSet_Gen.json
 func ExampleGoalAssignmentsClient_BeginRecommendCapacity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -285,7 +285,7 @@ func ExampleGoalAssignmentsClient_BeginRecommendCapacity() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/GoalAssignments_RefreshGoalResources_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-31-preview/GoalAssignments_RefreshGoalResources_MaximumSet_Gen.json
 func ExampleGoalAssignmentsClient_BeginRefreshGoalResources() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -311,7 +311,7 @@ func ExampleGoalAssignmentsClient_BeginRefreshGoalResources() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/GoalAssignments_Update_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-31-preview/GoalAssignments_Update_MaximumSet_Gen.json
 func ExampleGoalAssignmentsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -348,7 +348,7 @@ func ExampleGoalAssignmentsClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/GoalAssignments_UpdateGoalResources_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-31-preview/GoalAssignments_UpdateGoalResources_MaximumSet_Gen.json
 func ExampleGoalAssignmentsClient_BeginUpdateGoalResources() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

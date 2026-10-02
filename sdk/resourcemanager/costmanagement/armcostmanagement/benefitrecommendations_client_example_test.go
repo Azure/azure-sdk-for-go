@@ -75,8 +75,8 @@ func ExampleBenefitRecommendationsClient_NewListPager() {
 		// 					CommitmentGranularity: to.Ptr(armcostmanagement.GrainHourly),
 		// 					CostWithoutBenefit: to.Ptr[float64](218.267),
 		// 					CurrencyCode: to.Ptr("USD"),
-		// 					FirstConsumptionDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-10-18T00:00:00Z"); return t}()),
-		// 					LastConsumptionDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-10-25T00:00:00Z"); return t}()),
+		// 					FirstConsumptionDate: to.Ptr(time.Date(2022, time.October, 18, 0, 0, 0, 0, time.UTC)),
+		// 					LastConsumptionDate: to.Ptr(time.Date(2022, time.October, 25, 0, 0, 0, 0, time.UTC)),
 		// 					LookBackPeriod: to.Ptr(armcostmanagement.LookBackPeriodLast7Days),
 		// 					RecommendationDetails: &armcostmanagement.AllSavingsBenefitDetails{
 		// 						AverageUtilizationPercentage: to.Ptr[float64](99.33),

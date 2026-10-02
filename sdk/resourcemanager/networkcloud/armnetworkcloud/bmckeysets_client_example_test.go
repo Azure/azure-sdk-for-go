@@ -8,12 +8,12 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/networkcloud/armnetworkcloud"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/networkcloud/armnetworkcloud/v2"
 	"log"
 	"time"
 )
 
-// Generated from example definition: 2026-05-01-preview/BmcKeySets_Create.json
+// Generated from example definition: 2026-07-01/BmcKeySets_Create.json
 func ExampleBmcKeySetsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -32,7 +32,7 @@ func ExampleBmcKeySetsClient_BeginCreateOrUpdate() {
 		Location: to.Ptr("location"),
 		Properties: &armnetworkcloud.BmcKeySetProperties{
 			AzureGroupID:   to.Ptr("f110271b-XXXX-4163-9b99-214d91660f0e"),
-			Expiration:     to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-12-31T23:59:59.008Z"); return t }()),
+			Expiration:     to.Ptr(time.Date(2022, time.December, 31, 23, 59, 59, 8000000, time.UTC)),
 			PrivilegeLevel: to.Ptr(armnetworkcloud.BmcKeySetPrivilegeLevelAdministrator),
 			UserList: []*armnetworkcloud.KeySetUser{
 				{
@@ -81,8 +81,8 @@ func ExampleBmcKeySetsClient_BeginCreateOrUpdate() {
 	// 			AzureGroupID: to.Ptr("f110271b-XXXX-4163-9b99-214d91660f0e"),
 	// 			DetailedStatus: to.Ptr(armnetworkcloud.BmcKeySetDetailedStatusSomeInvalid),
 	// 			DetailedStatusMessage: to.Ptr("Invalid Azure user(s) were provided: userXYZ"),
-	// 			Expiration: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-12-31T23:59:59.008Z"); return t}()),
-	// 			LastValidation: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-12-12T12:00:00.008Z"); return t}()),
+	// 			Expiration: to.Ptr(time.Date(2022, time.December, 31, 23, 59, 59, 8000000, time.UTC)),
+	// 			LastValidation: to.Ptr(time.Date(2022, time.December, 12, 12, 0, 0, 8000000, time.UTC)),
 	// 			PrivilegeLevel: to.Ptr(armnetworkcloud.BmcKeySetPrivilegeLevelAdministrator),
 	// 			ProvisioningState: to.Ptr(armnetworkcloud.BmcKeySetProvisioningStateSucceeded),
 	// 			UserList: []*armnetworkcloud.KeySetUser{
@@ -117,10 +117,10 @@ func ExampleBmcKeySetsClient_BeginCreateOrUpdate() {
 	// 			},
 	// 		},
 	// 		SystemData: &armnetworkcloud.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-22T13:27:03.008Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.January, 22, 13, 27, 3, 8000000, time.UTC)),
 	// 			CreatedBy: to.Ptr("identityA"),
 	// 			CreatedByType: to.Ptr(armnetworkcloud.CreatedByTypeApplication),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-22T13:29:03.001Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.January, 22, 13, 29, 3, 1000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("identityB"),
 	// 			LastModifiedByType: to.Ptr(armnetworkcloud.CreatedByTypeUser),
 	// 		},
@@ -133,7 +133,7 @@ func ExampleBmcKeySetsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/BmcKeySets_Delete.json
+// Generated from example definition: 2026-07-01/BmcKeySets_Delete.json
 func ExampleBmcKeySetsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -154,7 +154,7 @@ func ExampleBmcKeySetsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/BmcKeySets_Get.json
+// Generated from example definition: 2026-07-01/BmcKeySets_Get.json
 func ExampleBmcKeySetsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -185,8 +185,8 @@ func ExampleBmcKeySetsClient_Get() {
 	// 			AzureGroupID: to.Ptr("f110271b-XXXX-4163-9b99-214d91660f0e"),
 	// 			DetailedStatus: to.Ptr(armnetworkcloud.BmcKeySetDetailedStatusSomeInvalid),
 	// 			DetailedStatusMessage: to.Ptr("Invalid Azure user(s) were provided: userXYZ"),
-	// 			Expiration: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-12-31T23:59:59.008Z"); return t}()),
-	// 			LastValidation: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-12-12T12:00:00.008Z"); return t}()),
+	// 			Expiration: to.Ptr(time.Date(2022, time.December, 31, 23, 59, 59, 8000000, time.UTC)),
+	// 			LastValidation: to.Ptr(time.Date(2022, time.December, 12, 12, 0, 0, 8000000, time.UTC)),
 	// 			PrivilegeLevel: to.Ptr(armnetworkcloud.BmcKeySetPrivilegeLevelAdministrator),
 	// 			ProvisioningState: to.Ptr(armnetworkcloud.BmcKeySetProvisioningStateSucceeded),
 	// 			UserList: []*armnetworkcloud.KeySetUser{
@@ -221,10 +221,10 @@ func ExampleBmcKeySetsClient_Get() {
 	// 			},
 	// 		},
 	// 		SystemData: &armnetworkcloud.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-22T13:27:03.008Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.January, 22, 13, 27, 3, 8000000, time.UTC)),
 	// 			CreatedBy: to.Ptr("identityA"),
 	// 			CreatedByType: to.Ptr(armnetworkcloud.CreatedByTypeApplication),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-22T13:29:03.001Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.January, 22, 13, 29, 3, 1000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("identityB"),
 	// 			LastModifiedByType: to.Ptr(armnetworkcloud.CreatedByTypeUser),
 	// 		},
@@ -237,7 +237,7 @@ func ExampleBmcKeySetsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/BmcKeySets_ListByCluster.json
+// Generated from example definition: 2026-07-01/BmcKeySets_ListByCluster.json
 func ExampleBmcKeySetsClient_NewListByClusterPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -275,8 +275,8 @@ func ExampleBmcKeySetsClient_NewListByClusterPager() {
 		// 					AzureGroupID: to.Ptr("f110271b-XXXX-4163-9b99-214d91660f0e"),
 		// 					DetailedStatus: to.Ptr(armnetworkcloud.BmcKeySetDetailedStatusSomeInvalid),
 		// 					DetailedStatusMessage: to.Ptr("Invalid Azure user(s) were provided: userXYZ"),
-		// 					Expiration: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-12-31T23:59:59.008Z"); return t}()),
-		// 					LastValidation: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-12-12T12:00:00.008Z"); return t}()),
+		// 					Expiration: to.Ptr(time.Date(2022, time.December, 31, 23, 59, 59, 8000000, time.UTC)),
+		// 					LastValidation: to.Ptr(time.Date(2022, time.December, 12, 12, 0, 0, 8000000, time.UTC)),
 		// 					PrivilegeLevel: to.Ptr(armnetworkcloud.BmcKeySetPrivilegeLevelAdministrator),
 		// 					ProvisioningState: to.Ptr(armnetworkcloud.BmcKeySetProvisioningStateSucceeded),
 		// 					UserList: []*armnetworkcloud.KeySetUser{
@@ -311,10 +311,10 @@ func ExampleBmcKeySetsClient_NewListByClusterPager() {
 		// 					},
 		// 				},
 		// 				SystemData: &armnetworkcloud.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-22T13:27:03.008Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2021, time.January, 22, 13, 27, 3, 8000000, time.UTC)),
 		// 					CreatedBy: to.Ptr("identityA"),
 		// 					CreatedByType: to.Ptr(armnetworkcloud.CreatedByTypeApplication),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-22T13:29:03.001Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2021, time.January, 22, 13, 29, 3, 1000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("identityB"),
 		// 					LastModifiedByType: to.Ptr(armnetworkcloud.CreatedByTypeUser),
 		// 				},
@@ -330,7 +330,7 @@ func ExampleBmcKeySetsClient_NewListByClusterPager() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/BmcKeySets_Patch.json
+// Generated from example definition: 2026-07-01/BmcKeySets_Patch.json
 func ExampleBmcKeySetsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -343,7 +343,7 @@ func ExampleBmcKeySetsClient_BeginUpdate() {
 	}
 	poller, err := clientFactory.NewBmcKeySetsClient().BeginUpdate(ctx, "resourceGroupName", "clusterName", "bmcKeySetName", armnetworkcloud.BmcKeySetPatchParameters{
 		Properties: &armnetworkcloud.BmcKeySetPatchProperties{
-			Expiration: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-12-31T23:59:59.008Z"); return t }()),
+			Expiration: to.Ptr(time.Date(2022, time.December, 31, 23, 59, 59, 8000000, time.UTC)),
 			UserList: []*armnetworkcloud.KeySetUser{
 				{
 					AzureUserName: to.Ptr("userABC"),
@@ -391,8 +391,8 @@ func ExampleBmcKeySetsClient_BeginUpdate() {
 	// 			AzureGroupID: to.Ptr("f110271b-XXXX-4163-9b99-214d91660f0e"),
 	// 			DetailedStatus: to.Ptr(armnetworkcloud.BmcKeySetDetailedStatusSomeInvalid),
 	// 			DetailedStatusMessage: to.Ptr("Invalid Azure user(s) were provided: userXYZ"),
-	// 			Expiration: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-12-31T23:59:59.008Z"); return t}()),
-	// 			LastValidation: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-12-12T12:00:00.008Z"); return t}()),
+	// 			Expiration: to.Ptr(time.Date(2022, time.December, 31, 23, 59, 59, 8000000, time.UTC)),
+	// 			LastValidation: to.Ptr(time.Date(2022, time.December, 12, 12, 0, 0, 8000000, time.UTC)),
 	// 			PrivilegeLevel: to.Ptr(armnetworkcloud.BmcKeySetPrivilegeLevelAdministrator),
 	// 			ProvisioningState: to.Ptr(armnetworkcloud.BmcKeySetProvisioningStateSucceeded),
 	// 			UserList: []*armnetworkcloud.KeySetUser{
@@ -427,10 +427,10 @@ func ExampleBmcKeySetsClient_BeginUpdate() {
 	// 			},
 	// 		},
 	// 		SystemData: &armnetworkcloud.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-22T13:27:03.008Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.January, 22, 13, 27, 3, 8000000, time.UTC)),
 	// 			CreatedBy: to.Ptr("identityA"),
 	// 			CreatedByType: to.Ptr(armnetworkcloud.CreatedByTypeApplication),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-22T13:29:03.001Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.January, 22, 13, 29, 3, 1000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("identityB"),
 	// 			LastModifiedByType: to.Ptr(armnetworkcloud.CreatedByTypeUser),
 	// 		},

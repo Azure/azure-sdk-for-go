@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-07-01-preview/entityQueries/CreateEntityQueryActivity.json
+// Generated from example definition: 2025-10-01-preview/entityQueries/CreateEntityQueryActivity.json
 func ExampleEntityQueriesClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -74,7 +74,7 @@ func ExampleEntityQueriesClient_CreateOrUpdate() {
 	// 		Properties: &armsecurityinsights.ActivityEntityQueriesProperties{
 	// 			Description: to.Ptr("Account deleted on host"),
 	// 			Content: to.Ptr("On '{{Computer}}' the account '{{TargetAccount}}' was deleted by '{{AddedBy}}'"),
-	// 			CreatedTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-01-01T13:15:30Z"); return t}()),
+	// 			CreatedTimeUTC: to.Ptr(time.Date(2019, time.January, 1, 13, 15, 30, 0, time.UTC)),
 	// 			Enabled: to.Ptr(true),
 	// 			EntitiesFilter: map[string][]*string{
 	// 				"Host_OsFamily": []*string{
@@ -82,7 +82,7 @@ func ExampleEntityQueriesClient_CreateOrUpdate() {
 	// 				},
 	// 			},
 	// 			InputEntityType: to.Ptr(armsecurityinsights.EntityTypeHost),
-	// 			LastModifiedTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-01-01T13:15:30Z"); return t}()),
+	// 			LastModifiedTimeUTC: to.Ptr(time.Date(2019, time.January, 1, 13, 15, 30, 0, time.UTC)),
 	// 			QueryDefinitions: &armsecurityinsights.ActivityEntityQueriesPropertiesQueryDefinitions{
 	// 				Query: to.Ptr("let GetAccountActions = (v_Host_Name:string, v_Host_NTDomain:string, v_Host_DnsDomain:string, v_Host_AzureID:string, v_Host_OMSAgentID:string){\nSecurityEvent\n| where EventID in (4725, 4726, 4767, 4720, 4722, 4723, 4724)\n// parsing for Host to handle variety of conventions coming from data\n| extend Host_HostName = case(\nComputer has '@', tostring(split(Computer, '@')[0]),\nComputer has '\\\\', tostring(split(Computer, '\\\\')[1]),\nComputer has '.', tostring(split(Computer, '.')[0]),\nComputer\n)\n| extend Host_NTDomain = case(\nComputer has '\\\\', tostring(split(Computer, '\\\\')[0]), \nComputer has '.', tostring(split(Computer, '.')[-2]), \nComputer\n)\n| extend Host_DnsDomain = case(\nComputer has '\\\\', tostring(split(Computer, '\\\\')[0]), \nComputer has '.', strcat_array(array_slice(split(Computer,'.'),-2,-1),'.'), \nComputer\n)\n| where (Host_HostName =~ v_Host_Name and Host_NTDomain =~ v_Host_NTDomain) \nor (Host_HostName =~ v_Host_Name and Host_DnsDomain =~ v_Host_DnsDomain) \nor v_Host_AzureID =~ _ResourceId \nor v_Host_OMSAgentID == SourceComputerId\n| project TimeGenerated, EventID, Activity, Computer, TargetAccount, TargetUserName, TargetDomainName, TargetSid, SubjectUserName, SubjectUserSid, _ResourceId, SourceComputerId\n| extend AddedBy = SubjectUserName\n// Future support for Activities\n| extend timestamp = TimeGenerated, HostCustomEntity = Computer, AccountCustomEntity = TargetAccount\n};\nGetAccountActions('{{Host_HostName}}', '{{Host_NTDomain}}', '{{Host_DnsDomain}}', '{{Host_AzureID}}', '{{Host_OMSAgentID}}')\n \n| where EventID == 4726 "),
 	// 			},
@@ -108,7 +108,7 @@ func ExampleEntityQueriesClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/entityQueries/DeleteEntityQuery.json
+// Generated from example definition: 2025-10-01-preview/entityQueries/DeleteEntityQuery.json
 func ExampleEntityQueriesClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -130,7 +130,7 @@ func ExampleEntityQueriesClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/entityQueries/GetActivityEntityQueryById.json
+// Generated from example definition: 2025-10-01-preview/entityQueries/GetActivityEntityQueryById.json
 func ExampleEntityQueriesClient_Get_getAnActivityEntityQuery() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -157,7 +157,7 @@ func ExampleEntityQueriesClient_Get_getAnActivityEntityQuery() {
 	// 		Properties: &armsecurityinsights.ActivityEntityQueriesProperties{
 	// 			Description: to.Ptr("Account deleted on host"),
 	// 			Content: to.Ptr("On '{{Computer}}' the account '{{TargetAccount}}' was deleted by '{{AddedBy}}'"),
-	// 			CreatedTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-01-01T13:15:30Z"); return t}()),
+	// 			CreatedTimeUTC: to.Ptr(time.Date(2019, time.January, 1, 13, 15, 30, 0, time.UTC)),
 	// 			Enabled: to.Ptr(true),
 	// 			EntitiesFilter: map[string][]*string{
 	// 				"Host_OsFamily": []*string{
@@ -165,7 +165,7 @@ func ExampleEntityQueriesClient_Get_getAnActivityEntityQuery() {
 	// 				},
 	// 			},
 	// 			InputEntityType: to.Ptr(armsecurityinsights.EntityTypeHost),
-	// 			LastModifiedTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-01-01T13:15:30Z"); return t}()),
+	// 			LastModifiedTimeUTC: to.Ptr(time.Date(2019, time.January, 1, 13, 15, 30, 0, time.UTC)),
 	// 			QueryDefinitions: &armsecurityinsights.ActivityEntityQueriesPropertiesQueryDefinitions{
 	// 				Query: to.Ptr("let GetAccountActions = (v_Host_Name:string, v_Host_NTDomain:string, v_Host_DnsDomain:string, v_Host_AzureID:string, v_Host_OMSAgentID:string){\nSecurityEvent\n| where EventID in (4725, 4726, 4767, 4720, 4722, 4723, 4724)\n// parsing for Host to handle variety of conventions coming from data\n| extend Host_HostName = case(\nComputer has '@', tostring(split(Computer, '@')[0]),\nComputer has '\\\\', tostring(split(Computer, '\\\\')[1]),\nComputer has '.', tostring(split(Computer, '.')[0]),\nComputer\n)\n| extend Host_NTDomain = case(\nComputer has '\\\\', tostring(split(Computer, '\\\\')[0]), \nComputer has '.', tostring(split(Computer, '.')[-2]), \nComputer\n)\n| extend Host_DnsDomain = case(\nComputer has '\\\\', tostring(split(Computer, '\\\\')[0]), \nComputer has '.', strcat_array(array_slice(split(Computer,'.'),-2,-1),'.'), \nComputer\n)\n| where (Host_HostName =~ v_Host_Name and Host_NTDomain =~ v_Host_NTDomain) \nor (Host_HostName =~ v_Host_Name and Host_DnsDomain =~ v_Host_DnsDomain) \nor v_Host_AzureID =~ _ResourceId \nor v_Host_OMSAgentID == SourceComputerId\n| project TimeGenerated, EventID, Activity, Computer, TargetAccount, TargetUserName, TargetDomainName, TargetSid, SubjectUserName, SubjectUserSid, _ResourceId, SourceComputerId\n| extend AddedBy = SubjectUserName\n// Future support for Activities\n| extend timestamp = TimeGenerated, HostCustomEntity = Computer, AccountCustomEntity = TargetAccount\n};\nGetAccountActions('{{Host_HostName}}', '{{Host_NTDomain}}', '{{Host_DnsDomain}}', '{{Host_AzureID}}', '{{Host_OMSAgentID}}')\n \n| where EventID == 4726 "),
 	// 			},
@@ -191,7 +191,7 @@ func ExampleEntityQueriesClient_Get_getAnActivityEntityQuery() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/entityQueries/GetExpansionEntityQueryById.json
+// Generated from example definition: 2025-10-01-preview/entityQueries/GetExpansionEntityQueryById.json
 func ExampleEntityQueriesClient_Get_getAnExpansionEntityQuery() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -233,7 +233,7 @@ func ExampleEntityQueriesClient_Get_getAnExpansionEntityQuery() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/entityQueries/GetEntityQueries.json
+// Generated from example definition: 2025-10-01-preview/entityQueries/GetEntityQueries.json
 func ExampleEntityQueriesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

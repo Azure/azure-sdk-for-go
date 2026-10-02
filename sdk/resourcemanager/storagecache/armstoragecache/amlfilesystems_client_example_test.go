@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01/amlFilesystems_Archive.json
+// Generated from example definition: 2026-08-01/amlFilesystems_Archive.json
 func ExampleAmlFilesystemsClient_Archive() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -37,7 +37,7 @@ func ExampleAmlFilesystemsClient_Archive() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/amlFilesystems_CancelArchive.json
+// Generated from example definition: 2026-08-01/amlFilesystems_CancelArchive.json
 func ExampleAmlFilesystemsClient_CancelArchive() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -59,7 +59,7 @@ func ExampleAmlFilesystemsClient_CancelArchive() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/amlFilesystems_CreateOrUpdate.json
+// Generated from example definition: 2026-08-01/amlFilesystems_CreateOrUpdate.json
 func ExampleAmlFilesystemsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -163,8 +163,8 @@ func ExampleAmlFilesystemsClient_BeginCreateOrUpdate() {
 	// 					{
 	// 						FilesystemPath: to.Ptr("/"),
 	// 						Status: &armstoragecache.AmlFilesystemArchiveStatus{
-	// 							LastCompletionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-21T18:25:43.511Z"); return t}()),
-	// 							LastStartedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-21T17:25:43.511Z"); return t}()),
+	// 							LastCompletionTime: to.Ptr(time.Date(2019, time.April, 21, 18, 25, 43, 511000000, time.UTC)),
+	// 							LastStartedTime: to.Ptr(time.Date(2019, time.April, 21, 17, 25, 43, 511000000, time.UTC)),
 	// 							State: to.Ptr(armstoragecache.ArchiveStatusTypeCompleted),
 	// 						},
 	// 					},
@@ -205,7 +205,7 @@ func ExampleAmlFilesystemsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/amlFilesystems_Delete.json
+// Generated from example definition: 2026-08-01/amlFilesystems_Delete.json
 func ExampleAmlFilesystemsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -231,7 +231,7 @@ func ExampleAmlFilesystemsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/amlFilesystems_Get.json
+// Generated from example definition: 2026-08-01/amlFilesystems_Get.json
 func ExampleAmlFilesystemsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -293,8 +293,8 @@ func ExampleAmlFilesystemsClient_Get() {
 	// 					{
 	// 						FilesystemPath: to.Ptr("/"),
 	// 						Status: &armstoragecache.AmlFilesystemArchiveStatus{
-	// 							LastCompletionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-21T18:25:43.511Z"); return t}()),
-	// 							LastStartedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-21T17:25:43.511Z"); return t}()),
+	// 							LastCompletionTime: to.Ptr(time.Date(2019, time.April, 21, 18, 25, 43, 511000000, time.UTC)),
+	// 							LastStartedTime: to.Ptr(time.Date(2019, time.April, 21, 17, 25, 43, 511000000, time.UTC)),
 	// 							State: to.Ptr(armstoragecache.ArchiveStatusTypeCompleted),
 	// 						},
 	// 					},
@@ -335,7 +335,7 @@ func ExampleAmlFilesystemsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/amlFilesystems_List.json
+// Generated from example definition: 2026-08-01/amlFilesystems_List.json
 func ExampleAmlFilesystemsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -403,8 +403,8 @@ func ExampleAmlFilesystemsClient_NewListPager() {
 		// 							{
 		// 								FilesystemPath: to.Ptr("/"),
 		// 								Status: &armstoragecache.AmlFilesystemArchiveStatus{
-		// 									LastCompletionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-21T18:25:43.511Z"); return t}()),
-		// 									LastStartedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-21T17:25:43.511Z"); return t}()),
+		// 									LastCompletionTime: to.Ptr(time.Date(2019, time.April, 21, 18, 25, 43, 511000000, time.UTC)),
+		// 									LastStartedTime: to.Ptr(time.Date(2019, time.April, 21, 17, 25, 43, 511000000, time.UTC)),
 		// 									State: to.Ptr(armstoragecache.ArchiveStatusTypeCompleted),
 		// 								},
 		// 							},
@@ -485,8 +485,8 @@ func ExampleAmlFilesystemsClient_NewListPager() {
 		// 							{
 		// 								FilesystemPath: to.Ptr("/"),
 		// 								Status: &armstoragecache.AmlFilesystemArchiveStatus{
-		// 									LastCompletionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-21T18:25:43.511Z"); return t}()),
-		// 									LastStartedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-21T17:25:43.511Z"); return t}()),
+		// 									LastCompletionTime: to.Ptr(time.Date(2019, time.April, 21, 18, 25, 43, 511000000, time.UTC)),
+		// 									LastStartedTime: to.Ptr(time.Date(2019, time.April, 21, 17, 25, 43, 511000000, time.UTC)),
 		// 									State: to.Ptr(armstoragecache.ArchiveStatusTypeCompleted),
 		// 								},
 		// 							},
@@ -530,7 +530,7 @@ func ExampleAmlFilesystemsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-01-01/amlFilesystems_ListByResourceGroup.json
+// Generated from example definition: 2026-08-01/amlFilesystems_ListByResourceGroup.json
 func ExampleAmlFilesystemsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -598,8 +598,8 @@ func ExampleAmlFilesystemsClient_NewListByResourceGroupPager() {
 		// 							{
 		// 								FilesystemPath: to.Ptr("/"),
 		// 								Status: &armstoragecache.AmlFilesystemArchiveStatus{
-		// 									LastCompletionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-21T18:25:43.511Z"); return t}()),
-		// 									LastStartedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-21T17:25:43.511Z"); return t}()),
+		// 									LastCompletionTime: to.Ptr(time.Date(2019, time.April, 21, 18, 25, 43, 511000000, time.UTC)),
+		// 									LastStartedTime: to.Ptr(time.Date(2019, time.April, 21, 17, 25, 43, 511000000, time.UTC)),
 		// 									State: to.Ptr(armstoragecache.ArchiveStatusTypeCompleted),
 		// 								},
 		// 							},
@@ -680,8 +680,8 @@ func ExampleAmlFilesystemsClient_NewListByResourceGroupPager() {
 		// 							{
 		// 								FilesystemPath: to.Ptr("/"),
 		// 								Status: &armstoragecache.AmlFilesystemArchiveStatus{
-		// 									LastCompletionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-21T18:25:43.511Z"); return t}()),
-		// 									LastStartedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-21T17:25:43.511Z"); return t}()),
+		// 									LastCompletionTime: to.Ptr(time.Date(2019, time.April, 21, 18, 25, 43, 511000000, time.UTC)),
+		// 									LastStartedTime: to.Ptr(time.Date(2019, time.April, 21, 17, 25, 43, 511000000, time.UTC)),
 		// 									State: to.Ptr(armstoragecache.ArchiveStatusTypeCompleted),
 		// 								},
 		// 							},
@@ -725,7 +725,7 @@ func ExampleAmlFilesystemsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-01-01/amlFilesystems_Update.json
+// Generated from example definition: 2026-08-01/amlFilesystems_Update.json
 func ExampleAmlFilesystemsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -813,8 +813,8 @@ func ExampleAmlFilesystemsClient_BeginUpdate() {
 	// 					{
 	// 						FilesystemPath: to.Ptr("/"),
 	// 						Status: &armstoragecache.AmlFilesystemArchiveStatus{
-	// 							LastCompletionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-21T18:25:43.511Z"); return t}()),
-	// 							LastStartedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-21T17:25:43.511Z"); return t}()),
+	// 							LastCompletionTime: to.Ptr(time.Date(2019, time.April, 21, 18, 25, 43, 511000000, time.UTC)),
+	// 							LastStartedTime: to.Ptr(time.Date(2019, time.April, 21, 17, 25, 43, 511000000, time.UTC)),
 	// 							State: to.Ptr(armstoragecache.ArchiveStatusTypeCompleted),
 	// 						},
 	// 					},

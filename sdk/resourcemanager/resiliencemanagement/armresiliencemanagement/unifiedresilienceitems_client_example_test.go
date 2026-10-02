@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-04-01-preview/UnifiedResilienceItems_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-31-preview/UnifiedResilienceItems_Get_MaximumSet_Gen.json
 func ExampleUnifiedResilienceItemsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -51,10 +51,10 @@ func ExampleUnifiedResilienceItemsClient_Get() {
 	// 					EnabledResourceCount: to.Ptr[int64](5),
 	// 					NotEnabledResourceCount: to.Ptr[int64](2),
 	// 					NotEvaluatedResourceCount: to.Ptr[int64](1),
-	// 					EvaluationDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-05-01T08:00:00Z"); return t}()),
+	// 					EvaluationDateTime: to.Ptr(time.Date(2025, time.May, 1, 8, 0, 0, 0, time.UTC)),
 	// 				},
 	// 			},
-	// 			LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-05-01T08:00:00Z"); return t}()),
+	// 			LastModifiedTime: to.Ptr(time.Date(2025, time.May, 1, 8, 0, 0, 0, time.UTC)),
 	// 		},
 	// 		ID: to.Ptr("/providers/Microsoft.AzureResilienceManagement/unifiedResilienceItems/uri1"),
 	// 		Name: to.Ptr("uri1"),
@@ -62,16 +62,16 @@ func ExampleUnifiedResilienceItemsClient_Get() {
 	// 		SystemData: &armresiliencemanagement.SystemData{
 	// 			CreatedBy: to.Ptr("dvnfxbuyqhvivfjddjccdtlwajfht"),
 	// 			CreatedByType: to.Ptr(armresiliencemanagement.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-02-06T15:03:42.796Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2025, time.February, 6, 15, 3, 42, 796000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("lndhhaimomorael"),
 	// 			LastModifiedByType: to.Ptr(armresiliencemanagement.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-02-06T15:03:42.797Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.February, 6, 15, 3, 42, 797000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/UnifiedResilienceItems_List_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-31-preview/UnifiedResilienceItems_List_MaximumSet_Gen.json
 func ExampleUnifiedResilienceItemsClient_NewListPager_unifiedResilienceItemsListMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -118,10 +118,10 @@ func ExampleUnifiedResilienceItemsClient_NewListPager_unifiedResilienceItemsList
 		// 							EnabledResourceCount: to.Ptr[int64](5),
 		// 							NotEnabledResourceCount: to.Ptr[int64](2),
 		// 							NotEvaluatedResourceCount: to.Ptr[int64](1),
-		// 							EvaluationDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-05-01T08:00:00Z"); return t}()),
+		// 							EvaluationDateTime: to.Ptr(time.Date(2025, time.May, 1, 8, 0, 0, 0, time.UTC)),
 		// 						},
 		// 					},
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-05-01T08:00:00Z"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2025, time.May, 1, 8, 0, 0, 0, time.UTC)),
 		// 				},
 		// 				ID: to.Ptr("/providers/Microsoft.AzureResilienceManagement/unifiedResilienceItems/uri1"),
 		// 				Name: to.Ptr("uri1"),
@@ -129,10 +129,10 @@ func ExampleUnifiedResilienceItemsClient_NewListPager_unifiedResilienceItemsList
 		// 				SystemData: &armresiliencemanagement.SystemData{
 		// 					CreatedBy: to.Ptr("dvnfxbuyqhvivfjddjccdtlwajfht"),
 		// 					CreatedByType: to.Ptr(armresiliencemanagement.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-02-06T15:03:42.796Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2025, time.February, 6, 15, 3, 42, 796000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("lndhhaimomorael"),
 		// 					LastModifiedByType: to.Ptr(armresiliencemanagement.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-02-06T15:03:42.797Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2025, time.February, 6, 15, 3, 42, 797000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -142,7 +142,7 @@ func ExampleUnifiedResilienceItemsClient_NewListPager_unifiedResilienceItemsList
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/UnifiedResilienceItems_List_MinimumSet_Gen.json
+// Generated from example definition: 2026-08-31-preview/UnifiedResilienceItems_List_MinimumSet_Gen.json
 func ExampleUnifiedResilienceItemsClient_NewListPager_unifiedResilienceItemsListMaximumSetGeneratedByMinimumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -40,8 +40,8 @@ type AzureVMWorkloadItemClassification interface {
 // Use a type switch to determine the concrete type.  The possible types are:
 // - *AzureVMWorkloadProtectableItem, *AzureVMWorkloadSAPAseDatabaseProtectableItem, *AzureVMWorkloadSAPAseSystemProtectableItem,
 // - *AzureVMWorkloadSAPHanaDBInstance, *AzureVMWorkloadSAPHanaDatabaseProtectableItem, *AzureVMWorkloadSAPHanaHSRProtectableItem,
-// - *AzureVMWorkloadSAPHanaScaleoutProtectableItem, *AzureVMWorkloadSAPHanaSystemProtectableItem, *AzureVMWorkloadSQLAvailabilityGroupProtectableItem,
-// - *AzureVMWorkloadSQLDatabaseProtectableItem, *AzureVMWorkloadSQLInstanceProtectableItem
+// - *AzureVMWorkloadSAPHanaSystemProtectableItem, *AzureVMWorkloadSQLAvailabilityGroupProtectableItem, *AzureVMWorkloadSQLDatabaseProtectableItem,
+// - *AzureVMWorkloadSQLInstanceProtectableItem
 type AzureVMWorkloadProtectableItemClassification interface {
 	WorkloadProtectableItemClassification
 	// GetAzureVMWorkloadProtectableItem returns the AzureVMWorkloadProtectableItem content of the underlying type.
@@ -52,7 +52,7 @@ type AzureVMWorkloadProtectableItemClassification interface {
 // Call the interface's GetAzureVMWorkloadProtectedItem() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
 // - *AzureVMWorkloadProtectedItem, *AzureVMWorkloadSAPAseDatabaseProtectedItem, *AzureVMWorkloadSAPHanaDBInstanceProtectedItem,
-// - *AzureVMWorkloadSAPHanaDatabaseProtectedItem, *AzureVMWorkloadSQLDatabaseProtectedItem, *AzureVMWorkloadSQLInstanceProtectedItem
+// - *AzureVMWorkloadSAPHanaDatabaseProtectedItem, *AzureVMWorkloadSQLDatabaseProtectedItem
 type AzureVMWorkloadProtectedItemClassification interface {
 	ProtectedItemClassification
 	// GetAzureVMWorkloadProtectedItem returns the AzureVMWorkloadProtectedItem content of the underlying type.
@@ -304,8 +304,8 @@ type ProtectableContainerClassification interface {
 // Use a type switch to determine the concrete type.  The possible types are:
 // - *AzureFileshareProtectedItem, *AzureIaaSClassicComputeVMProtectedItem, *AzureIaaSComputeVMProtectedItem, *AzureIaaSVMProtectedItem,
 // - *AzureSQLProtectedItem, *AzureVMWorkloadProtectedItem, *AzureVMWorkloadSAPAseDatabaseProtectedItem, *AzureVMWorkloadSAPHanaDBInstanceProtectedItem,
-// - *AzureVMWorkloadSAPHanaDatabaseProtectedItem, *AzureVMWorkloadSQLDatabaseProtectedItem, *AzureVMWorkloadSQLInstanceProtectedItem,
-// - *DPMProtectedItem, *GenericProtectedItem, *MabFileFolderProtectedItem, *ProtectedItem
+// - *AzureVMWorkloadSAPHanaDatabaseProtectedItem, *AzureVMWorkloadSQLDatabaseProtectedItem, *DPMProtectedItem, *GenericProtectedItem,
+// - *MabFileFolderProtectedItem, *ProtectedItem
 type ProtectedItemClassification interface {
 	// GetProtectedItem returns the ProtectedItem content of the underlying type.
 	GetProtectedItem() *ProtectedItem
@@ -438,9 +438,9 @@ type WorkloadItemClassification interface {
 // Use a type switch to determine the concrete type.  The possible types are:
 // - *AzureFileShareProtectableItem, *AzureIaaSClassicComputeVMProtectableItem, *AzureIaaSComputeVMProtectableItem, *AzureVMWorkloadProtectableItem,
 // - *AzureVMWorkloadSAPAseDatabaseProtectableItem, *AzureVMWorkloadSAPAseSystemProtectableItem, *AzureVMWorkloadSAPHanaDBInstance,
-// - *AzureVMWorkloadSAPHanaDatabaseProtectableItem, *AzureVMWorkloadSAPHanaHSRProtectableItem, *AzureVMWorkloadSAPHanaScaleoutProtectableItem,
-// - *AzureVMWorkloadSAPHanaSystemProtectableItem, *AzureVMWorkloadSQLAvailabilityGroupProtectableItem, *AzureVMWorkloadSQLDatabaseProtectableItem,
-// - *AzureVMWorkloadSQLInstanceProtectableItem, *IaaSVMProtectableItem, *WorkloadProtectableItem
+// - *AzureVMWorkloadSAPHanaDatabaseProtectableItem, *AzureVMWorkloadSAPHanaHSRProtectableItem, *AzureVMWorkloadSAPHanaSystemProtectableItem,
+// - *AzureVMWorkloadSQLAvailabilityGroupProtectableItem, *AzureVMWorkloadSQLDatabaseProtectableItem, *AzureVMWorkloadSQLInstanceProtectableItem,
+// - *IaaSVMProtectableItem, *WorkloadProtectableItem
 type WorkloadProtectableItemClassification interface {
 	// GetWorkloadProtectableItem returns the WorkloadProtectableItem content of the underlying type.
 	GetWorkloadProtectableItem() *WorkloadProtectableItem

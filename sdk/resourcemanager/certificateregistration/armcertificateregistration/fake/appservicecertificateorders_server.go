@@ -210,7 +210,7 @@ func (a *AppServiceCertificateOrdersServerTransport) dispatchBeginCreateOrUpdate
 	}
 	beginCreateOrUpdate := a.beginCreateOrUpdate.get(req)
 	if beginCreateOrUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CertificateRegistration/certificateOrders/(?P<certificateOrderName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.CertificateRegistration/certificateOrders/(?P<certificateOrderName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -258,7 +258,7 @@ func (a *AppServiceCertificateOrdersServerTransport) dispatchBeginCreateOrUpdate
 	}
 	beginCreateOrUpdateCertificate := a.beginCreateOrUpdateCertificate.get(req)
 	if beginCreateOrUpdateCertificate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CertificateRegistration/certificateOrders/(?P<certificateOrderName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/certificates/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.CertificateRegistration/certificateOrders/(?P<certificateOrderName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/certificates/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -308,7 +308,7 @@ func (a *AppServiceCertificateOrdersServerTransport) dispatchDelete(req *http.Re
 	if a.srv.Delete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Delete not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CertificateRegistration/certificateOrders/(?P<certificateOrderName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.CertificateRegistration/certificateOrders/(?P<certificateOrderName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -341,7 +341,7 @@ func (a *AppServiceCertificateOrdersServerTransport) dispatchDeleteCertificate(r
 	if a.srv.DeleteCertificate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method DeleteCertificate not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CertificateRegistration/certificateOrders/(?P<certificateOrderName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/certificates/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.CertificateRegistration/certificateOrders/(?P<certificateOrderName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/certificates/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -378,7 +378,7 @@ func (a *AppServiceCertificateOrdersServerTransport) dispatchGet(req *http.Reque
 	if a.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CertificateRegistration/certificateOrders/(?P<certificateOrderName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.CertificateRegistration/certificateOrders/(?P<certificateOrderName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -411,7 +411,7 @@ func (a *AppServiceCertificateOrdersServerTransport) dispatchGetCertificate(req 
 	if a.srv.GetCertificate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetCertificate not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CertificateRegistration/certificateOrders/(?P<certificateOrderName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/certificates/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.CertificateRegistration/certificateOrders/(?P<certificateOrderName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/certificates/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -450,7 +450,7 @@ func (a *AppServiceCertificateOrdersServerTransport) dispatchNewListPager(req *h
 	}
 	newListPager := a.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CertificateRegistration/certificateOrders`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.CertificateRegistration/certificateOrders`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 2 {
@@ -483,7 +483,7 @@ func (a *AppServiceCertificateOrdersServerTransport) dispatchNewListByResourceGr
 	}
 	newListByResourceGroupPager := a.newListByResourceGroupPager.get(req)
 	if newListByResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CertificateRegistration/certificateOrders`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.CertificateRegistration/certificateOrders`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
@@ -520,7 +520,7 @@ func (a *AppServiceCertificateOrdersServerTransport) dispatchNewListCertificates
 	}
 	newListCertificatesPager := a.newListCertificatesPager.get(req)
 	if newListCertificatesPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CertificateRegistration/certificateOrders/(?P<certificateOrderName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/certificates`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.CertificateRegistration/certificateOrders/(?P<certificateOrderName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/certificates`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -559,7 +559,7 @@ func (a *AppServiceCertificateOrdersServerTransport) dispatchReissue(req *http.R
 	if a.srv.Reissue == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Reissue not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CertificateRegistration/certificateOrders/(?P<certificateOrderName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/reissue`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.CertificateRegistration/certificateOrders/(?P<certificateOrderName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/reissue`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -596,7 +596,7 @@ func (a *AppServiceCertificateOrdersServerTransport) dispatchRenew(req *http.Req
 	if a.srv.Renew == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Renew not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CertificateRegistration/certificateOrders/(?P<certificateOrderName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/renew`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.CertificateRegistration/certificateOrders/(?P<certificateOrderName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/renew`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -633,7 +633,7 @@ func (a *AppServiceCertificateOrdersServerTransport) dispatchResendEmail(req *ht
 	if a.srv.ResendEmail == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ResendEmail not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CertificateRegistration/certificateOrders/(?P<certificateOrderName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resendEmail`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.CertificateRegistration/certificateOrders/(?P<certificateOrderName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resendEmail`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -666,7 +666,7 @@ func (a *AppServiceCertificateOrdersServerTransport) dispatchResendRequestEmails
 	if a.srv.ResendRequestEmails == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ResendRequestEmails not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CertificateRegistration/certificateOrders/(?P<certificateOrderName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resendRequestEmails`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.CertificateRegistration/certificateOrders/(?P<certificateOrderName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resendRequestEmails`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -703,7 +703,7 @@ func (a *AppServiceCertificateOrdersServerTransport) dispatchRetrieveCertificate
 	if a.srv.RetrieveCertificateActions == nil {
 		return nil, &nonRetriableError{errors.New("fake for method RetrieveCertificateActions not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CertificateRegistration/certificateOrders/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/retrieveCertificateActions`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.CertificateRegistration/certificateOrders/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/retrieveCertificateActions`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -736,7 +736,7 @@ func (a *AppServiceCertificateOrdersServerTransport) dispatchRetrieveCertificate
 	if a.srv.RetrieveCertificateEmailHistory == nil {
 		return nil, &nonRetriableError{errors.New("fake for method RetrieveCertificateEmailHistory not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CertificateRegistration/certificateOrders/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/retrieveEmailHistory`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.CertificateRegistration/certificateOrders/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/retrieveEmailHistory`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -769,7 +769,7 @@ func (a *AppServiceCertificateOrdersServerTransport) dispatchRetrieveSiteSeal(re
 	if a.srv.RetrieveSiteSeal == nil {
 		return nil, &nonRetriableError{errors.New("fake for method RetrieveSiteSeal not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CertificateRegistration/certificateOrders/(?P<certificateOrderName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/retrieveSiteSeal`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.CertificateRegistration/certificateOrders/(?P<certificateOrderName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/retrieveSiteSeal`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -806,7 +806,7 @@ func (a *AppServiceCertificateOrdersServerTransport) dispatchUpdate(req *http.Re
 	if a.srv.Update == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Update not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CertificateRegistration/certificateOrders/(?P<certificateOrderName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.CertificateRegistration/certificateOrders/(?P<certificateOrderName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -843,7 +843,7 @@ func (a *AppServiceCertificateOrdersServerTransport) dispatchUpdateCertificate(r
 	if a.srv.UpdateCertificate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method UpdateCertificate not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CertificateRegistration/certificateOrders/(?P<certificateOrderName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/certificates/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.CertificateRegistration/certificateOrders/(?P<certificateOrderName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/certificates/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -884,7 +884,7 @@ func (a *AppServiceCertificateOrdersServerTransport) dispatchValidatePurchaseInf
 	if a.srv.ValidatePurchaseInformation == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ValidatePurchaseInformation not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CertificateRegistration/validateCertificateRegistrationInformation`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.CertificateRegistration/validateCertificateRegistrationInformation`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 2 {
@@ -913,7 +913,7 @@ func (a *AppServiceCertificateOrdersServerTransport) dispatchVerifyDomainOwnersh
 	if a.srv.VerifyDomainOwnership == nil {
 		return nil, &nonRetriableError{errors.New("fake for method VerifyDomainOwnership not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CertificateRegistration/certificateOrders/(?P<certificateOrderName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/verifyDomainOwnership`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.CertificateRegistration/certificateOrders/(?P<certificateOrderName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/verifyDomainOwnership`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {

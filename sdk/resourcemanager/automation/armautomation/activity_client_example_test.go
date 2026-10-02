@@ -35,9 +35,9 @@ func ExampleActivityClient_Get() {
 	// 		ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount33/modules/AzureRM.Profile/activities/Add-AzureRmAccount"),
 	// 		Properties: &armautomation.ActivityProperties{
 	// 			Description: to.Ptr("The Add-AzureRmAcccount cmdlet adds an authenticated Azure account to use for Azure Resource Manager cmdlet requests.\n\nYou can use this authenticated account only with Azure Resource Manager cmdlets. To add an authenticated account for use with Service Management cmdlets, use the Add-AzureAccount or the Import-AzurePublishSettingsFile cmdlet."),
-	// 			CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-17T17:05:21.697+00:00"); return t}()),
+	// 			CreationTime: to.Ptr(time.Date(2017, time.March, 17, 17, 5, 21, 697000000, time.UTC)),
 	// 			Definition: to.Ptr(""),
-	// 			LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-17T17:05:21.697+00:00"); return t}()),
+	// 			LastModifiedTime: to.Ptr(time.Date(2017, time.March, 17, 17, 5, 21, 697000000, time.UTC)),
 	// 			OutputTypes: []*armautomation.ActivityOutputType{
 	// 				{
 	// 					Name: to.Ptr("Microsoft.Azure.Commands.Profile.Models.PSAzureProfile"),
@@ -631,9 +631,9 @@ func ExampleActivityClient_NewListByModulePager() {
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount33/modules/AzureRM.Profile/activities/Add-AzureRmAccount"),
 		// 				Properties: &armautomation.ActivityProperties{
 		// 					Description: to.Ptr("The Add-AzureRmAcccount cmdlet adds an authenticated Azure account to use for Azure Resource Manager cmdlet requests.\n\nYou can use this authenticated account only with Azure Resource Manager cmdlets. To add an authenticated account for use with Service Management cmdlets, use the Add-AzureAccount or the Import-AzurePublishSettingsFile cmdlet."),
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-17T17:05:21.697+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 17, 17, 5, 21, 697000000, time.UTC)),
 		// 					Definition: to.Ptr(""),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-17T17:05:21.697+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 17, 17, 5, 21, 697000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -641,9 +641,9 @@ func ExampleActivityClient_NewListByModulePager() {
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount33/modules/AzureRM.Profile/activities/Add-AzureRmEnvironment"),
 		// 				Properties: &armautomation.ActivityProperties{
 		// 					Description: to.Ptr("The Add-AzureRmEnvironment cmdlet adds endpoints and metadata to enable Azure Resource Manager cmdlets to connect with a new instance of Azure Resource Manager. The built-in environments AzureCloud and AzureChinaCloud target existing public instances of Azure Resource Manager."),
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-17T17:05:21.697+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 17, 17, 5, 21, 697000000, time.UTC)),
 		// 					Definition: to.Ptr(""),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-17T17:05:21.697+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 17, 17, 5, 21, 697000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -651,9 +651,9 @@ func ExampleActivityClient_NewListByModulePager() {
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount33/modules/AzureRM.Profile/activities/Disable-AzureRmDataCollection"),
 		// 				Properties: &armautomation.ActivityProperties{
 		// 					Description: to.Ptr(""),
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-17T17:05:21.713+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 17, 17, 5, 21, 713000000, time.UTC)),
 		// 					Definition: to.Ptr(""),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-17T17:05:21.713+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 17, 17, 5, 21, 713000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -661,9 +661,9 @@ func ExampleActivityClient_NewListByModulePager() {
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount33/modules/AzureRM.Profile/activities/Enable-AzureRmDataCollection"),
 		// 				Properties: &armautomation.ActivityProperties{
 		// 					Description: to.Ptr(""),
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-17T17:05:21.713+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 17, 17, 5, 21, 713000000, time.UTC)),
 		// 					Definition: to.Ptr(""),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-17T17:05:21.713+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 17, 17, 5, 21, 713000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -671,9 +671,9 @@ func ExampleActivityClient_NewListByModulePager() {
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount33/modules/AzureRM.Profile/activities/Get-AzureRmContext"),
 		// 				Properties: &armautomation.ActivityProperties{
 		// 					Description: to.Ptr("The Get-AzureRmContext cmdlet gets the current metadata used to authenticate Azure Resource Manager requests.\n\nThis cmdlet gets the Active Directory account, Active Directory tenant, Azure subscription, and the targeted Azure environment. Azure Resource Manager cmdlets use these settings by default when making Azure Resource Manager requests."),
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-17T17:05:21.713+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 17, 17, 5, 21, 713000000, time.UTC)),
 		// 					Definition: to.Ptr(""),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-17T17:05:21.713+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 17, 17, 5, 21, 713000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -681,9 +681,9 @@ func ExampleActivityClient_NewListByModulePager() {
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount33/modules/AzureRM.Profile/activities/Get-AzureRmEnvironment"),
 		// 				Properties: &armautomation.ActivityProperties{
 		// 					Description: to.Ptr("The Get-AzureRmEnvironment cmdlet gets endpoints and metadata for an instance of Azure services."),
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-17T17:05:21.697+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 17, 17, 5, 21, 697000000, time.UTC)),
 		// 					Definition: to.Ptr(""),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-17T17:05:21.697+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 17, 17, 5, 21, 697000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -691,9 +691,9 @@ func ExampleActivityClient_NewListByModulePager() {
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount33/modules/AzureRM.Profile/activities/Get-AzureRmSubscription"),
 		// 				Properties: &armautomation.ActivityProperties{
 		// 					Description: to.Ptr("The Get-AzureRmSubscription cmdlet gets the subscription ID, subscription name, and home tenant for subscriptions that the current account can access."),
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-17T17:05:21.697+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 17, 17, 5, 21, 697000000, time.UTC)),
 		// 					Definition: to.Ptr(""),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-17T17:05:21.697+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 17, 17, 5, 21, 697000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -701,9 +701,9 @@ func ExampleActivityClient_NewListByModulePager() {
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount33/modules/AzureRM.Profile/activities/Get-AzureRmTenant"),
 		// 				Properties: &armautomation.ActivityProperties{
 		// 					Description: to.Ptr("The Get-AzureRmTenant cmdlet gets tenants authorized for the current user."),
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-17T17:05:21.697+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 17, 17, 5, 21, 697000000, time.UTC)),
 		// 					Definition: to.Ptr(""),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-17T17:05:21.697+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 17, 17, 5, 21, 697000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -711,9 +711,9 @@ func ExampleActivityClient_NewListByModulePager() {
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount33/modules/AzureRM.Profile/activities/Remove-AzureRmEnvironment"),
 		// 				Properties: &armautomation.ActivityProperties{
 		// 					Description: to.Ptr("The Remove-AzureRmEnvironment cmdlet removes endpoints and metadata information for connecting to a given Azure instance."),
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-17T17:05:21.697+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 17, 17, 5, 21, 697000000, time.UTC)),
 		// 					Definition: to.Ptr(""),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-17T17:05:21.697+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 17, 17, 5, 21, 697000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -721,9 +721,9 @@ func ExampleActivityClient_NewListByModulePager() {
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount33/modules/AzureRM.Profile/activities/Save-AzureRmProfile"),
 		// 				Properties: &armautomation.ActivityProperties{
 		// 					Description: to.Ptr("The Save-AzureRmProfile cmdlet saves the current authentication information for use in other PowerShell sessions."),
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-17T17:05:21.697+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 17, 17, 5, 21, 697000000, time.UTC)),
 		// 					Definition: to.Ptr(""),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-17T17:05:21.697+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 17, 17, 5, 21, 697000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -731,9 +731,9 @@ func ExampleActivityClient_NewListByModulePager() {
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount33/modules/AzureRM.Profile/activities/Select-AzureRmProfile"),
 		// 				Properties: &armautomation.ActivityProperties{
 		// 					Description: to.Ptr("The Select-AzureRmProfile cmdlet loads authentication information from a file to set the Azure environment and context. Cmdlets that you run in the current session use this information to authenticate requests to Azure Resource Manager."),
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-17T17:05:21.697+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 17, 17, 5, 21, 697000000, time.UTC)),
 		// 					Definition: to.Ptr(""),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-17T17:05:21.697+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 17, 17, 5, 21, 697000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -741,9 +741,9 @@ func ExampleActivityClient_NewListByModulePager() {
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount33/modules/AzureRM.Profile/activities/Set-AzureRmContext"),
 		// 				Properties: &armautomation.ActivityProperties{
 		// 					Description: to.Ptr("The Set-AzureRmContext cmdlet sets authentication information for cmdlets that you run in the current session. The context includes tenant, subscription, and environment information."),
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-17T17:05:21.697+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 17, 17, 5, 21, 697000000, time.UTC)),
 		// 					Definition: to.Ptr(""),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-17T17:05:21.697+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 17, 17, 5, 21, 697000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -751,9 +751,9 @@ func ExampleActivityClient_NewListByModulePager() {
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount33/modules/AzureRM.Profile/activities/Set-AzureRmEnvironment"),
 		// 				Properties: &armautomation.ActivityProperties{
 		// 					Description: to.Ptr("The Set-AzureRMEnvironment cmdlet sets endpoints and metadata for connecting to an instance of Azure."),
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-17T17:05:21.697+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 17, 17, 5, 21, 697000000, time.UTC)),
 		// 					Definition: to.Ptr(""),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-17T17:05:21.697+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 17, 17, 5, 21, 697000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},

@@ -25,7 +25,7 @@ func ExamplePartnerConfigurationsClient_AuthorizePartner() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := clientFactory.NewPartnerConfigurationsClient().AuthorizePartner(ctx, "examplerg", armeventgrid.Partner{
-		AuthorizationExpirationTimeInUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-01-28T01:20:55.142Z"); return t }()),
+		AuthorizationExpirationTimeInUTC: to.Ptr(time.Date(2022, time.January, 28, 1, 20, 55, 142000000, time.UTC)),
 		PartnerName:                      to.Ptr("Contoso.Finance"),
 		PartnerRegistrationImmutableID:   to.Ptr("941892bc-f5d0-4d1c-8fb5-477570fc2b71"),
 	}, nil)
@@ -45,12 +45,12 @@ func ExamplePartnerConfigurationsClient_AuthorizePartner() {
 	// 			PartnerAuthorization: &armeventgrid.PartnerAuthorization{
 	// 				AuthorizedPartnersList: []*armeventgrid.Partner{
 	// 					{
-	// 						AuthorizationExpirationTimeInUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-01-28T01:20:55.142Z"); return t}()),
+	// 						AuthorizationExpirationTimeInUTC: to.Ptr(time.Date(2022, time.January, 28, 1, 20, 55, 142000000, time.UTC)),
 	// 						PartnerName: to.Ptr("Contoso.Finance"),
 	// 						PartnerRegistrationImmutableID: to.Ptr("941892bc-f5d0-4d1c-8fb5-477570fc2b71"),
 	// 					},
 	// 					{
-	// 						AuthorizationExpirationTimeInUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-02-20T01:00:00.142Z"); return t}()),
+	// 						AuthorizationExpirationTimeInUTC: to.Ptr(time.Date(2022, time.February, 20, 1, 0, 0, 142000000, time.UTC)),
 	// 						PartnerName: to.Ptr("fabrikam.HR"),
 	// 						PartnerRegistrationImmutableID: to.Ptr("5362bdb6-ce3e-4d0d-9a5b-3eb92c8aab38"),
 	// 					},
@@ -82,12 +82,12 @@ func ExamplePartnerConfigurationsClient_BeginCreateOrUpdate() {
 			PartnerAuthorization: &armeventgrid.PartnerAuthorization{
 				AuthorizedPartnersList: []*armeventgrid.Partner{
 					{
-						AuthorizationExpirationTimeInUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-01-28T01:20:55.142Z"); return t }()),
+						AuthorizationExpirationTimeInUTC: to.Ptr(time.Date(2022, time.January, 28, 1, 20, 55, 142000000, time.UTC)),
 						PartnerName:                      to.Ptr("Contoso.Finance"),
 						PartnerRegistrationImmutableID:   to.Ptr("941892bc-f5d0-4d1c-8fb5-477570fc2b71"),
 					},
 					{
-						AuthorizationExpirationTimeInUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-02-20T01:00:00.142Z"); return t }()),
+						AuthorizationExpirationTimeInUTC: to.Ptr(time.Date(2022, time.February, 20, 1, 0, 0, 142000000, time.UTC)),
 						PartnerName:                      to.Ptr("fabrikam.HR"),
 						PartnerRegistrationImmutableID:   to.Ptr("5362bdb6-ce3e-4d0d-9a5b-3eb92c8aab38"),
 					},
@@ -116,12 +116,12 @@ func ExamplePartnerConfigurationsClient_BeginCreateOrUpdate() {
 	// 			PartnerAuthorization: &armeventgrid.PartnerAuthorization{
 	// 				AuthorizedPartnersList: []*armeventgrid.Partner{
 	// 					{
-	// 						AuthorizationExpirationTimeInUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-01-28T01:20:55.142Z"); return t}()),
+	// 						AuthorizationExpirationTimeInUTC: to.Ptr(time.Date(2022, time.January, 28, 1, 20, 55, 142000000, time.UTC)),
 	// 						PartnerName: to.Ptr("Contoso.Finance"),
 	// 						PartnerRegistrationImmutableID: to.Ptr("941892bc-f5d0-4d1c-8fb5-477570fc2b71"),
 	// 					},
 	// 					{
-	// 						AuthorizationExpirationTimeInUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-02-20T01:00:00.142Z"); return t}()),
+	// 						AuthorizationExpirationTimeInUTC: to.Ptr(time.Date(2022, time.February, 20, 1, 0, 0, 142000000, time.UTC)),
 	// 						PartnerName: to.Ptr("fabrikam.HR"),
 	// 						PartnerRegistrationImmutableID: to.Ptr("5362bdb6-ce3e-4d0d-9a5b-3eb92c8aab38"),
 	// 					},
@@ -191,12 +191,12 @@ func ExamplePartnerConfigurationsClient_Get() {
 	// 			PartnerAuthorization: &armeventgrid.PartnerAuthorization{
 	// 				AuthorizedPartnersList: []*armeventgrid.Partner{
 	// 					{
-	// 						AuthorizationExpirationTimeInUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-01-28T01:20:55.142Z"); return t}()),
+	// 						AuthorizationExpirationTimeInUTC: to.Ptr(time.Date(2022, time.January, 28, 1, 20, 55, 142000000, time.UTC)),
 	// 						PartnerName: to.Ptr("Contoso.Finance"),
 	// 						PartnerRegistrationImmutableID: to.Ptr("941892bc-f5d0-4d1c-8fb5-477570fc2b71"),
 	// 					},
 	// 					{
-	// 						AuthorizationExpirationTimeInUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-02-20T01:00:00.142Z"); return t}()),
+	// 						AuthorizationExpirationTimeInUTC: to.Ptr(time.Date(2022, time.February, 20, 1, 0, 0, 142000000, time.UTC)),
 	// 						PartnerName: to.Ptr("fabrikam.HR"),
 	// 						PartnerRegistrationImmutableID: to.Ptr("5362bdb6-ce3e-4d0d-9a5b-3eb92c8aab38"),
 	// 					},
@@ -246,12 +246,12 @@ func ExamplePartnerConfigurationsClient_NewListByResourceGroupPager() {
 		// 					PartnerAuthorization: &armeventgrid.PartnerAuthorization{
 		// 						AuthorizedPartnersList: []*armeventgrid.Partner{
 		// 							{
-		// 								AuthorizationExpirationTimeInUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-01-28T01:20:55.142Z"); return t}()),
+		// 								AuthorizationExpirationTimeInUTC: to.Ptr(time.Date(2022, time.January, 28, 1, 20, 55, 142000000, time.UTC)),
 		// 								PartnerName: to.Ptr("Contoso.Finance"),
 		// 								PartnerRegistrationImmutableID: to.Ptr("941892bc-f5d0-4d1c-8fb5-477570fc2b71"),
 		// 							},
 		// 							{
-		// 								AuthorizationExpirationTimeInUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-02-20T01:00:00.142Z"); return t}()),
+		// 								AuthorizationExpirationTimeInUTC: to.Ptr(time.Date(2022, time.February, 20, 1, 0, 0, 142000000, time.UTC)),
 		// 								PartnerName: to.Ptr("fabrikam.HR"),
 		// 								PartnerRegistrationImmutableID: to.Ptr("5362bdb6-ce3e-4d0d-9a5b-3eb92c8aab38"),
 		// 							},
@@ -304,12 +304,12 @@ func ExamplePartnerConfigurationsClient_NewListBySubscriptionPager() {
 		// 					PartnerAuthorization: &armeventgrid.PartnerAuthorization{
 		// 						AuthorizedPartnersList: []*armeventgrid.Partner{
 		// 							{
-		// 								AuthorizationExpirationTimeInUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-01-28T01:20:55.142Z"); return t}()),
+		// 								AuthorizationExpirationTimeInUTC: to.Ptr(time.Date(2022, time.January, 28, 1, 20, 55, 142000000, time.UTC)),
 		// 								PartnerName: to.Ptr("Contoso.Finance"),
 		// 								PartnerRegistrationImmutableID: to.Ptr("941892bc-f5d0-4d1c-8fb5-477570fc2b71"),
 		// 							},
 		// 							{
-		// 								AuthorizationExpirationTimeInUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-02-20T01:00:00.142Z"); return t}()),
+		// 								AuthorizationExpirationTimeInUTC: to.Ptr(time.Date(2022, time.February, 20, 1, 0, 0, 142000000, time.UTC)),
 		// 								PartnerName: to.Ptr("fabrikam.HR"),
 		// 								PartnerRegistrationImmutableID: to.Ptr("5362bdb6-ce3e-4d0d-9a5b-3eb92c8aab38"),
 		// 							},
@@ -340,7 +340,7 @@ func ExamplePartnerConfigurationsClient_UnauthorizePartner() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := clientFactory.NewPartnerConfigurationsClient().UnauthorizePartner(ctx, "examplerg", armeventgrid.Partner{
-		AuthorizationExpirationTimeInUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-01-28T01:20:55.142Z"); return t }()),
+		AuthorizationExpirationTimeInUTC: to.Ptr(time.Date(2022, time.January, 28, 1, 20, 55, 142000000, time.UTC)),
 		PartnerName:                      to.Ptr("Contoso.Finance"),
 		PartnerRegistrationImmutableID:   to.Ptr("941892bc-f5d0-4d1c-8fb5-477570fc2b71"),
 	}, nil)
@@ -360,7 +360,7 @@ func ExamplePartnerConfigurationsClient_UnauthorizePartner() {
 	// 			PartnerAuthorization: &armeventgrid.PartnerAuthorization{
 	// 				AuthorizedPartnersList: []*armeventgrid.Partner{
 	// 					{
-	// 						AuthorizationExpirationTimeInUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-02-20T01:00:00.142Z"); return t}()),
+	// 						AuthorizationExpirationTimeInUTC: to.Ptr(time.Date(2022, time.February, 20, 1, 0, 0, 142000000, time.UTC)),
 	// 						PartnerName: to.Ptr("fabrikam.HR"),
 	// 						PartnerRegistrationImmutableID: to.Ptr("5362bdb6-ce3e-4d0d-9a5b-3eb92c8aab38"),
 	// 					},
@@ -416,12 +416,12 @@ func ExamplePartnerConfigurationsClient_BeginUpdate() {
 	// 			PartnerAuthorization: &armeventgrid.PartnerAuthorization{
 	// 				AuthorizedPartnersList: []*armeventgrid.Partner{
 	// 					{
-	// 						AuthorizationExpirationTimeInUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-01-28T01:20:55.142Z"); return t}()),
+	// 						AuthorizationExpirationTimeInUTC: to.Ptr(time.Date(2022, time.January, 28, 1, 20, 55, 142000000, time.UTC)),
 	// 						PartnerName: to.Ptr("Contoso.Finance"),
 	// 						PartnerRegistrationImmutableID: to.Ptr("941892bc-f5d0-4d1c-8fb5-477570fc2b71"),
 	// 					},
 	// 					{
-	// 						AuthorizationExpirationTimeInUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-02-20T01:00:00.142Z"); return t}()),
+	// 						AuthorizationExpirationTimeInUTC: to.Ptr(time.Date(2022, time.February, 20, 1, 0, 0, 142000000, time.UTC)),
 	// 						PartnerName: to.Ptr("fabrikam.HR"),
 	// 						PartnerRegistrationImmutableID: to.Ptr("5362bdb6-ce3e-4d0d-9a5b-3eb92c8aab38"),
 	// 					},

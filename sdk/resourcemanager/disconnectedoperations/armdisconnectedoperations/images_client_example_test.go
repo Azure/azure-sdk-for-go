@@ -37,7 +37,7 @@ func ExampleImagesClient_Get() {
 	// 			ReleaseVersion: to.Ptr("2.0.0"),
 	// 			ReleaseDisplayName: to.Ptr("release 1"),
 	// 			ReleaseNotes: to.Ptr("notes"),
-	// 			ReleaseDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2025-05-14"); return t}()),
+	// 			ReleaseDate: to.Ptr(time.Date(2025, time.May, 14, 0, 0, 0, 0, time.UTC)),
 	// 			ReleaseType: to.Ptr(armdisconnectedoperations.ReleaseTypeInstall),
 	// 			CompatibleVersions: []*string{
 	// 			},
@@ -55,10 +55,10 @@ func ExampleImagesClient_Get() {
 	// 		SystemData: &armdisconnectedoperations.SystemData{
 	// 			CreatedBy: to.Ptr("bwpmoygkcv"),
 	// 			CreatedByType: to.Ptr(armdisconnectedoperations.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-05-14T19:03:52.617Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2025, time.May, 14, 19, 3, 52, 617000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("tottbcqgtvsjebkejjlhxibnaifijd"),
 	// 			LastModifiedByType: to.Ptr(armdisconnectedoperations.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-05-14T19:03:52.617Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.May, 14, 19, 3, 52, 617000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -98,7 +98,7 @@ func ExampleImagesClient_NewListByDisconnectedOperationPager() {
 		// 					ReleaseVersion: to.Ptr("2.0.0"),
 		// 					ReleaseDisplayName: to.Ptr("release 1"),
 		// 					ReleaseNotes: to.Ptr("notes"),
-		// 					ReleaseDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2025-05-14"); return t}()),
+		// 					ReleaseDate: to.Ptr(time.Date(2025, time.May, 14, 0, 0, 0, 0, time.UTC)),
 		// 					ReleaseType: to.Ptr(armdisconnectedoperations.ReleaseTypeInstall),
 		// 					CompatibleVersions: []*string{
 		// 					},
@@ -116,10 +116,10 @@ func ExampleImagesClient_NewListByDisconnectedOperationPager() {
 		// 				SystemData: &armdisconnectedoperations.SystemData{
 		// 					CreatedBy: to.Ptr("bwpmoygkcv"),
 		// 					CreatedByType: to.Ptr(armdisconnectedoperations.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-05-14T19:03:52.617Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2025, time.May, 14, 19, 3, 52, 617000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("tottbcqgtvsjebkejjlhxibnaifijd"),
 		// 					LastModifiedByType: to.Ptr(armdisconnectedoperations.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-05-14T19:03:52.617Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2025, time.May, 14, 19, 3, 52, 617000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -152,7 +152,7 @@ func ExampleImagesClient_ListDownloadURI() {
 	// 		ReleaseVersion: to.Ptr("vbccjpcosofti"),
 	// 		ReleaseDisplayName: to.Ptr("thttwzm"),
 	// 		ReleaseNotes: to.Ptr("jswqauqfnwxk"),
-	// 		ReleaseDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2024-12-05"); return t}()),
+	// 		ReleaseDate: to.Ptr(time.Date(2024, time.December, 5, 0, 0, 0, 0, time.UTC)),
 	// 		CompatibleVersions: []*string{
 	// 			to.Ptr("czxghshqcn"),
 	// 		},
@@ -166,7 +166,7 @@ func ExampleImagesClient_ListDownloadURI() {
 	// 		TransactionID: to.Ptr("337b8e3a-dd7c-4872-a270-5d57632a8aea"),
 	// 		DownloadLink: to.Ptr("https://microsoft.com/akmzb"),
 	// 		ReleaseType: to.Ptr(armdisconnectedoperations.ReleaseTypeInstall),
-	// 		LinkExpiry: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-12-05T20:03:13.362Z"); return t}()),
+	// 		LinkExpiry: to.Ptr(time.Date(2024, time.December, 5, 20, 3, 13, 362000000, time.UTC)),
 	// 	},
 	// }
 }

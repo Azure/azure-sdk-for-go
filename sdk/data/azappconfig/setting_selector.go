@@ -47,6 +47,7 @@ func AllSettingFields() []SettingFields {
 		SettingFieldsLabel,
 		SettingFieldsValue,
 		SettingFieldsContentType,
+		SettingFieldsDescription,
 		SettingFieldsETag,
 		SettingFieldsLastModified,
 		SettingFieldsIsReadOnly,

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-02-01-preview/ManagedInstanceAdvancedThreatProtectionSettingsCreateMax.json
+// Generated from example definition: 2026-08-01-preview/ManagedInstanceAdvancedThreatProtectionSettingsCreateMax.json
 func ExampleManagedInstanceAdvancedThreatProtectionSettingsClient_BeginCreateOrUpdate_updateAManagedInstanceSAdvancedThreatProtectionSettingsWithAllParameters() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -44,14 +44,14 @@ func ExampleManagedInstanceAdvancedThreatProtectionSettingsClient_BeginCreateOrU
 	// 		Type: to.Ptr("Microsoft.Sql/managedInstances/advancedThreatProtectionSettings"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/threatprotection-4799/providers/Microsoft.Sql/managedInstances/threatprotection-6440/advancedThreatProtectionSettings/Default"),
 	// 		Properties: &armsql.AdvancedThreatProtectionProperties{
-	// 			CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-04-03T04:41:33.937Z"); return t}()),
+	// 			CreationTime: to.Ptr(time.Date(2022, time.April, 3, 4, 41, 33, 937000000, time.UTC)),
 	// 			State: to.Ptr(armsql.AdvancedThreatProtectionStateEnabled),
 	// 		},
 	// 		SystemData: &armsql.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-04-03T04:41:33.937Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2022, time.April, 3, 4, 41, 33, 937000000, time.UTC)),
 	// 			CreatedBy: to.Ptr("string"),
 	// 			CreatedByType: to.Ptr(armsql.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-04-03T04:41:33.937Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2022, time.April, 3, 4, 41, 33, 937000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("string"),
 	// 			LastModifiedByType: to.Ptr(armsql.CreatedByTypeUser),
 	// 		},
@@ -59,7 +59,7 @@ func ExampleManagedInstanceAdvancedThreatProtectionSettingsClient_BeginCreateOrU
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/ManagedInstanceAdvancedThreatProtectionSettingsCreateMin.json
+// Generated from example definition: 2026-08-01-preview/ManagedInstanceAdvancedThreatProtectionSettingsCreateMin.json
 func ExampleManagedInstanceAdvancedThreatProtectionSettingsClient_BeginCreateOrUpdate_updateAManagedInstanceSAdvancedThreatProtectionSettingsWithMinimalParameters() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -91,14 +91,14 @@ func ExampleManagedInstanceAdvancedThreatProtectionSettingsClient_BeginCreateOrU
 	// 		Type: to.Ptr("Microsoft.Sql/managedInstances/advancedThreatProtectionSettings"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/threatprotection-4799/providers/Microsoft.Sql/managedInstances/threatprotection-6440/advancedThreatProtectionSettings/Default"),
 	// 		Properties: &armsql.AdvancedThreatProtectionProperties{
-	// 			CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-04-03T04:41:33.937Z"); return t}()),
+	// 			CreationTime: to.Ptr(time.Date(2022, time.April, 3, 4, 41, 33, 937000000, time.UTC)),
 	// 			State: to.Ptr(armsql.AdvancedThreatProtectionStateDisabled),
 	// 		},
 	// 		SystemData: &armsql.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-04-03T04:41:33.937Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2022, time.April, 3, 4, 41, 33, 937000000, time.UTC)),
 	// 			CreatedBy: to.Ptr("string"),
 	// 			CreatedByType: to.Ptr(armsql.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-04-03T04:41:33.937Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2022, time.April, 3, 4, 41, 33, 937000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("string"),
 	// 			LastModifiedByType: to.Ptr(armsql.CreatedByTypeUser),
 	// 		},
@@ -106,7 +106,7 @@ func ExampleManagedInstanceAdvancedThreatProtectionSettingsClient_BeginCreateOrU
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/ManagedInstanceAdvancedThreatProtectionSettingsGet.json
+// Generated from example definition: 2026-08-01-preview/ManagedInstanceAdvancedThreatProtectionSettingsGet.json
 func ExampleManagedInstanceAdvancedThreatProtectionSettingsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -130,14 +130,14 @@ func ExampleManagedInstanceAdvancedThreatProtectionSettingsClient_Get() {
 	// 		Type: to.Ptr("Microsoft.Sql/managedInstances/advancedThreatProtectionSettings"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/threatprotection-4799/providers/Microsoft.Sql/managedInstances/threatprotection-6440/advancedThreatProtectionSettings/Default"),
 	// 		Properties: &armsql.AdvancedThreatProtectionProperties{
-	// 			CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-04-03T04:41:33.937Z"); return t}()),
+	// 			CreationTime: to.Ptr(time.Date(2022, time.April, 3, 4, 41, 33, 937000000, time.UTC)),
 	// 			State: to.Ptr(armsql.AdvancedThreatProtectionStateDisabled),
 	// 		},
 	// 		SystemData: &armsql.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-04-03T04:41:33.937Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2022, time.April, 3, 4, 41, 33, 937000000, time.UTC)),
 	// 			CreatedBy: to.Ptr("string"),
 	// 			CreatedByType: to.Ptr(armsql.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-04-03T04:41:33.937Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2022, time.April, 3, 4, 41, 33, 937000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("string"),
 	// 			LastModifiedByType: to.Ptr(armsql.CreatedByTypeUser),
 	// 		},
@@ -145,7 +145,7 @@ func ExampleManagedInstanceAdvancedThreatProtectionSettingsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/ManagedInstanceAdvancedThreatProtectionSettingsListByInstance.json
+// Generated from example definition: 2026-08-01-preview/ManagedInstanceAdvancedThreatProtectionSettingsListByInstance.json
 func ExampleManagedInstanceAdvancedThreatProtectionSettingsClient_NewListByInstancePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -175,14 +175,14 @@ func ExampleManagedInstanceAdvancedThreatProtectionSettingsClient_NewListByInsta
 		// 				Type: to.Ptr("Microsoft.Sql/managedInstances/advancedThreatProtectionSettings"),
 		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/threatprotection-4799/providers/Microsoft.Sql/managedInstances/threatprotection-6440/advancedThreatProtectionSettings/Default"),
 		// 				Properties: &armsql.AdvancedThreatProtectionProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-04-03T04:41:33.937Z"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2022, time.April, 3, 4, 41, 33, 937000000, time.UTC)),
 		// 					State: to.Ptr(armsql.AdvancedThreatProtectionStateDisabled),
 		// 				},
 		// 				SystemData: &armsql.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-04-03T04:41:33.937Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2022, time.April, 3, 4, 41, 33, 937000000, time.UTC)),
 		// 					CreatedBy: to.Ptr("string"),
 		// 					CreatedByType: to.Ptr(armsql.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-04-03T04:41:33.937Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2022, time.April, 3, 4, 41, 33, 937000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("string"),
 		// 					LastModifiedByType: to.Ptr(armsql.CreatedByTypeUser),
 		// 				},

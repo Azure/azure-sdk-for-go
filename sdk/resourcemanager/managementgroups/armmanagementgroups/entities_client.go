@@ -50,62 +50,76 @@ func (client *EntitiesClient) NewListPager(options *EntitiesClientListOptions) *
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return EntitiesClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return EntitiesClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *EntitiesClient) listCreateRequest(ctx context.Context, options *EntitiesClientListOptions) (*policy.Request, error) {
-	urlPath := "/providers/Microsoft.Management/getEntities"
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+func (client *EntitiesClient) listCreateRequest(ctx context.Context, nextLink string, options *EntitiesClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/providers/Microsoft.Management/getEntities"
+		req, err = runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
-	}
-	if options != nil && options.Search != nil {
-		reqQP.Set("$search", string(*options.Search))
-	}
-	if options != nil && options.Select != nil {
-		reqQP.Set("$select", *options.Select)
-	}
-	if options != nil && options.Skip != nil {
-		reqQP.Set("$skip", strconv.FormatInt(int64(*options.Skip), 10))
-	}
-	if options != nil && options.Skiptoken != nil {
-		reqQP.Set("$skiptoken", *options.Skiptoken)
-	}
-	if options != nil && options.Top != nil {
-		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
-	}
-	if options != nil && options.View != nil {
-		reqQP.Set("$view", string(*options.View))
-	}
-	reqQP.Set("api-version", version20230401)
-	if options != nil && options.GroupName != nil {
-		reqQP.Set("groupName", *options.GroupName)
-	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	if options != nil && options.CacheControl != nil {
-		req.Raw().Header["Cache-Control"] = []string{*options.CacheControl}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Filter != nil {
+			reqQP.Set("$filter", *options.Filter)
+		}
+		if options != nil && options.Search != nil {
+			reqQP.Set("$search", string(*options.Search))
+		}
+		if options != nil && options.Select != nil {
+			reqQP.Set("$select", *options.Select)
+		}
+		if options != nil && options.Skip != nil {
+			reqQP.Set("$skip", strconv.FormatInt(int64(*options.Skip), 10))
+		}
+		if options != nil && options.Skiptoken != nil {
+			reqQP.Set("$skiptoken", *options.Skiptoken)
+		}
+		if options != nil && options.Top != nil {
+			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+		}
+		if options != nil && options.View != nil {
+			reqQP.Set("$view", string(*options.View))
+		}
+		reqQP.Set("api-version", version20230401)
+		if options != nil && options.GroupName != nil {
+			reqQP.Set("groupName", *options.GroupName)
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+		if options != nil && options.CacheControl != nil {
+			req.Raw().Header["Cache-Control"] = []string{*options.CacheControl}
+		}
 	}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *EntitiesClient) listHandleResponse(resp *http.Response) (EntitiesClientListResponse, error) {
+func (client *EntitiesClient) listHandleResponse(resp *http.Response, successCodes ...int) (EntitiesClientListResponse, error) {
 	result := EntitiesClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EntityListResult); err != nil {
 		return EntitiesClientListResponse{}, err
 	}

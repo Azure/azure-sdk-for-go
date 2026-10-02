@@ -60,12 +60,7 @@ func (client *SavingsPlansClient) GetByBillingAccount(ctx context.Context, billi
 	if err != nil {
 		return SavingsPlansClientGetByBillingAccountResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SavingsPlansClientGetByBillingAccountResponse{}, err
-	}
-	resp, err := client.getByBillingAccountHandleResponse(httpResp)
-	return resp, err
+	return client.getByBillingAccountHandleResponse(httpResp, http.StatusOK)
 }
 
 // getByBillingAccountCreateRequest creates the GetByBillingAccount request.
@@ -98,8 +93,11 @@ func (client *SavingsPlansClient) getByBillingAccountCreateRequest(ctx context.C
 }
 
 // getByBillingAccountHandleResponse handles the GetByBillingAccount response.
-func (client *SavingsPlansClient) getByBillingAccountHandleResponse(resp *http.Response) (SavingsPlansClientGetByBillingAccountResponse, error) {
+func (client *SavingsPlansClient) getByBillingAccountHandleResponse(resp *http.Response, successCodes ...int) (SavingsPlansClientGetByBillingAccountResponse, error) {
 	result := SavingsPlansClientGetByBillingAccountResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SavingsPlanModel); err != nil {
 		return SavingsPlansClientGetByBillingAccountResponse{}, err
 	}
@@ -121,57 +119,71 @@ func (client *SavingsPlansClient) NewListByBillingAccountPager(billingAccountNam
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByBillingAccountCreateRequest(ctx, billingAccountName, options)
-			}, nil)
+			req, err := client.listByBillingAccountCreateRequest(ctx, billingAccountName, nextLink, options)
 			if err != nil {
 				return SavingsPlansClientListByBillingAccountResponse{}, err
 			}
-			return client.listByBillingAccountHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return SavingsPlansClientListByBillingAccountResponse{}, err
+			}
+			return client.listByBillingAccountHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByBillingAccountCreateRequest creates the ListByBillingAccount request.
-func (client *SavingsPlansClient) listByBillingAccountCreateRequest(ctx context.Context, billingAccountName string, options *SavingsPlansClientListByBillingAccountOptions) (*policy.Request, error) {
-	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/savingsPlans"
-	if billingAccountName == "" {
-		return nil, errors.New("parameter billingAccountName cannot be empty")
+func (client *SavingsPlansClient) listByBillingAccountCreateRequest(ctx context.Context, billingAccountName string, nextLink string, options *SavingsPlansClientListByBillingAccountOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/savingsPlans"
+		if billingAccountName == "" {
+			return nil, errors.New("parameter billingAccountName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{billingAccountName}", url.PathEscape(billingAccountName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{billingAccountName}", url.PathEscape(billingAccountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240401)
-	if options != nil && options.Filter != nil {
-		reqQP.Set("filter", *options.Filter)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20240401)
+		if options != nil && options.Filter != nil {
+			reqQP.Set("filter", *options.Filter)
+		}
+		if options != nil && options.OrderBy != nil {
+			reqQP.Set("orderBy", *options.OrderBy)
+		}
+		if options != nil && options.RefreshSummary != nil {
+			reqQP.Set("refreshSummary", *options.RefreshSummary)
+		}
+		if options != nil && options.SelectedState != nil {
+			reqQP.Set("selectedState", *options.SelectedState)
+		}
+		if options != nil && options.Skiptoken != nil {
+			reqQP.Set("skiptoken", strconv.FormatFloat(float64(*options.Skiptoken), 'f', -1, 32))
+		}
+		if options != nil && options.Take != nil {
+			reqQP.Set("take", strconv.FormatFloat(float64(*options.Take), 'f', -1, 32))
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.OrderBy != nil {
-		reqQP.Set("orderBy", *options.OrderBy)
-	}
-	if options != nil && options.RefreshSummary != nil {
-		reqQP.Set("refreshSummary", *options.RefreshSummary)
-	}
-	if options != nil && options.SelectedState != nil {
-		reqQP.Set("selectedState", *options.SelectedState)
-	}
-	if options != nil && options.Skiptoken != nil {
-		reqQP.Set("skiptoken", strconv.FormatFloat(float64(*options.Skiptoken), 'f', -1, 32))
-	}
-	if options != nil && options.Take != nil {
-		reqQP.Set("take", strconv.FormatFloat(float64(*options.Take), 'f', -1, 32))
-	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByBillingAccountHandleResponse handles the ListByBillingAccount response.
-func (client *SavingsPlansClient) listByBillingAccountHandleResponse(resp *http.Response) (SavingsPlansClientListByBillingAccountResponse, error) {
+func (client *SavingsPlansClient) listByBillingAccountHandleResponse(resp *http.Response, successCodes ...int) (SavingsPlansClientListByBillingAccountResponse, error) {
 	result := SavingsPlansClientListByBillingAccountResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SavingsPlanModelListResult); err != nil {
 		return SavingsPlansClientListByBillingAccountResponse{}, err
 	}
@@ -194,43 +206,57 @@ func (client *SavingsPlansClient) NewListBySavingsPlanOrderPager(billingAccountN
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listBySavingsPlanOrderCreateRequest(ctx, billingAccountName, savingsPlanOrderID, options)
-			}, nil)
+			req, err := client.listBySavingsPlanOrderCreateRequest(ctx, billingAccountName, savingsPlanOrderID, nextLink, options)
 			if err != nil {
 				return SavingsPlansClientListBySavingsPlanOrderResponse{}, err
 			}
-			return client.listBySavingsPlanOrderHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return SavingsPlansClientListBySavingsPlanOrderResponse{}, err
+			}
+			return client.listBySavingsPlanOrderHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listBySavingsPlanOrderCreateRequest creates the ListBySavingsPlanOrder request.
-func (client *SavingsPlansClient) listBySavingsPlanOrderCreateRequest(ctx context.Context, billingAccountName string, savingsPlanOrderID string, _ *SavingsPlansClientListBySavingsPlanOrderOptions) (*policy.Request, error) {
-	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/savingsPlanOrders/{savingsPlanOrderId}/savingsPlans"
-	if billingAccountName == "" {
-		return nil, errors.New("parameter billingAccountName cannot be empty")
+func (client *SavingsPlansClient) listBySavingsPlanOrderCreateRequest(ctx context.Context, billingAccountName string, savingsPlanOrderID string, nextLink string, _ *SavingsPlansClientListBySavingsPlanOrderOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/savingsPlanOrders/{savingsPlanOrderId}/savingsPlans"
+		if billingAccountName == "" {
+			return nil, errors.New("parameter billingAccountName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{billingAccountName}", url.PathEscape(billingAccountName))
+		if savingsPlanOrderID == "" {
+			return nil, errors.New("parameter savingsPlanOrderID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{savingsPlanOrderId}", url.PathEscape(savingsPlanOrderID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{billingAccountName}", url.PathEscape(billingAccountName))
-	if savingsPlanOrderID == "" {
-		return nil, errors.New("parameter savingsPlanOrderID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{savingsPlanOrderId}", url.PathEscape(savingsPlanOrderID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240401)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20240401)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listBySavingsPlanOrderHandleResponse handles the ListBySavingsPlanOrder response.
-func (client *SavingsPlansClient) listBySavingsPlanOrderHandleResponse(resp *http.Response) (SavingsPlansClientListBySavingsPlanOrderResponse, error) {
+func (client *SavingsPlansClient) listBySavingsPlanOrderHandleResponse(resp *http.Response, successCodes ...int) (SavingsPlansClientListBySavingsPlanOrderResponse, error) {
 	result := SavingsPlansClientListBySavingsPlanOrderResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SavingsPlanModelList); err != nil {
 		return SavingsPlansClientListBySavingsPlanOrderResponse{}, err
 	}
@@ -279,8 +305,7 @@ func (client *SavingsPlansClient) updateByBillingAccount(ctx context.Context, bi
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -337,12 +362,7 @@ func (client *SavingsPlansClient) ValidateUpdateByBillingAccount(ctx context.Con
 	if err != nil {
 		return SavingsPlansClientValidateUpdateByBillingAccountResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SavingsPlansClientValidateUpdateByBillingAccountResponse{}, err
-	}
-	resp, err := client.validateUpdateByBillingAccountHandleResponse(httpResp)
-	return resp, err
+	return client.validateUpdateByBillingAccountHandleResponse(httpResp, http.StatusOK)
 }
 
 // validateUpdateByBillingAccountCreateRequest creates the ValidateUpdateByBillingAccount request.
@@ -376,8 +396,11 @@ func (client *SavingsPlansClient) validateUpdateByBillingAccountCreateRequest(ct
 }
 
 // validateUpdateByBillingAccountHandleResponse handles the ValidateUpdateByBillingAccount response.
-func (client *SavingsPlansClient) validateUpdateByBillingAccountHandleResponse(resp *http.Response) (SavingsPlansClientValidateUpdateByBillingAccountResponse, error) {
+func (client *SavingsPlansClient) validateUpdateByBillingAccountHandleResponse(resp *http.Response, successCodes ...int) (SavingsPlansClientValidateUpdateByBillingAccountResponse, error) {
 	result := SavingsPlansClientValidateUpdateByBillingAccountResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SavingsPlanValidateResponse); err != nil {
 		return SavingsPlansClientValidateUpdateByBillingAccountResponse{}, err
 	}

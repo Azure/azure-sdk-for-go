@@ -11,7 +11,7 @@ that perf-automation can drive both languages from a single matrix.
 | `--duration` | `-d` | 10 | Measurement-phase duration in seconds. |
 | `--warmup` | `-w` | 5 | Warmup duration in seconds. Zero skips warmup. |
 | `--parallel` | `-p` | 1 | Number of goroutines executing the test concurrently. |
-| `--iterations` | `-i` | 1 | How many times the measurement phase is repeated. |
+| `--iterations` | `-i` | 1 | How many times the measurement phase is repeated and aggregated into the final results. |
 | `--rate` | `-r` | 0 | Target throughput in ops/sec aggregated across workers. Zero = unlimited. |
 | `--status-interval` |  | 1 | Seconds between live status lines. |
 | `--latency` | `-l` | false | Track per-operation latency and print a percentile summary. |
@@ -21,7 +21,10 @@ that perf-automation can drive both languages from a single matrix.
 | `--insecure` |  | false | Accepted for CLI parity; the default transport already skips TLS verification for the test proxy. |
 | `--test-proxies` | `-x` |  | Semicolon-separated list of test-proxy URLs. |
 | `--results-file` |  |  | When combined with `--latency`, writes per-operation results as JSON. |
+| `--max-results` |  | 1000000 | Maximum sampled operation records retained across all workers. Zero is unbounded. |
 | `--output-file-prefix` |  |  | Writes run summary artifacts to `<prefix>.json/.csv/.txt/.md`. |
+| `--profile` |  | false | Collect a Go CPU profile across setup, warmup, measurement, and cleanup. |
+| `--profile-path` |  | `cpu.pprof` | CPU profile destination when `--profile` is set. |
 | `--resource-telemetry` |  | false | Print a `runtime.MemStats` / goroutine-count delta at end of run. |
 | `--config` |  |  | Path to a workload-config JSON file. |
 | `--workload` |  |  | Workload name to select from the config file. |
@@ -35,7 +38,79 @@ that perf-automation can drive both languages from a single matrix.
 The runner always samples process CPU and memory in the background; both are
 shown live in the status line (`CPU`, `Memory(MiB)`) and as
 `averageCpuPercent` / `averageMemoryBytes` in the run-summary artifacts.
+Latency percentile collection retains a bounded sample across all workers to
+avoid memory growth during long, high-throughput runs.
 
+## Testing the azblob Performance Tests
+
+The following examples exercise upload, download, and list operations while
+collecting a CPU profile. Run them from the azblob perf-test module:
+
+```bash
+cd sdk/storage/azblob/testdata/perf
+```
+
+For OAuth authentication, sign in with the Azure CLI and set the storage
+account name. The identity must have permission to create containers and blobs,
+such as the Storage Blob Data Contributor role.
+
+```bash
+az login
+export AZURE_STORAGE_ACCOUNT_NAME="<storage-account-name>"
+unset AZURE_STORAGE_CONNECTION_STRING
+```
+
+For sovereign clouds or custom storage endpoints, set the full account URL
+instead of the account name:
+
+```bash
+export AZURE_STORAGE_ACCOUNT_URL="https://<storage-account-endpoint>"
+unset AZURE_STORAGE_ACCOUNT_NAME
+```
+
+Alternatively, unset `AZURE_STORAGE_ACCOUNT_NAME` and set
+`AZURE_STORAGE_CONNECTION_STRING` to use shared-key authentication.
+
+### Upload
+
+```bash
+go run . UploadBlobTest \
+	--size 10240 \
+	--iterations 1 \
+	--warmup 0 \
+	--profile \
+	--profile-path ./upload-blob.pprof
+```
+
+### Download
+
+```bash
+go run . DownloadBlobTest \
+	--size 10240 \
+	--iterations 1 \
+	--warmup 0 \
+	--profile \
+	--profile-path ./download-blob.pprof
+```
+
+### List
+
+```bash
+go run . ListBlobTest \
+	--num-blobs 100 \
+	--num-blobs-parallelism 8 \
+	--iterations 1 \
+	--warmup 0 \
+	--profile \
+	--profile-path ./list-blobs.pprof
+```
+
+Verify and inspect any generated profile with `go tool pprof`:
+
+```bash
+test -s ./list-blobs.pprof
+go tool pprof -top ./list-blobs.pprof
+```
 
 ## Adding Performance Tests to an SDK
 

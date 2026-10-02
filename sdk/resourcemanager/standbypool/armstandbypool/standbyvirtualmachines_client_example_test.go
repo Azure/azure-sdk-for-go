@@ -41,10 +41,10 @@ func ExampleStandbyVirtualMachinesClient_Get() {
 	// 		SystemData: &armstandbypool.SystemData{
 	// 			CreatedBy: to.Ptr("pooluser@microsoft.com"),
 	// 			CreatedByType: to.Ptr(armstandbypool.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-09-07T16:33:22.210Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2023, time.September, 7, 16, 33, 22, 210000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("pooluser@microsoft.com"),
 	// 			LastModifiedByType: to.Ptr(armstandbypool.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-09-07T16:33:22.210Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.September, 7, 16, 33, 22, 210000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -86,10 +86,10 @@ func ExampleStandbyVirtualMachinesClient_NewListByStandbyVirtualMachinePoolResou
 		// 				SystemData: &armstandbypool.SystemData{
 		// 					CreatedBy: to.Ptr("pooluser@microsoft.com"),
 		// 					CreatedByType: to.Ptr(armstandbypool.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-09-07T16:33:22.210Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2023, time.September, 7, 16, 33, 22, 210000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("pooluser@microsoft.com"),
 		// 					LastModifiedByType: to.Ptr(armstandbypool.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-09-07T16:33:22.210Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2023, time.September, 7, 16, 33, 22, 210000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},

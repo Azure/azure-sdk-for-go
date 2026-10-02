@@ -229,8 +229,14 @@ type BackupShortTermRetentionPolicyProperties struct {
 	// This is only applicable to live databases but not dropped databases.
 	DiffBackupIntervalInHours *DiffBackupIntervalInHours
 
+	// Whether to lock the immutability of the backups governed by this short term retention policy.
+	LockImmutability *bool
+
 	// The backup retention period in days. This is how many days Point-in-Time Restore will be supported.
 	RetentionDays *int32
+
+	// READ-ONLY; The immutability status of the backups governed by this short term retention policy.
+	ImmutabilityStatus *ImmutabilityStatus
 }
 
 // Baseline - SQL Vulnerability Assessment baseline Details
@@ -736,6 +742,12 @@ type DatabaseBlobAuditingPolicyProperties struct {
 	// The default minimum value is 1000 (1 second). The maximum is 2,147,483,647.
 	QueueDelayMs *int32
 
+	// Specifies the required fields to include in audit events (optional).
+	// Each item must be a valid audit_event field name.
+	// Can only be specified when isAzureMonitorTargetEnabled is true.
+	// For the complete list of valid field names, see the audit_event table schema documentation.
+	RequiredFields []*string
+
 	// Specifies the number of days to keep in the audit logs in the storage account.
 	RetentionDays *int32
 
@@ -743,9 +755,11 @@ type DatabaseBlobAuditingPolicyProperties struct {
 	// If state is Enabled and storageEndpoint is specified, not specifying the storageAccountAccessKey will use SQL server system-assigned
 	// managed identity to access the storage.
 	// Prerequisites for using managed identity authentication:
-	// 1. Assign SQL Server a system-assigned managed identity in Azure Active Directory (AAD).
-	// 2. Grant SQL Server identity access to the storage account by adding 'Storage Blob Data Contributor' RBAC role to the server
-	// identity.
+	//
+	//  1. Assign SQL Server a system-assigned managed identity in Azure Active Directory (AAD).
+	//  2. Grant SQL Server identity access to the storage account by adding 'Storage Blob Data Contributor' RBAC role to the server
+	//     identity.
+	//
 	// For more information, see [Auditing to storage using Managed Identity authentication](https://go.microsoft.com/fwlink/?linkid=2114355)
 	StorageAccountAccessKey *string
 
@@ -1759,6 +1773,12 @@ type DeletedServerProperties struct {
 	// READ-ONLY; The original ID of the server before deletion.
 	OriginalID *string
 
+	// READ-ONLY; The resource group of the original server before deletion.
+	OriginalResourceGroup *string
+
+	// READ-ONLY; The date and time when the deleted server will be permanently deleted (purged).
+	ScheduledPurgeTime *time.Time
+
 	// READ-ONLY; The version of the deleted server.
 	Version *string
 }
@@ -1862,6 +1882,9 @@ type DistributedAvailabilityGroupProperties struct {
 	// Managed instance side link role
 	InstanceLinkRole *LinkRole
 
+	// Specifies whether the link operates in single-database or multi-database mode.
+	LinkMode *LinkModeType
+
 	// SQL server side availability group name
 	PartnerAvailabilityGroupName *string
 
@@ -1879,6 +1902,15 @@ type DistributedAvailabilityGroupProperties struct {
 
 	// READ-ONLY; Name of the distributed availability group
 	DistributedAvailabilityGroupName *string
+
+	// READ-ONLY; Most recent error code for the distributed availability group.
+	MostRecentError *string
+
+	// READ-ONLY; Most recent error message for the distributed availability group.
+	MostRecentErrorMessage *string
+
+	// READ-ONLY; Time of the most recent error for the distributed availability group.
+	MostRecentErrorTime *time.Time
 
 	// READ-ONLY; SQL server side link role
 	PartnerLinkRole *LinkRole
@@ -2353,6 +2385,9 @@ type EndpointCertificateListResult struct {
 type EndpointCertificateProperties struct {
 	// The certificate public blob
 	PublicBlob *string
+
+	// READ-ONLY; Trusted root certificates required to validate the instance certificate
+	TrustedRootCertificates []*EndpointTrustedRootCertificateInfo
 }
 
 // EndpointDependency - A domain name that the managed instance service needs to communicate with, along with additional details.
@@ -2368,6 +2403,15 @@ type EndpointDependency struct {
 type EndpointDetail struct {
 	// READ-ONLY; The port an endpoint is connected to.
 	Port *int32
+}
+
+// EndpointTrustedRootCertificateInfo - Trusted root certificate required to validate the instance certificate
+type EndpointTrustedRootCertificateInfo struct {
+	// Root certificate public blob as DER encoded hex string
+	PublicBlob *string
+
+	// Root certificate subject name
+	Subject *string
 }
 
 // ExportDatabaseDefinition - Contains the information necessary to perform export database operation.
@@ -2508,6 +2552,12 @@ type ExtendedDatabaseBlobAuditingPolicyProperties struct {
 	// The default minimum value is 1000 (1 second). The maximum is 2,147,483,647.
 	QueueDelayMs *int32
 
+	// Specifies the required fields to include in audit events (optional).
+	// Each item must be a valid audit_event field name.
+	// Can only be specified when isAzureMonitorTargetEnabled is true.
+	// For the complete list of valid field names, see the audit_event table schema documentation.
+	RequiredFields []*string
+
 	// Specifies the number of days to keep in the audit logs in the storage account.
 	RetentionDays *int32
 
@@ -2515,9 +2565,11 @@ type ExtendedDatabaseBlobAuditingPolicyProperties struct {
 	// If state is Enabled and storageEndpoint is specified, not specifying the storageAccountAccessKey will use SQL server system-assigned
 	// managed identity to access the storage.
 	// Prerequisites for using managed identity authentication:
-	// 1. Assign SQL Server a system-assigned managed identity in Azure Active Directory (AAD).
-	// 2. Grant SQL Server identity access to the storage account by adding 'Storage Blob Data Contributor' RBAC role to the server
-	// identity.
+	//
+	//  1. Assign SQL Server a system-assigned managed identity in Azure Active Directory (AAD).
+	//  2. Grant SQL Server identity access to the storage account by adding 'Storage Blob Data Contributor' RBAC role to the server
+	//     identity.
+	//
 	// For more information, see [Auditing to storage using Managed Identity authentication](https://go.microsoft.com/fwlink/?linkid=2114355)
 	StorageAccountAccessKey *string
 
@@ -2652,6 +2704,12 @@ type ExtendedServerBlobAuditingPolicyProperties struct {
 	// The default minimum value is 1000 (1 second). The maximum is 2,147,483,647.
 	QueueDelayMs *int32
 
+	// Specifies the required fields to include in audit events (optional).
+	// Each item must be a valid audit_event field name.
+	// Can only be specified when isAzureMonitorTargetEnabled is true.
+	// For the complete list of valid field names, see the audit_event table schema documentation.
+	RequiredFields []*string
+
 	// Specifies the number of days to keep in the audit logs in the storage account.
 	RetentionDays *int32
 
@@ -2659,9 +2717,11 @@ type ExtendedServerBlobAuditingPolicyProperties struct {
 	// If state is Enabled and storageEndpoint is specified, not specifying the storageAccountAccessKey will use SQL server system-assigned
 	// managed identity to access the storage.
 	// Prerequisites for using managed identity authentication:
-	// 1. Assign SQL Server a system-assigned managed identity in Azure Active Directory (AAD).
-	// 2. Grant SQL Server identity access to the storage account by adding 'Storage Blob Data Contributor' RBAC role to the server
-	// identity.
+	//
+	//  1. Assign SQL Server a system-assigned managed identity in Azure Active Directory (AAD).
+	//  2. Grant SQL Server identity access to the storage account by adding 'Storage Blob Data Contributor' RBAC role to the server
+	//     identity.
+	//
 	// For more information, see [Auditing to storage using Managed Identity authentication](https://go.microsoft.com/fwlink/?linkid=2114355)
 	StorageAccountAccessKey *string
 
@@ -4255,8 +4315,14 @@ type ManagedBackupShortTermRetentionPolicyListResult struct {
 
 // ManagedBackupShortTermRetentionPolicyProperties - Properties of a short term retention policy
 type ManagedBackupShortTermRetentionPolicyProperties struct {
+	// Whether to lock the immutability of the backups governed by this short term retention policy.
+	LockImmutability *bool
+
 	// The backup retention period in days. This is how many days Point-in-Time Restore will be supported.
 	RetentionDays *int32
+
+	// READ-ONLY; The immutability status of the backups governed by this short term retention policy.
+	ImmutabilityStatus *ImmutabilityStatus
 }
 
 // ManagedDatabase - A managed database resource.
@@ -4729,6 +4795,9 @@ type ManagedInstanceAdministratorProperties struct {
 	// REQUIRED; SID (object ID) of the managed instance administrator.
 	Sid *string
 
+	// Principal type of the managed instance administrator.
+	PrincipalType *ManagedInstanceAdministratorPrincipalType
+
 	// Tenant ID of the managed instance administrator.
 	TenantID *string
 }
@@ -5090,11 +5159,25 @@ type ManagedInstanceLongTermRetentionBackupProperties struct {
 	// READ-ONLY; The name of the database the backup belong to
 	DatabaseName *string
 
+	// READ-ONLY; The setting whether the LTR backup is immutable
+	IsBackupImmutable *bool
+
+	// READ-ONLY; The setting for whether LegalHold is enabled or disabled on the LTR backup. When LegalHold is enabled, the backup
+	// cannot be deleted until the LegalHold is removed.
+	LegalHoldImmutability *SetLegalHoldImmutability
+
 	// READ-ONLY; The create time of the instance.
 	ManagedInstanceCreateTime *time.Time
 
 	// READ-ONLY; The managed instance that the backup database belongs to.
 	ManagedInstanceName *string
+
+	// READ-ONLY; The setting for whether or not time-based immutability is enabled for the LTR backup. When time-based immutability
+	// is enabled and locked, the backup cannot be deleted until BackupExpirationTime.
+	TimeBasedImmutability *TimeBasedImmutability
+
+	// READ-ONLY; The time-based immutability mode. Only applicable if time-based immutability is enabled.
+	TimeBasedImmutabilityMode *TimeBasedImmutabilityMode
 }
 
 // ManagedInstanceLongTermRetentionPolicy - A long term retention policy.
@@ -5131,6 +5214,15 @@ type ManagedInstanceLongTermRetentionPolicyProperties struct {
 
 	// The monthly retention policy for an LTR backup in an ISO 8601 format.
 	MonthlyRetention *string
+
+	// The setting for whether to enable time-based immutability for future backups. When set, future backups will have TimeBasedImmutability
+	// enabled.
+	TimeBasedImmutability *TimeBasedImmutability
+
+	// The setting for time-based immutability mode for future backup (Value can be either Locked or UnLocked. Only effective
+	// if TimeBasedImmutability is enabled). Caution: Immutability of LTR backup cannot be removed if TimeBasedImmutabilityMode
+	// is Locked.
+	TimeBasedImmutabilityMode *TimeBasedImmutabilityMode
 
 	// The week of year to take the yearly backup in an ISO 8601 format.
 	WeekOfYear *int32
@@ -7517,6 +7609,12 @@ type ServerBlobAuditingPolicyProperties struct {
 	// The default minimum value is 1000 (1 second). The maximum is 2,147,483,647.
 	QueueDelayMs *int32
 
+	// Specifies the required fields to include in audit events (optional).
+	// Each item must be a valid audit_event field name.
+	// Can only be specified when isAzureMonitorTargetEnabled is true.
+	// For the complete list of valid field names, see the audit_event table schema documentation.
+	RequiredFields []*string
+
 	// Specifies the number of days to keep in the audit logs in the storage account.
 	RetentionDays *int32
 
@@ -7524,9 +7622,11 @@ type ServerBlobAuditingPolicyProperties struct {
 	// If state is Enabled and storageEndpoint is specified, not specifying the storageAccountAccessKey will use SQL server system-assigned
 	// managed identity to access the storage.
 	// Prerequisites for using managed identity authentication:
-	// 1. Assign SQL Server a system-assigned managed identity in Azure Active Directory (AAD).
-	// 2. Grant SQL Server identity access to the storage account by adding 'Storage Blob Data Contributor' RBAC role to the server
-	// identity.
+	//
+	//  1. Assign SQL Server a system-assigned managed identity in Azure Active Directory (AAD).
+	//  2. Grant SQL Server identity access to the storage account by adding 'Storage Blob Data Contributor' RBAC role to the server
+	//     identity.
+	//
 	// For more information, see [Auditing to storage using Managed Identity authentication](https://go.microsoft.com/fwlink/?linkid=2114355)
 	StorageAccountAccessKey *string
 
@@ -7683,9 +7783,11 @@ type ServerDevOpsAuditSettingsProperties struct {
 	// If state is Enabled and storageEndpoint is specified, not specifying the storageAccountAccessKey will use SQL server system-assigned
 	// managed identity to access the storage.
 	// Prerequisites for using managed identity authentication:
-	// 1. Assign SQL Server a system-assigned managed identity in Azure Active Directory (AAD).
-	// 2. Grant SQL Server identity access to the storage account by adding 'Storage Blob Data Contributor' RBAC role to the server
-	// identity.
+	//
+	//  1. Assign SQL Server a system-assigned managed identity in Azure Active Directory (AAD).
+	//  2. Grant SQL Server identity access to the storage account by adding 'Storage Blob Data Contributor' RBAC role to the server
+	//     identity.
+	//
 	// For more information, see [Auditing to storage using Managed Identity authentication](https://go.microsoft.com/fwlink/?linkid=2114355)
 	StorageAccountAccessKey *string
 
@@ -8099,6 +8201,12 @@ type ServerUsageProperties struct {
 
 	// READ-ONLY; Boundary value of the metric.
 	Limit *float64
+
+	// READ-ONLY; The next reset time for the metric (ISO8601 format).
+	NextResetTime *time.Time
+
+	// READ-ONLY; The name of the resource.
+	ResourceName *string
 
 	// READ-ONLY; Unit of the metric.
 	Unit *string

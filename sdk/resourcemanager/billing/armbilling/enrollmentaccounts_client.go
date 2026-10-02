@@ -59,12 +59,7 @@ func (client *EnrollmentAccountsClient) Get(ctx context.Context, billingAccountN
 	if err != nil {
 		return EnrollmentAccountsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return EnrollmentAccountsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -90,8 +85,11 @@ func (client *EnrollmentAccountsClient) getCreateRequest(ctx context.Context, bi
 }
 
 // getHandleResponse handles the Get response.
-func (client *EnrollmentAccountsClient) getHandleResponse(resp *http.Response) (EnrollmentAccountsClientGetResponse, error) {
+func (client *EnrollmentAccountsClient) getHandleResponse(resp *http.Response, successCodes ...int) (EnrollmentAccountsClientGetResponse, error) {
 	result := EnrollmentAccountsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EnrollmentAccount); err != nil {
 		return EnrollmentAccountsClientGetResponse{}, err
 	}
@@ -120,12 +118,7 @@ func (client *EnrollmentAccountsClient) GetByDepartment(ctx context.Context, bil
 	if err != nil {
 		return EnrollmentAccountsClientGetByDepartmentResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return EnrollmentAccountsClientGetByDepartmentResponse{}, err
-	}
-	resp, err := client.getByDepartmentHandleResponse(httpResp)
-	return resp, err
+	return client.getByDepartmentHandleResponse(httpResp, http.StatusOK)
 }
 
 // getByDepartmentCreateRequest creates the GetByDepartment request.
@@ -155,8 +148,11 @@ func (client *EnrollmentAccountsClient) getByDepartmentCreateRequest(ctx context
 }
 
 // getByDepartmentHandleResponse handles the GetByDepartment response.
-func (client *EnrollmentAccountsClient) getByDepartmentHandleResponse(resp *http.Response) (EnrollmentAccountsClientGetByDepartmentResponse, error) {
+func (client *EnrollmentAccountsClient) getByDepartmentHandleResponse(resp *http.Response, successCodes ...int) (EnrollmentAccountsClientGetByDepartmentResponse, error) {
 	result := EnrollmentAccountsClientGetByDepartmentResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EnrollmentAccount); err != nil {
 		return EnrollmentAccountsClientGetByDepartmentResponse{}, err
 	}
@@ -179,57 +175,71 @@ func (client *EnrollmentAccountsClient) NewListByBillingAccountPager(billingAcco
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByBillingAccountCreateRequest(ctx, billingAccountName, options)
-			}, nil)
+			req, err := client.listByBillingAccountCreateRequest(ctx, billingAccountName, nextLink, options)
 			if err != nil {
 				return EnrollmentAccountsClientListByBillingAccountResponse{}, err
 			}
-			return client.listByBillingAccountHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return EnrollmentAccountsClientListByBillingAccountResponse{}, err
+			}
+			return client.listByBillingAccountHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByBillingAccountCreateRequest creates the ListByBillingAccount request.
-func (client *EnrollmentAccountsClient) listByBillingAccountCreateRequest(ctx context.Context, billingAccountName string, options *EnrollmentAccountsClientListByBillingAccountOptions) (*policy.Request, error) {
-	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/enrollmentAccounts"
-	if billingAccountName == "" {
-		return nil, errors.New("parameter billingAccountName cannot be empty")
+func (client *EnrollmentAccountsClient) listByBillingAccountCreateRequest(ctx context.Context, billingAccountName string, nextLink string, options *EnrollmentAccountsClientListByBillingAccountOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/enrollmentAccounts"
+		if billingAccountName == "" {
+			return nil, errors.New("parameter billingAccountName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{billingAccountName}", url.PathEscape(billingAccountName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{billingAccountName}", url.PathEscape(billingAccountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240401)
-	if options != nil && options.Count != nil {
-		reqQP.Set("count", strconv.FormatBool(*options.Count))
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20240401)
+		if options != nil && options.Count != nil {
+			reqQP.Set("count", strconv.FormatBool(*options.Count))
+		}
+		if options != nil && options.Filter != nil {
+			reqQP.Set("filter", *options.Filter)
+		}
+		if options != nil && options.OrderBy != nil {
+			reqQP.Set("orderBy", *options.OrderBy)
+		}
+		if options != nil && options.Search != nil {
+			reqQP.Set("search", *options.Search)
+		}
+		if options != nil && options.Skip != nil {
+			reqQP.Set("skip", strconv.FormatInt(*options.Skip, 10))
+		}
+		if options != nil && options.Top != nil {
+			reqQP.Set("top", strconv.FormatInt(*options.Top, 10))
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.Filter != nil {
-		reqQP.Set("filter", *options.Filter)
-	}
-	if options != nil && options.OrderBy != nil {
-		reqQP.Set("orderBy", *options.OrderBy)
-	}
-	if options != nil && options.Search != nil {
-		reqQP.Set("search", *options.Search)
-	}
-	if options != nil && options.Skip != nil {
-		reqQP.Set("skip", strconv.FormatInt(*options.Skip, 10))
-	}
-	if options != nil && options.Top != nil {
-		reqQP.Set("top", strconv.FormatInt(*options.Top, 10))
-	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByBillingAccountHandleResponse handles the ListByBillingAccount response.
-func (client *EnrollmentAccountsClient) listByBillingAccountHandleResponse(resp *http.Response) (EnrollmentAccountsClientListByBillingAccountResponse, error) {
+func (client *EnrollmentAccountsClient) listByBillingAccountHandleResponse(resp *http.Response, successCodes ...int) (EnrollmentAccountsClientListByBillingAccountResponse, error) {
 	result := EnrollmentAccountsClientListByBillingAccountResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EnrollmentAccountListResult); err != nil {
 		return EnrollmentAccountsClientListByBillingAccountResponse{}, err
 	}
@@ -253,61 +263,75 @@ func (client *EnrollmentAccountsClient) NewListByDepartmentPager(billingAccountN
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByDepartmentCreateRequest(ctx, billingAccountName, departmentName, options)
-			}, nil)
+			req, err := client.listByDepartmentCreateRequest(ctx, billingAccountName, departmentName, nextLink, options)
 			if err != nil {
 				return EnrollmentAccountsClientListByDepartmentResponse{}, err
 			}
-			return client.listByDepartmentHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return EnrollmentAccountsClientListByDepartmentResponse{}, err
+			}
+			return client.listByDepartmentHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByDepartmentCreateRequest creates the ListByDepartment request.
-func (client *EnrollmentAccountsClient) listByDepartmentCreateRequest(ctx context.Context, billingAccountName string, departmentName string, options *EnrollmentAccountsClientListByDepartmentOptions) (*policy.Request, error) {
-	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/departments/{departmentName}/enrollmentAccounts"
-	if billingAccountName == "" {
-		return nil, errors.New("parameter billingAccountName cannot be empty")
+func (client *EnrollmentAccountsClient) listByDepartmentCreateRequest(ctx context.Context, billingAccountName string, departmentName string, nextLink string, options *EnrollmentAccountsClientListByDepartmentOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/departments/{departmentName}/enrollmentAccounts"
+		if billingAccountName == "" {
+			return nil, errors.New("parameter billingAccountName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{billingAccountName}", url.PathEscape(billingAccountName))
+		if departmentName == "" {
+			return nil, errors.New("parameter departmentName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{departmentName}", url.PathEscape(departmentName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{billingAccountName}", url.PathEscape(billingAccountName))
-	if departmentName == "" {
-		return nil, errors.New("parameter departmentName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{departmentName}", url.PathEscape(departmentName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240401)
-	if options != nil && options.Count != nil {
-		reqQP.Set("count", strconv.FormatBool(*options.Count))
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20240401)
+		if options != nil && options.Count != nil {
+			reqQP.Set("count", strconv.FormatBool(*options.Count))
+		}
+		if options != nil && options.Filter != nil {
+			reqQP.Set("filter", *options.Filter)
+		}
+		if options != nil && options.OrderBy != nil {
+			reqQP.Set("orderBy", *options.OrderBy)
+		}
+		if options != nil && options.Search != nil {
+			reqQP.Set("search", *options.Search)
+		}
+		if options != nil && options.Skip != nil {
+			reqQP.Set("skip", strconv.FormatInt(*options.Skip, 10))
+		}
+		if options != nil && options.Top != nil {
+			reqQP.Set("top", strconv.FormatInt(*options.Top, 10))
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.Filter != nil {
-		reqQP.Set("filter", *options.Filter)
-	}
-	if options != nil && options.OrderBy != nil {
-		reqQP.Set("orderBy", *options.OrderBy)
-	}
-	if options != nil && options.Search != nil {
-		reqQP.Set("search", *options.Search)
-	}
-	if options != nil && options.Skip != nil {
-		reqQP.Set("skip", strconv.FormatInt(*options.Skip, 10))
-	}
-	if options != nil && options.Top != nil {
-		reqQP.Set("top", strconv.FormatInt(*options.Top, 10))
-	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByDepartmentHandleResponse handles the ListByDepartment response.
-func (client *EnrollmentAccountsClient) listByDepartmentHandleResponse(resp *http.Response) (EnrollmentAccountsClientListByDepartmentResponse, error) {
+func (client *EnrollmentAccountsClient) listByDepartmentHandleResponse(resp *http.Response, successCodes ...int) (EnrollmentAccountsClientListByDepartmentResponse, error) {
 	result := EnrollmentAccountsClientListByDepartmentResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EnrollmentAccountListResult); err != nil {
 		return EnrollmentAccountsClientListByDepartmentResponse{}, err
 	}

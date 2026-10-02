@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-04-01-preview/FirewallRulesCreateOrUpdate.json
+// Generated from example definition: 2026-07-01-preview/FirewallRulesCreateOrUpdate.json
 func ExampleFirewallRulesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -38,7 +38,7 @@ func ExampleFirewallRulesClient_BeginCreateOrUpdate() {
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/FirewallRulesDelete.json
+// Generated from example definition: 2026-07-01-preview/FirewallRulesDelete.json
 func ExampleFirewallRulesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -59,7 +59,7 @@ func ExampleFirewallRulesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/FirewallRulesGet.json
+// Generated from example definition: 2026-07-01-preview/FirewallRulesGet.json
 func ExampleFirewallRulesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -90,7 +90,7 @@ func ExampleFirewallRulesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/FirewallRulesListByServer.json
+// Generated from example definition: 2026-07-01-preview/FirewallRulesListByServer.json
 func ExampleFirewallRulesClient_NewListByServerPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -114,7 +114,7 @@ func ExampleFirewallRulesClient_NewListByServerPager() {
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page = armpostgresqlflexibleservers.FirewallRulesClientListByServerResponse{
 		// 	FirewallRuleList: armpostgresqlflexibleservers.FirewallRuleList{
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff//resourceGroups/exampleresourcegroup/providers/Microsoft.DBforPostgreSQL/flexibleServers/exampleserver/firewallRules?api-version=2026-04-01-preview&$skiptoken=skiptoken"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff//resourceGroups/exampleresourcegroup/providers/Microsoft.DBforPostgreSQL/flexibleServers/exampleserver/firewallRules?api-version=2026-07-01-preview&$skiptoken=skiptoken"),
 		// 		Value: []*armpostgresqlflexibleservers.FirewallRule{
 		// 			{
 		// 				Name: to.Ptr("examplefirewallrule1"),

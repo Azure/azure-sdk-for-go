@@ -2,6 +2,29 @@
 
 <!-- cSpell:ignore documentdb unmarshalling -->
 
+## 1.6.0-beta.4 (Unreleased)
+
+### Features Added
+* Added `ClientOptions.DisableEndpointDiscovery`. When set to `true`, the client ignores the account's advertised readable/writable locations for routing and sends every request to the endpoint the client was constructed with. Cross-region failover is suppressed in this mode while same-region (same-endpoint) transport retries are preserved. `PreferredRegions` may still be set but has no effect on routing. This supports environments where the account advertises a document endpoint whose host is not reachable from the client's network and all traffic must instead flow through the endpoint the client was created with (e.g. a reverse proxy on a different domain). See [PR 27508](https://github.com/Azure/azure-sdk-for-go/pull/27508).
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.6.0-beta.3 (2026-09-01)
+
+### Bugs Fixed
+
+* Fixed `ReadManyItems` requests that target a single logical partition key to include that key in service telemetry, allowing `CDBPartitionKeyRUConsumption` to attribute the request charge to the partition. See [PR 27491](https://github.com/Azure/azure-sdk-for-go/pull/27491).
+
+## 1.6.0-beta.2 (2026-08-03)
+
+### Bugs Fixed
+
+* Fixed partition key range cache refreshes failing against containers undergoing physical partition splits. A change-feed drain accumulates every page, so a range that is updated mid-split is re-delivered as a second revision of the same range ID; the routing map now deduplicates by range ID (keeping the latest revision) before validating range continuity, instead of rejecting the set with a "service returned an incomplete set of ranges" error reporting that the range overlaps itself. A full refresh that still observes an incomplete set is now retried up to three times with bounded jittered backoff before failing. See [PR 27282](https://github.com/Azure/azure-sdk-for-go/pull/27282).
+
 ## 1.6.0-beta.1 (2026-07-16)
 
 ### Features Added

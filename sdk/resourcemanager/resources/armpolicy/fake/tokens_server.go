@@ -87,7 +87,7 @@ func (t *TokensServerTransport) dispatchAcquire(req *http.Request) (*http.Respon
 	if t.srv.Acquire == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Acquire not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/acquirePolicyToken`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Authorization/acquirePolicyToken`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 2 {
@@ -116,7 +116,7 @@ func (t *TokensServerTransport) dispatchAcquireAtManagementGroup(req *http.Reque
 	if t.srv.AcquireAtManagementGroup == nil {
 		return nil, &nonRetriableError{errors.New("fake for method AcquireAtManagementGroup not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.Management/managementGroups/(?P<managementGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/acquirePolicyToken`
+	const regexStr = `/providers/Microsoft\.Management/managementGroups/(?P<managementGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Authorization/acquirePolicyToken`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 2 {

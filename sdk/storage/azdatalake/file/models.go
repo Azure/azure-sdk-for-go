@@ -68,15 +68,25 @@ type CreateExpiryValues struct {
 	ExpiresOn string
 }
 
-func (o *CreateOptions) format() (*generated.LeaseAccessConditions, *generated.ModifiedAccessConditions, *generated.PathHTTPHeaders, *generated.PathClientCreateOptions, *generated.CPKInfo) {
+func (o *CreateOptions) format() *generated.PathClientCreateOptions {
 	resource := generated.PathResourceTypeFile
 	createOpts := &generated.PathClientCreateOptions{
 		Resource: &resource,
 	}
 	if o == nil {
-		return nil, nil, nil, createOpts, nil
+		return createOpts
 	}
-	leaseAccessConditions, modifiedAccessConditions := exported.FormatPathAccessConditions(o.AccessConditions)
+	if o.AccessConditions != nil {
+		if o.AccessConditions.LeaseAccessConditions != nil {
+			createOpts.LeaseID = o.AccessConditions.LeaseAccessConditions.LeaseID
+		}
+		if o.AccessConditions.ModifiedAccessConditions != nil {
+			createOpts.IfMatch = o.AccessConditions.ModifiedAccessConditions.IfMatch
+			createOpts.IfNoneMatch = o.AccessConditions.ModifiedAccessConditions.IfNoneMatch
+			createOpts.IfModifiedSince = o.AccessConditions.ModifiedAccessConditions.IfModifiedSince
+			createOpts.IfUnmodifiedSince = o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince
+		}
+	}
 	if !reflect.ValueOf(o.Expiry).IsZero() {
 		createOpts.ExpiryOptions = &o.Expiry.ExpiryType
 		if o.Expiry.ExpiryType != CreateExpiryTypeNeverExpire {
@@ -92,20 +102,19 @@ func (o *CreateOptions) format() (*generated.LeaseAccessConditions, *generated.M
 	createOpts.LeaseDuration = o.LeaseDuration
 	createOpts.EncryptionContext = o.EncryptionContext
 
-	var httpHeaders *generated.PathHTTPHeaders
-	var cpkOpts *generated.CPKInfo
-
 	if o.HTTPHeaders != nil {
-		httpHeaders = path.FormatPathHTTPHeaders(o.HTTPHeaders)
+		createOpts.CacheControl = o.HTTPHeaders.CacheControl
+		createOpts.ContentDisposition = o.HTTPHeaders.ContentDisposition
+		createOpts.ContentEncoding = o.HTTPHeaders.ContentEncoding
+		createOpts.ContentLanguage = o.HTTPHeaders.ContentLanguage
+		createOpts.ContentType = o.HTTPHeaders.ContentType
 	}
 	if o.CPKInfo != nil {
-		cpkOpts = &generated.CPKInfo{
-			EncryptionAlgorithm: o.CPKInfo.EncryptionAlgorithm,
-			EncryptionKey:       o.CPKInfo.EncryptionKey,
-			EncryptionKeySHA256: o.CPKInfo.EncryptionKeySHA256,
-		}
+		createOpts.EncryptionAlgorithm = o.CPKInfo.EncryptionAlgorithm
+		createOpts.EncryptionKey = o.CPKInfo.EncryptionKey
+		createOpts.EncryptionKeySHA256 = o.CPKInfo.EncryptionKeySHA256
 	}
-	return leaseAccessConditions, modifiedAccessConditions, httpHeaders, createOpts, cpkOpts
+	return createOpts
 }
 
 // UpdateAccessControlOptions contains the optional parameters when calling the UpdateAccessControlRecursive operation.
@@ -152,6 +161,9 @@ type uploadFromReaderOptions struct {
 	CPKInfo *CPKInfo
 	// EncryptionContext contains the information returned from the x-ms-encryption-context header response.
 	EncryptionContext *string
+	// TransactionalValidation specifies the transfer validation type to use.
+	// The default is nil (no transfer validation).
+	TransactionalValidation TransferValidationType
 }
 
 // UploadStreamOptions provides set of configurations for Client.UploadStream operation.
@@ -169,6 +181,9 @@ type UploadStreamOptions struct {
 	CPKInfo *CPKInfo
 	// EncryptionContext contains the information returned from the x-ms-encryption-context header response.
 	EncryptionContext *string
+	// TransactionalValidation specifies the transfer validation type to use.
+	// The default is nil (no transfer validation).
+	TransactionalValidation TransferValidationType
 }
 
 // UploadBufferOptions provides set of configurations for Client.UploadBuffer operation.
@@ -200,54 +215,57 @@ type FlushDataOptions struct {
 	ProposedLeaseID *string
 }
 
-func (o *FlushDataOptions) format(offset int64) (*generated.PathClientFlushDataOptions, *generated.ModifiedAccessConditions, *generated.LeaseAccessConditions, *generated.PathHTTPHeaders, *generated.CPKInfo, error) {
+func (o *FlushDataOptions) format(offset int64) (*generated.PathClientFlushDataOptions, error) {
 	defaultRetainUncommitted := false
 	defaultClose := false
 	contentLength := int64(0)
 
-	var httpHeaderOpts *generated.PathHTTPHeaders
-	var leaseAccessConditions *generated.LeaseAccessConditions
-	var modifiedAccessConditions *generated.ModifiedAccessConditions
-	var cpkInfoOpts *generated.CPKInfo
 	flushDataOpts := &generated.PathClientFlushDataOptions{ContentLength: &contentLength, Position: &offset}
 
 	if o == nil {
 		flushDataOpts.RetainUncommittedData = &defaultRetainUncommitted
 		flushDataOpts.Close = &defaultClose
-		return flushDataOpts, nil, nil, nil, nil, nil
+		return flushDataOpts, nil
 	}
 
-	if o != nil {
-		if o.RetainUncommittedData == nil {
-			flushDataOpts.RetainUncommittedData = &defaultRetainUncommitted
-		} else {
-			flushDataOpts.RetainUncommittedData = o.RetainUncommittedData
-		}
-		if o.Close == nil {
-			flushDataOpts.Close = &defaultClose
-		} else {
-			flushDataOpts.Close = o.Close
-		}
-		leaseAccessConditions, modifiedAccessConditions = exported.FormatPathAccessConditions(o.AccessConditions)
-		if o.HTTPHeaders != nil {
-			httpHeaderOpts = &generated.PathHTTPHeaders{}
-			httpHeaderOpts.ContentMD5 = o.HTTPHeaders.ContentMD5
-			httpHeaderOpts.ContentType = o.HTTPHeaders.ContentType
-			httpHeaderOpts.CacheControl = o.HTTPHeaders.CacheControl
-			httpHeaderOpts.ContentDisposition = o.HTTPHeaders.ContentDisposition
-			httpHeaderOpts.ContentEncoding = o.HTTPHeaders.ContentEncoding
-		}
-		if o.CPKInfo != nil {
-			cpkInfoOpts = &generated.CPKInfo{}
-			cpkInfoOpts.EncryptionKey = o.CPKInfo.EncryptionKey
-			cpkInfoOpts.EncryptionKeySHA256 = o.CPKInfo.EncryptionKeySHA256
-			cpkInfoOpts.EncryptionAlgorithm = o.CPKInfo.EncryptionAlgorithm
-		}
-		flushDataOpts.LeaseAction = o.LeaseAction
-		flushDataOpts.LeaseDuration = o.LeaseDuration
-		flushDataOpts.ProposedLeaseID = o.ProposedLeaseID
+	if o.RetainUncommittedData == nil {
+		flushDataOpts.RetainUncommittedData = &defaultRetainUncommitted
+	} else {
+		flushDataOpts.RetainUncommittedData = o.RetainUncommittedData
 	}
-	return flushDataOpts, modifiedAccessConditions, leaseAccessConditions, httpHeaderOpts, cpkInfoOpts, nil
+	if o.Close == nil {
+		flushDataOpts.Close = &defaultClose
+	} else {
+		flushDataOpts.Close = o.Close
+	}
+	leaseAccessConditions, modifiedAccessConditions := exported.FormatPathAccessConditions(o.AccessConditions)
+	if leaseAccessConditions != nil {
+		flushDataOpts.LeaseID = leaseAccessConditions.LeaseID
+	}
+	if modifiedAccessConditions != nil {
+		flushDataOpts.IfMatch = modifiedAccessConditions.IfMatch
+		flushDataOpts.IfNoneMatch = modifiedAccessConditions.IfNoneMatch
+		flushDataOpts.IfModifiedSince = modifiedAccessConditions.IfModifiedSince
+		flushDataOpts.IfUnmodifiedSince = modifiedAccessConditions.IfUnmodifiedSince
+	}
+	// TODO: ContentLanguage https://github.com/Azure/azure-sdk-for-go/issues/27522
+	if o.HTTPHeaders != nil {
+		flushDataOpts.ContentMD5 = o.HTTPHeaders.ContentMD5
+		flushDataOpts.ContentType = o.HTTPHeaders.ContentType
+		flushDataOpts.CacheControl = o.HTTPHeaders.CacheControl
+		flushDataOpts.ContentDisposition = o.HTTPHeaders.ContentDisposition
+		flushDataOpts.ContentEncoding = o.HTTPHeaders.ContentEncoding
+		// flushDataOpts.ContentLanguage = o.HTTPHeaders.ContentLanguage
+	}
+	if o.CPKInfo != nil {
+		flushDataOpts.EncryptionKey = o.CPKInfo.EncryptionKey
+		flushDataOpts.EncryptionKeySHA256 = o.CPKInfo.EncryptionKeySHA256
+		flushDataOpts.EncryptionAlgorithm = o.CPKInfo.EncryptionAlgorithm
+	}
+	flushDataOpts.LeaseAction = o.LeaseAction
+	flushDataOpts.LeaseDuration = o.LeaseDuration
+	flushDataOpts.ProposedLeaseID = o.ProposedLeaseID
+	return flushDataOpts, nil
 }
 
 // AppendDataOptions contains the optional parameters for the Client.AppendData method.
@@ -270,20 +288,18 @@ type AppendDataOptions struct {
 	Flush *bool
 }
 
-func (o *AppendDataOptions) format(offset int64, body io.ReadSeekCloser) (*generated.PathClientAppendDataOptions,
-	*generated.LeaseAccessConditions, *generated.CPKInfo, error) {
-
+func (o *AppendDataOptions) format(offset int64, body io.ReadSeekCloser) (io.ReadSeekCloser, *generated.PathClientAppendDataOptions, error) {
 	if offset < 0 || body == nil {
-		return nil, nil, nil, errors.New("invalid argument: offset must be >= 0 and body must not be nil")
+		return nil, nil, errors.New("invalid argument: offset must be >= 0 and body must not be nil")
 	}
 
 	count, err := shared.ValidateSeekableStreamAt0AndGetCount(body)
 	if err != nil {
-		return nil, nil, nil, err
+		return nil, nil, err
 	}
 
 	if count == 0 {
-		return nil, nil, nil, errors.New("invalid argument: body must contain readable data whose size is > 0")
+		return nil, nil, errors.New("invalid argument: body must contain readable data whose size is > 0")
 	}
 
 	appendDataOptions := &generated.PathClientAppendDataOptions{}
@@ -296,32 +312,37 @@ func (o *AppendDataOptions) format(offset int64, body io.ReadSeekCloser) (*gener
 		appendDataOptions.ContentLength = &count
 	}
 
-	var leaseAccessConditions *LeaseAccessConditions
-	var cpkInfoOpts *generated.CPKInfo
-
-	if o != nil {
-		leaseAccessConditions = o.LeaseAccessConditions
-		if o.CPKInfo != nil {
-			cpkInfoOpts = &generated.CPKInfo{}
-			cpkInfoOpts.EncryptionKey = o.CPKInfo.EncryptionKey
-			cpkInfoOpts.EncryptionKeySHA256 = o.CPKInfo.EncryptionKeySHA256
-			cpkInfoOpts.EncryptionAlgorithm = o.CPKInfo.EncryptionAlgorithm
-		}
-
-		appendDataOptions.LeaseAction = o.LeaseAction
-		appendDataOptions.LeaseDuration = o.LeaseDuration
-		appendDataOptions.ProposedLeaseID = o.ProposedLeaseID
-		appendDataOptions.Flush = o.Flush
-
-		if o.TransactionalValidation != nil {
-			_, err = o.TransactionalValidation.Apply(body, appendDataOptions)
-			if err != nil {
-				return nil, nil, nil, err
-			}
-		}
+	if o == nil {
+		return body, appendDataOptions, nil
 	}
 
-	return appendDataOptions, leaseAccessConditions, cpkInfoOpts, nil
+	if o.LeaseAccessConditions != nil {
+		appendDataOptions.LeaseID = o.LeaseAccessConditions.LeaseID
+	}
+	if o.CPKInfo != nil {
+		appendDataOptions.EncryptionKey = o.CPKInfo.EncryptionKey
+		appendDataOptions.EncryptionKeySHA256 = o.CPKInfo.EncryptionKeySHA256
+		appendDataOptions.EncryptionAlgorithm = o.CPKInfo.EncryptionAlgorithm
+	}
+
+	appendDataOptions.LeaseAction = o.LeaseAction
+	appendDataOptions.LeaseDuration = o.LeaseDuration
+	appendDataOptions.ProposedLeaseID = o.ProposedLeaseID
+	appendDataOptions.Flush = o.Flush
+
+	if o.TransactionalValidation != nil {
+		body, err = o.TransactionalValidation.Apply(body, appendDataOptions)
+		if err != nil {
+			return nil, nil, err
+		}
+		count, err = shared.ValidateSeekableStreamAt0AndGetCount(body)
+		if err != nil {
+			return nil, nil, err
+		}
+		appendDataOptions.ContentLength = &count
+	}
+
+	return body, appendDataOptions, nil
 }
 
 func (u *UploadStreamOptions) setDefaults() {
@@ -340,8 +361,9 @@ func (u *uploadFromReaderOptions) getAppendDataOptions() *AppendDataOptions {
 	}
 	leaseAccessConditions, _ := exported.FormatPathAccessConditions(u.AccessConditions)
 	return &AppendDataOptions{
-		LeaseAccessConditions: leaseAccessConditions,
-		CPKInfo:               u.CPKInfo,
+		TransactionalValidation: u.TransactionalValidation,
+		LeaseAccessConditions:   leaseAccessConditions,
+		CPKInfo:                 u.CPKInfo,
 	}
 }
 
@@ -362,8 +384,9 @@ func (u *UploadStreamOptions) getAppendDataOptions() *AppendDataOptions {
 	}
 	leaseAccessConditions, _ := exported.FormatPathAccessConditions(u.AccessConditions)
 	return &AppendDataOptions{
-		LeaseAccessConditions: leaseAccessConditions,
-		CPKInfo:               u.CPKInfo,
+		TransactionalValidation: u.TransactionalValidation,
+		LeaseAccessConditions:   leaseAccessConditions,
+		CPKInfo:                 u.CPKInfo,
 	}
 }
 
@@ -391,6 +414,11 @@ type DownloadStreamOptions struct {
 	CPKInfo *CPKInfo
 	// CPKScopeInfo contains a group of parameters for client provided encryption scope.
 	CPKScopeInfo *CPKScopeInfo
+	// TransactionalValidation specifies the transfer validation type to use on download.
+	// When set to TransferValidationTypeComputeStructuredMessageCRC64, the service returns the
+	// data wrapped in a structured message with per-segment CRC64 checksums. The SDK
+	// automatically decodes the structured message and validates checksums before returning data.
+	TransactionalValidation TransferValidationType
 }
 
 func (o *DownloadStreamOptions) format() *blob.DownloadStreamOptions {
@@ -413,6 +441,11 @@ func (o *DownloadStreamOptions) format() *blob.DownloadStreamOptions {
 	downloadStreamOptions.RangeGetContentMD5 = o.RangeGetContentMD5
 	downloadStreamOptions.AccessConditions = exported.FormatBlobAccessConditions(o.AccessConditions)
 	downloadStreamOptions.CPKScopeInfo = o.CPKScopeInfo
+	if o.TransactionalValidation != nil {
+		if h := exported.GetStructuredBodyType(o.TransactionalValidation); h != "" {
+			downloadStreamOptions.TransactionalValidation = blob.TransferValidationTypeComputeStructuredMessageCRC64(0)
+		}
+	}
 	return downloadStreamOptions
 }
 
@@ -435,6 +468,8 @@ type DownloadBufferOptions struct {
 	Concurrency uint16
 	// RetryReaderOptionsPerChunk is used when downloading each chunk.
 	RetryReaderOptionsPerChunk *RetryReaderOptions
+	// TransactionalValidation specifies the transfer validation type to use on download.
+	TransactionalValidation TransferValidationType
 }
 
 func (o *DownloadBufferOptions) format() *blob.DownloadBufferOptions {
@@ -467,6 +502,11 @@ func (o *DownloadBufferOptions) format() *blob.DownloadBufferOptions {
 		downloadBufferOptions.RetryReaderOptionsPerBlock.EarlyCloseAsError = o.RetryReaderOptionsPerChunk.EarlyCloseAsError
 		downloadBufferOptions.RetryReaderOptionsPerBlock.MaxRetries = o.RetryReaderOptionsPerChunk.MaxRetries
 	}
+	if o.TransactionalValidation != nil {
+		if h := exported.GetStructuredBodyType(o.TransactionalValidation); h != "" {
+			downloadBufferOptions.TransactionalValidation = blob.TransferValidationTypeComputeStructuredMessageCRC64(0)
+		}
+	}
 
 	return downloadBufferOptions
 }
@@ -490,6 +530,8 @@ type DownloadFileOptions struct {
 	Concurrency uint16
 	// RetryReaderOptionsPerChunk is used when downloading each chunk.
 	RetryReaderOptionsPerChunk *RetryReaderOptions
+	// TransactionalValidation specifies the transfer validation type to use on download.
+	TransactionalValidation TransferValidationType
 }
 
 func (o *DownloadFileOptions) format() *blob.DownloadFileOptions {
@@ -521,6 +563,11 @@ func (o *DownloadFileOptions) format() *blob.DownloadFileOptions {
 		downloadFileOptions.RetryReaderOptionsPerBlock.OnFailedRead = o.RetryReaderOptionsPerChunk.OnFailedRead
 		downloadFileOptions.RetryReaderOptionsPerBlock.EarlyCloseAsError = o.RetryReaderOptionsPerChunk.EarlyCloseAsError
 		downloadFileOptions.RetryReaderOptionsPerBlock.MaxRetries = o.RetryReaderOptionsPerChunk.MaxRetries
+	}
+	if o.TransactionalValidation != nil {
+		if h := exported.GetStructuredBodyType(o.TransactionalValidation); h != "" {
+			downloadFileOptions.TransactionalValidation = blob.TransferValidationTypeComputeStructuredMessageCRC64(0)
+		}
 	}
 
 	return downloadFileOptions

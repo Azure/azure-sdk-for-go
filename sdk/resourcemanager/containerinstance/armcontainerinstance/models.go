@@ -306,9 +306,10 @@ type ContainerGroupProfileProperties struct {
 	Priority *ContainerGroupPriority
 
 	// Restart policy for all containers within the container group.
-	// - `Always` Always restart
-	// - `OnFailure` Restart on failure
-	// - `Never` Never restart
+	//
+	//   - `Always` Always restart
+	//   - `OnFailure` Restart on failure
+	//   - `Never` Never restart
 	RestartPolicy *ContainerGroupRestartPolicy
 
 	// The SKU for a container group.
@@ -415,9 +416,10 @@ type ContainerGroupPropertiesProperties struct {
 	Priority *ContainerGroupPriority
 
 	// Restart policy for all containers within the container group.
-	// - `Always` Always restart
-	// - `OnFailure` Restart on failure
-	// - `Never` Never restart
+	//
+	//   - `Always` Always restart
+	//   - `OnFailure` Restart on failure
+	//   - `Never` Never restart
 	RestartPolicy *ContainerGroupRestartPolicy
 
 	// The SKU for a container group.

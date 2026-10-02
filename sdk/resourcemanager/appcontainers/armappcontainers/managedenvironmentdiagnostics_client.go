@@ -19,7 +19,7 @@ import (
 // ManagedEnvironmentDiagnosticsClient contains the methods for the ManagedEnvironmentDiagnostics group.
 // Don't use this type directly, use NewManagedEnvironmentDiagnosticsClient() instead.
 //
-// Generated from API version 2025-10-02-preview
+// Generated from API version 2026-07-01
 type ManagedEnvironmentDiagnosticsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -30,6 +30,9 @@ type ManagedEnvironmentDiagnosticsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewManagedEnvironmentDiagnosticsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ManagedEnvironmentDiagnosticsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -64,19 +67,14 @@ func (client *ManagedEnvironmentDiagnosticsClient) GetDetector(ctx context.Conte
 	if err != nil {
 		return ManagedEnvironmentDiagnosticsClientGetDetectorResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ManagedEnvironmentDiagnosticsClientGetDetectorResponse{}, err
-	}
-	resp, err := client.getDetectorHandleResponse(httpResp)
-	return resp, err
+	return client.getDetectorHandleResponse(httpResp, http.StatusOK)
 }
 
 // getDetectorCreateRequest creates the GetDetector request.
 func (client *ManagedEnvironmentDiagnosticsClient) getDetectorCreateRequest(ctx context.Context, resourceGroupName string, environmentName string, detectorName string, _ *ManagedEnvironmentDiagnosticsClientGetDetectorOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/detectors/{detectorName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -96,15 +94,18 @@ func (client *ManagedEnvironmentDiagnosticsClient) getDetectorCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251002Preview)
+	reqQP.Set("api-version", version20260701)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getDetectorHandleResponse handles the GetDetector response.
-func (client *ManagedEnvironmentDiagnosticsClient) getDetectorHandleResponse(resp *http.Response) (ManagedEnvironmentDiagnosticsClientGetDetectorResponse, error) {
+func (client *ManagedEnvironmentDiagnosticsClient) getDetectorHandleResponse(resp *http.Response, successCodes ...int) (ManagedEnvironmentDiagnosticsClientGetDetectorResponse, error) {
 	result := ManagedEnvironmentDiagnosticsClientGetDetectorResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Diagnostics); err != nil {
 		return ManagedEnvironmentDiagnosticsClientGetDetectorResponse{}, err
 	}
@@ -133,19 +134,14 @@ func (client *ManagedEnvironmentDiagnosticsClient) ListDetectors(ctx context.Con
 	if err != nil {
 		return ManagedEnvironmentDiagnosticsClientListDetectorsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ManagedEnvironmentDiagnosticsClientListDetectorsResponse{}, err
-	}
-	resp, err := client.listDetectorsHandleResponse(httpResp)
-	return resp, err
+	return client.listDetectorsHandleResponse(httpResp, http.StatusOK)
 }
 
 // listDetectorsCreateRequest creates the ListDetectors request.
 func (client *ManagedEnvironmentDiagnosticsClient) listDetectorsCreateRequest(ctx context.Context, resourceGroupName string, environmentName string, _ *ManagedEnvironmentDiagnosticsClientListDetectorsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/detectors"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -161,15 +157,18 @@ func (client *ManagedEnvironmentDiagnosticsClient) listDetectorsCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251002Preview)
+	reqQP.Set("api-version", version20260701)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listDetectorsHandleResponse handles the ListDetectors response.
-func (client *ManagedEnvironmentDiagnosticsClient) listDetectorsHandleResponse(resp *http.Response) (ManagedEnvironmentDiagnosticsClientListDetectorsResponse, error) {
+func (client *ManagedEnvironmentDiagnosticsClient) listDetectorsHandleResponse(resp *http.Response, successCodes ...int) (ManagedEnvironmentDiagnosticsClientListDetectorsResponse, error) {
 	result := ManagedEnvironmentDiagnosticsClientListDetectorsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DiagnosticsCollection); err != nil {
 		return ManagedEnvironmentDiagnosticsClientListDetectorsResponse{}, err
 	}

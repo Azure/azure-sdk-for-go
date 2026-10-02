@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-04-01-preview/MigrationsCancel.json
+// Generated from example definition: 2026-07-01-preview/MigrationsCancel.json
 func ExampleMigrationsClient_Cancel() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -55,7 +55,7 @@ func ExampleMigrationsClient_Cancel() {
 	// 			MigrationID: to.Ptr("bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb"),
 	// 			MigrationMode: to.Ptr(armpostgresqlflexibleservers.MigrationModeOffline),
 	// 			MigrationOption: to.Ptr(armpostgresqlflexibleservers.MigrationOptionValidateAndMigrate),
-	// 			MigrationWindowStartTimeInUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T18:30:22.12345Z"); return t}()),
+	// 			MigrationWindowStartTimeInUTC: to.Ptr(time.Date(2025, time.June, 1, 18, 30, 22, 123450000, time.UTC)),
 	// 			OverwriteDbsInTarget: to.Ptr(armpostgresqlflexibleservers.OverwriteDatabasesOnTargetServerTrue),
 	// 			SetupLogicalReplicationOnSourceDbIfNeeded: to.Ptr(armpostgresqlflexibleservers.LogicalReplicationOnSourceServerTrue),
 	// 			SourceDbServerResourceID: to.Ptr("examplesource:5432@exampleadministratorlogin"),
@@ -77,7 +77,7 @@ func ExampleMigrationsClient_Cancel() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/MigrationsCheckNameAvailability.json
+// Generated from example definition: 2026-07-01-preview/MigrationsCheckNameAvailability.json
 func ExampleMigrationsClient_CheckNameAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -107,7 +107,7 @@ func ExampleMigrationsClient_CheckNameAvailability() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/MigrationsCreate.json
+// Generated from example definition: 2026-07-01-preview/MigrationsCreate.json
 func ExampleMigrationsClient_Create_createAMigration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -166,7 +166,7 @@ func ExampleMigrationsClient_Create_createAMigration() {
 	// 			},
 	// 			MigrateRoles: to.Ptr(armpostgresqlflexibleservers.MigrateRolesAndPermissionsFalse),
 	// 			MigrationID: to.Ptr("d3ceacbb-a5fd-43dc-a9db-6022b5154856"),
-	// 			MigrationWindowStartTimeInUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T18:30:22.123456Z"); return t}()),
+	// 			MigrationWindowStartTimeInUTC: to.Ptr(time.Date(2025, time.June, 1, 18, 30, 22, 123456000, time.UTC)),
 	// 			OverwriteDbsInTarget: to.Ptr(armpostgresqlflexibleservers.OverwriteDatabasesOnTargetServerTrue),
 	// 			SetupLogicalReplicationOnSourceDbIfNeeded: to.Ptr(armpostgresqlflexibleservers.LogicalReplicationOnSourceServerFalse),
 	// 			SourceDbServerResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBForPostgreSql/servers/examplesource"),
@@ -181,7 +181,7 @@ func ExampleMigrationsClient_Create_createAMigration() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/MigrationsCreateOtherSourceTypesValidateMigrate.json
+// Generated from example definition: 2026-07-01-preview/MigrationsCreateOtherSourceTypesValidateMigrate.json
 func ExampleMigrationsClient_Create_createAMigrationWithOtherSourceTypeForValidatingAndMigrating() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -244,7 +244,7 @@ func ExampleMigrationsClient_Create_createAMigrationWithOtherSourceTypeForValida
 	// 			MigrateRoles: to.Ptr(armpostgresqlflexibleservers.MigrateRolesAndPermissionsFalse),
 	// 			MigrationID: to.Ptr("d3ceacbb-a5fd-43dc-a9db-6022b5154856"),
 	// 			MigrationOption: to.Ptr(armpostgresqlflexibleservers.MigrationOptionValidateAndMigrate),
-	// 			MigrationWindowStartTimeInUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T18:30:22.123456Z"); return t}()),
+	// 			MigrationWindowStartTimeInUTC: to.Ptr(time.Date(2025, time.June, 1, 18, 30, 22, 123456000, time.UTC)),
 	// 			OverwriteDbsInTarget: to.Ptr(armpostgresqlflexibleservers.OverwriteDatabasesOnTargetServerTrue),
 	// 			SetupLogicalReplicationOnSourceDbIfNeeded: to.Ptr(armpostgresqlflexibleservers.LogicalReplicationOnSourceServerFalse),
 	// 			SourceDbServerResourceID: to.Ptr("examplesource:5432@exampleuser"),
@@ -261,7 +261,7 @@ func ExampleMigrationsClient_Create_createAMigrationWithOtherSourceTypeForValida
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/MigrationsCreateValidateOnly.json
+// Generated from example definition: 2026-07-01-preview/MigrationsCreateValidateOnly.json
 func ExampleMigrationsClient_Create_createAMigrationForValidatingOnly() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -322,7 +322,7 @@ func ExampleMigrationsClient_Create_createAMigrationForValidatingOnly() {
 	// 			MigrateRoles: to.Ptr(armpostgresqlflexibleservers.MigrateRolesAndPermissionsFalse),
 	// 			MigrationID: to.Ptr("d3ceacbb-a5fd-43dc-a9db-6022b5154856"),
 	// 			MigrationOption: to.Ptr(armpostgresqlflexibleservers.MigrationOptionValidate),
-	// 			MigrationWindowStartTimeInUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T18:30:22.123456Z"); return t}()),
+	// 			MigrationWindowStartTimeInUTC: to.Ptr(time.Date(2025, time.June, 1, 18, 30, 22, 123456000, time.UTC)),
 	// 			OverwriteDbsInTarget: to.Ptr(armpostgresqlflexibleservers.OverwriteDatabasesOnTargetServerTrue),
 	// 			SetupLogicalReplicationOnSourceDbIfNeeded: to.Ptr(armpostgresqlflexibleservers.LogicalReplicationOnSourceServerFalse),
 	// 			SourceDbServerResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBForPostgreSql/servers/examplesource"),
@@ -337,7 +337,7 @@ func ExampleMigrationsClient_Create_createAMigrationForValidatingOnly() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/MigrationsCreateWithFullyQualifiedDomainName.json
+// Generated from example definition: 2026-07-01-preview/MigrationsCreateWithFullyQualifiedDomainName.json
 func ExampleMigrationsClient_Create_createAMigrationWithFullyQualifiedDomainNamesForSourceAndTargetServers() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -398,7 +398,7 @@ func ExampleMigrationsClient_Create_createAMigrationWithFullyQualifiedDomainName
 	// 			},
 	// 			MigrateRoles: to.Ptr(armpostgresqlflexibleservers.MigrateRolesAndPermissionsFalse),
 	// 			MigrationID: to.Ptr("d3ceacbb-a5fd-43dc-a9db-6022b5154856"),
-	// 			MigrationWindowStartTimeInUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T18:30:22.123456Z"); return t}()),
+	// 			MigrationWindowStartTimeInUTC: to.Ptr(time.Date(2025, time.June, 1, 18, 30, 22, 123456000, time.UTC)),
 	// 			OverwriteDbsInTarget: to.Ptr(armpostgresqlflexibleservers.OverwriteDatabasesOnTargetServerTrue),
 	// 			SetupLogicalReplicationOnSourceDbIfNeeded: to.Ptr(armpostgresqlflexibleservers.LogicalReplicationOnSourceServerFalse),
 	// 			SourceDbServerFullyQualifiedDomainName: to.Ptr("examplesource.contoso.com"),
@@ -415,7 +415,7 @@ func ExampleMigrationsClient_Create_createAMigrationWithFullyQualifiedDomainName
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/MigrationsCreateWithOtherUsers.json
+// Generated from example definition: 2026-07-01-preview/MigrationsCreateWithOtherUsers.json
 func ExampleMigrationsClient_Create_createAMigrationSpecifyingUserNames() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -476,7 +476,7 @@ func ExampleMigrationsClient_Create_createAMigrationSpecifyingUserNames() {
 	// 			MigrateRoles: to.Ptr(armpostgresqlflexibleservers.MigrateRolesAndPermissionsFalse),
 	// 			MigrationID: to.Ptr("d3ceacbb-a5fd-43dc-a9db-6022b5154856"),
 	// 			MigrationMode: to.Ptr(armpostgresqlflexibleservers.MigrationModeOffline),
-	// 			MigrationWindowStartTimeInUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T18:30:22.123456Z"); return t}()),
+	// 			MigrationWindowStartTimeInUTC: to.Ptr(time.Date(2025, time.June, 1, 18, 30, 22, 123456000, time.UTC)),
 	// 			OverwriteDbsInTarget: to.Ptr(armpostgresqlflexibleservers.OverwriteDatabasesOnTargetServerFalse),
 	// 			SetupLogicalReplicationOnSourceDbIfNeeded: to.Ptr(armpostgresqlflexibleservers.LogicalReplicationOnSourceServerFalse),
 	// 			SourceDbServerResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBForPostgreSql/servers/examplesource"),
@@ -491,7 +491,7 @@ func ExampleMigrationsClient_Create_createAMigrationSpecifyingUserNames() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/MigrationsCreateWithPrivateEndpointServers.json
+// Generated from example definition: 2026-07-01-preview/MigrationsCreateWithPrivateEndpointServers.json
 func ExampleMigrationsClient_Create_createAMigrationWithPrivateEndpoint() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -552,7 +552,7 @@ func ExampleMigrationsClient_Create_createAMigrationWithPrivateEndpoint() {
 	// 			MigrateRoles: to.Ptr(armpostgresqlflexibleservers.MigrateRolesAndPermissionsFalse),
 	// 			MigrationID: to.Ptr("d3ceacbb-a5fd-43dc-a9db-6022b5154856"),
 	// 			MigrationInstanceResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBForPostgreSql/flexibleServers/examplesourcemigration"),
-	// 			MigrationWindowStartTimeInUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T18:30:22.123456Z"); return t}()),
+	// 			MigrationWindowStartTimeInUTC: to.Ptr(time.Date(2025, time.June, 1, 18, 30, 22, 123456000, time.UTC)),
 	// 			OverwriteDbsInTarget: to.Ptr(armpostgresqlflexibleservers.OverwriteDatabasesOnTargetServerTrue),
 	// 			SetupLogicalReplicationOnSourceDbIfNeeded: to.Ptr(armpostgresqlflexibleservers.LogicalReplicationOnSourceServerFalse),
 	// 			SourceDbServerResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBForPostgreSql/servers/examplesource"),
@@ -567,7 +567,7 @@ func ExampleMigrationsClient_Create_createAMigrationWithPrivateEndpoint() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/MigrationsCreateWithRoles.json
+// Generated from example definition: 2026-07-01-preview/MigrationsCreateWithRoles.json
 func ExampleMigrationsClient_Create_createAMigrationWithRoles() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -627,7 +627,7 @@ func ExampleMigrationsClient_Create_createAMigrationWithRoles() {
 	// 			},
 	// 			MigrateRoles: to.Ptr(armpostgresqlflexibleservers.MigrateRolesAndPermissionsTrue),
 	// 			MigrationID: to.Ptr("d3ceacbb-a5fd-43dc-a9db-6022b5154856"),
-	// 			MigrationWindowStartTimeInUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T18:30:22.123456Z"); return t}()),
+	// 			MigrationWindowStartTimeInUTC: to.Ptr(time.Date(2025, time.June, 1, 18, 30, 22, 123456000, time.UTC)),
 	// 			OverwriteDbsInTarget: to.Ptr(armpostgresqlflexibleservers.OverwriteDatabasesOnTargetServerTrue),
 	// 			SetupLogicalReplicationOnSourceDbIfNeeded: to.Ptr(armpostgresqlflexibleservers.LogicalReplicationOnSourceServerFalse),
 	// 			SourceDbServerResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBForPostgreSql/servers/examplesource"),
@@ -642,7 +642,7 @@ func ExampleMigrationsClient_Create_createAMigrationWithRoles() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/MigrationsGet.json
+// Generated from example definition: 2026-07-01-preview/MigrationsGet.json
 func ExampleMigrationsClient_Get_getInformationAboutAMigration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -682,7 +682,7 @@ func ExampleMigrationsClient_Get_getInformationAboutAMigration() {
 	// 			},
 	// 			MigrateRoles: to.Ptr(armpostgresqlflexibleservers.MigrateRolesAndPermissionsFalse),
 	// 			MigrationID: to.Ptr("d3ceacbb-a5fd-43dc-a9db-6022b5154856"),
-	// 			MigrationWindowStartTimeInUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T18:30:22.123456Z"); return t}()),
+	// 			MigrationWindowStartTimeInUTC: to.Ptr(time.Date(2025, time.June, 1, 18, 30, 22, 123456000, time.UTC)),
 	// 			OverwriteDbsInTarget: to.Ptr(armpostgresqlflexibleservers.OverwriteDatabasesOnTargetServerFalse),
 	// 			SetupLogicalReplicationOnSourceDbIfNeeded: to.Ptr(armpostgresqlflexibleservers.LogicalReplicationOnSourceServerFalse),
 	// 			SourceDbServerMetadata: &armpostgresqlflexibleservers.DbServerMetadata{
@@ -712,7 +712,7 @@ func ExampleMigrationsClient_Get_getInformationAboutAMigration() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/MigrationsGetMigrationWithSuccessfulValidationAndMigration.json
+// Generated from example definition: 2026-07-01-preview/MigrationsGetMigrationWithSuccessfulValidationAndMigration.json
 func ExampleMigrationsClient_Get_getInformationAboutAMigrationWithSuccessfulValidationAndSuccessfulMigration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -747,7 +747,7 @@ func ExampleMigrationsClient_Get_getInformationAboutAMigrationWithSuccessfulVali
 	// 							CdcInsertCounter: to.Ptr[int32](0),
 	// 							CdcUpdateCounter: to.Ptr[int32](0),
 	// 							DatabaseName: to.Ptr("exampledatabase"),
-	// 							EndedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T20:30:22.123456Z"); return t}()),
+	// 							EndedOn: to.Ptr(time.Date(2025, time.June, 1, 20, 30, 22, 123456000, time.UTC)),
 	// 							FullLoadCompletedTables: to.Ptr[int32](10),
 	// 							FullLoadErroredTables: to.Ptr[int32](0),
 	// 							FullLoadLoadingTables: to.Ptr[int32](0),
@@ -755,15 +755,15 @@ func ExampleMigrationsClient_Get_getInformationAboutAMigrationWithSuccessfulVali
 	// 							IncomingChanges: to.Ptr[int32](0),
 	// 							Latency: to.Ptr[int32](0),
 	// 							MigrationState: to.Ptr(armpostgresqlflexibleservers.MigrationDatabaseStateSucceeded),
-	// 							StartedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T18:30:22.123456Z"); return t}()),
+	// 							StartedOn: to.Ptr(time.Date(2025, time.June, 1, 18, 30, 22, 123456000, time.UTC)),
 	// 						},
 	// 					},
 	// 					ValidationDetails: &armpostgresqlflexibleservers.ValidationDetails{
 	// 						DbLevelValidationDetails: []*armpostgresqlflexibleservers.DbLevelValidationStatus{
 	// 							{
 	// 								DatabaseName: to.Ptr("exampledatabase"),
-	// 								EndedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T20:30:22.123456Z"); return t}()),
-	// 								StartedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T18:30:22.123456Z"); return t}()),
+	// 								EndedOn: to.Ptr(time.Date(2025, time.June, 1, 20, 30, 22, 123456000, time.UTC)),
+	// 								StartedOn: to.Ptr(time.Date(2025, time.June, 1, 18, 30, 22, 123456000, time.UTC)),
 	// 								Summary: []*armpostgresqlflexibleservers.ValidationSummaryItem{
 	// 									{
 	// 										Type: to.Ptr("SchemaValidation"),
@@ -795,8 +795,8 @@ func ExampleMigrationsClient_Get_getInformationAboutAMigrationWithSuccessfulVali
 	// 							},
 	// 						},
 	// 						Status: to.Ptr(armpostgresqlflexibleservers.ValidationStateSucceeded),
-	// 						ValidationEndTimeInUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T20:30:22.123456Z"); return t}()),
-	// 						ValidationStartTimeInUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T18:30:22.123456Z"); return t}()),
+	// 						ValidationEndTimeInUTC: to.Ptr(time.Date(2025, time.June, 1, 20, 30, 22, 123456000, time.UTC)),
+	// 						ValidationStartTimeInUTC: to.Ptr(time.Date(2025, time.June, 1, 18, 30, 22, 123456000, time.UTC)),
 	// 					},
 	// 				},
 	// 				State: to.Ptr(armpostgresqlflexibleservers.MigrationStateSucceeded),
@@ -808,8 +808,8 @@ func ExampleMigrationsClient_Get_getInformationAboutAMigrationWithSuccessfulVali
 	// 			MigrationID: to.Ptr("f2354e72-2828-4a19-ad20-b4cd9e2673c1"),
 	// 			MigrationMode: to.Ptr(armpostgresqlflexibleservers.MigrationModeOffline),
 	// 			MigrationOption: to.Ptr(armpostgresqlflexibleservers.MigrationOptionValidateAndMigrate),
-	// 			MigrationWindowEndTimeInUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T20:30:22.123456Z"); return t}()),
-	// 			MigrationWindowStartTimeInUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T18:30:22.123456Z"); return t}()),
+	// 			MigrationWindowEndTimeInUTC: to.Ptr(time.Date(2025, time.June, 1, 20, 30, 22, 123456000, time.UTC)),
+	// 			MigrationWindowStartTimeInUTC: to.Ptr(time.Date(2025, time.June, 1, 18, 30, 22, 123456000, time.UTC)),
 	// 			OverwriteDbsInTarget: to.Ptr(armpostgresqlflexibleservers.OverwriteDatabasesOnTargetServerTrue),
 	// 			SetupLogicalReplicationOnSourceDbIfNeeded: to.Ptr(armpostgresqlflexibleservers.LogicalReplicationOnSourceServerTrue),
 	// 			SourceDbServerResourceID: to.Ptr("20.228.214.65:5432@postgres"),
@@ -820,7 +820,7 @@ func ExampleMigrationsClient_Get_getInformationAboutAMigrationWithSuccessfulVali
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/MigrationsGetMigrationWithSuccessfulValidationButMigrationFailure.json
+// Generated from example definition: 2026-07-01-preview/MigrationsGetMigrationWithSuccessfulValidationButMigrationFailure.json
 func ExampleMigrationsClient_Get_getInformationAboutAMigrationWithSuccessfulValidationButFailedMigration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -855,7 +855,7 @@ func ExampleMigrationsClient_Get_getInformationAboutAMigrationWithSuccessfulVali
 	// 							CdcInsertCounter: to.Ptr[int32](0),
 	// 							CdcUpdateCounter: to.Ptr[int32](0),
 	// 							DatabaseName: to.Ptr("exampledatabase"),
-	// 							EndedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T20:30:22.123456Z"); return t}()),
+	// 							EndedOn: to.Ptr(time.Date(2025, time.June, 1, 20, 30, 22, 123456000, time.UTC)),
 	// 							FullLoadCompletedTables: to.Ptr[int32](0),
 	// 							FullLoadErroredTables: to.Ptr[int32](0),
 	// 							FullLoadLoadingTables: to.Ptr[int32](0),
@@ -864,15 +864,15 @@ func ExampleMigrationsClient_Get_getInformationAboutAMigrationWithSuccessfulVali
 	// 							Latency: to.Ptr[int32](0),
 	// 							Message: to.Ptr("Collation/Encoding not Supported Error:  User defined Collations are present in the source database. Please drop them before retrying the migration."),
 	// 							MigrationState: to.Ptr(armpostgresqlflexibleservers.MigrationDatabaseStateFailed),
-	// 							StartedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T18:30:22.123456Z"); return t}()),
+	// 							StartedOn: to.Ptr(time.Date(2025, time.June, 1, 18, 30, 22, 123456000, time.UTC)),
 	// 						},
 	// 					},
 	// 					ValidationDetails: &armpostgresqlflexibleservers.ValidationDetails{
 	// 						DbLevelValidationDetails: []*armpostgresqlflexibleservers.DbLevelValidationStatus{
 	// 							{
 	// 								DatabaseName: to.Ptr("address_standardizer"),
-	// 								EndedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T20:30:22.123456Z"); return t}()),
-	// 								StartedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T18:30:22.123456Z"); return t}()),
+	// 								EndedOn: to.Ptr(time.Date(2025, time.June, 1, 20, 30, 22, 123456000, time.UTC)),
+	// 								StartedOn: to.Ptr(time.Date(2025, time.June, 1, 18, 30, 22, 123456000, time.UTC)),
 	// 								Summary: []*armpostgresqlflexibleservers.ValidationSummaryItem{
 	// 									{
 	// 										Type: to.Ptr("ExtensionsValidation"),
@@ -888,8 +888,8 @@ func ExampleMigrationsClient_Get_getInformationAboutAMigrationWithSuccessfulVali
 	// 							},
 	// 						},
 	// 						Status: to.Ptr(armpostgresqlflexibleservers.ValidationStateSucceeded),
-	// 						ValidationEndTimeInUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T20:30:22.123456Z"); return t}()),
-	// 						ValidationStartTimeInUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T18:30:22.123456Z"); return t}()),
+	// 						ValidationEndTimeInUTC: to.Ptr(time.Date(2025, time.June, 1, 20, 30, 22, 123456000, time.UTC)),
+	// 						ValidationStartTimeInUTC: to.Ptr(time.Date(2025, time.June, 1, 18, 30, 22, 123456000, time.UTC)),
 	// 					},
 	// 				},
 	// 				Error: to.Ptr("exampledatabase: Collation/Encoding not Supported Error:  User defined Collations are present in the source database. Please drop them before retrying the migration."),
@@ -902,8 +902,8 @@ func ExampleMigrationsClient_Get_getInformationAboutAMigrationWithSuccessfulVali
 	// 			MigrationID: to.Ptr("da52db29-cfeb-4670-a1ad-683edb14c621"),
 	// 			MigrationMode: to.Ptr(armpostgresqlflexibleservers.MigrationModeOffline),
 	// 			MigrationOption: to.Ptr(armpostgresqlflexibleservers.MigrationOptionValidateAndMigrate),
-	// 			MigrationWindowEndTimeInUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T20:30:22.123456Z"); return t}()),
-	// 			MigrationWindowStartTimeInUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T18:30:22.123456Z"); return t}()),
+	// 			MigrationWindowEndTimeInUTC: to.Ptr(time.Date(2025, time.June, 1, 20, 30, 22, 123456000, time.UTC)),
+	// 			MigrationWindowStartTimeInUTC: to.Ptr(time.Date(2025, time.June, 1, 18, 30, 22, 123456000, time.UTC)),
 	// 			OverwriteDbsInTarget: to.Ptr(armpostgresqlflexibleservers.OverwriteDatabasesOnTargetServerTrue),
 	// 			SetupLogicalReplicationOnSourceDbIfNeeded: to.Ptr(armpostgresqlflexibleservers.LogicalReplicationOnSourceServerTrue),
 	// 			SourceDbServerMetadata: &armpostgresqlflexibleservers.DbServerMetadata{
@@ -927,7 +927,7 @@ func ExampleMigrationsClient_Get_getInformationAboutAMigrationWithSuccessfulVali
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/MigrationsGetMigrationWithSuccessfulValidationOnly.json
+// Generated from example definition: 2026-07-01-preview/MigrationsGetMigrationWithSuccessfulValidationOnly.json
 func ExampleMigrationsClient_Get_getInformationAboutAMigrationWithSuccessfulValidationOnly() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -961,8 +961,8 @@ func ExampleMigrationsClient_Get_getInformationAboutAMigrationWithSuccessfulVali
 	// 						DbLevelValidationDetails: []*armpostgresqlflexibleservers.DbLevelValidationStatus{
 	// 							{
 	// 								DatabaseName: to.Ptr("UnknownCollationTest"),
-	// 								EndedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T20:30:22.123456Z"); return t}()),
-	// 								StartedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T18:30:22.123456Z"); return t}()),
+	// 								EndedOn: to.Ptr(time.Date(2025, time.June, 1, 20, 30, 22, 123456000, time.UTC)),
+	// 								StartedOn: to.Ptr(time.Date(2025, time.June, 1, 18, 30, 22, 123456000, time.UTC)),
 	// 								Summary: []*armpostgresqlflexibleservers.ValidationSummaryItem{
 	// 									{
 	// 										Type: to.Ptr("SchemaValidation"),
@@ -994,8 +994,8 @@ func ExampleMigrationsClient_Get_getInformationAboutAMigrationWithSuccessfulVali
 	// 							},
 	// 						},
 	// 						Status: to.Ptr(armpostgresqlflexibleservers.ValidationStateSucceeded),
-	// 						ValidationEndTimeInUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T20:30:22.123456Z"); return t}()),
-	// 						ValidationStartTimeInUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T18:30:22.123456Z"); return t}()),
+	// 						ValidationEndTimeInUTC: to.Ptr(time.Date(2025, time.June, 1, 20, 30, 22, 123456000, time.UTC)),
+	// 						ValidationStartTimeInUTC: to.Ptr(time.Date(2025, time.June, 1, 18, 30, 22, 123456000, time.UTC)),
 	// 					},
 	// 				},
 	// 				State: to.Ptr(armpostgresqlflexibleservers.MigrationStateSucceeded),
@@ -1007,8 +1007,8 @@ func ExampleMigrationsClient_Get_getInformationAboutAMigrationWithSuccessfulVali
 	// 			MigrationID: to.Ptr("77840327-7be8-44b8-adc0-af0ccccfeb36"),
 	// 			MigrationMode: to.Ptr(armpostgresqlflexibleservers.MigrationModeOffline),
 	// 			MigrationOption: to.Ptr(armpostgresqlflexibleservers.MigrationOptionValidate),
-	// 			MigrationWindowEndTimeInUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T20:30:22.123456Z"); return t}()),
-	// 			MigrationWindowStartTimeInUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T18:30:22.123456Z"); return t}()),
+	// 			MigrationWindowEndTimeInUTC: to.Ptr(time.Date(2025, time.June, 1, 20, 30, 22, 123456000, time.UTC)),
+	// 			MigrationWindowStartTimeInUTC: to.Ptr(time.Date(2025, time.June, 1, 18, 30, 22, 123456000, time.UTC)),
 	// 			OverwriteDbsInTarget: to.Ptr(armpostgresqlflexibleservers.OverwriteDatabasesOnTargetServerTrue),
 	// 			SetupLogicalReplicationOnSourceDbIfNeeded: to.Ptr(armpostgresqlflexibleservers.LogicalReplicationOnSourceServerTrue),
 	// 			SourceDbServerResourceID: to.Ptr("20.228.214.65:5432@postgres"),
@@ -1019,7 +1019,7 @@ func ExampleMigrationsClient_Get_getInformationAboutAMigrationWithSuccessfulVali
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/MigrationsGetMigrationWithValidationFailures.json
+// Generated from example definition: 2026-07-01-preview/MigrationsGetMigrationWithValidationFailures.json
 func ExampleMigrationsClient_Get_getInformationAboutAMigrationWithValidationFailures() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1053,8 +1053,8 @@ func ExampleMigrationsClient_Get_getInformationAboutAMigrationWithValidationFail
 	// 						DbLevelValidationDetails: []*armpostgresqlflexibleservers.DbLevelValidationStatus{
 	// 							{
 	// 								DatabaseName: to.Ptr("exampledatabase1"),
-	// 								EndedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T20:30:22.123456Z"); return t}()),
-	// 								StartedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T18:30:22.123456Z"); return t}()),
+	// 								EndedOn: to.Ptr(time.Date(2025, time.June, 1, 20, 30, 22, 123456000, time.UTC)),
+	// 								StartedOn: to.Ptr(time.Date(2025, time.June, 1, 18, 30, 22, 123456000, time.UTC)),
 	// 								Summary: []*armpostgresqlflexibleservers.ValidationSummaryItem{
 	// 									{
 	// 										Type: to.Ptr("SchemaValidation"),
@@ -1078,8 +1078,8 @@ func ExampleMigrationsClient_Get_getInformationAboutAMigrationWithValidationFail
 	// 							},
 	// 							{
 	// 								DatabaseName: to.Ptr("exampledatabase2"),
-	// 								EndedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T20:30:22.123456Z"); return t}()),
-	// 								StartedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T18:30:22.123456Z"); return t}()),
+	// 								EndedOn: to.Ptr(time.Date(2025, time.June, 1, 20, 30, 22, 123456000, time.UTC)),
+	// 								StartedOn: to.Ptr(time.Date(2025, time.June, 1, 18, 30, 22, 123456000, time.UTC)),
 	// 								Summary: []*armpostgresqlflexibleservers.ValidationSummaryItem{
 	// 									{
 	// 										Type: to.Ptr("SchemaValidation"),
@@ -1097,8 +1097,8 @@ func ExampleMigrationsClient_Get_getInformationAboutAMigrationWithValidationFail
 	// 							},
 	// 							{
 	// 								DatabaseName: to.Ptr("exampledatabase3"),
-	// 								EndedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T20:30:22.123456Z"); return t}()),
-	// 								StartedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T18:30:22.123456Z"); return t}()),
+	// 								EndedOn: to.Ptr(time.Date(2025, time.June, 1, 20, 30, 22, 123456000, time.UTC)),
+	// 								StartedOn: to.Ptr(time.Date(2025, time.June, 1, 18, 30, 22, 123456000, time.UTC)),
 	// 								Summary: []*armpostgresqlflexibleservers.ValidationSummaryItem{
 	// 									{
 	// 										Type: to.Ptr("SchemaValidation"),
@@ -1116,8 +1116,8 @@ func ExampleMigrationsClient_Get_getInformationAboutAMigrationWithValidationFail
 	// 							},
 	// 							{
 	// 								DatabaseName: to.Ptr("exampledatabase4"),
-	// 								EndedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T20:30:22.123456Z"); return t}()),
-	// 								StartedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T18:30:22.123456Z"); return t}()),
+	// 								EndedOn: to.Ptr(time.Date(2025, time.June, 1, 20, 30, 22, 123456000, time.UTC)),
+	// 								StartedOn: to.Ptr(time.Date(2025, time.June, 1, 18, 30, 22, 123456000, time.UTC)),
 	// 								Summary: []*armpostgresqlflexibleservers.ValidationSummaryItem{
 	// 									{
 	// 										Type: to.Ptr("SchemaValidation"),
@@ -1131,8 +1131,8 @@ func ExampleMigrationsClient_Get_getInformationAboutAMigrationWithValidationFail
 	// 							},
 	// 							{
 	// 								DatabaseName: to.Ptr("exampledatabase5"),
-	// 								EndedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T20:30:22.123456Z"); return t}()),
-	// 								StartedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T18:30:22.123456Z"); return t}()),
+	// 								EndedOn: to.Ptr(time.Date(2025, time.June, 1, 20, 30, 22, 123456000, time.UTC)),
+	// 								StartedOn: to.Ptr(time.Date(2025, time.June, 1, 18, 30, 22, 123456000, time.UTC)),
 	// 								Summary: []*armpostgresqlflexibleservers.ValidationSummaryItem{
 	// 									{
 	// 										Type: to.Ptr("SchemaValidation"),
@@ -1146,8 +1146,8 @@ func ExampleMigrationsClient_Get_getInformationAboutAMigrationWithValidationFail
 	// 							},
 	// 							{
 	// 								DatabaseName: to.Ptr("exampledatabase6"),
-	// 								EndedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T20:30:22.123456Z"); return t}()),
-	// 								StartedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T18:30:22.123456Z"); return t}()),
+	// 								EndedOn: to.Ptr(time.Date(2025, time.June, 1, 20, 30, 22, 123456000, time.UTC)),
+	// 								StartedOn: to.Ptr(time.Date(2025, time.June, 1, 18, 30, 22, 123456000, time.UTC)),
 	// 								Summary: []*armpostgresqlflexibleservers.ValidationSummaryItem{
 	// 									{
 	// 										Type: to.Ptr("SchemaValidation"),
@@ -1161,8 +1161,8 @@ func ExampleMigrationsClient_Get_getInformationAboutAMigrationWithValidationFail
 	// 							},
 	// 							{
 	// 								DatabaseName: to.Ptr("exampledatabase7"),
-	// 								EndedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T20:30:22.123456Z"); return t}()),
-	// 								StartedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T18:30:22.123456Z"); return t}()),
+	// 								EndedOn: to.Ptr(time.Date(2025, time.June, 1, 20, 30, 22, 123456000, time.UTC)),
+	// 								StartedOn: to.Ptr(time.Date(2025, time.June, 1, 18, 30, 22, 123456000, time.UTC)),
 	// 								Summary: []*armpostgresqlflexibleservers.ValidationSummaryItem{
 	// 									{
 	// 										Type: to.Ptr("SchemaValidation"),
@@ -1196,8 +1196,8 @@ func ExampleMigrationsClient_Get_getInformationAboutAMigrationWithValidationFail
 	// 							},
 	// 						},
 	// 						Status: to.Ptr(armpostgresqlflexibleservers.ValidationStateFailed),
-	// 						ValidationEndTimeInUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T20:30:22.123456Z"); return t}()),
-	// 						ValidationStartTimeInUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T18:30:22.123456Z"); return t}()),
+	// 						ValidationEndTimeInUTC: to.Ptr(time.Date(2025, time.June, 1, 20, 30, 22, 123456000, time.UTC)),
+	// 						ValidationStartTimeInUTC: to.Ptr(time.Date(2025, time.June, 1, 18, 30, 22, 123456000, time.UTC)),
 	// 					},
 	// 				},
 	// 				State: to.Ptr(armpostgresqlflexibleservers.MigrationStateValidationFailed),
@@ -1215,8 +1215,8 @@ func ExampleMigrationsClient_Get_getInformationAboutAMigrationWithValidationFail
 	// 			MigrationID: to.Ptr("a3e2d3cc-b139-4201-9431-e4f3003140fd"),
 	// 			MigrationMode: to.Ptr(armpostgresqlflexibleservers.MigrationModeOffline),
 	// 			MigrationOption: to.Ptr(armpostgresqlflexibleservers.MigrationOptionValidate),
-	// 			MigrationWindowEndTimeInUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T20:30:22.123456Z"); return t}()),
-	// 			MigrationWindowStartTimeInUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T18:30:22.123456Z"); return t}()),
+	// 			MigrationWindowEndTimeInUTC: to.Ptr(time.Date(2025, time.June, 1, 20, 30, 22, 123456000, time.UTC)),
+	// 			MigrationWindowStartTimeInUTC: to.Ptr(time.Date(2025, time.June, 1, 18, 30, 22, 123456000, time.UTC)),
 	// 			OverwriteDbsInTarget: to.Ptr(armpostgresqlflexibleservers.OverwriteDatabasesOnTargetServerTrue),
 	// 			SetupLogicalReplicationOnSourceDbIfNeeded: to.Ptr(armpostgresqlflexibleservers.LogicalReplicationOnSourceServerTrue),
 	// 			SourceDbServerResourceID: to.Ptr("20.228.214.65:5432@postgres"),
@@ -1227,7 +1227,7 @@ func ExampleMigrationsClient_Get_getInformationAboutAMigrationWithValidationFail
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/MigrationsListByTargetServer.json
+// Generated from example definition: 2026-07-01-preview/MigrationsListByTargetServer.json
 func ExampleMigrationsClient_NewListByTargetServerPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1274,7 +1274,7 @@ func ExampleMigrationsClient_NewListByTargetServerPager() {
 		// 					},
 		// 					MigrateRoles: to.Ptr(armpostgresqlflexibleservers.MigrateRolesAndPermissionsFalse),
 		// 					MigrationID: to.Ptr("d3ceacbb-a5fd-43dc-a9db-6022b5154856"),
-		// 					MigrationWindowStartTimeInUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T20:30:22.123456Z"); return t}()),
+		// 					MigrationWindowStartTimeInUTC: to.Ptr(time.Date(2025, time.June, 1, 20, 30, 22, 123456000, time.UTC)),
 		// 					OverwriteDbsInTarget: to.Ptr(armpostgresqlflexibleservers.OverwriteDatabasesOnTargetServerFalse),
 		// 					SetupLogicalReplicationOnSourceDbIfNeeded: to.Ptr(armpostgresqlflexibleservers.LogicalReplicationOnSourceServerFalse),
 		// 					SourceDbServerMetadata: &armpostgresqlflexibleservers.DbServerMetadata{
@@ -1307,7 +1307,7 @@ func ExampleMigrationsClient_NewListByTargetServerPager() {
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/MigrationsUpdate.json
+// Generated from example definition: 2026-07-01-preview/MigrationsUpdate.json
 func ExampleMigrationsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1351,7 +1351,7 @@ func ExampleMigrationsClient_Update() {
 	// 			},
 	// 			MigrateRoles: to.Ptr(armpostgresqlflexibleservers.MigrateRolesAndPermissionsFalse),
 	// 			MigrationID: to.Ptr("d3ceacbb-a5fd-43dc-a9db-6022b5154856"),
-	// 			MigrationWindowStartTimeInUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T20:30:22.123456Z"); return t}()),
+	// 			MigrationWindowStartTimeInUTC: to.Ptr(time.Date(2025, time.June, 1, 20, 30, 22, 123456000, time.UTC)),
 	// 			OverwriteDbsInTarget: to.Ptr(armpostgresqlflexibleservers.OverwriteDatabasesOnTargetServerFalse),
 	// 			SetupLogicalReplicationOnSourceDbIfNeeded: to.Ptr(armpostgresqlflexibleservers.LogicalReplicationOnSourceServerTrue),
 	// 			SourceDbServerMetadata: &armpostgresqlflexibleservers.DbServerMetadata{

@@ -139,7 +139,7 @@ func (a AgentUpgrade) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "lastAttemptDesiredVersion", a.LastAttemptDesiredVersion)
 	populate(objectMap, "lastAttemptMessage", a.LastAttemptMessage)
 	populate(objectMap, "lastAttemptStatus", a.LastAttemptStatus)
-	populateTime[datetime.RFC3339](objectMap, "lastAttemptTimestamp", a.LastAttemptTimestamp)
+	populateTime[datetime.RFC3339](objectMap, "lastAttemptTimestamp", a.LastAttemptTimestamp, true)
 	return json.Marshal(objectMap)
 }
 
@@ -916,7 +916,7 @@ func (e ExtensionsResourceStatus) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "displayStatus", e.DisplayStatus)
 	populate(objectMap, "level", e.Level)
 	populate(objectMap, "message", e.Message)
-	populateTime[datetime.RFC3339](objectMap, "time", e.Time)
+	populateTime[datetime.RFC3339](objectMap, "time", e.Time, true)
 	return json.Marshal(objectMap)
 }
 
@@ -1451,10 +1451,10 @@ func (l *LicenseProfileArmEsuProperties) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type LicenseProfileArmProductProfileProperties.
 func (l LicenseProfileArmProductProfileProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populateTime[datetime.RFC3339](objectMap, "billingEndDate", l.BillingEndDate)
-	populateTime[datetime.RFC3339](objectMap, "billingStartDate", l.BillingStartDate)
-	populateTime[datetime.RFC3339](objectMap, "disenrollmentDate", l.DisenrollmentDate)
-	populateTime[datetime.RFC3339](objectMap, "enrollmentDate", l.EnrollmentDate)
+	populateTime[datetime.RFC3339](objectMap, "billingEndDate", l.BillingEndDate, true)
+	populateTime[datetime.RFC3339](objectMap, "billingStartDate", l.BillingStartDate, true)
+	populateTime[datetime.RFC3339](objectMap, "disenrollmentDate", l.DisenrollmentDate, true)
+	populateTime[datetime.RFC3339](objectMap, "enrollmentDate", l.EnrollmentDate, true)
 	populate(objectMap, "error", l.Error)
 	populate(objectMap, "productFeatures", l.ProductFeatures)
 	populate(objectMap, "productType", l.ProductType)
@@ -2132,11 +2132,11 @@ func (m MachineAssessPatchesResult) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "assessmentActivityId", m.AssessmentActivityID)
 	populate(objectMap, "availablePatchCountByClassification", m.AvailablePatchCountByClassification)
 	populate(objectMap, "errorDetails", m.ErrorDetails)
-	populateTime[datetime.RFC3339](objectMap, "lastModifiedDateTime", m.LastModifiedDateTime)
+	populateTime[datetime.RFC3339](objectMap, "lastModifiedDateTime", m.LastModifiedDateTime, true)
 	populate(objectMap, "osType", m.OSType)
 	populate(objectMap, "patchServiceUsed", m.PatchServiceUsed)
 	populate(objectMap, "rebootPending", m.RebootPending)
-	populateTime[datetime.RFC3339](objectMap, "startDateTime", m.StartDateTime)
+	populateTime[datetime.RFC3339](objectMap, "startDateTime", m.StartDateTime, true)
 	populate(objectMap, "startedBy", m.StartedBy)
 	populate(objectMap, "status", m.Status)
 	return json.Marshal(objectMap)
@@ -2286,7 +2286,7 @@ func (m MachineExtensionInstanceViewStatus) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "displayStatus", m.DisplayStatus)
 	populate(objectMap, "level", m.Level)
 	populate(objectMap, "message", m.Message)
-	populateTime[datetime.RFC3339](objectMap, "time", m.Time)
+	populateTime[datetime.RFC3339](objectMap, "time", m.Time, true)
 	return json.Marshal(objectMap)
 }
 
@@ -2576,14 +2576,14 @@ func (m MachineInstallPatchesResult) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "failedPatchCount", m.FailedPatchCount)
 	populate(objectMap, "installationActivityId", m.InstallationActivityID)
 	populate(objectMap, "installedPatchCount", m.InstalledPatchCount)
-	populateTime[datetime.RFC3339](objectMap, "lastModifiedDateTime", m.LastModifiedDateTime)
+	populateTime[datetime.RFC3339](objectMap, "lastModifiedDateTime", m.LastModifiedDateTime, true)
 	populate(objectMap, "maintenanceWindowExceeded", m.MaintenanceWindowExceeded)
 	populate(objectMap, "notSelectedPatchCount", m.NotSelectedPatchCount)
 	populate(objectMap, "osType", m.OSType)
 	populate(objectMap, "patchServiceUsed", m.PatchServiceUsed)
 	populate(objectMap, "pendingPatchCount", m.PendingPatchCount)
 	populate(objectMap, "rebootStatus", m.RebootStatus)
-	populateTime[datetime.RFC3339](objectMap, "startDateTime", m.StartDateTime)
+	populateTime[datetime.RFC3339](objectMap, "startDateTime", m.StartDateTime, true)
 	populate(objectMap, "startedBy", m.StartedBy)
 	populate(objectMap, "status", m.Status)
 	return json.Marshal(objectMap)
@@ -2701,7 +2701,7 @@ func (m MachineProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "hardwareProfile", m.HardwareProfile)
 	populate(objectMap, "hardwareResourceId", m.HardwareResourceID)
 	populate(objectMap, "identityKeyStore", m.IdentityKeyStore)
-	populateTime[datetime.RFC3339](objectMap, "lastStatusChange", m.LastStatusChange)
+	populateTime[datetime.RFC3339](objectMap, "lastStatusChange", m.LastStatusChange, true)
 	populate(objectMap, "licenseProfile", m.LicenseProfile)
 	populate(objectMap, "locationData", m.LocationData)
 	populate(objectMap, "machineFqdn", m.MachineFqdn)
@@ -2911,13 +2911,13 @@ func (m *MachineRunCommand) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type MachineRunCommandInstanceView.
 func (m MachineRunCommandInstanceView) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populateTime[datetime.RFC3339](objectMap, "endTime", m.EndTime)
+	populateTime[datetime.RFC3339](objectMap, "endTime", m.EndTime, true)
 	populate(objectMap, "error", m.Error)
 	populate(objectMap, "executionMessage", m.ExecutionMessage)
 	populate(objectMap, "executionState", m.ExecutionState)
 	populate(objectMap, "exitCode", m.ExitCode)
 	populate(objectMap, "output", m.Output)
-	populateTime[datetime.RFC3339](objectMap, "startTime", m.StartTime)
+	populateTime[datetime.RFC3339](objectMap, "startTime", m.StartTime, true)
 	populate(objectMap, "statuses", m.Statuses)
 	return json.Marshal(objectMap)
 }
@@ -4314,10 +4314,10 @@ func (p *Processor) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type ProductFeature.
 func (p ProductFeature) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populateTime[datetime.RFC3339](objectMap, "billingEndDate", p.BillingEndDate)
-	populateTime[datetime.RFC3339](objectMap, "billingStartDate", p.BillingStartDate)
-	populateTime[datetime.RFC3339](objectMap, "disenrollmentDate", p.DisenrollmentDate)
-	populateTime[datetime.RFC3339](objectMap, "enrollmentDate", p.EnrollmentDate)
+	populateTime[datetime.RFC3339](objectMap, "billingEndDate", p.BillingEndDate, true)
+	populateTime[datetime.RFC3339](objectMap, "billingStartDate", p.BillingStartDate, true)
+	populateTime[datetime.RFC3339](objectMap, "disenrollmentDate", p.DisenrollmentDate, true)
+	populateTime[datetime.RFC3339](objectMap, "enrollmentDate", p.EnrollmentDate, true)
 	populate(objectMap, "error", p.Error)
 	populate(objectMap, "name", p.Name)
 	populate(objectMap, "subscriptionStatus", p.SubscriptionStatus)
@@ -4873,10 +4873,10 @@ func (s *Subnet) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type SystemData.
 func (s SystemData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populateTime[datetime.RFC3339](objectMap, "createdAt", s.CreatedAt)
+	populateTime[datetime.RFC3339](objectMap, "createdAt", s.CreatedAt, true)
 	populate(objectMap, "createdBy", s.CreatedBy)
 	populate(objectMap, "createdByType", s.CreatedByType)
-	populateTime[datetime.RFC3339](objectMap, "lastModifiedAt", s.LastModifiedAt)
+	populateTime[datetime.RFC3339](objectMap, "lastModifiedAt", s.LastModifiedAt, true)
 	populate(objectMap, "lastModifiedBy", s.LastModifiedBy)
 	populate(objectMap, "lastModifiedByType", s.LastModifiedByType)
 	return json.Marshal(objectMap)
@@ -5013,7 +5013,7 @@ func (w WindowsParameters) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "excludeKbsRequiringReboot", w.ExcludeKbsRequiringReboot)
 	populate(objectMap, "kbNumbersToExclude", w.KbNumbersToExclude)
 	populate(objectMap, "kbNumbersToInclude", w.KbNumbersToInclude)
-	populateTime[datetime.RFC3339](objectMap, "maxPatchPublishDate", w.MaxPatchPublishDate)
+	populateTime[datetime.RFC3339](objectMap, "maxPatchPublishDate", w.MaxPatchPublishDate, true)
 	populate(objectMap, "patchNameMasksToExclude", w.PatchNameMasksToExclude)
 	populate(objectMap, "patchNameMasksToInclude", w.PatchNameMasksToInclude)
 	return json.Marshal(objectMap)
@@ -5067,13 +5067,17 @@ func populate(m map[string]any, k string, v any) {
 	}
 }
 
-func populateTime[T dateTimeConstraints](m map[string]any, k string, t *time.Time) {
+func populateTime[T dateTimeConstraints](m map[string]any, k string, t *time.Time, utc bool) {
 	if t == nil {
 		return
 	} else if azcore.IsNullValue(t) {
 		m[k] = nil
 	} else if !reflect.ValueOf(t).IsNil() {
-		newTime := T(*t)
+		tt := *t
+		if utc {
+			tt = tt.UTC()
+		}
+		newTime := T(tt)
 		m[k] = (*T)(&newTime)
 	}
 }
@@ -5093,7 +5097,7 @@ func unpopulate(data json.RawMessage, fn string, v any) error {
 		return nil
 	}
 	if err := json.Unmarshal(data, v); err != nil {
-		return fmt.Errorf("struct field %s: %v", fn, err)
+		return fmt.Errorf("struct field %s: %s", fn, err.Error())
 	}
 	return nil
 }
@@ -5104,7 +5108,7 @@ func unpopulateTime[T dateTimeConstraints](data json.RawMessage, fn string, t **
 	}
 	var aux T
 	if err := json.Unmarshal(data, &aux); err != nil {
-		return fmt.Errorf("struct field %s: %v", fn, err)
+		return fmt.Errorf("struct field %s: %s", fn, err.Error())
 	}
 	newTime := time.Time(aux)
 	*t = &newTime

@@ -18,6 +18,7 @@ import (
 	"os/exec"
 	"path/filepath"
 	"runtime"
+	"strings"
 	"time"
 )
 
@@ -45,6 +46,7 @@ func init() {
 	if ok := certPool.AppendCertsFromPEM(cert); !ok {
 		log.Println("no certs appended, using system certs only")
 	}
+	rootCAs = certPool
 
 	defaultTransport := &http.Transport{
 		Proxy: http.ProxyFromEnvironment,
@@ -79,7 +81,7 @@ func findProxyCertLocation() (string, error) {
 		log.Print("Could not find PROXY_CERT environment variable or toplevel of git repository, please set PROXY_CERT to location of certificate found in eng/common/testproxy/dotnet-devcert.crt")
 		return "", err
 	}
-	topLevel := bytes.NewBuffer(out).String()
+	topLevel := strings.TrimSpace(bytes.NewBuffer(out).String())
 	return filepath.Join(topLevel, "eng", "common", "testproxy", "dotnet-devcert.crt"), nil
 }
 
@@ -182,7 +184,7 @@ func (c *RecordingHTTPClient) start() error {
 		req.Header.Set(idHeader, c.recID)
 	}
 
-	resp, err := defaultHTTPClient.Do(req)
+	resp, err := c.defaultClient.Do(req)
 	if err != nil {
 		return fmt.Errorf("there was an error communicating with the test proxy: %s", err.Error())
 	}
@@ -190,6 +192,10 @@ func (c *RecordingHTTPClient) start() error {
 	defer func() {
 		_ = resp.Body.Close()
 	}()
+	if resp.StatusCode < http.StatusOK || resp.StatusCode >= http.StatusMultipleChoices {
+		body, _ := io.ReadAll(resp.Body)
+		return fmt.Errorf("proxy did not start %s mode: status %d: %s", c.mode, resp.StatusCode, body)
+	}
 
 	recID := resp.Header.Get(idHeader)
 	if recID == "" {
@@ -217,7 +223,7 @@ func (c *RecordingHTTPClient) stop() error {
 	}
 
 	req.Header.Set("x-recording-id", c.recID)
-	resp, err := defaultHTTPClient.Do(req)
+	resp, err := c.defaultClient.Do(req)
 	if err != nil {
 		return fmt.Errorf("there was an error communicating with the test proxy: %s", err.Error())
 	}

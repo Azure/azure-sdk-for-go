@@ -55,6 +55,22 @@ func (c *ClientFactory) NewOperationsClient() *OperationsClient {
 	}
 }
 
+// NewPrivateEndpointConnectionsInterfaceClient creates a new instance of PrivateEndpointConnectionsInterfaceClient.
+func (c *ClientFactory) NewPrivateEndpointConnectionsInterfaceClient() *PrivateEndpointConnectionsInterfaceClient {
+	return &PrivateEndpointConnectionsInterfaceClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewPrivateLinkResourcesInterfaceClient creates a new instance of PrivateLinkResourcesInterfaceClient.
+func (c *ClientFactory) NewPrivateLinkResourcesInterfaceClient() *PrivateLinkResourcesInterfaceClient {
+	return &PrivateLinkResourcesInterfaceClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewSecurityPoliciesInterfaceClient creates a new instance of SecurityPoliciesInterfaceClient.
 func (c *ClientFactory) NewSecurityPoliciesInterfaceClient() *SecurityPoliciesInterfaceClient {
 	return &SecurityPoliciesInterfaceClient{

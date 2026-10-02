@@ -233,10 +233,10 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_detectSapSoftwareInstallationO
 	// 			State: to.Ptr(armworkloadssapvirtualinstance.SAPVirtualInstanceStateRegistrationComplete),
 	// 		},
 	// 		SystemData: &armworkloadssapvirtualinstance.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-08-18T18:25:55.2406546Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2022, time.August, 18, 18, 25, 55, 240654600, time.UTC)),
 	// 			CreatedBy: to.Ptr("f1bc9460-9d57-4c16-99a8-5a19378a3a93"),
 	// 			CreatedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeApplication),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-08-18T18:50:59.1945444Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2022, time.August, 18, 18, 50, 59, 194544400, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("f1bc9460-9d57-4c16-99a8-5a19378a3a93"),
 	// 			LastModifiedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeApplication),
 	// 		},
@@ -468,10 +468,10 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_detectSapSoftwareInstallationO
 	// 			State: to.Ptr(armworkloadssapvirtualinstance.SAPVirtualInstanceStateRegistrationComplete),
 	// 		},
 	// 		SystemData: &armworkloadssapvirtualinstance.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T15:10:46.196Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.August, 19, 15, 10, 46, 196000000, time.UTC)),
 	// 			CreatedBy: to.Ptr("user@xyz.com"),
 	// 			CreatedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T15:10:46.196Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.August, 19, 15, 10, 46, 196000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user@xyz.com"),
 	// 			LastModifiedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
 	// 		},
@@ -702,10 +702,10 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_detectSapSoftwareInstallationO
 	// 			State: to.Ptr(armworkloadssapvirtualinstance.SAPVirtualInstanceStateRegistrationComplete),
 	// 		},
 	// 		SystemData: &armworkloadssapvirtualinstance.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T15:10:46.196Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.August, 19, 15, 10, 46, 196000000, time.UTC)),
 	// 			CreatedBy: to.Ptr("user@xyz.com"),
 	// 			CreatedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T15:10:46.196Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.August, 19, 15, 10, 46, 196000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user@xyz.com"),
 	// 			LastModifiedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
 	// 		},
@@ -836,10 +836,10 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_detectSapSoftwareInstallationO
 	// 			State: to.Ptr(armworkloadssapvirtualinstance.SAPVirtualInstanceStateRegistrationComplete),
 	// 		},
 	// 		SystemData: &armworkloadssapvirtualinstance.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T15:10:46.196Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.August, 19, 15, 10, 46, 196000000, time.UTC)),
 	// 			CreatedBy: to.Ptr("user@xyz.com"),
 	// 			CreatedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T15:10:46.196Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.August, 19, 15, 10, 46, 196000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user@xyz.com"),
 	// 			LastModifiedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
 	// 		},
@@ -1073,10 +1073,10 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureOnlyForDis
 	// 			Status: to.Ptr(armworkloadssapvirtualinstance.SAPVirtualInstanceStatus("Unknown")),
 	// 		},
 	// 		SystemData: &armworkloadssapvirtualinstance.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T15:10:46.196Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.August, 19, 15, 10, 46, 196000000, time.UTC)),
 	// 			CreatedBy: to.Ptr("user@xyz.com"),
 	// 			CreatedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T15:10:46.196Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.August, 19, 15, 10, 46, 196000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user@xyz.com"),
 	// 			LastModifiedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
 	// 		},
@@ -1387,10 +1387,10 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureWithDiskAn
 	// 			Status: to.Ptr(armworkloadssapvirtualinstance.SAPVirtualInstanceStatus("Unknown")),
 	// 		},
 	// 		SystemData: &armworkloadssapvirtualinstance.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T15:10:46.196Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.August, 19, 15, 10, 46, 196000000, time.UTC)),
 	// 			CreatedBy: to.Ptr("user@xyz.com"),
 	// 			CreatedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T15:10:46.196Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.August, 19, 15, 10, 46, 196000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user@xyz.com"),
 	// 			LastModifiedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
 	// 		},
@@ -1707,10 +1707,10 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureWithDiskAn
 	// 			Status: to.Ptr(armworkloadssapvirtualinstance.SAPVirtualInstanceStatus("Unknown")),
 	// 		},
 	// 		SystemData: &armworkloadssapvirtualinstance.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T15:10:46.196Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.August, 19, 15, 10, 46, 196000000, time.UTC)),
 	// 			CreatedBy: to.Ptr("user@xyz.com"),
 	// 			CreatedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T15:10:46.196Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.August, 19, 15, 10, 46, 196000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user@xyz.com"),
 	// 			LastModifiedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
 	// 		},
@@ -2027,10 +2027,10 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureWithDiskAn
 	// 			Status: to.Ptr(armworkloadssapvirtualinstance.SAPVirtualInstanceStatus("Unknown")),
 	// 		},
 	// 		SystemData: &armworkloadssapvirtualinstance.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T15:10:46.196Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.August, 19, 15, 10, 46, 196000000, time.UTC)),
 	// 			CreatedBy: to.Ptr("user@xyz.com"),
 	// 			CreatedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T15:10:46.196Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.August, 19, 15, 10, 46, 196000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user@xyz.com"),
 	// 			LastModifiedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
 	// 		},
@@ -2247,10 +2247,10 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureWithDiskAn
 	// 			Status: to.Ptr(armworkloadssapvirtualinstance.SAPVirtualInstanceStatus("Unknown")),
 	// 		},
 	// 		SystemData: &armworkloadssapvirtualinstance.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T15:10:46.196Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.August, 19, 15, 10, 46, 196000000, time.UTC)),
 	// 			CreatedBy: to.Ptr("user@xyz.com"),
 	// 			CreatedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T15:10:46.196Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.August, 19, 15, 10, 46, 196000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user@xyz.com"),
 	// 			LastModifiedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
 	// 		},
@@ -2490,10 +2490,10 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureOnlyForHaS
 	// 			Status: to.Ptr(armworkloadssapvirtualinstance.SAPVirtualInstanceStatus("Unknown")),
 	// 		},
 	// 		SystemData: &armworkloadssapvirtualinstance.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T15:10:46.196Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.August, 19, 15, 10, 46, 196000000, time.UTC)),
 	// 			CreatedBy: to.Ptr("user@xyz.com"),
 	// 			CreatedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T15:10:46.196Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.August, 19, 15, 10, 46, 196000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user@xyz.com"),
 	// 			LastModifiedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
 	// 		},
@@ -2733,10 +2733,10 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureOnlyForHaS
 	// 			Status: to.Ptr(armworkloadssapvirtualinstance.SAPVirtualInstanceStatus("Unknown")),
 	// 		},
 	// 		SystemData: &armworkloadssapvirtualinstance.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T15:10:46.196Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.August, 19, 15, 10, 46, 196000000, time.UTC)),
 	// 			CreatedBy: to.Ptr("user@xyz.com"),
 	// 			CreatedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T15:10:46.196Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.August, 19, 15, 10, 46, 196000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user@xyz.com"),
 	// 			LastModifiedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
 	// 		},
@@ -2958,10 +2958,10 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureWithOSConf
 	// 			Status: to.Ptr(armworkloadssapvirtualinstance.SAPVirtualInstanceStatus("Unknown")),
 	// 		},
 	// 		SystemData: &armworkloadssapvirtualinstance.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T15:10:46.196Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.August, 19, 15, 10, 46, 196000000, time.UTC)),
 	// 			CreatedBy: to.Ptr("user@xyz.com"),
 	// 			CreatedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T15:10:46.196Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.August, 19, 15, 10, 46, 196000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user@xyz.com"),
 	// 			LastModifiedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
 	// 		},
@@ -3366,10 +3366,10 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureWithOSConf
 	// 			Status: to.Ptr(armworkloadssapvirtualinstance.SAPVirtualInstanceStatus("Unknown")),
 	// 		},
 	// 		SystemData: &armworkloadssapvirtualinstance.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T15:10:46.196Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.August, 19, 15, 10, 46, 196000000, time.UTC)),
 	// 			CreatedBy: to.Ptr("user@xyz.com"),
 	// 			CreatedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T15:10:46.196Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.August, 19, 15, 10, 46, 196000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user@xyz.com"),
 	// 			LastModifiedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
 	// 		},
@@ -3902,10 +3902,10 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureWithOSConf
 	// 			Status: to.Ptr(armworkloadssapvirtualinstance.SAPVirtualInstanceStatus("Unknown")),
 	// 		},
 	// 		SystemData: &armworkloadssapvirtualinstance.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T15:10:46.196Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.August, 19, 15, 10, 46, 196000000, time.UTC)),
 	// 			CreatedBy: to.Ptr("user@xyz.com"),
 	// 			CreatedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T15:10:46.196Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.August, 19, 15, 10, 46, 196000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user@xyz.com"),
 	// 			LastModifiedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
 	// 		},
@@ -4432,10 +4432,10 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureWithOSConf
 	// 			Status: to.Ptr(armworkloadssapvirtualinstance.SAPVirtualInstanceStatus("Unknown")),
 	// 		},
 	// 		SystemData: &armworkloadssapvirtualinstance.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T15:10:46.196Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.August, 19, 15, 10, 46, 196000000, time.UTC)),
 	// 			CreatedBy: to.Ptr("user@xyz.com"),
 	// 			CreatedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T15:10:46.196Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.August, 19, 15, 10, 46, 196000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user@xyz.com"),
 	// 			LastModifiedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
 	// 		},
@@ -4591,10 +4591,10 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureWithOSConf
 	// 			Status: to.Ptr(armworkloadssapvirtualinstance.SAPVirtualInstanceStatus("Unknown")),
 	// 		},
 	// 		SystemData: &armworkloadssapvirtualinstance.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T15:10:46.196Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.August, 19, 15, 10, 46, 196000000, time.UTC)),
 	// 			CreatedBy: to.Ptr("user@xyz.com"),
 	// 			CreatedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T15:10:46.196Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.August, 19, 15, 10, 46, 196000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user@xyz.com"),
 	// 			LastModifiedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
 	// 		},
@@ -4813,10 +4813,10 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureWithOSConf
 	// 			Status: to.Ptr(armworkloadssapvirtualinstance.SAPVirtualInstanceStatus("Unknown")),
 	// 		},
 	// 		SystemData: &armworkloadssapvirtualinstance.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T15:10:46.196Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.August, 19, 15, 10, 46, 196000000, time.UTC)),
 	// 			CreatedBy: to.Ptr("user@xyz.com"),
 	// 			CreatedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T15:10:46.196Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.August, 19, 15, 10, 46, 196000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user@xyz.com"),
 	// 			LastModifiedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
 	// 		},
@@ -5041,10 +5041,10 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureWithOSConf
 	// 			Status: to.Ptr(armworkloadssapvirtualinstance.SAPVirtualInstanceStatus("Unknown")),
 	// 		},
 	// 		SystemData: &armworkloadssapvirtualinstance.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T15:10:46.196Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.August, 19, 15, 10, 46, 196000000, time.UTC)),
 	// 			CreatedBy: to.Ptr("user@xyz.com"),
 	// 			CreatedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T15:10:46.196Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.August, 19, 15, 10, 46, 196000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user@xyz.com"),
 	// 			LastModifiedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
 	// 		},
@@ -5269,10 +5269,10 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureWithOSConf
 	// 			Status: to.Ptr(armworkloadssapvirtualinstance.SAPVirtualInstanceStatus("Unknown")),
 	// 		},
 	// 		SystemData: &armworkloadssapvirtualinstance.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T15:10:46.196Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.August, 19, 15, 10, 46, 196000000, time.UTC)),
 	// 			CreatedBy: to.Ptr("user@xyz.com"),
 	// 			CreatedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T15:10:46.196Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.August, 19, 15, 10, 46, 196000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user@xyz.com"),
 	// 			LastModifiedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
 	// 		},
@@ -5397,10 +5397,10 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureWithOSConf
 	// 			Status: to.Ptr(armworkloadssapvirtualinstance.SAPVirtualInstanceStatus("Unknown")),
 	// 		},
 	// 		SystemData: &armworkloadssapvirtualinstance.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T15:10:46.196Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.August, 19, 15, 10, 46, 196000000, time.UTC)),
 	// 			CreatedBy: to.Ptr("user@xyz.com"),
 	// 			CreatedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T15:10:46.196Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.August, 19, 15, 10, 46, 196000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user@xyz.com"),
 	// 			LastModifiedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
 	// 		},
@@ -5523,10 +5523,10 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureOnlyForSin
 	// 			Status: to.Ptr(armworkloadssapvirtualinstance.SAPVirtualInstanceStatus("Unknown")),
 	// 		},
 	// 		SystemData: &armworkloadssapvirtualinstance.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T15:10:46.196Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.August, 19, 15, 10, 46, 196000000, time.UTC)),
 	// 			CreatedBy: to.Ptr("user@xyz.com"),
 	// 			CreatedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T15:10:46.196Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.August, 19, 15, 10, 46, 196000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user@xyz.com"),
 	// 			LastModifiedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
 	// 		},
@@ -5759,10 +5759,10 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureWithAnExis
 	// 			Status: to.Ptr(armworkloadssapvirtualinstance.SAPVirtualInstanceStatus("Unknown")),
 	// 		},
 	// 		SystemData: &armworkloadssapvirtualinstance.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T15:10:46.196Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.August, 19, 15, 10, 46, 196000000, time.UTC)),
 	// 			CreatedBy: to.Ptr("user@xyz.com"),
 	// 			CreatedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T15:10:46.196Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.August, 19, 15, 10, 46, 196000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user@xyz.com"),
 	// 			LastModifiedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
 	// 		},
@@ -5995,10 +5995,10 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureWithANewSa
 	// 			Status: to.Ptr(armworkloadssapvirtualinstance.SAPVirtualInstanceStatus("Unknown")),
 	// 		},
 	// 		SystemData: &armworkloadssapvirtualinstance.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T15:10:46.196Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.August, 19, 15, 10, 46, 196000000, time.UTC)),
 	// 			CreatedBy: to.Ptr("user@xyz.com"),
 	// 			CreatedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T15:10:46.196Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.August, 19, 15, 10, 46, 196000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user@xyz.com"),
 	// 			LastModifiedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
 	// 		},
@@ -6219,10 +6219,10 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureWithOSConf
 	// 			Status: to.Ptr(armworkloadssapvirtualinstance.SAPVirtualInstanceStatus("Unknown")),
 	// 		},
 	// 		SystemData: &armworkloadssapvirtualinstance.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T15:10:46.196Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.August, 19, 15, 10, 46, 196000000, time.UTC)),
 	// 			CreatedBy: to.Ptr("user@xyz.com"),
 	// 			CreatedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T15:10:46.196Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.August, 19, 15, 10, 46, 196000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user@xyz.com"),
 	// 			LastModifiedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
 	// 		},
@@ -6451,10 +6451,10 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureWithoutASa
 	// 			Status: to.Ptr(armworkloadssapvirtualinstance.SAPVirtualInstanceStatus("Unknown")),
 	// 		},
 	// 		SystemData: &armworkloadssapvirtualinstance.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T15:10:46.196Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.August, 19, 15, 10, 46, 196000000, time.UTC)),
 	// 			CreatedBy: to.Ptr("user@xyz.com"),
 	// 			CreatedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T15:10:46.196Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.August, 19, 15, 10, 46, 196000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user@xyz.com"),
 	// 			LastModifiedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
 	// 		},
@@ -6689,10 +6689,10 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_installSapSoftwareOnDistribute
 	// 			State: to.Ptr(armworkloadssapvirtualinstance.SAPVirtualInstanceStateSoftwareInstallationInProgress),
 	// 		},
 	// 		SystemData: &armworkloadssapvirtualinstance.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-08-18T18:25:55.2406546Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2022, time.August, 18, 18, 25, 55, 240654600, time.UTC)),
 	// 			CreatedBy: to.Ptr("f1bc9460-9d57-4c16-99a8-5a19378a3a93"),
 	// 			CreatedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeApplication),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-08-18T18:50:59.1945444Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2022, time.August, 18, 18, 50, 59, 194544400, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("f1bc9460-9d57-4c16-99a8-5a19378a3a93"),
 	// 			LastModifiedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeApplication),
 	// 		},
@@ -6872,10 +6872,10 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_installSapSoftwareOnSingleServ
 	// 			State: to.Ptr(armworkloadssapvirtualinstance.SAPVirtualInstanceStateSoftwareInstallationInProgress),
 	// 		},
 	// 		SystemData: &armworkloadssapvirtualinstance.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-08-18T18:25:55.2406546Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2022, time.August, 18, 18, 25, 55, 240654600, time.UTC)),
 	// 			CreatedBy: to.Ptr("f1bc9460-9d57-4c16-99a8-5a19378a3a93"),
 	// 			CreatedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeApplication),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-08-18T18:50:59.1945444Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2022, time.August, 18, 18, 50, 59, 194544400, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("f1bc9460-9d57-4c16-99a8-5a19378a3a93"),
 	// 			LastModifiedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeApplication),
 	// 		},
@@ -6945,10 +6945,10 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_registerExistingSapSystemAsVir
 	// 			Status: to.Ptr(armworkloadssapvirtualinstance.SAPVirtualInstanceStatusRunning),
 	// 		},
 	// 		SystemData: &armworkloadssapvirtualinstance.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-07-27T08:22:52.3318907Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2022, time.July, 27, 8, 22, 52, 331890700, time.UTC)),
 	// 			CreatedBy: to.Ptr("abc@microsoft.com"),
 	// 			CreatedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-07-27T11:44:17.9310503Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2022, time.July, 27, 11, 44, 17, 931050300, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("abc@microsoft.com"),
 	// 			LastModifiedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
 	// 		},
@@ -7017,10 +7017,10 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_registerExistingSapSystemAsVir
 	// 			Status: to.Ptr(armworkloadssapvirtualinstance.SAPVirtualInstanceStatusRunning),
 	// 		},
 	// 		SystemData: &armworkloadssapvirtualinstance.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-07-27T08:22:52.3318907Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2022, time.July, 27, 8, 22, 52, 331890700, time.UTC)),
 	// 			CreatedBy: to.Ptr("abc@microsoft.com"),
 	// 			CreatedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-07-27T11:44:17.9310503Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2022, time.July, 27, 11, 44, 17, 931050300, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("abc@microsoft.com"),
 	// 			LastModifiedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
 	// 		},
@@ -7089,10 +7089,10 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_registerWithTrustedAccessEnabl
 	// 			Status: to.Ptr(armworkloadssapvirtualinstance.SAPVirtualInstanceStatusRunning),
 	// 		},
 	// 		SystemData: &armworkloadssapvirtualinstance.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-07-27T08:22:52.3318907Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2022, time.July, 27, 8, 22, 52, 331890700, time.UTC)),
 	// 			CreatedBy: to.Ptr("abc@microsoft.com"),
 	// 			CreatedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-07-27T11:44:17.9310503Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2022, time.July, 27, 11, 44, 17, 931050300, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("abc@microsoft.com"),
 	// 			LastModifiedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
 	// 		},
@@ -7254,10 +7254,10 @@ func ExampleSAPVirtualInstancesClient_Get_sapVirtualInstancesGet() {
 	// 			Status: to.Ptr(armworkloadssapvirtualinstance.SAPVirtualInstanceStatusRunning),
 	// 		},
 	// 		SystemData: &armworkloadssapvirtualinstance.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T15:10:46.196Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.August, 19, 15, 10, 46, 196000000, time.UTC)),
 	// 			CreatedBy: to.Ptr("user@xyz.com"),
 	// 			CreatedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T15:10:46.196Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.August, 19, 15, 10, 46, 196000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user@xyz.com"),
 	// 			LastModifiedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
 	// 		},
@@ -7391,15 +7391,1311 @@ func ExampleSAPVirtualInstancesClient_Get_sapVirtualInstancesGetWithAcssInstalla
 	// 			Status: to.Ptr(armworkloadssapvirtualinstance.SAPVirtualInstanceStatusRunning),
 	// 		},
 	// 		SystemData: &armworkloadssapvirtualinstance.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T15:10:46.196Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.August, 19, 15, 10, 46, 196000000, time.UTC)),
 	// 			CreatedBy: to.Ptr("user@xyz.com"),
 	// 			CreatedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T15:10:46.196Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.August, 19, 15, 10, 46, 196000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user@xyz.com"),
 	// 			LastModifiedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
 	// 		},
 	// 		Tags: map[string]*string{
 	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2024-09-01/SapVirtualInstances_InvokeAvailabilityZoneDetails_eastus.json
+func ExampleSAPVirtualInstancesClient_GetAvailabilityZoneDetails_sapAvailabilityZoneDetailsInEastUs() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armworkloadssapvirtualinstance.NewClientFactory("8e17e36c-42e9-4cd5-a078-7b44883414e0", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewSAPVirtualInstancesClient().GetAvailabilityZoneDetails(ctx, "eastus", armworkloadssapvirtualinstance.SAPAvailabilityZoneDetailsRequest{
+		AppLocation:  to.Ptr("eastus"),
+		SapProduct:   to.Ptr(armworkloadssapvirtualinstance.SAPProductTypeS4HANA),
+		DatabaseType: to.Ptr(armworkloadssapvirtualinstance.SAPDatabaseTypeHANA),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armworkloadssapvirtualinstance.SAPVirtualInstancesClientGetAvailabilityZoneDetailsResponse{
+	// 	SAPAvailabilityZoneDetailsResult: armworkloadssapvirtualinstance.SAPAvailabilityZoneDetailsResult{
+	// 		AvailabilityZonePairs: []*armworkloadssapvirtualinstance.SAPAvailabilityZonePair{
+	// 			{
+	// 				ZoneA: to.Ptr[int64](1),
+	// 				ZoneB: to.Ptr[int64](2),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2024-09-01/SapVirtualInstances_InvokeAvailabilityZoneDetails_northeurope.json
+func ExampleSAPVirtualInstancesClient_GetAvailabilityZoneDetails_sapAvailabilityZoneDetailsInNorthEurope() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armworkloadssapvirtualinstance.NewClientFactory("8e17e36c-42e9-4cd5-a078-7b44883414e0", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewSAPVirtualInstancesClient().GetAvailabilityZoneDetails(ctx, "northeurope", armworkloadssapvirtualinstance.SAPAvailabilityZoneDetailsRequest{
+		AppLocation:  to.Ptr("northeurope"),
+		SapProduct:   to.Ptr(armworkloadssapvirtualinstance.SAPProductTypeS4HANA),
+		DatabaseType: to.Ptr(armworkloadssapvirtualinstance.SAPDatabaseTypeHANA),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armworkloadssapvirtualinstance.SAPVirtualInstancesClientGetAvailabilityZoneDetailsResponse{
+	// 	SAPAvailabilityZoneDetailsResult: armworkloadssapvirtualinstance.SAPAvailabilityZoneDetailsResult{
+	// 		AvailabilityZonePairs: []*armworkloadssapvirtualinstance.SAPAvailabilityZonePair{
+	// 			{
+	// 				ZoneA: to.Ptr[int64](2),
+	// 				ZoneB: to.Ptr[int64](3),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2024-09-01/SapVirtualInstances_InvokeDiskConfigurations_NonProd.json
+func ExampleSAPVirtualInstancesClient_GetDiskConfigurations_sapDiskConfigurationsForInputEnvironmentNonProd() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armworkloadssapvirtualinstance.NewClientFactory("8e17e36c-42e9-4cd5-a078-7b44883414e0", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewSAPVirtualInstancesClient().GetDiskConfigurations(ctx, "centralus", armworkloadssapvirtualinstance.SAPDiskConfigurationsRequest{
+		AppLocation:    to.Ptr("eastus"),
+		SapProduct:     to.Ptr(armworkloadssapvirtualinstance.SAPProductTypeS4HANA),
+		Environment:    to.Ptr(armworkloadssapvirtualinstance.SAPEnvironmentTypeNonProd),
+		DatabaseType:   to.Ptr(armworkloadssapvirtualinstance.SAPDatabaseTypeHANA),
+		DeploymentType: to.Ptr(armworkloadssapvirtualinstance.SAPDeploymentTypeThreeTier),
+		DbVMSKU:        to.Ptr("Standard_M32ts"),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armworkloadssapvirtualinstance.SAPVirtualInstancesClientGetDiskConfigurationsResponse{
+	// 	SAPDiskConfigurationsResult: armworkloadssapvirtualinstance.SAPDiskConfigurationsResult{
+	// 		VolumeConfigurations: map[string]*armworkloadssapvirtualinstance.SAPDiskConfiguration{
+	// 			"hana/data": &armworkloadssapvirtualinstance.SAPDiskConfiguration{
+	// 				RecommendedConfiguration: &armworkloadssapvirtualinstance.DiskVolumeConfiguration{
+	// 					SKU: &armworkloadssapvirtualinstance.DiskSKU{
+	// 						Name: to.Ptr(armworkloadssapvirtualinstance.DiskSKUNamePremiumLRS),
+	// 					},
+	// 					Count: to.Ptr[int64](4),
+	// 					SizeGB: to.Ptr[int64](128),
+	// 				},
+	// 				SupportedConfigurations: []*armworkloadssapvirtualinstance.DiskDetails{
+	// 					{
+	// 						SKU: &armworkloadssapvirtualinstance.DiskSKU{
+	// 							Name: to.Ptr(armworkloadssapvirtualinstance.DiskSKUNamePremiumLRS),
+	// 						},
+	// 						SizeGB: to.Ptr[int64](128),
+	// 						MinimumSupportedDiskCount: to.Ptr[int64](4),
+	// 						MaximumSupportedDiskCount: to.Ptr[int64](5),
+	// 						IopsReadWrite: to.Ptr[int64](500),
+	// 						MbpsReadWrite: to.Ptr[int64](100),
+	// 						DiskTier: to.Ptr("P10"),
+	// 					},
+	// 				},
+	// 			},
+	// 			"hana/log": &armworkloadssapvirtualinstance.SAPDiskConfiguration{
+	// 				RecommendedConfiguration: &armworkloadssapvirtualinstance.DiskVolumeConfiguration{
+	// 					SKU: &armworkloadssapvirtualinstance.DiskSKU{
+	// 						Name: to.Ptr(armworkloadssapvirtualinstance.DiskSKUNamePremiumLRS),
+	// 					},
+	// 					Count: to.Ptr[int64](3),
+	// 					SizeGB: to.Ptr[int64](128),
+	// 				},
+	// 				SupportedConfigurations: []*armworkloadssapvirtualinstance.DiskDetails{
+	// 					{
+	// 						SKU: &armworkloadssapvirtualinstance.DiskSKU{
+	// 							Name: to.Ptr(armworkloadssapvirtualinstance.DiskSKUNamePremiumLRS),
+	// 						},
+	// 						SizeGB: to.Ptr[int64](128),
+	// 						MinimumSupportedDiskCount: to.Ptr[int64](3),
+	// 						MaximumSupportedDiskCount: to.Ptr[int64](5),
+	// 						IopsReadWrite: to.Ptr[int64](500),
+	// 						MbpsReadWrite: to.Ptr[int64](100),
+	// 						DiskTier: to.Ptr("P10"),
+	// 					},
+	// 				},
+	// 			},
+	// 			"hana/shared": &armworkloadssapvirtualinstance.SAPDiskConfiguration{
+	// 				RecommendedConfiguration: &armworkloadssapvirtualinstance.DiskVolumeConfiguration{
+	// 					SKU: &armworkloadssapvirtualinstance.DiskSKU{
+	// 						Name: to.Ptr(armworkloadssapvirtualinstance.DiskSKUNameStandardSSDLRS),
+	// 					},
+	// 					Count: to.Ptr[int64](1),
+	// 					SizeGB: to.Ptr[int64](256),
+	// 				},
+	// 				SupportedConfigurations: []*armworkloadssapvirtualinstance.DiskDetails{
+	// 					{
+	// 						SKU: &armworkloadssapvirtualinstance.DiskSKU{
+	// 							Name: to.Ptr(armworkloadssapvirtualinstance.DiskSKUNamePremiumLRS),
+	// 						},
+	// 						SizeGB: to.Ptr[int64](256),
+	// 						MinimumSupportedDiskCount: to.Ptr[int64](1),
+	// 						MaximumSupportedDiskCount: to.Ptr[int64](1),
+	// 						IopsReadWrite: to.Ptr[int64](1100),
+	// 						MbpsReadWrite: to.Ptr[int64](125),
+	// 						DiskTier: to.Ptr("P15"),
+	// 					},
+	// 					{
+	// 						SKU: &armworkloadssapvirtualinstance.DiskSKU{
+	// 							Name: to.Ptr(armworkloadssapvirtualinstance.DiskSKUNamePremiumLRS),
+	// 						},
+	// 						SizeGB: to.Ptr[int64](512),
+	// 						MinimumSupportedDiskCount: to.Ptr[int64](1),
+	// 						MaximumSupportedDiskCount: to.Ptr[int64](1),
+	// 						IopsReadWrite: to.Ptr[int64](2300),
+	// 						MbpsReadWrite: to.Ptr[int64](150),
+	// 						DiskTier: to.Ptr("P20"),
+	// 					},
+	// 					{
+	// 						SKU: &armworkloadssapvirtualinstance.DiskSKU{
+	// 							Name: to.Ptr(armworkloadssapvirtualinstance.DiskSKUNamePremiumLRS),
+	// 						},
+	// 						SizeGB: to.Ptr[int64](1024),
+	// 						MinimumSupportedDiskCount: to.Ptr[int64](1),
+	// 						MaximumSupportedDiskCount: to.Ptr[int64](1),
+	// 						IopsReadWrite: to.Ptr[int64](5000),
+	// 						MbpsReadWrite: to.Ptr[int64](200),
+	// 						DiskTier: to.Ptr("P30"),
+	// 					},
+	// 					{
+	// 						SKU: &armworkloadssapvirtualinstance.DiskSKU{
+	// 							Name: to.Ptr(armworkloadssapvirtualinstance.DiskSKUNamePremiumLRS),
+	// 						},
+	// 						SizeGB: to.Ptr[int64](2048),
+	// 						MinimumSupportedDiskCount: to.Ptr[int64](1),
+	// 						MaximumSupportedDiskCount: to.Ptr[int64](1),
+	// 						IopsReadWrite: to.Ptr[int64](7500),
+	// 						MbpsReadWrite: to.Ptr[int64](250),
+	// 						DiskTier: to.Ptr("P40"),
+	// 					},
+	// 					{
+	// 						SKU: &armworkloadssapvirtualinstance.DiskSKU{
+	// 							Name: to.Ptr(armworkloadssapvirtualinstance.DiskSKUNamePremiumLRS),
+	// 						},
+	// 						SizeGB: to.Ptr[int64](4096),
+	// 						MinimumSupportedDiskCount: to.Ptr[int64](1),
+	// 						MaximumSupportedDiskCount: to.Ptr[int64](1),
+	// 						IopsReadWrite: to.Ptr[int64](7500),
+	// 						MbpsReadWrite: to.Ptr[int64](250),
+	// 						DiskTier: to.Ptr("P50"),
+	// 					},
+	// 					{
+	// 						SKU: &armworkloadssapvirtualinstance.DiskSKU{
+	// 							Name: to.Ptr(armworkloadssapvirtualinstance.DiskSKUNameStandardSSDLRS),
+	// 						},
+	// 						SizeGB: to.Ptr[int64](256),
+	// 						MinimumSupportedDiskCount: to.Ptr[int64](1),
+	// 						MaximumSupportedDiskCount: to.Ptr[int64](1),
+	// 						IopsReadWrite: to.Ptr[int64](500),
+	// 						MbpsReadWrite: to.Ptr[int64](60),
+	// 						DiskTier: to.Ptr("E15"),
+	// 					},
+	// 					{
+	// 						SKU: &armworkloadssapvirtualinstance.DiskSKU{
+	// 							Name: to.Ptr(armworkloadssapvirtualinstance.DiskSKUNameStandardSSDLRS),
+	// 						},
+	// 						SizeGB: to.Ptr[int64](512),
+	// 						MinimumSupportedDiskCount: to.Ptr[int64](1),
+	// 						MaximumSupportedDiskCount: to.Ptr[int64](1),
+	// 						IopsReadWrite: to.Ptr[int64](500),
+	// 						MbpsReadWrite: to.Ptr[int64](60),
+	// 						DiskTier: to.Ptr("E20"),
+	// 					},
+	// 					{
+	// 						SKU: &armworkloadssapvirtualinstance.DiskSKU{
+	// 							Name: to.Ptr(armworkloadssapvirtualinstance.DiskSKUNameStandardSSDLRS),
+	// 						},
+	// 						SizeGB: to.Ptr[int64](1024),
+	// 						MinimumSupportedDiskCount: to.Ptr[int64](1),
+	// 						MaximumSupportedDiskCount: to.Ptr[int64](1),
+	// 						IopsReadWrite: to.Ptr[int64](500),
+	// 						MbpsReadWrite: to.Ptr[int64](60),
+	// 						DiskTier: to.Ptr("E30"),
+	// 					},
+	// 					{
+	// 						SKU: &armworkloadssapvirtualinstance.DiskSKU{
+	// 							Name: to.Ptr(armworkloadssapvirtualinstance.DiskSKUNameStandardSSDLRS),
+	// 						},
+	// 						SizeGB: to.Ptr[int64](2048),
+	// 						MinimumSupportedDiskCount: to.Ptr[int64](1),
+	// 						MaximumSupportedDiskCount: to.Ptr[int64](1),
+	// 						IopsReadWrite: to.Ptr[int64](500),
+	// 						MbpsReadWrite: to.Ptr[int64](60),
+	// 						DiskTier: to.Ptr("E40"),
+	// 					},
+	// 					{
+	// 						SKU: &armworkloadssapvirtualinstance.DiskSKU{
+	// 							Name: to.Ptr(armworkloadssapvirtualinstance.DiskSKUNameStandardSSDLRS),
+	// 						},
+	// 						SizeGB: to.Ptr[int64](4096),
+	// 						MinimumSupportedDiskCount: to.Ptr[int64](1),
+	// 						MaximumSupportedDiskCount: to.Ptr[int64](1),
+	// 						IopsReadWrite: to.Ptr[int64](500),
+	// 						MbpsReadWrite: to.Ptr[int64](60),
+	// 						DiskTier: to.Ptr("E50"),
+	// 					},
+	// 				},
+	// 			},
+	// 			"usr/sap": &armworkloadssapvirtualinstance.SAPDiskConfiguration{
+	// 				RecommendedConfiguration: &armworkloadssapvirtualinstance.DiskVolumeConfiguration{
+	// 					SKU: &armworkloadssapvirtualinstance.DiskSKU{
+	// 						Name: to.Ptr(armworkloadssapvirtualinstance.DiskSKUNamePremiumLRS),
+	// 					},
+	// 					Count: to.Ptr[int64](1),
+	// 					SizeGB: to.Ptr[int64](128),
+	// 				},
+	// 				SupportedConfigurations: []*armworkloadssapvirtualinstance.DiskDetails{
+	// 					{
+	// 						SKU: &armworkloadssapvirtualinstance.DiskSKU{
+	// 							Name: to.Ptr(armworkloadssapvirtualinstance.DiskSKUNamePremiumLRS),
+	// 						},
+	// 						SizeGB: to.Ptr[int64](128),
+	// 						MinimumSupportedDiskCount: to.Ptr[int64](1),
+	// 						MaximumSupportedDiskCount: to.Ptr[int64](1),
+	// 						IopsReadWrite: to.Ptr[int64](500),
+	// 						MbpsReadWrite: to.Ptr[int64](100),
+	// 						DiskTier: to.Ptr("P10"),
+	// 					},
+	// 					{
+	// 						SKU: &armworkloadssapvirtualinstance.DiskSKU{
+	// 							Name: to.Ptr(armworkloadssapvirtualinstance.DiskSKUNamePremiumLRS),
+	// 						},
+	// 						SizeGB: to.Ptr[int64](256),
+	// 						MinimumSupportedDiskCount: to.Ptr[int64](1),
+	// 						MaximumSupportedDiskCount: to.Ptr[int64](1),
+	// 						IopsReadWrite: to.Ptr[int64](1100),
+	// 						MbpsReadWrite: to.Ptr[int64](125),
+	// 						DiskTier: to.Ptr("P10"),
+	// 					},
+	// 					{
+	// 						SKU: &armworkloadssapvirtualinstance.DiskSKU{
+	// 							Name: to.Ptr(armworkloadssapvirtualinstance.DiskSKUNamePremiumLRS),
+	// 						},
+	// 						SizeGB: to.Ptr[int64](512),
+	// 						MinimumSupportedDiskCount: to.Ptr[int64](1),
+	// 						MaximumSupportedDiskCount: to.Ptr[int64](1),
+	// 						IopsReadWrite: to.Ptr[int64](2300),
+	// 						MbpsReadWrite: to.Ptr[int64](150),
+	// 						DiskTier: to.Ptr("P10"),
+	// 					},
+	// 					{
+	// 						SKU: &armworkloadssapvirtualinstance.DiskSKU{
+	// 							Name: to.Ptr(armworkloadssapvirtualinstance.DiskSKUNameStandardSSDLRS),
+	// 						},
+	// 						SizeGB: to.Ptr[int64](128),
+	// 						MinimumSupportedDiskCount: to.Ptr[int64](1),
+	// 						MaximumSupportedDiskCount: to.Ptr[int64](1),
+	// 						IopsReadWrite: to.Ptr[int64](500),
+	// 						MbpsReadWrite: to.Ptr[int64](60),
+	// 						DiskTier: to.Ptr("E10"),
+	// 					},
+	// 					{
+	// 						SKU: &armworkloadssapvirtualinstance.DiskSKU{
+	// 							Name: to.Ptr(armworkloadssapvirtualinstance.DiskSKUNameStandardSSDLRS),
+	// 						},
+	// 						SizeGB: to.Ptr[int64](256),
+	// 						MinimumSupportedDiskCount: to.Ptr[int64](1),
+	// 						MaximumSupportedDiskCount: to.Ptr[int64](1),
+	// 						IopsReadWrite: to.Ptr[int64](500),
+	// 						MbpsReadWrite: to.Ptr[int64](60),
+	// 						DiskTier: to.Ptr("E15"),
+	// 					},
+	// 					{
+	// 						SKU: &armworkloadssapvirtualinstance.DiskSKU{
+	// 							Name: to.Ptr(armworkloadssapvirtualinstance.DiskSKUNameStandardSSDLRS),
+	// 						},
+	// 						SizeGB: to.Ptr[int64](512),
+	// 						MinimumSupportedDiskCount: to.Ptr[int64](1),
+	// 						MaximumSupportedDiskCount: to.Ptr[int64](1),
+	// 						IopsReadWrite: to.Ptr[int64](500),
+	// 						MbpsReadWrite: to.Ptr[int64](60),
+	// 						DiskTier: to.Ptr("E20"),
+	// 					},
+	// 				},
+	// 			},
+	// 			"os": &armworkloadssapvirtualinstance.SAPDiskConfiguration{
+	// 				RecommendedConfiguration: &armworkloadssapvirtualinstance.DiskVolumeConfiguration{
+	// 					SKU: &armworkloadssapvirtualinstance.DiskSKU{
+	// 						Name: to.Ptr(armworkloadssapvirtualinstance.DiskSKUNameStandardSSDLRS),
+	// 					},
+	// 					Count: to.Ptr[int64](1),
+	// 					SizeGB: to.Ptr[int64](64),
+	// 				},
+	// 				SupportedConfigurations: []*armworkloadssapvirtualinstance.DiskDetails{
+	// 					{
+	// 						SKU: &armworkloadssapvirtualinstance.DiskSKU{
+	// 							Name: to.Ptr(armworkloadssapvirtualinstance.DiskSKUNamePremiumLRS),
+	// 						},
+	// 						SizeGB: to.Ptr[int64](64),
+	// 						MinimumSupportedDiskCount: to.Ptr[int64](1),
+	// 						MaximumSupportedDiskCount: to.Ptr[int64](1),
+	// 						IopsReadWrite: to.Ptr[int64](240),
+	// 						MbpsReadWrite: to.Ptr[int64](50),
+	// 						DiskTier: to.Ptr("P6"),
+	// 					},
+	// 					{
+	// 						SKU: &armworkloadssapvirtualinstance.DiskSKU{
+	// 							Name: to.Ptr(armworkloadssapvirtualinstance.DiskSKUNamePremiumLRS),
+	// 						},
+	// 						SizeGB: to.Ptr[int64](128),
+	// 						MinimumSupportedDiskCount: to.Ptr[int64](1),
+	// 						MaximumSupportedDiskCount: to.Ptr[int64](1),
+	// 						IopsReadWrite: to.Ptr[int64](500),
+	// 						MbpsReadWrite: to.Ptr[int64](100),
+	// 						DiskTier: to.Ptr("P10"),
+	// 					},
+	// 					{
+	// 						SKU: &armworkloadssapvirtualinstance.DiskSKU{
+	// 							Name: to.Ptr(armworkloadssapvirtualinstance.DiskSKUNameStandardSSDLRS),
+	// 						},
+	// 						SizeGB: to.Ptr[int64](64),
+	// 						MinimumSupportedDiskCount: to.Ptr[int64](1),
+	// 						MaximumSupportedDiskCount: to.Ptr[int64](1),
+	// 						IopsReadWrite: to.Ptr[int64](500),
+	// 						MbpsReadWrite: to.Ptr[int64](60),
+	// 						DiskTier: to.Ptr("P6"),
+	// 					},
+	// 					{
+	// 						SKU: &armworkloadssapvirtualinstance.DiskSKU{
+	// 							Name: to.Ptr(armworkloadssapvirtualinstance.DiskSKUNameStandardSSDLRS),
+	// 						},
+	// 						SizeGB: to.Ptr[int64](128),
+	// 						MinimumSupportedDiskCount: to.Ptr[int64](1),
+	// 						MaximumSupportedDiskCount: to.Ptr[int64](1),
+	// 						IopsReadWrite: to.Ptr[int64](500),
+	// 						MbpsReadWrite: to.Ptr[int64](60),
+	// 						DiskTier: to.Ptr("P10"),
+	// 					},
+	// 				},
+	// 			},
+	// 			"backup": &armworkloadssapvirtualinstance.SAPDiskConfiguration{
+	// 				RecommendedConfiguration: &armworkloadssapvirtualinstance.DiskVolumeConfiguration{
+	// 					SKU: &armworkloadssapvirtualinstance.DiskSKU{
+	// 						Name: to.Ptr(armworkloadssapvirtualinstance.DiskSKUNameStandardSSDLRS),
+	// 					},
+	// 					Count: to.Ptr[int64](2),
+	// 					SizeGB: to.Ptr[int64](256),
+	// 				},
+	// 				SupportedConfigurations: []*armworkloadssapvirtualinstance.DiskDetails{
+	// 					{
+	// 						SKU: &armworkloadssapvirtualinstance.DiskSKU{
+	// 							Name: to.Ptr(armworkloadssapvirtualinstance.DiskSKUNameStandardSSDLRS),
+	// 						},
+	// 						SizeGB: to.Ptr[int64](128),
+	// 						MinimumSupportedDiskCount: to.Ptr[int64](0),
+	// 						MaximumSupportedDiskCount: to.Ptr[int64](6),
+	// 						IopsReadWrite: to.Ptr[int64](500),
+	// 						MbpsReadWrite: to.Ptr[int64](60),
+	// 						DiskTier: to.Ptr("E10"),
+	// 					},
+	// 					{
+	// 						SKU: &armworkloadssapvirtualinstance.DiskSKU{
+	// 							Name: to.Ptr(armworkloadssapvirtualinstance.DiskSKUNameStandardSSDLRS),
+	// 						},
+	// 						SizeGB: to.Ptr[int64](256),
+	// 						MinimumSupportedDiskCount: to.Ptr[int64](0),
+	// 						MaximumSupportedDiskCount: to.Ptr[int64](6),
+	// 						IopsReadWrite: to.Ptr[int64](500),
+	// 						MbpsReadWrite: to.Ptr[int64](60),
+	// 						DiskTier: to.Ptr("E15"),
+	// 					},
+	// 					{
+	// 						SKU: &armworkloadssapvirtualinstance.DiskSKU{
+	// 							Name: to.Ptr(armworkloadssapvirtualinstance.DiskSKUNameStandardSSDLRS),
+	// 						},
+	// 						SizeGB: to.Ptr[int64](512),
+	// 						MinimumSupportedDiskCount: to.Ptr[int64](0),
+	// 						MaximumSupportedDiskCount: to.Ptr[int64](6),
+	// 						IopsReadWrite: to.Ptr[int64](500),
+	// 						MbpsReadWrite: to.Ptr[int64](60),
+	// 						DiskTier: to.Ptr("E20"),
+	// 					},
+	// 					{
+	// 						SKU: &armworkloadssapvirtualinstance.DiskSKU{
+	// 							Name: to.Ptr(armworkloadssapvirtualinstance.DiskSKUNamePremiumLRS),
+	// 						},
+	// 						SizeGB: to.Ptr[int64](128),
+	// 						MinimumSupportedDiskCount: to.Ptr[int64](0),
+	// 						MaximumSupportedDiskCount: to.Ptr[int64](6),
+	// 						IopsReadWrite: to.Ptr[int64](500),
+	// 						MbpsReadWrite: to.Ptr[int64](100),
+	// 						DiskTier: to.Ptr("P10"),
+	// 					},
+	// 					{
+	// 						SKU: &armworkloadssapvirtualinstance.DiskSKU{
+	// 							Name: to.Ptr(armworkloadssapvirtualinstance.DiskSKUNamePremiumLRS),
+	// 						},
+	// 						SizeGB: to.Ptr[int64](256),
+	// 						MinimumSupportedDiskCount: to.Ptr[int64](0),
+	// 						MaximumSupportedDiskCount: to.Ptr[int64](6),
+	// 						IopsReadWrite: to.Ptr[int64](1100),
+	// 						MbpsReadWrite: to.Ptr[int64](125),
+	// 						DiskTier: to.Ptr("P15"),
+	// 					},
+	// 					{
+	// 						SKU: &armworkloadssapvirtualinstance.DiskSKU{
+	// 							Name: to.Ptr(armworkloadssapvirtualinstance.DiskSKUNamePremiumLRS),
+	// 						},
+	// 						SizeGB: to.Ptr[int64](512),
+	// 						MinimumSupportedDiskCount: to.Ptr[int64](0),
+	// 						MaximumSupportedDiskCount: to.Ptr[int64](6),
+	// 						IopsReadWrite: to.Ptr[int64](2300),
+	// 						MbpsReadWrite: to.Ptr[int64](150),
+	// 						DiskTier: to.Ptr("P20"),
+	// 					},
+	// 				},
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2024-09-01/SapVirtualInstances_InvokeDiskConfigurations_Prod.json
+func ExampleSAPVirtualInstancesClient_GetDiskConfigurations_sapDiskConfigurationsForInputEnvironmentProd() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armworkloadssapvirtualinstance.NewClientFactory("8e17e36c-42e9-4cd5-a078-7b44883414e0", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewSAPVirtualInstancesClient().GetDiskConfigurations(ctx, "centralus", armworkloadssapvirtualinstance.SAPDiskConfigurationsRequest{
+		AppLocation:    to.Ptr("eastus"),
+		SapProduct:     to.Ptr(armworkloadssapvirtualinstance.SAPProductTypeS4HANA),
+		Environment:    to.Ptr(armworkloadssapvirtualinstance.SAPEnvironmentTypeProd),
+		DatabaseType:   to.Ptr(armworkloadssapvirtualinstance.SAPDatabaseTypeHANA),
+		DeploymentType: to.Ptr(armworkloadssapvirtualinstance.SAPDeploymentTypeThreeTier),
+		DbVMSKU:        to.Ptr("Standard_M32ts"),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armworkloadssapvirtualinstance.SAPVirtualInstancesClientGetDiskConfigurationsResponse{
+	// 	SAPDiskConfigurationsResult: armworkloadssapvirtualinstance.SAPDiskConfigurationsResult{
+	// 		VolumeConfigurations: map[string]*armworkloadssapvirtualinstance.SAPDiskConfiguration{
+	// 			"hana/data": &armworkloadssapvirtualinstance.SAPDiskConfiguration{
+	// 				RecommendedConfiguration: &armworkloadssapvirtualinstance.DiskVolumeConfiguration{
+	// 					SKU: &armworkloadssapvirtualinstance.DiskSKU{
+	// 						Name: to.Ptr(armworkloadssapvirtualinstance.DiskSKUNamePremiumLRS),
+	// 					},
+	// 					Count: to.Ptr[int64](4),
+	// 					SizeGB: to.Ptr[int64](128),
+	// 				},
+	// 				SupportedConfigurations: []*armworkloadssapvirtualinstance.DiskDetails{
+	// 					{
+	// 						SKU: &armworkloadssapvirtualinstance.DiskSKU{
+	// 							Name: to.Ptr(armworkloadssapvirtualinstance.DiskSKUNamePremiumLRS),
+	// 						},
+	// 						SizeGB: to.Ptr[int64](128),
+	// 						MinimumSupportedDiskCount: to.Ptr[int64](4),
+	// 						MaximumSupportedDiskCount: to.Ptr[int64](5),
+	// 						IopsReadWrite: to.Ptr[int64](500),
+	// 						MbpsReadWrite: to.Ptr[int64](100),
+	// 						DiskTier: to.Ptr("P10"),
+	// 					},
+	// 				},
+	// 			},
+	// 			"hana/log": &armworkloadssapvirtualinstance.SAPDiskConfiguration{
+	// 				RecommendedConfiguration: &armworkloadssapvirtualinstance.DiskVolumeConfiguration{
+	// 					SKU: &armworkloadssapvirtualinstance.DiskSKU{
+	// 						Name: to.Ptr(armworkloadssapvirtualinstance.DiskSKUNamePremiumLRS),
+	// 					},
+	// 					Count: to.Ptr[int64](3),
+	// 					SizeGB: to.Ptr[int64](128),
+	// 				},
+	// 				SupportedConfigurations: []*armworkloadssapvirtualinstance.DiskDetails{
+	// 					{
+	// 						SKU: &armworkloadssapvirtualinstance.DiskSKU{
+	// 							Name: to.Ptr(armworkloadssapvirtualinstance.DiskSKUNamePremiumLRS),
+	// 						},
+	// 						SizeGB: to.Ptr[int64](128),
+	// 						MinimumSupportedDiskCount: to.Ptr[int64](3),
+	// 						MaximumSupportedDiskCount: to.Ptr[int64](5),
+	// 						IopsReadWrite: to.Ptr[int64](500),
+	// 						MbpsReadWrite: to.Ptr[int64](100),
+	// 						DiskTier: to.Ptr("P10"),
+	// 					},
+	// 				},
+	// 			},
+	// 			"hana/shared": &armworkloadssapvirtualinstance.SAPDiskConfiguration{
+	// 				RecommendedConfiguration: &armworkloadssapvirtualinstance.DiskVolumeConfiguration{
+	// 					SKU: &armworkloadssapvirtualinstance.DiskSKU{
+	// 						Name: to.Ptr(armworkloadssapvirtualinstance.DiskSKUNamePremiumLRS),
+	// 					},
+	// 					Count: to.Ptr[int64](1),
+	// 					SizeGB: to.Ptr[int64](256),
+	// 				},
+	// 				SupportedConfigurations: []*armworkloadssapvirtualinstance.DiskDetails{
+	// 					{
+	// 						SKU: &armworkloadssapvirtualinstance.DiskSKU{
+	// 							Name: to.Ptr(armworkloadssapvirtualinstance.DiskSKUNamePremiumLRS),
+	// 						},
+	// 						SizeGB: to.Ptr[int64](256),
+	// 						MinimumSupportedDiskCount: to.Ptr[int64](1),
+	// 						MaximumSupportedDiskCount: to.Ptr[int64](1),
+	// 						IopsReadWrite: to.Ptr[int64](1100),
+	// 						MbpsReadWrite: to.Ptr[int64](125),
+	// 						DiskTier: to.Ptr("P15"),
+	// 					},
+	// 					{
+	// 						SKU: &armworkloadssapvirtualinstance.DiskSKU{
+	// 							Name: to.Ptr(armworkloadssapvirtualinstance.DiskSKUNamePremiumLRS),
+	// 						},
+	// 						SizeGB: to.Ptr[int64](512),
+	// 						MinimumSupportedDiskCount: to.Ptr[int64](1),
+	// 						MaximumSupportedDiskCount: to.Ptr[int64](1),
+	// 						IopsReadWrite: to.Ptr[int64](2300),
+	// 						MbpsReadWrite: to.Ptr[int64](150),
+	// 						DiskTier: to.Ptr("P20"),
+	// 					},
+	// 					{
+	// 						SKU: &armworkloadssapvirtualinstance.DiskSKU{
+	// 							Name: to.Ptr(armworkloadssapvirtualinstance.DiskSKUNamePremiumLRS),
+	// 						},
+	// 						SizeGB: to.Ptr[int64](1024),
+	// 						MinimumSupportedDiskCount: to.Ptr[int64](1),
+	// 						MaximumSupportedDiskCount: to.Ptr[int64](1),
+	// 						IopsReadWrite: to.Ptr[int64](5000),
+	// 						MbpsReadWrite: to.Ptr[int64](200),
+	// 						DiskTier: to.Ptr("P30"),
+	// 					},
+	// 					{
+	// 						SKU: &armworkloadssapvirtualinstance.DiskSKU{
+	// 							Name: to.Ptr(armworkloadssapvirtualinstance.DiskSKUNamePremiumLRS),
+	// 						},
+	// 						SizeGB: to.Ptr[int64](2048),
+	// 						MinimumSupportedDiskCount: to.Ptr[int64](1),
+	// 						MaximumSupportedDiskCount: to.Ptr[int64](1),
+	// 						IopsReadWrite: to.Ptr[int64](7500),
+	// 						MbpsReadWrite: to.Ptr[int64](250),
+	// 						DiskTier: to.Ptr("P40"),
+	// 					},
+	// 					{
+	// 						SKU: &armworkloadssapvirtualinstance.DiskSKU{
+	// 							Name: to.Ptr(armworkloadssapvirtualinstance.DiskSKUNamePremiumLRS),
+	// 						},
+	// 						SizeGB: to.Ptr[int64](4096),
+	// 						MinimumSupportedDiskCount: to.Ptr[int64](1),
+	// 						MaximumSupportedDiskCount: to.Ptr[int64](1),
+	// 						IopsReadWrite: to.Ptr[int64](7500),
+	// 						MbpsReadWrite: to.Ptr[int64](250),
+	// 						DiskTier: to.Ptr("P50"),
+	// 					},
+	// 				},
+	// 			},
+	// 			"usr/sap": &armworkloadssapvirtualinstance.SAPDiskConfiguration{
+	// 				RecommendedConfiguration: &armworkloadssapvirtualinstance.DiskVolumeConfiguration{
+	// 					SKU: &armworkloadssapvirtualinstance.DiskSKU{
+	// 						Name: to.Ptr(armworkloadssapvirtualinstance.DiskSKUNamePremiumLRS),
+	// 					},
+	// 					Count: to.Ptr[int64](1),
+	// 					SizeGB: to.Ptr[int64](128),
+	// 				},
+	// 				SupportedConfigurations: []*armworkloadssapvirtualinstance.DiskDetails{
+	// 					{
+	// 						SKU: &armworkloadssapvirtualinstance.DiskSKU{
+	// 							Name: to.Ptr(armworkloadssapvirtualinstance.DiskSKUNamePremiumLRS),
+	// 						},
+	// 						SizeGB: to.Ptr[int64](128),
+	// 						MinimumSupportedDiskCount: to.Ptr[int64](1),
+	// 						MaximumSupportedDiskCount: to.Ptr[int64](1),
+	// 						IopsReadWrite: to.Ptr[int64](500),
+	// 						MbpsReadWrite: to.Ptr[int64](100),
+	// 						DiskTier: to.Ptr("P10"),
+	// 					},
+	// 					{
+	// 						SKU: &armworkloadssapvirtualinstance.DiskSKU{
+	// 							Name: to.Ptr(armworkloadssapvirtualinstance.DiskSKUNamePremiumLRS),
+	// 						},
+	// 						SizeGB: to.Ptr[int64](256),
+	// 						MinimumSupportedDiskCount: to.Ptr[int64](1),
+	// 						MaximumSupportedDiskCount: to.Ptr[int64](1),
+	// 						IopsReadWrite: to.Ptr[int64](1100),
+	// 						MbpsReadWrite: to.Ptr[int64](125),
+	// 						DiskTier: to.Ptr("P10"),
+	// 					},
+	// 					{
+	// 						SKU: &armworkloadssapvirtualinstance.DiskSKU{
+	// 							Name: to.Ptr(armworkloadssapvirtualinstance.DiskSKUNamePremiumLRS),
+	// 						},
+	// 						SizeGB: to.Ptr[int64](512),
+	// 						MinimumSupportedDiskCount: to.Ptr[int64](1),
+	// 						MaximumSupportedDiskCount: to.Ptr[int64](1),
+	// 						IopsReadWrite: to.Ptr[int64](2300),
+	// 						MbpsReadWrite: to.Ptr[int64](150),
+	// 						DiskTier: to.Ptr("P10"),
+	// 					},
+	// 				},
+	// 			},
+	// 			"os": &armworkloadssapvirtualinstance.SAPDiskConfiguration{
+	// 				RecommendedConfiguration: &armworkloadssapvirtualinstance.DiskVolumeConfiguration{
+	// 					SKU: &armworkloadssapvirtualinstance.DiskSKU{
+	// 						Name: to.Ptr(armworkloadssapvirtualinstance.DiskSKUNamePremiumLRS),
+	// 					},
+	// 					Count: to.Ptr[int64](1),
+	// 					SizeGB: to.Ptr[int64](64),
+	// 				},
+	// 				SupportedConfigurations: []*armworkloadssapvirtualinstance.DiskDetails{
+	// 					{
+	// 						SKU: &armworkloadssapvirtualinstance.DiskSKU{
+	// 							Name: to.Ptr(armworkloadssapvirtualinstance.DiskSKUNamePremiumLRS),
+	// 						},
+	// 						SizeGB: to.Ptr[int64](64),
+	// 						MinimumSupportedDiskCount: to.Ptr[int64](1),
+	// 						MaximumSupportedDiskCount: to.Ptr[int64](1),
+	// 						IopsReadWrite: to.Ptr[int64](240),
+	// 						MbpsReadWrite: to.Ptr[int64](50),
+	// 						DiskTier: to.Ptr("P6"),
+	// 					},
+	// 					{
+	// 						SKU: &armworkloadssapvirtualinstance.DiskSKU{
+	// 							Name: to.Ptr(armworkloadssapvirtualinstance.DiskSKUNamePremiumLRS),
+	// 						},
+	// 						SizeGB: to.Ptr[int64](128),
+	// 						MinimumSupportedDiskCount: to.Ptr[int64](1),
+	// 						MaximumSupportedDiskCount: to.Ptr[int64](1),
+	// 						IopsReadWrite: to.Ptr[int64](500),
+	// 						MbpsReadWrite: to.Ptr[int64](100),
+	// 						DiskTier: to.Ptr("P10"),
+	// 					},
+	// 				},
+	// 			},
+	// 			"backup": &armworkloadssapvirtualinstance.SAPDiskConfiguration{
+	// 				RecommendedConfiguration: &armworkloadssapvirtualinstance.DiskVolumeConfiguration{
+	// 					SKU: &armworkloadssapvirtualinstance.DiskSKU{
+	// 						Name: to.Ptr(armworkloadssapvirtualinstance.DiskSKUNamePremiumLRS),
+	// 					},
+	// 					Count: to.Ptr[int64](2),
+	// 					SizeGB: to.Ptr[int64](256),
+	// 				},
+	// 				SupportedConfigurations: []*armworkloadssapvirtualinstance.DiskDetails{
+	// 					{
+	// 						SKU: &armworkloadssapvirtualinstance.DiskSKU{
+	// 							Name: to.Ptr(armworkloadssapvirtualinstance.DiskSKUNamePremiumLRS),
+	// 						},
+	// 						SizeGB: to.Ptr[int64](128),
+	// 						MinimumSupportedDiskCount: to.Ptr[int64](0),
+	// 						MaximumSupportedDiskCount: to.Ptr[int64](6),
+	// 						IopsReadWrite: to.Ptr[int64](500),
+	// 						MbpsReadWrite: to.Ptr[int64](100),
+	// 						DiskTier: to.Ptr("P10"),
+	// 					},
+	// 					{
+	// 						SKU: &armworkloadssapvirtualinstance.DiskSKU{
+	// 							Name: to.Ptr(armworkloadssapvirtualinstance.DiskSKUNamePremiumLRS),
+	// 						},
+	// 						SizeGB: to.Ptr[int64](256),
+	// 						MinimumSupportedDiskCount: to.Ptr[int64](0),
+	// 						MaximumSupportedDiskCount: to.Ptr[int64](6),
+	// 						IopsReadWrite: to.Ptr[int64](1100),
+	// 						MbpsReadWrite: to.Ptr[int64](125),
+	// 						DiskTier: to.Ptr("P15"),
+	// 					},
+	// 					{
+	// 						SKU: &armworkloadssapvirtualinstance.DiskSKU{
+	// 							Name: to.Ptr(armworkloadssapvirtualinstance.DiskSKUNamePremiumLRS),
+	// 						},
+	// 						SizeGB: to.Ptr[int64](512),
+	// 						MinimumSupportedDiskCount: to.Ptr[int64](0),
+	// 						MaximumSupportedDiskCount: to.Ptr[int64](6),
+	// 						IopsReadWrite: to.Ptr[int64](2300),
+	// 						MbpsReadWrite: to.Ptr[int64](150),
+	// 						DiskTier: to.Ptr("P20"),
+	// 					},
+	// 				},
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2024-09-01/SapVirtualInstances_InvokeSapSupportedSku_Distributed.json
+func ExampleSAPVirtualInstancesClient_GetSapSupportedSKU_sapSupportedSkUsForDistributedNonHaEnvironment() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armworkloadssapvirtualinstance.NewClientFactory("8e17e36c-42e9-4cd5-a078-7b44883414e0", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewSAPVirtualInstancesClient().GetSapSupportedSKU(ctx, "centralus", armworkloadssapvirtualinstance.SAPSupportedSKUsRequest{
+		AppLocation:    to.Ptr("eastus"),
+		SapProduct:     to.Ptr(armworkloadssapvirtualinstance.SAPProductTypeS4HANA),
+		Environment:    to.Ptr(armworkloadssapvirtualinstance.SAPEnvironmentTypeProd),
+		DatabaseType:   to.Ptr(armworkloadssapvirtualinstance.SAPDatabaseTypeHANA),
+		DeploymentType: to.Ptr(armworkloadssapvirtualinstance.SAPDeploymentTypeThreeTier),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armworkloadssapvirtualinstance.SAPVirtualInstancesClientGetSapSupportedSKUResponse{
+	// 	SAPSupportedResourceSKUsResult: armworkloadssapvirtualinstance.SAPSupportedResourceSKUsResult{
+	// 		SupportedSKUs: []*armworkloadssapvirtualinstance.SAPSupportedSKU{
+	// 			{
+	// 				IsAppServerCertified: to.Ptr(true),
+	// 				IsDatabaseCertified: to.Ptr(false),
+	// 				VMSKU: to.Ptr("Standard_E4ds_v4"),
+	// 			},
+	// 			{
+	// 				IsAppServerCertified: to.Ptr(true),
+	// 				IsDatabaseCertified: to.Ptr(false),
+	// 				VMSKU: to.Ptr("Standard_E8ds_v4"),
+	// 			},
+	// 			{
+	// 				IsAppServerCertified: to.Ptr(true),
+	// 				IsDatabaseCertified: to.Ptr(false),
+	// 				VMSKU: to.Ptr("Standard_E16ds_v4"),
+	// 			},
+	// 			{
+	// 				IsAppServerCertified: to.Ptr(true),
+	// 				IsDatabaseCertified: to.Ptr(false),
+	// 				VMSKU: to.Ptr("Standard_E20ds_v4"),
+	// 			},
+	// 			{
+	// 				IsAppServerCertified: to.Ptr(true),
+	// 				IsDatabaseCertified: to.Ptr(false),
+	// 				VMSKU: to.Ptr("Standard_E32ds_v4"),
+	// 			},
+	// 			{
+	// 				IsAppServerCertified: to.Ptr(true),
+	// 				IsDatabaseCertified: to.Ptr(false),
+	// 				VMSKU: to.Ptr("Standard_E48ds_v4"),
+	// 			},
+	// 			{
+	// 				IsAppServerCertified: to.Ptr(true),
+	// 				IsDatabaseCertified: to.Ptr(false),
+	// 				VMSKU: to.Ptr("Standard_E64ds_v4"),
+	// 			},
+	// 			{
+	// 				IsAppServerCertified: to.Ptr(false),
+	// 				IsDatabaseCertified: to.Ptr(true),
+	// 				VMSKU: to.Ptr("Standard_M32Is"),
+	// 			},
+	// 			{
+	// 				IsAppServerCertified: to.Ptr(false),
+	// 				IsDatabaseCertified: to.Ptr(true),
+	// 				VMSKU: to.Ptr("Standard_M32ts"),
+	// 			},
+	// 			{
+	// 				IsAppServerCertified: to.Ptr(false),
+	// 				IsDatabaseCertified: to.Ptr(true),
+	// 				VMSKU: to.Ptr("Standard_M64Is"),
+	// 			},
+	// 			{
+	// 				IsAppServerCertified: to.Ptr(false),
+	// 				IsDatabaseCertified: to.Ptr(true),
+	// 				VMSKU: to.Ptr("Standard_M64ms"),
+	// 			},
+	// 			{
+	// 				IsAppServerCertified: to.Ptr(false),
+	// 				IsDatabaseCertified: to.Ptr(true),
+	// 				VMSKU: to.Ptr("Standard_M64s"),
+	// 			},
+	// 			{
+	// 				IsAppServerCertified: to.Ptr(false),
+	// 				IsDatabaseCertified: to.Ptr(true),
+	// 				VMSKU: to.Ptr("Standard_M128ms"),
+	// 			},
+	// 			{
+	// 				IsAppServerCertified: to.Ptr(false),
+	// 				IsDatabaseCertified: to.Ptr(true),
+	// 				VMSKU: to.Ptr("Standard_M128s"),
+	// 			},
+	// 			{
+	// 				IsAppServerCertified: to.Ptr(false),
+	// 				IsDatabaseCertified: to.Ptr(true),
+	// 				VMSKU: to.Ptr("Standard_M208ms_v2"),
+	// 			},
+	// 			{
+	// 				IsAppServerCertified: to.Ptr(false),
+	// 				IsDatabaseCertified: to.Ptr(true),
+	// 				VMSKU: to.Ptr("Standard_M208s_v2"),
+	// 			},
+	// 			{
+	// 				IsAppServerCertified: to.Ptr(false),
+	// 				IsDatabaseCertified: to.Ptr(true),
+	// 				VMSKU: to.Ptr("Standard_M416ms_v2"),
+	// 			},
+	// 			{
+	// 				IsAppServerCertified: to.Ptr(false),
+	// 				IsDatabaseCertified: to.Ptr(true),
+	// 				VMSKU: to.Ptr("Standard_M416s_v2"),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2024-09-01/SapVirtualInstances_InvokeSapSupportedSku_DistributedHA_AvSet.json
+func ExampleSAPVirtualInstancesClient_GetSapSupportedSKU_sapSupportedSkUsForDistributedHaEnvironmentWithAvailabilitySet() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armworkloadssapvirtualinstance.NewClientFactory("8e17e36c-42e9-4cd5-a078-7b44883414e0", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewSAPVirtualInstancesClient().GetSapSupportedSKU(ctx, "centralus", armworkloadssapvirtualinstance.SAPSupportedSKUsRequest{
+		AppLocation:          to.Ptr("eastus"),
+		SapProduct:           to.Ptr(armworkloadssapvirtualinstance.SAPProductTypeS4HANA),
+		Environment:          to.Ptr(armworkloadssapvirtualinstance.SAPEnvironmentTypeProd),
+		DatabaseType:         to.Ptr(armworkloadssapvirtualinstance.SAPDatabaseTypeHANA),
+		DeploymentType:       to.Ptr(armworkloadssapvirtualinstance.SAPDeploymentTypeThreeTier),
+		HighAvailabilityType: to.Ptr(armworkloadssapvirtualinstance.SAPHighAvailabilityTypeAvailabilitySet),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armworkloadssapvirtualinstance.SAPVirtualInstancesClientGetSapSupportedSKUResponse{
+	// 	SAPSupportedResourceSKUsResult: armworkloadssapvirtualinstance.SAPSupportedResourceSKUsResult{
+	// 		SupportedSKUs: []*armworkloadssapvirtualinstance.SAPSupportedSKU{
+	// 			{
+	// 				IsAppServerCertified: to.Ptr(true),
+	// 				IsDatabaseCertified: to.Ptr(false),
+	// 				VMSKU: to.Ptr("Standard_E4ds_v4"),
+	// 			},
+	// 			{
+	// 				IsAppServerCertified: to.Ptr(true),
+	// 				IsDatabaseCertified: to.Ptr(false),
+	// 				VMSKU: to.Ptr("Standard_E8ds_v4"),
+	// 			},
+	// 			{
+	// 				IsAppServerCertified: to.Ptr(true),
+	// 				IsDatabaseCertified: to.Ptr(false),
+	// 				VMSKU: to.Ptr("Standard_E16ds_v4"),
+	// 			},
+	// 			{
+	// 				IsAppServerCertified: to.Ptr(true),
+	// 				IsDatabaseCertified: to.Ptr(false),
+	// 				VMSKU: to.Ptr("Standard_E20ds_v4"),
+	// 			},
+	// 			{
+	// 				IsAppServerCertified: to.Ptr(true),
+	// 				IsDatabaseCertified: to.Ptr(false),
+	// 				VMSKU: to.Ptr("Standard_E32ds_v4"),
+	// 			},
+	// 			{
+	// 				IsAppServerCertified: to.Ptr(true),
+	// 				IsDatabaseCertified: to.Ptr(false),
+	// 				VMSKU: to.Ptr("Standard_E48ds_v4"),
+	// 			},
+	// 			{
+	// 				IsAppServerCertified: to.Ptr(true),
+	// 				IsDatabaseCertified: to.Ptr(false),
+	// 				VMSKU: to.Ptr("Standard_E64ds_v4"),
+	// 			},
+	// 			{
+	// 				IsAppServerCertified: to.Ptr(false),
+	// 				IsDatabaseCertified: to.Ptr(true),
+	// 				VMSKU: to.Ptr("Standard_M32Is"),
+	// 			},
+	// 			{
+	// 				IsAppServerCertified: to.Ptr(false),
+	// 				IsDatabaseCertified: to.Ptr(true),
+	// 				VMSKU: to.Ptr("Standard_M32ts"),
+	// 			},
+	// 			{
+	// 				IsAppServerCertified: to.Ptr(false),
+	// 				IsDatabaseCertified: to.Ptr(true),
+	// 				VMSKU: to.Ptr("Standard_M64Is"),
+	// 			},
+	// 			{
+	// 				IsAppServerCertified: to.Ptr(false),
+	// 				IsDatabaseCertified: to.Ptr(true),
+	// 				VMSKU: to.Ptr("Standard_M64ms"),
+	// 			},
+	// 			{
+	// 				IsAppServerCertified: to.Ptr(false),
+	// 				IsDatabaseCertified: to.Ptr(true),
+	// 				VMSKU: to.Ptr("Standard_M64s"),
+	// 			},
+	// 			{
+	// 				IsAppServerCertified: to.Ptr(false),
+	// 				IsDatabaseCertified: to.Ptr(true),
+	// 				VMSKU: to.Ptr("Standard_M128ms"),
+	// 			},
+	// 			{
+	// 				IsAppServerCertified: to.Ptr(false),
+	// 				IsDatabaseCertified: to.Ptr(true),
+	// 				VMSKU: to.Ptr("Standard_M128s"),
+	// 			},
+	// 			{
+	// 				IsAppServerCertified: to.Ptr(false),
+	// 				IsDatabaseCertified: to.Ptr(true),
+	// 				VMSKU: to.Ptr("Standard_M208ms_v2"),
+	// 			},
+	// 			{
+	// 				IsAppServerCertified: to.Ptr(false),
+	// 				IsDatabaseCertified: to.Ptr(true),
+	// 				VMSKU: to.Ptr("Standard_M208s_v2"),
+	// 			},
+	// 			{
+	// 				IsAppServerCertified: to.Ptr(false),
+	// 				IsDatabaseCertified: to.Ptr(true),
+	// 				VMSKU: to.Ptr("Standard_M416ms_v2"),
+	// 			},
+	// 			{
+	// 				IsAppServerCertified: to.Ptr(false),
+	// 				IsDatabaseCertified: to.Ptr(true),
+	// 				VMSKU: to.Ptr("Standard_M416s_v2"),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2024-09-01/SapVirtualInstances_InvokeSapSupportedSku_DistributedHA_AvZone.json
+func ExampleSAPVirtualInstancesClient_GetSapSupportedSKU_sapSupportedSkusForHaWithAvailabilityZone() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armworkloadssapvirtualinstance.NewClientFactory("8e17e36c-42e9-4cd5-a078-7b44883414e0", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewSAPVirtualInstancesClient().GetSapSupportedSKU(ctx, "centralus", armworkloadssapvirtualinstance.SAPSupportedSKUsRequest{
+		AppLocation:          to.Ptr("eastus"),
+		SapProduct:           to.Ptr(armworkloadssapvirtualinstance.SAPProductTypeS4HANA),
+		Environment:          to.Ptr(armworkloadssapvirtualinstance.SAPEnvironmentTypeProd),
+		DatabaseType:         to.Ptr(armworkloadssapvirtualinstance.SAPDatabaseTypeHANA),
+		DeploymentType:       to.Ptr(armworkloadssapvirtualinstance.SAPDeploymentTypeThreeTier),
+		HighAvailabilityType: to.Ptr(armworkloadssapvirtualinstance.SAPHighAvailabilityTypeAvailabilityZone),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armworkloadssapvirtualinstance.SAPVirtualInstancesClientGetSapSupportedSKUResponse{
+	// 	SAPSupportedResourceSKUsResult: armworkloadssapvirtualinstance.SAPSupportedResourceSKUsResult{
+	// 		SupportedSKUs: []*armworkloadssapvirtualinstance.SAPSupportedSKU{
+	// 			{
+	// 				IsAppServerCertified: to.Ptr(true),
+	// 				IsDatabaseCertified: to.Ptr(true),
+	// 				VMSKU: to.Ptr("Standard_E32ds_v4"),
+	// 			},
+	// 			{
+	// 				IsAppServerCertified: to.Ptr(true),
+	// 				IsDatabaseCertified: to.Ptr(true),
+	// 				VMSKU: to.Ptr("Standard_E48ds_v4"),
+	// 			},
+	// 			{
+	// 				IsAppServerCertified: to.Ptr(true),
+	// 				IsDatabaseCertified: to.Ptr(true),
+	// 				VMSKU: to.Ptr("Standard_E64ds_v4"),
+	// 			},
+	// 			{
+	// 				IsAppServerCertified: to.Ptr(true),
+	// 				IsDatabaseCertified: to.Ptr(true),
+	// 				VMSKU: to.Ptr("Standard_M32Is"),
+	// 			},
+	// 			{
+	// 				IsAppServerCertified: to.Ptr(true),
+	// 				IsDatabaseCertified: to.Ptr(true),
+	// 				VMSKU: to.Ptr("Standard_M32ts"),
+	// 			},
+	// 			{
+	// 				IsAppServerCertified: to.Ptr(true),
+	// 				IsDatabaseCertified: to.Ptr(true),
+	// 				VMSKU: to.Ptr("Standard_M64Is"),
+	// 			},
+	// 			{
+	// 				IsAppServerCertified: to.Ptr(true),
+	// 				IsDatabaseCertified: to.Ptr(true),
+	// 				VMSKU: to.Ptr("Standard_M64ms"),
+	// 			},
+	// 			{
+	// 				IsAppServerCertified: to.Ptr(true),
+	// 				IsDatabaseCertified: to.Ptr(true),
+	// 				VMSKU: to.Ptr("Standard_M64s"),
+	// 			},
+	// 			{
+	// 				IsAppServerCertified: to.Ptr(true),
+	// 				IsDatabaseCertified: to.Ptr(true),
+	// 				VMSKU: to.Ptr("Standard_M128ms"),
+	// 			},
+	// 			{
+	// 				IsAppServerCertified: to.Ptr(true),
+	// 				IsDatabaseCertified: to.Ptr(true),
+	// 				VMSKU: to.Ptr("Standard_M128s"),
+	// 			},
+	// 			{
+	// 				IsAppServerCertified: to.Ptr(true),
+	// 				IsDatabaseCertified: to.Ptr(true),
+	// 				VMSKU: to.Ptr("Standard_M208ms_v2"),
+	// 			},
+	// 			{
+	// 				IsAppServerCertified: to.Ptr(true),
+	// 				IsDatabaseCertified: to.Ptr(true),
+	// 				VMSKU: to.Ptr("Standard_M208s_v2"),
+	// 			},
+	// 			{
+	// 				IsAppServerCertified: to.Ptr(true),
+	// 				IsDatabaseCertified: to.Ptr(true),
+	// 				VMSKU: to.Ptr("Standard_M416ms_v2"),
+	// 			},
+	// 			{
+	// 				IsAppServerCertified: to.Ptr(true),
+	// 				IsDatabaseCertified: to.Ptr(true),
+	// 				VMSKU: to.Ptr("Standard_M416s_v2"),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2024-09-01/SapVirtualInstances_InvokeSapSupportedSku_SingleServer.json
+func ExampleSAPVirtualInstancesClient_GetSapSupportedSKU_sapSupportedSkUsForSingleServer() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armworkloadssapvirtualinstance.NewClientFactory("8e17e36c-42e9-4cd5-a078-7b44883414e0", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewSAPVirtualInstancesClient().GetSapSupportedSKU(ctx, "centralus", armworkloadssapvirtualinstance.SAPSupportedSKUsRequest{
+		AppLocation:    to.Ptr("eastus"),
+		SapProduct:     to.Ptr(armworkloadssapvirtualinstance.SAPProductTypeS4HANA),
+		Environment:    to.Ptr(armworkloadssapvirtualinstance.SAPEnvironmentTypeNonProd),
+		DatabaseType:   to.Ptr(armworkloadssapvirtualinstance.SAPDatabaseTypeHANA),
+		DeploymentType: to.Ptr(armworkloadssapvirtualinstance.SAPDeploymentTypeSingleServer),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armworkloadssapvirtualinstance.SAPVirtualInstancesClientGetSapSupportedSKUResponse{
+	// 	SAPSupportedResourceSKUsResult: armworkloadssapvirtualinstance.SAPSupportedResourceSKUsResult{
+	// 		SupportedSKUs: []*armworkloadssapvirtualinstance.SAPSupportedSKU{
+	// 			{
+	// 				IsAppServerCertified: to.Ptr(true),
+	// 				IsDatabaseCertified: to.Ptr(false),
+	// 				VMSKU: to.Ptr("Standard_E32ds_v4"),
+	// 			},
+	// 			{
+	// 				IsAppServerCertified: to.Ptr(true),
+	// 				IsDatabaseCertified: to.Ptr(false),
+	// 				VMSKU: to.Ptr("Standard_E48ds_v4"),
+	// 			},
+	// 			{
+	// 				IsAppServerCertified: to.Ptr(true),
+	// 				IsDatabaseCertified: to.Ptr(false),
+	// 				VMSKU: to.Ptr("Standard_E64ds_v4"),
+	// 			},
+	// 			{
+	// 				IsAppServerCertified: to.Ptr(true),
+	// 				IsDatabaseCertified: to.Ptr(true),
+	// 				VMSKU: to.Ptr("Standard_M32ts"),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2024-09-01/SapVirtualInstances_InvokeSizingRecommendations_S4HANA_Distributed.json
+func ExampleSAPVirtualInstancesClient_GetSizingRecommendations_sapSizingRecommendationsForNonHaDistributedSystem() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armworkloadssapvirtualinstance.NewClientFactory("8e17e36c-42e9-4cd5-a078-7b44883414e0", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewSAPVirtualInstancesClient().GetSizingRecommendations(ctx, "centralus", armworkloadssapvirtualinstance.SAPSizingRecommendationRequest{
+		AppLocation:    to.Ptr("eastus"),
+		Environment:    to.Ptr(armworkloadssapvirtualinstance.SAPEnvironmentTypeProd),
+		SapProduct:     to.Ptr(armworkloadssapvirtualinstance.SAPProductTypeS4HANA),
+		DeploymentType: to.Ptr(armworkloadssapvirtualinstance.SAPDeploymentTypeThreeTier),
+		Saps:           to.Ptr[int64](20000),
+		DbMemory:       to.Ptr[int64](1024),
+		DatabaseType:   to.Ptr(armworkloadssapvirtualinstance.SAPDatabaseTypeHANA),
+		DbScaleMethod:  to.Ptr(armworkloadssapvirtualinstance.SAPDatabaseScaleMethodScaleUp),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armworkloadssapvirtualinstance.SAPVirtualInstancesClientGetSizingRecommendationsResponse{
+	// 	SAPSizingRecommendationResultClassification: &armworkloadssapvirtualinstance.ThreeTierRecommendationResult{
+	// 		DeploymentType: to.Ptr(armworkloadssapvirtualinstance.SAPDeploymentTypeThreeTier),
+	// 		ApplicationServerVMSKU: to.Ptr("Standard_E8ds_v4"),
+	// 		ApplicationServerInstanceCount: to.Ptr[int64](2),
+	// 		CentralServerVMSKU: to.Ptr("Standard_E4ds_v4"),
+	// 		CentralServerInstanceCount: to.Ptr[int64](1),
+	// 		DbVMSKU: to.Ptr("Standard_M64s"),
+	// 		DatabaseInstanceCount: to.Ptr[int64](1),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2024-09-01/SapVirtualInstances_InvokeSizingRecommendations_S4HANA_HA_AvSet.json
+func ExampleSAPVirtualInstancesClient_GetSizingRecommendations_sapSizingRecommendationsForHaWithAvailabilitySet() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armworkloadssapvirtualinstance.NewClientFactory("8e17e36c-42e9-4cd5-a078-7b44883414e0", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewSAPVirtualInstancesClient().GetSizingRecommendations(ctx, "centralus", armworkloadssapvirtualinstance.SAPSizingRecommendationRequest{
+		AppLocation:          to.Ptr("eastus"),
+		Environment:          to.Ptr(armworkloadssapvirtualinstance.SAPEnvironmentTypeProd),
+		SapProduct:           to.Ptr(armworkloadssapvirtualinstance.SAPProductTypeS4HANA),
+		DeploymentType:       to.Ptr(armworkloadssapvirtualinstance.SAPDeploymentTypeThreeTier),
+		Saps:                 to.Ptr[int64](75000),
+		DbMemory:             to.Ptr[int64](1024),
+		DatabaseType:         to.Ptr(armworkloadssapvirtualinstance.SAPDatabaseTypeHANA),
+		DbScaleMethod:        to.Ptr(armworkloadssapvirtualinstance.SAPDatabaseScaleMethodScaleUp),
+		HighAvailabilityType: to.Ptr(armworkloadssapvirtualinstance.SAPHighAvailabilityTypeAvailabilitySet),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armworkloadssapvirtualinstance.SAPVirtualInstancesClientGetSizingRecommendationsResponse{
+	// 	SAPSizingRecommendationResultClassification: &armworkloadssapvirtualinstance.ThreeTierRecommendationResult{
+	// 		DeploymentType: to.Ptr(armworkloadssapvirtualinstance.SAPDeploymentTypeThreeTier),
+	// 		ApplicationServerVMSKU: to.Ptr("Standard_E16ds_v4"),
+	// 		ApplicationServerInstanceCount: to.Ptr[int64](3),
+	// 		CentralServerVMSKU: to.Ptr("Standard_E8ds_v4"),
+	// 		CentralServerInstanceCount: to.Ptr[int64](2),
+	// 		DbVMSKU: to.Ptr("Standard_M64s"),
+	// 		DatabaseInstanceCount: to.Ptr[int64](2),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2024-09-01/SapVirtualInstances_InvokeSizingRecommendations_S4HANA_HA_AvZone.json
+func ExampleSAPVirtualInstancesClient_GetSizingRecommendations_sapSizingRecommendationsForHaWithAvailabilityZone() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armworkloadssapvirtualinstance.NewClientFactory("8e17e36c-42e9-4cd5-a078-7b44883414e0", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewSAPVirtualInstancesClient().GetSizingRecommendations(ctx, "centralus", armworkloadssapvirtualinstance.SAPSizingRecommendationRequest{
+		AppLocation:          to.Ptr("eastus"),
+		Environment:          to.Ptr(armworkloadssapvirtualinstance.SAPEnvironmentTypeProd),
+		SapProduct:           to.Ptr(armworkloadssapvirtualinstance.SAPProductTypeS4HANA),
+		DeploymentType:       to.Ptr(armworkloadssapvirtualinstance.SAPDeploymentTypeThreeTier),
+		Saps:                 to.Ptr[int64](75000),
+		DbMemory:             to.Ptr[int64](1024),
+		DatabaseType:         to.Ptr(armworkloadssapvirtualinstance.SAPDatabaseTypeHANA),
+		DbScaleMethod:        to.Ptr(armworkloadssapvirtualinstance.SAPDatabaseScaleMethodScaleUp),
+		HighAvailabilityType: to.Ptr(armworkloadssapvirtualinstance.SAPHighAvailabilityTypeAvailabilityZone),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armworkloadssapvirtualinstance.SAPVirtualInstancesClientGetSizingRecommendationsResponse{
+	// 	SAPSizingRecommendationResultClassification: &armworkloadssapvirtualinstance.ThreeTierRecommendationResult{
+	// 		DeploymentType: to.Ptr(armworkloadssapvirtualinstance.SAPDeploymentTypeThreeTier),
+	// 		ApplicationServerVMSKU: to.Ptr("Standard_E8ds_v4"),
+	// 		ApplicationServerInstanceCount: to.Ptr[int64](6),
+	// 		CentralServerVMSKU: to.Ptr("Standard_E4ds_v4"),
+	// 		CentralServerInstanceCount: to.Ptr[int64](2),
+	// 		DbVMSKU: to.Ptr("Standard_M64s"),
+	// 		DatabaseInstanceCount: to.Ptr[int64](2),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2024-09-01/SapVirtualInstances_InvokeSizingRecommendations_S4HANA_SingleServer.json
+func ExampleSAPVirtualInstancesClient_GetSizingRecommendations_sapSizingRecommendationsForSingleServer() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armworkloadssapvirtualinstance.NewClientFactory("8e17e36c-42e9-4cd5-a078-7b44883414e0", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewSAPVirtualInstancesClient().GetSizingRecommendations(ctx, "centralus", armworkloadssapvirtualinstance.SAPSizingRecommendationRequest{
+		AppLocation:    to.Ptr("eastus"),
+		Environment:    to.Ptr(armworkloadssapvirtualinstance.SAPEnvironmentTypeNonProd),
+		SapProduct:     to.Ptr(armworkloadssapvirtualinstance.SAPProductTypeS4HANA),
+		DeploymentType: to.Ptr(armworkloadssapvirtualinstance.SAPDeploymentTypeSingleServer),
+		Saps:           to.Ptr[int64](60000),
+		DbMemory:       to.Ptr[int64](2000),
+		DatabaseType:   to.Ptr(armworkloadssapvirtualinstance.SAPDatabaseTypeHANA),
+		DbScaleMethod:  to.Ptr(armworkloadssapvirtualinstance.SAPDatabaseScaleMethodScaleUp),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armworkloadssapvirtualinstance.SAPVirtualInstancesClientGetSizingRecommendationsResponse{
+	// 	SAPSizingRecommendationResultClassification: &armworkloadssapvirtualinstance.SingleServerRecommendationResult{
+	// 		VMSKU: to.Ptr("Standard_M128s"),
+	// 		DeploymentType: to.Ptr(armworkloadssapvirtualinstance.SAPDeploymentTypeSingleServer),
 	// 	},
 	// }
 }
@@ -7531,10 +8827,10 @@ func ExampleSAPVirtualInstancesClient_NewListByResourceGroupPager() {
 		// 					Status: to.Ptr(armworkloadssapvirtualinstance.SAPVirtualInstanceStatusRunning),
 		// 				},
 		// 				SystemData: &armworkloadssapvirtualinstance.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T15:10:46.196Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2021, time.August, 19, 15, 10, 46, 196000000, time.UTC)),
 		// 					CreatedBy: to.Ptr("user@xyz.com"),
 		// 					CreatedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T15:10:46.196Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2021, time.August, 19, 15, 10, 46, 196000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("user@xyz.com"),
 		// 					LastModifiedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
 		// 				},
@@ -7640,10 +8936,10 @@ func ExampleSAPVirtualInstancesClient_NewListByResourceGroupPager() {
 		// 					Status: to.Ptr(armworkloadssapvirtualinstance.SAPVirtualInstanceStatusRunning),
 		// 				},
 		// 				SystemData: &armworkloadssapvirtualinstance.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T15:10:46.196Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2021, time.August, 19, 15, 10, 46, 196000000, time.UTC)),
 		// 					CreatedBy: to.Ptr("user@xyz.com"),
 		// 					CreatedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T15:10:46.196Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2021, time.August, 19, 15, 10, 46, 196000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("user@xyz.com"),
 		// 					LastModifiedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
 		// 				},
@@ -7783,10 +9079,10 @@ func ExampleSAPVirtualInstancesClient_NewListBySubscriptionPager() {
 		// 					Status: to.Ptr(armworkloadssapvirtualinstance.SAPVirtualInstanceStatusRunning),
 		// 				},
 		// 				SystemData: &armworkloadssapvirtualinstance.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T15:10:46.196Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2021, time.August, 19, 15, 10, 46, 196000000, time.UTC)),
 		// 					CreatedBy: to.Ptr("user@xyz.com"),
 		// 					CreatedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T15:10:46.196Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2021, time.August, 19, 15, 10, 46, 196000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("user@xyz.com"),
 		// 					LastModifiedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
 		// 				},
@@ -7892,10 +9188,10 @@ func ExampleSAPVirtualInstancesClient_NewListBySubscriptionPager() {
 		// 					Status: to.Ptr(armworkloadssapvirtualinstance.SAPVirtualInstanceStatusRunning),
 		// 				},
 		// 				SystemData: &armworkloadssapvirtualinstance.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T15:10:46.196Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2021, time.August, 19, 15, 10, 46, 196000000, time.UTC)),
 		// 					CreatedBy: to.Ptr("user@xyz.com"),
 		// 					CreatedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T15:10:46.196Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2021, time.August, 19, 15, 10, 46, 196000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("user@xyz.com"),
 		// 					LastModifiedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
 		// 				},
@@ -7936,9 +9232,9 @@ func ExampleSAPVirtualInstancesClient_BeginStart_sapVirtualInstancesStart() {
 	// res = armworkloadssapvirtualinstance.SAPVirtualInstancesClientStartResponse{
 	// 	OperationStatusResult: armworkloadssapvirtualinstance.OperationStatusResult{
 	// 		Name: to.Ptr("1e4193c3-206e-4916-b124-1da16175eb0e"),
-	// 		EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T03:38:07.000Z"); return t}()),
+	// 		EndTime: to.Ptr(time.Date(2021, time.August, 19, 3, 38, 7, 0, time.UTC)),
 	// 		ID: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/test-rg/providers/Microsoft.Workloads/operations/locations/centralus/1e4193c3-206e-4916-b124-1da16175eb0e"),
-	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T03:36:07.000Z"); return t}()),
+	// 		StartTime: to.Ptr(time.Date(2021, time.August, 19, 3, 36, 7, 0, time.UTC)),
 	// 		Status: to.Ptr("Succeeded"),
 	// 	},
 	// }
@@ -7972,9 +9268,9 @@ func ExampleSAPVirtualInstancesClient_BeginStart_sapVirtualInstancesStartWithInf
 	// res = armworkloadssapvirtualinstance.SAPVirtualInstancesClientStartResponse{
 	// 	OperationStatusResult: armworkloadssapvirtualinstance.OperationStatusResult{
 	// 		Name: to.Ptr("1e4193c3-206e-4916-b124-1da16175eb0e"),
-	// 		EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T03:38:07.000Z"); return t}()),
+	// 		EndTime: to.Ptr(time.Date(2021, time.August, 19, 3, 38, 7, 0, time.UTC)),
 	// 		ID: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/test-rg/providers/Microsoft.Workloads/operations/locations/centralus/1e4193c3-206e-4916-b124-1da16175eb0e"),
-	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T03:36:07.000Z"); return t}()),
+	// 		StartTime: to.Ptr(time.Date(2021, time.August, 19, 3, 36, 7, 0, time.UTC)),
 	// 		Status: to.Ptr("Succeeded"),
 	// 	},
 	// }
@@ -8008,9 +9304,9 @@ func ExampleSAPVirtualInstancesClient_BeginStop_softStopOfSapVirtualInstancesSto
 	// res = armworkloadssapvirtualinstance.SAPVirtualInstancesClientStopResponse{
 	// 	OperationStatusResult: armworkloadssapvirtualinstance.OperationStatusResult{
 	// 		Name: to.Ptr("1e4193c3-206e-4916-b124-1da16175eb0e"),
-	// 		EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T03:38:07.000Z"); return t}()),
+	// 		EndTime: to.Ptr(time.Date(2021, time.August, 19, 3, 38, 7, 0, time.UTC)),
 	// 		ID: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/test-rg/providers/Microsoft.Workloads/operations/locations/centralus/1e4193c3-206e-4916-b124-1da16175eb0e"),
-	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T03:36:07.000Z"); return t}()),
+	// 		StartTime: to.Ptr(time.Date(2021, time.August, 19, 3, 36, 7, 0, time.UTC)),
 	// 		Status: to.Ptr("Succeeded"),
 	// 	},
 	// }
@@ -8045,9 +9341,9 @@ func ExampleSAPVirtualInstancesClient_BeginStop_softStopTheVirtualMachineSAndThe
 	// res = armworkloadssapvirtualinstance.SAPVirtualInstancesClientStopResponse{
 	// 	OperationStatusResult: armworkloadssapvirtualinstance.OperationStatusResult{
 	// 		Name: to.Ptr("1e4193c3-206e-4916-b124-1da16175eb0e"),
-	// 		EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T03:38:07.000Z"); return t}()),
+	// 		EndTime: to.Ptr(time.Date(2021, time.August, 19, 3, 38, 7, 0, time.UTC)),
 	// 		ID: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/test-rg/providers/Microsoft.Workloads/operations/locations/centralus/1e4193c3-206e-4916-b124-1da16175eb0e"),
-	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T03:36:07.000Z"); return t}()),
+	// 		StartTime: to.Ptr(time.Date(2021, time.August, 19, 3, 36, 7, 0, time.UTC)),
 	// 		Status: to.Ptr("Succeeded"),
 	// 	},
 	// }
@@ -8081,9 +9377,9 @@ func ExampleSAPVirtualInstancesClient_BeginStop_sapVirtualInstancesStop() {
 	// res = armworkloadssapvirtualinstance.SAPVirtualInstancesClientStopResponse{
 	// 	OperationStatusResult: armworkloadssapvirtualinstance.OperationStatusResult{
 	// 		Name: to.Ptr("1e4193c3-206e-4916-b124-1da16175eb0e"),
-	// 		EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T03:38:07.000Z"); return t}()),
+	// 		EndTime: to.Ptr(time.Date(2021, time.August, 19, 3, 38, 7, 0, time.UTC)),
 	// 		ID: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/test-rg/providers/Microsoft.Workloads/operations/locations/centralus/1e4193c3-206e-4916-b124-1da16175eb0e"),
-	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T03:36:07.000Z"); return t}()),
+	// 		StartTime: to.Ptr(time.Date(2021, time.August, 19, 3, 36, 7, 0, time.UTC)),
 	// 		Status: to.Ptr("Succeeded"),
 	// 	},
 	// }
@@ -8118,9 +9414,9 @@ func ExampleSAPVirtualInstancesClient_BeginStop_stopTheVirtualMachineSAndTheSapS
 	// res = armworkloadssapvirtualinstance.SAPVirtualInstancesClientStopResponse{
 	// 	OperationStatusResult: armworkloadssapvirtualinstance.OperationStatusResult{
 	// 		Name: to.Ptr("1e4193c3-206e-4916-b124-1da16175eb0e"),
-	// 		EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T03:38:07.000Z"); return t}()),
+	// 		EndTime: to.Ptr(time.Date(2021, time.August, 19, 3, 38, 7, 0, time.UTC)),
 	// 		ID: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/test-rg/providers/Microsoft.Workloads/operations/locations/centralus/1e4193c3-206e-4916-b124-1da16175eb0e"),
-	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T03:36:07.000Z"); return t}()),
+	// 		StartTime: to.Ptr(time.Date(2021, time.August, 19, 3, 36, 7, 0, time.UTC)),
 	// 		Status: to.Ptr("Succeeded"),
 	// 	},
 	// }
@@ -8180,10 +9476,10 @@ func ExampleSAPVirtualInstancesClient_BeginUpdate_sapVirtualInstancesUpdate() {
 	// 			Status: to.Ptr(armworkloadssapvirtualinstance.SAPVirtualInstanceStatusStarting),
 	// 		},
 	// 		SystemData: &armworkloadssapvirtualinstance.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T15:10:46.196Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.August, 19, 15, 10, 46, 196000000, time.UTC)),
 	// 			CreatedBy: to.Ptr("user@xyz.com"),
 	// 			CreatedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T15:10:46.196Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.August, 19, 15, 10, 46, 196000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user@xyz.com"),
 	// 			LastModifiedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
 	// 		},
@@ -8251,10 +9547,10 @@ func ExampleSAPVirtualInstancesClient_BeginUpdate_sapVirtualInstancesTrustedAcce
 	// 			Status: to.Ptr(armworkloadssapvirtualinstance.SAPVirtualInstanceStatusStarting),
 	// 		},
 	// 		SystemData: &armworkloadssapvirtualinstance.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T15:10:46.196Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.August, 19, 15, 10, 46, 196000000, time.UTC)),
 	// 			CreatedBy: to.Ptr("user@xyz.com"),
 	// 			CreatedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T15:10:46.196Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.August, 19, 15, 10, 46, 196000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user@xyz.com"),
 	// 			LastModifiedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
 	// 		},

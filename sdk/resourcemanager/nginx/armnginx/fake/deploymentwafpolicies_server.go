@@ -82,7 +82,7 @@ func (d *DeploymentWafPoliciesServerTransport) dispatchAnalysis(req *http.Reques
 	if d.srv.Analysis == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Analysis not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Nginx\.NginxPlus/nginxDeployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/wafPolicies/(?P<wafPolicyName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/analyzeWafPolicy`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Nginx\.NginxPlus/nginxDeployments/(?P<deploymentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/wafPolicies/(?P<wafPolicyName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/analyzeWafPolicy`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {

@@ -209,6 +209,158 @@ func TestRequestWithContext(t *testing.T) {
 	require.EqualValues(t, "value", req1.Raw().Header.Get("added-req2"))
 }
 
+func TestNewRequestForNextLink(t *testing.T) {
+	tests := []struct {
+		name     string
+		endpoint string
+		nextLink string
+		expected string
+	}{
+		{
+			name:     "empty next link joins endpoint",
+			endpoint: "https://example.com",
+			nextLink: "",
+			expected: "https://example.com/",
+		},
+		{
+			name:     "relative next link joins endpoint",
+			endpoint: "https://example.com",
+			nextLink: "page2",
+			expected: "https://example.com/page2",
+		},
+		{
+			name:     "relative next link with query joins endpoint",
+			endpoint: "https://example.com",
+			nextLink: "page2?skip=10",
+			expected: "https://example.com/page2?skip=10",
+		},
+		{
+			name:     "absolute next link is used as-is",
+			endpoint: "https://example.com",
+			nextLink: "https://other.com/page3?token=abc",
+			expected: "https://other.com/page3?token=abc",
+		},
+		{
+			name:     "absolute next link overrides endpoint",
+			endpoint: "https://example.com",
+			nextLink: "https://other.com/next",
+			expected: "https://other.com/next",
+		},
+		{
+			name:     "relative next link with plus in query is encoded",
+			endpoint: "https://example.com",
+			nextLink: "page2?filter=a+b",
+			expected: "https://example.com/page2?filter=a%20b",
+		},
+		{
+			name:     "absolute next link with plus in query is encoded",
+			endpoint: "https://example.com",
+			nextLink: "https://example.com/next?filter=a+b+c",
+			expected: "https://example.com/next?filter=a%20b%20c",
+		},
+		{
+			name:     "escaped plus in query is preserved",
+			endpoint: "https://example.com",
+			nextLink: "https://example.com/next?filter=a%2Bb",
+			expected: "https://example.com/next?filter=a%2Bb",
+		},
+		{
+			name:     "multiple query params with spaces and plus",
+			endpoint: "https://example.com",
+			nextLink: "https://example.com/next?a=1+2&b=hello%20world",
+			expected: "https://example.com/next?a=1%202&b=hello%20world",
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			req, err := NewRequestForNextLink(context.Background(), http.MethodGet, tt.endpoint, tt.nextLink)
+			require.NoError(t, err)
+			require.Equal(t, tt.expected, req.Raw().URL.String())
+		})
+	}
+}
+
+func TestEncodeQueryParams(t *testing.T) {
+	tests := []struct {
+		name         string
+		url          string
+		encodeSpaces bool
+		expected     string
+		expectErr    bool
+	}{
+		{
+			name:     "no query params",
+			url:      "https://example.com/foo",
+			expected: "https://example.com/foo",
+		},
+		{
+			name:     "empty query",
+			url:      "https://example.com/foo?",
+			expected: "https://example.com/foo?",
+		},
+		{
+			name:     "single query param",
+			url:      "https://example.com/foo?a=1",
+			expected: "https://example.com/foo?a=1",
+		},
+		{
+			name:     "params are sorted by key",
+			url:      "https://example.com/foo?b=2&a=1",
+			expected: "https://example.com/foo?a=1&b=2",
+		},
+		{
+			name:         "plus encoded as space when encodeSpaces is true",
+			url:          "https://example.com/foo?a=1+2",
+			encodeSpaces: true,
+			expected:     "https://example.com/foo?a=1%202",
+		},
+		{
+			name:         "plus encoded as plus when encodeSpaces is false",
+			url:          "https://example.com/foo?a=1+2",
+			encodeSpaces: false,
+			expected:     "https://example.com/foo?a=1+2",
+		},
+		{
+			name:         "multiple plus chars with encodeSpaces",
+			url:          "https://example.com/foo?a=1+2+3",
+			encodeSpaces: true,
+			expected:     "https://example.com/foo?a=1%202%203",
+		},
+		{
+			name:     "escaped plus is preserved",
+			url:      "https://example.com/foo?a=1%2B2",
+			expected: "https://example.com/foo?a=1%2B2",
+		},
+		{
+			name:     "semicolon is escaped",
+			url:      "https://example.com/foo?a=1;2",
+			expected: "https://example.com/foo?a=1%3B2",
+		},
+		{
+			name:         "multiple params with spaces and plus",
+			url:          "https://example.com/foo?a=1+2&b=hello%20world",
+			encodeSpaces: true,
+			expected:     "https://example.com/foo?a=1%202&b=hello%20world",
+		},
+		{
+			name:      "invalid query escape returns error",
+			url:       "https://example.com/foo?a=%zz",
+			expectErr: true,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			actual, err := EncodeQueryParams(tt.url, tt.encodeSpaces)
+			if tt.expectErr {
+				require.Error(t, err)
+				return
+			}
+			require.NoError(t, err)
+			require.Equal(t, tt.expected, actual)
+		})
+	}
+}
+
 func TestSetBodyWithClobber(t *testing.T) {
 	req, err := NewRequest(context.Background(), http.MethodPatch, "https://contoso.com")
 	require.NoError(t, err)

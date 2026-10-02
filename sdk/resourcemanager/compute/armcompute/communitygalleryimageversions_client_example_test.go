@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-12-03/communityGalleryExamples/CommunityGalleryImageVersion_Get.json
+// Generated from example definition: 2026-03-03/communityGalleryExamples/CommunityGalleryImageVersion_Get.json
 func ExampleCommunityGalleryImageVersionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -32,8 +32,8 @@ func ExampleCommunityGalleryImageVersionsClient_Get() {
 	// res = armcompute.CommunityGalleryImageVersionsClientGetResponse{
 	// 	CommunityGalleryImageVersion: armcompute.CommunityGalleryImageVersion{
 	// 		Properties: &armcompute.CommunityGalleryImageVersionProperties{
-	// 			PublishedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-20T09:12:28Z"); return t}()),
-	// 			EndOfLifeDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-20T09:12:28Z"); return t}()),
+	// 			PublishedDate: to.Ptr(time.Date(2018, time.March, 20, 9, 12, 28, 0, time.UTC)),
+	// 			EndOfLifeDate: to.Ptr(time.Date(2022, time.March, 20, 9, 12, 28, 0, time.UTC)),
 	// 			ExcludeFromLatest: to.Ptr(false),
 	// 			StorageProfile: &armcompute.SharedGalleryImageVersionStorageProfile{
 	// 				OSDiskImage: &armcompute.SharedGalleryOSDiskImage{
@@ -45,6 +45,8 @@ func ExampleCommunityGalleryImageVersionsClient_Get() {
 	// 				"ShareTag-CommunityGallery": to.Ptr("CommunityGallery"),
 	// 			},
 	// 			Disclaimer: to.Ptr("https://test-uri.com"),
+	// 			ConsumptionEndTime: to.Ptr(time.Date(2026, time.April, 20, 9, 12, 28, 0, time.UTC)),
+	// 			ImageState: to.Ptr(armcompute.GalleryImageVersionStateSoftDeleted),
 	// 		},
 	// 		Location: to.Ptr("myLocation"),
 	// 		Name: to.Ptr("myGalleryImageVersionName"),
@@ -56,7 +58,7 @@ func ExampleCommunityGalleryImageVersionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-12-03/communityGalleryExamples/CommunityGalleryImageVersion_List.json
+// Generated from example definition: 2026-03-03/communityGalleryExamples/CommunityGalleryImageVersion_List.json
 func ExampleCommunityGalleryImageVersionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -83,8 +85,8 @@ func ExampleCommunityGalleryImageVersionsClient_NewListPager() {
 		// 		Value: []*armcompute.CommunityGalleryImageVersion{
 		// 			{
 		// 				Properties: &armcompute.CommunityGalleryImageVersionProperties{
-		// 					PublishedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-20T09:12:28Z"); return t}()),
-		// 					EndOfLifeDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-20T09:12:28Z"); return t}()),
+		// 					PublishedDate: to.Ptr(time.Date(2018, time.March, 20, 9, 12, 28, 0, time.UTC)),
+		// 					EndOfLifeDate: to.Ptr(time.Date(2022, time.March, 20, 9, 12, 28, 0, time.UTC)),
 		// 					ExcludeFromLatest: to.Ptr(false),
 		// 					StorageProfile: &armcompute.SharedGalleryImageVersionStorageProfile{
 		// 						OSDiskImage: &armcompute.SharedGalleryOSDiskImage{
@@ -96,6 +98,7 @@ func ExampleCommunityGalleryImageVersionsClient_NewListPager() {
 		// 						"ShareTag-CommunityGallery": to.Ptr("CommunityGallery"),
 		// 					},
 		// 					Disclaimer: to.Ptr("https://test-uri.com"),
+		// 					ImageState: to.Ptr(armcompute.GalleryImageVersionStateActive),
 		// 				},
 		// 				Location: to.Ptr("myLocation"),
 		// 				Name: to.Ptr("myGalleryImageVersionName"),

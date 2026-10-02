@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-// Generated from example definition: 2025-09-01/Maintenances_Get.json
+// Generated from example definition: 2026-03-01/Maintenances_Get.json
 func ExampleMaintenancesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -40,18 +40,48 @@ func ExampleMaintenancesClient_Get() {
 	// 			Component: to.Ptr(armavs.MaintenanceTypeVCSA),
 	// 			DisplayName: to.Ptr("vcsa 7.0 upgrade"),
 	// 			ClusterID: to.Ptr[int32](1),
-	// 			InfoLink: to.Ptr("https://vmwarekb/arcticle"),
-	// 			Impact: to.Ptr("This upgrade will update your vcsa to 7.0. Control plance performance will be impacted for the duration"),
-	// 			ScheduledStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-01-12T11:00:11.830Z"); return t}()),
+	// 			InfoLink: to.Ptr("https://vmwarekb/article"),
+	// 			Impact: to.Ptr("This upgrade will update your vcsa to 7.0. Control plane performance will be impacted for the duration"),
+	// 			ScheduledStartTime: to.Ptr(time.Date(2023, time.January, 12, 11, 0, 11, 830000000, time.UTC)),
 	// 			EstimatedDurationInMinutes: to.Ptr[int64](960),
 	// 			State: &armavs.MaintenanceState{
 	// 				Message: to.Ptr("CD rom mounted"),
-	// 				StartedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-01-12T11:00:11.830Z"); return t}()),
-	// 				EndedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-01-12T11:00:11.830Z"); return t}()),
+	// 				StartedAt: to.Ptr(time.Date(2023, time.January, 12, 11, 0, 11, 830000000, time.UTC)),
+	// 				EndedAt: to.Ptr(time.Date(2023, time.January, 12, 11, 0, 11, 830000000, time.UTC)),
 	// 				Name: to.Ptr(armavs.MaintenanceStateNameScheduled),
 	// 			},
 	// 			ProvisioningState: to.Ptr(armavs.MaintenanceProvisioningStateSucceeded),
 	// 			ScheduledByMicrosoft: to.Ptr(true),
+	// 			Activities: []*armavs.MaintenanceActivity{
+	// 				{
+	// 					Kind: to.Ptr(armavs.MaintenanceActivityKindUpgrade),
+	// 					Component: to.Ptr("ESXi"),
+	// 					Version: to.Ptr("7.0.3.01500"),
+	// 					InfoLink: to.Ptr("https://vmwarekb/article"),
+	// 					Impact: to.Ptr("This upgrade will update your esxi to 7.0. Control plane performance will be impacted for the duration"),
+	// 				},
+	// 				{
+	// 					Kind: to.Ptr(armavs.MaintenanceActivityKindCertificateRotation),
+	// 					Component: to.Ptr("vCSA"),
+	// 					Version: to.Ptr("notapplicable"),
+	// 					InfoLink: to.Ptr("https://vmwarekb/article"),
+	// 					Impact: to.Ptr("During this time, we expect no impact to Azure VMware Solution services or to the workloads"),
+	// 				},
+	// 			},
+	// 			Group: &armavs.MaintenanceGroup{
+	// 				ID: to.Ptr("SKUMigrationID"),
+	// 				Name: to.Ptr("SKUMigration"),
+	// 				Kind: to.Ptr(armavs.MaintenanceGroupKindConsolidation),
+	// 			},
+	// 			Relationships: &armavs.MaintenanceRelationships{
+	// 				Dependencies: []*string{
+	// 					to.Ptr("dependentMaintenanceName1"),
+	// 					to.Ptr("dependentMaintenanceName2"),
+	// 				},
+	// 				Prerequisites: []*string{
+	// 					to.Ptr("prerequisiteMaintenanceName1"),
+	// 				},
+	// 			},
 	// 			Operations: []armavs.MaintenanceManagementOperationClassification{
 	// 				&armavs.ScheduleOperation{
 	// 					Kind: to.Ptr(armavs.MaintenanceManagementOperationKindSchedule),
@@ -60,21 +90,26 @@ func ExampleMaintenancesClient_Get() {
 	// 					Constraints: []armavs.ScheduleOperationConstraintClassification{
 	// 						&armavs.SchedulingWindow{
 	// 							Kind: to.Ptr(armavs.ScheduleOperationConstraintKindSchedulingWindow),
-	// 							StartsAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-16T06:21:31.961Z"); return t}()),
-	// 							EndsAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-16T06:21:31.961Z"); return t}()),
+	// 							StartsAt: to.Ptr(time.Date(2025, time.January, 16, 6, 21, 31, 961000000, time.UTC)),
+	// 							EndsAt: to.Ptr(time.Date(2025, time.January, 16, 6, 21, 31, 961000000, time.UTC)),
 	// 						},
 	// 						&armavs.AvailableWindowForMaintenanceWhileScheduleOperation{
 	// 							Kind: to.Ptr(armavs.ScheduleOperationConstraintKindAvailableWindowForMaintenanceWhileScheduleOperation),
-	// 							StartsAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-16T06:21:31.961Z"); return t}()),
-	// 							EndsAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-16T06:21:31.961Z"); return t}()),
+	// 							StartsAt: to.Ptr(time.Date(2025, time.January, 16, 6, 21, 31, 961000000, time.UTC)),
+	// 							EndsAt: to.Ptr(time.Date(2025, time.January, 16, 6, 21, 31, 961000000, time.UTC)),
+	// 						},
+	// 						&armavs.WeekendSchedulingConstraint{
+	// 							Kind: to.Ptr(armavs.ScheduleOperationConstraintKindWeekendScheduling),
+	// 							DisabledReason: to.Ptr("Schedule operation is disabled for maintenance on weekends"),
+	// 							IsDisabled: to.Ptr(true),
 	// 						},
 	// 						&armavs.BlockedWhileScheduleOperation{
 	// 							Kind: to.Ptr(armavs.ScheduleOperationConstraintKindBlockedWhileScheduleOperation),
 	// 							Category: to.Ptr(armavs.BlockedDatesConstraintCategoryHiPriorityEvent),
 	// 							TimeRanges: []*armavs.BlockedDatesConstraintTimeRange{
 	// 								{
-	// 									StartsAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-16T06:21:31.961Z"); return t}()),
-	// 									EndsAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-16T06:21:31.961Z"); return t}()),
+	// 									StartsAt: to.Ptr(time.Date(2025, time.January, 16, 6, 21, 31, 961000000, time.UTC)),
+	// 									EndsAt: to.Ptr(time.Date(2025, time.January, 16, 6, 21, 31, 961000000, time.UTC)),
 	// 									Reason: to.Ptr("2024 Summer Opening Ceremony"),
 	// 								},
 	// 							},
@@ -84,15 +119,27 @@ func ExampleMaintenancesClient_Get() {
 	// 							Category: to.Ptr(armavs.BlockedDatesConstraintCategoryQuotaExhausted),
 	// 							TimeRanges: []*armavs.BlockedDatesConstraintTimeRange{
 	// 								{
-	// 									StartsAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-04-14T17:03:28.609Z"); return t}()),
-	// 									EndsAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-04-15T17:03:28.609Z"); return t}()),
+	// 									StartsAt: to.Ptr(time.Date(2024, time.April, 14, 17, 3, 28, 609000000, time.UTC)),
+	// 									EndsAt: to.Ptr(time.Date(2024, time.April, 15, 17, 3, 28, 609000000, time.UTC)),
 	// 									Reason: to.Ptr("No slots available"),
 	// 								},
 	// 								{
-	// 									StartsAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-09-13T17:03:28.609Z"); return t}()),
-	// 									EndsAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-09-26T17:03:28.609Z"); return t}()),
+	// 									StartsAt: to.Ptr(time.Date(2024, time.September, 13, 17, 3, 28, 609000000, time.UTC)),
+	// 									EndsAt: to.Ptr(time.Date(2024, time.September, 26, 17, 3, 28, 609000000, time.UTC)),
 	// 									Reason: to.Ptr("No slots available"),
 	// 								},
+	// 							},
+	// 						},
+	// 					},
+	// 					Recommendation: &armavs.MaintenanceRecommendation{
+	// 						MaintenanceWindows: []*armavs.MaintenanceWindowRecommendation{
+	// 							{
+	// 								StartTime: to.Ptr(time.Date(2025, time.December, 14, 16, 0, 0, 0, time.UTC)),
+	// 								Reason: to.Ptr("Historically preferred time"),
+	// 							},
+	// 							{
+	// 								StartTime: to.Ptr(time.Date(2025, time.December, 14, 16, 0, 0, 0, time.UTC)),
+	// 								Reason: to.Ptr("Historically preferred day"),
 	// 							},
 	// 						},
 	// 					},
@@ -104,18 +151,40 @@ func ExampleMaintenancesClient_Get() {
 	// 					Constraints: []armavs.RescheduleOperationConstraintClassification{
 	// 						&armavs.AvailableWindowForMaintenanceWhileRescheduleOperation{
 	// 							Kind: to.Ptr(armavs.RescheduleOperationConstraintKindAvailableWindowForMaintenanceWhileRescheduleOperation),
-	// 							StartsAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-16T06:21:31.961Z"); return t}()),
-	// 							EndsAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-16T06:21:31.961Z"); return t}()),
+	// 							StartsAt: to.Ptr(time.Date(2025, time.January, 16, 6, 21, 31, 961000000, time.UTC)),
+	// 							EndsAt: to.Ptr(time.Date(2025, time.January, 16, 6, 21, 31, 961000000, time.UTC)),
+	// 						},
+	// 						&armavs.ReschedulingWindowConstraint{
+	// 							EndsAt: to.Ptr(time.Date(2026, time.February, 8, 21, 59, 56, 0, time.UTC)),
+	// 							Kind: to.Ptr(armavs.RescheduleOperationConstraintKindReschedulingWindow),
+	// 							StartsAt: to.Ptr(time.Date(2026, time.January, 29, 21, 59, 56, 0, time.UTC)),
+	// 						},
+	// 						&armavs.WeekendReschedulingConstraint{
+	// 							Kind: to.Ptr(armavs.RescheduleOperationConstraintKindWeekendRescheduling),
+	// 							DisabledReason: to.Ptr("Reschedule operation is disabled for maintenance on weekends"),
+	// 							IsDisabled: to.Ptr(true),
 	// 						},
 	// 						&armavs.BlockedWhileRescheduleOperation{
 	// 							Kind: to.Ptr(armavs.RescheduleOperationConstraintKindBlockedWhileRescheduleOperation),
 	// 							Category: to.Ptr(armavs.BlockedDatesConstraintCategoryHiPriorityEvent),
 	// 							TimeRanges: []*armavs.BlockedDatesConstraintTimeRange{
 	// 								{
-	// 									StartsAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-10T06:21:31.961Z"); return t}()),
-	// 									EndsAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-19T06:21:31.961Z"); return t}()),
+	// 									StartsAt: to.Ptr(time.Date(2025, time.August, 10, 6, 21, 31, 961000000, time.UTC)),
+	// 									EndsAt: to.Ptr(time.Date(2025, time.August, 19, 6, 21, 31, 961000000, time.UTC)),
 	// 									Reason: to.Ptr("US General Election 2024"),
 	// 								},
+	// 							},
+	// 						},
+	// 					},
+	// 					Recommendation: &armavs.MaintenanceRecommendation{
+	// 						MaintenanceWindows: []*armavs.MaintenanceWindowRecommendation{
+	// 							{
+	// 								StartTime: to.Ptr(time.Date(2025, time.December, 14, 16, 0, 0, 0, time.UTC)),
+	// 								Reason: to.Ptr("Historically preferred time"),
+	// 							},
+	// 							{
+	// 								StartTime: to.Ptr(time.Date(2025, time.December, 14, 16, 0, 0, 0, time.UTC)),
+	// 								Reason: to.Ptr("Historically preferred day"),
 	// 							},
 	// 						},
 	// 					},
@@ -152,14 +221,14 @@ func ExampleMaintenancesClient_Get() {
 	// 						},
 	// 					},
 	// 				},
-	// 				LastUpdated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-16T06:21:31.961Z"); return t}()),
+	// 				LastUpdated: to.Ptr(time.Date(2025, time.January, 16, 6, 21, 31, 961000000, time.UTC)),
 	// 			},
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-09-01/Maintenances_InitiateChecks.json
+// Generated from example definition: 2026-03-01/Maintenances_InitiateChecks.json
 func ExampleMaintenancesClient_InitiateChecks() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -186,18 +255,48 @@ func ExampleMaintenancesClient_InitiateChecks() {
 	// 			Component: to.Ptr(armavs.MaintenanceTypeVCSA),
 	// 			DisplayName: to.Ptr("vcsa 7.0 upgrade"),
 	// 			ClusterID: to.Ptr[int32](1),
-	// 			InfoLink: to.Ptr("https://vmwarekb/arcticle"),
-	// 			Impact: to.Ptr("This upgrade will update your vcsa to 7.0. Control plance performance will be impacted for the duration"),
-	// 			ScheduledStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-01-12T11:00:11.830Z"); return t}()),
+	// 			InfoLink: to.Ptr("https://vmwarekb/article"),
+	// 			Impact: to.Ptr("This upgrade will update your vcsa to 7.0. Control plane performance will be impacted for the duration"),
+	// 			ScheduledStartTime: to.Ptr(time.Date(2023, time.January, 12, 11, 0, 11, 830000000, time.UTC)),
 	// 			EstimatedDurationInMinutes: to.Ptr[int64](960),
 	// 			State: &armavs.MaintenanceState{
 	// 				Message: to.Ptr("CD rom mounted"),
-	// 				StartedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-11-12T11:00:11.830Z"); return t}()),
-	// 				EndedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-11-12T16:00:11.830Z"); return t}()),
+	// 				StartedAt: to.Ptr(time.Date(2025, time.November, 12, 11, 0, 11, 830000000, time.UTC)),
+	// 				EndedAt: to.Ptr(time.Date(2025, time.November, 12, 16, 0, 11, 830000000, time.UTC)),
 	// 				Name: to.Ptr(armavs.MaintenanceStateNameScheduled),
 	// 			},
 	// 			ProvisioningState: to.Ptr(armavs.MaintenanceProvisioningStateSucceeded),
 	// 			ScheduledByMicrosoft: to.Ptr(true),
+	// 			Activities: []*armavs.MaintenanceActivity{
+	// 				{
+	// 					Kind: to.Ptr(armavs.MaintenanceActivityKindUpgrade),
+	// 					Component: to.Ptr("ESXi"),
+	// 					Version: to.Ptr("7.0.3.01500"),
+	// 					InfoLink: to.Ptr("https://vmwarekb/article"),
+	// 					Impact: to.Ptr("This upgrade will update your esxi to 7.0. Control plane performance will be impacted for the duration"),
+	// 				},
+	// 				{
+	// 					Kind: to.Ptr(armavs.MaintenanceActivityKindCertificateRotation),
+	// 					Component: to.Ptr("vCSA"),
+	// 					Version: to.Ptr("notapplicable"),
+	// 					InfoLink: to.Ptr("https://vmwarekb/article"),
+	// 					Impact: to.Ptr("During this time, we expect no impact to Azure VMware Solution services or to the workloads"),
+	// 				},
+	// 			},
+	// 			Group: &armavs.MaintenanceGroup{
+	// 				ID: to.Ptr("SKUMigrationID"),
+	// 				Name: to.Ptr("SKUMigration"),
+	// 				Kind: to.Ptr(armavs.MaintenanceGroupKindConsolidation),
+	// 			},
+	// 			Relationships: &armavs.MaintenanceRelationships{
+	// 				Dependencies: []*string{
+	// 					to.Ptr("dependentMaintenanceName1"),
+	// 					to.Ptr("dependentMaintenanceName2"),
+	// 				},
+	// 				Prerequisites: []*string{
+	// 					to.Ptr("prerequisiteMaintenanceName1"),
+	// 				},
+	// 			},
 	// 			Operations: []armavs.MaintenanceManagementOperationClassification{
 	// 				&armavs.ScheduleOperation{
 	// 					Kind: to.Ptr(armavs.MaintenanceManagementOperationKindSchedule),
@@ -206,21 +305,26 @@ func ExampleMaintenancesClient_InitiateChecks() {
 	// 					Constraints: []armavs.ScheduleOperationConstraintClassification{
 	// 						&armavs.SchedulingWindow{
 	// 							Kind: to.Ptr(armavs.ScheduleOperationConstraintKindSchedulingWindow),
-	// 							StartsAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-16T06:21:31.961Z"); return t}()),
-	// 							EndsAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-16T06:21:31.961Z"); return t}()),
+	// 							StartsAt: to.Ptr(time.Date(2025, time.January, 16, 6, 21, 31, 961000000, time.UTC)),
+	// 							EndsAt: to.Ptr(time.Date(2025, time.January, 16, 6, 21, 31, 961000000, time.UTC)),
 	// 						},
 	// 						&armavs.AvailableWindowForMaintenanceWhileScheduleOperation{
 	// 							Kind: to.Ptr(armavs.ScheduleOperationConstraintKindAvailableWindowForMaintenanceWhileScheduleOperation),
-	// 							StartsAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-16T06:21:31.961Z"); return t}()),
-	// 							EndsAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-16T06:21:31.961Z"); return t}()),
+	// 							StartsAt: to.Ptr(time.Date(2025, time.January, 16, 6, 21, 31, 961000000, time.UTC)),
+	// 							EndsAt: to.Ptr(time.Date(2025, time.January, 16, 6, 21, 31, 961000000, time.UTC)),
+	// 						},
+	// 						&armavs.WeekendSchedulingConstraint{
+	// 							Kind: to.Ptr(armavs.ScheduleOperationConstraintKindWeekendScheduling),
+	// 							DisabledReason: to.Ptr("Schedule operation is disabled for maintenance on weekends"),
+	// 							IsDisabled: to.Ptr(true),
 	// 						},
 	// 						&armavs.BlockedWhileScheduleOperation{
 	// 							Kind: to.Ptr(armavs.ScheduleOperationConstraintKindBlockedWhileScheduleOperation),
 	// 							Category: to.Ptr(armavs.BlockedDatesConstraintCategoryHiPriorityEvent),
 	// 							TimeRanges: []*armavs.BlockedDatesConstraintTimeRange{
 	// 								{
-	// 									StartsAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-16T06:21:31.961Z"); return t}()),
-	// 									EndsAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-16T06:21:31.961Z"); return t}()),
+	// 									StartsAt: to.Ptr(time.Date(2025, time.January, 16, 6, 21, 31, 961000000, time.UTC)),
+	// 									EndsAt: to.Ptr(time.Date(2025, time.January, 16, 6, 21, 31, 961000000, time.UTC)),
 	// 									Reason: to.Ptr("2024 Summer Opening Ceremony"),
 	// 								},
 	// 							},
@@ -230,15 +334,27 @@ func ExampleMaintenancesClient_InitiateChecks() {
 	// 							Category: to.Ptr(armavs.BlockedDatesConstraintCategoryQuotaExhausted),
 	// 							TimeRanges: []*armavs.BlockedDatesConstraintTimeRange{
 	// 								{
-	// 									StartsAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-04-14T17:03:28.609Z"); return t}()),
-	// 									EndsAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-04-15T17:03:28.609Z"); return t}()),
+	// 									StartsAt: to.Ptr(time.Date(2024, time.April, 14, 17, 3, 28, 609000000, time.UTC)),
+	// 									EndsAt: to.Ptr(time.Date(2024, time.April, 15, 17, 3, 28, 609000000, time.UTC)),
 	// 									Reason: to.Ptr("No slots available"),
 	// 								},
 	// 								{
-	// 									StartsAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-09-13T17:03:28.609Z"); return t}()),
-	// 									EndsAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-09-26T17:03:28.609Z"); return t}()),
+	// 									StartsAt: to.Ptr(time.Date(2024, time.September, 13, 17, 3, 28, 609000000, time.UTC)),
+	// 									EndsAt: to.Ptr(time.Date(2024, time.September, 26, 17, 3, 28, 609000000, time.UTC)),
 	// 									Reason: to.Ptr("No slots available"),
 	// 								},
+	// 							},
+	// 						},
+	// 					},
+	// 					Recommendation: &armavs.MaintenanceRecommendation{
+	// 						MaintenanceWindows: []*armavs.MaintenanceWindowRecommendation{
+	// 							{
+	// 								StartTime: to.Ptr(time.Date(2025, time.December, 14, 16, 0, 0, 0, time.UTC)),
+	// 								Reason: to.Ptr("Historically preferred time"),
+	// 							},
+	// 							{
+	// 								StartTime: to.Ptr(time.Date(2025, time.December, 14, 16, 0, 0, 0, time.UTC)),
+	// 								Reason: to.Ptr("Historically preferred day"),
 	// 							},
 	// 						},
 	// 					},
@@ -250,18 +366,40 @@ func ExampleMaintenancesClient_InitiateChecks() {
 	// 					Constraints: []armavs.RescheduleOperationConstraintClassification{
 	// 						&armavs.AvailableWindowForMaintenanceWhileRescheduleOperation{
 	// 							Kind: to.Ptr(armavs.RescheduleOperationConstraintKindAvailableWindowForMaintenanceWhileRescheduleOperation),
-	// 							StartsAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-16T06:21:31.961Z"); return t}()),
-	// 							EndsAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-16T06:21:31.961Z"); return t}()),
+	// 							StartsAt: to.Ptr(time.Date(2025, time.January, 16, 6, 21, 31, 961000000, time.UTC)),
+	// 							EndsAt: to.Ptr(time.Date(2025, time.January, 16, 6, 21, 31, 961000000, time.UTC)),
+	// 						},
+	// 						&armavs.ReschedulingWindowConstraint{
+	// 							EndsAt: to.Ptr(time.Date(2026, time.February, 8, 21, 59, 56, 0, time.UTC)),
+	// 							Kind: to.Ptr(armavs.RescheduleOperationConstraintKindReschedulingWindow),
+	// 							StartsAt: to.Ptr(time.Date(2026, time.January, 29, 21, 59, 56, 0, time.UTC)),
+	// 						},
+	// 						&armavs.WeekendReschedulingConstraint{
+	// 							Kind: to.Ptr(armavs.RescheduleOperationConstraintKindWeekendRescheduling),
+	// 							DisabledReason: to.Ptr("Reschedule operation is disabled for maintenance on weekends"),
+	// 							IsDisabled: to.Ptr(true),
 	// 						},
 	// 						&armavs.BlockedWhileRescheduleOperation{
 	// 							Kind: to.Ptr(armavs.RescheduleOperationConstraintKindBlockedWhileRescheduleOperation),
 	// 							Category: to.Ptr(armavs.BlockedDatesConstraintCategoryHiPriorityEvent),
 	// 							TimeRanges: []*armavs.BlockedDatesConstraintTimeRange{
 	// 								{
-	// 									StartsAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-10T06:21:31.961Z"); return t}()),
-	// 									EndsAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-19T06:21:31.961Z"); return t}()),
+	// 									StartsAt: to.Ptr(time.Date(2025, time.August, 10, 6, 21, 31, 961000000, time.UTC)),
+	// 									EndsAt: to.Ptr(time.Date(2025, time.August, 19, 6, 21, 31, 961000000, time.UTC)),
 	// 									Reason: to.Ptr("US General Election 2024"),
 	// 								},
+	// 							},
+	// 						},
+	// 					},
+	// 					Recommendation: &armavs.MaintenanceRecommendation{
+	// 						MaintenanceWindows: []*armavs.MaintenanceWindowRecommendation{
+	// 							{
+	// 								StartTime: to.Ptr(time.Date(2025, time.December, 14, 16, 0, 0, 0, time.UTC)),
+	// 								Reason: to.Ptr("Historically preferred time"),
+	// 							},
+	// 							{
+	// 								StartTime: to.Ptr(time.Date(2025, time.December, 14, 16, 0, 0, 0, time.UTC)),
+	// 								Reason: to.Ptr("Historically preferred day"),
 	// 							},
 	// 						},
 	// 					},
@@ -298,14 +436,14 @@ func ExampleMaintenancesClient_InitiateChecks() {
 	// 						},
 	// 					},
 	// 				},
-	// 				LastUpdated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-16T06:21:31.961Z"); return t}()),
+	// 				LastUpdated: to.Ptr(time.Date(2025, time.January, 16, 6, 21, 31, 961000000, time.UTC)),
 	// 			},
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-09-01/Maintenances_List.json
+// Generated from example definition: 2026-03-01/Maintenances_List.json
 func ExampleMaintenancesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -338,18 +476,48 @@ func ExampleMaintenancesClient_NewListPager() {
 		// 					Component: to.Ptr(armavs.MaintenanceTypeVCSA),
 		// 					DisplayName: to.Ptr("vcsa 7.0 upgrade"),
 		// 					ClusterID: to.Ptr[int32](1),
-		// 					InfoLink: to.Ptr("https://vmwarekb/arcticle"),
-		// 					Impact: to.Ptr("This upgrade will update your vcsa to 7.0. Control plance performance will be impacted for the duration"),
-		// 					ScheduledStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-01-12T11:00:11.830Z"); return t}()),
+		// 					InfoLink: to.Ptr("https://vmwarekb/article"),
+		// 					Impact: to.Ptr("This upgrade will update your vcsa to 7.0. Control plane performance will be impacted for the duration"),
+		// 					ScheduledStartTime: to.Ptr(time.Date(2023, time.January, 12, 11, 0, 11, 830000000, time.UTC)),
 		// 					EstimatedDurationInMinutes: to.Ptr[int64](960),
 		// 					State: &armavs.MaintenanceState{
 		// 						Message: to.Ptr("CD rom mounted"),
-		// 						StartedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-01-12T11:00:11.830Z"); return t}()),
-		// 						EndedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-01-12T11:00:11.830Z"); return t}()),
+		// 						StartedAt: to.Ptr(time.Date(2023, time.January, 12, 11, 0, 11, 830000000, time.UTC)),
+		// 						EndedAt: to.Ptr(time.Date(2023, time.January, 12, 11, 0, 11, 830000000, time.UTC)),
 		// 						Name: to.Ptr(armavs.MaintenanceStateNameScheduled),
 		// 					},
 		// 					ProvisioningState: to.Ptr(armavs.MaintenanceProvisioningStateSucceeded),
 		// 					ScheduledByMicrosoft: to.Ptr(true),
+		// 					Activities: []*armavs.MaintenanceActivity{
+		// 						{
+		// 							Kind: to.Ptr(armavs.MaintenanceActivityKindUpgrade),
+		// 							Component: to.Ptr("ESXi"),
+		// 							Version: to.Ptr("7.0.3.01500"),
+		// 							InfoLink: to.Ptr("https://vmwarekb/article"),
+		// 							Impact: to.Ptr("This upgrade will update your esxi to 7.0. Control plane performance will be impacted for the duration"),
+		// 						},
+		// 						{
+		// 							Kind: to.Ptr(armavs.MaintenanceActivityKindCertificateRotation),
+		// 							Component: to.Ptr("vCSA"),
+		// 							Version: to.Ptr("notapplicable"),
+		// 							InfoLink: to.Ptr("https://vmwarekb/article"),
+		// 							Impact: to.Ptr("During this time, we expect no impact to Azure VMware Solution services or to the workloads"),
+		// 						},
+		// 					},
+		// 					Group: &armavs.MaintenanceGroup{
+		// 						ID: to.Ptr("SKUMigrationID"),
+		// 						Name: to.Ptr("SKUMigration"),
+		// 						Kind: to.Ptr(armavs.MaintenanceGroupKindConsolidation),
+		// 					},
+		// 					Relationships: &armavs.MaintenanceRelationships{
+		// 						Dependencies: []*string{
+		// 							to.Ptr("dependentMaintenanceName1"),
+		// 							to.Ptr("dependentMaintenanceName2"),
+		// 						},
+		// 						Prerequisites: []*string{
+		// 							to.Ptr("prerequisiteMaintenanceName1"),
+		// 						},
+		// 					},
 		// 					Operations: []armavs.MaintenanceManagementOperationClassification{
 		// 						&armavs.ScheduleOperation{
 		// 							Kind: to.Ptr(armavs.MaintenanceManagementOperationKindSchedule),
@@ -358,21 +526,21 @@ func ExampleMaintenancesClient_NewListPager() {
 		// 							Constraints: []armavs.ScheduleOperationConstraintClassification{
 		// 								&armavs.SchedulingWindow{
 		// 									Kind: to.Ptr(armavs.ScheduleOperationConstraintKindSchedulingWindow),
-		// 									StartsAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-16T06:21:31.961Z"); return t}()),
-		// 									EndsAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-16T06:21:31.961Z"); return t}()),
+		// 									StartsAt: to.Ptr(time.Date(2025, time.January, 16, 6, 21, 31, 961000000, time.UTC)),
+		// 									EndsAt: to.Ptr(time.Date(2025, time.January, 16, 6, 21, 31, 961000000, time.UTC)),
 		// 								},
 		// 								&armavs.AvailableWindowForMaintenanceWhileScheduleOperation{
 		// 									Kind: to.Ptr(armavs.ScheduleOperationConstraintKindAvailableWindowForMaintenanceWhileScheduleOperation),
-		// 									StartsAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-16T06:21:31.961Z"); return t}()),
-		// 									EndsAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-16T06:21:31.961Z"); return t}()),
+		// 									StartsAt: to.Ptr(time.Date(2025, time.January, 16, 6, 21, 31, 961000000, time.UTC)),
+		// 									EndsAt: to.Ptr(time.Date(2025, time.January, 16, 6, 21, 31, 961000000, time.UTC)),
 		// 								},
 		// 								&armavs.BlockedWhileScheduleOperation{
 		// 									Kind: to.Ptr(armavs.ScheduleOperationConstraintKindBlockedWhileScheduleOperation),
 		// 									Category: to.Ptr(armavs.BlockedDatesConstraintCategoryHiPriorityEvent),
 		// 									TimeRanges: []*armavs.BlockedDatesConstraintTimeRange{
 		// 										{
-		// 											StartsAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-16T06:21:31.961Z"); return t}()),
-		// 											EndsAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-16T06:21:31.961Z"); return t}()),
+		// 											StartsAt: to.Ptr(time.Date(2025, time.January, 16, 6, 21, 31, 961000000, time.UTC)),
+		// 											EndsAt: to.Ptr(time.Date(2025, time.January, 16, 6, 21, 31, 961000000, time.UTC)),
 		// 											Reason: to.Ptr("2024 Summer Opening Ceremony"),
 		// 										},
 		// 									},
@@ -382,15 +550,27 @@ func ExampleMaintenancesClient_NewListPager() {
 		// 									Category: to.Ptr(armavs.BlockedDatesConstraintCategoryQuotaExhausted),
 		// 									TimeRanges: []*armavs.BlockedDatesConstraintTimeRange{
 		// 										{
-		// 											StartsAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-04-14T17:03:28.609Z"); return t}()),
-		// 											EndsAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-04-15T17:03:28.609Z"); return t}()),
+		// 											StartsAt: to.Ptr(time.Date(2024, time.April, 14, 17, 3, 28, 609000000, time.UTC)),
+		// 											EndsAt: to.Ptr(time.Date(2024, time.April, 15, 17, 3, 28, 609000000, time.UTC)),
 		// 											Reason: to.Ptr("No slots available"),
 		// 										},
 		// 										{
-		// 											StartsAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-09-13T17:03:28.609Z"); return t}()),
-		// 											EndsAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-09-26T17:03:28.609Z"); return t}()),
+		// 											StartsAt: to.Ptr(time.Date(2024, time.September, 13, 17, 3, 28, 609000000, time.UTC)),
+		// 											EndsAt: to.Ptr(time.Date(2024, time.September, 26, 17, 3, 28, 609000000, time.UTC)),
 		// 											Reason: to.Ptr("No slots available"),
 		// 										},
+		// 									},
+		// 								},
+		// 							},
+		// 							Recommendation: &armavs.MaintenanceRecommendation{
+		// 								MaintenanceWindows: []*armavs.MaintenanceWindowRecommendation{
+		// 									{
+		// 										StartTime: to.Ptr(time.Date(2025, time.December, 14, 16, 0, 0, 0, time.UTC)),
+		// 										Reason: to.Ptr("Historically preferred time"),
+		// 									},
+		// 									{
+		// 										StartTime: to.Ptr(time.Date(2025, time.December, 14, 16, 0, 0, 0, time.UTC)),
+		// 										Reason: to.Ptr("Historically preferred day"),
 		// 									},
 		// 								},
 		// 							},
@@ -402,18 +582,30 @@ func ExampleMaintenancesClient_NewListPager() {
 		// 							Constraints: []armavs.RescheduleOperationConstraintClassification{
 		// 								&armavs.AvailableWindowForMaintenanceWhileRescheduleOperation{
 		// 									Kind: to.Ptr(armavs.RescheduleOperationConstraintKindAvailableWindowForMaintenanceWhileRescheduleOperation),
-		// 									StartsAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-16T06:21:31.961Z"); return t}()),
-		// 									EndsAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-16T06:21:31.961Z"); return t}()),
+		// 									StartsAt: to.Ptr(time.Date(2025, time.January, 16, 6, 21, 31, 961000000, time.UTC)),
+		// 									EndsAt: to.Ptr(time.Date(2025, time.January, 16, 6, 21, 31, 961000000, time.UTC)),
 		// 								},
 		// 								&armavs.BlockedWhileRescheduleOperation{
 		// 									Kind: to.Ptr(armavs.RescheduleOperationConstraintKindBlockedWhileRescheduleOperation),
 		// 									Category: to.Ptr(armavs.BlockedDatesConstraintCategoryHiPriorityEvent),
 		// 									TimeRanges: []*armavs.BlockedDatesConstraintTimeRange{
 		// 										{
-		// 											StartsAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-10T06:21:31.961Z"); return t}()),
-		// 											EndsAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-19T06:21:31.961Z"); return t}()),
+		// 											StartsAt: to.Ptr(time.Date(2025, time.August, 10, 6, 21, 31, 961000000, time.UTC)),
+		// 											EndsAt: to.Ptr(time.Date(2025, time.August, 19, 6, 21, 31, 961000000, time.UTC)),
 		// 											Reason: to.Ptr("US General Election 2024"),
 		// 										},
+		// 									},
+		// 								},
+		// 							},
+		// 							Recommendation: &armavs.MaintenanceRecommendation{
+		// 								MaintenanceWindows: []*armavs.MaintenanceWindowRecommendation{
+		// 									{
+		// 										StartTime: to.Ptr(time.Date(2025, time.December, 14, 16, 0, 0, 0, time.UTC)),
+		// 										Reason: to.Ptr("Historically preferred time"),
+		// 									},
+		// 									{
+		// 										StartTime: to.Ptr(time.Date(2025, time.December, 14, 16, 0, 0, 0, time.UTC)),
+		// 										Reason: to.Ptr("Historically preferred day"),
 		// 									},
 		// 								},
 		// 							},
@@ -452,7 +644,7 @@ func ExampleMaintenancesClient_NewListPager() {
 		// 								},
 		// 							},
 		// 						},
-		// 						LastUpdated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-16T06:21:31.961Z"); return t}()),
+		// 						LastUpdated: to.Ptr(time.Date(2025, time.January, 16, 6, 21, 31, 961000000, time.UTC)),
 		// 					},
 		// 				},
 		// 			},
@@ -464,18 +656,48 @@ func ExampleMaintenancesClient_NewListPager() {
 		// 					Component: to.Ptr(armavs.MaintenanceTypeVCSA),
 		// 					DisplayName: to.Ptr("vcsa 7.0 upgrade"),
 		// 					ClusterID: to.Ptr[int32](1),
-		// 					InfoLink: to.Ptr("https://vmwarekb/arcticle"),
-		// 					Impact: to.Ptr("This upgrade will update your vcsa to 7.0. Control plance performance will be impacted for the duration"),
-		// 					ScheduledStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-01-12T11:00:11.830Z"); return t}()),
+		// 					InfoLink: to.Ptr("https://vmwarekb/article"),
+		// 					Impact: to.Ptr("This upgrade will update your vcsa to 7.0. Control plane performance will be impacted for the duration"),
+		// 					ScheduledStartTime: to.Ptr(time.Date(2023, time.January, 12, 11, 0, 11, 830000000, time.UTC)),
 		// 					EstimatedDurationInMinutes: to.Ptr[int64](960),
 		// 					State: &armavs.MaintenanceState{
 		// 						Message: to.Ptr("CD rom mounted"),
-		// 						StartedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-01-12T11:00:11.830Z"); return t}()),
-		// 						EndedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-01-12T11:00:11.830Z"); return t}()),
+		// 						StartedAt: to.Ptr(time.Date(2023, time.January, 12, 11, 0, 11, 830000000, time.UTC)),
+		// 						EndedAt: to.Ptr(time.Date(2023, time.January, 12, 11, 0, 11, 830000000, time.UTC)),
 		// 						Name: to.Ptr(armavs.MaintenanceStateNameScheduled),
 		// 					},
 		// 					ProvisioningState: to.Ptr(armavs.MaintenanceProvisioningStateSucceeded),
 		// 					ScheduledByMicrosoft: to.Ptr(true),
+		// 					Activities: []*armavs.MaintenanceActivity{
+		// 						{
+		// 							Kind: to.Ptr(armavs.MaintenanceActivityKindUpgrade),
+		// 							Component: to.Ptr("ESXi"),
+		// 							Version: to.Ptr("7.0.3.01500"),
+		// 							InfoLink: to.Ptr("https://vmwarekb/article"),
+		// 							Impact: to.Ptr("This upgrade will update your esxi to 7.0. Control plane performance will be impacted for the duration"),
+		// 						},
+		// 						{
+		// 							Kind: to.Ptr(armavs.MaintenanceActivityKindCertificateRotation),
+		// 							Component: to.Ptr("vCSA"),
+		// 							Version: to.Ptr("notapplicable"),
+		// 							InfoLink: to.Ptr("https://vmwarekb/article"),
+		// 							Impact: to.Ptr("During this time, we expect no impact to Azure VMware Solution services or to the workloads"),
+		// 						},
+		// 					},
+		// 					Group: &armavs.MaintenanceGroup{
+		// 						ID: to.Ptr("SKUMigrationID"),
+		// 						Name: to.Ptr("SKUMigration"),
+		// 						Kind: to.Ptr(armavs.MaintenanceGroupKindConsolidation),
+		// 					},
+		// 					Relationships: &armavs.MaintenanceRelationships{
+		// 						Dependencies: []*string{
+		// 							to.Ptr("dependentMaintenanceName1"),
+		// 							to.Ptr("dependentMaintenanceName2"),
+		// 						},
+		// 						Prerequisites: []*string{
+		// 							to.Ptr("prerequisiteMaintenanceName1"),
+		// 						},
+		// 					},
 		// 					Operations: []armavs.MaintenanceManagementOperationClassification{
 		// 						&armavs.ScheduleOperation{
 		// 							Kind: to.Ptr(armavs.MaintenanceManagementOperationKindSchedule),
@@ -484,21 +706,21 @@ func ExampleMaintenancesClient_NewListPager() {
 		// 							Constraints: []armavs.ScheduleOperationConstraintClassification{
 		// 								&armavs.SchedulingWindow{
 		// 									Kind: to.Ptr(armavs.ScheduleOperationConstraintKindSchedulingWindow),
-		// 									StartsAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-16T06:21:31.961Z"); return t}()),
-		// 									EndsAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-16T06:21:31.961Z"); return t}()),
+		// 									StartsAt: to.Ptr(time.Date(2025, time.January, 16, 6, 21, 31, 961000000, time.UTC)),
+		// 									EndsAt: to.Ptr(time.Date(2025, time.January, 16, 6, 21, 31, 961000000, time.UTC)),
 		// 								},
 		// 								&armavs.AvailableWindowForMaintenanceWhileScheduleOperation{
 		// 									Kind: to.Ptr(armavs.ScheduleOperationConstraintKindAvailableWindowForMaintenanceWhileScheduleOperation),
-		// 									StartsAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-16T06:21:31.961Z"); return t}()),
-		// 									EndsAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-16T06:21:31.961Z"); return t}()),
+		// 									StartsAt: to.Ptr(time.Date(2025, time.January, 16, 6, 21, 31, 961000000, time.UTC)),
+		// 									EndsAt: to.Ptr(time.Date(2025, time.January, 16, 6, 21, 31, 961000000, time.UTC)),
 		// 								},
 		// 								&armavs.BlockedWhileScheduleOperation{
 		// 									Kind: to.Ptr(armavs.ScheduleOperationConstraintKindBlockedWhileScheduleOperation),
 		// 									Category: to.Ptr(armavs.BlockedDatesConstraintCategoryHiPriorityEvent),
 		// 									TimeRanges: []*armavs.BlockedDatesConstraintTimeRange{
 		// 										{
-		// 											StartsAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-16T06:21:31.961Z"); return t}()),
-		// 											EndsAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-16T06:21:31.961Z"); return t}()),
+		// 											StartsAt: to.Ptr(time.Date(2025, time.January, 16, 6, 21, 31, 961000000, time.UTC)),
+		// 											EndsAt: to.Ptr(time.Date(2025, time.January, 16, 6, 21, 31, 961000000, time.UTC)),
 		// 											Reason: to.Ptr("2024 Summer Opening Ceremony"),
 		// 										},
 		// 									},
@@ -508,13 +730,13 @@ func ExampleMaintenancesClient_NewListPager() {
 		// 									Category: to.Ptr(armavs.BlockedDatesConstraintCategoryQuotaExhausted),
 		// 									TimeRanges: []*armavs.BlockedDatesConstraintTimeRange{
 		// 										{
-		// 											StartsAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-04-14T17:03:28.609Z"); return t}()),
-		// 											EndsAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-04-15T17:03:28.609Z"); return t}()),
+		// 											StartsAt: to.Ptr(time.Date(2024, time.April, 14, 17, 3, 28, 609000000, time.UTC)),
+		// 											EndsAt: to.Ptr(time.Date(2024, time.April, 15, 17, 3, 28, 609000000, time.UTC)),
 		// 											Reason: to.Ptr("No slots available"),
 		// 										},
 		// 										{
-		// 											StartsAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-09-13T17:03:28.609Z"); return t}()),
-		// 											EndsAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-09-26T17:03:28.609Z"); return t}()),
+		// 											StartsAt: to.Ptr(time.Date(2024, time.September, 13, 17, 3, 28, 609000000, time.UTC)),
+		// 											EndsAt: to.Ptr(time.Date(2024, time.September, 26, 17, 3, 28, 609000000, time.UTC)),
 		// 											Reason: to.Ptr("No slots available"),
 		// 										},
 		// 									},
@@ -528,16 +750,16 @@ func ExampleMaintenancesClient_NewListPager() {
 		// 							Constraints: []armavs.RescheduleOperationConstraintClassification{
 		// 								&armavs.AvailableWindowForMaintenanceWhileRescheduleOperation{
 		// 									Kind: to.Ptr(armavs.RescheduleOperationConstraintKindAvailableWindowForMaintenanceWhileRescheduleOperation),
-		// 									StartsAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-16T06:21:31.961Z"); return t}()),
-		// 									EndsAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-16T06:21:31.961Z"); return t}()),
+		// 									StartsAt: to.Ptr(time.Date(2025, time.January, 16, 6, 21, 31, 961000000, time.UTC)),
+		// 									EndsAt: to.Ptr(time.Date(2025, time.January, 16, 6, 21, 31, 961000000, time.UTC)),
 		// 								},
 		// 								&armavs.BlockedWhileRescheduleOperation{
 		// 									Kind: to.Ptr(armavs.RescheduleOperationConstraintKindBlockedWhileRescheduleOperation),
 		// 									Category: to.Ptr(armavs.BlockedDatesConstraintCategoryHiPriorityEvent),
 		// 									TimeRanges: []*armavs.BlockedDatesConstraintTimeRange{
 		// 										{
-		// 											StartsAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-10T06:21:31.961Z"); return t}()),
-		// 											EndsAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-19T06:21:31.961Z"); return t}()),
+		// 											StartsAt: to.Ptr(time.Date(2025, time.August, 10, 6, 21, 31, 961000000, time.UTC)),
+		// 											EndsAt: to.Ptr(time.Date(2025, time.August, 19, 6, 21, 31, 961000000, time.UTC)),
 		// 											Reason: to.Ptr("US General Election 2024"),
 		// 										},
 		// 									},
@@ -576,7 +798,7 @@ func ExampleMaintenancesClient_NewListPager() {
 		// 								},
 		// 							},
 		// 						},
-		// 						LastUpdated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-19T06:21:31.961Z"); return t}()),
+		// 						LastUpdated: to.Ptr(time.Date(2025, time.January, 19, 6, 21, 31, 961000000, time.UTC)),
 		// 					},
 		// 				},
 		// 			},
@@ -586,7 +808,7 @@ func ExampleMaintenancesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-09-01/Maintenances_Reschedule.json
+// Generated from example definition: 2026-03-01/Maintenances_Reschedule.json
 func ExampleMaintenancesClient_Reschedule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -598,7 +820,7 @@ func ExampleMaintenancesClient_Reschedule() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := clientFactory.NewMaintenancesClient().Reschedule(ctx, "group1", "cloud1", "maintenance1", armavs.MaintenanceReschedule{
-		RescheduleTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-01-12T16:17:55.237Z"); return t }()),
+		RescheduleTime: to.Ptr(time.Date(2023, time.January, 12, 16, 17, 55, 237000000, time.UTC)),
 		Message:        to.Ptr("Rescheduled due to xyz"),
 	}, nil)
 	if err != nil {
@@ -616,18 +838,48 @@ func ExampleMaintenancesClient_Reschedule() {
 	// 			Component: to.Ptr(armavs.MaintenanceTypeVCSA),
 	// 			DisplayName: to.Ptr("vcsa 7.0 upgrade"),
 	// 			ClusterID: to.Ptr[int32](1),
-	// 			InfoLink: to.Ptr("https://vmwarekb/arcticle"),
-	// 			Impact: to.Ptr("This upgrade will update your vcsa to 7.0. Control plance performance will be impacted for the duration"),
-	// 			ScheduledStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-01-12T16:17:55.237Z"); return t}()),
+	// 			InfoLink: to.Ptr("https://vmwarekb/article"),
+	// 			Impact: to.Ptr("This upgrade will update your vcsa to 7.0. Control plane performance will be impacted for the duration"),
+	// 			ScheduledStartTime: to.Ptr(time.Date(2023, time.January, 12, 16, 17, 55, 237000000, time.UTC)),
 	// 			EstimatedDurationInMinutes: to.Ptr[int64](960),
 	// 			State: &armavs.MaintenanceState{
 	// 				Message: to.Ptr("CD rom mounted"),
-	// 				StartedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-01-12T11:00:11.830Z"); return t}()),
-	// 				EndedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-01-12T11:00:11.830Z"); return t}()),
+	// 				StartedAt: to.Ptr(time.Date(2023, time.January, 12, 11, 0, 11, 830000000, time.UTC)),
+	// 				EndedAt: to.Ptr(time.Date(2023, time.January, 12, 11, 0, 11, 830000000, time.UTC)),
 	// 				Name: to.Ptr(armavs.MaintenanceStateNameScheduled),
 	// 			},
 	// 			ProvisioningState: to.Ptr(armavs.MaintenanceProvisioningStateSucceeded),
 	// 			ScheduledByMicrosoft: to.Ptr(true),
+	// 			Activities: []*armavs.MaintenanceActivity{
+	// 				{
+	// 					Kind: to.Ptr(armavs.MaintenanceActivityKindUpgrade),
+	// 					Component: to.Ptr("ESXi"),
+	// 					Version: to.Ptr("7.0.3.01500"),
+	// 					InfoLink: to.Ptr("https://vmwarekb/article"),
+	// 					Impact: to.Ptr("This upgrade will update your esxi to 7.0. Control plane performance will be impacted for the duration"),
+	// 				},
+	// 				{
+	// 					Kind: to.Ptr(armavs.MaintenanceActivityKindCertificateRotation),
+	// 					Component: to.Ptr("vCSA"),
+	// 					Version: to.Ptr("notapplicable"),
+	// 					InfoLink: to.Ptr("https://vmwarekb/article"),
+	// 					Impact: to.Ptr("During this time, we expect no impact to Azure VMware Solution services or to the workloads"),
+	// 				},
+	// 			},
+	// 			Group: &armavs.MaintenanceGroup{
+	// 				ID: to.Ptr("SKUMigrationID"),
+	// 				Name: to.Ptr("SKUMigration"),
+	// 				Kind: to.Ptr(armavs.MaintenanceGroupKindConsolidation),
+	// 			},
+	// 			Relationships: &armavs.MaintenanceRelationships{
+	// 				Dependencies: []*string{
+	// 					to.Ptr("dependentMaintenanceName1"),
+	// 					to.Ptr("dependentMaintenanceName2"),
+	// 				},
+	// 				Prerequisites: []*string{
+	// 					to.Ptr("prerequisiteMaintenanceName1"),
+	// 				},
+	// 			},
 	// 			Operations: []armavs.MaintenanceManagementOperationClassification{
 	// 				&armavs.ScheduleOperation{
 	// 					Kind: to.Ptr(armavs.MaintenanceManagementOperationKindSchedule),
@@ -636,21 +888,26 @@ func ExampleMaintenancesClient_Reschedule() {
 	// 					Constraints: []armavs.ScheduleOperationConstraintClassification{
 	// 						&armavs.SchedulingWindow{
 	// 							Kind: to.Ptr(armavs.ScheduleOperationConstraintKindSchedulingWindow),
-	// 							StartsAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-16T06:21:31.961Z"); return t}()),
-	// 							EndsAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-16T06:21:31.961Z"); return t}()),
+	// 							StartsAt: to.Ptr(time.Date(2025, time.January, 16, 6, 21, 31, 961000000, time.UTC)),
+	// 							EndsAt: to.Ptr(time.Date(2025, time.January, 16, 6, 21, 31, 961000000, time.UTC)),
 	// 						},
 	// 						&armavs.AvailableWindowForMaintenanceWhileScheduleOperation{
 	// 							Kind: to.Ptr(armavs.ScheduleOperationConstraintKindAvailableWindowForMaintenanceWhileScheduleOperation),
-	// 							StartsAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-16T06:21:31.961Z"); return t}()),
-	// 							EndsAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-16T06:21:31.961Z"); return t}()),
+	// 							StartsAt: to.Ptr(time.Date(2025, time.January, 16, 6, 21, 31, 961000000, time.UTC)),
+	// 							EndsAt: to.Ptr(time.Date(2025, time.January, 16, 6, 21, 31, 961000000, time.UTC)),
+	// 						},
+	// 						&armavs.WeekendSchedulingConstraint{
+	// 							Kind: to.Ptr(armavs.ScheduleOperationConstraintKindWeekendScheduling),
+	// 							DisabledReason: to.Ptr("Schedule operation is disabled for maintenance on weekends"),
+	// 							IsDisabled: to.Ptr(true),
 	// 						},
 	// 						&armavs.BlockedWhileScheduleOperation{
 	// 							Kind: to.Ptr(armavs.ScheduleOperationConstraintKindBlockedWhileScheduleOperation),
 	// 							Category: to.Ptr(armavs.BlockedDatesConstraintCategoryHiPriorityEvent),
 	// 							TimeRanges: []*armavs.BlockedDatesConstraintTimeRange{
 	// 								{
-	// 									StartsAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-16T06:21:31.961Z"); return t}()),
-	// 									EndsAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-16T06:21:31.961Z"); return t}()),
+	// 									StartsAt: to.Ptr(time.Date(2025, time.January, 16, 6, 21, 31, 961000000, time.UTC)),
+	// 									EndsAt: to.Ptr(time.Date(2025, time.January, 16, 6, 21, 31, 961000000, time.UTC)),
 	// 									Reason: to.Ptr("2024 Summer Opening Ceremony"),
 	// 								},
 	// 							},
@@ -660,15 +917,27 @@ func ExampleMaintenancesClient_Reschedule() {
 	// 							Category: to.Ptr(armavs.BlockedDatesConstraintCategoryQuotaExhausted),
 	// 							TimeRanges: []*armavs.BlockedDatesConstraintTimeRange{
 	// 								{
-	// 									StartsAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-04-14T17:03:28.609Z"); return t}()),
-	// 									EndsAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-04-15T17:03:28.609Z"); return t}()),
+	// 									StartsAt: to.Ptr(time.Date(2024, time.April, 14, 17, 3, 28, 609000000, time.UTC)),
+	// 									EndsAt: to.Ptr(time.Date(2024, time.April, 15, 17, 3, 28, 609000000, time.UTC)),
 	// 									Reason: to.Ptr("No slots available"),
 	// 								},
 	// 								{
-	// 									StartsAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-09-13T17:03:28.609Z"); return t}()),
-	// 									EndsAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-09-26T17:03:28.609Z"); return t}()),
+	// 									StartsAt: to.Ptr(time.Date(2024, time.September, 13, 17, 3, 28, 609000000, time.UTC)),
+	// 									EndsAt: to.Ptr(time.Date(2024, time.September, 26, 17, 3, 28, 609000000, time.UTC)),
 	// 									Reason: to.Ptr("No slots available"),
 	// 								},
+	// 							},
+	// 						},
+	// 					},
+	// 					Recommendation: &armavs.MaintenanceRecommendation{
+	// 						MaintenanceWindows: []*armavs.MaintenanceWindowRecommendation{
+	// 							{
+	// 								StartTime: to.Ptr(time.Date(2025, time.December, 14, 16, 0, 0, 0, time.UTC)),
+	// 								Reason: to.Ptr("Historically preferred time"),
+	// 							},
+	// 							{
+	// 								StartTime: to.Ptr(time.Date(2025, time.December, 14, 16, 0, 0, 0, time.UTC)),
+	// 								Reason: to.Ptr("Historically preferred day"),
 	// 							},
 	// 						},
 	// 					},
@@ -680,18 +949,40 @@ func ExampleMaintenancesClient_Reschedule() {
 	// 					Constraints: []armavs.RescheduleOperationConstraintClassification{
 	// 						&armavs.AvailableWindowForMaintenanceWhileRescheduleOperation{
 	// 							Kind: to.Ptr(armavs.RescheduleOperationConstraintKindAvailableWindowForMaintenanceWhileRescheduleOperation),
-	// 							StartsAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-16T06:21:31.961Z"); return t}()),
-	// 							EndsAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-16T06:21:31.961Z"); return t}()),
+	// 							StartsAt: to.Ptr(time.Date(2025, time.January, 16, 6, 21, 31, 961000000, time.UTC)),
+	// 							EndsAt: to.Ptr(time.Date(2025, time.January, 16, 6, 21, 31, 961000000, time.UTC)),
+	// 						},
+	// 						&armavs.ReschedulingWindowConstraint{
+	// 							EndsAt: to.Ptr(time.Date(2026, time.February, 8, 21, 59, 56, 0, time.UTC)),
+	// 							Kind: to.Ptr(armavs.RescheduleOperationConstraintKindReschedulingWindow),
+	// 							StartsAt: to.Ptr(time.Date(2026, time.January, 29, 21, 59, 56, 0, time.UTC)),
+	// 						},
+	// 						&armavs.WeekendReschedulingConstraint{
+	// 							Kind: to.Ptr(armavs.RescheduleOperationConstraintKindWeekendRescheduling),
+	// 							DisabledReason: to.Ptr("Reschedule operation is disabled for maintenance on weekends"),
+	// 							IsDisabled: to.Ptr(true),
 	// 						},
 	// 						&armavs.BlockedWhileRescheduleOperation{
 	// 							Kind: to.Ptr(armavs.RescheduleOperationConstraintKindBlockedWhileRescheduleOperation),
 	// 							Category: to.Ptr(armavs.BlockedDatesConstraintCategoryHiPriorityEvent),
 	// 							TimeRanges: []*armavs.BlockedDatesConstraintTimeRange{
 	// 								{
-	// 									StartsAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-10T06:21:31.961Z"); return t}()),
-	// 									EndsAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-19T06:21:31.961Z"); return t}()),
+	// 									StartsAt: to.Ptr(time.Date(2025, time.August, 10, 6, 21, 31, 961000000, time.UTC)),
+	// 									EndsAt: to.Ptr(time.Date(2025, time.August, 19, 6, 21, 31, 961000000, time.UTC)),
 	// 									Reason: to.Ptr("US General Election 2024"),
 	// 								},
+	// 							},
+	// 						},
+	// 					},
+	// 					Recommendation: &armavs.MaintenanceRecommendation{
+	// 						MaintenanceWindows: []*armavs.MaintenanceWindowRecommendation{
+	// 							{
+	// 								StartTime: to.Ptr(time.Date(2025, time.December, 14, 16, 0, 0, 0, time.UTC)),
+	// 								Reason: to.Ptr("Historically preferred time"),
+	// 							},
+	// 							{
+	// 								StartTime: to.Ptr(time.Date(2025, time.December, 14, 16, 0, 0, 0, time.UTC)),
+	// 								Reason: to.Ptr("Historically preferred day"),
 	// 							},
 	// 						},
 	// 					},
@@ -728,14 +1019,14 @@ func ExampleMaintenancesClient_Reschedule() {
 	// 						},
 	// 					},
 	// 				},
-	// 				LastUpdated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-16T06:21:31.961Z"); return t}()),
+	// 				LastUpdated: to.Ptr(time.Date(2025, time.January, 16, 6, 21, 31, 961000000, time.UTC)),
 	// 			},
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-09-01/Maintenances_Schedule.json
+// Generated from example definition: 2026-03-01/Maintenances_Schedule.json
 func ExampleMaintenancesClient_Schedule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -747,7 +1038,7 @@ func ExampleMaintenancesClient_Schedule() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := clientFactory.NewMaintenancesClient().Schedule(ctx, "group1", "cloud1", "maintenance1", armavs.MaintenanceSchedule{
-		ScheduleTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-09-12T16:17:55.237Z"); return t }()),
+		ScheduleTime: to.Ptr(time.Date(2025, time.September, 12, 16, 17, 55, 237000000, time.UTC)),
 		Message:      to.Ptr("scheduled due to xyz"),
 	}, nil)
 	if err != nil {
@@ -765,18 +1056,48 @@ func ExampleMaintenancesClient_Schedule() {
 	// 			Component: to.Ptr(armavs.MaintenanceTypeVCSA),
 	// 			DisplayName: to.Ptr("vcsa 7.0 upgrade"),
 	// 			ClusterID: to.Ptr[int32](1),
-	// 			InfoLink: to.Ptr("https://vmwarekb/arcticle"),
-	// 			Impact: to.Ptr("This upgrade will update your vcsa to 7.0. Control plance performance will be impacted for the duration"),
-	// 			ScheduledStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-01-12T16:17:55.237Z"); return t}()),
+	// 			InfoLink: to.Ptr("https://vmwarekb/article"),
+	// 			Impact: to.Ptr("This upgrade will update your vcsa to 7.0. Control plane performance will be impacted for the duration"),
+	// 			ScheduledStartTime: to.Ptr(time.Date(2023, time.January, 12, 16, 17, 55, 237000000, time.UTC)),
 	// 			EstimatedDurationInMinutes: to.Ptr[int64](960),
 	// 			State: &armavs.MaintenanceState{
 	// 				Message: to.Ptr("Please schedule maintenance in scheduling window"),
-	// 				StartedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-09-12T16:17:55.237Z"); return t}()),
-	// 				EndedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-09-12T19:00:11.830Z"); return t}()),
+	// 				StartedAt: to.Ptr(time.Date(2025, time.September, 12, 16, 17, 55, 237000000, time.UTC)),
+	// 				EndedAt: to.Ptr(time.Date(2025, time.September, 12, 19, 0, 11, 830000000, time.UTC)),
 	// 				Name: to.Ptr(armavs.MaintenanceStateNameNotScheduled),
 	// 			},
 	// 			ProvisioningState: to.Ptr(armavs.MaintenanceProvisioningStateSucceeded),
 	// 			ScheduledByMicrosoft: to.Ptr(true),
+	// 			Activities: []*armavs.MaintenanceActivity{
+	// 				{
+	// 					Kind: to.Ptr(armavs.MaintenanceActivityKindUpgrade),
+	// 					Component: to.Ptr("ESXi"),
+	// 					Version: to.Ptr("7.0.3.01500"),
+	// 					InfoLink: to.Ptr("https://vmwarekb/article"),
+	// 					Impact: to.Ptr("This upgrade will update your esxi to 7.0. Control plane performance will be impacted for the duration"),
+	// 				},
+	// 				{
+	// 					Kind: to.Ptr(armavs.MaintenanceActivityKindCertificateRotation),
+	// 					Component: to.Ptr("vCSA"),
+	// 					Version: to.Ptr("notapplicable"),
+	// 					InfoLink: to.Ptr("https://vmwarekb/article"),
+	// 					Impact: to.Ptr("During this time, we expect no impact to Azure VMware Solution services or to the workloads"),
+	// 				},
+	// 			},
+	// 			Group: &armavs.MaintenanceGroup{
+	// 				ID: to.Ptr("SKUMigrationID"),
+	// 				Name: to.Ptr("SKUMigration"),
+	// 				Kind: to.Ptr(armavs.MaintenanceGroupKindConsolidation),
+	// 			},
+	// 			Relationships: &armavs.MaintenanceRelationships{
+	// 				Dependencies: []*string{
+	// 					to.Ptr("dependentMaintenanceName1"),
+	// 					to.Ptr("dependentMaintenanceName2"),
+	// 				},
+	// 				Prerequisites: []*string{
+	// 					to.Ptr("prerequisiteMaintenanceName1"),
+	// 				},
+	// 			},
 	// 			Operations: []armavs.MaintenanceManagementOperationClassification{
 	// 				&armavs.ScheduleOperation{
 	// 					Kind: to.Ptr(armavs.MaintenanceManagementOperationKindSchedule),
@@ -785,21 +1106,26 @@ func ExampleMaintenancesClient_Schedule() {
 	// 					Constraints: []armavs.ScheduleOperationConstraintClassification{
 	// 						&armavs.SchedulingWindow{
 	// 							Kind: to.Ptr(armavs.ScheduleOperationConstraintKindSchedulingWindow),
-	// 							StartsAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-16T06:21:31.961Z"); return t}()),
-	// 							EndsAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-16T06:21:31.961Z"); return t}()),
+	// 							StartsAt: to.Ptr(time.Date(2025, time.January, 16, 6, 21, 31, 961000000, time.UTC)),
+	// 							EndsAt: to.Ptr(time.Date(2025, time.January, 16, 6, 21, 31, 961000000, time.UTC)),
 	// 						},
 	// 						&armavs.AvailableWindowForMaintenanceWhileScheduleOperation{
 	// 							Kind: to.Ptr(armavs.ScheduleOperationConstraintKindAvailableWindowForMaintenanceWhileScheduleOperation),
-	// 							StartsAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-16T06:21:31.961Z"); return t}()),
-	// 							EndsAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-16T06:21:31.961Z"); return t}()),
+	// 							StartsAt: to.Ptr(time.Date(2025, time.January, 16, 6, 21, 31, 961000000, time.UTC)),
+	// 							EndsAt: to.Ptr(time.Date(2025, time.January, 16, 6, 21, 31, 961000000, time.UTC)),
+	// 						},
+	// 						&armavs.WeekendSchedulingConstraint{
+	// 							Kind: to.Ptr(armavs.ScheduleOperationConstraintKindWeekendScheduling),
+	// 							DisabledReason: to.Ptr("Schedule operation is disabled for maintenance on weekends"),
+	// 							IsDisabled: to.Ptr(true),
 	// 						},
 	// 						&armavs.BlockedWhileScheduleOperation{
 	// 							Kind: to.Ptr(armavs.ScheduleOperationConstraintKindBlockedWhileScheduleOperation),
 	// 							Category: to.Ptr(armavs.BlockedDatesConstraintCategoryHiPriorityEvent),
 	// 							TimeRanges: []*armavs.BlockedDatesConstraintTimeRange{
 	// 								{
-	// 									StartsAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-16T06:21:31.961Z"); return t}()),
-	// 									EndsAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-16T06:21:31.961Z"); return t}()),
+	// 									StartsAt: to.Ptr(time.Date(2025, time.January, 16, 6, 21, 31, 961000000, time.UTC)),
+	// 									EndsAt: to.Ptr(time.Date(2025, time.January, 16, 6, 21, 31, 961000000, time.UTC)),
 	// 									Reason: to.Ptr("2024 Summer Opening Ceremony"),
 	// 								},
 	// 							},
@@ -809,15 +1135,27 @@ func ExampleMaintenancesClient_Schedule() {
 	// 							Category: to.Ptr(armavs.BlockedDatesConstraintCategoryQuotaExhausted),
 	// 							TimeRanges: []*armavs.BlockedDatesConstraintTimeRange{
 	// 								{
-	// 									StartsAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-04-14T17:03:28.609Z"); return t}()),
-	// 									EndsAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-04-15T17:03:28.609Z"); return t}()),
+	// 									StartsAt: to.Ptr(time.Date(2024, time.April, 14, 17, 3, 28, 609000000, time.UTC)),
+	// 									EndsAt: to.Ptr(time.Date(2024, time.April, 15, 17, 3, 28, 609000000, time.UTC)),
 	// 									Reason: to.Ptr("No slots available"),
 	// 								},
 	// 								{
-	// 									StartsAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-09-13T17:03:28.609Z"); return t}()),
-	// 									EndsAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-09-26T17:03:28.609Z"); return t}()),
+	// 									StartsAt: to.Ptr(time.Date(2024, time.September, 13, 17, 3, 28, 609000000, time.UTC)),
+	// 									EndsAt: to.Ptr(time.Date(2024, time.September, 26, 17, 3, 28, 609000000, time.UTC)),
 	// 									Reason: to.Ptr("No slots available"),
 	// 								},
+	// 							},
+	// 						},
+	// 					},
+	// 					Recommendation: &armavs.MaintenanceRecommendation{
+	// 						MaintenanceWindows: []*armavs.MaintenanceWindowRecommendation{
+	// 							{
+	// 								StartTime: to.Ptr(time.Date(2025, time.December, 14, 16, 0, 0, 0, time.UTC)),
+	// 								Reason: to.Ptr("Historically preferred time"),
+	// 							},
+	// 							{
+	// 								StartTime: to.Ptr(time.Date(2025, time.December, 14, 16, 0, 0, 0, time.UTC)),
+	// 								Reason: to.Ptr("Historically preferred day"),
 	// 							},
 	// 						},
 	// 					},
@@ -854,7 +1192,7 @@ func ExampleMaintenancesClient_Schedule() {
 	// 						},
 	// 					},
 	// 				},
-	// 				LastUpdated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-16T06:21:31.961Z"); return t}()),
+	// 				LastUpdated: to.Ptr(time.Date(2025, time.January, 16, 6, 21, 31, 961000000, time.UTC)),
 	// 			},
 	// 		},
 	// 	},

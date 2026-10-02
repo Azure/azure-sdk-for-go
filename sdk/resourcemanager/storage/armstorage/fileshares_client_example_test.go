@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-// Generated from example definition: 2026-04-01/FileSharesPut.json
+// Generated from example definition: 2026-06-01/FileSharesPut.json
 func ExampleFileSharesClient_Create_putShares() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -40,7 +40,7 @@ func ExampleFileSharesClient_Create_putShares() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01/FileSharesPut_AccessTier.json
+// Generated from example definition: 2026-06-01/FileSharesPut_AccessTier.json
 func ExampleFileSharesClient_Create_putSharesWithAccessTier() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -74,7 +74,7 @@ func ExampleFileSharesClient_Create_putSharesWithAccessTier() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01/FileSharesPut_NFS.json
+// Generated from example definition: 2026-06-01/FileSharesPut_NFS.json
 func ExampleFileSharesClient_Create_createNfsShares() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -108,7 +108,7 @@ func ExampleFileSharesClient_Create_createNfsShares() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01/FileSharesPut_PaidBursting.json
+// Generated from example definition: 2026-06-01/FileSharesPut_PaidBursting.json
 func ExampleFileSharesClient_Create_putSharesWithPaidBursting() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -150,7 +150,7 @@ func ExampleFileSharesClient_Create_putSharesWithPaidBursting() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01/FileSharesPut_ProvisionedV2.json
+// Generated from example definition: 2026-06-01/FileSharesPut_ProvisionedV2.json
 func ExampleFileSharesClient_Create_putSharesProvisionedV2() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -190,7 +190,7 @@ func ExampleFileSharesClient_Create_putSharesProvisionedV2() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01/FileSharesDelete.json
+// Generated from example definition: 2026-06-01/FileSharesDelete.json
 func ExampleFileSharesClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -212,7 +212,7 @@ func ExampleFileSharesClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01/FileSharesGet.json
+// Generated from example definition: 2026-06-01/FileSharesGet.json
 func ExampleFileSharesClient_Get_getShares() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -237,14 +237,14 @@ func ExampleFileSharesClient_Get_getShares() {
 	// 		Etag: to.Ptr("\"0x8D592D74CC20EBA\""),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res9871/providers/Microsoft.Storage/storageAccounts/sto6217/fileServices/default/shares/share1634"),
 	// 		FileShareProperties: &armstorage.FileShareProperties{
-	// 			LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-05-26T05:06:14Z"); return t}()),
+	// 			LastModifiedTime: to.Ptr(time.Date(2019, time.May, 26, 5, 6, 14, 0, time.UTC)),
 	// 			ShareQuota: to.Ptr[int32](1024),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-04-01/FileSharesGet_PaidBursting.json
+// Generated from example definition: 2026-06-01/FileSharesGet_PaidBursting.json
 func ExampleFileSharesClient_Get_getSharePaidBursting() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -274,14 +274,14 @@ func ExampleFileSharesClient_Get_getSharePaidBursting() {
 	// 				PaidBurstingMaxBandwidthMibps: to.Ptr[int32](10340),
 	// 				PaidBurstingMaxIops: to.Ptr[int32](102400),
 	// 			},
-	// 			LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-05-26T05:06:14Z"); return t}()),
+	// 			LastModifiedTime: to.Ptr(time.Date(2019, time.May, 26, 5, 6, 14, 0, time.UTC)),
 	// 			ShareQuota: to.Ptr[int32](1024),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-04-01/FileSharesGet_ProvisionedV2.json
+// Generated from example definition: 2026-06-01/FileSharesGet_ProvisionedV2.json
 func ExampleFileSharesClient_Get_getShareProvisionedV2() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -307,11 +307,11 @@ func ExampleFileSharesClient_Get_getShareProvisionedV2() {
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res9871/providers/Microsoft.Storage/storageAccounts/sto6217/fileServices/default/shares/share1634"),
 	// 		FileShareProperties: &armstorage.FileShareProperties{
 	// 			IncludedBurstIops: to.Ptr[int32](15000),
-	// 			LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-10-25T01:50:50.0000000Z"); return t}()),
+	// 			LastModifiedTime: to.Ptr(time.Date(2024, time.October, 25, 1, 50, 50, 0, time.UTC)),
 	// 			MaxBurstCreditsForIops: to.Ptr[int64](36000000),
-	// 			NextAllowedProvisionedBandwidthDowngradeTime: to.Ptr(func() time.Time { t, _ := strconv.ParseInt(Fri, 25 Oct 2024 01:48:09 GMT, 10, 64); return time.Unix(t, 0).UTC()}()),
-	// 			NextAllowedProvisionedIopsDowngradeTime: to.Ptr(func() time.Time { t, _ := strconv.ParseInt(Fri, 25 Oct 2024 01:48:09 GMT, 10, 64); return time.Unix(t, 0).UTC()}()),
-	// 			NextAllowedQuotaDowngradeTime: to.Ptr(func() time.Time { t, _ := strconv.ParseInt(Sat, 26 Oct 2024 01:50:50 GMT, 10, 64); return time.Unix(t, 0).UTC()}()),
+	// 			NextAllowedProvisionedBandwidthDowngradeTime: to.Ptr(time.Date(2024, time.October, 25, 1, 48, 9, 0, time.UTC)),
+	// 			NextAllowedProvisionedIopsDowngradeTime: to.Ptr(time.Date(2024, time.October, 25, 1, 48, 9, 0, time.UTC)),
+	// 			NextAllowedQuotaDowngradeTime: to.Ptr(time.Date(2024, time.October, 26, 1, 50, 50, 0, time.UTC)),
 	// 			ProvisionedBandwidthMibps: to.Ptr[int32](200),
 	// 			ProvisionedIops: to.Ptr[int32](5000),
 	// 			ShareQuota: to.Ptr[int32](100),
@@ -320,7 +320,7 @@ func ExampleFileSharesClient_Get_getShareProvisionedV2() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01/FileSharesGet_Stats.json
+// Generated from example definition: 2026-06-01/FileSharesGet_Stats.json
 func ExampleFileSharesClient_Get_getShareStats() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -346,7 +346,7 @@ func ExampleFileSharesClient_Get_getShareStats() {
 	// 		Etag: to.Ptr("\"0x8D592D74CC20EBA\""),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res9871/providers/Microsoft.Storage/storageAccounts/sto6217/fileServices/default/shares/share1634"),
 	// 		FileShareProperties: &armstorage.FileShareProperties{
-	// 			LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-05-26T05:06:14Z"); return t}()),
+	// 			LastModifiedTime: to.Ptr(time.Date(2019, time.May, 26, 5, 6, 14, 0, time.UTC)),
 	// 			ShareQuota: to.Ptr[int32](1024),
 	// 			ShareUsageBytes: to.Ptr[int64](652945),
 	// 		},
@@ -354,7 +354,7 @@ func ExampleFileSharesClient_Get_getShareStats() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01/FileSharesLease_Acquire.json
+// Generated from example definition: 2026-06-01/FileSharesLease_Acquire.json
 func ExampleFileSharesClient_Lease_acquireALeaseOnAShare() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -383,7 +383,7 @@ func ExampleFileSharesClient_Lease_acquireALeaseOnAShare() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01/FileSharesLease_Break.json
+// Generated from example definition: 2026-06-01/FileSharesLease_Break.json
 func ExampleFileSharesClient_Lease_breakALeaseOnAShare() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -412,7 +412,7 @@ func ExampleFileSharesClient_Lease_breakALeaseOnAShare() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01/DeletedFileSharesList.json
+// Generated from example definition: 2026-06-01/DeletedFileSharesList.json
 func ExampleFileSharesClient_NewListPager_listDeletedShares() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -445,8 +445,8 @@ func ExampleFileSharesClient_NewListPager_listDeletedShares() {
 		// 				ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res9290/providers/Microsoft.Storage/storageAccounts/sto1590/fileServices/default/shares/share1644_1234567890"),
 		// 				Properties: &armstorage.FileShareProperties{
 		// 					Deleted: to.Ptr(true),
-		// 					DeletedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-14T08:20:47Z"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-05-14T08:20:47Z"); return t}()),
+		// 					DeletedTime: to.Ptr(time.Date(2019, time.December, 14, 8, 20, 47, 0, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2019, time.May, 14, 8, 20, 47, 0, time.UTC)),
 		// 					RemainingRetentionDays: to.Ptr[int32](30),
 		// 					ShareQuota: to.Ptr[int32](1024),
 		// 					Version: to.Ptr("1234567890"),
@@ -458,7 +458,7 @@ func ExampleFileSharesClient_NewListPager_listDeletedShares() {
 		// 				Etag: to.Ptr("\"0x8D589847DAB5AF9\""),
 		// 				ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res9290/providers/Microsoft.Storage/storageAccounts/sto1590/fileServices/default/shares/share4052"),
 		// 				Properties: &armstorage.FileShareProperties{
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-05-14T08:20:47Z"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2019, time.May, 14, 8, 20, 47, 0, time.UTC)),
 		// 					ShareQuota: to.Ptr[int32](1024),
 		// 				},
 		// 			},
@@ -468,7 +468,7 @@ func ExampleFileSharesClient_NewListPager_listDeletedShares() {
 	}
 }
 
-// Generated from example definition: 2026-04-01/FileShareSnapshotsList.json
+// Generated from example definition: 2026-06-01/FileShareSnapshotsList.json
 func ExampleFileSharesClient_NewListPager_listShareSnapshots() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -500,7 +500,7 @@ func ExampleFileSharesClient_NewListPager_listShareSnapshots() {
 		// 				Etag: to.Ptr("\"0x8D589847DAB5AF9\""),
 		// 				ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res9290/providers/Microsoft.Storage/storageAccounts/sto1590/fileServices/default/shares/share4052"),
 		// 				Properties: &armstorage.FileShareProperties{
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-26T05:47:05.0000000Z"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2020, time.October, 26, 5, 47, 5, 0, time.UTC)),
 		// 					ShareQuota: to.Ptr[int32](1024),
 		// 				},
 		// 			},
@@ -510,9 +510,9 @@ func ExampleFileSharesClient_NewListPager_listShareSnapshots() {
 		// 				Etag: to.Ptr("\"0x8D589847DAB5AF9\""),
 		// 				ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res9290/providers/Microsoft.Storage/storageAccounts/sto1590/fileServices/default/shares/share4052"),
 		// 				Properties: &armstorage.FileShareProperties{
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-26T05:47:05.0000000Z"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2020, time.October, 26, 5, 47, 5, 0, time.UTC)),
 		// 					ShareQuota: to.Ptr[int32](1024),
-		// 					SnapshotTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-26T05:48:07.0000000Z"); return t}()),
+		// 					SnapshotTime: to.Ptr(time.Date(2020, time.October, 26, 5, 48, 7, 0, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -521,7 +521,7 @@ func ExampleFileSharesClient_NewListPager_listShareSnapshots() {
 	}
 }
 
-// Generated from example definition: 2026-04-01/FileSharesList.json
+// Generated from example definition: 2026-06-01/FileSharesList.json
 func ExampleFileSharesClient_NewListPager_listShares() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -553,7 +553,7 @@ func ExampleFileSharesClient_NewListPager_listShares() {
 		// 				Etag: to.Ptr("\"0x8D589847D51C7DE\""),
 		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/res9290/providers/Microsoft.Storage/storageAccounts/sto1590/fileServices/default/shares/share1644"),
 		// 				Properties: &armstorage.FileShareProperties{
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-05-14T08:20:47Z"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2019, time.May, 14, 8, 20, 47, 0, time.UTC)),
 		// 					ShareQuota: to.Ptr[int32](1024),
 		// 				},
 		// 			},
@@ -563,7 +563,7 @@ func ExampleFileSharesClient_NewListPager_listShares() {
 		// 				Etag: to.Ptr("\"0x8D589847DAB5AF9\""),
 		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/res9290/providers/Microsoft.Storage/storageAccounts/sto1590/fileServices/default/shares/share4052"),
 		// 				Properties: &armstorage.FileShareProperties{
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-05-14T08:20:47Z"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2019, time.May, 14, 8, 20, 47, 0, time.UTC)),
 		// 					ShareQuota: to.Ptr[int32](1024),
 		// 				},
 		// 			},
@@ -573,7 +573,7 @@ func ExampleFileSharesClient_NewListPager_listShares() {
 	}
 }
 
-// Generated from example definition: 2026-04-01/FileSharesList_PaidBursting.json
+// Generated from example definition: 2026-06-01/FileSharesList_PaidBursting.json
 func ExampleFileSharesClient_NewListPager_listSharesPaidBursting() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -610,7 +610,7 @@ func ExampleFileSharesClient_NewListPager_listSharesPaidBursting() {
 		// 						PaidBurstingMaxBandwidthMibps: to.Ptr[int32](10340),
 		// 						PaidBurstingMaxIops: to.Ptr[int32](102400),
 		// 					},
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-05-14T08:20:47Z"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2019, time.May, 14, 8, 20, 47, 0, time.UTC)),
 		// 					ShareQuota: to.Ptr[int32](1024),
 		// 				},
 		// 			},
@@ -625,7 +625,7 @@ func ExampleFileSharesClient_NewListPager_listSharesPaidBursting() {
 		// 						PaidBurstingMaxBandwidthMibps: to.Ptr[int32](10340),
 		// 						PaidBurstingMaxIops: to.Ptr[int32](102400),
 		// 					},
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-05-14T08:20:47Z"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2019, time.May, 14, 8, 20, 47, 0, time.UTC)),
 		// 					ShareQuota: to.Ptr[int32](1024),
 		// 				},
 		// 			},
@@ -635,7 +635,7 @@ func ExampleFileSharesClient_NewListPager_listSharesPaidBursting() {
 	}
 }
 
-// Generated from example definition: 2026-04-01/FileSharesList_ProvisionedV2.json
+// Generated from example definition: 2026-06-01/FileSharesList_ProvisionedV2.json
 func ExampleFileSharesClient_NewListPager_listSharesProvisionedV2() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -668,11 +668,11 @@ func ExampleFileSharesClient_NewListPager_listSharesProvisionedV2() {
 		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/res9290/providers/Microsoft.Storage/storageAccounts/sto1590/fileServices/default/shares/share1644"),
 		// 				Properties: &armstorage.FileShareProperties{
 		// 					IncludedBurstIops: to.Ptr[int32](15000),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-10-25T01:50:50.0000000Z"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2024, time.October, 25, 1, 50, 50, 0, time.UTC)),
 		// 					MaxBurstCreditsForIops: to.Ptr[int64](36000000),
-		// 					NextAllowedProvisionedBandwidthDowngradeTime: to.Ptr(func() time.Time { t, _ := strconv.ParseInt(Fri, 25 Oct 2024 01:48:09 GMT, 10, 64); return time.Unix(t, 0).UTC()}()),
-		// 					NextAllowedProvisionedIopsDowngradeTime: to.Ptr(func() time.Time { t, _ := strconv.ParseInt(Fri, 25 Oct 2024 01:48:09 GMT, 10, 64); return time.Unix(t, 0).UTC()}()),
-		// 					NextAllowedQuotaDowngradeTime: to.Ptr(func() time.Time { t, _ := strconv.ParseInt(Sat, 26 Oct 2024 01:50:50 GMT, 10, 64); return time.Unix(t, 0).UTC()}()),
+		// 					NextAllowedProvisionedBandwidthDowngradeTime: to.Ptr(time.Date(2024, time.October, 25, 1, 48, 9, 0, time.UTC)),
+		// 					NextAllowedProvisionedIopsDowngradeTime: to.Ptr(time.Date(2024, time.October, 25, 1, 48, 9, 0, time.UTC)),
+		// 					NextAllowedQuotaDowngradeTime: to.Ptr(time.Date(2024, time.October, 26, 1, 50, 50, 0, time.UTC)),
 		// 					ProvisionedBandwidthMibps: to.Ptr[int32](200),
 		// 					ProvisionedIops: to.Ptr[int32](5000),
 		// 					ShareQuota: to.Ptr[int32](100),
@@ -685,11 +685,11 @@ func ExampleFileSharesClient_NewListPager_listSharesProvisionedV2() {
 		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/res9290/providers/Microsoft.Storage/storageAccounts/sto1590/fileServices/default/shares/share4052"),
 		// 				Properties: &armstorage.FileShareProperties{
 		// 					IncludedBurstIops: to.Ptr[int32](15000),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-10-25T01:50:50.0000000Z"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2024, time.October, 25, 1, 50, 50, 0, time.UTC)),
 		// 					MaxBurstCreditsForIops: to.Ptr[int64](36000000),
-		// 					NextAllowedProvisionedBandwidthDowngradeTime: to.Ptr(func() time.Time { t, _ := strconv.ParseInt(Fri, 25 Oct 2024 01:48:09 GMT, 10, 64); return time.Unix(t, 0).UTC()}()),
-		// 					NextAllowedProvisionedIopsDowngradeTime: to.Ptr(func() time.Time { t, _ := strconv.ParseInt(Fri, 25 Oct 2024 01:48:09 GMT, 10, 64); return time.Unix(t, 0).UTC()}()),
-		// 					NextAllowedQuotaDowngradeTime: to.Ptr(func() time.Time { t, _ := strconv.ParseInt(Sat, 26 Oct 2024 01:50:50 GMT, 10, 64); return time.Unix(t, 0).UTC()}()),
+		// 					NextAllowedProvisionedBandwidthDowngradeTime: to.Ptr(time.Date(2024, time.October, 25, 1, 48, 9, 0, time.UTC)),
+		// 					NextAllowedProvisionedIopsDowngradeTime: to.Ptr(time.Date(2024, time.October, 25, 1, 48, 9, 0, time.UTC)),
+		// 					NextAllowedQuotaDowngradeTime: to.Ptr(time.Date(2024, time.October, 26, 1, 50, 50, 0, time.UTC)),
 		// 					ProvisionedBandwidthMibps: to.Ptr[int32](200),
 		// 					ProvisionedIops: to.Ptr[int32](5000),
 		// 					ShareQuota: to.Ptr[int32](100),
@@ -701,7 +701,7 @@ func ExampleFileSharesClient_NewListPager_listSharesProvisionedV2() {
 	}
 }
 
-// Generated from example definition: 2026-04-01/FileSharesRestore.json
+// Generated from example definition: 2026-06-01/FileSharesRestore.json
 func ExampleFileSharesClient_Restore() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -726,7 +726,7 @@ func ExampleFileSharesClient_Restore() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01/FileShareAclsPatch.json
+// Generated from example definition: 2026-06-01/FileShareAclsPatch.json
 func ExampleFileSharesClient_Update_updateShareAcls() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -742,9 +742,9 @@ func ExampleFileSharesClient_Update_updateShareAcls() {
 			SignedIdentifiers: []*armstorage.SignedIdentifier{
 				{
 					AccessPolicy: &armstorage.AccessPolicy{
-						ExpiryTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-01T08:49:37.0000000Z"); return t }()),
+						ExpiryTime: to.Ptr(time.Date(2021, time.May, 1, 8, 49, 37, 0, time.UTC)),
 						Permission: to.Ptr("rwd"),
-						StartTime:  to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-01T08:49:37.0000000Z"); return t }()),
+						StartTime:  to.Ptr(time.Date(2021, time.April, 1, 8, 49, 37, 0, time.UTC)),
 					},
 					ID: to.Ptr("MTIzNDU2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTI"),
 				},
@@ -766,9 +766,9 @@ func ExampleFileSharesClient_Update_updateShareAcls() {
 	// 			SignedIdentifiers: []*armstorage.SignedIdentifier{
 	// 				{
 	// 					AccessPolicy: &armstorage.AccessPolicy{
-	// 						ExpiryTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-01T08:49:37.0000000Z"); return t}()),
+	// 						ExpiryTime: to.Ptr(time.Date(2021, time.May, 1, 8, 49, 37, 0, time.UTC)),
 	// 						Permission: to.Ptr("rwd"),
-	// 						StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-01T08:49:37.0000000Z"); return t}()),
+	// 						StartTime: to.Ptr(time.Date(2021, time.April, 1, 8, 49, 37, 0, time.UTC)),
 	// 					},
 	// 					ID: to.Ptr("MTIzNDU2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTI"),
 	// 				},
@@ -778,7 +778,7 @@ func ExampleFileSharesClient_Update_updateShareAcls() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01/FileSharesPatch.json
+// Generated from example definition: 2026-06-01/FileSharesPatch.json
 func ExampleFileSharesClient_Update_updateShares() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -816,7 +816,7 @@ func ExampleFileSharesClient_Update_updateShares() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01/FileSharesPatch_PaidBursting.json
+// Generated from example definition: 2026-06-01/FileSharesPatch_PaidBursting.json
 func ExampleFileSharesClient_Update_updateSharePaidBursting() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -858,7 +858,7 @@ func ExampleFileSharesClient_Update_updateSharePaidBursting() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01/FileSharesPatch_ProvisionedV2.json
+// Generated from example definition: 2026-06-01/FileSharesPatch_ProvisionedV2.json
 func ExampleFileSharesClient_Update_updateShareProvisionedV2() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -890,9 +890,9 @@ func ExampleFileSharesClient_Update_updateShareProvisionedV2() {
 	// 		FileShareProperties: &armstorage.FileShareProperties{
 	// 			IncludedBurstIops: to.Ptr[int32](15000),
 	// 			MaxBurstCreditsForIops: to.Ptr[int64](36000000),
-	// 			NextAllowedProvisionedBandwidthDowngradeTime: to.Ptr(func() time.Time { t, _ := strconv.ParseInt(Fri, 25 Oct 2024 01:48:09 GMT, 10, 64); return time.Unix(t, 0).UTC()}()),
-	// 			NextAllowedProvisionedIopsDowngradeTime: to.Ptr(func() time.Time { t, _ := strconv.ParseInt(Fri, 25 Oct 2024 01:48:09 GMT, 10, 64); return time.Unix(t, 0).UTC()}()),
-	// 			NextAllowedQuotaDowngradeTime: to.Ptr(func() time.Time { t, _ := strconv.ParseInt(Sat, 26 Oct 2024 01:50:50 GMT, 10, 64); return time.Unix(t, 0).UTC()}()),
+	// 			NextAllowedProvisionedBandwidthDowngradeTime: to.Ptr(time.Date(2024, time.October, 25, 1, 48, 9, 0, time.UTC)),
+	// 			NextAllowedProvisionedIopsDowngradeTime: to.Ptr(time.Date(2024, time.October, 25, 1, 48, 9, 0, time.UTC)),
+	// 			NextAllowedQuotaDowngradeTime: to.Ptr(time.Date(2024, time.October, 26, 1, 50, 50, 0, time.UTC)),
 	// 			ProvisionedBandwidthMibps: to.Ptr[int32](200),
 	// 			ProvisionedIops: to.Ptr[int32](5000),
 	// 			ShareQuota: to.Ptr[int32](100),

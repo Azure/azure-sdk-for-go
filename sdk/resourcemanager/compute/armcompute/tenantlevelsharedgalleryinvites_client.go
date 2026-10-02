@@ -19,7 +19,7 @@ import (
 // TenantLevelSharedGalleryInvitesClient contains the methods for the TenantLevelSharedGalleryInvites group.
 // Don't use this type directly, use NewTenantLevelSharedGalleryInvitesClient() instead.
 //
-// Generated from API version 2025-12-03
+// Generated from API version 2026-03-03
 type TenantLevelSharedGalleryInvitesClient struct {
 	internal *arm.Client
 }
@@ -79,8 +79,7 @@ func (client *TenantLevelSharedGalleryInvitesClient) tenantLevelGallerySharingAc
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -105,7 +104,7 @@ func (client *TenantLevelSharedGalleryInvitesClient) tenantLevelGallerySharingAc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251203)
+	reqQP.Set("api-version", version20260303)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -151,8 +150,7 @@ func (client *TenantLevelSharedGalleryInvitesClient) tenantLevelGallerySharingRe
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -177,7 +175,7 @@ func (client *TenantLevelSharedGalleryInvitesClient) tenantLevelGallerySharingRe
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251203)
+	reqQP.Set("api-version", version20260303)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }

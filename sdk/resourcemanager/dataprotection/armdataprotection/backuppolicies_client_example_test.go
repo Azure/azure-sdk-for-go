@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-// Generated from example definition: 2026-03-01/PolicyCRUD/CreateOrUpdateBackupPolicy.json
+// Generated from example definition: 2026-06-01/PolicyCRUD/CreateOrUpdateBackupPolicy.json
 func ExampleBackupPoliciesClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -65,7 +65,7 @@ func ExampleBackupPoliciesClient_CreateOrUpdate() {
 										},
 										ObjectType: to.Ptr("ScheduleBasedBackupCriteria"),
 										ScheduleTimes: []*time.Time{
-											to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-03-01T13:00:00Z"); return t }()),
+											to.Ptr(time.Date(2019, time.March, 1, 13, 0, 0, 0, time.UTC)),
 										},
 									},
 								},
@@ -167,7 +167,7 @@ func ExampleBackupPoliciesClient_CreateOrUpdate() {
 	// 										},
 	// 										ObjectType: to.Ptr("ScheduleBasedBackupCriteria"),
 	// 										ScheduleTimes: []*time.Time{
-	// 											to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-03-01T13:00:00Z"); return t}()),
+	// 											to.Ptr(time.Date(2019, time.March, 1, 13, 0, 0, 0, time.UTC)),
 	// 										},
 	// 									},
 	// 								},
@@ -221,7 +221,7 @@ func ExampleBackupPoliciesClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/PolicyCRUD/DeleteBackupPolicy.json
+// Generated from example definition: 2026-06-01/PolicyCRUD/DeleteBackupPolicy.json
 func ExampleBackupPoliciesClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -243,7 +243,7 @@ func ExampleBackupPoliciesClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/PolicyCRUD/GetBackupPolicy.json
+// Generated from example definition: 2026-06-01/PolicyCRUD/GetBackupPolicy.json
 func ExampleBackupPoliciesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -307,7 +307,7 @@ func ExampleBackupPoliciesClient_Get() {
 	// 										},
 	// 										ObjectType: to.Ptr("ScheduleBasedBackupCriteria"),
 	// 										ScheduleTimes: []*time.Time{
-	// 											to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-03-01T13:00:00Z"); return t}()),
+	// 											to.Ptr(time.Date(2019, time.March, 1, 13, 0, 0, 0, time.UTC)),
 	// 										},
 	// 									},
 	// 								},
@@ -361,7 +361,7 @@ func ExampleBackupPoliciesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/PolicyCRUD/ListBackupPolicy.json
+// Generated from example definition: 2026-06-01/PolicyCRUD/ListBackupPolicy.json
 func ExampleBackupPoliciesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -431,7 +431,7 @@ func ExampleBackupPoliciesClient_NewListPager() {
 		// 												},
 		// 												ObjectType: to.Ptr("ScheduleBasedBackupCriteria"),
 		// 												ScheduleTimes: []*time.Time{
-		// 													to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-03-01T13:00:00Z"); return t}()),
+		// 													to.Ptr(time.Date(2019, time.March, 1, 13, 0, 0, 0, time.UTC)),
 		// 												},
 		// 											},
 		// 										},

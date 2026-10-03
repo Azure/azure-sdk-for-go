@@ -5,7 +5,7 @@
 package armcomputefleet
 
 const (
-	version20260601Preview string = "2026-06-01-preview"
+	version20260801 string = "2026-08-01"
 )
 
 // AcceleratorManufacturer - Accelerator manufacturers supported by Azure VMs.
@@ -360,10 +360,9 @@ func PossibleEvictionPolicyValues() []EvictionPolicy {
 type FleetMode string
 
 const (
-	// FleetModeLaunch - Launch mode for Compute Fleet will directly launch VM instances to be managed by the customer.
+	// FleetModeLaunch - Launch mode where Compute Fleet launches the VMs and the customer manages them and their lifecycle.
 	FleetModeLaunch FleetMode = "Launch"
-	// FleetModeManaged - Default. Managed is the default mode for Compute Fleet where VMs are provisioned via virtual machine
-	// scale sets.
+	// FleetModeManaged - Default. Managed mode where Compute Fleet provisions the VMs, manages them and their lifecycle.
 	FleetModeManaged FleetMode = "Managed"
 )
 
@@ -1037,26 +1036,5 @@ func PossibleWindowsVMGuestPatchModeValues() []WindowsVMGuestPatchMode {
 		WindowsVMGuestPatchModeAutomaticByOS,
 		WindowsVMGuestPatchModeAutomaticByPlatform,
 		WindowsVMGuestPatchModeManual,
-	}
-}
-
-// ZoneDistributionStrategy - Distribution strategies for Compute Fleet zone allocation policy.
-type ZoneDistributionStrategy string
-
-const (
-	// ZoneDistributionStrategyBestEffortSingleZone - Default. Compute Fleet allocates all Fleet capacity within a single zone
-	// based on best effort.
-	// If capacity is not available, Compute Fleet can allocate capacity in different zones.
-	ZoneDistributionStrategyBestEffortSingleZone ZoneDistributionStrategy = "BestEffortSingleZone"
-	// ZoneDistributionStrategyPrioritized - Compute Fleet allocates capacity based on zone preferences.
-	// Higher priority zones are filled first before allocating to lower priority zones.
-	ZoneDistributionStrategyPrioritized ZoneDistributionStrategy = "Prioritized"
-)
-
-// PossibleZoneDistributionStrategyValues returns the possible values for the ZoneDistributionStrategy const type.
-func PossibleZoneDistributionStrategyValues() []ZoneDistributionStrategy {
-	return []ZoneDistributionStrategy{
-		ZoneDistributionStrategyBestEffortSingleZone,
-		ZoneDistributionStrategyPrioritized,
 	}
 }

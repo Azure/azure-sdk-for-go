@@ -192,6 +192,13 @@ default to `itemdb` and `items` and can be overridden with `AZCOSMOS_DATABASE` a
 `AZCOSMOS_CONTAINER`. Query scope tests also use the `query-hierarchical` container declared in
 the same configuration, under the selected database.
 
+Query regression tests cover ordered cross-partition checkpoint/resume on a fresh client,
+mid-pagination errors and request-charge accounting, and metric/session option propagation.
+The contract tests use a local HTTP proxy to inject known error and metric response headers
+while the real native driver executes against the emulator. This validates the binding and
+native decoding, not live-service metric generation. Per-cursor test hooks control checkpoint
+delivery and cancellation races without relying on network timing.
+
 ## Getting Started
 
 ### Prerequisites

@@ -34,6 +34,9 @@ type nativeQueryCursor struct {
 	queue   *C.cosmos_completion_queue_t
 	reactor *cursorReactor
 	handle  *C.cosmos_cursor_t
+
+	// beforeCompletionWait controls delivery timing in boundary tests.
+	beforeCompletionWait func(chan cursorDelivery)
 }
 
 func (d *nativeDriver) openCursor(ctx context.Context, driver *C.cosmos_driver_t, operation C.cosmos_operation_request_t) (*nativeQueryCursor, error) {
@@ -140,6 +143,9 @@ func (q *nativeQueryCursor) submit(ctx context.Context, submit func(C.intptr_t, 
 			return nil, invalidCursorCompletion("submission returned no operation")
 		}
 		return nil, statusError(status, nil, "submitting query cursor operation")
+	}
+	if q.beforeCompletionWait != nil {
+		q.beforeCompletionWait(waiter)
 	}
 	finish := func(result cursorDelivery) (*C.cosmos_cursor_completion_t, error) {
 		C.cosmos_operation_handle_free(op)

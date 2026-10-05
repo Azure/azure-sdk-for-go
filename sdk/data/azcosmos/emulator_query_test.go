@@ -342,6 +342,42 @@ func TestEmulatorQueryCrossPartition(t *testing.T) {
 					require.Equal(t, tc.want, read(t, pager))
 				})
 			}
+			for _, direction := range []string{"ASC", "DESC"} {
+				t.Run("ordered resume "+direction, func(t *testing.T) {
+					expected := slices.Clone(all)
+					if direction == "DESC" {
+						slices.Reverse(expected)
+					}
+					query := build("SELECT VALUE c.value FROM c WHERE c.run = @run ORDER BY c.value " + direction)
+					pager := container.NewQueryItemsPager(query, scope, &QueryOptions{
+						Feed: FeedOptions{PageSizeHint: 2}, QueryPlanMode: mode,
+					})
+					defer func() { require.NoError(t, pager.Close()) }()
+					first, err := pager.NextPage(t.Context())
+					require.NoError(t, err)
+					require.NotEmpty(t, first.Items)
+					require.Less(t, len(first.Items), len(expected), "checkpoint must leave results to resume")
+					for i, item := range first.Items {
+						var value int
+						require.NoError(t, json.Unmarshal(item, &value))
+						require.Equal(t, expected[i], value)
+					}
+					token, err := pager.ContinuationToken(t.Context())
+					require.NoError(t, err)
+					require.NotEmpty(t, token)
+					tail := read(t, pager)
+					require.Equal(t, expected[len(first.Items):], tail, "snapshotting must not advance the original cursor")
+
+					client, databaseID, containerID := emulatorClient(t)
+					freshContainer, err := client.NewContainer(databaseID, containerID)
+					require.NoError(t, err)
+					resumed := freshContainer.NewQueryItemsPager(query, scope, &QueryOptions{
+						Feed: FeedOptions{PageSizeHint: 2, ContinuationToken: token}, QueryPlanMode: mode,
+					})
+					require.Equal(t, expected[len(first.Items):], read(t, resumed),
+						"fresh-client resume must preserve order with no duplicates or omissions")
+				})
+			}
 			for _, aggregate := range []string{"COUNT(1)", "SUM(c.value)"} {
 				pager := container.NewQueryItemsPager(build("SELECT VALUE "+aggregate+" FROM c WHERE c.run = @run"),
 					scope, &QueryOptions{QueryPlanMode: mode})

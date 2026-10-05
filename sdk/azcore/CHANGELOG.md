@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+* Fixed `arm.ResourceID.Location` being empty when the `locations` segment uses different casing.
+
 ### Other Changes
 
 * Added `azure-deprecating` to the default set of allowed (non-redacted) response headers for logging.

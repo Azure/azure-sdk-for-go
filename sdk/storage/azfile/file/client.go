@@ -25,6 +25,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/generated"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/sas"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/internal/sasurl"
 )
 
 // ClientOptions contains the optional parameters when creating a Client.
@@ -373,9 +374,7 @@ func (f *Client) GetSASURL(permissions sas.FilePermissions, expiry time.Time, o 
 		return "", err
 	}
 
-	endpoint := f.URL() + "?" + qps.Encode()
-
-	return endpoint, nil
+	return sasurl.Append(f.URL(), qps.Encode()), nil
 }
 
 // Concurrent Upload Functions -----------------------------------------------------------------------------------------

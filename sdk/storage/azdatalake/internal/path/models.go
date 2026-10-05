@@ -345,9 +345,18 @@ func FormatGetTagsOptions(o *GetTagsOptions) *blob.GetTagsOptions {
 	}
 
 	if o.AccessConditions != nil {
-		// azblob's GetTags sends the x-ms-blob-if-* headers from BlobAccessConditions.ModifiedAccessConditions;
-		// it does not read BlobModifiedAccessConditions.
-		opts.BlobAccessConditions = exported.FormatBlobAccessConditions(o.AccessConditions)
+		opts.BlobAccessConditions = &blob.AccessConditions{
+			LeaseAccessConditions: exported.FormatBlobAccessConditions(o.AccessConditions).LeaseAccessConditions,
+		}
+
+		if o.AccessConditions.ModifiedAccessConditions != nil {
+			opts.BlobModifiedAccessConditions = &BlobModifiedAccessConditions{
+				IfMatch:           o.AccessConditions.ModifiedAccessConditions.IfMatch,
+				IfNoneMatch:       o.AccessConditions.ModifiedAccessConditions.IfNoneMatch,
+				IfModifiedSince:   o.AccessConditions.ModifiedAccessConditions.IfModifiedSince,
+				IfUnmodifiedSince: o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince,
+			}
+		}
 	}
 
 	return opts

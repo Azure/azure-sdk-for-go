@@ -16,6 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/v2/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/v2/queueerror"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue/v2/sas"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/internal/sasurl"
 )
 
 // ClientOptions contains the optional parameters when creating a Client.
@@ -259,7 +260,5 @@ func (q *QueueClient) GetSASURL(permissions sas.QueuePermissions, expiry time.Ti
 		return "", err
 	}
 
-	endpoint := q.URL() + "?" + qps.Encode()
-
-	return endpoint, nil
+	return sasurl.Append(q.URL(), qps.Encode()), nil
 }

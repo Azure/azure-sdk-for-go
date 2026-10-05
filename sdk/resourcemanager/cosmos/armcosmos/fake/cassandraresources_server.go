@@ -532,7 +532,7 @@ func (c *CassandraResourcesServerTransport) dispatchBeginCreateUpdateCassandraVi
 	}
 	beginCreateUpdateCassandraView := c.beginCreateUpdateCassandraView.get(req)
 	if beginCreateUpdateCassandraView == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/cassandraKeyspaces/(?P<keyspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/views/(?P<viewName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/cassandraKeyspaces/(?P<keyspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/views/(?P<viewName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 6 {
@@ -784,7 +784,7 @@ func (c *CassandraResourcesServerTransport) dispatchBeginDeleteCassandraView(req
 	}
 	beginDeleteCassandraView := c.beginDeleteCassandraView.get(req)
 	if beginDeleteCassandraView == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/cassandraKeyspaces/(?P<keyspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/views/(?P<viewName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/cassandraKeyspaces/(?P<keyspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/views/(?P<viewName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 6 {
@@ -1064,7 +1064,7 @@ func (c *CassandraResourcesServerTransport) dispatchGetCassandraView(req *http.R
 	if c.srv.GetCassandraView == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetCassandraView not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/cassandraKeyspaces/(?P<keyspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/views/(?P<viewName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/cassandraKeyspaces/(?P<keyspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/views/(?P<viewName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 6 {
@@ -1105,7 +1105,7 @@ func (c *CassandraResourcesServerTransport) dispatchGetCassandraViewThroughput(r
 	if c.srv.GetCassandraViewThroughput == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetCassandraViewThroughput not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/cassandraKeyspaces/(?P<keyspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/views/(?P<viewName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/throughputSettings/default`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/cassandraKeyspaces/(?P<keyspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/views/(?P<viewName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/throughputSettings/default`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 6 {
@@ -1316,7 +1316,7 @@ func (c *CassandraResourcesServerTransport) dispatchNewListCassandraViewsPager(r
 	}
 	newListCassandraViewsPager := c.newListCassandraViewsPager.get(req)
 	if newListCassandraViewsPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/cassandraKeyspaces/(?P<keyspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/views`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/cassandraKeyspaces/(?P<keyspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/views`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -1561,7 +1561,7 @@ func (c *CassandraResourcesServerTransport) dispatchBeginMigrateCassandraViewToA
 	}
 	beginMigrateCassandraViewToAutoscale := c.beginMigrateCassandraViewToAutoscale.get(req)
 	if beginMigrateCassandraViewToAutoscale == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/cassandraKeyspaces/(?P<keyspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/views/(?P<viewName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/throughputSettings/default/migrateToAutoscale`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/cassandraKeyspaces/(?P<keyspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/views/(?P<viewName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/throughputSettings/default/migrateToAutoscale`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 6 {
@@ -1613,7 +1613,7 @@ func (c *CassandraResourcesServerTransport) dispatchBeginMigrateCassandraViewToM
 	}
 	beginMigrateCassandraViewToManualThroughput := c.beginMigrateCassandraViewToManualThroughput.get(req)
 	if beginMigrateCassandraViewToManualThroughput == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/cassandraKeyspaces/(?P<keyspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/views/(?P<viewName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/throughputSettings/default/migrateToManualThroughput`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/cassandraKeyspaces/(?P<keyspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/views/(?P<viewName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/throughputSettings/default/migrateToManualThroughput`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 6 {
@@ -1773,7 +1773,7 @@ func (c *CassandraResourcesServerTransport) dispatchBeginUpdateCassandraViewThro
 	}
 	beginUpdateCassandraViewThroughput := c.beginUpdateCassandraViewThroughput.get(req)
 	if beginUpdateCassandraViewThroughput == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/cassandraKeyspaces/(?P<keyspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/views/(?P<viewName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/throughputSettings/default`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/cassandraKeyspaces/(?P<keyspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/views/(?P<viewName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/throughputSettings/default`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 6 {

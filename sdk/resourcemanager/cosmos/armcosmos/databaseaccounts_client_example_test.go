@@ -122,9 +122,9 @@ func ExampleDatabaseAccountsClient_BeginCreateOrUpdate_cosmosDbDatabaseAccountCr
 			Capacity: &armcosmos.Capacity{
 				TotalThroughputLimit: to.Ptr[int32](2000),
 			},
-			CapacityMode:                               to.Ptr(armcosmos.CapacityModeProvisioned),
-			EnableMaterializedViews:                    to.Ptr(false),
-			EnableBurstCapacity:                        to.Ptr(true),
+			CapacityMode:            to.Ptr(armcosmos.CapacityModeProvisioned),
+			EnableMaterializedViews: to.Ptr(false),
+			EnableBurstCapacity:     to.Ptr(true),
 			EnforceHierarchicalPartitionKeyIDLastLevel: to.Ptr(false),
 			MinimalTLSVersion:                          to.Ptr(armcosmos.MinimalTLSVersionTls12),
 			EnablePriorityBasedExecution:               to.Ptr(true),

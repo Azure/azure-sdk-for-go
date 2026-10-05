@@ -62,10 +62,10 @@ type PoliciesServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewPoliciesServerTransport(srv *PoliciesServer) *PoliciesServerTransport {
 	return &PoliciesServerTransport{
-		srv:                                           srv,
-		beginCreateOrUpdateByBillingAccount:           newTracker[azfake.PollerResponder[armbilling.PoliciesClientCreateOrUpdateByBillingAccountResponse]](),
-		beginCreateOrUpdateByBillingProfile:           newTracker[azfake.PollerResponder[armbilling.PoliciesClientCreateOrUpdateByBillingProfileResponse]](),
-		beginCreateOrUpdateByCustomer:                 newTracker[azfake.PollerResponder[armbilling.PoliciesClientCreateOrUpdateByCustomerResponse]](),
+		srv:                                 srv,
+		beginCreateOrUpdateByBillingAccount: newTracker[azfake.PollerResponder[armbilling.PoliciesClientCreateOrUpdateByBillingAccountResponse]](),
+		beginCreateOrUpdateByBillingProfile: newTracker[azfake.PollerResponder[armbilling.PoliciesClientCreateOrUpdateByBillingProfileResponse]](),
+		beginCreateOrUpdateByCustomer:       newTracker[azfake.PollerResponder[armbilling.PoliciesClientCreateOrUpdateByCustomerResponse]](),
 		beginCreateOrUpdateByCustomerAtBillingAccount: newTracker[azfake.PollerResponder[armbilling.PoliciesClientCreateOrUpdateByCustomerAtBillingAccountResponse]](),
 	}
 }

@@ -102,7 +102,7 @@ type FaultInjectionResult struct {
 	CustomSubStatus *uint16
 	// RetryAfter sets the custom retry delay. Nil means unset.
 	RetryAfter *time.Duration
-	// Headers supplies custom response headers.
+	// Headers supplies custom response headers. Nil and empty maps both omit headers.
 	Headers map[string]string
 	// Body is copied verbatim into a custom response.
 	Body []byte

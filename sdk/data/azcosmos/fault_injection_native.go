@@ -16,6 +16,17 @@ import (
 	"unsafe"
 )
 
+// inspectFaultInjectionOptionsBuild exercises native validation without network I/O.
+// Tests cannot import C, so this helper also releases the built options.
+func (d *nativeDriver) inspectFaultInjectionOptionsBuild() error {
+	options, err := d.buildDriverOptions()
+	if err != nil {
+		return err
+	}
+	C.cosmos_driver_options_free(options)
+	return nil
+}
+
 func nativeOptionalMilliseconds(duration *time.Duration) C.int64_t {
 	if duration == nil {
 		return -1
@@ -67,10 +78,13 @@ func nativeFaultInjectionRules(rules []FaultInjectionRule) (*C.cosmos_fault_inje
 		if r.Result.Probability != nil {
 			result.probability = C.float(*r.Result.Probability)
 		}
-		headers, releaseHeaders := (OperationOptions{CustomHeaders: r.Result.Headers}).toNative()
-		releases = append(releases, releaseHeaders)
-		result.custom_headers = headers.custom_headers
-		result.custom_headers_len = headers.custom_headers_len
+		// A non-null pointer selects a custom response, even when its header count is zero.
+		if len(r.Result.Headers) != 0 {
+			headers, releaseHeaders := (OperationOptions{CustomHeaders: r.Result.Headers}).toNative()
+			releases = append(releases, releaseHeaders)
+			result.custom_headers = headers.custom_headers
+			result.custom_headers_len = headers.custom_headers_len
+		}
 		if len(r.Result.Body) != 0 {
 			body := C.CBytes(r.Result.Body)
 			releases = append(releases, func() { C.free(body) })

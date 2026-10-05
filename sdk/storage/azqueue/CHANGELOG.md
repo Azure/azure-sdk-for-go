@@ -1,10 +1,6 @@
 ## Release History
 
-### 2.2.0-beta.2 (Unreleased)
-
-#### Features Added
-
-#### Breaking Changes
+### 2.2.0-beta.2 (2026-10-05)
 
 #### Bugs Fixed
 * Fixed `QueueClient.GetSASURL()` and `ServiceClient.GetSASURL()` appending a duplicated `?` to the resulting URL when the client's underlying URL already contained a query string, which produced a malformed SAS URL.

@@ -1,14 +1,12 @@
 ## Release History
 
-### 2.1.1-beta.1 (Unreleased)
-
-#### Features Added
-
-#### Breaking Changes
+### 2.1.1 (2026-10-05)
 
 #### Bugs Fixed
+* Fixed `QueueClient.GetSASURL()` and `ServiceClient.GetSASURL()` appending a duplicated `?` to the resulting URL when the client's underlying URL already contained a query string, which produced a malformed SAS URL.
 
 #### Other Changes
+* Updated `azcore` version to `1.23.2`
 
 ### 2.1.0 (2026-05-15)
 

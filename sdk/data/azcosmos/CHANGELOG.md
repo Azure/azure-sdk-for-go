@@ -8,12 +8,15 @@
 
 * Query cursors now share a client-owned completion reactor instead of blocking one OS thread
   per waiting query. Cancellation and client shutdown retain late-completion cleanup.
+  See [PR 27676](https://github.com/Azure/azure-sdk-for-go/pull/27676).
 * Added full-container and hierarchical-prefix query scopes, retained query paging, fan-out
   limits, query-plan selection, and query/index metrics using native driver v0.2.0.
+  See [PR 27676](https://github.com/Azure/azure-sdk-for-go/pull/27676).
 * Query pagers now own native resources and expose `Close` and an explicit
   `ContinuationToken(ctx)` snapshot method. The return type is `*QueryItemsPager` rather than
   `*runtime.Pager[QueryItemsResponse]`; continuation tokens no longer appear on responses.
   Unsupported checkpoints do not prevent continued iteration.
+  See [PR 27676](https://github.com/Azure/azure-sdk-for-go/pull/27676).
 * Added the Go SDK identity to the User-Agent header alongside the native driver identity,
   preserving the optional `ClientOptions.ApplicationID` suffix. See [PR 27627](https://github.com/Azure/azure-sdk-for-go/pull/27627).
 * Added parameterized queries within a complete logical partition through `Query`, `FeedScope`,

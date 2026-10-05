@@ -107,7 +107,7 @@ func TestEmulatorQueryPaginationAfterContainerRecreation(t *testing.T) {
 	scope := NewFeedScopeForPartitionKey(key)
 	options := &QueryOptions{Feed: FeedOptions{PageSizeHint: 2}}
 	oldPager := container.NewQueryItemsPager(query, scope, options)
-	defer oldPager.Close()
+	defer func() { require.NoError(t, oldPager.Close()) }()
 	_, err = oldPager.NextPage(t.Context())
 	require.NoError(t, err)
 	oldToken, err := oldPager.ContinuationToken(t.Context())
@@ -272,7 +272,7 @@ func TestEmulatorQueryHierarchicalScope(t *testing.T) {
 
 	prefix := container.NewQueryItemsPager(NewQuery("SELECT VALUE c.id FROM c"),
 		NewFeedScopeForPartitionKey(NewPartitionKeyString(partition)), nil)
-	defer prefix.Close()
+	defer func() { require.NoError(t, prefix.Close()) }()
 	var ids []string
 	for pages := 0; prefix.More(); pages++ {
 		require.Less(t, pages, 10)
@@ -306,7 +306,7 @@ func TestEmulatorQueryCrossPartition(t *testing.T) {
 	}
 	read := func(t *testing.T, pager *QueryItemsPager) []int {
 		t.Helper()
-		defer pager.Close()
+		defer func() { require.NoError(t, pager.Close()) }()
 		var values []int
 		for pages := 0; pager.More(); pages++ {
 			require.Less(t, pages, 100, "cross-partition query did not terminate")
@@ -345,7 +345,7 @@ func TestEmulatorQueryCrossPartition(t *testing.T) {
 			for _, aggregate := range []string{"COUNT(1)", "SUM(c.value)"} {
 				pager := container.NewQueryItemsPager(build("SELECT VALUE "+aggregate+" FROM c WHERE c.run = @run"),
 					scope, &QueryOptions{QueryPlanMode: mode})
-				defer pager.Close()
+				defer func() { require.NoError(t, pager.Close()) }()
 				page, err := pager.NextPage(t.Context())
 				require.Zero(t, page)
 				var cosmosErr *Error
@@ -356,7 +356,7 @@ func TestEmulatorQueryCrossPartition(t *testing.T) {
 	}
 	query := build("SELECT VALUE c.value FROM c WHERE c.run = @run")
 	pager := container.NewQueryItemsPager(query, scope, &QueryOptions{Feed: FeedOptions{PageSizeHint: 2}})
-	defer pager.Close()
+	defer func() { require.NoError(t, pager.Close()) }()
 	_, err := pager.NextPage(t.Context())
 	require.NoError(t, err)
 	token, err := pager.ContinuationToken(t.Context())
@@ -371,7 +371,7 @@ func TestEmulatorQueryCrossPartition(t *testing.T) {
 	require.Equal(t, remaining, resumed, "checkpoint must resume without duplication or omission")
 
 	limited := container.NewQueryItemsPager(query, scope, &QueryOptions{Feed: FeedOptions{MaxFanOut: 1}})
-	defer limited.Close()
+	defer func() { require.NoError(t, limited.Close()) }()
 	page, err := limited.NextPage(t.Context())
 	require.Error(t, err, "the fixture has four physical partitions")
 	require.Zero(t, page)
@@ -379,7 +379,7 @@ func TestEmulatorQueryCrossPartition(t *testing.T) {
 
 	buffered := container.NewQueryItemsPager(build("SELECT DISTINCT TOP 2 VALUE c.category FROM c WHERE c.run = @run"), scope,
 		&QueryOptions{Feed: FeedOptions{PageSizeHint: 1}})
-	defer buffered.Close()
+	defer func() { require.NoError(t, buffered.Close()) }()
 	page, err = buffered.NextPage(t.Context())
 	require.NoError(t, err)
 	_, err = buffered.ContinuationToken(t.Context())

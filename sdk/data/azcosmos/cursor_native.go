@@ -5,6 +5,8 @@
 
 package azcosmos
 
+// cSpell:ignore gocritic
+
 /*
 #include <stdlib.h>
 #include "azurecosmosdriver.h"
@@ -51,10 +53,10 @@ func (d *nativeDriver) openCursor(ctx context.Context, driver *C.cosmos_driver_t
 	d.mu.Unlock()
 	q.mu.Lock()
 	var request C.cosmos_cursor_request_t
-	C.cosmos_cursor_request_init(&request)
+	C.cosmos_cursor_request_init(&request) //nolint:gocritic // dupSubExpr targets cgo-generated code.
 	request.operation = operation
 	completion, err := q.submit(ctx, func(cookie C.intptr_t, status *C.cosmos_status_code_t) *C.cosmos_operation_handle_t {
-		return C.cosmos_cursor_open_submit(driver, &request, q.queue, cookie, status)
+		return C.cosmos_cursor_open_submit(driver, &request, q.queue, cookie, status) //nolint:gocritic // dupSubExpr targets cgo-generated code.
 	})
 	if err == nil {
 		defer C.cosmos_cursor_completion_free(completion)

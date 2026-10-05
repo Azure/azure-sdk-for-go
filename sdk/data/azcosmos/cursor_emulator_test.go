@@ -45,7 +45,11 @@ func TestEmulatorCursorConcurrentCorrelation(t *testing.T) {
 			<-start
 			pager := container.NewQueryItemsPager(queries[worker], NewFeedScopeForFullContainer(),
 				&QueryOptions{Feed: FeedOptions{PageSizeHint: 1}})
-			defer pager.Close()
+			defer func() {
+				if err := pager.Close(); err != nil {
+					t.Errorf("worker %d closing pager: %v", worker, err)
+				}
+			}()
 			var values []int
 			for pages := 0; pager.More(); pages++ {
 				if pages > 12 {

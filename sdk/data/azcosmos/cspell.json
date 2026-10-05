@@ -1,10 +1,12 @@
 {
   "version": "0.2",
   "ignorePaths": [
-    "region_proximity.go"
+    "region_proximity.go",
+    "go.sum"
   ],
   "words": [
     "azlog",
+    "cbindgen",
     "EASTUS",
     "enableaadauthentication",
     "itemdb",

@@ -29,6 +29,29 @@ func unmarshalDrillPropertiesClassification(rawMsg json.RawMessage) (DrillProper
 	return b, nil
 }
 
+func unmarshalDrillResourcePropertiesClassification(rawMsg json.RawMessage) (DrillResourcePropertiesClassification, error) {
+	if rawMsg == nil || string(rawMsg) == "null" {
+		return nil, nil
+	}
+	var m map[string]any
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b DrillResourcePropertiesClassification
+	switch m["drillType"] {
+	case string(DrillTypeRegional):
+		b = &RegionalDrillResourceProperties{}
+	case string(DrillTypeZonal):
+		b = &ZonalDrillResourceProperties{}
+	default:
+		b = &DrillResourceProperties{}
+	}
+	if err := json.Unmarshal(rawMsg, b); err != nil {
+		return nil, err
+	}
+	return b, nil
+}
+
 func unmarshalRecoveryGroupBaseActionClassification(rawMsg json.RawMessage) (RecoveryGroupBaseActionClassification, error) {
 	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
@@ -81,10 +104,20 @@ func unmarshalResourceBaseProtectionSolutionSettingClassification(rawMsg json.Ra
 	}
 	var b ResourceBaseProtectionSolutionSettingClassification
 	switch m["protectionSolutionType"] {
+	case string(ResourceProtectionSolutionTypeAzureCosmosDB):
+		b = &ResourceCosmosDBProtectionSetting{}
 	case string(ResourceProtectionSolutionTypeAzureNative):
 		b = &ResourceNativeProtectionSolutionSetting{}
+	case string(ResourceProtectionSolutionTypeAzureNetAppFiles):
+		b = &ResourceNetAppFilesProtectionSetting{}
+	case string(ResourceProtectionSolutionTypeAzureServiceBus):
+		b = &ResourceServiceBusProtectionSetting{}
 	case string(ResourceProtectionSolutionTypeAzureSiteRecovery):
 		b = &ResourceSiteRecoveryProtectionSetting{}
+	case string(ResourceProtectionSolutionTypeAzureStorageAccount):
+		b = &ResourceStorageAccountProtectionSetting{}
+	case string(ResourceProtectionSolutionTypeAzureTemplate):
+		b = &ResourceAzureTemplateProtectionSetting{}
 	case string(ResourceProtectionSolutionTypeCrossZoneVMRecovery):
 		b = &ResourceCrossZoneVMRecoveryProtectionSetting{}
 	case string(ResourceProtectionSolutionTypeCustomRunbook):

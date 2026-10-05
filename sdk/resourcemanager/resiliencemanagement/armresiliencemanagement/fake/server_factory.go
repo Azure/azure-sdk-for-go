@@ -36,9 +36,6 @@ type ServerFactory struct {
 	// GoalResourcesServer contains the fakes for client GoalResourcesClient
 	GoalResourcesServer GoalResourcesServer
 
-	// GoalTemplatesServer contains the fakes for client GoalTemplatesClient
-	GoalTemplatesServer GoalTemplatesServer
-
 	// OperationStatusServer contains the fakes for client OperationStatusClient
 	OperationStatusServer OperationStatusServer
 
@@ -88,7 +85,6 @@ type ServerFactoryTransport struct {
 	trEnrollmentsServer            *EnrollmentsServerTransport
 	trGoalAssignmentsServer        *GoalAssignmentsServerTransport
 	trGoalResourcesServer          *GoalResourcesServerTransport
-	trGoalTemplatesServer          *GoalTemplatesServerTransport
 	trOperationStatusServer        *OperationStatusServerTransport
 	trOperationsServer             *OperationsServerTransport
 	trRecoveryJobResourcesServer   *RecoveryJobResourcesServerTransport
@@ -142,11 +138,6 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewGoalResourcesServerTransport(&s.srv.GoalResourcesServer)
 		})
 		resp, err = s.trGoalResourcesServer.Do(req)
-	case "GoalTemplatesClient":
-		initServer(&s.trMu, &s.trGoalTemplatesServer, func() *GoalTemplatesServerTransport {
-			return NewGoalTemplatesServerTransport(&s.srv.GoalTemplatesServer)
-		})
-		resp, err = s.trGoalTemplatesServer.Do(req)
 	case "OperationStatusClient":
 		initServer(&s.trMu, &s.trOperationStatusServer, func() *OperationStatusServerTransport {
 			return NewOperationStatusServerTransport(&s.srv.OperationStatusServer)

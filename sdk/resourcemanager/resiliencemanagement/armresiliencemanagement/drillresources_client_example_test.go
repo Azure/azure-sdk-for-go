@@ -12,8 +12,8 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-08-31-preview/DrillResources_Get_MaximumSet_Gen.json
-func ExampleDrillResourcesClient_Get() {
+// Generated from example definition: 2026-10-31-preview/DrillResources_Get_MaximumSet_Gen.json
+func ExampleDrillResourcesClient_Get_drillResourcesGetMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -32,7 +32,8 @@ func ExampleDrillResourcesClient_Get() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armresiliencemanagement.DrillResourcesClientGetResponse{
 	// 	DrillResource: armresiliencemanagement.DrillResource{
-	// 		Properties: &armresiliencemanagement.DrillResourceProperties{
+	// 		Properties: &armresiliencemanagement.ZonalDrillResourceProperties{
+	// 			DrillType: to.Ptr(armresiliencemanagement.DrillTypeZonal),
 	// 			ResourceID: to.Ptr("/subscriptions/f2edfd5d-5496-4683-b94f-b3588c579009/resourceGroups/testRG/providers/Microsoft.Compute/virtualMachines/vm1"),
 	// 			ResourceType: to.Ptr("Microsoft.Compute/virtualMachines"),
 	// 			InclusionState: to.Ptr(armresiliencemanagement.DrillResourceInclusionStateExcluded),
@@ -113,8 +114,54 @@ func ExampleDrillResourcesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-08-31-preview/DrillResources_List_MaximumSet_Gen.json
-func ExampleDrillResourcesClient_NewListPager() {
+// Generated from example definition: 2026-10-31-preview/DrillResources_Get_Regional.json
+func ExampleDrillResourcesClient_Get_drillResourcesGetRegional() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armresiliencemanagement.NewClientFactory("<subscriptionID>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewDrillResourcesClient().Get(ctx, "sampleServiceGroupName", "regionalDrill", "b6378181-9dc0-4a43-8e09-97a8b08aabaa", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armresiliencemanagement.DrillResourcesClientGetResponse{
+	// 	DrillResource: armresiliencemanagement.DrillResource{
+	// 		ID: to.Ptr("/providers/Microsoft.Management/serviceGroups/sampleServiceGroupName/providers/Microsoft.AzureResilienceManagement/drills/regionalDrill/drillResources/b6378181-9dc0-4a43-8e09-97a8b08aabaa"),
+	// 		Name: to.Ptr("b6378181-9dc0-4a43-8e09-97a8b08aabaa"),
+	// 		Type: to.Ptr("Microsoft.AzureResilienceManagement/drillResources"),
+	// 		Properties: &armresiliencemanagement.RegionalDrillResourceProperties{
+	// 			DrillType: to.Ptr(armresiliencemanagement.DrillTypeRegional),
+	// 			ResourceID: to.Ptr("/subscriptions/f2edfd5d-5496-4683-b94f-b3588c579009/resourceGroups/testRG/providers/Microsoft.Compute/virtualMachines/vm1"),
+	// 			ResourceType: to.Ptr("Microsoft.Compute/virtualMachines"),
+	// 			ActiveLocations: []*string{
+	// 				to.Ptr("eastus"),
+	// 			},
+	// 			RecoveryLocations: []*string{
+	// 				to.Ptr("westus"),
+	// 			},
+	// 			InclusionState: to.Ptr(armresiliencemanagement.DrillResourceInclusionStateExcluded),
+	// 			FaultState: to.Ptr(armresiliencemanagement.DrillResourceFaultStateNotDefined),
+	// 			FaultEligibility: to.Ptr(armresiliencemanagement.FaultEligibilityIneligible),
+	// 			RegionalResiliencyStatus: to.Ptr(armresiliencemanagement.RegionalResiliencyStatusNotResilient),
+	// 			ReplicationMode: to.Ptr(armresiliencemanagement.ReplicationModeActivePassive),
+	// 			AdvisorRegionalRecommendationID: to.Ptr("/subscriptions/f2edfd5d-5496-4683-b94f-b3588c579009/providers/Microsoft.Advisor/recommendations/adf5287d-27e0-9954-1cc1-f51dc78c8adc"),
+	// 			FaultIneligibleReason: to.Ptr(armresiliencemanagement.FaultIneligibleReasonResourceNotIncludedInRecoveryPlan),
+	// 			ProvisioningState: to.Ptr(armresiliencemanagement.ProvisioningStateSucceeded),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-10-31-preview/DrillResources_List_MaximumSet_Gen.json
+func ExampleDrillResourcesClient_NewListPager_drillResourcesListMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -141,7 +188,8 @@ func ExampleDrillResourcesClient_NewListPager() {
 		// 	DrillResourceListResult: armresiliencemanagement.DrillResourceListResult{
 		// 		Value: []*armresiliencemanagement.DrillResource{
 		// 			{
-		// 				Properties: &armresiliencemanagement.DrillResourceProperties{
+		// 				Properties: &armresiliencemanagement.ZonalDrillResourceProperties{
+		// 					DrillType: to.Ptr(armresiliencemanagement.DrillTypeZonal),
 		// 					ResourceID: to.Ptr("/subscriptions/f2edfd5d-5496-4683-b94f-b3588c579009/resourceGroups/testRG/providers/Microsoft.Compute/virtualMachines/vm1"),
 		// 					ResourceType: to.Ptr("Microsoft.Compute/virtualMachines"),
 		// 					InclusionState: to.Ptr(armresiliencemanagement.DrillResourceInclusionStateExcluded),
@@ -220,7 +268,8 @@ func ExampleDrillResourcesClient_NewListPager() {
 		// 				},
 		// 			},
 		// 			{
-		// 				Properties: &armresiliencemanagement.DrillResourceProperties{
+		// 				Properties: &armresiliencemanagement.ZonalDrillResourceProperties{
+		// 					DrillType: to.Ptr(armresiliencemanagement.DrillTypeZonal),
 		// 					ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resourceGroups1/providers/Microsoft.Sql/managedInstances/managedInstances1"),
 		// 					ResourceType: to.Ptr("Microsoft.Sql/managedInstances"),
 		// 					InclusionState: to.Ptr(armresiliencemanagement.DrillResourceInclusionStateExcluded),
@@ -299,7 +348,76 @@ func ExampleDrillResourcesClient_NewListPager() {
 		// 				},
 		// 			},
 		// 		},
-		// 		NextLink: to.Ptr("https://microsoft.com/a"),
+		// 		NextLink: to.Ptr("https://management.azure.com/providers/Microsoft.Management/serviceGroups/sampleServiceGroupName/providers/Microsoft.AzureResilienceManagement/drills/drill1/drillResources?api-version=2026-10-31-preview&$skipToken=eyJuZXh0UGFnZSI6Mn0%3D"),
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2026-10-31-preview/DrillResources_List_Regional.json
+func ExampleDrillResourcesClient_NewListPager_drillResourcesListRegional() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armresiliencemanagement.NewClientFactory("<subscriptionID>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewDrillResourcesClient().NewListPager("sampleServiceGroupName", "regionalDrill", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armresiliencemanagement.DrillResourcesClientListResponse{
+		// 	DrillResourceListResult: armresiliencemanagement.DrillResourceListResult{
+		// 		Value: []*armresiliencemanagement.DrillResource{
+		// 			{
+		// 				ID: to.Ptr("/providers/Microsoft.Management/serviceGroups/sampleServiceGroupName/providers/Microsoft.AzureResilienceManagement/drills/regionalDrill/drillResources/b6378181-9dc0-4a43-8e09-97a8b08aabaa"),
+		// 				Name: to.Ptr("b6378181-9dc0-4a43-8e09-97a8b08aabaa"),
+		// 				Type: to.Ptr("Microsoft.AzureResilienceManagement/drillResources"),
+		// 				Properties: &armresiliencemanagement.RegionalDrillResourceProperties{
+		// 					DrillType: to.Ptr(armresiliencemanagement.DrillTypeRegional),
+		// 					ResourceID: to.Ptr("/subscriptions/f2edfd5d-5496-4683-b94f-b3588c579009/resourceGroups/testRG/providers/Microsoft.DocumentDB/databaseAccounts/regionalaccount"),
+		// 					ResourceType: to.Ptr("Microsoft.DocumentDB/databaseAccounts"),
+		// 					ActiveLocations: []*string{
+		// 						to.Ptr("eastus"),
+		// 						to.Ptr("westus"),
+		// 					},
+		// 					InclusionState: to.Ptr(armresiliencemanagement.DrillResourceInclusionStateExcluded),
+		// 					FaultState: to.Ptr(armresiliencemanagement.DrillResourceFaultStateNotDefined),
+		// 					FaultEligibility: to.Ptr(armresiliencemanagement.FaultEligibilityEligible),
+		// 					RegionalResiliencyStatus: to.Ptr(armresiliencemanagement.RegionalResiliencyStatusResilient),
+		// 					ReplicationMode: to.Ptr(armresiliencemanagement.ReplicationModeActiveActive),
+		// 					ProvisioningState: to.Ptr(armresiliencemanagement.ProvisioningStateSucceeded),
+		// 				},
+		// 			},
+		// 			{
+		// 				ID: to.Ptr("/providers/Microsoft.Management/serviceGroups/sampleServiceGroupName/providers/Microsoft.AzureResilienceManagement/drills/regionalDrill/drillResources/2c9b3a1f-f96e-42c2-98fe-15005da8a133"),
+		// 				Name: to.Ptr("2c9b3a1f-f96e-42c2-98fe-15005da8a133"),
+		// 				Type: to.Ptr("Microsoft.AzureResilienceManagement/drillResources"),
+		// 				Properties: &armresiliencemanagement.RegionalDrillResourceProperties{
+		// 					DrillType: to.Ptr(armresiliencemanagement.DrillTypeRegional),
+		// 					ResourceID: to.Ptr("/subscriptions/f2edfd5d-5496-4683-b94f-b3588c579009/resourceGroups/testRG/providers/Microsoft.Compute/virtualMachines/vm2"),
+		// 					ResourceType: to.Ptr("Microsoft.Compute/virtualMachines"),
+		// 					ActiveLocations: []*string{
+		// 						to.Ptr("eastus"),
+		// 					},
+		// 					InclusionState: to.Ptr(armresiliencemanagement.DrillResourceInclusionStateExcluded),
+		// 					FaultState: to.Ptr(armresiliencemanagement.DrillResourceFaultStateNotDefined),
+		// 					FaultEligibility: to.Ptr(armresiliencemanagement.FaultEligibilityIneligible),
+		// 					FaultIneligibleReason: to.Ptr(armresiliencemanagement.FaultIneligibleReasonRecoveryPlanNotConfigured),
+		// 					ProvisioningState: to.Ptr(armresiliencemanagement.ProvisioningStateSucceeded),
+		// 				},
+		// 			},
+		// 		},
 		// 	},
 		// }
 	}

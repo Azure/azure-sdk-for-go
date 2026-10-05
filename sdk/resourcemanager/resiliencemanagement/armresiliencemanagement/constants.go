@@ -5,7 +5,7 @@
 package armresiliencemanagement
 
 const (
-	version20260831Preview string = "2026-08-31-preview"
+	version20261031Preview string = "2026-10-31-preview"
 )
 
 // ActionTask - An action task type indicates the type of action task.
@@ -438,9 +438,9 @@ func PossibleExclusionReasonValues() []ExclusionReason {
 type ExclusionState string
 
 const (
-	// ExclusionStateExcluded - Resource is not included in the goals.
+	// ExclusionStateExcluded - The resource is excluded from the goals.
 	ExclusionStateExcluded ExclusionState = "Excluded"
-	// ExclusionStateIncluded - Resource is excluded from the goals.
+	// ExclusionStateIncluded - The resource is included in the goals.
 	ExclusionStateIncluded ExclusionState = "Included"
 )
 
@@ -548,6 +548,48 @@ func PossibleFailoverStateValues() []FailoverState {
 	}
 }
 
+// FaultEligibility - Normal fault eligibility of a drill resource, independent of inclusion and readiness.
+type FaultEligibility string
+
+const (
+	// FaultEligibilityEligible - The resource satisfies the normal fault inclusion policy.
+	FaultEligibilityEligible FaultEligibility = "Eligible"
+	// FaultEligibilityIneligible - The resource does not satisfy the normal fault inclusion policy.
+	FaultEligibilityIneligible FaultEligibility = "Ineligible"
+	// FaultEligibilityUnknown - The available information is insufficient to determine normal fault eligibility.
+	FaultEligibilityUnknown FaultEligibility = "Unknown"
+)
+
+// PossibleFaultEligibilityValues returns the possible values for the FaultEligibility const type.
+func PossibleFaultEligibilityValues() []FaultEligibility {
+	return []FaultEligibility{
+		FaultEligibilityEligible,
+		FaultEligibilityIneligible,
+		FaultEligibilityUnknown,
+	}
+}
+
+// FaultIneligibleReason - Reason requiring attention for a resource that requires recovery-plan participation and has no
+// independent fault eligibility path.
+type FaultIneligibleReason string
+
+const (
+	// FaultIneligibleReasonRecoveryPlanNotConfigured - The parent drill has no associated recovery plan required by the resource's
+	// normal fault inclusion policy.
+	FaultIneligibleReasonRecoveryPlanNotConfigured FaultIneligibleReason = "RecoveryPlanNotConfigured"
+	// FaultIneligibleReasonResourceNotIncludedInRecoveryPlan - The associated recovery plan's complete membership collection
+	// was successfully read and the resource is absent or explicitly Excluded.
+	FaultIneligibleReasonResourceNotIncludedInRecoveryPlan FaultIneligibleReason = "ResourceNotIncludedInRecoveryPlan"
+)
+
+// PossibleFaultIneligibleReasonValues returns the possible values for the FaultIneligibleReason const type.
+func PossibleFaultIneligibleReasonValues() []FaultIneligibleReason {
+	return []FaultIneligibleReason{
+		FaultIneligibleReasonRecoveryPlanNotConfigured,
+		FaultIneligibleReasonResourceNotIncludedInRecoveryPlan,
+	}
+}
+
 // ForceInclusionAndUpdate - Enum for ForceInclusionAndUpdate
 type ForceInclusionAndUpdate string
 
@@ -563,36 +605,6 @@ func PossibleForceInclusionAndUpdateValues() []ForceInclusionAndUpdate {
 	return []ForceInclusionAndUpdate{
 		ForceInclusionAndUpdateDisable,
 		ForceInclusionAndUpdateEnable,
-	}
-}
-
-// GoalAssignmentType - Supported type of goal assignment.
-type GoalAssignmentType string
-
-const (
-	// GoalAssignmentTypeResiliency - Resiliency goal assignment type.
-	GoalAssignmentTypeResiliency GoalAssignmentType = "Resiliency"
-)
-
-// PossibleGoalAssignmentTypeValues returns the possible values for the GoalAssignmentType const type.
-func PossibleGoalAssignmentTypeValues() []GoalAssignmentType {
-	return []GoalAssignmentType{
-		GoalAssignmentTypeResiliency,
-	}
-}
-
-// GoalType - Supported type of goal.
-type GoalType string
-
-const (
-	// GoalTypeResiliency - Resiliency goal type.
-	GoalTypeResiliency GoalType = "Resiliency"
-)
-
-// PossibleGoalTypeValues returns the possible values for the GoalType const type.
-func PossibleGoalTypeValues() []GoalType {
-	return []GoalType{
-		GoalTypeResiliency,
 	}
 }
 
@@ -782,27 +794,6 @@ func PossibleManagedServiceIdentityTypeValues() []ManagedServiceIdentityType {
 		ManagedServiceIdentityTypeSystemAssigned,
 		ManagedServiceIdentityTypeSystemAssignedUserAssigned,
 		ManagedServiceIdentityTypeUserAssigned,
-	}
-}
-
-// MembershipType - Membership type of the service group to resource.
-type MembershipType string
-
-const (
-	// MembershipTypeDirect - Resource is direct member of service group.
-	MembershipTypeDirect MembershipType = "Direct"
-	// MembershipTypeThroughResourceGroup - Resource is member of service group through resource group.
-	MembershipTypeThroughResourceGroup MembershipType = "ThroughResourceGroup"
-	// MembershipTypeThroughSubscription - Resource is member of service group through subscription.
-	MembershipTypeThroughSubscription MembershipType = "ThroughSubscription"
-)
-
-// PossibleMembershipTypeValues returns the possible values for the MembershipType const type.
-func PossibleMembershipTypeValues() []MembershipType {
-	return []MembershipType{
-		MembershipTypeDirect,
-		MembershipTypeThroughResourceGroup,
-		MembershipTypeThroughSubscription,
 	}
 }
 
@@ -1086,6 +1077,25 @@ func PossibleRecoveryPlanTypeValues() []RecoveryPlanType {
 	}
 }
 
+// RegionalResiliencyStatus - Regional resiliency posture reported by the selected protection solution.
+type RegionalResiliencyStatus string
+
+const (
+	// RegionalResiliencyStatusNotResilient - The available protection-solution posture reports the resource as not regionally
+	// resilient.
+	RegionalResiliencyStatusNotResilient RegionalResiliencyStatus = "NotResilient"
+	// RegionalResiliencyStatusResilient - The available protection-solution posture reports the resource as regionally resilient.
+	RegionalResiliencyStatusResilient RegionalResiliencyStatus = "Resilient"
+)
+
+// PossibleRegionalResiliencyStatusValues returns the possible values for the RegionalResiliencyStatus const type.
+func PossibleRegionalResiliencyStatusValues() []RegionalResiliencyStatus {
+	return []RegionalResiliencyStatus{
+		RegionalResiliencyStatusNotResilient,
+		RegionalResiliencyStatusResilient,
+	}
+}
+
 // RelativeResourceCompositionState - Enum for AttentionReason - Resource state sync between two objects.
 type RelativeResourceCompositionState string
 
@@ -1104,42 +1114,24 @@ func PossibleRelativeResourceCompositionStateValues() []RelativeResourceComposit
 	}
 }
 
-// RequirementSelected - Enum for the requirement status of the resource in the goal.
-type RequirementSelected string
+// ReplicationMode - Replication mode configured for a protected resource.
+type ReplicationMode string
 
 const (
-	// RequirementSelectedNotRequired - The resource is not required for the specified goal.
-	RequirementSelectedNotRequired RequirementSelected = "NotRequired"
-	// RequirementSelectedRequired - The resource is required for the specified goal.
-	RequirementSelectedRequired RequirementSelected = "Required"
+	// ReplicationModeActiveActive - The resource is active in multiple locations at the same time.
+	ReplicationModeActiveActive ReplicationMode = "ActiveActive"
+	// ReplicationModeActivePassive - The resource has one active location and one or more passive recovery locations.
+	ReplicationModeActivePassive ReplicationMode = "ActivePassive"
+	// ReplicationModeNone - No replication mode is configured for the protected resource.
+	ReplicationModeNone ReplicationMode = "None"
 )
 
-// PossibleRequirementSelectedValues returns the possible values for the RequirementSelected const type.
-func PossibleRequirementSelectedValues() []RequirementSelected {
-	return []RequirementSelected{
-		RequirementSelectedNotRequired,
-		RequirementSelectedRequired,
-	}
-}
-
-// ResilienceHealthStatus - enum for Resilience health status.
-type ResilienceHealthStatus string
-
-const (
-	// ResilienceHealthStatusHealthy - Resource is Healthy.
-	ResilienceHealthStatusHealthy ResilienceHealthStatus = "Healthy"
-	// ResilienceHealthStatusNotEvaluated - Resource is not evaluated.
-	ResilienceHealthStatusNotEvaluated ResilienceHealthStatus = "NotEvaluated"
-	// ResilienceHealthStatusUnhealthy - Resource is Unhealthy.
-	ResilienceHealthStatusUnhealthy ResilienceHealthStatus = "Unhealthy"
-)
-
-// PossibleResilienceHealthStatusValues returns the possible values for the ResilienceHealthStatus const type.
-func PossibleResilienceHealthStatusValues() []ResilienceHealthStatus {
-	return []ResilienceHealthStatus{
-		ResilienceHealthStatusHealthy,
-		ResilienceHealthStatusNotEvaluated,
-		ResilienceHealthStatusUnhealthy,
+// PossibleReplicationModeValues returns the possible values for the ReplicationMode const type.
+func PossibleReplicationModeValues() []ReplicationMode {
+	return []ReplicationMode{
+		ReplicationModeActiveActive,
+		ReplicationModeActivePassive,
+		ReplicationModeNone,
 	}
 }
 
@@ -1182,6 +1174,25 @@ func PossibleResourceFeasibilityReviewTypeValues() []ResourceFeasibilityReviewTy
 	}
 }
 
+// ResourceInclusionDisabledReason - Reason why a recovery resource cannot be included in a recovery plan.
+type ResourceInclusionDisabledReason string
+
+const (
+	// ResourceInclusionDisabledReasonResourceActiveActiveProtection - The resource uses active-active protection.
+	ResourceInclusionDisabledReasonResourceActiveActiveProtection ResourceInclusionDisabledReason = "ResourceActiveActiveProtection"
+	// ResourceInclusionDisabledReasonResourceHighlyAvailable - The resource is highly available and does not require recovery-plan
+	// inclusion.
+	ResourceInclusionDisabledReasonResourceHighlyAvailable ResourceInclusionDisabledReason = "ResourceHighlyAvailable"
+)
+
+// PossibleResourceInclusionDisabledReasonValues returns the possible values for the ResourceInclusionDisabledReason const type.
+func PossibleResourceInclusionDisabledReasonValues() []ResourceInclusionDisabledReason {
+	return []ResourceInclusionDisabledReason{
+		ResourceInclusionDisabledReasonResourceActiveActiveProtection,
+		ResourceInclusionDisabledReasonResourceHighlyAvailable,
+	}
+}
+
 // ResourceInclusionState - A state type that indicates inclusion of the resource with respect to the resiliency support.
 type ResourceInclusionState string
 
@@ -1204,12 +1215,26 @@ func PossibleResourceInclusionStateValues() []ResourceInclusionState {
 type ResourceProtectionSolutionType string
 
 const (
+	// ResourceProtectionSolutionTypeAzureCosmosDB - Resource is protected with Azure Cosmos DB multiregion replication using
+	// customer-managed failover, where recovery promotes a secondary region to the write region.
+	ResourceProtectionSolutionTypeAzureCosmosDB ResourceProtectionSolutionType = "AzureCosmosDB"
 	// ResourceProtectionSolutionTypeAzureNative - Resource is protected with the Azure native solution provided by the native
 	// Azure service.
 	ResourceProtectionSolutionTypeAzureNative ResourceProtectionSolutionType = "AzureNative"
+	// ResourceProtectionSolutionTypeAzureNetAppFiles - Resource is protected with Azure NetApp Files cross-region replication,
+	// where recovery fails over to the destination volume.
+	ResourceProtectionSolutionTypeAzureNetAppFiles ResourceProtectionSolutionType = "AzureNetAppFiles"
+	// ResourceProtectionSolutionTypeAzureServiceBus - Resource is protected with Azure Service Bus geo-replication, where a premium
+	// namespace replicates data to a secondary region and recovery promotes that secondary in place.
+	ResourceProtectionSolutionTypeAzureServiceBus ResourceProtectionSolutionType = "AzureServiceBus"
 	// ResourceProtectionSolutionTypeAzureSiteRecovery - Resource protected with the Azure solution provided by the native Azure
 	// Site Service for Azure VMs.
 	ResourceProtectionSolutionTypeAzureSiteRecovery ResourceProtectionSolutionType = "AzureSiteRecovery"
+	// ResourceProtectionSolutionTypeAzureStorageAccount - Resource is protected with Azure Storage account customer-managed failover.
+	ResourceProtectionSolutionTypeAzureStorageAccount ResourceProtectionSolutionType = "AzureStorageAccount"
+	// ResourceProtectionSolutionTypeAzureTemplate - Resource recovery is orchestrated by deploying an Azure Resource Manager
+	// template.
+	ResourceProtectionSolutionTypeAzureTemplate ResourceProtectionSolutionType = "AzureTemplate"
 	// ResourceProtectionSolutionTypeCrossZoneVMRecovery - Cross zone recovery enabled Azure VMs.
 	ResourceProtectionSolutionTypeCrossZoneVMRecovery ResourceProtectionSolutionType = "CrossZoneVMRecovery"
 	// ResourceProtectionSolutionTypeCustomRunbook - Resource is not protected with native solution and using custom runbook automation
@@ -1222,8 +1247,13 @@ const (
 // PossibleResourceProtectionSolutionTypeValues returns the possible values for the ResourceProtectionSolutionType const type.
 func PossibleResourceProtectionSolutionTypeValues() []ResourceProtectionSolutionType {
 	return []ResourceProtectionSolutionType{
+		ResourceProtectionSolutionTypeAzureCosmosDB,
 		ResourceProtectionSolutionTypeAzureNative,
+		ResourceProtectionSolutionTypeAzureNetAppFiles,
+		ResourceProtectionSolutionTypeAzureServiceBus,
 		ResourceProtectionSolutionTypeAzureSiteRecovery,
+		ResourceProtectionSolutionTypeAzureStorageAccount,
+		ResourceProtectionSolutionTypeAzureTemplate,
 		ResourceProtectionSolutionTypeCrossZoneVMRecovery,
 		ResourceProtectionSolutionTypeCustomRunbook,
 		ResourceProtectionSolutionTypeNone,
@@ -1282,7 +1312,7 @@ func PossibleResourceReplicationRoleValues() []ResourceReplicationRole {
 type ResourceTypeCategories string
 
 const (
-	// ResourceTypeCategoriesAzureSiteRecoveryVMsPresent - Indicates that alteast one Azure Site Recovery VMs are present.
+	// ResourceTypeCategoriesAzureSiteRecoveryVMsPresent - Indicates that at least one Azure Site Recovery VM is present.
 	ResourceTypeCategoriesAzureSiteRecoveryVMsPresent ResourceTypeCategories = "AzureSiteRecoveryVMsPresent"
 )
 
@@ -1366,33 +1396,10 @@ func PossibleTestFailoverStateValues() []TestFailoverState {
 	}
 }
 
-// UnifiedResilienceItemRequirementSelected - Enum for the requirement status of the resource in the goal.
-type UnifiedResilienceItemRequirementSelected string
-
-const (
-	// UnifiedResilienceItemRequirementSelectedNotRequired - The resource is not required for the specified goal.
-	UnifiedResilienceItemRequirementSelectedNotRequired UnifiedResilienceItemRequirementSelected = "NotRequired"
-	// UnifiedResilienceItemRequirementSelectedNotSelected - The resource is not selected for the specified goal.
-	UnifiedResilienceItemRequirementSelectedNotSelected UnifiedResilienceItemRequirementSelected = "NotSelected"
-	// UnifiedResilienceItemRequirementSelectedRequired - The resource is required for the specified goal.
-	UnifiedResilienceItemRequirementSelectedRequired UnifiedResilienceItemRequirementSelected = "Required"
-)
-
-// PossibleUnifiedResilienceItemRequirementSelectedValues returns the possible values for the UnifiedResilienceItemRequirementSelected const type.
-func PossibleUnifiedResilienceItemRequirementSelectedValues() []UnifiedResilienceItemRequirementSelected {
-	return []UnifiedResilienceItemRequirementSelected{
-		UnifiedResilienceItemRequirementSelectedNotRequired,
-		UnifiedResilienceItemRequirementSelectedNotSelected,
-		UnifiedResilienceItemRequirementSelectedRequired,
-	}
-}
-
 // UsagePlanType - The type of usage plan.
 type UsagePlanType string
 
 const (
-	// UsagePlanTypeBasic - Basic usage plan with restricted functionality without any charges.
-	UsagePlanTypeBasic UsagePlanType = "Basic"
 	// UsagePlanTypeStandard - Standard usage plan with comprehensive functionality and usage based charges.
 	UsagePlanTypeStandard UsagePlanType = "Standard"
 )
@@ -1400,7 +1407,6 @@ const (
 // PossibleUsagePlanTypeValues returns the possible values for the UsagePlanType const type.
 func PossibleUsagePlanTypeValues() []UsagePlanType {
 	return []UsagePlanType{
-		UsagePlanTypeBasic,
 		UsagePlanTypeStandard,
 	}
 }
@@ -1429,7 +1435,7 @@ type VMPresent string
 const (
 	// VMPresentAbsent - No VM present.
 	VMPresentAbsent VMPresent = "Absent"
-	// VMPresentPresent - Atleast one VM Present.
+	// VMPresentPresent - At least one VM is present.
 	VMPresentPresent VMPresent = "Present"
 )
 

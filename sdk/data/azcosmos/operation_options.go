@@ -8,9 +8,8 @@ import "time"
 // OperationOptions holds the driver-level settings every Cosmos DB operation accepts. It is
 // carried by each operation's own options type, which adds the settings specific to it.
 //
-// It mirrors the option set the driver takes per operation, so the same knobs are available to
-// reads, writes, patches, batches and queries alike rather than being restated for each. A
-// consequence is that a setting can be present but inert for a given operation:
+// It exposes a subset of the driver's per-operation settings, shared by the operation APIs
+// instead of being restated for each. A setting can be present but inert for a given operation:
 // [OperationOptions.EnableContentResponseOnWrite] means nothing to a read, for instance.
 type OperationOptions struct {
 	// ConsistencyStrategy selects how fresh a read must be. The zero value reads with whatever the

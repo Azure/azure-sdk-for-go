@@ -27,6 +27,7 @@ func ExampleContainerClient_NewQueryItemsPager() {
 	pager := container.NewQueryItemsPager(query, scope, &azcosmos.QueryOptions{
 		Feed: azcosmos.FeedOptions{PageSizeHint: 25},
 	})
+	defer pager.Close()
 	for pager.More() {
 		page, err := pager.NextPage(context.TODO())
 		if err != nil {
@@ -34,7 +35,7 @@ func ExampleContainerClient_NewQueryItemsPager() {
 			log.Fatalf("ERROR: %s", err)
 		}
 		log.Printf("received %d items, charge %.2f RU", len(page.Items), page.RequestCharge)
-		// Save page.ContinuationToken to resume later with the same query and scope.
+		// To pause, call pager.ContinuationToken(ctx) before exhaustion, then Close.
 	}
 	closeClient()
 }

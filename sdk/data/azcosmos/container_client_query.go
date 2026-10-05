@@ -10,41 +10,161 @@ import (
 	"fmt"
 	"slices"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"sync"
 )
 
-// NewQueryItemsPager queries a complete logical partition, returning raw JSON items in pages.
+// NewQueryItemsPager queries the supplied scope, returning raw JSON items in pages.
 // Construction performs no network I/O; argument errors are reported by NextPage.
 //
-// The first fetch reads container metadata to reject incomplete partition keys. Its charge is
-// included in that fetch's response or error. Resuming with a new pager repeats this validation.
-// Empty pages may have a continuation. Pagers are not safe for concurrent use.
-func (c *ContainerClient) NewQueryItemsPager(query Query, scope FeedScope, options *QueryOptions) *runtime.Pager[QueryItemsResponse] {
+// Defer Close when stopping before exhaustion. Empty pages do not imply exhaustion.
+// Use ContinuationToken to snapshot progress explicitly; not every query supports snapshots.
+func (c *ContainerClient) NewQueryItemsPager(query Query, scope FeedScope, options *QueryOptions) *QueryItemsPager {
 	req, err := newQueryRequest(query, scope, options)
 	req.databaseID = c.database.id
 	req.containerID = c.id
-	return newQueryItemsPager(req, err, c.queryItems)
+	return &QueryItemsPager{client: c.database.client, req: req, validationErr: err}
+}
+
+// QueryItemsPager owns a retained query plan. Close releases it when iteration stops early.
+// Iteration and checkpoint calls must not be concurrent; Close safely waits for an active call.
+// An empty token is not an exhaustion signal. Use More instead.
+type QueryItemsPager struct {
+	mu            sync.Mutex
+	client        *Client
+	req           queryRequest
+	validationErr error
+	cursor        queryCursor
+	done          bool
+}
+
+type queryCursor interface {
+	next(context.Context) (QueryItemsResponse, bool, error)
+	checkpoint(context.Context) (string, error)
+	close()
+}
+
+// More reports whether another page may be fetched. It does not perform I/O.
+func (p *QueryItemsPager) More() bool {
+	p.mu.Lock()
+	defer p.mu.Unlock()
+	return !p.done
+}
+
+// NextPage fetches one page. A final empty page can signal exhaustion through More.
+// Failures after execution starts terminate this pager; retries belong to the native driver.
+func (p *QueryItemsPager) NextPage(ctx context.Context) (QueryItemsResponse, error) {
+	p.mu.Lock()
+	defer p.mu.Unlock()
+	if p.validationErr != nil {
+		return QueryItemsResponse{}, p.validationErr
+	}
+	release, err := p.client.acquire()
+	if err != nil {
+		return QueryItemsResponse{}, err
+	}
+	defer release()
+	if p.done {
+		return QueryItemsResponse{}, &Error{Code: CodeClientError, Message: "azcosmos: query pager is closed or exhausted"}
+	}
+	if err := ctx.Err(); err != nil {
+		return QueryItemsResponse{}, err
+	}
+	ctx, cancel := contextWithEndToEndTimeout(ctx, p.req.options.Operation.EndToEndTimeout)
+	defer cancel()
+	var setup Response
+	if p.cursor == nil {
+		p.cursor, setup, err = p.client.openQuery(ctx, &p.req)
+		if err != nil {
+			p.finish()
+			return QueryItemsResponse{}, addQuerySetupCharge(err, setup)
+		}
+	}
+	page, end, err := p.cursor.next(ctx)
+	if err != nil {
+		p.finish()
+		return QueryItemsResponse{}, addQuerySetupCharge(err, setup)
+	}
+	page.RequestCharge += setup.RequestCharge
+	if page.ActivityID == "" && setup.RequestCharge != 0 {
+		page.ActivityID = setup.ActivityID
+	}
+	if end {
+		p.finish()
+	}
+	return page, nil
+}
+
+// ContinuationToken snapshots delivered progress without advancing the query.
+// Call after a successful NextPage and before exhaustion or Close. Unsupported snapshots
+// return an error but do not prevent further paging. Resume with the same query and scope.
+func (p *QueryItemsPager) ContinuationToken(ctx context.Context) (string, error) {
+	p.mu.Lock()
+	defer p.mu.Unlock()
+	if p.validationErr != nil {
+		return "", p.validationErr
+	}
+	release, err := p.client.acquire()
+	if err != nil {
+		return "", err
+	}
+	defer release()
+	if p.done || p.cursor == nil {
+		return "", &Error{Code: CodeClientError, Message: "azcosmos: checkpoint requires an open query pager"}
+	}
+	if err := ctx.Err(); err != nil {
+		return "", err
+	}
+	ctx, cancel := contextWithEndToEndTimeout(ctx, p.req.options.Operation.EndToEndTimeout)
+	defer cancel()
+	token, err := p.cursor.checkpoint(ctx)
+	if err != nil && !unsupportedQueryCheckpoint(err) {
+		p.finish()
+	}
+	return token, err
+}
+
+func unsupportedQueryCheckpoint(err error) bool {
+	var cosmosErr *Error
+	return errors.As(err, &cosmosErr) && !cosmosErr.FromWire &&
+		cosmosErr.StatusCode == 400 && (cosmosErr.SubStatus == 20124 || cosmosErr.SubStatus == 20117)
+}
+
+// Close releases the retained query plan. It is idempotent and safe alongside Client.Close.
+func (p *QueryItemsPager) Close() error {
+	p.mu.Lock()
+	defer p.mu.Unlock()
+	p.finish()
+	return nil
+}
+
+func (p *QueryItemsPager) finish() {
+	p.done = true
+	if p.cursor != nil {
+		p.cursor.close()
+		p.cursor = nil
+	}
 }
 
 type queryRequest struct {
-	databaseID     string
-	containerID    string
-	body           []byte
-	partitionKey   PartitionKey
-	options        QueryOptions
-	scopeValidated bool
+	databaseID    string
+	containerID   string
+	body          []byte
+	partitionKey  PartitionKey
+	fullContainer bool
+	options       QueryOptions
 }
 
 func newQueryRequest(query Query, scope FeedScope, options *QueryOptions) (queryRequest, error) {
-	req := queryRequest{partitionKey: scope.partitionKey}
+	req := queryRequest{partitionKey: scope.partitionKey, fullContainer: scope.fullContainer}
 	var err error
 	req.body, err = query.body()
 	if err != nil {
 		return req, err
 	}
-	if err := validateItemArguments(scope.partitionKey); err != nil {
-		return req, err
+	if !scope.fullContainer {
+		if err := validateItemArguments(scope.partitionKey); err != nil {
+			return req, err
+		}
 	}
 	if options != nil {
 		req.options = *options
@@ -53,6 +173,19 @@ func newQueryRequest(query Query, scope FeedScope, options *QueryOptions) (query
 			copied := *value
 			req.options.Operation.EnableContentResponseOnWrite = &copied
 		}
+		if value := options.PopulateIndexMetrics; value != nil {
+			copied := *value
+			req.options.PopulateIndexMetrics = &copied
+		}
+		if value := options.PopulateQueryMetrics; value != nil {
+			copied := *value
+			req.options.PopulateQueryMetrics = &copied
+		}
+	}
+	switch req.options.QueryPlanMode {
+	case "", QueryPlanModeLocalPreferred, QueryPlanModeGatewayOnly:
+	default:
+		return req, errors.New("azcosmos: invalid query plan mode")
 	}
 	if err := req.options.Operation.ConsistencyStrategy.validate(); err != nil {
 		return req, err
@@ -69,36 +202,8 @@ func newQueryRequest(query Query, scope FeedScope, options *QueryOptions) (query
 	return req, nil
 }
 
-func newQueryItemsPager(req queryRequest, validationErr error, fetch func(context.Context, *queryRequest) (QueryItemsResponse, error)) *runtime.Pager[QueryItemsResponse] {
-	return runtime.NewPager(runtime.PagingHandler[QueryItemsResponse]{
-		More: func(page QueryItemsResponse) bool { return page.ContinuationToken != "" },
-		Fetcher: func(ctx context.Context, previous *QueryItemsResponse) (QueryItemsResponse, error) {
-			if validationErr != nil {
-				return QueryItemsResponse{}, validationErr
-			}
-			if previous != nil {
-				req.options.Feed.ContinuationToken = previous.ContinuationToken
-			}
-			return fetch(ctx, &req)
-		},
-	})
-}
-
-func (c *ContainerClient) queryItems(ctx context.Context, req *queryRequest) (QueryItemsResponse, error) {
-	client := c.database.client
-	release, err := client.acquire()
-	if err != nil {
-		return QueryItemsResponse{}, err
-	}
-	defer release()
-	if err := ctx.Err(); err != nil {
-		return QueryItemsResponse{}, err
-	}
-	return client.executeQuery(ctx, req)
-}
-
 func decodeQueryPage(body []byte, response Response, sessionToken SessionToken, continuation string, exhausted bool) (QueryItemsResponse, error) {
-	page := QueryItemsResponse{Response: response, SessionToken: sessionToken, ContinuationToken: continuation}
+	page := QueryItemsResponse{Response: response, SessionToken: sessionToken}
 	if exhausted {
 		if len(body) != 0 || continuation != "" {
 			return QueryItemsResponse{}, queryResponseError(response, sessionToken, errors.New("inconsistent exhausted query completion"))
@@ -152,9 +257,9 @@ func validateQueryPartitionKey(body []byte, partitionKey PartitionKey) error {
 		(definition.Version != nil && *definition.Version != 1 && *definition.Version != 2) {
 		return &Error{Code: CodeBadRequest, Message: "unsupported query partition key definition"}
 	}
-	if partitionKey.Len() != len(definition.Paths) {
+	if partitionKey.Len() == 0 || partitionKey.Len() > len(definition.Paths) {
 		return &Error{Code: CodeBadRequest, Message: fmt.Sprintf(
-			"query scope requires all %d partition key components; got %d (prefix queries are not supported)",
+			"query scope requires between 1 and %d partition key components; got %d",
 			len(definition.Paths), partitionKey.Len())}
 	}
 	return nil

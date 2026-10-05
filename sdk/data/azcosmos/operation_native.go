@@ -56,7 +56,7 @@ func (d *nativeDriver) execute(ctx context.Context, req itemRequest) (ItemRespon
 	// only what remains rather than restarting the configured duration.
 	req.options.EndToEndTimeout = endToEndTimeout(ctx, 0)
 
-	result, err := d.awaitCompletion(ctx, "submitting the operation",
+	result, err := d.awaitAuthoritativeCompletion(ctx, "submitting the operation",
 		func(queue *C.cosmos_completion_queue_t, cookie C.intptr_t, preError *C.cosmos_status_code_t) *C.cosmos_operation_handle_t {
 			return d.submit(driver, container, req, queue, cookie, preError)
 		})
@@ -74,13 +74,29 @@ func (d *nativeDriver) execute(ctx context.Context, req itemRequest) (ItemRespon
 // to, the cookie to round-trip onto it, and somewhere to report a pre-flight rejection. It returns
 // NULL when the operation was rejected before it started, which posts no completion.
 //
-// Cancelling the context cancels the operation at the driver rather than abandoning it, and then
-// still waits for the completion. The operation owns the cookie, so returning before it has been
-// posted would delete a handle the reactor is about to dereference.
+// Native operations cannot be canceled. After admission we await the authoritative result,
+// including committed writes, before releasing the operation's cookie and client lifetime guard.
 func (d *nativeDriver) awaitCompletion(
 	ctx context.Context,
 	doing string,
 	submit func(queue *C.cosmos_completion_queue_t, cookie C.intptr_t, preError *C.cosmos_status_code_t) *C.cosmos_operation_handle_t,
+) (completionResult, error) {
+	return d.awaitOperation(ctx, doing, submit, false)
+}
+
+func (d *nativeDriver) awaitAuthoritativeCompletion(
+	ctx context.Context,
+	doing string,
+	submit func(queue *C.cosmos_completion_queue_t, cookie C.intptr_t, preError *C.cosmos_status_code_t) *C.cosmos_operation_handle_t,
+) (completionResult, error) {
+	return d.awaitOperation(ctx, doing, submit, true)
+}
+
+func (d *nativeDriver) awaitOperation(
+	ctx context.Context,
+	doing string,
+	submit func(queue *C.cosmos_completion_queue_t, cookie C.intptr_t, preError *C.cosmos_status_code_t) *C.cosmos_operation_handle_t,
+	authoritative bool,
 ) (completionResult, error) {
 	if err := ctx.Err(); err != nil {
 		return completionResult{}, err
@@ -92,7 +108,12 @@ func (d *nativeDriver) awaitCompletion(
 	handle := cgo.NewHandle(pending)
 	// Deleted only once the operation is known to be finished, because the driver round-trips the
 	// cookie onto the completion and the reactor dereferences it.
-	defer handle.Delete()
+	abandoned := false
+	defer func() {
+		if !abandoned {
+			handle.Delete()
+		}
+	}()
 
 	var preError C.cosmos_status_code_t
 	op := submit(d.reactor.queue, C.intptr_t(handle), &preError)
@@ -107,7 +128,11 @@ func (d *nativeDriver) awaitCompletion(
 			Message:    "azcosmos: " + doing,
 		}
 	}
-	defer C.cosmos_operation_handle_free(op)
+	defer func() {
+		if !abandoned {
+			C.cosmos_operation_handle_free(op)
+		}
+	}()
 
 	select {
 	case result := <-pending.result:
@@ -121,7 +146,18 @@ func (d *nativeDriver) awaitCompletion(
 		return result, nil
 
 	case <-ctx.Done():
-		C.cosmos_operation_handle_cancel(op)
+		if !authoritative {
+			abandoned = true
+			d.pending.Add(1)
+			go func() {
+				defer d.pending.Done()
+				defer handle.Delete()
+				defer C.cosmos_operation_handle_free(op)
+				result := <-pending.result
+				result.release()
+			}()
+			return completionResult{}, newOperationCancelledError(ctx.Err(), 0, "")
+		}
 		// The terminal result is authoritative when completion and cancellation race. In
 		// particular, a successful write must not be reported as cancelled after it committed.
 		result := <-pending.result

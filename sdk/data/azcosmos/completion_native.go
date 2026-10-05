@@ -171,6 +171,8 @@ type completionHeaders struct {
 	etag          azcore.ETag
 	subStatus     int
 	retryAfter    time.Duration
+	indexMetrics  string
+	queryMetrics  string
 }
 
 // readCompletionHeaders pulls the headers this package surfaces out of a completion.
@@ -188,6 +190,10 @@ func readCompletionHeaders(completion *C.cosmos_completion_t) completionHeaders 
 	for i := range all {
 		header := &all[i]
 		switch header.id {
+		case C.COSMOS_HEADER_ID_INDEX_METRICS:
+			headers.indexMetrics = headerString(&header.value)
+		case C.COSMOS_HEADER_ID_QUERY_METRICS:
+			headers.queryMetrics = headerString(&header.value)
 		case C.COSMOS_HEADER_ID_REQUEST_CHARGE:
 			headers.requestCharge = headerFloat(&header.value)
 		case C.COSMOS_HEADER_ID_ACTIVITY_ID:

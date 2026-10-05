@@ -88,35 +88,82 @@ Client-side execution of a patch that is not intrinsically retry-safe permanentl
 
 `ContainerClient.NewQueryItemsPager` accepts a `Query`, an explicit `FeedScope`, and optional
 `QueryOptions`. Use `NewQuery(sql).WithParameter(name, value)` to capture JSON parameter values,
-and `NewFeedScopeForPartitionKey(pk)` to target a complete logical partition. For hierarchical
-partition keys, supply every component. Query values are immutable; `WithParameter` returns a
+and `NewFeedScopeForPartitionKey(pk)` to target a logical partition or hierarchical key prefix.
+Use `NewFeedScopeForFullContainer()` for cross-partition queries. Query values are immutable; `WithParameter` returns a
 new query and an error if the value cannot be serialized.
 
-The API follows the Rust SDK's separation of query, scope, and feed options, with Go's standard
-`More`/`NextPage` pager. `QueryOptions.Feed.PageSizeHint` is a positive page-size hint; zero leaves
+The API follows the Rust SDK's separation of query, scope, and feed options. Its Cosmos-owned
+`QueryItemsPager` retains the native query plan and provides `More`, `NextPage`, and `Close`.
+Use `defer pager.Close()` to release native resources on early exit; exhaustion also releases
+them, and `Client.Close` reclaims any remaining cursors. This unreleased-v2 API intentionally
+differs from `runtime.Pager[T]` and requires Go SDK API review before stabilization.
+`QueryOptions.Feed.PageSizeHint` is a positive per-partition page-size hint; zero leaves
 sizing to the driver, and negative hints are rejected. Results are raw JSON values in
 `QueryItemsResponse.Items`, including scalar `SELECT VALUE` results. An empty page does not
 necessarily end the query: use `More`, not the number of items.
 
-Save `QueryItemsResponse.ContinuationToken` and pass it in `QueryOptions.Feed` to resume with
+Call `pager.ContinuationToken(ctx)` after a page, before exhaustion or Close, and pass the result
+in `QueryOptions.Feed.ContinuationToken` to resume with
 the same query and scope. This is an opaque **driver planner token**, not the service's
-`x-ms-continuation` header. Do not parse or modify it. An empty token indicates completion.
-Each fetch resolves its container reference through the native driver's cache, allowing queries
+`x-ms-continuation` header. Do not parse or modify it. Snapshotting does not advance the pager.
+Some buffered query plans do not support checkpoints but can still be fully iterated.
+Checkpoint availability does not determine whether more pages exist. A final empty page may
+mark exhaustion; check `More()` again after fetching it.
+Each new pager resolves its container reference through the native driver's cache, allowing queries
 started after container recreation to use the replacement. Tokens from the deleted container
 cannot be used to resume against the replacement.
-With the currently pinned azcore pager, a failed `NextPage` does not advance the continuation;
-callers must handle the error rather than blindly continuing a `More` loop.
+An execution failure terminates the pager; the native driver owns retries. An unsupported
+checkpoint does not terminate it.
 
 Pager construction performs no network I/O and snapshots its inputs. Each pager's first fetch
 (including a resumed pager) performs an additional container-metadata read to verify that the
-key is complete. Its request charge is included in the first fetch's response or error, and
+key or prefix fits the container definition. Full-container scopes omit this additional read.
+Its request charge is included in the first fetch's response or error, and
 it shares the page's context and end-to-end timeout. This requires permission to read container
-metadata. Pagers are not safe for concurrent use; independent pagers can share a client.
+metadata. Iteration and checkpoint calls must not be concurrent; independent pagers can share a
+client. `Close` safely synchronizes with active calls.
+All cursors on a client share a cursor-format completion reactor, separate from the legacy
+operation queue. Query callers wait on Go channels rather than each blocking an OS thread.
 
-Cross-partition and hierarchical-prefix queries are intentionally not exposed yet. The pinned
-native ABI returns only the first item of pre-split driver pages, so those pipelines cannot be
-safely exposed as general query support without a native fix. Complete logical-partition
-queries use the driver's direct request pipeline and return complete JSON feed envelopes.
+The pinned native driver v0.2.0 returns complete raw and pre-split query pages.
+`FeedOptions.MaxFanOut` limits initial physical-partition fan-out; zero uses the native default
+of 100. This is not a runtime limit: resume and later splits do not recheck it. Broad scopes
+can consume substantial RUs. `QueryPlanMode` selects local-preferred (default) or gateway-only
+planning. Optional `PopulateIndexMetrics` and `PopulateQueryMetrics` flags request the
+corresponding response fields; index metrics are already decoded JSON.
+
+The published ABI does not expose arbitrary physical/EPK ranges or Rust's buffered-window
+configuration. Buffered query shapes retain the native default window (1000), require finite
+TOP/LIMIT where the engine requires it, and may not support continuation snapshots.
+Cross-partition aggregates such as COUNT and SUM are rejected by this published engine;
+the Go binding preserves that error rather than computing aggregates itself.
+
+Contexts bound query waits; canceling an admitted page or checkpoint terminates that pager
+without claiming to cancel native work. Late completions are drained safely, and client
+shutdown waits for their cleanup. Native per-page timeouts retain the configured duration
+(the driver clamps positive values below one second); subsequent page contexts do not inherit
+the first page's remaining deadline. Point operations continue to await authoritative native
+outcomes after admission, so a committed write is not mislabeled as canceled.
+
+#### Rust query-option parity
+
+Against the Rust revision used to publish native v0.2.0, query-option coverage is:
+
+| Rust setting | Go support |
+| --- | --- |
+| Positive page-size hint, continuation token, maximum fan-out | `FeedOptions.PageSizeHint`, `ContinuationToken`, `MaxFanOut` |
+| Query-plan mode, session token, index/query metric flags | Corresponding `QueryOptions` fields |
+| Buffered-query window limit | Not exposed by the native ABI; native default of 1000 applies |
+| Explicit `MaxItemCountHint::ServerDecides` | Not independently expressible through this ABI; Go zero selects the native unset/default behavior |
+| Common per-operation settings | Only a subset: consistency strategy, excluded regions, content response on writes, and end-to-end timeout |
+
+The shared per-operation surface is not yet at full Rust parity. Go does not expose Rust's
+throughput bucket/priority, throttle/session/failover retry controls, endpoint-unavailability
+TTL, session-capture disable flag, hedging/availability strategy, custom headers, or configurable
+binary encoding. Go requests text JSON. Not all of these gaps require a new native release;
+the buffered-window and explicit server-decides gaps do require a native contract change.
+Rust also distinguishes inherited versus explicitly cleared region exclusions; Go currently
+maps both nil and empty exclusion slices to inheritance.
 
 ### Running the end-to-end tests
 

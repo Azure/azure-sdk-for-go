@@ -22,6 +22,10 @@ import (
 
 // VirtualMachineBulkOperationsServer is a fake server for instances of the armbulkactions.VirtualMachineBulkOperationsClient type.
 type VirtualMachineBulkOperationsServer struct {
+	// BulkAcknowledgeOperationErrors is the fake for method VirtualMachineBulkOperationsClient.BulkAcknowledgeOperationErrors
+	// HTTP status codes to indicate success: http.StatusOK
+	BulkAcknowledgeOperationErrors func(ctx context.Context, resourceGroupName string, location string, body armbulkactions.AcknowledgeBulkOperationErrorsRequest, options *armbulkactions.VirtualMachineBulkOperationsClientBulkAcknowledgeOperationErrorsOptions) (resp azfake.Responder[armbulkactions.VirtualMachineBulkOperationsClientBulkAcknowledgeOperationErrorsResponse], errResp azfake.ErrorResponder)
+
 	// BulkCancelOperations is the fake for method VirtualMachineBulkOperationsClient.BulkCancelOperations
 	// HTTP status codes to indicate success: http.StatusOK
 	BulkCancelOperations func(ctx context.Context, resourceGroupName string, location string, requestBody armbulkactions.CancelOperationsContent, options *armbulkactions.VirtualMachineBulkOperationsClientBulkCancelOperationsOptions) (resp azfake.Responder[armbulkactions.VirtualMachineBulkOperationsClientBulkCancelOperationsResponse], errResp azfake.ErrorResponder)
@@ -93,6 +97,8 @@ func (v *VirtualMachineBulkOperationsServerTransport) dispatchToMethodFake(req *
 		}
 		if !intercepted {
 			switch method {
+			case "VirtualMachineBulkOperationsClient.BulkAcknowledgeOperationErrors":
+				res.resp, res.err = v.dispatchBulkAcknowledgeOperationErrors(req)
 			case "VirtualMachineBulkOperationsClient.BulkCancelOperations":
 				res.resp, res.err = v.dispatchBulkCancelOperations(req)
 			case "VirtualMachineBulkOperationsClient.BulkDeallocateOperation":
@@ -123,6 +129,43 @@ func (v *VirtualMachineBulkOperationsServerTransport) dispatchToMethodFake(req *
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
+}
+
+func (v *VirtualMachineBulkOperationsServerTransport) dispatchBulkAcknowledgeOperationErrors(req *http.Request) (*http.Response, error) {
+	if v.srv.BulkAcknowledgeOperationErrors == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BulkAcknowledgeOperationErrors not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Compute/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/acknowledgeBulkOperationErrors`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armbulkactions.AcknowledgeBulkOperationErrorsRequest](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	locationParam, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := v.srv.BulkAcknowledgeOperationErrors(req.Context(), resourceGroupNameParam, locationParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).AcknowledgeBulkOperationErrorsResponse, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
 }
 
 func (v *VirtualMachineBulkOperationsServerTransport) dispatchBulkCancelOperations(req *http.Request) (*http.Response, error) {

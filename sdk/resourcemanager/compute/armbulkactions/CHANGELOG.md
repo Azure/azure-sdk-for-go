@@ -1,5 +1,13 @@
 # Release History
 
+## 0.6.0 (2026-09-29)
+### Features Added
+
+- New function `*VirtualMachineBulkOperationsClient.BulkAcknowledgeOperationErrors(ctx context.Context, resourceGroupName string, location string, body AcknowledgeBulkOperationErrorsRequest, options *VirtualMachineBulkOperationsClientBulkAcknowledgeOperationErrorsOptions) (VirtualMachineBulkOperationsClientBulkAcknowledgeOperationErrorsResponse, error)`
+- New struct `AcknowledgeBulkOperationErrorsRequest`
+- New struct `AcknowledgeBulkOperationErrorsResponse`
+
+
 ## 0.5.0 (2026-09-25)
 ### Breaking Changes
 

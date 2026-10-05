@@ -10,6 +10,9 @@
 
 ### Other Changes
 
+* Added `azure-deprecating` to the default set of allowed (non-redacted) response headers for logging.
+* Replaced internal default HTTP client with the one from `sdk/internal`.
+
 ## 1.23.2 (2026-09-28)
 
 ### Bugs Fixed

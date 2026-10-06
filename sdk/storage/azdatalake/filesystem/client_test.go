@@ -1419,6 +1419,62 @@ func (s *RecordedTestSuite) TestCreateFileClientFromDirectoryClientWithSpecialFi
 	_require.NoError(err)
 }
 
+func createListPathsFixtures(t *testing.T, fsClient *filesystem.Client, testName string) []string {
+	t.Helper()
+	_require := require.New(t)
+	parentName, _, found := strings.Cut(testName, "/")
+	_require.True(found)
+
+	// Existing recordings predate explicit parent creation and sanitize returned path names.
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		parentClient := fsClient.NewDirectoryClient(parentName)
+		_, err := parentClient.Create(context.Background(), nil)
+		_require.NoError(err)
+	}
+
+	names := []string{
+		testName + "file1",
+		testName + "file2",
+		testName + "dir1",
+		testName + "dir2",
+	}
+
+	client := fsClient.NewFileClient(names[0])
+	_, err := client.Create(context.Background(), nil)
+	_require.NoError(err)
+	client = fsClient.NewFileClient(names[1])
+	_, err = client.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	dirClient := fsClient.NewDirectoryClient(names[2])
+	_, err = dirClient.Create(context.Background(), nil)
+	_require.NoError(err)
+	dirClient = fsClient.NewDirectoryClient(names[3])
+	_, err = dirClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	return append([]string{parentName}, names...)
+}
+
+func requireListPathNames(t *testing.T, paths []*filesystem.Path, expected []string) {
+	t.Helper()
+	_require := require.New(t)
+	_require.Len(paths, len(expected))
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		return
+	}
+
+	actual := make([]string, 0, len(paths))
+	seen := make(map[string]struct{}, len(paths))
+	for _, path := range paths {
+		_require.NotNil(path.Name)
+		_require.NotContains(seen, *path.Name, "duplicate path %q", *path.Name)
+		seen[*path.Name] = struct{}{}
+		actual = append(actual, *path.Name)
+	}
+	_require.ElementsMatch(expected, actual)
+}
+
 func (s *RecordedTestSuite) TestFilesystemListPathsWithRecursive() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -1431,18 +1487,7 @@ func (s *RecordedTestSuite) TestFilesystemListPathsWithRecursive() {
 	_, err = fsClient.Create(context.Background(), nil)
 	_require.NoError(err)
 
-	client := fsClient.NewFileClient(testName + "file1")
-	_, err = client.Create(context.Background(), nil)
-	_require.NoError(err)
-	client = fsClient.NewFileClient(testName + "file2")
-	_, err = client.Create(context.Background(), nil)
-	_require.NoError(err)
-	dirClient := fsClient.NewDirectoryClient(testName + "dir1")
-	_, err = dirClient.Create(context.Background(), nil)
-	_require.NoError(err)
-	dirClient = fsClient.NewDirectoryClient(testName + "dir2")
-	_, err = dirClient.Create(context.Background(), nil)
-	_require.NoError(err)
+	expectedNames := createListPathsFixtures(s.T(), fsClient, testName)
 
 	var paths []*filesystem.Path
 	pager := fsClient.NewListPathsPager(true, nil)
@@ -1450,13 +1495,8 @@ func (s *RecordedTestSuite) TestFilesystemListPathsWithRecursive() {
 		resp, err := pager.NextPage(context.Background())
 		_require.NoError(err)
 		paths = append(paths, resp.Paths...)
-
-		if err != nil {
-			break
-		}
 	}
-	_require.Equal(5, len(paths))
-	_require.NotNil(paths[0].IsDirectory)
+	requireListPathNames(s.T(), paths, expectedNames)
 }
 
 func (s *RecordedTestSuite) TestFilesystemListPathsRecursiveWithEtagCheck() {

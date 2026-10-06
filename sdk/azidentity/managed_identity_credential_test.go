@@ -739,7 +739,7 @@ func TestManagedIdentityCredential_ServiceFabricCallerTransport(t *testing.T) {
 			identityServerThumbprint: hex.EncodeToString(thumbprint[:]),
 		})
 		opts := &ManagedIdentityCredentialOptions{}
-		opts.ClientOptions.Transport = &http.Client{Transport: callerTransport}
+		opts.Transport = &http.Client{Transport: callerTransport}
 		cred, err := NewManagedIdentityCredential(opts)
 		require.NoError(t, err)
 		testGetTokenSuccess(t, cred, scope)
@@ -755,7 +755,7 @@ func TestManagedIdentityCredential_ServiceFabricCallerTransport(t *testing.T) {
 			identityServerThumbprint: hex.EncodeToString(thumbprint[:]),
 		})
 		opts := &ManagedIdentityCredentialOptions{}
-		opts.ClientOptions.Transport = nonHTTPClientTransporter{}
+		opts.Transport = nonHTTPClientTransporter{}
 		_, err := NewManagedIdentityCredential(opts)
 		require.Error(t, err)
 		require.Contains(t, err.Error(), "*http.Client")

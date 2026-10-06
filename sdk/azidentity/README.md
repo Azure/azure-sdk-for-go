@@ -75,7 +75,7 @@ On Service Fabric, `ManagedIdentityCredential` pins the endpoint certificate to
 the default transport. A custom transport must be an `*http.Client` whose `Transport` is `nil` or
 an `*http.Transport` without custom TLS dialing or verification callbacks. The credential derives
 the pinned client without modifying the caller's client. Unsupported transports cause credential
-construction to fail. See the [troubleshooting guide](TROUBLESHOOTING.md#azure-service-fabric-managed-identity)
+construction to fail. See the [troubleshooting guide](https://aka.ms/azsdk/go/identity/troubleshoot#azure-service-fabric-managed-identity)
 for configuration errors.
 
 ## Examples

@@ -741,15 +741,11 @@ func TestManagedIdentityCredential_ServiceFabricCallerTransport(t *testing.T) {
 		opts := &ManagedIdentityCredentialOptions{}
 		opts.ClientOptions.Transport = &http.Client{Transport: callerTransport}
 		cred, err := NewManagedIdentityCredential(opts)
-		if err != nil {
-			t.Fatal(err)
-		}
+		require.NoError(t, err)
 		testGetTokenSuccess(t, cred, scope)
 		mu.Lock()
 		defer mu.Unlock()
-		if !proxyCalled {
-			t.Fatal("expected the caller's transport to be used as the pinning base")
-		}
+		require.True(t, proxyCalled, "expected the caller's transport to be used as the pinning base")
 	})
 
 	t.Run("non-*http.Client Transport is rejected", func(t *testing.T) {

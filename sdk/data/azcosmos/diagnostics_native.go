@@ -189,12 +189,24 @@ func copyDiagnosticAttempts(d *C.cosmos_diagnostics_t, out *Diagnostics) error {
 	return nil
 }
 
-// copyDiagnosticJSON copies the driver's detailed diagnostics rendering into out.JSON. It leaves
-// that field empty on failure rather than touching fields the other sections own.
+// copyDiagnosticJSON copies the driver's diagnostics rendering into out.JSON, at the compact
+// SUMMARY verbosity rather than DETAILED.
+//
+// Every completion pays for whatever verbosity is requested here regardless of whether a caller
+// ever reads JSON, since the native handle cannot outlive translateCompletionOutcome (there is no
+// retain/clone for cosmos_diagnostics_t, so rendering cannot be deferred to first Go-side access
+// the way Rust's and Java's Cosmos SDKs defer their own JSON materialization). SUMMARY is the
+// driver's bounded, deduplicated rendering; DETAILED repeats the full per-attempt timeline this
+// package already copies losslessly into out.Attempts, at real per-request serialization and
+// allocation cost most callers never read. A caller that needs the full per-attempt detail should
+// use out.Attempts directly rather than parsing JSON, which is diagnostic text, not a stable
+// schema.
+//
+// It leaves that field empty on failure rather than touching fields the other sections own.
 func copyDiagnosticJSON(d *C.cosmos_diagnostics_t, out *Diagnostics) error {
 	var data *C.uint8_t
 	var length C.uintptr_t
-	if status := C.cosmos_diagnostics_to_json(d, C.cosmos_diagnostics_verbosity_t_DETAILED, &data, &length); status != 0 { //nolint:gocritic // dupSubExpr targets cgo-generated code.
+	if status := C.cosmos_diagnostics_to_json(d, C.cosmos_diagnostics_verbosity_t_SUMMARY, &data, &length); status != 0 { //nolint:gocritic // dupSubExpr targets cgo-generated code.
 		return fmt.Errorf("azcosmos: rendering native diagnostics (status %d)", int32(status))
 	}
 	if length == 0 {

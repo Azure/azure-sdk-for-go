@@ -39,8 +39,11 @@ type Diagnostics struct {
 	// Attempts contains the retained per-attempt records in execution order.
 	Attempts []DiagnosticAttempt
 
-	// JSON is the driver's detailed diagnostics rendering, copied into Go memory.
-	// It is diagnostic data, not a stable schema; do not parse it for SDK behavior.
+	// JSON is the driver's diagnostics rendering, copied into Go memory, at the compact SUMMARY
+	// verbosity rather than the full per-attempt DETAILED rendering: every completion pays for
+	// this render whether or not it is read, so SUMMARY keeps that cost bounded. Use
+	// [Diagnostics.Attempts] for the full per-attempt detail instead of parsing JSON, which is
+	// diagnostic data, not a stable schema.
 	JSON string
 }
 

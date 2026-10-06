@@ -1,26 +1,6 @@
 # Release History
 
-## 2.0.0-beta.3 (2026-07-22)
-### Features Added
-
-- New field `Priority`, `VMSize`, `Zone` in struct `VirtualMachine`
-
-
-## 2.0.0-beta.2 (2026-06-01)
-### Breaking Changes
-
-- `FleetModeInstance` from enum `FleetMode` has been removed
-- `VMOperationStatusCancelFailedStatusUnknown`, `VMOperationStatusCanceled` from enum `VMOperationStatus` has been removed
-- Function `*FleetsClient.BeginCancel` has been removed
-
-### Features Added
-
-- New value `FleetModeLaunch` added to enum type `FleetMode`
-- New value `VMOperationStatusLaunching` added to enum type `VMOperationStatus`
-- New field `VMNamePrefix` in struct `FleetProperties`
-
-
-## 2.0.0-beta.1 (2025-08-21)
+## 2.0.0 (2026-09-29)
 ### Breaking Changes
 
 - `ManagedServiceIdentityTypeSystemAndUserAssigned` from enum `ManagedServiceIdentityType` has been removed
@@ -29,16 +9,12 @@
 
 - New value `ManagedServiceIdentityTypeSystemAssignedUserAssigned` added to enum type `ManagedServiceIdentityType`
 - New enum type `CapacityType` with values `CapacityTypeVCPU`, `CapacityTypeVM`
-- New enum type `FleetMode` with values `FleetModeInstance`, `FleetModeManaged`
-- New enum type `VMOperationStatus` with values `VMOperationStatusCancelFailedStatusUnknown`, `VMOperationStatusCanceled`, `VMOperationStatusCreating`, `VMOperationStatusFailed`, `VMOperationStatusSucceeded`
-- New enum type `ZoneDistributionStrategy` with values `ZoneDistributionStrategyBestEffortSingleZone`, `ZoneDistributionStrategyPrioritized`
-- New function `*FleetsClient.BeginCancel(context.Context, string, string, *FleetsClientBeginCancelOptions) (*runtime.Poller[FleetsClientCancelResponse], error)`
-- New function `*FleetsClient.NewListVirtualMachinesPager(string, string, *FleetsClientListVirtualMachinesOptions) *runtime.Pager[FleetsClientListVirtualMachinesResponse]`
+- New enum type `FleetMode` with values `FleetModeLaunch`, `FleetModeManaged`
+- New enum type `VMOperationStatus` with values `VMOperationStatusCreating`, `VMOperationStatusFailed`, `VMOperationStatusLaunching`, `VMOperationStatusSucceeded`
+- New function `*FleetsClient.NewListVirtualMachinesPager(resourceGroupName string, name string, options *FleetsClientListVirtualMachinesOptions) *runtime.Pager[FleetsClientListVirtualMachinesResponse]`
 - New struct `VirtualMachine`
 - New struct `VirtualMachineListResult`
-- New struct `ZoneAllocationPolicy`
-- New struct `ZonePreference`
-- New field `CapacityType`, `Mode`, `ZoneAllocationPolicy` in struct `FleetProperties`
+- New field `CapacityType`, `Mode`, `VMNamePrefix` in struct `FleetProperties`
 
 
 ## 1.0.0 (2024-10-22)

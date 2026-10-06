@@ -1,10 +1,6 @@
 # Release History
 
-## 1.23.3-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
+## 1.23.3 (2026-10-06)
 
 ### Bugs Fixed
 

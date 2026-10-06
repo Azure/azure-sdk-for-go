@@ -1544,16 +1544,17 @@ func (s *RecordedTestSuite) TestFilesystemListPathsWithRecursiveNoPrefix() {
 	_, err = fsClient.Create(context.Background(), nil)
 	_require.NoError(err)
 
-	client := fsClient.NewFileClient("file1")
+	expectedNames := []string{"file1", "file2", "dir1", "dir2"}
+	client := fsClient.NewFileClient(expectedNames[0])
 	_, err = client.Create(context.Background(), nil)
 	_require.NoError(err)
-	client = fsClient.NewFileClient("file2")
+	client = fsClient.NewFileClient(expectedNames[1])
 	_, err = client.Create(context.Background(), nil)
 	_require.NoError(err)
-	dirClient := fsClient.NewDirectoryClient("dir1")
+	dirClient := fsClient.NewDirectoryClient(expectedNames[2])
 	_, err = dirClient.Create(context.Background(), nil)
 	_require.NoError(err)
-	dirClient = fsClient.NewDirectoryClient("dir2")
+	dirClient = fsClient.NewDirectoryClient(expectedNames[3])
 	_, err = dirClient.Create(context.Background(), nil)
 	_require.NoError(err)
 
@@ -1563,12 +1564,8 @@ func (s *RecordedTestSuite) TestFilesystemListPathsWithRecursiveNoPrefix() {
 		resp, err := pager.NextPage(context.Background())
 		_require.NoError(err)
 		paths = append(paths, resp.Paths...)
-		if err != nil {
-			break
-		}
 	}
-	_require.Equal(4, len(paths))
-	_require.NotNil(paths[0].IsDirectory)
+	requireListPathNames(s.T(), paths, expectedNames)
 }
 
 func (s *RecordedTestSuite) TestFilesystemListPathsWithoutRecursive() {
@@ -1583,28 +1580,16 @@ func (s *RecordedTestSuite) TestFilesystemListPathsWithoutRecursive() {
 	_, err = fsClient.Create(context.Background(), nil)
 	_require.NoError(err)
 
-	client := fsClient.NewFileClient(testName + "file1")
-	_, err = client.Create(context.Background(), nil)
-	_require.NoError(err)
-	client = fsClient.NewFileClient(testName + "file2")
-	_, err = client.Create(context.Background(), nil)
-	_require.NoError(err)
-	dirClient := fsClient.NewDirectoryClient(testName + "dir1")
-	_, err = dirClient.Create(context.Background(), nil)
-	_require.NoError(err)
-	dirClient = fsClient.NewDirectoryClient(testName + "dir2")
-	_, err = dirClient.Create(context.Background(), nil)
-	_require.NoError(err)
+	expectedNames := createListPathsFixtures(s.T(), fsClient, testName)
 
+	var paths []*filesystem.Path
 	pager := fsClient.NewListPathsPager(false, nil)
 	for pager.More() {
 		resp, err := pager.NextPage(context.Background())
 		_require.NoError(err)
-		_require.Equal(1, len(resp.Paths))
-		if err != nil {
-			break
-		}
+		paths = append(paths, resp.Paths...)
 	}
+	requireListPathNames(s.T(), paths, expectedNames[:1])
 }
 
 func (s *RecordedTestSuite) TestFilesystemListPathsWithMaxResults() {
@@ -1619,34 +1604,21 @@ func (s *RecordedTestSuite) TestFilesystemListPathsWithMaxResults() {
 	_, err = fsClient.Create(context.Background(), nil)
 	_require.NoError(err)
 
-	client := fsClient.NewFileClient(testName + "file1")
-	_, err = client.Create(context.Background(), nil)
-	_require.NoError(err)
-	client = fsClient.NewFileClient(testName + "file2")
-	_, err = client.Create(context.Background(), nil)
-	_require.NoError(err)
-	dirClient := fsClient.NewDirectoryClient(testName + "dir1")
-	_, err = dirClient.Create(context.Background(), nil)
-	_require.NoError(err)
-	dirClient = fsClient.NewDirectoryClient(testName + "dir2")
-	_, err = dirClient.Create(context.Background(), nil)
-	_require.NoError(err)
+	expectedNames := createListPathsFixtures(s.T(), fsClient, testName)
 
+	const maxResults = int32(2)
 	opts := filesystem.ListPathsOptions{
-		MaxResults: to.Ptr(int32(2)),
+		MaxResults: to.Ptr(maxResults),
 	}
-	pages := 3
-	count := 0
+	var paths []*filesystem.Path
 	pager := fsClient.NewListPathsPager(true, &opts)
 	for pager.More() {
-		_, err = pager.NextPage(context.Background())
+		resp, err := pager.NextPage(context.Background())
 		_require.NoError(err)
-		count += 1
-		if err != nil {
-			break
-		}
+		_require.LessOrEqual(len(resp.Paths), int(maxResults))
+		paths = append(paths, resp.Paths...)
 	}
-	_require.Equal(pages, count)
+	requireListPathNames(s.T(), paths, expectedNames)
 }
 
 func (s *RecordedTestSuite) TestFilesystemListPathsWithPrefix() {

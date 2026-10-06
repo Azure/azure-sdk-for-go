@@ -68,6 +68,16 @@ in any hosting environment which supports managed identities, such as (this list
 * [Azure Service Fabric](https://learn.microsoft.com/azure/service-fabric/concepts-managed-identity)
 * [Azure Virtual Machines](https://learn.microsoft.com/entra/identity/managed-identities-azure-resources/how-to-use-vm-token)
 
+### Service Fabric transport requirements
+
+On Service Fabric, `ManagedIdentityCredential` pins the endpoint certificate to
+`IDENTITY_SERVER_THUMBPRINT` and rejects redirects. Leave `ClientOptions.Transport` `nil` to use
+the default transport. A custom transport must be an `*http.Client` whose `Transport` is `nil` or
+an `*http.Transport` without custom TLS dialing or verification callbacks. The credential derives
+the pinned client without modifying the caller's client. Unsupported transports cause credential
+construction to fail. See the [troubleshooting guide](https://aka.ms/azsdk/go/identity/troubleshoot#azure-service-fabric-managed-identity)
+for configuration errors.
+
 ## Examples
 
 - [Authenticate with DefaultAzureCredential](#authenticate-with-defaultazurecredential "Authenticate with DefaultAzureCredential")
@@ -244,5 +254,3 @@ additional questions or comments.
 <!-- LINKS -->
 [ctc_overview]: https://aka.ms/azsdk/go/identity/credential-chains#chainedtokencredential-overview
 [dac_overview]: https://aka.ms/azsdk/go/identity/credential-chains#defaultazurecredential-overview
-
-

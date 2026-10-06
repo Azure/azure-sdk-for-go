@@ -1,6 +1,6 @@
 # Release History
 
-## 2.1.0 (2026-10-01)
+## 2.1.0 (2026-10-06)
 ### Features Added
 
 - New value `JSONWebKeyTypeOctHSM` added to enum type `JSONWebKeyType`

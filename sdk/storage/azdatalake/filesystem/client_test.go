@@ -1633,31 +1633,19 @@ func (s *RecordedTestSuite) TestFilesystemListPathsWithPrefix() {
 	_, err = fsClient.Create(context.Background(), nil)
 	_require.NoError(err)
 
-	client := fsClient.NewFileClient(testName + "file1")
-	_, err = client.Create(context.Background(), nil)
-	_require.NoError(err)
-	client = fsClient.NewFileClient(testName + "file2")
-	_, err = client.Create(context.Background(), nil)
-	_require.NoError(err)
-	dirClient := fsClient.NewDirectoryClient(testName + "dir1")
-	_, err = dirClient.Create(context.Background(), nil)
-	_require.NoError(err)
-	dirClient = fsClient.NewDirectoryClient(testName + "dir2")
-	_, err = dirClient.Create(context.Background(), nil)
-	_require.NoError(err)
+	expectedNames := createListPathsFixtures(s.T(), fsClient, testName)
 
 	opts := filesystem.ListPathsOptions{
 		Prefix: to.Ptr("Test"),
 	}
+	var paths []*filesystem.Path
 	pager := fsClient.NewListPathsPager(true, &opts)
 	for pager.More() {
 		resp, err := pager.NextPage(context.Background())
 		_require.NoError(err)
-		_require.Equal(4, len(resp.Paths))
-		if err != nil {
-			break
-		}
+		paths = append(paths, resp.Paths...)
 	}
+	requireListPathNames(s.T(), paths, expectedNames[1:])
 }
 
 func (s *RecordedTestSuite) TestFilesystemListPathsWithContinuation() {
@@ -1672,37 +1660,36 @@ func (s *RecordedTestSuite) TestFilesystemListPathsWithContinuation() {
 	_, err = fsClient.Create(context.Background(), nil)
 	_require.NoError(err)
 
-	client := fsClient.NewFileClient(testName + "file1")
-	_, err = client.Create(context.Background(), nil)
-	_require.NoError(err)
-	client = fsClient.NewFileClient(testName + "file2")
-	_, err = client.Create(context.Background(), nil)
-	_require.NoError(err)
-	dirClient := fsClient.NewDirectoryClient(testName + "dir1")
-	_, err = dirClient.Create(context.Background(), nil)
-	_require.NoError(err)
-	dirClient = fsClient.NewDirectoryClient(testName + "dir2")
-	_, err = dirClient.Create(context.Background(), nil)
-	_require.NoError(err)
+	expectedNames := createListPathsFixtures(s.T(), fsClient, testName)
 
+	const maxResults = int32(3)
 	opts := filesystem.ListPathsOptions{
-		MaxResults: to.Ptr(int32(3)),
+		MaxResults: to.Ptr(maxResults),
 	}
 	pager := fsClient.NewListPathsPager(true, &opts)
 
 	resp, err := pager.NextPage(context.Background())
 	_require.NoError(err)
-	_require.Equal(3, len(resp.Paths))
+	_require.LessOrEqual(len(resp.Paths), int(maxResults))
 	_require.NotNil(resp.Continuation)
 
+	paths := append([]*filesystem.Path(nil), resp.Paths...)
 	token := resp.Continuation
-	pager = fsClient.NewListPathsPager(true, &filesystem.ListPathsOptions{
+	resumeOptions := filesystem.ListPathsOptions{
 		Marker: token,
-	})
-	resp, err = pager.NextPage(context.Background())
-	_require.NoError(err)
-	_require.Equal(2, len(resp.Paths))
-	_require.Nil(resp.Continuation)
+	}
+	// The existing recording resumed without maxResults, so only live runs can add the page bound.
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		resumeOptions.MaxResults = to.Ptr(maxResults)
+	}
+	pager = fsClient.NewListPathsPager(true, &resumeOptions)
+	for pager.More() {
+		resp, err = pager.NextPage(context.Background())
+		_require.NoError(err)
+		_require.LessOrEqual(len(resp.Paths), int(maxResults))
+		paths = append(paths, resp.Paths...)
+	}
+	requireListPathNames(s.T(), paths, expectedNames)
 }
 
 func (s *RecordedTestSuite) TestFilesystemListPathsWithEncryptionContext() {

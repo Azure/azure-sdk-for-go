@@ -7,8 +7,6 @@
 - Added `Client.NewListSessionsForQueuePager()` and `Client.NewListSessionsForSubscriptionPager()` to list the IDs of sessions in session-enabled queues and subscriptions. By default they list sessions that have active messages, as well as sessions that have session state set but no active messages; set `SessionStateUpdatedAfter` to instead list sessions whose session state was updated after a given time. (PR#26688)
 - Added `SQLFilterCount` and `CorrelationFilterCount` to `TopicRuntimeProperties`, exposing the total number of SQL filters and correlation filters across all of a topic's subscriptions, including the default rule each subscription is created with. The service reports these at api-version 2024-05 or later. (PR#27323)
 
-### Breaking Changes
-
 ### Bugs Fixed
 
 - `AcceptNextSessionForQueue` and `AcceptNextSessionForSubscription` now pass

@@ -74,8 +74,8 @@ func (d *nativeDriver) execute(ctx context.Context, req itemRequest) (ItemRespon
 // to, the cookie to round-trip onto it, and somewhere to report a pre-flight rejection. It returns
 // NULL when the operation was rejected before it started, which posts no completion.
 //
-// Native operations cannot be canceled. After admission we await the authoritative result,
-// including committed writes, before releasing the operation's cookie and client lifetime guard.
+// Non-authoritative waits may return on cancellation; late completion cleanup keeps native
+// resources alive. Point operations separately await authoritative results, including writes.
 func (d *nativeDriver) awaitCompletion(
 	ctx context.Context,
 	doing string,
@@ -134,9 +134,26 @@ func (d *nativeDriver) awaitOperation(
 		}
 	}()
 
-	select {
-	case result := <-pending.result:
+	return awaitOperationResult(ctx, pending.result, authoritative, func() {
+		abandoned = true
+		d.pending.Add(1)
+		go func() {
+			defer d.pending.Done()
+			defer handle.Delete()
+			defer C.cosmos_operation_handle_free(op)
+			result := <-pending.result
+			result.release()
+		}()
+	})
+}
+
+func awaitOperationResult(ctx context.Context, results <-chan completionResult, authoritative bool, abandon func()) (completionResult, error) {
+	finish := func(result completionResult) (completionResult, error) {
 		if cause := ctx.Err(); cause != nil {
+			if !authoritative {
+				defer result.release()
+				return completionResult{}, completionCancellationError(cause, result)
+			}
 			terminal, err := resultAfterCancellation(cause, result)
 			if err != nil {
 				result.release()
@@ -144,23 +161,23 @@ func (d *nativeDriver) awaitOperation(
 			return terminal, err
 		}
 		return result, nil
-
+	}
+	select {
+	case result := <-results:
+		return finish(result)
 	case <-ctx.Done():
 		if !authoritative {
-			abandoned = true
-			d.pending.Add(1)
-			go func() {
-				defer d.pending.Done()
-				defer handle.Delete()
-				defer C.cosmos_operation_handle_free(op)
-				result := <-pending.result
-				result.release()
-			}()
+			select {
+			case result := <-results:
+				return finish(result)
+			default:
+			}
+			abandon()
 			return completionResult{}, newOperationCancelledError(ctx.Err(), 0, "")
 		}
 		// The terminal result is authoritative when completion and cancellation race. In
 		// particular, a successful write must not be reported as cancelled after it committed.
-		result := <-pending.result
+		result := <-results
 		terminal, err := resultAfterCancellation(ctx.Err(), result)
 		if err != nil {
 			result.release()
@@ -173,6 +190,10 @@ func resultAfterCancellation(cause error, result completionResult) (completionRe
 	if !result.cancelled {
 		return result, nil
 	}
+	return completionResult{}, completionCancellationError(cause, result)
+}
+
+func completionCancellationError(cause error, result completionResult) error {
 	requestCharge := result.response.RequestCharge
 	activityID := result.response.ActivityID
 	var completionErr *Error
@@ -180,7 +201,7 @@ func resultAfterCancellation(cause error, result completionResult) (completionRe
 		requestCharge = completionErr.RequestCharge
 		activityID = completionErr.ActivityID
 	}
-	return completionResult{}, newOperationCancelledError(cause, requestCharge, activityID)
+	return newOperationCancelledError(cause, requestCharge, activityID)
 }
 
 // inspectAwaitCompletionSubmission reports whether awaitCompletion invoked its submit closure.

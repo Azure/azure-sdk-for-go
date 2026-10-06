@@ -52,6 +52,8 @@ func (p *QueryItemsPager) More() bool {
 
 // NextPage fetches one page. A final empty page can signal exhaustion through More.
 // Failures after execution starts terminate this pager; retries belong to the native driver.
+// The context bounds the Go wait, not admitted native execution. Client.Close may wait
+// for native work to finish after this method returns a context error.
 func (p *QueryItemsPager) NextPage(ctx context.Context) (QueryItemsResponse, error) {
 	p.mu.Lock()
 	defer p.mu.Unlock()
@@ -97,6 +99,7 @@ func (p *QueryItemsPager) NextPage(ctx context.Context) (QueryItemsResponse, err
 // ContinuationToken snapshots delivered progress without advancing the query.
 // Call after a successful NextPage and before exhaustion or Close. Unsupported snapshots
 // return an error but do not prevent further paging. Resume with the same query and scope.
+// The context bounds the Go wait; it does not cancel admitted native checkpoint work.
 func (p *QueryItemsPager) ContinuationToken(ctx context.Context) (string, error) {
 	p.mu.Lock()
 	defer p.mu.Unlock()

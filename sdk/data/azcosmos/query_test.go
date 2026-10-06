@@ -367,6 +367,20 @@ func TestQuerySetupChargeOnErrors(t *testing.T) {
 	require.Same(t, queryDiagnostics, got.Diagnostics)
 	require.Equal(t, 429, got.StatusCode)
 	require.Equal(t, uint32(3), got.AttemptCount)
+
+	// A genuinely empty Response (no setup fetch happened at all) must pass err through
+	// unchanged rather than wrapping it.
+	require.Same(t, original, addQuerySetupCharge(original, Response{}))
+
+	// A successful setup completion can carry diagnostics/status/attempt metadata even when its
+	// request charge is absent or zero; the zero charge alone must not be treated as "no setup"
+	// and skip the backfill.
+	zeroChargeDiagnostics := &Diagnostics{StatusCode: 200, AttemptCount: 1}
+	zeroChargeSetup := Response{ActivityID: "metadata", Diagnostics: zeroChargeDiagnostics, StatusCode: 200, AttemptCount: 1}
+	require.ErrorAs(t, addQuerySetupCharge(bare, zeroChargeSetup), &got)
+	require.Same(t, zeroChargeDiagnostics, got.Diagnostics)
+	require.Equal(t, 200, got.StatusCode)
+	require.Equal(t, uint32(1), got.AttemptCount)
 }
 
 func TestQueryDiagnosticBuild(t *testing.T) {

@@ -47,7 +47,9 @@ The v0.2.0 driver owns throttle and session retries; Go submits once and exposes
 attempt count and final status on responses and errors. When attached by the driver,
 `Response.Diagnostics` and `Error.Diagnostics` contain a Go-owned snapshot of total charge,
 elapsed time, regions contacted, retained per-attempt status/substatus and latency, and the
-driver's detailed JSON rendering. The native driver can compact old attempts; `AttemptCount`
+driver's JSON rendering at `ClientOptions.DiagnosticsVerbosity` (a compact per-region summary by
+default; the full per-attempt rendering only when set to `DiagnosticsVerbosityDetailed`). The
+native driver can compact old attempts; `AttemptCount`
 remains the total even when `len(Diagnostics.Attempts)` is smaller. Diagnostics are not available
 when cancellation returns before a native completion.
 

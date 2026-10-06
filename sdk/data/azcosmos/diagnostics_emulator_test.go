@@ -172,8 +172,12 @@ func TestEmulatorDiagnosticsVerbosityOption(t *testing.T) {
 	// The default client, used by every other diagnostics test in this file, must render the same
 	// way as an explicit DiagnosticsVerbositySummary.
 	defaultContainer := emulatorContainer(t)
-	trackEmulatorItem(t, defaultContainer, pk, id+"-default")
-	defaultResult, err := defaultContainer.CreateItem(t.Context(), pk, id+"-default", body, nil)
+	defaultID := id + "-default"
+	defaultPK := NewPartitionKeyString(defaultID)
+	defaultBody, err := json.Marshal(map[string]string{"id": defaultID, "pk": defaultID})
+	require.NoError(t, err)
+	trackEmulatorItem(t, defaultContainer, defaultPK, defaultID)
+	defaultResult, err := defaultContainer.CreateItem(t.Context(), defaultPK, defaultID, defaultBody, nil)
 	require.NoError(t, err)
 	require.True(t, json.Valid([]byte(defaultResult.Diagnostics.JSON)))
 }

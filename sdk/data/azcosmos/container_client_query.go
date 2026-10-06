@@ -277,7 +277,10 @@ func validateQueryPartitionKey(body []byte, partitionKey PartitionKey) error {
 }
 
 func addQuerySetupCharge(err error, setup Response) error {
-	if setup.RequestCharge == 0 {
+	// RequestCharge alone is not a reliable "no setup" sentinel: a successful setup completion can
+	// carry diagnostics/status/attempt metadata even when the charge header is absent or zero.
+	// Only treat the zero Response itself as "nothing to add".
+	if setup == (Response{}) {
 		return err
 	}
 	var cosmosErr *Error

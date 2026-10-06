@@ -69,14 +69,21 @@ func (p *pendingOperation) deliver(result completionResult) {
 	p.result <- result
 }
 
-func (p *pendingOperation) abandon() {
+// abandon marks the operation closed, so a deliver racing with it releases the result itself
+// instead of blocking or leaking it, and atomically claims whatever result was already buffered at
+// that moment. The second return value reports whether one was: a true result must not be
+// discarded as part of cancellation, since the native operation can complete (successfully or not)
+// in the same instant the caller's context is noticed as cancelled, and that outcome is the real
+// one to report.
+func (p *pendingOperation) abandon() (completionResult, bool) {
 	p.mu.Lock()
 	defer p.mu.Unlock()
 	p.closed = true
 	select {
 	case result := <-p.result:
-		result.release()
+		return result, true
 	default:
+		return completionResult{}, false
 	}
 }
 

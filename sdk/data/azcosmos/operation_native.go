@@ -74,8 +74,10 @@ func (d *nativeDriver) execute(ctx context.Context, req itemRequest) (ItemRespon
 // to, the cookie to round-trip onto it, and somewhere to report a pre-flight rejection. It returns
 // NULL when the operation was rejected before it started, which posts no completion.
 //
-// Non-authoritative waits may return on cancellation; late completion cleanup keeps native
-// resources alive. Point operations separately await authoritative results, including writes.
+// Non-authoritative waits may return on cancellation without the native operation's result; the
+// handle and cookie are released immediately regardless, since a completion that arrives after is
+// safely dropped by the reactor. Point operations separately await authoritative results, including
+// writes.
 func (d *nativeDriver) awaitCompletion(
 	ctx context.Context,
 	doing string,
@@ -105,14 +107,12 @@ func (d *nativeDriver) awaitOperation(
 	// Buffered so the reactor can deliver without blocking after cancellation.
 	pending := &pendingOperation{result: make(chan completionResult, 1)}
 	handle := cgo.NewHandle(pending)
-	// Deleted only once the operation is known to be finished, because the driver round-trips the
-	// cookie onto the completion and the reactor dereferences it.
-	abandoned := false
-	defer func() {
-		if !abandoned {
-			handle.Delete()
-		}
-	}()
+	// cosmos_operation_handle_free only drops this handle's Arc reference; the driver keeps the
+	// operation alive through its own reference until the completion is posted. Freeing the
+	// handle and deleting the cookie here, rather than waiting for a late completion, is therefore
+	// always safe: a completion that arrives afterward finds its cookie invalid and is dropped by
+	// the reactor before translation, so nothing it carries is ever leaked.
+	defer handle.Delete()
 
 	var preError C.cosmos_status_code_t
 	op := submit(d.reactor.queue, C.intptr_t(handle), &preError)
@@ -127,26 +127,12 @@ func (d *nativeDriver) awaitOperation(
 			Message:    "azcosmos: " + doing,
 		}
 	}
-	defer func() {
-		if !abandoned {
-			C.cosmos_operation_handle_free(op)
-		}
-	}()
+	defer C.cosmos_operation_handle_free(op)
 
-	return awaitOperationResult(ctx, pending.result, authoritative, func() {
-		abandoned = true
-		d.pending.Add(1)
-		go func() {
-			defer d.pending.Done()
-			defer handle.Delete()
-			defer C.cosmos_operation_handle_free(op)
-			result := <-pending.result
-			result.release()
-		}()
-	})
+	return awaitOperationResult(ctx, pending, authoritative)
 }
 
-func awaitOperationResult(ctx context.Context, results <-chan completionResult, authoritative bool, abandon func()) (completionResult, error) {
+func awaitOperationResult(ctx context.Context, pending *pendingOperation, authoritative bool) (completionResult, error) {
 	finish := func(result completionResult) (completionResult, error) {
 		if cause := ctx.Err(); cause != nil {
 			if !authoritative {
@@ -162,25 +148,28 @@ func awaitOperationResult(ctx context.Context, results <-chan completionResult, 
 		return result, nil
 	}
 	select {
-	case result := <-results:
+	case result := <-pending.result:
 		return finish(result)
 	case <-ctx.Done():
 		if !authoritative {
-			select {
-			case result := <-results:
+			// abandon() marks the pending operation closed and claims whatever result is buffered
+			// atomically, under its own lock, so this cannot race with the reactor's concurrent
+			// deliver(): either the result was already delivered and abandon() hands it back here,
+			// or deliver() observes closed and releases it itself. A result that lands in that
+			// exact instant is never silently discarded in favor of a cancellation error.
+			if result, ok := pending.abandon(); ok {
 				return finish(result)
-			default:
 			}
-			abandon()
 			return completionResult{}, newOperationCancelledError(ctx.Err(), 0, "")
 		}
 		// The terminal result is authoritative when completion and cancellation race. In
 		// particular, a successful write must not be reported as cancelled after it committed.
-		result := <-results
+		result := <-pending.result
 		terminal, err := resultAfterCancellation(ctx.Err(), result)
 		if err != nil {
 			result.release()
 		}
+		return terminal, err
 	}
 }
 

@@ -84,13 +84,11 @@ func TestAwaitOperationResultCancelledWithDeliveredMetadata(t *testing.T) {
 					result.err = &Error{Code: CodeBadRequest, RequestCharge: 4.75, ActivityID: "failure"}
 					charge, activity = 4.75, "failure"
 				}
-				results := make(chan completionResult, 1)
-				results <- result
-				got, err := awaitOperationResult(ctx, results, false, func() {
-					t.Fatal("an already-delivered completion must not be abandoned")
-				})
+				pending := &pendingOperation{result: make(chan completionResult, 1)}
+				pending.result <- result
+				got, err := awaitOperationResult(ctx, pending, false)
 				require.Zero(t, got)
-				require.Empty(t, results)
+				require.Empty(t, pending.result)
 				require.ErrorIs(t, err, cause)
 				var cosmosErr *Error
 				require.ErrorAs(t, err, &cosmosErr)
@@ -105,11 +103,14 @@ func TestAwaitOperationResultCancelledWithDeliveredMetadata(t *testing.T) {
 func TestAwaitOperationResultAbandonsOnlyUndelivered(t *testing.T) {
 	ctx, cancel := context.WithCancel(t.Context())
 	cancel()
-	abandoned := false
-	got, err := awaitOperationResult(ctx, make(chan completionResult, 1), false, func() { abandoned = true })
-	require.True(t, abandoned)
+	pending := &pendingOperation{result: make(chan completionResult, 1)}
+	got, err := awaitOperationResult(ctx, pending, false)
 	require.Zero(t, got)
 	require.ErrorIs(t, err, context.Canceled)
+	// awaitOperationResult must have abandoned the pending operation rather than leaving it open:
+	// abandoning it again finds nothing buffered, since nothing was ever delivered.
+	_, ok := pending.abandon()
+	require.False(t, ok)
 }
 
 func TestAwaitOperationResultPreservesAuthoritativeOutcome(t *testing.T) {
@@ -119,9 +120,9 @@ func TestAwaitOperationResultPreservesAuthoritativeOutcome(t *testing.T) {
 		{body: []byte("committed")},
 		{err: &Error{Code: CodeConflict, RequestCharge: 2}},
 	} {
-		results := make(chan completionResult, 1)
-		results <- result
-		got, err := awaitOperationResult(ctx, results, true, func() { t.Fatal("authoritative operation abandoned") })
+		pending := &pendingOperation{result: make(chan completionResult, 1)}
+		pending.result <- result
+		got, err := awaitOperationResult(ctx, pending, true)
 		require.NoError(t, err)
 		require.Equal(t, result, got)
 	}

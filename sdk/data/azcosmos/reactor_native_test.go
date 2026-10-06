@@ -24,11 +24,44 @@ func TestAbandonedCompletionDoesNotRetainResults(t *testing.T) {
 		}()
 		go func() {
 			defer wg.Done()
-			pending.abandon()
+			// abandon() hands back whatever it atomically claimed instead of releasing it, since
+			// callers that actually got a real result from it must not discard it as part of
+			// cancellation. A caller that truly doesn't want it, like this one, releases it.
+			if result, ok := pending.abandon(); ok {
+				result.release()
+			}
 		}()
 		wg.Wait()
 		require.Empty(t, pending.result)
 	}
+}
+
+// TestAbandonReturnsAResultDeliveredBeforeIt guards against treating an already-completed
+// operation as cancelled: if deliver() wins the race and buffers a result before abandon() runs,
+// abandon() must hand that result back rather than silently releasing it, so awaitCompletion can
+// still report the operation's real outcome instead of a synthesized cancellation.
+func TestAbandonReturnsAResultDeliveredBeforeIt(t *testing.T) {
+	pending := &pendingOperation{result: make(chan completionResult, 1)}
+	pending.deliver(completionResult{body: []byte("already completed")})
+
+	result, ok := pending.abandon()
+
+	require.True(t, ok, "abandon must report a result was already buffered")
+	require.Equal(t, []byte("already completed"), result.body)
+
+	// A subsequent deliver, as if the reactor raced abandon(), must not block or retain anything:
+	// abandon() has already marked the operation closed.
+	pending.deliver(completionResult{body: []byte("too late")})
+	require.Empty(t, pending.result)
+}
+
+func TestAbandonReportsNothingBufferedWhenNoResultArrivedYet(t *testing.T) {
+	pending := &pendingOperation{result: make(chan completionResult, 1)}
+
+	result, ok := pending.abandon()
+
+	require.False(t, ok)
+	require.Zero(t, result)
 }
 
 // The reactor owns a completion queue and a goroutine blocked in C. These cover its lifetime

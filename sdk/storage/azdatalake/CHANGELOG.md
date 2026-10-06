@@ -10,10 +10,11 @@
 ### Bugs Fixed
 * Fixed a panic in `GetProperties` (and `DownloadStream`) for file and directory clients created via `directory.NewFileClient`/`directory.NewSubdirectoryClient`. These clients did not capture the raw HTTP response, so reading the datalake-specific headers dereferenced a nil response. Fixes [#25490](https://github.com/Azure/azure-sdk-for-go/issues/25490).
 * Fixed `Rename` on `file.Client` and `directory.Client` so source paths containing spaces or non-ASCII characters are percent-encoded in the `x-ms-rename-source` header instead of being sent decoded, which previously failed with `400 InvalidSourceUri`. Fixes [#23831](https://github.com/Azure/azure-sdk-for-go/issues/23831) and [#24369](https://github.com/Azure/azure-sdk-for-go/issues/24369).
-* Fixed `GetSASURL()` on `filesystem.Client`, `file.Client`, and `directory.Client` appending a duplicated `?` to the resulting URL when the client's underlying blob URL already contained a query string, which produced a malformed SAS URL.
+* Fixed `GetSASURL()` on `filesystem.Client`, `file.Client`, `directory.Client`, and `service.Client` appending a duplicated `?` to the resulting URL when the client's underlying blob URL already contained a query string, which produced a malformed SAS URL.
 
 ### Other Changes
 * Updated `azcore` version to `1.23.2`
+* Updated `azblob` version to `1.8.2`
 
 ## 1.6.1-beta.1 (2026-07-24)
 

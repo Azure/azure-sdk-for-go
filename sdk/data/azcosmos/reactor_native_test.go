@@ -73,7 +73,7 @@ func TestReactorStartsAndStops(t *testing.T) {
 	require.NoError(t, d.buildRuntime())
 	t.Cleanup(func() { _ = d.close() })
 
-	r, err := newReactor(d.runtime)
+	r, err := newReactor(d.runtime, DiagnosticsVerbosityDefault)
 	require.NoError(t, err)
 	require.NotNil(t, r.queue)
 
@@ -88,7 +88,7 @@ func TestReactorCloseIsIdempotent(t *testing.T) {
 	require.NoError(t, d.buildRuntime())
 	t.Cleanup(func() { _ = d.close() })
 
-	r, err := newReactor(d.runtime)
+	r, err := newReactor(d.runtime, DiagnosticsVerbosityDefault)
 	require.NoError(t, err)
 
 	r.close()
@@ -105,7 +105,7 @@ func TestReactorLifecycleIsRepeatable(t *testing.T) {
 	t.Cleanup(func() { _ = d.close() })
 
 	for range 10 {
-		r, err := newReactor(d.runtime)
+		r, err := newReactor(d.runtime, DiagnosticsVerbosityDefault)
 		require.NoError(t, err)
 		r.close()
 	}
@@ -122,7 +122,7 @@ func TestReactorCloseDoesNotWaitOutTheTimeout(t *testing.T) {
 	var waitStartedOnce sync.Once
 	r, err := newReactorWithWait(d.runtime, 10_000, func() {
 		waitStartedOnce.Do(func() { close(waitStarted) })
-	})
+	}, DiagnosticsVerbosityDefault)
 	require.NoError(t, err)
 	<-waitStarted
 
@@ -142,10 +142,35 @@ func TestReactorCloseDoesNotWaitOutTheTimeout(t *testing.T) {
 // A queue cannot be created without a runtime, and reporting that as an error rather than
 // returning a nil reactor is what keeps the failure at construction.
 func TestReactorRequiresARuntime(t *testing.T) {
-	_, err := newReactor(nil)
+	_, err := newReactor(nil, DiagnosticsVerbosityDefault)
 	require.Error(t, err)
 
 	var cosmosErr *Error
 	require.ErrorAs(t, err, &cosmosErr)
 	require.Equal(t, CodeClientError, cosmosErr.Code)
+}
+
+// TestReactorStoresEveryDiagnosticsVerbosity walks every DiagnosticsVerbosity constant, verifying
+// newReactor stores exactly the value it was given rather than normalizing or dropping it: deliver
+// reads this field on every completion, so a wrong value here would misroute every operation's
+// diagnostics rendering for the reactor's whole lifetime.
+func TestReactorStoresEveryDiagnosticsVerbosity(t *testing.T) {
+	for _, verbosity := range []DiagnosticsVerbosity{
+		DiagnosticsVerbosityDefault,
+		DiagnosticsVerbositySummary,
+		DiagnosticsVerbosityDetailed,
+		DiagnosticsVerbosity(99), // not one callers can construct via ClientOptions.validate, but the reactor must not panic or silently coerce it.
+	} {
+		t.Run(verbosity.String(), func(t *testing.T) {
+			d := &nativeDriver{}
+			require.NoError(t, d.buildRuntime())
+			t.Cleanup(func() { _ = d.close() })
+
+			r, err := newReactor(d.runtime, verbosity)
+			require.NoError(t, err)
+			t.Cleanup(r.close)
+
+			require.Equal(t, verbosity, r.verbosity)
+		})
+	}
 }

@@ -8,6 +8,7 @@ package azcosmos
 import (
 	"context"
 	"errors"
+	"fmt"
 	"net/http"
 	"testing"
 	"time"
@@ -52,7 +53,7 @@ func TestNativeResponseCopiesUpdatedSessionToken(t *testing.T) {
 }
 
 func TestAbsentNativeDiagnostics(t *testing.T) {
-	diagnostics, err := copyDiagnostics(nil)
+	diagnostics, err := copyDiagnostics(nil, DiagnosticsVerbosityDefault)
 	require.NoError(t, err)
 	require.Nil(t, diagnostics)
 }
@@ -85,6 +86,31 @@ func captureDiagnosticsLog(t *testing.T) *[]string {
 	})
 	t.Cleanup(func() { log.SetListener(nil) })
 	return messages
+}
+
+// TestTranslateCompletionOutcomePropagatesEveryDiagnosticsVerbosity walks every DiagnosticsVerbosity
+// constant, verifying translateCompletionOutcome passes the exact value a caller gave it through
+// to copyDiagnosticsForCompletion unchanged, regardless of the completion's outcome. The seam is
+// stubbed because cosmos_diagnostics_t is an opaque native handle tests cannot construct; this
+// proves the plumbing between the two functions rather than the native rendering itself, which the
+// emulator tests and TestNativeDiagnosticsVerbosityMapsEveryEnumValue cover separately.
+func TestTranslateCompletionOutcomePropagatesEveryDiagnosticsVerbosity(t *testing.T) {
+	for _, outcome := range []syntheticOutcome{syntheticOutcomeOK, syntheticOutcomeCancelled, syntheticOutcomeError} {
+		for _, verbosity := range []DiagnosticsVerbosity{
+			DiagnosticsVerbosityDefault,
+			DiagnosticsVerbositySummary,
+			DiagnosticsVerbosityDetailed,
+		} {
+			t.Run(fmt.Sprintf("%d/%s", outcome, verbosity), func(t *testing.T) {
+				restore, seen := stubCopyDiagnosticsForCompletionCapturing(&Diagnostics{}, nil)
+				t.Cleanup(restore)
+
+				syntheticCompletionResultWithVerbosity(outcome, http.StatusOK, false, verbosity)
+
+				require.Equal(t, []DiagnosticsVerbosity{verbosity}, *seen)
+			})
+		}
+	}
 }
 
 func TestDiagnosticsCopyFailureDoesNotMaskSuccess(t *testing.T) {

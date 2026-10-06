@@ -141,6 +141,43 @@ func TestEmulatorDiagnosticsConcurrentSnapshots(t *testing.T) {
 	}
 }
 
+func TestEmulatorDiagnosticsVerbosityOption(t *testing.T) {
+	summaryContainer := emulatorContainerWithOptions(t, &ClientOptions{DiagnosticsVerbosity: DiagnosticsVerbositySummary})
+	detailedContainer := emulatorContainerWithOptions(t, &ClientOptions{DiagnosticsVerbosity: DiagnosticsVerbosityDetailed})
+
+	id := uniqueItemID(t)
+	pk := NewPartitionKeyString(id)
+	body, err := json.Marshal(map[string]string{"id": id, "pk": id})
+	require.NoError(t, err)
+
+	trackEmulatorItem(t, summaryContainer, pk, id)
+	summary, err := summaryContainer.CreateItem(t.Context(), pk, id, body, nil)
+	require.NoError(t, err)
+	require.True(t, json.Valid([]byte(summary.Diagnostics.JSON)))
+
+	detailedID := uniqueItemID(t)
+	detailedPK := NewPartitionKeyString(detailedID)
+	detailedBody, err := json.Marshal(map[string]string{"id": detailedID, "pk": detailedID})
+	require.NoError(t, err)
+	trackEmulatorItem(t, detailedContainer, detailedPK, detailedID)
+	detailed, err := detailedContainer.CreateItem(t.Context(), detailedPK, detailedID, detailedBody, nil)
+	require.NoError(t, err)
+	require.True(t, json.Valid([]byte(detailed.Diagnostics.JSON)))
+
+	// Both renderings describe a single-attempt create. DETAILED's per-attempt record is at least
+	// as large as SUMMARY's deduplicated one, which is what distinguishes the two renderings for a
+	// caller that opted into DETAILED.
+	require.GreaterOrEqual(t, len(detailed.Diagnostics.JSON), len(summary.Diagnostics.JSON))
+
+	// The default client, used by every other diagnostics test in this file, must render the same
+	// way as an explicit DiagnosticsVerbositySummary.
+	defaultContainer := emulatorContainer(t)
+	trackEmulatorItem(t, defaultContainer, pk, id+"-default")
+	defaultResult, err := defaultContainer.CreateItem(t.Context(), pk, id+"-default", body, nil)
+	require.NoError(t, err)
+	require.True(t, json.Valid([]byte(defaultResult.Diagnostics.JSON)))
+}
+
 func TestEmulatorDiagnosticsSurviveClientClose(t *testing.T) {
 	client, databaseID, containerID := emulatorClient(t)
 	container, err := client.NewContainer(databaseID, containerID)

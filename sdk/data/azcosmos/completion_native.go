@@ -40,11 +40,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 )
 
-// EventDiagnostics entries report when an operation's native diagnostics snapshot could not be
-// copied. Diagnostics are informational only: the operation's own outcome never depends on this
-// copy succeeding, so a failure here is logged rather than reported as an operation failure.
-const EventDiagnostics log.Event = "CosmosDiagnostics"
-
 // completionResult is everything an operation needs from a completion, copied out of driver-owned
 // memory so it stays valid after the completion is freed.
 type completionResult struct {
@@ -77,8 +72,8 @@ func (r completionResult) release() {
 //
 // Everything it reads is borrowed from the driver and reclaimed when the completion is freed at the
 // end of the drain, so every string and byte slice is copied rather than referenced.
-func translateCompletion(completion *C.cosmos_completion_t) completionResult {
-	result := translateCompletionOutcome(completion)
+func translateCompletion(completion *C.cosmos_completion_t, verbosity DiagnosticsVerbosity) completionResult {
+	result := translateCompletionOutcome(completion, verbosity)
 
 	// Taken here rather than by the waiter, because the completion is freed at the end of this
 	// drain and a handle left on it would be reclaimed with it. Both return NULL when the
@@ -96,9 +91,9 @@ var copyDiagnosticsForCompletion = copyDiagnostics
 
 // translateCompletionOutcome copies the data half of a completion, leaving the handles to
 // translateCompletion.
-func translateCompletionOutcome(completion *C.cosmos_completion_t) completionResult {
+func translateCompletionOutcome(completion *C.cosmos_completion_t, verbosity DiagnosticsVerbosity) completionResult {
 	headers := readCompletionHeaders(completion)
-	diagnostics, diagnosticsErr := copyDiagnosticsForCompletion(completion.diagnostics)
+	diagnostics, diagnosticsErr := copyDiagnosticsForCompletion(completion.diagnostics, verbosity)
 	subStatus := headers.subStatus
 	if completion.outcome != C.COSMOS_COMPLETION_OUTCOME_OK {
 		if _, packed := unpackStatus(completion.status); packed != 0 {
@@ -367,7 +362,7 @@ func syntheticThrottledCompletion(packedSubStatus int) *Error {
 		body:             (*C.uint8_t)(bodyMemory),
 		body_len:         C.uintptr_t(len(body)),
 	}
-	result := translateCompletion(&completion)
+	result := translateCompletion(&completion, DiagnosticsVerbosityDefault)
 	return result.err.(*Error)
 }
 
@@ -383,9 +378,22 @@ const (
 )
 
 // syntheticCompletionResult builds a minimal C-owned completion for the given outcome and HTTP
-// status and translates it. Tests use it to exercise translateCompletionOutcome's outcome
-// branches, including interaction with diagnostics copying, without constructing cgo types.
+// status and translates it at DiagnosticsVerbosityDefault. Tests use it to exercise
+// translateCompletionOutcome's outcome branches, including interaction with diagnostics copying,
+// without constructing cgo types.
 func syntheticCompletionResult(outcome syntheticOutcome, httpStatus int, fromWire bool) completionResult {
+	return syntheticCompletionResultWithVerbosity(outcome, httpStatus, fromWire, DiagnosticsVerbosityDefault)
+}
+
+// syntheticCompletionResultWithVerbosity is syntheticCompletionResult with an explicit
+// DiagnosticsVerbosity, for tests verifying that the verbosity passed to translateCompletionOutcome
+// reaches copyDiagnosticsForCompletion unchanged.
+func syntheticCompletionResultWithVerbosity(
+	outcome syntheticOutcome,
+	httpStatus int,
+	fromWire bool,
+	verbosity DiagnosticsVerbosity,
+) completionResult {
 	var cOutcome C.cosmos_completion_outcome_t
 	switch outcome {
 	case syntheticOutcomeOK:
@@ -402,18 +410,28 @@ func syntheticCompletionResult(outcome syntheticOutcome, httpStatus int, fromWir
 	if fromWire {
 		completion.is_from_wire = 1
 	}
-	return translateCompletionOutcome(&completion)
+	return translateCompletionOutcome(&completion, verbosity)
 }
 
 // stubCopyDiagnosticsForCompletion installs a fake copyDiagnosticsForCompletion and returns a
 // function that restores the original. Defined here rather than in a _test.go file so tests never
 // need to name cosmos_diagnostics_t, the cgo parameter type copyDiagnosticsForCompletion takes.
 func stubCopyDiagnosticsForCompletion(diagnostics *Diagnostics, err error) (restore func()) {
+	restore, _ = stubCopyDiagnosticsForCompletionCapturing(diagnostics, err)
+	return restore
+}
+
+// stubCopyDiagnosticsForCompletionCapturing is stubCopyDiagnosticsForCompletion, additionally
+// recording every DiagnosticsVerbosity the stub is called with, in call order. Tests use it to
+// verify which verbosity reaches the copy seam without constructing cgo types.
+func stubCopyDiagnosticsForCompletionCapturing(diagnostics *Diagnostics, err error) (restore func(), seen *[]DiagnosticsVerbosity) {
 	original := copyDiagnosticsForCompletion
-	copyDiagnosticsForCompletion = func(*C.cosmos_diagnostics_t) (*Diagnostics, error) {
+	captured := &[]DiagnosticsVerbosity{}
+	copyDiagnosticsForCompletion = func(_ *C.cosmos_diagnostics_t, verbosity DiagnosticsVerbosity) (*Diagnostics, error) {
+		*captured = append(*captured, verbosity)
 		return diagnostics, err
 	}
-	return func() { copyDiagnosticsForCompletion = original }
+	return func() { copyDiagnosticsForCompletion = original }, captured
 }
 
 func syntheticSessionCompletion() ItemResponse {
@@ -429,5 +447,5 @@ func syntheticSessionCompletion() ItemResponse {
 		headers:          &header,
 		headers_len:      1,
 	}
-	return translateCompletionOutcome(&completion).response
+	return translateCompletionOutcome(&completion, DiagnosticsVerbosityDefault).response
 }

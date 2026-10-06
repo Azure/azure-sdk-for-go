@@ -19,6 +19,11 @@
   See [PR 27676](https://github.com/Azure/azure-sdk-for-go/pull/27676).
 * Exposed native retry diagnostics and final status on v2 responses and errors, including Go-owned
   per-attempt details and session-token recovery. See [PR 27662](https://github.com/Azure/azure-sdk-for-go/pull/27662).
+* Added `ClientOptions.DiagnosticsVerbosity` to control how much detail every completion's
+  `Diagnostics.JSON` renders. The zero value, `DiagnosticsVerbosityDefault`, resolves to
+  `DiagnosticsVerbositySummary`; `DiagnosticsVerbosityDetailed` renders the full per-attempt
+  timeline already available losslessly through `Diagnostics.Attempts`.
+  See [PR 27662](https://github.com/Azure/azure-sdk-for-go/pull/27662).
 * Added the Go SDK identity to the User-Agent header alongside the native driver identity,
   preserving the optional `ClientOptions.ApplicationID` suffix. See [PR 27627](https://github.com/Azure/azure-sdk-for-go/pull/27627).
 * Added parameterized queries within a complete logical partition through `Query`, `FeedScope`,

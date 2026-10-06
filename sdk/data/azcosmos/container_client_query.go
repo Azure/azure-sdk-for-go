@@ -309,6 +309,19 @@ func addQuerySetupCharge(err error, setup Response) error {
 	if errors.Is(err, context.Canceled) || errors.Is(err, context.DeadlineExceeded) {
 		code = CodeOperationCancelled
 	}
-	return &Error{Code: code, Message: "fetching query page", RequestCharge: setup.RequestCharge,
-		ActivityID: setup.ActivityID, cause: err}
+	// err here is a raw cause rather than an *Error, such as context.DeadlineExceeded from the
+	// setup fetch itself: there is no existing *Error to backfill non-zero fields onto, so the
+	// setup fetch's diagnostics/status/attempt metadata is copied in directly, the same metadata
+	// the *Error branch above backfills.
+	return &Error{
+		Code:          code,
+		Message:       "fetching query page",
+		RequestCharge: setup.RequestCharge,
+		ActivityID:    setup.ActivityID,
+		Diagnostics:   setup.Diagnostics,
+		StatusCode:    setup.StatusCode,
+		SubStatus:     setup.SubStatus,
+		AttemptCount:  setup.AttemptCount,
+		cause:         err,
+	}
 }

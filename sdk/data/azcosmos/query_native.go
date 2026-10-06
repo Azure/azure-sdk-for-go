@@ -181,6 +181,6 @@ func syntheticQueryCompletion(body []byte, continuation string, status int) (Que
 		body: (*C.uint8_t)(nativeBody), body_len: C.uintptr_t(len(body)),
 		next_continuation: nativeToken,
 	}
-	result := translateCompletionOutcome(&completion)
+	result := translateCompletionOutcome(&completion, DiagnosticsVerbosityDefault)
 	return result.queryPage(Response{})
 }

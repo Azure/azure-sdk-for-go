@@ -564,3 +564,28 @@ func TestAwaitCompletionDoesNotSubmitAfterCancellation(t *testing.T) {
 	require.ErrorIs(t, err, context.Canceled)
 	require.False(t, submitted)
 }
+
+// TestOpenDriverPropagatesClientOptionsDiagnosticsVerbosity walks every DiagnosticsVerbosity
+// constant, verifying it reaches the client's reactor unchanged. openDriver does none of its own
+// network I/O, so this exercises the whole path from ClientOptions through driverConfig to the
+// reactor without needing a live account.
+func TestOpenDriverPropagatesClientOptionsDiagnosticsVerbosity(t *testing.T) {
+	for _, verbosity := range []DiagnosticsVerbosity{
+		DiagnosticsVerbosityDefault,
+		DiagnosticsVerbositySummary,
+		DiagnosticsVerbosityDetailed,
+	} {
+		t.Run(verbosity.String(), func(t *testing.T) {
+			client, err := newClient(
+				"https://myaccount.documents.azure.com",
+				testAccountKey,
+				nil,
+				&ClientOptions{DiagnosticsVerbosity: verbosity},
+			)
+			require.NoError(t, err)
+			t.Cleanup(func() { require.NoError(t, client.Close()) })
+
+			require.Equal(t, verbosity, client.driver.reactor.verbosity)
+		})
+	}
+}

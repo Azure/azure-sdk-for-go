@@ -41,6 +41,11 @@ type ClientOptions struct {
 	// the driver's operation-specific default; a non-nil value explicitly enables or disables
 	// content responses. It can be overridden per operation.
 	EnableContentResponseOnWrite *bool
+
+	// DiagnosticsVerbosity controls how much detail every completion's [Diagnostics.JSON] renders.
+	// The zero value, DiagnosticsVerbosityDefault, resolves to DiagnosticsVerbositySummary. It
+	// applies to every operation on the client; there is no per-operation override.
+	DiagnosticsVerbosity DiagnosticsVerbosity
 }
 
 // Client is a client for an Azure Cosmos DB account. It is the entry point to the databases and
@@ -237,6 +242,11 @@ func (o ClientOptions) validate() error {
 	// The driver rejects embedded NUL bytes in this counted UTF-8 field.
 	if strings.IndexByte(o.ApplicationID, 0) >= 0 {
 		return errors.New("azcosmos: ClientOptions.ApplicationID must not contain a NUL byte")
+	}
+	switch o.DiagnosticsVerbosity {
+	case DiagnosticsVerbosityDefault, DiagnosticsVerbositySummary, DiagnosticsVerbosityDetailed:
+	default:
+		return fmt.Errorf("azcosmos: ClientOptions.DiagnosticsVerbosity: unrecognized %s", o.DiagnosticsVerbosity)
 	}
 	return nil
 }

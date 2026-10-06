@@ -42,6 +42,12 @@ type reactor struct {
 	waitMillis uint32
 	beforeWait func()
 
+	// verbosity is the client's configured DiagnosticsVerbosity, applied to every completion this
+	// reactor delivers. It is resolved once at construction rather than read from the client on
+	// every completion, since a reactor is already one-per-client and the value never changes
+	// after the client is built.
+	verbosity DiagnosticsVerbosity
+
 	// stop is closed to ask the loop to finish. done is closed by the loop when it has.
 	stop chan struct{}
 	done chan struct{}
@@ -88,8 +94,8 @@ func (p *pendingOperation) abandon() (completionResult, bool) {
 }
 
 // newReactor creates a completion queue on the runtime and starts draining it.
-func newReactor(rt *C.cosmos_runtime_t) (*reactor, error) {
-	return newReactorWithWait(rt, completionWaitMillis, nil)
+func newReactor(rt *C.cosmos_runtime_t, verbosity DiagnosticsVerbosity) (*reactor, error) {
+	return newReactorWithWait(rt, completionWaitMillis, nil, verbosity)
 }
 
 // newReactorWithWait is newReactor with a configurable wait and observation hook for tests.
@@ -97,6 +103,7 @@ func newReactorWithWait(
 	rt *C.cosmos_runtime_t,
 	waitMillis uint32,
 	beforeWait func(),
+	verbosity DiagnosticsVerbosity,
 ) (*reactor, error) {
 	options := C.cosmos_completion_queue_options_t{
 		capacity_hint: C.uint32_t(completionBatch),
@@ -118,6 +125,7 @@ func newReactorWithWait(
 		queue:      queue,
 		waitMillis: waitMillis,
 		beforeWait: beforeWait,
+		verbosity:  verbosity,
 		stop:       make(chan struct{}),
 		done:       make(chan struct{}),
 	}
@@ -196,7 +204,7 @@ func (r *reactor) deliver(completion *C.cosmos_completion_t) {
 
 	// Translation copies every field it needs, because the completion's memory is reclaimed as
 	// soon as this drain returns, and detaches any handle the completion carries.
-	pending.deliver(translateCompletion(completion))
+	pending.deliver(translateCompletion(completion, r.verbosity))
 }
 
 // close stops the reactor and releases the queue. It is idempotent.

@@ -330,6 +330,24 @@ func TestQuerySetupChargeOnErrors(t *testing.T) {
 	require.Equal(t, CodeOperationCancelled, got.Code)
 	require.Equal(t, 3.0, got.RequestCharge)
 
+	// A raw cause such as context.DeadlineExceeded has no *Error to backfill non-zero fields
+	// onto, so the fallback branch must copy the setup fetch's diagnostics/status/attempt
+	// metadata in directly rather than leaving it zero, the same metadata the *Error branch
+	// above backfills.
+	rawCauseSetupDiagnostics := &Diagnostics{StatusCode: 200, AttemptCount: 4}
+	rawCauseSetup := Response{
+		RequestCharge: 3, ActivityID: "metadata",
+		Diagnostics: rawCauseSetupDiagnostics, StatusCode: 200, SubStatus: 1, AttemptCount: 4,
+	}
+	err = addQuerySetupCharge(context.DeadlineExceeded, rawCauseSetup)
+	require.ErrorIs(t, err, context.DeadlineExceeded)
+	require.ErrorAs(t, err, &got)
+	require.Equal(t, CodeOperationCancelled, got.Code)
+	require.Same(t, rawCauseSetupDiagnostics, got.Diagnostics)
+	require.Equal(t, 200, got.StatusCode)
+	require.Equal(t, 1, got.SubStatus)
+	require.Equal(t, uint32(4), got.AttemptCount)
+
 	// validateQueryPartitionKey has no response to copy diagnostics from, so its error carries
 	// none of its own; addQuerySetupCharge must backfill them from the setup fetch's response.
 	setupDiagnostics := &Diagnostics{StatusCode: 200, AttemptCount: 2}

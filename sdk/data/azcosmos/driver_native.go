@@ -169,7 +169,7 @@ func openDriver(cfg driverConfig) (*nativeDriver, error) {
 	// Before the driver rather than after it, because creating the driver is itself answered
 	// through this queue.
 	var err error
-	if d.reactor, err = newReactor(d.runtime); err != nil {
+	if d.reactor, err = newReactor(d.runtime, cfg.options.DiagnosticsVerbosity); err != nil {
 		_ = d.close()
 		return nil, err
 	}

@@ -1,7 +1,16 @@
 parameters:
-  DependsOn: Build
-  TestPipeline: false
-  ServiceDirectory: ''
+  - name: DependsOn
+    type: object
+    default: Build
+  - name: TestPipeline
+    type: boolean
+    default: false
+  - name: ServiceDirectory
+    type: string
+    default: ''
+  - name: ReleasePlanId
+    type: string
+    default: '0'
 
 stages:
   - stage: CheckRelease
@@ -62,6 +71,10 @@ stages:
     variables:
       - template: /eng/pipelines/templates/variables/globals.yml
       - template: /eng/pipelines/templates/variables/image.yml
+      # This output exists only when the release stage directly depends on AutoReleasePrepare.
+      - ${{ if and(eq(parameters.ServiceDirectory, 'template/aztemplate'), eq(variables['Build.Reason'], 'IndividualCI'), eq(variables['Build.SourceBranch'], 'refs/heads/main')) }}:
+        - name: AutoReleaseSdkPullRequestUrl
+          value: $[ stageDependencies.AutoReleasePrepare.ResolveAutoReleasePackages.outputs['resolve.AutoReleaseSdkPullRequestUrl'] ]
     displayName: 'Release: ${{ parameters.ServiceDirectory }}'
     # On post-merge main CI, also require the auto-release label + changed-package signal from
     # AutoReleasePrepare. Manual/scheduled runs release on the changelog/tag gate alone.
@@ -190,6 +203,11 @@ stages:
             parameters:
               ConfigFileDir: $(Pipeline.Workspace)/PackageInfo
               PackageArtifactName: sdk/${{ parameters.ServiceDirectory }}
+              # Template-only pilot; requires the shared completion contract from tools PR #17189.
+              ${{ if eq(parameters.ServiceDirectory, 'template/aztemplate') }}:
+                ReleasePlanId: ${{ parameters.ReleasePlanId }}
+                ${{ if and(eq(variables['Build.Reason'], 'IndividualCI'), eq(variables['Build.SourceBranch'], 'refs/heads/main')) }}:
+                  SdkPullRequest: $(AutoReleaseSdkPullRequestUrl)
 
       - ${{ if not(and(startsWith(parameters.ServiceDirectory, 'resourcemanager'), ne(parameters.ServiceDirectory, 'resourcemanager/internal'))) }}:
         - job: UpdatePackageVersion

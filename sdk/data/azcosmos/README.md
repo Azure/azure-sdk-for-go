@@ -118,8 +118,11 @@ checkpoint does not terminate it.
 Pager construction performs no network I/O and snapshots its inputs. Each pager's first fetch
 (including a resumed pager) performs an additional container-metadata read to verify that the
 key or prefix fits the container definition. Full-container scopes omit this additional read.
-Its request charge is included in the first fetch's response or error, and
-it shares the page's context and end-to-end timeout. This requires permission to read container
+Its request charge is included in the first fetch's response or error when the metadata
+completion is available before that fetch returns. If cancellation returns first, charges
+reported by a later native completion cannot be surfaced to the caller; a zero reported
+charge does not mean the operation consumed no RUs.
+The metadata read shares the page's context and end-to-end timeout. This requires permission to read container
 metadata. Iteration and checkpoint calls must not be concurrent; independent pagers can share a
 client. `Close` safely synchronizes with active calls.
 All cursors on a client share a cursor-format completion reactor, separate from the legacy

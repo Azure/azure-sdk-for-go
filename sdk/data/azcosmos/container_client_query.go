@@ -234,8 +234,14 @@ func decodeQueryPage(body []byte, response Response, sessionToken SessionToken, 
 func queryResponseError(response Response, sessionToken SessionToken, cause error) *Error {
 	return &Error{
 		Code: CodeSerializationFailed, Message: "decoding query response",
-		RequestCharge: response.RequestCharge, ActivityID: response.ActivityID,
-		SessionToken: sessionToken, cause: cause,
+		Diagnostics:   response.Diagnostics,
+		StatusCode:    response.StatusCode,
+		SubStatus:     response.SubStatus,
+		AttemptCount:  response.AttemptCount,
+		RequestCharge: response.RequestCharge,
+		ActivityID:    response.ActivityID,
+		SessionToken:  sessionToken,
+		cause:         cause,
 	}
 }
 
@@ -280,6 +286,22 @@ func addQuerySetupCharge(err error, setup Response) error {
 		copied.RequestCharge += setup.RequestCharge
 		if copied.ActivityID == "" {
 			copied.ActivityID = setup.ActivityID
+		}
+		// err may be derived from the setup fetch itself, such as validateQueryPartitionKey's,
+		// which has no response to copy diagnostics from and so carries none of its own. Backfill
+		// them from setup rather than leaving them zero. A query-completion error already carries
+		// its own non-zero values here, so this never overwrites them.
+		if copied.Diagnostics == nil {
+			copied.Diagnostics = setup.Diagnostics
+		}
+		if copied.StatusCode == 0 {
+			copied.StatusCode = setup.StatusCode
+		}
+		if copied.SubStatus == 0 {
+			copied.SubStatus = setup.SubStatus
+		}
+		if copied.AttemptCount == 0 {
+			copied.AttemptCount = setup.AttemptCount
 		}
 		return &copied
 	}

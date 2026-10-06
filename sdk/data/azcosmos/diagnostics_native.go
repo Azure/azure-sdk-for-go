@@ -100,11 +100,19 @@ static void cosmos_go_free_attempts(cosmos_go_attempts_t *out) {
 import "C"
 
 import (
+	"errors"
 	"fmt"
 	"time"
 	"unsafe"
 )
 
+// copyDiagnostics copies the native diagnostics for one completion into Go memory.
+//
+// It is best effort: diagnostics are optional and must never block an otherwise successful or
+// cancelled operation, so a failure copying one section (regions, attempts, or the JSON
+// rendering) does not discard the scalar fields or any other section that copied cleanly. The
+// returned Diagnostics is non-nil whenever d is non-nil; the returned error, if any, joins every
+// section that could not be copied.
 func copyDiagnostics(d *C.cosmos_diagnostics_t) (*Diagnostics, error) {
 	if d == nil {
 		return nil, nil
@@ -118,62 +126,85 @@ func copyDiagnostics(d *C.cosmos_diagnostics_t) (*Diagnostics, error) {
 		Compacted:          bool(C.cosmos_diagnostics_is_compacted(d)),
 	}
 
+	return out, errors.Join(
+		copyDiagnosticRegions(d, out),
+		copyDiagnosticAttempts(d, out),
+		copyDiagnosticJSON(d, out),
+	)
+}
+
+// copyDiagnosticRegions copies the regions-contacted list into out.RegionsContacted. It leaves
+// that field nil on failure rather than touching fields the other sections own.
+func copyDiagnosticRegions(d *C.cosmos_diagnostics_t, out *Diagnostics) error {
 	count := int(C.cosmos_go_region_count(d))
-	if count > 0 {
-		ptr := C.malloc(C.size_t(count) * C.size_t(unsafe.Sizeof((*C.char)(nil))))
-		if ptr == nil {
-			return nil, fmt.Errorf("azcosmos: allocating diagnostic regions")
-		}
-		regions := C.cosmos_go_regions_t{entries: (**C.char)(ptr), capacity: C.uintptr_t(count)}
-		defer C.cosmos_go_free_regions(&regions) //nolint:gocritic // dupSubExpr targets cgo-generated code.
-		C.cosmos_go_read_regions(d, &regions)    //nolint:gocritic // dupSubExpr targets cgo-generated code.
-		if regions.failed != 0 {
-			return nil, fmt.Errorf("azcosmos: copying diagnostic regions")
-		}
-		out.RegionsContacted = make([]string, int(regions.count))
-		for i, region := range unsafe.Slice(regions.entries, int(regions.count)) {
-			out.RegionsContacted[i] = C.GoString(region)
+	if count == 0 {
+		return nil
+	}
+	ptr := C.malloc(C.size_t(count) * C.size_t(unsafe.Sizeof((*C.char)(nil))))
+	if ptr == nil {
+		return fmt.Errorf("azcosmos: allocating diagnostic regions")
+	}
+	regions := C.cosmos_go_regions_t{entries: (**C.char)(ptr), capacity: C.uintptr_t(count)}
+	defer C.cosmos_go_free_regions(&regions) //nolint:gocritic // dupSubExpr targets cgo-generated code.
+	C.cosmos_go_read_regions(d, &regions)    //nolint:gocritic // dupSubExpr targets cgo-generated code.
+	if regions.failed != 0 {
+		return fmt.Errorf("azcosmos: copying diagnostic regions")
+	}
+	out.RegionsContacted = make([]string, int(regions.count))
+	for i, region := range unsafe.Slice(regions.entries, int(regions.count)) {
+		out.RegionsContacted[i] = C.GoString(region)
+	}
+	return nil
+}
+
+// copyDiagnosticAttempts copies the retained per-attempt timeline into out.Attempts. It leaves
+// that field nil on failure rather than touching fields the other sections own.
+func copyDiagnosticAttempts(d *C.cosmos_diagnostics_t, out *Diagnostics) error {
+	count := int(C.cosmos_diagnostics_retained_request_count(d))
+	if count == 0 {
+		return nil
+	}
+	ptr := C.malloc(C.size_t(count) * C.size_t(unsafe.Sizeof(C.cosmos_go_attempt_t{})))
+	if ptr == nil {
+		return fmt.Errorf("azcosmos: allocating diagnostic attempts")
+	}
+	attempts := C.cosmos_go_attempts_t{entries: (*C.cosmos_go_attempt_t)(ptr), capacity: C.uintptr_t(count)}
+	defer C.cosmos_go_free_attempts(&attempts) //nolint:gocritic // dupSubExpr targets cgo-generated code.
+	C.cosmos_go_read_attempts(d, &attempts)    //nolint:gocritic // dupSubExpr targets cgo-generated code.
+	if attempts.failed != 0 {
+		return fmt.Errorf("azcosmos: copying diagnostic attempts")
+	}
+	out.Attempts = make([]DiagnosticAttempt, int(attempts.count))
+	for i, attempt := range unsafe.Slice(attempts.entries, int(attempts.count)) {
+		out.Attempts[i] = DiagnosticAttempt{
+			Endpoint:         C.GoString(attempt.endpoint),
+			Region:           C.GoString(attempt.region),
+			StatusCode:       int(attempt.status),
+			SubStatus:        normalizeSubStatus(int32(attempt.sub_status)),
+			Latency:          durationMillis(uint64(attempt.latency_ms)),
+			RequestCharge:    float64(attempt.request_charge),
+			ServerDurationMS: float64(attempt.server_duration_ms),
 		}
 	}
+	return nil
+}
 
-	count = int(C.cosmos_diagnostics_retained_request_count(d))
-	if count > 0 {
-		ptr := C.malloc(C.size_t(count) * C.size_t(unsafe.Sizeof(C.cosmos_go_attempt_t{})))
-		if ptr == nil {
-			return nil, fmt.Errorf("azcosmos: allocating diagnostic attempts")
-		}
-		attempts := C.cosmos_go_attempts_t{entries: (*C.cosmos_go_attempt_t)(ptr), capacity: C.uintptr_t(count)}
-		defer C.cosmos_go_free_attempts(&attempts) //nolint:gocritic // dupSubExpr targets cgo-generated code.
-		C.cosmos_go_read_attempts(d, &attempts)    //nolint:gocritic // dupSubExpr targets cgo-generated code.
-		if attempts.failed != 0 {
-			return nil, fmt.Errorf("azcosmos: copying diagnostic attempts")
-		}
-		out.Attempts = make([]DiagnosticAttempt, int(attempts.count))
-		for i, attempt := range unsafe.Slice(attempts.entries, int(attempts.count)) {
-			out.Attempts[i] = DiagnosticAttempt{
-				Endpoint:         C.GoString(attempt.endpoint),
-				Region:           C.GoString(attempt.region),
-				StatusCode:       int(attempt.status),
-				SubStatus:        normalizeSubStatus(int32(attempt.sub_status)),
-				Latency:          durationMillis(uint64(attempt.latency_ms)),
-				RequestCharge:    float64(attempt.request_charge),
-				ServerDurationMS: float64(attempt.server_duration_ms),
-			}
-		}
-	}
-
+// copyDiagnosticJSON copies the driver's detailed diagnostics rendering into out.JSON. It leaves
+// that field empty on failure rather than touching fields the other sections own.
+func copyDiagnosticJSON(d *C.cosmos_diagnostics_t, out *Diagnostics) error {
 	var data *C.uint8_t
 	var length C.uintptr_t
 	if status := C.cosmos_diagnostics_to_json(d, C.cosmos_diagnostics_verbosity_t_DETAILED, &data, &length); status != 0 { //nolint:gocritic // dupSubExpr targets cgo-generated code.
-		return nil, fmt.Errorf("azcosmos: rendering native diagnostics (status %d)", int32(status))
+		return fmt.Errorf("azcosmos: rendering native diagnostics (status %d)", int32(status))
 	}
-	if length > 0 {
-		if data == nil {
-			return nil, fmt.Errorf("azcosmos: native diagnostics returned a null JSON buffer")
-		}
-		out.JSON = string(unsafe.Slice((*byte)(unsafe.Pointer(data)), int(length)))
+	if length == 0 {
+		return nil
 	}
-	return out, nil
+	if data == nil {
+		return fmt.Errorf("azcosmos: native diagnostics returned a null JSON buffer")
+	}
+	out.JSON = string(unsafe.Slice((*byte)(unsafe.Pointer(data)), int(length)))
+	return nil
 }
 
 func durationMicros(value uint64) time.Duration {

@@ -37,7 +37,13 @@ import (
 	"unsafe"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 )
+
+// EventDiagnostics entries report when an operation's native diagnostics snapshot could not be
+// copied. Diagnostics are informational only: the operation's own outcome never depends on this
+// copy succeeding, so a failure here is logged rather than reported as an operation failure.
+const EventDiagnostics log.Event = "CosmosDiagnostics"
 
 // completionResult is everything an operation needs from a completion, copied out of driver-owned
 // memory so it stays valid after the completion is freed.
@@ -82,11 +88,17 @@ func translateCompletion(completion *C.cosmos_completion_t) completionResult {
 	return result
 }
 
+// copyDiagnosticsForCompletion is a seam over copyDiagnostics. translateCompletionOutcome calls it
+// rather than copyDiagnostics directly so tests can substitute a fake (diagnostics, error) pair,
+// since cosmos_diagnostics_t is an opaque native handle tests cannot hand-construct and a real
+// copy failure can only be forced by actual OOM.
+var copyDiagnosticsForCompletion = copyDiagnostics
+
 // translateCompletionOutcome copies the data half of a completion, leaving the handles to
 // translateCompletion.
 func translateCompletionOutcome(completion *C.cosmos_completion_t) completionResult {
 	headers := readCompletionHeaders(completion)
-	diagnostics, diagnosticsErr := copyDiagnostics(completion.diagnostics)
+	diagnostics, diagnosticsErr := copyDiagnosticsForCompletion(completion.diagnostics)
 	subStatus := headers.subStatus
 	if completion.outcome != C.COSMOS_COMPLETION_OUTCOME_OK {
 		if _, packed := unpackStatus(completion.status); packed != 0 {
@@ -113,11 +125,18 @@ func translateCompletionOutcome(completion *C.cosmos_completion_t) completionRes
 		response.AttemptCount = diagnostics.AttemptCount
 	}
 
+	// Diagnostics are optional and never change whether the operation itself succeeded.
+	// copyDiagnostics is best effort: diagnostics carries whatever sections it managed to copy, so
+	// a copy failure here is logged rather than reported as an operation failure, and the OK and
+	// CANCELLED cases below fall through with the real result plus whatever diagnostics could be
+	// recovered. Only the already-failing default case below folds it into the operation error,
+	// since there is no successful result it could mask.
+	if diagnosticsErr != nil {
+		log.Writef(EventDiagnostics, "azcosmos: copying operation diagnostics: %s", diagnosticsErr)
+	}
+
 	switch completion.outcome {
 	case C.COSMOS_COMPLETION_OUTCOME_OK:
-		if diagnosticsErr != nil {
-			return completionResult{err: &Error{Code: CodeClientError, Message: diagnosticsErr.Error()}}
-		}
 		return completionResult{
 			response:         response,
 			body:             copyCompletionBody(completion),
@@ -126,9 +145,6 @@ func translateCompletionOutcome(completion *C.cosmos_completion_t) completionRes
 		}
 
 	case C.COSMOS_COMPLETION_OUTCOME_CANCELLED:
-		if diagnosticsErr != nil {
-			return completionResult{err: &Error{Code: CodeClientError, Message: diagnosticsErr.Error()}}
-		}
 		return completionResult{
 			cancelled: true,
 			err: &Error{
@@ -147,7 +163,6 @@ func translateCompletionOutcome(completion *C.cosmos_completion_t) completionRes
 		operationErr := completionError(completion, headers, diagnostics)
 		if diagnosticsErr != nil {
 			operationErr.Message += "; " + diagnosticsErr.Error()
-			operationErr.cause = diagnosticsErr
 		}
 		return completionResult{err: operationErr}
 	}
@@ -354,6 +369,51 @@ func syntheticThrottledCompletion(packedSubStatus int) *Error {
 	}
 	result := translateCompletion(&completion)
 	return result.err.(*Error)
+}
+
+// syntheticOutcome mirrors cosmos_completion_outcome_t without exposing the cgo type to tests, so
+// tests exercising translateCompletionOutcome's outcome branches never need to construct cgo
+// types themselves.
+type syntheticOutcome int
+
+const (
+	syntheticOutcomeOK syntheticOutcome = iota
+	syntheticOutcomeCancelled
+	syntheticOutcomeError
+)
+
+// syntheticCompletionResult builds a minimal C-owned completion for the given outcome and HTTP
+// status and translates it. Tests use it to exercise translateCompletionOutcome's outcome
+// branches, including interaction with diagnostics copying, without constructing cgo types.
+func syntheticCompletionResult(outcome syntheticOutcome, httpStatus int, fromWire bool) completionResult {
+	var cOutcome C.cosmos_completion_outcome_t
+	switch outcome {
+	case syntheticOutcomeOK:
+		cOutcome = C.COSMOS_COMPLETION_OUTCOME_OK
+	case syntheticOutcomeCancelled:
+		cOutcome = C.COSMOS_COMPLETION_OUTCOME_CANCELLED
+	default:
+		cOutcome = C.COSMOS_COMPLETION_OUTCOME_ERROR
+	}
+	completion := C.cosmos_completion_t{
+		outcome:          cOutcome,
+		http_status_code: C.uint16_t(httpStatus),
+	}
+	if fromWire {
+		completion.is_from_wire = 1
+	}
+	return translateCompletionOutcome(&completion)
+}
+
+// stubCopyDiagnosticsForCompletion installs a fake copyDiagnosticsForCompletion and returns a
+// function that restores the original. Defined here rather than in a _test.go file so tests never
+// need to name cosmos_diagnostics_t, the cgo parameter type copyDiagnosticsForCompletion takes.
+func stubCopyDiagnosticsForCompletion(diagnostics *Diagnostics, err error) (restore func()) {
+	original := copyDiagnosticsForCompletion
+	copyDiagnosticsForCompletion = func(*C.cosmos_diagnostics_t) (*Diagnostics, error) {
+		return diagnostics, err
+	}
+	return func() { copyDiagnosticsForCompletion = original }
 }
 
 func syntheticSessionCompletion() ItemResponse {

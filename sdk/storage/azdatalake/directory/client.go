@@ -25,6 +25,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/path"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/sas"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/internal/sasurl"
 )
 
 // ClientOptions contains the optional parameters when creating a Client.
@@ -588,9 +589,7 @@ func (d *Client) GetSASURL(permissions sas.DirectoryPermissions, expiry time.Tim
 		return "", err
 	}
 
-	endpoint := d.BlobURL() + "?" + qps.Encode()
-
-	return endpoint, nil
+	return sasurl.Append(d.BlobURL(), qps.Encode()), nil
 }
 
 // TODO: Undelete()

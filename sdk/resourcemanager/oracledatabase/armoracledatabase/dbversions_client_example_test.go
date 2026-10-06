@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/oracledatabase/armoracledatabase/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/oracledatabase/armoracledatabase/v3"
 	"log"
 )
 
-// Generated from example definition: 2025-09-01/DbVersions_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-01/DbVersions_Get_MaximumSet_Gen.json
 func ExampleDbVersionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -23,7 +23,7 @@ func ExampleDbVersionsClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewDbVersionsClient().Get(ctx, "eastus", "23.0.0.0.0", nil)
+	res, err := clientFactory.NewDbVersionsClient().Get(ctx, "eastus", "resource1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -33,28 +33,28 @@ func ExampleDbVersionsClient_Get() {
 	// res = armoracledatabase.DbVersionsClientGetResponse{
 	// 	DbVersion: armoracledatabase.DbVersion{
 	// 		Properties: &armoracledatabase.DbVersionProperties{
-	// 			Version: to.Ptr("23.0.0.0.0"),
+	// 			Version: to.Ptr("example"),
 	// 			IsLatestForMajorVersion: to.Ptr(true),
 	// 			IsPreviewDbVersion: to.Ptr(true),
 	// 			IsUpgradeSupported: to.Ptr(true),
 	// 			SupportsPdb: to.Ptr(true),
 	// 		},
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Oracle.Database/locations/eastus/dbSystemDbVersions/23.0.0.0.0"),
-	// 		Name: to.Ptr("23.0.0.0.0"),
-	// 		Type: to.Ptr("zxclhrvufj"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/resources/resource1"),
+	// 		Name: to.Ptr("resource1"),
+	// 		Type: to.Ptr("tgug"),
 	// 		SystemData: &armoracledatabase.SystemData{
-	// 			CreatedBy: to.Ptr("sqehacivpuim"),
+	// 			CreatedBy: to.Ptr("ns"),
 	// 			CreatedByType: to.Ptr(armoracledatabase.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(time.Date(2025, time.August, 1, 4, 32, 58, 716000000, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("axrqfdkqylvjv"),
+	// 			CreatedAt: to.Ptr(time.Date(2026, time.July, 28, 21, 47, 8, 141000000, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("example"),
 	// 			LastModifiedByType: to.Ptr(armoracledatabase.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.August, 1, 4, 32, 58, 716000000, time.UTC)),
+	// 			LastModifiedAt: to.Ptr(time.Date(2026, time.July, 28, 21, 47, 8, 141000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-09-01/DbVersions_ListByLocation_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-01/DbVersions_ListByLocation_MaximumSet_Gen.json
 func ExampleDbVersionsClient_NewListByLocationPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -67,11 +67,11 @@ func ExampleDbVersionsClient_NewListByLocationPager() {
 	}
 	pager := clientFactory.NewDbVersionsClient().NewListByLocationPager("eastus", &armoracledatabase.DbVersionsClientListByLocationOptions{
 		DbSystemShape:                    to.Ptr(armoracledatabase.BaseDbSystemShapesVMStandardX86),
-		DbSystemID:                       to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Oracle.Database/dbSystems/dbsystem1"),
+		DbSystemID:                       to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/dbSystems/db1"),
 		StorageManagement:                to.Ptr(armoracledatabase.StorageManagementTypeLVM),
 		IsUpgradeSupported:               to.Ptr(true),
 		IsDatabaseSoftwareImageSupported: to.Ptr(true),
-		ShapeFamily:                      to.Ptr(armoracledatabase.ShapeFamilyTypeVirtualMachine)})
+		ShapeFamily:                      to.Ptr(armoracledatabase.ShapeFamilyTypeExadata)})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -87,26 +87,26 @@ func ExampleDbVersionsClient_NewListByLocationPager() {
 		// 		Value: []*armoracledatabase.DbVersion{
 		// 			{
 		// 				Properties: &armoracledatabase.DbVersionProperties{
-		// 					Version: to.Ptr("23.0.0.0.0"),
+		// 					Version: to.Ptr("example"),
 		// 					IsLatestForMajorVersion: to.Ptr(true),
 		// 					IsPreviewDbVersion: to.Ptr(true),
 		// 					IsUpgradeSupported: to.Ptr(true),
 		// 					SupportsPdb: to.Ptr(true),
 		// 				},
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Oracle.Database/locations/eastus/dbSystemDbVersions/23.0.0.0.0"),
-		// 				Name: to.Ptr("23.0.0.0.0"),
-		// 				Type: to.Ptr("zxclhrvufj"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/resources/resource1"),
+		// 				Name: to.Ptr("resource1"),
+		// 				Type: to.Ptr("tgug"),
 		// 				SystemData: &armoracledatabase.SystemData{
-		// 					CreatedBy: to.Ptr("sqehacivpuim"),
+		// 					CreatedBy: to.Ptr("ns"),
 		// 					CreatedByType: to.Ptr(armoracledatabase.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(time.Date(2025, time.August, 1, 4, 32, 58, 716000000, time.UTC)),
-		// 					LastModifiedBy: to.Ptr("axrqfdkqylvjv"),
+		// 					CreatedAt: to.Ptr(time.Date(2026, time.July, 28, 21, 47, 8, 141000000, time.UTC)),
+		// 					LastModifiedBy: to.Ptr("example"),
 		// 					LastModifiedByType: to.Ptr(armoracledatabase.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(time.Date(2025, time.August, 1, 4, 32, 58, 716000000, time.UTC)),
+		// 					LastModifiedAt: to.Ptr(time.Date(2026, time.July, 28, 21, 47, 8, 141000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
-		// 		NextLink: to.Ptr("https://microsoft.com/ao"),
+		// 		NextLink: to.Ptr("https://microsoft.com/ajaiji"),
 		// 	},
 		// }
 	}

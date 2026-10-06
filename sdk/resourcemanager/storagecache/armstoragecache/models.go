@@ -491,6 +491,7 @@ type AutoExportJobUpdate struct {
 	Tags map[string]*string
 }
 
+// AutoExportJobUpdateProperties - Properties for updating an auto export job.
 type AutoExportJobUpdateProperties struct {
 	// The administrative status of the auto export job. Possible values: 'Enable', 'Disable'. Passing in a value of 'Disable'
 	// will disable the current active auto export job. By default it is set to 'Enable'.
@@ -676,6 +677,7 @@ type AutoImportJobUpdate struct {
 	Tags map[string]*string
 }
 
+// AutoImportJobUpdateProperties - Properties for updating an auto import job.
 type AutoImportJobUpdateProperties struct {
 	// The administrative status of the auto import job. Possible values: 'Enable', 'Disable'. Passing in a value of 'Disable'
 	// will disable the current active auto import job. By default it is set to 'Enable'.
@@ -1032,8 +1034,15 @@ type ExpansionJobProperties struct {
 	// and greater than the current storage capacity of the AML file system.
 	NewStorageCapacityTiB *float32
 
+	// When true, expansion creates a RebalanceJob after completing. Optional, defaults to true.
+	RunRebalanceJob *bool
+
 	// READ-ONLY; ARM provisioning state, see https://github.com/Azure/azure-resource-manager-rpc/blob/master/v1.0/Addendum.md#provisioningstate-property
 	ProvisioningState *ExpansionJobPropertiesProvisioningState
+
+	// READ-ONLY; Fully qualified ARM resource ID of the child rebalance job created by this expansion. Populated after RebalanceJob
+	// is created.
+	RebalanceJobID *string
 
 	// READ-ONLY; The status of the expansion job.
 	Status *ExpansionJobPropertiesStatus
@@ -1193,6 +1202,7 @@ type ImportJobUpdate struct {
 	Tags map[string]*string
 }
 
+// ImportJobUpdateProperties - Properties for updating an import job.
 type ImportJobUpdateProperties struct {
 	// The administrative status of the import job. Possible values: 'Active', 'Cancel'. Passing in a value of 'Cancel' will cancel
 	// the current active import job.
@@ -1374,6 +1384,127 @@ type PrimingJob struct {
 type PrimingJobIDParameter struct {
 	// REQUIRED; The unique identifier of the priming job.
 	PrimingJobID *string
+}
+
+// RebalanceJob - A rebalance job instance. Rebalances OST data across storage targets after a cluster expansion.
+// Follows Azure Resource Manager standards: https://github.com/Azure/azure-resource-manager-rpc/blob/master/v1.0/resource-api-reference.md
+type RebalanceJob struct {
+	// Properties of the rebalance job.
+	Properties *RebalanceJobProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// RebalanceJobProperties - Properties of the rebalance job.
+type RebalanceJobProperties struct {
+	// READ-ONLY; The current administrative status of the rebalance job. 'Active' indicates the job is running normally; 'Cancel'
+	// indicates cancellation has been requested.
+	AdminStatus *RebalanceJobAdminStatus
+
+	// READ-ONLY; Fully qualified ARM resource ID of the parent expansion job that initiated this rebalance. Populated when the
+	// rebalance was created as part of an expansion.
+	ExpansionJobID *string
+
+	// READ-ONLY; ARM provisioning state, see https://github.com/Azure/azure-resource-manager-rpc/blob/master/v1.0/Addendum.md#provisioningstate-property
+	ProvisioningState *RebalanceJobPropertiesProvisioningState
+
+	// READ-ONLY; The status of the rebalance job.
+	Status *RebalanceJobPropertiesStatus
+}
+
+// RebalanceJobPropertiesStatus - The status of the rebalance job.
+type RebalanceJobPropertiesStatus struct {
+	// READ-ONLY; The balance percentage (0-100). Represents cumulative progress since the rebalance started. Reported in periodic
+	// rebalance status updates. Resets to 0 if the rebalancer node restarts.
+	BalancePercent *float64
+
+	// READ-ONLY; Total number of bytes moved since the rebalance started. Reported in periodic rebalance status updates. Resets
+	// to 0 if the rebalancer node restarts.
+	BytesMoved *int64
+
+	// READ-ONLY; The time (in UTC) when the rebalance job completed. Only populated when the job reaches a terminal state (Completed,
+	// Failed, or Canceled).
+	CompletionTimeUTC *time.Time
+
+	// READ-ONLY; Total number of directories migrated since the rebalance started. Counts MDT-phase (metadata) work items, reported
+	// separately from filesMigrated (OST-phase data migrations). Reported in periodic rebalance status updates. Resets to 0 if
+	// the rebalancer node restarts.
+	DirsMigrated *int64
+
+	// READ-ONLY; Estimated remaining time in seconds. Omitted during initial assessment before the rebalancer has enough data
+	// to estimate.
+	EstimatedRemainingSeconds *int32
+
+	// READ-ONLY; Total number of files migrated since the rebalance started. Counts OST-phase (data) work items. Reported in
+	// periodic rebalance status updates. Resets to 0 if the rebalancer node restarts.
+	FilesMigrated *int64
+
+	// READ-ONLY; Average files moved per second over the most recent reporting interval.
+	FilesMovedPerSecond *float64
+
+	// READ-ONLY; The percentage of rebalance job completion.
+	PercentComplete *float32
+
+	// READ-ONLY; The time (in UTC) the rebalance job started.
+	StartTimeUTC *time.Time
+
+	// READ-ONLY; The operational state of the rebalance job. InProgress indicates the rebalance is running on the cluster. Cancelling
+	// indicates a cancel has been requested. Canceled indicates the rebalance was cancelled. Completed indicates the rebalance
+	// finished successfully. Failed indicates the rebalance was unable to complete due to a fatal error. Deleting indicates the
+	// job is being cleaned up during deletion. RollingBack indicates the orchestrator is rolling back provisioned resources after
+	// a failure.
+	State *RebalanceJobStatusType
+
+	// READ-ONLY; Server-defined status code for rebalance job.
+	StatusCode *string
+
+	// READ-ONLY; Server-defined status message for rebalance job.
+	StatusMessage *string
+
+	// READ-ONLY; Average throughput in mebibytes per second (1024x1024 bytes per second) over the most recent reporting interval.
+	ThroughputMiBps *float64
+
+	// READ-ONLY; Total cumulative non-skip errors since the rebalance started. Reported in periodic rebalance status updates.
+	// Resets to 0 if the rebalancer node restarts.
+	TotalErrors *int32
+
+	// READ-ONLY; Total cumulative benign skips since the rebalance started: files intentionally not migrated (for example, a
+	// lost migration lease or a stale layout), as distinct from the hard failures counted in totalErrors. Reported in periodic
+	// rebalance status updates. Resets to 0 if the rebalancer node restarts.
+	TotalSkipped *int64
+}
+
+// RebalanceJobUpdate - A rebalance job update instance.
+type RebalanceJobUpdate struct {
+	// Properties for the rebalance job update.
+	Properties *RebalanceJobUpdateProperties
+}
+
+// RebalanceJobUpdateProperties - Properties for updating a rebalance job.
+type RebalanceJobUpdateProperties struct {
+	// The administrative status of the rebalance job. Passing in a value of 'Cancel' will cancel the current active rebalance
+	// job.
+	AdminStatus *RebalanceJobAdminStatus
+}
+
+// RebalanceJobsListResult - Result of the request to list rebalance jobs. It contains a list of rebalance jobs and a URL
+// link to get the next set of results.
+type RebalanceJobsListResult struct {
+	// URL to get the next set of rebalance job list results, if there are any.
+	NextLink *string
+
+	// List of rebalance jobs.
+	Value []*RebalanceJob
 }
 
 // RequiredAmlFilesystemSubnetsSize - Information about the number of available IP addresses that are required for the AML
@@ -1620,6 +1751,7 @@ type UsageModelsResult struct {
 	Value []*UsageModel
 }
 
+// UserAssignedIdentitiesValue - User-assigned identity properties.
 type UserAssignedIdentitiesValue struct {
 	// READ-ONLY; The client ID of the user-assigned identity.
 	ClientID *string

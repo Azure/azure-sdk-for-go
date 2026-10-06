@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-08-01-preview/AvailableVersions_ListByLocation.json
+// Generated from example definition: 2026-08-01-preview/AvailableVersions_ListByLocation.json
 func ExampleAvailableVersionsClient_NewListByLocationPager_availableVersionsListByLocation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -136,7 +136,7 @@ func ExampleAvailableVersionsClient_NewListByLocationPager_availableVersionsList
 	}
 }
 
-// Generated from example definition: 2025-08-01-preview/AvailableVersions_ListByLocationWithFilter.json
+// Generated from example definition: 2026-08-01-preview/AvailableVersions_ListByLocationWithFilter.json
 func ExampleAvailableVersionsClient_NewListByLocationPager_availableVersionsListByLocationWithFilter() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -32,3 +32,28 @@ func unmarshalAutonomousDatabaseBasePropertiesClassification(rawMsg json.RawMess
 	}
 	return b, nil
 }
+
+func unmarshalConnectionBasePropertiesClassification(rawMsg json.RawMessage) (ConnectionBasePropertiesClassification, error) {
+	if rawMsg == nil || string(rawMsg) == "null" {
+		return nil, nil
+	}
+	var m map[string]any
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b ConnectionBasePropertiesClassification
+	switch m["connectionType"] {
+	case string(ConnectionTypeKafka):
+		b = &KafkaConnectionDetails{}
+	case string(ConnectionTypeMicrosoftFabric):
+		b = &MicrosoftFabricConnectionDetails{}
+	case string(ConnectionTypeOracle):
+		b = &OracleConnectionDetails{}
+	default:
+		b = &ConnectionBaseProperties{}
+	}
+	if err := json.Unmarshal(rawMsg, b); err != nil {
+		return nil, err
+	}
+	return b, nil
+}

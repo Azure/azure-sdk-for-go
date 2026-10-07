@@ -129,7 +129,9 @@ func (p *QueryItemsPager) ContinuationToken(ctx context.Context) (string, error)
 func unsupportedQueryCheckpoint(err error) bool {
 	var cosmosErr *Error
 	return errors.As(err, &cosmosErr) && !cosmosErr.FromWire &&
-		cosmosErr.StatusCode == 400 && (cosmosErr.SubStatus == 20124 || cosmosErr.SubStatus == 20117)
+		cosmosErr.StatusCode == 400 &&
+		(cosmosErr.SubStatus == subStatusBufferedQueryContinuationUnsupported ||
+			cosmosErr.SubStatus == subStatusContinuationTokenNonQueryOperation)
 }
 
 // Close releases the retained query plan. It is idempotent and safe alongside Client.Close.

@@ -7,6 +7,7 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"math"
 	"testing"
 
@@ -152,7 +153,7 @@ func (c *testQueryCursor) checkpoint(context.Context) (string, error) {
 func (c *testQueryCursor) close() { c.closed++ }
 
 func TestQueryPagerRetainsProgressWithoutCheckpoint(t *testing.T) {
-	cursor := &testQueryCursor{checkpointErr: &Error{Code: CodeBadRequest, StatusCode: 400, SubStatus: 20124}}
+	cursor := &testQueryCursor{checkpointErr: &Error{Code: CodeBadRequest, StatusCode: 400, SubStatus: subStatusBufferedQueryContinuationUnsupported}}
 	pager := &QueryItemsPager{client: newTestContainer(t).database.client, cursor: cursor}
 	require.True(t, pager.More())
 	empty, err := pager.NextPage(t.Context())
@@ -174,6 +175,31 @@ func TestQueryPagerRetainsProgressWithoutCheckpoint(t *testing.T) {
 	require.Equal(t, 1, cursor.closed)
 	require.NoError(t, pager.Close())
 	require.Equal(t, 1, cursor.closed)
+}
+
+func TestUnsupportedQueryCheckpoint(t *testing.T) {
+	require.Equal(t, 20124, subStatusBufferedQueryContinuationUnsupported)
+	require.Equal(t, 20117, subStatusContinuationTokenNonQueryOperation)
+	for _, tt := range []struct {
+		name string
+		err  error
+		want bool
+	}{
+		{"buffered query", &Error{StatusCode: 400, SubStatus: subStatusBufferedQueryContinuationUnsupported}, true},
+		{"non-query operation", &Error{StatusCode: 400, SubStatus: subStatusContinuationTokenNonQueryOperation}, true},
+		{"wrapped", fmt.Errorf("checkpoint: %w", &Error{StatusCode: 400, SubStatus: subStatusBufferedQueryContinuationUnsupported}), true},
+		{"buffered wire error", &Error{StatusCode: 400, SubStatus: subStatusBufferedQueryContinuationUnsupported, FromWire: true}, false},
+		{"non-query wire error", &Error{StatusCode: 400, SubStatus: subStatusContinuationTokenNonQueryOperation, FromWire: true}, false},
+		{"buffered wrong status", &Error{StatusCode: 503, SubStatus: subStatusBufferedQueryContinuationUnsupported}, false},
+		{"non-query wrong status", &Error{StatusCode: 503, SubStatus: subStatusContinuationTokenNonQueryOperation}, false},
+		{"unknown substatus", &Error{StatusCode: 400, SubStatus: 9999}, false},
+		{"other error", errors.New("checkpoint failed"), false},
+		{"nil", nil, false},
+	} {
+		t.Run(tt.name, func(t *testing.T) {
+			require.Equal(t, tt.want, unsupportedQueryCheckpoint(tt.err))
+		})
+	}
 }
 
 func TestQueryPagerTerminalFailureClosesCursor(t *testing.T) {

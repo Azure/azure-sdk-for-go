@@ -133,8 +133,9 @@ func TestAcquireSession_Success(t *testing.T) {
 	require.False(t, creds.Fallback())
 	require.Equal(t, "test-key", creds.Key())
 	require.Equal(t, "test-token", creds.Token())
-	require.Equal(t, expiration.Format(time.RFC1123), exp.Format(time.RFC1123))
-	require.Equal(t, expiration.Format(time.RFC1123), creds.Expiry().Format(time.RFC1123))
+	// compare instants, not formatted strings: azcore parses RFC1123 times into GMT rather than UTC
+	require.WithinDuration(t, expiration, exp, 0)
+	require.WithinDuration(t, expiration, creds.Expiry(), 0)
 }
 
 func TestAcquireSession_FallbackToBearer(t *testing.T) {

@@ -116,6 +116,13 @@ const (
 // [Error.Code] is part of the published API. The string returned by [Error.Error] is not, and is
 // subject to change.
 type Error struct {
+	// Diagnostics is a copy of the native operation diagnostics, if available.
+	Diagnostics *Diagnostics
+
+	// AttemptCount is the number of native requests made, including retries. It is zero when
+	// diagnostics are unavailable.
+	AttemptCount uint32
+
 	// Code classifies the failure. Prefer it over StatusCode and SubStatus, which are reported
 	// verbatim and are harder to interpret correctly.
 	Code Code
@@ -232,6 +239,12 @@ func cloneError(err error) error {
 	}
 	clone := *cosmosErr
 	clone.Body = append([]byte(nil), cosmosErr.Body...)
+	if cosmosErr.Diagnostics != nil {
+		diagnostics := *cosmosErr.Diagnostics
+		diagnostics.RegionsContacted = append([]string(nil), diagnostics.RegionsContacted...)
+		diagnostics.Attempts = append([]DiagnosticAttempt(nil), diagnostics.Attempts...)
+		clone.Diagnostics = &diagnostics
+	}
 	return &clone
 }
 

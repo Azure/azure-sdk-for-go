@@ -43,6 +43,22 @@ this package's cgo files need the ABI declarations in their own include path. Th
 and linked library version must both match the pin in `driver.go` before any struct-sensitive ABI
 call during construction. Mismatched versions can otherwise cause incompatible struct layouts.
 
+The v0.2.0 driver owns throttle and session retries; Go submits once and exposes the driver's
+attempt count and final status on responses and errors. When attached by the driver,
+`Response.Diagnostics` and `Error.Diagnostics` contain a Go-owned snapshot of total charge,
+elapsed time, regions contacted, retained per-attempt status/substatus and latency, and the
+driver's JSON rendering at `ClientOptions.DiagnosticsVerbosity` (a compact per-region summary by
+default; the full per-attempt rendering only when set to `DiagnosticsVerbosityDetailed`). The
+native driver can compact old attempts; `AttemptCount`
+remains the total even when `len(Diagnostics.Attempts)` is smaller. Diagnostics are not available
+when cancellation returns before a native completion.
+
+The caller's session token is forwarded unchanged, and the returned token can be supplied on a
+later request. The v0.2 native ABI does not support on-demand operation cancellation: cancelling
+a Go context returns promptly and releases its Go-side resources, but the native request can
+continue until its own timeout or retry budget ends. Avoid assuming a cancelled write did not
+reach the service.
+
 ### Client initialization
 
 `NewClient` and `NewClientWithKey` perform no network I/O. Call `Client.Initialize` with a context
@@ -176,8 +192,9 @@ maps both nil and empty exclusion slices to inheritance.
 
 ### Running the end-to-end tests
 
-The tests in `emulator_test.go` run real operations against a service. They need a driver-backed
-build and the `EMULATOR` environment variable, and they skip otherwise.
+The tests in `emulator_test.go`, `diagnostics_emulator_test.go`, and `retry_native_test.go` run
+real operations against a service. They need a driver-backed build and the `EMULATOR` environment
+variable, and they skip otherwise.
 
 They run against the driver's own in-memory emulator, which is the same one the driver's Rust tests
 use, so the binding is exercised against what the driver is developed against. It is a plain
@@ -193,7 +210,7 @@ into this module. CI builds it with a pinned Rust toolchain and locked Cargo dep
   --config path/to/azcosmos/internal/testdata/emulator-config.json
 # {"event":"ready","accountEndpoint":"http://127.0.0.1:49151/", ...}
 
-EMULATOR=1 AZCOSMOS_ENDPOINT=http://127.0.0.1:49151/ go test -run TestEmulator ./...
+EMULATOR=1 AZCOSMOS_ENDPOINT=http://127.0.0.1:49151/ go test -run 'Test(Emulator|NativeThrottle|NativeStaleSession)' ./...
 ```
 
 The container the tests use is declared in `internal/testdata/emulator-config.json`; its ids

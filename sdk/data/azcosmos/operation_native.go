@@ -56,10 +56,20 @@ func (d *nativeDriver) execute(ctx context.Context, req itemRequest) (ItemRespon
 	// only what remains rather than restarting the configured duration.
 	req.options.EndToEndTimeout = endToEndTimeout(ctx, 0)
 
-	result, err := d.awaitAuthoritativeCompletion(ctx, "submitting the operation",
-		func(queue *C.cosmos_completion_queue_t, cookie C.intptr_t, preError *C.cosmos_status_code_t) *C.cosmos_operation_handle_t {
-			return d.submit(driver, container, req, queue, cookie, preError)
-		})
+	submit := func(queue *C.cosmos_completion_queue_t, cookie C.intptr_t, preError *C.cosmos_status_code_t) *C.cosmos_operation_handle_t {
+		return d.submit(driver, container, req, queue, cookie, preError)
+	}
+
+	// Only a write can leave a side effect that must not be misreported as cancelled after it
+	// already committed, so only writes pay for an authoritative wait. A read has nothing to
+	// protect: abandoning it the moment ctx ends, rather than waiting out the native driver's own
+	// retry budget, is what keeps cancellation prompt.
+	var result completionResult
+	if req.kind == operationKindReadItem {
+		result, err = d.awaitCompletion(ctx, "submitting the operation", submit)
+	} else {
+		result, err = d.awaitAuthoritativeCompletion(ctx, "submitting the operation", submit)
+	}
 	if err != nil {
 		return ItemResponse{}, nil, err
 	}
@@ -67,15 +77,18 @@ func (d *nativeDriver) execute(ctx context.Context, req itemRequest) (ItemRespon
 }
 
 // awaitCompletion submits one operation and waits for its completion or the caller's context,
-// whichever comes first. Driver creation, container resolution and item operations all go through
-// it, so all three honor a context the same way.
+// whichever comes first. Driver creation, container resolution and reads all go through it, so
+// all three honor a context the same way.
 //
 // The submit closure receives what the driver needs to answer: the queue to post the completion
 // to, the cookie to round-trip onto it, and somewhere to report a pre-flight rejection. It returns
 // NULL when the operation was rejected before it started, which posts no completion.
 //
-// Non-authoritative waits may return on cancellation; late completion cleanup keeps native
-// resources alive. Point operations separately await authoritative results, including writes.
+// Non-authoritative waits may return on cancellation without the native operation's result; the
+// handle and cookie are released immediately regardless, since a completion that arrives after is
+// safely dropped by the reactor. Writes separately await authoritative results instead, since a
+// write may have already committed by the time the context ends and must not be misreported as
+// cancelled.
 func (d *nativeDriver) awaitCompletion(
 	ctx context.Context,
 	doing string,
@@ -102,18 +115,15 @@ func (d *nativeDriver) awaitOperation(
 		return completionResult{}, err
 	}
 
-	// Buffered so the reactor can always deliver without blocking, even after this goroutine has
-	// stopped waiting because the context was cancelled.
+	// Buffered so the reactor can deliver without blocking after cancellation.
 	pending := &pendingOperation{result: make(chan completionResult, 1)}
 	handle := cgo.NewHandle(pending)
-	// Deleted only once the operation is known to be finished, because the driver round-trips the
-	// cookie onto the completion and the reactor dereferences it.
-	abandoned := false
-	defer func() {
-		if !abandoned {
-			handle.Delete()
-		}
-	}()
+	// cosmos_operation_handle_free only drops this handle's Arc reference; the driver keeps the
+	// operation alive through its own reference until the completion is posted. Freeing the
+	// handle and deleting the cookie here, rather than waiting for a late completion, is therefore
+	// always safe: a completion that arrives afterward finds its cookie invalid and is dropped by
+	// the reactor before translation, so nothing it carries is ever leaked.
+	defer handle.Delete()
 
 	var preError C.cosmos_status_code_t
 	op := submit(d.reactor.queue, C.intptr_t(handle), &preError)
@@ -128,26 +138,12 @@ func (d *nativeDriver) awaitOperation(
 			Message:    "azcosmos: " + doing,
 		}
 	}
-	defer func() {
-		if !abandoned {
-			C.cosmos_operation_handle_free(op)
-		}
-	}()
+	defer C.cosmos_operation_handle_free(op)
 
-	return awaitOperationResult(ctx, pending.result, authoritative, func() {
-		abandoned = true
-		d.pending.Add(1)
-		go func() {
-			defer d.pending.Done()
-			defer handle.Delete()
-			defer C.cosmos_operation_handle_free(op)
-			result := <-pending.result
-			result.release()
-		}()
-	})
+	return awaitOperationResult(ctx, pending, authoritative)
 }
 
-func awaitOperationResult(ctx context.Context, results <-chan completionResult, authoritative bool, abandon func()) (completionResult, error) {
+func awaitOperationResult(ctx context.Context, pending *pendingOperation, authoritative bool) (completionResult, error) {
 	finish := func(result completionResult) (completionResult, error) {
 		if cause := ctx.Err(); cause != nil {
 			if !authoritative {
@@ -163,21 +159,23 @@ func awaitOperationResult(ctx context.Context, results <-chan completionResult, 
 		return result, nil
 	}
 	select {
-	case result := <-results:
+	case result := <-pending.result:
 		return finish(result)
 	case <-ctx.Done():
 		if !authoritative {
-			select {
-			case result := <-results:
+			// abandon() marks the pending operation closed and claims whatever result is buffered
+			// atomically, under its own lock, so this cannot race with the reactor's concurrent
+			// deliver(): either the result was already delivered and abandon() hands it back here,
+			// or deliver() observes closed and releases it itself. A result that lands in that
+			// exact instant is never silently discarded in favor of a cancellation error.
+			if result, ok := pending.abandon(); ok {
 				return finish(result)
-			default:
 			}
-			abandon()
 			return completionResult{}, newOperationCancelledError(ctx.Err(), 0, "")
 		}
 		// The terminal result is authoritative when completion and cancellation race. In
 		// particular, a successful write must not be reported as cancelled after it committed.
-		result := <-results
+		result := <-pending.result
 		terminal, err := resultAfterCancellation(ctx.Err(), result)
 		if err != nil {
 			result.release()
@@ -187,21 +185,49 @@ func awaitOperationResult(ctx context.Context, results <-chan completionResult, 
 }
 
 func resultAfterCancellation(cause error, result completionResult) (completionResult, error) {
-	if !result.cancelled {
+	if !result.cancelled && !isClientOperationTimeout(result.err) {
 		return result, nil
 	}
 	return completionResult{}, completionCancellationError(cause, result)
 }
 
+// isClientOperationTimeout reports whether err is the native driver's own end-to-end budget
+// expiring (CodeClientOperationTimeout), as opposed to the COSMOS_COMPLETION_OUTCOME_CANCELLED
+// outcome that result.cancelled already covers.
+//
+// The native driver's end-to-end timeout and the caller's context deadline are set to the same
+// nominal duration but run on independent clocks, so either can fire first. When the native clock
+// wins that race, the completion arrives classified as ClientOperationTimeout rather than
+// cancelled, and an authoritative wait (which always awaits the real completion, since a write may
+// have already committed) would otherwise return that raw error instead of one that satisfies
+// errors.Is(err, context.DeadlineExceeded) as callers expect once the context has ended.
+func isClientOperationTimeout(err error) bool {
+	var completionErr *Error
+	return errors.As(err, &completionErr) && completionErr.Code == CodeClientOperationTimeout
+}
+
 func completionCancellationError(cause error, result completionResult) error {
 	requestCharge := result.response.RequestCharge
 	activityID := result.response.ActivityID
+	diagnostics := result.response.Diagnostics
+	attemptCount := result.response.AttemptCount
+	statusCode := result.response.StatusCode
+	subStatus := result.response.SubStatus
 	var completionErr *Error
 	if errors.As(result.err, &completionErr) {
 		requestCharge = completionErr.RequestCharge
 		activityID = completionErr.ActivityID
+		diagnostics = completionErr.Diagnostics
+		attemptCount = completionErr.AttemptCount
+		statusCode = completionErr.StatusCode
+		subStatus = completionErr.SubStatus
 	}
-	return newOperationCancelledError(cause, requestCharge, activityID)
+	err := newOperationCancelledError(cause, requestCharge, activityID)
+	err.Diagnostics = diagnostics
+	err.AttemptCount = attemptCount
+	err.StatusCode = statusCode
+	err.SubStatus = subStatus
+	return err
 }
 
 // inspectAwaitCompletionSubmission reports whether awaitCompletion invoked its submit closure.

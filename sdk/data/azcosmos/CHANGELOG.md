@@ -6,6 +6,12 @@
 
 ### Features Added
 
+* Added key-auth-only database/container management: `Client.CreateDatabase`;
+  `DatabaseClient.Read`, `DatabaseClient.Delete`, `DatabaseClient.CreateContainer`;
+  `ContainerClient.ReadContainer`, `ContainerClient.DeleteContainer`; and the
+  `DatabaseProperties`/`ContainerProperties` model types, including `IndexingPolicy` and
+  `UniqueKeyPolicy`. These require a key-credential client (`NewClientWithKey`).
+  See [PR 27700](https://github.com/Azure/azure-sdk-for-go/pull/27700).
 * Query cursors now share a client-owned completion reactor instead of blocking one OS thread
   per waiting query. Cancellation and client shutdown retain late-completion cleanup.
   See [PR 27676](https://github.com/Azure/azure-sdk-for-go/pull/27676).

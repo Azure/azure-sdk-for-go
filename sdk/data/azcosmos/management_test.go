@@ -5,6 +5,7 @@ package azcosmos
 
 import (
 	"context"
+	"encoding/json"
 	"testing"
 
 	"github.com/stretchr/testify/require"
@@ -100,4 +101,28 @@ func TestContainerResponseParsesProperties(t *testing.T) {
 	require.True(t, response.ContainerProperties.IndexingPolicy.Automatic)
 	require.NotNil(t, response.ContainerProperties.UniqueKeyPolicy)
 	require.Equal(t, []string{"/email"}, response.ContainerProperties.UniqueKeyPolicy.UniqueKeys[0].Paths)
+}
+
+func TestPartitionKeyDefinitionMarshalInfersKindFromPathCount(t *testing.T) {
+	tests := []struct {
+		name string
+		def  PartitionKeyDefinition
+		want PartitionKeyKind
+	}{
+		{"explicit kind is preserved", PartitionKeyDefinition{Kind: PartitionKeyKindMultiHash, Paths: []string{"/a"}}, PartitionKeyKindMultiHash},
+		{"single path infers hash", PartitionKeyDefinition{Paths: []string{"/pk"}}, PartitionKeyKindHash},
+		{"multiple paths infer multi-hash", PartitionKeyDefinition{Paths: []string{"/a", "/b"}}, PartitionKeyKindMultiHash},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			data, err := json.Marshal(tt.def)
+			require.NoError(t, err)
+
+			var decoded struct {
+				Kind PartitionKeyKind `json:"kind"`
+			}
+			require.NoError(t, json.Unmarshal(data, &decoded))
+			require.Equal(t, tt.want, decoded.Kind)
+		})
+	}
 }

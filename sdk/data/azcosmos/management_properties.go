@@ -3,7 +3,11 @@
 
 package azcosmos
 
-import "github.com/Azure/azure-sdk-for-go/sdk/azcore"
+import (
+	"encoding/json"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+)
 
 // DatabaseProperties represents the properties of a database.
 type DatabaseProperties struct {
@@ -37,6 +41,24 @@ type PartitionKeyDefinition struct {
 	Paths []string `json:"paths"`
 	// Version is the partition key hash version. Zero uses the service default.
 	Version int `json:"version,omitempty"`
+}
+
+// MarshalJSON applies the [PartitionKeyDefinition.Kind] inference documented on the field: an
+// empty Kind is resolved from the path count before encoding, since the service expects an
+// explicit kind rather than inferring one itself.
+func (p PartitionKeyDefinition) MarshalJSON() ([]byte, error) {
+	kind := p.Kind
+	if kind == "" {
+		switch len(p.Paths) {
+		case 1:
+			kind = PartitionKeyKindHash
+		case 0:
+		default:
+			kind = PartitionKeyKindMultiHash
+		}
+	}
+	type alias PartitionKeyDefinition
+	return json.Marshal(alias{Kind: kind, Paths: p.Paths, Version: p.Version})
 }
 
 // IndexingMode selects how a container's indexing policy is applied.

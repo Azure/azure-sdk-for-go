@@ -15,6 +15,7 @@ import "C"
 
 import (
 	"context"
+	"strings"
 	"unsafe"
 )
 
@@ -94,11 +95,18 @@ func (d *nativeDriver) executeManagement(
 	if err != nil {
 		return Response{}, nil, err
 	}
-	if result.err == nil && kind == operationKindDeleteContainer {
-		// The cached handle's RID is now stale; drop it so the next item or management operation
-		// against this database/container pair resolves fresh rather than reusing a deleted
-		// container's identity.
-		d.evictContainer(databaseID, containerID)
+	if result.err == nil {
+		switch kind {
+		case operationKindDeleteContainer:
+			// The cached handle's RID is now stale; drop it so the next item or management
+			// operation against this database/container pair resolves fresh rather than reusing a
+			// deleted container's identity.
+			d.evictContainer(databaseID, containerID)
+		case operationKindDeleteDatabase:
+			// Every container under this database is gone too, so every cached handle scoped to
+			// it is stale, not just one directly deleted container.
+			d.evictDatabase(databaseID)
+		}
 	}
 	return result.response.Response, result.body, result.err
 }
@@ -144,7 +152,7 @@ func (d *nativeDriver) createDatabaseRef(databaseID string) (*C.cosmos_database_
 	defer C.free(allocation)
 
 	var out *C.cosmos_database_ref_t
-	status := C.cosmos_database_ref_create(d.account, cDatabaseID, &out)
+	status := C.cosmos_database_ref_create(d.account, cDatabaseID, &out) //nolint:gocritic // dupSubExpr is reported against cgo-generated code, not this call.
 	if status != 0 {
 		httpStatus, subStatus := unpackStatus(status)
 		return nil, &Error{
@@ -166,6 +174,22 @@ func (d *nativeDriver) evictContainer(databaseID, containerID string) {
 	if container, ok := d.containers[key]; ok {
 		delete(d.containers, key)
 		C.cosmos_container_ref_free(container)
+	}
+}
+
+// evictDatabase drops every cached container handle scoped to databaseID, freeing each. A
+// successful database delete invalidates all of its containers' resource IDs too, not just one
+// directly deleted container, so the cache must not keep serving stale handles for any of them if
+// the database and a same-named container are recreated later.
+func (d *nativeDriver) evictDatabase(databaseID string) {
+	prefix := databaseID + "/"
+	d.mu.Lock()
+	defer d.mu.Unlock()
+	for key, container := range d.containers {
+		if strings.HasPrefix(key, prefix) {
+			delete(d.containers, key)
+			C.cosmos_container_ref_free(container)
+		}
 	}
 }
 

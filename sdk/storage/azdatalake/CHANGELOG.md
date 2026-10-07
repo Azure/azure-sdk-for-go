@@ -1,6 +1,6 @@
 # Release History
 
-## 1.7.0-beta.1 (Unreleased)
+## 1.7.0 (Unreleased)
 
 ### Features Added
 * Added support for session authentication. Set `Session` on `ClientOptions` to configure it. Sessions apply only to
@@ -28,7 +28,7 @@
 * The token credential constructors now return the error from creating their blob client instead of discarding it.
 
 ### Other Changes
-* Requires `azblob` `1.9.0-beta.1`.
+* Updated `azblob` version to `1.9.0`
 
 ## 1.6.1 (2026-10-07)
 

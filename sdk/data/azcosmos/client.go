@@ -37,8 +37,6 @@ type ClientOptions struct {
 	// Nil resolves AZURE_COSMOS_BINARY_ENCODING_ENABLED at construction, then defaults to enabled.
 	// Explicit request encoding overrides this value. PATCH and delete use Operation inheritance.
 	BinaryEncoding *BinaryEncodingOptions
-	// FaultInjectionRules configures client-specific native fault injection for testing.
-	FaultInjectionRules []FaultInjectionRule
 	// DiagnosticsHandler observes completed item calls after their lifetime guard is released.
 	// It must be safe for concurrent calls. Query-specific diagnostics are not configured here.
 	DiagnosticsHandler func(context.Context, OperationDiagnostic)
@@ -132,7 +130,6 @@ func newClient(
 		client.options.Routing = options.Routing.clone()
 		client.options.Operation = options.Operation.clone()
 		client.options.BinaryEncoding = options.BinaryEncoding.clone()
-		client.options.FaultInjectionRules = cloneFaultInjectionRules(options.FaultInjectionRules)
 	}
 	if err := client.options.validate(); err != nil {
 		return nil, err
@@ -262,8 +259,5 @@ func (c *Client) NewContainer(databaseID string, containerID string) (*Container
 // validate reports option values that cannot be passed through the C ABI. Values the driver
 // understands are passed through and validated there, so this package does not duplicate its rules.
 func (o ClientOptions) validate() error {
-	if err := validateFaultInjectionRules(o.FaultInjectionRules); err != nil {
-		return err
-	}
 	return o.Operation.validate()
 }

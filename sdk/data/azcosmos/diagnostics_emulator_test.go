@@ -13,7 +13,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestEmulatorFaultInjectionAndDiagnostics(t *testing.T) {
+func TestEmulatorDiagnosticsSnapshotSurvivesClientClose(t *testing.T) {
 	endpoint, database, containerID := emulatorConfiguration(t)
 	runtime, err := NewRuntime(nil)
 	require.NoError(t, err)
@@ -26,12 +26,6 @@ func TestEmulatorFaultInjectionAndDiagnostics(t *testing.T) {
 			HedgingEnabled:        to(false),
 			MaxFailoverRetryCount: to(uint32(0)),
 		},
-		FaultInjectionRules: []FaultInjectionRule{{
-			ID: "read-throttle", Condition: FaultInjectionCondition{Operation: FaultInjectionReadItem},
-			Result: FaultInjectionResult{CustomStatusCode: 429, Headers: map[string]string{"x-ms-retry-after-ms": "1"},
-				Body: []byte(`{"code":"TooManyRequests","message":"injected test response"}`)},
-			HitLimit: to(uint32(1)),
-		}},
 		DiagnosticsHandler: func(_ context.Context, diagnostic OperationDiagnostic) { observed <- diagnostic },
 	})
 	require.NoError(t, err)
@@ -41,7 +35,7 @@ func TestEmulatorFaultInjectionAndDiagnostics(t *testing.T) {
 	_, err = container.ReadItem(t.Context(), NewPartitionKeyString("missing"), uniqueItemID(t), nil)
 	var cosmosErr *Error
 	require.ErrorAs(t, err, &cosmosErr)
-	require.Equal(t, 429, cosmosErr.StatusCode)
+	require.Equal(t, 404, cosmosErr.StatusCode)
 	diagnostic := <-observed
 	require.Equal(t, "ReadItem", diagnostic.Operation)
 	require.Error(t, diagnostic.Error)
@@ -52,7 +46,7 @@ func TestEmulatorFaultInjectionAndDiagnostics(t *testing.T) {
 	jsonSnapshot := diagnostic.Diagnostics.JSON()
 	_, err = container.ReadItem(t.Context(), NewPartitionKeyString("missing"), uniqueItemID(t), nil)
 	require.ErrorAs(t, err, &cosmosErr)
-	require.Equal(t, 404, cosmosErr.StatusCode, "hit limit must release subsequent requests")
+	require.Equal(t, 404, cosmosErr.StatusCode)
 	<-observed
 	require.NoError(t, client.Close())
 	require.Equal(t, jsonSnapshot, diagnostic.Diagnostics.JSON(), "snapshot must survive native completion and client release")

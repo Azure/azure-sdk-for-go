@@ -47,35 +47,3 @@ func TestPatchTrackingRustRetentionAndUUID(t *testing.T) {
 	}
 	require.NoError(t, (PatchItemOptions{TrackingRetention: to(time.Duration(math.MaxInt64))}).validateTracking())
 }
-
-func TestFaultInjectionValidationAndCopies(t *testing.T) {
-	rules := []FaultInjectionRule{{
-		ID: "fault", Condition: FaultInjectionCondition{Operation: FaultInjectionReadItem},
-		Result: FaultInjectionResult{CustomStatusCode: 429, Probability: to(float32(1)),
-			Headers: map[string]string{"x-test": "one"}, Body: []byte("body"), RetryAfter: to(time.Second)},
-		HitLimit: to(uint32(0)), ExpireAfter: to(time.Second),
-	}}
-	require.NoError(t, validateFaultInjectionRules(rules))
-	copy := cloneFaultInjectionRules(rules)
-	rules[0].Result.Headers["x-test"] = "two"
-	rules[0].Result.Body[0] = 'x'
-	*rules[0].HitLimit = 9
-	*rules[0].Result.Probability = 0
-	require.Equal(t, "one", copy[0].Result.Headers["x-test"])
-	require.Equal(t, []byte("body"), copy[0].Result.Body)
-	require.Zero(t, *copy[0].HitLimit)
-	require.Equal(t, float32(1), *copy[0].Result.Probability)
-	for _, mutate := range []func(*FaultInjectionRule){
-		func(r *FaultInjectionRule) { r.ID = "" },
-		func(r *FaultInjectionRule) { r.Condition.Operation = 99 },
-		func(r *FaultInjectionRule) { r.Result.Error = FaultInjectionTimeout },
-		func(r *FaultInjectionRule) { r.Result.Probability = to(float32(math.NaN())) },
-		func(r *FaultInjectionRule) { r.Result.RetryAfter = to(-time.Second) },
-		func(r *FaultInjectionRule) { r.Result.Headers = map[string]string{"bad name": "value"} },
-	} {
-		invalid := cloneFaultInjectionRules(copy)
-		mutate(&invalid[0])
-		require.Error(t, validateFaultInjectionRules(invalid))
-	}
-	require.Error(t, validateFaultInjectionRules(append(copy, copy[0])))
-}

@@ -23,7 +23,6 @@ import (
 	"fmt"
 	"sync"
 	"time"
-	"unsafe"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
@@ -285,16 +284,7 @@ func (d *nativeDriver) buildDriverOptions() (*C.cosmos_driver_options_t, error) 
 	defer release()
 
 	var options *C.cosmos_driver_options_t
-	versioned := C.cosmos_driver_options_config_v2_default()
-	versioned.preferred_regions = config.preferred_regions
-	versioned.preferred_regions_len = config.preferred_regions_len
-	versioned.operation_options = config.operation_options
-	rules, releaseRules := nativeFaultInjectionRules(d.cfg.options.FaultInjectionRules)
-	defer releaseRules()
-	versioned.fault_injection_rules = rules
-	versioned.fault_injection_rules_len = C.uintptr_t(len(d.cfg.options.FaultInjectionRules))
-	versioned.fault_injection_rule_stride = C.uintptr_t(unsafe.Sizeof(C.cosmos_fault_injection_rule_t{}))
-	status := C.cosmos_driver_options_build_v2(d.account, &versioned, &options) //nolint:gocritic // dupSubExpr is reported against cgo-generated code.
+	status := C.cosmos_driver_options_build(d.account, config, &options) //nolint:gocritic // dupSubExpr is reported against cgo-generated code.
 	if err := statusError(status, nil, "building the driver options"); err != nil {
 		return nil, err
 	}

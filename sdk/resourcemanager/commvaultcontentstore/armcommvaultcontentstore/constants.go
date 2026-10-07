@@ -497,7 +497,8 @@ func PossibleRetentionTimeValues() []RetentionTime {
 	}
 }
 
-// RoleName - Supported Commvault role names
+// RoleName - Supported Commvault role names. Extensible enum — additional roles may be added in future versions without a
+// breaking change.
 type RoleName string
 
 const (

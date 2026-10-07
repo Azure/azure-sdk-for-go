@@ -17,13 +17,14 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/temporal"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/bloberror"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/base"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/sas"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/internal/autorefresh"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/internal/locality"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/internal/sasurl"
 )
@@ -422,15 +423,15 @@ func (b *Client) downloadBuffer(ctx context.Context, writer io.WriterAt, o downl
 
 	// More data remains. Layout aware routing applies only when the caller left it enabled and
 	// the service asked for it via the download hint on the initial response.
-	var layoutResource *temporal.Resource[layout, context.Context]
+	var layoutCache *autorefresh.Cache[layout]
 	if o.layoutAwareRoutingEnabled() && downloadHint != nil && *downloadHint == generated.DownloadHintLayout {
-		layoutResource, err = b.resolveLayout(ctx, o, initialChunkSize, remaining)
+		layoutCache, err = b.resolveLayout(ctx, o, initialChunkSize, remaining)
 		if err != nil {
 			return 0, err
 		}
 	}
 
-	remainingDownloaded, err := b.parallelDownloadFrom(ctx, writer, o, initialChunkSize, remaining, prog, layoutResource)
+	remainingDownloaded, err := b.parallelDownloadFrom(ctx, writer, o, initialChunkSize, remaining, prog, layoutCache)
 	if err != nil {
 		return 0, err
 	}
@@ -483,7 +484,7 @@ func (b *Client) parallelDownload(ctx context.Context, writer io.WriterAt, o dow
 	return dataDownloaded, nil
 }
 
-func (b *Client) parallelDownloadFrom(ctx context.Context, writer io.WriterAt, o downloadOptions, writerOffset int64, remaining int64, prog *downloadProgress, layoutResource *temporal.Resource[layout, context.Context]) (int64, error) {
+func (b *Client) parallelDownloadFrom(ctx context.Context, writer io.WriterAt, o downloadOptions, writerOffset int64, remaining int64, prog *downloadProgress, layoutCache *autorefresh.Cache[layout]) (int64, error) {
 	dataDownloaded := int64(0)
 
 	err := shared.DoBatchTransfer(ctx, &shared.BatchTransferOptions{
@@ -495,11 +496,11 @@ func (b *Client) parallelDownloadFrom(ctx context.Context, writer io.WriterAt, o
 		Operation: func(ctx context.Context, chunkStart int64, count int64) error {
 			blobOffset := chunkStart + writerOffset + o.Range.Offset
 			downloadBlobOptions := o.getDownloadBlobOptions(HTTPRange{Offset: blobOffset, Count: count}, nil)
-			// Route this chunk to the endpoint the layout serves it from. A refresh that fails
-			// leaves the chunk on the client's configured endpoint rather than failing the
-			// download.
-			if layoutResource != nil {
-				if chunkLayout, lerr := layoutResource.Get(ctx); lerr == nil && !chunkLayout.fallback {
+			// Route this chunk to the endpoint the layout serves it from. A layout that has expired
+			// and can't be fetched again leaves the chunk on the client's configured endpoint rather
+			// than failing the download.
+			if layoutCache != nil {
+				if chunkLayout, lerr := layoutCache.Get(ctx); lerr == nil {
 					downloadBlobOptions.LayoutEndpoint = getIdealEndpoint(blobOffset, chunkLayout)
 				}
 			}
@@ -609,18 +610,18 @@ func (b *Client) DownloadFile(ctx context.Context, file *os.File, o *DownloadFil
 	return downloaded, nil
 }
 
-// resolveLayout enumerates the layout covering the part of the blob that still has to be
-// downloaded and returns the cache holding it. It returns a nil resource when the layout cannot
-// be used, in which case the remaining chunks go to the client's configured endpoint.
+// resolveLayout returns the cache of the layout covering the part of the blob that still has to
+// be downloaded, fetching it once now so that a failure to fetch it fails the download before any
+// chunk is read. Every chunk then reads the cached layout, which is refreshed in the background
+// shortly before it expires, so a long transfer never waits on a refresh.
 //
-// The layout is resolved once here rather than on the first chunk, so a fallback or no-layout
-// answer costs a single enumeration instead of one per chunk, and the resource is handed to the
-// chunk downloads so a transfer running past the layout's expiry refreshes it once rather than
-// per chunk.
+// A layout the service can't provide (a 400 or 5xx) and a blob with no layout are cached like any
+// other layout: chunks read from the client's configured endpoint until the cache expires, without
+// asking the service again.
 //
 // o.AccessConditions already carries the initial read's ETag by the time this is called, so the
 // enumeration is pinned to the same version of the blob as the data.
-func (b *Client) resolveLayout(ctx context.Context, o downloadOptions, writerOffset, remaining int64) (*temporal.Resource[layout, context.Context], error) {
+func (b *Client) resolveLayout(ctx context.Context, o downloadOptions, writerOffset, remaining int64) (*autorefresh.Cache[layout], error) {
 	layoutOptions := o.getBlobLayoutOptions()
 	if layoutOptions == nil {
 		layoutOptions = &GetLayoutOptions{}
@@ -628,24 +629,13 @@ func (b *Client) resolveLayout(ctx context.Context, o downloadOptions, writerOff
 	// Only the part of the blob that still has to be read needs a layout.
 	layoutOptions.Range = HTTPRange{Offset: o.Range.Offset + writerOffset, Count: remaining}
 
-	resource := temporal.NewResourceWithOptions(
-		func(ctx context.Context) (layout, time.Time, error) {
-			return getLayout(ctx, b.GetLayoutPager(layoutOptions))
-		}, temporal.ResourceOptions[layout, context.Context]{
-			ShouldRefresh: shouldRefreshLayout,
-		})
-
-	l, err := resource.Get(ctx)
-	if err != nil {
-		// getLayout caches "layout unavailable" as a fallback layout, so any error here is fatal.
+	cache := newLayoutCache(func(ctx context.Context) (layout, error) {
+		return getLayout(ctx, b.GetLayoutPager(layoutOptions))
+	})
+	if _, err := cache.Get(ctx); err != nil {
 		return nil, err
 	}
-	if l.fallback || len(l.layoutRanges) == 0 {
-		// The service can't supply a layout, or the blob has none: read the remainder from the
-		// client's configured endpoint.
-		return nil, nil
-	}
-	return resource, nil
+	return cache, nil
 }
 
 // GetLayoutPager returns the blob's layout: the set of byte ranges making up the blob and the

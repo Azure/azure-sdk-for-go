@@ -10,6 +10,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"os"
 	"strconv"
 	"sync"
 	"testing"
@@ -17,7 +18,6 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/temporal"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
 	"github.com/stretchr/testify/require"
 )
@@ -634,9 +634,58 @@ func TestDownloadBufferStaleUserETagFails(t *testing.T) {
 	require.Zero(t, layoutCalls, "the download fails before a layout is ever requested")
 }
 
-// TestDownloadBufferLayoutDefaultEnabled verifies that leaving LayoutAwareRouting unset (the zero
-// value, LayoutAwareRoutingAuto) resolves to enabled: the layout is fetched and used for routing.
-func TestDownloadBufferLayoutDefaultEnabled(t *testing.T) {
+// TestDownloadLayoutRoutingDefaultDisabled verifies that leaving LayoutAwareRouting unset (the
+// zero value, LayoutAwareRoutingAuto) resolves to disabled: even when the service sends the layout
+// download hint, no layout is fetched and every read goes to the configured endpoint.
+func TestDownloadLayoutRoutingDefaultDisabled(t *testing.T) {
+	etag := azcore.ETag("etag")
+	l := buildLayout(3, 100, 2, &etag)
+
+	for _, tt := range []struct {
+		name     string
+		download func(t *testing.T, client *Client) error
+	}{
+		{"DownloadBufferNilOptions", func(t *testing.T, client *Client) error {
+			// nil options use the default block size, so this is a single read
+			_, err := client.DownloadBuffer(context.Background(), make([]byte, l.contentLength), nil)
+			return err
+		}},
+		{"DownloadBufferAuto", func(t *testing.T, client *Client) error {
+			_, err := client.DownloadBuffer(context.Background(), make([]byte, l.contentLength), &DownloadBufferOptions{BlockSize: 100})
+			return err
+		}},
+		{"DownloadBufferExplicitAuto", func(t *testing.T, client *Client) error {
+			_, err := client.DownloadBuffer(context.Background(), make([]byte, l.contentLength), &DownloadBufferOptions{
+				BlockSize:          100,
+				LayoutAwareRouting: LayoutAwareRoutingAuto,
+			})
+			return err
+		}},
+		{"DownloadFileAuto", func(t *testing.T, client *Client) error {
+			file, err := os.CreateTemp(t.TempDir(), "download")
+			require.NoError(t, err)
+			defer file.Close()
+			_, err = client.DownloadFile(context.Background(), file, &DownloadFileOptions{BlockSize: 100})
+			return err
+		}},
+	} {
+		t.Run(tt.name, func(t *testing.T) {
+			f := newFakeLayoutResponder(l, nil)
+			client := newFakeLayoutClient(t, f)
+
+			require.NoError(t, tt.download(t, client))
+
+			layoutCalls, localityGets, normalGets, _ := f.counts()
+			require.Zero(t, layoutCalls, "the default must not fetch a layout")
+			require.Zero(t, localityGets, "the default must not route any read by layout")
+			require.NotZero(t, normalGets)
+		})
+	}
+}
+
+// TestDownloadLayoutRoutingExplicitlyEnabled verifies that LayoutAwareRoutingEnabled opts in: with
+// the layout download hint, the remaining reads are routed by layout.
+func TestDownloadLayoutRoutingExplicitlyEnabled(t *testing.T) {
 	etag := azcore.ETag("etag")
 	l := buildLayout(3, 100, 2, &etag)
 
@@ -644,13 +693,14 @@ func TestDownloadBufferLayoutDefaultEnabled(t *testing.T) {
 	client := newFakeLayoutClient(t, f)
 
 	_, err := client.DownloadBuffer(context.Background(), make([]byte, l.contentLength), &DownloadBufferOptions{
-		BlockSize: 100,
+		BlockSize:          100,
+		LayoutAwareRouting: LayoutAwareRoutingEnabled,
 	})
 	require.NoError(t, err)
 
 	layoutCalls, localityGets, normalGets, getPropsCalled := f.counts()
-	require.NotZero(t, layoutCalls, "the default must fetch the layout")
-	require.Equal(t, 2, localityGets, "every chunk after the initial read is routed to a locality endpoint by default")
+	require.Equal(t, 1, layoutCalls)
+	require.Equal(t, 2, localityGets, "every chunk after the initial read is routed to a locality endpoint")
 	require.Equal(t, 1, normalGets, "the initial read precedes the layout")
 	require.False(t, getPropsCalled, "the initial read supplies the length, so GetProperties is unnecessary")
 }
@@ -679,38 +729,40 @@ func TestDownloadBufferLayoutETagLock(t *testing.T) {
 	}
 }
 
-// TestDownloadBufferRefreshFailureIsNonFatal verifies that once a layout has been cached, a failed
-// eager refresh doesn't fail the download: temporal.Resource serves the stale-but-valid layout.
-func TestDownloadBufferRefreshFailureIsNonFatal(t *testing.T) {
-	// Make the cached layout go stale immediately so the chunk goroutines attempt a refresh.
-	defer func(refresh time.Duration) { layoutRefresh = refresh }(layoutRefresh)
-	layoutRefresh = time.Millisecond
+// TestDownloadBufferExpiredLayoutRefetchFailureFallsBack verifies that when a cached layout has
+// expired and fetching it again fails, the chunks are read from the client's configured endpoint
+// rather than failing the download.
+func TestDownloadBufferExpiredLayoutRefetchFailureFallsBack(t *testing.T) {
+	// Every layout is already expired when it is cached (a negative lifetime is deterministic,
+	// unlike a tiny positive one on a coarse clock), so each chunk has to fetch it again.
+	defer func(lifetime, buffer time.Duration) { layoutLifetime, layoutRefreshBuffer = lifetime, buffer }(layoutLifetime, layoutRefreshBuffer)
+	layoutLifetime, layoutRefreshBuffer = -time.Second, 0
 
 	etag := azcore.ETag("etag")
 	l := buildLayout(3, 100, 2, &etag)
 	f := newFakeLayoutResponder(l, nil)
 
-	// splitLayoutToPages(_, 3) yields a single page, so the initial fetch is call #1.
-	// Fail every call after that to simulate the refresh failing.
+	// splitLayoutToPages(_, 3) yields a single page, so the initial fetch is call #1. Every fetch
+	// after it fails with an error that isn't a cacheable "layout unavailable".
 	f.layoutStatusOverride = func(call int) *http.Response {
 		if call == 1 {
 			return nil // serve the canned successful page
 		}
-		return newMockLayoutResponse(0, "", generated.BlobLayout{}, http.StatusInternalServerError)
+		return newMockLayoutResponse(0, "", generated.BlobLayout{}, http.StatusForbidden)
 	}
 	client := newFakeLayoutClient(t, f)
-
-	time.Sleep(5 * time.Millisecond) // ensure the first fetch is already stale when chunks run
 
 	_, err := client.DownloadBuffer(context.Background(), make([]byte, l.contentLength), &DownloadBufferOptions{
 		LayoutAwareRouting: LayoutAwareRoutingEnabled,
 		BlockSize:          100,
 		Concurrency:        1,
 	})
-	require.NoError(t, err, "a failed layout refresh must not fail the download")
+	require.NoError(t, err, "a failed layout refetch must not fail the download")
 
-	_, localityGets, normalGets, _ := f.counts()
+	layoutCalls, localityGets, normalGets, _ := f.counts()
 	require.Equal(t, 3, localityGets+normalGets, "all chunks should still be downloaded")
+	require.Greater(t, layoutCalls, 1, "the expired layout was fetched again")
+	require.Zero(t, localityGets, "without a current layout the chunks use the configured endpoint")
 }
 
 // TestClientLayoutFallbackCachedSingleRequest verifies that, when driven through the client's
@@ -722,15 +774,12 @@ func TestClientLayoutFallbackCachedSingleRequest(t *testing.T) {
 	}
 	client := newFakeLayoutClient(t, f)
 
-	temporalLayout := temporal.NewResourceWithOptions(
-		func(ctx context.Context) (layout, time.Time, error) {
-			return getLayout(ctx, client.GetLayoutPager(nil))
-		}, temporal.ResourceOptions[layout, context.Context]{
-			ShouldRefresh: shouldRefreshLayout,
-		})
+	cache := newLayoutCache(func(ctx context.Context) (layout, error) {
+		return getLayout(ctx, client.GetLayoutPager(nil))
+	})
 
 	for i := 0; i < 3; i++ {
-		l, err := temporalLayout.Get(context.Background())
+		l, err := cache.Get(context.Background())
 		require.NoError(t, err)
 		require.True(t, l.fallback)
 	}

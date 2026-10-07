@@ -262,3 +262,19 @@ func PossibleFileRequestIntentTypeValues() []FileRequestIntentType {
 		FileRequestIntentTypeBackup,
 	}
 }
+
+// DownloadHint is the service's hint, on a Get Blob response, about how the rest of the blob is
+// best downloaded. See DownloadResponse.DownloadHint.
+type DownloadHint = generated.DownloadHint
+
+const (
+	// DownloadHintLayout indicates that the blob's layout can be retrieved with
+	// Client.GetLayoutPager, and that routing the remaining reads by it can improve throughput.
+	// DownloadBuffer and DownloadFile act on it when LayoutAwareRouting is LayoutAwareRoutingEnabled.
+	DownloadHintLayout DownloadHint = generated.DownloadHintLayout
+)
+
+// PossibleDownloadHintValues returns the possible values for the DownloadHint const type.
+func PossibleDownloadHintValues() []DownloadHint {
+	return generated.PossibleDownloadHintValues()
+}

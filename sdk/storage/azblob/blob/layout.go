@@ -11,6 +11,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/internal/autorefresh"
 )
 
 func getStatusCode(err error) int {
@@ -22,7 +23,21 @@ func getStatusCode(err error) int {
 	return respErr.StatusCode
 }
 
-var layoutRefresh = 5 * time.Minute
+// These are variables so tests can manipulate them.
+var (
+	// layoutLifetime is how long the service considers a layout current.
+	layoutLifetime = 5 * time.Minute
+
+	// layoutRefreshBuffer is how long before a cached layout expires that a background refresh
+	// starts.
+	layoutRefreshBuffer = 30 * time.Second
+
+	// layoutBackgroundAcquireTimeout bounds a background layout refresh.
+	layoutBackgroundAcquireTimeout = 30 * time.Second
+
+	// layoutNow is the clock for layout caches.
+	layoutNow = time.Now
+)
 
 type layoutRange struct {
 	start    int64
@@ -30,30 +45,48 @@ type layoutRange struct {
 	endpoint string
 }
 
+// layout is a cached Get Layout result. It routes reads only when layoutRanges is non-empty: a
+// blob with no layout (an empty or 204 response) and a layout the service couldn't provide
+// (fallback) both send every read to the client's configured endpoint, and both are cached for
+// the layout's full lifetime so the rest of the download doesn't ask again.
 type layout struct {
 	layoutRanges  []layoutRange
 	contentLength int64
 	eTag          *azcore.ETag
 	fallback      bool
-	expiry        time.Time
 }
 
-func getLayout(ctx context.Context, pager *runtime.Pager[GetLayoutResponse]) (layout, time.Time, error) {
+// newLayoutCache returns a cache of the layout fetch produces, valid for layoutLifetime from when
+// the fetch completes and refreshed in the background layoutRefreshBuffer before that.
+func newLayoutCache(fetch func(context.Context) (layout, error)) *autorefresh.Cache[layout] {
+	return autorefresh.New(func(ctx context.Context) (autorefresh.Entry[layout], error) {
+		l, err := fetch(ctx)
+		if err != nil {
+			return autorefresh.Entry[layout]{}, err
+		}
+		expires := layoutNow().Add(layoutLifetime)
+		return autorefresh.Entry[layout]{Value: l, ExpiresOn: expires, RefreshOn: expires.Add(-layoutRefreshBuffer)}, nil
+	}, &autorefresh.Options{
+		BackgroundAcquireTimeout: layoutBackgroundAcquireTimeout,
+		Now:                      layoutNow,
+	})
+}
+
+// getLayout pages through the layout. A 400 or 5xx means the service can't provide one, which is
+// returned as a fallback layout rather than an error so that the decision is cached instead of
+// asked again for every read. Any other error is returned.
+func getLayout(ctx context.Context, pager *runtime.Pager[GetLayoutResponse]) (layout, error) {
 	layoutRanges := make([]layoutRange, 0)
 
 	var contentLength int64
 	var eTag *azcore.ETag
-	expiry := time.Now().Add(layoutRefresh)
 	for pager.More() {
 		resp, err := pager.NextPage(ctx)
 		if err != nil {
-			// A 400 or 5xx means the service can't provide a layout. Return a fallback layout with a
-			// nil error so temporal.Resource caches the decision; returning an error would leave the
-			// resource unset and cause every subsequent call to hit the service again.
 			if sc := getStatusCode(err); sc == http.StatusBadRequest || sc >= 500 {
-				return layout{fallback: true, expiry: expiry}, expiry, nil
+				return layout{fallback: true}, nil
 			}
-			return layout{}, time.Time{}, err
+			return layout{}, err
 		}
 		if resp.BlobContentLength != nil {
 			contentLength = *resp.BlobContentLength
@@ -64,7 +97,7 @@ func getLayout(ctx context.Context, pager *runtime.Pager[GetLayoutResponse]) (la
 		if resp.Endpoints == nil || len(resp.Endpoints.Endpoint) == 0 ||
 			resp.Ranges == nil || len(resp.Ranges.Range) == 0 {
 			// No layout means we can download the whole blob from the primary endpoint.
-			return layout{contentLength: contentLength, eTag: eTag, expiry: expiry}, expiry, nil
+			return layout{contentLength: contentLength, eTag: eTag}, nil
 		}
 		endpoints := make([]string, len(resp.Endpoints.Endpoint))
 		for _, ep := range resp.Endpoints.Endpoint {
@@ -79,15 +112,15 @@ func getLayout(ctx context.Context, pager *runtime.Pager[GetLayoutResponse]) (la
 			layoutRanges = append(layoutRanges, lr)
 		}
 	}
-
-	return layout{layoutRanges: layoutRanges, contentLength: contentLength, eTag: eTag, expiry: expiry}, expiry, nil
+	return layout{layoutRanges: layoutRanges, contentLength: contentLength, eTag: eTag}, nil
 }
 
+// getIdealEndpoint returns the endpoint that serves offset, or "" when the layout doesn't route
+// reads.
 func getIdealEndpoint(offset int64, l layout) string {
 	if len(l.layoutRanges) == 0 {
 		return ""
 	}
-
 	// Binary search to find the first range whose end >= offset
 	left, right := 0, len(l.layoutRanges)-1
 	for left < right {
@@ -98,16 +131,6 @@ func getIdealEndpoint(offset int64, l layout) string {
 			right = mid
 		}
 	}
-
 	// Range is guaranteed to exist, return its endpoint
 	return l.layoutRanges[left].endpoint
-}
-
-func shouldRefreshLayout(resource layout, _ context.Context) bool {
-	if resource.fallback {
-		// A fallback layout is a cached "layout is unavailable" decision. Refreshing it early would
-		// contact the service before the decision was due to be reconsidered; let it expire instead.
-		return false
-	}
-	return resource.expiry.Add(-30 * time.Second).Before(time.Now())
 }

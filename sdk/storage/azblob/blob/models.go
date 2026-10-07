@@ -164,21 +164,26 @@ func (o *DownloadStreamOptions) format() *generated.BlobClientDownloadOptions {
 
 // ---------------------------------------------------------------------------------------------------------------------
 
-// LayoutAwareRouting defines whether downloads should attempt to be routed to the ideal
-// endpoint for each block, based on the blob's layout.
+// LayoutAwareRouting determines whether the parallel range reads of a DownloadBuffer or DownloadFile
+// are routed to the endpoint that serves each range, based on the blob's layout. It is a
+// performance optimization only: the data downloaded is the same whatever the mode.
 type LayoutAwareRouting string
 
 const (
 	// LayoutAwareRoutingAuto is the zero value, and therefore the default when no value is
-	// specified. Currently, the SDK resolves Auto to enabled, so it behaves identically to
-	// LayoutAwareRoutingEnabled. Specify LayoutAwareRoutingEnabled or
-	// LayoutAwareRoutingDisabled to pin the behavior.
+	// specified. The client library decides whether layout aware routing is used, and that
+	// decision may change in a future release. Currently, LayoutAwareRoutingAuto resolves to
+	// LayoutAwareRoutingDisabled; use LayoutAwareRoutingEnabled to opt in.
 	LayoutAwareRoutingAuto LayoutAwareRouting = ""
 
-	// LayoutAwareRoutingEnabled always attempts to route requests to the ideal endpoint for each block.
+	// LayoutAwareRoutingEnabled opts in to layout aware routing. When the initial read of a download
+	// carries the layout download hint and data remains, the layout of the remaining range is fetched
+	// and cached (with automatic background refresh), and each remaining range is read from the
+	// endpoint that serves it.
 	LayoutAwareRoutingEnabled LayoutAwareRouting = "Enabled"
 
-	// LayoutAwareRoutingDisabled never uses layout aware routing; requests are sent to the client's configured endpoint.
+	// LayoutAwareRoutingDisabled never routes by layout; every read goes to the client's configured
+	// endpoint.
 	LayoutAwareRoutingDisabled LayoutAwareRouting = "Disabled"
 )
 
@@ -194,7 +199,7 @@ func PossibleLayoutAwareRoutingValues() []LayoutAwareRouting {
 // downloadOptions contains common options used by the DownloadBuffer and DownloadFile functions.
 type downloadOptions struct {
 	// LayoutAwareRouting indicates whether downloads should attempt to be routed to the ideal endpoint
-	// for each block. The default, LayoutAwareRoutingAuto, currently resolves to enabled.
+	// for each block. The default, LayoutAwareRoutingAuto, currently resolves to disabled.
 	LayoutAwareRouting LayoutAwareRouting
 
 	// Range specifies a range of bytes.  The default value is all bytes.
@@ -224,14 +229,14 @@ type downloadOptions struct {
 	TransactionalValidation TransferValidationType
 }
 
-// layoutAwareRoutingEnabled reports whether layout aware routing should be attempted.
-// LayoutAwareRoutingAuto, which is the zero value, currently resolves to enabled, so only
-// an explicit LayoutAwareRoutingDisabled turns it off.
+// layoutAwareRoutingEnabled reports whether layout aware routing should be attempted. Only an
+// explicit LayoutAwareRoutingEnabled turns it on: LayoutAwareRoutingAuto, the zero value, currently
+// resolves to disabled.
 func (o *downloadOptions) layoutAwareRoutingEnabled() bool {
 	if o == nil {
-		return true
+		return false
 	}
-	return o.LayoutAwareRouting != LayoutAwareRoutingDisabled
+	return o.LayoutAwareRouting == LayoutAwareRoutingEnabled
 }
 
 func (o *downloadOptions) getDownloadBlobOptions(rnge HTTPRange, rangeGetContentMD5 *bool) *DownloadStreamOptions {
@@ -262,8 +267,8 @@ func (o *downloadOptions) getBlobLayoutOptions() *GetLayoutOptions {
 // DownloadBufferOptions contains the optional parameters for the DownloadBuffer method.
 type DownloadBufferOptions struct {
 	// LayoutAwareRouting indicates whether downloads should attempt to be routed to the ideal endpoint
-	// for each block. The default, LayoutAwareRoutingAuto, currently resolves to enabled; set
-	// LayoutAwareRoutingDisabled to always use the client's configured endpoint.
+	// for each block. The default, LayoutAwareRoutingAuto, currently resolves to disabled; set
+	// LayoutAwareRoutingEnabled to opt in.
 	LayoutAwareRouting LayoutAwareRouting
 
 	// Range specifies a range of bytes.  The default value is all bytes.
@@ -298,8 +303,8 @@ type DownloadBufferOptions struct {
 // DownloadFileOptions contains the optional parameters for the DownloadFile method.
 type DownloadFileOptions struct {
 	// LayoutAwareRouting indicates whether downloads should attempt to be routed to the ideal endpoint
-	// for each block. The default, LayoutAwareRoutingAuto, currently resolves to enabled; set
-	// LayoutAwareRoutingDisabled to always use the client's configured endpoint.
+	// for each block. The default, LayoutAwareRoutingAuto, currently resolves to disabled; set
+	// LayoutAwareRoutingEnabled to opt in.
 	LayoutAwareRouting LayoutAwareRouting
 
 	// Range specifies a range of bytes.  The default value is all bytes.
@@ -905,6 +910,24 @@ func (o *GetAccountInfoOptions) format() *generated.BlobClientGetAccountInfoOpti
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
+
+// Layout is a page of a blob's layout: the byte ranges making up the blob and the storage
+// endpoints that serve them. It is returned by Client.GetLayoutPager.
+type Layout = generated.BlobLayout
+
+// LayoutRanges contains the ranges of a Layout.
+type LayoutRanges = generated.BlobLayoutRanges
+
+// LayoutRange is a range of a blob, inclusive of Start and End, and the index of the endpoint in
+// LayoutEndpoints that serves it.
+type LayoutRange = generated.BlobLayoutRange
+
+// LayoutEndpoints contains the endpoints of a Layout.
+type LayoutEndpoints = generated.BlobLayoutEndpoints
+
+// LayoutEndpoint is an endpoint that serves ranges of a blob, referenced from LayoutRange by Index.
+// Pass its Value as DownloadStreamOptions.LayoutEndpoint to read a range from it.
+type LayoutEndpoint = generated.BlobLayoutEndpoint
 
 // GetLayoutOptions contains the optional parameters for the Client.GetLayout method
 type GetLayoutOptions struct {

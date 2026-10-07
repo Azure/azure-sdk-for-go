@@ -8,6 +8,8 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"sync"
+	"sync/atomic"
 	"testing"
 	"time"
 
@@ -184,14 +186,13 @@ func TestGetLayout_SinglePageWithLayout(t *testing.T) {
 
 	pager := createMockPager(responses, nil)
 
-	result, expiry, err := getLayout(ctx, pager)
+	result, err := getLayout(ctx, pager)
 
 	require.NoError(t, err)
 	require.Len(t, result.layoutRanges, 2)
 	require.Equal(t, int64(1000), result.contentLength)
 	require.NotNil(t, result.eTag)
 	require.Equal(t, etag, *result.eTag)
-	require.False(t, expiry.IsZero())
 	require.False(t, result.fallback)
 
 	// Verify ranges
@@ -223,14 +224,13 @@ func TestGetLayout_SinglePageNoLayout(t *testing.T) {
 
 	pager := createMockPager(responses, nil)
 
-	result, expiry, err := getLayout(ctx, pager)
+	result, err := getLayout(ctx, pager)
 
 	require.NoError(t, err)
 	require.Len(t, result.layoutRanges, 0)
 	require.Equal(t, int64(500), result.contentLength)
 	require.NotNil(t, result.eTag)
 	require.Equal(t, etag, *result.eTag)
-	require.False(t, expiry.IsZero())
 	require.False(t, result.fallback)
 }
 
@@ -280,12 +280,11 @@ func TestGetLayout_MultiplePages(t *testing.T) {
 
 	pager := createMockPager(responses, nil)
 
-	result, expiry, err := getLayout(ctx, pager)
+	result, err := getLayout(ctx, pager)
 
 	require.NoError(t, err)
 	require.Len(t, result.layoutRanges, 3)
 	require.Equal(t, int64(3000), result.contentLength)
-	require.False(t, expiry.IsZero())
 
 	// Verify all ranges from both pages
 	require.Equal(t, "endpoint1", result.layoutRanges[0].endpoint)
@@ -299,28 +298,25 @@ func TestGetLayout_Error(t *testing.T) {
 
 	pager := createMockPager(nil, testErr)
 
-	result, expiry, err := getLayout(ctx, pager)
+	result, err := getLayout(ctx, pager)
 
 	require.Error(t, err)
 	require.Equal(t, testErr, err)
 	require.Empty(t, result.layoutRanges)
-	require.True(t, expiry.IsZero())
 }
 
 // TestGetLayout_UnsupportedIsCached verifies that when the service says it can't provide a layout
-// (400 or 5xx), getLayout returns a fallback layout with a nil error so temporal.Resource caches
+// (400 or 5xx), getLayout returns a fallback layout with a nil error so the layout cache keeps
 // the decision instead of contacting the service on every call.
 func TestGetLayout_UnsupportedIsCached(t *testing.T) {
 	for _, statusCode := range []int{http.StatusBadRequest, http.StatusInternalServerError, http.StatusServiceUnavailable} {
 		t.Run(fmt.Sprintf("status_%d", statusCode), func(t *testing.T) {
 			pager := createMockPager(nil, &azcore.ResponseError{StatusCode: statusCode})
 
-			result, expiry, err := getLayout(context.Background(), pager)
+			result, err := getLayout(context.Background(), pager)
 
 			require.NoError(t, err)
 			require.True(t, result.fallback)
-			require.False(t, expiry.IsZero())
-			require.False(t, shouldRefreshLayout(result, context.Background()), "a cached fallback must not be eagerly refreshed")
 		})
 	}
 }
@@ -334,41 +330,192 @@ func TestGetLayout_ErrorStatusClassification(t *testing.T) {
 
 	for _, sc := range cached {
 		t.Run(fmt.Sprintf("cached_%d", sc), func(t *testing.T) {
-			result, expiry, err := getLayout(context.Background(), createMockPager(nil, &azcore.ResponseError{StatusCode: sc}))
+			result, err := getLayout(context.Background(), createMockPager(nil, &azcore.ResponseError{StatusCode: sc}))
 			require.NoError(t, err)
 			require.True(t, result.fallback)
-			require.False(t, expiry.IsZero())
 		})
 	}
 
 	for _, sc := range propagated {
 		t.Run(fmt.Sprintf("propagated_%d", sc), func(t *testing.T) {
-			result, expiry, err := getLayout(context.Background(), createMockPager(nil, &azcore.ResponseError{StatusCode: sc}))
+			result, err := getLayout(context.Background(), createMockPager(nil, &azcore.ResponseError{StatusCode: sc}))
 			require.Error(t, err)
 			require.False(t, result.fallback, "a propagated error must not produce a cacheable fallback")
-			require.True(t, expiry.IsZero())
 		})
 	}
 }
 
 // ======================================================================================== //
-// shouldRefreshLayout
+// newLayoutCache
 
-func TestShouldRefreshLayout(t *testing.T) {
-	ctx := context.Background()
+// layoutTestClock replaces the layout clock for the duration of a test.
+type layoutTestClock struct {
+	mu  sync.Mutex
+	now time.Time
+}
 
-	t.Run("fallback is never eagerly refreshed", func(t *testing.T) {
-		// Even an already-expired fallback returns false; temporal.Resource refreshes it on expiry.
-		require.False(t, shouldRefreshLayout(layout{fallback: true, expiry: time.Now().Add(-time.Hour)}, ctx))
-		require.False(t, shouldRefreshLayout(layout{fallback: true, expiry: time.Now().Add(time.Hour)}, ctx))
+func useLayoutTestClock(t *testing.T) *layoutTestClock {
+	c := &layoutTestClock{now: time.Date(2026, 10, 1, 12, 0, 0, 0, time.UTC)}
+	prev := layoutNow
+	layoutNow = c.Now
+	t.Cleanup(func() { layoutNow = prev })
+	return c
+}
+
+func (c *layoutTestClock) Now() time.Time {
+	c.mu.Lock()
+	defer c.mu.Unlock()
+	return c.now
+}
+
+func (c *layoutTestClock) Advance(d time.Duration) {
+	c.mu.Lock()
+	defer c.mu.Unlock()
+	c.now = c.now.Add(d)
+}
+
+// layoutFetcher hands out layouts whose single range is served by "endpoint-<n>" for the nth
+// fetch, or the result of fail when it is set.
+type layoutFetcher struct {
+	calls atomic.Int32
+	gate  chan struct{}
+	fail  func(n int) (layout, error)
+}
+
+func (f *layoutFetcher) fetch(context.Context) (layout, error) {
+	n := int(f.calls.Add(1))
+	if f.gate != nil {
+		<-f.gate
+	}
+	if f.fail != nil {
+		if l, err := f.fail(n); err != nil || l.fallback {
+			return l, err
+		}
+	}
+	return layout{layoutRanges: []layoutRange{{start: 0, end: 99, endpoint: fmt.Sprintf("endpoint-%d", n)}}}, nil
+}
+
+func cachedEndpoint(t *testing.T, c interface {
+	Get(context.Context) (layout, error)
+}) string {
+	t.Helper()
+	l, err := c.Get(context.Background())
+	require.NoError(t, err)
+	return getIdealEndpoint(0, l)
+}
+
+func TestLayoutCacheLifetimeAndProactiveRefresh(t *testing.T) {
+	clock := useLayoutTestClock(t)
+	f := &layoutFetcher{}
+	cache := newLayoutCache(f.fetch)
+
+	require.Equal(t, "endpoint-1", cachedEndpoint(t, cache))
+
+	// Valid and not yet due for refresh until 30 seconds before the 5 minute lifetime ends.
+	clock.Advance(4*time.Minute + 29*time.Second)
+	require.Equal(t, "endpoint-1", cachedEndpoint(t, cache))
+	require.Equal(t, int32(1), f.calls.Load())
+
+	// In the refresh window, consumers keep the current layout while the refresh runs in the
+	// background.
+	f.gate = make(chan struct{})
+	clock.Advance(2 * time.Second)
+	require.Equal(t, "endpoint-1", cachedEndpoint(t, cache))
+	require.Eventually(t, func() bool { return f.calls.Load() == 2 }, 5*time.Second, time.Millisecond)
+	require.Equal(t, "endpoint-1", cachedEndpoint(t, cache), "the old layout is used while the refresh runs")
+	close(f.gate)
+	require.Eventually(t, func() bool { return cachedEndpoint(t, cache) == "endpoint-2" }, 5*time.Second, time.Millisecond)
+}
+
+func TestLayoutCacheLifetimeStartsWhenFetchCompletes(t *testing.T) {
+	clock := useLayoutTestClock(t)
+	var calls atomic.Int32
+	cache := newLayoutCache(func(context.Context) (layout, error) {
+		calls.Add(1)
+		// a slow fetch: the layout's lifetime must not include the time spent fetching it
+		clock.Advance(time.Minute)
+		return layout{layoutRanges: []layoutRange{{start: 0, end: 99, endpoint: "e"}}}, nil
 	})
+	require.Equal(t, "e", cachedEndpoint(t, cache))
 
-	t.Run("fresh layout is not refreshed", func(t *testing.T) {
-		require.False(t, shouldRefreshLayout(layout{expiry: time.Now().Add(time.Hour)}, ctx))
-	})
+	// 4m29s after the fetch completed (5m29s after it started) the layout is still current and
+	// not yet due for refresh.
+	clock.Advance(4*time.Minute + 29*time.Second)
+	require.Equal(t, "e", cachedEndpoint(t, cache))
+	require.Equal(t, int32(1), calls.Load())
+}
 
-	t.Run("layout expiring within 30s is refreshed", func(t *testing.T) {
-		require.True(t, shouldRefreshLayout(layout{expiry: time.Now().Add(10 * time.Second)}, ctx))
-		require.True(t, shouldRefreshLayout(layout{expiry: time.Now().Add(-time.Second)}, ctx))
-	})
+func TestLayoutCacheFailedBackgroundRefreshKeepsLayout(t *testing.T) {
+	clock := useLayoutTestClock(t)
+	f := &layoutFetcher{fail: func(n int) (layout, error) {
+		if n > 1 {
+			return layout{}, errors.New("refresh failed")
+		}
+		return layout{}, nil
+	}}
+	cache := newLayoutCache(f.fetch)
+	require.Equal(t, "endpoint-1", cachedEndpoint(t, cache))
+
+	clock.Advance(4*time.Minute + 31*time.Second)
+	require.Equal(t, "endpoint-1", cachedEndpoint(t, cache))
+	require.Eventually(t, func() bool { return f.calls.Load() == 2 }, 5*time.Second, time.Millisecond)
+	for range 5 {
+		require.Equal(t, "endpoint-1", cachedEndpoint(t, cache), "a failed background refresh doesn't fail consumers")
+	}
+}
+
+func TestLayoutCacheCachesUnavailableAndEmptyLayouts(t *testing.T) {
+	for _, tt := range []struct {
+		name   string
+		result layout
+	}{
+		{"Unavailable", layout{fallback: true}},
+		{"NoLayout", layout{}},
+	} {
+		t.Run(tt.name, func(t *testing.T) {
+			clock := useLayoutTestClock(t)
+			var calls atomic.Int32
+			cache := newLayoutCache(func(context.Context) (layout, error) {
+				calls.Add(1)
+				return tt.result, nil
+			})
+			for range 10 {
+				require.Equal(t, "", cachedEndpoint(t, cache), "reads go to the configured endpoint")
+			}
+			clock.Advance(4 * time.Minute)
+			require.Equal(t, "", cachedEndpoint(t, cache))
+			require.Equal(t, int32(1), calls.Load(), "the result is cached for the layout's lifetime")
+		})
+	}
+}
+
+func TestLayoutCacheConcurrentConsumersFetchOnce(t *testing.T) {
+	useLayoutTestClock(t)
+	f := &layoutFetcher{gate: make(chan struct{})}
+	cache := newLayoutCache(f.fetch)
+
+	var wg sync.WaitGroup
+	for range 32 {
+		wg.Add(1)
+		go func() {
+			defer wg.Done()
+			l, err := cache.Get(context.Background())
+			require.NoError(t, err)
+			require.Equal(t, "endpoint-1", getIdealEndpoint(0, l))
+		}()
+	}
+	time.Sleep(20 * time.Millisecond)
+	close(f.gate)
+	wg.Wait()
+	require.Equal(t, int32(1), f.calls.Load(), "concurrent chunks don't stampede Get Layout")
+}
+
+func TestLayoutCacheExpiredLayoutIsRefetched(t *testing.T) {
+	clock := useLayoutTestClock(t)
+	f := &layoutFetcher{}
+	cache := newLayoutCache(f.fetch)
+	require.Equal(t, "endpoint-1", cachedEndpoint(t, cache))
+
+	clock.Advance(5 * time.Minute)
+	require.Equal(t, "endpoint-2", cachedEndpoint(t, cache), "an expired layout is never used")
 }

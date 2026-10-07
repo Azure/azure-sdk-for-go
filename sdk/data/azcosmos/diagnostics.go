@@ -3,46 +3,128 @@
 
 package azcosmos
 
-import "time"
+import (
+	"fmt"
+	"time"
 
-// Diagnostics is an immutable native operation snapshot copied before its completion is freed.
-// The zero value has no native snapshot, for example when the caller stops waiting before completion.
-type Diagnostics struct {
-	json          string
-	elapsed       time.Duration
-	requestCharge float64
-	requestCount  uint32
-	compacted     bool
-	failure       bool
-	err           error
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
+)
+
+// EventDiagnostics entries report when an operation's native diagnostics snapshot could not be
+// copied. Diagnostics are informational only: the operation's own outcome never depends on this
+// copy succeeding, so a failure here is logged rather than reported as an operation failure.
+//
+// Declared here rather than in completion_native.go, which is platform-tagged, so the constant
+// stays part of the package's API on every platform: a caller using azcosmos.EventDiagnostics
+// otherwise fails to compile on Windows, unsupported architectures, or CGO_ENABLED=0, where that
+// file is excluded from the build. [EventRouting] in routing_strategy.go follows the same pattern.
+const EventDiagnostics log.Event = "CosmosDiagnostics"
+
+// DiagnosticsVerbosity controls how much detail the native driver renders into
+// [Diagnostics.JSON]. Set it on [ClientOptions.DiagnosticsVerbosity].
+//
+// It does not affect [Diagnostics.Attempts], [Diagnostics.RegionsContacted] or any scalar field:
+// those are always copied losslessly regardless of verbosity. It only governs the native driver's
+// own JSON rendering, which is diagnostic text rather than a stable schema.
+//
+// The zero value, DiagnosticsVerbosityDefault, resolves to DiagnosticsVerbositySummary.
+type DiagnosticsVerbosity int32
+
+const (
+	// DiagnosticsVerbosityDefault leaves the rendering choice to the SDK. It currently resolves
+	// to DiagnosticsVerbositySummary; that resolution may change in a future version without
+	// being considered a breaking change.
+	DiagnosticsVerbosityDefault DiagnosticsVerbosity = iota
+
+	// DiagnosticsVerbositySummary renders the native driver's compact, deduplicated diagnostics:
+	// requests are grouped by region, with the first and last request per region kept in full
+	// detail and the rest summarized by count and duration statistics. This is cheap enough that
+	// every completion can afford to pay for it.
+	DiagnosticsVerbositySummary
+
+	// DiagnosticsVerbosityDetailed renders every individual request the native driver recorded,
+	// with no deduplication or truncation. This duplicates data already available losslessly and
+	// more cheaply through [Diagnostics.Attempts]: prefer that field unless something specifically
+	// needs the driver's own JSON rendering of the same data. Every completion pays the
+	// serialization and allocation cost of this rendering whether or not it is ever read, since
+	// the native diagnostics handle cannot be retained past the completion to defer that work.
+	DiagnosticsVerbosityDetailed
+)
+
+// String returns the name of the verbosity level, for logging and error messages.
+func (v DiagnosticsVerbosity) String() string {
+	switch v {
+	case DiagnosticsVerbosityDefault:
+		return "Default"
+	case DiagnosticsVerbositySummary:
+		return "Summary"
+	case DiagnosticsVerbosityDetailed:
+		return "Detailed"
+	default:
+		return fmt.Sprintf("DiagnosticsVerbosity(%d)", int32(v))
+	}
 }
 
-// JSON returns the native default-verbosity JSON snapshot. Its schema is driver-defined.
-func (d Diagnostics) JSON() string { return d.json }
+// Diagnostics is a Go-owned snapshot of the native driver's operation diagnostics.
+// It is available only when the driver attaches diagnostics to a completion. In
+// particular, cancellation can return before a native completion is available.
+type Diagnostics struct {
+	// StatusCode and SubStatus describe the final completion. They are zero
+	// when no HTTP status or sub-status is available.
+	StatusCode int
+	SubStatus  int
 
-// Elapsed returns the native operation duration, including retries.
-func (d Diagnostics) Elapsed() time.Duration { return d.elapsed }
+	// AttemptCount includes the initial request and every native retry. It can
+	// exceed len(Attempts) if the driver compacted the timeline.
+	AttemptCount uint32
 
-// RequestCharge returns the aggregate native request charge.
-func (d Diagnostics) RequestCharge() float64 { return d.requestCharge }
+	// TotalRequestCharge is the charge across all attempts, including retries.
+	TotalRequestCharge float64
 
-// RequestCount returns the total number of native attempts, including retries.
-func (d Diagnostics) RequestCount() uint32 { return d.requestCount }
+	// Elapsed is the native driver's total wall-clock time for the operation.
+	Elapsed time.Duration
 
-// IsCompacted reports whether the native driver discarded older attempt records.
-func (d Diagnostics) IsCompacted() bool { return d.compacted }
+	// Completed reports whether the driver recorded a terminal outcome.
+	Completed bool
 
-// IsFailure reports whether the native snapshot records a failure.
-func (d Diagnostics) IsFailure() bool { return d.failure }
+	// Failed reports whether that terminal outcome was a failure.
+	Failed bool
 
-// Err returns a diagnostic rendering error without hiding the operation's own result.
-func (d Diagnostics) Err() error { return d.err }
+	// Compacted reports whether the driver discarded older attempt records.
+	Compacted bool
 
-// Available reports whether this value contains a native diagnostic snapshot or rendering error.
-func (d Diagnostics) Available() bool { return d.json != "" || d.err != nil }
+	// RegionsContacted lists distinct regions in first-contact order.
+	RegionsContacted []string
 
-// OperationDiagnostic describes a completed Go item call. Native fields can be absent on validation
-// failure or when context cancellation ends the Go wait before native completion.
+	// Attempts contains the retained per-attempt records in execution order.
+	Attempts []DiagnosticAttempt
+
+	// JSON is the native driver's diagnostics rendering, copied into Go memory at the verbosity
+	// configured by [ClientOptions.DiagnosticsVerbosity] (DiagnosticsVerbositySummary by
+	// default). Use [Diagnostics.Attempts] for the full per-attempt detail instead of parsing
+	// JSON, which is diagnostic data, not a stable schema.
+	JSON string
+}
+
+// DiagnosticAttempt describes one native request retained in the timeline.
+type DiagnosticAttempt struct {
+	Endpoint string
+	Region   string
+
+	// StatusCode and SubStatus are the status of this attempt. SubStatus is zero
+	// when the driver did not record one.
+	StatusCode int
+	SubStatus  int
+
+	Latency       time.Duration
+	RequestCharge float64
+
+	// ServerDurationMS is negative when the service did not report a duration.
+	ServerDurationMS float64
+}
+
+// OperationDiagnostic describes an item call that passed validation and acquired its client.
+// Diagnostics can be nil when context cancellation returns before native completion.
 type OperationDiagnostic struct {
 	// Operation is the item operation name.
 	Operation string
@@ -50,8 +132,8 @@ type OperationDiagnostic struct {
 	DatabaseID string
 	// ContainerID is the container addressed by the call.
 	ContainerID string
-	// Diagnostics contains the native snapshot when available.
-	Diagnostics Diagnostics
+	// Diagnostics is a Go-owned native snapshot, when available.
+	Diagnostics *Diagnostics
 	// Error is the error returned by the Go call.
 	Error error
 }

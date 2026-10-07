@@ -30,6 +30,13 @@
   `*runtime.Pager[QueryItemsResponse]`; continuation tokens no longer appear on responses.
   Unsupported checkpoints do not prevent continued iteration.
   See [PR 27676](https://github.com/Azure/azure-sdk-for-go/pull/27676).
+* Exposed native retry diagnostics and final status on v2 responses and errors, including Go-owned
+  per-attempt details and session-token recovery. See [PR 27662](https://github.com/Azure/azure-sdk-for-go/pull/27662).
+* Added `ClientOptions.DiagnosticsVerbosity` to control how much detail every completion's
+  `Diagnostics.JSON` renders. The zero value, `DiagnosticsVerbosityDefault`, resolves to
+  `DiagnosticsVerbositySummary`; `DiagnosticsVerbosityDetailed` renders the full per-attempt
+  timeline already available losslessly through `Diagnostics.Attempts`.
+  See [PR 27662](https://github.com/Azure/azure-sdk-for-go/pull/27662).
 * Added the Go SDK identity to the User-Agent header alongside the native driver identity,
   with an optional runtime application suffix. See [PR 27627](https://github.com/Azure/azure-sdk-for-go/pull/27627).
 * Added optional operation timeouts with Rust's one-second minimum, runtime CPU sampling intervals,
@@ -81,6 +88,14 @@
   breaking-change list lands here before the beta ships. See [PR 27339](https://github.com/Azure/azure-sdk-for-go/pull/27339).
 
 ### Bugs Fixed
+
+* Fixed `ReadItem` (and other reads) waiting out the native driver's own retry budget before
+  returning on context cancellation, instead of returning promptly. Reads now abandon immediately
+  once the context ends, matching their existing non-authoritative contract; only writes, which may
+  have already committed by the time the context ends, await the real outcome. Also fixed the
+  native `ClientOperationTimeout` error surfacing unwrapped instead of satisfying
+  `errors.Is(err, context.DeadlineExceeded)` when the native driver's own end-to-end timeout raced
+  the caller's context deadline and won. See [PR 27662](https://github.com/Azure/azure-sdk-for-go/pull/27662).
 
 ### Other Changes
 

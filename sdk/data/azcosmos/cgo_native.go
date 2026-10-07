@@ -27,6 +27,9 @@ _Static_assert(COSMOS_PATCH_STRATEGY_UNSET == 0, "unset PATCH strategy discrimin
 _Static_assert(COSMOS_PATCH_STRATEGY_AUTO == 1, "automatic PATCH strategy discriminant changed");
 _Static_assert(COSMOS_PATCH_STRATEGY_CLIENT_SIDE == 2, "client-side PATCH strategy discriminant changed");
 _Static_assert(COSMOS_PATCH_STRATEGY_SERVER_SIDE == 3, "server-side PATCH strategy discriminant changed");
+_Static_assert(COSMOS_FAULT_INJECTION_OPERATION_TYPE_READ_ITEM == 1, "read-item fault discriminant changed");
+_Static_assert(COSMOS_FAULT_INJECTION_ERROR_TYPE_TOO_MANY_REQUESTS == 2, "throttle fault discriminant changed");
+_Static_assert(COSMOS_FAULT_INJECTION_ERROR_TYPE_READ_SESSION_NOT_AVAILABLE == 4, "session fault discriminant changed");
 
 _Static_assert(sizeof(cosmos_string_view_t) == 16, "cosmos_string_view_t ABI size changed");
 _Static_assert(_Alignof(cosmos_string_view_t) == 8, "cosmos_string_view_t ABI alignment changed");

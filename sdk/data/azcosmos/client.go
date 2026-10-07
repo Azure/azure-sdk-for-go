@@ -40,6 +40,10 @@ type ClientOptions struct {
 	// DiagnosticsHandler observes completed item calls after their lifetime guard is released.
 	// It must be safe for concurrent calls. Query-specific diagnostics are not configured here.
 	DiagnosticsHandler func(context.Context, OperationDiagnostic)
+	// DiagnosticsVerbosity controls how much detail every completion's [Diagnostics.JSON] renders.
+	// The zero value, DiagnosticsVerbosityDefault, resolves to DiagnosticsVerbositySummary. It
+	// applies to every operation on the client; there is no per-operation override.
+	DiagnosticsVerbosity DiagnosticsVerbosity
 }
 
 // Client is a client for an Azure Cosmos DB account. It is the entry point to the databases and
@@ -259,5 +263,10 @@ func (c *Client) NewContainer(databaseID string, containerID string) (*Container
 // validate reports option values that cannot be passed through the C ABI. Values the driver
 // understands are passed through and validated there, so this package does not duplicate its rules.
 func (o ClientOptions) validate() error {
+	switch o.DiagnosticsVerbosity {
+	case DiagnosticsVerbosityDefault, DiagnosticsVerbositySummary, DiagnosticsVerbosityDetailed:
+	default:
+		return fmt.Errorf("azcosmos: ClientOptions.DiagnosticsVerbosity: unrecognized %s", o.DiagnosticsVerbosity)
+	}
 	return o.Operation.validate()
 }

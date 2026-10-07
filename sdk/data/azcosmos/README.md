@@ -20,8 +20,7 @@ Cosmos DB SDKs.
 ### Building with the driver
 
 The driver binding is selected automatically when cgo is enabled on glibc `linux/amd64` or
-`darwin/arm64`. The binding uses the published **native ABI 0.2.0** platform modules.
-No local replacements, build tag, or linker environment variable is required:
+`darwin/arm64`. No build tag or linker environment variable is required:
 
 ```sh
 go build ./...
@@ -44,6 +43,22 @@ this package's cgo files need the ABI declarations in their own include path. Th
 and linked library version must both match the pin in `driver.go` before any struct-sensitive ABI
 call during construction. Mismatched versions can otherwise cause incompatible struct layouts.
 
+The v0.2.0 driver owns throttle and session retries; Go submits once and exposes the driver's
+attempt count and final status on responses and errors. When attached by the driver,
+`Response.Diagnostics` and `Error.Diagnostics` contain a Go-owned snapshot of total charge,
+elapsed time, regions contacted, retained per-attempt status/substatus and latency, and the
+driver's JSON rendering at `ClientOptions.DiagnosticsVerbosity` (a compact per-region summary by
+default; the full per-attempt rendering only when set to `DiagnosticsVerbosityDetailed`). The
+native driver can compact old attempts; `AttemptCount`
+remains the total even when `len(Diagnostics.Attempts)` is smaller. Diagnostics are not available
+when cancellation returns before a native completion.
+
+The caller's session token is forwarded unchanged, and the returned token can be supplied on a
+later request. The v0.2 native ABI does not support on-demand operation cancellation: cancelling
+a Go context returns promptly and releases its Go-side resources, but the native request can
+continue until its own timeout or retry budget ends. Avoid assuming a cancelled write did not
+reach the service.
+
 ### Client initialization
 
 `NewClient` and `NewClientWithKey` perform no network I/O. Call `Client.Initialize` with a context
@@ -61,101 +76,11 @@ container's metadata.
 
 One limit applies to the driver-backed build today: v1's WebAssembly support does not carry over.
 
-### Operation defaults and shared runtimes
-
-`OperationOptions` is accepted by each item request, query page fetch, `ClientOptions.Operation`, and
-`RuntimeOptions.Operation`. The Rust driver resolves declared environment overrides above request,
-client, runtime, ordinary supported environment settings, and driver defaults, in that order.
-Database and container handles do not introduce extra configuration layers.
-
-Nil pointers inherit; explicit false and zero values override. Nil excluded-region slices and
-custom-header maps inherit; non-nil empty values clear the inherited list/map. Nonempty values
-replace rather than extend them. Throughput and throttling members inherit independently.
-Binary encoding and availability strategies replace their entire groups.
-
-Leaving `ClientOptions.Runtime` nil uses a lazily initialized process-wide runtime, as in Rust.
-`NewRuntime` creates an explicit runtime with construction-time defaults. Multiple clients for the
-same account may share it, including after another client closes. Native caches retain account
-references and their credentials: a cached container may use the identity that first resolved it,
-not the identity supplied to a later client. Use different explicit runtimes when credentials
-must be isolated. The global runtime is retained for the process lifetime.
-Configure client content-response defaults through `ClientOptions.Operation.EnableContentResponseOnWrite`.
-
-Runtime defaults cannot be updated after construction. Requests capture a native snapshot before
-lazy initialization. `EndToEndTimeout` is optional: nil inherits; explicit zero or subsecond values
-clamp to one second at every scope. A caller's context deadline can stop waiting earlier without
-cancelling native work. Throttling retry budgets apply per transport invocation, not to
-the entire logical operation. The hedging master switch and its environment override can override
-the chosen availability strategy. Environment settings are captured at runtime construction.
-
-`Client.Close` drains and closes only that client. It does not cancel credentials retained by a
-shared native cache. `Runtime.Close` releases the owner's reference and rejects new attachments;
-existing clients keep working until they close. Native resources are freed after the last owner
-and attached client release them. Both methods are idempotent and concurrency-safe.
-Do not call Close from inside a credential callback.
-
-### Context cancellation
-
-Native ABI 0.2.0 does not support cancelling submitted operations. Initialization, metadata,
-and query waits may return `CodeOperationCancelled` when their context ends while native work
-continues. Metadata from a later completion cannot be returned to that caller.
-Once a point item operation has been submitted, the call waits for its authoritative completion,
-even after context cancellation, so a committed write is not reported as cancelled.
-
-The binding drains abandoned waits in the background and retains native handles and credentials
-until completion. `Client.Close` waits for that drain and can take longer
-than the caller's context deadline. End-to-end timeout snapshots bound native item execution,
-but a shorter Go deadline does not cancel native initialization or metadata resolution.
-For retryable client-side patches, supply `TrackingID` before submission to retain the identity
-after cancellation; a native-generated tracking ID is only available after completion.
-
-### Binary response compatibility change
-
-*Raw item response bytes now use the driver's binary JSON default**, including for existing
-callers that leave options unset. Rust-compatible `ClientOptions.BinaryEncoding` resolves once from
-an explicit group, then `AZURE_COSMOS_BINARY_ENCODING_ENABLED`, then enabled by default.
-Create/read/replace/upsert resolve request encoding over that SDK client default rather than
-runtime/client `Operation.BinaryEncoding`. PATCH and delete retain native layered resolution.
-Before using `encoding/json`, select text responses on the request or dedicated client group:
-
-```go
-options := azcosmos.OperationOptions{
-    BinaryEncoding: &azcosmos.BinaryEncodingOptions{
-        RequestTextResponse: true,
-    },
-}
-```
-
-This keeps binary wire encoding while asking the driver to return text JSON. Alternatively,
-`&azcosmos.BinaryEncodingOptions{Enabled: to.Ptr(false)}` disables binary wire encoding
-(`to` is `github.com/Azure/azure-sdk-for-go/sdk/azcore/to`).
-The zero-valued group enables binary, as Rust's default does. Text conversion preserves JSON
-values, not necessarily byte-for-byte formatting. Go never decodes application item schemas.
-
 ### SDK identity
 
 Service requests include `azsdk-go-azcosmos/<version>` in the User-Agent header alongside the native
-Cosmos driver identity and feature flags. `RuntimeOptions.ApplicationID` is the optional application
-suffix; SDK identity does not consume its length allowance. Per-client suffix overrides require
-native support not present in v0.2.0, so they are not exposed.
-
-### Additional configuration
-
-`RuntimeOptions.CPURefreshInterval` configures the existing native CPU/memory sampler (one to sixty
-seconds). `ClientOptions.FaultInjectionRules` forwards copied, typed test rules through the existing
-versioned native driver-options API. Rules can select item or metadata operations, transport and
-region, predefined failures or custom HTTP responses, delays, probability, hit limits, and lifetime.
-
-`Response.Diagnostics` and `Error.Diagnostics` contain immutable native snapshots when available.
-`ClientOptions.DiagnosticsHandler` observes completed Go item calls after the client lifetime guard
-is released. It receives absent native diagnostics when a call stops waiting before completion.
-JSON rendering errors are reported through `Diagnostics.Err()` without changing operation outcomes.
-Snapshot JSON uses native default verbosity and a driver-defined schema.
-
-Connection-pool configuration, partition-failover tuning, backup endpoints, runtime diagnostic
-retention/verbosity configuration, and per-client identity overrides remain deferred: the published
-ABI cannot carry those settings. Submillisecond precision is also limited by its millisecond fields.
-Constructors stay network-free; use `Initialize(ctx)` for eager account initialization.
+Cosmos driver identity and feature flags. `ClientOptions.ApplicationID` remains an optional,
+unchanged application suffix; SDK identity does not consume its length allowance.
 
 ### Patching items
 
@@ -173,18 +98,7 @@ back to read-modify-write when a request exceeds the service limit.
 
 Client-side execution of a patch that is not intrinsically retry-safe permanently adds the
 `_azsdkPatchTracking` property to the item. The driver uses it to deduplicate retries within one
-`PatchItem` call. `PatchItemOptions.TrackingID` accepts a UUID (simple, hyphenated, braced, or URN) to reuse across
-application retries after an ambiguous outcome. The effective ID is returned on `ItemResponse`
-or `Error`, including cancellation, when supplied by the driver. Duplicate suppression is bounded
-by tracking capacity and retention; it is not a permanent exactly-once guarantee.
-
-`MaxAttempts` (1..255), `TrackingCapacity` (1..65535), and `TrackingRetention` configure client-side
-patching and are inert for server-side execution. Retention floors to whole seconds with a minimum
-of one second even for explicit zero and a maximum of uint32 seconds; larger values clamp.
-Nil uses the driver default. Capacity pressure can evict tracking entries sooner.
-PATCH exposes only If-Match. Other item APIs expose mutually exclusive If-Match and If-None-Match
-preconditions, whose service support depends on the operation. Patch-specific `Strategy` overrides
-the shared `Operation.PatchStrategy`.
+`PatchItem` call. Supplying a stable tracking ID across separate calls is not exposed yet.
 
 ### Querying items
 
@@ -203,13 +117,6 @@ differs from `runtime.Pager[T]` and requires Go SDK API review before stabilizat
 sizing to the driver, and negative hints are rejected. Results are raw JSON values in
 `QueryItemsResponse.Items`, including scalar `SELECT VALUE` results. An empty page does not
 necessarily end the query: use `More`, not the number of items.
-
-Queries default to text wire encoding, overriding inherited binary-encoding preferences so the
-pager can split the JSON feed envelope. To enable binary wire encoding for a query, set both
-`QueryOptions.Operation.BinaryEncoding.Enabled` and `RequestTextResponse` to true.
-Explicit raw binary responses are rejected. Other operation options inherit normally; each
-`NextPage` starts a fresh Go wait budget including first-use initialization and metadata.
-The retained native plan applies operation timeout settings independently to each page.
 
 Call `pager.ContinuationToken(ctx)` after a page, before exhaustion or Close, and pass the result
 in `QueryOptions.Feed.ContinuationToken` to resume with
@@ -253,9 +160,9 @@ the Go binding preserves that error rather than computing aggregates itself.
 Contexts bound query waits; canceling an admitted page or checkpoint terminates that pager
 without claiming to cancel native work. Late completions are drained safely, and client
 shutdown waits for their cleanup. Native per-page timeouts retain the configured duration
-(the driver clamps explicit values below one second); subsequent page contexts do not inherit
-the first page's remaining deadline. A nil `EndToEndTimeout` inherits client/runtime settings
-and native defaults; an explicit zero selects the one-second minimum.
+(the driver clamps positive values below one second); subsequent page contexts do not inherit
+the first page's remaining deadline. With `EndToEndTimeout == 0`, no explicit native query
+timeout is added: native defaults apply, and a context deadline limits only the Go wait.
 Per-page context deadlines cannot bound native execution with the pinned ABI. Stronger
 guarantees require cooperative cancellation
 ([Azure/azure-sdk-for-rust#5358](https://github.com/Azure/azure-sdk-for-rust/issues/5358))
@@ -273,18 +180,21 @@ Against the Rust revision used to publish native v0.2.0, query-option coverage i
 | Query-plan mode, session token, index/query metric flags | Corresponding `QueryOptions` fields |
 | Buffered-query window limit | Not exposed by the native ABI; native default of 1000 applies |
 | Explicit `MaxItemCountHint::ServerDecides` | Not independently expressible through this ABI; Go zero selects the native unset/default behavior |
-| Common per-operation settings | All 15 shared settings through `OperationOptions`, with per-field client/runtime inheritance |
+| Common per-operation settings | Only a subset: consistency strategy, excluded regions, content response on writes, and end-to-end timeout |
 
-Go exposes throughput bucket/priority, throttle/session/failover retry controls, endpoint TTL,
-session-capture control, hedging/availability, custom headers, and binary encoding. Queries require
-text responses even when binary wire encoding is enabled. Nil region exclusions inherit; an empty
-non-nil slice explicitly clears them. The buffered-window and explicit server-decides gaps remain
-native contract limitations.
+The shared per-operation surface is not yet at full Rust parity. Go does not expose Rust's
+throughput bucket/priority, throttle/session/failover retry controls, endpoint-unavailability
+TTL, session-capture disable flag, hedging/availability strategy, custom headers, or configurable
+binary encoding. Go requests text JSON. Not all of these gaps require a new native release;
+the buffered-window and explicit server-decides gaps do require a native contract change.
+Rust also distinguishes inherited versus explicitly cleared region exclusions; Go currently
+maps both nil and empty exclusion slices to inheritance.
 
 ### Running the end-to-end tests
 
-The tests in `emulator_test.go` run real operations against a service. They need a driver-backed
-build and the `EMULATOR` environment variable, and they skip otherwise.
+The tests in `emulator_test.go`, `diagnostics_emulator_test.go`, and `retry_native_test.go` run
+real operations against a service. They need a driver-backed build and the `EMULATOR` environment
+variable, and they skip otherwise.
 
 They run against the driver's own in-memory emulator, which is the same one the driver's Rust tests
 use, so the binding is exercised against what the driver is developed against. It is a plain
@@ -300,7 +210,7 @@ into this module. CI builds it with a pinned Rust toolchain and locked Cargo dep
   --config path/to/azcosmos/internal/testdata/emulator-config.json
 # {"event":"ready","accountEndpoint":"http://127.0.0.1:49151/", ...}
 
-EMULATOR=1 AZCOSMOS_ENDPOINT=http://127.0.0.1:49151/ go test -run TestEmulator ./...
+EMULATOR=1 AZCOSMOS_ENDPOINT=http://127.0.0.1:49151/ go test -run 'Test(Emulator|NativeThrottle|NativeStaleSession)' ./...
 ```
 
 The container the tests use is declared in `internal/testdata/emulator-config.json`; its ids

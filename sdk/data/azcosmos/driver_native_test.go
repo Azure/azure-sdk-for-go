@@ -28,6 +28,22 @@ func TestVerifyDriverVersion(t *testing.T) {
 	require.NoError(t, verifyDriverVersion())
 }
 
+func TestNativeFaultInjectionOptionsBuild(t *testing.T) {
+	d := &nativeDriver{faultRules: []nativeFaultRule{{
+		id: "throttle-read", kind: 1, errorType: 2, hitLimit: 2,
+		delayMS: -1, retryAfter: 1,
+	}}}
+	require.NoError(t, d.buildRuntime())
+	require.NoError(t, d.buildAccount(driverConfig{
+		endpoint: "https://myaccount.documents.azure.com", accountKey: emulatorKey,
+	}))
+	t.Cleanup(func() { require.NoError(t, d.close()) })
+	options, err := d.buildDriverOptions()
+	require.NoError(t, err)
+	require.NotNil(t, options)
+	freeNativeDriverOptions(options)
+}
+
 func TestValidateDriverVersions(t *testing.T) {
 	for _, tt := range []struct {
 		name   string
@@ -594,4 +610,29 @@ func TestAwaitCompletionDoesNotSubmitAfterCancellation(t *testing.T) {
 
 	require.ErrorIs(t, err, context.Canceled)
 	require.False(t, submitted)
+}
+
+// TestOpenDriverPropagatesClientOptionsDiagnosticsVerbosity walks every DiagnosticsVerbosity
+// constant, verifying it reaches the client's reactor unchanged. openDriver does none of its own
+// network I/O, so this exercises the whole path from ClientOptions through driverConfig to the
+// reactor without needing a live account.
+func TestOpenDriverPropagatesClientOptionsDiagnosticsVerbosity(t *testing.T) {
+	for _, verbosity := range []DiagnosticsVerbosity{
+		DiagnosticsVerbosityDefault,
+		DiagnosticsVerbositySummary,
+		DiagnosticsVerbosityDetailed,
+	} {
+		t.Run(verbosity.String(), func(t *testing.T) {
+			client, err := newClient(
+				"https://myaccount.documents.azure.com",
+				testAccountKey,
+				nil,
+				&ClientOptions{DiagnosticsVerbosity: verbosity},
+			)
+			require.NoError(t, err)
+			t.Cleanup(func() { require.NoError(t, client.Close()) })
+
+			require.Equal(t, verbosity, client.driver.reactor.verbosity)
+		})
+	}
 }

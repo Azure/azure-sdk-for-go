@@ -49,19 +49,19 @@ _Static_assert(sizeof(cosmos_completion_queue_options_t) == 12, "completion-queu
 _Static_assert(_Alignof(cosmos_completion_queue_options_t) == 4, "completion-queue options ABI alignment changed");
 COSMOS_ASSERT_OFFSET(cosmos_completion_queue_options_t, include_error_details, 8);
 
-_Static_assert(sizeof(cosmos_runtime_options_t) == 64, "runtime options ABI size changed");
+_Static_assert(sizeof(cosmos_runtime_options_t) == 72, "runtime options ABI size changed");
 _Static_assert(_Alignof(cosmos_runtime_options_t) == 8, "runtime options ABI alignment changed");
 COSMOS_ASSERT_OFFSET(cosmos_runtime_options_t, correlation_id, 8);
 COSMOS_ASSERT_OFFSET(cosmos_runtime_options_t, user_agent_suffix, 24);
 COSMOS_ASSERT_OFFSET(cosmos_runtime_options_t, wrapping_sdk_identifier, 40);
 COSMOS_ASSERT_OFFSET(cosmos_runtime_options_t, cpu_refresh_interval_ms, 56);
 
-_Static_assert(sizeof(cosmos_operation_options_t) == 96, "operation options ABI size changed");
+_Static_assert(sizeof(cosmos_operation_options_t) == 136, "operation options ABI size changed");
 _Static_assert(_Alignof(cosmos_operation_options_t) == 8, "operation options ABI alignment changed");
-COSMOS_ASSERT_OFFSET(cosmos_operation_options_t, end_to_end_timeout_ms, 24);
-COSMOS_ASSERT_OFFSET(cosmos_operation_options_t, excluded_regions, 56);
-COSMOS_ASSERT_OFFSET(cosmos_operation_options_t, excluded_regions_len, 64);
-COSMOS_ASSERT_OFFSET(cosmos_operation_options_t, binary_encoding_request_text_response, 89);
+COSMOS_ASSERT_OFFSET(cosmos_operation_options_t, end_to_end_timeout_ms, 32);
+COSMOS_ASSERT_OFFSET(cosmos_operation_options_t, excluded_regions, 48);
+COSMOS_ASSERT_OFFSET(cosmos_operation_options_t, excluded_regions_len, 56);
+COSMOS_ASSERT_OFFSET(cosmos_operation_options_t, binary_encoding_request_text_response, 81);
 
 _Static_assert(sizeof(cosmos_driver_options_config_t) == 24, "driver options ABI size changed");
 _Static_assert(_Alignof(cosmos_driver_options_config_t) == 8, "driver options ABI alignment changed");
@@ -73,9 +73,8 @@ _Static_assert(_Alignof(cosmos_completion_t) == 8, "cosmos_completion_t ABI alig
 COSMOS_ASSERT_OFFSET(cosmos_completion_t, outcome, 0);
 COSMOS_ASSERT_OFFSET(cosmos_completion_t, status, 4);
 COSMOS_ASSERT_OFFSET(cosmos_completion_t, user_data, 8);
-COSMOS_ASSERT_OFFSET(cosmos_completion_t, was_cancel_requested, 16);
-COSMOS_ASSERT_OFFSET(cosmos_completion_t, http_status_code, 18);
-COSMOS_ASSERT_OFFSET(cosmos_completion_t, is_from_wire, 20);
+COSMOS_ASSERT_OFFSET(cosmos_completion_t, http_status_code, 16);
+COSMOS_ASSERT_OFFSET(cosmos_completion_t, is_from_wire, 18);
 COSMOS_ASSERT_OFFSET(cosmos_completion_t, message, 24);
 COSMOS_ASSERT_OFFSET(cosmos_completion_t, headers, 48);
 COSMOS_ASSERT_OFFSET(cosmos_completion_t, headers_len, 56);
@@ -86,7 +85,7 @@ COSMOS_ASSERT_OFFSET(cosmos_completion_t, driver, 88);
 COSMOS_ASSERT_OFFSET(cosmos_completion_t, container, 96);
 COSMOS_ASSERT_OFFSET(cosmos_completion_t, backing, 104);
 
-_Static_assert(sizeof(cosmos_operation_request_t) == 224, "cosmos_operation_request_t ABI size changed");
+_Static_assert(sizeof(cosmos_operation_request_t) == 232, "cosmos_operation_request_t ABI size changed");
 _Static_assert(_Alignof(cosmos_operation_request_t) == 8, "cosmos_operation_request_t ABI alignment changed");
 COSMOS_ASSERT_OFFSET(cosmos_operation_request_t, kind, 0);
 COSMOS_ASSERT_OFFSET(cosmos_operation_request_t, container, 24);
@@ -100,6 +99,18 @@ COSMOS_ASSERT_OFFSET(cosmos_operation_request_t, max_item_count, 160);
 COSMOS_ASSERT_OFFSET(cosmos_operation_request_t, precondition_kind, 172);
 COSMOS_ASSERT_OFFSET(cosmos_operation_request_t, precondition_etag, 176);
 COSMOS_ASSERT_OFFSET(cosmos_operation_request_t, options, 192);
+COSMOS_ASSERT_OFFSET(cosmos_operation_request_t, options_snapshot, 224);
+
+_Static_assert(sizeof(cosmos_cursor_request_t) == 280, "cursor request ABI size changed");
+COSMOS_ASSERT_OFFSET(cosmos_cursor_request_t, operation, 8);
+COSMOS_ASSERT_OFFSET(cosmos_cursor_request_t, reserved, 264);
+_Static_assert(sizeof(cosmos_cursor_completion_t) == 176, "cursor completion ABI size changed");
+COSMOS_ASSERT_OFFSET(cosmos_cursor_completion_t, common, 8);
+COSMOS_ASSERT_OFFSET(cosmos_cursor_completion_t, result_kind, 120);
+COSMOS_ASSERT_OFFSET(cosmos_cursor_completion_t, body_kind, 124);
+COSMOS_ASSERT_OFFSET(cosmos_cursor_completion_t, items, 128);
+COSMOS_ASSERT_OFFSET(cosmos_cursor_completion_t, checkpoint, 144);
+COSMOS_ASSERT_OFFSET(cosmos_cursor_completion_t, cursor, 160);
 */
 import "C"
 

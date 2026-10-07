@@ -8,9 +8,8 @@ import "time"
 // OperationOptions holds the driver-level settings every Cosmos DB operation accepts. It is
 // carried by each operation's own options type, which adds the settings specific to it.
 //
-// It mirrors the option set the driver takes per operation, so the same knobs are available to
-// reads, writes, patches, batches and queries alike rather than being restated for each. A
-// consequence is that a setting can be present but inert for a given operation:
+// It exposes a subset of the driver's per-operation settings, shared by the operation APIs
+// instead of being restated for each. A setting can be present but inert for a given operation:
 // [OperationOptions.EnableContentResponseOnWrite] means nothing to a read, for instance.
 type OperationOptions struct {
 	// ConsistencyStrategy selects how fresh a read must be. The zero value reads with whatever the
@@ -28,7 +27,9 @@ type OperationOptions struct {
 	// keeps the operation away from them entirely.
 	ExcludedRegions []Region
 
-	// EndToEndTimeout bounds the whole operation, including the retries the driver performs on
-	// the caller's behalf. Zero means no bound beyond the context's deadline.
+	// EndToEndTimeout sets the operation budget, including native retries. For queries it
+	// applies per page; zero adds no explicit native query timeout beyond native defaults.
+	// Query contexts bound the Go wait, not native execution; Client.Close may wait for
+	// admitted work after the context ends. Positive native timeouts are clamped to at least one second.
 	EndToEndTimeout time.Duration
 }

@@ -220,7 +220,7 @@ func TestCloseCancelsTokenAcquisition(t *testing.T) {
 }
 
 // The token callback proves driver creation has been submitted before cancellation. Initialize
-// must cancel the native operation and await its terminal completion before returning.
+// must abandon the wait safely; native v0.2.0 does not cancel admitted operations.
 func TestNativeCancellationAfterSubmission(t *testing.T) {
 	credential := &blockingTokenCredential{
 		started: make(chan struct{}),
@@ -242,7 +242,7 @@ func TestNativeCancellationAfterSubmission(t *testing.T) {
 		require.ErrorAs(t, err, &cosmosErr)
 		require.Equal(t, CodeOperationCancelled, cosmosErr.Code)
 	case <-time.After(time.Second):
-		t.Fatal("Initialize did not await the terminal cancellation completion")
+		t.Fatal("Initialize did not return after its context was canceled")
 	}
 
 	require.NoError(t, client.Close())

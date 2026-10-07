@@ -47,6 +47,6 @@ func (c *Client) execute(context.Context, itemRequest) (ItemResponse, []byte, er
 	return ItemResponse{}, nil, newDriverUnavailableError()
 }
 
-func (c *Client) executeQuery(context.Context, *queryRequest) (QueryItemsResponse, error) {
-	return QueryItemsResponse{}, newDriverUnavailableError()
+func (c *Client) openQuery(context.Context, *queryRequest) (queryCursor, Response, error) {
+	return nil, Response{}, newDriverUnavailableError()
 }

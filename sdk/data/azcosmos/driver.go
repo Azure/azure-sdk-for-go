@@ -14,4 +14,4 @@ package azcosmos
 // TODO: confirm the GA pin with the Rust driver crew before API sign-off.
 //
 //nolint:unused // consumed once client construction lands.
-const nativeDriverVersion = "0.1.0"
+const nativeDriverVersion = "0.2.0"

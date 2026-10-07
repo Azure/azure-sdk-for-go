@@ -38,6 +38,8 @@ type DownloadStreamResponse struct {
 	cpkInfo                 *CPKInfo
 	cpkScope                *CPKScopeInfo
 	transactionalValidation TransferValidationType
+	// layoutEndpoint is the layout endpoint this read was routed to, kept so a retry of it stays there
+	layoutEndpoint string
 }
 
 // NewRetryReader constructs new RetryReader stream for reading data. If a connection fails while
@@ -59,6 +61,7 @@ func (r *DownloadStreamResponse) NewRetryReader(ctx context.Context, options *Re
 			CPKInfo:                 r.cpkInfo,
 			CPKScopeInfo:            r.cpkScope,
 			TransactionalValidation: r.transactionalValidation,
+			LayoutEndpoint:          r.layoutEndpoint,
 		}
 		resp, err := r.client.DownloadStream(ctx, &options)
 		if err != nil {

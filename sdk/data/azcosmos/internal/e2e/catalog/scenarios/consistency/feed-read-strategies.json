@@ -1,0 +1,48 @@
+{
+  "$schema": "../../schema/scenario.v1.json",
+  "specVersion": "1.0",
+  "id": "consistency.feed-read-strategies",
+  "title": "Feed reads honor account and operation consistency",
+  "requirement": "Query and change-feed reads honor account consistency and explicit read-consistency strategies, and GlobalStrong is rejected before transport on non-Strong accounts.",
+  "maturity": "candidate",
+  "precedents": [
+    {
+      "sdk": "rust",
+      "path": "sdk/cosmos/azure_data_cosmos/tests/e2e_test_cases/item_lifecycle.rs",
+      "test": "global_strong_requires_strong_account"
+    }
+  ],
+  "profiles": [
+    "configurationResilience",
+    "lifecycleConsistencyMatrix"
+  ],
+  "tags": [
+    "consistency",
+    "query",
+    "changeFeed"
+  ],
+  "backends": {
+    "hostedEmulatorGatewayV1": {
+      "applicability": "required",
+      "fidelity": "full",
+      "requires": [
+        "query",
+        "changeFeed"
+      ]
+    },
+    "hostedEmulatorGatewayV2": {
+      "applicability": "required",
+      "fidelity": "full",
+      "requires": [
+        "query",
+        "changeFeed",
+        "gatewayV2"
+      ]
+    },
+    "azureLive": {
+      "applicability": "notApplicable",
+      "fidelity": "none",
+      "reason": "The PR3 contract uses hosted wire counters and a replication barrier that Azure Live does not expose."
+    }
+  }
+}

@@ -1,0 +1,48 @@
+{
+    "$schema": "../../schema/scenario.v1.json",
+    "specVersion": "1.0",
+    "id": "resilience.partition-circuit-breaker",
+    "title": "Partition failover avoids and probes unhealthy regions",
+    "requirement": "Two partition-scoped failures accumulate to trip the circuit breaker, route subsequent reads to a healthy region, and allow bounded recovery to the preferred region.",
+    "maturity": "candidate",
+    "precedents": [
+        {
+            "sdk": "rust",
+            "path": "sdk/cosmos/azure_data_cosmos_driver/tests/multi_write_tests/driver_partition_failover.rs",
+            "test": "ppcb_failback_to_hub_region_after_write_fault_clears"
+        }
+    ],
+    "profiles": [
+        "dynamicTopology"
+    ],
+    "tags": [
+        "resilience",
+        "ppaf",
+        "ppcb",
+        "failback"
+    ],
+    "backends": {
+        "hostedEmulatorGatewayV1": {
+            "applicability": "required",
+            "fidelity": "full",
+            "requires": [
+                "item",
+                "perPartitionFailover"
+            ]
+        },
+        "hostedEmulatorGatewayV2": {
+            "applicability": "required",
+            "fidelity": "full",
+            "requires": [
+                "item",
+                "perPartitionFailover",
+                "gatewayV2"
+            ]
+        },
+        "azureLive": {
+            "applicability": "notApplicable",
+            "fidelity": "none",
+            "reason": "The scenario uses deterministic regional fault injection and short circuit-breaker intervals."
+        }
+    }
+}

@@ -1,0 +1,44 @@
+{
+  "$schema": "../../schema/scenario.v1.json",
+  "specVersion": "1.0",
+  "id": "diagnostics.handlers-telemetry",
+  "title": "Diagnostics handlers emit operation telemetry",
+  "requirement": "Registered handlers receive operation identity for success and failure, metrics record operation duration, and failed operations emit a sampled OpenTelemetry span tree.",
+  "maturity": "candidate",
+  "precedents": [
+    {
+      "sdk": "rust",
+      "path": "sdk/cosmos/azure_data_cosmos/tests/in_memory_emulator_tests/handler_propagation.rs",
+      "test": "handler_receives_singleton_success/handler_receives_singleton_failure"
+    }
+  ],
+  "profiles": [
+    "configurationResilience"
+  ],
+  "tags": [
+    "diagnostics",
+    "metrics",
+    "tracing"
+  ],
+  "backends": {
+    "hostedEmulatorGatewayV1": {
+      "applicability": "required",
+      "fidelity": "full",
+      "requires": [
+        "item"
+      ]
+    },
+    "hostedEmulatorGatewayV2": {
+      "applicability": "required",
+      "fidelity": "full",
+      "requires": [
+        "item",
+        "gatewayV2"
+      ]
+    },
+    "azureLive": {
+      "applicability": "supported",
+      "fidelity": "full"
+    }
+  }
+}

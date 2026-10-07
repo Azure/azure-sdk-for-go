@@ -1,0 +1,39 @@
+{
+    "$schema": "../../schema/scenario.v1.json",
+    "specVersion": "1.0",
+    "id": "query.parameterized-filter",
+    "title": "A parameterized partition query filters and orders results",
+    "requirement": "Query parameters are bound without string substitution and deterministic ORDER BY results preserve order.",
+    "maturity": "candidate",
+    "precedents": [
+        {
+            "sdk": "java",
+            "path": "sdk/cosmos/azure-cosmos-tests/src/test/java/com/azure/cosmos/CosmosItemTest.java",
+            "test": "queryItems"
+        }
+    ],
+    "profiles": [
+        "smokeTests"
+    ],
+    "tags": [
+        "prSmoke",
+        "query"
+    ],
+    "backends": {
+        "hostedEmulatorGatewayV1": {
+            "applicability": "required",
+            "fidelity": "full"
+        },
+        "hostedEmulatorGatewayV2": {
+            "applicability": "required",
+            "fidelity": "full",
+            "requires": [
+                "gatewayV2"
+            ]
+        },
+        "azureLive": {
+            "applicability": "supported",
+            "fidelity": "full"
+        }
+    }
+}

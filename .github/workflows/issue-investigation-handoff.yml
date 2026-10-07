@@ -1,0 +1,113 @@
+# Copyright (c) Microsoft Corporation. All rights reserved.
+# Licensed under the MIT License.
+
+name: Issue investigation handoff
+
+on:
+  workflow_run:
+    workflows: ["Agentic Triage"]
+    types: [completed]
+
+permissions: {}
+
+concurrency:
+  group: investigation-handoff-${{ github.event.workflow_run.id }}-${{ github.event.workflow_run.run_attempt }}
+  cancel-in-progress: false
+
+jobs:
+  dispatch:
+    if: vars.ENABLE_ISSUE_INVESTIGATION == 'true' && github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      issues: read
+      actions: write
+    steps:
+      - name: Check out trusted handoff guard
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.workflow_sha }}
+          persist-credentials: false
+          sparse-checkout: .github/scripts
+      - name: Validate completed triage run
+        id: run
+        uses: actions/github-script@373c709c69115d41ff229c7e5df9f8788daa9553 # v9
+        with:
+          script: |
+            const { prepareRun } = require('./.github/scripts/issue-investigation-handoff.cjs');
+            return await prepareRun({ github, context, core });
+      - name: Download trusted activation metadata
+        if: steps.run.outputs.result != 'null'
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: activation
+          run-id: ${{ github.event.workflow_run.id }}
+          github-token: ${{ github.token }}
+          path: ${{ runner.temp }}/investigation-handoff/activation
+      - name: Validate canonical issue and eligibility
+        if: steps.run.outputs.result != 'null'
+        id: target
+        uses: actions/github-script@373c709c69115d41ff229c7e5df9f8788daa9553 # v9
+        env:
+          RUN: ${{ steps.run.outputs.result }}
+          DIRECTORY: ${{ runner.temp }}/investigation-handoff/activation
+        with:
+          script: |
+            const { checkTarget } = require('./.github/scripts/issue-investigation-handoff.cjs');
+            return await checkTarget({ github, context, core, run: JSON.parse(process.env.RUN), directory: process.env.DIRECTORY });
+      - name: Download completed triage plan
+        if: steps.run.outputs.result != 'null' && steps.target.outputs.result != 'null'
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: agent
+          run-id: ${{ github.event.workflow_run.id }}
+          github-token: ${{ github.token }}
+          path: ${{ runner.temp }}/investigation-handoff/agent
+      - name: Validate completed owner routing
+        if: steps.run.outputs.result != 'null' && steps.target.outputs.result != 'null'
+        id: plan
+        uses: actions/github-script@373c709c69115d41ff229c7e5df9f8788daa9553 # v9
+        env:
+          RUN: ${{ steps.run.outputs.result }}
+          NUMBER: ${{ steps.target.outputs.result }}
+          DIRECTORY: ${{ runner.temp }}/investigation-handoff/agent
+        with:
+          script: |
+            const { issueNumber } = require('./.github/scripts/issue-investigation.cjs');
+            const { checkPlan } = require('./.github/scripts/issue-investigation-handoff.cjs');
+            return Boolean(checkPlan({ core, run: JSON.parse(process.env.RUN), number: issueNumber(process.env.NUMBER), directory: process.env.DIRECTORY }));
+      - name: Download independent threat-detection evidence
+        if: steps.plan.outputs.result == 'true'
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: detection
+          run-id: ${{ github.event.workflow_run.id }}
+          github-token: ${{ github.token }}
+          path: ${{ runner.temp }}/investigation-handoff/detection
+      - name: Set up pinned native dispatch runtime
+        if: steps.plan.outputs.result == 'true'
+        uses: github/gh-aw-actions/setup@6aab9e5b5c91c615506061f09bedd81a23babe3c # v0.86.2
+        with:
+          destination: ${{ runner.temp }}/gh-aw/actions
+      - name: Dispatch only the verified default-branch investigation
+        if: steps.plan.outputs.result == 'true'
+        uses: actions/github-script@373c709c69115d41ff229c7e5df9f8788daa9553 # v9
+        env:
+          RUN: ${{ steps.run.outputs.result }}
+          NUMBER: ${{ steps.target.outputs.result }}
+          DETECTION_FILE: ${{ runner.temp }}/investigation-handoff/detection/detection.log
+        with:
+          script: |
+            const nativeRoot = '${{ runner.temp }}/gh-aw/actions';
+            const { setupGlobals } = require(`${nativeRoot}/setup_globals.cjs`);
+            setupGlobals(core, github, context, exec, io, getOctokit);
+            const { parseDetectionLog } = require(`${nativeRoot}/parse_threat_detection_results.cjs`);
+            const { main: createDispatchHandler } = require(`${nativeRoot}/dispatch_workflow.cjs`);
+            const { issueNumber } = require('./.github/scripts/issue-investigation.cjs');
+            const { dispatch } = require('./.github/scripts/issue-investigation-handoff.cjs');
+            await dispatch({
+              github, context, core, run: JSON.parse(process.env.RUN),
+              number: issueNumber(process.env.NUMBER), detectionFile: process.env.DETECTION_FILE,
+              parseDetectionLog, createDispatchHandler
+            });

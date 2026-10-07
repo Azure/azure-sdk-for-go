@@ -73,6 +73,12 @@ type Client struct {
 	// driver holds the resources the client owns in the driver. It is nil in builds that are not
 	// bound to the driver, where operations report that the driver is unavailable.
 	driver *nativeDriver
+
+	// usesKeyAuth records whether the client was constructed with NewClientWithKey. Azure Cosmos
+	// DB only accepts master-key authentication for database and container management operations
+	// issued through the data-plane SQL API, so management methods reject a token-credential
+	// client rather than letting it fail server-side with a less specific error.
+	usesKeyAuth bool
 }
 
 // NewClient creates a client that authenticates with Microsoft Entra ID.
@@ -128,7 +134,7 @@ func newClient(
 		return nil, fmt.Errorf("azcosmos: endpoint %q must use the http or https scheme", endpoint)
 	}
 
-	client := &Client{endpoint: endpoint}
+	client := &Client{endpoint: endpoint, usesKeyAuth: accountKey != ""}
 	if options != nil {
 		client.options = *options
 		client.options.Routing = options.Routing.clone()
@@ -224,6 +230,18 @@ func (c *Client) NewDatabase(id string) (*DatabaseClient, error) {
 		return nil, errors.New("azcosmos: database id must not be empty")
 	}
 	return &DatabaseClient{id: id, client: c}, nil
+}
+
+// CreateDatabase creates a new database.
+//
+// properties.ID is required; every other field is server-assigned and ignored. options may be
+// nil.
+//
+// Azure Cosmos DB only accepts master-key authentication for this operation: a client created
+// with [NewClient] (Microsoft Entra ID) returns an error rather than reaching the service. Use
+// [NewClientWithKey].
+func (c *Client) CreateDatabase(ctx context.Context, properties DatabaseProperties, options *CreateDatabaseOptions) (DatabaseResponse, error) {
+	return c.createDatabase(ctx, properties, options)
 }
 
 // NewContainer returns a client for a container in the account. It does not contact the service,

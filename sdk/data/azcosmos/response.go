@@ -49,6 +49,24 @@ type ItemResponse struct {
 	Value []byte
 }
 
+// DatabaseResponse is the response from an operation on a database.
+type DatabaseResponse struct {
+	Response
+
+	// DatabaseProperties is the database the operation addressed. It is the zero value for a
+	// delete, which returns no body.
+	DatabaseProperties DatabaseProperties
+}
+
+// ContainerResponse is the response from an operation on a container.
+type ContainerResponse struct {
+	Response
+
+	// ContainerProperties is the container the operation addressed. It is the zero value for a
+	// delete, which returns no body.
+	ContainerProperties ContainerProperties
+}
+
 // QueryItemsResponse contains one query page. An empty page does not imply exhaustion.
 type QueryItemsResponse struct {
 	// Response includes the metadata-validation charge on the first fetch.

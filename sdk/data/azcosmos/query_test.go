@@ -240,7 +240,11 @@ func TestQueryPagerCheckpointAndCloseContracts(t *testing.T) {
 }
 
 func TestDecodeQueryPage(t *testing.T) {
-	response := Response{RequestCharge: 3.5, ActivityID: "query-activity"}
+	diagnostics := &Diagnostics{StatusCode: 200, AttemptCount: 1}
+	response := Response{
+		RequestCharge: 3.5, ActivityID: "query-activity",
+		Diagnostics: diagnostics, StatusCode: 200, SubStatus: 0, AttemptCount: 1,
+	}
 	body := []byte(`{"Documents":[{"id":"first"},9007199254740993,null,[1,true],"text"],"_count":5}`)
 	page, err := decodeQueryPage(body, response, "0:2", "planner-token", false)
 	require.NoError(t, err)
@@ -261,6 +265,11 @@ func TestDecodeQueryPage(t *testing.T) {
 			require.Equal(t, "query-activity", cosmosErr.ActivityID)
 			require.Equal(t, SessionToken("0:2"), cosmosErr.SessionToken)
 			require.False(t, cosmosErr.FromWire)
+			// A decode failure happens after a successful native completion, so the diagnostics
+			// and attempt metadata from that completion must still reach the caller.
+			require.Same(t, diagnostics, cosmosErr.Diagnostics)
+			require.Equal(t, 200, cosmosErr.StatusCode)
+			require.Equal(t, uint32(1), cosmosErr.AttemptCount)
 		})
 	}
 	page, err = decodeQueryPage([]byte(`{"Documents":[]}`), response, "", "more", false)
@@ -320,6 +329,58 @@ func TestQuerySetupChargeOnErrors(t *testing.T) {
 	require.ErrorAs(t, err, &got)
 	require.Equal(t, CodeOperationCancelled, got.Code)
 	require.Equal(t, 3.0, got.RequestCharge)
+
+	// A raw cause such as context.DeadlineExceeded has no *Error to backfill non-zero fields
+	// onto, so the fallback branch must copy the setup fetch's diagnostics/status/attempt
+	// metadata in directly rather than leaving it zero, the same metadata the *Error branch
+	// above backfills.
+	rawCauseSetupDiagnostics := &Diagnostics{StatusCode: 200, AttemptCount: 4}
+	rawCauseSetup := Response{
+		RequestCharge: 3, ActivityID: "metadata",
+		Diagnostics: rawCauseSetupDiagnostics, StatusCode: 200, SubStatus: 1, AttemptCount: 4,
+	}
+	err = addQuerySetupCharge(context.DeadlineExceeded, rawCauseSetup)
+	require.ErrorIs(t, err, context.DeadlineExceeded)
+	require.ErrorAs(t, err, &got)
+	require.Equal(t, CodeOperationCancelled, got.Code)
+	require.Same(t, rawCauseSetupDiagnostics, got.Diagnostics)
+	require.Equal(t, 200, got.StatusCode)
+	require.Equal(t, 1, got.SubStatus)
+	require.Equal(t, uint32(4), got.AttemptCount)
+
+	// validateQueryPartitionKey has no response to copy diagnostics from, so its error carries
+	// none of its own; addQuerySetupCharge must backfill them from the setup fetch's response.
+	setupDiagnostics := &Diagnostics{StatusCode: 200, AttemptCount: 2}
+	bare := &Error{Code: CodeSerializationFailed, Message: "decoding container partition key definition"}
+	setup := Response{RequestCharge: 3, ActivityID: "metadata", Diagnostics: setupDiagnostics, StatusCode: 200, SubStatus: 1, AttemptCount: 2}
+	require.ErrorAs(t, addQuerySetupCharge(bare, setup), &got)
+	require.Same(t, setupDiagnostics, got.Diagnostics)
+	require.Equal(t, 200, got.StatusCode)
+	require.Equal(t, 1, got.SubStatus)
+	require.Equal(t, uint32(2), got.AttemptCount)
+
+	// A query-completion error already carries its own diagnostics from the query attempt itself;
+	// the unrelated setup-fetch diagnostics must not overwrite them.
+	queryDiagnostics := &Diagnostics{StatusCode: 429, AttemptCount: 3}
+	withOwnDiagnostics := &Error{Code: CodeThrottled, StatusCode: 429, AttemptCount: 3, Diagnostics: queryDiagnostics}
+	require.ErrorAs(t, addQuerySetupCharge(withOwnDiagnostics, setup), &got)
+	require.Same(t, queryDiagnostics, got.Diagnostics)
+	require.Equal(t, 429, got.StatusCode)
+	require.Equal(t, uint32(3), got.AttemptCount)
+
+	// A genuinely empty Response (no setup fetch happened at all) must pass err through
+	// unchanged rather than wrapping it.
+	require.Same(t, original, addQuerySetupCharge(original, Response{}))
+
+	// A successful setup completion can carry diagnostics/status/attempt metadata even when its
+	// request charge is absent or zero; the zero charge alone must not be treated as "no setup"
+	// and skip the backfill.
+	zeroChargeDiagnostics := &Diagnostics{StatusCode: 200, AttemptCount: 1}
+	zeroChargeSetup := Response{ActivityID: "metadata", Diagnostics: zeroChargeDiagnostics, StatusCode: 200, AttemptCount: 1}
+	require.ErrorAs(t, addQuerySetupCharge(bare, zeroChargeSetup), &got)
+	require.Same(t, zeroChargeDiagnostics, got.Diagnostics)
+	require.Equal(t, 200, got.StatusCode)
+	require.Equal(t, uint32(1), got.AttemptCount)
 }
 
 func TestQueryDiagnosticBuild(t *testing.T) {

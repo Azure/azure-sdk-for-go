@@ -23,6 +23,7 @@ import (
 	"fmt"
 	"sync"
 	"time"
+	"unsafe"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
@@ -93,6 +94,18 @@ type nativeDriver struct {
 	cursors       map[*nativeQueryCursor]struct{}
 	cursorReactor *cursorReactor
 	pending       sync.WaitGroup
+
+	// faultRules is a native-only test seam. Production clients never set it.
+	faultRules []nativeFaultRule
+}
+
+type nativeFaultRule struct {
+	id         string
+	kind       int32
+	errorType  int32
+	hitLimit   int64
+	delayMS    int64
+	retryAfter int64
 }
 
 type driverCreation struct {
@@ -156,7 +169,7 @@ func openDriver(cfg driverConfig) (*nativeDriver, error) {
 	// Before the driver rather than after it, because creating the driver is itself answered
 	// through this queue.
 	var err error
-	if d.reactor, err = newReactor(d.runtime); err != nil {
+	if d.reactor, err = newReactor(d.runtime, cfg.options.DiagnosticsVerbosity); err != nil {
 		_ = d.close()
 		return nil, err
 	}
@@ -284,11 +297,71 @@ func (d *nativeDriver) buildDriverOptions() (*C.cosmos_driver_options_t, error) 
 	defer release()
 
 	var options *C.cosmos_driver_options_t
-	status := C.cosmos_driver_options_build(d.account, config, &options) //nolint:gocritic // dupSubExpr is reported against cgo-generated code, not this call.
+	var status C.cosmos_status_code_t
+	if len(d.faultRules) == 0 {
+		status = C.cosmos_driver_options_build(d.account, config, &options) //nolint:gocritic // dupSubExpr is reported against cgo-generated code, not this call.
+	} else {
+		status = d.buildFaultInjectionOptions(config, &options)
+	}
 	if err := statusError(status, nil, "building the driver options"); err != nil {
 		return nil, err
 	}
 	return options, nil
+}
+
+func freeNativeDriverOptions(options *C.cosmos_driver_options_t) {
+	C.cosmos_driver_options_free(options)
+}
+
+// buildFaultInjectionOptions uses the versioned ABI only for native integration tests.
+// The driver copies all rule memory before this call returns.
+func (d *nativeDriver) buildFaultInjectionOptions(
+	config *C.cosmos_driver_options_config_t,
+	out **C.cosmos_driver_options_t,
+) C.cosmos_status_code_t {
+	rules := (*C.cosmos_fault_injection_rule_t)(C.malloc(
+		C.size_t(len(d.faultRules)) * C.size_t(unsafe.Sizeof(C.cosmos_fault_injection_rule_t{}))))
+	defer C.free(unsafe.Pointer(rules))
+	var allocations []unsafe.Pointer
+	defer func() {
+		for _, allocation := range allocations {
+			C.free(allocation)
+		}
+	}()
+	for i, rule := range d.faultRules {
+		condition := (*C.cosmos_fault_injection_condition_t)(C.malloc(
+			C.size_t(unsafe.Sizeof(C.cosmos_fault_injection_condition_t{}))))
+		result := (*C.cosmos_fault_injection_result_t)(C.malloc(
+			C.size_t(unsafe.Sizeof(C.cosmos_fault_injection_result_t{}))))
+		allocations = append(allocations, unsafe.Pointer(condition), unsafe.Pointer(result))
+		*condition = C.cosmos_fault_injection_condition_default()
+		condition.operation_type = C.int32_t(rule.kind)
+		*result = C.cosmos_fault_injection_result_default()
+		result.error_type = C.int32_t(rule.errorType)
+		result.probability = 1
+		result.delay_ms = C.int64_t(rule.delayMS)
+		result.retry_after_ms = C.int64_t(rule.retryAfter)
+		if rule.retryAfter >= 0 {
+			result.custom_status_code = 429
+			result.custom_sub_status = 3200
+		}
+		id, allocation := toNativeString(rule.id)
+		allocations = append(allocations, allocation)
+		nativeRule := C.cosmos_fault_injection_rule_default()
+		nativeRule.id = id
+		nativeRule.condition = condition
+		nativeRule.result = result
+		nativeRule.hit_limit = C.int64_t(rule.hitLimit)
+		unsafe.Slice(rules, len(d.faultRules))[i] = nativeRule
+	}
+	v2 := C.cosmos_driver_options_config_v2_default()
+	v2.preferred_regions = config.preferred_regions
+	v2.preferred_regions_len = config.preferred_regions_len
+	v2.operation_options = config.operation_options
+	v2.fault_injection_rules = rules
+	v2.fault_injection_rules_len = C.uintptr_t(len(d.faultRules))
+	v2.fault_injection_rule_stride = C.uintptr_t(unsafe.Sizeof(C.cosmos_fault_injection_rule_t{}))
+	return C.cosmos_driver_options_build_v2(d.account, &v2, out) //nolint:gocritic // dupSubExpr targets cgo-generated code.
 }
 
 // buildRuntime creates the Tokio runtime the driver executes on.

@@ -153,6 +153,26 @@ func TestErrorUnwrapsCancellation(t *testing.T) {
 	require.Equal(t, "activity-id", deadline.ActivityID)
 }
 
+func TestCloneErrorOwnsDiagnostics(t *testing.T) {
+	original := &Error{
+		Body: []byte("body"),
+		Diagnostics: &Diagnostics{
+			RegionsContacted: []string{"East US"},
+			Attempts:         []DiagnosticAttempt{{StatusCode: 429}},
+			JSON:             `{"requestCount":1}`,
+		},
+	}
+	cloned, ok := cloneError(original).(*Error)
+	require.True(t, ok)
+	require.NotSame(t, original.Diagnostics, cloned.Diagnostics)
+	cloned.Body[0] = 'B'
+	cloned.Diagnostics.RegionsContacted[0] = "West US"
+	cloned.Diagnostics.Attempts[0].StatusCode = 200
+	require.Equal(t, []byte("body"), original.Body)
+	require.Equal(t, "East US", original.Diagnostics.RegionsContacted[0])
+	require.Equal(t, 429, original.Diagnostics.Attempts[0].StatusCode)
+}
+
 // The driver pairs a failure it produced itself with a synthetic 408 or 503, so classifying one on
 // its HTTP status would blame the service for a local failure. These are the codes the driver's own
 // classifier consults the sub-status for.

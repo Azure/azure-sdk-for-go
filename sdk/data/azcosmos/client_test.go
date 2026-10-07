@@ -323,6 +323,32 @@ func TestNewClientWithKeyRejectsInvalidOptions(t *testing.T) {
 	require.Nil(t, client)
 }
 
+// TestClientOptionsValidateDiagnosticsVerbosity walks every defined DiagnosticsVerbosity constant
+// plus an out-of-range value, verifying the enum's zero value and named members are all accepted
+// and anything else is rejected before a client is ever constructed.
+func TestClientOptionsValidateDiagnosticsVerbosity(t *testing.T) {
+	for _, tt := range []struct {
+		name      string
+		verbosity DiagnosticsVerbosity
+		wantErr   string
+	}{
+		{"zero value / Default", DiagnosticsVerbosityDefault, ""},
+		{"Summary", DiagnosticsVerbositySummary, ""},
+		{"Detailed", DiagnosticsVerbosityDetailed, ""},
+		{"out of range", DiagnosticsVerbosity(99), "unrecognized DiagnosticsVerbosity(99)"},
+		{"negative", DiagnosticsVerbosity(-1), "unrecognized DiagnosticsVerbosity(-1)"},
+	} {
+		t.Run(tt.name, func(t *testing.T) {
+			err := ClientOptions{DiagnosticsVerbosity: tt.verbosity}.validate()
+			if tt.wantErr == "" {
+				require.NoError(t, err)
+				return
+			}
+			require.ErrorContains(t, err, tt.wantErr)
+		})
+	}
+}
+
 func TestNewClientWithKeyAcceptsOptions(t *testing.T) {
 	for _, tt := range []struct {
 		name    string
@@ -332,6 +358,8 @@ func TestNewClientWithKeyAcceptsOptions(t *testing.T) {
 		{"preferred regions", ClientOptions{Routing: PreferredRegions(RegionEastUS, RegionWestUS)}},
 		{"proximity to known region", ClientOptions{Routing: ProximityTo(RegionEastUS)}},
 		{"proximity to unknown region", ClientOptions{Routing: ProximityTo("not-a-real-region")}},
+		{"diagnostics verbosity summary", ClientOptions{DiagnosticsVerbosity: DiagnosticsVerbositySummary}},
+		{"diagnostics verbosity detailed", ClientOptions{DiagnosticsVerbosity: DiagnosticsVerbosityDetailed}},
 	} {
 		t.Run(tt.name, func(t *testing.T) {
 			client, err := newClient("https://myaccount.documents.azure.com", testAccountKey, nil, &tt.options)

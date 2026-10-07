@@ -63,7 +63,7 @@ func (d *nativeDriver) openCursor(ctx context.Context, driver *C.cosmos_driver_t
 	})
 	if err == nil {
 		defer C.cosmos_cursor_completion_free(completion)
-		err = cursorCompletionError(completion)
+		err = cursorCompletionError(completion, d.reactor.verbosity)
 		if err == nil {
 			if completion.result_kind != 1 {
 				err = invalidCursorCompletion("expected opened cursor")
@@ -99,10 +99,10 @@ func (q *nativeQueryCursor) next(ctx context.Context) (QueryItemsResponse, bool,
 		return QueryItemsResponse{}, false, err
 	}
 	defer C.cosmos_cursor_completion_free(completion)
-	if err := cursorCompletionError(completion); err != nil {
+	if err := cursorCompletionError(completion, q.owner.reactor.verbosity); err != nil {
 		return QueryItemsResponse{}, false, err
 	}
-	return decodeCursorPage(completion)
+	return decodeCursorPage(completion, q.owner.reactor.verbosity)
 }
 
 func (q *nativeQueryCursor) checkpoint(ctx context.Context) (string, error) {
@@ -121,7 +121,7 @@ func (q *nativeQueryCursor) checkpoint(ctx context.Context) (string, error) {
 		return "", err
 	}
 	defer C.cosmos_cursor_completion_free(completion)
-	if err := cursorCompletionError(completion); err != nil {
+	if err := cursorCompletionError(completion, q.owner.reactor.verbosity); err != nil {
 		return "", err
 	}
 	if completion.result_kind != 3 {
@@ -197,18 +197,18 @@ func invalidCursorCompletion(message string) error {
 	return &Error{Code: CodeClientError, Message: "azcosmos: " + message}
 }
 
-func cursorCompletionError(completion *C.cosmos_cursor_completion_t) error {
+func cursorCompletionError(completion *C.cosmos_cursor_completion_t, verbosity DiagnosticsVerbosity) error {
 	if completion.abi_version != 1 || completion.struct_size_bytes < C.uint32_t(unsafe.Sizeof(*completion)) {
 		return invalidCursorCompletion("unsupported cursor completion layout")
 	}
 	if completion.common.outcome != C.COSMOS_COMPLETION_OUTCOME_OK {
-		return translateCompletionOutcome(&completion.common).err
+		return translateCompletionOutcome(&completion.common, verbosity).err
 	}
 	return nil
 }
 
-func decodeCursorPage(completion *C.cosmos_cursor_completion_t) (QueryItemsResponse, bool, error) {
-	common := translateCompletionOutcome(&completion.common)
+func decodeCursorPage(completion *C.cosmos_cursor_completion_t, verbosity DiagnosticsVerbosity) (QueryItemsResponse, bool, error) {
+	common := translateCompletionOutcome(&completion.common, verbosity)
 	headers := readCompletionHeaders(&completion.common)
 	page := QueryItemsResponse{
 		Response: common.response.Response, SessionToken: common.response.SessionToken,
@@ -281,7 +281,7 @@ func syntheticCursorPage(body []byte, items [][]byte, kind, result uint32) (Quer
 	}
 	completion.common.headers = &headers[0]
 	completion.common.headers_len = C.uintptr_t(len(headers))
-	return decodeCursorPage(&completion)
+	return decodeCursorPage(&completion, DiagnosticsVerbosityDefault)
 }
 
 func (d *nativeDriver) testIdleCursor() (*nativeQueryCursor, error) {

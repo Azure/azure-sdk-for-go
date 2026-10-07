@@ -30,10 +30,8 @@ func buildImplementations() []Implementation {
 		{ScenarioID: "query.parameterized-filter", Status: StatusActive, Test: "TestQueryParameterizedFilterAndOrder"},
 		{ScenarioID: "query.invalid-syntax", Status: StatusActive, Test: "TestQueryInvalidSyntaxIsNotAnEmptyFeed"},
 		{ScenarioID: "query.pagination-resume", Status: StatusActive, Test: "TestQueryPaginationResumesWithoutLossOrDuplication"},
-		{ScenarioID: "query.feed-ranges", Status: StatusActive, Test: "TestQueryFeedRangesCoverPartitionKeyRouting"},
 		{ScenarioID: "diagnostics.success-and-error", Status: StatusActive, Test: "TestDiagnosticsCoverSuccessAndError"},
 		{ScenarioID: "consistency.session-management", Status: StatusActive, Test: "TestSessionTokenExplicitManagement"},
-		{ScenarioID: "consistency.response-token-capture", Status: StatusActive, Test: "TestSessionTokenCapturedBeforeSwitchingToSession"},
 
 		// --- Blocked: missing Go product capability ---
 		{ScenarioID: "management.capabilities", Status: StatusBlocked, Reason: noManagementAPI},
@@ -43,6 +41,8 @@ func buildImplementations() []Implementation {
 		{ScenarioID: "changefeed.pagination-resume", Status: StatusBlocked, Reason: noChangeFeedAPI},
 		{ScenarioID: "changefeed.all-versions-start-validation", Status: StatusBlocked, Reason: noChangeFeedAPI},
 		{ScenarioID: "diagnostics.handlers-telemetry", Status: StatusBlocked, Reason: "requires confirming azcosmos/v2 exposes diagnostics-handler/OpenTelemetry hooks equivalent to Rust's; not yet verified to exist for v2's native-driver diagnostics surface."},
+		{ScenarioID: "query.feed-ranges", Status: StatusBlocked, Reason: "azcosmos/v2's ContainerClient has no public feed-range API (no equivalent of Rust's read_feed_ranges/feed_range_from_partition_key); only NewQueryItemsPager's partition-key/full-container scopes exist."},
+		{ScenarioID: "consistency.response-token-capture", Status: StatusBlocked, Reason: "Rust's scenario pauses West US replication and routes with multi-region PreferredRegions to force an Eventual-then-Session switch; the pinned emulator is single-region with no replication-pause management API, so this cannot be arranged honestly. " + noFaultInjection},
 
 		// --- Blocked: requires hosted-emulator capability beyond the currently pinned revision ---
 		{ScenarioID: "resilience.deadline", Status: StatusBlocked, Reason: noFaultInjection},

@@ -64,10 +64,13 @@
 
 ### Bugs Fixed
 
-* Fixed an item operation returning its native `ClientOperationTimeout` error unwrapped instead of
-  one satisfying `errors.Is(err, context.DeadlineExceeded)`, when the native driver's own
-  end-to-end timeout raced the caller's context deadline and won.
-  See [PR 27662](https://github.com/Azure/azure-sdk-for-go/pull/27662).
+* Fixed `ReadItem` (and other reads) waiting out the native driver's own retry budget before
+  returning on context cancellation, instead of returning promptly. Reads now abandon immediately
+  once the context ends, matching their existing non-authoritative contract; only writes, which may
+  have already committed by the time the context ends, await the real outcome. Also fixed the
+  native `ClientOperationTimeout` error surfacing unwrapped instead of satisfying
+  `errors.Is(err, context.DeadlineExceeded)` when the native driver's own end-to-end timeout raced
+  the caller's context deadline and won. See [PR 27662](https://github.com/Azure/azure-sdk-for-go/pull/27662).
 
 ### Other Changes
 

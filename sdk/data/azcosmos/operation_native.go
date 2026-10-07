@@ -56,10 +56,20 @@ func (d *nativeDriver) execute(ctx context.Context, req itemRequest) (ItemRespon
 	// only what remains rather than restarting the configured duration.
 	req.options.EndToEndTimeout = endToEndTimeout(ctx, 0)
 
-	result, err := d.awaitAuthoritativeCompletion(ctx, "submitting the operation",
-		func(queue *C.cosmos_completion_queue_t, cookie C.intptr_t, preError *C.cosmos_status_code_t) *C.cosmos_operation_handle_t {
-			return d.submit(driver, container, req, queue, cookie, preError)
-		})
+	submit := func(queue *C.cosmos_completion_queue_t, cookie C.intptr_t, preError *C.cosmos_status_code_t) *C.cosmos_operation_handle_t {
+		return d.submit(driver, container, req, queue, cookie, preError)
+	}
+
+	// Only a write can leave a side effect that must not be misreported as cancelled after it
+	// already committed, so only writes pay for an authoritative wait. A read has nothing to
+	// protect: abandoning it the moment ctx ends, rather than waiting out the native driver's own
+	// retry budget, is what keeps cancellation prompt.
+	var result completionResult
+	if req.kind == operationKindReadItem {
+		result, err = d.awaitCompletion(ctx, "submitting the operation", submit)
+	} else {
+		result, err = d.awaitAuthoritativeCompletion(ctx, "submitting the operation", submit)
+	}
 	if err != nil {
 		return ItemResponse{}, nil, err
 	}
@@ -67,8 +77,8 @@ func (d *nativeDriver) execute(ctx context.Context, req itemRequest) (ItemRespon
 }
 
 // awaitCompletion submits one operation and waits for its completion or the caller's context,
-// whichever comes first. Driver creation, container resolution and item operations all go through
-// it, so all three honor a context the same way.
+// whichever comes first. Driver creation, container resolution and reads all go through it, so
+// all three honor a context the same way.
 //
 // The submit closure receives what the driver needs to answer: the queue to post the completion
 // to, the cookie to round-trip onto it, and somewhere to report a pre-flight rejection. It returns
@@ -76,8 +86,9 @@ func (d *nativeDriver) execute(ctx context.Context, req itemRequest) (ItemRespon
 //
 // Non-authoritative waits may return on cancellation without the native operation's result; the
 // handle and cookie are released immediately regardless, since a completion that arrives after is
-// safely dropped by the reactor. Point operations separately await authoritative results, including
-// writes.
+// safely dropped by the reactor. Writes separately await authoritative results instead, since a
+// write may have already committed by the time the context ends and must not be misreported as
+// cancelled.
 func (d *nativeDriver) awaitCompletion(
 	ctx context.Context,
 	doing string,

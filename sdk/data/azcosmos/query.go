@@ -59,17 +59,32 @@ func (q Query) body() ([]byte, error) {
 	}{q.text, q.parameters})
 }
 
-// FeedScope identifies the partition targeted by a query. The zero value is invalid.
-// Only complete logical partition keys are supported; cross-partition and prefix scopes are not.
+// FeedScope identifies the partitions targeted by a query. The zero value is invalid.
 type FeedScope struct {
-	partitionKey PartitionKey
+	partitionKey  PartitionKey
+	fullContainer bool
 }
 
-// NewFeedScopeForPartitionKey targets one logical partition. Hierarchical keys must include
-// every component; partial keys are rejected on the first page fetch.
+// NewFeedScopeForPartitionKey targets one logical partition or a hierarchical key prefix.
+// A prefix includes every logical partition sharing the supplied leading components.
 func NewFeedScopeForPartitionKey(partitionKey PartitionKey) FeedScope {
 	return FeedScope{partitionKey: partitionKey}
 }
+
+// NewFeedScopeForFullContainer targets every partition. Broad queries can consume substantial RUs.
+func NewFeedScopeForFullContainer() FeedScope {
+	return FeedScope{fullContainer: true}
+}
+
+// QueryPlanMode selects the query-plan provider.
+type QueryPlanMode string
+
+const (
+	// QueryPlanModeLocalPreferred uses local planning with the driver's gateway fallback.
+	QueryPlanModeLocalPreferred QueryPlanMode = "LocalPreferred"
+	// QueryPlanModeGatewayOnly requests query plans from the gateway.
+	QueryPlanModeGatewayOnly QueryPlanMode = "GatewayOnly"
+)
 
 // FeedOptions configures pagination and resumption.
 type FeedOptions struct {
@@ -80,11 +95,16 @@ type FeedOptions struct {
 	// ContinuationToken resumes a previous query with the same query and scope.
 	// Empty starts a new query. Tokens are opaque and must not be modified.
 	ContinuationToken string
+
+	// MaxFanOut limits physical partitions at initial setup. Zero uses the native default (100).
+	// Resumption and subsequent partition splits do not recheck this limit.
+	MaxFanOut uint32
 }
 
 // QueryOptions configures item queries. A nil *QueryOptions selects defaults.
 type QueryOptions struct {
-	// Operation holds the settings every operation accepts. Its timeout applies to each page fetch.
+	// Operation holds shared settings. An explicit timeout applies to each native page fetch.
+	// With zero timeout, the context bounds only the Go wait and native defaults still apply.
 	Operation OperationOptions
 
 	// Feed controls page size and resumption.
@@ -92,4 +112,13 @@ type QueryOptions struct {
 
 	// SessionToken overrides the client's captured session token. Empty uses the client's token.
 	SessionToken SessionToken
+
+	// QueryPlanMode selects the provider. Zero uses LocalPreferred.
+	QueryPlanMode QueryPlanMode
+
+	// PopulateIndexMetrics requests decoded index-utilization metrics. Nil uses the driver default.
+	PopulateIndexMetrics *bool
+
+	// PopulateQueryMetrics requests query execution metrics. Nil uses the driver default.
+	PopulateQueryMetrics *bool
 }

@@ -302,7 +302,7 @@ func normalizeSubStatus(subStatus int32) int {
 }
 
 // Sub-status codes the driver reports on failures it produced itself. It pairs them with a
-// synthetic 408 or 503, so the sub-status rather than the status is what says what went wrong.
+// synthetic HTTP status, so the sub-status identifies the specific failure.
 const (
 	subStatusTransportGenerated503  = 20003
 	subStatusClientOperationTimeout = 20008
@@ -312,6 +312,9 @@ const (
 	// 20021 a request body it could not write.
 	subStatusSerializationMin = 20020
 	subStatusSerializationMax = 20021
+	// Unsupported checkpoints do not prevent the retained query from continuing.
+	subStatusContinuationTokenNonQueryOperation   = 20117
+	subStatusBufferedQueryContinuationUnsupported = 20124
 	// The driver treats a signature it generated a 401 for and a token it could not acquire as
 	// the same class of failure, and so does this.
 	subStatusClientGenerated401   = 20401

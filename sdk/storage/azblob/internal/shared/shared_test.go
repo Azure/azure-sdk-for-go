@@ -295,9 +295,11 @@ func TestGetServiceURL(t *testing.T) {
 		{"IPStyleServiceURL", "https://127.0.0.1:10000/devstoreaccount1/", "https://127.0.0.1:10000/devstoreaccount1/", false, ""},
 		{"IPStyleServiceURLNoTrailingSlash", "https://127.0.0.1:10000/devstoreaccount1", "https://127.0.0.1:10000/devstoreaccount1/", false, ""},
 
-		// SAS token preservation
-		{"StandardURLWithSAS", "https://account.blob.core.windows.net/container/blob?sv=2021-06-08&ss=b&srt=sco&sig=test", "https://account.blob.core.windows.net/?sv=2021-06-08&ss=b&srt=sco&sig=test", false, ""},
-		{"IPStyleURLWithSAS", "https://127.0.0.1:10000/devstoreaccount1/container?sv=2021-06-08&sig=test", "https://127.0.0.1:10000/devstoreaccount1/?sv=2021-06-08&sig=test", false, ""},
+		// the query, including any SAS, is discarded
+		{"StandardURLWithSAS", "https://account.blob.core.windows.net/container/blob?sv=2021-06-08&ss=b&srt=sco&sig=test", "https://account.blob.core.windows.net/", false, ""},
+		{"IPStyleURLWithSAS", "https://127.0.0.1:10000/devstoreaccount1/container?sv=2021-06-08&sig=test", "https://127.0.0.1:10000/devstoreaccount1/", false, ""},
+		{"EmulatorPortWithHostName", "http://localhost:10000/devstoreaccount1/container/blob", "http://localhost:10000/devstoreaccount1/", false, ""},
+		{"FragmentDropped", "https://account.blob.core.windows.net/container/blob#frag", "https://account.blob.core.windows.net/", false, ""},
 
 		// HTTP scheme
 		{"HTTPScheme", "http://account.blob.core.windows.net/container", "http://account.blob.core.windows.net/", false, ""},
@@ -407,11 +409,22 @@ func TestGetAccountName(t *testing.T) {
 		{"IPStyleBlobURL", "https://127.0.0.1:10000/devstoreaccount1/container/blob", "devstoreaccount1", false},
 		{"IPStyleServiceURL", "https://127.0.0.1:10000/devstoreaccount1/", "devstoreaccount1", false},
 		{"IPStyleServiceURLNoTrailingSlash", "http://127.0.0.1:10000/devstoreaccount1", "devstoreaccount1", false},
+		{"EmulatorPortWithHostName", "http://localhost:10000/devstoreaccount1/container", "devstoreaccount1", false},
+
+		// suffixes are trimmed the way the other Azure Storage SDKs do
+		{"SecondaryEndpoint", "https://account-secondary.blob.core.windows.net/c", "account", false},
+		{"IPv6Endpoint", "https://account-ipv6.blob.core.windows.net/c", "account", false},
+		{"DualStackEndpoint", "https://account-dualstack.blob.core.windows.net/c", "account", false},
+		{"SecondaryIPv6Endpoint", "https://account-secondary-ipv6.blob.core.windows.net/c", "account", false},
+		{"SovereignCloud", "https://account.blob.core.chinacloudapi.cn/c", "account", false},
+		{"DfsHostHasNoBlobAccount", "https://account.dfs.core.windows.net/c", "", true},
 
 		// Error cases
 		{"IPStyleMissingAccount", "https://127.0.0.1:10000/", "", true},
 		{"IPStyleNoPath", "https://127.0.0.1:10000", "", true},
 		{"HostWithoutSubdomain", "https://localhost/container/blob", "", true},
+		{"CustomDomain", "https://files.contoso.com/container/blob", "", true},
+		{"CustomDomainWithSAS", "https://files.contoso.com/container/blob?sig=secret", "", true},
 		{"EmptyHost", "/container/blob", "", true},
 	}
 
@@ -421,6 +434,7 @@ func TestGetAccountName(t *testing.T) {
 			if tt.expectError {
 				require.Error(t, err)
 				require.Empty(t, accountName)
+				require.NotContains(t, err.Error(), "sig=", "errors must not leak the query")
 				return
 			}
 			require.NoError(t, err)

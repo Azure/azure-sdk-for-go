@@ -11,6 +11,7 @@ import (
 	"net/http"
 	"strings"
 	"sync"
+	"sync/atomic"
 	"testing"
 	"time"
 
@@ -24,9 +25,10 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-// This file exercises the operations that session authentication covers end to end: the requests
-// the generated clients actually build are run through the real pipeline, so the assertions are
-// about what reached the transport rather than about IsRequestEligible in isolation.
+// This file exercises session authentication end to end, against the operation it covers and the
+// ones it doesn't: the requests the generated clients actually build are run through the real
+// pipeline, so the assertions are about what reached the transport rather than about request
+// eligibility in isolation.
 
 const (
 	sessionTestAccount    = "fakeaccount"
@@ -52,7 +54,11 @@ type recordedOp struct {
 	comp   string
 	// scheme is the first token of the Authorization header, i.e. "Session" or "Bearer".
 	scheme string
-	body   []byte
+	// token is the session token a Session-authenticated request was signed with.
+	token string
+	// container is the first path segment of the request URL.
+	container string
+	body      []byte
 }
 
 // sessionAPITransport serves CreateSession and the blob operations under test, recording the
@@ -66,6 +72,9 @@ type sessionAPITransport struct {
 	// rejectSession, when set, returns 401 for a session-authenticated request it selects. It is
 	// how the tests drive the invalidate-and-fall-back-to-bearer path.
 	rejectSession func(op recordedOp) bool
+
+	// rejected tracks the bodies of the 401 responses, so tests can check they were closed.
+	rejected []*closeTrackingBody
 }
 
 func (tr *sessionAPITransport) Do(req *http.Request) (*http.Response, error) {
@@ -91,6 +100,11 @@ func (tr *sessionAPITransport) Do(req *http.Request) (*http.Response, error) {
 
 	scheme, _, _ := strings.Cut(req.Header.Get("Authorization"), " ")
 	op := recordedOp{method: req.Method, comp: query.Get("comp"), scheme: scheme}
+	if scheme == "Session" {
+		_, credential, _ := strings.Cut(req.Header.Get("Authorization"), " ")
+		op.token, _, _ = strings.Cut(credential, ":")
+	}
+	op.container, _, _ = strings.Cut(strings.TrimPrefix(req.URL.Path, "/"), "/")
 	if req.Body != nil {
 		op.body, _ = io.ReadAll(req.Body)
 	}
@@ -101,7 +115,13 @@ func (tr *sessionAPITransport) Do(req *http.Request) (*http.Response, error) {
 	tr.mu.Unlock()
 
 	if reject != nil && scheme == "Session" && reject(op) {
-		return newSessionTestResponse(req, http.StatusUnauthorized, http.Header{}, nil), nil
+		body := &closeTrackingBody{Reader: bytes.NewReader([]byte("<Error><Code>InvalidAuthenticationInfo</Code></Error>"))}
+		tr.mu.Lock()
+		tr.rejected = append(tr.rejected, body)
+		tr.mu.Unlock()
+		resp := newSessionTestResponse(req, http.StatusUnauthorized, http.Header{}, nil)
+		resp.Body = body
+		return resp, nil
 	}
 
 	return sessionTestSuccessResponse(req, op)
@@ -185,7 +205,7 @@ func newSessionTestClients(t *testing.T, tr *sessionAPITransport) (*blob.Client,
 	return contClient.NewBlobClient(sessionTestBlob), contClient.NewBlockBlobClient(sessionTestBlob)
 }
 
-// ---- the five supported operations use session authentication ------------------------------
+// ---- Get Blob is the only operation a session authenticates ---------------------------------
 
 func TestSessionAuthUsedForGetBlob(t *testing.T) {
 	tr := &sessionAPITransport{}
@@ -193,7 +213,10 @@ func TestSessionAuthUsedForGetBlob(t *testing.T) {
 
 	resp, err := blobClient.DownloadStream(context.Background(), nil)
 	require.NoError(t, err)
+	data, err := io.ReadAll(resp.Body)
+	require.NoError(t, err)
 	require.NoError(t, resp.Body.Close())
+	require.Equal(t, "blob contents", string(data))
 
 	ops := tr.recorded()
 	require.Len(t, ops, 1)
@@ -201,68 +224,60 @@ func TestSessionAuthUsedForGetBlob(t *testing.T) {
 	require.Equal(t, "Session", ops[0].scheme)
 }
 
-func TestSessionAuthUsedForGetBlobProperties(t *testing.T) {
-	tr := &sessionAPITransport{}
-	blobClient, _ := newSessionTestClients(t, tr)
+// The private drop also signed Get Blob Properties, Put Blob, Put Block and Put Block List with a
+// session. The public preview matches the other Azure Storage SDKs and signs only Get Blob, so
+// these four use the bearer token and never create a session.
+func TestPrivateDropSessionOperationsUseBearer(t *testing.T) {
+	ctx := context.Background()
+	putBlobBody := bytes.Repeat([]byte("put-blob-body-"), 64)
+	putBlockBody := bytes.Repeat([]byte("put-block-body-"), 64)
 
-	_, err := blobClient.GetProperties(context.Background(), nil)
-	require.NoError(t, err)
+	tests := []struct {
+		name     string
+		method   string
+		comp     string
+		wantBody []byte
+		call     func(t *testing.T, blobClient *blob.Client, bbClient *blockblob.Client)
+	}{
+		{"GetBlobProperties", http.MethodHead, "", nil, func(t *testing.T, blobClient *blob.Client, _ *blockblob.Client) {
+			_, err := blobClient.GetProperties(ctx, nil)
+			require.NoError(t, err)
+		}},
+		{"PutBlob", http.MethodPut, "", putBlobBody, func(t *testing.T, _ *blob.Client, bbClient *blockblob.Client) {
+			_, err := bbClient.Upload(ctx, streaming.NopCloser(bytes.NewReader(putBlobBody)), nil)
+			require.NoError(t, err)
+		}},
+		{"PutBlock", http.MethodPut, "block", putBlockBody, func(t *testing.T, _ *blob.Client, bbClient *blockblob.Client) {
+			_, err := bbClient.StageBlock(ctx, "YmxvY2sx", streaming.NopCloser(bytes.NewReader(putBlockBody)), nil)
+			require.NoError(t, err)
+		}},
+		{"PutBlockList", http.MethodPut, "blocklist", nil, func(t *testing.T, _ *blob.Client, bbClient *blockblob.Client) {
+			_, err := bbClient.CommitBlockList(ctx, []string{"YmxvY2sx"}, nil)
+			require.NoError(t, err)
+		}},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			tr := &sessionAPITransport{}
+			blobClient, bbClient := newSessionTestClients(t, tr)
 
-	ops := tr.recorded()
-	require.Len(t, ops, 1)
-	require.Equal(t, http.MethodHead, ops[0].method)
-	require.Equal(t, "Session", ops[0].scheme, "GetBlobProperties must use session authentication")
+			tt.call(t, blobClient, bbClient)
+
+			ops := tr.recorded()
+			require.Len(t, ops, 1)
+			require.Equal(t, tt.method, ops[0].method)
+			require.Equal(t, tt.comp, ops[0].comp)
+			require.Equal(t, "Bearer", ops[0].scheme, "%s must use the bearer token", tt.name)
+			if tt.wantBody != nil {
+				require.Equal(t, tt.wantBody, ops[0].body)
+			}
+			_, _, createSessions := tr.counts()
+			require.Zero(t, createSessions, "%s must not create a session", tt.name)
+		})
+	}
 }
 
-func TestSessionAuthUsedForPutBlob(t *testing.T) {
-	tr := &sessionAPITransport{}
-	_, bbClient := newSessionTestClients(t, tr)
-
-	payload := []byte("put blob payload")
-	_, err := bbClient.Upload(context.Background(), streaming.NopCloser(bytes.NewReader(payload)), nil)
-	require.NoError(t, err)
-
-	ops := tr.recorded()
-	require.Len(t, ops, 1)
-	require.Equal(t, http.MethodPut, ops[0].method)
-	require.Empty(t, ops[0].comp)
-	require.Equal(t, "Session", ops[0].scheme, "PutBlob must use session authentication")
-	require.Equal(t, payload, ops[0].body)
-}
-
-func TestSessionAuthUsedForPutBlock(t *testing.T) {
-	tr := &sessionAPITransport{}
-	_, bbClient := newSessionTestClients(t, tr)
-
-	payload := []byte("put block payload")
-	_, err := bbClient.StageBlock(context.Background(), "YmxvY2sx", streaming.NopCloser(bytes.NewReader(payload)), nil)
-	require.NoError(t, err)
-
-	ops := tr.recorded()
-	require.Len(t, ops, 1)
-	require.Equal(t, http.MethodPut, ops[0].method)
-	require.Equal(t, "block", ops[0].comp)
-	require.Equal(t, "Session", ops[0].scheme, "PutBlock must use session authentication")
-	require.Equal(t, payload, ops[0].body)
-}
-
-func TestSessionAuthUsedForPutBlockList(t *testing.T) {
-	tr := &sessionAPITransport{}
-	_, bbClient := newSessionTestClients(t, tr)
-
-	_, err := bbClient.CommitBlockList(context.Background(), []string{"YmxvY2sx"}, nil)
-	require.NoError(t, err)
-
-	ops := tr.recorded()
-	require.Len(t, ops, 1)
-	require.Equal(t, http.MethodPut, ops[0].method)
-	require.Equal(t, "blocklist", ops[0].comp)
-	require.Equal(t, "Session", ops[0].scheme, "PutBlockList must use session authentication")
-	require.NotEmpty(t, ops[0].body, "the block list body must reach the service")
-}
-
-// A full staged upload exercises all three write operations against one cached session.
-func TestSessionAuthStagedUploadUsesOneSession(t *testing.T) {
+func TestSessionAuthStagedUploadCreatesNoSession(t *testing.T) {
 	tr := &sessionAPITransport{}
 	_, bbClient := newSessionTestClients(t, tr)
 
@@ -275,52 +290,38 @@ func TestSessionAuthStagedUploadUsesOneSession(t *testing.T) {
 	require.NoError(t, err)
 
 	sessionOps, bearerOps, createSessions := tr.counts()
-	require.Equal(t, 3, sessionOps)
-	require.Equal(t, 0, bearerOps)
-	require.Equal(t, 1, createSessions, "the container session is created once and reused")
+	require.Equal(t, 0, sessionOps)
+	require.Equal(t, 3, bearerOps)
+	require.Equal(t, 0, createSessions)
 }
 
-// ---- unsupported operations stay on bearer authentication ----------------------------------
-
-func TestSessionAuthNotUsedForUnsupportedOperations(t *testing.T) {
+func TestSessionAuthNotUsedForOtherOperations(t *testing.T) {
 	ctx := context.Background()
 
 	tests := []struct {
 		name string
 		call func(t *testing.T, blobClient *blob.Client, bbClient *blockblob.Client)
 	}{
-		{
-			name: "DeleteBlob",
-			call: func(t *testing.T, blobClient *blob.Client, _ *blockblob.Client) {
-				_, err := blobClient.Delete(ctx, nil)
-				require.NoError(t, err)
-			},
-		},
-		{
-			name: "SetBlobMetadata",
-			call: func(t *testing.T, blobClient *blob.Client, _ *blockblob.Client) {
-				_, err := blobClient.SetMetadata(ctx, nil, nil)
-				require.NoError(t, err)
-			},
-		},
-		{
-			name: "SetBlobTier",
-			call: func(t *testing.T, blobClient *blob.Client, _ *blockblob.Client) {
-				_, _ = blobClient.SetTier(ctx, blob.AccessTierCool, nil)
-			},
-		},
-		{
-			name: "GetBlockList",
-			call: func(t *testing.T, _ *blob.Client, bbClient *blockblob.Client) {
-				_, _ = bbClient.GetBlockList(ctx, blockblob.BlockListTypeAll, nil)
-			},
-		},
-		{
-			name: "CopyFromURL",
-			call: func(t *testing.T, blobClient *blob.Client, _ *blockblob.Client) {
-				_, _ = blobClient.StartCopyFromURL(ctx, "https://other.blob.core.windows.net/c/b", nil)
-			},
-		},
+		{"DeleteBlob", func(t *testing.T, blobClient *blob.Client, _ *blockblob.Client) {
+			_, err := blobClient.Delete(ctx, nil)
+			require.NoError(t, err)
+		}},
+		{"SetBlobMetadata", func(t *testing.T, blobClient *blob.Client, _ *blockblob.Client) {
+			_, err := blobClient.SetMetadata(ctx, nil, nil)
+			require.NoError(t, err)
+		}},
+		{"SetBlobTier", func(t *testing.T, blobClient *blob.Client, _ *blockblob.Client) {
+			_, _ = blobClient.SetTier(ctx, blob.AccessTierCool, nil)
+		}},
+		{"GetTags", func(t *testing.T, blobClient *blob.Client, _ *blockblob.Client) {
+			_, _ = blobClient.GetTags(ctx, nil)
+		}},
+		{"GetBlockList", func(t *testing.T, _ *blob.Client, bbClient *blockblob.Client) {
+			_, _ = bbClient.GetBlockList(ctx, blockblob.BlockListTypeAll, nil)
+		}},
+		{"CopyFromURL", func(t *testing.T, blobClient *blob.Client, _ *blockblob.Client) {
+			_, _ = blobClient.StartCopyFromURL(ctx, "https://other.blob.core.windows.net/c/b", nil)
+		}},
 	}
 
 	for _, tt := range tests {
@@ -340,109 +341,185 @@ func TestSessionAuthNotUsedForUnsupportedOperations(t *testing.T) {
 
 // ---- 401 invalidates the session and falls back to bearer ----------------------------------
 
-// A rejected session must not cost the request its body: the policy rewinds before handing the
-// request to the bearer token policy, so the service still receives the complete payload.
-func TestSessionAuthPutBlobFallsBackToBearerWithIntactBody(t *testing.T) {
-	payload := bytes.Repeat([]byte("put-blob-body-"), 512)
-
-	// reject only the first session-authenticated attempt
+func rejectFirstSessionRequest() func(recordedOp) bool {
 	var once sync.Once
-	tr := &sessionAPITransport{
-		rejectSession: func(recordedOp) bool {
-			reject := false
-			once.Do(func() { reject = true })
-			return reject
-		},
+	return func(recordedOp) bool {
+		reject := false
+		once.Do(func() { reject = true })
+		return reject
 	}
-
-	_, bbClient := newSessionTestClients(t, tr)
-
-	_, err := bbClient.Upload(context.Background(), streaming.NopCloser(bytes.NewReader(payload)), nil)
-	require.NoError(t, err, "the bearer fallback must complete the upload")
-
-	ops := tr.recorded()
-	require.Len(t, ops, 2, "one rejected session attempt and one bearer fallback")
-	require.Equal(t, "Session", ops[0].scheme)
-	require.Equal(t, payload, ops[0].body, "the session attempt sends the full body")
-	require.Equal(t, "Bearer", ops[1].scheme, "the rejected request falls back to bearer authentication")
-	require.Equal(t, payload, ops[1].body, "the body must be rewound intact for the bearer fallback")
 }
 
-func TestSessionAuthPutBlockFallsBackToBearerWithIntactBody(t *testing.T) {
-	payload := bytes.Repeat([]byte("put-block-body-"), 512)
-
-	var once sync.Once
-	tr := &sessionAPITransport{
-		rejectSession: func(op recordedOp) bool {
-			reject := false
-			once.Do(func() { reject = true })
-			return reject
-		},
-	}
-
-	_, bbClient := newSessionTestClients(t, tr)
-
-	_, err := bbClient.StageBlock(context.Background(), "YmxvY2sx", streaming.NopCloser(bytes.NewReader(payload)), nil)
-	require.NoError(t, err)
-
-	ops := tr.recorded()
-	require.Len(t, ops, 2)
-	require.Equal(t, "Session", ops[0].scheme)
-	require.Equal(t, "block", ops[0].comp)
-	require.Equal(t, "Bearer", ops[1].scheme)
-	require.Equal(t, payload, ops[1].body, "the staged block body must survive the fallback")
-}
-
-// After a 401 the cached session is discarded, so the next eligible request acquires a new one.
-func TestSessionAuthUnauthorizedInvalidatesAndReacquires(t *testing.T) {
-	var once sync.Once
-	tr := &sessionAPITransport{
-		rejectSession: func(op recordedOp) bool {
-			reject := false
-			once.Do(func() { reject = true })
-			return reject
-		},
-	}
-
-	_, bbClient := newSessionTestClients(t, tr)
+// A rejected session sends this request once more with a bearer token, drains the rejected
+// response, and leaves the next request to create a new session.
+func TestSessionAuthUnauthorizedFallsBackThenReacquires(t *testing.T) {
+	tr := &sessionAPITransport{rejectSession: rejectFirstSessionRequest()}
+	blobClient, _ := newSessionTestClients(t, tr)
 	ctx := context.Background()
 
-	// first upload: session rejected, falls back to bearer, session invalidated
-	_, err := bbClient.Upload(ctx, streaming.NopCloser(bytes.NewReader([]byte("first"))), nil)
+	resp, err := blobClient.DownloadStream(ctx, nil)
+	require.NoError(t, err, "the bearer fallback completes the request")
+	data, err := io.ReadAll(resp.Body)
 	require.NoError(t, err)
-
-	// second upload: a new session is acquired and used
-	_, err = bbClient.Upload(ctx, streaming.NopCloser(bytes.NewReader([]byte("second"))), nil)
-	require.NoError(t, err)
+	require.NoError(t, resp.Body.Close())
+	require.Equal(t, "blob contents", string(data))
 
 	ops := tr.recorded()
-	require.Len(t, ops, 3)
+	require.Len(t, ops, 2, "one rejected session attempt and one bearer attempt")
 	require.Equal(t, "Session", ops[0].scheme)
 	require.Equal(t, "Bearer", ops[1].scheme)
-	require.Equal(t, "Session", ops[2].scheme, "the next eligible request uses the replacement session")
-
 	_, _, createSessions := tr.counts()
-	require.Equal(t, 2, createSessions, "the rejected session is discarded and a new one created")
+	require.Equal(t, 1, createSessions, "the rejected request doesn't wait for a new session")
+	require.True(t, tr.rejectedBodiesClosed(), "the rejected response is drained and closed")
+
+	resp, err = blobClient.DownloadStream(ctx, nil)
+	require.NoError(t, err)
+	require.NoError(t, resp.Body.Close())
+	ops = tr.recorded()
+	require.Len(t, ops, 3)
+	require.Equal(t, "Session", ops[2].scheme, "the next request uses a replacement session")
+	_, _, createSessions = tr.counts()
+	require.Equal(t, 2, createSessions)
 }
 
-// GetBlobProperties carries no body, but it must still fall back cleanly.
-func TestSessionAuthGetBlobPropertiesFallsBackToBearer(t *testing.T) {
-	var once sync.Once
-	tr := &sessionAPITransport{
-		rejectSession: func(op recordedOp) bool {
-			reject := false
-			once.Do(func() { reject = true })
-			return reject
-		},
+// Many downloads in flight with the same session are all rejected; together they replace the
+// session once rather than once each.
+func TestSessionAuthConcurrentUnauthorizedReplacesSessionOnce(t *testing.T) {
+	tr := &sessionAPITransport{rejectSession: func(op recordedOp) bool { return op.token == "session-token-1" }}
+	blobClient, _ := newSessionTestClients(t, tr)
+	ctx := context.Background()
+
+	var wg sync.WaitGroup
+	for range 20 {
+		wg.Add(1)
+		go func() {
+			defer wg.Done()
+			resp, err := blobClient.DownloadStream(ctx, nil)
+			require.NoError(t, err)
+			require.NoError(t, resp.Body.Close())
+		}()
+	}
+	wg.Wait()
+
+	resp, err := blobClient.DownloadStream(ctx, nil)
+	require.NoError(t, err)
+	require.NoError(t, resp.Body.Close())
+
+	_, _, createSessions := tr.counts()
+	require.Equal(t, 2, createSessions, "one replacement session")
+	ops := tr.recorded()
+	require.Equal(t, "Session", ops[len(ops)-1].scheme)
+	require.Equal(t, "session-token-2", ops[len(ops)-1].token)
+}
+
+// A rejected session in one container leaves other containers' sessions alone.
+func TestSessionAuthInvalidationIsPerContainer(t *testing.T) {
+	tr := &sessionAPITransport{rejectSession: func(op recordedOp) bool { return op.container == "a" && op.token == "session-token-1" }}
+	svcClient := newSessionTestServiceClient(t, tr, nil)
+	download := func(container string) {
+		downloadOnce(t, svcClient.NewContainerClient(container).NewBlobClient("blob"))
 	}
 
-	blobClient, _ := newSessionTestClients(t, tr)
+	download("a") // session-token-1, rejected
+	download("b") // session-token-2
+	download("a") // session-token-3
+	download("b") // still session-token-2
 
-	_, err := blobClient.GetProperties(context.Background(), nil)
+	_, _, createSessions := tr.counts()
+	require.Equal(t, 3, createSessions)
+	ops := tr.recorded()
+	require.Equal(t, "session-token-2", ops[len(ops)-1].token, "container b keeps its session")
+}
+
+// ---- session providers ---------------------------------------------------------------------
+
+func newSessionTestServiceClient(t *testing.T, tr *sessionAPITransport, provider azblob.SessionProvider) *service.Client {
+	t.Helper()
+	opts := &service.ClientOptions{
+		ClientOptions: azcore.ClientOptions{Transport: tr, Retry: policy.RetryOptions{MaxRetries: -1}},
+		Session:       azblob.SessionOptions{Mode: azblob.SessionModeEnabled, AccountName: sessionTestAccount, Provider: provider},
+	}
+	svcClient, err := service.NewClient(sessionTestServiceURL, sessionTestTokenCredential{}, opts)
+	require.NoError(t, err)
+	return svcClient
+}
+
+func downloadOnce(t *testing.T, client *blob.Client) {
+	t.Helper()
+	resp, err := client.DownloadStream(context.Background(), nil)
+	require.NoError(t, err)
+	require.NoError(t, resp.Body.Close())
+}
+
+func TestSessionImplicitProviderIsSharedWithDerivedClients(t *testing.T) {
+	tr := &sessionAPITransport{}
+	svcClient := newSessionTestServiceClient(t, tr, nil)
+
+	downloadOnce(t, svcClient.NewContainerClient(sessionTestContainer).NewBlobClient("one"))
+	downloadOnce(t, svcClient.NewContainerClient(sessionTestContainer).NewBlobClient("two"))
+
+	_, _, createSessions := tr.counts()
+	require.Equal(t, 1, createSessions)
+}
+
+func TestSessionImplicitProvidersAreNotSharedAcrossIndependentClients(t *testing.T) {
+	tr := &sessionAPITransport{}
+	downloadOnce(t, newSessionTestServiceClient(t, tr, nil).NewContainerClient(sessionTestContainer).NewBlobClient("blob"))
+	downloadOnce(t, newSessionTestServiceClient(t, tr, nil).NewContainerClient(sessionTestContainer).NewBlobClient("blob"))
+
+	_, _, createSessions := tr.counts()
+	require.Equal(t, 2, createSessions)
+}
+
+// A provider passed to independently created clients keeps one session per container for all of
+// them, including clients created after earlier ones were discarded.
+func TestSessionSharedProviderOutlivesClients(t *testing.T) {
+	tr := &sessionAPITransport{}
+	provider, err := azblob.NewContainerSessionProvider(sessionTestServiceURL, sessionTestTokenCredential{}, &azblob.ClientOptions{
+		ClientOptions: azcore.ClientOptions{Transport: tr, Retry: policy.RetryOptions{MaxRetries: -1}},
+	})
 	require.NoError(t, err)
 
-	ops := tr.recorded()
-	require.Len(t, ops, 2)
-	require.Equal(t, "Session", ops[0].scheme)
-	require.Equal(t, "Bearer", ops[1].scheme)
+	for range 3 {
+		// a new client each time, as an application recreating its clients would
+		svcClient := newSessionTestServiceClient(t, tr, provider)
+		downloadOnce(t, svcClient.NewContainerClient(sessionTestContainer).NewBlobClient("blob"))
+	}
+	blobClient, err := blob.NewClient(sessionTestServiceURL+sessionTestContainer+"/other", sessionTestTokenCredential{}, &blob.ClientOptions{
+		ClientOptions: azcore.ClientOptions{Transport: tr, Retry: policy.RetryOptions{MaxRetries: -1}},
+		Session:       azblob.SessionOptions{Mode: azblob.SessionModeEnabled, Provider: provider},
+	})
+	require.NoError(t, err)
+	downloadOnce(t, blobClient)
+
+	_, _, createSessions := tr.counts()
+	require.Equal(t, 1, createSessions, "one session for the container across every client")
+
+	// a different container gets its own session from the same provider
+	downloadOnce(t, newSessionTestServiceClient(t, tr, provider).NewContainerClient("othercontainer").NewBlobClient("blob"))
+	_, _, createSessions = tr.counts()
+	require.Equal(t, 2, createSessions)
+}
+
+// closeTrackingBody records whether a response body was closed.
+type closeTrackingBody struct {
+	*bytes.Reader
+	closed atomic.Bool
+}
+
+func (b *closeTrackingBody) Close() error {
+	b.closed.Store(true)
+	return nil
+}
+
+// rejectedBodiesClosed reports whether every 401 response handed to the pipeline was closed.
+func (tr *sessionAPITransport) rejectedBodiesClosed() bool {
+	tr.mu.Lock()
+	defer tr.mu.Unlock()
+	for _, b := range tr.rejected {
+		if !b.closed.Load() {
+			return false
+		}
+	}
+	return len(tr.rejected) > 0
 }

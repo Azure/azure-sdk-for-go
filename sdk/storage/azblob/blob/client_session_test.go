@@ -209,8 +209,8 @@ func (s *BlobRecordedTestsSuite) TestBlobDownloadWithSessionModeOff() {
 
 	sessionTracker := &authRequestTracker{}
 
-	// SessionModeDefault is the zero value, so it covers clients that never mention sessions
-	for _, mode := range []azblob.SessionMode{azblob.SessionModeDisabled, azblob.SessionModeDefault} {
+	// SessionModeAuto is the zero value, so it covers clients that never mention sessions
+	for _, mode := range []azblob.SessionMode{azblob.SessionModeDisabled, azblob.SessionModeAuto} {
 		sessionOptions := &service.ClientOptions{
 			Session: azblob.SessionOptions{
 				Mode: mode,
@@ -756,7 +756,7 @@ func (s *BlobUnrecordedTestsSuite) TestBlobSharedSessionProviderReusedAcrossClie
 	testcommon.SetClientOptions(s.T(), &providerOptions.ClientOptions)
 	providerOptions.PerRetryPolicies = append(providerOptions.PerRetryPolicies, tracker)
 
-	provider, err := azblob.NewContainerSessionProvider(cred, serviceURL, providerOptions)
+	provider, err := azblob.NewContainerSessionProvider(serviceURL, cred, providerOptions)
 	_require.NoError(err)
 
 	// every blob gets its own client, but they all share the injected provider

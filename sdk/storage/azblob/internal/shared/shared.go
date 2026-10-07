@@ -249,83 +249,102 @@ func IsIPEndpointStyle(host string) bool {
 	return net.ParseIP(host) != nil
 }
 
-// GetServiceURL returns the blob service URL from a container or blob URL.
-// For example, "https://account.blob.core.windows.net/container/blob" returns
-// "https://account.blob.core.windows.net/", and for IP-style endpoints like
+// pathStylePorts are the ports at which an endpoint addresses its account in the first path
+// segment even when its host is a name, as the storage emulators do (for example
+// http://localhost:10000/devstoreaccount1). The list matches the other Azure Storage SDKs.
+var pathStylePorts = map[string]bool{
+	"10000": true, "10001": true, "10002": true, "10003": true, "10004": true,
+	"10100": true, "10101": true, "10102": true, "10103": true, "10104": true,
+	"11000": true, "11001": true, "11002": true, "11003": true, "11004": true,
+	"11100": true, "11101": true, "11102": true, "11103": true, "11104": true,
+}
+
+// IsPathStyleURL reports whether u carries its account name in the first path segment rather
+// than in its host: an IP host such as https://127.0.0.1:10000/account/..., or an emulator port
+// such as http://localhost:10000/account/....
+func IsPathStyleURL(u *url.URL) bool {
+	return IsIPEndpointStyle(u.Host) || pathStylePorts[u.Port()]
+}
+
+// GetServiceURL reduces a service, container or blob URL to the blob service endpoint, discarding
+// the container and blob path segments, the query (including any SAS) and the fragment.
+// For example, "https://account.blob.core.windows.net/container/blob?sv=..." returns
+// "https://account.blob.core.windows.net/", and the path-style
 // "https://127.0.0.1:10000/account/container" returns "https://127.0.0.1:10000/account/".
-// Query parameters (e.g. SAS tokens) are preserved in the returned URL.
 func GetServiceURL(storageURL string) (string, error) {
 	u, err := url.Parse(storageURL)
 	if err != nil {
-		return "", err
+		return "", errors.New("the storage URL could not be parsed")
 	}
-
-	if IsIPEndpointStyle(u.Host) {
-		// IP-style URLs (e.g., Azurite emulator) have the format:
-		// scheme://IP:port/accountName/container/blob...
-		// We need to keep the first path segment (account name) to form the service URL.
-		path := u.Path
-		if len(path) > 0 && path[0] == '/' {
-			path = path[1:]
+	u.Path, u.RawPath, u.RawQuery, u.Fragment, u.RawFragment = "/", "", "", "", ""
+	if IsPathStyleURL(u) {
+		account, ok := firstPathSegment(storageURL)
+		if !ok {
+			return "", errors.New("path-style endpoint URL is missing the account name path segment")
 		}
-
-		accountEndIndex := strings.Index(path, "/")
-		if accountEndIndex == -1 {
-			if path == "" {
-				return "", errors.New("IP-style endpoint URL is missing the account name path segment")
-			}
-			u.Path = "/" + path + "/"
-		} else {
-			u.Path = "/" + path[:accountEndIndex] + "/"
-		}
-		u.RawPath = ""
-		return u.String(), nil
+		u.Path = "/" + account + "/"
 	}
-
-	// Standard-style URLs have the format:
-	// scheme://account.blob.core.windows.net/container/blob...
-	u.Path = "/"
-	u.RawPath = ""
 	return u.String(), nil
 }
 
-// GetAccountName extracts the storage account name from a service, container, or blob URL.
-// For standard-style endpoints (e.g., "https://account.blob.core.windows.net/..."), the account
-// name is the first subdomain of the host.
-// For IP-style endpoints (e.g., "https://127.0.0.1:10000/account/..."), the account name is the
-// first path segment.
-// Returns an error if the account name cannot be determined.
+// GetAccountName extracts the storage account name from a service, container or blob URL, the
+// way the other Azure Storage SDKs do:
+//   - path-style URLs (see IsPathStyleURL) carry it in the first path segment;
+//   - otherwise it is the first label of a host whose remainder contains "blob", for example
+//     "account" for account.blob.core.windows.net, with any "-ipv6" or "-dualstack" suffix and then
+//     any "-secondary" suffix removed.
+//
+// Any other host, such as a custom domain, has no derivable account name and returns an error.
+// The error never includes the URL's query.
 func GetAccountName(storageURL string) (string, error) {
 	u, err := url.Parse(storageURL)
 	if err != nil {
-		return "", fmt.Errorf("failed to parse storage URL: %w", err)
+		return "", errors.New("the storage URL could not be parsed")
 	}
-
-	if IsIPEndpointStyle(u.Host) {
-		// IP-style: scheme://IP:port/accountName/container/blob...
-		path := strings.TrimPrefix(u.Path, "/")
-		if path == "" {
-			return "", errors.New("IP-style endpoint URL is missing the account name path segment")
+	if IsPathStyleURL(u) {
+		account, ok := firstPathSegment(storageURL)
+		if !ok {
+			return "", errors.New("path-style endpoint URL is missing the account name path segment")
 		}
-		parts := strings.SplitN(path, "/", 2)
-		if parts[0] == "" {
-			return "", errors.New("IP-style endpoint URL is missing the account name path segment")
-		}
-		return parts[0], nil
+		return account, nil
 	}
+	if account := accountNameFromHost(u.Hostname(), "blob"); account != "" {
+		return account, nil
+	}
+	return "", fmt.Errorf("could not determine the account name from host %q", u.Hostname())
+}
 
-	// Standard-style: scheme://account.blob.core.windows.net/...
-	host := u.Hostname()
-	dotIndex := strings.Index(host, ".")
-	if dotIndex <= 0 {
-		return "", fmt.Errorf("could not determine account name from host %q", host)
+// accountNameFromHost returns the account name in host for the given service sub-domain, or ""
+// when host isn't a storage host for that service.
+func accountNameFromHost(host, serviceSubDomain string) string {
+	dot := strings.Index(host, ".")
+	if dot <= 0 || !strings.Contains(host[dot:], serviceSubDomain) {
+		return ""
 	}
-	return host[:dotIndex], nil
+	account := host[:dot]
+	// trim in this order to handle names such as "account-secondary-ipv6"
+	if trimmed, ok := strings.CutSuffix(account, "-ipv6"); ok {
+		account = trimmed
+	} else if trimmed, ok := strings.CutSuffix(account, "-dualstack"); ok {
+		account = trimmed
+	}
+	account, _ = strings.CutSuffix(account, "-secondary")
+	return account
+}
+
+// firstPathSegment returns the first segment of the URL's path.
+func firstPathSegment(storageURL string) (string, bool) {
+	u, err := url.Parse(storageURL)
+	if err != nil {
+		return "", false
+	}
+	segment, _, _ := strings.Cut(strings.TrimPrefix(u.Path, "/"), "/")
+	return segment, segment != ""
 }
 
 // GetContainerAndBlobName splits a parsed container or blob URL into its container and blob names.
 // For standard-style endpoints (e.g. "https://account.blob.core.windows.net/container/blob") the
-// container is the first path segment. For IP-style endpoints (e.g.
+// container is the first path segment. For path-style endpoints (see IsPathStyleURL, e.g.
 // "https://127.0.0.1:10000/account/container/blob") the first path segment is the account name, so
 // the container is the second.
 // blob is empty when the URL addresses a container rather than a blob.
@@ -338,12 +357,12 @@ func GetContainerAndBlobName(u *url.URL) (container string, blob string, err err
 	}
 
 	path := strings.TrimPrefix(u.Path, "/")
-	if IsIPEndpointStyle(u.Host) {
-		// IP-style: scheme://IP:port/accountName/container/blob...
+	if IsPathStyleURL(u) {
+		// path-style: scheme://host:port/accountName/container/blob...
 		// drop the account name segment
 		_, remainder, found := strings.Cut(path, "/")
 		if !found {
-			return "", "", errors.New("IP-style endpoint URL is missing the container name path segment")
+			return "", "", errors.New("path-style endpoint URL is missing the container name path segment")
 		}
 		path = remainder
 	}
@@ -396,4 +415,15 @@ func HeaderValue(h http.Header, name string) string {
 		return v[0]
 	}
 	return ""
+}
+
+// ParseURLWithoutQuery returns rawURL without its user information, query and fragment, so that
+// it can be logged or returned in an error without disclosing a SAS or other credentials.
+func ParseURLWithoutQuery(rawURL string) (string, error) {
+	u, err := url.Parse(rawURL)
+	if err != nil {
+		return "", errors.New("the URL could not be parsed")
+	}
+	u.User, u.RawQuery, u.ForceQuery, u.Fragment, u.RawFragment = nil, "", false, "", ""
+	return u.String(), nil
 }

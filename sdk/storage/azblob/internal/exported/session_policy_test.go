@@ -35,22 +35,21 @@ const (
 type fakeSessionProvider struct {
 	eligible bool
 	// creds are returned by GetSession in order; the last entry is returned for any subsequent call.
-	creds         []SessionCredential
-	getErr        error
-	invalidateErr error
+	creds  []sessionCredential
+	getErr error
 
 	getCalls        int
 	invalidateCalls int
-	invalidatedWith SessionCredential
+	invalidatedWith sessionCredential
 }
 
-func (f *fakeSessionProvider) GetSession(*http.Request) (SessionCredential, error) {
+func (f *fakeSessionProvider) getSession(*http.Request) (sessionCredential, error) {
 	f.getCalls++
 	if f.getErr != nil {
-		return SessionCredential{}, f.getErr
+		return sessionCredential{}, f.getErr
 	}
 	if len(f.creds) == 0 {
-		return SessionCredential{}, nil
+		return sessionCredential{}, nil
 	}
 	i := f.getCalls - 1
 	if i >= len(f.creds) {
@@ -59,13 +58,13 @@ func (f *fakeSessionProvider) GetSession(*http.Request) (SessionCredential, erro
 	return f.creds[i], nil
 }
 
-func (f *fakeSessionProvider) InvalidateSession(_ *http.Request, current SessionCredential) error {
+func (f *fakeSessionProvider) invalidateSession(_ *http.Request, current sessionCredential) {
 	f.invalidateCalls++
 	f.invalidatedWith = current
-	return f.invalidateErr
+
 }
 
-func (f *fakeSessionProvider) IsRequestEligible(*http.Request) bool {
+func (f *fakeSessionProvider) isRequestEligible(*http.Request) bool {
 	return f.eligible
 }
 
@@ -73,7 +72,7 @@ func (f *fakeSessionProvider) IsRequestEligible(*http.Request) bool {
 func newEligibleProvider() *fakeSessionProvider {
 	return &fakeSessionProvider{
 		eligible: true,
-		creds:    []SessionCredential{NewSessionCredential(testSessionToken, testSessionKey, time.Now().Add(time.Hour))},
+		creds:    []sessionCredential{{token: testSessionToken, key: testSessionKey}},
 	}
 }
 
@@ -222,7 +221,7 @@ func TestSessionPolicyGetSessionErrorPropagates(t *testing.T) {
 func TestSessionPolicyFallbackCredentialUsesBearer(t *testing.T) {
 	provider := &fakeSessionProvider{
 		eligible: true,
-		creds:    []SessionCredential{NewSessionCredentialFallback(time.Now().Add(time.Hour))},
+		creds:    []sessionCredential{{fallback: true}},
 	}
 	bearer := &mockBearerPolicy{}
 	transport := &recordingTransport{}
@@ -347,7 +346,7 @@ func TestSessionPolicyRefreshesDateHeader(t *testing.T) {
 func TestSessionPolicyInvalidSessionKeyReturnsError(t *testing.T) {
 	provider := &fakeSessionProvider{
 		eligible: true,
-		creds:    []SessionCredential{NewSessionCredential(testSessionToken, "not-base64!", time.Now().Add(time.Hour))},
+		creds:    []sessionCredential{{token: testSessionToken, key: "not-base64!"}},
 	}
 	bearer := &mockBearerPolicy{}
 	transport := &recordingTransport{}
@@ -375,7 +374,7 @@ func TestSessionPolicyInvalidatesSessionOnUnauthorizedResponse(t *testing.T) {
 	require.Equal(t, http.StatusOK, resp.StatusCode, "the bearer token response is returned")
 
 	require.Equal(t, 1, provider.invalidateCalls, "the rejected session must be discarded")
-	require.Equal(t, testSessionToken, provider.invalidatedWith.Token())
+	require.Equal(t, testSessionToken, provider.invalidatedWith.token)
 	require.Equal(t, 1, bearer.doCalls)
 }
 
@@ -482,22 +481,6 @@ func TestSessionPolicyNonUnauthorizedErrorPropagates(t *testing.T) {
 	require.Equal(t, http.StatusForbidden, respErr.StatusCode)
 
 	require.Equal(t, 0, provider.invalidateCalls, "only a rejected session is invalidated")
-	require.Equal(t, 0, bearer.doCalls)
-}
-
-func TestSessionPolicyInvalidateSessionErrorPropagates(t *testing.T) {
-	expectedErr := errors.New("invalidate failed")
-	provider := newEligibleProvider()
-	provider.invalidateErr = expectedErr
-
-	bearer := &mockBearerPolicy{}
-	transport := &recordingTransport{statusCode: http.StatusUnauthorized}
-
-	pl := newTestPipeline(NewSessionPolicy(testAccountName, provider, bearer), transport)
-
-	resp, err := pl.Do(newTestPolicyRequest(t, http.MethodGet, testBlobURL))
-	require.ErrorIs(t, err, expectedErr)
-	require.Nil(t, resp)
 	require.Equal(t, 0, bearer.doCalls)
 }
 

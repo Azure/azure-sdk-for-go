@@ -12,14 +12,18 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/shared"
 )
 
+// sessionPolicy occupies the authentication slot of a token credential pipeline whose sessions
+// resolve to enabled. Requests the provider deems eligible are signed with a session; every
+// other request, and any request whose session can't be used, goes to the bearer token policy.
 type sessionPolicy struct {
 	bearerTokenPolicy policy.Policy
 	provider          SessionProvider
 	accountName       string
 }
 
+// NewSessionPolicy returns the authentication policy for a token credential client with sessions
+// enabled. accountName signs session requests; bearerTokenPolicy authenticates everything else.
 func NewSessionPolicy(accountName string, provider SessionProvider, bearerTokenPolicy policy.Policy) policy.Policy {
-	// If we get here, assumption is opts.Mode = Enabled
 	return &sessionPolicy{
 		accountName:       accountName,
 		provider:          provider,
@@ -28,58 +32,48 @@ func NewSessionPolicy(accountName string, provider SessionProvider, bearerTokenP
 }
 
 func (p *sessionPolicy) Do(req *policy.Request) (*http.Response, error) {
-	if !p.provider.IsRequestEligible(req.Raw()) {
+	if !p.provider.isRequestEligible(req.Raw()) {
+		return p.bearerTokenPolicy.Do(req)
+	}
+	session, err := p.provider.getSession(req.Raw())
+	if err != nil {
+		return nil, err
+	}
+	if session.fallback {
 		return p.bearerTokenPolicy.Do(req)
 	}
 
-	sessionCreds, err := p.provider.GetSession(req.Raw())
-	if err != nil {
+	resp, err := p.sendWithSession(req, session)
+	// The pipeline returns a 401 as a response rather than an error, so the status code is what
+	// tells a rejected session apart.
+	if err != nil || resp.StatusCode != http.StatusUnauthorized {
+		return resp, err
+	}
+
+	// The service rejected the session. Free the connection, discard the session if it is still
+	// the cached one so the next eligible request creates a new one, and send this request once
+	// more with a bearer token. This request doesn't wait for a new session.
+	runtime.Drain(resp)
+	p.provider.invalidateSession(req.Raw(), session)
+	if err := req.RewindBody(); err != nil {
 		return nil, err
 	}
-
-	if !sessionCreds.Fallback() {
-		resp, err := p.applySessionReq(req, sessionCreds)
-		// a 401 means the service rejected the session; the pipeline surfaces the response
-		// without an error, so the status code is what's checked here
-		if err != nil || resp.StatusCode != http.StatusUnauthorized {
-			return resp, err
-		}
-
-		// The session was rejected, so discard it; a new one is acquired on the next eligible
-		// request. This request falls back to bearer token authentication.
-		// drain the failed response to avoid leaking the connection
-		runtime.Drain(resp)
-
-		if invErr := p.provider.InvalidateSession(req.Raw(), sessionCreds); invErr != nil {
-			return nil, invErr
-		}
-
-		// rewind the request body before falling back to bearer token authentication,
-		// as it may have been consumed by the prior call to req.Next().
-		if rwErr := req.RewindBody(); rwErr != nil {
-			return nil, rwErr
-		}
-
-		// remove the headers added for session authentication so the request is handed to the
-		// bearer token policy as it would have been had a session never been applied. The bearer
-		// token policy sets Authorization itself, and x-ms-date isn't set on bearer requests.
-		req.Raw().Header.Del(shared.HeaderAuthorization)
-		req.Raw().Header.Del(shared.HeaderXmsDate)
-	}
-
+	// Hand the bearer token policy the request as it was before the session was applied. It
+	// sets Authorization itself, and bearer requests don't carry the signing date.
+	req.Raw().Header.Del(shared.HeaderAuthorization)
+	req.Raw().Header.Del(shared.HeaderXmsDate)
 	return p.bearerTokenPolicy.Do(req)
 }
 
-// applySessionReq signs the request with the given session credentials and sends it.
-func (p *sessionPolicy) applySessionReq(req *policy.Request, sessionCreds SessionCredential) (*http.Response, error) {
-	cred, err := NewSharedKeyCredential(p.accountName, sessionCreds.Key())
+// sendWithSession signs the request with the session key using the shared key scheme, sets
+// "Authorization: Session <token>:<signature>", and sends it.
+func (p *sessionPolicy) sendWithSession(req *policy.Request, session sessionCredential) (*http.Response, error) {
+	cred, err := NewSharedKeyCredential(p.accountName, session.key)
 	if err != nil {
 		return nil, err
 	}
-
-	// always set a fresh date so the signature matches the current time, including on retries
+	// a fresh date for every attempt keeps the signature current on retries
 	req.Raw().Header.Set(shared.HeaderXmsDate, time.Now().UTC().Format(http.TimeFormat))
-
 	stringToSign, err := cred.buildStringToSign(req.Raw())
 	if err != nil {
 		return nil, err
@@ -88,8 +82,6 @@ func (p *sessionPolicy) applySessionReq(req *policy.Request, sessionCreds Sessio
 	if err != nil {
 		return nil, err
 	}
-	authHeader := "Session " + sessionCreds.Token() + ":" + signature
-	req.Raw().Header.Set(shared.HeaderAuthorization, authHeader)
-
+	req.Raw().Header.Set(shared.HeaderAuthorization, "Session "+session.token+":"+signature)
 	return req.Next()
 }

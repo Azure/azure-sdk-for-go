@@ -24,6 +24,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/sas"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/internal/locality"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/internal/sasurl"
 )
 
@@ -543,7 +544,7 @@ func (b *Client) DownloadStream(ctx context.Context, o *DownloadStreamOptions) (
 		o = &DownloadStreamOptions{}
 	}
 	if o.LayoutEndpoint != "" {
-		ctx = shared.WithLayoutEndpoint(ctx, o.LayoutEndpoint)
+		ctx = locality.WithEndpoint(ctx, o.LayoutEndpoint)
 	}
 	dr, err := b.generated().Download(ctx, o.format())
 	var coreErr *azcore.ResponseError

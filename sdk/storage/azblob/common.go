@@ -56,15 +56,24 @@ const (
 // header to operations that include a request body.
 type ExpectContinueOptions = exported.ExpectContinueOptions
 
-// SessionMode specifies how session-based authentication is handled.
+// SessionMode specifies whether eligible requests are authenticated with a session. Sessions
+// apply only to clients authenticated with an azcore.TokenCredential.
 type SessionMode = exported.SessionMode
 
 const (
-	// SessionModeDefault is the default mode where sessions are disabled.
-	SessionModeDefault = exported.SessionModeDefault
-	// SessionModeDisabled explicitly disables session-based authentication.
+	// SessionModeAuto is the zero value, and therefore the default when no value is specified.
+	// The client library decides whether sessions are used, and that decision may change in a
+	// future release. Currently, SessionModeAuto resolves to SessionModeDisabled.
+	SessionModeAuto = exported.SessionModeAuto
+
+	// SessionModeDisabled authenticates every request with a bearer token.
 	SessionModeDisabled = exported.SessionModeDisabled
-	// SessionModeEnabled enables session-based authentication.
+
+	// SessionModeEnabled authenticates eligible requests with a session, created and cached per
+	// container. Currently, Get Blob (blob.Client.DownloadStream and the downloads built on it) is
+	// the only eligible operation. It requires the storage account name: when it can be
+	// determined from neither SessionOptions.AccountName nor the client's URL, client
+	// construction fails.
 	SessionModeEnabled = exported.SessionModeEnabled
 )
 
@@ -73,20 +82,30 @@ func PossibleSessionModeValues() []SessionMode {
 	return exported.PossibleSessionModeValues()
 }
 
-// SessionOptions configures session-based authentication behavior.
+// SessionOptions configures session authentication. Sessions apply only to clients
+// authenticated with an azcore.TokenCredential; clients using a shared key, a SAS or no
+// credential ignore these options.
 type SessionOptions = exported.SessionOptions
 
-// SessionCredential contains session authentication credentials.
-type SessionCredential = exported.SessionCredential
-
-// SessionProvider is the interface for session-based authentication providers.
+// SessionProvider provides and caches the sessions used to authenticate eligible requests. Share
+// one across clients through SessionOptions.Provider. It can't be implemented outside this
+// module; create one with NewContainerSessionProvider.
 type SessionProvider = exported.SessionProvider
 
-// NewContainerSessionProvider creates a SessionProvider that manages container-scoped sessions
-// using the provided token credential.
+// ContainerSessionProvider is a SessionProvider that creates sessions with an
+// azcore.TokenCredential and caches one per container.
+type ContainerSessionProvider = exported.ContainerSessionProvider
+
+// NewContainerSessionProvider creates a ContainerSessionProvider. Pass it as
+// SessionOptions.Provider to clients that should share its cached sessions, including clients
+// created independently of one another or after others have been discarded.
+//   - serviceURL - the URL of the blob service, e.g. https://<account>.blob.core.windows.net/. A
+//     container or blob URL is reduced to its service URL.
 //   - cred - an Azure AD credential, typically obtained via the azidentity module
-//   - storageURL - the URL of the storage account e.g. https://<account>.blob.core.windows.net/
-//   - options - client options; pass nil to accept the default values
-func NewContainerSessionProvider(cred azcore.TokenCredential, storageURL string, options *ClientOptions) (SessionProvider, error) {
-	return base.NewContainerSessionProvider(cred, storageURL, (*base.ClientOptions)(options))
+//   - options - client options for the pipeline that creates sessions; pass nil to accept the
+//     default values
+//
+// The provider retains one cached session per container it is used with.
+func NewContainerSessionProvider(serviceURL string, cred azcore.TokenCredential, options *ClientOptions) (*ContainerSessionProvider, error) {
+	return base.NewContainerSessionProvider(serviceURL, cred, (*base.ClientOptions)(options))
 }

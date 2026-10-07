@@ -23,6 +23,16 @@ func WithEndpoint(ctx context.Context, endpoint string) context.Context {
 	return context.WithValue(ctx, ctxEndpointKey{}, endpoint)
 }
 
+// WithoutEndpoint returns a context whose requests are not routed, even if ctx carries a layout
+// endpoint. Use it for requests made on behalf of a routed request, such as acquiring the
+// credential that request is signed with, which must go to the account endpoint.
+func WithoutEndpoint(ctx context.Context) context.Context {
+	if Endpoint(ctx) == "" {
+		return ctx
+	}
+	return context.WithValue(ctx, ctxEndpointKey{}, "")
+}
+
 // Endpoint returns the layout endpoint attached to ctx by [WithEndpoint], if any.
 func Endpoint(ctx context.Context) string {
 	endpoint, _ := ctx.Value(ctxEndpointKey{}).(string)

@@ -68,6 +68,17 @@ func TestWithEndpoint(t *testing.T) {
 	require.Equal(t, ctx, WithEndpoint(ctx, ""), "an empty endpoint leaves the context unchanged")
 }
 
+func TestWithoutEndpoint(t *testing.T) {
+	ctx := context.Background()
+	require.Equal(t, ctx, WithoutEndpoint(ctx), "a context without an endpoint is returned unchanged")
+
+	routed := WithEndpoint(ctx, "layout.blob.core.windows.net")
+	tr := &recordingTransport{}
+	send(t, newPipeline(tr), WithoutEndpoint(routed), "https://account.blob.core.windows.net/container?restype=container&comp=session")
+	require.Equal(t, []sent{{urlHost: "account.blob.core.windows.net", host: "account.blob.core.windows.net"}}, tr.attempts,
+		"a request made on behalf of a routed request goes to the account endpoint")
+}
+
 func TestRewritesHostAndKeepsAccountHostHeader(t *testing.T) {
 	for _, endpoint := range []string{
 		"layout.blob.core.windows.net",

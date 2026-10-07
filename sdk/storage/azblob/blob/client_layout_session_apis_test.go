@@ -28,11 +28,11 @@ import (
 
 // Session authentication and Data Locality have different scopes, and this file pins both down.
 //
-// Session authentication covers five operations: Get Blob, Get Blob Properties, Put Blob,
-// Put Block and Put Block List.
+// Session authentication covers Get Blob only. Get Blob Properties, Put Blob, Put Block and
+// Put Block List, which the private drop also signed with a session, use the bearer token.
 //
-// Data Locality covers Get Blob and the managed downloads built on it, and nothing else. The
-// four operations that gained session authentication did not gain a layout with it.
+// Data Locality covers Get Blob and the managed downloads built on it, and nothing else; those
+// four operations get no layout either.
 //
 // Where the two do meet, on a locality-routed download chunk, they compose: Data Locality
 // rewrites the request URL host to a layout endpoint while keeping the account Host header, and
@@ -297,8 +297,8 @@ func TestLayoutDisabledDownloadStillUsesSession(t *testing.T) {
 	}
 }
 
-// Data Locality is scoped to Get Blob and the managed downloads built on it. Gaining session
-// authentication did not give the other four operations a layout: these tests fail if a layout
+// Data Locality is scoped to Get Blob and the managed downloads built on it. The four operations
+// the private drop also signed with a session have no layout: these tests fail if a layout
 // lookup or a rerouted request ever appears on GetBlobProperties, PutBlob, PutBlock or
 // PutBlockList.
 //
@@ -367,7 +367,7 @@ func TestNewSessionAPIsDoNotUseDataLocality(t *testing.T) {
 			op := ops[0]
 			require.Equal(t, tt.method, op.method)
 			require.Equal(t, tt.comp, op.comp)
-			require.Equal(t, "Session", op.scheme, "%s must use session authentication", tt.name)
+			require.Equal(t, "Bearer", op.scheme, "%s must use the bearer token", tt.name)
 			require.Equal(t, sessionTestHost, op.urlHost,
 				"%s must go to the account endpoint, not a layout endpoint", tt.name)
 			require.Equal(t, sessionTestHost, op.hostHeader)

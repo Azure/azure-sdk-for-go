@@ -729,40 +729,69 @@ func TestDownloadBufferLayoutETagLock(t *testing.T) {
 	}
 }
 
-// TestDownloadBufferExpiredLayoutRefetchFailureFallsBack verifies that when a cached layout has
-// expired and fetching it again fails, the chunks are read from the client's configured endpoint
-// rather than failing the download.
-func TestDownloadBufferExpiredLayoutRefetchFailureFallsBack(t *testing.T) {
-	// Every layout is already expired when it is cached (a negative lifetime is deterministic,
-	// unlike a tiny positive one on a coarse clock), so each chunk has to fetch it again.
-	defer func(lifetime, buffer time.Duration) { layoutLifetime, layoutRefreshBuffer = lifetime, buffer }(layoutLifetime, layoutRefreshBuffer)
+// newExpiringLayoutClient returns a client whose layouts are already expired when cached (a
+// negative lifetime is deterministic, unlike a tiny positive one on a coarse clock), so each chunk
+// has to fetch the layout again; every fetch after the first returns refetchStatus.
+func newExpiringLayoutClient(t *testing.T, refetchStatus int) (*Client, *fakeLayoutResponder, layout) {
+	t.Helper()
+	prevLifetime, prevBuffer := layoutLifetime, layoutRefreshBuffer
 	layoutLifetime, layoutRefreshBuffer = -time.Second, 0
+	t.Cleanup(func() { layoutLifetime, layoutRefreshBuffer = prevLifetime, prevBuffer })
 
 	etag := azcore.ETag("etag")
 	l := buildLayout(3, 100, 2, &etag)
 	f := newFakeLayoutResponder(l, nil)
-
-	// splitLayoutToPages(_, 3) yields a single page, so the initial fetch is call #1. Every fetch
-	// after it fails with an error that isn't a cacheable "layout unavailable".
+	// splitLayoutToPages(_, 3) yields a single page, so the initial fetch is call #1
 	f.layoutStatusOverride = func(call int) *http.Response {
 		if call == 1 {
 			return nil // serve the canned successful page
 		}
-		return newMockLayoutResponse(0, "", generated.BlobLayout{}, http.StatusForbidden)
+		return newMockLayoutResponse(0, "", generated.BlobLayout{}, refetchStatus)
 	}
-	client := newFakeLayoutClient(t, f)
+	return newFakeLayoutClient(t, f), f, l
+}
+
+// TestDownloadBufferExpiredLayoutHardRefetchErrorFails verifies that when a cached layout has
+// expired and fetching it again fails with an error other than a cacheable "layout unavailable"
+// (400 or 5xx), the download fails, as it does in the other Azure Storage SDKs.
+func TestDownloadBufferExpiredLayoutHardRefetchErrorFails(t *testing.T) {
+	client, f, l := newExpiringLayoutClient(t, http.StatusForbidden)
 
 	_, err := client.DownloadBuffer(context.Background(), make([]byte, l.contentLength), &DownloadBufferOptions{
 		LayoutAwareRouting: LayoutAwareRoutingEnabled,
 		BlockSize:          100,
 		Concurrency:        1,
 	})
-	require.NoError(t, err, "a failed layout refetch must not fail the download")
+	var respErr *azcore.ResponseError
+	require.ErrorAs(t, err, &respErr, "a hard layout refetch error fails the download")
+	require.Equal(t, http.StatusForbidden, respErr.StatusCode)
 
-	layoutCalls, localityGets, normalGets, _ := f.counts()
-	require.Equal(t, 3, localityGets+normalGets, "all chunks should still be downloaded")
-	require.Greater(t, layoutCalls, 1, "the expired layout was fetched again")
-	require.Zero(t, localityGets, "without a current layout the chunks use the configured endpoint")
+	layoutCalls, localityGets, _, _ := f.counts()
+	require.GreaterOrEqual(t, layoutCalls, 2, "the expired layout was fetched again")
+	require.Zero(t, localityGets)
+}
+
+// TestDownloadBufferExpiredLayoutSoftRefetchErrorFallsBack verifies that when the refetch of an
+// expired layout says the layout is unavailable (400 or 5xx), the chunks are read from the
+// configured endpoint and the download succeeds.
+func TestDownloadBufferExpiredLayoutSoftRefetchErrorFallsBack(t *testing.T) {
+	// 501 is a 5xx that azcore's retry policy doesn't retry, which keeps the test fast
+	for _, status := range []int{http.StatusBadRequest, http.StatusNotImplemented} {
+		t.Run(strconv.Itoa(status), func(t *testing.T) {
+			client, f, l := newExpiringLayoutClient(t, status)
+
+			_, err := client.DownloadBuffer(context.Background(), make([]byte, l.contentLength), &DownloadBufferOptions{
+				LayoutAwareRouting: LayoutAwareRoutingEnabled,
+				BlockSize:          100,
+				Concurrency:        1,
+			})
+			require.NoError(t, err)
+
+			_, localityGets, normalGets, _ := f.counts()
+			require.Equal(t, 3, normalGets, "the initial read and both chunks use the configured endpoint")
+			require.Zero(t, localityGets)
+		})
+	}
 }
 
 // TestClientLayoutFallbackCachedSingleRequest verifies that, when driven through the client's

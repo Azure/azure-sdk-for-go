@@ -108,10 +108,9 @@ and replaces the URL host. Those mutations are made on the request itself, so th
 retries. Running it per-retry would re-apply the rewrite to an already-rewritten request and copy
 the layout host into the `Host` header.
 
-If the layout has expired and fetching it again fails with an error that isn't a cacheable
-"layout unavailable", the chunk is read from the configured endpoint rather than failing the
-download. This is a deliberate difference from the .NET SDK, whose partitioned downloader fails
-the chunk in that case.
+If the layout has expired and fetching it again fails, a 400 or 5xx is cached as "no layout" and
+the chunk reads from the configured endpoint. Any other error fails the chunk, and with it the
+download, matching the .NET SDK's partitioned downloader.
 
 ## Retries
 
@@ -139,7 +138,8 @@ the chunk that needed it is routed.
 | GetLayout returns 204 / no ranges | Treated as "no layout"; remainder read from the account endpoint. |
 | GetLayout returns 400 / 5xx | Cached fallback layout; one enumeration, then the account endpoint. |
 | Layout due for refresh mid-download | Refreshed once in the background; chunks keep the current layout meanwhile, and keep it if the refresh fails. |
-| Layout expired and re-fetch fails | That chunk reads from the account endpoint; the download continues. |
+| Layout expired, re-fetch returns 400 / 5xx | Cached as "no layout"; the chunk reads from the account endpoint. |
+| Layout expired, re-fetch fails otherwise | The download fails with that error, as in .NET. |
 | Structured message | `Content-Length` is the encoded size, so decoded length comes from `Content-Range` for both the initial read and each chunk. |
 | Progress | The initial read assigns the byte count; parallel chunks accumulate deltas under a shared lock. No double counting. |
 

@@ -1,6 +1,6 @@
 # Release History
 
-## 1.9.0-beta.1 (Unreleased)
+## 1.9.0 (Unreleased)
 
 ### Features Added
 * Added support for session authentication. Set `Session` on `ClientOptions` to configure it. Sessions apply only to
@@ -32,6 +32,7 @@
 
 ### Other Changes
 * Updated the service version to `2027-03-07`.
+* Updated `sdk/storage/internal` version to `0.2.0`
 
 ## 1.8.2 (2026-10-01)
 

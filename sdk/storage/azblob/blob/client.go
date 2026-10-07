@@ -496,13 +496,16 @@ func (b *Client) parallelDownloadFrom(ctx context.Context, writer io.WriterAt, o
 		Operation: func(ctx context.Context, chunkStart int64, count int64) error {
 			blobOffset := chunkStart + writerOffset + o.Range.Offset
 			downloadBlobOptions := o.getDownloadBlobOptions(HTTPRange{Offset: blobOffset, Count: count}, nil)
-			// Route this chunk to the endpoint the layout serves it from. A layout that has expired
-			// and can't be fetched again leaves the chunk on the client's configured endpoint rather
-			// than failing the download.
+			// Route this chunk to the endpoint the layout serves it from. The cache never fails for a
+			// layout the service can't provide (400 or 5xx): that is cached as "no layout" and the chunk
+			// reads from the configured endpoint. Any other error fetching an expired layout fails the
+			// chunk, and with it the download, as the other Azure Storage SDKs do.
 			if layoutCache != nil {
-				if chunkLayout, lerr := layoutCache.Get(ctx); lerr == nil {
-					downloadBlobOptions.LayoutEndpoint = getIdealEndpoint(blobOffset, chunkLayout)
+				chunkLayout, err := layoutCache.Get(ctx)
+				if err != nil {
+					return err
 				}
+				downloadBlobOptions.LayoutEndpoint = getIdealEndpoint(blobOffset, chunkLayout)
 			}
 			dr, err := b.DownloadStream(ctx, downloadBlobOptions)
 			if err != nil {

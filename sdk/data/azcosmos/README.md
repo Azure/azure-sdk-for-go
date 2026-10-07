@@ -96,11 +96,11 @@ Do not call Close from inside a credential callback.
 
 ### Context cancellation
 
-Native ABI 0.2.0 does not support cancelling submitted operations. Cancelling a Go context
-stops the caller's wait, but the native request continues and a write may still commit.
-An already delivered completion takes precedence over cancellation. Otherwise, a cancelled
-wait returns `CodeOperationCancelled` wrapping the context error, with the outcome unknown.
-Response metadata from a later completion cannot be returned to that caller.
+Native ABI 0.2.0 does not support cancelling submitted operations. Initialization, metadata,
+and query waits may return `CodeOperationCancelled` when their context ends while native work
+continues. Metadata from a later completion cannot be returned to that caller.
+Once a point item operation has been submitted, the call waits for its authoritative completion,
+even after context cancellation, so a committed write is not reported as cancelled.
 
 The binding drains abandoned waits in the background and retains native handles and credentials
 until completion. `Client.Close` waits for that drain and can take longer
@@ -111,7 +111,7 @@ after cancellation; a native-generated tracking ID is only available after compl
 
 ### Binary response compatibility change
 
-**Raw item response bytes now use the driver's binary JSON default**, including for existing
+*Raw item response bytes now use the driver's binary JSON default**, including for existing
 callers that leave options unset. Rust-compatible `ClientOptions.BinaryEncoding` resolves once from
 an explicit group, then `AZURE_COSMOS_BINARY_ENCODING_ENABLED`, then enabled by default.
 Create/read/replace/upsert resolve request encoding over that SDK client default rather than
@@ -190,12 +190,16 @@ the shared `Operation.PatchStrategy`.
 
 `ContainerClient.NewQueryItemsPager` accepts a `Query`, an explicit `FeedScope`, and optional
 `QueryOptions`. Use `NewQuery(sql).WithParameter(name, value)` to capture JSON parameter values,
-and `NewFeedScopeForPartitionKey(pk)` to target a complete logical partition. For hierarchical
-partition keys, supply every component. Query values are immutable; `WithParameter` returns a
+and `NewFeedScopeForPartitionKey(pk)` to target a logical partition or hierarchical key prefix.
+Use `NewFeedScopeForFullContainer()` for cross-partition queries. Query values are immutable; `WithParameter` returns a
 new query and an error if the value cannot be serialized.
 
-The API follows the Rust SDK's separation of query, scope, and feed options, with Go's standard
-`More`/`NextPage` pager. `QueryOptions.Feed.PageSizeHint` is a positive page-size hint; zero leaves
+The API follows the Rust SDK's separation of query, scope, and feed options. Its Cosmos-owned
+`QueryItemsPager` retains the native query plan and provides `More`, `NextPage`, and `Close`.
+Use `defer pager.Close()` to release native resources on early exit; exhaustion also releases
+them, and `Client.Close` reclaims any remaining cursors. This unreleased-v2 API intentionally
+differs from `runtime.Pager[T]` and requires Go SDK API review before stabilization.
+`QueryOptions.Feed.PageSizeHint` is a positive per-partition page-size hint; zero leaves
 sizing to the driver, and negative hints are rejected. Results are raw JSON values in
 `QueryItemsResponse.Items`, including scalar `SELECT VALUE` results. An empty page does not
 necessarily end the query: use `More`, not the number of items.
@@ -204,27 +208,78 @@ Queries default to text wire encoding, overriding inherited binary-encoding pref
 pager can split the JSON feed envelope. To enable binary wire encoding for a query, set both
 `QueryOptions.Operation.BinaryEncoding.Enabled` and `RequestTextResponse` to true.
 Explicit raw binary responses are rejected. Other operation options inherit normally; each
-`NextPage` captures a fresh runtime snapshot and one budget for initialization, metadata, and query.
+`NextPage` starts a fresh Go wait budget including first-use initialization and metadata.
+The retained native plan applies operation timeout settings independently to each page.
 
-Save `QueryItemsResponse.ContinuationToken` and pass it in `QueryOptions.Feed` to resume with
+Call `pager.ContinuationToken(ctx)` after a page, before exhaustion or Close, and pass the result
+in `QueryOptions.Feed.ContinuationToken` to resume with
 the same query and scope. This is an opaque **driver planner token**, not the service's
-`x-ms-continuation` header. Do not parse or modify it. An empty token indicates completion.
-Each fetch resolves its container reference through the native driver's cache, allowing queries
+`x-ms-continuation` header. Do not parse or modify it. Snapshotting does not advance the pager.
+Some buffered query plans do not support checkpoints but can still be fully iterated.
+Checkpoint availability does not determine whether more pages exist. A final empty page may
+mark exhaustion; check `More()` again after fetching it.
+Each new pager resolves its container reference through the native driver's cache, allowing queries
 started after container recreation to use the replacement. Tokens from the deleted container
 cannot be used to resume against the replacement.
-With the currently pinned azcore pager, a failed `NextPage` does not advance the continuation;
-callers must handle the error rather than blindly continuing a `More` loop.
+An execution failure terminates the pager; the native driver owns retries. An unsupported
+checkpoint does not terminate it.
 
 Pager construction performs no network I/O and snapshots its inputs. Each pager's first fetch
 (including a resumed pager) performs an additional container-metadata read to verify that the
-key is complete. Its request charge is included in the first fetch's response or error, and
-it shares the page's context and end-to-end timeout. This requires permission to read container
-metadata. Pagers are not safe for concurrent use; independent pagers can share a client.
+key or prefix fits the container definition. Full-container scopes omit this additional read.
+Its request charge is included in the first fetch's response or error when the metadata
+completion is available before that fetch returns. If cancellation returns first, charges
+reported by a later native completion cannot be surfaced to the caller; a zero reported
+charge does not mean the operation consumed no RUs.
+The metadata read shares the page's context and end-to-end timeout. This requires permission to read container
+metadata. Iteration and checkpoint calls must not be concurrent; independent pagers can share a
+client. `Close` safely synchronizes with active calls.
+All cursors on a client share a cursor-format completion reactor, separate from the legacy
+operation queue. Query callers wait on Go channels rather than each blocking an OS thread.
 
-Cross-partition and hierarchical-prefix queries are intentionally not exposed yet. The pinned
-native ABI returns only the first item of pre-split driver pages, so those pipelines cannot be
-safely exposed as general query support without a native fix. Complete logical-partition
-queries use the driver's direct request pipeline and return complete JSON feed envelopes.
+The pinned native driver v0.2.0 returns complete raw and pre-split query pages.
+`FeedOptions.MaxFanOut` limits initial physical-partition fan-out; zero uses the native default
+of 100. This is not a runtime limit: resume and later splits do not recheck it. Broad scopes
+can consume substantial RUs. `QueryPlanMode` selects local-preferred (default) or gateway-only
+planning. Optional `PopulateIndexMetrics` and `PopulateQueryMetrics` flags request the
+corresponding response fields; index metrics are already decoded JSON.
+
+The published ABI does not expose arbitrary physical/EPK ranges or Rust's buffered-window
+configuration. Buffered query shapes retain the native default window (1000), require finite
+TOP/LIMIT where the engine requires it, and may not support continuation snapshots.
+Cross-partition aggregates such as COUNT and SUM are rejected by this published engine;
+the Go binding preserves that error rather than computing aggregates itself.
+
+Contexts bound query waits; canceling an admitted page or checkpoint terminates that pager
+without claiming to cancel native work. Late completions are drained safely, and client
+shutdown waits for their cleanup. Native per-page timeouts retain the configured duration
+(the driver clamps explicit values below one second); subsequent page contexts do not inherit
+the first page's remaining deadline. A nil `EndToEndTimeout` inherits client/runtime settings
+and native defaults; an explicit zero selects the one-second minimum.
+Per-page context deadlines cannot bound native execution with the pinned ABI. Stronger
+guarantees require cooperative cancellation
+([Azure/azure-sdk-for-rust#5358](https://github.com/Azure/azure-sdk-for-rust/issues/5358))
+or per-page deadline support in a future native release.
+Point operations continue to await authoritative native
+outcomes after admission, so a committed write is not mislabeled as canceled.
+
+#### Rust query-option parity
+
+Against the Rust revision used to publish native v0.2.0, query-option coverage is:
+
+| Rust setting | Go support |
+| --- | --- |
+| Positive page-size hint, continuation token, maximum fan-out | `FeedOptions.PageSizeHint`, `ContinuationToken`, `MaxFanOut` |
+| Query-plan mode, session token, index/query metric flags | Corresponding `QueryOptions` fields |
+| Buffered-query window limit | Not exposed by the native ABI; native default of 1000 applies |
+| Explicit `MaxItemCountHint::ServerDecides` | Not independently expressible through this ABI; Go zero selects the native unset/default behavior |
+| Common per-operation settings | All 15 shared settings through `OperationOptions`, with per-field client/runtime inheritance |
+
+Go exposes throughput bucket/priority, throttle/session/failover retry controls, endpoint TTL,
+session-capture control, hedging/availability, custom headers, and binary encoding. Queries require
+text responses even when binary wire encoding is enabled. Nil region exclusions inherit; an empty
+non-nil slice explicitly clears them. The buffered-window and explicit server-decides gaps remain
+native contract limitations.
 
 ### Running the end-to-end tests
 
@@ -252,6 +307,13 @@ The container the tests use is declared in `internal/testdata/emulator-config.js
 default to `itemdb` and `items` and can be overridden with `AZCOSMOS_DATABASE` and
 `AZCOSMOS_CONTAINER`. Query scope tests also use the `query-hierarchical` container declared in
 the same configuration, under the selected database.
+
+Query regression tests cover ordered cross-partition checkpoint/resume on a fresh client,
+mid-pagination errors and request-charge accounting, and metric/session option propagation.
+The contract tests use a local HTTP proxy to inject known error and metric response headers
+while the real native driver executes against the emulator. This validates the binding and
+native decoding, not live-service metric generation. Per-cursor test hooks control checkpoint
+delivery and cancellation races without relying on network timing.
 
 ## Getting Started
 

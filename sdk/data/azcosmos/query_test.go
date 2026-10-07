@@ -7,6 +7,7 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"math"
 	"testing"
 	"time"
@@ -67,8 +68,10 @@ func TestQueryRequestOwnsOptions(t *testing.T) {
 			ThrottlingRetry:              ThrottlingRetryOptions{MaxRetryCount: to(uint32(1))},
 			ThroughputControl:            ThroughputControlOptions{ThroughputBucket: to(uint32(2))},
 		},
-		Feed:         FeedOptions{PageSizeHint: 5, ContinuationToken: "resume"},
-		SessionToken: SessionToken("0:1"),
+		Feed:                 FeedOptions{PageSizeHint: 5, ContinuationToken: "resume"},
+		SessionToken:         SessionToken("0:1"),
+		PopulateIndexMetrics: &enabled,
+		PopulateQueryMetrics: &enabled,
 	}
 	req, err := newQueryRequest(NewQuery("SELECT * FROM c"), NewFeedScopeForPartitionKey(NewPartitionKeyNull()), options)
 	require.NoError(t, err)
@@ -82,6 +85,8 @@ func TestQueryRequestOwnsOptions(t *testing.T) {
 	options.Feed = FeedOptions{}
 	options.SessionToken = ""
 	require.True(t, *req.options.Operation.EnableContentResponseOnWrite)
+	require.True(t, *req.options.PopulateIndexMetrics)
+	require.True(t, *req.options.PopulateQueryMetrics)
 	require.Equal(t, []Region{RegionEastUS}, req.options.Operation.ExcludedRegions)
 	require.Equal(t, "original", req.options.Operation.CustomHeaders["x-test"])
 	require.True(t, req.options.Operation.BinaryEncoding.enabled())
@@ -116,6 +121,7 @@ func TestQueryPagerArgumentAndLifetimeOrdering(t *testing.T) {
 		{"invalid availability", NewQuery("SELECT * FROM c"), scope, &QueryOptions{Operation: OperationOptions{AvailabilityStrategy: HedgingAvailability(0)}}, "positive threshold"},
 		{"raw binary", NewQuery("SELECT * FROM c"), scope, &QueryOptions{Operation: OperationOptions{BinaryEncoding: &BinaryEncodingOptions{Enabled: to(true)}}}, "queries require text JSON"},
 		{"invalid session", NewQuery("SELECT * FROM c"), scope, &QueryOptions{SessionToken: "a\x00b"}, "session"},
+		{"invalid plan mode", NewQuery("SELECT * FROM c"), scope, &QueryOptions{QueryPlanMode: "invalid"}, "query plan mode"},
 	} {
 		t.Run(tt.name, func(t *testing.T) {
 			pager := container.NewQueryItemsPager(tt.query, tt.scope, tt.options)
@@ -138,40 +144,46 @@ func TestQueryPagerArgumentAndLifetimeOrdering(t *testing.T) {
 	require.ErrorIs(t, err, context.Canceled)
 }
 
-func TestQueryPagerContinuationsAndRetry(t *testing.T) {
-	req := queryRequest{options: QueryOptions{Feed: FeedOptions{ContinuationToken: "initial"}}}
-	calls := 0
-	transient := errors.New("transient")
-	pager := newQueryItemsPager(req, nil, func(_ context.Context, req *queryRequest) (QueryItemsResponse, error) {
-		calls++
-		switch calls {
-		case 1:
-			require.Equal(t, "initial", req.options.Feed.ContinuationToken)
-			return QueryItemsResponse{ContinuationToken: "after-empty"}, nil
-		case 2:
-			require.Equal(t, "after-empty", req.options.Feed.ContinuationToken)
-			return QueryItemsResponse{}, transient
-		case 3:
-			require.Equal(t, "after-empty", req.options.Feed.ContinuationToken)
-			return QueryItemsResponse{Items: [][]byte{[]byte(`1`), []byte(`2`)}, ContinuationToken: "last"}, nil
-		case 4:
-			require.Equal(t, "last", req.options.Feed.ContinuationToken)
-			return QueryItemsResponse{}, nil
-		default:
-			t.Fatal("exhausted pager invoked fetch")
-			return QueryItemsResponse{}, nil
-		}
-	})
+type testQueryCursor struct {
+	calls         int
+	closed        int
+	checkpointErr error
+	nextErr       error
+}
+
+func (c *testQueryCursor) next(context.Context) (QueryItemsResponse, bool, error) {
+	c.calls++
+	if c.nextErr != nil {
+		return QueryItemsResponse{}, false, c.nextErr
+	}
+	switch c.calls {
+	case 1:
+		return QueryItemsResponse{}, false, nil
+	case 2:
+		return QueryItemsResponse{Items: [][]byte{[]byte("1"), []byte("2")}}, false, nil
+	default:
+		return QueryItemsResponse{}, true, nil
+	}
+}
+
+func (c *testQueryCursor) checkpoint(context.Context) (string, error) {
+	return "snapshot", c.checkpointErr
+}
+
+func (c *testQueryCursor) close() { c.closed++ }
+
+func TestQueryPagerRetainsProgressWithoutCheckpoint(t *testing.T) {
+	cursor := &testQueryCursor{checkpointErr: &Error{Code: CodeBadRequest, StatusCode: 400, SubStatus: subStatusBufferedQueryContinuationUnsupported}}
+	pager := &QueryItemsPager{client: newTestContainer(t).database.client, cursor: cursor}
 	require.True(t, pager.More())
 	empty, err := pager.NextPage(t.Context())
 	require.NoError(t, err)
 	require.Empty(t, empty.Items)
 	require.True(t, pager.More(), "an empty page must not truncate the query")
+	_, err = pager.ContinuationToken(t.Context())
+	require.ErrorIs(t, err, cursor.checkpointErr)
+	require.True(t, pager.More())
 	page, err := pager.NextPage(t.Context())
-	require.ErrorIs(t, err, transient)
-	require.Zero(t, page)
-	require.True(t, pager.More(), "azcore v1.22.0 allows retrying a failed fetch")
-	page, err = pager.NextPage(t.Context())
 	require.NoError(t, err)
 	require.Len(t, page.Items, 2)
 	_, err = pager.NextPage(t.Context())
@@ -179,7 +191,86 @@ func TestQueryPagerContinuationsAndRetry(t *testing.T) {
 	require.False(t, pager.More())
 	_, err = pager.NextPage(t.Context())
 	require.Error(t, err)
-	require.Equal(t, 4, calls)
+	require.Equal(t, 3, cursor.calls)
+	require.Equal(t, 1, cursor.closed)
+	require.NoError(t, pager.Close())
+	require.Equal(t, 1, cursor.closed)
+}
+
+func TestUnsupportedQueryCheckpoint(t *testing.T) {
+	require.Equal(t, 20124, subStatusBufferedQueryContinuationUnsupported)
+	require.Equal(t, 20117, subStatusContinuationTokenNonQueryOperation)
+	for _, tt := range []struct {
+		name string
+		err  error
+		want bool
+	}{
+		{"buffered query", &Error{StatusCode: 400, SubStatus: subStatusBufferedQueryContinuationUnsupported}, true},
+		{"non-query operation", &Error{StatusCode: 400, SubStatus: subStatusContinuationTokenNonQueryOperation}, true},
+		{"wrapped", fmt.Errorf("checkpoint: %w", &Error{StatusCode: 400, SubStatus: subStatusBufferedQueryContinuationUnsupported}), true},
+		{"buffered wire error", &Error{StatusCode: 400, SubStatus: subStatusBufferedQueryContinuationUnsupported, FromWire: true}, false},
+		{"non-query wire error", &Error{StatusCode: 400, SubStatus: subStatusContinuationTokenNonQueryOperation, FromWire: true}, false},
+		{"buffered wrong status", &Error{StatusCode: 503, SubStatus: subStatusBufferedQueryContinuationUnsupported}, false},
+		{"non-query wrong status", &Error{StatusCode: 503, SubStatus: subStatusContinuationTokenNonQueryOperation}, false},
+		{"unknown substatus", &Error{StatusCode: 400, SubStatus: 9999}, false},
+		{"other error", errors.New("checkpoint failed"), false},
+		{"nil", nil, false},
+	} {
+		t.Run(tt.name, func(t *testing.T) {
+			require.Equal(t, tt.want, unsupportedQueryCheckpoint(tt.err))
+		})
+	}
+}
+
+func TestQueryPagerTerminalFailureClosesCursor(t *testing.T) {
+	cursor := &testQueryCursor{nextErr: &Error{Code: CodeBadRequest}}
+	pager := &QueryItemsPager{client: newTestContainer(t).database.client, cursor: cursor}
+	page, err := pager.NextPage(t.Context())
+	require.ErrorIs(t, err, cursor.nextErr)
+	require.Zero(t, page)
+	require.False(t, pager.More())
+	require.Equal(t, 1, cursor.closed)
+}
+
+func TestQueryPagerCheckpointAndCloseContracts(t *testing.T) {
+	for _, failure := range []error{context.Canceled, &Error{Code: CodeClientError}} {
+		cursor := &testQueryCursor{checkpointErr: failure}
+		pager := &QueryItemsPager{client: newTestContainer(t).database.client, cursor: cursor}
+		_, err := pager.ContinuationToken(t.Context())
+		require.ErrorIs(t, err, failure)
+		require.False(t, pager.More())
+		require.Equal(t, 1, cursor.closed)
+	}
+	cursor := &testQueryCursor{}
+	pager := &QueryItemsPager{client: newTestContainer(t).database.client, cursor: cursor}
+	token, err := pager.ContinuationToken(t.Context())
+	require.NoError(t, err)
+	require.Equal(t, "snapshot", token)
+	require.Zero(t, cursor.calls, "checkpoint must not advance the cursor")
+	ctx, cancel := context.WithCancel(t.Context())
+	cancel()
+	_, err = pager.NextPage(ctx)
+	require.ErrorIs(t, err, context.Canceled)
+	require.True(t, pager.More(), "pre-admission cancellation does not lose a page")
+	require.Zero(t, cursor.calls)
+	require.NoError(t, pager.Close())
+	require.False(t, pager.More())
+	_, err = pager.ContinuationToken(t.Context())
+	require.Error(t, err)
+}
+
+func TestQueryPagerRejectsNilContextsWithoutAdvancing(t *testing.T) {
+	cursor := &testQueryCursor{}
+	pager := &QueryItemsPager{client: newTestClient(t), cursor: cursor}
+	defer func() { require.NoError(t, pager.Close()) }()
+	page, err := pager.NextPage(nil) //nolint:staticcheck // verifies the boundary guard
+	require.ErrorContains(t, err, "context must not be nil")
+	require.Zero(t, page)
+	token, err := pager.ContinuationToken(nil) //nolint:staticcheck // verifies the boundary guard
+	require.ErrorContains(t, err, "context must not be nil")
+	require.Empty(t, token)
+	require.True(t, pager.More())
+	require.Zero(t, cursor.calls)
 }
 
 func TestDecodeQueryPage(t *testing.T) {
@@ -189,7 +280,6 @@ func TestDecodeQueryPage(t *testing.T) {
 	require.NoError(t, err)
 	require.Equal(t, response, page.Response)
 	require.Equal(t, SessionToken("0:2"), page.SessionToken)
-	require.Equal(t, "planner-token", page.ContinuationToken)
 	require.Equal(t, [][]byte{[]byte(`{"id":"first"}`), []byte(`9007199254740993`), []byte(`null`), []byte(`[1,true]`), []byte(`"text"`)}, page.Items)
 	clear(body)
 	require.Equal(t, `{"id":"first"}`, string(page.Items[0]), "items must not borrow the envelope")
@@ -210,10 +300,9 @@ func TestDecodeQueryPage(t *testing.T) {
 	page, err = decodeQueryPage([]byte(`{"Documents":[]}`), response, "", "more", false)
 	require.NoError(t, err)
 	require.Empty(t, page.Items)
-	require.Equal(t, "more", page.ContinuationToken)
 	page, err = decodeQueryPage(nil, Response{}, "", "", true)
 	require.NoError(t, err)
-	require.Empty(t, page.ContinuationToken)
+	require.Empty(t, page.Items)
 	_, err = decodeQueryPage([]byte(`{"Documents":[]}`), response, "", "", true)
 	require.Error(t, err)
 	_, err = decodeQueryPage(nil, response, "", "more", true)
@@ -230,7 +319,7 @@ func TestQueryPartitionScopeValidation(t *testing.T) {
 		{"hash", `{"partitionKey":{"paths":["/pk"],"kind":"Hash","version":2}}`, NewPartitionKeyNull(), true},
 		{"legacy hash", `{"partitionKey":{"paths":["/pk"],"kind":"Hash"}}`, NewPartitionKeyUndefined(), true},
 		{"hierarchical", `{"partitionKey":{"paths":["/a","/b"],"kind":"MultiHash","version":2}}`, NewPartitionKeyString("a").AppendNumber(2), true},
-		{"prefix", `{"partitionKey":{"paths":["/a","/b"],"kind":"MultiHash","version":2}}`, NewPartitionKeyString("a"), false},
+		{"prefix", `{"partitionKey":{"paths":["/a","/b"],"kind":"MultiHash","version":2}}`, NewPartitionKeyString("a"), true},
 		{"too long", `{"partitionKey":{"paths":["/pk"],"kind":"Hash","version":2}}`, NewPartitionKeyString("a").AppendNull(), false},
 		{"range", `{"partitionKey":{"paths":["/pk"],"kind":"Range","version":1}}`, NewPartitionKeyString("a"), false},
 		{"invalid multihash", `{"partitionKey":{"paths":["/a","/b"],"kind":"MultiHash","version":1}}`, NewPartitionKeyString("a").AppendNull(), false},

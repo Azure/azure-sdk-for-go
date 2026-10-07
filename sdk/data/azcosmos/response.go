@@ -41,7 +41,7 @@ type ItemResponse struct {
 	Value []byte
 }
 
-// QueryItemsResponse contains one query page. An empty page can still have a continuation.
+// QueryItemsResponse contains one query page. An empty page does not imply exhaustion.
 type QueryItemsResponse struct {
 	// Response includes the metadata-validation charge on the first fetch.
 	Response
@@ -52,7 +52,9 @@ type QueryItemsResponse struct {
 	// SessionToken is the session token returned for this page.
 	SessionToken SessionToken
 
-	// ContinuationToken is the driver's opaque resume token, not the server continuation header.
-	// Empty means there are no more pages. Resume with the same query and scope.
-	ContinuationToken string
+	// IndexMetrics is the decoded index-utilization JSON, when requested and available.
+	IndexMetrics string
+
+	// QueryMetrics contains the service's query execution metrics, when requested and available.
+	QueryMetrics string
 }

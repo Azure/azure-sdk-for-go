@@ -19,6 +19,17 @@
   available on native success and error responses. A caller-supplied ID is retained when a
   submitted patch's Go wait is cancelled.
   See [PR 27661](https://github.com/Azure/azure-sdk-for-go/pull/27661).
+* Query cursors now share a client-owned completion reactor instead of blocking one OS thread
+  per waiting query. Cancellation and client shutdown retain late-completion cleanup.
+  See [PR 27676](https://github.com/Azure/azure-sdk-for-go/pull/27676).
+* Added full-container and hierarchical-prefix query scopes, retained query paging, fan-out
+  limits, query-plan selection, and query/index metrics using native driver v0.2.0.
+  See [PR 27676](https://github.com/Azure/azure-sdk-for-go/pull/27676).
+* Query pagers now own native resources and expose `Close` and an explicit
+  `ContinuationToken(ctx)` snapshot method. The return type is `*QueryItemsPager` rather than
+  `*runtime.Pager[QueryItemsResponse]`; continuation tokens no longer appear on responses.
+  Unsupported checkpoints do not prevent continued iteration.
+  See [PR 27676](https://github.com/Azure/azure-sdk-for-go/pull/27676).
 * Added the Go SDK identity to the User-Agent header alongside the native driver identity,
   with an optional runtime application suffix. See [PR 27627](https://github.com/Azure/azure-sdk-for-go/pull/27627).
 * Added optional operation timeouts with Rust's one-second minimum, runtime CPU sampling intervals,
@@ -26,11 +37,10 @@
   See [PR 27661](https://github.com/Azure/azure-sdk-for-go/pull/27661).
 * Added parameterized queries within a complete logical partition through `Query`, `FeedScope`,
   `QueryOptions`, and `ContainerClient.NewQueryItemsPager`, including page-size hints, raw JSON
-  results, and resumable driver continuation tokens. Cross-partition and hierarchical-prefix
-  queries remain unsupported.
+  results, and resumable driver continuation tokens.
   See [PR 27635](https://github.com/Azure/azure-sdk-for-go/pull/27635).
-* Query page fetches use the shared operation-option validation, immutable input copies, and
-  per-page runtime snapshots. Text JSON remains the default; binary wire encoding requires
+* Query page fetches use shared operation-option validation, immutable input copies, and
+  per-call timeout budgets. Text JSON remains the default; binary wire encoding requires
   requesting text responses for the pager.
   See [PR 27661](https://github.com/Azure/azure-sdk-for-go/pull/27661).
 * Added the error and response model: `Error` classifies a failure with a `Code` and reports whether
@@ -57,9 +67,9 @@
 
 ### Breaking Changes
 
-* Adopted the published native 0.2.0 no-cancellation contract. Context cancellation stops waiting,
-  but submitted native operations continue and writes may still commit. Closing clients
-  drains that work before freeing resources.
+* Adopted the published native 0.2.0 no-cancellation contract. Initialization and query contexts
+  stop waiting, but native operations continue. Submitted point item calls await authoritative
+  completion. Closing clients drains native work before freeing resources.
   See [PR 27661](https://github.com/Azure/azure-sdk-for-go/pull/27661).
 * Unset encoding options now inherit the driver's binary JSON default. Raw response bytes can be
   Cosmos binary JSON; select `BinaryEncodingOptions.RequestTextResponse` with binary enabled,

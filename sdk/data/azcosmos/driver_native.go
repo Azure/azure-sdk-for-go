@@ -78,6 +78,9 @@ type nativeDriver struct {
 	// beforeCreationWait is a test hook for observing that a caller joined an in-flight attempt.
 	beforeCreationWait func()
 
+	// beforePendingWait observes teardown reaching abandoned-operation cleanup in tests.
+	beforePendingWait func()
+
 	// reactor drains the completion queue operations are answered through. The queue binds to
 	// the runtime rather than the driver, so it is created with the client and is what makes
 	// driver creation itself awaitable.
@@ -86,7 +89,9 @@ type nativeDriver struct {
 	// containers caches resolved container handles by "database/container". Resolving reads
 	// container metadata from the gateway on a miss, so an item operation would otherwise pay
 	// for that lookup on every call.
-	containers map[string]*C.cosmos_container_ref_t
+	containers    map[string]*C.cosmos_container_ref_t
+	cursors       map[*nativeQueryCursor]struct{}
+	cursorReactor *cursorReactor
 }
 
 type driverCreation struct {
@@ -338,11 +343,25 @@ func (d *nativeDriver) close() error {
 	if d == nil {
 		return nil
 	}
-	d.pending.Wait()
 	// Client.mu prevents new submissions while pending drains; mu orders remaining state reads.
 	d.mu.Lock()
-	defer d.mu.Unlock()
 	d.closed = true
+	cursors := make([]*nativeQueryCursor, 0, len(d.cursors))
+	for cursor := range d.cursors {
+		cursors = append(cursors, cursor)
+	}
+	d.mu.Unlock()
+	for _, cursor := range cursors {
+		cursor.close()
+	}
+	if d.beforePendingWait != nil {
+		d.beforePendingWait()
+	}
+	d.pending.Wait()
+	d.cursorReactor.close()
+	d.cursorReactor = nil
+	d.mu.Lock()
+	defer d.mu.Unlock()
 
 	// The reactor goes first: it holds the completion queue, and stopping it is what guarantees
 	// no thread is still reading completions that reference the driver.

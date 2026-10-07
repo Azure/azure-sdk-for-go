@@ -112,6 +112,17 @@ COSMOS_ASSERT_OFFSET(cosmos_operation_request_t, precondition_kind, 172);
 COSMOS_ASSERT_OFFSET(cosmos_operation_request_t, precondition_etag, 176);
 COSMOS_ASSERT_OFFSET(cosmos_operation_request_t, options, 192);
 COSMOS_ASSERT_OFFSET(cosmos_operation_request_t, options_snapshot, 224);
+
+_Static_assert(sizeof(cosmos_cursor_request_t) == 280, "cursor request ABI size changed");
+COSMOS_ASSERT_OFFSET(cosmos_cursor_request_t, operation, 8);
+COSMOS_ASSERT_OFFSET(cosmos_cursor_request_t, reserved, 264);
+_Static_assert(sizeof(cosmos_cursor_completion_t) == 176, "cursor completion ABI size changed");
+COSMOS_ASSERT_OFFSET(cosmos_cursor_completion_t, common, 8);
+COSMOS_ASSERT_OFFSET(cosmos_cursor_completion_t, result_kind, 120);
+COSMOS_ASSERT_OFFSET(cosmos_cursor_completion_t, body_kind, 124);
+COSMOS_ASSERT_OFFSET(cosmos_cursor_completion_t, items, 128);
+COSMOS_ASSERT_OFFSET(cosmos_cursor_completion_t, checkpoint, 144);
+COSMOS_ASSERT_OFFSET(cosmos_cursor_completion_t, cursor, 160);
 */
 import "C"
 

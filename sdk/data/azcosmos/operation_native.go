@@ -66,7 +66,7 @@ func (d *nativeDriver) execute(ctx context.Context, req itemRequest) (ItemRespon
 		return ItemResponse{}, nil, err
 	}
 
-	result, err := d.awaitCompletion(ctx, "submitting the operation",
+	result, err := d.awaitAuthoritativeCompletion(ctx, "submitting the operation",
 		func(queue *C.cosmos_completion_queue_t, cookie C.intptr_t, preError *C.cosmos_status_code_t) *C.cosmos_operation_handle_t {
 			request, release := buildNativeItemRequest(req, container)
 			defer release()
@@ -91,12 +91,29 @@ func (d *nativeDriver) execute(ctx context.Context, req itemRequest) (ItemRespon
 // to, the cookie to round-trip onto it, and somewhere to report a pre-flight rejection. It returns
 // NULL when the operation was rejected before it started, which posts no completion.
 //
-// The published ABI cannot cancel submitted work. On context cancellation a background waiter
-// owns the cookie and operation handle until completion; Close drains these waiters.
+// Non-authoritative waits may return on cancellation; late completion cleanup keeps native
+// resources alive. Point operations separately await authoritative results, including writes.
 func (d *nativeDriver) awaitCompletion(
 	ctx context.Context,
 	doing string,
 	submit func(queue *C.cosmos_completion_queue_t, cookie C.intptr_t, preError *C.cosmos_status_code_t) *C.cosmos_operation_handle_t,
+) (completionResult, error) {
+	return d.awaitOperation(ctx, doing, submit, false)
+}
+
+func (d *nativeDriver) awaitAuthoritativeCompletion(
+	ctx context.Context,
+	doing string,
+	submit func(queue *C.cosmos_completion_queue_t, cookie C.intptr_t, preError *C.cosmos_status_code_t) *C.cosmos_operation_handle_t,
+) (completionResult, error) {
+	return d.awaitOperation(ctx, doing, submit, true)
+}
+
+func (d *nativeDriver) awaitOperation(
+	ctx context.Context,
+	doing string,
+	submit func(queue *C.cosmos_completion_queue_t, cookie C.intptr_t, preError *C.cosmos_status_code_t) *C.cosmos_operation_handle_t,
+	authoritative bool,
 ) (completionResult, error) {
 	if err := ctx.Err(); err != nil {
 		return completionResult{}, err
@@ -106,22 +123,17 @@ func (d *nativeDriver) awaitCompletion(
 	// stopped waiting because the context was cancelled.
 	pending := &pendingOperation{result: make(chan completionResult, 1)}
 	handle := cgo.NewHandle(pending)
-	d.pending.Add(1)
-	var op *C.cosmos_operation_handle_t
-	release := func() {
-		C.cosmos_operation_handle_free(op)
-		handle.Delete()
-		d.pending.Done()
-	}
-	owned := true
+	// Deleted only once the operation is known to be finished, because the driver round-trips the
+	// cookie onto the completion and the reactor dereferences it.
+	abandoned := false
 	defer func() {
-		if owned {
-			release()
+		if !abandoned {
+			handle.Delete()
 		}
 	}()
 
 	var preError C.cosmos_status_code_t
-	op = submit(d.reactor.queue, C.intptr_t(handle), &preError)
+	op := submit(d.reactor.queue, C.intptr_t(handle), &preError)
 	if op == nil {
 		// A pre-flight rejection posts no completion, so it is reported here rather than through
 		// the queue.
@@ -133,10 +145,32 @@ func (d *nativeDriver) awaitCompletion(
 			Message:    "azcosmos: " + doing,
 		}
 	}
+	defer func() {
+		if !abandoned {
+			C.cosmos_operation_handle_free(op)
+		}
+	}()
 
-	select {
-	case result := <-pending.result:
+	return awaitOperationResult(ctx, pending.result, authoritative, func() {
+		abandoned = true
+		d.pending.Add(1)
+		go func() {
+			defer d.pending.Done()
+			defer handle.Delete()
+			defer C.cosmos_operation_handle_free(op)
+			result := <-pending.result
+			result.release()
+		}()
+	})
+}
+
+func awaitOperationResult(ctx context.Context, results <-chan completionResult, authoritative bool, abandon func()) (completionResult, error) {
+	finish := func(result completionResult) (completionResult, error) {
 		if cause := ctx.Err(); cause != nil {
+			if !authoritative {
+				defer result.release()
+				return completionResult{}, completionCancellationError(cause, result)
+			}
 			terminal, err := resultAfterCancellation(cause, result)
 			if err != nil {
 				result.release()
@@ -144,21 +178,28 @@ func (d *nativeDriver) awaitCompletion(
 			return terminal, err
 		}
 		return result, nil
-
+	}
+	select {
+	case result := <-results:
+		return finish(result)
 	case <-ctx.Done():
-		// Prefer an already delivered result. Otherwise a write's outcome remains unknown.
-		select {
-		case result := <-pending.result:
-			return result, nil
-		default:
+		if !authoritative {
+			select {
+			case result := <-results:
+				return finish(result)
+			default:
+			}
+			abandon()
+			return completionResult{}, newOperationCancelledError(ctx.Err(), 0, "")
 		}
-		owned = false
-		go func() {
-			defer release()
-			result := <-pending.result
+		// The terminal result is authoritative when completion and cancellation race. In
+		// particular, a successful write must not be reported as cancelled after it committed.
+		result := <-results
+		terminal, err := resultAfterCancellation(ctx.Err(), result)
+		if err != nil {
 			result.release()
-		}()
-		return completionResult{}, newOperationCancelledError(ctx.Err(), 0, "")
+		}
+		return terminal, err
 	}
 }
 
@@ -166,6 +207,10 @@ func resultAfterCancellation(cause error, result completionResult) (completionRe
 	if !result.cancelled {
 		return result, nil
 	}
+	return completionResult{}, completionCancellationError(cause, result)
+}
+
+func completionCancellationError(cause error, result completionResult) error {
 	requestCharge := result.response.RequestCharge
 	activityID := result.response.ActivityID
 	var completionErr *Error
@@ -178,7 +223,7 @@ func resultAfterCancellation(cause error, result completionResult) (completionRe
 	if completionErr != nil {
 		err.PatchTrackingID = completionErr.PatchTrackingID
 	}
-	return completionResult{}, err
+	return err
 }
 
 // inspectAwaitCompletionSubmission reports whether awaitCompletion invoked its submit closure.

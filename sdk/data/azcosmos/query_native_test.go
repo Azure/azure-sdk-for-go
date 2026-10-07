@@ -50,10 +50,60 @@ func TestQuerySnapshotTimeoutIncludesLazyInitialization(t *testing.T) {
 	}
 }
 
+func TestQueryNativeOptions(t *testing.T) {
+	yes, no := true, false
+	req, err := newQueryRequest(NewQuery("SELECT * FROM c"), NewFeedScopeForFullContainer(), &QueryOptions{
+		Operation:     OperationOptions{EndToEndTimeout: to(5 * time.Second)},
+		Feed:          FeedOptions{MaxFanOut: 250, PageSizeHint: 17},
+		QueryPlanMode: QueryPlanModeGatewayOnly, PopulateIndexMetrics: &yes, PopulateQueryMetrics: &no,
+	})
+	require.NoError(t, err)
+	got, err := inspectNativeFullQuery(&req)
+	require.NoError(t, err)
+	require.Equal(t, nativeQueryOptions{full: true, fanOut: 250, pageSize: 17, mode: 2, indexMetrics: 2, queryMetrics: 1, timeoutMillis: 5000}, got)
+
+	req, err = newQueryRequest(NewQuery("SELECT * FROM c"), NewFeedScopeForFullContainer(), nil)
+	require.NoError(t, err)
+	got, err = inspectNativeFullQuery(&req)
+	require.NoError(t, err)
+	require.True(t, got.full)
+	require.Zero(t, got.fanOut)
+	require.EqualValues(t, -1, got.pageSize)
+	require.Zero(t, got.mode)
+	require.Zero(t, got.indexMetrics)
+	require.Zero(t, got.queryMetrics)
+}
+
+func TestQueryContextInheritsTimeoutAndPreservesCallerDeadline(t *testing.T) {
+	shared, err := NewRuntime(&RuntimeOptions{Operation: OperationOptions{EndToEndTimeout: to(3 * time.Second)}})
+	require.NoError(t, err)
+	t.Cleanup(func() { require.NoError(t, shared.Close()) })
+	client := sharedTestClient(t, shared, OperationOptions{EndToEndTimeout: to(2 * time.Second)})
+	for _, options := range []OperationOptions{{}, {EndToEndTimeout: to(time.Duration(0))}} {
+		ctx, release, err := client.queryContext(context.Background(), options)
+		require.NoError(t, err)
+		deadline, bounded := ctx.Deadline()
+		require.True(t, bounded)
+		want := 2 * time.Second
+		if options.EndToEndTimeout != nil {
+			want = time.Second
+		}
+		require.InDelta(t, float64(want), float64(time.Until(deadline)), float64(200*time.Millisecond))
+		release()
+	}
+	parent, cancel := context.WithTimeout(context.Background(), 50*time.Millisecond)
+	defer cancel()
+	ctx, release, err := client.queryContext(parent, OperationOptions{})
+	require.NoError(t, err)
+	defer release()
+	want, _ := parent.Deadline()
+	got, _ := ctx.Deadline()
+	require.Equal(t, want, got)
+}
+
 func TestQueryCompletionCopiesPageAndPlannerToken(t *testing.T) {
 	page, err := syntheticQueryCompletion([]byte(`{"Documents":[{"id":"first"},{"id":"second"}]}`), "planner-token", 200)
 	require.NoError(t, err)
-	require.Equal(t, "planner-token", page.ContinuationToken)
 	require.Equal(t, [][]byte{[]byte(`{"id":"first"}`), []byte(`{"id":"second"}`)}, page.Items)
 	end, err := syntheticQueryCompletion(nil, "", 0)
 	require.NoError(t, err)
@@ -94,7 +144,6 @@ func TestQueryPageSetupActivityID(t *testing.T) {
 			require.NoError(t, err)
 			require.Equal(t, tt.expected, page.Response)
 			require.Empty(t, page.Items)
-			require.Empty(t, page.ContinuationToken)
 		})
 	}
 }

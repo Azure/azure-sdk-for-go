@@ -3,7 +3,10 @@
 
 package azcosmos
 
-import "errors"
+import (
+	"context"
+	"errors"
+)
 
 // DatabaseClient is a client for a database in a Cosmos DB account. Obtain one from
 // [Client.NewDatabase].
@@ -24,4 +27,34 @@ func (d *DatabaseClient) NewContainer(id string) (*ContainerClient, error) {
 		return nil, errors.New("azcosmos: container id must not be empty")
 	}
 	return &ContainerClient{id: id, database: d}, nil
+}
+
+// Read reads the database's properties. options may be nil.
+//
+// Azure Cosmos DB only accepts master-key authentication for this operation: a client created
+// with [NewClient] (Microsoft Entra ID) returns an error rather than reaching the service. Use
+// [NewClientWithKey].
+func (d *DatabaseClient) Read(ctx context.Context, options *ReadDatabaseOptions) (DatabaseResponse, error) {
+	return d.read(ctx, options)
+}
+
+// Delete deletes the database and every container in it. options may be nil.
+//
+// Azure Cosmos DB only accepts master-key authentication for this operation: a client created
+// with [NewClient] (Microsoft Entra ID) returns an error rather than reaching the service. Use
+// [NewClientWithKey].
+func (d *DatabaseClient) Delete(ctx context.Context, options *DeleteDatabaseOptions) (DatabaseResponse, error) {
+	return d.delete(ctx, options)
+}
+
+// CreateContainer creates a new container in the database.
+//
+// properties.ID and properties.PartitionKeyDefinition are required; the partition key definition
+// is immutable once created. options may be nil.
+//
+// Azure Cosmos DB only accepts master-key authentication for this operation: a client created
+// with [NewClient] (Microsoft Entra ID) returns an error rather than reaching the service. Use
+// [NewClientWithKey].
+func (d *DatabaseClient) CreateContainer(ctx context.Context, properties ContainerProperties, options *CreateContainerOptions) (ContainerResponse, error) {
+	return d.createContainer(ctx, properties, options)
 }

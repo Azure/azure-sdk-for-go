@@ -80,6 +80,9 @@ func PossibleStateTypeValues() []StateType {
 	return lease.PossibleStateTypeValues()
 }
 
+// SessionMode specifies whether eligible requests are authenticated with a session. Sessions apply
+// only to clients authenticated with an azcore.TokenCredential, and only to the file reads they send
+// to the blob endpoint; requests to the DFS endpoint always use the bearer token.
 type SessionMode = azblob.SessionMode
 
 const (

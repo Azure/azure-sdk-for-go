@@ -664,7 +664,7 @@ func TestDownloadLayoutRoutingDefaultDisabled(t *testing.T) {
 		{"DownloadFileAuto", func(t *testing.T, client *Client) error {
 			file, err := os.CreateTemp(t.TempDir(), "download")
 			require.NoError(t, err)
-			defer file.Close()
+			defer func() { require.NoError(t, file.Close()) }()
 			_, err = client.DownloadFile(context.Background(), file, &DownloadFileOptions{BlockSize: 100})
 			return err
 		}},

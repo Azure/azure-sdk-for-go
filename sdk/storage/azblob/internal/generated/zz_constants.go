@@ -5,7 +5,7 @@
 package generated
 
 const (
-	version20261206 string = "2026-12-06"
+	version20270307 string = "2027-03-07"
 )
 
 // AccessTier - The access tiers.

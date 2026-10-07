@@ -64,6 +64,11 @@
 
 ### Bugs Fixed
 
+* Fixed an item operation returning its native `ClientOperationTimeout` error unwrapped instead of
+  one satisfying `errors.Is(err, context.DeadlineExceeded)`, when the native driver's own
+  end-to-end timeout raced the caller's context deadline and won.
+  See [PR 27662](https://github.com/Azure/azure-sdk-for-go/pull/27662).
+
 ### Other Changes
 
 ## 1.6.0-beta.2 (2026-08-03)

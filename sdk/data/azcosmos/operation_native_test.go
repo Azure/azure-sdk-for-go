@@ -34,6 +34,36 @@ func TestResultAfterCancellationReturnsTerminalCompletion(t *testing.T) {
 		require.Same(t, serviceErr, got.err)
 	})
 
+	t.Run("client operation timeout", func(t *testing.T) {
+		// The native driver's own end-to-end timeout can fire a ClientOperationTimeout completion
+		// in a race with the caller's context deadline. An authoritative wait always awaits the
+		// real completion, so without this it would surface that raw error instead of one callers
+		// can detect with errors.Is(err, context.DeadlineExceeded), even though the context is why
+		// the operation stopped mattering to the caller.
+		diagnostics := &Diagnostics{AttemptCount: 1, StatusCode: 408, SubStatus: 20008}
+		result := completionResult{
+			err: &Error{
+				Code:          CodeClientOperationTimeout,
+				RequestCharge: 0.5,
+				ActivityID:    "timeout-activity-id",
+				Diagnostics:   diagnostics,
+				AttemptCount:  1,
+				StatusCode:    408,
+				SubStatus:     20008,
+			},
+		}
+
+		got, err := resultAfterCancellation(context.DeadlineExceeded, result)
+
+		require.Empty(t, got)
+		require.ErrorIs(t, err, context.DeadlineExceeded)
+		var cosmosErr *Error
+		require.True(t, errors.As(err, &cosmosErr))
+		require.Equal(t, CodeOperationCancelled, cosmosErr.Code)
+		require.Equal(t, 0.5, cosmosErr.RequestCharge)
+		require.Equal(t, "timeout-activity-id", cosmosErr.ActivityID)
+	})
+
 	t.Run("cancelled", func(t *testing.T) {
 		diagnostics := &Diagnostics{AttemptCount: 2, StatusCode: 429, SubStatus: 3200}
 		result := completionResult{
@@ -126,4 +156,28 @@ func TestAwaitOperationResultPreservesAuthoritativeOutcome(t *testing.T) {
 		require.NoError(t, err)
 		require.Equal(t, result, got)
 	}
+}
+
+func TestAwaitOperationResultWrapsClientOperationTimeoutAfterCancellation(t *testing.T) {
+	// The native driver's own end-to-end timeout races the caller's context deadline on an
+	// independent clock. An authoritative wait always awaits the real completion rather than
+	// abandoning early, so when the native clock wins that race, this must still surface as a
+	// cancellation error rather than the raw ClientOperationTimeout, matching the non-authoritative
+	// path's errors.Is(err, context.DeadlineExceeded) contract.
+	ctx, cancel := context.WithCancel(t.Context())
+	cancel()
+	pending := &pendingOperation{result: make(chan completionResult, 1)}
+	pending.result <- completionResult{
+		err: &Error{Code: CodeClientOperationTimeout, RequestCharge: 0.5, ActivityID: "timeout-activity-id"},
+	}
+
+	got, err := awaitOperationResult(ctx, pending, true)
+
+	require.Zero(t, got)
+	require.ErrorIs(t, err, context.Canceled)
+	var cosmosErr *Error
+	require.ErrorAs(t, err, &cosmosErr)
+	require.Equal(t, CodeOperationCancelled, cosmosErr.Code)
+	require.Equal(t, 0.5, cosmosErr.RequestCharge)
+	require.Equal(t, "timeout-activity-id", cosmosErr.ActivityID)
 }

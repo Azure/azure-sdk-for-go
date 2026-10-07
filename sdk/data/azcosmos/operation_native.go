@@ -174,10 +174,25 @@ func awaitOperationResult(ctx context.Context, pending *pendingOperation, author
 }
 
 func resultAfterCancellation(cause error, result completionResult) (completionResult, error) {
-	if !result.cancelled {
+	if !result.cancelled && !isClientOperationTimeout(result.err) {
 		return result, nil
 	}
 	return completionResult{}, completionCancellationError(cause, result)
+}
+
+// isClientOperationTimeout reports whether err is the native driver's own end-to-end budget
+// expiring (CodeClientOperationTimeout), as opposed to the COSMOS_COMPLETION_OUTCOME_CANCELLED
+// outcome that result.cancelled already covers.
+//
+// The native driver's end-to-end timeout and the caller's context deadline are set to the same
+// nominal duration but run on independent clocks, so either can fire first. When the native clock
+// wins that race, the completion arrives classified as ClientOperationTimeout rather than
+// cancelled, and an authoritative wait (which always awaits the real completion, since a write may
+// have already committed) would otherwise return that raw error instead of one that satisfies
+// errors.Is(err, context.DeadlineExceeded) as callers expect once the context has ended.
+func isClientOperationTimeout(err error) bool {
+	var completionErr *Error
+	return errors.As(err, &completionErr) && completionErr.Code == CodeClientOperationTimeout
 }
 
 func completionCancellationError(cause error, result completionResult) error {

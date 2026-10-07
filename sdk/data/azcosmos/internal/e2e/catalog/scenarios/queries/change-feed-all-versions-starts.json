@@ -1,0 +1,50 @@
+{
+    "$schema": "../../schema/scenario.v1.json",
+    "specVersion": "1.0",
+    "id": "changefeed.all-versions-start-validation",
+    "title": "All-versions change feed rejects unsupported start positions",
+    "requirement": "AllVersionsAndDeletes rejects Beginning and PointInTime starts with BadRequest while preserving the public SDK error contract.",
+    "maturity": "candidate",
+    "precedents": [
+        {
+            "sdk": "rust",
+            "path": "sdk/cosmos/azure_data_cosmos/tests/in_memory_emulator_tests/change_feed.rs",
+            "test": "all_versions_and_deletes_rejects_beginning"
+        },
+        {
+            "sdk": "rust",
+            "path": "sdk/cosmos/azure_data_cosmos/tests/emulator_tests/cosmos_change_feed.rs",
+            "test": "all_versions_and_deletes_rejects_point_in_time_start"
+        }
+    ],
+    "profiles": [
+        "coreOperations"
+    ],
+    "tags": [
+        "changeFeed",
+        "validation",
+        "coreOperations"
+    ],
+    "backends": {
+        "hostedEmulatorGatewayV1": {
+            "applicability": "required",
+            "fidelity": "full",
+            "requires": [
+                "changeFeed"
+            ]
+        },
+        "hostedEmulatorGatewayV2": {
+            "applicability": "required",
+            "fidelity": "full",
+            "reason": "AllVersionsAndDeletes intentionally uses Compute Gateway because full-fidelity change feed is not supported by Gateway V2.",
+            "requires": [
+                "changeFeed",
+                "gatewayV2"
+            ]
+        },
+        "azureLive": {
+            "applicability": "supported",
+            "fidelity": "full"
+        }
+    }
+}

@@ -1,0 +1,45 @@
+{
+  "$schema": "../../schema/scenario.v1.json",
+  "specVersion": "1.0",
+  "id": "resilience.service-retry",
+  "title": "Retryable service failures preserve read results",
+  "requirement": "A bounded injected service-unavailable response is retried and the successful read retains the failed service attempt in diagnostics.",
+  "maturity": "candidate",
+  "precedents": [
+    {
+      "sdk": "rust",
+      "path": "sdk/cosmos/azure_data_cosmos/tests/emulator_tests/cosmos_fault_injection.rs",
+      "test": "error_diagnostics_records_retry_history"
+    }
+  ],
+  "profiles": [
+    "configurationResilience"
+  ],
+  "tags": [
+    "resilience",
+    "serviceRetry",
+    "faultInjection"
+  ],
+  "backends": {
+    "hostedEmulatorGatewayV1": {
+      "applicability": "required",
+      "fidelity": "full",
+      "requires": [
+        "item"
+      ]
+    },
+    "hostedEmulatorGatewayV2": {
+      "applicability": "required",
+      "fidelity": "full",
+      "requires": [
+        "item",
+        "gatewayV2"
+      ]
+    },
+    "azureLive": {
+      "applicability": "notApplicable",
+      "fidelity": "none",
+      "reason": "The scenario intentionally injects a retryable service response."
+    }
+  }
+}

@@ -62,7 +62,7 @@ func TestItemLifecycleSmoke(t *testing.T) {
 	requireCriticalDiagnostics(t, deleted.Diagnostics, 204)
 
 	_, err = fx.Container.ReadItem(ctx, pk, id, nil)
-	requireCode(t, err, azcosmos.CodeNotFound)
+	_ = requireCode(t, err, azcosmos.CodeNotFound)
 }
 
 // TestItemUpsertCreateThenUpdate ports Rust scenario item.upsert-create-update: UpsertItem
@@ -149,10 +149,10 @@ func TestItemNotFoundDoesNotCrossPartitionKeys(t *testing.T) {
 	trackItem(t, fx.Container, ownerPK, id)
 
 	_, err = fx.Container.ReadItem(ctx, wrongPK, id, nil)
-	requireCode(t, err, azcosmos.CodeNotFound)
+	_ = requireCode(t, err, azcosmos.CodeNotFound)
 
 	_, err = fx.Container.ReadItem(ctx, ownerPK, uniqueID(t), nil)
-	requireCode(t, err, azcosmos.CodeNotFound)
+	_ = requireCode(t, err, azcosmos.CodeNotFound)
 
 	read, err := fx.Container.ReadItem(ctx, ownerPK, id, nil)
 	require.NoError(t, err)

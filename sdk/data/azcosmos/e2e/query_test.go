@@ -47,7 +47,7 @@ func TestQueryParameterizedFilterAndOrder(t *testing.T) {
 func queryOrderedSuffixes(t *testing.T, fx fixture, query azcosmos.Query, scope azcosmos.PartitionKey, prefix string) []string {
 	t.Helper()
 	pager := fx.Container.NewQueryItemsPager(query, azcosmos.NewFeedScopeForPartitionKey(scope), nil)
-	defer pager.Close()
+	defer func() { require.NoError(t, pager.Close()) }()
 	var ids []string
 	for pager.More() {
 		page, err := pager.NextPage(context.Background())
@@ -68,9 +68,9 @@ func TestQueryInvalidSyntaxIsNotAnEmptyFeed(t *testing.T) {
 	scope := azcosmos.NewFeedScopeForPartitionKey(azcosmos.NewPartitionKeyString("A"))
 
 	pager := fx.Container.NewQueryItemsPager(azcosmos.NewQuery("SELECT FROM"), scope, nil)
-	defer pager.Close()
+	defer func() { require.NoError(t, pager.Close()) }()
 	_, err := pager.NextPage(context.Background())
-	requireCode(t, err, azcosmos.CodeBadRequest)
+	_ = requireCode(t, err, azcosmos.CodeBadRequest)
 }
 
 // TestQueryPaginationResumesWithoutLossOrDuplication ports Rust scenario
@@ -118,7 +118,7 @@ func TestQueryPaginationResumesWithoutLossOrDuplication(t *testing.T) {
 	resumed := fx.Container.NewQueryItemsPager(query, azcosmos.NewFeedScopeForFullContainer(), &azcosmos.QueryOptions{
 		Feed: azcosmos.FeedOptions{PageSizeHint: 2, ContinuationToken: token},
 	})
-	defer resumed.Close()
+	defer func() { require.NoError(t, resumed.Close()) }()
 	for resumed.More() {
 		page, err := resumed.NextPage(ctx)
 		require.NoError(t, err)

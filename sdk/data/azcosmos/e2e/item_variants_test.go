@@ -141,7 +141,7 @@ func TestItemHierarchicalPartitionKeyPointAndPrefix(t *testing.T) {
 	pager := fx.Container.NewQueryItemsPager(
 		azcosmos.NewQuery("SELECT VALUE c.id FROM c ORDER BY c.id ASC"),
 		azcosmos.NewFeedScopeForPartitionKey(prefix), nil)
-	defer pager.Close()
+	defer func() { require.NoError(t, pager.Close()) }()
 	var ids []string
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
@@ -159,7 +159,7 @@ func TestItemHierarchicalPartitionKeyPointAndPrefix(t *testing.T) {
 	require.Equal(t, 204, deleted.StatusCode)
 
 	_, err = fx.Container.ReadItem(ctx, firstPK, firstID, nil)
-	requireCode(t, err, azcosmos.CodeNotFound)
+	_ = requireCode(t, err, azcosmos.CodeNotFound)
 }
 
 func mustUnmarshalTenantItem(t *testing.T, body []byte) TenantItem {

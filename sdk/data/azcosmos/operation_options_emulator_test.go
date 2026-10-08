@@ -91,16 +91,16 @@ func TestEmulatorBinaryClientDefaultAndRequestOverride(t *testing.T) {
 	trackEmulatorItem(t, container, pk, id)
 	response, err := container.ReadItem(t.Context(), pk, id, nil)
 	require.NoError(t, err)
-	require.Equal(t, byte(0x80), response.Value[0], "SDK client default wins over runtime encoding for reads")
+	require.True(t, json.Valid(response.Value), "default binary responses are converted to text")
 	for _, encoding := range []*BinaryEncodingOptions{
-		{RequestTextResponse: true}, {Enabled: to(false)},
+		{}, {Enabled: to(false)},
 	} {
 		response, err = container.ReadItem(t.Context(), pk, id, &ReadItemOptions{Operation: OperationOptions{BinaryEncoding: encoding}})
 		require.NoError(t, err)
 		require.True(t, json.Valid(response.Value))
 	}
 	textClient, err := NewClientWithKey(endpoint, KeyCredential{accountKey: emulatorKey},
-		&ClientOptions{Runtime: shared, BinaryEncoding: &BinaryEncodingOptions{RequestTextResponse: true}})
+		&ClientOptions{Runtime: shared, BinaryEncoding: &BinaryEncodingOptions{Enabled: to(false)}})
 	require.NoError(t, err)
 	t.Cleanup(func() { require.NoError(t, textClient.Close()) })
 	textContainer, err := textClient.NewContainer(database, containerID)
@@ -110,7 +110,7 @@ func TestEmulatorBinaryClientDefaultAndRequestOverride(t *testing.T) {
 	require.True(t, json.Valid(response.Value))
 	response, err = textContainer.ReadItem(t.Context(), pk, id, &ReadItemOptions{Operation: OperationOptions{BinaryEncoding: &BinaryEncodingOptions{}}})
 	require.NoError(t, err)
-	require.Equal(t, byte(0x80), response.Value[0], "zero encoding group enables binary")
+	require.True(t, json.Valid(response.Value), "enabling binary at request scope still returns text")
 }
 
 func TestEmulatorSameAccountClientsShareCachedCredentials(t *testing.T) {

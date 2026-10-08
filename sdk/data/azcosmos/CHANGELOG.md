@@ -14,7 +14,8 @@
   `Runtime.Close` releases the owner's reference; attached clients keep the runtime alive.
   Same-account clients share native caches and cached credentials. Use separate runtimes for isolation.
   See [PR 27661](https://github.com/Azure/azure-sdk-for-go/pull/27661).
-* Added mutually exclusive If-Match and If-None-Match item preconditions (PATCH supports only If-Match) and client-side patch
+* Added validated `Precondition` values constructed with `IfMatch` or `IfNoneMatch` for item operations
+  (PATCH retains its If-Match-only option) and client-side patch
   attempt, tracking ID, capacity, and retention controls. Effective patch tracking IDs are
   available on native success and error responses. A caller-supplied ID is retained when a
   submitted patch's Go wait is cancelled.
@@ -47,8 +48,8 @@
   results, and resumable driver continuation tokens.
   See [PR 27635](https://github.com/Azure/azure-sdk-for-go/pull/27635).
 * Query page fetches use shared operation-option validation, immutable input copies, and
-  per-call timeout budgets. Text JSON remains the default; binary wire encoding requires
-  requesting text responses for the pager.
+  per-call timeout budgets. Queries honor client/request binary wire preferences; the native driver
+  automatically converts binary item and query responses to text JSON.
   See [PR 27661](https://github.com/Azure/azure-sdk-for-go/pull/27661).
 * Added the error and response model: `Error` classifies a failure with a `Code` and reports whether
   the service or the client produced it, and `Response`/`ItemResponse` carry what an operation
@@ -74,14 +75,6 @@
 
 ### Breaking Changes
 
-* Adopted the published native 0.2.0 no-cancellation contract. Initialization and query contexts
-  stop waiting, but native operations continue. Submitted point item calls await authoritative
-  completion. Closing clients drains native work before freeing resources.
-  See [PR 27661](https://github.com/Azure/azure-sdk-for-go/pull/27661).
-* Unset encoding options now inherit the driver's binary JSON default. Raw response bytes can be
-  Cosmos binary JSON; select `BinaryEncodingOptions.RequestTextResponse` with binary enabled,
-  or explicitly disable binary encoding before decoding with `encoding/json`.
-  See [PR 27661](https://github.com/Azure/azure-sdk-for-go/pull/27661).
 * This is the first release of `github.com/Azure/azure-sdk-for-go/sdk/data/azcosmos/v2`. The v2
   module replaces the v1 pure-Go implementation with a binding to the shared Rust Cosmos driver,
   so it is a full rewrite of the public surface rather than an incremental change. The complete

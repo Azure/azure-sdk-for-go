@@ -67,18 +67,6 @@ func emulatorClientConfigured(
 	cred, err := NewKeyCredential(emulatorKey)
 	require.NoError(t, err)
 
-	// Existing semantic assertions decode JSON; binary-default behavior has separate coverage.
-	var configured ClientOptions
-	if options != nil {
-		configured = *options
-	}
-	if configured.Operation.BinaryEncoding == nil {
-		configured.Operation.BinaryEncoding = &BinaryEncodingOptions{Enabled: to(true), RequestTextResponse: true}
-	}
-	if configured.BinaryEncoding == nil {
-		configured.BinaryEncoding = configured.Operation.BinaryEncoding.clone()
-	}
-	options = &configured
 	client, err := NewClientWithKey(endpoint, cred, options)
 	require.NoError(t, err)
 	t.Cleanup(func() { require.NoError(t, client.Close()) })
@@ -353,12 +341,16 @@ func TestEmulatorReadItemIfNoneMatch(t *testing.T) {
 	require.NotEmpty(t, created.ETag)
 
 	unchanged := created.ETag
-	response, err := container.ReadItem(ctx, pk, id, &ReadItemOptions{IfNoneMatchETag: &unchanged})
+	condition, err := IfNoneMatch(unchanged)
+	require.NoError(t, err)
+	response, err := container.ReadItem(ctx, pk, id, &ReadItemOptions{Precondition: condition})
 	require.NoError(t, err, "an unchanged item is not an error")
 	require.Empty(t, response.Value, "the item has not changed, so it is not sent")
 
 	stale := azcore.ETag("\"00000000-0000-0000-0000-000000000000\"")
-	response, err = container.ReadItem(ctx, pk, id, &ReadItemOptions{IfNoneMatchETag: &stale})
+	condition, err = IfNoneMatch(stale)
+	require.NoError(t, err)
+	response, err = container.ReadItem(ctx, pk, id, &ReadItemOptions{Precondition: condition})
 	require.NoError(t, err)
 	require.NotEmpty(t, response.Value, "the ETag does not match, so the item is sent")
 }
@@ -462,18 +454,20 @@ func TestEmulatorConditionalItemWrites(t *testing.T) {
 	var patch PatchOperations
 	require.NoError(t, patch.AppendSet("/value", 2))
 
-	_, err = container.ReplaceItem(ctx, pk, id, replacement, &ReplaceItemOptions{IfMatchETag: &stale})
+	staleCondition, err := IfMatch(stale)
+	require.NoError(t, err)
+	_, err = container.ReplaceItem(ctx, pk, id, replacement, &ReplaceItemOptions{Precondition: staleCondition})
 	requireWireError(t, err, CodePreconditionFailed, 412)
-	_, err = container.UpsertItem(ctx, pk, id, replacement, &UpsertItemOptions{IfMatchETag: &stale})
+	_, err = container.UpsertItem(ctx, pk, id, replacement, &UpsertItemOptions{Precondition: staleCondition})
 	requireWireError(t, err, CodePreconditionFailed, 412)
 	_, err = container.PatchItem(ctx, pk, id, patch, &PatchItemOptions{IfMatchETag: &stale})
 	requirePatchPreconditionError(t, err)
-	_, err = container.DeleteItem(ctx, pk, id, &DeleteItemOptions{IfMatchETag: &stale})
+	_, err = container.DeleteItem(ctx, pk, id, &DeleteItemOptions{Precondition: staleCondition})
 	requireWireError(t, err, CodePreconditionFailed, 412)
 
-	replaced, err := container.ReplaceItem(ctx, pk, id, replacement, &ReplaceItemOptions{
-		IfMatchETag: &created.ETag,
-	})
+	createdCondition, err := IfMatch(created.ETag)
+	require.NoError(t, err)
+	replaced, err := container.ReplaceItem(ctx, pk, id, replacement, &ReplaceItemOptions{Precondition: createdCondition})
 	require.NoError(t, err)
 	require.NotEmpty(t, replaced.ETag)
 
@@ -488,13 +482,15 @@ func TestEmulatorConditionalItemWrites(t *testing.T) {
 	missing, err := json.Marshal(map[string]any{"id": missingID, "pk": missingID})
 	require.NoError(t, err)
 	_, err = container.UpsertItem(ctx, missingPK, missingID, missing, &UpsertItemOptions{
-		IfMatchETag: &stale,
+		Precondition: staleCondition,
 	})
 	require.NoError(t, err, "a missing item is created even with a stale If-Match")
 
 	read, err := container.ReadItem(ctx, pk, id, nil)
 	require.NoError(t, err)
-	deleted, err := container.DeleteItem(ctx, pk, id, &DeleteItemOptions{IfMatchETag: &read.ETag})
+	readCondition, err := IfMatch(read.ETag)
+	require.NoError(t, err)
+	deleted, err := container.DeleteItem(ctx, pk, id, &DeleteItemOptions{Precondition: readCondition})
 	require.NoError(t, err)
 	require.Nil(t, deleted.Value)
 }

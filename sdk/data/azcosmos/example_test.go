@@ -187,11 +187,7 @@ func ExampleContainerClient_ReadItem() {
 	container, closeClient := exampleContainer()
 	pk := azcosmos.NewPartitionKeyString("gear-surf-surfboards")
 
-	response, err := container.ReadItem(context.TODO(), pk, "item-1", &azcosmos.ReadItemOptions{
-		Operation: azcosmos.OperationOptions{
-			BinaryEncoding: &azcosmos.BinaryEncodingOptions{RequestTextResponse: true},
-		},
-	})
+	response, err := container.ReadItem(context.TODO(), pk, "item-1", nil)
 	if err != nil {
 		// TODO: Update the following line with your application specific error handling logic
 		log.Fatalf("ERROR: %s", err)
@@ -222,7 +218,7 @@ func ExampleNewRuntime() {
 	}
 	client, err := azcosmos.NewClient("https://myaccount.documents.azure.com", credential, &azcosmos.ClientOptions{
 		Runtime:        runtime,
-		BinaryEncoding: &azcosmos.BinaryEncodingOptions{RequestTextResponse: true},
+		BinaryEncoding: &azcosmos.BinaryEncodingOptions{},
 	})
 	if err != nil {
 		// TODO: Update the following line with your application specific error handling logic

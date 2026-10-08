@@ -124,7 +124,7 @@ func (o OperationOptions) toNative() (*C.cosmos_operation_options_t, func()) {
 	}
 	if o.BinaryEncoding != nil {
 		options.binary_encoding_enabled = nativeBool(o.BinaryEncoding.enabled())
-		options.binary_encoding_request_text_response = nativeBool(o.BinaryEncoding.RequestTextResponse)
+		options.binary_encoding_request_text_response = nativeBool(o.BinaryEncoding.enabled())
 	}
 	if o.ThroughputControl.ThroughputBucket != nil {
 		options.throughput_bucket = C.int64_t(*o.ThroughputControl.ThroughputBucket)

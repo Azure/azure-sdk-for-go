@@ -33,9 +33,10 @@ type ClientOptions struct {
 	// [ProximityTo] expands a known application region to the SDK's estimated proximity order.
 	Routing RoutingStrategy
 
-	// BinaryEncoding sets the SDK's client encoding default for create/read/replace/upsert.
+	// BinaryEncoding sets the SDK's client wire-encoding default for create/read/replace/upsert and queries.
 	// Nil resolves AZURE_COSMOS_BINARY_ENCODING_ENABLED at construction, then defaults to enabled.
-	// Explicit request encoding overrides this value. PATCH and delete use Operation inheritance.
+	// Explicit request encoding overrides this value. Responses are text JSON.
+	// PATCH and delete use Operation inheritance.
 	BinaryEncoding *BinaryEncodingOptions
 	// DiagnosticsHandler observes completed item calls after their lifetime guard is released.
 	// It must be safe for concurrent calls. Query-specific diagnostics are not configured here.

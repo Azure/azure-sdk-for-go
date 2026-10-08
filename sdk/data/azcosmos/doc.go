@@ -30,8 +30,7 @@
 //
 // # Response encoding
 //
-// ItemResponse.Value can contain Cosmos binary JSON by default. Select BinaryEncodingOptions with
-// RequestTextResponse true before decoding responses with encoding/json, or explicitly set Enabled
-// to false. A nil Enabled defaults to true. Go does not deserialize item schemas.
-// QueryItemsResponse.Items always contains text JSON values; queries default to text wire encoding.
+// Binary wire encoding is enabled by default; native code converts responses to text JSON.
+// Set BinaryEncodingOptions.Enabled to false to disable binary wire encoding.
+// ItemResponse.Value and QueryItemsResponse.Items contain text JSON, not decoded application models.
 package azcosmos

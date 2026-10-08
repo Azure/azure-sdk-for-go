@@ -535,7 +535,7 @@ func TestEmulatorQueryEncodingAndRuntimeDefaults(t *testing.T) {
 	for _, encoding := range []*BinaryEncodingOptions{
 		nil,
 		{Enabled: to(false)},
-		{Enabled: to(true), RequestTextResponse: true},
+		{Enabled: to(true)},
 	} {
 		pager := container.NewQueryItemsPager(NewQuery("SELECT VALUE c.value FROM c"),
 			NewFeedScopeForPartitionKey(pk), &QueryOptions{Operation: OperationOptions{BinaryEncoding: encoding}})

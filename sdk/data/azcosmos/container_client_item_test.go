@@ -456,26 +456,17 @@ func TestItemOperationsRejectNULSessionToken(t *testing.T) {
 	require.ErrorContains(t, err, "session token must not contain a NUL byte")
 }
 
-func TestItemWritesRejectInvalidIfMatchETag(t *testing.T) {
+func TestPatchItemRejectsInvalidIfMatchETag(t *testing.T) {
 	container := newTestContainer(t)
-	item := []byte(`{"id":"item-1","pk":"pk"}`)
 	pk := NewPartitionKeyString("pk")
 
 	for _, etag := range []azcore.ETag{"", "\"etag\x00suffix\""} {
 		t.Run(string(etag), func(t *testing.T) {
-			_, replaceErr := container.ReplaceItem(context.Background(), pk, "item-1", item,
-				&ReplaceItemOptions{IfMatchETag: &etag})
-			_, upsertErr := container.UpsertItem(context.Background(), pk, "item-1", item,
-				&UpsertItemOptions{IfMatchETag: &etag})
-			_, deleteErr := container.DeleteItem(context.Background(), pk, "item-1",
-				&DeleteItemOptions{IfMatchETag: &etag})
 			_, patchErr := container.PatchItem(context.Background(), pk, "item-1", validPatchOperations(t),
 				&PatchItemOptions{IfMatchETag: &etag})
 
-			for _, err := range []error{replaceErr, upsertErr, deleteErr, patchErr} {
-				require.Error(t, err)
-				requireNotDriverUnavailable(t, err)
-			}
+			require.Error(t, patchErr)
+			requireNotDriverUnavailable(t, patchErr)
 		})
 	}
 }
@@ -498,34 +489,6 @@ func TestPatchClientSidePreconditionErrorIsClassified(t *testing.T) {
 	require.Same(t, original, normalizeItemOperationError(operationKindReplaceItem, original))
 	original.FromWire = true
 	require.Same(t, original, normalizeItemOperationError(operationKindPatchItem, original))
-}
-
-func TestReadItemRejectsNULETag(t *testing.T) {
-	container := newTestContainer(t)
-	etag := azcore.ETag("\"etag\x00suffix\"")
-
-	_, err := container.ReadItem(
-		context.Background(),
-		NewPartitionKeyString("pk"),
-		"item-1",
-		&ReadItemOptions{IfNoneMatchETag: &etag},
-	)
-
-	require.ErrorContains(t, err, "IfNoneMatchETag must not contain a NUL byte")
-}
-
-func TestReadItemRejectsEmptyETag(t *testing.T) {
-	container := newTestContainer(t)
-	etag := azcore.ETag("")
-
-	_, err := container.ReadItem(
-		context.Background(),
-		NewPartitionKeyString("pk"),
-		"item-1",
-		&ReadItemOptions{IfNoneMatchETag: &etag},
-	)
-
-	require.ErrorContains(t, err, "IfNoneMatchETag must not be empty")
 }
 
 func TestEndToEndTimeoutPreservesStricterContext(t *testing.T) {

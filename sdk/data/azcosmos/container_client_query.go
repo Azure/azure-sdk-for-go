@@ -21,6 +21,9 @@ func (c *ContainerClient) NewQueryItemsPager(query Query, scope FeedScope, optio
 	req, err := newQueryRequest(query, scope, options)
 	req.databaseID = c.database.id
 	req.containerID = c.id
+	if req.options.Operation.BinaryEncoding == nil {
+		req.options.Operation.BinaryEncoding = c.database.client.binaryEncoding.clone()
+	}
 	return &QueryItemsPager{client: c.database.client, req: req, validationErr: err}
 }
 
@@ -201,13 +204,6 @@ func newQueryRequest(query Query, scope FeedScope, options *QueryOptions) (query
 	}
 	if err := req.options.Operation.validate(); err != nil {
 		return req, err
-	}
-	// The pager splits a text JSON envelope; unlike point items it cannot return opaque binary.
-	if req.options.Operation.BinaryEncoding == nil {
-		req.options.Operation.BinaryEncoding = &BinaryEncodingOptions{Enabled: new(bool)}
-	}
-	if encoding := req.options.Operation.BinaryEncoding; encoding.enabled() && !encoding.RequestTextResponse {
-		return req, errors.New("azcosmos: queries require text JSON responses; enable RequestTextResponse or disable binary encoding")
 	}
 	if err := req.options.SessionToken.validate(); err != nil {
 		return req, err

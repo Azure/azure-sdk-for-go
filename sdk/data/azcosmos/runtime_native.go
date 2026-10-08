@@ -30,6 +30,10 @@ func openRuntime(config RuntimeOptions) (*nativeRuntime, error) {
 	identifier, allocation := toNativeString(wrappingSDKIdentifier())
 	defer C.free(allocation)
 	options.wrapping_sdk_identifier = identifier
+	// Establish the default conversion at the lowest programmatic layer without overriding requests.
+	if config.Operation.BinaryEncoding == nil {
+		config.Operation.BinaryEncoding = &BinaryEncodingOptions{}
+	}
 	common, release := config.Operation.toNative()
 	defer release()
 	options.operation_options = common

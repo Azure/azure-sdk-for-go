@@ -104,8 +104,8 @@ type FeedOptions struct {
 // QueryOptions configures item queries. A nil *QueryOptions selects defaults.
 type QueryOptions struct {
 	// Operation holds shared settings. Its timeout applies separately to each page fetch.
-	// Queries default to text wire encoding, overriding inherited binary settings. Enabling binary
-	// encoding requires RequestTextResponse because the pager returns text JSON items.
+	// Query encoding follows an explicit request preference or ClientOptions.BinaryEncoding.
+	// Native code converts binary responses to text JSON items automatically.
 	Operation OperationOptions
 
 	// Feed controls page size and resumption.

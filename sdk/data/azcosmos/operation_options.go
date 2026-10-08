@@ -38,8 +38,8 @@ type OperationOptions struct {
 	EndpointUnavailabilityTTL *time.Duration
 	// CustomHeaders replaces inherited custom headers. Nil inherits; an empty map clears them.
 	CustomHeaders map[string]string
-	// BinaryEncoding overrides the entire encoding group. Nil inherits for point items;
-	// QueryOptions defaults to text so the pager can split the JSON feed envelope.
+	// BinaryEncoding controls binary wire encoding. Nil uses the operation's inherited default.
+	// Responses are always returned as text JSON, with native conversion when binary is enabled.
 	BinaryEncoding *BinaryEncodingOptions
 	// ThroughputControl configures independently inherited throughput controls.
 	ThroughputControl ThroughputControlOptions
@@ -96,20 +96,18 @@ func HedgingAvailability(threshold time.Duration) AvailabilityStrategy {
 	return AvailabilityStrategy{kind: 2, threshold: threshold}
 }
 
-// BinaryEncodingOptions controls Cosmos binary JSON wire encoding and response conversion.
-// A supplied zero value enables binary encoding, matching Rust's default options.
+// BinaryEncodingOptions controls Cosmos binary JSON wire encoding.
+// A zero-valued group enables binary; native code automatically converts responses to text JSON.
 type BinaryEncodingOptions struct {
 	// Enabled permits binary JSON on the wire. Nil defaults to true; false explicitly disables it.
 	Enabled *bool
-	// RequestTextResponse converts binary responses to text JSON without disabling binary wire encoding.
-	RequestTextResponse bool
 }
 
 func (o *BinaryEncodingOptions) clone() *BinaryEncodingOptions {
 	if o == nil {
 		return nil
 	}
-	return &BinaryEncodingOptions{Enabled: clonePointer(o.Enabled), RequestTextResponse: o.RequestTextResponse}
+	return &BinaryEncodingOptions{Enabled: clonePointer(o.Enabled)}
 }
 
 func (o BinaryEncodingOptions) enabled() bool {

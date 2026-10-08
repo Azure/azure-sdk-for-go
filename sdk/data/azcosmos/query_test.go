@@ -63,7 +63,7 @@ func TestQueryRequestOwnsOptions(t *testing.T) {
 			EnableContentResponseOnWrite: &enabled,
 			ExcludedRegions:              []Region{RegionEastUS},
 			CustomHeaders:                map[string]string{"x-test": "original"},
-			BinaryEncoding:               &BinaryEncodingOptions{Enabled: to(true), RequestTextResponse: true},
+			BinaryEncoding:               &BinaryEncodingOptions{Enabled: to(true)},
 			MaxFailoverRetryCount:        to(uint32(3)),
 			ThrottlingRetry:              ThrottlingRetryOptions{MaxRetryCount: to(uint32(1))},
 			ThroughputControl:            ThroughputControlOptions{ThroughputBucket: to(uint32(2))},
@@ -119,7 +119,6 @@ func TestQueryPagerArgumentAndLifetimeOrdering(t *testing.T) {
 		{"invalid timeout", NewQuery("SELECT * FROM c"), scope, &QueryOptions{Operation: OperationOptions{EndToEndTimeout: to(time.Duration(-1))}}, "EndToEndTimeout"},
 		{"invalid header", NewQuery("SELECT * FROM c"), scope, &QueryOptions{Operation: OperationOptions{CustomHeaders: map[string]string{"x-test": "\r\n"}}}, "custom header"},
 		{"invalid availability", NewQuery("SELECT * FROM c"), scope, &QueryOptions{Operation: OperationOptions{AvailabilityStrategy: HedgingAvailability(0)}}, "positive threshold"},
-		{"raw binary", NewQuery("SELECT * FROM c"), scope, &QueryOptions{Operation: OperationOptions{BinaryEncoding: &BinaryEncodingOptions{Enabled: to(true)}}}, "queries require text JSON"},
 		{"invalid session", NewQuery("SELECT * FROM c"), scope, &QueryOptions{SessionToken: "a\x00b"}, "session"},
 		{"invalid plan mode", NewQuery("SELECT * FROM c"), scope, &QueryOptions{QueryPlanMode: "invalid"}, "query plan mode"},
 	} {

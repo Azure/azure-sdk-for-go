@@ -13,13 +13,30 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+func TestNativeBinaryEncodingAutomaticallyRequestsText(t *testing.T) {
+	for _, tt := range []struct {
+		encoding *BinaryEncodingOptions
+		want     int8
+	}{
+		{nil, 0},
+		{&BinaryEncodingOptions{}, 2},
+		{&BinaryEncodingOptions{Enabled: to(true)}, 2},
+		{&BinaryEncodingOptions{Enabled: to(false)}, 1},
+	} {
+		options, release := inspectNativeOperationOptions(OperationOptions{BinaryEncoding: tt.encoding})
+		require.Equal(t, tt.want, options.binaryEncodingEnabled)
+		require.Equal(t, tt.want, options.binaryTextResponse)
+		release()
+	}
+}
+
 func TestFullOperationOptionsNativePresence(t *testing.T) {
 	options := OperationOptions{
 		ConsistencyStrategy: ReadConsistencyStrategyDefault, EnableContentResponseOnWrite: to(false),
 		ExcludedRegions: []Region{}, EndToEndTimeout: to(time.Duration(3 * time.Second)), PatchStrategy: PatchStrategyClientSide,
 		SessionCapturingDisabled: to(false), MaxFailoverRetryCount: to(uint32(math.MaxUint32)),
 		MaxSessionRetryCount: to(uint32(0)), EndpointUnavailabilityTTL: to(time.Duration(0)),
-		CustomHeaders: map[string]string{"X-Test": "value"}, BinaryEncoding: &BinaryEncodingOptions{Enabled: to(true), RequestTextResponse: true},
+		CustomHeaders: map[string]string{"X-Test": "value"}, BinaryEncoding: &BinaryEncodingOptions{Enabled: to(true)},
 		ThroughputControl: ThroughputControlOptions{ThroughputBucket: to(uint32(math.MaxUint32)), PriorityLevel: PriorityLevelLow},
 		ThrottlingRetry:   ThrottlingRetryOptions{MaxRetryCount: to(uint32(0)), MaxRetryWaitTime: to(time.Duration(0))},
 		HedgingEnabled:    to(false), AvailabilityStrategy: HedgingAvailability(time.Nanosecond),

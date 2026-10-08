@@ -24,14 +24,12 @@ func TestBinaryEncodingRustDefaultsAndEnvironment(t *testing.T) {
 }
 
 func TestClientCopiesDedicatedBinaryOptions(t *testing.T) {
-	options := &BinaryEncodingOptions{Enabled: to(false), RequestTextResponse: true}
+	options := &BinaryEncodingOptions{Enabled: to(false)}
 	client, err := NewClientWithKey("https://myaccount.documents.azure.com", mustKeyCredential(t), &ClientOptions{BinaryEncoding: options})
 	require.NoError(t, err)
 	t.Cleanup(func() { require.NoError(t, client.Close()) })
 	*options.Enabled = true
-	options.RequestTextResponse = false
 	require.False(t, client.binaryEncoding.enabled())
-	require.True(t, client.binaryEncoding.RequestTextResponse)
 }
 
 func TestPatchTrackingRustRetentionAndUUID(t *testing.T) {

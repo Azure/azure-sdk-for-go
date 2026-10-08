@@ -9,7 +9,6 @@ import (
 	"testing"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/stretchr/testify/require"
 )
 
@@ -109,11 +108,7 @@ func TestCommonValidationAcrossAllItemOperations(t *testing.T) {
 	}
 }
 
-func TestPreconditionsAndTrackingValidation(t *testing.T) {
-	tag := azcore.ETag(`"tag"`)
-	require.Error(t, validatePreconditions(&tag, &tag))
-	require.NoError(t, validatePreconditions(nil, &tag))
-	require.NoError(t, validatePreconditions(&tag, nil))
+func TestTrackingValidation(t *testing.T) {
 	for _, options := range []PatchItemOptions{
 		{MaxAttempts: to(uint8(0))}, {TrackingCapacity: to(uint16(0))},
 		{TrackingRetention: to(time.Duration(-1))},
@@ -125,35 +120,4 @@ func TestPreconditionsAndTrackingValidation(t *testing.T) {
 		MaxAttempts: to(uint8(255)), TrackingCapacity: to(uint16(65535)),
 		TrackingRetention: to(time.Duration(0)), TrackingID: "00112233-4455-6677-8899-aabbccddeeff",
 	}).validateTracking())
-}
-
-func TestAllItemAPIsRejectConflictingPreconditions(t *testing.T) {
-	client := &Client{closed: true}
-	container, err := client.NewContainer("db", "container")
-	require.NoError(t, err)
-	tag := azcore.ETag(`"tag"`)
-	pk := NewPartitionKeyString("pk")
-	ctx := context.Background()
-	calls := []func() (ItemResponse, error){
-		func() (ItemResponse, error) {
-			return container.ReadItem(ctx, pk, "id", &ReadItemOptions{IfMatchETag: &tag, IfNoneMatchETag: &tag})
-		},
-		func() (ItemResponse, error) {
-			return container.CreateItem(ctx, pk, "id", []byte("{}"), &CreateItemOptions{IfMatchETag: &tag, IfNoneMatchETag: &tag})
-		},
-		func() (ItemResponse, error) {
-			return container.ReplaceItem(ctx, pk, "id", []byte("{}"), &ReplaceItemOptions{IfMatchETag: &tag, IfNoneMatchETag: &tag})
-		},
-		func() (ItemResponse, error) {
-			return container.UpsertItem(ctx, pk, "id", []byte("{}"), &UpsertItemOptions{IfMatchETag: &tag, IfNoneMatchETag: &tag})
-		},
-		func() (ItemResponse, error) {
-			return container.DeleteItem(ctx, pk, "id", &DeleteItemOptions{IfMatchETag: &tag, IfNoneMatchETag: &tag})
-		},
-	}
-	for _, call := range calls {
-		response, err := call()
-		require.ErrorContains(t, err, "cannot both be set")
-		require.Empty(t, response)
-	}
 }

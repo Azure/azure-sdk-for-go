@@ -47,8 +47,8 @@ type ItemResponse struct {
 	SessionToken SessionToken
 
 	// Value is the raw item content the service returned. It is nil when the operation did not
-	// request a content response, and for operations that do not return an item. The default
-	// encoding can be Cosmos binary JSON; request text explicitly before using encoding/json.
+	// request a content response, and for operations that do not return an item.
+	// Binary wire responses are converted to text JSON by the native driver.
 	Value []byte
 }
 

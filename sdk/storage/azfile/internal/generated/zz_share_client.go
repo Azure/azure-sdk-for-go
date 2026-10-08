@@ -20,7 +20,7 @@ import (
 // ShareClient contains the methods for the Share group.
 // Don't use this type directly, use a constructor function instead.
 //
-// Generated from API version 2026-10-06
+// Generated from API version 2027-03-07
 type ShareClient struct {
 	internal *azcore.Client
 	url      string
@@ -40,12 +40,7 @@ func (client *ShareClient) AcquireLease(ctx context.Context, options *ShareClien
 	if err != nil {
 		return ShareClientAcquireLeaseResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return ShareClientAcquireLeaseResponse{}, err
-	}
-	resp, err := client.acquireLeaseHandleResponse(httpResp)
-	return resp, err
+	return client.acquireLeaseHandleResponse(httpResp, http.StatusCreated)
 }
 
 // acquireLeaseCreateRequest creates the AcquireLease request.
@@ -76,14 +71,17 @@ func (client *ShareClient) acquireLeaseCreateRequest(ctx context.Context, option
 	if options != nil && options.ProposedLeaseID != nil {
 		req.Raw().Header["x-ms-proposed-lease-id"] = []string{*options.ProposedLeaseID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{version20261006}
+	req.Raw().Header["x-ms-version"] = []string{version20270307}
 	return req, nil
 }
 
 // acquireLeaseHandleResponse handles the AcquireLease response.
-func (client *ShareClient) acquireLeaseHandleResponse(resp *http.Response) (ShareClientAcquireLeaseResponse, error) {
+func (client *ShareClient) acquireLeaseHandleResponse(resp *http.Response, successCodes ...int) (ShareClientAcquireLeaseResponse, error) {
 	result := ShareClientAcquireLeaseResponse{}
-	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("X-Ms-Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
 	if val := resp.Header.Get("Date"); val != "" {
@@ -93,7 +91,7 @@ func (client *ShareClient) acquireLeaseHandleResponse(resp *http.Response) (Shar
 		}
 		result.Date = &date
 	}
-	if val := resp.Header.Get("ETag"); val != "" {
+	if val := resp.Header.Get("Etag"); val != "" {
 		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
@@ -103,13 +101,13 @@ func (client *ShareClient) acquireLeaseHandleResponse(resp *http.Response) (Shar
 		}
 		result.LastModified = &lastModified
 	}
-	if val := resp.Header.Get("x-ms-lease-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Lease-Id"); val != "" {
 		result.LeaseID = &val
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
+	if val := resp.Header.Get("X-Ms-Version"); val != "" {
 		result.Version = &val
 	}
 	return result, nil
@@ -129,12 +127,7 @@ func (client *ShareClient) BreakLease(ctx context.Context, options *ShareClientB
 	if err != nil {
 		return ShareClientBreakLeaseResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return ShareClientBreakLeaseResponse{}, err
-	}
-	resp, err := client.breakLeaseHandleResponse(httpResp)
-	return resp, err
+	return client.breakLeaseHandleResponse(httpResp, http.StatusAccepted)
 }
 
 // breakLeaseCreateRequest creates the BreakLease request.
@@ -165,14 +158,17 @@ func (client *ShareClient) breakLeaseCreateRequest(ctx context.Context, options 
 	if options != nil && options.LeaseID != nil {
 		req.Raw().Header["x-ms-lease-id"] = []string{*options.LeaseID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{version20261006}
+	req.Raw().Header["x-ms-version"] = []string{version20270307}
 	return req, nil
 }
 
 // breakLeaseHandleResponse handles the BreakLease response.
-func (client *ShareClient) breakLeaseHandleResponse(resp *http.Response) (ShareClientBreakLeaseResponse, error) {
+func (client *ShareClient) breakLeaseHandleResponse(resp *http.Response, successCodes ...int) (ShareClientBreakLeaseResponse, error) {
 	result := ShareClientBreakLeaseResponse{}
-	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("X-Ms-Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
 	if val := resp.Header.Get("Date"); val != "" {
@@ -182,7 +178,7 @@ func (client *ShareClient) breakLeaseHandleResponse(resp *http.Response) (ShareC
 		}
 		result.Date = &date
 	}
-	if val := resp.Header.Get("ETag"); val != "" {
+	if val := resp.Header.Get("Etag"); val != "" {
 		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
@@ -192,10 +188,10 @@ func (client *ShareClient) breakLeaseHandleResponse(resp *http.Response) (ShareC
 		}
 		result.LastModified = &lastModified
 	}
-	if val := resp.Header.Get("x-ms-lease-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Lease-Id"); val != "" {
 		result.LeaseID = &val
 	}
-	if val := resp.Header.Get("x-ms-lease-time"); val != "" {
+	if val := resp.Header.Get("X-Ms-Lease-Time"); val != "" {
 		leaseTime32, err := strconv.ParseInt(val, 10, 32)
 		leaseTime := int32(leaseTime32)
 		if err != nil {
@@ -203,10 +199,10 @@ func (client *ShareClient) breakLeaseHandleResponse(resp *http.Response) (ShareC
 		}
 		result.LeaseTime = &leaseTime
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
+	if val := resp.Header.Get("X-Ms-Version"); val != "" {
 		result.Version = &val
 	}
 	return result, nil
@@ -227,12 +223,7 @@ func (client *ShareClient) ChangeLease(ctx context.Context, leaseID string, opti
 	if err != nil {
 		return ShareClientChangeLeaseResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ShareClientChangeLeaseResponse{}, err
-	}
-	resp, err := client.changeLeaseHandleResponse(httpResp)
-	return resp, err
+	return client.changeLeaseHandleResponse(httpResp, http.StatusOK)
 }
 
 // changeLeaseCreateRequest creates the ChangeLease request.
@@ -261,14 +252,17 @@ func (client *ShareClient) changeLeaseCreateRequest(ctx context.Context, leaseID
 	if options != nil && options.ProposedLeaseID != nil {
 		req.Raw().Header["x-ms-proposed-lease-id"] = []string{*options.ProposedLeaseID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{version20261006}
+	req.Raw().Header["x-ms-version"] = []string{version20270307}
 	return req, nil
 }
 
 // changeLeaseHandleResponse handles the ChangeLease response.
-func (client *ShareClient) changeLeaseHandleResponse(resp *http.Response) (ShareClientChangeLeaseResponse, error) {
+func (client *ShareClient) changeLeaseHandleResponse(resp *http.Response, successCodes ...int) (ShareClientChangeLeaseResponse, error) {
 	result := ShareClientChangeLeaseResponse{}
-	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("X-Ms-Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
 	if val := resp.Header.Get("Date"); val != "" {
@@ -278,7 +272,7 @@ func (client *ShareClient) changeLeaseHandleResponse(resp *http.Response) (Share
 		}
 		result.Date = &date
 	}
-	if val := resp.Header.Get("ETag"); val != "" {
+	if val := resp.Header.Get("Etag"); val != "" {
 		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
@@ -288,13 +282,13 @@ func (client *ShareClient) changeLeaseHandleResponse(resp *http.Response) (Share
 		}
 		result.LastModified = &lastModified
 	}
-	if val := resp.Header.Get("x-ms-lease-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Lease-Id"); val != "" {
 		result.LeaseID = &val
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
+	if val := resp.Header.Get("X-Ms-Version"); val != "" {
 		result.Version = &val
 	}
 	return result, nil
@@ -314,12 +308,7 @@ func (client *ShareClient) Create(ctx context.Context, options *ShareClientCreat
 	if err != nil {
 		return ShareClientCreateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return ShareClientCreateResponse{}, err
-	}
-	resp, err := client.createHandleResponse(httpResp)
-	return resp, err
+	return client.createHandleResponse(httpResp, http.StatusCreated)
 }
 
 // createCreateRequest creates the Create request.
@@ -380,14 +369,17 @@ func (client *ShareClient) createCreateRequest(ctx context.Context, options *Sha
 	if options != nil && options.Quota != nil {
 		req.Raw().Header["x-ms-share-quota"] = []string{strconv.FormatInt(int64(*options.Quota), 10)}
 	}
-	req.Raw().Header["x-ms-version"] = []string{version20261006}
+	req.Raw().Header["x-ms-version"] = []string{version20270307}
 	return req, nil
 }
 
 // createHandleResponse handles the Create response.
-func (client *ShareClient) createHandleResponse(resp *http.Response) (ShareClientCreateResponse, error) {
+func (client *ShareClient) createHandleResponse(resp *http.Response, successCodes ...int) (ShareClientCreateResponse, error) {
 	result := ShareClientCreateResponse{}
-	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("X-Ms-Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
 	if val := resp.Header.Get("Date"); val != "" {
@@ -397,7 +389,7 @@ func (client *ShareClient) createHandleResponse(resp *http.Response) (ShareClien
 		}
 		result.Date = &date
 	}
-	if val := resp.Header.Get("ETag"); val != "" {
+	if val := resp.Header.Get("Etag"); val != "" {
 		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
@@ -407,45 +399,45 @@ func (client *ShareClient) createHandleResponse(resp *http.Response) (ShareClien
 		}
 		result.LastModified = &lastModified
 	}
-	if val := resp.Header.Get("x-ms-share-max-burst-credits-for-iops"); val != "" {
+	if val := resp.Header.Get("X-Ms-Share-Max-Burst-Credits-For-Iops"); val != "" {
 		maxBurstCreditsForIops, err := strconv.ParseInt(val, 10, 64)
 		if err != nil {
 			return ShareClientCreateResponse{}, err
 		}
 		result.MaxBurstCreditsForIops = &maxBurstCreditsForIops
 	}
-	if val := resp.Header.Get("x-ms-share-quota"); val != "" {
+	if val := resp.Header.Get("X-Ms-Share-Quota"); val != "" {
 		quota, err := strconv.ParseInt(val, 10, 64)
 		if err != nil {
 			return ShareClientCreateResponse{}, err
 		}
 		result.Quota = &quota
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-share-included-burst-iops"); val != "" {
+	if val := resp.Header.Get("X-Ms-Share-Included-Burst-Iops"); val != "" {
 		shareIncludedBurstIops, err := strconv.ParseInt(val, 10, 64)
 		if err != nil {
 			return ShareClientCreateResponse{}, err
 		}
 		result.ShareIncludedBurstIops = &shareIncludedBurstIops
 	}
-	if val := resp.Header.Get("x-ms-share-provisioned-bandwidth-mibps"); val != "" {
+	if val := resp.Header.Get("X-Ms-Share-Provisioned-Bandwidth-Mibps"); val != "" {
 		shareProvisionedBandwidthMibps, err := strconv.ParseInt(val, 10, 64)
 		if err != nil {
 			return ShareClientCreateResponse{}, err
 		}
 		result.ShareProvisionedBandwidthMibps = &shareProvisionedBandwidthMibps
 	}
-	if val := resp.Header.Get("x-ms-share-provisioned-iops"); val != "" {
+	if val := resp.Header.Get("X-Ms-Share-Provisioned-Iops"); val != "" {
 		shareProvisionedIops, err := strconv.ParseInt(val, 10, 64)
 		if err != nil {
 			return ShareClientCreateResponse{}, err
 		}
 		result.ShareProvisionedIops = &shareProvisionedIops
 	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
+	if val := resp.Header.Get("X-Ms-Version"); val != "" {
 		result.Version = &val
 	}
 	return result, nil
@@ -465,12 +457,7 @@ func (client *ShareClient) CreatePermission(ctx context.Context, permission Shar
 	if err != nil {
 		return ShareClientCreatePermissionResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return ShareClientCreatePermissionResponse{}, err
-	}
-	resp, err := client.createPermissionHandleResponse(httpResp)
-	return resp, err
+	return client.createPermissionHandleResponse(httpResp, http.StatusCreated)
 }
 
 // createPermissionCreateRequest creates the CreatePermission request.
@@ -491,7 +478,7 @@ func (client *ShareClient) createPermissionCreateRequest(ctx context.Context, pe
 	if options != nil && options.FileRequestIntent != nil {
 		req.Raw().Header["x-ms-file-request-intent"] = []string{string(*options.FileRequestIntent)}
 	}
-	req.Raw().Header["x-ms-version"] = []string{version20261006}
+	req.Raw().Header["x-ms-version"] = []string{version20270307}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, permission); err != nil {
 		return nil, err
@@ -500,9 +487,12 @@ func (client *ShareClient) createPermissionCreateRequest(ctx context.Context, pe
 }
 
 // createPermissionHandleResponse handles the CreatePermission response.
-func (client *ShareClient) createPermissionHandleResponse(resp *http.Response) (ShareClientCreatePermissionResponse, error) {
+func (client *ShareClient) createPermissionHandleResponse(resp *http.Response, successCodes ...int) (ShareClientCreatePermissionResponse, error) {
 	result := ShareClientCreatePermissionResponse{}
-	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("X-Ms-Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
 	if val := resp.Header.Get("Date"); val != "" {
@@ -512,13 +502,13 @@ func (client *ShareClient) createPermissionHandleResponse(resp *http.Response) (
 		}
 		result.Date = &date
 	}
-	if val := resp.Header.Get("x-ms-file-permission-key"); val != "" {
+	if val := resp.Header.Get("X-Ms-File-Permission-Key"); val != "" {
 		result.FilePermissionKey = &val
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
+	if val := resp.Header.Get("X-Ms-Version"); val != "" {
 		result.Version = &val
 	}
 	return result, nil
@@ -537,12 +527,7 @@ func (client *ShareClient) CreateSnapshot(ctx context.Context, options *ShareCli
 	if err != nil {
 		return ShareClientCreateSnapshotResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return ShareClientCreateSnapshotResponse{}, err
-	}
-	resp, err := client.createSnapshotHandleResponse(httpResp)
-	return resp, err
+	return client.createSnapshotHandleResponse(httpResp, http.StatusCreated)
 }
 
 // createSnapshotCreateRequest creates the CreateSnapshot request.
@@ -570,14 +555,17 @@ func (client *ShareClient) createSnapshotCreateRequest(ctx context.Context, opti
 			}
 		}
 	}
-	req.Raw().Header["x-ms-version"] = []string{version20261006}
+	req.Raw().Header["x-ms-version"] = []string{version20270307}
 	return req, nil
 }
 
 // createSnapshotHandleResponse handles the CreateSnapshot response.
-func (client *ShareClient) createSnapshotHandleResponse(resp *http.Response) (ShareClientCreateSnapshotResponse, error) {
+func (client *ShareClient) createSnapshotHandleResponse(resp *http.Response, successCodes ...int) (ShareClientCreateSnapshotResponse, error) {
 	result := ShareClientCreateSnapshotResponse{}
-	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("X-Ms-Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
 	if val := resp.Header.Get("Date"); val != "" {
@@ -587,7 +575,7 @@ func (client *ShareClient) createSnapshotHandleResponse(resp *http.Response) (Sh
 		}
 		result.Date = &date
 	}
-	if val := resp.Header.Get("ETag"); val != "" {
+	if val := resp.Header.Get("Etag"); val != "" {
 		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
@@ -597,13 +585,13 @@ func (client *ShareClient) createSnapshotHandleResponse(resp *http.Response) (Sh
 		}
 		result.LastModified = &lastModified
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-snapshot"); val != "" {
+	if val := resp.Header.Get("X-Ms-Snapshot"); val != "" {
 		result.Snapshot = &val
 	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
+	if val := resp.Header.Get("X-Ms-Version"); val != "" {
 		result.Version = &val
 	}
 	return result, nil
@@ -623,12 +611,7 @@ func (client *ShareClient) Delete(ctx context.Context, options *ShareClientDelet
 	if err != nil {
 		return ShareClientDeleteResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return ShareClientDeleteResponse{}, err
-	}
-	resp, err := client.deleteHandleResponse(httpResp)
-	return resp, err
+	return client.deleteHandleResponse(httpResp, http.StatusAccepted)
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -658,14 +641,17 @@ func (client *ShareClient) deleteCreateRequest(ctx context.Context, options *Sha
 	if options != nil && options.LeaseID != nil {
 		req.Raw().Header["x-ms-lease-id"] = []string{*options.LeaseID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{version20261006}
+	req.Raw().Header["x-ms-version"] = []string{version20270307}
 	return req, nil
 }
 
 // deleteHandleResponse handles the Delete response.
-func (client *ShareClient) deleteHandleResponse(resp *http.Response) (ShareClientDeleteResponse, error) {
+func (client *ShareClient) deleteHandleResponse(resp *http.Response, successCodes ...int) (ShareClientDeleteResponse, error) {
 	result := ShareClientDeleteResponse{}
-	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("X-Ms-Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
 	if val := resp.Header.Get("Date"); val != "" {
@@ -675,24 +661,24 @@ func (client *ShareClient) deleteHandleResponse(resp *http.Response) (ShareClien
 		}
 		result.Date = &date
 	}
-	if val := resp.Header.Get("x-ms-file-share-snapshot-usage-bytes"); val != "" {
+	if val := resp.Header.Get("X-Ms-File-Share-Snapshot-Usage-Bytes"); val != "" {
 		fileShareSnapshotUsageBytes, err := strconv.ParseInt(val, 10, 64)
 		if err != nil {
 			return ShareClientDeleteResponse{}, err
 		}
 		result.FileShareSnapshotUsageBytes = &fileShareSnapshotUsageBytes
 	}
-	if val := resp.Header.Get("x-ms-file-share-usage-bytes"); val != "" {
+	if val := resp.Header.Get("X-Ms-File-Share-Usage-Bytes"); val != "" {
 		fileShareUsageBytes, err := strconv.ParseInt(val, 10, 64)
 		if err != nil {
 			return ShareClientDeleteResponse{}, err
 		}
 		result.FileShareUsageBytes = &fileShareUsageBytes
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
+	if val := resp.Header.Get("X-Ms-Version"); val != "" {
 		result.Version = &val
 	}
 	return result, nil
@@ -712,12 +698,7 @@ func (client *ShareClient) GetAccessPolicy(ctx context.Context, options *ShareCl
 	if err != nil {
 		return ShareClientGetAccessPolicyResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ShareClientGetAccessPolicyResponse{}, err
-	}
-	resp, err := client.getAccessPolicyHandleResponse(httpResp)
-	return resp, err
+	return client.getAccessPolicyHandleResponse(httpResp, http.StatusOK)
 }
 
 // getAccessPolicyCreateRequest creates the GetAccessPolicy request.
@@ -742,14 +723,17 @@ func (client *ShareClient) getAccessPolicyCreateRequest(ctx context.Context, opt
 	if options != nil && options.LeaseID != nil {
 		req.Raw().Header["x-ms-lease-id"] = []string{*options.LeaseID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{version20261006}
+	req.Raw().Header["x-ms-version"] = []string{version20270307}
 	return req, nil
 }
 
 // getAccessPolicyHandleResponse handles the GetAccessPolicy response.
-func (client *ShareClient) getAccessPolicyHandleResponse(resp *http.Response) (ShareClientGetAccessPolicyResponse, error) {
+func (client *ShareClient) getAccessPolicyHandleResponse(resp *http.Response, successCodes ...int) (ShareClientGetAccessPolicyResponse, error) {
 	result := ShareClientGetAccessPolicyResponse{}
-	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("X-Ms-Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
 	if val := resp.Header.Get("Date"); val != "" {
@@ -759,7 +743,7 @@ func (client *ShareClient) getAccessPolicyHandleResponse(resp *http.Response) (S
 		}
 		result.Date = &date
 	}
-	if val := resp.Header.Get("ETag"); val != "" {
+	if val := resp.Header.Get("Etag"); val != "" {
 		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
@@ -769,10 +753,10 @@ func (client *ShareClient) getAccessPolicyHandleResponse(resp *http.Response) (S
 		}
 		result.LastModified = &lastModified
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
+	if val := resp.Header.Get("X-Ms-Version"); val != "" {
 		result.Version = &val
 	}
 	if err := runtime.UnmarshalAsXML(resp, &result); err != nil {
@@ -797,12 +781,7 @@ func (client *ShareClient) GetPermission(ctx context.Context, filePermissionKey 
 	if err != nil {
 		return ShareClientGetPermissionResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ShareClientGetPermissionResponse{}, err
-	}
-	resp, err := client.getPermissionHandleResponse(httpResp)
-	return resp, err
+	return client.getPermissionHandleResponse(httpResp, http.StatusOK)
 }
 
 // getPermissionCreateRequest creates the GetPermission request.
@@ -828,14 +807,17 @@ func (client *ShareClient) getPermissionCreateRequest(ctx context.Context, fileP
 	if options != nil && options.FileRequestIntent != nil {
 		req.Raw().Header["x-ms-file-request-intent"] = []string{string(*options.FileRequestIntent)}
 	}
-	req.Raw().Header["x-ms-version"] = []string{version20261006}
+	req.Raw().Header["x-ms-version"] = []string{version20270307}
 	return req, nil
 }
 
 // getPermissionHandleResponse handles the GetPermission response.
-func (client *ShareClient) getPermissionHandleResponse(resp *http.Response) (ShareClientGetPermissionResponse, error) {
+func (client *ShareClient) getPermissionHandleResponse(resp *http.Response, successCodes ...int) (ShareClientGetPermissionResponse, error) {
 	result := ShareClientGetPermissionResponse{}
-	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("X-Ms-Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
 	if val := resp.Header.Get("Date"); val != "" {
@@ -845,10 +827,10 @@ func (client *ShareClient) getPermissionHandleResponse(resp *http.Response) (Sha
 		}
 		result.Date = &date
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
+	if val := resp.Header.Get("X-Ms-Version"); val != "" {
 		result.Version = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SharePermission); err != nil {
@@ -870,12 +852,7 @@ func (client *ShareClient) GetProperties(ctx context.Context, options *ShareClie
 	if err != nil {
 		return ShareClientGetPropertiesResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ShareClientGetPropertiesResponse{}, err
-	}
-	resp, err := client.getPropertiesHandleResponse(httpResp)
-	return resp, err
+	return client.getPropertiesHandleResponse(httpResp, http.StatusOK)
 }
 
 // getPropertiesCreateRequest creates the GetProperties request.
@@ -902,28 +879,38 @@ func (client *ShareClient) getPropertiesCreateRequest(ctx context.Context, optio
 	if options != nil && options.LeaseID != nil {
 		req.Raw().Header["x-ms-lease-id"] = []string{*options.LeaseID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{version20261006}
+	req.Raw().Header["x-ms-version"] = []string{version20270307}
 	return req, nil
 }
 
 // getPropertiesHandleResponse handles the GetProperties response.
-func (client *ShareClient) getPropertiesHandleResponse(resp *http.Response) (ShareClientGetPropertiesResponse, error) {
+func (client *ShareClient) getPropertiesHandleResponse(resp *http.Response, successCodes ...int) (ShareClientGetPropertiesResponse, error) {
 	result := ShareClientGetPropertiesResponse{}
-	if val := resp.Header.Get("x-ms-access-tier"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("X-Ms-Access-Tier"); val != "" {
 		result.AccessTier = &val
 	}
-	if val := resp.Header.Get("x-ms-access-tier-change-time"); val != "" {
+	if val := resp.Header.Get("X-Ms-Access-Tier-Change-Time"); val != "" {
 		accessTierChangeTime, err := time.Parse(time.RFC1123, val)
 		if err != nil {
 			return ShareClientGetPropertiesResponse{}, err
 		}
 		result.AccessTierChangeTime = &accessTierChangeTime
 	}
-	if val := resp.Header.Get("x-ms-access-tier-transition-state"); val != "" {
+	if val := resp.Header.Get("X-Ms-Access-Tier-Transition-State"); val != "" {
 		result.AccessTierTransitionState = &val
 	}
-	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
+	}
+	if val := resp.Header.Get("X-Ms-Share-Creation-Time"); val != "" {
+		creationTime, err := time.Parse(time.RFC1123, val)
+		if err != nil {
+			return ShareClientGetPropertiesResponse{}, err
+		}
+		result.CreationTime = &creationTime
 	}
 	if val := resp.Header.Get("Date"); val != "" {
 		date, err := time.Parse(time.RFC1123, val)
@@ -932,27 +919,27 @@ func (client *ShareClient) getPropertiesHandleResponse(resp *http.Response) (Sha
 		}
 		result.Date = &date
 	}
-	if val := resp.Header.Get("ETag"); val != "" {
+	if val := resp.Header.Get("Etag"); val != "" {
 		result.ETag = (*azcore.ETag)(&val)
 	}
-	if val := resp.Header.Get("x-ms-enable-smb-directory-lease"); val != "" {
+	if val := resp.Header.Get("X-Ms-Enable-Smb-Directory-Lease"); val != "" {
 		enableSMBDirectoryLease, err := strconv.ParseBool(val)
 		if err != nil {
 			return ShareClientGetPropertiesResponse{}, err
 		}
 		result.EnableSMBDirectoryLease = &enableSMBDirectoryLease
 	}
-	if val := resp.Header.Get("x-ms-enable-snapshot-virtual-directory-access"); val != "" {
+	if val := resp.Header.Get("X-Ms-Enable-Snapshot-Virtual-Directory-Access"); val != "" {
 		enableSnapshotVirtualDirectoryAccess, err := strconv.ParseBool(val)
 		if err != nil {
 			return ShareClientGetPropertiesResponse{}, err
 		}
 		result.EnableSnapshotVirtualDirectoryAccess = &enableSnapshotVirtualDirectoryAccess
 	}
-	if val := resp.Header.Get("x-ms-enabled-protocols"); val != "" {
+	if val := resp.Header.Get("X-Ms-Enabled-Protocols"); val != "" {
 		result.EnabledProtocols = &val
 	}
-	if val := resp.Header.Get("x-ms-share-included-burst-iops"); val != "" {
+	if val := resp.Header.Get("X-Ms-Share-Included-Burst-Iops"); val != "" {
 		includedBurstIops, err := strconv.ParseInt(val, 10, 64)
 		if err != nil {
 			return ShareClientGetPropertiesResponse{}, err
@@ -966,16 +953,16 @@ func (client *ShareClient) getPropertiesHandleResponse(resp *http.Response) (Sha
 		}
 		result.LastModified = &lastModified
 	}
-	if val := resp.Header.Get("x-ms-lease-duration"); val != "" {
+	if val := resp.Header.Get("X-Ms-Lease-Duration"); val != "" {
 		result.LeaseDuration = (*LeaseDurationType)(&val)
 	}
-	if val := resp.Header.Get("x-ms-lease-state"); val != "" {
+	if val := resp.Header.Get("X-Ms-Lease-State"); val != "" {
 		result.LeaseState = (*LeaseStateType)(&val)
 	}
-	if val := resp.Header.Get("x-ms-lease-status"); val != "" {
+	if val := resp.Header.Get("X-Ms-Lease-Status"); val != "" {
 		result.LeaseStatus = (*LeaseStatusType)(&val)
 	}
-	if val := resp.Header.Get("x-ms-share-max-burst-credits-for-iops"); val != "" {
+	if val := resp.Header.Get("X-Ms-Share-Max-Burst-Credits-For-Iops"); val != "" {
 		maxBurstCreditsForIops, err := strconv.ParseInt(val, 10, 64)
 		if err != nil {
 			return ShareClientGetPropertiesResponse{}, err
@@ -990,49 +977,49 @@ func (client *ShareClient) getPropertiesHandleResponse(resp *http.Response) (Sha
 			result.Metadata[hh[len("x-ms-meta-"):]] = to.Ptr(resp.Header.Get(hh))
 		}
 	}
-	if val := resp.Header.Get("x-ms-share-next-allowed-provisioned-bandwidth-downgrade-time"); val != "" {
+	if val := resp.Header.Get("X-Ms-Share-Next-Allowed-Provisioned-Bandwidth-Downgrade-Time"); val != "" {
 		nextAllowedProvisionedBandwidthDowngradeTime, err := time.Parse(time.RFC1123, val)
 		if err != nil {
 			return ShareClientGetPropertiesResponse{}, err
 		}
 		result.NextAllowedProvisionedBandwidthDowngradeTime = &nextAllowedProvisionedBandwidthDowngradeTime
 	}
-	if val := resp.Header.Get("x-ms-share-next-allowed-provisioned-iops-downgrade-time"); val != "" {
+	if val := resp.Header.Get("X-Ms-Share-Next-Allowed-Provisioned-Iops-Downgrade-Time"); val != "" {
 		nextAllowedProvisionedIopsDowngradeTime, err := time.Parse(time.RFC1123, val)
 		if err != nil {
 			return ShareClientGetPropertiesResponse{}, err
 		}
 		result.NextAllowedProvisionedIopsDowngradeTime = &nextAllowedProvisionedIopsDowngradeTime
 	}
-	if val := resp.Header.Get("x-ms-share-next-allowed-quota-downgrade-time"); val != "" {
+	if val := resp.Header.Get("X-Ms-Share-Next-Allowed-Quota-Downgrade-Time"); val != "" {
 		nextAllowedQuotaDowngradeTime, err := time.Parse(time.RFC1123, val)
 		if err != nil {
 			return ShareClientGetPropertiesResponse{}, err
 		}
 		result.NextAllowedQuotaDowngradeTime = &nextAllowedQuotaDowngradeTime
 	}
-	if val := resp.Header.Get("x-ms-share-paid-bursting-enabled"); val != "" {
+	if val := resp.Header.Get("X-Ms-Share-Paid-Bursting-Enabled"); val != "" {
 		paidBurstingEnabled, err := strconv.ParseBool(val)
 		if err != nil {
 			return ShareClientGetPropertiesResponse{}, err
 		}
 		result.PaidBurstingEnabled = &paidBurstingEnabled
 	}
-	if val := resp.Header.Get("x-ms-share-paid-bursting-max-bandwidth-mibps"); val != "" {
+	if val := resp.Header.Get("X-Ms-Share-Paid-Bursting-Max-Bandwidth-Mibps"); val != "" {
 		paidBurstingMaxBandwidthMibps, err := strconv.ParseInt(val, 10, 64)
 		if err != nil {
 			return ShareClientGetPropertiesResponse{}, err
 		}
 		result.PaidBurstingMaxBandwidthMibps = &paidBurstingMaxBandwidthMibps
 	}
-	if val := resp.Header.Get("x-ms-share-paid-bursting-max-iops"); val != "" {
+	if val := resp.Header.Get("X-Ms-Share-Paid-Bursting-Max-Iops"); val != "" {
 		paidBurstingMaxIops, err := strconv.ParseInt(val, 10, 64)
 		if err != nil {
 			return ShareClientGetPropertiesResponse{}, err
 		}
 		result.PaidBurstingMaxIops = &paidBurstingMaxIops
 	}
-	if val := resp.Header.Get("x-ms-share-provisioned-bandwidth-mibps"); val != "" {
+	if val := resp.Header.Get("X-Ms-Share-Provisioned-Bandwidth-Mibps"); val != "" {
 		provisionedBandwidthMiBps32, err := strconv.ParseInt(val, 10, 32)
 		provisionedBandwidthMiBps := int32(provisionedBandwidthMiBps32)
 		if err != nil {
@@ -1040,7 +1027,7 @@ func (client *ShareClient) getPropertiesHandleResponse(resp *http.Response) (Sha
 		}
 		result.ProvisionedBandwidthMiBps = &provisionedBandwidthMiBps
 	}
-	if val := resp.Header.Get("x-ms-share-provisioned-egress-mbps"); val != "" {
+	if val := resp.Header.Get("X-Ms-Share-Provisioned-Egress-Mbps"); val != "" {
 		provisionedEgressMBps32, err := strconv.ParseInt(val, 10, 32)
 		provisionedEgressMBps := int32(provisionedEgressMBps32)
 		if err != nil {
@@ -1048,7 +1035,7 @@ func (client *ShareClient) getPropertiesHandleResponse(resp *http.Response) (Sha
 		}
 		result.ProvisionedEgressMBps = &provisionedEgressMBps
 	}
-	if val := resp.Header.Get("x-ms-share-provisioned-ingress-mbps"); val != "" {
+	if val := resp.Header.Get("X-Ms-Share-Provisioned-Ingress-Mbps"); val != "" {
 		provisionedIngressMBps32, err := strconv.ParseInt(val, 10, 32)
 		provisionedIngressMBps := int32(provisionedIngressMBps32)
 		if err != nil {
@@ -1056,7 +1043,7 @@ func (client *ShareClient) getPropertiesHandleResponse(resp *http.Response) (Sha
 		}
 		result.ProvisionedIngressMBps = &provisionedIngressMBps
 	}
-	if val := resp.Header.Get("x-ms-share-provisioned-iops"); val != "" {
+	if val := resp.Header.Get("X-Ms-Share-Provisioned-Iops"); val != "" {
 		provisionedIops32, err := strconv.ParseInt(val, 10, 32)
 		provisionedIops := int32(provisionedIops32)
 		if err != nil {
@@ -1064,7 +1051,7 @@ func (client *ShareClient) getPropertiesHandleResponse(resp *http.Response) (Sha
 		}
 		result.ProvisionedIops = &provisionedIops
 	}
-	if val := resp.Header.Get("x-ms-share-quota"); val != "" {
+	if val := resp.Header.Get("X-Ms-Share-Quota"); val != "" {
 		quota32, err := strconv.ParseInt(val, 10, 32)
 		quota := int32(quota32)
 		if err != nil {
@@ -1072,13 +1059,13 @@ func (client *ShareClient) getPropertiesHandleResponse(resp *http.Response) (Sha
 		}
 		result.Quota = &quota
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-root-squash"); val != "" {
+	if val := resp.Header.Get("X-Ms-Root-Squash"); val != "" {
 		result.RootSquash = (*ShareRootSquash)(&val)
 	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
+	if val := resp.Header.Get("X-Ms-Version"); val != "" {
 		result.Version = &val
 	}
 	return result, nil
@@ -1097,12 +1084,7 @@ func (client *ShareClient) GetStatistics(ctx context.Context, options *ShareClie
 	if err != nil {
 		return ShareClientGetStatisticsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ShareClientGetStatisticsResponse{}, err
-	}
-	resp, err := client.getStatisticsHandleResponse(httpResp)
-	return resp, err
+	return client.getStatisticsHandleResponse(httpResp, http.StatusOK)
 }
 
 // getStatisticsCreateRequest creates the GetStatistics request.
@@ -1127,14 +1109,17 @@ func (client *ShareClient) getStatisticsCreateRequest(ctx context.Context, optio
 	if options != nil && options.LeaseID != nil {
 		req.Raw().Header["x-ms-lease-id"] = []string{*options.LeaseID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{version20261006}
+	req.Raw().Header["x-ms-version"] = []string{version20270307}
 	return req, nil
 }
 
 // getStatisticsHandleResponse handles the GetStatistics response.
-func (client *ShareClient) getStatisticsHandleResponse(resp *http.Response) (ShareClientGetStatisticsResponse, error) {
+func (client *ShareClient) getStatisticsHandleResponse(resp *http.Response, successCodes ...int) (ShareClientGetStatisticsResponse, error) {
 	result := ShareClientGetStatisticsResponse{}
-	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("X-Ms-Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
 	if val := resp.Header.Get("Date"); val != "" {
@@ -1144,7 +1129,7 @@ func (client *ShareClient) getStatisticsHandleResponse(resp *http.Response) (Sha
 		}
 		result.Date = &date
 	}
-	if val := resp.Header.Get("ETag"); val != "" {
+	if val := resp.Header.Get("Etag"); val != "" {
 		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
@@ -1154,10 +1139,10 @@ func (client *ShareClient) getStatisticsHandleResponse(resp *http.Response) (Sha
 		}
 		result.LastModified = &lastModified
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
+	if val := resp.Header.Get("X-Ms-Version"); val != "" {
 		result.Version = &val
 	}
 	if err := runtime.UnmarshalAsXML(resp, &result.ShareStats); err != nil {
@@ -1181,12 +1166,7 @@ func (client *ShareClient) ReleaseLease(ctx context.Context, leaseID string, opt
 	if err != nil {
 		return ShareClientReleaseLeaseResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ShareClientReleaseLeaseResponse{}, err
-	}
-	resp, err := client.releaseLeaseHandleResponse(httpResp)
-	return resp, err
+	return client.releaseLeaseHandleResponse(httpResp, http.StatusOK)
 }
 
 // releaseLeaseCreateRequest creates the ReleaseLease request.
@@ -1212,14 +1192,17 @@ func (client *ShareClient) releaseLeaseCreateRequest(ctx context.Context, leaseI
 	}
 	req.Raw().Header["x-ms-lease-action"] = []string{"release"}
 	req.Raw().Header["x-ms-lease-id"] = []string{leaseID}
-	req.Raw().Header["x-ms-version"] = []string{version20261006}
+	req.Raw().Header["x-ms-version"] = []string{version20270307}
 	return req, nil
 }
 
 // releaseLeaseHandleResponse handles the ReleaseLease response.
-func (client *ShareClient) releaseLeaseHandleResponse(resp *http.Response) (ShareClientReleaseLeaseResponse, error) {
+func (client *ShareClient) releaseLeaseHandleResponse(resp *http.Response, successCodes ...int) (ShareClientReleaseLeaseResponse, error) {
 	result := ShareClientReleaseLeaseResponse{}
-	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("X-Ms-Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
 	if val := resp.Header.Get("Date"); val != "" {
@@ -1229,7 +1212,7 @@ func (client *ShareClient) releaseLeaseHandleResponse(resp *http.Response) (Shar
 		}
 		result.Date = &date
 	}
-	if val := resp.Header.Get("ETag"); val != "" {
+	if val := resp.Header.Get("Etag"); val != "" {
 		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
@@ -1239,10 +1222,10 @@ func (client *ShareClient) releaseLeaseHandleResponse(resp *http.Response) (Shar
 		}
 		result.LastModified = &lastModified
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
+	if val := resp.Header.Get("X-Ms-Version"); val != "" {
 		result.Version = &val
 	}
 	return result, nil
@@ -1263,12 +1246,7 @@ func (client *ShareClient) RenewLease(ctx context.Context, leaseID string, optio
 	if err != nil {
 		return ShareClientRenewLeaseResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ShareClientRenewLeaseResponse{}, err
-	}
-	resp, err := client.renewLeaseHandleResponse(httpResp)
-	return resp, err
+	return client.renewLeaseHandleResponse(httpResp, http.StatusOK)
 }
 
 // renewLeaseCreateRequest creates the RenewLease request.
@@ -1294,14 +1272,17 @@ func (client *ShareClient) renewLeaseCreateRequest(ctx context.Context, leaseID 
 	}
 	req.Raw().Header["x-ms-lease-action"] = []string{"renew"}
 	req.Raw().Header["x-ms-lease-id"] = []string{leaseID}
-	req.Raw().Header["x-ms-version"] = []string{version20261006}
+	req.Raw().Header["x-ms-version"] = []string{version20270307}
 	return req, nil
 }
 
 // renewLeaseHandleResponse handles the RenewLease response.
-func (client *ShareClient) renewLeaseHandleResponse(resp *http.Response) (ShareClientRenewLeaseResponse, error) {
+func (client *ShareClient) renewLeaseHandleResponse(resp *http.Response, successCodes ...int) (ShareClientRenewLeaseResponse, error) {
 	result := ShareClientRenewLeaseResponse{}
-	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("X-Ms-Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
 	if val := resp.Header.Get("Date"); val != "" {
@@ -1311,7 +1292,7 @@ func (client *ShareClient) renewLeaseHandleResponse(resp *http.Response) (ShareC
 		}
 		result.Date = &date
 	}
-	if val := resp.Header.Get("ETag"); val != "" {
+	if val := resp.Header.Get("Etag"); val != "" {
 		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
@@ -1321,13 +1302,13 @@ func (client *ShareClient) renewLeaseHandleResponse(resp *http.Response) (ShareC
 		}
 		result.LastModified = &lastModified
 	}
-	if val := resp.Header.Get("x-ms-lease-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Lease-Id"); val != "" {
 		result.LeaseID = &val
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
+	if val := resp.Header.Get("X-Ms-Version"); val != "" {
 		result.Version = &val
 	}
 	return result, nil
@@ -1346,12 +1327,7 @@ func (client *ShareClient) Restore(ctx context.Context, options *ShareClientRest
 	if err != nil {
 		return ShareClientRestoreResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return ShareClientRestoreResponse{}, err
-	}
-	resp, err := client.restoreHandleResponse(httpResp)
-	return resp, err
+	return client.restoreHandleResponse(httpResp, http.StatusCreated)
 }
 
 // restoreCreateRequest creates the Restore request.
@@ -1378,14 +1354,17 @@ func (client *ShareClient) restoreCreateRequest(ctx context.Context, options *Sh
 	if options != nil && options.FileRequestIntent != nil {
 		req.Raw().Header["x-ms-file-request-intent"] = []string{string(*options.FileRequestIntent)}
 	}
-	req.Raw().Header["x-ms-version"] = []string{version20261006}
+	req.Raw().Header["x-ms-version"] = []string{version20270307}
 	return req, nil
 }
 
 // restoreHandleResponse handles the Restore response.
-func (client *ShareClient) restoreHandleResponse(resp *http.Response) (ShareClientRestoreResponse, error) {
+func (client *ShareClient) restoreHandleResponse(resp *http.Response, successCodes ...int) (ShareClientRestoreResponse, error) {
 	result := ShareClientRestoreResponse{}
-	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("X-Ms-Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
 	if val := resp.Header.Get("Date"); val != "" {
@@ -1395,10 +1374,10 @@ func (client *ShareClient) restoreHandleResponse(resp *http.Response) (ShareClie
 		}
 		result.Date = &date
 	}
-	if val := resp.Header.Get("ETag"); val != "" {
+	if val := resp.Header.Get("Etag"); val != "" {
 		result.ETag = (*azcore.ETag)(&val)
 	}
-	if val := resp.Header.Get("x-ms-share-included-burst-iops"); val != "" {
+	if val := resp.Header.Get("X-Ms-Share-Included-Burst-Iops"); val != "" {
 		includedBurstIops, err := strconv.ParseInt(val, 10, 64)
 		if err != nil {
 			return ShareClientRestoreResponse{}, err
@@ -1412,38 +1391,38 @@ func (client *ShareClient) restoreHandleResponse(resp *http.Response) (ShareClie
 		}
 		result.LastModified = &lastModified
 	}
-	if val := resp.Header.Get("x-ms-share-max-burst-credits-for-iops"); val != "" {
+	if val := resp.Header.Get("X-Ms-Share-Max-Burst-Credits-For-Iops"); val != "" {
 		maxBurstCreditsForIops, err := strconv.ParseInt(val, 10, 64)
 		if err != nil {
 			return ShareClientRestoreResponse{}, err
 		}
 		result.MaxBurstCreditsForIops = &maxBurstCreditsForIops
 	}
-	if val := resp.Header.Get("x-ms-share-provisioned-bandwidth-mibps"); val != "" {
+	if val := resp.Header.Get("X-Ms-Share-Provisioned-Bandwidth-Mibps"); val != "" {
 		provisionedBandwidthMibps, err := strconv.ParseInt(val, 10, 64)
 		if err != nil {
 			return ShareClientRestoreResponse{}, err
 		}
 		result.ProvisionedBandwidthMibps = &provisionedBandwidthMibps
 	}
-	if val := resp.Header.Get("x-ms-share-provisioned-iops"); val != "" {
+	if val := resp.Header.Get("X-Ms-Share-Provisioned-Iops"); val != "" {
 		provisionedIops, err := strconv.ParseInt(val, 10, 64)
 		if err != nil {
 			return ShareClientRestoreResponse{}, err
 		}
 		result.ProvisionedIops = &provisionedIops
 	}
-	if val := resp.Header.Get("x-ms-share-quota"); val != "" {
+	if val := resp.Header.Get("X-Ms-Share-Quota"); val != "" {
 		quota, err := strconv.ParseInt(val, 10, 64)
 		if err != nil {
 			return ShareClientRestoreResponse{}, err
 		}
 		result.Quota = &quota
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
+	if val := resp.Header.Get("X-Ms-Version"); val != "" {
 		result.Version = &val
 	}
 	return result, nil
@@ -1463,12 +1442,7 @@ func (client *ShareClient) SetAccessPolicy(ctx context.Context, shareACL []*Sign
 	if err != nil {
 		return ShareClientSetAccessPolicyResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ShareClientSetAccessPolicyResponse{}, err
-	}
-	resp, err := client.setAccessPolicyHandleResponse(httpResp)
-	return resp, err
+	return client.setAccessPolicyHandleResponse(httpResp, http.StatusOK)
 }
 
 // setAccessPolicyCreateRequest creates the SetAccessPolicy request.
@@ -1492,7 +1466,7 @@ func (client *ShareClient) setAccessPolicyCreateRequest(ctx context.Context, sha
 	if options != nil && options.LeaseID != nil {
 		req.Raw().Header["x-ms-lease-id"] = []string{*options.LeaseID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{version20261006}
+	req.Raw().Header["x-ms-version"] = []string{version20270307}
 	type wrapper struct {
 		XMLName  xml.Name             `xml:"SignedIdentifiers"`
 		ShareACL *[]*SignedIdentifier `xml:"SignedIdentifier"`
@@ -1505,9 +1479,12 @@ func (client *ShareClient) setAccessPolicyCreateRequest(ctx context.Context, sha
 }
 
 // setAccessPolicyHandleResponse handles the SetAccessPolicy response.
-func (client *ShareClient) setAccessPolicyHandleResponse(resp *http.Response) (ShareClientSetAccessPolicyResponse, error) {
+func (client *ShareClient) setAccessPolicyHandleResponse(resp *http.Response, successCodes ...int) (ShareClientSetAccessPolicyResponse, error) {
 	result := ShareClientSetAccessPolicyResponse{}
-	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("X-Ms-Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
 	if val := resp.Header.Get("Date"); val != "" {
@@ -1517,7 +1494,7 @@ func (client *ShareClient) setAccessPolicyHandleResponse(resp *http.Response) (S
 		}
 		result.Date = &date
 	}
-	if val := resp.Header.Get("ETag"); val != "" {
+	if val := resp.Header.Get("Etag"); val != "" {
 		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
@@ -1527,10 +1504,10 @@ func (client *ShareClient) setAccessPolicyHandleResponse(resp *http.Response) (S
 		}
 		result.LastModified = &lastModified
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
+	if val := resp.Header.Get("X-Ms-Version"); val != "" {
 		result.Version = &val
 	}
 	return result, nil
@@ -1549,12 +1526,7 @@ func (client *ShareClient) SetMetadata(ctx context.Context, options *ShareClient
 	if err != nil {
 		return ShareClientSetMetadataResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ShareClientSetMetadataResponse{}, err
-	}
-	resp, err := client.setMetadataHandleResponse(httpResp)
-	return resp, err
+	return client.setMetadataHandleResponse(httpResp, http.StatusOK)
 }
 
 // setMetadataCreateRequest creates the SetMetadata request.
@@ -1585,14 +1557,17 @@ func (client *ShareClient) setMetadataCreateRequest(ctx context.Context, options
 			}
 		}
 	}
-	req.Raw().Header["x-ms-version"] = []string{version20261006}
+	req.Raw().Header["x-ms-version"] = []string{version20270307}
 	return req, nil
 }
 
 // setMetadataHandleResponse handles the SetMetadata response.
-func (client *ShareClient) setMetadataHandleResponse(resp *http.Response) (ShareClientSetMetadataResponse, error) {
+func (client *ShareClient) setMetadataHandleResponse(resp *http.Response, successCodes ...int) (ShareClientSetMetadataResponse, error) {
 	result := ShareClientSetMetadataResponse{}
-	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("X-Ms-Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
 	if val := resp.Header.Get("Date"); val != "" {
@@ -1602,7 +1577,7 @@ func (client *ShareClient) setMetadataHandleResponse(resp *http.Response) (Share
 		}
 		result.Date = &date
 	}
-	if val := resp.Header.Get("ETag"); val != "" {
+	if val := resp.Header.Get("Etag"); val != "" {
 		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
@@ -1612,10 +1587,10 @@ func (client *ShareClient) setMetadataHandleResponse(resp *http.Response) (Share
 		}
 		result.LastModified = &lastModified
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
+	if val := resp.Header.Get("X-Ms-Version"); val != "" {
 		result.Version = &val
 	}
 	return result, nil
@@ -1634,12 +1609,7 @@ func (client *ShareClient) SetProperties(ctx context.Context, options *ShareClie
 	if err != nil {
 		return ShareClientSetPropertiesResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ShareClientSetPropertiesResponse{}, err
-	}
-	resp, err := client.setPropertiesHandleResponse(httpResp)
-	return resp, err
+	return client.setPropertiesHandleResponse(httpResp, http.StatusOK)
 }
 
 // setPropertiesCreateRequest creates the SetProperties request.
@@ -1693,14 +1663,17 @@ func (client *ShareClient) setPropertiesCreateRequest(ctx context.Context, optio
 	if options != nil && options.Quota != nil {
 		req.Raw().Header["x-ms-share-quota"] = []string{strconv.FormatInt(int64(*options.Quota), 10)}
 	}
-	req.Raw().Header["x-ms-version"] = []string{version20261006}
+	req.Raw().Header["x-ms-version"] = []string{version20270307}
 	return req, nil
 }
 
 // setPropertiesHandleResponse handles the SetProperties response.
-func (client *ShareClient) setPropertiesHandleResponse(resp *http.Response) (ShareClientSetPropertiesResponse, error) {
+func (client *ShareClient) setPropertiesHandleResponse(resp *http.Response, successCodes ...int) (ShareClientSetPropertiesResponse, error) {
 	result := ShareClientSetPropertiesResponse{}
-	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("X-Ms-Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
 	if val := resp.Header.Get("Date"); val != "" {
@@ -1710,10 +1683,10 @@ func (client *ShareClient) setPropertiesHandleResponse(resp *http.Response) (Sha
 		}
 		result.Date = &date
 	}
-	if val := resp.Header.Get("ETag"); val != "" {
+	if val := resp.Header.Get("Etag"); val != "" {
 		result.ETag = (*azcore.ETag)(&val)
 	}
-	if val := resp.Header.Get("x-ms-share-included-burst-iops"); val != "" {
+	if val := resp.Header.Get("X-Ms-Share-Included-Burst-Iops"); val != "" {
 		includedBurstIops, err := strconv.ParseInt(val, 10, 64)
 		if err != nil {
 			return ShareClientSetPropertiesResponse{}, err
@@ -1727,59 +1700,59 @@ func (client *ShareClient) setPropertiesHandleResponse(resp *http.Response) (Sha
 		}
 		result.LastModified = &lastModified
 	}
-	if val := resp.Header.Get("x-ms-share-max-burst-credits-for-iops"); val != "" {
+	if val := resp.Header.Get("X-Ms-Share-Max-Burst-Credits-For-Iops"); val != "" {
 		maxBurstCreditsForIops, err := strconv.ParseInt(val, 10, 64)
 		if err != nil {
 			return ShareClientSetPropertiesResponse{}, err
 		}
 		result.MaxBurstCreditsForIops = &maxBurstCreditsForIops
 	}
-	if val := resp.Header.Get("x-ms-share-next-allowed-provisioned-bandwidth-downgrade-time"); val != "" {
+	if val := resp.Header.Get("X-Ms-Share-Next-Allowed-Provisioned-Bandwidth-Downgrade-Time"); val != "" {
 		nextAllowedProvisionedBandwidthDowngradeTime, err := time.Parse(time.RFC1123, val)
 		if err != nil {
 			return ShareClientSetPropertiesResponse{}, err
 		}
 		result.NextAllowedProvisionedBandwidthDowngradeTime = &nextAllowedProvisionedBandwidthDowngradeTime
 	}
-	if val := resp.Header.Get("x-ms-share-next-allowed-provisioned-iops-downgrade-time"); val != "" {
+	if val := resp.Header.Get("X-Ms-Share-Next-Allowed-Provisioned-Iops-Downgrade-Time"); val != "" {
 		nextAllowedProvisionedIopsDowngradeTime, err := time.Parse(time.RFC1123, val)
 		if err != nil {
 			return ShareClientSetPropertiesResponse{}, err
 		}
 		result.NextAllowedProvisionedIopsDowngradeTime = &nextAllowedProvisionedIopsDowngradeTime
 	}
-	if val := resp.Header.Get("x-ms-share-next-allowed-quota-downgrade-time"); val != "" {
+	if val := resp.Header.Get("X-Ms-Share-Next-Allowed-Quota-Downgrade-Time"); val != "" {
 		nextAllowedQuotaDowngradeTime, err := time.Parse(time.RFC1123, val)
 		if err != nil {
 			return ShareClientSetPropertiesResponse{}, err
 		}
 		result.NextAllowedQuotaDowngradeTime = &nextAllowedQuotaDowngradeTime
 	}
-	if val := resp.Header.Get("x-ms-share-provisioned-bandwidth-mibps"); val != "" {
+	if val := resp.Header.Get("X-Ms-Share-Provisioned-Bandwidth-Mibps"); val != "" {
 		provisionedBandwidthMibps, err := strconv.ParseInt(val, 10, 64)
 		if err != nil {
 			return ShareClientSetPropertiesResponse{}, err
 		}
 		result.ProvisionedBandwidthMibps = &provisionedBandwidthMibps
 	}
-	if val := resp.Header.Get("x-ms-share-provisioned-iops"); val != "" {
+	if val := resp.Header.Get("X-Ms-Share-Provisioned-Iops"); val != "" {
 		provisionedIops, err := strconv.ParseInt(val, 10, 64)
 		if err != nil {
 			return ShareClientSetPropertiesResponse{}, err
 		}
 		result.ProvisionedIops = &provisionedIops
 	}
-	if val := resp.Header.Get("x-ms-share-quota"); val != "" {
+	if val := resp.Header.Get("X-Ms-Share-Quota"); val != "" {
 		quota, err := strconv.ParseInt(val, 10, 64)
 		if err != nil {
 			return ShareClientSetPropertiesResponse{}, err
 		}
 		result.Quota = &quota
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
+	if val := resp.Header.Get("X-Ms-Version"); val != "" {
 		result.Version = &val
 	}
 	return result, nil

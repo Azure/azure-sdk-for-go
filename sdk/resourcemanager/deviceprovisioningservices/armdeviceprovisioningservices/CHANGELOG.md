@@ -1,5 +1,14 @@
 # Release History
 
+## 1.4.0 (2026-10-08)
+### Features Added
+
+- New enum type `DeviceRegistryNamespaceAuthenticationType` with values `DeviceRegistryNamespaceAuthenticationTypeSystemAssigned`, `DeviceRegistryNamespaceAuthenticationTypeUserAssigned`
+- New enum type `LinkingState` with values `LinkingStateInProgress`, `LinkingStateNotLinked`, `LinkingStateOrphaned`, `LinkingStateSucceeded`
+- New struct `DeviceRegistryNamespaceDescription`
+- New field `DeviceRegistryNamespaces` in struct `IotDpsPropertiesDescription`
+
+
 ## 1.3.0 (2026-08-26)
 ### Features Added
 

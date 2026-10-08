@@ -5,5 +5,5 @@ package internal
 
 const (
 	//lint:ignore U1000 reason: "this constant is used by release automation"
-	version = "v0.1.0"
+	version = "v0.2.0"
 )

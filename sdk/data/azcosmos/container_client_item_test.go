@@ -250,7 +250,7 @@ func TestItemOptionsShareOperationOptions(t *testing.T) {
 	shared := OperationOptions{
 		ConsistencyStrategy: ReadConsistencyStrategySession,
 		ExcludedRegions:     []Region{RegionEastUS},
-		EndToEndTimeout:     5 * time.Second,
+		EndToEndTimeout:     to(time.Duration(5 * time.Second)),
 	}
 
 	read := ReadItemOptions{Operation: shared}
@@ -456,26 +456,17 @@ func TestItemOperationsRejectNULSessionToken(t *testing.T) {
 	require.ErrorContains(t, err, "session token must not contain a NUL byte")
 }
 
-func TestItemWritesRejectInvalidIfMatchETag(t *testing.T) {
+func TestPatchItemRejectsInvalidIfMatchETag(t *testing.T) {
 	container := newTestContainer(t)
-	item := []byte(`{"id":"item-1","pk":"pk"}`)
 	pk := NewPartitionKeyString("pk")
 
 	for _, etag := range []azcore.ETag{"", "\"etag\x00suffix\""} {
 		t.Run(string(etag), func(t *testing.T) {
-			_, replaceErr := container.ReplaceItem(context.Background(), pk, "item-1", item,
-				&ReplaceItemOptions{IfMatchETag: &etag})
-			_, upsertErr := container.UpsertItem(context.Background(), pk, "item-1", item,
-				&UpsertItemOptions{IfMatchETag: &etag})
-			_, deleteErr := container.DeleteItem(context.Background(), pk, "item-1",
-				&DeleteItemOptions{IfMatchETag: &etag})
 			_, patchErr := container.PatchItem(context.Background(), pk, "item-1", validPatchOperations(t),
 				&PatchItemOptions{IfMatchETag: &etag})
 
-			for _, err := range []error{replaceErr, upsertErr, deleteErr, patchErr} {
-				require.Error(t, err)
-				requireNotDriverUnavailable(t, err)
-			}
+			require.Error(t, patchErr)
+			requireNotDriverUnavailable(t, patchErr)
 		})
 	}
 }
@@ -500,68 +491,18 @@ func TestPatchClientSidePreconditionErrorIsClassified(t *testing.T) {
 	require.Same(t, original, normalizeItemOperationError(operationKindPatchItem, original))
 }
 
-func TestReadItemRejectsNULETag(t *testing.T) {
-	container := newTestContainer(t)
-	etag := azcore.ETag("\"etag\x00suffix\"")
-
-	_, err := container.ReadItem(
-		context.Background(),
-		NewPartitionKeyString("pk"),
-		"item-1",
-		&ReadItemOptions{IfNoneMatchETag: &etag},
-	)
-
-	require.ErrorContains(t, err, "IfNoneMatchETag must not contain a NUL byte")
-}
-
-func TestReadItemRejectsEmptyETag(t *testing.T) {
-	container := newTestContainer(t)
-	etag := azcore.ETag("")
-
-	_, err := container.ReadItem(
-		context.Background(),
-		NewPartitionKeyString("pk"),
-		"item-1",
-		&ReadItemOptions{IfNoneMatchETag: &etag},
-	)
-
-	require.ErrorContains(t, err, "IfNoneMatchETag must not be empty")
-}
-
-// The driver's budget is what guarantees an operation terminates: cancelling the context stops it
-// only once the driver notices, while without a budget it is bounded by transport timeouts times a
-// retry budget. Passing the caller's deadline down is what makes one number bound every layer.
-func TestEndToEndTimeoutFollowsTheContextDeadline(t *testing.T) {
-	t.Run("no deadline leaves the driver default", func(t *testing.T) {
-		require.Zero(t, endToEndTimeout(context.Background(), 0))
-	})
-
-	t.Run("deadline becomes the budget", func(t *testing.T) {
-		ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
-		defer cancel()
-
-		got := endToEndTimeout(ctx, 0)
-		require.Positive(t, got)
-		require.LessOrEqual(t, got, time.Minute)
-		require.Greater(t, got, 59*time.Second, "should be what remains, not a fixed value")
-	})
-
-	t.Run("an explicit setting wins over the deadline", func(t *testing.T) {
-		ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
-		defer cancel()
-
-		// The caller is describing how long the operation may spend, which is a different thing
-		// from when they stop waiting, so it is not second-guessed.
-		require.Equal(t, 5*time.Second, endToEndTimeout(ctx, 5*time.Second))
-	})
-
-	t.Run("an expired deadline stays positive", func(t *testing.T) {
-		ctx, cancel := context.WithTimeout(context.Background(), -time.Second)
-		defer cancel()
-
-		// Zero would read as unset at the ABI, which would remove the bound rather than tighten it.
-		require.Positive(t, endToEndTimeout(ctx, 0))
-	})
+func TestEndToEndTimeoutPreservesStricterContext(t *testing.T) {
+	parent, cancel := context.WithTimeout(context.Background(), time.Second)
+	defer cancel()
+	ctx, release := contextWithEndToEndTimeout(parent, time.Minute)
+	defer release()
+	want, _ := parent.Deadline()
+	actual, _ := ctx.Deadline()
+	require.Equal(t, want, actual)
+	unbounded, releaseUnbounded := contextWithEndToEndTimeout(context.Background(), 0)
+	defer releaseUnbounded()
+	_, bounded := unbounded.Deadline()
+	require.False(t, bounded)
 }
 
 func validPatchOperations(t *testing.T) PatchOperations {

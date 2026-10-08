@@ -6,6 +6,20 @@
 
 ### Features Added
 
+* Added all 15 shared driver operation settings through request `OperationOptions`,
+  `ClientOptions.Operation`, and `RuntimeOptions.Operation`, including throughput controls, retry
+  budgets, hedging, session capture, custom headers, and binary encoding.
+  See [PR 27661](https://github.com/Azure/azure-sdk-for-go/pull/27661).
+* Added a process-wide default runtime and `NewRuntime` for explicit construction-time defaults.
+  `Runtime.Close` releases the owner's reference; attached clients keep the runtime alive.
+  Same-account clients share native caches and cached credentials. Use separate runtimes for isolation.
+  See [PR 27661](https://github.com/Azure/azure-sdk-for-go/pull/27661).
+* Added validated `Precondition` values constructed with `IfMatch` or `IfNoneMatch` for item operations
+  (PATCH retains its If-Match-only option) and client-side patch
+  attempt, tracking ID, capacity, and retention controls. Effective patch tracking IDs are
+  available on native success and error responses. A caller-supplied ID is retained when a
+  submitted patch's Go wait is cancelled.
+  See [PR 27661](https://github.com/Azure/azure-sdk-for-go/pull/27661).
 * Query cursors now share a client-owned completion reactor instead of blocking one OS thread
   per waiting query. Cancellation and client shutdown retain late-completion cleanup.
   See [PR 27676](https://github.com/Azure/azure-sdk-for-go/pull/27676).
@@ -25,11 +39,18 @@
   timeline already available losslessly through `Diagnostics.Attempts`.
   See [PR 27662](https://github.com/Azure/azure-sdk-for-go/pull/27662).
 * Added the Go SDK identity to the User-Agent header alongside the native driver identity,
-  preserving the optional `ClientOptions.ApplicationID` suffix. See [PR 27627](https://github.com/Azure/azure-sdk-for-go/pull/27627).
+  with an optional runtime application suffix. See [PR 27627](https://github.com/Azure/azure-sdk-for-go/pull/27627).
+* Added optional operation timeouts with Rust's one-second minimum, runtime CPU sampling intervals,
+  native diagnostics snapshots, and item-completion diagnostics handlers.
+  See [PR 27661](https://github.com/Azure/azure-sdk-for-go/pull/27661).
 * Added parameterized queries within a complete logical partition through `Query`, `FeedScope`,
   `QueryOptions`, and `ContainerClient.NewQueryItemsPager`, including page-size hints, raw JSON
   results, and resumable driver continuation tokens.
   See [PR 27635](https://github.com/Azure/azure-sdk-for-go/pull/27635).
+* Query page fetches use shared operation-option validation, immutable input copies, and
+  per-call timeout budgets. Queries honor client/request binary wire preferences; the native driver
+  automatically converts binary item and query responses to text JSON.
+  See [PR 27661](https://github.com/Azure/azure-sdk-for-go/pull/27661).
 * Added the error and response model: `Error` classifies a failure with a `Code` and reports whether
   the service or the client produced it, and `Response`/`ItemResponse` carry what an operation
   returns. See [PR 27339](https://github.com/Azure/azure-sdk-for-go/pull/27339).
@@ -58,19 +79,14 @@
   module replaces the v1 pure-Go implementation with a binding to the shared Rust Cosmos driver,
   so it is a full rewrite of the public surface rather than an incremental change. The complete
   breaking-change list lands here before the beta ships. See [PR 27339](https://github.com/Azure/azure-sdk-for-go/pull/27339).
-* Changed `ClientOptions.EnableContentResponseOnWrite` from `bool` to `*bool`, preserving the
-  difference between inheriting the driver's operation-specific default and explicitly enabling or
-  disabling content responses. See [PR 27597](https://github.com/Azure/azure-sdk-for-go/pull/27597).
 
 ### Bugs Fixed
 
 * Fixed `ReadItem` (and other reads) waiting out the native driver's own retry budget before
   returning on context cancellation, instead of returning promptly. Reads now abandon immediately
-  once the context ends, matching their existing non-authoritative contract; only writes, which may
-  have already committed by the time the context ends, await the real outcome. Also fixed the
-  native `ClientOperationTimeout` error surfacing unwrapped instead of satisfying
-  `errors.Is(err, context.DeadlineExceeded)` when the native driver's own end-to-end timeout raced
-  the caller's context deadline and won. See [PR 27662](https://github.com/Azure/azure-sdk-for-go/pull/27662).
+  once the context ends. Write calls also stop waiting when their context ends, but submitted
+  writes may still commit; native work is drained before releasing client resources.
+  See [PR 27662](https://github.com/Azure/azure-sdk-for-go/pull/27662).
 
 ### Other Changes
 

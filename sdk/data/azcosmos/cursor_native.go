@@ -275,11 +275,12 @@ func syntheticCursorPage(body []byte, items [][]byte, kind, result uint32) (Quer
 	query := C.CString("retrievedDocumentCount=2")
 	defer C.free(unsafe.Pointer(index))
 	defer C.free(unsafe.Pointer(query))
-	headers := []C.cosmos_response_header_t{
-		{id: C.COSMOS_HEADER_ID_INDEX_METRICS, value: C.cosmos_cursor_test_string(index)},
-		{id: C.COSMOS_HEADER_ID_QUERY_METRICS, value: C.cosmos_cursor_test_string(query)},
-	}
-	completion.common.headers = &headers[0]
+	headerMemory := C.malloc(2 * C.size_t(unsafe.Sizeof(C.cosmos_response_header_t{})))
+	defer C.free(headerMemory)
+	headers := unsafe.Slice((*C.cosmos_response_header_t)(headerMemory), 2)
+	headers[0] = C.cosmos_response_header_t{id: C.COSMOS_HEADER_ID_INDEX_METRICS, value: C.cosmos_cursor_test_string(index)}
+	headers[1] = C.cosmos_response_header_t{id: C.COSMOS_HEADER_ID_QUERY_METRICS, value: C.cosmos_cursor_test_string(query)}
+	completion.common.headers = (*C.cosmos_response_header_t)(headerMemory)
 	completion.common.headers_len = C.uintptr_t(len(headers))
 	return decodeCursorPage(&completion, DiagnosticsVerbosityDefault)
 }

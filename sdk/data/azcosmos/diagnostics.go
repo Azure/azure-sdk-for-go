@@ -122,3 +122,18 @@ type DiagnosticAttempt struct {
 	// ServerDurationMS is negative when the service did not report a duration.
 	ServerDurationMS float64
 }
+
+// OperationDiagnostic describes an item call that passed validation and acquired its client.
+// Diagnostics can be nil when context cancellation returns before native completion.
+type OperationDiagnostic struct {
+	// Operation is the item operation name.
+	Operation string
+	// DatabaseID is the database addressed by the call.
+	DatabaseID string
+	// ContainerID is the container addressed by the call.
+	ContainerID string
+	// Diagnostics is a Go-owned native snapshot, when available.
+	Diagnostics *Diagnostics
+	// Error is the error returned by the Go call.
+	Error error
+}

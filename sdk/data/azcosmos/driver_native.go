@@ -3,9 +3,9 @@
 
 //go:build cgo && ((darwin && !ios && arm64) || (linux && !android && amd64))
 
-package azcosmos
-
 // cSpell:ignore gocritic
+
+package azcosmos
 
 /*
 #include <stdlib.h>
@@ -37,34 +37,33 @@ const driverAvailable = true
 // nativeDriver owns the driver handles a client needs. close releases them in reverse acquisition
 // order.
 //
-// The runtime is per client rather than shared. It caches drivers by endpoint and only evicts that
-// cache when it is freed, so a process-wide runtime would keep a closed client's driver alive and
-// hand it to the next client for the same endpoint, defeating [Client.Close].
+// Runtime ownership belongs to Runtime. Each client retains independent driver/account handles,
+// credentials, options, metadata caches, and a completion queue.
 //
 // The runtime, account reference and completion queue are built locally. Initialize or the first
 // operation creates the driver, which fetches account properties, seeds routing state and creates
 // the account transport.
 //
 // The queue binds to the runtime, not to the driver, so it exists before driver creation and makes
-// that network work cancellable through cosmos_driver_get_or_create_submit.
+// callers can stop waiting without cancelling native work.
 type nativeDriver struct {
 	// cfg is kept across the local setup in openDriver and the asynchronous driver creation that
 	// follows it.
-	cfg     driverConfig
-	runtime *C.cosmos_runtime_t
-	account *C.cosmos_account_ref_t
+	cfg          driverConfig
+	runtime      *C.cosmos_runtime_t
+	ownedRuntime *nativeRuntime
+	account      *C.cosmos_account_ref_t
 
 	tokenProvider *tokenProviderState
+	// pending retains resources for submitted work after its Go caller stops waiting.
+	pending sync.WaitGroup
 
 	// mu guards everything below it. It is deliberately not held across driver creation or
 	// container resolution: both wait on the network, and holding it there would make a second
 	// caller block on the mutex where it cannot honor its own context.
 	//
-	// That means mu does not keep these handles alive for an operation's duration, and close
-	// does not wait for one to finish. Client.mu is what does: Close takes it for write, which
-	// blocks until every operation holding it for read has returned, so close only ever runs
-	// with nothing in flight. Calling into a nativeDriver outside Client.acquire breaks that,
-	// which is why nothing but a test does.
+	// Client.mu protects active callers; pending protects native submissions whose callers
+	// have stopped waiting. Close drains both before freeing handles.
 	mu sync.Mutex
 	// created records that initialization succeeded. Failures are not cached because transport,
 	// service and token acquisition can recover while this long-lived client remains in use.
@@ -93,7 +92,6 @@ type nativeDriver struct {
 	containers    map[string]*C.cosmos_container_ref_t
 	cursors       map[*nativeQueryCursor]struct{}
 	cursorReactor *cursorReactor
-	pending       sync.WaitGroup
 
 	// faultRules is a native-only test seam. Production clients never set it.
 	faultRules []nativeFaultRule
@@ -116,15 +114,13 @@ type driverCreation struct {
 
 // initialize eagerly creates the driver, which fills its account-properties and routing caches.
 func (d *nativeDriver) initialize(ctx context.Context) error {
-	_, err := d.ensureDriver(ctx)
-	return err
-}
-
-// cancel stops host token acquisition before Close waits for in-flight operations.
-func (d *nativeDriver) cancel() {
-	if d != nil && d.tokenProvider != nil {
-		d.tokenProvider.cancel()
+	ctx, _, release, err := d.snapshot(ctx, OperationOptions{})
+	if err != nil {
+		return err
 	}
+	defer release()
+	_, err = d.ensureDriver(ctx)
+	return err
 }
 
 // verifyDriverVersion checks header and library versions before any struct-sensitive ABI call.
@@ -156,8 +152,12 @@ func openDriver(cfg driverConfig) (*nativeDriver, error) {
 	}
 
 	d := &nativeDriver{cfg: cfg}
-	if err := d.buildRuntime(); err != nil {
-		return nil, err
+	if cfg.runtime != nil {
+		d.runtime = cfg.runtime.native.handle
+	} else {
+		if err := d.buildRuntime(); err != nil {
+			return nil, err
+		}
 	}
 	if err := d.buildAccount(cfg); err != nil {
 		_ = d.close()
@@ -365,39 +365,12 @@ func (d *nativeDriver) buildFaultInjectionOptions(
 }
 
 // buildRuntime creates the Tokio runtime the driver executes on.
-//
-// ApplicationID is applied here rather than with the other client options because the C ABI carries
-// the user agent on the runtime, not on the driver.
 func (d *nativeDriver) buildRuntime() error {
-	// Seeded from the defaults so that fields this binding does not set keep the driver's values
-	// rather than a Go zero.
-	options := C.cosmos_runtime_options_default()
-
-	// Copied into the runtime before the call returns, so freeing it here is safe.
-	identifier, identifierAllocation := toNativeString(wrappingSDKIdentifier())
-	defer C.free(identifierAllocation)
-	options.wrapping_sdk_identifier = identifier
-
-	if d.cfg.options.ApplicationID != "" {
-		// Copied into the runtime before the call returns, so freeing it here is safe.
-		suffix, allocation := toNativeString(d.cfg.options.ApplicationID)
-		defer C.free(allocation)
-		options.user_agent_suffix = suffix
-	}
-
-	var richErr *C.cosmos_error_t
-	status := C.cosmos_runtime_build(&options, &d.runtime, &richErr) //nolint:gocritic // dupSubExpr is reported against cgo-generated code, not this call.
-	err := statusError(status, richErr, "building the driver runtime")
+	native, err := openRuntime(RuntimeOptions{})
 	if err == nil {
-		return err
-	}
-
-	// The C ABI reports invalid options without a field name. Identify the possible sources
-	// without echoing values or duplicating the driver's validation rules.
-	var cosmosErr *Error
-	if errors.As(err, &cosmosErr) &&
-		cosmosErr.SubStatus == int(C.COSMOS_SUB_STATUS_CLIENT_FFI_INVALID_OPTION_VALUE) {
-		cosmosErr.Message = "azcosmos: the Cosmos driver rejected runtime options (SDK identity or ClientOptions.ApplicationID)"
+		d.ownedRuntime = native
+		d.runtime = native.handle
+		return nil
 	}
 	return err
 }
@@ -433,9 +406,7 @@ func (d *nativeDriver) close() error {
 	if d == nil {
 		return nil
 	}
-	// Freeing here is only safe because the caller guarantees no operation is in flight; see
-	// nativeDriver.mu. The lock below orders this against a concurrent state read, not against
-	// an operation, which it can no longer wait for.
+	// Client.mu prevents new submissions while pending drains; mu orders remaining state reads.
 	d.mu.Lock()
 	d.closed = true
 	cursors := make([]*nativeQueryCursor, 0, len(d.cursors))
@@ -469,7 +440,8 @@ func (d *nativeDriver) close() error {
 	d.driver = nil
 	C.cosmos_account_ref_free(d.account)
 	d.account = nil
-	C.cosmos_runtime_free(d.runtime)
+	d.ownedRuntime.close()
+	d.ownedRuntime = nil
 	d.runtime = nil
 	return nil
 }

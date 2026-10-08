@@ -127,10 +127,14 @@ type recordingTokenCredential struct {
 }
 
 func (c *recordingTokenCredential) GetToken(
-	_ context.Context,
+	ctx context.Context,
 	options policy.TokenRequestOptions,
 ) (azcore.AccessToken, error) {
-	c.requests <- append([]string(nil), options.Scopes...)
+	select {
+	case c.requests <- append([]string(nil), options.Scopes...):
+	case <-ctx.Done():
+		return azcore.AccessToken{}, ctx.Err()
+	}
 	return azcore.AccessToken{
 		Token:     "emulator-access-token",
 		ExpiresOn: time.Now().Add(time.Hour),
@@ -341,12 +345,16 @@ func TestEmulatorReadItemIfNoneMatch(t *testing.T) {
 	require.NotEmpty(t, created.ETag)
 
 	unchanged := created.ETag
-	response, err := container.ReadItem(ctx, pk, id, &ReadItemOptions{IfNoneMatchETag: &unchanged})
+	condition, err := IfNoneMatch(unchanged)
+	require.NoError(t, err)
+	response, err := container.ReadItem(ctx, pk, id, &ReadItemOptions{Precondition: condition})
 	require.NoError(t, err, "an unchanged item is not an error")
 	require.Empty(t, response.Value, "the item has not changed, so it is not sent")
 
 	stale := azcore.ETag("\"00000000-0000-0000-0000-000000000000\"")
-	response, err = container.ReadItem(ctx, pk, id, &ReadItemOptions{IfNoneMatchETag: &stale})
+	condition, err = IfNoneMatch(stale)
+	require.NoError(t, err)
+	response, err = container.ReadItem(ctx, pk, id, &ReadItemOptions{Precondition: condition})
 	require.NoError(t, err)
 	require.NotEmpty(t, response.Value, "the ETag does not match, so the item is sent")
 }
@@ -450,18 +458,20 @@ func TestEmulatorConditionalItemWrites(t *testing.T) {
 	var patch PatchOperations
 	require.NoError(t, patch.AppendSet("/value", 2))
 
-	_, err = container.ReplaceItem(ctx, pk, id, replacement, &ReplaceItemOptions{IfMatchETag: &stale})
+	staleCondition, err := IfMatch(stale)
+	require.NoError(t, err)
+	_, err = container.ReplaceItem(ctx, pk, id, replacement, &ReplaceItemOptions{Precondition: staleCondition})
 	requireWireError(t, err, CodePreconditionFailed, 412)
-	_, err = container.UpsertItem(ctx, pk, id, replacement, &UpsertItemOptions{IfMatchETag: &stale})
+	_, err = container.UpsertItem(ctx, pk, id, replacement, &UpsertItemOptions{Precondition: staleCondition})
 	requireWireError(t, err, CodePreconditionFailed, 412)
 	_, err = container.PatchItem(ctx, pk, id, patch, &PatchItemOptions{IfMatchETag: &stale})
 	requirePatchPreconditionError(t, err)
-	_, err = container.DeleteItem(ctx, pk, id, &DeleteItemOptions{IfMatchETag: &stale})
+	_, err = container.DeleteItem(ctx, pk, id, &DeleteItemOptions{Precondition: staleCondition})
 	requireWireError(t, err, CodePreconditionFailed, 412)
 
-	replaced, err := container.ReplaceItem(ctx, pk, id, replacement, &ReplaceItemOptions{
-		IfMatchETag: &created.ETag,
-	})
+	createdCondition, err := IfMatch(created.ETag)
+	require.NoError(t, err)
+	replaced, err := container.ReplaceItem(ctx, pk, id, replacement, &ReplaceItemOptions{Precondition: createdCondition})
 	require.NoError(t, err)
 	require.NotEmpty(t, replaced.ETag)
 
@@ -476,13 +486,15 @@ func TestEmulatorConditionalItemWrites(t *testing.T) {
 	missing, err := json.Marshal(map[string]any{"id": missingID, "pk": missingID})
 	require.NoError(t, err)
 	_, err = container.UpsertItem(ctx, missingPK, missingID, missing, &UpsertItemOptions{
-		IfMatchETag: &stale,
+		Precondition: staleCondition,
 	})
 	require.NoError(t, err, "a missing item is created even with a stale If-Match")
 
 	read, err := container.ReadItem(ctx, pk, id, nil)
 	require.NoError(t, err)
-	deleted, err := container.DeleteItem(ctx, pk, id, &DeleteItemOptions{IfMatchETag: &read.ETag})
+	readCondition, err := IfMatch(read.ETag)
+	require.NoError(t, err)
+	deleted, err := container.DeleteItem(ctx, pk, id, &DeleteItemOptions{Precondition: readCondition})
 	require.NoError(t, err)
 	require.Nil(t, deleted.Value)
 }
@@ -573,7 +585,7 @@ func TestEmulatorPatchContentResponse(t *testing.T) {
 	} {
 		t.Run(tt.name, func(t *testing.T) {
 			container := emulatorContainerWithOptions(t, &ClientOptions{
-				EnableContentResponseOnWrite: tt.clientEnabled,
+				Operation: OperationOptions{EnableContentResponseOnWrite: tt.clientEnabled},
 			})
 			id := uniqueItemID(t)
 			pk := NewPartitionKeyString(id)
@@ -926,11 +938,6 @@ func TestEmulatorUnknownContainer(t *testing.T) {
 	require.Equal(t, CodeNotFound, cosmosErr.Code)
 }
 
-// to returns a pointer to v, for the tri-state option fields.
-func to[T any](v T) *T {
-	return &v
-}
-
 // emulatorContainerWithOptions returns a container client built with the options under test.
 func emulatorContainerWithOptions(t *testing.T, options *ClientOptions) *ContainerClient {
 	t.Helper()
@@ -974,7 +981,7 @@ func TestEmulatorClientContentResponseOnWrite(t *testing.T) {
 		{"enabled", to(true), true},
 	} {
 		t.Run(tt.name, func(t *testing.T) {
-			container := emulatorContainerWithOptions(t, &ClientOptions{EnableContentResponseOnWrite: tt.enabled})
+			container := emulatorContainerWithOptions(t, &ClientOptions{Operation: OperationOptions{EnableContentResponseOnWrite: tt.enabled}})
 
 			require.Equal(t, tt.want, createForClientOptions(t, container, nil),
 				"an operation that sets nothing inherits the client's setting")
@@ -985,7 +992,7 @@ func TestEmulatorClientContentResponseOnWrite(t *testing.T) {
 // An operation that sets the value overrides the client, which is what makes the client value a
 // default rather than a policy.
 func TestEmulatorOperationContentResponseOverridesTheClient(t *testing.T) {
-	container := emulatorContainerWithOptions(t, &ClientOptions{EnableContentResponseOnWrite: to(true)})
+	container := emulatorContainerWithOptions(t, &ClientOptions{Operation: OperationOptions{EnableContentResponseOnWrite: to(true)}})
 
 	require.False(t, createForClientOptions(t, container, &OperationOptions{
 		EnableContentResponseOnWrite: to(false),
@@ -1045,7 +1052,10 @@ func TestEmulatorRoutingStrategiesRouteReads(t *testing.T) {
 // driver accepts survives initialization and a request.
 func TestEmulatorApplicationID(t *testing.T) {
 	// At the driver's 25-byte limit, so a regression in the limit shows up here too.
-	container := emulatorContainerWithOptions(t, &ClientOptions{ApplicationID: "azcosmos-go-v2-e2e-testin"})
+	runtime, err := NewRuntime(&RuntimeOptions{ApplicationID: "azcosmos-go-v2-e2e-testin"})
+	require.NoError(t, err)
+	t.Cleanup(func() { require.NoError(t, runtime.Close()) })
+	container := emulatorContainerWithOptions(t, &ClientOptions{Runtime: runtime})
 
 	createForClientOptions(t, container, nil)
 }
@@ -1073,12 +1083,21 @@ func TestEmulatorTokenCredential(t *testing.T) {
 	endpoint, databaseID, containerID := emulatorConfiguration(t)
 	credential := &recordingTokenCredential{requests: make(chan []string, 1)}
 
-	client, err := NewClient(endpoint, credential, nil)
+	runtime, err := NewRuntime(nil)
+	require.NoError(t, err)
+	t.Cleanup(func() { require.NoError(t, runtime.Close()) })
+	client, err := NewClient(endpoint, credential, &ClientOptions{Runtime: runtime})
 	require.NoError(t, err)
 	t.Cleanup(func() { require.NoError(t, client.Close()) })
-	require.NoError(t, client.Initialize(t.Context()))
-
-	require.Equal(t, []string{"https://cosmos.azure.com/.default"}, <-credential.requests)
+	ctx, cancel := context.WithTimeout(t.Context(), 10*time.Second)
+	defer cancel()
+	require.NoError(t, client.Initialize(ctx))
+	select {
+	case scopes := <-credential.requests:
+		require.Equal(t, []string{"https://cosmos.azure.com/.default"}, scopes)
+	case <-ctx.Done():
+		t.Fatal("Initialize did not invoke the supplied credential")
+	}
 
 	container, err := client.NewContainer(databaseID, containerID)
 	require.NoError(t, err)
@@ -1100,17 +1119,22 @@ func TestEmulatorTokenCredential(t *testing.T) {
 func TestEmulatorInitializationRecoversFromTokenFailure(t *testing.T) {
 	endpoint, _, _ := emulatorConfiguration(t)
 	credential := &recoveringTokenCredential{}
-	client, err := NewClient(endpoint, credential, nil)
+	runtime, err := NewRuntime(nil)
+	require.NoError(t, err)
+	t.Cleanup(func() { require.NoError(t, runtime.Close()) })
+	client, err := NewClient(endpoint, credential, &ClientOptions{Runtime: runtime})
 	require.NoError(t, err)
 	t.Cleanup(func() { require.NoError(t, client.Close()) })
 
-	err = client.Initialize(t.Context())
+	ctx, cancel := context.WithTimeout(t.Context(), 10*time.Second)
+	defer cancel()
+	err = client.Initialize(ctx)
 	var cosmosErr *Error
 	require.ErrorAs(t, err, &cosmosErr)
 	require.Equal(t, CodeAuthenticationFailed, cosmosErr.Code)
 	require.Equal(t, int32(2), credential.attempts.Load())
 
-	require.NoError(t, client.Initialize(t.Context()))
+	require.NoError(t, client.Initialize(ctx))
 	require.Equal(t, int32(3), credential.attempts.Load())
 }
 
@@ -1122,26 +1146,53 @@ func TestEmulatorInitializationFollowerOutlivesLeader(t *testing.T) {
 		started: make(chan struct{}),
 		release: make(chan struct{}),
 	}
-	client, err := NewClient(endpoint, credential, nil)
+	runtime, err := NewRuntime(nil)
+	require.NoError(t, err)
+	t.Cleanup(func() { require.NoError(t, runtime.Close()) })
+	client, err := NewClient(endpoint, credential, &ClientOptions{Runtime: runtime})
 	require.NoError(t, err)
 	t.Cleanup(func() { require.NoError(t, client.Close()) })
+	var releaseOnce sync.Once
+	unblock := func() { releaseOnce.Do(func() { close(credential.release) }) }
+	t.Cleanup(unblock)
+	ctx, cancel := context.WithTimeout(t.Context(), 10*time.Second)
+	defer cancel()
 
 	waiting := make(chan struct{}, 1)
 	client.driver.beforeCreationWait = func() { waiting <- struct{}{} }
 
-	leaderCtx, cancelLeader := context.WithCancel(t.Context())
+	leaderCtx, cancelLeader := context.WithCancel(ctx)
+	defer cancelLeader()
 	leaderResult := make(chan error, 1)
 	go func() { leaderResult <- client.Initialize(leaderCtx) }()
-	<-credential.started
+	select {
+	case <-credential.started:
+	case <-ctx.Done():
+		t.Fatal("leader did not reach token acquisition")
+	}
 
 	followerResult := make(chan error, 1)
-	go func() { followerResult <- client.Initialize(t.Context()) }()
-	<-waiting
+	go func() { followerResult <- client.Initialize(ctx) }()
+	select {
+	case <-waiting:
+	case <-ctx.Done():
+		t.Fatal("follower did not join the initialization attempt")
+	}
 
 	cancelLeader()
-	require.ErrorIs(t, <-leaderResult, context.Canceled)
-	close(credential.release)
-	require.NoError(t, <-followerResult)
+	select {
+	case err := <-leaderResult:
+		require.ErrorIs(t, err, context.Canceled)
+	case <-ctx.Done():
+		t.Fatal("leader did not stop waiting")
+	}
+	unblock()
+	select {
+	case err := <-followerResult:
+		require.NoError(t, err)
+	case <-ctx.Done():
+		t.Fatal("follower did not finish initialization")
+	}
 }
 
 // Initialize is optional: the first operation performs the same work when callers skip it.

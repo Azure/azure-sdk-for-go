@@ -16,7 +16,9 @@ import "C"
 import (
 	"context"
 	"errors"
+	"math"
 	"runtime/cgo"
+	"time"
 	"unsafe"
 )
 
@@ -34,13 +36,25 @@ const unsetMaxItemCount = -1
 // handles alive for the operation's duration: Close cannot take the write lock until every
 // operation has released it.
 func (c *Client) execute(ctx context.Context, req itemRequest) (ItemResponse, []byte, error) {
+	switch req.kind {
+	case operationKindCreateItem, operationKindReadItem, operationKindReplaceItem, operationKindUpsertItem:
+		if req.options.BinaryEncoding == nil {
+			req.options.BinaryEncoding = c.binaryEncoding.clone()
+		}
+	}
 	return c.driver.execute(ctx, req)
 }
 
 // execute runs one operation to completion and returns its result.
 func (d *nativeDriver) execute(ctx context.Context, req itemRequest) (ItemResponse, []byte, error) {
-	ctx, cancel := contextWithEndToEndTimeout(ctx, req.options.EndToEndTimeout)
-	defer cancel()
+	if req.patchStrategy != PatchStrategyUnset {
+		req.options.PatchStrategy = req.patchStrategy
+	}
+	ctx, snapshot, releaseSnapshot, err := d.snapshot(ctx, req.options)
+	if err != nil {
+		return ItemResponse{}, nil, err
+	}
+	defer releaseSnapshot()
 
 	driver, err := d.ensureDriver(ctx)
 	if err != nil {
@@ -52,82 +66,54 @@ func (d *nativeDriver) execute(ctx context.Context, req itemRequest) (ItemRespon
 		return ItemResponse{}, nil, err
 	}
 
-	// Initialization and resolution have already spent part of the budget, so the operation gets
-	// only what remains rather than restarting the configured duration.
-	req.options.EndToEndTimeout = endToEndTimeout(ctx, 0)
-
 	submit := func(queue *C.cosmos_completion_queue_t, cookie C.intptr_t, preError *C.cosmos_status_code_t) *C.cosmos_operation_handle_t {
-		return d.submit(driver, container, req, queue, cookie, preError)
+		request, release := buildNativeItemRequest(req, container)
+		defer release()
+		request.options_snapshot = snapshot
+		return C.cosmos_submit_singleton_operation(driver, &request, queue, cookie, preError) //nolint:gocritic // dupSubExpr is reported against cgo-generated code.
 	}
 
-	// Only a write can leave a side effect that must not be misreported as cancelled after it
-	// already committed, so only writes pay for an authoritative wait. A read has nothing to
-	// protect: abandoning it the moment ctx ends, rather than waiting out the native driver's own
-	// retry budget, is what keeps cancellation prompt.
-	var result completionResult
-	if req.kind == operationKindReadItem {
-		result, err = d.awaitCompletion(ctx, "submitting the operation", submit)
-	} else {
-		result, err = d.awaitAuthoritativeCompletion(ctx, "submitting the operation", submit)
-	}
+	result, err := d.awaitCompletion(ctx, "submitting the operation", submit)
 	if err != nil {
-		return ItemResponse{}, nil, err
+		return ItemResponse{}, nil, patchCancellationError(err, req.patchTrackingID)
 	}
 	return result.response, result.body, result.err
 }
 
+func patchCancellationError(err error, requestedID PatchTrackingID) error {
+	var cancelled *Error
+	if errors.As(err, &cancelled) && cancelled.Code == CodeOperationCancelled && cancelled.PatchTrackingID == "" {
+		cancelled.PatchTrackingID = requestedID
+	}
+	return err
+}
+
 // awaitCompletion submits one operation and waits for its completion or the caller's context,
-// whichever comes first. Driver creation, container resolution and reads all go through it, so
-// all three honor a context the same way.
+// whichever comes first. Driver creation, container resolution, and item operations use it.
 //
 // The submit closure receives what the driver needs to answer: the queue to post the completion
 // to, the cookie to round-trip onto it, and somewhere to report a pre-flight rejection. It returns
 // NULL when the operation was rejected before it started, which posts no completion.
 //
-// Non-authoritative waits may return on cancellation without the native operation's result; the
-// handle and cookie are released immediately regardless, since a completion that arrives after is
-// safely dropped by the reactor. Writes separately await authoritative results instead, since a
-// write may have already committed by the time the context ends and must not be misreported as
-// cancelled.
+// Cancellation stops waiting, not native execution: writes may still commit.
+// Close drains late deliveries before freeing resources.
 func (d *nativeDriver) awaitCompletion(
 	ctx context.Context,
 	doing string,
 	submit func(queue *C.cosmos_completion_queue_t, cookie C.intptr_t, preError *C.cosmos_status_code_t) *C.cosmos_operation_handle_t,
-) (completionResult, error) {
-	return d.awaitOperation(ctx, doing, submit, false)
-}
-
-func (d *nativeDriver) awaitAuthoritativeCompletion(
-	ctx context.Context,
-	doing string,
-	submit func(queue *C.cosmos_completion_queue_t, cookie C.intptr_t, preError *C.cosmos_status_code_t) *C.cosmos_operation_handle_t,
-) (completionResult, error) {
-	return d.awaitOperation(ctx, doing, submit, true)
-}
-
-func (d *nativeDriver) awaitOperation(
-	ctx context.Context,
-	doing string,
-	submit func(queue *C.cosmos_completion_queue_t, cookie C.intptr_t, preError *C.cosmos_status_code_t) *C.cosmos_operation_handle_t,
-	authoritative bool,
 ) (completionResult, error) {
 	if err := ctx.Err(); err != nil {
 		return completionResult{}, err
 	}
 
 	// Buffered so the reactor can deliver without blocking after cancellation.
-	pending := &pendingOperation{result: make(chan completionResult, 1)}
+	pending := &pendingOperation{result: make(chan completionResult, 1), delivered: make(chan struct{})}
 	handle := cgo.NewHandle(pending)
-	// cosmos_operation_handle_free only drops this handle's Arc reference; the driver keeps the
-	// operation alive through its own reference until the completion is posted. Freeing the
-	// handle and deleting the cookie here, rather than waiting for a late completion, is therefore
-	// always safe: a completion that arrives afterward finds its cookie invalid and is dropped by
-	// the reactor before translation, so nothing it carries is ever leaked.
-	defer handle.Delete()
 
 	var preError C.cosmos_status_code_t
 	op := submit(d.reactor.queue, C.intptr_t(handle), &preError)
 	if op == nil {
+		handle.Delete()
 		// A pre-flight rejection posts no completion, so it is reported here rather than through
 		// the queue.
 		httpStatus, subStatus := unpackStatus(preError)
@@ -138,23 +124,32 @@ func (d *nativeDriver) awaitOperation(
 			Message:    "azcosmos: " + doing,
 		}
 	}
-	defer C.cosmos_operation_handle_free(op)
+	defer func() {
+		release := func() {
+			C.cosmos_operation_handle_free(op)
+			handle.Delete()
+		}
+		select {
+		case <-pending.delivered:
+			release()
+		default:
+			d.pending.Add(1)
+			go func() {
+				defer d.pending.Done()
+				<-pending.delivered
+				release()
+			}()
+		}
+	}()
 
-	return awaitOperationResult(ctx, pending, authoritative)
+	return awaitOperationResult(ctx, pending)
 }
 
-func awaitOperationResult(ctx context.Context, pending *pendingOperation, authoritative bool) (completionResult, error) {
+func awaitOperationResult(ctx context.Context, pending *pendingOperation) (completionResult, error) {
 	finish := func(result completionResult) (completionResult, error) {
 		if cause := ctx.Err(); cause != nil {
-			if !authoritative {
-				defer result.release()
-				return completionResult{}, completionCancellationError(cause, result)
-			}
-			terminal, err := resultAfterCancellation(cause, result)
-			if err != nil {
-				result.release()
-			}
-			return terminal, err
+			defer result.release()
+			return completionResult{}, completionCancellationError(cause, result)
 		}
 		return result, nil
 	}
@@ -162,48 +157,12 @@ func awaitOperationResult(ctx context.Context, pending *pendingOperation, author
 	case result := <-pending.result:
 		return finish(result)
 	case <-ctx.Done():
-		if !authoritative {
-			// abandon() marks the pending operation closed and claims whatever result is buffered
-			// atomically, under its own lock, so this cannot race with the reactor's concurrent
-			// deliver(): either the result was already delivered and abandon() hands it back here,
-			// or deliver() observes closed and releases it itself. A result that lands in that
-			// exact instant is never silently discarded in favor of a cancellation error.
-			if result, ok := pending.abandon(); ok {
-				return finish(result)
-			}
-			return completionResult{}, newOperationCancelledError(ctx.Err(), 0, "")
+		// Claim buffered metadata atomically, or let late delivery release the result.
+		if result, ok := pending.abandon(); ok {
+			return finish(result)
 		}
-		// The terminal result is authoritative when completion and cancellation race. In
-		// particular, a successful write must not be reported as cancelled after it committed.
-		result := <-pending.result
-		terminal, err := resultAfterCancellation(ctx.Err(), result)
-		if err != nil {
-			result.release()
-		}
-		return terminal, err
+		return completionResult{}, newOperationCancelledError(ctx.Err(), 0, "")
 	}
-}
-
-func resultAfterCancellation(cause error, result completionResult) (completionResult, error) {
-	if !result.cancelled && !isClientOperationTimeout(result.err) {
-		return result, nil
-	}
-	return completionResult{}, completionCancellationError(cause, result)
-}
-
-// isClientOperationTimeout reports whether err is the native driver's own end-to-end budget
-// expiring (CodeClientOperationTimeout), as opposed to the COSMOS_COMPLETION_OUTCOME_CANCELLED
-// outcome that result.cancelled already covers.
-//
-// The native driver's end-to-end timeout and the caller's context deadline are set to the same
-// nominal duration but run on independent clocks, so either can fire first. When the native clock
-// wins that race, the completion arrives classified as ClientOperationTimeout rather than
-// cancelled, and an authoritative wait (which always awaits the real completion, since a write may
-// have already committed) would otherwise return that raw error instead of one that satisfies
-// errors.Is(err, context.DeadlineExceeded) as callers expect once the context has ended.
-func isClientOperationTimeout(err error) bool {
-	var completionErr *Error
-	return errors.As(err, &completionErr) && completionErr.Code == CodeClientOperationTimeout
 }
 
 func completionCancellationError(cause error, result completionResult) error {
@@ -223,6 +182,10 @@ func completionCancellationError(cause error, result completionResult) error {
 		subStatus = completionErr.SubStatus
 	}
 	err := newOperationCancelledError(cause, requestCharge, activityID)
+	err.PatchTrackingID = result.response.PatchTrackingID
+	if completionErr != nil {
+		err.PatchTrackingID = completionErr.PatchTrackingID
+	}
 	err.Diagnostics = diagnostics
 	err.AttemptCount = attemptCount
 	err.StatusCode = statusCode
@@ -287,6 +250,20 @@ func (d *nativeDriver) submit(
 func buildNativeItemRequest(req itemRequest, container *C.cosmos_container_ref_t) (C.cosmos_operation_request_t, func()) {
 	request := newOperationRequest(req.kind, container)
 	var releases []func()
+	if req.patchMaxAttempts != nil {
+		request.patch_max_attempts = C.uint8_t(*req.patchMaxAttempts)
+	}
+	if req.patchTrackingCapacity != nil {
+		request.patch_tracking_capacity = C.uint16_t(*req.patchTrackingCapacity)
+	}
+	if req.patchTrackingRetention != nil {
+		request.patch_tracking_retention_seconds = C.uint32_t(min(math.MaxUint32, max(1, *req.patchTrackingRetention/time.Second)))
+	}
+	if req.patchTrackingID != "" {
+		id, allocation := toNativeString(string(req.patchTrackingID))
+		releases = append(releases, func() { C.free(allocation) })
+		request.patch_tracking_id = id
+	}
 
 	if req.itemID != "" {
 		itemID, allocation := toNativeString(req.itemID)
@@ -336,29 +313,37 @@ func buildNativeItemRequest(req itemRequest, container *C.cosmos_container_ref_t
 
 // nativeItemRequest is a converted request in Go types, for tests that cannot import C.
 type nativeItemRequest struct {
-	kind                 int32
-	itemID               string
-	partitionKeyLen      int
-	body                 []byte
-	sessionToken         string
-	maxItemCount         int32
-	preconditionKind     int32
-	preconditionETag     string
-	contentResponseWrite int32
-	patchStrategy        int32
+	kind                   int32
+	itemID                 string
+	partitionKeyLen        int
+	body                   []byte
+	sessionToken           string
+	maxItemCount           int32
+	preconditionKind       int32
+	preconditionETag       string
+	contentResponseWrite   int32
+	patchStrategy          int32
+	patchMaxAttempts       uint8
+	patchTrackingID        string
+	patchTrackingCapacity  uint16
+	patchTrackingRetention uint32
 }
 
 // inspectNativeItemRequest converts a request and reads it back before releasing its C memory.
 func inspectNativeItemRequest(req itemRequest) (nativeItemRequest, func()) {
 	request, release := buildNativeItemRequest(req, nil)
 	converted := nativeItemRequest{
-		kind:             int32(request.kind),
-		itemID:           fromNativeString(request.item_id),
-		partitionKeyLen:  int(request.partition_key_len),
-		sessionToken:     fromNativeString(request.session_token),
-		maxItemCount:     int32(request.max_item_count),
-		preconditionKind: int32(request.precondition_kind),
-		preconditionETag: fromNativeString(request.precondition_etag),
+		kind:                   int32(request.kind),
+		itemID:                 fromNativeString(request.item_id),
+		partitionKeyLen:        int(request.partition_key_len),
+		sessionToken:           fromNativeString(request.session_token),
+		maxItemCount:           int32(request.max_item_count),
+		preconditionKind:       int32(request.precondition_kind),
+		preconditionETag:       fromNativeString(request.precondition_etag),
+		patchMaxAttempts:       uint8(request.patch_max_attempts),
+		patchTrackingID:        fromNativeString(request.patch_tracking_id),
+		patchTrackingCapacity:  uint16(request.patch_tracking_capacity),
+		patchTrackingRetention: uint32(request.patch_tracking_retention_seconds),
 	}
 	if request.body != nil {
 		converted.body = C.GoBytes(unsafe.Pointer(request.body), C.int(request.body_len))

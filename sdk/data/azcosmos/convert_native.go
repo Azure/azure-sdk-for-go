@@ -14,6 +14,7 @@ package azcosmos
 import "C"
 
 import (
+	"strings"
 	"unsafe"
 )
 
@@ -94,8 +95,6 @@ func (o OperationOptions) toNative() (*C.cosmos_operation_options_t, func()) {
 	// package does not set keeps its documented default rather than becoming zero.
 	options := (*C.cosmos_operation_options_t)(C.malloc(C.size_t(unsafe.Sizeof(C.cosmos_operation_options_t{}))))
 	*options = C.cosmos_operation_options_default()
-	// Keep response bodies as service-provided text JSON rather than Cosmos binary JSON.
-	options.binary_encoding_enabled = 1
 
 	var allocations []unsafe.Pointer
 	release := func() {
@@ -108,6 +107,62 @@ func (o OperationOptions) toNative() (*C.cosmos_operation_options_t, func()) {
 	if strategy, ok := o.ConsistencyStrategy.toNative(); ok {
 		options.read_consistency_strategy = strategy
 	}
+	if strategy, ok := o.PatchStrategy.toNative(); ok {
+		options.patch_strategy = strategy
+	}
+	if o.SessionCapturingDisabled != nil {
+		options.session_capturing_disabled = nativeBool(*o.SessionCapturingDisabled)
+	}
+	if o.MaxFailoverRetryCount != nil {
+		options.max_failover_retry_count = C.int64_t(*o.MaxFailoverRetryCount)
+	}
+	if o.MaxSessionRetryCount != nil {
+		options.max_session_retry_count = C.int64_t(*o.MaxSessionRetryCount)
+	}
+	if o.EndpointUnavailabilityTTL != nil {
+		options.endpoint_unavailability_ttl_ms = C.int64_t(o.EndpointUnavailabilityTTL.Milliseconds())
+	}
+	if o.BinaryEncoding != nil {
+		options.binary_encoding_enabled = nativeBool(o.BinaryEncoding.enabled())
+		options.binary_encoding_request_text_response = nativeBool(o.BinaryEncoding.enabled())
+	}
+	if o.ThroughputControl.ThroughputBucket != nil {
+		options.throughput_bucket = C.int64_t(*o.ThroughputControl.ThroughputBucket)
+	}
+	switch o.ThroughputControl.PriorityLevel {
+	case PriorityLevelHigh:
+		options.priority_level = 1
+	case PriorityLevelLow:
+		options.priority_level = 2
+	}
+	if o.ThrottlingRetry.MaxRetryCount != nil {
+		options.max_throttle_retry_count = C.int64_t(*o.ThrottlingRetry.MaxRetryCount)
+	}
+	if o.ThrottlingRetry.MaxRetryWaitTime != nil {
+		options.max_throttle_retry_wait_time_ms = C.int64_t(o.ThrottlingRetry.MaxRetryWaitTime.Milliseconds())
+	}
+	if o.HedgingEnabled != nil {
+		options.hedging_enabled = nativeBool(*o.HedgingEnabled)
+	}
+	options.availability_strategy = C.int32_t(o.AvailabilityStrategy.kind)
+	if o.AvailabilityStrategy.kind == 2 {
+		options.hedge_threshold_ms = C.int64_t(max(1, o.AvailabilityStrategy.threshold.Milliseconds()))
+	}
+	if o.CustomHeaders != nil {
+		array := (*C.cosmos_header_kv_t)(C.malloc(C.size_t(max(1, len(o.CustomHeaders))) * C.size_t(unsafe.Sizeof(C.cosmos_header_kv_t{}))))
+		allocations = append(allocations, unsafe.Pointer(array))
+		headers := unsafe.Slice(array, len(o.CustomHeaders))
+		i := 0
+		for name, value := range o.CustomHeaders {
+			n, na := toNativeString(strings.ToLower(name))
+			v, va := toNativeString(value)
+			allocations = append(allocations, na, va)
+			headers[i] = C.cosmos_header_kv_t{name: n, value: v}
+			i++
+		}
+		options.custom_headers = array
+		options.custom_headers_len = C.uintptr_t(len(headers))
+	}
 	if o.EnableContentResponseOnWrite != nil {
 		// Tri-state: 0 unset, 1 false, 2 true.
 		if *o.EnableContentResponseOnWrite {
@@ -115,13 +170,14 @@ func (o OperationOptions) toNative() (*C.cosmos_operation_options_t, func()) {
 		} else {
 			options.content_response_on_write = 1
 		}
+
 	}
-	if o.EndToEndTimeout > 0 {
-		milliseconds := max(o.EndToEndTimeout.Milliseconds(), 1)
+	if o.EndToEndTimeout != nil {
+		milliseconds := max(o.EndToEndTimeout.Milliseconds(), 1000)
 		options.end_to_end_timeout_ms = C.int64_t(milliseconds)
 	}
-	if len(o.ExcludedRegions) > 0 {
-		size := C.size_t(len(o.ExcludedRegions)) * C.size_t(unsafe.Sizeof(C.cosmos_string_view_t{}))
+	if o.ExcludedRegions != nil {
+		size := C.size_t(max(1, len(o.ExcludedRegions))) * C.size_t(unsafe.Sizeof(C.cosmos_string_view_t{}))
 		array := (*C.cosmos_string_view_t)(C.malloc(size))
 		allocations = append(allocations, unsafe.Pointer(array))
 
@@ -136,6 +192,13 @@ func (o OperationOptions) toNative() (*C.cosmos_operation_options_t, func()) {
 	}
 
 	return options, release
+}
+
+func nativeBool(value bool) C.int8_t {
+	if value {
+		return 2
+	}
+	return 1
 }
 
 // toNative maps a read consistency strategy onto the driver's discriminant. The second result is
@@ -220,43 +283,74 @@ var (
 
 // nativeOperationOptions is a converted option set, in Go types.
 type nativeOperationOptions struct {
-	binaryEncodingEnabled   int8
-	readConsistencyStrategy int32
-	contentResponseOnWrite  int32
-	endToEndTimeoutMillis   int64
-	excludedRegions         []string
+	binaryEncodingEnabled      int8
+	binaryTextResponse         int8
+	readConsistencyStrategy    int32
+	contentResponseOnWrite     int32
+	endToEndTimeoutMillis      int64
+	excludedRegions            []string
+	patchStrategy              int32
+	sessionCapturingDisabled   int8
+	maxFailoverRetryCount      int64
+	maxSessionRetryCount       int64
+	endpointTTLMillis          int64
+	customHeaders              map[string]string
+	throughputBucket           int64
+	priorityLevel              int32
+	maxThrottleRetryCount      int64
+	maxThrottleRetryWaitMillis int64
+	hedgingEnabled             int8
+	availabilityStrategy       int32
+	hedgeThresholdMillis       int64
 }
 
 // inspectNativeOperationOptions converts an option set and reads the result back.
 func inspectNativeOperationOptions(o OperationOptions) (nativeOperationOptions, func()) {
 	options, release := o.toNative()
+	return readNativeOperationOptions(options), release
+}
 
+func readNativeOperationOptions(options *C.cosmos_operation_options_t) nativeOperationOptions {
 	out := nativeOperationOptions{
-		binaryEncodingEnabled:   int8(options.binary_encoding_enabled),
-		readConsistencyStrategy: int32(options.read_consistency_strategy),
-		contentResponseOnWrite:  int32(options.content_response_on_write),
-		endToEndTimeoutMillis:   int64(options.end_to_end_timeout_ms),
+		binaryEncodingEnabled:      int8(options.binary_encoding_enabled),
+		binaryTextResponse:         int8(options.binary_encoding_request_text_response),
+		readConsistencyStrategy:    int32(options.read_consistency_strategy),
+		contentResponseOnWrite:     int32(options.content_response_on_write),
+		endToEndTimeoutMillis:      int64(options.end_to_end_timeout_ms),
+		patchStrategy:              int32(options.patch_strategy),
+		sessionCapturingDisabled:   int8(options.session_capturing_disabled),
+		maxFailoverRetryCount:      int64(options.max_failover_retry_count),
+		maxSessionRetryCount:       int64(options.max_session_retry_count),
+		endpointTTLMillis:          int64(options.endpoint_unavailability_ttl_ms),
+		throughputBucket:           int64(options.throughput_bucket),
+		priorityLevel:              int32(options.priority_level),
+		maxThrottleRetryCount:      int64(options.max_throttle_retry_count),
+		maxThrottleRetryWaitMillis: int64(options.max_throttle_retry_wait_time_ms),
+		hedgingEnabled:             int8(options.hedging_enabled),
+		availabilityStrategy:       int32(options.availability_strategy),
+		hedgeThresholdMillis:       int64(options.hedge_threshold_ms),
 	}
-	if options.excluded_regions != nil && options.excluded_regions_len > 0 {
+	if options.excluded_regions != nil {
 		regions := unsafe.Slice(options.excluded_regions, int(options.excluded_regions_len))
 		out.excludedRegions = make([]string, len(regions))
 		for i, region := range regions {
 			out.excludedRegions[i] = fromNativeString(region)
 		}
 	}
-	return out, release
+	if options.custom_headers != nil {
+		out.customHeaders = make(map[string]string)
+		for _, h := range unsafe.Slice(options.custom_headers, int(options.custom_headers_len)) {
+			out.customHeaders[fromNativeString(h.name)] = fromNativeString(h.value)
+		}
+	}
+	return out
 }
 
 // defaultNativeOperationOptions reports the driver's own defaults, so a test can assert that an
 // unset field was left alone rather than hardcoding what the default happens to be.
 func defaultNativeOperationOptions() nativeOperationOptions {
 	defaults := C.cosmos_operation_options_default()
-	return nativeOperationOptions{
-		binaryEncodingEnabled:   int8(defaults.binary_encoding_enabled),
-		readConsistencyStrategy: int32(defaults.read_consistency_strategy),
-		contentResponseOnWrite:  int32(defaults.content_response_on_write),
-		endToEndTimeoutMillis:   int64(defaults.end_to_end_timeout_ms),
-	}
+	return readNativeOperationOptions(&defaults)
 }
 
 // nativeReadConsistencyStrategy reports the discriminant a strategy maps to, in Go types.
@@ -274,15 +368,13 @@ func nativePatchStrategy(s PatchStrategy) (int32, bool) {
 // toNative builds the driver's per-client options config. The returned function releases it.
 //
 // The config is flat: preferred regions plus the operation options every operation starts from.
-// [ClientOptions.ApplicationID] is not here because the ABI carries the user agent on the runtime;
+// Application identity is not here because the ABI carries the user agent on the runtime;
 // see nativeDriver.buildRuntime.
 func (o ClientOptions) toNative() (*C.cosmos_driver_options_config_t, func(), error) {
 	config := (*C.cosmos_driver_options_config_t)(C.malloc(C.size_t(unsafe.Sizeof(C.cosmos_driver_options_config_t{}))))
 	*config = C.cosmos_driver_options_config_default()
 
-	operationOptions, releaseOperationOptions := OperationOptions{
-		EnableContentResponseOnWrite: o.EnableContentResponseOnWrite,
-	}.toNative()
+	operationOptions, releaseOperationOptions := o.Operation.toNative()
 	config.operation_options = operationOptions
 
 	var allocations []unsafe.Pointer
@@ -339,12 +431,7 @@ func inspectNativeClientOptions(o ClientOptions) (nativeClientOptions, func(), e
 		}
 	}
 	if config.operation_options != nil {
-		out.operationOptions = nativeOperationOptions{
-			binaryEncodingEnabled:   int8(config.operation_options.binary_encoding_enabled),
-			readConsistencyStrategy: int32(config.operation_options.read_consistency_strategy),
-			contentResponseOnWrite:  int32(config.operation_options.content_response_on_write),
-			endToEndTimeoutMillis:   int64(config.operation_options.end_to_end_timeout_ms),
-		}
+		out.operationOptions = readNativeOperationOptions(config.operation_options)
 	}
 	return out, release, nil
 }

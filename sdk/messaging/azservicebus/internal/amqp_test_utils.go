@@ -287,6 +287,14 @@ func (ns *FakeNS) Close(permanently bool) error {
 	return nil
 }
 
+func (ns *FakeNS) CloseIfNeeded(clientRevision uint64) error {
+	if clientRevision == ns.recovered+100 {
+		ns.CloseCalled++
+	}
+
+	return nil
+}
+
 func (ns *FakeNS) Check() error {
 	return nil
 }

@@ -338,12 +338,6 @@ func (client *ShareClient) createCreateRequest(ctx context.Context, options *Sha
 	if options != nil && options.EnabledProtocols != nil {
 		req.Raw().Header["x-ms-enabled-protocols"] = []string{*options.EnabledProtocols}
 	}
-	if options != nil && options.ChangeFeedRetentionInDays != nil {
-		req.Raw().Header["x-ms-file-change-feed-retention-in-days"] = []string{strconv.FormatInt(int64(*options.ChangeFeedRetentionInDays), 10)}
-	}
-	if options != nil && options.EnableChangeFeed != nil {
-		req.Raw().Header["x-ms-file-enable-change-feed"] = []string{strconv.FormatBool(*options.EnableChangeFeed)}
-	}
 	if options != nil && options.FileRequestIntent != nil {
 		req.Raw().Header["x-ms-file-request-intent"] = []string{string(*options.FileRequestIntent)}
 	}
@@ -908,17 +902,6 @@ func (client *ShareClient) getPropertiesHandleResponse(resp *http.Response, succ
 	if val := resp.Header.Get("X-Ms-Access-Tier-Transition-State"); val != "" {
 		result.AccessTierTransitionState = &val
 	}
-	if val := resp.Header.Get("X-Ms-File-Blob-Container-For-Xfiles-Change-Feed"); val != "" {
-		result.ChangeFeedBlobContainerName = &val
-	}
-	if val := resp.Header.Get("X-Ms-File-Change-Feed-Retention-In-Days"); val != "" {
-		changeFeedRetentionInDays32, err := strconv.ParseInt(val, 10, 32)
-		changeFeedRetentionInDays := int32(changeFeedRetentionInDays32)
-		if err != nil {
-			return ShareClientGetPropertiesResponse{}, err
-		}
-		result.ChangeFeedRetentionInDays = &changeFeedRetentionInDays
-	}
 	if val := resp.Header.Get("X-Ms-Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
@@ -931,13 +914,6 @@ func (client *ShareClient) getPropertiesHandleResponse(resp *http.Response, succ
 	}
 	if val := resp.Header.Get("Etag"); val != "" {
 		result.ETag = (*azcore.ETag)(&val)
-	}
-	if val := resp.Header.Get("X-Ms-File-Enable-Change-Feed"); val != "" {
-		enableChangeFeed, err := strconv.ParseBool(val)
-		if err != nil {
-			return ShareClientGetPropertiesResponse{}, err
-		}
-		result.EnableChangeFeed = &enableChangeFeed
 	}
 	if val := resp.Header.Get("X-Ms-Enable-Smb-Directory-Lease"); val != "" {
 		enableSMBDirectoryLease, err := strconv.ParseBool(val)
@@ -1652,12 +1628,6 @@ func (client *ShareClient) setPropertiesCreateRequest(ctx context.Context, optio
 	}
 	if options != nil && options.EnableSnapshotVirtualDirectoryAccess != nil {
 		req.Raw().Header["x-ms-enable-snapshot-virtual-directory-access"] = []string{strconv.FormatBool(*options.EnableSnapshotVirtualDirectoryAccess)}
-	}
-	if options != nil && options.ChangeFeedRetentionInDays != nil {
-		req.Raw().Header["x-ms-file-change-feed-retention-in-days"] = []string{strconv.FormatInt(int64(*options.ChangeFeedRetentionInDays), 10)}
-	}
-	if options != nil && options.EnableChangeFeed != nil {
-		req.Raw().Header["x-ms-file-enable-change-feed"] = []string{strconv.FormatBool(*options.EnableChangeFeed)}
 	}
 	if options != nil && options.FileRequestIntent != nil {
 		req.Raw().Header["x-ms-file-request-intent"] = []string{string(*options.FileRequestIntent)}

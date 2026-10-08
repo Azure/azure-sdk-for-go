@@ -228,12 +228,20 @@ func PossibleLeaseStatusTypeValues() []LeaseStatusType {
 type ListFilesIncludeType string
 
 const (
+	// ListFilesIncludeTypeAll - All
+	ListFilesIncludeTypeAll ListFilesIncludeType = "All"
 	// ListFilesIncludeTypeAttributes - Attributes
 	ListFilesIncludeTypeAttributes ListFilesIncludeType = "Attributes"
 	// ListFilesIncludeTypeEtag - Etag
 	ListFilesIncludeTypeEtag ListFilesIncludeType = "Etag"
+	// ListFilesIncludeTypeLinkCount - LinkCount
+	ListFilesIncludeTypeLinkCount ListFilesIncludeType = "LinkCount"
+	// ListFilesIncludeTypeNfsAttributes - NfsAttributes
+	ListFilesIncludeTypeNfsAttributes ListFilesIncludeType = "NfsAttributes"
 	// ListFilesIncludeTypePermissionKey - PermissionKey
 	ListFilesIncludeTypePermissionKey ListFilesIncludeType = "PermissionKey"
+	// ListFilesIncludeTypePermissions - Permissions
+	ListFilesIncludeTypePermissions ListFilesIncludeType = "Permissions"
 	// ListFilesIncludeTypeTimestamps - Timestamps
 	ListFilesIncludeTypeTimestamps ListFilesIncludeType = "Timestamps"
 )
@@ -241,9 +249,13 @@ const (
 // PossibleListFilesIncludeTypeValues returns the possible values for the ListFilesIncludeType const type.
 func PossibleListFilesIncludeTypeValues() []ListFilesIncludeType {
 	return []ListFilesIncludeType{
+		ListFilesIncludeTypeAll,
 		ListFilesIncludeTypeAttributes,
 		ListFilesIncludeTypeEtag,
+		ListFilesIncludeTypeLinkCount,
+		ListFilesIncludeTypeNfsAttributes,
 		ListFilesIncludeTypePermissionKey,
+		ListFilesIncludeTypePermissions,
 		ListFilesIncludeTypeTimestamps,
 	}
 }

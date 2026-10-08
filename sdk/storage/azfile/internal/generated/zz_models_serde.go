@@ -51,6 +51,18 @@ func (a *AccessPolicy) UnmarshalXML(dec *xml.Decoder, start xml.StartElement) er
 	return nil
 }
 
+// MarshalXML implements the xml.Marshaller interface for type BlockDeviceItem.
+func (b BlockDeviceItem) MarshalXML(enc *xml.Encoder, start xml.StartElement) error {
+	start.Name.Local = "BlockDevice"
+	type alias BlockDeviceItem
+	aux := &struct {
+		*alias
+	}{
+		alias: (*alias)(&b),
+	}
+	return enc.EncodeElement(aux, start)
+}
+
 // MarshalXML implements the xml.Marshaller interface for type CORSRule.
 func (c CORSRule) MarshalXML(enc *xml.Encoder, start xml.StartElement) error {
 	start.Name.Local = "CorsRule"
@@ -59,6 +71,30 @@ func (c CORSRule) MarshalXML(enc *xml.Encoder, start xml.StartElement) error {
 		*alias
 	}{
 		alias: (*alias)(&c),
+	}
+	return enc.EncodeElement(aux, start)
+}
+
+// MarshalXML implements the xml.Marshaller interface for type CharDeviceItem.
+func (c CharDeviceItem) MarshalXML(enc *xml.Encoder, start xml.StartElement) error {
+	start.Name.Local = "CharDevice"
+	type alias CharDeviceItem
+	aux := &struct {
+		*alias
+	}{
+		alias: (*alias)(&c),
+	}
+	return enc.EncodeElement(aux, start)
+}
+
+// MarshalXML implements the xml.Marshaller interface for type FifoItem.
+func (f FifoItem) MarshalXML(enc *xml.Encoder, start xml.StartElement) error {
+	start.Name.Local = "Fifo"
+	type alias FifoItem
+	aux := &struct {
+		*alias
+	}{
+		alias: (*alias)(&f),
 	}
 	return enc.EncodeElement(aux, start)
 }
@@ -135,16 +171,36 @@ func (f FilesAndDirectoriesListSegment) MarshalXML(enc *xml.Encoder, start xml.S
 	type alias FilesAndDirectoriesListSegment
 	aux := &struct {
 		*alias
-		Directories *[]*Directory `xml:"Directory"`
-		Files       *[]*File      `xml:"File"`
+		BlockDeviceItems *[]*BlockDeviceItem `xml:"BlockDevice"`
+		CharDeviceItems  *[]*CharDeviceItem  `xml:"CharDevice"`
+		Directories      *[]*Directory       `xml:"Directory"`
+		FifoItems        *[]*FifoItem        `xml:"Fifo"`
+		Files            *[]*File            `xml:"File"`
+		SocketItems      *[]*SocketItem      `xml:"Socket"`
+		SymLinkItems     *[]*SymLinkItem     `xml:"SymLink"`
 	}{
 		alias: (*alias)(&f),
+	}
+	if f.BlockDeviceItems != nil {
+		aux.BlockDeviceItems = &f.BlockDeviceItems
+	}
+	if f.CharDeviceItems != nil {
+		aux.CharDeviceItems = &f.CharDeviceItems
 	}
 	if f.Directories != nil {
 		aux.Directories = &f.Directories
 	}
+	if f.FifoItems != nil {
+		aux.FifoItems = &f.FifoItems
+	}
 	if f.Files != nil {
 		aux.Files = &f.Files
+	}
+	if f.SocketItems != nil {
+		aux.SocketItems = &f.SocketItems
+	}
+	if f.SymLinkItems != nil {
+		aux.SymLinkItems = &f.SymLinkItems
 	}
 	return enc.EncodeElement(aux, start)
 }
@@ -421,6 +477,18 @@ func (s *ShareProperties) UnmarshalXML(dec *xml.Decoder, start xml.StartElement)
 	return nil
 }
 
+// MarshalXML implements the xml.Marshaller interface for type SocketItem.
+func (s SocketItem) MarshalXML(enc *xml.Encoder, start xml.StartElement) error {
+	start.Name.Local = "Socket"
+	type alias SocketItem
+	aux := &struct {
+		*alias
+	}{
+		alias: (*alias)(&s),
+	}
+	return enc.EncodeElement(aux, start)
+}
+
 // MarshalXML implements the xml.Marshaller interface for type StorageServiceProperties.
 func (s StorageServiceProperties) MarshalXML(enc *xml.Encoder, start xml.StartElement) error {
 	type alias StorageServiceProperties
@@ -432,6 +500,18 @@ func (s StorageServiceProperties) MarshalXML(enc *xml.Encoder, start xml.StartEl
 	}
 	if s.CORS != nil {
 		aux.CORS = &s.CORS
+	}
+	return enc.EncodeElement(aux, start)
+}
+
+// MarshalXML implements the xml.Marshaller interface for type SymLinkItem.
+func (s SymLinkItem) MarshalXML(enc *xml.Encoder, start xml.StartElement) error {
+	start.Name.Local = "SymLink"
+	type alias SymLinkItem
+	aux := &struct {
+		*alias
+	}{
+		alias: (*alias)(&s),
 	}
 	return enc.EncodeElement(aux, start)
 }

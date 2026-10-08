@@ -41,7 +41,7 @@
 * Added the Go SDK identity to the User-Agent header alongside the native driver identity,
   with an optional runtime application suffix. See [PR 27627](https://github.com/Azure/azure-sdk-for-go/pull/27627).
 * Added optional operation timeouts with Rust's one-second minimum, runtime CPU sampling intervals,
-  client fault-injection rules, immutable native diagnostics, and item-completion diagnostics handlers.
+  native diagnostics snapshots, and item-completion diagnostics handlers.
   See [PR 27661](https://github.com/Azure/azure-sdk-for-go/pull/27661).
 * Added parameterized queries within a complete logical partition through `Query`, `FeedScope`,
   `QueryOptions`, and `ContainerClient.NewQueryItemsPager`, including page-size hints, raw JSON

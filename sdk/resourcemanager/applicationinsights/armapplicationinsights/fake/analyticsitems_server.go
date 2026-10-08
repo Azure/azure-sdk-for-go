@@ -100,7 +100,7 @@ func (a *AnalyticsItemsServerTransport) dispatchDelete(req *http.Request) (*http
 	if a.srv.Delete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Delete not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/microsoft\.insights/components/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/(?P<scopePath>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/item`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/microsoft\.insights/components/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/(?P<scopePath>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/item`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -153,7 +153,7 @@ func (a *AnalyticsItemsServerTransport) dispatchGet(req *http.Request) (*http.Re
 	if a.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/microsoft\.insights/components/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/(?P<scopePath>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/item`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/microsoft\.insights/components/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/(?P<scopePath>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/item`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -206,7 +206,7 @@ func (a *AnalyticsItemsServerTransport) dispatchList(req *http.Request) (*http.R
 	if a.srv.List == nil {
 		return nil, &nonRetriableError{errors.New("fake for method List not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/microsoft\.insights/components/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/(?P<scopePath>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/microsoft\.insights/components/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/(?P<scopePath>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -264,7 +264,7 @@ func (a *AnalyticsItemsServerTransport) dispatchPut(req *http.Request) (*http.Re
 	if a.srv.Put == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Put not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/microsoft\.insights/components/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/(?P<scopePath>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/item`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/microsoft\.insights/components/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/(?P<scopePath>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/item`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {

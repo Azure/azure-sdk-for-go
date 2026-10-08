@@ -30,6 +30,9 @@ type WorkItemConfigurationsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewWorkItemConfigurationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*WorkItemConfigurationsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -62,19 +65,14 @@ func (client *WorkItemConfigurationsClient) Create(ctx context.Context, resource
 	if err != nil {
 		return WorkItemConfigurationsClientCreateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WorkItemConfigurationsClientCreateResponse{}, err
-	}
-	resp, err := client.createHandleResponse(httpResp)
-	return resp, err
+	return client.createHandleResponse(httpResp, http.StatusOK)
 }
 
 // createCreateRequest creates the Create request.
 func (client *WorkItemConfigurationsClient) createCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, workItemConfigurationProperties WorkItemCreateConfiguration, _ *WorkItemConfigurationsClientCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/WorkItemConfigs"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -101,8 +99,11 @@ func (client *WorkItemConfigurationsClient) createCreateRequest(ctx context.Cont
 }
 
 // createHandleResponse handles the Create response.
-func (client *WorkItemConfigurationsClient) createHandleResponse(resp *http.Response) (WorkItemConfigurationsClientCreateResponse, error) {
+func (client *WorkItemConfigurationsClient) createHandleResponse(resp *http.Response, successCodes ...int) (WorkItemConfigurationsClientCreateResponse, error) {
 	result := WorkItemConfigurationsClientCreateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkItemConfiguration); err != nil {
 		return WorkItemConfigurationsClientCreateResponse{}, err
 	}
@@ -132,8 +133,7 @@ func (client *WorkItemConfigurationsClient) Delete(ctx context.Context, resource
 		return WorkItemConfigurationsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WorkItemConfigurationsClientDeleteResponse{}, err
+		return WorkItemConfigurationsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return WorkItemConfigurationsClientDeleteResponse{}, nil
 }
@@ -142,7 +142,7 @@ func (client *WorkItemConfigurationsClient) Delete(ctx context.Context, resource
 func (client *WorkItemConfigurationsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, workItemConfigID string, _ *WorkItemConfigurationsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/WorkItemConfigs/{workItemConfigId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -187,19 +187,14 @@ func (client *WorkItemConfigurationsClient) GetDefault(ctx context.Context, reso
 	if err != nil {
 		return WorkItemConfigurationsClientGetDefaultResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WorkItemConfigurationsClientGetDefaultResponse{}, err
-	}
-	resp, err := client.getDefaultHandleResponse(httpResp)
-	return resp, err
+	return client.getDefaultHandleResponse(httpResp, http.StatusOK)
 }
 
 // getDefaultCreateRequest creates the GetDefault request.
 func (client *WorkItemConfigurationsClient) getDefaultCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, _ *WorkItemConfigurationsClientGetDefaultOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/DefaultWorkItemConfig"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -222,8 +217,11 @@ func (client *WorkItemConfigurationsClient) getDefaultCreateRequest(ctx context.
 }
 
 // getDefaultHandleResponse handles the GetDefault response.
-func (client *WorkItemConfigurationsClient) getDefaultHandleResponse(resp *http.Response) (WorkItemConfigurationsClientGetDefaultResponse, error) {
+func (client *WorkItemConfigurationsClient) getDefaultHandleResponse(resp *http.Response, successCodes ...int) (WorkItemConfigurationsClientGetDefaultResponse, error) {
 	result := WorkItemConfigurationsClientGetDefaultResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkItemConfiguration); err != nil {
 		return WorkItemConfigurationsClientGetDefaultResponse{}, err
 	}
@@ -252,19 +250,14 @@ func (client *WorkItemConfigurationsClient) GetItem(ctx context.Context, resourc
 	if err != nil {
 		return WorkItemConfigurationsClientGetItemResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WorkItemConfigurationsClientGetItemResponse{}, err
-	}
-	resp, err := client.getItemHandleResponse(httpResp)
-	return resp, err
+	return client.getItemHandleResponse(httpResp, http.StatusOK)
 }
 
 // getItemCreateRequest creates the GetItem request.
 func (client *WorkItemConfigurationsClient) getItemCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, workItemConfigID string, _ *WorkItemConfigurationsClientGetItemOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/WorkItemConfigs/{workItemConfigId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -291,8 +284,11 @@ func (client *WorkItemConfigurationsClient) getItemCreateRequest(ctx context.Con
 }
 
 // getItemHandleResponse handles the GetItem response.
-func (client *WorkItemConfigurationsClient) getItemHandleResponse(resp *http.Response) (WorkItemConfigurationsClientGetItemResponse, error) {
+func (client *WorkItemConfigurationsClient) getItemHandleResponse(resp *http.Response, successCodes ...int) (WorkItemConfigurationsClientGetItemResponse, error) {
 	result := WorkItemConfigurationsClientGetItemResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkItemConfiguration); err != nil {
 		return WorkItemConfigurationsClientGetItemResponse{}, err
 	}
@@ -315,47 +311,61 @@ func (client *WorkItemConfigurationsClient) NewListPager(resourceGroupName strin
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, resourceGroupName, resourceName, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, resourceGroupName, resourceName, nextLink, options)
 			if err != nil {
 				return WorkItemConfigurationsClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return WorkItemConfigurationsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *WorkItemConfigurationsClient) listCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, _ *WorkItemConfigurationsClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/WorkItemConfigs"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *WorkItemConfigurationsClient) listCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, nextLink string, _ *WorkItemConfigurationsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/WorkItemConfigs"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if resourceName == "" {
+			return nil, errors.New("parameter resourceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if resourceName == "" {
-		return nil, errors.New("parameter resourceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20150501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20150501)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *WorkItemConfigurationsClient) listHandleResponse(resp *http.Response) (WorkItemConfigurationsClientListResponse, error) {
+func (client *WorkItemConfigurationsClient) listHandleResponse(resp *http.Response, successCodes ...int) (WorkItemConfigurationsClientListResponse, error) {
 	result := WorkItemConfigurationsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkItemConfigurationsListResult); err != nil {
 		return WorkItemConfigurationsClientListResponse{}, err
 	}
@@ -386,19 +396,14 @@ func (client *WorkItemConfigurationsClient) UpdateItem(ctx context.Context, reso
 	if err != nil {
 		return WorkItemConfigurationsClientUpdateItemResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WorkItemConfigurationsClientUpdateItemResponse{}, err
-	}
-	resp, err := client.updateItemHandleResponse(httpResp)
-	return resp, err
+	return client.updateItemHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateItemCreateRequest creates the UpdateItem request.
 func (client *WorkItemConfigurationsClient) updateItemCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, workItemConfigID string, workItemConfigurationProperties WorkItemCreateConfiguration, _ *WorkItemConfigurationsClientUpdateItemOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/WorkItemConfigs/{workItemConfigId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -429,8 +434,11 @@ func (client *WorkItemConfigurationsClient) updateItemCreateRequest(ctx context.
 }
 
 // updateItemHandleResponse handles the UpdateItem response.
-func (client *WorkItemConfigurationsClient) updateItemHandleResponse(resp *http.Response) (WorkItemConfigurationsClientUpdateItemResponse, error) {
+func (client *WorkItemConfigurationsClient) updateItemHandleResponse(resp *http.Response, successCodes ...int) (WorkItemConfigurationsClientUpdateItemResponse, error) {
 	result := WorkItemConfigurationsClientUpdateItemResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkItemConfiguration); err != nil {
 		return WorkItemConfigurationsClientUpdateItemResponse{}, err
 	}

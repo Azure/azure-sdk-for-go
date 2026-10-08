@@ -1483,6 +1483,12 @@ type ShareClientGetPropertiesResponse struct {
 	// The access tier transition state.
 	AccessTierTransitionState *string
 
+	// The blob container in which change feed records are stored, in the format "$fileschangefeed-<guid>".
+	ChangeFeedBlobContainerName *string
+
+	// The number of days that change feed records are retained.
+	ChangeFeedRetentionInDays *int32
+
 	// An opaque, globally-unique, client-generated string identifier for the request.
 	ClientRequestID *string
 
@@ -1494,6 +1500,9 @@ type ShareClientGetPropertiesResponse struct {
 
 	// The ETag contains a value that represents the version of the resource.
 	ETag *azcore.ETag
+
+	// Whether change feed is enabled.
+	EnableChangeFeed *bool
 
 	// Whether SMB directory lease is enabled.
 	EnableSMBDirectoryLease *bool

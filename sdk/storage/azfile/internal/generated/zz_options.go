@@ -1157,6 +1157,13 @@ type ShareClientCreateOptions struct {
 	// Specifies the access tier of the share.
 	AccessTier *ShareAccessTier
 
+	// Optional. Integer. Specifies the number of days that change feed records are retained, between 1 and 365. Default if not
+	// specified is 7 days.
+	ChangeFeedRetentionInDays *int32
+
+	// Optional. Boolean. Default if not specified is false. This property enables change feed on the share.
+	EnableChangeFeed *bool
+
 	// Optional. Used to enable SMB directory lease.
 	EnableSMBDirectoryLease *bool
 
@@ -1398,6 +1405,13 @@ type ShareClientSetMetadataOptions struct {
 type ShareClientSetPropertiesOptions struct {
 	// Specifies the access tier of the share.
 	AccessTier *ShareAccessTier
+
+	// Optional. Integer. Specifies the number of days that change feed records are retained, between 1 and 365. Default if not
+	// specified is 7 days.
+	ChangeFeedRetentionInDays *int32
+
+	// Optional. Boolean. Default if not specified is false. This property enables change feed on the share.
+	EnableChangeFeed *bool
 
 	// Optional. Used to enable SMB directory lease.
 	EnableSMBDirectoryLease *bool

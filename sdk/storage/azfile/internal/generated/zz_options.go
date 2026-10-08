@@ -588,6 +588,27 @@ type FileClientForceCloseHandlesOptions struct {
 	Timeout *int32
 }
 
+// FileClientGetHardLinksOptions contains the optional parameters for the FileClient.GetHardLinks method.
+type FileClientGetHardLinksOptions struct {
+	// If true, the trailing dot will not be trimmed from the target file/directory path.
+	AllowTrailingDot *bool
+
+	// Valid values are 'backup'.
+	FileRequestIntent *ShareTokenIntent
+
+	// If specified, the lease ID must match the lease ID of the file.
+	LeaseID *string
+
+	// An opaque, globally-unique, client-generated string identifier for the request.
+	RequestID *string
+
+	// The snapshot parameter is an opaque DateTime value that specifies a share snapshot.
+	Sharesnapshot *string
+
+	// The timeout parameter is expressed in seconds.
+	Timeout *int32
+}
+
 // FileClientGetPropertiesOptions contains the optional parameters for the FileClient.GetProperties method.
 type FileClientGetPropertiesOptions struct {
 	// If true, the trailing dot will not be trimmed from the target file/directory path.

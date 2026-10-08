@@ -449,6 +449,9 @@ func (client *DirectoryClient) getPropertiesHandleResponse(resp *http.Response, 
 	if val := resp.Header.Get("X-Ms-Mode"); val != "" {
 		result.FileMode = &val
 	}
+	if val := resp.Header.Get("X-Ms-File-Name"); val != "" {
+		result.FileName = &val
+	}
 	if val := resp.Header.Get("X-Ms-File-Permission-Key"); val != "" {
 		result.FilePermissionKey = &val
 	}

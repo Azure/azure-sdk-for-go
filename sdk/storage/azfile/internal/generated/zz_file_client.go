@@ -1258,6 +1258,226 @@ func (client *FileClient) forceCloseHandlesHandleResponse(resp *http.Response, s
 	return result, nil
 }
 
+// GetHardLinks - Returns the hard links of a file, along with all user-defined metadata, content properties, and system properties
+// for the file. NFS only.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - options - FileClientGetHardLinksOptions contains the optional parameters for the FileClient.GetHardLinks method.
+func (client *FileClient) GetHardLinks(ctx context.Context, options *FileClientGetHardLinksOptions) (FileClientGetHardLinksResponse, error) {
+	var err error
+	req, err := client.getHardLinksCreateRequest(ctx, options)
+	if err != nil {
+		return FileClientGetHardLinksResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return FileClientGetHardLinksResponse{}, err
+	}
+	return client.getHardLinksHandleResponse(httpResp, http.StatusOK)
+}
+
+// getHardLinksCreateRequest creates the GetHardLinks request.
+func (client *FileClient) getHardLinksCreateRequest(ctx context.Context, options *FileClientGetHardLinksOptions) (*policy.Request, error) {
+	urlPath := "?comp=hardlinks"
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.url, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	if options != nil && options.Sharesnapshot != nil {
+		reqQP.Set("sharesnapshot", *options.Sharesnapshot)
+	}
+	if options != nil && options.Timeout != nil {
+		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
+	}
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/xml"}
+	if options != nil && options.AllowTrailingDot != nil {
+		req.Raw().Header["x-ms-allow-trailing-dot"] = []string{strconv.FormatBool(*options.AllowTrailingDot)}
+	}
+	if options != nil && options.RequestID != nil {
+		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
+	}
+	if options != nil && options.FileRequestIntent != nil {
+		req.Raw().Header["x-ms-file-request-intent"] = []string{string(*options.FileRequestIntent)}
+	}
+	if options != nil && options.LeaseID != nil {
+		req.Raw().Header["x-ms-lease-id"] = []string{*options.LeaseID}
+	}
+	req.Raw().Header["x-ms-version"] = []string{version20270307}
+	return req, nil
+}
+
+// getHardLinksHandleResponse handles the GetHardLinks response.
+func (client *FileClient) getHardLinksHandleResponse(resp *http.Response, successCodes ...int) (FileClientGetHardLinksResponse, error) {
+	result := FileClientGetHardLinksResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("X-Ms-Client-Request-Id"); val != "" {
+		result.ClientRequestID = &val
+	}
+	if val := resp.Header.Get("X-Ms-Copy-Completion-Time"); val != "" {
+		copyCompletionTime, err := time.Parse(time.RFC1123, val)
+		if err != nil {
+			return FileClientGetHardLinksResponse{}, err
+		}
+		result.CopyCompletionTime = &copyCompletionTime
+	}
+	if val := resp.Header.Get("X-Ms-Copy-Id"); val != "" {
+		result.CopyID = &val
+	}
+	if val := resp.Header.Get("X-Ms-Copy-Progress"); val != "" {
+		result.CopyProgress = &val
+	}
+	if val := resp.Header.Get("X-Ms-Copy-Source"); val != "" {
+		result.CopySource = &val
+	}
+	if val := resp.Header.Get("X-Ms-Copy-Status"); val != "" {
+		result.CopyStatus = (*CopyStatusType)(&val)
+	}
+	if val := resp.Header.Get("X-Ms-Copy-Status-Description"); val != "" {
+		result.CopyStatusDescription = &val
+	}
+	if val := resp.Header.Get("Date"); val != "" {
+		date, err := time.Parse(time.RFC1123, val)
+		if err != nil {
+			return FileClientGetHardLinksResponse{}, err
+		}
+		result.Date = &date
+	}
+	if val := resp.Header.Get("Etag"); val != "" {
+		result.ETag = (*azcore.ETag)(&val)
+	}
+	if val := resp.Header.Get("X-Ms-File-Attributes"); val != "" {
+		result.FileAttributes = &val
+	}
+	if val := resp.Header.Get("X-Ms-Cache-Control"); val != "" {
+		result.FileCacheControl = &val
+	}
+	if val := resp.Header.Get("X-Ms-File-Change-Time"); val != "" {
+		fileChangeTime, err := time.Parse(time.RFC3339Nano, val)
+		if err != nil {
+			return FileClientGetHardLinksResponse{}, err
+		}
+		result.FileChangeTime = &fileChangeTime
+	}
+	if val := resp.Header.Get("X-Ms-Content-Disposition"); val != "" {
+		result.FileContentDisposition = &val
+	}
+	if val := resp.Header.Get("X-Ms-Content-Encoding"); val != "" {
+		result.FileContentEncoding = &val
+	}
+	if val := resp.Header.Get("X-Ms-Content-Language"); val != "" {
+		result.FileContentLanguage = &val
+	}
+	if val := resp.Header.Get("X-Ms-Content-Length"); val != "" {
+		fileContentLength, err := strconv.ParseInt(val, 10, 64)
+		if err != nil {
+			return FileClientGetHardLinksResponse{}, err
+		}
+		result.FileContentLength = &fileContentLength
+	}
+	if val := resp.Header.Get("X-Ms-Content-Md5"); val != "" {
+		fileContentMD5, err := base64.StdEncoding.DecodeString(val)
+		if err != nil {
+			return FileClientGetHardLinksResponse{}, err
+		}
+		result.FileContentMD5 = fileContentMD5
+	}
+	if val := resp.Header.Get("X-Ms-Content-Type"); val != "" {
+		result.FileContentType = &val
+	}
+	if val := resp.Header.Get("X-Ms-File-Creation-Time"); val != "" {
+		fileCreationTime, err := time.Parse(time.RFC3339Nano, val)
+		if err != nil {
+			return FileClientGetHardLinksResponse{}, err
+		}
+		result.FileCreationTime = &fileCreationTime
+	}
+	if val := resp.Header.Get("X-Ms-File-Last-Write-Time"); val != "" {
+		fileLastWriteTime, err := time.Parse(time.RFC3339Nano, val)
+		if err != nil {
+			return FileClientGetHardLinksResponse{}, err
+		}
+		result.FileLastWriteTime = &fileLastWriteTime
+	}
+	if val := resp.Header.Get("X-Ms-Mode"); val != "" {
+		result.FileMode = &val
+	}
+	if val := resp.Header.Get("X-Ms-File-Name"); val != "" {
+		result.FileName = &val
+	}
+	if val := resp.Header.Get("X-Ms-File-Permission-Key"); val != "" {
+		result.FilePermissionKey = &val
+	}
+	if val := resp.Header.Get("X-Ms-Type"); val != "" {
+		result.FileType = &val
+	}
+	if val := resp.Header.Get("X-Ms-Group"); val != "" {
+		result.Group = &val
+	}
+	if val := resp.Header.Get("X-Ms-File-Id"); val != "" {
+		result.ID = &val
+	}
+	if val := resp.Header.Get("X-Ms-Server-Encrypted"); val != "" {
+		isServerEncrypted, err := strconv.ParseBool(val)
+		if err != nil {
+			return FileClientGetHardLinksResponse{}, err
+		}
+		result.IsServerEncrypted = &isServerEncrypted
+	}
+	if val := resp.Header.Get("Last-Modified"); val != "" {
+		lastModified, err := time.Parse(time.RFC1123, val)
+		if err != nil {
+			return FileClientGetHardLinksResponse{}, err
+		}
+		result.LastModified = &lastModified
+	}
+	if val := resp.Header.Get("X-Ms-Lease-Duration"); val != "" {
+		result.LeaseDuration = (*LeaseDurationType)(&val)
+	}
+	if val := resp.Header.Get("X-Ms-Lease-State"); val != "" {
+		result.LeaseState = (*LeaseStateType)(&val)
+	}
+	if val := resp.Header.Get("X-Ms-Lease-Status"); val != "" {
+		result.LeaseStatus = (*LeaseStatusType)(&val)
+	}
+	if val := resp.Header.Get("X-Ms-Link-Count"); val != "" {
+		linkCount, err := strconv.ParseInt(val, 10, 64)
+		if err != nil {
+			return FileClientGetHardLinksResponse{}, err
+		}
+		result.LinkCount = &linkCount
+	}
+	for hh := range resp.Header {
+		if len(hh) > len("x-ms-meta-") && strings.EqualFold(hh[:len("x-ms-meta-")], "x-ms-meta-") {
+			if result.Metadata == nil {
+				result.Metadata = map[string]*string{}
+			}
+			result.Metadata[hh[len("x-ms-meta-"):]] = to.Ptr(resp.Header.Get(hh))
+		}
+	}
+	if val := resp.Header.Get("X-Ms-File-File-Type"); val != "" {
+		result.NFSFileType = (*NFSFileType)(&val)
+	}
+	if val := resp.Header.Get("X-Ms-Owner"); val != "" {
+		result.Owner = &val
+	}
+	if val := resp.Header.Get("X-Ms-File-Parent-Id"); val != "" {
+		result.ParentID = &val
+	}
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
+		result.RequestID = &val
+	}
+	if val := resp.Header.Get("X-Ms-Version"); val != "" {
+		result.Version = &val
+	}
+	if err := runtime.UnmarshalAsXML(resp, &result.HardLinkList); err != nil {
+		return FileClientGetHardLinksResponse{}, err
+	}
+	return result, nil
+}
+
 // GetProperties - Returns all user-defined metadata, standard HTTP properties, and system properties for the file.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - options - FileClientGetPropertiesOptions contains the optional parameters for the FileClient.GetProperties method.
@@ -1400,6 +1620,9 @@ func (client *FileClient) getPropertiesHandleResponse(resp *http.Response, succe
 	}
 	if val := resp.Header.Get("X-Ms-Mode"); val != "" {
 		result.FileMode = &val
+	}
+	if val := resp.Header.Get("X-Ms-File-Name"); val != "" {
+		result.FileName = &val
 	}
 	if val := resp.Header.Get("X-Ms-File-Permission-Key"); val != "" {
 		result.FilePermissionKey = &val

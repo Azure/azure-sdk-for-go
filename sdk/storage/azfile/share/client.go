@@ -13,6 +13,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/directory"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/file"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/fileerror"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/base"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/exported"
@@ -144,6 +145,24 @@ func (s *Client) NewDirectoryClient(directoryName string) *directory.Client {
 func (s *Client) NewRootDirectoryClient() *directory.Client {
 	rootDirURL := s.URL()
 	return (*directory.Client)(base.NewDirectoryClient(rootDirURL, s.generated().InternalClient().WithClientName(exported.ModuleName), s.sharedKey(), s.getClientOptions()))
+}
+
+// NewFileClientByFileID creates a new file.Client for accessing a file via its FileId.
+func (s *Client) NewFileClientByFileID(fileID string) *file.Client {
+	p, _ := sas.ParseURL(s.URL())
+	p.DirectoryOrFilePath = ""
+	p.FileID = fileID
+	fileURL := p.String()
+	return (*file.Client)(base.NewFileClient(fileURL, s.generated().InternalClient().WithClientName(exported.ModuleName), s.sharedKey(), s.getClientOptions()))
+}
+
+// NewDirectoryClientByFileID creates a new directory.Client for accessing a directory via its FileId.
+func (s *Client) NewDirectoryClientByFileID(fileID string) *directory.Client {
+	p, _ := sas.ParseURL(s.URL())
+	p.DirectoryOrFilePath = ""
+	p.FileID = fileID
+	dirURL := p.String()
+	return (*directory.Client)(base.NewDirectoryClient(dirURL, s.generated().InternalClient().WithClientName(exported.ModuleName), s.sharedKey(), s.getClientOptions()))
 }
 
 // WithSnapshot creates a new Client object identical to the source but with the specified share snapshot timestamp.

@@ -8,11 +8,16 @@
 // This is the v2 major version of the module and it is not usable yet. The v2 surface is being
 // assembled incrementally so that it can be reviewed as it lands. This release covers the error
 // and response model, partition keys, client construction, and creating, reading, replacing,
-// upserting, deleting, and patching single items, plus retained item-query paging.
+// upserting, deleting, and patching single items, plus retained query and change-feed paging.
 //
 // QueryItemsPager supports logical-partition, hierarchical-prefix, and full-container scopes.
 // Defer its Close method when stopping early. ContinuationToken captures resumable progress
 // separately from paging; not every native query plan supports a checkpoint.
+//
+// ChangeFeedPager reads LatestVersion or AllVersionsAndDeletes changes from an explicit scope
+// and initial position. Empty and HTTP 304 pages remain pollable. Items preserve raw change
+// envelopes, including optional previous images and metadata. Defer Close; ContinuationToken
+// snapshots delivered progress independently of application acknowledgement.
 //
 // v2 replaces the v1 pure-Go implementation with a binding to the shared Rust Cosmos driver, so
 // that routing, retries, session handling, failover behavior and query fan-out are consistent

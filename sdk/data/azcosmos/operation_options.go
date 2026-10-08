@@ -27,9 +27,9 @@ type OperationOptions struct {
 	// keeps the operation away from them entirely.
 	ExcludedRegions []Region
 
-	// EndToEndTimeout sets the operation budget, including native retries. For queries it
-	// applies per page; zero adds no explicit native query timeout beyond native defaults.
-	// Query contexts bound the Go wait, not native execution; Client.Close may wait for
+	// EndToEndTimeout sets the operation budget, including native retries. For query and
+	// change-feed pagers it applies per page; zero leaves native feed timeouts at their defaults.
+	// Pager contexts bound the Go wait, not native execution; Client.Close may wait for
 	// admitted work after the context ends. Positive native timeouts are clamped to at least one second.
 	EndToEndTimeout time.Duration
 }

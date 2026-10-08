@@ -6,6 +6,11 @@
 
 ### Features Added
 
+* Added change-feed pull reads through `ContainerClient.NewChangeFeedPager`, with explicit
+  beginning, now, and point-in-time starts, LatestVersion and AllVersionsAndDeletes modes,
+  raw change envelopes, pollable idle pages, and opaque checkpoint/resume tokens.
+  Change-feed pagers reuse the client-owned cursor reactor and expose `Close` and
+  `ContinuationToken(ctx)`.
 * Query cursors now share a client-owned completion reactor instead of blocking one OS thread
   per waiting query. Cancellation and client shutdown retain late-completion cleanup.
   See [PR 27676](https://github.com/Azure/azure-sdk-for-go/pull/27676).

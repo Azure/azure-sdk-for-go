@@ -11,7 +11,7 @@ This client library enables client applications to connect to Azure Cosmos DB vi
 This is the v2 major version of the module and it is **not usable yet**. The v2 surface is being
 assembled incrementally so that it can be reviewed as it lands. This release covers the error and
 response model, partition keys, client construction, and creating, reading, replacing, upserting,
-deleting, and patching single items, plus paged queries within a complete logical partition.
+deleting, and patching single items, plus retained query and change-feed paging.
 
 v2 replaces the v1 pure-Go implementation with a binding to the shared Rust Cosmos driver, so that
 routing, retries, session handling, failover behavior and query fan-out are consistent across the
@@ -190,9 +190,58 @@ the buffered-window and explicit server-decides gaps do require a native contrac
 Rust also distinguishes inherited versus explicitly cleared region exclusions; Go currently
 maps both nil and empty exclusion slices to inheritance.
 
+### Reading the change feed
+
+`ContainerClient.NewChangeFeedPager(scope, startFrom, options)` reads changes through the
+released Rust driver's retained cursor contract. Pass an explicit `FeedScope` and one of
+`NewChangeFeedStartFromBeginning()`, `NewChangeFeedStartFromNow()`, or
+`NewChangeFeedStartFromPointInTime(time)`. Construction performs no I/O and snapshots the
+inputs; `NextPage` reports argument and execution errors.
+
+Nil options and a zero `ChangeFeedOptions.Mode` select `ChangeFeedModeLatestVersion`.
+LatestVersion accepts beginning, now, and time starts. `ChangeFeedModeAllVersionsAndDeletes`
+requires a supported account and retention policy; fresh reads start from now. Beginning
+and time starts in that mode are passed through for the service to reject. The service uses
+second precision for time starts. Account enablement, retention, and mode/start restrictions
+remain driver or service errors rather than duplicated Go policy.
+
+Use a complete partition key or full-container scope. Hierarchical prefixes are forwarded
+through the Rust driver's logical-key path, but this released ABI does not establish
+multi-range prefix fan-out. `ChangeFeedOptions.Feed` supplies the page-size hint and initial
+fan-out limit with the same semantics as queries. Partition-scoped pagers perform the same
+additional container-metadata read and first-page charge accounting as query pagers.
+
+`ChangeFeedResponse.Items` contains independently owned raw JSON change envelopes. Optional
+`previous` images, metadata, unknown fields, and numeric precision are preserved; Go does not
+unwrap `current` or synthesize missing data. `Response` carries status, charge, activity ID,
+and diagnostics, and the change-feed response also carries the returned ETag and session token.
+The ETag is a service position, **not** a driver checkpoint.
+
+Empty and HTTP 304 pages are successful, pollable pages, not EOF. `More()` means that the
+pager is open, not that changes are immediately available. Callers choose polling cadence
+and when to stop. A full-container pager can return an idle page from one range while other
+ranges still have changes; one HTTP 304 must not be treated as container-wide catch-up.
+
+After a successful page, including an idle page, call `pager.ContinuationToken(ctx)` before
+Close. This snapshots delivered-to-Go progress without fetching another page. To resume,
+supply that opaque token through `ChangeFeedOptions.Feed.ContinuationToken` and use the same
+container, scope, and mode. An explicit valid start is still required, but saved token
+positions take precedence. Go does not parse or wrap tokens, recover their scope, or impose
+extra scope-equality checks; native compatibility errors are preserved. A checkpoint is not
+application acknowledgement and does not provide exactly-once delivery. Persist it according
+to the application's processing and replay policy.
+
+Defer `pager.Close()` when stopping. Execution or admitted cancellation failures terminate
+the pager. As with queries, contexts bound the Go wait rather than cancel admitted native
+work, per-page timeouts retain the configured native duration, late completions are drained,
+and `Client.Close` waits for pending cleanup. Iteration and checkpoint calls must not be
+concurrent; Close synchronizes with active calls. Query and change-feed cursors share the
+existing client-owned reactor.
+
 ### Running the end-to-end tests
 
-The tests in `emulator_test.go`, `diagnostics_emulator_test.go`, and `retry_native_test.go` run
+The tests in `emulator_test.go`, `diagnostics_emulator_test.go`, `change_feed_emulator_test.go`,
+and `retry_native_test.go` run
 real operations against a service. They need a driver-backed build and the `EMULATOR` environment
 variable, and they skip otherwise.
 
@@ -224,6 +273,18 @@ The contract tests use a local HTTP proxy to inject known error and metric respo
 while the real native driver executes against the emulator. This validates the binding and
 native decoding, not live-service metric generation. Per-cursor test hooks control checkpoint
 delivery and cancellation races without relying on network timing.
+
+Change-feed unit and scripted HTTP contract tests run without an emulator. They cover native
+selectors, payload ownership, idle polling, checkpoint/resume, compatibility errors, and
+cursor cleanup against the pinned driver. Scripted responses are binding evidence, not
+certification of live change history, AllVersionsAndDeletes retention/pre-images, or splits.
+`TestEmulatorChangeFeed` adds complete-key/complete-HPK isolation and full-container binding
+checks under the existing `EMULATOR` configuration. It does not certify prefix fan-out or
+historical fidelity. Run those separately against a configured endpoint:
+
+```sh
+EMULATOR=1 AZCOSMOS_ENDPOINT=http://127.0.0.1:49151/ go test -run 'TestEmulatorChangeFeed' ./...
+```
 
 ## Getting Started
 

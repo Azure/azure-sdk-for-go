@@ -53,11 +53,6 @@ func (f *FileClientUploadRangeFromURLOptions) SetSourceContentCRC64(v []byte) {
 	f.SourceContentCRC64 = v
 }
 
-type StringEncoded struct {
-	Content *string `xml:",chardata"`
-	Encoded *bool   `xml:"Encoded,attr"`
-}
-
 // Custom MarshalXML/UnmarshalXML functions for types that need special handling.
 
 // MarshalXML implements the xml.Marshaller interface for type Handle.

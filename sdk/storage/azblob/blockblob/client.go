@@ -399,19 +399,13 @@ func (bb *Client) uploadFromReader(ctx context.Context, reader io.ReaderAt, actu
 		if actualSize > MaxStageBlockBytes*MaxBlocks {
 			return uploadFromReaderResponse{}, errors.New("buffer is too large to upload to a block blob")
 		}
-		// If bufferSize <= MaxUploadBlobBytes, then Upload should be used with just 1 I/O request
-		if actualSize <= MaxUploadBlobBytes {
-			o.BlockSize = MaxUploadBlobBytes // Default if unspecified
-		} else {
-			o.BlockSize = int64(math.Ceil(float64(actualSize) / MaxBlocks)) // ceil(buffer / max blocks) = block size to use all 50,000 blocks
-			if o.BlockSize < blob.DefaultDownloadBlockSize {                // If the block size is smaller than 4MB, round up to 4MB
-				o.BlockSize = blob.DefaultDownloadBlockSize
-			}
-			// StageBlock will be called with blockSize blocks and a Concurrency of (BufferSize / BlockSize).
+		o.BlockSize = int64(math.Ceil(float64(actualSize) / MaxBlocks)) // ceil(buffer / max blocks) = block size to use all 50,000 blocks
+		if o.BlockSize < blob.DefaultDownloadBlockSize {                // If the block size is smaller than 4MB, round up to 4MB
+			o.BlockSize = blob.DefaultDownloadBlockSize
 		}
 	}
 
-	if actualSize <= MaxUploadBlobBytes {
+	if actualSize <= o.BlockSize {
 		// If the size can fit in 1 Upload call, do it this way
 		var body io.ReadSeeker = io.NewSectionReader(reader, 0, actualSize)
 		if o.Progress != nil {

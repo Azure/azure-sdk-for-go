@@ -20,7 +20,7 @@ import (
 // DirectoryClient contains the methods for the Directory group.
 // Don't use this type directly, use a constructor function instead.
 //
-// Generated from API version 2026-10-06
+// Generated from API version 2027-03-07
 type DirectoryClient struct {
 	internal *azcore.Client
 	url      string
@@ -39,12 +39,7 @@ func (client *DirectoryClient) Create(ctx context.Context, options *DirectoryCli
 	if err != nil {
 		return DirectoryClientCreateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return DirectoryClientCreateResponse{}, err
-	}
-	resp, err := client.createHandleResponse(httpResp)
-	return resp, err
+	return client.createHandleResponse(httpResp, http.StatusCreated)
 }
 
 // createCreateRequest creates the Create request.
@@ -108,14 +103,17 @@ func (client *DirectoryClient) createCreateRequest(ctx context.Context, options 
 	if options != nil && options.Owner != nil {
 		req.Raw().Header["x-ms-owner"] = []string{*options.Owner}
 	}
-	req.Raw().Header["x-ms-version"] = []string{version20261006}
+	req.Raw().Header["x-ms-version"] = []string{version20270307}
 	return req, nil
 }
 
 // createHandleResponse handles the Create response.
-func (client *DirectoryClient) createHandleResponse(resp *http.Response) (DirectoryClientCreateResponse, error) {
+func (client *DirectoryClient) createHandleResponse(resp *http.Response, successCodes ...int) (DirectoryClientCreateResponse, error) {
 	result := DirectoryClientCreateResponse{}
-	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("X-Ms-Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
 	if val := resp.Header.Get("Date"); val != "" {
@@ -125,46 +123,46 @@ func (client *DirectoryClient) createHandleResponse(resp *http.Response) (Direct
 		}
 		result.Date = &date
 	}
-	if val := resp.Header.Get("ETag"); val != "" {
+	if val := resp.Header.Get("Etag"); val != "" {
 		result.ETag = (*azcore.ETag)(&val)
 	}
-	if val := resp.Header.Get("x-ms-file-attributes"); val != "" {
+	if val := resp.Header.Get("X-Ms-File-Attributes"); val != "" {
 		result.FileAttributes = &val
 	}
-	if val := resp.Header.Get("x-ms-file-change-time"); val != "" {
+	if val := resp.Header.Get("X-Ms-File-Change-Time"); val != "" {
 		fileChangeTime, err := time.Parse(time.RFC3339Nano, val)
 		if err != nil {
 			return DirectoryClientCreateResponse{}, err
 		}
 		result.FileChangeTime = &fileChangeTime
 	}
-	if val := resp.Header.Get("x-ms-file-creation-time"); val != "" {
+	if val := resp.Header.Get("X-Ms-File-Creation-Time"); val != "" {
 		fileCreationTime, err := time.Parse(time.RFC3339Nano, val)
 		if err != nil {
 			return DirectoryClientCreateResponse{}, err
 		}
 		result.FileCreationTime = &fileCreationTime
 	}
-	if val := resp.Header.Get("x-ms-file-last-write-time"); val != "" {
+	if val := resp.Header.Get("X-Ms-File-Last-Write-Time"); val != "" {
 		fileLastWriteTime, err := time.Parse(time.RFC3339Nano, val)
 		if err != nil {
 			return DirectoryClientCreateResponse{}, err
 		}
 		result.FileLastWriteTime = &fileLastWriteTime
 	}
-	if val := resp.Header.Get("x-ms-mode"); val != "" {
+	if val := resp.Header.Get("X-Ms-Mode"); val != "" {
 		result.FileMode = &val
 	}
-	if val := resp.Header.Get("x-ms-file-permission-key"); val != "" {
+	if val := resp.Header.Get("X-Ms-File-Permission-Key"); val != "" {
 		result.FilePermissionKey = &val
 	}
-	if val := resp.Header.Get("x-ms-group"); val != "" {
+	if val := resp.Header.Get("X-Ms-Group"); val != "" {
 		result.Group = &val
 	}
-	if val := resp.Header.Get("x-ms-file-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-File-Id"); val != "" {
 		result.ID = &val
 	}
-	if val := resp.Header.Get("x-ms-request-server-encrypted"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Server-Encrypted"); val != "" {
 		isServerEncrypted, err := strconv.ParseBool(val)
 		if err != nil {
 			return DirectoryClientCreateResponse{}, err
@@ -178,19 +176,19 @@ func (client *DirectoryClient) createHandleResponse(resp *http.Response) (Direct
 		}
 		result.LastModified = &lastModified
 	}
-	if val := resp.Header.Get("x-ms-file-file-type"); val != "" {
+	if val := resp.Header.Get("X-Ms-File-File-Type"); val != "" {
 		result.NFSFileType = (*NFSFileType)(&val)
 	}
-	if val := resp.Header.Get("x-ms-owner"); val != "" {
+	if val := resp.Header.Get("X-Ms-Owner"); val != "" {
 		result.Owner = &val
 	}
-	if val := resp.Header.Get("x-ms-file-parent-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-File-Parent-Id"); val != "" {
 		result.ParentID = &val
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
+	if val := resp.Header.Get("X-Ms-Version"); val != "" {
 		result.Version = &val
 	}
 	return result, nil
@@ -209,12 +207,7 @@ func (client *DirectoryClient) Delete(ctx context.Context, options *DirectoryCli
 	if err != nil {
 		return DirectoryClientDeleteResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return DirectoryClientDeleteResponse{}, err
-	}
-	resp, err := client.deleteHandleResponse(httpResp)
-	return resp, err
+	return client.deleteHandleResponse(httpResp, http.StatusAccepted)
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -238,14 +231,17 @@ func (client *DirectoryClient) deleteCreateRequest(ctx context.Context, options 
 	if options != nil && options.FileRequestIntent != nil {
 		req.Raw().Header["x-ms-file-request-intent"] = []string{string(*options.FileRequestIntent)}
 	}
-	req.Raw().Header["x-ms-version"] = []string{version20261006}
+	req.Raw().Header["x-ms-version"] = []string{version20270307}
 	return req, nil
 }
 
 // deleteHandleResponse handles the Delete response.
-func (client *DirectoryClient) deleteHandleResponse(resp *http.Response) (DirectoryClientDeleteResponse, error) {
+func (client *DirectoryClient) deleteHandleResponse(resp *http.Response, successCodes ...int) (DirectoryClientDeleteResponse, error) {
 	result := DirectoryClientDeleteResponse{}
-	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("X-Ms-Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
 	if val := resp.Header.Get("Date"); val != "" {
@@ -255,10 +251,10 @@ func (client *DirectoryClient) deleteHandleResponse(resp *http.Response) (Direct
 		}
 		result.Date = &date
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
+	if val := resp.Header.Get("X-Ms-Version"); val != "" {
 		result.Version = &val
 	}
 	return result, nil
@@ -280,12 +276,7 @@ func (client *DirectoryClient) ForceCloseHandles(ctx context.Context, handleID s
 	if err != nil {
 		return DirectoryClientForceCloseHandlesResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DirectoryClientForceCloseHandlesResponse{}, err
-	}
-	resp, err := client.forceCloseHandlesHandleResponse(httpResp)
-	return resp, err
+	return client.forceCloseHandlesHandleResponse(httpResp, http.StatusOK)
 }
 
 // forceCloseHandlesCreateRequest creates the ForceCloseHandles request.
@@ -319,14 +310,17 @@ func (client *DirectoryClient) forceCloseHandlesCreateRequest(ctx context.Contex
 	if options != nil && options.Recursive != nil {
 		req.Raw().Header["x-ms-recursive"] = []string{strconv.FormatBool(*options.Recursive)}
 	}
-	req.Raw().Header["x-ms-version"] = []string{version20261006}
+	req.Raw().Header["x-ms-version"] = []string{version20270307}
 	return req, nil
 }
 
 // forceCloseHandlesHandleResponse handles the ForceCloseHandles response.
-func (client *DirectoryClient) forceCloseHandlesHandleResponse(resp *http.Response) (DirectoryClientForceCloseHandlesResponse, error) {
+func (client *DirectoryClient) forceCloseHandlesHandleResponse(resp *http.Response, successCodes ...int) (DirectoryClientForceCloseHandlesResponse, error) {
 	result := DirectoryClientForceCloseHandlesResponse{}
-	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("X-Ms-Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
 	if val := resp.Header.Get("Date"); val != "" {
@@ -336,10 +330,10 @@ func (client *DirectoryClient) forceCloseHandlesHandleResponse(resp *http.Respon
 		}
 		result.Date = &date
 	}
-	if val := resp.Header.Get("x-ms-marker"); val != "" {
+	if val := resp.Header.Get("X-Ms-Marker"); val != "" {
 		result.Marker = &val
 	}
-	if val := resp.Header.Get("x-ms-number-of-handles-closed"); val != "" {
+	if val := resp.Header.Get("X-Ms-Number-Of-Handles-Closed"); val != "" {
 		numberOfHandlesClosed32, err := strconv.ParseInt(val, 10, 32)
 		numberOfHandlesClosed := int32(numberOfHandlesClosed32)
 		if err != nil {
@@ -347,7 +341,7 @@ func (client *DirectoryClient) forceCloseHandlesHandleResponse(resp *http.Respon
 		}
 		result.NumberOfHandlesClosed = &numberOfHandlesClosed
 	}
-	if val := resp.Header.Get("x-ms-number-of-handles-failed"); val != "" {
+	if val := resp.Header.Get("X-Ms-Number-Of-Handles-Failed"); val != "" {
 		numberOfHandlesFailedToClose32, err := strconv.ParseInt(val, 10, 32)
 		numberOfHandlesFailedToClose := int32(numberOfHandlesFailedToClose32)
 		if err != nil {
@@ -355,10 +349,10 @@ func (client *DirectoryClient) forceCloseHandlesHandleResponse(resp *http.Respon
 		}
 		result.NumberOfHandlesFailedToClose = &numberOfHandlesFailedToClose
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
+	if val := resp.Header.Get("X-Ms-Version"); val != "" {
 		result.Version = &val
 	}
 	return result, nil
@@ -378,12 +372,7 @@ func (client *DirectoryClient) GetProperties(ctx context.Context, options *Direc
 	if err != nil {
 		return DirectoryClientGetPropertiesResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DirectoryClientGetPropertiesResponse{}, err
-	}
-	resp, err := client.getPropertiesHandleResponse(httpResp)
-	return resp, err
+	return client.getPropertiesHandleResponse(httpResp, http.StatusOK)
 }
 
 // getPropertiesCreateRequest creates the GetProperties request.
@@ -410,14 +399,17 @@ func (client *DirectoryClient) getPropertiesCreateRequest(ctx context.Context, o
 	if options != nil && options.FileRequestIntent != nil {
 		req.Raw().Header["x-ms-file-request-intent"] = []string{string(*options.FileRequestIntent)}
 	}
-	req.Raw().Header["x-ms-version"] = []string{version20261006}
+	req.Raw().Header["x-ms-version"] = []string{version20270307}
 	return req, nil
 }
 
 // getPropertiesHandleResponse handles the GetProperties response.
-func (client *DirectoryClient) getPropertiesHandleResponse(resp *http.Response) (DirectoryClientGetPropertiesResponse, error) {
+func (client *DirectoryClient) getPropertiesHandleResponse(resp *http.Response, successCodes ...int) (DirectoryClientGetPropertiesResponse, error) {
 	result := DirectoryClientGetPropertiesResponse{}
-	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("X-Ms-Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
 	if val := resp.Header.Get("Date"); val != "" {
@@ -427,46 +419,49 @@ func (client *DirectoryClient) getPropertiesHandleResponse(resp *http.Response) 
 		}
 		result.Date = &date
 	}
-	if val := resp.Header.Get("ETag"); val != "" {
+	if val := resp.Header.Get("Etag"); val != "" {
 		result.ETag = (*azcore.ETag)(&val)
 	}
-	if val := resp.Header.Get("x-ms-file-attributes"); val != "" {
+	if val := resp.Header.Get("X-Ms-File-Attributes"); val != "" {
 		result.FileAttributes = &val
 	}
-	if val := resp.Header.Get("x-ms-file-change-time"); val != "" {
+	if val := resp.Header.Get("X-Ms-File-Change-Time"); val != "" {
 		fileChangeTime, err := time.Parse(time.RFC3339Nano, val)
 		if err != nil {
 			return DirectoryClientGetPropertiesResponse{}, err
 		}
 		result.FileChangeTime = &fileChangeTime
 	}
-	if val := resp.Header.Get("x-ms-file-creation-time"); val != "" {
+	if val := resp.Header.Get("X-Ms-File-Creation-Time"); val != "" {
 		fileCreationTime, err := time.Parse(time.RFC3339Nano, val)
 		if err != nil {
 			return DirectoryClientGetPropertiesResponse{}, err
 		}
 		result.FileCreationTime = &fileCreationTime
 	}
-	if val := resp.Header.Get("x-ms-file-last-write-time"); val != "" {
+	if val := resp.Header.Get("X-Ms-File-Last-Write-Time"); val != "" {
 		fileLastWriteTime, err := time.Parse(time.RFC3339Nano, val)
 		if err != nil {
 			return DirectoryClientGetPropertiesResponse{}, err
 		}
 		result.FileLastWriteTime = &fileLastWriteTime
 	}
-	if val := resp.Header.Get("x-ms-mode"); val != "" {
+	if val := resp.Header.Get("X-Ms-Mode"); val != "" {
 		result.FileMode = &val
 	}
-	if val := resp.Header.Get("x-ms-file-permission-key"); val != "" {
+	if val := resp.Header.Get("X-Ms-File-Name"); val != "" {
+		result.FileName = &val
+	}
+	if val := resp.Header.Get("X-Ms-File-Permission-Key"); val != "" {
 		result.FilePermissionKey = &val
 	}
-	if val := resp.Header.Get("x-ms-group"); val != "" {
+	if val := resp.Header.Get("X-Ms-Group"); val != "" {
 		result.Group = &val
 	}
-	if val := resp.Header.Get("x-ms-file-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-File-Id"); val != "" {
 		result.ID = &val
 	}
-	if val := resp.Header.Get("x-ms-server-encrypted"); val != "" {
+	if val := resp.Header.Get("X-Ms-Server-Encrypted"); val != "" {
 		isServerEncrypted, err := strconv.ParseBool(val)
 		if err != nil {
 			return DirectoryClientGetPropertiesResponse{}, err
@@ -488,19 +483,19 @@ func (client *DirectoryClient) getPropertiesHandleResponse(resp *http.Response) 
 			result.Metadata[hh[len("x-ms-meta-"):]] = to.Ptr(resp.Header.Get(hh))
 		}
 	}
-	if val := resp.Header.Get("x-ms-file-file-type"); val != "" {
+	if val := resp.Header.Get("X-Ms-File-File-Type"); val != "" {
 		result.NFSFileType = (*NFSFileType)(&val)
 	}
-	if val := resp.Header.Get("x-ms-owner"); val != "" {
+	if val := resp.Header.Get("X-Ms-Owner"); val != "" {
 		result.Owner = &val
 	}
-	if val := resp.Header.Get("x-ms-file-parent-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-File-Parent-Id"); val != "" {
 		result.ParentID = &val
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
+	if val := resp.Header.Get("X-Ms-Version"); val != "" {
 		result.Version = &val
 	}
 	return result, nil
@@ -521,12 +516,7 @@ func (client *DirectoryClient) ListFilesAndDirectoriesSegment(ctx context.Contex
 	if err != nil {
 		return DirectoryClientListFilesAndDirectoriesSegmentResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DirectoryClientListFilesAndDirectoriesSegmentResponse{}, err
-	}
-	resp, err := client.listFilesAndDirectoriesSegmentHandleResponse(httpResp)
-	return resp, err
+	return client.listFilesAndDirectoriesSegmentHandleResponse(httpResp, http.StatusOK)
 }
 
 // listFilesAndDirectoriesSegmentCreateRequest creates the ListFilesAndDirectoriesSegment request.
@@ -569,18 +559,18 @@ func (client *DirectoryClient) listFilesAndDirectoriesSegmentCreateRequest(ctx c
 	if options != nil && options.FileRequestIntent != nil {
 		req.Raw().Header["x-ms-file-request-intent"] = []string{string(*options.FileRequestIntent)}
 	}
-	req.Raw().Header["x-ms-version"] = []string{version20261006}
+	req.Raw().Header["x-ms-version"] = []string{version20270307}
 	return req, nil
 }
 
 // listFilesAndDirectoriesSegmentHandleResponse handles the ListFilesAndDirectoriesSegment response.
-func (client *DirectoryClient) listFilesAndDirectoriesSegmentHandleResponse(resp *http.Response) (DirectoryClientListFilesAndDirectoriesSegmentResponse, error) {
+func (client *DirectoryClient) listFilesAndDirectoriesSegmentHandleResponse(resp *http.Response, successCodes ...int) (DirectoryClientListFilesAndDirectoriesSegmentResponse, error) {
 	result := DirectoryClientListFilesAndDirectoriesSegmentResponse{}
-	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
-		result.ClientRequestID = &val
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
 	}
-	if val := resp.Header.Get("Content-Type"); val != "" {
-		result.ContentType = &val
+	if val := resp.Header.Get("X-Ms-Client-Request-Id"); val != "" {
+		result.ClientRequestID = &val
 	}
 	if val := resp.Header.Get("Date"); val != "" {
 		date, err := time.Parse(time.RFC1123, val)
@@ -589,10 +579,10 @@ func (client *DirectoryClient) listFilesAndDirectoriesSegmentHandleResponse(resp
 		}
 		result.Date = &date
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
+	if val := resp.Header.Get("X-Ms-Version"); val != "" {
 		result.Version = &val
 	}
 	if err := runtime.UnmarshalAsXML(resp, &result.ListFilesAndDirectoriesSegmentResponse); err != nil {
@@ -614,12 +604,7 @@ func (client *DirectoryClient) ListHandles(ctx context.Context, options *Directo
 	if err != nil {
 		return DirectoryClientListHandlesResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DirectoryClientListHandlesResponse{}, err
-	}
-	resp, err := client.listHandlesHandleResponse(httpResp)
-	return resp, err
+	return client.listHandlesHandleResponse(httpResp, http.StatusOK)
 }
 
 // listHandlesCreateRequest creates the ListHandles request.
@@ -656,18 +641,18 @@ func (client *DirectoryClient) listHandlesCreateRequest(ctx context.Context, opt
 	if options != nil && options.Recursive != nil {
 		req.Raw().Header["x-ms-recursive"] = []string{strconv.FormatBool(*options.Recursive)}
 	}
-	req.Raw().Header["x-ms-version"] = []string{version20261006}
+	req.Raw().Header["x-ms-version"] = []string{version20270307}
 	return req, nil
 }
 
 // listHandlesHandleResponse handles the ListHandles response.
-func (client *DirectoryClient) listHandlesHandleResponse(resp *http.Response) (DirectoryClientListHandlesResponse, error) {
+func (client *DirectoryClient) listHandlesHandleResponse(resp *http.Response, successCodes ...int) (DirectoryClientListHandlesResponse, error) {
 	result := DirectoryClientListHandlesResponse{}
-	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
-		result.ClientRequestID = &val
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
 	}
-	if val := resp.Header.Get("Content-Type"); val != "" {
-		result.ContentType = &val
+	if val := resp.Header.Get("X-Ms-Client-Request-Id"); val != "" {
+		result.ClientRequestID = &val
 	}
 	if val := resp.Header.Get("Date"); val != "" {
 		date, err := time.Parse(time.RFC1123, val)
@@ -676,10 +661,10 @@ func (client *DirectoryClient) listHandlesHandleResponse(resp *http.Response) (D
 		}
 		result.Date = &date
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
+	if val := resp.Header.Get("X-Ms-Version"); val != "" {
 		result.Version = &val
 	}
 	if err := runtime.UnmarshalAsXML(resp, &result.ListHandlesResponse); err != nil {
@@ -703,12 +688,7 @@ func (client *DirectoryClient) Rename(ctx context.Context, renameSource string, 
 	if err != nil {
 		return DirectoryClientRenameResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DirectoryClientRenameResponse{}, err
-	}
-	resp, err := client.renameHandleResponse(httpResp)
-	return resp, err
+	return client.renameHandleResponse(httpResp, http.StatusOK)
 }
 
 // renameCreateRequest creates the Rename request.
@@ -776,14 +756,17 @@ func (client *DirectoryClient) renameCreateRequest(ctx context.Context, renameSo
 	if options != nil && options.SourceLeaseID != nil {
 		req.Raw().Header["x-ms-source-lease-id"] = []string{*options.SourceLeaseID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{version20261006}
+	req.Raw().Header["x-ms-version"] = []string{version20270307}
 	return req, nil
 }
 
 // renameHandleResponse handles the Rename response.
-func (client *DirectoryClient) renameHandleResponse(resp *http.Response) (DirectoryClientRenameResponse, error) {
+func (client *DirectoryClient) renameHandleResponse(resp *http.Response, successCodes ...int) (DirectoryClientRenameResponse, error) {
 	result := DirectoryClientRenameResponse{}
-	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("X-Ms-Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
 	if val := resp.Header.Get("Date"); val != "" {
@@ -793,40 +776,40 @@ func (client *DirectoryClient) renameHandleResponse(resp *http.Response) (Direct
 		}
 		result.Date = &date
 	}
-	if val := resp.Header.Get("ETag"); val != "" {
+	if val := resp.Header.Get("Etag"); val != "" {
 		result.ETag = (*azcore.ETag)(&val)
 	}
-	if val := resp.Header.Get("x-ms-file-attributes"); val != "" {
+	if val := resp.Header.Get("X-Ms-File-Attributes"); val != "" {
 		result.FileAttributes = &val
 	}
-	if val := resp.Header.Get("x-ms-file-change-time"); val != "" {
+	if val := resp.Header.Get("X-Ms-File-Change-Time"); val != "" {
 		fileChangeTime, err := time.Parse(time.RFC3339Nano, val)
 		if err != nil {
 			return DirectoryClientRenameResponse{}, err
 		}
 		result.FileChangeTime = &fileChangeTime
 	}
-	if val := resp.Header.Get("x-ms-file-creation-time"); val != "" {
+	if val := resp.Header.Get("X-Ms-File-Creation-Time"); val != "" {
 		fileCreationTime, err := time.Parse(time.RFC3339Nano, val)
 		if err != nil {
 			return DirectoryClientRenameResponse{}, err
 		}
 		result.FileCreationTime = &fileCreationTime
 	}
-	if val := resp.Header.Get("x-ms-file-last-write-time"); val != "" {
+	if val := resp.Header.Get("X-Ms-File-Last-Write-Time"); val != "" {
 		fileLastWriteTime, err := time.Parse(time.RFC3339Nano, val)
 		if err != nil {
 			return DirectoryClientRenameResponse{}, err
 		}
 		result.FileLastWriteTime = &fileLastWriteTime
 	}
-	if val := resp.Header.Get("x-ms-file-permission-key"); val != "" {
+	if val := resp.Header.Get("X-Ms-File-Permission-Key"); val != "" {
 		result.FilePermissionKey = &val
 	}
-	if val := resp.Header.Get("x-ms-file-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-File-Id"); val != "" {
 		result.ID = &val
 	}
-	if val := resp.Header.Get("x-ms-request-server-encrypted"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Server-Encrypted"); val != "" {
 		isServerEncrypted, err := strconv.ParseBool(val)
 		if err != nil {
 			return DirectoryClientRenameResponse{}, err
@@ -840,13 +823,13 @@ func (client *DirectoryClient) renameHandleResponse(resp *http.Response) (Direct
 		}
 		result.LastModified = &lastModified
 	}
-	if val := resp.Header.Get("x-ms-file-parent-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-File-Parent-Id"); val != "" {
 		result.ParentID = &val
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
+	if val := resp.Header.Get("X-Ms-Version"); val != "" {
 		result.Version = &val
 	}
 	return result, nil
@@ -865,12 +848,7 @@ func (client *DirectoryClient) SetMetadata(ctx context.Context, options *Directo
 	if err != nil {
 		return DirectoryClientSetMetadataResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DirectoryClientSetMetadataResponse{}, err
-	}
-	resp, err := client.setMetadataHandleResponse(httpResp)
-	return resp, err
+	return client.setMetadataHandleResponse(httpResp, http.StatusOK)
 }
 
 // setMetadataCreateRequest creates the SetMetadata request.
@@ -901,14 +879,17 @@ func (client *DirectoryClient) setMetadataCreateRequest(ctx context.Context, opt
 			}
 		}
 	}
-	req.Raw().Header["x-ms-version"] = []string{version20261006}
+	req.Raw().Header["x-ms-version"] = []string{version20270307}
 	return req, nil
 }
 
 // setMetadataHandleResponse handles the SetMetadata response.
-func (client *DirectoryClient) setMetadataHandleResponse(resp *http.Response) (DirectoryClientSetMetadataResponse, error) {
+func (client *DirectoryClient) setMetadataHandleResponse(resp *http.Response, successCodes ...int) (DirectoryClientSetMetadataResponse, error) {
 	result := DirectoryClientSetMetadataResponse{}
-	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("X-Ms-Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
 	if val := resp.Header.Get("Date"); val != "" {
@@ -918,10 +899,10 @@ func (client *DirectoryClient) setMetadataHandleResponse(resp *http.Response) (D
 		}
 		result.Date = &date
 	}
-	if val := resp.Header.Get("ETag"); val != "" {
+	if val := resp.Header.Get("Etag"); val != "" {
 		result.ETag = (*azcore.ETag)(&val)
 	}
-	if val := resp.Header.Get("x-ms-request-server-encrypted"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Server-Encrypted"); val != "" {
 		isServerEncrypted, err := strconv.ParseBool(val)
 		if err != nil {
 			return DirectoryClientSetMetadataResponse{}, err
@@ -935,10 +916,10 @@ func (client *DirectoryClient) setMetadataHandleResponse(resp *http.Response) (D
 		}
 		result.LastModified = &lastModified
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
+	if val := resp.Header.Get("X-Ms-Version"); val != "" {
 		result.Version = &val
 	}
 	return result, nil
@@ -957,12 +938,7 @@ func (client *DirectoryClient) SetProperties(ctx context.Context, options *Direc
 	if err != nil {
 		return DirectoryClientSetPropertiesResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DirectoryClientSetPropertiesResponse{}, err
-	}
-	resp, err := client.setPropertiesHandleResponse(httpResp)
-	return resp, err
+	return client.setPropertiesHandleResponse(httpResp, http.StatusOK)
 }
 
 // setPropertiesCreateRequest creates the SetProperties request.
@@ -1016,14 +992,17 @@ func (client *DirectoryClient) setPropertiesCreateRequest(ctx context.Context, o
 	if options != nil && options.Owner != nil {
 		req.Raw().Header["x-ms-owner"] = []string{*options.Owner}
 	}
-	req.Raw().Header["x-ms-version"] = []string{version20261006}
+	req.Raw().Header["x-ms-version"] = []string{version20270307}
 	return req, nil
 }
 
 // setPropertiesHandleResponse handles the SetProperties response.
-func (client *DirectoryClient) setPropertiesHandleResponse(resp *http.Response) (DirectoryClientSetPropertiesResponse, error) {
+func (client *DirectoryClient) setPropertiesHandleResponse(resp *http.Response, successCodes ...int) (DirectoryClientSetPropertiesResponse, error) {
 	result := DirectoryClientSetPropertiesResponse{}
-	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("X-Ms-Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
 	if val := resp.Header.Get("Date"); val != "" {
@@ -1033,46 +1012,46 @@ func (client *DirectoryClient) setPropertiesHandleResponse(resp *http.Response) 
 		}
 		result.Date = &date
 	}
-	if val := resp.Header.Get("ETag"); val != "" {
+	if val := resp.Header.Get("Etag"); val != "" {
 		result.ETag = (*azcore.ETag)(&val)
 	}
-	if val := resp.Header.Get("x-ms-file-attributes"); val != "" {
+	if val := resp.Header.Get("X-Ms-File-Attributes"); val != "" {
 		result.FileAttributes = &val
 	}
-	if val := resp.Header.Get("x-ms-file-change-time"); val != "" {
+	if val := resp.Header.Get("X-Ms-File-Change-Time"); val != "" {
 		fileChangeTime, err := time.Parse(time.RFC3339Nano, val)
 		if err != nil {
 			return DirectoryClientSetPropertiesResponse{}, err
 		}
 		result.FileChangeTime = &fileChangeTime
 	}
-	if val := resp.Header.Get("x-ms-file-creation-time"); val != "" {
+	if val := resp.Header.Get("X-Ms-File-Creation-Time"); val != "" {
 		fileCreationTime, err := time.Parse(time.RFC3339Nano, val)
 		if err != nil {
 			return DirectoryClientSetPropertiesResponse{}, err
 		}
 		result.FileCreationTime = &fileCreationTime
 	}
-	if val := resp.Header.Get("x-ms-file-last-write-time"); val != "" {
+	if val := resp.Header.Get("X-Ms-File-Last-Write-Time"); val != "" {
 		fileLastWriteTime, err := time.Parse(time.RFC3339Nano, val)
 		if err != nil {
 			return DirectoryClientSetPropertiesResponse{}, err
 		}
 		result.FileLastWriteTime = &fileLastWriteTime
 	}
-	if val := resp.Header.Get("x-ms-mode"); val != "" {
+	if val := resp.Header.Get("X-Ms-Mode"); val != "" {
 		result.FileMode = &val
 	}
-	if val := resp.Header.Get("x-ms-file-permission-key"); val != "" {
+	if val := resp.Header.Get("X-Ms-File-Permission-Key"); val != "" {
 		result.FilePermissionKey = &val
 	}
-	if val := resp.Header.Get("x-ms-group"); val != "" {
+	if val := resp.Header.Get("X-Ms-Group"); val != "" {
 		result.Group = &val
 	}
-	if val := resp.Header.Get("x-ms-file-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-File-Id"); val != "" {
 		result.ID = &val
 	}
-	if val := resp.Header.Get("x-ms-request-server-encrypted"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Server-Encrypted"); val != "" {
 		isServerEncrypted, err := strconv.ParseBool(val)
 		if err != nil {
 			return DirectoryClientSetPropertiesResponse{}, err
@@ -1086,16 +1065,16 @@ func (client *DirectoryClient) setPropertiesHandleResponse(resp *http.Response) 
 		}
 		result.LastModified = &lastModified
 	}
-	if val := resp.Header.Get("x-ms-owner"); val != "" {
+	if val := resp.Header.Get("X-Ms-Owner"); val != "" {
 		result.Owner = &val
 	}
-	if val := resp.Header.Get("x-ms-file-parent-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-File-Parent-Id"); val != "" {
 		result.ParentID = &val
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
+	if val := resp.Header.Get("X-Ms-Version"); val != "" {
 		result.Version = &val
 	}
 	return result, nil

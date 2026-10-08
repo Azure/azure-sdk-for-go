@@ -127,10 +127,14 @@ type recordingTokenCredential struct {
 }
 
 func (c *recordingTokenCredential) GetToken(
-	_ context.Context,
+	ctx context.Context,
 	options policy.TokenRequestOptions,
 ) (azcore.AccessToken, error) {
-	c.requests <- append([]string(nil), options.Scopes...)
+	select {
+	case c.requests <- append([]string(nil), options.Scopes...):
+	case <-ctx.Done():
+		return azcore.AccessToken{}, ctx.Err()
+	}
 	return azcore.AccessToken{
 		Token:     "emulator-access-token",
 		ExpiresOn: time.Now().Add(time.Hour),
@@ -1079,12 +1083,21 @@ func TestEmulatorTokenCredential(t *testing.T) {
 	endpoint, databaseID, containerID := emulatorConfiguration(t)
 	credential := &recordingTokenCredential{requests: make(chan []string, 1)}
 
-	client, err := NewClient(endpoint, credential, nil)
+	runtime, err := NewRuntime(nil)
+	require.NoError(t, err)
+	t.Cleanup(func() { require.NoError(t, runtime.Close()) })
+	client, err := NewClient(endpoint, credential, &ClientOptions{Runtime: runtime})
 	require.NoError(t, err)
 	t.Cleanup(func() { require.NoError(t, client.Close()) })
-	require.NoError(t, client.Initialize(t.Context()))
-
-	require.Equal(t, []string{"https://cosmos.azure.com/.default"}, <-credential.requests)
+	ctx, cancel := context.WithTimeout(t.Context(), 10*time.Second)
+	defer cancel()
+	require.NoError(t, client.Initialize(ctx))
+	select {
+	case scopes := <-credential.requests:
+		require.Equal(t, []string{"https://cosmos.azure.com/.default"}, scopes)
+	case <-ctx.Done():
+		t.Fatal("Initialize did not invoke the supplied credential")
+	}
 
 	container, err := client.NewContainer(databaseID, containerID)
 	require.NoError(t, err)
@@ -1106,17 +1119,22 @@ func TestEmulatorTokenCredential(t *testing.T) {
 func TestEmulatorInitializationRecoversFromTokenFailure(t *testing.T) {
 	endpoint, _, _ := emulatorConfiguration(t)
 	credential := &recoveringTokenCredential{}
-	client, err := NewClient(endpoint, credential, nil)
+	runtime, err := NewRuntime(nil)
+	require.NoError(t, err)
+	t.Cleanup(func() { require.NoError(t, runtime.Close()) })
+	client, err := NewClient(endpoint, credential, &ClientOptions{Runtime: runtime})
 	require.NoError(t, err)
 	t.Cleanup(func() { require.NoError(t, client.Close()) })
 
-	err = client.Initialize(t.Context())
+	ctx, cancel := context.WithTimeout(t.Context(), 10*time.Second)
+	defer cancel()
+	err = client.Initialize(ctx)
 	var cosmosErr *Error
 	require.ErrorAs(t, err, &cosmosErr)
 	require.Equal(t, CodeAuthenticationFailed, cosmosErr.Code)
 	require.Equal(t, int32(2), credential.attempts.Load())
 
-	require.NoError(t, client.Initialize(t.Context()))
+	require.NoError(t, client.Initialize(ctx))
 	require.Equal(t, int32(3), credential.attempts.Load())
 }
 
@@ -1128,26 +1146,53 @@ func TestEmulatorInitializationFollowerOutlivesLeader(t *testing.T) {
 		started: make(chan struct{}),
 		release: make(chan struct{}),
 	}
-	client, err := NewClient(endpoint, credential, nil)
+	runtime, err := NewRuntime(nil)
+	require.NoError(t, err)
+	t.Cleanup(func() { require.NoError(t, runtime.Close()) })
+	client, err := NewClient(endpoint, credential, &ClientOptions{Runtime: runtime})
 	require.NoError(t, err)
 	t.Cleanup(func() { require.NoError(t, client.Close()) })
+	var releaseOnce sync.Once
+	unblock := func() { releaseOnce.Do(func() { close(credential.release) }) }
+	t.Cleanup(unblock)
+	ctx, cancel := context.WithTimeout(t.Context(), 10*time.Second)
+	defer cancel()
 
 	waiting := make(chan struct{}, 1)
 	client.driver.beforeCreationWait = func() { waiting <- struct{}{} }
 
-	leaderCtx, cancelLeader := context.WithCancel(t.Context())
+	leaderCtx, cancelLeader := context.WithCancel(ctx)
+	defer cancelLeader()
 	leaderResult := make(chan error, 1)
 	go func() { leaderResult <- client.Initialize(leaderCtx) }()
-	<-credential.started
+	select {
+	case <-credential.started:
+	case <-ctx.Done():
+		t.Fatal("leader did not reach token acquisition")
+	}
 
 	followerResult := make(chan error, 1)
-	go func() { followerResult <- client.Initialize(t.Context()) }()
-	<-waiting
+	go func() { followerResult <- client.Initialize(ctx) }()
+	select {
+	case <-waiting:
+	case <-ctx.Done():
+		t.Fatal("follower did not join the initialization attempt")
+	}
 
 	cancelLeader()
-	require.ErrorIs(t, <-leaderResult, context.Canceled)
-	close(credential.release)
-	require.NoError(t, <-followerResult)
+	select {
+	case err := <-leaderResult:
+		require.ErrorIs(t, err, context.Canceled)
+	case <-ctx.Done():
+		t.Fatal("leader did not stop waiting")
+	}
+	unblock()
+	select {
+	case err := <-followerResult:
+		require.NoError(t, err)
+	case <-ctx.Done():
+		t.Fatal("follower did not finish initialization")
+	}
 }
 
 // Initialize is optional: the first operation performs the same work when callers skip it.

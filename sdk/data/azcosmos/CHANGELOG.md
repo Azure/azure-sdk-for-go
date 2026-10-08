@@ -85,10 +85,8 @@
 * Fixed `ReadItem` (and other reads) waiting out the native driver's own retry budget before
   returning on context cancellation, instead of returning promptly. Reads now abandon immediately
   once the context ends. Write calls also stop waiting when their context ends, but submitted
-  writes may still commit; native work is drained before releasing client resources. Also fixed the
-  native `ClientOperationTimeout` error surfacing unwrapped instead of satisfying
-  `errors.Is(err, context.DeadlineExceeded)` when the native driver's own end-to-end timeout raced
-  the caller's context deadline and won. See [PR 27662](https://github.com/Azure/azure-sdk-for-go/pull/27662).
+  writes may still commit; native work is drained before releasing client resources.
+  See [PR 27662](https://github.com/Azure/azure-sdk-for-go/pull/27662).
 
 ### Other Changes
 

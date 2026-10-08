@@ -402,6 +402,12 @@ func (f *Client) GetSymbolicLink(ctx context.Context, options *GetSymbolicLinkOp
 	return f.generated().GetSymbolicLink(ctx, opts)
 }
 
+// GetFileLinks returns the hard links for a file. This API only supports FileId-based clients.
+func (f *Client) GetFileLinks(ctx context.Context, options *GetFileLinksOptions) (GetFileLinksResponse, error) {
+	opts := options.format(f.getClientOptions().FileRequestIntent)
+	return f.generated().GetHardLinks(ctx, opts)
+}
+
 // GetSASURL is a convenience method for generating a SAS token for the currently pointed at file.
 // It can only be used if the credential supplied during creation was a SharedKeyCredential.
 func (f *Client) GetSASURL(permissions sas.FilePermissions, expiry time.Time, o *GetSASURLOptions) (string, error) {

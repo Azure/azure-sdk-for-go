@@ -174,6 +174,21 @@ type Handle struct {
 	ParentID *string `xml:"ParentId"`
 }
 
+// HardLink - A hard link to a file.
+type HardLink struct {
+	// REQUIRED; The name of the hard link.
+	FileName *string `xml:"FileName"`
+
+	// REQUIRED; The fileId of the parent directory of the hard link.
+	ParentID *string `xml:"ParentId"`
+}
+
+// HardLinkList - The list of hard links for a file.
+type HardLinkList struct {
+	// REQUIRED; The hard links.
+	HardLinks []*HardLink `xml:"HardLink"`
+}
+
 // KeyInfo - Key information
 type KeyInfo struct {
 	// REQUIRED; The date-time the key expires in ISO 8601 UTC time
@@ -352,7 +367,7 @@ type ShareFileRangeListSegment struct {
 	Ranges []*FileRange `xml:"Range"`
 }
 
-// ShareNFSSettings - Settings for SMB protocol.
+// ShareNFSSettings - Settings for NFS protocol.
 type ShareNFSSettings struct {
 	// Enable or disable encryption in transit.
 	EncryptionInTransit *ShareNFSSettingsEncryptionInTransit `xml:"EncryptionInTransit"`

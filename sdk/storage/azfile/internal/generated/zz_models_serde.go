@@ -149,6 +149,22 @@ func (f FilesAndDirectoriesListSegment) MarshalXML(enc *xml.Encoder, start xml.S
 	return enc.EncodeElement(aux, start)
 }
 
+// MarshalXML implements the xml.Marshaller interface for type HardLinkList.
+func (h HardLinkList) MarshalXML(enc *xml.Encoder, start xml.StartElement) error {
+	start.Name.Local = "HardLinks"
+	type alias HardLinkList
+	aux := &struct {
+		*alias
+		HardLinks *[]*HardLink `xml:"HardLink"`
+	}{
+		alias: (*alias)(&h),
+	}
+	if h.HardLinks != nil {
+		aux.HardLinks = &h.HardLinks
+	}
+	return enc.EncodeElement(aux, start)
+}
+
 // MarshalXML implements the xml.Marshaller interface for type ListFilesAndDirectoriesSegmentResponse.
 func (l ListFilesAndDirectoriesSegmentResponse) MarshalXML(enc *xml.Encoder, start xml.StartElement) error {
 	start.Name.Local = "EnumerationResults"
@@ -482,7 +498,7 @@ func unpopulate(data json.RawMessage, fn string, v any) error {
 		return nil
 	}
 	if err := json.Unmarshal(data, v); err != nil {
-		return fmt.Errorf("struct field %s: %v", fn, err)
+		return fmt.Errorf("struct field %s: %s", fn, err.Error())
 	}
 	return nil
 }

@@ -352,7 +352,7 @@ type ShareFileRangeListSegment struct {
 	Ranges []*FileRange `xml:"Range"`
 }
 
-// ShareNFSSettings - Settings for SMB protocol.
+// ShareNFSSettings - Settings for NFS protocol.
 type ShareNFSSettings struct {
 	// Enable or disable encryption in transit.
 	EncryptionInTransit *ShareNFSSettingsEncryptionInTransit `xml:"EncryptionInTransit"`

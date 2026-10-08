@@ -79,8 +79,9 @@ One limit applies to the driver-backed build today: v1's WebAssembly support doe
 ### SDK identity
 
 Service requests include `azsdk-go-azcosmos/<version>` in the User-Agent header alongside the native
-Cosmos driver identity and feature flags. `ClientOptions.ApplicationID` remains an optional,
-unchanged application suffix; SDK identity does not consume its length allowance.
+Cosmos driver identity and feature flags. Configure an application suffix through
+`RuntimeOptions.ApplicationID`, then supply that runtime in `ClientOptions.Runtime`.
+SDK identity does not consume the suffix's length allowance.
 
 ### Patching items
 
@@ -167,8 +168,8 @@ Per-page context deadlines cannot bound native execution with the pinned ABI. St
 guarantees require cooperative cancellation
 ([Azure/azure-sdk-for-rust#5358](https://github.com/Azure/azure-sdk-for-rust/issues/5358))
 or per-page deadline support in a future native release.
-Point operations continue to await authoritative native
-outcomes after admission, so a committed write is not mislabeled as canceled.
+Item operations also stop waiting when their context ends. Submitted writes may still commit;
+a cancellation error is not evidence that a write was rolled back or never reached the service.
 
 #### Rust query-option parity
 

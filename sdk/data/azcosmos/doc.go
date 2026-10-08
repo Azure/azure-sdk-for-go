@@ -24,8 +24,7 @@
 // Rust owns resolution and supported environment overrides; defaults are fixed at construction.
 // Clients without an explicit Runtime use a process-wide runtime and share native account caches.
 // Client.Close closes only that client; Runtime.Close releases ownership without closing attached clients.
-// Initialization and query cancellation stop waiting, not submitted native work.
-// Submitted point item operations await authoritative completion, even after context cancellation.
+// Context cancellation stops waiting, not submitted native work; writes may still commit.
 // Close waits for native work to finish, including operations whose callers stopped waiting.
 //
 // # Response encoding

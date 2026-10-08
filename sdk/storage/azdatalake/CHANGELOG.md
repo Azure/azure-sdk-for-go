@@ -1,5 +1,10 @@
 # Release History
 
+## 1.7.0 (2026-10-08)
+
+### Features Added
+* Added structured message (XSM/1.0) CRC64 content validation for `azdatalake` uploads and downloads via the new `TransferValidationTypeComputeStructuredMessageCRC64` transfer validation option.
+
 ## 1.6.1 (2026-10-07)
 
 ### Bugs Fixed

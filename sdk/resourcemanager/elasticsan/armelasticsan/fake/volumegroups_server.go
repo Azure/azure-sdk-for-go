@@ -12,7 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/elasticsan/armelasticsan"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/elasticsan/armelasticsan/v2"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -269,7 +269,14 @@ func (v *VolumeGroupsServerTransport) dispatchNewListByElasticSanPager(req *http
 		if err != nil {
 			return nil, err
 		}
-		resp := v.srv.NewListByElasticSanPager(resourceGroupNameParam, elasticSanNameParam, nil)
+		xMSAccessSoftDeletedResourcesParam := getOptional(armelasticsan.XMSAccessSoftDeletedResources(getHeaderValue(req.Header, "x-ms-access-soft-deleted-resources")))
+		var options *armelasticsan.VolumeGroupsClientListByElasticSanOptions
+		if xMSAccessSoftDeletedResourcesParam != nil {
+			options = &armelasticsan.VolumeGroupsClientListByElasticSanOptions{
+				XMSAccessSoftDeletedResources: xMSAccessSoftDeletedResourcesParam,
+			}
+		}
+		resp := v.srv.NewListByElasticSanPager(resourceGroupNameParam, elasticSanNameParam, options)
 		newListByElasticSanPager = &resp
 		v.newListByElasticSanPager.add(req, newListByElasticSanPager)
 		server.PagerResponderInjectNextLinks(newListByElasticSanPager, req, func(page *armelasticsan.VolumeGroupsClientListByElasticSanResponse, createLink func() string) {

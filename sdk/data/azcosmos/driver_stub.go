@@ -50,3 +50,7 @@ func (c *Client) execute(context.Context, itemRequest) (ItemResponse, []byte, er
 func (c *Client) openQuery(context.Context, *queryRequest) (queryCursor, Response, error) {
 	return nil, Response{}, newDriverUnavailableError()
 }
+
+func (c *Client) executeBatch(context.Context, itemRequest, int) (TransactionalBatchResponse, error) {
+	return TransactionalBatchResponse{}, newDriverUnavailableError()
+}

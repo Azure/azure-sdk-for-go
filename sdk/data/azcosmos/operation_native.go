@@ -207,27 +207,27 @@ func isClientOperationTimeout(err error) bool {
 }
 
 func completionCancellationError(cause error, result completionResult) error {
-	requestCharge := result.response.RequestCharge
-	activityID := result.response.ActivityID
-	diagnostics := result.response.Diagnostics
-	attemptCount := result.response.AttemptCount
-	statusCode := result.response.StatusCode
-	subStatus := result.response.SubStatus
+	metadata := Error{
+		RequestCharge: result.response.RequestCharge,
+		ActivityID:    result.response.ActivityID,
+		Diagnostics:   result.response.Diagnostics,
+		AttemptCount:  result.response.AttemptCount,
+		StatusCode:    result.response.StatusCode,
+		SubStatus:     result.response.SubStatus,
+		SessionToken:  result.response.SessionToken,
+		ETag:          result.response.ETag,
+		RetryAfter:    result.retryAfter,
+		FromWire:      result.fromWire,
+		Body:          result.body,
+	}
 	var completionErr *Error
 	if errors.As(result.err, &completionErr) {
-		requestCharge = completionErr.RequestCharge
-		activityID = completionErr.ActivityID
-		diagnostics = completionErr.Diagnostics
-		attemptCount = completionErr.AttemptCount
-		statusCode = completionErr.StatusCode
-		subStatus = completionErr.SubStatus
+		metadata = *completionErr
 	}
-	err := newOperationCancelledError(cause, requestCharge, activityID)
-	err.Diagnostics = diagnostics
-	err.AttemptCount = attemptCount
-	err.StatusCode = statusCode
-	err.SubStatus = subStatus
-	return err
+	cancelled := newOperationCancelledError(cause, metadata.RequestCharge, metadata.ActivityID)
+	metadata.Code, metadata.Message, metadata.cause = cancelled.Code, cancelled.Message, cancelled.cause
+	metadata.Body = append([]byte(nil), metadata.Body...)
+	return &metadata
 }
 
 // inspectAwaitCompletionSubmission reports whether awaitCompletion invoked its submit closure.

@@ -42,3 +42,16 @@ the configured listeners bind loopback.
 
 When updating the emulator, change the pins in CI and this document together, then rerun
 the Go emulator suite. A successful source build alone is not a compatibility check.
+
+The configuration includes scalar `items`, two-level `query-hierarchical`, and three-level
+`batch-hierarchical` containers in `itemdb`. Focused batch tests cover commit, persisted-state
+rollback, null/undefined HPK isolation, prefix rejection, and content-response ownership:
+
+```sh
+EMULATOR=true AZCOSMOS_ENDPOINT="<accountEndpoint>" \
+  go test -run '^TestEmulatorTransactionalBatch' ./...
+```
+
+Batch Read If-None-Match is intentionally deferred. The pinned emulator can commit writes around
+a conditional 304 read and then report HTTP 207. It therefore cannot certify that option's
+service transaction semantics; do not treat this emulator behavior as the product contract.

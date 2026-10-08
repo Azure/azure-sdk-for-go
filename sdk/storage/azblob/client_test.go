@@ -616,6 +616,7 @@ func performUploadAndDownloadBufferTest(t *testing.T, _require *require.Assertio
 		containerName,
 		blobName,
 		destBuffer, &blob.DownloadBufferOptions{
+			LayoutAwareRouting: blob.LayoutAwareRoutingDisabled,
 			Range: azblob.HTTPRange{
 				Count:  int64(downloadCount),
 				Offset: int64(downloadOffset),

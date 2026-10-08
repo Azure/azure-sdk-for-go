@@ -112,6 +112,9 @@ type BlobClientDownloadResponse struct {
 	// ErrorCode contains the information returned from the x-ms-error-code header response.
 	ErrorCode *string
 
+	// Indicates the download hint for the blob.
+	DownloadHint *DownloadHint
+
 	// The ETag contains a value that you can use to perform operations conditionally.
 	ETag *azcore.ETag
 

@@ -1,5 +1,39 @@
 # Release History
 
+## 1.9.0 (Unreleased)
+
+### Features Added
+* Added support for session authentication. Set `Session` on `ClientOptions` to configure it. Sessions apply only to
+  clients authenticated with an `azcore.TokenCredential`; clients using a shared key, a SAS or no credential ignore
+  these options. With `SessionModeEnabled`, Get Blob requests (`blob.Client.DownloadStream` and the downloads built on
+  it) are authenticated with a session created and cached per container; every other request keeps using the bearer
+  token. The default, `SessionModeAuto`, currently resolves to `SessionModeDisabled`.
+  * The account name that signs session requests is derived from the client's URL, or set with
+    `SessionOptions.AccountName` for a custom domain. When it can be determined from neither, client construction
+    fails if `SessionModeEnabled` was set explicitly.
+  * By default each client creates its own session cache, shared with the clients derived from it. Create a
+    `ContainerSessionProvider` with `NewContainerSessionProvider` and pass it as `SessionOptions.Provider` to share one
+    cache across separately constructed clients, so that sessions survive the clients that created them.
+  * Sessions are refreshed in the background shortly before they expire. If the service indicates sessions are
+    unavailable, or rejects a session, the client transparently falls back to bearer token authentication.
+* Added support for data locality. `Client.GetLayoutPager` on the blob clients returns a blob's layout: the byte ranges
+  making up the blob and the storage endpoint that serves each one (`Layout`, `LayoutRange`, `LayoutEndpoint`). Pass
+  the endpoint covering a given offset as `DownloadStreamOptions.LayoutEndpoint` to route that read to it.
+  `DownloadResponse.DownloadHint` reports the service's `DownloadHintLayout` hint.
+* Added `LayoutAwareRouting` to `DownloadBufferOptions` and `DownloadFileOptions`. With `LayoutAwareRoutingEnabled`,
+  when the initial read carries the layout download hint, the remaining blocks are routed to the endpoint that serves
+  each one, using a cached layout that is refreshed in the background. The default, `LayoutAwareRoutingAuto`,
+  currently resolves to `LayoutAwareRoutingDisabled`. When the service can't provide a layout, downloads use the
+  client's configured endpoint.
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+* Updated the service version to `2027-03-07`.
+* Updated `sdk/storage/internal` version to `0.2.0`
+
 ## 1.8.2 (2026-10-01)
 
 ### Bugs Fixed

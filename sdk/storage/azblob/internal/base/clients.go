@@ -7,9 +7,12 @@ import (
 	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/shared"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/internal/locality"
 )
 
 // ClientOptions contains the optional parameters when creating a Client.
@@ -29,6 +32,9 @@ type ClientOptions struct {
 	// Setting the environment variable AZURE_STORAGE_DISABLE_EXPECT_CONTINUE_HEADER to a
 	// truthy value disables this behavior entirely, regardless of this setting.
 	ExpectContinueBehavior exported.ExpectContinueOptions
+
+	// Session configures session-based authentication behavior.
+	Session exported.SessionOptions
 }
 
 type Client[T any] struct {
@@ -64,6 +70,40 @@ func GetAudience(clOpts *ClientOptions) string {
 	} else {
 		return strings.TrimRight(clOpts.Audience, "/") + "/.default"
 	}
+}
+
+// GetAzClient creates an *azcore.Client with the common pipeline configuration used by all blob clients.
+// Provide either cred or sharedKey for authentication, or both nil for anonymous/SAS access.
+func GetAzClient(serviceURL string, cred azcore.TokenCredential, sharedKey *exported.SharedKeyCredential, conOptions *ClientOptions) (*azcore.Client, error) {
+	var plOpts runtime.PipelineOptions
+
+	if cred != nil {
+		audience := GetAudience(conOptions)
+		bearerTokenPolicy := shared.NewStorageChallengePolicy(cred, audience, conOptions.InsecureAllowCredentialWithHTTP)
+		// Sessions are signed with a key obtained through a token credential, so only token
+		// credential clients can use them. Shared key, SAS and anonymous clients ignore
+		// conOptions.Session.
+		authPolicy, err := newSessionAuthPolicy(serviceURL, cred, bearerTokenPolicy, conOptions)
+		if err != nil {
+			return nil, err
+		}
+		plOpts.PerRetry = []policy.Policy{authPolicy}
+	} else if sharedKey != nil {
+		authPolicy := exported.NewSharedKeyCredPolicy(sharedKey)
+		plOpts.PerRetry = []policy.Policy{authPolicy}
+	}
+	// The range policy comes from main and applies to every client. The layout policy is
+	// registered per-call because its rewrite must happen exactly once: it moves the account
+	// host into the Host header and replaces the URL host with the layout endpoint. Those
+	// mutations are made on the request itself, so they persist across retries and every
+	// attempt still reaches the layout endpoint. Running it per-retry would re-apply the
+	// rewrite to an already-rewritten request, copying the layout host into the Host header
+	// and losing the original account host.
+	plOpts.PerCall = []policy.Policy{shared.NewRangePolicy(), locality.NewPolicy()}
+	if p := NewExpectContinuePolicy(conOptions.ExpectContinueBehavior); p != nil {
+		plOpts.PerRetry = append(plOpts.PerRetry, p)
+	}
+	return azcore.NewClient(exported.ModuleName, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
 }
 
 func NewClient[T any](inner *T) *Client[T] {

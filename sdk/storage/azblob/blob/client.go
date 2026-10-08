@@ -15,15 +15,17 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/bloberror"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/base"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/sas"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/internal/autorefresh"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/internal/locality"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/internal/sasurl"
 )
 
@@ -38,15 +40,9 @@ type Client base.Client[generated.BlobClient]
 //   - cred - an Azure AD credential, typically obtained via the azidentity module
 //   - options - client options; pass nil to accept the default values
 func NewClient(blobURL string, cred azcore.TokenCredential, options *ClientOptions) (*Client, error) {
-	audience := base.GetAudience((*base.ClientOptions)(options))
 	conOptions := shared.GetClientOptions(options)
-	authPolicy := shared.NewStorageChallengePolicy(cred, audience, conOptions.InsecureAllowCredentialWithHTTP)
-	plOpts := runtime.PipelineOptions{PerCall: []policy.Policy{shared.NewRangePolicy()}, PerRetry: []policy.Policy{authPolicy}}
-	if p := base.NewExpectContinuePolicy(conOptions.ExpectContinueBehavior); p != nil {
-		plOpts.PerRetry = append(plOpts.PerRetry, p)
-	}
 
-	azClient, err := azcore.NewClient(exported.ModuleName, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
+	azClient, err := base.GetAzClient(blobURL, cred, nil, (*base.ClientOptions)(conOptions))
 	if err != nil {
 		return nil, err
 	}
@@ -59,12 +55,8 @@ func NewClient(blobURL string, cred azcore.TokenCredential, options *ClientOptio
 //   - options - client options; pass nil to accept the default values
 func NewClientWithNoCredential(blobURL string, options *ClientOptions) (*Client, error) {
 	conOptions := shared.GetClientOptions(options)
-	plOpts := runtime.PipelineOptions{PerCall: []policy.Policy{shared.NewRangePolicy()}}
-	if p := base.NewExpectContinuePolicy(conOptions.ExpectContinueBehavior); p != nil {
-		plOpts.PerRetry = append(plOpts.PerRetry, p)
-	}
 
-	azClient, err := azcore.NewClient(exported.ModuleName, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
+	azClient, err := base.GetAzClient(blobURL, nil, nil, (*base.ClientOptions)(conOptions))
 	if err != nil {
 		return nil, err
 	}
@@ -76,14 +68,9 @@ func NewClientWithNoCredential(blobURL string, options *ClientOptions) (*Client,
 //   - cred - a SharedKeyCredential created with the matching blob's storage account and access key
 //   - options - client options; pass nil to accept the default values
 func NewClientWithSharedKeyCredential(blobURL string, cred *SharedKeyCredential, options *ClientOptions) (*Client, error) {
-	authPolicy := exported.NewSharedKeyCredPolicy(cred)
 	conOptions := shared.GetClientOptions(options)
-	plOpts := runtime.PipelineOptions{PerCall: []policy.Policy{shared.NewRangePolicy()}, PerRetry: []policy.Policy{authPolicy}}
-	if p := base.NewExpectContinuePolicy(conOptions.ExpectContinueBehavior); p != nil {
-		plOpts.PerRetry = append(plOpts.PerRetry, p)
-	}
 
-	azClient, err := azcore.NewClient(exported.ModuleName, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
+	azClient, err := base.GetAzClient(blobURL, nil, cred, (*base.ClientOptions)(conOptions))
 	if err != nil {
 		return nil, err
 	}
@@ -318,11 +305,26 @@ func (b *Client) downloadBuffer(ctx context.Context, writer io.WriterAt, o downl
 	}
 
 	count := o.Range.Count
-	if count != CountToEnd {
+	// An explicit count with layout routing off has nothing for an initial read to discover,
+	// so it goes straight to the parallel chunks and keeps main's request pattern unchanged.
+	// With routing on, the initial read is still needed: it carries the download hint that
+	// decides whether a layout applies, and the ETag that keeps the chunks consistent.
+	if count != CountToEnd && !o.layoutAwareRoutingEnabled() {
 		return b.parallelDownload(ctx, writer, o, count)
 	}
 
-	dr, err := b.DownloadStream(ctx, o.getDownloadBlobOptions(HTTPRange{Offset: o.Range.Offset, Count: o.BlockSize}, nil))
+	// The initial read never asks for more than the caller wanted.
+	initialCount := o.BlockSize
+	if count != CountToEnd {
+		if count <= 0 {
+			return 0, nil
+		}
+		if count < initialCount {
+			initialCount = count
+		}
+	}
+
+	dr, err := b.DownloadStream(ctx, o.getDownloadBlobOptions(HTTPRange{Offset: o.Range.Offset, Count: initialCount}, nil))
 	if err != nil {
 		if bloberror.HasCode(err, bloberror.InvalidRange) {
 			return 0, nil
@@ -338,21 +340,25 @@ func (b *Client) downloadBuffer(ctx context.Context, writer io.WriterAt, o downl
 		return 0, fmt.Errorf("response contained no content headers; this may indicate a 304 Not Modified due to access conditions")
 	}
 
-	var totalSize int64
-	if dr.ContentRange != nil {
-		totalSize = parseContentRangeTotal(*dr.ContentRange)
-		if totalSize <= 0 {
-			_ = dr.Body.Close()
-			return 0, fmt.Errorf("unable to parse total size from Content-Range header: %s", *dr.ContentRange)
+	// The caller's count already bounds the download when they gave one; only a CountToEnd
+	// download has to learn the size from the response.
+	if count == CountToEnd {
+		var totalSize int64
+		if dr.ContentRange != nil {
+			totalSize = parseContentRangeTotal(*dr.ContentRange)
+			if totalSize <= 0 {
+				_ = dr.Body.Close()
+				return 0, fmt.Errorf("unable to parse total size from Content-Range header: %s", *dr.ContentRange)
+			}
+		} else {
+			totalSize = *dr.ContentLength + o.Range.Offset
 		}
-	} else {
-		totalSize = *dr.ContentLength + o.Range.Offset
-	}
 
-	count = totalSize - o.Range.Offset
-	if count <= 0 {
-		_ = dr.Body.Close()
-		return 0, nil
+		count = totalSize - o.Range.Offset
+		if count <= 0 {
+			_ = dr.Body.Close()
+			return 0, nil
+		}
 	}
 
 	if dr.ETag != nil {
@@ -382,6 +388,9 @@ func (b *Client) downloadBuffer(ctx context.Context, writer io.WriterAt, o downl
 		return 0, nil
 	}
 
+	// The download hint has to be read off the response before the body is consumed. It is what
+	// decides whether the remainder of this download is worth routing with the blob's layout.
+	downloadHint := dr.DownloadHint
 	prog := &downloadProgress{}
 	var body io.ReadCloser = dr.NewRetryReader(ctx, &o.RetryReaderOptionsPerBlock)
 	if o.Progress != nil {
@@ -411,7 +420,18 @@ func (b *Client) downloadBuffer(ctx context.Context, writer io.WriterAt, o downl
 	}
 
 	remaining := count - initialChunkSize
-	remainingDownloaded, err := b.parallelDownloadFrom(ctx, writer, o, initialChunkSize, remaining, prog)
+
+	// More data remains. Layout aware routing applies only when the caller left it enabled and
+	// the service asked for it via the download hint on the initial response.
+	var layoutCache *autorefresh.Cache[layout]
+	if o.layoutAwareRoutingEnabled() && downloadHint != nil && *downloadHint == generated.DownloadHintLayout {
+		layoutCache, err = b.resolveLayout(ctx, o, initialChunkSize, remaining)
+		if err != nil {
+			return 0, err
+		}
+	}
+
+	remainingDownloaded, err := b.parallelDownloadFrom(ctx, writer, o, initialChunkSize, remaining, prog, layoutCache)
 	if err != nil {
 		return 0, err
 	}
@@ -464,7 +484,7 @@ func (b *Client) parallelDownload(ctx context.Context, writer io.WriterAt, o dow
 	return dataDownloaded, nil
 }
 
-func (b *Client) parallelDownloadFrom(ctx context.Context, writer io.WriterAt, o downloadOptions, writerOffset int64, remaining int64, prog *downloadProgress) (int64, error) {
+func (b *Client) parallelDownloadFrom(ctx context.Context, writer io.WriterAt, o downloadOptions, writerOffset int64, remaining int64, prog *downloadProgress, layoutCache *autorefresh.Cache[layout]) (int64, error) {
 	dataDownloaded := int64(0)
 
 	err := shared.DoBatchTransfer(ctx, &shared.BatchTransferOptions{
@@ -474,8 +494,20 @@ func (b *Client) parallelDownloadFrom(ctx context.Context, writer io.WriterAt, o
 		NumChunks:     uint64(((remaining - 1) / o.BlockSize) + 1),
 		Concurrency:   o.Concurrency,
 		Operation: func(ctx context.Context, chunkStart int64, count int64) error {
-			dr, err := b.DownloadStream(ctx, o.getDownloadBlobOptions(HTTPRange{
-				Offset: chunkStart + writerOffset + o.Range.Offset, Count: count}, nil))
+			blobOffset := chunkStart + writerOffset + o.Range.Offset
+			downloadBlobOptions := o.getDownloadBlobOptions(HTTPRange{Offset: blobOffset, Count: count}, nil)
+			// Route this chunk to the endpoint the layout serves it from. The cache never fails for a
+			// layout the service can't provide (400 or 5xx): that is cached as "no layout" and the chunk
+			// reads from the configured endpoint. Any other error fetching an expired layout fails the
+			// chunk, and with it the download, as the other Azure Storage SDKs do.
+			if layoutCache != nil {
+				chunkLayout, err := layoutCache.Get(ctx)
+				if err != nil {
+					return err
+				}
+				downloadBlobOptions.LayoutEndpoint = getIdealEndpoint(blobOffset, chunkLayout)
+			}
+			dr, err := b.DownloadStream(ctx, downloadBlobOptions)
 			if err != nil {
 				return err
 			}
@@ -515,6 +547,9 @@ func (b *Client) DownloadStream(ctx context.Context, o *DownloadStreamOptions) (
 	if o == nil {
 		o = &DownloadStreamOptions{}
 	}
+	if o.LayoutEndpoint != "" {
+		ctx = locality.WithEndpoint(ctx, o.LayoutEndpoint)
+	}
 	dr, err := b.generated().Download(ctx, o.format())
 	var coreErr *azcore.ResponseError
 	if errors.As(err, &coreErr) && coreErr.StatusCode == http.StatusNotModified {
@@ -539,6 +574,8 @@ func (b *Client) DownloadStream(ctx context.Context, o *DownloadStreamOptions) (
 		cpkInfo:                 o.CPKInfo,
 		cpkScope:                o.CPKScopeInfo,
 		transactionalValidation: o.TransactionalValidation,
+		// carried so a retry of this read stays on the endpoint the layout chose for it
+		layoutEndpoint: o.LayoutEndpoint,
 	}, err
 }
 
@@ -574,6 +611,80 @@ func (b *Client) DownloadFile(ctx context.Context, file *os.File, o *DownloadFil
 	}
 
 	return downloaded, nil
+}
+
+// resolveLayout returns the cache of the layout covering the part of the blob that still has to
+// be downloaded, fetching it once now so that a failure to fetch it fails the download before any
+// chunk is read. Every chunk then reads the cached layout, which is refreshed in the background
+// shortly before it expires, so a long transfer never waits on a refresh.
+//
+// A layout the service can't provide (a 400 or 5xx) and a blob with no layout are cached like any
+// other layout: chunks read from the client's configured endpoint until the cache expires, without
+// asking the service again.
+//
+// o.AccessConditions already carries the initial read's ETag by the time this is called, so the
+// enumeration is pinned to the same version of the blob as the data.
+func (b *Client) resolveLayout(ctx context.Context, o downloadOptions, writerOffset, remaining int64) (*autorefresh.Cache[layout], error) {
+	layoutOptions := o.getBlobLayoutOptions()
+	if layoutOptions == nil {
+		layoutOptions = &GetLayoutOptions{}
+	}
+	// Only the part of the blob that still has to be read needs a layout.
+	layoutOptions.Range = HTTPRange{Offset: o.Range.Offset + writerOffset, Count: remaining}
+
+	cache := newLayoutCache(func(ctx context.Context) (layout, error) {
+		return getLayout(ctx, b.GetLayoutPager(layoutOptions))
+	})
+	if _, err := cache.Get(ctx); err != nil {
+		return nil, err
+	}
+	return cache, nil
+}
+
+// GetLayoutPager returns the blob's layout: the set of byte ranges making up the blob and the
+// storage endpoint that serves each one. Pass the endpoint covering a given offset as
+// DownloadStreamOptions.LayoutEndpoint to route that read for better locality.
+//
+// A single enumeration describes the whole requested range, so callers implementing a custom
+// chunked download should enumerate once and reuse the result across chunks rather than paging
+// per chunk. A blob's layout can change over time; refresh the cached layout roughly every
+// 5 minutes, which is the interval Client.DownloadBuffer and Client.DownloadFile use internally.
+//
+// Unless the caller supplies an If-Match condition in options.AccessConditions, the ETag returned
+// by the first page is sent as If-Match on every subsequent page, so that a single enumeration
+// always describes one version of the blob.
+//
+// For more information, see https://docs.microsoft.com/rest/api/storageservices/get-blob-layout.
+func (b *Client) GetLayoutPager(options *GetLayoutOptions) *runtime.Pager[GetLayoutResponse] {
+	opts := options.format()
+	if opts == nil {
+		opts = &generated.BlobClientGetLayoutOptions{}
+	}
+	// Use the caller's If-Match when they supplied one, otherwise capture the ETag from the
+	// first response so every later page is locked to the same version of the blob.
+	initialIfMatch := opts.IfMatch
+
+	return runtime.NewPager(runtime.PagingHandler[GetLayoutResponse]{
+		More: func(page GetLayoutResponse) bool {
+			return page.NextMarker != nil && len(*page.NextMarker) > 0
+		},
+		Fetcher: func(ctx context.Context, page *GetLayoutResponse) (GetLayoutResponse, error) {
+			pageOpts := *opts
+			if page != nil {
+				pageOpts.Marker = page.NextMarker
+				pageOpts.IfMatch = initialIfMatch
+			}
+			result, err := b.generated().GetLayout(ctx, &pageOpts)
+			if err != nil {
+				return GetLayoutResponse{}, err
+			}
+			// Capture the ETag from the first response for every subsequent request.
+			if page == nil && initialIfMatch == nil {
+				initialIfMatch = result.ETag
+			}
+			return result, nil
+		},
+	})
 }
 
 // parseContentRangeLength parses the range length from a Content-Range header value.

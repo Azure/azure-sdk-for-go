@@ -1,0 +1,50 @@
+{
+    "$schema": "../../schema/scenario.v1.json",
+    "specVersion": "1.0",
+    "id": "topology.partition-split-merge",
+    "title": "Partition split and merge preserve item state",
+    "requirement": "Manually phased split and merge operations expose their transition windows and preserve point-operation state across replacement partition ranges.",
+    "maturity": "candidate",
+    "precedents": [
+        {
+            "sdk": "rust",
+            "path": "sdk/cosmos/azure_data_cosmos/tests/in_memory_emulator_tests/partition_merge.rs",
+            "test": "public_sdk_paths_survive_real_partition_merge"
+        }
+    ],
+    "profiles": [
+        "dynamicTopology"
+    ],
+    "tags": [
+        "topology",
+        "partition",
+        "split",
+        "merge"
+    ],
+    "backends": {
+        "hostedEmulatorGatewayV1": {
+            "applicability": "required",
+            "fidelity": "full",
+            "requires": [
+                "item",
+                "partitionSplit",
+                "partitionMerge"
+            ]
+        },
+        "hostedEmulatorGatewayV2": {
+            "applicability": "required",
+            "fidelity": "full",
+            "requires": [
+                "item",
+                "partitionSplit",
+                "partitionMerge",
+                "gatewayV2"
+            ]
+        },
+        "azureLive": {
+            "applicability": "notApplicable",
+            "fidelity": "none",
+            "reason": "The scenario requires manually controlled split and merge phases."
+        }
+    }
+}

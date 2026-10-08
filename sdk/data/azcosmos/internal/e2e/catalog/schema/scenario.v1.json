@@ -1,0 +1,159 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://azure.github.io/cosmos-sdk-e2e-tests/scenario.v1.json",
+  "title": "Cosmos SDK E2E test scenario metadata",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "$schema",
+    "specVersion",
+    "id",
+    "title",
+    "requirement",
+    "maturity",
+    "precedents",
+    "profiles",
+    "tags",
+    "backends"
+  ],
+  "properties": {
+    "$schema": {
+      "const": "../../schema/scenario.v1.json"
+    },
+    "specVersion": {
+      "const": "1.0"
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9]*(\\.[a-z][a-z0-9-]*)+$"
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1
+    },
+    "requirement": {
+      "type": "string",
+      "minLength": 1
+    },
+    "maturity": {
+      "enum": [
+        "candidate",
+        "stable",
+        "deprecated"
+      ]
+    },
+    "precedents": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/reference"
+      }
+    },
+    "profiles": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "tags": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "backends": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "hostedEmulatorGatewayV1",
+        "hostedEmulatorGatewayV2",
+        "azureLive"
+      ],
+      "properties": {
+        "hostedEmulatorGatewayV1": {
+          "$ref": "#/$defs/backend"
+        },
+        "hostedEmulatorGatewayV2": {
+          "$ref": "#/$defs/backend"
+        },
+        "azureLive": {
+          "$ref": "#/$defs/backend"
+        }
+      }
+    }
+  },
+  "$defs": {
+    "reference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "sdk",
+        "path",
+        "test"
+      ],
+      "properties": {
+        "sdk": {
+          "enum": [
+            "service",
+            "rust",
+            "java",
+            "dotnet",
+            "python"
+          ]
+        },
+        "path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "test": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "backend": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "applicability",
+        "fidelity"
+      ],
+      "properties": {
+        "applicability": {
+          "enum": [
+            "required",
+            "supported",
+            "simulated",
+            "notApplicable"
+          ]
+        },
+        "fidelity": {
+          "enum": [
+            "full",
+            "partial",
+            "simulated",
+            "none"
+          ]
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1
+        },
+        "requires": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    }
+  }
+}

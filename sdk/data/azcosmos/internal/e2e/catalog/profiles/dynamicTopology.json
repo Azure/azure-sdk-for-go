@@ -1,0 +1,42 @@
+{
+    "$schema": "../schema/profile.v1.json",
+    "specVersion": "1.0",
+    "id": "dynamicTopology",
+    "accounts": [
+        {
+            "id": "singleWriteThreeRegions",
+            "writeMode": "single",
+            "consistency": "session",
+            "regions": [
+                {
+                    "name": "East US"
+                },
+                {
+                    "name": "West US"
+                },
+                {
+                    "name": "North Europe"
+                }
+            ],
+            "replication": {
+                "minDelayMs": 0,
+                "maxDelayMs": 0
+            },
+            "perPartitionFailover": true
+        }
+    ],
+    "runtimes": [
+        {
+            "id": "ppcbEnabled",
+            "gatewayV2": "backendDefault",
+            "ppcb": "enabled"
+        }
+    ],
+    "clients": [
+        {
+            "id": "preferredRegions",
+            "binaryEncoding": "sdkDefault",
+            "routing": "preferredRegions"
+        }
+    ]
+}

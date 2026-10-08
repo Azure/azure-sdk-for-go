@@ -1,0 +1,47 @@
+{
+  "$schema": "../../schema/scenario.v1.json",
+  "specVersion": "1.0",
+  "id": "item.hierarchical-partition-key",
+  "title": "Hierarchical partition keys support point and prefix operations",
+  "requirement": "A full hierarchical partition key addresses one item while a prefix-scoped query returns only matching descendants.",
+  "maturity": "candidate",
+  "precedents": [
+    {
+      "sdk": "rust",
+      "path": "sdk/cosmos/azure_data_cosmos/tests/emulator_tests/cosmos_hpk.rs",
+      "test": "hpk_item_create_and_read_full_key/query_geo_prefix"
+    }
+  ],
+  "profiles": [
+    "coreOperations"
+  ],
+  "tags": [
+    "item",
+    "query",
+    "partitionKey",
+    "coreOperations"
+  ],
+  "backends": {
+    "hostedEmulatorGatewayV1": {
+      "applicability": "required",
+      "fidelity": "full",
+      "requires": [
+        "item",
+        "query"
+      ]
+    },
+    "hostedEmulatorGatewayV2": {
+      "applicability": "required",
+      "fidelity": "full",
+      "requires": [
+        "item",
+        "query",
+        "gatewayV2"
+      ]
+    },
+    "azureLive": {
+      "applicability": "supported",
+      "fidelity": "full"
+    }
+  }
+}

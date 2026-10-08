@@ -1,15 +1,11 @@
 # Release History
 
-## 2.2.1-beta.1 (Unreleased)
+## 2.3.0 (2026-10-08)
 
 ### Features Added
 * Added `Description` field to the `Setting` and `Snapshot` structs.
 * Added `Description` field to `AddSettingOptions`, `SetSettingOptions`, and `BeginCreateSnapshotOptions`.
 * Added `SettingFieldsDescription` and `SnapshotFieldsDescription` field selector constants.
-
-### Breaking Changes
-
-### Bugs Fixed
 
 ### Other Changes
 * Updated to API version `2026-04-01`.

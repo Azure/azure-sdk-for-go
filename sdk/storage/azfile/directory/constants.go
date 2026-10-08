@@ -39,6 +39,10 @@ const (
 	ListFilesIncludeTypeETag          ListFilesIncludeType = generated.ListFilesIncludeTypeEtag
 	ListFilesIncludeTypeAttributes    ListFilesIncludeType = generated.ListFilesIncludeTypeAttributes
 	ListFilesIncludeTypePermissionKey ListFilesIncludeType = generated.ListFilesIncludeTypePermissionKey
+	ListFilesIncludeTypePermissions   ListFilesIncludeType = generated.ListFilesIncludeTypePermissions
+	ListFilesIncludeTypeLinkCount     ListFilesIncludeType = generated.ListFilesIncludeTypeLinkCount
+	ListFilesIncludeTypeNfsAttributes ListFilesIncludeType = generated.ListFilesIncludeTypeNfsAttributes
+	ListFilesIncludeTypeAll           ListFilesIncludeType = generated.ListFilesIncludeTypeAll
 )
 
 // PossibleListFilesIncludeTypeValues returns the possible values for the ListFilesIncludeType const type.

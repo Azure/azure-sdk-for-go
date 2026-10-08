@@ -352,7 +352,7 @@ type ShareFileRangeListSegment struct {
 	Ranges []*FileRange `xml:"Range"`
 }
 
-// ShareNFSSettings - Settings for SMB protocol.
+// ShareNFSSettings - Settings for NFS protocol.
 type ShareNFSSettings struct {
 	// Enable or disable encryption in transit.
 	EncryptionInTransit *ShareNFSSettingsEncryptionInTransit `xml:"EncryptionInTransit"`
@@ -392,6 +392,9 @@ type ShareProperties struct {
 
 	// The access tier transition state.
 	AccessTierTransitionState *string `xml:"AccessTierTransitionState"`
+
+	// The creation time.
+	CreationTime *time.Time `xml:"Creation-Time"`
 
 	// The deleted time.
 	DeletedTime *time.Time `xml:"DeletedTime"`

@@ -11,6 +11,7 @@ import (
 
 const (
 	shareSnapshot = "sharesnapshot"
+	fileIDParam   = "fileid"
 )
 
 // IPEndpointStyleInfo is used for IP endpoint style URL when working with Azure storage emulator.
@@ -28,6 +29,7 @@ type URLParts struct {
 	IPEndpointStyleInfo IPEndpointStyleInfo // Useful Parts for IP endpoint style URL.
 	ShareName           string              // Share name, Ex: "myshare"
 	DirectoryOrFilePath string              // Path of directory or file, Ex: "mydirectory/myfile"
+	FileID              string              // File ID for FileId-based URLs, Ex: "12384898975283830"
 	ShareSnapshot       string              // IsZero is true if not a snapshot
 	SAS                 QueryParameters
 	UnparsedParams      string
@@ -80,6 +82,12 @@ func ParseURL(u string) (URLParts, error) {
 		delete(paramsMap, shareSnapshot)
 	}
 
+	up.FileID = ""
+	if fileIDStr, ok := caseInsensitiveValues(paramsMap).Get(fileIDParam); ok {
+		up.FileID = fileIDStr[0]
+		delete(paramsMap, fileIDParam)
+	}
+
 	up.SAS = NewQueryParameters(paramsMap, true)
 	up.UnparsedParams = paramsMap.Encode()
 	return up, nil
@@ -106,6 +114,14 @@ func (up URLParts) String() string {
 	// If no snapshot is initially provided, fill it in from the SAS query properties to help the user
 	if up.ShareSnapshot == "" && !up.SAS.ShareSnapshotTime().IsZero() {
 		up.ShareSnapshot = up.SAS.ShareSnapshotTime().Format(SnapshotTimeFormat)
+	}
+
+	// Concatenate file ID query parameter (if it exists)
+	if up.FileID != "" {
+		if len(rawQuery) > 0 {
+			rawQuery += "&"
+		}
+		rawQuery += fileIDParam + "=" + up.FileID
 	}
 
 	// Concatenate share snapshot query parameter (if it exists)

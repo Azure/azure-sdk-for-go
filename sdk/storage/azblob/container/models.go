@@ -266,7 +266,7 @@ type ListBlobsFlatOptions struct {
 	// Only supported when ResponseFormat is StorageResponseFormatArrow.
 	EndBefore *string
 	// ResponseFormat specifies the format the service should use to return list results.
-	// Defaults to StorageResponseFormatAuto, which resolves to XML for the current release.
+	// Defaults to StorageResponseFormatAuto, which resolves to Arrow.
 	ResponseFormat StorageResponseFormat
 }
 
@@ -311,7 +311,7 @@ type ListBlobsHierarchyOptions struct {
 	// Only supported when ResponseFormat is StorageResponseFormatArrow.
 	EndBefore *string
 	// ResponseFormat specifies the format the service should use to return list results.
-	// Defaults to StorageResponseFormatAuto, which resolves to XML for the current release.
+	// Defaults to StorageResponseFormatAuto, which resolves to Arrow.
 	ResponseFormat StorageResponseFormat
 }
 

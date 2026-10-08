@@ -632,6 +632,9 @@ type AzureIaaSClassicComputeVMProtectedItem struct {
 	// Time remaining before the DS marked for deferred delete is permanently deleted
 	DeferredDeleteTimeRemaining *string
 
+	// Specifies how existing Basic VM protection is handled when configuring protection.
+	ExistingBasicVMProtection *ExistingBasicVMProtection
+
 	// Additional information for this backup item.
 	ExtendedInfo *AzureIaaSVMProtectedItemExtendedInfo
 
@@ -726,6 +729,7 @@ func (a *AzureIaaSClassicComputeVMProtectedItem) GetAzureIaaSVMProtectedItem() *
 		CreateMode:                       a.CreateMode,
 		DeferredDeleteTimeInUTC:          a.DeferredDeleteTimeInUTC,
 		DeferredDeleteTimeRemaining:      a.DeferredDeleteTimeRemaining,
+		ExistingBasicVMProtection:        a.ExistingBasicVMProtection,
 		ExtendedInfo:                     a.ExtendedInfo,
 		ExtendedProperties:               a.ExtendedProperties,
 		FriendlyName:                     a.FriendlyName,
@@ -924,6 +928,9 @@ type AzureIaaSComputeVMProtectedItem struct {
 	// Time remaining before the DS marked for deferred delete is permanently deleted
 	DeferredDeleteTimeRemaining *string
 
+	// Specifies how existing Basic VM protection is handled when configuring protection.
+	ExistingBasicVMProtection *ExistingBasicVMProtection
+
 	// Additional information for this backup item.
 	ExtendedInfo *AzureIaaSVMProtectedItemExtendedInfo
 
@@ -1018,6 +1025,7 @@ func (a *AzureIaaSComputeVMProtectedItem) GetAzureIaaSVMProtectedItem() *AzureIa
 		CreateMode:                       a.CreateMode,
 		DeferredDeleteTimeInUTC:          a.DeferredDeleteTimeInUTC,
 		DeferredDeleteTimeRemaining:      a.DeferredDeleteTimeRemaining,
+		ExistingBasicVMProtection:        a.ExistingBasicVMProtection,
 		ExtendedInfo:                     a.ExtendedInfo,
 		ExtendedProperties:               a.ExtendedProperties,
 		FriendlyName:                     a.FriendlyName,
@@ -1297,6 +1305,9 @@ type AzureIaaSVMProtectedItem struct {
 	// Time remaining before the DS marked for deferred delete is permanently deleted
 	DeferredDeleteTimeRemaining *string
 
+	// Specifies how existing Basic VM protection is handled when configuring protection.
+	ExistingBasicVMProtection *ExistingBasicVMProtection
+
 	// Additional information for this backup item.
 	ExtendedInfo *AzureIaaSVMProtectedItemExtendedInfo
 
@@ -1438,7 +1449,15 @@ type AzureIaaSVMProtectionPolicy struct {
 	// CONSTANT; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
 	// Field has constant value "AzureIaasVM", any specified value is ignored.
 	BackupManagementType *string
-	InstantRPDetails     *InstantRPAdditionalDetails
+
+	// Duration in minutes for which the Instant Access snapshot is retained, when instantAccessSnapshotEnabled
+	// is true. Must be between 60 and 300 minutes; defaults to 300 minutes if not specified.
+	InstantAccessDurationMinutes *int32
+
+	// Specifies whether Instant Access snapshot is enabled for the policy. If false or omitted,
+	// instantAccessDurationMinutes is ignored and no Instant Access snapshot is retained.
+	InstantAccessSnapshotEnabled *bool
+	InstantRPDetails             *InstantRPAdditionalDetails
 
 	// Instant RP retention policy range in days
 	InstantRpRetentionRangeInDays *int32
@@ -2431,6 +2450,9 @@ type AzureVMWorkloadProtectionPolicy struct {
 
 	// List of sub-protection policies which includes schedule and retention
 	SubProtectionPolicy []*SubProtectionPolicy
+
+	// Type of the protection policy
+	VMWorkloadPolicyType *VMWorkloadPolicyType
 
 	// Type of workload for the backup management
 	WorkLoadType *WorkloadType
@@ -3893,6 +3915,9 @@ type AzureVMWorkloadSQLDatabaseProtectedItem struct {
 	// Parent name of the DB such as Instance or Availability Group.
 	ParentName *string
 
+	// Name of the parent protected item (e.g., SQL Instance name) when this database is protected as part of a parent.
+	ParentProtectedItem *string
+
 	// Parent type of protected item, example: for a DB, standalone server or distributed
 	ParentType *string
 
@@ -3907,6 +3932,9 @@ type AzureVMWorkloadSQLDatabaseProtectedItem struct {
 
 	// Health status of the backup item, evaluated based on last heartbeat received
 	ProtectedItemHealthStatus *ProtectedItemHealthStatus
+
+	// Protection type in case protected as part of a parent.
+	ProtectionLevel *ProtectionLevel
 
 	// Backup state of this backup item.
 	ProtectionState *ProtectionState
@@ -4147,6 +4175,189 @@ func (a *AzureVMWorkloadSQLInstanceProtectableItem) GetWorkloadProtectableItem()
 		ProtectableItemType:  a.ProtectableItemType,
 		ProtectionState:      a.ProtectionState,
 		WorkloadType:         a.WorkloadType,
+	}
+}
+
+// AzureVMWorkloadSQLInstanceProtectedItem - Azure VM workload-specific protected item representing SQL Instance.
+type AzureVMWorkloadSQLInstanceProtectedItem struct {
+	// CONSTANT; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
+	// Field has constant value "AzureVmWorkloadSQLInstance", any specified value is ignored.
+	ProtectedItemType *string
+
+	// Name of the backup set the backup item belongs to
+	BackupSetName *string
+
+	// Name of Child Dbs protected under this parent.
+	ChildDBNames []*string
+
+	// Unique name of container
+	ContainerName *string
+
+	// Create mode to indicate recovery of existing soft deleted data source or creation of new data source.
+	CreateMode *CreateMode
+
+	// Time for deferred deletion in UTC
+	DeferredDeleteTimeInUTC *time.Time
+
+	// Time remaining before the DS marked for deferred delete is permanently deleted
+	DeferredDeleteTimeRemaining *string
+
+	// Additional information for this backup item.
+	ExtendedInfo *AzureVMWorkloadProtectedItemExtendedInfo
+
+	// The state of instance protection.
+	InstanceProtectionReadiness *InstanceProtectionReadiness
+
+	// Flag to identify whether datasource is protected in archive
+	IsArchiveEnabled *bool
+
+	// Flag to identify whether the deferred deleted DS is to be purged soon
+	IsDeferredDeleteScheduleUpcoming *bool
+
+	// Flag to identify that deferred deleted DS is to be moved into Pause state
+	IsRehydrate *bool
+
+	// Flag to identify whether the DS is scheduled for deferred delete
+	IsScheduledForDeferredDelete *bool
+
+	// Health details of different KPIs
+	KpisHealths map[string]*KPIResourceHealthDetails
+
+	// Error details in last backup
+	LastBackupErrorDetail *ErrorDetail
+
+	// Last backup operation status. Possible values: Healthy, Unhealthy.
+	LastBackupStatus *LastBackupStatus
+
+	// Timestamp of the last backup operation on this backup item.
+	LastBackupTime *time.Time
+
+	// Timestamp when the last (latest) backup copy was created for this backup item.
+	LastRecoveryPoint *time.Time
+
+	// List of the nodes in case of distributed container.
+	NodesList []*DistributedNodesInfo
+
+	// Parent name of the DB such as Instance or Availability Group.
+	ParentName *string
+
+	// Parent type of protected item, example: for a DB, standalone server or distributed
+	ParentType *string
+
+	// ID of the backup policy with which this item is backed up.
+	PolicyID *string
+
+	// Name of the policy used for protection
+	PolicyName *string
+
+	// Data ID of the protected item.
+	ProtectedItemDataSourceID *string
+
+	// Health status of the backup item, evaluated based on last heartbeat received
+	ProtectedItemHealthStatus *ProtectedItemHealthStatus
+
+	// Backup state of this backup item.
+	ProtectionState *ProtectionState
+
+	// ResourceGuardOperationRequests on which LAC check will be performed
+	ResourceGuardOperationRequests []*string
+
+	// Host/Cluster Name for instance or AG
+	ServerName *string
+
+	// Soft delete retention period in days
+	SoftDeleteRetentionPeriodInDays *int32
+
+	// ARM ID of the resource to be backed up.
+	SourceResourceID *string
+
+	// Source side threat information
+	SourceSideScanInfo *SourceSideScanInfo
+
+	// READ-ONLY; Type of backup management for the backed up item.
+	BackupManagementType *BackupManagementType
+
+	// READ-ONLY; Friendly name of the DB represented by this backup item.
+	FriendlyName *string
+
+	// READ-ONLY; Backup status of this backup item.
+	ProtectionStatus *string
+
+	// READ-ONLY; Source location of the protected item datasource.
+	SourceLocation *string
+
+	// READ-ONLY; ID of the vault which protects this item
+	VaultID *string
+
+	// READ-ONLY; Type of workload this item represents.
+	WorkloadType *DataSourceType
+}
+
+// GetAzureVMWorkloadProtectedItem implements the AzureVMWorkloadProtectedItemClassification interface for type AzureVMWorkloadSQLInstanceProtectedItem.
+func (a *AzureVMWorkloadSQLInstanceProtectedItem) GetAzureVMWorkloadProtectedItem() *AzureVMWorkloadProtectedItem {
+	return &AzureVMWorkloadProtectedItem{
+		BackupManagementType:             a.BackupManagementType,
+		BackupSetName:                    a.BackupSetName,
+		ContainerName:                    a.ContainerName,
+		CreateMode:                       a.CreateMode,
+		DeferredDeleteTimeInUTC:          a.DeferredDeleteTimeInUTC,
+		DeferredDeleteTimeRemaining:      a.DeferredDeleteTimeRemaining,
+		ExtendedInfo:                     a.ExtendedInfo,
+		FriendlyName:                     a.FriendlyName,
+		IsArchiveEnabled:                 a.IsArchiveEnabled,
+		IsDeferredDeleteScheduleUpcoming: a.IsDeferredDeleteScheduleUpcoming,
+		IsRehydrate:                      a.IsRehydrate,
+		IsScheduledForDeferredDelete:     a.IsScheduledForDeferredDelete,
+		KpisHealths:                      a.KpisHealths,
+		LastBackupErrorDetail:            a.LastBackupErrorDetail,
+		LastBackupStatus:                 a.LastBackupStatus,
+		LastBackupTime:                   a.LastBackupTime,
+		LastRecoveryPoint:                a.LastRecoveryPoint,
+		NodesList:                        a.NodesList,
+		ParentName:                       a.ParentName,
+		ParentType:                       a.ParentType,
+		PolicyID:                         a.PolicyID,
+		PolicyName:                       a.PolicyName,
+		ProtectedItemDataSourceID:        a.ProtectedItemDataSourceID,
+		ProtectedItemHealthStatus:        a.ProtectedItemHealthStatus,
+		ProtectedItemType:                a.ProtectedItemType,
+		ProtectionState:                  a.ProtectionState,
+		ProtectionStatus:                 a.ProtectionStatus,
+		ResourceGuardOperationRequests:   a.ResourceGuardOperationRequests,
+		ServerName:                       a.ServerName,
+		SoftDeleteRetentionPeriodInDays:  a.SoftDeleteRetentionPeriodInDays,
+		SourceLocation:                   a.SourceLocation,
+		SourceResourceID:                 a.SourceResourceID,
+		SourceSideScanInfo:               a.SourceSideScanInfo,
+		VaultID:                          a.VaultID,
+		WorkloadType:                     a.WorkloadType,
+	}
+}
+
+// GetProtectedItem implements the ProtectedItemClassification interface for type AzureVMWorkloadSQLInstanceProtectedItem.
+func (a *AzureVMWorkloadSQLInstanceProtectedItem) GetProtectedItem() *ProtectedItem {
+	return &ProtectedItem{
+		BackupManagementType:             a.BackupManagementType,
+		BackupSetName:                    a.BackupSetName,
+		ContainerName:                    a.ContainerName,
+		CreateMode:                       a.CreateMode,
+		DeferredDeleteTimeInUTC:          a.DeferredDeleteTimeInUTC,
+		DeferredDeleteTimeRemaining:      a.DeferredDeleteTimeRemaining,
+		IsArchiveEnabled:                 a.IsArchiveEnabled,
+		IsDeferredDeleteScheduleUpcoming: a.IsDeferredDeleteScheduleUpcoming,
+		IsRehydrate:                      a.IsRehydrate,
+		IsScheduledForDeferredDelete:     a.IsScheduledForDeferredDelete,
+		LastRecoveryPoint:                a.LastRecoveryPoint,
+		PolicyID:                         a.PolicyID,
+		PolicyName:                       a.PolicyName,
+		ProtectedItemType:                a.ProtectedItemType,
+		ResourceGuardOperationRequests:   a.ResourceGuardOperationRequests,
+		SoftDeleteRetentionPeriodInDays:  a.SoftDeleteRetentionPeriodInDays,
+		SourceLocation:                   a.SourceLocation,
+		SourceResourceID:                 a.SourceResourceID,
+		SourceSideScanInfo:               a.SourceSideScanInfo,
+		VaultID:                          a.VaultID,
+		WorkloadType:                     a.WorkloadType,
 	}
 }
 
@@ -5897,6 +6108,12 @@ type AzureWorkloadSQLRecoveryPointExtendedInfo struct {
 
 	// UTC time at which data directory info was captured
 	DataDirectoryTimeInUTC *time.Time
+
+	// List of databases included in recovery point.
+	IncludedDatabases []*DatabaseInRP
+
+	// Detailed info of snapshot restore point.
+	SnapshotRecoveryPointInfo *SnapshotRecoveryPointInfo
 }
 
 // AzureWorkloadSQLRestoreRequest - AzureWorkload SQL -specific restore. Specifically for full/diff restore
@@ -6794,6 +7011,15 @@ type DataDiskEncryptionSettings struct {
 	PerDiskEncryptionSetIDs []*PerDiskEncryptionSetID
 }
 
+// DatabaseInRP - Database included in RP.
+type DatabaseInRP struct {
+	// Datasource Id for the database.
+	DatasourceID *string
+
+	// Datasource name for the database.
+	DatasourceName *string
+}
+
 // Day of the week.
 type Day struct {
 	// Date of the month
@@ -6820,10 +7046,44 @@ type DiskExclusionProperties struct {
 	IsInclusionList *bool
 }
 
+// DiskInfo - Metadata for a physical disk that backs a filesystem volume or Storage Spaces pool.
+// Unlike DiskInformation, this model describes storage topology; DiskInformation only identifies disks included in or excluded
+// from a virtual machine recovery point.
+type DiskInfo struct {
+	// GUID of the disk.
+	DiskGUID *string
+
+	// Location of the disk.
+	DiskLocation *string
+
+	// Disk number.
+	DiskNumber *int32
+
+	// Unique ID of the disk.
+	DiskUniqueID *string
+
+	// Friendly name of the disk.
+	FriendlyName *string
+
+	// LUN of the disk.
+	Lun *int32
+
+	// ARM ID of the managed disk.
+	ManagedDiskID *string
+
+	// Size of the disk in bytes.
+	SizeInBytes *int64
+}
+
 // DiskInformation - Disk information
 type DiskInformation struct {
-	Lun  *int32
-	Name *string
+	// Size of the disk in GB.
+	DiskSizeInGb *int32
+	Lun          *int32
+	Name         *string
+
+	// Storage type of the disk.
+	StorageType *string
 }
 
 // DistributedNodesInfo - This is used to represent the various nodes of the distributed container.
@@ -7285,6 +7545,30 @@ func (f *FetchTieringCostSavingsInfoForVaultRequest) GetFetchTieringCostInfoRequ
 	}
 }
 
+// FilesystemInfo - Per volume filesystem metadata captured on the VM.
+type FilesystemInfo struct {
+	// Drive letters / mount points pointing at this volume.
+	AccessPaths []*string
+
+	// Physical disks that back this volume (or the storage pool).
+	DiskInfoList []*DiskInfo
+
+	// Filesystem type (NTFS / ReFS / etc.).
+	FileSystemType *string
+
+	// True when this volume sits on a Windows Storage Spaces virtual disk.
+	IsOnStorageSpace *bool
+
+	// Volume label.
+	Label *string
+
+	// Storage Spaces pool / virtual-disk identifiers.
+	StorageSpaceInfo *StorageSpaceInfo
+
+	// Volume GUID path.
+	VolumeGUID *string
+}
+
 // GenericContainer - Base class for generic container of backup items
 type GenericContainer struct {
 	// CONSTANT; Type of the container. The value of this property for: 1. Compute Azure VM is Microsoft.Compute/virtualMachines
@@ -7522,6 +7806,41 @@ func (g *GenericRecoveryPoint) GetRecoveryPoint() *RecoveryPoint {
 		ThreatInfo:   g.ThreatInfo,
 		ThreatStatus: g.ThreatStatus,
 	}
+}
+
+// GetRPExtendedInfoRequest - Request for fetching the additional details of a recovery point.
+type GetRPExtendedInfoRequest struct {
+	// REQUIRED; ARM id of the recovery point whose additional details are to be fetched. Exactly one recovery point id can be
+	// specified.
+	RecoveryPointIDs []*string
+}
+
+// GetRPExtendedInfoRequestResource - Request for fetching the additional details of a recovery point, wrapped in a resource
+// envelope.
+type GetRPExtendedInfoRequestResource struct {
+	// REQUIRED; GetRPExtendedInfoRequestResource properties
+	Properties *GetRPExtendedInfoRequest
+
+	// Optional ETag.
+	ETag *string
+
+	// Resource location.
+	Location *string
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
 }
 
 type HourlySchedule struct {
@@ -9734,8 +10053,19 @@ type SnapshotBackupAdditionalDetails struct {
 	UserAssignedManagedIdentityDetails *UserAssignedManagedIdentityDetails
 }
 
+// SnapshotRecoveryPointInfo - Extended info class details for workload snapshot.
+type SnapshotRecoveryPointInfo struct {
+	// Resource Group of snapshot restore point.
+	SnapshotResourceGroup *string
+
+	// Per volume filesystem metadata captured on the VM.
+	SourceFilesystemInfo []*FilesystemInfo
+}
+
 // SnapshotRestoreParameters - Encapsulates information regarding snapshot recovery for SAP Hana
 type SnapshotRestoreParameters struct {
+	// List of disk ARM IDs the customer should detach in case of filesystem clash.
+	DisksToDetachOnClash        []*string
 	LogPointInTimeForDBRecovery *string
 	SkipAttachAndMount          *bool
 }
@@ -9747,6 +10077,21 @@ type SourceSideScanInfo struct {
 
 	// Threat summary for the container
 	SourceSideScanSummary *SourceSideScanSummary
+}
+
+// StorageSpaceInfo - Identifiers for a Windows Storage Spaces pool and its virtual disk.
+type StorageSpaceInfo struct {
+	// Friendly name of the storage pool.
+	StoragePoolFriendlyName *string
+
+	// Unique ID of the storage pool.
+	StoragePoolUniqueID *string
+
+	// Friendly name of the virtual disk.
+	VirtualDiskFriendlyName *string
+
+	// Unique ID of the virtual disk.
+	VirtualDiskUniqueID *string
 }
 
 // SubProtectionPolicy - Sub-protection policy which includes schedule and retention
@@ -9987,6 +10332,25 @@ type UserAssignedManagedIdentityDetails struct {
 
 	// User assigned managed identity properties
 	UserAssignedIdentityProperties *UserAssignedIdentityProperties
+}
+
+// ValidateAzureWorkloadRestoreOperationRequest - Restore validation request for Azure Workload backups.
+// This subtype provides the distinct objectType discriminator used for Azure Workload (SQL/HANA/SAP ASE/AnyDatabase) restore
+// validation.
+type ValidateAzureWorkloadRestoreOperationRequest struct {
+	// CONSTANT; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
+	// Field has constant value "ValidateAzureWorkloadRestoreOperationRequest", any specified value is ignored.
+	ObjectType *string
+
+	// Sets restore request to be validated
+	RestoreRequest RestoreRequestClassification
+}
+
+// GetValidateOperationRequest implements the ValidateOperationRequestClassification interface for type ValidateAzureWorkloadRestoreOperationRequest.
+func (v *ValidateAzureWorkloadRestoreOperationRequest) GetValidateOperationRequest() *ValidateOperationRequest {
+	return &ValidateOperationRequest{
+		ObjectType: v.ObjectType,
+	}
 }
 
 // ValidateIaasVMRestoreOperationRequest - AzureRestoreValidation request.

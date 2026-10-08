@@ -338,6 +338,12 @@ type ProtectionContainerRefreshOperationResultsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
+// ProtectionContainerRefreshOperationStatusesClientGetOptions contains the optional parameters for the ProtectionContainerRefreshOperationStatusesClient.Get
+// method.
+type ProtectionContainerRefreshOperationStatusesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
 // ProtectionContainersClientBeginRegisterOptions contains the optional parameters for the ProtectionContainersClient.BeginRegister
 // method.
 type ProtectionContainersClientBeginRegisterOptions struct {
@@ -416,6 +422,20 @@ type ProtectionPolicyOperationResultsClientGetOptions struct {
 // method.
 type ProtectionPolicyOperationStatusesClientGetOptions struct {
 	// placeholder for future optional parameters
+}
+
+// RecoveryPointsClientBeginGetRPExtendedInfoOperationResultOptions contains the optional parameters for the RecoveryPointsClient.BeginGetRPExtendedInfoOperationResult
+// method.
+type RecoveryPointsClientBeginGetRPExtendedInfoOperationResultOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// RecoveryPointsClientBeginGetRPExtendedInfoOptions contains the optional parameters for the RecoveryPointsClient.BeginGetRPExtendedInfo
+// method.
+type RecoveryPointsClientBeginGetRPExtendedInfoOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
 }
 
 // RecoveryPointsClientGetOptions contains the optional parameters for the RecoveryPointsClient.Get method.

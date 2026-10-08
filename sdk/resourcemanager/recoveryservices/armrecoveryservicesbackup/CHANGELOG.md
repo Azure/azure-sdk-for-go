@@ -1,5 +1,41 @@
 # Release History
 
+## 5.2.0 (2026-10-08)
+### Features Added
+
+- New value `RecoveryPointTierTypeIASnapshotRP` added to enum type `RecoveryPointTierType`
+- New enum type `ExistingBasicVMProtection` with values `ExistingBasicVMProtectionDisableWithDeleteRPsNow`
+- New enum type `InstanceProtectionReadiness` with values `InstanceProtectionReadinessPartialProtection`, `InstanceProtectionReadinessProtectionError`, `InstanceProtectionReadinessReady`, `InstanceProtectionReadinessScheduleDisabled`, `InstanceProtectionReadinessUnknown`
+- New enum type `ProtectionLevel` with values `ProtectionLevelDatabase`, `ProtectionLevelDatabaseUnderInstance`
+- New enum type `VMWorkloadPolicyType` with values `VMWorkloadPolicyTypeInvalid`, `VMWorkloadPolicyTypeSnapshotV1`, `VMWorkloadPolicyTypeSnapshotV2`, `VMWorkloadPolicyTypeStreaming`
+- New function `*AzureVMWorkloadSQLInstanceProtectedItem.GetAzureVMWorkloadProtectedItem() *AzureVMWorkloadProtectedItem`
+- New function `*AzureVMWorkloadSQLInstanceProtectedItem.GetProtectedItem() *ProtectedItem`
+- New function `*ClientFactory.NewProtectionContainerRefreshOperationStatusesClient() *ProtectionContainerRefreshOperationStatusesClient`
+- New function `NewProtectionContainerRefreshOperationStatusesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ProtectionContainerRefreshOperationStatusesClient, error)`
+- New function `*ProtectionContainerRefreshOperationStatusesClient.Get(ctx context.Context, resourceGroupName string, vaultName string, fabricName string, operationID string, options *ProtectionContainerRefreshOperationStatusesClientGetOptions) (ProtectionContainerRefreshOperationStatusesClientGetResponse, error)`
+- New function `*RecoveryPointsClient.BeginGetRPExtendedInfo(ctx context.Context, resourceGroupName string, vaultName string, fabricName string, parameters GetRPExtendedInfoRequestResource, options *RecoveryPointsClientBeginGetRPExtendedInfoOptions) (*runtime.Poller[RecoveryPointsClientGetRPExtendedInfoResponse], error)`
+- New function `*RecoveryPointsClient.BeginGetRPExtendedInfoOperationResult(ctx context.Context, resourceGroupName string, vaultName string, fabricName string, operationID string, options *RecoveryPointsClientBeginGetRPExtendedInfoOperationResultOptions) (*runtime.Poller[RecoveryPointsClientGetRPExtendedInfoOperationResultResponse], error)`
+- New function `*ValidateAzureWorkloadRestoreOperationRequest.GetValidateOperationRequest() *ValidateOperationRequest`
+- New struct `AzureVMWorkloadSQLInstanceProtectedItem`
+- New struct `DatabaseInRP`
+- New struct `DiskInfo`
+- New struct `FilesystemInfo`
+- New struct `GetRPExtendedInfoRequest`
+- New struct `GetRPExtendedInfoRequestResource`
+- New struct `SnapshotRecoveryPointInfo`
+- New struct `StorageSpaceInfo`
+- New struct `ValidateAzureWorkloadRestoreOperationRequest`
+- New field `ExistingBasicVMProtection` in struct `AzureIaaSClassicComputeVMProtectedItem`
+- New field `ExistingBasicVMProtection` in struct `AzureIaaSComputeVMProtectedItem`
+- New field `ExistingBasicVMProtection` in struct `AzureIaaSVMProtectedItem`
+- New field `InstantAccessDurationMinutes`, `InstantAccessSnapshotEnabled` in struct `AzureIaaSVMProtectionPolicy`
+- New field `VMWorkloadPolicyType` in struct `AzureVMWorkloadProtectionPolicy`
+- New field `ParentProtectedItem`, `ProtectionLevel` in struct `AzureVMWorkloadSQLDatabaseProtectedItem`
+- New field `IncludedDatabases`, `SnapshotRecoveryPointInfo` in struct `AzureWorkloadSQLRecoveryPointExtendedInfo`
+- New field `DiskSizeInGb`, `StorageType` in struct `DiskInformation`
+- New field `DisksToDetachOnClash` in struct `SnapshotRestoreParameters`
+
+
 ## 5.1.0 (2026-08-31)
 ### Features Added
 

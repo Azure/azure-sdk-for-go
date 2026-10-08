@@ -11,8 +11,8 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-10-01/Common/ExportJobsOperationResult.json
-func ExampleExportJobsOperationResultsClient_Get() {
+// Generated from example definition: 2026-10-01/Common/RefreshContainers_OperationStatus.json
+func ExampleProtectionContainerRefreshOperationStatusesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -22,22 +22,20 @@ func ExampleExportJobsOperationResultsClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewExportJobsOperationResultsClient().Get(ctx, "NetSDKTestRsVault", "SwaggerTestRg", "00000000-0000-0000-0000-000000000000", nil)
+	res, err := clientFactory.NewProtectionContainerRefreshOperationStatusesClient().Get(ctx, "SwaggerTestRg", "NetSDKTestRsVault", "Azure", "00000000-0000-0000-0000-000000000000", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armrecoveryservicesbackup.ExportJobsOperationResultsClientGetResponse{
-	// 	OperationResultInfoBaseResource: armrecoveryservicesbackup.OperationResultInfoBaseResource{
-	// 		Headers: map[string][]*string{
-	// 		},
-	// 		Operation: &armrecoveryservicesbackup.ExportJobsOperationResultInfo{
-	// 			BlobSasKey: to.Ptr("?sv=2014-02-14&sr=b&sig=<sas_signature>&st=2017-11-29T07%3A53%3A34Z&se=2017-11-29T08%3A03%3A34Z&sp=r"),
-	// 			BlobURL: to.Ptr("https://azureblob.blob.core.windows.net/reportcontainer/exportjobsreportc00000000-0000-0000-0000-000000000000"),
-	// 			ObjectType: to.Ptr("ExportJobsOperationResultInfo"),
-	// 		},
+	// res = armrecoveryservicesbackup.ProtectionContainerRefreshOperationStatusesClientGetResponse{
+	// 	OperationStatus: armrecoveryservicesbackup.OperationStatus{
+	// 		Name: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 		EndTime: to.Ptr(time.Date(2026, time.September, 14, 9, 17, 45, 331057200, time.UTC)),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/SwaggerTestRg/providers/Microsoft.RecoveryServices/vaults/NetSDKTestRsVault/backupFabrics/Azure/operationsStatus/00000000-0000-0000-0000-000000000000"),
+	// 		StartTime: to.Ptr(time.Date(2026, time.September, 14, 9, 17, 13, 76081900, time.UTC)),
+	// 		Status: to.Ptr(armrecoveryservicesbackup.OperationStatusValuesSucceeded),
 	// 	},
 	// }
 }

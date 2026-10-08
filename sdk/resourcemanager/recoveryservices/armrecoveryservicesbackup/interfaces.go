@@ -52,7 +52,7 @@ type AzureVMWorkloadProtectableItemClassification interface {
 // Call the interface's GetAzureVMWorkloadProtectedItem() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
 // - *AzureVMWorkloadProtectedItem, *AzureVMWorkloadSAPAseDatabaseProtectedItem, *AzureVMWorkloadSAPHanaDBInstanceProtectedItem,
-// - *AzureVMWorkloadSAPHanaDatabaseProtectedItem, *AzureVMWorkloadSQLDatabaseProtectedItem
+// - *AzureVMWorkloadSAPHanaDatabaseProtectedItem, *AzureVMWorkloadSQLDatabaseProtectedItem, *AzureVMWorkloadSQLInstanceProtectedItem
 type AzureVMWorkloadProtectedItemClassification interface {
 	ProtectedItemClassification
 	// GetAzureVMWorkloadProtectedItem returns the AzureVMWorkloadProtectedItem content of the underlying type.
@@ -304,8 +304,8 @@ type ProtectableContainerClassification interface {
 // Use a type switch to determine the concrete type.  The possible types are:
 // - *AzureFileshareProtectedItem, *AzureIaaSClassicComputeVMProtectedItem, *AzureIaaSComputeVMProtectedItem, *AzureIaaSVMProtectedItem,
 // - *AzureSQLProtectedItem, *AzureVMWorkloadProtectedItem, *AzureVMWorkloadSAPAseDatabaseProtectedItem, *AzureVMWorkloadSAPHanaDBInstanceProtectedItem,
-// - *AzureVMWorkloadSAPHanaDatabaseProtectedItem, *AzureVMWorkloadSQLDatabaseProtectedItem, *DPMProtectedItem, *GenericProtectedItem,
-// - *MabFileFolderProtectedItem, *ProtectedItem
+// - *AzureVMWorkloadSAPHanaDatabaseProtectedItem, *AzureVMWorkloadSQLDatabaseProtectedItem, *AzureVMWorkloadSQLInstanceProtectedItem,
+// - *DPMProtectedItem, *GenericProtectedItem, *MabFileFolderProtectedItem, *ProtectedItem
 type ProtectedItemClassification interface {
 	// GetProtectedItem returns the ProtectedItem content of the underlying type.
 	GetProtectedItem() *ProtectedItem
@@ -397,7 +397,7 @@ type TieringCostInfoClassification interface {
 // ValidateOperationRequestClassification provides polymorphic access to related types.
 // Call the interface's GetValidateOperationRequest() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
-// - *ValidateIaasVMRestoreOperationRequest, *ValidateOperationRequest, *ValidateRestoreOperationRequest
+// - *ValidateAzureWorkloadRestoreOperationRequest, *ValidateIaasVMRestoreOperationRequest, *ValidateOperationRequest, *ValidateRestoreOperationRequest
 type ValidateOperationRequestClassification interface {
 	// GetValidateOperationRequest returns the ValidateOperationRequest content of the underlying type.
 	GetValidateOperationRequest() *ValidateOperationRequest

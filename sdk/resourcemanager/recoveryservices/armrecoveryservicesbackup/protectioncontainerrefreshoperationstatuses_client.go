@@ -16,20 +16,21 @@ import (
 	"strings"
 )
 
-// TieringCostOperationStatusClient contains the methods for the TieringCostOperationStatus group.
-// Don't use this type directly, use NewTieringCostOperationStatusClient() instead.
+// ProtectionContainerRefreshOperationStatusesClient contains the methods for the ProtectionContainerRefreshOperationStatuses
+// group.
+// Don't use this type directly, use NewProtectionContainerRefreshOperationStatusesClient() instead.
 //
 // Generated from API version 2026-10-01
-type TieringCostOperationStatusClient struct {
+type ProtectionContainerRefreshOperationStatusesClient struct {
 	internal       *arm.Client
 	subscriptionID string
 }
 
-// NewTieringCostOperationStatusClient creates a new instance of TieringCostOperationStatusClient with the specified values.
+// NewProtectionContainerRefreshOperationStatusesClient creates a new instance of ProtectionContainerRefreshOperationStatusesClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
-func NewTieringCostOperationStatusClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*TieringCostOperationStatusClient, error) {
+func NewProtectionContainerRefreshOperationStatusesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ProtectionContainerRefreshOperationStatusesClient, error) {
 	if subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
@@ -37,39 +38,44 @@ func NewTieringCostOperationStatusClient(subscriptionID string, credential azcor
 	if err != nil {
 		return nil, err
 	}
-	client := &TieringCostOperationStatusClient{
+	client := &ProtectionContainerRefreshOperationStatusesClient{
 		subscriptionID: subscriptionID,
 		internal:       cl,
 	}
 	return client, nil
 }
 
-// Get - Gets the status of async operations of tiering cost
+// Get - Fetches the status of the fabric level asynchronous operation identified by the given operation id. The status
+// can be in progress, completed or failed. You can refer to the OperationStatus enum for all the possible states of
+// an operation. This is the endpoint reported in the Azure-AsyncOperation header of the fabric level operations
+// that start one, such as RefreshContainers and GetRPExtendedInfo.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - vaultName - The name of the recovery services vault.
-//   - options - TieringCostOperationStatusClientGetOptions contains the optional parameters for the TieringCostOperationStatusClient.Get
+//   - fabricName - Fabric name associated with the operation.
+//   - operationID - OperationID which represents the operation whose status needs to be fetched.
+//   - options - ProtectionContainerRefreshOperationStatusesClientGetOptions contains the optional parameters for the ProtectionContainerRefreshOperationStatusesClient.Get
 //     method.
-func (client *TieringCostOperationStatusClient) Get(ctx context.Context, resourceGroupName string, vaultName string, operationID string, options *TieringCostOperationStatusClientGetOptions) (TieringCostOperationStatusClientGetResponse, error) {
+func (client *ProtectionContainerRefreshOperationStatusesClient) Get(ctx context.Context, resourceGroupName string, vaultName string, fabricName string, operationID string, options *ProtectionContainerRefreshOperationStatusesClientGetOptions) (ProtectionContainerRefreshOperationStatusesClientGetResponse, error) {
 	var err error
-	const operationName = "TieringCostOperationStatusClient.Get"
+	const operationName = "ProtectionContainerRefreshOperationStatusesClient.Get"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.getCreateRequest(ctx, resourceGroupName, vaultName, operationID, options)
+	req, err := client.getCreateRequest(ctx, resourceGroupName, vaultName, fabricName, operationID, options)
 	if err != nil {
-		return TieringCostOperationStatusClientGetResponse{}, err
+		return ProtectionContainerRefreshOperationStatusesClientGetResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return TieringCostOperationStatusClientGetResponse{}, err
+		return ProtectionContainerRefreshOperationStatusesClientGetResponse{}, err
 	}
 	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
-func (client *TieringCostOperationStatusClient) getCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, operationID string, _ *TieringCostOperationStatusClientGetOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupTieringCost/default/operationsStatus/{operationId}"
+func (client *ProtectionContainerRefreshOperationStatusesClient) getCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, fabricName string, operationID string, _ *ProtectionContainerRefreshOperationStatusesClientGetOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupFabrics/{fabricName}/operationsStatus/{operationId}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
@@ -82,6 +88,10 @@ func (client *TieringCostOperationStatusClient) getCreateRequest(ctx context.Con
 		return nil, errors.New("parameter vaultName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{vaultName}", url.PathEscape(vaultName))
+	if fabricName == "" {
+		return nil, errors.New("parameter fabricName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{fabricName}", url.PathEscape(fabricName))
 	if operationID == "" {
 		return nil, errors.New("parameter operationID cannot be empty")
 	}
@@ -98,13 +108,13 @@ func (client *TieringCostOperationStatusClient) getCreateRequest(ctx context.Con
 }
 
 // getHandleResponse handles the Get response.
-func (client *TieringCostOperationStatusClient) getHandleResponse(resp *http.Response, successCodes ...int) (TieringCostOperationStatusClientGetResponse, error) {
-	result := TieringCostOperationStatusClientGetResponse{}
+func (client *ProtectionContainerRefreshOperationStatusesClient) getHandleResponse(resp *http.Response, successCodes ...int) (ProtectionContainerRefreshOperationStatusesClientGetResponse, error) {
+	result := ProtectionContainerRefreshOperationStatusesClientGetResponse{}
 	if !runtime.HasStatusCode(resp, successCodes...) {
 		return result, runtime.NewResponseError(resp)
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OperationStatus); err != nil {
-		return TieringCostOperationStatusClientGetResponse{}, err
+		return ProtectionContainerRefreshOperationStatusesClientGetResponse{}, err
 	}
 	return result, nil
 }

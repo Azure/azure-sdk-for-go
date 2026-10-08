@@ -1,5 +1,16 @@
 # Breaking Changes
 
+## v1.14.2-beta.1
+
+### Service Fabric transport requirements
+
+`ManagedIdentityCredential` now requires a transport that supports the Service Fabric endpoint's
+certificate pinning. Applications with a custom `ClientOptions.Transport` must provide an
+`*http.Client` whose Transport is `nil` or a standard `*http.Transport` without custom TLS dialing
+or verification callbacks. Unsupported transports cause credential construction to fail.
+Leave `ClientOptions.Transport` `nil` to use the default transport. The credential derives the
+pinned client without modifying a caller-supplied client and rejects redirects.
+
 ## v1.8.0
 
 ### New errors from `NewManagedIdentityCredential` in some environments

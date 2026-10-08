@@ -49,11 +49,11 @@
 # ServiceOwners:                                                   @MehaKaushik @Pilchie @Wmengmsft
 
 # PRLabel: %EngSys
-/sdk/template/                                                     @benbp @mikeharder
+/sdk/template/                                                     @Azure/azure-sdk-eng
 
-# AzureSdkOwners:                                                  @benbp
+# AzureSdkOwners:                                                  @Azure/azure-sdk-eng
 # ServiceLabel: %EngSys
-# ServiceOwners:                                                   @benbp @mikeharder
+# ServiceOwners:                                                   @Azure/azure-sdk-eng
 
 # PRLabel: %Event Grid
 /sdk/messaging/eventgrid/                                          @rajeshka @shankarsama
@@ -656,10 +656,10 @@
 ###########
 # Eng Sys
 ###########
-/eng/                              @benbp @mikeharder
+/eng/                              @Azure/azure-sdk-eng
 /eng/common/                       @Azure/azure-sdk-eng
 /eng/config.json                   @richardpark-msft @jhendrixMSFT @rickwinter @xirzec
-/.config/1espt/                    @benbp @mikeharder
+/.config/1espt/                    @Azure/azure-sdk-eng
 /.github/workflows/                @Azure/azure-sdk-eng
 /.github/CODEOWNERS                @rickwinter @xirzec @sandeep-sen @Azure/azure-sdk-eng
 /.github/copilot-instructions.md   @richardpark-msft @praveenkuttappan @maririos

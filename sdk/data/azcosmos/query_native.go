@@ -19,23 +19,47 @@ import (
 )
 
 func (c *Client) openQuery(ctx context.Context, req *queryRequest) (queryCursor, Response, error) {
+	driver, container, setup, err := c.resolveFeedScope(ctx, req.databaseID, req.containerID,
+		req.partitionKey, req.fullContainer, req.options.Operation)
+	if err != nil {
+		return nil, setup, err
+	}
+	defer C.cosmos_container_ref_free(container)
+	request, release, status := buildNativeQueryRequest(req, req.options.Operation, container)
+	defer release()
+	if status != 0 {
+		return nil, setup, statusError(status, nil, "building query")
+	}
+	cursor, err := c.driver.openCursor(ctx, driver, request)
+	if err != nil {
+		return nil, setup, err
+	}
+	return cursor, setup, nil
+}
+
+func (c *Client) resolveFeedScope(ctx context.Context, databaseID, containerID string, partitionKey PartitionKey,
+	fullContainer bool, options OperationOptions) (*C.cosmos_driver_t, *C.cosmos_container_ref_t, Response, error) {
 	d := c.driver
 	driver, err := d.ensureDriver(ctx)
 	if err != nil {
-		return nil, Response{}, err
+		return nil, nil, Response{}, err
 	}
 	// Resolve through the native cache each page: Go's lifetime-cached handle can retain a
 	// deleted container's RID and invalidate tokens issued for its replacement.
-	container, err := d.submitResolveContainer(ctx, driver, req.databaseID, req.containerID)
+	container, err := d.submitResolveContainer(ctx, driver, databaseID, containerID)
 	if err != nil {
-		return nil, Response{}, err
+		return nil, nil, Response{}, err
 	}
-	defer C.cosmos_container_ref_free(container)
-	options := req.options.Operation
+	keepContainer := false
+	defer func() {
+		if !keepContainer {
+			C.cosmos_container_ref_free(container)
+		}
+	}()
 	var setup Response
-	if !req.fullContainer {
+	if !fullContainer {
 		options.EndToEndTimeout = endToEndTimeout(ctx, 0)
-		metadata, err := d.awaitCompletion(ctx, "reading query scope metadata",
+		metadata, err := d.awaitCompletion(ctx, "reading feed scope metadata",
 			func(queue *C.cosmos_completion_queue_t, cookie C.intptr_t, preError *C.cosmos_status_code_t) *C.cosmos_operation_handle_t {
 				request := newOperationRequest(operationKind(C.COSMOS_OPERATION_KIND_READ_CONTAINER), container)
 				nativeOptions, freeOptions := options.toNative()
@@ -44,29 +68,18 @@ func (c *Client) openQuery(ctx context.Context, req *queryRequest) (queryCursor,
 				return C.cosmos_submit_singleton_operation(driver, &request, queue, cookie, preError) //nolint:gocritic // dupSubExpr targets cgo-generated code.
 			})
 		if err != nil {
-			return nil, Response{}, err
+			return nil, nil, Response{}, err
 		}
 		if metadata.err != nil {
-			return nil, Response{}, metadata.err
+			return nil, nil, Response{}, metadata.err
 		}
 		setup = metadata.response.Response
-		if err := validateQueryPartitionKey(metadata.body, req.partitionKey); err != nil {
-			return nil, setup, err
+		if err := validateFeedPartitionKey(metadata.body, partitionKey); err != nil {
+			return nil, nil, setup, err
 		}
 	}
-	// Retained options apply afresh to every native page; do not retain the first
-	// caller's remaining context deadline as the budget for all future pages.
-	options.EndToEndTimeout = req.options.Operation.EndToEndTimeout
-	request, release, status := buildNativeQueryRequest(req, options, container)
-	defer release()
-	if status != 0 {
-		return nil, setup, statusError(status, nil, "building query")
-	}
-	cursor, err := d.openCursor(ctx, driver, request)
-	if err != nil {
-		return nil, setup, err
-	}
-	return cursor, setup, nil
+	keepContainer = true
+	return driver, container, setup, nil
 }
 
 func (result completionResult) queryPage(setup Response) (QueryItemsResponse, error) {
@@ -80,18 +93,44 @@ func (result completionResult) queryPage(setup Response) (QueryItemsResponse, er
 }
 
 func buildNativeQueryRequest(req *queryRequest, options OperationOptions, container *C.cosmos_container_ref_t) (C.cosmos_operation_request_t, func(), C.cosmos_status_code_t) {
-	request := newOperationRequest(operationKind(C.COSMOS_OPERATION_KIND_QUERY_ITEMS), container)
+	request, freeFeed, status := buildNativeFeedRequest(req.partitionKey, req.fullContainer,
+		req.options.Feed, req.options.SessionToken, options, container)
+	if status != 0 {
+		return request, freeFeed, status
+	}
+	request.kind = C.COSMOS_OPERATION_KIND_QUERY_ITEMS
+	body := C.CBytes(req.body)
+	request.body = (*C.uint8_t)(body)
+	request.body_len = C.uintptr_t(len(req.body))
+	release := func() {
+		C.free(body)
+		freeFeed()
+	}
+	switch req.options.QueryPlanMode {
+	case QueryPlanModeGatewayOnly:
+		request.options.query_plan_mode = C.COSMOS_QUERY_PLAN_MODE_GATEWAY_ONLY
+	case QueryPlanModeLocalPreferred:
+		request.options.query_plan_mode = C.COSMOS_QUERY_PLAN_MODE_LOCAL_PREFERRED
+	}
+	request.populate_index_metrics = nativeOptionalBool(req.options.PopulateIndexMetrics)
+	request.populate_query_metrics = nativeOptionalBool(req.options.PopulateQueryMetrics)
+	return request, release, 0
+}
+
+func buildNativeFeedRequest(partitionKey PartitionKey, fullContainer bool, feed FeedOptions, sessionToken SessionToken,
+	options OperationOptions, container *C.cosmos_container_ref_t) (C.cosmos_operation_request_t, func(), C.cosmos_status_code_t) {
+	request := newOperationRequest(0, container)
 	var releases []func()
 	release := func() {
 		for i := len(releases) - 1; i >= 0; i-- {
 			releases[i]()
 		}
 	}
-	if !req.fullContainer {
-		components, freeComponents := req.partitionKey.toNative()
+	if !fullContainer {
+		components, freeComponents := partitionKey.toNative()
 		releases = append(releases, freeComponents)
 		var pk *C.cosmos_partition_key_t
-		if status := C.cosmos_partition_key_create(components, req.partitionKey.partitionKeyLen(), &pk); status != 0 { //nolint:gocritic // dupSubExpr targets cgo-generated code.
+		if status := C.cosmos_partition_key_create(components, partitionKey.partitionKeyLen(), &pk); status != 0 { //nolint:gocritic // dupSubExpr targets cgo-generated code.
 			return request, release, status
 		}
 		releases = append(releases, func() { C.cosmos_partition_key_free(pk) })
@@ -103,34 +142,22 @@ func buildNativeQueryRequest(req *queryRequest, options OperationOptions, contai
 		request.feed_range = feedRange
 	}
 
-	body := C.CBytes(req.body)
-	releases = append(releases, func() { C.free(body) })
-	request.body = (*C.uint8_t)(body)
-	request.body_len = C.uintptr_t(len(req.body))
-	if token := req.options.Feed.ContinuationToken; token != "" {
+	if token := feed.ContinuationToken; token != "" {
 		value, allocation := toNativeString(token)
 		releases = append(releases, func() { C.free(allocation) })
 		request.continuation_token = value
 	}
-	if token := req.options.SessionToken; token != "" {
+	if token := sessionToken; token != "" {
 		value, allocation := toNativeString(string(token))
 		releases = append(releases, func() { C.free(allocation) })
 		request.session_token = value
 	}
-	if req.options.Feed.PageSizeHint > 0 {
-		request.max_item_count = C.int32_t(req.options.Feed.PageSizeHint)
+	if feed.PageSizeHint > 0 {
+		request.max_item_count = C.int32_t(feed.PageSizeHint)
 	}
 	nativeOptions, freeOptions := options.toNative()
 	releases = append(releases, freeOptions)
-	switch req.options.QueryPlanMode {
-	case QueryPlanModeGatewayOnly:
-		nativeOptions.query_plan_mode = C.COSMOS_QUERY_PLAN_MODE_GATEWAY_ONLY
-	case QueryPlanModeLocalPreferred:
-		nativeOptions.query_plan_mode = C.COSMOS_QUERY_PLAN_MODE_LOCAL_PREFERRED
-	}
-	request.max_fan_out = C.uint32_t(req.options.Feed.MaxFanOut)
-	request.populate_index_metrics = nativeOptionalBool(req.options.PopulateIndexMetrics)
-	request.populate_query_metrics = nativeOptionalBool(req.options.PopulateQueryMetrics)
+	request.max_fan_out = C.uint32_t(feed.MaxFanOut)
 	request.options = nativeOptions
 	return request, release, 0
 }

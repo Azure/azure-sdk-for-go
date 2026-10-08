@@ -215,20 +215,29 @@ func decodeQueryPage(body []byte, response Response, sessionToken SessionToken, 
 		}
 		return page, nil
 	}
+	items, err := decodeFeedItems(body)
+	if err != nil {
+		return QueryItemsResponse{}, queryResponseError(response, sessionToken, err)
+	}
+	page.Items = items
+	return page, nil
+}
+
+func decodeFeedItems(body []byte) ([][]byte, error) {
 	var envelope struct {
 		Documents []json.RawMessage `json:"Documents"`
 	}
 	if err := json.Unmarshal(body, &envelope); err != nil {
-		return QueryItemsResponse{}, queryResponseError(response, sessionToken, err)
+		return nil, err
 	}
 	if envelope.Documents == nil {
-		return QueryItemsResponse{}, queryResponseError(response, sessionToken, errors.New("query response has no Documents array"))
+		return nil, errors.New("feed response has no Documents array")
 	}
-	page.Items = make([][]byte, len(envelope.Documents))
+	items := make([][]byte, len(envelope.Documents))
 	for i, item := range envelope.Documents {
-		page.Items[i] = item
+		items[i] = item
 	}
-	return page, nil
+	return items, nil
 }
 
 func queryResponseError(response Response, sessionToken SessionToken, cause error) *Error {
@@ -246,6 +255,10 @@ func queryResponseError(response Response, sessionToken SessionToken, cause erro
 }
 
 func validateQueryPartitionKey(body []byte, partitionKey PartitionKey) error {
+	return validateFeedPartitionKey(body, partitionKey)
+}
+
+func validateFeedPartitionKey(body []byte, partitionKey PartitionKey) error {
 	var metadata struct {
 		PartitionKey struct {
 			Paths   []string `json:"paths"`
@@ -261,22 +274,26 @@ func validateQueryPartitionKey(body []byte, partitionKey PartitionKey) error {
 		return &Error{Code: CodeSerializationFailed, Message: "container has no partition key paths"}
 	}
 	if definition.Kind != "Hash" && definition.Kind != "MultiHash" {
-		return &Error{Code: CodeBadRequest, Message: "query scope requires a Hash or MultiHash partition key definition"}
+		return &Error{Code: CodeBadRequest, Message: "feed scope requires a Hash or MultiHash partition key definition"}
 	}
 	if (definition.Kind == "Hash" && len(definition.Paths) != 1) ||
 		(definition.Kind == "MultiHash" && (definition.Version == nil || *definition.Version != 2)) ||
 		(definition.Version != nil && *definition.Version != 1 && *definition.Version != 2) {
-		return &Error{Code: CodeBadRequest, Message: "unsupported query partition key definition"}
+		return &Error{Code: CodeBadRequest, Message: "unsupported feed partition key definition"}
 	}
 	if partitionKey.Len() == 0 || partitionKey.Len() > len(definition.Paths) {
 		return &Error{Code: CodeBadRequest, Message: fmt.Sprintf(
-			"query scope requires between 1 and %d partition key components; got %d",
+			"feed scope requires between 1 and %d partition key components; got %d",
 			len(definition.Paths), partitionKey.Len())}
 	}
 	return nil
 }
 
 func addQuerySetupCharge(err error, setup Response) error {
+	return addFeedSetupCharge(err, setup, "fetching query page")
+}
+
+func addFeedSetupCharge(err error, setup Response, message string) error {
 	// RequestCharge alone is not a reliable "no setup" sentinel: a successful setup completion can
 	// carry diagnostics/status/attempt metadata even when the charge header is absent or zero.
 	// Only treat the zero Response itself as "nothing to add".
@@ -318,7 +335,7 @@ func addQuerySetupCharge(err error, setup Response) error {
 	// the *Error branch above backfills.
 	return &Error{
 		Code:          code,
-		Message:       "fetching query page",
+		Message:       message,
 		RequestCharge: setup.RequestCharge,
 		ActivityID:    setup.ActivityID,
 		Diagnostics:   setup.Diagnostics,

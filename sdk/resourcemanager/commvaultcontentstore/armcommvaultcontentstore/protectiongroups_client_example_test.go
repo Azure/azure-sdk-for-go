@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-07-03-preview/ProtectionGroups_Backup_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-01-preview/ProtectionGroups_Backup_MaximumSet_Gen.json
 func ExampleProtectionGroupsClient_Backup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -53,7 +53,7 @@ func ExampleProtectionGroupsClient_Backup() {
 	// }
 }
 
-// Generated from example definition: 2026-07-03-preview/ProtectionGroups_CreateOrupdate_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-01-preview/ProtectionGroups_CreateOrupdate_MaximumSet_Gen.json
 func ExampleProtectionGroupsClient_BeginCreateOrupdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -137,7 +137,7 @@ func ExampleProtectionGroupsClient_BeginCreateOrupdate() {
 	// }
 }
 
-// Generated from example definition: 2026-07-03-preview/ProtectionGroups_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-01-preview/ProtectionGroups_Delete_MaximumSet_Gen.json
 func ExampleProtectionGroupsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -158,7 +158,7 @@ func ExampleProtectionGroupsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-07-03-preview/ProtectionGroups_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-01-preview/ProtectionGroups_Get_MaximumSet_Gen.json
 func ExampleProtectionGroupsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -217,7 +217,7 @@ func ExampleProtectionGroupsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-07-03-preview/ProtectionGroups_ListByCloudAccount_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-01-preview/ProtectionGroups_ListByCloudAccount_MaximumSet_Gen.json
 func ExampleProtectionGroupsClient_NewListByCloudAccountPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -286,7 +286,7 @@ func ExampleProtectionGroupsClient_NewListByCloudAccountPager() {
 	}
 }
 
-// Generated from example definition: 2026-07-03-preview/ProtectionGroups_Restore_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-01-preview/ProtectionGroups_Restore_MaximumSet_Gen.json
 func ExampleProtectionGroupsClient_Restore() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -340,7 +340,7 @@ func ExampleProtectionGroupsClient_Restore() {
 	// }
 }
 
-// Generated from example definition: 2026-07-03-preview/ProtectionGroups_ResumeBackup_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-01-preview/ProtectionGroups_ResumeBackup_MaximumSet_Gen.json
 func ExampleProtectionGroupsClient_ResumeBackup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -357,7 +357,7 @@ func ExampleProtectionGroupsClient_ResumeBackup() {
 	}
 }
 
-// Generated from example definition: 2026-07-03-preview/ProtectionGroups_StopBackup_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-01-preview/ProtectionGroups_StopBackup_MaximumSet_Gen.json
 func ExampleProtectionGroupsClient_BeginStopBackup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

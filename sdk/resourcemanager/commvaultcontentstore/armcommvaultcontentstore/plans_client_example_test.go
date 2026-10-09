@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-07-03-preview/Plans_CreateOrupdate_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-01-preview/Plans_CreateOrupdate_MaximumSet_Gen.json
 func ExamplePlansClient_BeginCreateOrupdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -385,7 +385,7 @@ func ExamplePlansClient_BeginCreateOrupdate() {
 	// }
 }
 
-// Generated from example definition: 2026-07-03-preview/Plans_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-01-preview/Plans_Delete_MaximumSet_Gen.json
 func ExamplePlansClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -406,7 +406,7 @@ func ExamplePlansClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-07-03-preview/Plans_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-01-preview/Plans_Get_MaximumSet_Gen.json
 func ExamplePlansClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -608,7 +608,7 @@ func ExamplePlansClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-07-03-preview/Plans_ListByCloudAccount_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-01-preview/Plans_ListByCloudAccount_MaximumSet_Gen.json
 func ExamplePlansClient_NewListByCloudAccountPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

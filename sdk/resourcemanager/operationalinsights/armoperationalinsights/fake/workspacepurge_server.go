@@ -27,19 +27,27 @@ type WorkspacePurgeServer struct {
 	// Purge is the fake for method WorkspacePurgeClient.Purge
 	// HTTP status codes to indicate success: http.StatusAccepted
 	Purge func(ctx context.Context, resourceGroupName string, workspaceName string, body armoperationalinsights.WorkspacePurgeBody, options *armoperationalinsights.WorkspacePurgeClientPurgeOptions) (resp azfake.Responder[armoperationalinsights.WorkspacePurgeClientPurgeResponse], errResp azfake.ErrorResponder)
+
+	// BeginPurgeLakeData is the fake for method WorkspacePurgeClient.BeginPurgeLakeData
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	BeginPurgeLakeData func(ctx context.Context, resourceGroupName string, workspaceName string, body armoperationalinsights.WorkspacePurgeLakeDataBody, options *armoperationalinsights.WorkspacePurgeClientBeginPurgeLakeDataOptions) (resp azfake.PollerResponder[armoperationalinsights.WorkspacePurgeClientPurgeLakeDataResponse], errResp azfake.ErrorResponder)
 }
 
 // NewWorkspacePurgeServerTransport creates a new instance of WorkspacePurgeServerTransport with the provided implementation.
 // The returned WorkspacePurgeServerTransport instance is connected to an instance of armoperationalinsights.WorkspacePurgeClient via the
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewWorkspacePurgeServerTransport(srv *WorkspacePurgeServer) *WorkspacePurgeServerTransport {
-	return &WorkspacePurgeServerTransport{srv: srv}
+	return &WorkspacePurgeServerTransport{
+		srv:                srv,
+		beginPurgeLakeData: newTracker[azfake.PollerResponder[armoperationalinsights.WorkspacePurgeClientPurgeLakeDataResponse]](),
+	}
 }
 
 // WorkspacePurgeServerTransport connects instances of armoperationalinsights.WorkspacePurgeClient to instances of WorkspacePurgeServer.
 // Don't use this type directly, use NewWorkspacePurgeServerTransport instead.
 type WorkspacePurgeServerTransport struct {
-	srv *WorkspacePurgeServer
+	srv                *WorkspacePurgeServer
+	beginPurgeLakeData *tracker[azfake.PollerResponder[armoperationalinsights.WorkspacePurgeClientPurgeLakeDataResponse]]
 }
 
 // Do implements the policy.Transporter interface for WorkspacePurgeServerTransport.
@@ -67,6 +75,8 @@ func (w *WorkspacePurgeServerTransport) dispatchToMethodFake(req *http.Request, 
 				res.resp, res.err = w.dispatchGetPurgeStatus(req)
 			case "WorkspacePurgeClient.Purge":
 				res.resp, res.err = w.dispatchPurge(req)
+			case "WorkspacePurgeClient.BeginPurgeLakeData":
+				res.resp, res.err = w.dispatchBeginPurgeLakeData(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -157,6 +167,54 @@ func (w *WorkspacePurgeServerTransport) dispatchPurge(req *http.Request) (*http.
 	if val := server.GetResponse(respr).XMSStatusLocation; val != nil {
 		resp.Header.Set("X-Ms-Status-Location", *val)
 	}
+	return resp, nil
+}
+
+func (w *WorkspacePurgeServerTransport) dispatchBeginPurgeLakeData(req *http.Request) (*http.Response, error) {
+	if w.srv.BeginPurgeLakeData == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginPurgeLakeData not implemented")}
+	}
+	beginPurgeLakeData := w.beginPurgeLakeData.get(req)
+	if beginPurgeLakeData == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.OperationalInsights/workspaces/(?P<workspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/purgeLakeData`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armoperationalinsights.WorkspacePurgeLakeDataBody](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		workspaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("workspaceName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := w.srv.BeginPurgeLakeData(req.Context(), resourceGroupNameParam, workspaceNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginPurgeLakeData = &respr
+		w.beginPurgeLakeData.add(req, beginPurgeLakeData)
+	}
+
+	resp, err := server.PollerResponderNext(beginPurgeLakeData, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		w.beginPurgeLakeData.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginPurgeLakeData) {
+		w.beginPurgeLakeData.remove(req)
+	}
+
 	return resp, nil
 }
 

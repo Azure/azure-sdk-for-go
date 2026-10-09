@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-07-01/LinkedServicesCreate.json
+// Generated from example definition: 2026-03-01/LinkedServicesCreate.json
 func ExampleLinkedServicesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -51,7 +51,7 @@ func ExampleLinkedServicesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/LinkedServicesDelete.json
+// Generated from example definition: 2026-03-01/LinkedServicesDelete.json
 func ExampleLinkedServicesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -86,7 +86,7 @@ func ExampleLinkedServicesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/LinkedServicesGet.json
+// Generated from example definition: 2026-03-01/LinkedServicesGet.json
 func ExampleLinkedServicesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -117,7 +117,7 @@ func ExampleLinkedServicesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/LinkedServicesListByWorkspace.json
+// Generated from example definition: 2026-03-01/LinkedServicesListByWorkspace.json
 func ExampleLinkedServicesClient_NewListByWorkspacePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

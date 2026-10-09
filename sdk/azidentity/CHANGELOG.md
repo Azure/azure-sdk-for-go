@@ -4,6 +4,9 @@
 
 ### Features Added
 
+- `ManagedIdentityCredential` and `DefaultAzureCredential` support user-assigned managed identities
+  on Azure Arc when the agent supports them
+
 ### Breaking Changes
 
 ### Bugs Fixed

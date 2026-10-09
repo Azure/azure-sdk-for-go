@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-09-01/SubscriptionQuotaAllocation/SubscriptionQuotaAllocation_List-Compute.json
+// Generated from example definition: 2026-09-01-preview/SubscriptionQuotaAllocation/SubscriptionQuotaAllocation_List-Compute.json
 func ExampleGroupQuotaSubscriptionAllocationClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -30,7 +30,7 @@ func ExampleGroupQuotaSubscriptionAllocationClient_List() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armquota.GroupQuotaSubscriptionAllocationClientListResponse{
-	// 	SubscriptionQuotaAllocationsList: &armquota.SubscriptionQuotaAllocationsList{
+	// 	SubscriptionQuotaAllocationsList: armquota.SubscriptionQuotaAllocationsList{
 	// 		Name: to.Ptr("westus"),
 	// 		Type: to.Ptr("Microsoft.Quota/groupQuotas/quotaAllocations"),
 	// 		ID: to.Ptr("/providers/Microsoft.Management/managementGroups/E7EC67B3-7657-4966-BFFC-41EFD36BAA09/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Quota/groupQuotas/groupquota1/resourceProviders/Microsoft.Compute/quotaAllocations/westus"),

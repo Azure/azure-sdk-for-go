@@ -48,6 +48,22 @@ func (c *ClientFactory) NewAdvancedPlatformMetricsClient() *AdvancedPlatformMetr
 	}
 }
 
+// NewBlobAccessPointConfigurationsClient creates a new instance of BlobAccessPointConfigurationsClient.
+func (c *ClientFactory) NewBlobAccessPointConfigurationsClient() *BlobAccessPointConfigurationsClient {
+	return &BlobAccessPointConfigurationsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewBlobAccessPointConnectionTestsClient creates a new instance of BlobAccessPointConnectionTestsClient.
+func (c *ClientFactory) NewBlobAccessPointConnectionTestsClient() *BlobAccessPointConnectionTestsClient {
+	return &BlobAccessPointConnectionTestsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewBlobContainersClient creates a new instance of BlobContainersClient.
 func (c *ClientFactory) NewBlobContainersClient() *BlobContainersClient {
 	return &BlobContainersClient{

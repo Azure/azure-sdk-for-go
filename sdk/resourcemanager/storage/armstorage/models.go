@@ -351,6 +351,9 @@ type AccountProperties struct {
 	// This property is readOnly and is set by server during asynchronous storage account sku conversion operations.
 	StorageAccountSKUConversionStatus *AccountSKUConversionStatus
 
+	// Configures Turbo Tier for the storage account.
+	TurboTier *TurboTier
+
 	// READ-ONLY; Required for storage accounts where kind = BlobStorage. The access tier is used for billing. The 'Premium' access
 	// tier is the default value for premium block blobs storage account type and it cannot be changed for the premium block blobs
 	// storage account type.
@@ -528,6 +531,9 @@ type AccountPropertiesCreateParameters struct {
 
 	// SasPolicy assigned to the storage account.
 	SasPolicy *SasPolicy
+
+	// Configures Turbo Tier for the storage account.
+	TurboTier *TurboTier
 }
 
 // AccountPropertiesUpdateParameters - The parameters used when updating a storage account.
@@ -626,6 +632,9 @@ type AccountPropertiesUpdateParameters struct {
 
 	// SasPolicy assigned to the storage account.
 	SasPolicy *SasPolicy
+
+	// Configures Turbo Tier for the storage account.
+	TurboTier *TurboTier
 }
 
 // AccountRegenerateKeyParameters - The parameters used to regenerate the storage account key.
@@ -838,6 +847,10 @@ type AdvancedPlatformMetricsRuleProperties struct {
 	// REQUIRED; Configuration for the advanced platform metrics rule.
 	RuleConfig *AdvancedPlatformMetricsRuleConfig
 
+	// The metrics requested by the caller. If omitted in a create or update request, the service enables all metrics supported
+	// by the selected rule type.
+	MetricsToEmit []*MetricsEmitted
+
 	// READ-ONLY; Gets the last modification date and time of the advanced platform metrics rule in UTC.
 	LastModifiedTime *time.Time
 
@@ -873,6 +886,628 @@ type AzureFilesIdentityBasedAuthentication struct {
 
 	// Required for Managed Identities access using OAuth over SMB.
 	SmbOAuthSettings *SmbOAuthSettings
+}
+
+// BlobAccessPointAccessKeyAuthProperties - S3 access-key authentication properties.
+type BlobAccessPointAccessKeyAuthProperties struct {
+	// REQUIRED; The access key ID.
+	AccessKeyID *string
+
+	// CONSTANT; Field has constant value BlobAccessPointRemoteAuthTypeAccessKey, any specified value is ignored.
+	AuthType *BlobAccessPointRemoteAuthType
+
+	// REQUIRED; The secret access key. This value is never returned by read or list operations.
+	SecretAccessKey *string
+
+	// The host used when computing request signatures. The endpoint host is used by default.
+	HostOverride *string
+
+	// The region used by the request-signing algorithm. Defaults to 'us-east-1' when not specified.
+	SigningRegion *string
+}
+
+// GetBlobAccessPointRemoteAuthProperties implements the BlobAccessPointRemoteAuthPropertiesClassification interface for type
+// BlobAccessPointAccessKeyAuthProperties.
+func (b *BlobAccessPointAccessKeyAuthProperties) GetBlobAccessPointRemoteAuthProperties() *BlobAccessPointRemoteAuthProperties {
+	return &BlobAccessPointRemoteAuthProperties{
+		AuthType: b.AuthType,
+	}
+}
+
+// BlobAccessPointAccessKeyAuthPropertiesUpdate - S3 access-key authentication properties.
+type BlobAccessPointAccessKeyAuthPropertiesUpdate struct {
+	// CONSTANT; Field has constant value BlobAccessPointRemoteAuthTypeAccessKey, any specified value is ignored.
+	AuthType *BlobAccessPointRemoteAuthType
+
+	// The access key ID.
+	AccessKeyID *string
+
+	// The host used when computing request signatures. The endpoint host is used by default.
+	HostOverride *string
+
+	// The secret access key. This value is never returned by read or list operations.
+	SecretAccessKey *string
+
+	// The region used by the request-signing algorithm. Defaults to 'us-east-1' when not specified.
+	SigningRegion *string
+}
+
+// GetBlobAccessPointRemoteAuthPropertiesUpdate implements the BlobAccessPointRemoteAuthPropertiesUpdateClassification interface
+// for type BlobAccessPointAccessKeyAuthPropertiesUpdate.
+func (b *BlobAccessPointAccessKeyAuthPropertiesUpdate) GetBlobAccessPointRemoteAuthPropertiesUpdate() *BlobAccessPointRemoteAuthPropertiesUpdate {
+	return &BlobAccessPointRemoteAuthPropertiesUpdate{
+		AuthType: b.AuthType,
+	}
+}
+
+// BlobAccessPointAzureNetAppFilesSourceProperties - An Azure NetApp Files backing source.
+type BlobAccessPointAzureNetAppFilesSourceProperties struct {
+	// REQUIRED; Details for authenticating to the backing data source.
+	Auth BlobAccessPointRemoteAuthPropertiesClassification
+
+	// REQUIRED; Details for connecting to the backing data source. The connection target is fixed when the configuration is created;
+	// only the TLS verification behavior can be changed afterwards.
+	Connection BlobAccessPointConnectionPropertiesClassification
+
+	// CONSTANT; Field has constant value BlobAccessPointSourceTypeAzureNetAppFiles, any specified value is ignored.
+	SourceType *BlobAccessPointSourceType
+}
+
+// GetBlobAccessPointSourceProperties implements the BlobAccessPointSourcePropertiesClassification interface for type BlobAccessPointAzureNetAppFilesSourceProperties.
+func (b *BlobAccessPointAzureNetAppFilesSourceProperties) GetBlobAccessPointSourceProperties() *BlobAccessPointSourceProperties {
+	return &BlobAccessPointSourceProperties{
+		SourceType: b.SourceType,
+	}
+}
+
+// BlobAccessPointAzureNetAppFilesSourcePropertiesUpdate - An Azure NetApp Files backing source.
+type BlobAccessPointAzureNetAppFilesSourcePropertiesUpdate struct {
+	// CONSTANT; Field has constant value BlobAccessPointSourceTypeAzureNetAppFiles, any specified value is ignored.
+	SourceType *BlobAccessPointSourceType
+
+	// Details for authenticating to the backing data source.
+	Auth BlobAccessPointRemoteAuthPropertiesUpdateClassification
+
+	// Details for connecting to the backing data source. The connection target is fixed when the configuration is created; only
+	// the TLS verification behavior can be changed afterwards.
+	Connection BlobAccessPointConnectionPropertiesUpdateClassification
+}
+
+// GetBlobAccessPointSourcePropertiesUpdate implements the BlobAccessPointSourcePropertiesUpdateClassification interface for
+// type BlobAccessPointAzureNetAppFilesSourcePropertiesUpdate.
+func (b *BlobAccessPointAzureNetAppFilesSourcePropertiesUpdate) GetBlobAccessPointSourcePropertiesUpdate() *BlobAccessPointSourcePropertiesUpdate {
+	return &BlobAccessPointSourcePropertiesUpdate{
+		SourceType: b.SourceType,
+	}
+}
+
+// BlobAccessPointCommvaultSourceProperties - A Commvault backing source.
+type BlobAccessPointCommvaultSourceProperties struct {
+	// REQUIRED; Details for authenticating to the backing data source.
+	Auth BlobAccessPointRemoteAuthPropertiesClassification
+
+	// REQUIRED; Details for connecting to the backing data source. The connection target is fixed when the configuration is created;
+	// only the TLS verification behavior can be changed afterwards.
+	Connection BlobAccessPointConnectionPropertiesClassification
+
+	// CONSTANT; Field has constant value BlobAccessPointSourceTypeCommvault, any specified value is ignored.
+	SourceType *BlobAccessPointSourceType
+}
+
+// GetBlobAccessPointSourceProperties implements the BlobAccessPointSourcePropertiesClassification interface for type BlobAccessPointCommvaultSourceProperties.
+func (b *BlobAccessPointCommvaultSourceProperties) GetBlobAccessPointSourceProperties() *BlobAccessPointSourceProperties {
+	return &BlobAccessPointSourceProperties{
+		SourceType: b.SourceType,
+	}
+}
+
+// BlobAccessPointCommvaultSourcePropertiesUpdate - A Commvault backing source.
+type BlobAccessPointCommvaultSourcePropertiesUpdate struct {
+	// CONSTANT; Field has constant value BlobAccessPointSourceTypeCommvault, any specified value is ignored.
+	SourceType *BlobAccessPointSourceType
+
+	// Details for authenticating to the backing data source.
+	Auth BlobAccessPointRemoteAuthPropertiesUpdateClassification
+
+	// Details for connecting to the backing data source. The connection target is fixed when the configuration is created; only
+	// the TLS verification behavior can be changed afterwards.
+	Connection BlobAccessPointConnectionPropertiesUpdateClassification
+}
+
+// GetBlobAccessPointSourcePropertiesUpdate implements the BlobAccessPointSourcePropertiesUpdateClassification interface for
+// type BlobAccessPointCommvaultSourcePropertiesUpdate.
+func (b *BlobAccessPointCommvaultSourcePropertiesUpdate) GetBlobAccessPointSourcePropertiesUpdate() *BlobAccessPointSourcePropertiesUpdate {
+	return &BlobAccessPointSourcePropertiesUpdate{
+		SourceType: b.SourceType,
+	}
+}
+
+// BlobAccessPointConfiguration - A BlobAccessPointConfiguration is a tracked Azure resource modeled as a sub-resource of
+// a Storage Account.
+type BlobAccessPointConfiguration struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
+	// REQUIRED; The resource-specific properties for this resource.
+	Properties *BlobAccessPointConfigurationProperties
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// BlobAccessPointConfigurationConnection - Blob Access Point configuration associated with a blob container.
+type BlobAccessPointConfigurationConnection struct {
+	// Name of the Blob Access Point Configuration to connect to.
+	BlobAccessPointConfigurationName *string
+
+	// System-generated unique identifier of the Blob Access Point Configuration to connect to. If not provided on create, the
+	// service looks up and persists the current unique id.
+	BlobAccessPointConfigurationUniqueID *string
+}
+
+// BlobAccessPointConfigurationListResult - The response of a BlobAccessPointConfiguration list operation.
+type BlobAccessPointConfigurationListResult struct {
+	// REQUIRED; The BlobAccessPointConfiguration items on this page
+	Value []*BlobAccessPointConfiguration
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// BlobAccessPointConfigurationProperties - Details of a Blob Access Point configuration.
+type BlobAccessPointConfigurationProperties struct {
+	// REQUIRED; Information about the backing data source.
+	Source BlobAccessPointSourcePropertiesClassification
+
+	// An arbitrary description of the Blob Access Point configuration.
+	Description *string
+
+	// The configuration state. A configuration is created in the Active state when this value is not specified.
+	State *BlobAccessPointConfigurationState
+
+	// READ-ONLY; The normalized and redacted error from the most recent failed connection test.
+	LastConnectionTestErrorMessage *string
+
+	// READ-ONLY; The status of the most recent connection test.
+	LastConnectionTestStatus *BlobAccessPointConnectionTestStatus
+
+	// READ-ONLY; The timestamp of the most recent connection test.
+	LastConnectionTestTimestamp *time.Time
+
+	// READ-ONLY; The status of the last operation.
+	ProvisioningState *ResourceProvisioningState
+
+	// READ-ONLY; The system-generated unique identifier of the configuration.
+	UniqueID *string
+}
+
+// BlobAccessPointConfigurationPropertiesUpdate - Details of a Blob Access Point configuration.
+type BlobAccessPointConfigurationPropertiesUpdate struct {
+	// An arbitrary description of the Blob Access Point configuration.
+	Description *string
+
+	// Information about the backing data source.
+	Source BlobAccessPointSourcePropertiesUpdateClassification
+
+	// The configuration state. A configuration is created in the Active state when this value is not specified.
+	State *BlobAccessPointConfigurationState
+}
+
+// BlobAccessPointConfigurationUpdate - A BlobAccessPointConfiguration is a tracked Azure resource modeled as a sub-resource
+// of a Storage Account.
+type BlobAccessPointConfigurationUpdate struct {
+	// The resource-specific properties for this resource.
+	Properties *BlobAccessPointConfigurationPropertiesUpdate
+
+	// Resource tags.
+	Tags map[string]*string
+}
+
+// BlobAccessPointConnectionProperties - Details for connecting to a backing data source.
+type BlobAccessPointConnectionProperties struct {
+	// REQUIRED; The connection type. This value determines the remaining shape of the connection object.
+	ConnectionType *BlobAccessPointConnectionType
+}
+
+// GetBlobAccessPointConnectionProperties implements the BlobAccessPointConnectionPropertiesClassification interface for type
+// BlobAccessPointConnectionProperties.
+func (b *BlobAccessPointConnectionProperties) GetBlobAccessPointConnectionProperties() *BlobAccessPointConnectionProperties {
+	return b
+}
+
+// BlobAccessPointConnectionPropertiesUpdate - Details for connecting to a backing data source.
+type BlobAccessPointConnectionPropertiesUpdate struct {
+	// REQUIRED; The connection type. This value determines the remaining shape of the connection object.
+	ConnectionType *BlobAccessPointConnectionType
+}
+
+// GetBlobAccessPointConnectionPropertiesUpdate implements the BlobAccessPointConnectionPropertiesUpdateClassification interface
+// for type BlobAccessPointConnectionPropertiesUpdate.
+func (b *BlobAccessPointConnectionPropertiesUpdate) GetBlobAccessPointConnectionPropertiesUpdate() *BlobAccessPointConnectionPropertiesUpdate {
+	return b
+}
+
+// BlobAccessPointConnectionTestRequest - The request used to test an existing Blob Access Point configuration.
+type BlobAccessPointConnectionTestRequest struct {
+	// REQUIRED; The system-generated unique identifier of the Blob Access Point configuration, as returned by a read operation.
+	// This value must match the configuration named in the request path, and is required so that a configuration which was deleted
+	// and recreated under the same name is not tested by mistake.
+	UniqueID *string
+}
+
+// BlobAccessPointConnectionTestResponse - The result of testing a Blob Access Point configuration connection.
+type BlobAccessPointConnectionTestResponse struct {
+	// REQUIRED; The name of the request attempted against the backing data source.
+	MethodName *string
+
+	// REQUIRED; The request ID associated with the request sent to the backing data source for validation.
+	RequestID *string
+
+	// A normalized and redacted error message received from the backing data source. This value is empty when the connection
+	// test succeeds.
+	ErrorMessage *string
+}
+
+// BlobAccessPointDellOneFsSourceProperties - A Dell OneFS backing source.
+type BlobAccessPointDellOneFsSourceProperties struct {
+	// REQUIRED; Details for authenticating to the backing data source.
+	Auth BlobAccessPointRemoteAuthPropertiesClassification
+
+	// REQUIRED; Details for connecting to the backing data source. The connection target is fixed when the configuration is created;
+	// only the TLS verification behavior can be changed afterwards.
+	Connection BlobAccessPointConnectionPropertiesClassification
+
+	// CONSTANT; Field has constant value BlobAccessPointSourceTypeDellOneFs, any specified value is ignored.
+	SourceType *BlobAccessPointSourceType
+}
+
+// GetBlobAccessPointSourceProperties implements the BlobAccessPointSourcePropertiesClassification interface for type BlobAccessPointDellOneFsSourceProperties.
+func (b *BlobAccessPointDellOneFsSourceProperties) GetBlobAccessPointSourceProperties() *BlobAccessPointSourceProperties {
+	return &BlobAccessPointSourceProperties{
+		SourceType: b.SourceType,
+	}
+}
+
+// BlobAccessPointDellOneFsSourcePropertiesUpdate - A Dell OneFS backing source.
+type BlobAccessPointDellOneFsSourcePropertiesUpdate struct {
+	// CONSTANT; Field has constant value BlobAccessPointSourceTypeDellOneFs, any specified value is ignored.
+	SourceType *BlobAccessPointSourceType
+
+	// Details for authenticating to the backing data source.
+	Auth BlobAccessPointRemoteAuthPropertiesUpdateClassification
+
+	// Details for connecting to the backing data source. The connection target is fixed when the configuration is created; only
+	// the TLS verification behavior can be changed afterwards.
+	Connection BlobAccessPointConnectionPropertiesUpdateClassification
+}
+
+// GetBlobAccessPointSourcePropertiesUpdate implements the BlobAccessPointSourcePropertiesUpdateClassification interface for
+// type BlobAccessPointDellOneFsSourcePropertiesUpdate.
+func (b *BlobAccessPointDellOneFsSourcePropertiesUpdate) GetBlobAccessPointSourcePropertiesUpdate() *BlobAccessPointSourcePropertiesUpdate {
+	return &BlobAccessPointSourcePropertiesUpdate{
+		SourceType: b.SourceType,
+	}
+}
+
+// BlobAccessPointEndpointConnectionProperties - A direct endpoint connection.
+type BlobAccessPointEndpointConnectionProperties struct {
+	// CONSTANT; Field has constant value BlobAccessPointConnectionTypeEndpoint, any specified value is ignored.
+	ConnectionType *BlobAccessPointConnectionType
+
+	// REQUIRED; The backing endpoint, including its protocol, host, optional port, and optional path.
+	Endpoint *string
+
+	// TLS certificate verification behavior. Defaults to Perform when not specified.
+	TLSVerification *BlobAccessPointTLSVerification
+}
+
+// GetBlobAccessPointConnectionProperties implements the BlobAccessPointConnectionPropertiesClassification interface for type
+// BlobAccessPointEndpointConnectionProperties.
+func (b *BlobAccessPointEndpointConnectionProperties) GetBlobAccessPointConnectionProperties() *BlobAccessPointConnectionProperties {
+	return &BlobAccessPointConnectionProperties{
+		ConnectionType: b.ConnectionType,
+	}
+}
+
+// BlobAccessPointEndpointConnectionPropertiesUpdate - A direct endpoint connection.
+type BlobAccessPointEndpointConnectionPropertiesUpdate struct {
+	// CONSTANT; Field has constant value BlobAccessPointConnectionTypeEndpoint, any specified value is ignored.
+	ConnectionType *BlobAccessPointConnectionType
+
+	// TLS certificate verification behavior. Defaults to Perform when not specified.
+	TLSVerification *BlobAccessPointTLSVerification
+}
+
+// GetBlobAccessPointConnectionPropertiesUpdate implements the BlobAccessPointConnectionPropertiesUpdateClassification interface
+// for type BlobAccessPointEndpointConnectionPropertiesUpdate.
+func (b *BlobAccessPointEndpointConnectionPropertiesUpdate) GetBlobAccessPointConnectionPropertiesUpdate() *BlobAccessPointConnectionPropertiesUpdate {
+	return &BlobAccessPointConnectionPropertiesUpdate{
+		ConnectionType: b.ConnectionType,
+	}
+}
+
+// BlobAccessPointGenericS3SourceProperties - Another S3-compatible backing source.
+type BlobAccessPointGenericS3SourceProperties struct {
+	// REQUIRED; Details for authenticating to the backing data source.
+	Auth BlobAccessPointRemoteAuthPropertiesClassification
+
+	// REQUIRED; Details for connecting to the backing data source. The connection target is fixed when the configuration is created;
+	// only the TLS verification behavior can be changed afterwards.
+	Connection BlobAccessPointConnectionPropertiesClassification
+
+	// CONSTANT; Field has constant value BlobAccessPointSourceTypeS3Compatible, any specified value is ignored.
+	SourceType *BlobAccessPointSourceType
+}
+
+// GetBlobAccessPointSourceProperties implements the BlobAccessPointSourcePropertiesClassification interface for type BlobAccessPointGenericS3SourceProperties.
+func (b *BlobAccessPointGenericS3SourceProperties) GetBlobAccessPointSourceProperties() *BlobAccessPointSourceProperties {
+	return &BlobAccessPointSourceProperties{
+		SourceType: b.SourceType,
+	}
+}
+
+// BlobAccessPointGenericS3SourcePropertiesUpdate - Another S3-compatible backing source.
+type BlobAccessPointGenericS3SourcePropertiesUpdate struct {
+	// CONSTANT; Field has constant value BlobAccessPointSourceTypeS3Compatible, any specified value is ignored.
+	SourceType *BlobAccessPointSourceType
+
+	// Details for authenticating to the backing data source.
+	Auth BlobAccessPointRemoteAuthPropertiesUpdateClassification
+
+	// Details for connecting to the backing data source. The connection target is fixed when the configuration is created; only
+	// the TLS verification behavior can be changed afterwards.
+	Connection BlobAccessPointConnectionPropertiesUpdateClassification
+}
+
+// GetBlobAccessPointSourcePropertiesUpdate implements the BlobAccessPointSourcePropertiesUpdateClassification interface for
+// type BlobAccessPointGenericS3SourcePropertiesUpdate.
+func (b *BlobAccessPointGenericS3SourcePropertiesUpdate) GetBlobAccessPointSourcePropertiesUpdate() *BlobAccessPointSourcePropertiesUpdate {
+	return &BlobAccessPointSourcePropertiesUpdate{
+		SourceType: b.SourceType,
+	}
+}
+
+// BlobAccessPointNasuniSourceProperties - A Nasuni backing source.
+type BlobAccessPointNasuniSourceProperties struct {
+	// REQUIRED; Details for authenticating to the backing data source.
+	Auth BlobAccessPointRemoteAuthPropertiesClassification
+
+	// REQUIRED; Details for connecting to the backing data source. The connection target is fixed when the configuration is created;
+	// only the TLS verification behavior can be changed afterwards.
+	Connection BlobAccessPointConnectionPropertiesClassification
+
+	// CONSTANT; Field has constant value BlobAccessPointSourceTypeNasuni, any specified value is ignored.
+	SourceType *BlobAccessPointSourceType
+}
+
+// GetBlobAccessPointSourceProperties implements the BlobAccessPointSourcePropertiesClassification interface for type BlobAccessPointNasuniSourceProperties.
+func (b *BlobAccessPointNasuniSourceProperties) GetBlobAccessPointSourceProperties() *BlobAccessPointSourceProperties {
+	return &BlobAccessPointSourceProperties{
+		SourceType: b.SourceType,
+	}
+}
+
+// BlobAccessPointNasuniSourcePropertiesUpdate - A Nasuni backing source.
+type BlobAccessPointNasuniSourcePropertiesUpdate struct {
+	// CONSTANT; Field has constant value BlobAccessPointSourceTypeNasuni, any specified value is ignored.
+	SourceType *BlobAccessPointSourceType
+
+	// Details for authenticating to the backing data source.
+	Auth BlobAccessPointRemoteAuthPropertiesUpdateClassification
+
+	// Details for connecting to the backing data source. The connection target is fixed when the configuration is created; only
+	// the TLS verification behavior can be changed afterwards.
+	Connection BlobAccessPointConnectionPropertiesUpdateClassification
+}
+
+// GetBlobAccessPointSourcePropertiesUpdate implements the BlobAccessPointSourcePropertiesUpdateClassification interface for
+// type BlobAccessPointNasuniSourcePropertiesUpdate.
+func (b *BlobAccessPointNasuniSourcePropertiesUpdate) GetBlobAccessPointSourcePropertiesUpdate() *BlobAccessPointSourcePropertiesUpdate {
+	return &BlobAccessPointSourcePropertiesUpdate{
+		SourceType: b.SourceType,
+	}
+}
+
+// BlobAccessPointNetAppOntapSourceProperties - A NetApp ONTAP backing source.
+type BlobAccessPointNetAppOntapSourceProperties struct {
+	// REQUIRED; Details for authenticating to the backing data source.
+	Auth BlobAccessPointRemoteAuthPropertiesClassification
+
+	// REQUIRED; Details for connecting to the backing data source. The connection target is fixed when the configuration is created;
+	// only the TLS verification behavior can be changed afterwards.
+	Connection BlobAccessPointConnectionPropertiesClassification
+
+	// CONSTANT; Field has constant value BlobAccessPointSourceTypeNetAppOntap, any specified value is ignored.
+	SourceType *BlobAccessPointSourceType
+}
+
+// GetBlobAccessPointSourceProperties implements the BlobAccessPointSourcePropertiesClassification interface for type BlobAccessPointNetAppOntapSourceProperties.
+func (b *BlobAccessPointNetAppOntapSourceProperties) GetBlobAccessPointSourceProperties() *BlobAccessPointSourceProperties {
+	return &BlobAccessPointSourceProperties{
+		SourceType: b.SourceType,
+	}
+}
+
+// BlobAccessPointNetAppOntapSourcePropertiesUpdate - A NetApp ONTAP backing source.
+type BlobAccessPointNetAppOntapSourcePropertiesUpdate struct {
+	// CONSTANT; Field has constant value BlobAccessPointSourceTypeNetAppOntap, any specified value is ignored.
+	SourceType *BlobAccessPointSourceType
+
+	// Details for authenticating to the backing data source.
+	Auth BlobAccessPointRemoteAuthPropertiesUpdateClassification
+
+	// Details for connecting to the backing data source. The connection target is fixed when the configuration is created; only
+	// the TLS verification behavior can be changed afterwards.
+	Connection BlobAccessPointConnectionPropertiesUpdateClassification
+}
+
+// GetBlobAccessPointSourcePropertiesUpdate implements the BlobAccessPointSourcePropertiesUpdateClassification interface for
+// type BlobAccessPointNetAppOntapSourcePropertiesUpdate.
+func (b *BlobAccessPointNetAppOntapSourcePropertiesUpdate) GetBlobAccessPointSourcePropertiesUpdate() *BlobAccessPointSourcePropertiesUpdate {
+	return &BlobAccessPointSourcePropertiesUpdate{
+		SourceType: b.SourceType,
+	}
+}
+
+// BlobAccessPointPrivateLinkConnectionProperties - A connection established through Azure Private Link.
+type BlobAccessPointPrivateLinkConnectionProperties struct {
+	// CONSTANT; Field has constant value BlobAccessPointConnectionTypePrivateLink, any specified value is ignored.
+	ConnectionType *BlobAccessPointConnectionType
+
+	// REQUIRED; The backing endpoint as seen by the target of the Private Link.
+	Endpoint *string
+
+	// REQUIRED; The Azure resource ID of the backing Private Link service.
+	PrivateLinkID *string
+
+	// REQUIRED; Indicates that privateLinkId contains an Azure resource ID.
+	PrivateLinkIDType *BlobAccessPointPrivateLinkIDType
+
+	// REQUIRED; The Azure region in which the private endpoint is provisioned.
+	PrivateLinkLocation *string
+
+	// REQUIRED; The connection request message sent to the Private Link owner.
+	RequestMessage *string
+
+	// The Private Link group ID, when required by the backing resource.
+	PrivateLinkGroupID *string
+
+	// TLS certificate verification behavior. Defaults to Perform when not specified.
+	TLSVerification *BlobAccessPointTLSVerification
+
+	// READ-ONLY; The name of the private endpoint created by Azure Storage.
+	PrivateEndpointName *string
+}
+
+// GetBlobAccessPointConnectionProperties implements the BlobAccessPointConnectionPropertiesClassification interface for type
+// BlobAccessPointPrivateLinkConnectionProperties.
+func (b *BlobAccessPointPrivateLinkConnectionProperties) GetBlobAccessPointConnectionProperties() *BlobAccessPointConnectionProperties {
+	return &BlobAccessPointConnectionProperties{
+		ConnectionType: b.ConnectionType,
+	}
+}
+
+// BlobAccessPointPrivateLinkConnectionPropertiesUpdate - A connection established through Azure Private Link.
+type BlobAccessPointPrivateLinkConnectionPropertiesUpdate struct {
+	// CONSTANT; Field has constant value BlobAccessPointConnectionTypePrivateLink, any specified value is ignored.
+	ConnectionType *BlobAccessPointConnectionType
+
+	// TLS certificate verification behavior. Defaults to Perform when not specified.
+	TLSVerification *BlobAccessPointTLSVerification
+}
+
+// GetBlobAccessPointConnectionPropertiesUpdate implements the BlobAccessPointConnectionPropertiesUpdateClassification interface
+// for type BlobAccessPointPrivateLinkConnectionPropertiesUpdate.
+func (b *BlobAccessPointPrivateLinkConnectionPropertiesUpdate) GetBlobAccessPointConnectionPropertiesUpdate() *BlobAccessPointConnectionPropertiesUpdate {
+	return &BlobAccessPointConnectionPropertiesUpdate{
+		ConnectionType: b.ConnectionType,
+	}
+}
+
+// BlobAccessPointProposedConnectionTestRequest - The request used to test a proposed Blob Access Point configuration.
+type BlobAccessPointProposedConnectionTestRequest struct {
+	// REQUIRED; Information about the backing data source whose connection is tested.
+	Source BlobAccessPointSourcePropertiesClassification
+}
+
+// BlobAccessPointQumuloSourceProperties - A Qumulo backing source.
+type BlobAccessPointQumuloSourceProperties struct {
+	// REQUIRED; Details for authenticating to the backing data source.
+	Auth BlobAccessPointRemoteAuthPropertiesClassification
+
+	// REQUIRED; Details for connecting to the backing data source. The connection target is fixed when the configuration is created;
+	// only the TLS verification behavior can be changed afterwards.
+	Connection BlobAccessPointConnectionPropertiesClassification
+
+	// CONSTANT; Field has constant value BlobAccessPointSourceTypeQumulo, any specified value is ignored.
+	SourceType *BlobAccessPointSourceType
+}
+
+// GetBlobAccessPointSourceProperties implements the BlobAccessPointSourcePropertiesClassification interface for type BlobAccessPointQumuloSourceProperties.
+func (b *BlobAccessPointQumuloSourceProperties) GetBlobAccessPointSourceProperties() *BlobAccessPointSourceProperties {
+	return &BlobAccessPointSourceProperties{
+		SourceType: b.SourceType,
+	}
+}
+
+// BlobAccessPointQumuloSourcePropertiesUpdate - A Qumulo backing source.
+type BlobAccessPointQumuloSourcePropertiesUpdate struct {
+	// CONSTANT; Field has constant value BlobAccessPointSourceTypeQumulo, any specified value is ignored.
+	SourceType *BlobAccessPointSourceType
+
+	// Details for authenticating to the backing data source.
+	Auth BlobAccessPointRemoteAuthPropertiesUpdateClassification
+
+	// Details for connecting to the backing data source. The connection target is fixed when the configuration is created; only
+	// the TLS verification behavior can be changed afterwards.
+	Connection BlobAccessPointConnectionPropertiesUpdateClassification
+}
+
+// GetBlobAccessPointSourcePropertiesUpdate implements the BlobAccessPointSourcePropertiesUpdateClassification interface for
+// type BlobAccessPointQumuloSourcePropertiesUpdate.
+func (b *BlobAccessPointQumuloSourcePropertiesUpdate) GetBlobAccessPointSourcePropertiesUpdate() *BlobAccessPointSourcePropertiesUpdate {
+	return &BlobAccessPointSourcePropertiesUpdate{
+		SourceType: b.SourceType,
+	}
+}
+
+// BlobAccessPointRemoteAuthProperties - Authentication properties for a non-Azure S3-compatible source.
+type BlobAccessPointRemoteAuthProperties struct {
+	// REQUIRED; The authentication type. This value determines the remaining shape of the authentication object.
+	AuthType *BlobAccessPointRemoteAuthType
+}
+
+// GetBlobAccessPointRemoteAuthProperties implements the BlobAccessPointRemoteAuthPropertiesClassification interface for type
+// BlobAccessPointRemoteAuthProperties.
+func (b *BlobAccessPointRemoteAuthProperties) GetBlobAccessPointRemoteAuthProperties() *BlobAccessPointRemoteAuthProperties {
+	return b
+}
+
+// BlobAccessPointRemoteAuthPropertiesUpdate - Authentication properties for a non-Azure S3-compatible source.
+type BlobAccessPointRemoteAuthPropertiesUpdate struct {
+	// REQUIRED; The authentication type. This value determines the remaining shape of the authentication object.
+	AuthType *BlobAccessPointRemoteAuthType
+}
+
+// GetBlobAccessPointRemoteAuthPropertiesUpdate implements the BlobAccessPointRemoteAuthPropertiesUpdateClassification interface
+// for type BlobAccessPointRemoteAuthPropertiesUpdate.
+func (b *BlobAccessPointRemoteAuthPropertiesUpdate) GetBlobAccessPointRemoteAuthPropertiesUpdate() *BlobAccessPointRemoteAuthPropertiesUpdate {
+	return b
+}
+
+// BlobAccessPointSourceProperties - Information about the data source exposed through a Blob Access Point.
+type BlobAccessPointSourceProperties struct {
+	// REQUIRED; The source type. This value determines the remaining shape of the source object.
+	SourceType *BlobAccessPointSourceType
+}
+
+// GetBlobAccessPointSourceProperties implements the BlobAccessPointSourcePropertiesClassification interface for type BlobAccessPointSourceProperties.
+func (b *BlobAccessPointSourceProperties) GetBlobAccessPointSourceProperties() *BlobAccessPointSourceProperties {
+	return b
+}
+
+// BlobAccessPointSourcePropertiesUpdate - Information about the data source exposed through a Blob Access Point.
+type BlobAccessPointSourcePropertiesUpdate struct {
+	// REQUIRED; The source type. This value determines the remaining shape of the source object.
+	SourceType *BlobAccessPointSourceType
+}
+
+// GetBlobAccessPointSourcePropertiesUpdate implements the BlobAccessPointSourcePropertiesUpdateClassification interface for
+// type BlobAccessPointSourcePropertiesUpdate.
+func (b *BlobAccessPointSourcePropertiesUpdate) GetBlobAccessPointSourcePropertiesUpdate() *BlobAccessPointSourcePropertiesUpdate {
+	return b
 }
 
 // BlobContainer - Properties of the blob container, including Id, resource name, resource type, Etag.
@@ -1311,6 +1946,11 @@ type ConnectorUpdate struct {
 
 // ContainerProperties - The properties of a container.
 type ContainerProperties struct {
+	// Configuration that attaches this container to a Blob Access Point. If set, the container is a read-only virtual container
+	// whose read/list requests are forwarded to the connected backing data store. Cannot be changed, removed, or added after
+	// container creation.
+	BlobAccessPointConfiguration *BlobAccessPointConfigurationConnection
+
 	// Default the container to use specified encryption scope for all writes.
 	DefaultEncryptionScope *string
 
@@ -1399,6 +2039,31 @@ type ContextCache struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
+}
+
+// ContextCacheCheckNameAvailabilityParameters - The parameters used to check the availability of the context cache resource
+// name.
+type ContextCacheCheckNameAvailabilityParameters struct {
+	// REQUIRED; The name of the context cache resource to check for availability.
+	Name *string
+
+	// CONSTANT; The type of the context cache resource to check for availability.
+	// Field has constant value "Microsoft.Storage/contextCaches", any specified value is ignored.
+	Type *string
+}
+
+// ContextCacheCheckNameAvailabilityResult - The result of the context cache name availability check.
+type ContextCacheCheckNameAvailabilityResult struct {
+	// READ-ONLY; A boolean value that indicates whether the context cache name is available to use. If true, the name is available.
+	// If false, the name has already been taken or is invalid and cannot be used.
+	NameAvailable *bool
+
+	// READ-ONLY; The error message providing additional information about the context cache name availability check failure.
+	Message *string
+
+	// READ-ONLY; The reason why the context cache name is not available. The Reason element is only returned if NameAvailable
+	// is false
+	Reason *ContextCacheCheckNameAvailabilityFailureReason
 }
 
 // ContextCacheContainer - A container resource within a Context Cache
@@ -1555,6 +2220,9 @@ type CustomerManagedKeyEncryption struct {
 
 // DataCollaborationPolicyProperties - Defines Data Collaboration Policy for a storage account.
 type DataCollaborationPolicyProperties struct {
+	// Indicates whether Blob Access Point configurations are allowed to be created or managed on the storage account.
+	AllowBlobAccessPoints *bool
+
 	// Indicates whether cross-entra tenant data sharing is allowed on the storage account.
 	AllowCrossTenantDataSharing *bool
 
@@ -3182,6 +3850,9 @@ type NspAccessRuleProperties struct {
 	// Direction of Access Rule
 	Direction *NspAccessRuleDirection
 
+	// Service Tags for inbound rules
+	ServiceTags []*string
+
 	// Subscriptions for inbound rules
 	Subscriptions []*NspAccessRulePropertiesSubscriptionsItem
 
@@ -4196,6 +4867,16 @@ type TriggerParametersUpdate struct {
 	// When to start task execution. This is a mutable field when ExecutionTrigger.properties.type is 'RunOnce'; this property
 	// should not be present when ExecutionTrigger.properties.type is 'OnSchedule'
 	StartOn *time.Time
+}
+
+// TurboTier - Configures Turbo Tier for a storage account.
+type TurboTier struct {
+	// Indicates whether Turbo Tier is enabled or disabled.
+	Status *TurboTierStatus
+
+	// The target fill percentage used for placement. The valid range is 10 to 100. When status is Enabled and this property is
+	// omitted, the default value is 20.
+	TargetPercent *int32
 }
 
 // UpdateHistoryProperty - An update history of the ImmutabilityPolicy of a blob container.

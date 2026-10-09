@@ -20,7 +20,7 @@ import (
 // PartnerDestinationsClient contains the methods for the PartnerDestinations group.
 // Don't use this type directly, use NewPartnerDestinationsClient() instead.
 //
-// Generated from API version 2025-07-15-preview
+// Generated from API version 2026-06-15-preview
 type PartnerDestinationsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -90,7 +90,7 @@ func (client *PartnerDestinationsClient) activateCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250715Preview)
+	reqQP.Set("api-version", version20260615Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -134,7 +134,7 @@ func (client *PartnerDestinationsClient) BeginCreateOrUpdate(ctx context.Context
 	}
 }
 
-// CreateOrUpdate - Create a partner destination.
+// createOrUpdate - Create a partner destination.
 //
 // Asynchronously creates a new partner destination with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -158,7 +158,7 @@ func (client *PartnerDestinationsClient) createOrUpdate(ctx context.Context, res
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *PartnerDestinationsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, partnerDestinationName string, partnerDestination PartnerDestination, _ *PartnerDestinationsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/partnerDestinations/{partnerDestinationName}"
 	if client.subscriptionID == "" {
@@ -178,7 +178,7 @@ func (client *PartnerDestinationsClient) createOrUpdateCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250715Preview)
+	reqQP.Set("api-version", version20260615Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -198,7 +198,7 @@ func (client *PartnerDestinationsClient) createOrUpdateCreateRequest(ctx context
 //     method.
 func (client *PartnerDestinationsClient) BeginDelete(ctx context.Context, resourceGroupName string, partnerDestinationName string, options *PartnerDestinationsClientBeginDeleteOptions) (*runtime.Poller[PartnerDestinationsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.deleteOperation(ctx, resourceGroupName, partnerDestinationName, options)
+		resp, err := client.delete(ctx, resourceGroupName, partnerDestinationName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -213,11 +213,11 @@ func (client *PartnerDestinationsClient) BeginDelete(ctx context.Context, resour
 	}
 }
 
-// Delete - Delete a partner destination.
+// delete - Delete a partner destination.
 //
 // Delete existing partner destination.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *PartnerDestinationsClient) deleteOperation(ctx context.Context, resourceGroupName string, partnerDestinationName string, options *PartnerDestinationsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *PartnerDestinationsClient) delete(ctx context.Context, resourceGroupName string, partnerDestinationName string, options *PartnerDestinationsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "PartnerDestinationsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -237,7 +237,7 @@ func (client *PartnerDestinationsClient) deleteOperation(ctx context.Context, re
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *PartnerDestinationsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, partnerDestinationName string, _ *PartnerDestinationsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/partnerDestinations/{partnerDestinationName}"
 	if client.subscriptionID == "" {
@@ -257,8 +257,89 @@ func (client *PartnerDestinationsClient) deleteCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250715Preview)
+	reqQP.Set("api-version", version20260615Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginUpdate - Update a partner destination.
+//
+// Asynchronously updates a partner destination with the specified parameters.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - partnerDestinationName - Name of the partner destination.
+//   - partnerDestinationUpdateParameters - Partner destination update information.
+//   - options - PartnerDestinationsClientBeginUpdateOptions contains the optional parameters for the PartnerDestinationsClient.BeginUpdate
+//     method.
+func (client *PartnerDestinationsClient) BeginUpdate(ctx context.Context, resourceGroupName string, partnerDestinationName string, partnerDestinationUpdateParameters PartnerDestinationUpdateParameters, options *PartnerDestinationsClientBeginUpdateOptions) (*runtime.Poller[PartnerDestinationsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, partnerDestinationName, partnerDestinationUpdateParameters, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[PartnerDestinationsClientUpdateResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[PartnerDestinationsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Update a partner destination.
+//
+// Asynchronously updates a partner destination with the specified parameters.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *PartnerDestinationsClient) update(ctx context.Context, resourceGroupName string, partnerDestinationName string, partnerDestinationUpdateParameters PartnerDestinationUpdateParameters, options *PartnerDestinationsClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "PartnerDestinationsClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, partnerDestinationName, partnerDestinationUpdateParameters, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *PartnerDestinationsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, partnerDestinationName string, partnerDestinationUpdateParameters PartnerDestinationUpdateParameters, _ *PartnerDestinationsClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/partnerDestinations/{partnerDestinationName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if partnerDestinationName == "" {
+		return nil, errors.New("parameter partnerDestinationName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{partnerDestinationName}", url.PathEscape(partnerDestinationName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260615Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, partnerDestinationUpdateParameters); err != nil {
+		return nil, err
+	}
 	return req, nil
 }
 
@@ -306,7 +387,7 @@ func (client *PartnerDestinationsClient) getCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250715Preview)
+	reqQP.Set("api-version", version20260615Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -385,7 +466,7 @@ func (client *PartnerDestinationsClient) listByResourceGroupCreateRequest(ctx co
 		if options != nil && options.Top != nil {
 			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 		}
-		reqQP.Set("api-version", version20250715Preview)
+		reqQP.Set("api-version", version20260615Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -460,7 +541,7 @@ func (client *PartnerDestinationsClient) listBySubscriptionCreateRequest(ctx con
 		if options != nil && options.Top != nil {
 			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 		}
-		reqQP.Set("api-version", version20250715Preview)
+		reqQP.Set("api-version", version20260615Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -477,85 +558,4 @@ func (client *PartnerDestinationsClient) listBySubscriptionHandleResponse(resp *
 		return PartnerDestinationsClientListBySubscriptionResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginUpdate - Update a partner destination.
-//
-// Asynchronously updates a partner destination with the specified parameters.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - partnerDestinationName - Name of the partner destination.
-//   - partnerDestinationUpdateParameters - Partner destination update information.
-//   - options - PartnerDestinationsClientBeginUpdateOptions contains the optional parameters for the PartnerDestinationsClient.BeginUpdate
-//     method.
-func (client *PartnerDestinationsClient) BeginUpdate(ctx context.Context, resourceGroupName string, partnerDestinationName string, partnerDestinationUpdateParameters PartnerDestinationUpdateParameters, options *PartnerDestinationsClientBeginUpdateOptions) (*runtime.Poller[PartnerDestinationsClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, partnerDestinationName, partnerDestinationUpdateParameters, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[PartnerDestinationsClientUpdateResponse]{
-			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
-			Tracer:        client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[PartnerDestinationsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Update a partner destination.
-//
-// Asynchronously updates a partner destination with the specified parameters.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *PartnerDestinationsClient) update(ctx context.Context, resourceGroupName string, partnerDestinationName string, partnerDestinationUpdateParameters PartnerDestinationUpdateParameters, options *PartnerDestinationsClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "PartnerDestinationsClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, partnerDestinationName, partnerDestinationUpdateParameters, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *PartnerDestinationsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, partnerDestinationName string, partnerDestinationUpdateParameters PartnerDestinationUpdateParameters, _ *PartnerDestinationsClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/partnerDestinations/{partnerDestinationName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if partnerDestinationName == "" {
-		return nil, errors.New("parameter partnerDestinationName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{partnerDestinationName}", url.PathEscape(partnerDestinationName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250715Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, partnerDestinationUpdateParameters); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

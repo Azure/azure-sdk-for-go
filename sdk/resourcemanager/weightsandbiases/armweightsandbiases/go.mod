@@ -1,3 +1,4 @@
+// Deprecated: Please note, this package has been deprecated and will no longer be maintained after September 30, 2026. There is no replacement service or SDK module. Refer to our deprecation policy (https://aka.ms/azsdk/support-policies) for more details.
 module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/weightsandbiases/armweightsandbiases
 
 go 1.25.0

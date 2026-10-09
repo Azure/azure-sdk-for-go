@@ -309,7 +309,7 @@ func (f *FileSharesServerTransport) dispatchLease(req *http.Request) (*http.Resp
 		return nil, err
 	}
 	if val := server.GetResponse(respr).ETag; val != nil {
-		resp.Header.Set("ETag", *val)
+		resp.Header.Set("Etag", *val)
 	}
 	return resp, nil
 }

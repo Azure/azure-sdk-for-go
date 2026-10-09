@@ -247,6 +247,12 @@ type ScheduledActionsClientPatchResourcesOptions struct {
 	// placeholder for future optional parameters
 }
 
+// VirtualMachineBulkOperationsClientBulkAcknowledgeOperationErrorsOptions contains the optional parameters for the VirtualMachineBulkOperationsClient.BulkAcknowledgeOperationErrors
+// method.
+type VirtualMachineBulkOperationsClientBulkAcknowledgeOperationErrorsOptions struct {
+	// placeholder for future optional parameters
+}
+
 // VirtualMachineBulkOperationsClientBulkCancelOperationsOptions contains the optional parameters for the VirtualMachineBulkOperationsClient.BulkCancelOperations
 // method.
 type VirtualMachineBulkOperationsClientBulkCancelOperationsOptions struct {
@@ -275,6 +281,13 @@ type VirtualMachineBulkOperationsClientBulkGetOperationsStatusOptions struct {
 // method.
 type VirtualMachineBulkOperationsClientBulkHibernateOperationOptions struct {
 	// placeholder for future optional parameters
+}
+
+// VirtualMachineBulkOperationsClientBulkListOperationErrorsOptions contains the optional parameters for the VirtualMachineBulkOperationsClient.NewBulkListOperationErrorsPager
+// method.
+type VirtualMachineBulkOperationsClientBulkListOperationErrorsOptions struct {
+	// The number of minutes before the current time to include when listing bulk action errors.
+	LookbackInMinutes *int32
 }
 
 // VirtualMachineBulkOperationsClientBulkReimageOperationOptions contains the optional parameters for the VirtualMachineBulkOperationsClient.BulkReimageOperation

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-08-01-preview/AppLinkMembers_CreateOrUpdate.json
+// Generated from example definition: 2026-08-01-preview/AppLinkMembers_CreateOrUpdate.json
 func ExampleAppLinkMembersClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -27,7 +27,7 @@ func ExampleAppLinkMembersClient_BeginCreateOrUpdate() {
 		Properties: &armappnetwork.AppLinkMemberProperties{
 			ClusterType: to.Ptr(armappnetwork.ClusterTypeAKS),
 			Metadata: &armappnetwork.Metadata{
-				ResourceID: to.Ptr("/subscriptions/bc7e0da9-5e4c-4a91-9252-9658837006cf/resourcegroups/applink-rg/providers/Microsoft.ContainerService/managedClusters/applink-member1"),
+				ResourceID: to.Ptr("/subscriptions/bc7e0da9-5e4c-4a91-9252-9658837006cf/resourceGroups/applink-rg/providers/Microsoft.ContainerService/managedClusters/applink-member1"),
 			},
 			UpgradeProfile: &armappnetwork.UpgradeProfile{
 				Mode: to.Ptr(armappnetwork.UpgradeModeFullyManaged),
@@ -42,6 +42,7 @@ func ExampleAppLinkMembersClient_BeginCreateOrUpdate() {
 				EastWestGateway: &armappnetwork.EastWestGatewayProfile{
 					Visibility: to.Ptr(armappnetwork.EastWestGatewayVisibilityInternal),
 				},
+				Network: to.Ptr("network1"),
 			},
 		},
 		Tags: map[string]*string{
@@ -64,7 +65,7 @@ func ExampleAppLinkMembersClient_BeginCreateOrUpdate() {
 	// 		Properties: &armappnetwork.AppLinkMemberProperties{
 	// 			ClusterType: to.Ptr(armappnetwork.ClusterTypeAKS),
 	// 			Metadata: &armappnetwork.Metadata{
-	// 				ResourceID: to.Ptr("/subscriptions/bc7e0da9-5e4c-4a91-9252-9658837006cf/resourcegroups/applink-rg/providers/Microsoft.ContainerService/managedClusters/applink-member1"),
+	// 				ResourceID: to.Ptr("/subscriptions/bc7e0da9-5e4c-4a91-9252-9658837006cf/resourceGroups/applink-rg/providers/Microsoft.ContainerService/managedClusters/applink-member1"),
 	// 			},
 	// 			UpgradeProfile: &armappnetwork.UpgradeProfile{
 	// 				Mode: to.Ptr(armappnetwork.UpgradeModeFullyManaged),
@@ -84,6 +85,7 @@ func ExampleAppLinkMembersClient_BeginCreateOrUpdate() {
 	// 				EastWestGateway: &armappnetwork.EastWestGatewayProfile{
 	// 					Visibility: to.Ptr(armappnetwork.EastWestGatewayVisibilityInternal),
 	// 				},
+	// 				Network: to.Ptr("network1"),
 	// 			},
 	// 			ProvisioningState: to.Ptr(armappnetwork.ProvisioningStateSucceeded),
 	// 		},
@@ -106,7 +108,7 @@ func ExampleAppLinkMembersClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01-preview/AppLinkMembers_Delete.json
+// Generated from example definition: 2026-08-01-preview/AppLinkMembers_Delete.json
 func ExampleAppLinkMembersClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -127,7 +129,7 @@ func ExampleAppLinkMembersClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-08-01-preview/AppLinkMembers_Get.json
+// Generated from example definition: 2026-08-01-preview/AppLinkMembers_Get.json
 func ExampleAppLinkMembersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -150,7 +152,7 @@ func ExampleAppLinkMembersClient_Get() {
 	// 		Properties: &armappnetwork.AppLinkMemberProperties{
 	// 			ClusterType: to.Ptr(armappnetwork.ClusterTypeAKS),
 	// 			Metadata: &armappnetwork.Metadata{
-	// 				ResourceID: to.Ptr("/subscriptions/bc7e0da9-5e4c-4a91-9252-9658837006cf/resourcegroups/applink-rg/providers/Microsoft.ContainerService/managedClusters/applink-member1"),
+	// 				ResourceID: to.Ptr("/subscriptions/bc7e0da9-5e4c-4a91-9252-9658837006cf/resourceGroups/applink-rg/providers/Microsoft.ContainerService/managedClusters/applink-member1"),
 	// 			},
 	// 			UpgradeProfile: &armappnetwork.UpgradeProfile{
 	// 				Mode: to.Ptr(armappnetwork.UpgradeModeFullyManaged),
@@ -170,6 +172,7 @@ func ExampleAppLinkMembersClient_Get() {
 	// 				EastWestGateway: &armappnetwork.EastWestGatewayProfile{
 	// 					Visibility: to.Ptr(armappnetwork.EastWestGatewayVisibilityInternal),
 	// 				},
+	// 				Network: to.Ptr("network1"),
 	// 			},
 	// 			ProvisioningState: to.Ptr(armappnetwork.ProvisioningStateSucceeded),
 	// 		},
@@ -192,7 +195,7 @@ func ExampleAppLinkMembersClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01-preview/AppLinkMembers_ListByAppLink.json
+// Generated from example definition: 2026-08-01-preview/AppLinkMembers_ListByAppLink.json
 func ExampleAppLinkMembersClient_NewListByAppLinkPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -221,7 +224,7 @@ func ExampleAppLinkMembersClient_NewListByAppLinkPager() {
 		// 				Properties: &armappnetwork.AppLinkMemberProperties{
 		// 					ClusterType: to.Ptr(armappnetwork.ClusterTypeAKS),
 		// 					Metadata: &armappnetwork.Metadata{
-		// 						ResourceID: to.Ptr("/subscriptions/bc7e0da9-5e4c-4a91-9252-9658837006cf/resourcegroups/applink-rg/providers/Microsoft.ContainerService/managedClusters/applink-member1"),
+		// 						ResourceID: to.Ptr("/subscriptions/bc7e0da9-5e4c-4a91-9252-9658837006cf/resourceGroups/applink-rg/providers/Microsoft.ContainerService/managedClusters/applink-member1"),
 		// 					},
 		// 					UpgradeProfile: &armappnetwork.UpgradeProfile{
 		// 						Mode: to.Ptr(armappnetwork.UpgradeModeFullyManaged),
@@ -241,6 +244,7 @@ func ExampleAppLinkMembersClient_NewListByAppLinkPager() {
 		// 						EastWestGateway: &armappnetwork.EastWestGatewayProfile{
 		// 							Visibility: to.Ptr(armappnetwork.EastWestGatewayVisibilityInternal),
 		// 						},
+		// 						Network: to.Ptr("network1"),
 		// 					},
 		// 					ProvisioningState: to.Ptr(armappnetwork.ProvisioningStateSucceeded),
 		// 				},
@@ -264,7 +268,7 @@ func ExampleAppLinkMembersClient_NewListByAppLinkPager() {
 		// 				Properties: &armappnetwork.AppLinkMemberProperties{
 		// 					ClusterType: to.Ptr(armappnetwork.ClusterTypeAKS),
 		// 					Metadata: &armappnetwork.Metadata{
-		// 						ResourceID: to.Ptr("/subscriptions/bc7e0da9-5e4c-4a91-9252-9658837006cf/resourcegroups/applink-rg/providers/Microsoft.ContainerService/managedClusters/applink-member2"),
+		// 						ResourceID: to.Ptr("/subscriptions/bc7e0da9-5e4c-4a91-9252-9658837006cf/resourceGroups/applink-rg/providers/Microsoft.ContainerService/managedClusters/applink-member2"),
 		// 					},
 		// 					UpgradeProfile: &armappnetwork.UpgradeProfile{
 		// 						Mode: to.Ptr(armappnetwork.UpgradeModeSelfManaged),
@@ -281,6 +285,7 @@ func ExampleAppLinkMembersClient_NewListByAppLinkPager() {
 		// 						EastWestGateway: &armappnetwork.EastWestGatewayProfile{
 		// 							Visibility: to.Ptr(armappnetwork.EastWestGatewayVisibilityExternal),
 		// 						},
+		// 						Network: to.Ptr("network1"),
 		// 					},
 		// 					ProvisioningState: to.Ptr(armappnetwork.ProvisioningStateSucceeded),
 		// 				},
@@ -301,13 +306,13 @@ func ExampleAppLinkMembersClient_NewListByAppLinkPager() {
 		// 				},
 		// 			},
 		// 		},
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/11809CA1-E126-4017-945E-AA795CD5C5A9/resourceGroups/test_rg/providers/Microsoft.AppLink/appLinks/applink-test-01/appLinkMembers?api-version=2025-08-01-preview&$skiptoken=eyJjb250aW51YXRpb24iOiAibWVtYmVyLTAzIn0%3D"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/11809CA1-E126-4017-945E-AA795CD5C5A9/resourceGroups/test_rg/providers/Microsoft.AppLink/appLinks/applink-test-01/appLinkMembers?api-version=2026-08-01-preview&$skiptoken=eyJjb250aW51YXRpb24iOiAibWVtYmVyLTAzIn0%3D"),
 		// 	},
 		// }
 	}
 }
 
-// Generated from example definition: 2025-08-01-preview/AppLinkMembers_Update.json
+// Generated from example definition: 2026-08-01-preview/AppLinkMembers_Update.json
 func ExampleAppLinkMembersClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -323,16 +328,17 @@ func ExampleAppLinkMembersClient_BeginUpdate() {
 			"key7952": to.Ptr("updated_tag_value"),
 		},
 		Properties: &armappnetwork.AppLinkMemberUpdateProperties{
-			UpgradeProfile: &armappnetwork.UpgradeProfile{
+			UpgradeProfile: &armappnetwork.UpgradeProfileUpdate{
 				Mode: to.Ptr(armappnetwork.UpgradeModeSelfManaged),
-				SelfManagedUpgradeProfile: &armappnetwork.SelfManagedUpgradeProfile{
+				SelfManagedUpgradeProfile: &armappnetwork.SelfManagedUpgradeProfileUpdate{
 					Version: to.Ptr("1.26"),
 				},
 			},
-			ConnectivityProfile: &armappnetwork.ConnectivityProfile{
-				EastWestGateway: &armappnetwork.EastWestGatewayProfile{
+			ConnectivityProfile: &armappnetwork.ConnectivityProfileUpdate{
+				EastWestGateway: &armappnetwork.EastWestGatewayProfileUpdate{
 					Visibility: to.Ptr(armappnetwork.EastWestGatewayVisibilityInternal),
 				},
+				Network: to.Ptr("network1"),
 			},
 		},
 	}, nil)
@@ -351,7 +357,7 @@ func ExampleAppLinkMembersClient_BeginUpdate() {
 	// 		Properties: &armappnetwork.AppLinkMemberProperties{
 	// 			ClusterType: to.Ptr(armappnetwork.ClusterTypeAKS),
 	// 			Metadata: &armappnetwork.Metadata{
-	// 				ResourceID: to.Ptr("/subscriptions/bc7e0da9-5e4c-4a91-9252-9658837006cf/resourcegroups/applink-rg/providers/Microsoft.ContainerService/managedClusters/applink-member1"),
+	// 				ResourceID: to.Ptr("/subscriptions/bc7e0da9-5e4c-4a91-9252-9658837006cf/resourceGroups/applink-rg/providers/Microsoft.ContainerService/managedClusters/applink-member1"),
 	// 			},
 	// 			UpgradeProfile: &armappnetwork.UpgradeProfile{
 	// 				Mode: to.Ptr(armappnetwork.UpgradeModeSelfManaged),
@@ -371,6 +377,7 @@ func ExampleAppLinkMembersClient_BeginUpdate() {
 	// 				EastWestGateway: &armappnetwork.EastWestGatewayProfile{
 	// 					Visibility: to.Ptr(armappnetwork.EastWestGatewayVisibilityInternal),
 	// 				},
+	// 				Network: to.Ptr("network1"),
 	// 			},
 	// 			ProvisioningState: to.Ptr(armappnetwork.ProvisioningStateSucceeded),
 	// 		},

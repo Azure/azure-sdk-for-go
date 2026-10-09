@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-08-01-preview/AppLinks_CreateOrUpdate.json
+// Generated from example definition: 2026-08-01-preview/AppLinks_CreateOrUpdate.json
 func ExampleAppLinksClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -72,7 +72,7 @@ func ExampleAppLinksClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01-preview/AppLinks_Delete.json
+// Generated from example definition: 2026-08-01-preview/AppLinks_Delete.json
 func ExampleAppLinksClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -93,7 +93,7 @@ func ExampleAppLinksClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-08-01-preview/AppLinks_Get.json
+// Generated from example definition: 2026-08-01-preview/AppLinks_Get.json
 func ExampleAppLinksClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -140,7 +140,7 @@ func ExampleAppLinksClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01-preview/AppLinks_ListByResourceGroup.json
+// Generated from example definition: 2026-08-01-preview/AppLinks_ListByResourceGroup.json
 func ExampleAppLinksClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -220,13 +220,13 @@ func ExampleAppLinksClient_NewListByResourceGroupPager() {
 		// 				},
 		// 			},
 		// 		},
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/11809CA1-E126-4017-945E-AA795CD5C5A9/resourceGroups/test_rg/providers/Microsoft.AppLink/appLinks?api-version=2025-08-01-preview&$skiptoken=eyJjb250aW51YXRpb24iOiAiYXBwbGluay10ZXN0LTAzIn0%3D"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/11809CA1-E126-4017-945E-AA795CD5C5A9/resourceGroups/test_rg/providers/Microsoft.AppLink/appLinks?api-version=2026-08-01-preview&$skiptoken=eyJjb250aW51YXRpb24iOiAiYXBwbGluay10ZXN0LTAzIn0%3D"),
 		// 	},
 		// }
 	}
 }
 
-// Generated from example definition: 2025-08-01-preview/AppLinks_ListBySubscription.json
+// Generated from example definition: 2026-08-01-preview/AppLinks_ListBySubscription.json
 func ExampleAppLinksClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -333,13 +333,13 @@ func ExampleAppLinksClient_NewListBySubscriptionPager() {
 		// 				},
 		// 			},
 		// 		},
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/11809CA1-E126-4017-945E-AA795CD5C5A9/providers/Microsoft.AppLink/appLinks?api-version=2025-08-01-preview&$skiptoken=eyJjb250aW51YXRpb24iOiAiYXBwbGluay1zdGFnaW5nLTAyIn0%3D"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/11809CA1-E126-4017-945E-AA795CD5C5A9/providers/Microsoft.AppLink/appLinks?api-version=2026-08-01-preview&$skiptoken=eyJjb250aW51YXRpb24iOiAiYXBwbGluay1zdGFnaW5nLTAyIn0%3D"),
 		// 	},
 		// }
 	}
 }
 
-// Generated from example definition: 2025-08-01-preview/AppLinks_Update.json
+// Generated from example definition: 2026-08-01-preview/AppLinks_Update.json
 func ExampleAppLinksClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -354,6 +354,12 @@ func ExampleAppLinksClient_BeginUpdate() {
 		Tags: map[string]*string{
 			"environment": to.Ptr("production"),
 			"cost-center": to.Ptr("platform"),
+		},
+		Identity: &armappnetwork.ManagedServiceIdentityUpdate{
+			Type: to.Ptr(armappnetwork.ManagedServiceIdentityTypeUserAssigned),
+			UserAssignedIdentities: map[string]*armappnetwork.UserAssignedIdentity{
+				"/subscriptions/11809CA1-E126-4017-945E-AA795CD5C5A9/resourceGroups/test_rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/applink-identity": {},
+			},
 		},
 	}, nil)
 	if err != nil {

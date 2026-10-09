@@ -12,7 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/elasticsan/armelasticsan"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/elasticsan/armelasticsan/v2"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -196,6 +196,7 @@ func (v *VolumesServerTransport) dispatchBeginDelete(req *http.Request) (*http.R
 		if len(matches) < 6 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
+		qp := req.URL.Query()
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 		if err != nil {
 			return nil, err
@@ -214,11 +215,13 @@ func (v *VolumesServerTransport) dispatchBeginDelete(req *http.Request) (*http.R
 		}
 		xMSDeleteSnapshotsParam := getOptional(armelasticsan.XMSDeleteSnapshots(getHeaderValue(req.Header, "x-ms-delete-snapshots")))
 		xMSForceDeleteParam := getOptional(armelasticsan.XMSForceDelete(getHeaderValue(req.Header, "x-ms-force-delete")))
+		deleteTypeParam := getOptional(armelasticsan.DeleteType(qp.Get("deleteType")))
 		var options *armelasticsan.VolumesClientBeginDeleteOptions
-		if xMSDeleteSnapshotsParam != nil || xMSForceDeleteParam != nil {
+		if xMSDeleteSnapshotsParam != nil || xMSForceDeleteParam != nil || deleteTypeParam != nil {
 			options = &armelasticsan.VolumesClientBeginDeleteOptions{
 				XMSDeleteSnapshots: xMSDeleteSnapshotsParam,
 				XMSForceDelete:     xMSForceDeleteParam,
+				DeleteType:         deleteTypeParam,
 			}
 		}
 		respr, errRespr := v.srv.BeginDelete(req.Context(), resourceGroupNameParam, elasticSanNameParam, volumeGroupNameParam, volumeNameParam, options)
@@ -310,7 +313,14 @@ func (v *VolumesServerTransport) dispatchNewListByVolumeGroupPager(req *http.Req
 		if err != nil {
 			return nil, err
 		}
-		resp := v.srv.NewListByVolumeGroupPager(resourceGroupNameParam, elasticSanNameParam, volumeGroupNameParam, nil)
+		xMSAccessSoftDeletedResourcesParam := getOptional(armelasticsan.XMSAccessSoftDeletedResources(getHeaderValue(req.Header, "x-ms-access-soft-deleted-resources")))
+		var options *armelasticsan.VolumesClientListByVolumeGroupOptions
+		if xMSAccessSoftDeletedResourcesParam != nil {
+			options = &armelasticsan.VolumesClientListByVolumeGroupOptions{
+				XMSAccessSoftDeletedResources: xMSAccessSoftDeletedResourcesParam,
+			}
+		}
+		resp := v.srv.NewListByVolumeGroupPager(resourceGroupNameParam, elasticSanNameParam, volumeGroupNameParam, options)
 		newListByVolumeGroupPager = &resp
 		v.newListByVolumeGroupPager.add(req, newListByVolumeGroupPager)
 		server.PagerResponderInjectNextLinks(newListByVolumeGroupPager, req, func(page *armelasticsan.VolumesClientListByVolumeGroupResponse, createLink func() string) {

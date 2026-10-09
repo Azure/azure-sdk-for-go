@@ -20,7 +20,7 @@ import (
 // HeatMapClient contains the methods for the HeatMap group.
 // Don't use this type directly, use NewHeatMapClient() instead.
 //
-// Generated from API version 2024-04-01-preview
+// Generated from API version 2026-09-01
 type HeatMapClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -88,7 +88,7 @@ func (client *HeatMapClient) getCreateRequest(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240401Preview)
+	reqQP.Set("api-version", version20260901)
 	if options != nil && options.BotRight != nil {
 		reqQP.Set("botRight", strings.Join(strings.Fields(strings.Trim(fmt.Sprint(options.BotRight), "[]")), ","))
 	}

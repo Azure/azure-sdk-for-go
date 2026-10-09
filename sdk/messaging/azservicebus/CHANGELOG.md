@@ -8,6 +8,10 @@
 
 ### Bugs Fixed
 
+- `AcceptNextSessionForQueue` and `AcceptNextSessionForSubscription` now pass
+  the caller's context deadline to Service Bus, allowing session accepts to
+  wait longer than the service's default timeout. ([#19036](https://github.com/Azure/azure-sdk-for-go/issues/19036))
+
 ### Other Changes
 
 ## 1.11.0-beta.1 (2026-08-21)

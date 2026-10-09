@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-04-01-preview/VirtualNetworkSubnetUsageList.json
+// Generated from example definition: 2026-07-01-preview/VirtualNetworkSubnetUsageList.json
 func ExampleVirtualNetworkSubnetUsageClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

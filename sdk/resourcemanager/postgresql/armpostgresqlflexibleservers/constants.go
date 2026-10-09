@@ -5,7 +5,7 @@
 package armpostgresqlflexibleservers
 
 const (
-	version20260401Preview string = "2026-04-01-preview"
+	version20260701Preview string = "2026-07-01-preview"
 )
 
 // AzureManagedDiskPerformanceTier - Storage tier of a server.
@@ -270,6 +270,75 @@ func PossibleDataEncryptionTypeValues() []DataEncryptionType {
 	}
 }
 
+// DbAgentForUpdateState - The database agent states accepted in a write request.
+type DbAgentForUpdateState string
+
+const (
+	// DbAgentForUpdateStateDisabled - Disable the database agent.
+	DbAgentForUpdateStateDisabled DbAgentForUpdateState = "Disabled"
+	// DbAgentForUpdateStateEnabled - Enable the database agent.
+	DbAgentForUpdateStateEnabled DbAgentForUpdateState = "Enabled"
+)
+
+// PossibleDbAgentForUpdateStateValues returns the possible values for the DbAgentForUpdateState const type.
+func PossibleDbAgentForUpdateStateValues() []DbAgentForUpdateState {
+	return []DbAgentForUpdateState{
+		DbAgentForUpdateStateDisabled,
+		DbAgentForUpdateStateEnabled,
+	}
+}
+
+// DbAgentProvisioningState - The provisioning state of the database agent resource.
+type DbAgentProvisioningState string
+
+const (
+	// DbAgentProvisioningStateCanceled - Resource creation was canceled.
+	DbAgentProvisioningStateCanceled DbAgentProvisioningState = "Canceled"
+	// DbAgentProvisioningStateFailed - Resource creation failed.
+	DbAgentProvisioningStateFailed DbAgentProvisioningState = "Failed"
+	// DbAgentProvisioningStateInProgress - The database agent lifecycle operation is in progress.
+	DbAgentProvisioningStateInProgress DbAgentProvisioningState = "InProgress"
+	// DbAgentProvisioningStateSucceeded - Resource has been created.
+	DbAgentProvisioningStateSucceeded DbAgentProvisioningState = "Succeeded"
+)
+
+// PossibleDbAgentProvisioningStateValues returns the possible values for the DbAgentProvisioningState const type.
+func PossibleDbAgentProvisioningStateValues() []DbAgentProvisioningState {
+	return []DbAgentProvisioningState{
+		DbAgentProvisioningStateCanceled,
+		DbAgentProvisioningStateFailed,
+		DbAgentProvisioningStateInProgress,
+		DbAgentProvisioningStateSucceeded,
+	}
+}
+
+// DbAgentState - The state of the database agent.
+type DbAgentState string
+
+const (
+	// DbAgentStateDisabled - The database agent is disabled.
+	DbAgentStateDisabled DbAgentState = "Disabled"
+	// DbAgentStateDisabling - The database agent is being disabled.
+	DbAgentStateDisabling DbAgentState = "Disabling"
+	// DbAgentStateEnabled - The database agent is enabled.
+	DbAgentStateEnabled DbAgentState = "Enabled"
+	// DbAgentStateEnabling - The database agent is being enabled.
+	DbAgentStateEnabling DbAgentState = "Enabling"
+	// DbAgentStateFailed - The database agent lifecycle operation failed.
+	DbAgentStateFailed DbAgentState = "Failed"
+)
+
+// PossibleDbAgentStateValues returns the possible values for the DbAgentState const type.
+func PossibleDbAgentStateValues() []DbAgentState {
+	return []DbAgentState{
+		DbAgentStateDisabled,
+		DbAgentStateDisabling,
+		DbAgentStateEnabled,
+		DbAgentStateEnabling,
+		DbAgentStateFailed,
+	}
+}
+
 // EncryptionKeyStatus - Status of key used by a server configured with data encryption based on customer managed key, to
 // encrypt the primary storage associated to the server.
 type EncryptionKeyStatus string
@@ -378,6 +447,24 @@ func PossibleFeatureStatusValues() []FeatureStatus {
 	return []FeatureStatus{
 		FeatureStatusDisabled,
 		FeatureStatusEnabled,
+	}
+}
+
+// FipsMode - Indicates if FIPS (Federal Information Processing Standards) mode is enabled on the server.
+type FipsMode string
+
+const (
+	// FipsModeDisabled - FIPS mode is disabled on the server.
+	FipsModeDisabled FipsMode = "Disabled"
+	// FipsModeEnabled - FIPS mode is enabled on the server.
+	FipsModeEnabled FipsMode = "Enabled"
+)
+
+// PossibleFipsModeValues returns the possible values for the FipsMode const type.
+func PossibleFipsModeValues() []FipsMode {
+	return []FipsMode{
+		FipsModeDisabled,
+		FipsModeEnabled,
 	}
 }
 
@@ -498,6 +585,24 @@ func PossibleIdentityTypeValues() []IdentityType {
 		IdentityTypeSystemAssigned,
 		IdentityTypeSystemAssignedUserAssigned,
 		IdentityTypeUserAssigned,
+	}
+}
+
+// ImmutableBackup - Indicates if the server is configured to create immutable backups.
+type ImmutableBackup string
+
+const (
+	// ImmutableBackupDisabled - Server is not configured to create immutable backups.
+	ImmutableBackupDisabled ImmutableBackup = "Disabled"
+	// ImmutableBackupEnabled - Server is configured to create immutable backups.
+	ImmutableBackupEnabled ImmutableBackup = "Enabled"
+)
+
+// PossibleImmutableBackupValues returns the possible values for the ImmutableBackup const type.
+func PossibleImmutableBackupValues() []ImmutableBackup {
+	return []ImmutableBackup{
+		ImmutableBackupDisabled,
+		ImmutableBackupEnabled,
 	}
 }
 
@@ -955,6 +1060,8 @@ func PossiblePasswordBasedAuthValues() []PasswordBasedAuth {
 type PostgresMajorVersion string
 
 const (
+	// PostgresMajorVersion19 - PostgreSQL 19.
+	PostgresMajorVersion19 PostgresMajorVersion = "19"
 	// PostgresMajorVersionEighteen - PostgreSQL 18.
 	PostgresMajorVersionEighteen PostgresMajorVersion = "18"
 	// PostgresMajorVersionEleven - PostgreSQL 11.
@@ -976,6 +1083,7 @@ const (
 // PossiblePostgresMajorVersionValues returns the possible values for the PostgresMajorVersion const type.
 func PossiblePostgresMajorVersionValues() []PostgresMajorVersion {
 	return []PostgresMajorVersion{
+		PostgresMajorVersion19,
 		PostgresMajorVersionEighteen,
 		PostgresMajorVersionEleven,
 		PostgresMajorVersionFifteen,

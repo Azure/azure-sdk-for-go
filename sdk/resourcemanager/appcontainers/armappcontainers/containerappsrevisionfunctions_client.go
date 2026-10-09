@@ -19,7 +19,7 @@ import (
 // ContainerAppsRevisionFunctionsClient contains the methods for the ContainerAppsRevisionFunctions group.
 // Don't use this type directly, use NewContainerAppsRevisionFunctionsClient() instead.
 //
-// Generated from API version 2025-10-02-preview
+// Generated from API version 2026-07-01
 type ContainerAppsRevisionFunctionsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -46,7 +46,7 @@ func NewContainerAppsRevisionFunctionsClient(subscriptionID string, credential a
 
 // Get - Get a specific function of a Container App Revision.
 //
-// Get a specific function of a Container App Revision.
+// Gets the details of a specific function in a Container App revision.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - containerAppName - Name of the Container App.
@@ -99,7 +99,7 @@ func (client *ContainerAppsRevisionFunctionsClient) getCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251002Preview)
+	reqQP.Set("api-version", version20260701)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -119,7 +119,7 @@ func (client *ContainerAppsRevisionFunctionsClient) getHandleResponse(resp *http
 
 // NewListPager - List the functions for a given Container App Revision.
 //
-// List the functions for a given Container App Revision.
+// Lists the functions available in a specific Container App revision.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - containerAppName - Name of the Container App.
 //   - revisionName - Name of the Container App Revision.
@@ -182,7 +182,7 @@ func (client *ContainerAppsRevisionFunctionsClient) listCreateRequest(ctx contex
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20251002Preview)
+		reqQP.Set("api-version", version20260701)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-06-01/VaultCRUD/CheckBackupVaultsNameAvailability.json
+// Generated from example definition: 2026-07-01/VaultCRUD/CheckBackupVaultsNameAvailability.json
 func ExampleBackupVaultsClient_CheckNameAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -40,7 +40,7 @@ func ExampleBackupVaultsClient_CheckNameAvailability() {
 	// }
 }
 
-// Generated from example definition: 2026-06-01/PutBackupVaultWithUndelete.json
+// Generated from example definition: 2026-07-01/PutBackupVaultWithUndelete.json
 func ExampleBackupVaultsClient_BeginCreateOrUpdate_restoreASoftDeletedBackupVault() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -149,7 +149,7 @@ func ExampleBackupVaultsClient_BeginCreateOrUpdate_restoreASoftDeletedBackupVaul
 	// }
 }
 
-// Generated from example definition: 2026-06-01/VaultCRUD/PutBackupVault.json
+// Generated from example definition: 2026-07-01/VaultCRUD/PutBackupVault.json
 func ExampleBackupVaultsClient_BeginCreateOrUpdate_createBackupVault() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -239,7 +239,7 @@ func ExampleBackupVaultsClient_BeginCreateOrUpdate_createBackupVault() {
 	// }
 }
 
-// Generated from example definition: 2026-06-01/VaultCRUD/PutBackupVaultCMKSettings_ResourceGuardEnabled.json
+// Generated from example definition: 2026-07-01/VaultCRUD/PutBackupVaultCMKSettings_ResourceGuardEnabled.json
 func ExampleBackupVaultsClient_BeginCreateOrUpdate_createOrUpdateBackupVaultWithCmkAndResourceGuardEnabled() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -332,7 +332,7 @@ func ExampleBackupVaultsClient_BeginCreateOrUpdate_createOrUpdateBackupVaultWith
 	// }
 }
 
-// Generated from example definition: 2026-06-01/VaultCRUD/PutBackupVaultWithCMK.json
+// Generated from example definition: 2026-07-01/VaultCRUD/PutBackupVaultWithCMK.json
 func ExampleBackupVaultsClient_BeginCreateOrUpdate_createBackupVaultWithCmk() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -419,7 +419,7 @@ func ExampleBackupVaultsClient_BeginCreateOrUpdate_createBackupVaultWithCmk() {
 	// }
 }
 
-// Generated from example definition: 2026-06-01/VaultCRUD/PutBackupVaultWithCostManagementSettings.json
+// Generated from example definition: 2026-07-01/VaultCRUD/PutBackupVaultWithCostManagementSettings.json
 func ExampleBackupVaultsClient_BeginCreateOrUpdate_createBackupVaultWithCostManagementSettings() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -515,7 +515,7 @@ func ExampleBackupVaultsClient_BeginCreateOrUpdate_createBackupVaultWithCostMana
 	// }
 }
 
-// Generated from example definition: 2026-06-01/VaultCRUD/PutBackupVaultWithMSI.json
+// Generated from example definition: 2026-07-01/VaultCRUD/PutBackupVaultWithMSI.json
 func ExampleBackupVaultsClient_BeginCreateOrUpdate_createBackupVaultWithMsi() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -605,7 +605,96 @@ func ExampleBackupVaultsClient_BeginCreateOrUpdate_createBackupVaultWithMsi() {
 	// }
 }
 
-// Generated from example definition: 2026-06-01/VaultCRUD/DeleteBackupVault.json
+// Generated from example definition: 2026-07-01/VaultCRUD/PutBackupVaultWithTimedImmutability.json
+func ExampleBackupVaultsClient_BeginCreateOrUpdate_createBackupVaultWithTimedImmutability() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdataprotection.NewClientFactory("04cf684a-d41f-4550-9f70-7708a3a2283b", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewBackupVaultsClient().BeginCreateOrUpdate(ctx, "SampleResourceGroup", "swaggerExample", armdataprotection.BackupVaultResource{
+		Location: to.Ptr("WestUS"),
+		Properties: &armdataprotection.BackupVault{
+			SecuritySettings: &armdataprotection.SecuritySettings{
+				ImmutabilitySettings: &armdataprotection.ImmutabilitySettings{
+					State: to.Ptr(armdataprotection.ImmutabilityStateUnlocked),
+					Configuration: &armdataprotection.ImmutabilityConfiguration{
+						Type:           to.Ptr(armdataprotection.ImmutabilityTypeTimeBased),
+						DurationInDays: to.Ptr[int32](30),
+					},
+				},
+				SoftDeleteSettings: &armdataprotection.SoftDeleteSettings{
+					RetentionDurationInDays: to.Ptr[float64](14),
+					State:                   to.Ptr(armdataprotection.SoftDeleteStateOn),
+				},
+			},
+			StorageSettings: []*armdataprotection.StorageSetting{
+				{
+					Type:          to.Ptr(armdataprotection.StorageSettingTypesLocallyRedundant),
+					DatastoreType: to.Ptr(armdataprotection.StorageSettingStoreTypesVaultStore),
+				},
+			},
+		},
+		Tags: map[string]*string{
+			"key1": to.Ptr("val1"),
+		},
+		Identity: &armdataprotection.DppIdentityDetails{
+			Type: to.Ptr("None"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armdataprotection.BackupVaultsClientCreateOrUpdateResponse{
+	// 	BackupVaultResource: armdataprotection.BackupVaultResource{
+	// 		ID: to.Ptr("/subscriptions/04cf684a-d41f-4550-9f70-7708a3a2283b/resourceGroups/SampleResourceGroup/providers/Microsoft.DataProtection/backupVaults/swaggerExample"),
+	// 		Name: to.Ptr("swaggerExample"),
+	// 		Type: to.Ptr("Microsoft.DataProtection/backupVaults"),
+	// 		Location: to.Ptr("WestUS"),
+	// 		Tags: map[string]*string{
+	// 			"key1": to.Ptr("val1"),
+	// 		},
+	// 		Identity: &armdataprotection.DppIdentityDetails{
+	// 			Type: to.Ptr("None"),
+	// 		},
+	// 		Properties: &armdataprotection.BackupVault{
+	// 			ProvisioningState: to.Ptr(armdataprotection.ProvisioningStateSucceeded),
+	// 			SecuritySettings: &armdataprotection.SecuritySettings{
+	// 				ImmutabilitySettings: &armdataprotection.ImmutabilitySettings{
+	// 					State: to.Ptr(armdataprotection.ImmutabilityStateUnlocked),
+	// 					Configuration: &armdataprotection.ImmutabilityConfiguration{
+	// 						Type: to.Ptr(armdataprotection.ImmutabilityTypeTimeBased),
+	// 						DurationInDays: to.Ptr[int32](30),
+	// 					},
+	// 				},
+	// 				SoftDeleteSettings: &armdataprotection.SoftDeleteSettings{
+	// 					RetentionDurationInDays: to.Ptr[float64](14),
+	// 					State: to.Ptr(armdataprotection.SoftDeleteStateOn),
+	// 				},
+	// 			},
+	// 			StorageSettings: []*armdataprotection.StorageSetting{
+	// 				{
+	// 					Type: to.Ptr(armdataprotection.StorageSettingTypesLocallyRedundant),
+	// 					DatastoreType: to.Ptr(armdataprotection.StorageSettingStoreTypesVaultStore),
+	// 				},
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-07-01/VaultCRUD/DeleteBackupVault.json
 func ExampleBackupVaultsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -631,7 +720,7 @@ func ExampleBackupVaultsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-06-01/VaultCRUD/GetBackupVault.json
+// Generated from example definition: 2026-07-01/VaultCRUD/GetBackupVault.json
 func ExampleBackupVaultsClient_Get_getBackupVault() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -689,7 +778,7 @@ func ExampleBackupVaultsClient_Get_getBackupVault() {
 	// }
 }
 
-// Generated from example definition: 2026-06-01/VaultCRUD/GetBackupVaultWithCMK.json
+// Generated from example definition: 2026-07-01/VaultCRUD/GetBackupVaultWithCMK.json
 func ExampleBackupVaultsClient_Get_getBackupVaultWithCmk() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -749,7 +838,7 @@ func ExampleBackupVaultsClient_Get_getBackupVaultWithCmk() {
 	// }
 }
 
-// Generated from example definition: 2026-06-01/VaultCRUD/GetBackupVaultWithCostManagementSettings.json
+// Generated from example definition: 2026-07-01/VaultCRUD/GetBackupVaultWithCostManagementSettings.json
 func ExampleBackupVaultsClient_Get_getBackupVaultWithCostManagementSettings() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -805,7 +894,7 @@ func ExampleBackupVaultsClient_Get_getBackupVaultWithCostManagementSettings() {
 	// }
 }
 
-// Generated from example definition: 2026-06-01/VaultCRUD/GetBackupVaultWithMSI.json
+// Generated from example definition: 2026-07-01/VaultCRUD/GetBackupVaultWithMSI.json
 func ExampleBackupVaultsClient_Get_getBackupVaultWithMsi() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -858,7 +947,7 @@ func ExampleBackupVaultsClient_Get_getBackupVaultWithMsi() {
 	// }
 }
 
-// Generated from example definition: 2026-06-01/VaultCRUD/GetBackupVaultsInResourceGroup.json
+// Generated from example definition: 2026-07-01/VaultCRUD/GetBackupVaultsInResourceGroup.json
 func ExampleBackupVaultsClient_NewGetInResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -956,7 +1045,7 @@ func ExampleBackupVaultsClient_NewGetInResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-06-01/VaultCRUD/GetBackupVaultsInSubscription.json
+// Generated from example definition: 2026-07-01/VaultCRUD/GetBackupVaultsInSubscription.json
 func ExampleBackupVaultsClient_NewGetInSubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1049,7 +1138,7 @@ func ExampleBackupVaultsClient_NewGetInSubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2026-06-01/VaultCRUD/PatchBackupVault.json
+// Generated from example definition: 2026-07-01/VaultCRUD/PatchBackupVault.json
 func ExampleBackupVaultsClient_BeginUpdate_patchBackupVault() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1109,7 +1198,7 @@ func ExampleBackupVaultsClient_BeginUpdate_patchBackupVault() {
 	// }
 }
 
-// Generated from example definition: 2026-06-01/VaultCRUD/PatchBackupVaultWithCMK.json
+// Generated from example definition: 2026-07-01/VaultCRUD/PatchBackupVaultWithCMK.json
 func ExampleBackupVaultsClient_BeginUpdate_patchBackupVaultWithCmk() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1206,7 +1295,7 @@ func ExampleBackupVaultsClient_BeginUpdate_patchBackupVaultWithCmk() {
 	// }
 }
 
-// Generated from example definition: 2026-06-01/VaultCRUD/PatchBackupVaultWithCostManagementSettings.json
+// Generated from example definition: 2026-07-01/VaultCRUD/PatchBackupVaultWithCostManagementSettings.json
 func ExampleBackupVaultsClient_BeginUpdate_patchBackupVaultWithCostManagementSettings() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

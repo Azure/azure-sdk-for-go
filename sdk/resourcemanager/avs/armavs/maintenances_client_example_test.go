@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-// Generated from example definition: 2025-09-01/Maintenances_Get.json
+// Generated from example definition: 2026-03-01/Maintenances_Get.json
 func ExampleMaintenancesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -40,8 +40,8 @@ func ExampleMaintenancesClient_Get() {
 	// 			Component: to.Ptr(armavs.MaintenanceTypeVCSA),
 	// 			DisplayName: to.Ptr("vcsa 7.0 upgrade"),
 	// 			ClusterID: to.Ptr[int32](1),
-	// 			InfoLink: to.Ptr("https://vmwarekb/arcticle"),
-	// 			Impact: to.Ptr("This upgrade will update your vcsa to 7.0. Control plance performance will be impacted for the duration"),
+	// 			InfoLink: to.Ptr("https://vmwarekb/article"),
+	// 			Impact: to.Ptr("This upgrade will update your vcsa to 7.0. Control plane performance will be impacted for the duration"),
 	// 			ScheduledStartTime: to.Ptr(time.Date(2023, time.January, 12, 11, 0, 11, 830000000, time.UTC)),
 	// 			EstimatedDurationInMinutes: to.Ptr[int64](960),
 	// 			State: &armavs.MaintenanceState{
@@ -52,6 +52,36 @@ func ExampleMaintenancesClient_Get() {
 	// 			},
 	// 			ProvisioningState: to.Ptr(armavs.MaintenanceProvisioningStateSucceeded),
 	// 			ScheduledByMicrosoft: to.Ptr(true),
+	// 			Activities: []*armavs.MaintenanceActivity{
+	// 				{
+	// 					Kind: to.Ptr(armavs.MaintenanceActivityKindUpgrade),
+	// 					Component: to.Ptr("ESXi"),
+	// 					Version: to.Ptr("7.0.3.01500"),
+	// 					InfoLink: to.Ptr("https://vmwarekb/article"),
+	// 					Impact: to.Ptr("This upgrade will update your esxi to 7.0. Control plane performance will be impacted for the duration"),
+	// 				},
+	// 				{
+	// 					Kind: to.Ptr(armavs.MaintenanceActivityKindCertificateRotation),
+	// 					Component: to.Ptr("vCSA"),
+	// 					Version: to.Ptr("notapplicable"),
+	// 					InfoLink: to.Ptr("https://vmwarekb/article"),
+	// 					Impact: to.Ptr("During this time, we expect no impact to Azure VMware Solution services or to the workloads"),
+	// 				},
+	// 			},
+	// 			Group: &armavs.MaintenanceGroup{
+	// 				ID: to.Ptr("SKUMigrationID"),
+	// 				Name: to.Ptr("SKUMigration"),
+	// 				Kind: to.Ptr(armavs.MaintenanceGroupKindConsolidation),
+	// 			},
+	// 			Relationships: &armavs.MaintenanceRelationships{
+	// 				Dependencies: []*string{
+	// 					to.Ptr("dependentMaintenanceName1"),
+	// 					to.Ptr("dependentMaintenanceName2"),
+	// 				},
+	// 				Prerequisites: []*string{
+	// 					to.Ptr("prerequisiteMaintenanceName1"),
+	// 				},
+	// 			},
 	// 			Operations: []armavs.MaintenanceManagementOperationClassification{
 	// 				&armavs.ScheduleOperation{
 	// 					Kind: to.Ptr(armavs.MaintenanceManagementOperationKindSchedule),
@@ -67,6 +97,11 @@ func ExampleMaintenancesClient_Get() {
 	// 							Kind: to.Ptr(armavs.ScheduleOperationConstraintKindAvailableWindowForMaintenanceWhileScheduleOperation),
 	// 							StartsAt: to.Ptr(time.Date(2025, time.January, 16, 6, 21, 31, 961000000, time.UTC)),
 	// 							EndsAt: to.Ptr(time.Date(2025, time.January, 16, 6, 21, 31, 961000000, time.UTC)),
+	// 						},
+	// 						&armavs.WeekendSchedulingConstraint{
+	// 							Kind: to.Ptr(armavs.ScheduleOperationConstraintKindWeekendScheduling),
+	// 							DisabledReason: to.Ptr("Schedule operation is disabled for maintenance on weekends"),
+	// 							IsDisabled: to.Ptr(true),
 	// 						},
 	// 						&armavs.BlockedWhileScheduleOperation{
 	// 							Kind: to.Ptr(armavs.ScheduleOperationConstraintKindBlockedWhileScheduleOperation),
@@ -96,6 +131,18 @@ func ExampleMaintenancesClient_Get() {
 	// 							},
 	// 						},
 	// 					},
+	// 					Recommendation: &armavs.MaintenanceRecommendation{
+	// 						MaintenanceWindows: []*armavs.MaintenanceWindowRecommendation{
+	// 							{
+	// 								StartTime: to.Ptr(time.Date(2025, time.December, 14, 16, 0, 0, 0, time.UTC)),
+	// 								Reason: to.Ptr("Historically preferred time"),
+	// 							},
+	// 							{
+	// 								StartTime: to.Ptr(time.Date(2025, time.December, 14, 16, 0, 0, 0, time.UTC)),
+	// 								Reason: to.Ptr("Historically preferred day"),
+	// 							},
+	// 						},
+	// 					},
 	// 				},
 	// 				&armavs.RescheduleOperation{
 	// 					Kind: to.Ptr(armavs.MaintenanceManagementOperationKindReschedule),
@@ -107,6 +154,16 @@ func ExampleMaintenancesClient_Get() {
 	// 							StartsAt: to.Ptr(time.Date(2025, time.January, 16, 6, 21, 31, 961000000, time.UTC)),
 	// 							EndsAt: to.Ptr(time.Date(2025, time.January, 16, 6, 21, 31, 961000000, time.UTC)),
 	// 						},
+	// 						&armavs.ReschedulingWindowConstraint{
+	// 							EndsAt: to.Ptr(time.Date(2026, time.February, 8, 21, 59, 56, 0, time.UTC)),
+	// 							Kind: to.Ptr(armavs.RescheduleOperationConstraintKindReschedulingWindow),
+	// 							StartsAt: to.Ptr(time.Date(2026, time.January, 29, 21, 59, 56, 0, time.UTC)),
+	// 						},
+	// 						&armavs.WeekendReschedulingConstraint{
+	// 							Kind: to.Ptr(armavs.RescheduleOperationConstraintKindWeekendRescheduling),
+	// 							DisabledReason: to.Ptr("Reschedule operation is disabled for maintenance on weekends"),
+	// 							IsDisabled: to.Ptr(true),
+	// 						},
 	// 						&armavs.BlockedWhileRescheduleOperation{
 	// 							Kind: to.Ptr(armavs.RescheduleOperationConstraintKindBlockedWhileRescheduleOperation),
 	// 							Category: to.Ptr(armavs.BlockedDatesConstraintCategoryHiPriorityEvent),
@@ -116,6 +173,18 @@ func ExampleMaintenancesClient_Get() {
 	// 									EndsAt: to.Ptr(time.Date(2025, time.August, 19, 6, 21, 31, 961000000, time.UTC)),
 	// 									Reason: to.Ptr("US General Election 2024"),
 	// 								},
+	// 							},
+	// 						},
+	// 					},
+	// 					Recommendation: &armavs.MaintenanceRecommendation{
+	// 						MaintenanceWindows: []*armavs.MaintenanceWindowRecommendation{
+	// 							{
+	// 								StartTime: to.Ptr(time.Date(2025, time.December, 14, 16, 0, 0, 0, time.UTC)),
+	// 								Reason: to.Ptr("Historically preferred time"),
+	// 							},
+	// 							{
+	// 								StartTime: to.Ptr(time.Date(2025, time.December, 14, 16, 0, 0, 0, time.UTC)),
+	// 								Reason: to.Ptr("Historically preferred day"),
 	// 							},
 	// 						},
 	// 					},
@@ -159,7 +228,7 @@ func ExampleMaintenancesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/Maintenances_InitiateChecks.json
+// Generated from example definition: 2026-03-01/Maintenances_InitiateChecks.json
 func ExampleMaintenancesClient_InitiateChecks() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -186,8 +255,8 @@ func ExampleMaintenancesClient_InitiateChecks() {
 	// 			Component: to.Ptr(armavs.MaintenanceTypeVCSA),
 	// 			DisplayName: to.Ptr("vcsa 7.0 upgrade"),
 	// 			ClusterID: to.Ptr[int32](1),
-	// 			InfoLink: to.Ptr("https://vmwarekb/arcticle"),
-	// 			Impact: to.Ptr("This upgrade will update your vcsa to 7.0. Control plance performance will be impacted for the duration"),
+	// 			InfoLink: to.Ptr("https://vmwarekb/article"),
+	// 			Impact: to.Ptr("This upgrade will update your vcsa to 7.0. Control plane performance will be impacted for the duration"),
 	// 			ScheduledStartTime: to.Ptr(time.Date(2023, time.January, 12, 11, 0, 11, 830000000, time.UTC)),
 	// 			EstimatedDurationInMinutes: to.Ptr[int64](960),
 	// 			State: &armavs.MaintenanceState{
@@ -198,6 +267,36 @@ func ExampleMaintenancesClient_InitiateChecks() {
 	// 			},
 	// 			ProvisioningState: to.Ptr(armavs.MaintenanceProvisioningStateSucceeded),
 	// 			ScheduledByMicrosoft: to.Ptr(true),
+	// 			Activities: []*armavs.MaintenanceActivity{
+	// 				{
+	// 					Kind: to.Ptr(armavs.MaintenanceActivityKindUpgrade),
+	// 					Component: to.Ptr("ESXi"),
+	// 					Version: to.Ptr("7.0.3.01500"),
+	// 					InfoLink: to.Ptr("https://vmwarekb/article"),
+	// 					Impact: to.Ptr("This upgrade will update your esxi to 7.0. Control plane performance will be impacted for the duration"),
+	// 				},
+	// 				{
+	// 					Kind: to.Ptr(armavs.MaintenanceActivityKindCertificateRotation),
+	// 					Component: to.Ptr("vCSA"),
+	// 					Version: to.Ptr("notapplicable"),
+	// 					InfoLink: to.Ptr("https://vmwarekb/article"),
+	// 					Impact: to.Ptr("During this time, we expect no impact to Azure VMware Solution services or to the workloads"),
+	// 				},
+	// 			},
+	// 			Group: &armavs.MaintenanceGroup{
+	// 				ID: to.Ptr("SKUMigrationID"),
+	// 				Name: to.Ptr("SKUMigration"),
+	// 				Kind: to.Ptr(armavs.MaintenanceGroupKindConsolidation),
+	// 			},
+	// 			Relationships: &armavs.MaintenanceRelationships{
+	// 				Dependencies: []*string{
+	// 					to.Ptr("dependentMaintenanceName1"),
+	// 					to.Ptr("dependentMaintenanceName2"),
+	// 				},
+	// 				Prerequisites: []*string{
+	// 					to.Ptr("prerequisiteMaintenanceName1"),
+	// 				},
+	// 			},
 	// 			Operations: []armavs.MaintenanceManagementOperationClassification{
 	// 				&armavs.ScheduleOperation{
 	// 					Kind: to.Ptr(armavs.MaintenanceManagementOperationKindSchedule),
@@ -213,6 +312,11 @@ func ExampleMaintenancesClient_InitiateChecks() {
 	// 							Kind: to.Ptr(armavs.ScheduleOperationConstraintKindAvailableWindowForMaintenanceWhileScheduleOperation),
 	// 							StartsAt: to.Ptr(time.Date(2025, time.January, 16, 6, 21, 31, 961000000, time.UTC)),
 	// 							EndsAt: to.Ptr(time.Date(2025, time.January, 16, 6, 21, 31, 961000000, time.UTC)),
+	// 						},
+	// 						&armavs.WeekendSchedulingConstraint{
+	// 							Kind: to.Ptr(armavs.ScheduleOperationConstraintKindWeekendScheduling),
+	// 							DisabledReason: to.Ptr("Schedule operation is disabled for maintenance on weekends"),
+	// 							IsDisabled: to.Ptr(true),
 	// 						},
 	// 						&armavs.BlockedWhileScheduleOperation{
 	// 							Kind: to.Ptr(armavs.ScheduleOperationConstraintKindBlockedWhileScheduleOperation),
@@ -242,6 +346,18 @@ func ExampleMaintenancesClient_InitiateChecks() {
 	// 							},
 	// 						},
 	// 					},
+	// 					Recommendation: &armavs.MaintenanceRecommendation{
+	// 						MaintenanceWindows: []*armavs.MaintenanceWindowRecommendation{
+	// 							{
+	// 								StartTime: to.Ptr(time.Date(2025, time.December, 14, 16, 0, 0, 0, time.UTC)),
+	// 								Reason: to.Ptr("Historically preferred time"),
+	// 							},
+	// 							{
+	// 								StartTime: to.Ptr(time.Date(2025, time.December, 14, 16, 0, 0, 0, time.UTC)),
+	// 								Reason: to.Ptr("Historically preferred day"),
+	// 							},
+	// 						},
+	// 					},
 	// 				},
 	// 				&armavs.RescheduleOperation{
 	// 					Kind: to.Ptr(armavs.MaintenanceManagementOperationKindReschedule),
@@ -253,6 +369,16 @@ func ExampleMaintenancesClient_InitiateChecks() {
 	// 							StartsAt: to.Ptr(time.Date(2025, time.January, 16, 6, 21, 31, 961000000, time.UTC)),
 	// 							EndsAt: to.Ptr(time.Date(2025, time.January, 16, 6, 21, 31, 961000000, time.UTC)),
 	// 						},
+	// 						&armavs.ReschedulingWindowConstraint{
+	// 							EndsAt: to.Ptr(time.Date(2026, time.February, 8, 21, 59, 56, 0, time.UTC)),
+	// 							Kind: to.Ptr(armavs.RescheduleOperationConstraintKindReschedulingWindow),
+	// 							StartsAt: to.Ptr(time.Date(2026, time.January, 29, 21, 59, 56, 0, time.UTC)),
+	// 						},
+	// 						&armavs.WeekendReschedulingConstraint{
+	// 							Kind: to.Ptr(armavs.RescheduleOperationConstraintKindWeekendRescheduling),
+	// 							DisabledReason: to.Ptr("Reschedule operation is disabled for maintenance on weekends"),
+	// 							IsDisabled: to.Ptr(true),
+	// 						},
 	// 						&armavs.BlockedWhileRescheduleOperation{
 	// 							Kind: to.Ptr(armavs.RescheduleOperationConstraintKindBlockedWhileRescheduleOperation),
 	// 							Category: to.Ptr(armavs.BlockedDatesConstraintCategoryHiPriorityEvent),
@@ -262,6 +388,18 @@ func ExampleMaintenancesClient_InitiateChecks() {
 	// 									EndsAt: to.Ptr(time.Date(2025, time.August, 19, 6, 21, 31, 961000000, time.UTC)),
 	// 									Reason: to.Ptr("US General Election 2024"),
 	// 								},
+	// 							},
+	// 						},
+	// 					},
+	// 					Recommendation: &armavs.MaintenanceRecommendation{
+	// 						MaintenanceWindows: []*armavs.MaintenanceWindowRecommendation{
+	// 							{
+	// 								StartTime: to.Ptr(time.Date(2025, time.December, 14, 16, 0, 0, 0, time.UTC)),
+	// 								Reason: to.Ptr("Historically preferred time"),
+	// 							},
+	// 							{
+	// 								StartTime: to.Ptr(time.Date(2025, time.December, 14, 16, 0, 0, 0, time.UTC)),
+	// 								Reason: to.Ptr("Historically preferred day"),
 	// 							},
 	// 						},
 	// 					},
@@ -305,7 +443,7 @@ func ExampleMaintenancesClient_InitiateChecks() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/Maintenances_List.json
+// Generated from example definition: 2026-03-01/Maintenances_List.json
 func ExampleMaintenancesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -338,8 +476,8 @@ func ExampleMaintenancesClient_NewListPager() {
 		// 					Component: to.Ptr(armavs.MaintenanceTypeVCSA),
 		// 					DisplayName: to.Ptr("vcsa 7.0 upgrade"),
 		// 					ClusterID: to.Ptr[int32](1),
-		// 					InfoLink: to.Ptr("https://vmwarekb/arcticle"),
-		// 					Impact: to.Ptr("This upgrade will update your vcsa to 7.0. Control plance performance will be impacted for the duration"),
+		// 					InfoLink: to.Ptr("https://vmwarekb/article"),
+		// 					Impact: to.Ptr("This upgrade will update your vcsa to 7.0. Control plane performance will be impacted for the duration"),
 		// 					ScheduledStartTime: to.Ptr(time.Date(2023, time.January, 12, 11, 0, 11, 830000000, time.UTC)),
 		// 					EstimatedDurationInMinutes: to.Ptr[int64](960),
 		// 					State: &armavs.MaintenanceState{
@@ -350,6 +488,36 @@ func ExampleMaintenancesClient_NewListPager() {
 		// 					},
 		// 					ProvisioningState: to.Ptr(armavs.MaintenanceProvisioningStateSucceeded),
 		// 					ScheduledByMicrosoft: to.Ptr(true),
+		// 					Activities: []*armavs.MaintenanceActivity{
+		// 						{
+		// 							Kind: to.Ptr(armavs.MaintenanceActivityKindUpgrade),
+		// 							Component: to.Ptr("ESXi"),
+		// 							Version: to.Ptr("7.0.3.01500"),
+		// 							InfoLink: to.Ptr("https://vmwarekb/article"),
+		// 							Impact: to.Ptr("This upgrade will update your esxi to 7.0. Control plane performance will be impacted for the duration"),
+		// 						},
+		// 						{
+		// 							Kind: to.Ptr(armavs.MaintenanceActivityKindCertificateRotation),
+		// 							Component: to.Ptr("vCSA"),
+		// 							Version: to.Ptr("notapplicable"),
+		// 							InfoLink: to.Ptr("https://vmwarekb/article"),
+		// 							Impact: to.Ptr("During this time, we expect no impact to Azure VMware Solution services or to the workloads"),
+		// 						},
+		// 					},
+		// 					Group: &armavs.MaintenanceGroup{
+		// 						ID: to.Ptr("SKUMigrationID"),
+		// 						Name: to.Ptr("SKUMigration"),
+		// 						Kind: to.Ptr(armavs.MaintenanceGroupKindConsolidation),
+		// 					},
+		// 					Relationships: &armavs.MaintenanceRelationships{
+		// 						Dependencies: []*string{
+		// 							to.Ptr("dependentMaintenanceName1"),
+		// 							to.Ptr("dependentMaintenanceName2"),
+		// 						},
+		// 						Prerequisites: []*string{
+		// 							to.Ptr("prerequisiteMaintenanceName1"),
+		// 						},
+		// 					},
 		// 					Operations: []armavs.MaintenanceManagementOperationClassification{
 		// 						&armavs.ScheduleOperation{
 		// 							Kind: to.Ptr(armavs.MaintenanceManagementOperationKindSchedule),
@@ -394,6 +562,18 @@ func ExampleMaintenancesClient_NewListPager() {
 		// 									},
 		// 								},
 		// 							},
+		// 							Recommendation: &armavs.MaintenanceRecommendation{
+		// 								MaintenanceWindows: []*armavs.MaintenanceWindowRecommendation{
+		// 									{
+		// 										StartTime: to.Ptr(time.Date(2025, time.December, 14, 16, 0, 0, 0, time.UTC)),
+		// 										Reason: to.Ptr("Historically preferred time"),
+		// 									},
+		// 									{
+		// 										StartTime: to.Ptr(time.Date(2025, time.December, 14, 16, 0, 0, 0, time.UTC)),
+		// 										Reason: to.Ptr("Historically preferred day"),
+		// 									},
+		// 								},
+		// 							},
 		// 						},
 		// 						&armavs.RescheduleOperation{
 		// 							Kind: to.Ptr(armavs.MaintenanceManagementOperationKindReschedule),
@@ -414,6 +594,18 @@ func ExampleMaintenancesClient_NewListPager() {
 		// 											EndsAt: to.Ptr(time.Date(2025, time.August, 19, 6, 21, 31, 961000000, time.UTC)),
 		// 											Reason: to.Ptr("US General Election 2024"),
 		// 										},
+		// 									},
+		// 								},
+		// 							},
+		// 							Recommendation: &armavs.MaintenanceRecommendation{
+		// 								MaintenanceWindows: []*armavs.MaintenanceWindowRecommendation{
+		// 									{
+		// 										StartTime: to.Ptr(time.Date(2025, time.December, 14, 16, 0, 0, 0, time.UTC)),
+		// 										Reason: to.Ptr("Historically preferred time"),
+		// 									},
+		// 									{
+		// 										StartTime: to.Ptr(time.Date(2025, time.December, 14, 16, 0, 0, 0, time.UTC)),
+		// 										Reason: to.Ptr("Historically preferred day"),
 		// 									},
 		// 								},
 		// 							},
@@ -464,8 +656,8 @@ func ExampleMaintenancesClient_NewListPager() {
 		// 					Component: to.Ptr(armavs.MaintenanceTypeVCSA),
 		// 					DisplayName: to.Ptr("vcsa 7.0 upgrade"),
 		// 					ClusterID: to.Ptr[int32](1),
-		// 					InfoLink: to.Ptr("https://vmwarekb/arcticle"),
-		// 					Impact: to.Ptr("This upgrade will update your vcsa to 7.0. Control plance performance will be impacted for the duration"),
+		// 					InfoLink: to.Ptr("https://vmwarekb/article"),
+		// 					Impact: to.Ptr("This upgrade will update your vcsa to 7.0. Control plane performance will be impacted for the duration"),
 		// 					ScheduledStartTime: to.Ptr(time.Date(2023, time.January, 12, 11, 0, 11, 830000000, time.UTC)),
 		// 					EstimatedDurationInMinutes: to.Ptr[int64](960),
 		// 					State: &armavs.MaintenanceState{
@@ -476,6 +668,36 @@ func ExampleMaintenancesClient_NewListPager() {
 		// 					},
 		// 					ProvisioningState: to.Ptr(armavs.MaintenanceProvisioningStateSucceeded),
 		// 					ScheduledByMicrosoft: to.Ptr(true),
+		// 					Activities: []*armavs.MaintenanceActivity{
+		// 						{
+		// 							Kind: to.Ptr(armavs.MaintenanceActivityKindUpgrade),
+		// 							Component: to.Ptr("ESXi"),
+		// 							Version: to.Ptr("7.0.3.01500"),
+		// 							InfoLink: to.Ptr("https://vmwarekb/article"),
+		// 							Impact: to.Ptr("This upgrade will update your esxi to 7.0. Control plane performance will be impacted for the duration"),
+		// 						},
+		// 						{
+		// 							Kind: to.Ptr(armavs.MaintenanceActivityKindCertificateRotation),
+		// 							Component: to.Ptr("vCSA"),
+		// 							Version: to.Ptr("notapplicable"),
+		// 							InfoLink: to.Ptr("https://vmwarekb/article"),
+		// 							Impact: to.Ptr("During this time, we expect no impact to Azure VMware Solution services or to the workloads"),
+		// 						},
+		// 					},
+		// 					Group: &armavs.MaintenanceGroup{
+		// 						ID: to.Ptr("SKUMigrationID"),
+		// 						Name: to.Ptr("SKUMigration"),
+		// 						Kind: to.Ptr(armavs.MaintenanceGroupKindConsolidation),
+		// 					},
+		// 					Relationships: &armavs.MaintenanceRelationships{
+		// 						Dependencies: []*string{
+		// 							to.Ptr("dependentMaintenanceName1"),
+		// 							to.Ptr("dependentMaintenanceName2"),
+		// 						},
+		// 						Prerequisites: []*string{
+		// 							to.Ptr("prerequisiteMaintenanceName1"),
+		// 						},
+		// 					},
 		// 					Operations: []armavs.MaintenanceManagementOperationClassification{
 		// 						&armavs.ScheduleOperation{
 		// 							Kind: to.Ptr(armavs.MaintenanceManagementOperationKindSchedule),
@@ -586,7 +808,7 @@ func ExampleMaintenancesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-09-01/Maintenances_Reschedule.json
+// Generated from example definition: 2026-03-01/Maintenances_Reschedule.json
 func ExampleMaintenancesClient_Reschedule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -616,8 +838,8 @@ func ExampleMaintenancesClient_Reschedule() {
 	// 			Component: to.Ptr(armavs.MaintenanceTypeVCSA),
 	// 			DisplayName: to.Ptr("vcsa 7.0 upgrade"),
 	// 			ClusterID: to.Ptr[int32](1),
-	// 			InfoLink: to.Ptr("https://vmwarekb/arcticle"),
-	// 			Impact: to.Ptr("This upgrade will update your vcsa to 7.0. Control plance performance will be impacted for the duration"),
+	// 			InfoLink: to.Ptr("https://vmwarekb/article"),
+	// 			Impact: to.Ptr("This upgrade will update your vcsa to 7.0. Control plane performance will be impacted for the duration"),
 	// 			ScheduledStartTime: to.Ptr(time.Date(2023, time.January, 12, 16, 17, 55, 237000000, time.UTC)),
 	// 			EstimatedDurationInMinutes: to.Ptr[int64](960),
 	// 			State: &armavs.MaintenanceState{
@@ -628,6 +850,36 @@ func ExampleMaintenancesClient_Reschedule() {
 	// 			},
 	// 			ProvisioningState: to.Ptr(armavs.MaintenanceProvisioningStateSucceeded),
 	// 			ScheduledByMicrosoft: to.Ptr(true),
+	// 			Activities: []*armavs.MaintenanceActivity{
+	// 				{
+	// 					Kind: to.Ptr(armavs.MaintenanceActivityKindUpgrade),
+	// 					Component: to.Ptr("ESXi"),
+	// 					Version: to.Ptr("7.0.3.01500"),
+	// 					InfoLink: to.Ptr("https://vmwarekb/article"),
+	// 					Impact: to.Ptr("This upgrade will update your esxi to 7.0. Control plane performance will be impacted for the duration"),
+	// 				},
+	// 				{
+	// 					Kind: to.Ptr(armavs.MaintenanceActivityKindCertificateRotation),
+	// 					Component: to.Ptr("vCSA"),
+	// 					Version: to.Ptr("notapplicable"),
+	// 					InfoLink: to.Ptr("https://vmwarekb/article"),
+	// 					Impact: to.Ptr("During this time, we expect no impact to Azure VMware Solution services or to the workloads"),
+	// 				},
+	// 			},
+	// 			Group: &armavs.MaintenanceGroup{
+	// 				ID: to.Ptr("SKUMigrationID"),
+	// 				Name: to.Ptr("SKUMigration"),
+	// 				Kind: to.Ptr(armavs.MaintenanceGroupKindConsolidation),
+	// 			},
+	// 			Relationships: &armavs.MaintenanceRelationships{
+	// 				Dependencies: []*string{
+	// 					to.Ptr("dependentMaintenanceName1"),
+	// 					to.Ptr("dependentMaintenanceName2"),
+	// 				},
+	// 				Prerequisites: []*string{
+	// 					to.Ptr("prerequisiteMaintenanceName1"),
+	// 				},
+	// 			},
 	// 			Operations: []armavs.MaintenanceManagementOperationClassification{
 	// 				&armavs.ScheduleOperation{
 	// 					Kind: to.Ptr(armavs.MaintenanceManagementOperationKindSchedule),
@@ -643,6 +895,11 @@ func ExampleMaintenancesClient_Reschedule() {
 	// 							Kind: to.Ptr(armavs.ScheduleOperationConstraintKindAvailableWindowForMaintenanceWhileScheduleOperation),
 	// 							StartsAt: to.Ptr(time.Date(2025, time.January, 16, 6, 21, 31, 961000000, time.UTC)),
 	// 							EndsAt: to.Ptr(time.Date(2025, time.January, 16, 6, 21, 31, 961000000, time.UTC)),
+	// 						},
+	// 						&armavs.WeekendSchedulingConstraint{
+	// 							Kind: to.Ptr(armavs.ScheduleOperationConstraintKindWeekendScheduling),
+	// 							DisabledReason: to.Ptr("Schedule operation is disabled for maintenance on weekends"),
+	// 							IsDisabled: to.Ptr(true),
 	// 						},
 	// 						&armavs.BlockedWhileScheduleOperation{
 	// 							Kind: to.Ptr(armavs.ScheduleOperationConstraintKindBlockedWhileScheduleOperation),
@@ -672,6 +929,18 @@ func ExampleMaintenancesClient_Reschedule() {
 	// 							},
 	// 						},
 	// 					},
+	// 					Recommendation: &armavs.MaintenanceRecommendation{
+	// 						MaintenanceWindows: []*armavs.MaintenanceWindowRecommendation{
+	// 							{
+	// 								StartTime: to.Ptr(time.Date(2025, time.December, 14, 16, 0, 0, 0, time.UTC)),
+	// 								Reason: to.Ptr("Historically preferred time"),
+	// 							},
+	// 							{
+	// 								StartTime: to.Ptr(time.Date(2025, time.December, 14, 16, 0, 0, 0, time.UTC)),
+	// 								Reason: to.Ptr("Historically preferred day"),
+	// 							},
+	// 						},
+	// 					},
 	// 				},
 	// 				&armavs.RescheduleOperation{
 	// 					Kind: to.Ptr(armavs.MaintenanceManagementOperationKindReschedule),
@@ -683,6 +952,16 @@ func ExampleMaintenancesClient_Reschedule() {
 	// 							StartsAt: to.Ptr(time.Date(2025, time.January, 16, 6, 21, 31, 961000000, time.UTC)),
 	// 							EndsAt: to.Ptr(time.Date(2025, time.January, 16, 6, 21, 31, 961000000, time.UTC)),
 	// 						},
+	// 						&armavs.ReschedulingWindowConstraint{
+	// 							EndsAt: to.Ptr(time.Date(2026, time.February, 8, 21, 59, 56, 0, time.UTC)),
+	// 							Kind: to.Ptr(armavs.RescheduleOperationConstraintKindReschedulingWindow),
+	// 							StartsAt: to.Ptr(time.Date(2026, time.January, 29, 21, 59, 56, 0, time.UTC)),
+	// 						},
+	// 						&armavs.WeekendReschedulingConstraint{
+	// 							Kind: to.Ptr(armavs.RescheduleOperationConstraintKindWeekendRescheduling),
+	// 							DisabledReason: to.Ptr("Reschedule operation is disabled for maintenance on weekends"),
+	// 							IsDisabled: to.Ptr(true),
+	// 						},
 	// 						&armavs.BlockedWhileRescheduleOperation{
 	// 							Kind: to.Ptr(armavs.RescheduleOperationConstraintKindBlockedWhileRescheduleOperation),
 	// 							Category: to.Ptr(armavs.BlockedDatesConstraintCategoryHiPriorityEvent),
@@ -692,6 +971,18 @@ func ExampleMaintenancesClient_Reschedule() {
 	// 									EndsAt: to.Ptr(time.Date(2025, time.August, 19, 6, 21, 31, 961000000, time.UTC)),
 	// 									Reason: to.Ptr("US General Election 2024"),
 	// 								},
+	// 							},
+	// 						},
+	// 					},
+	// 					Recommendation: &armavs.MaintenanceRecommendation{
+	// 						MaintenanceWindows: []*armavs.MaintenanceWindowRecommendation{
+	// 							{
+	// 								StartTime: to.Ptr(time.Date(2025, time.December, 14, 16, 0, 0, 0, time.UTC)),
+	// 								Reason: to.Ptr("Historically preferred time"),
+	// 							},
+	// 							{
+	// 								StartTime: to.Ptr(time.Date(2025, time.December, 14, 16, 0, 0, 0, time.UTC)),
+	// 								Reason: to.Ptr("Historically preferred day"),
 	// 							},
 	// 						},
 	// 					},
@@ -735,7 +1026,7 @@ func ExampleMaintenancesClient_Reschedule() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/Maintenances_Schedule.json
+// Generated from example definition: 2026-03-01/Maintenances_Schedule.json
 func ExampleMaintenancesClient_Schedule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -765,8 +1056,8 @@ func ExampleMaintenancesClient_Schedule() {
 	// 			Component: to.Ptr(armavs.MaintenanceTypeVCSA),
 	// 			DisplayName: to.Ptr("vcsa 7.0 upgrade"),
 	// 			ClusterID: to.Ptr[int32](1),
-	// 			InfoLink: to.Ptr("https://vmwarekb/arcticle"),
-	// 			Impact: to.Ptr("This upgrade will update your vcsa to 7.0. Control plance performance will be impacted for the duration"),
+	// 			InfoLink: to.Ptr("https://vmwarekb/article"),
+	// 			Impact: to.Ptr("This upgrade will update your vcsa to 7.0. Control plane performance will be impacted for the duration"),
 	// 			ScheduledStartTime: to.Ptr(time.Date(2023, time.January, 12, 16, 17, 55, 237000000, time.UTC)),
 	// 			EstimatedDurationInMinutes: to.Ptr[int64](960),
 	// 			State: &armavs.MaintenanceState{
@@ -777,6 +1068,36 @@ func ExampleMaintenancesClient_Schedule() {
 	// 			},
 	// 			ProvisioningState: to.Ptr(armavs.MaintenanceProvisioningStateSucceeded),
 	// 			ScheduledByMicrosoft: to.Ptr(true),
+	// 			Activities: []*armavs.MaintenanceActivity{
+	// 				{
+	// 					Kind: to.Ptr(armavs.MaintenanceActivityKindUpgrade),
+	// 					Component: to.Ptr("ESXi"),
+	// 					Version: to.Ptr("7.0.3.01500"),
+	// 					InfoLink: to.Ptr("https://vmwarekb/article"),
+	// 					Impact: to.Ptr("This upgrade will update your esxi to 7.0. Control plane performance will be impacted for the duration"),
+	// 				},
+	// 				{
+	// 					Kind: to.Ptr(armavs.MaintenanceActivityKindCertificateRotation),
+	// 					Component: to.Ptr("vCSA"),
+	// 					Version: to.Ptr("notapplicable"),
+	// 					InfoLink: to.Ptr("https://vmwarekb/article"),
+	// 					Impact: to.Ptr("During this time, we expect no impact to Azure VMware Solution services or to the workloads"),
+	// 				},
+	// 			},
+	// 			Group: &armavs.MaintenanceGroup{
+	// 				ID: to.Ptr("SKUMigrationID"),
+	// 				Name: to.Ptr("SKUMigration"),
+	// 				Kind: to.Ptr(armavs.MaintenanceGroupKindConsolidation),
+	// 			},
+	// 			Relationships: &armavs.MaintenanceRelationships{
+	// 				Dependencies: []*string{
+	// 					to.Ptr("dependentMaintenanceName1"),
+	// 					to.Ptr("dependentMaintenanceName2"),
+	// 				},
+	// 				Prerequisites: []*string{
+	// 					to.Ptr("prerequisiteMaintenanceName1"),
+	// 				},
+	// 			},
 	// 			Operations: []armavs.MaintenanceManagementOperationClassification{
 	// 				&armavs.ScheduleOperation{
 	// 					Kind: to.Ptr(armavs.MaintenanceManagementOperationKindSchedule),
@@ -792,6 +1113,11 @@ func ExampleMaintenancesClient_Schedule() {
 	// 							Kind: to.Ptr(armavs.ScheduleOperationConstraintKindAvailableWindowForMaintenanceWhileScheduleOperation),
 	// 							StartsAt: to.Ptr(time.Date(2025, time.January, 16, 6, 21, 31, 961000000, time.UTC)),
 	// 							EndsAt: to.Ptr(time.Date(2025, time.January, 16, 6, 21, 31, 961000000, time.UTC)),
+	// 						},
+	// 						&armavs.WeekendSchedulingConstraint{
+	// 							Kind: to.Ptr(armavs.ScheduleOperationConstraintKindWeekendScheduling),
+	// 							DisabledReason: to.Ptr("Schedule operation is disabled for maintenance on weekends"),
+	// 							IsDisabled: to.Ptr(true),
 	// 						},
 	// 						&armavs.BlockedWhileScheduleOperation{
 	// 							Kind: to.Ptr(armavs.ScheduleOperationConstraintKindBlockedWhileScheduleOperation),
@@ -818,6 +1144,18 @@ func ExampleMaintenancesClient_Schedule() {
 	// 									EndsAt: to.Ptr(time.Date(2024, time.September, 26, 17, 3, 28, 609000000, time.UTC)),
 	// 									Reason: to.Ptr("No slots available"),
 	// 								},
+	// 							},
+	// 						},
+	// 					},
+	// 					Recommendation: &armavs.MaintenanceRecommendation{
+	// 						MaintenanceWindows: []*armavs.MaintenanceWindowRecommendation{
+	// 							{
+	// 								StartTime: to.Ptr(time.Date(2025, time.December, 14, 16, 0, 0, 0, time.UTC)),
+	// 								Reason: to.Ptr("Historically preferred time"),
+	// 							},
+	// 							{
+	// 								StartTime: to.Ptr(time.Date(2025, time.December, 14, 16, 0, 0, 0, time.UTC)),
+	// 								Reason: to.Ptr("Historically preferred day"),
 	// 							},
 	// 						},
 	// 					},

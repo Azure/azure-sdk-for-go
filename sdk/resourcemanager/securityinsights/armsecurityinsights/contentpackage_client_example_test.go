@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-07-01-preview/contentPackages/InstallPackage.json
+// Generated from example definition: 2025-10-01-preview/contentPackages/InstallPackage.json
 func ExampleContentPackageClient_Install() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -70,7 +70,7 @@ func ExampleContentPackageClient_Install() {
 	// 						Version: to.Ptr("2.0.0"),
 	// 					},
 	// 				},
-	// 				Operator: to.Ptr(armsecurityinsights.Operator("AND")),
+	// 				Operator: to.Ptr(armsecurityinsights.MetadataDependencyOperatorAND),
 	// 			},
 	// 			DisplayName: to.Ptr("str"),
 	// 			FirstPublishDate: to.Ptr(time.Date(2022, time.April, 1, 0, 0, 0, 0, time.UTC)),
@@ -102,7 +102,7 @@ func ExampleContentPackageClient_Install() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/contentPackages/UninstallPackage.json
+// Generated from example definition: 2025-10-01-preview/contentPackages/UninstallPackage.json
 func ExampleContentPackageClient_Uninstall() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

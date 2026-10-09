@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v11"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v12"
 	"log"
 )
 
-// Generated from example definition: 2025-09-01/NetworkManagerSecurityUserRulePut.json
+// Generated from example definition: 2026-01-01/NetworkManagerSecurityUserRulePut.json
 func ExampleSecurityUserRulesClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -96,7 +96,7 @@ func ExampleSecurityUserRulesClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/NetworkManagerSecurityUserRuleDelete.json
+// Generated from example definition: 2026-01-01/NetworkManagerSecurityUserRuleDelete.json
 func ExampleSecurityUserRulesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -123,7 +123,7 @@ func ExampleSecurityUserRulesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/NetworkManagerSecurityUserRuleGet.json
+// Generated from example definition: 2026-01-01/NetworkManagerSecurityUserRuleGet.json
 func ExampleSecurityUserRulesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -183,7 +183,7 @@ func ExampleSecurityUserRulesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/NetworkManagerSecurityUserRuleList.json
+// Generated from example definition: 2026-01-01/NetworkManagerSecurityUserRuleList.json
 func ExampleSecurityUserRulesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

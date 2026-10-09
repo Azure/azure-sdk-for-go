@@ -38,10 +38,23 @@ type DrillRunsClientFailOverResponse struct {
 	// placeholder for future response values
 }
 
+// DrillRunsClientGenerateReportResponse contains the response from method DrillRunsClient.BeginGenerateReport.
+type DrillRunsClientGenerateReportResponse struct {
+	// Public, read-only summary of report generation for a Drill Run. Exposes status and pointers only - the report content and
+	// internal storage locations are never surfaced.
+	DrillReportSummary
+}
+
 // DrillRunsClientGetResponse contains the response from method DrillRunsClient.Get.
 type DrillRunsClientGetResponse struct {
 	// DrillRun resource.
 	DrillRun
+}
+
+// DrillRunsClientListReportDownloadURLResponse contains the response from method DrillRunsClient.BeginListReportDownloadURL.
+type DrillRunsClientListReportDownloadURLResponse struct {
+	// Response containing a short-lived, read-only download URL for a Drill Run report.
+	ListReportDownloadURLResponse
 }
 
 // DrillRunsClientListResponse contains the response from method DrillRunsClient.NewListPager.
@@ -153,7 +166,7 @@ type GoalAssignmentsClientDeleteResponse struct {
 
 // GoalAssignmentsClientGetResponse contains the response from method GoalAssignmentsClient.Get.
 type GoalAssignmentsClientGetResponse struct {
-	// Goal assignment a AzureResilienceProviderHub resource
+	// A goal assignment resource in the Azure Resilience Management provider.
 	GoalAssignment
 }
 
@@ -185,7 +198,7 @@ type GoalAssignmentsClientUpdateResponse struct {
 
 // GoalResourcesClientGetResponse contains the response from method GoalResourcesClient.Get.
 type GoalResourcesClientGetResponse struct {
-	// Goal Resource a AzureResilienceProviderHub resource
+	// A goal resource in the Azure Resilience Management provider.
 	GoalResource
 }
 
@@ -193,34 +206,6 @@ type GoalResourcesClientGetResponse struct {
 type GoalResourcesClientListResponse struct {
 	// The response of a GoalResource list operation.
 	GoalResourceListResult
-}
-
-// GoalTemplatesClientCreateOrUpdateResponse contains the response from method GoalTemplatesClient.BeginCreateOrUpdate.
-type GoalTemplatesClientCreateOrUpdateResponse struct {
-	// Goal template a AzureResilienceProviderHub resource
-	GoalTemplate
-}
-
-// GoalTemplatesClientDeleteResponse contains the response from method GoalTemplatesClient.BeginDelete.
-type GoalTemplatesClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// GoalTemplatesClientGetResponse contains the response from method GoalTemplatesClient.Get.
-type GoalTemplatesClientGetResponse struct {
-	// Goal template a AzureResilienceProviderHub resource
-	GoalTemplate
-}
-
-// GoalTemplatesClientListResponse contains the response from method GoalTemplatesClient.NewListPager.
-type GoalTemplatesClientListResponse struct {
-	// The response of a GoalTemplate list operation.
-	GoalTemplateListResult
-}
-
-// GoalTemplatesClientUpdateResponse contains the response from method GoalTemplatesClient.BeginUpdate.
-type GoalTemplatesClientUpdateResponse struct {
-	// placeholder for future response values
 }
 
 // OperationStatusClientGetResponse contains the response from method OperationStatusClient.Get.

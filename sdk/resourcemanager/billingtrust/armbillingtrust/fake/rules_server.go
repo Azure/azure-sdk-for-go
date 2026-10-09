@@ -114,10 +114,7 @@ func (r *RulesServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.
 	if err != nil {
 		return nil, err
 	}
-	resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
-	if err != nil {
-		return nil, err
-	}
+	resourceURIParam := matches[regex.SubexpIndex("resourceUri")]
 	ruleNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("ruleName")])
 	if err != nil {
 		return nil, err
@@ -147,10 +144,7 @@ func (r *RulesServerTransport) dispatchGet(req *http.Request) (*http.Response, e
 	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
-	if err != nil {
-		return nil, err
-	}
+	resourceURIParam := matches[regex.SubexpIndex("resourceUri")]
 	ruleNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("ruleName")])
 	if err != nil {
 		return nil, err
@@ -182,10 +176,7 @@ func (r *RulesServerTransport) dispatchNewListPager(req *http.Request) (*http.Re
 		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
-		if err != nil {
-			return nil, err
-		}
+		resourceURIParam := matches[regex.SubexpIndex("resourceUri")]
 		resp := r.srv.NewListPager(resourceURIParam, nil)
 		newListPager = &resp
 		r.newListPager.add(req, newListPager)
@@ -225,10 +216,7 @@ func (r *RulesServerTransport) dispatchUpdate(req *http.Request) (*http.Response
 	if err != nil {
 		return nil, err
 	}
-	resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
-	if err != nil {
-		return nil, err
-	}
+	resourceURIParam := matches[regex.SubexpIndex("resourceUri")]
 	ruleNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("ruleName")])
 	if err != nil {
 		return nil, err

@@ -1,5 +1,12 @@
 # Release History
 
+## 2.1.0 (2026-10-06)
+### Features Added
+
+- New value `JSONWebKeyTypeOctHSM` added to enum type `JSONWebKeyType`
+- New value `ManagedHsmSKUNameStandardB10V2`, `ManagedHsmSKUNameStandardB15V2`, `ManagedHsmSKUNameStandardB1V2`, `ManagedHsmSKUNameStandardB20V2`, `ManagedHsmSKUNameStandardB5V2` added to enum type `ManagedHsmSKUName`
+
+
 ## 2.0.2 (2026-03-17)
 ### Other Changes
 

@@ -116,10 +116,7 @@ func (t *TroubleshootersServerTransport) dispatchContinue(req *http.Request) (*h
 	if err != nil {
 		return nil, err
 	}
-	scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
-	if err != nil {
-		return nil, err
-	}
+	scopeParam := matches[regex.SubexpIndex("scope")]
 	troubleshooterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("troubleshooterName")])
 	if err != nil {
 		return nil, err
@@ -162,10 +159,7 @@ func (t *TroubleshootersServerTransport) dispatchCreate(req *http.Request) (*htt
 	if err != nil {
 		return nil, err
 	}
-	scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
-	if err != nil {
-		return nil, err
-	}
+	scopeParam := matches[regex.SubexpIndex("scope")]
 	troubleshooterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("troubleshooterName")])
 	if err != nil {
 		return nil, err
@@ -195,10 +189,7 @@ func (t *TroubleshootersServerTransport) dispatchEnd(req *http.Request) (*http.R
 	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
-	if err != nil {
-		return nil, err
-	}
+	scopeParam := matches[regex.SubexpIndex("scope")]
 	troubleshooterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("troubleshooterName")])
 	if err != nil {
 		return nil, err
@@ -231,10 +222,7 @@ func (t *TroubleshootersServerTransport) dispatchGet(req *http.Request) (*http.R
 	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
-	if err != nil {
-		return nil, err
-	}
+	scopeParam := matches[regex.SubexpIndex("scope")]
 	troubleshooterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("troubleshooterName")])
 	if err != nil {
 		return nil, err
@@ -264,10 +252,7 @@ func (t *TroubleshootersServerTransport) dispatchRestart(req *http.Request) (*ht
 	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
-	if err != nil {
-		return nil, err
-	}
+	scopeParam := matches[regex.SubexpIndex("scope")]
 	troubleshooterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("troubleshooterName")])
 	if err != nil {
 		return nil, err

@@ -12,7 +12,75 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-10-02-preview/ManagedEnvironments_CreateOrUpdate.json
+// Generated from example definition: 2026-07-01/ManagedEnvironments_CheckMigrationEligibility.json
+func ExampleManagedEnvironmentsClient_CheckMigrationEligibility_checkMigrationEligibilityForAnEligibleManagedEnvironment() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armappcontainers.NewClientFactory("8efdecc5-919e-44eb-b179-915dca89ebf9", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewManagedEnvironmentsClient().CheckMigrationEligibility(ctx, "examplerg", "my-environment", armappcontainers.CheckMigrationEligibilityRequest{
+		TargetMode: to.Ptr("Express"),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armappcontainers.ManagedEnvironmentsClientCheckMigrationEligibilityResponse{
+	// 	CheckMigrationEligibilityResponse: armappcontainers.CheckMigrationEligibilityResponse{
+	// 		IsEligible: to.Ptr(true),
+	// 		EnvironmentName: to.Ptr("my-environment"),
+	// 		CurrentMode: to.Ptr("WorkloadProfiles"),
+	// 		TargetMode: to.Ptr("Express"),
+	// 		FailureReasons: []*armappcontainers.MigrationEligibilityFailureReason{
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-07-01/ManagedEnvironments_CheckMigrationEligibility_Ineligible.json
+func ExampleManagedEnvironmentsClient_CheckMigrationEligibility_checkMigrationEligibilityForAnIneligibleManagedEnvironment() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armappcontainers.NewClientFactory("8efdecc5-919e-44eb-b179-915dca89ebf9", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewManagedEnvironmentsClient().CheckMigrationEligibility(ctx, "examplerg", "my-environment", armappcontainers.CheckMigrationEligibilityRequest{
+		TargetMode: to.Ptr("Express"),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armappcontainers.ManagedEnvironmentsClientCheckMigrationEligibilityResponse{
+	// 	CheckMigrationEligibilityResponse: armappcontainers.CheckMigrationEligibilityResponse{
+	// 		IsEligible: to.Ptr(false),
+	// 		EnvironmentName: to.Ptr("my-environment"),
+	// 		CurrentMode: to.Ptr("WorkloadProfiles"),
+	// 		TargetMode: to.Ptr("Express"),
+	// 		FailureReasons: []*armappcontainers.MigrationEligibilityFailureReason{
+	// 			{
+	// 				Code: to.Ptr("ManagedEnvironmentInvalidNetworkConfiguration"),
+	// 				Message: to.Ptr("The managed environment network configuration does not support migration to the requested target mode."),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-07-01/ManagedEnvironments_CreateOrUpdate.json
 func ExampleManagedEnvironmentsClient_BeginCreateOrUpdate_createEnvironments() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -32,59 +100,39 @@ func ExampleManagedEnvironmentsClient_BeginCreateOrUpdate_createEnvironments() {
 		},
 		Location: to.Ptr("East US"),
 		Properties: &armappcontainers.ManagedEnvironmentProperties{
-			AppInsightsConfiguration: &armappcontainers.AppInsightsConfiguration{
-				ConnectionString: to.Ptr("InstrumentationKey=00000000-0000-0000-0000-000000000000;IngestionEndpoint=https://eastus-8.in.applicationinsights.azure.com/;LiveEndpoint=https://eastus.livediagnostics.monitor.azure.com/"),
-			},
 			AppLogsConfiguration: &armappcontainers.AppLogsConfiguration{
 				LogAnalyticsConfiguration: &armappcontainers.LogAnalyticsConfiguration{
-					CustomerID:         to.Ptr("string"),
-					DynamicJSONColumns: to.Ptr(true),
-					SharedKey:          to.Ptr("string"),
+					CustomerID: to.Ptr("string"),
+					SharedKey:  to.Ptr("string"),
 				},
 			},
-			AvailabilityZones: []*string{
-				to.Ptr("1"),
-				to.Ptr("2"),
-				to.Ptr("3"),
-			},
-			CustomDomainConfiguration: &armappcontainers.CustomDomainConfiguration{
-				CertificatePassword: to.Ptr("1234"),
-				CertificateValue:    []byte("Y2VydA=="),
-				DNSSuffix:           to.Ptr("www.my-name.com"),
-			},
-			DaprAIConnectionString: to.Ptr("InstrumentationKey=00000000-0000-0000-0000-000000000000;IngestionEndpoint=https://northcentralus-0.in.applicationinsights.azure.com/"),
-			DiskEncryptionConfiguration: &armappcontainers.DiskEncryptionConfiguration{
-				KeyVaultConfiguration: &armappcontainers.DiskEncryptionConfigurationKeyVaultConfiguration{
-					Auth: &armappcontainers.DiskEncryptionConfigurationKeyVaultConfigurationAuth{
-						Identity: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/contoso-resources/providers/Microsoft.ManagedIdentity/userAssignedIdentities/contoso-identity"),
-					},
-					KeyURL: to.Ptr("https://contoso.vault.azure.net/mykey/19ff8313ca394b89b9e824bbbdc8c521"),
-				},
-			},
-			IngressConfiguration: &armappcontainers.IngressConfiguration{
-				HeaderCountLimit:              to.Ptr[int32](30),
-				RequestIdleTimeout:            to.Ptr[int32](5),
-				TerminationGracePeriodSeconds: to.Ptr[int32](3600),
-				WorkloadProfileName:           to.Ptr("My-CO-01"),
+			AppInsightsConfiguration: &armappcontainers.AppInsightsConfiguration{
+				ConnectionString: to.Ptr("InstrumentationKey=00000000-0000-0000-0000-000000000000;IngestionEndpoint=https://eastus-8.in.applicationinsights.azure.com/;LiveEndpoint=https://eastus.livediagnostics.monitor.azure.com/"),
 			},
 			OpenTelemetryConfiguration: &armappcontainers.OpenTelemetryConfiguration{
 				DestinationsConfiguration: &armappcontainers.DestinationsConfiguration{
 					DataDogConfiguration: &armappcontainers.DataDogConfiguration{
-						Key:  to.Ptr("000000000000000000000000"),
 						Site: to.Ptr("string"),
+						Key:  to.Ptr("000000000000000000000000"),
 					},
 					OtlpConfigurations: []*armappcontainers.OtlpConfiguration{
 						{
 							Name:     to.Ptr("dashboard"),
 							Endpoint: to.Ptr("dashboard.k8s.region.azurecontainerapps.io:80"),
+							Insecure: to.Ptr(true),
 							Headers: []*armappcontainers.Header{
 								{
 									Key:   to.Ptr("api-key"),
 									Value: to.Ptr("xxxxxxxxxxx"),
 								},
 							},
-							Insecure: to.Ptr(true),
 						},
+					},
+				},
+				TracesConfiguration: &armappcontainers.TracesConfiguration{
+					IncludeDapr: to.Ptr(true),
+					Destinations: []*string{
+						to.Ptr("appInsights"),
 					},
 				},
 				LogsConfiguration: &armappcontainers.LogsConfiguration{
@@ -93,17 +141,23 @@ func ExampleManagedEnvironmentsClient_BeginCreateOrUpdate_createEnvironments() {
 					},
 				},
 				MetricsConfiguration: &armappcontainers.MetricsConfiguration{
+					IncludeKeda: to.Ptr(true),
 					Destinations: []*string{
 						to.Ptr("dataDog"),
 					},
-					IncludeKeda: to.Ptr(true),
 				},
-				TracesConfiguration: &armappcontainers.TracesConfiguration{
-					Destinations: []*string{
-						to.Ptr("appInsights"),
-					},
-					IncludeDapr: to.Ptr(true),
-				},
+			},
+			CustomDomainConfiguration: &armappcontainers.CustomDomainConfiguration{
+				CertificatePassword: to.Ptr("1234"),
+				CertificateValue:    []byte("Y2VydA=="),
+				DNSSuffix:           to.Ptr("www.my-name.com"),
+			},
+			DaprAIConnectionString: to.Ptr("InstrumentationKey=00000000-0000-0000-0000-000000000000;IngestionEndpoint=https://northcentralus-0.in.applicationinsights.azure.com/"),
+			IngressConfiguration: &armappcontainers.IngressConfiguration{
+				HeaderCountLimit:              to.Ptr[int32](30),
+				RequestIdleTimeout:            to.Ptr[int32](5),
+				TerminationGracePeriodSeconds: to.Ptr[int32](3600),
+				WorkloadProfileName:           to.Ptr("My-CO-01"),
 			},
 			PeerAuthentication: &armappcontainers.ManagedEnvironmentPropertiesPeerAuthentication{
 				Mtls: &armappcontainers.Mtls{
@@ -121,7 +175,6 @@ func ExampleManagedEnvironmentsClient_BeginCreateOrUpdate_createEnvironments() {
 			WorkloadProfiles: []*armappcontainers.WorkloadProfile{
 				{
 					Name:                to.Ptr("My-GP-01"),
-					EnableFips:          to.Ptr(true),
 					MaximumCount:        to.Ptr[int32](12),
 					MinimumCount:        to.Ptr[int32](3),
 					WorkloadProfileType: to.Ptr("GeneralPurpose"),
@@ -177,13 +230,44 @@ func ExampleManagedEnvironmentsClient_BeginCreateOrUpdate_createEnvironments() {
 	// 			AppLogsConfiguration: &armappcontainers.AppLogsConfiguration{
 	// 				LogAnalyticsConfiguration: &armappcontainers.LogAnalyticsConfiguration{
 	// 					CustomerID: to.Ptr("string"),
-	// 					DynamicJSONColumns: to.Ptr(true),
 	// 				},
 	// 			},
-	// 			AvailabilityZones: []*string{
-	// 				to.Ptr("1"),
-	// 				to.Ptr("2"),
-	// 				to.Ptr("3"),
+	// 			OpenTelemetryConfiguration: &armappcontainers.OpenTelemetryConfiguration{
+	// 				DestinationsConfiguration: &armappcontainers.DestinationsConfiguration{
+	// 					DataDogConfiguration: &armappcontainers.DataDogConfiguration{
+	// 						Site: to.Ptr("string"),
+	// 					},
+	// 					OtlpConfigurations: []*armappcontainers.OtlpConfiguration{
+	// 						{
+	// 							Name: to.Ptr("dashboard"),
+	// 							Endpoint: to.Ptr("dashboard.k8s.region.azurecontainerapps.io:80"),
+	// 							Insecure: to.Ptr(true),
+	// 							Headers: []*armappcontainers.Header{
+	// 								{
+	// 									Key: to.Ptr("api-key"),
+	// 									Value: to.Ptr("xxxxxxxxxxx"),
+	// 								},
+	// 							},
+	// 						},
+	// 					},
+	// 				},
+	// 				TracesConfiguration: &armappcontainers.TracesConfiguration{
+	// 					IncludeDapr: to.Ptr(true),
+	// 					Destinations: []*string{
+	// 						to.Ptr("appInsights"),
+	// 					},
+	// 				},
+	// 				LogsConfiguration: &armappcontainers.LogsConfiguration{
+	// 					Destinations: []*string{
+	// 						to.Ptr("appInsights"),
+	// 					},
+	// 				},
+	// 				MetricsConfiguration: &armappcontainers.MetricsConfiguration{
+	// 					IncludeKeda: to.Ptr(true),
+	// 					Destinations: []*string{
+	// 						to.Ptr("dataDog"),
+	// 					},
+	// 				},
 	// 			},
 	// 			CustomDomainConfiguration: &armappcontainers.CustomDomainConfiguration{
 	// 				CustomDomainVerificationID: to.Ptr("custom domain verification id"),
@@ -193,14 +277,6 @@ func ExampleManagedEnvironmentsClient_BeginCreateOrUpdate_createEnvironments() {
 	// 				Thumbprint: to.Ptr("CERTIFICATE_THUMBPRINT"),
 	// 			},
 	// 			DefaultDomain: to.Ptr("testcontainerenv.k4apps.io"),
-	// 			DiskEncryptionConfiguration: &armappcontainers.DiskEncryptionConfiguration{
-	// 				KeyVaultConfiguration: &armappcontainers.DiskEncryptionConfigurationKeyVaultConfiguration{
-	// 					Auth: &armappcontainers.DiskEncryptionConfigurationKeyVaultConfigurationAuth{
-	// 						Identity: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/contoso-resources/providers/Microsoft.ManagedIdentity/userAssignedIdentities/contoso-identity"),
-	// 					},
-	// 					KeyURL: to.Ptr("https://contoso.vault.azure.net/mykey/19ff8313ca394b89b9e824bbbdc8c521"),
-	// 				},
-	// 			},
 	// 			EventStreamEndpoint: to.Ptr("testEndpoint"),
 	// 			InfrastructureResourceGroup: to.Ptr("capp-svc-testcontainerenv-eastus"),
 	// 			IngressConfiguration: &armappcontainers.IngressConfiguration{
@@ -209,35 +285,7 @@ func ExampleManagedEnvironmentsClient_BeginCreateOrUpdate_createEnvironments() {
 	// 				TerminationGracePeriodSeconds: to.Ptr[int32](3600),
 	// 				WorkloadProfileName: to.Ptr("My-CO-01"),
 	// 			},
-	// 			OpenTelemetryConfiguration: &armappcontainers.OpenTelemetryConfiguration{
-	// 				DestinationsConfiguration: &armappcontainers.DestinationsConfiguration{
-	// 					DataDogConfiguration: &armappcontainers.DataDogConfiguration{
-	// 						Site: to.Ptr("datadoghq.com"),
-	// 					},
-	// 					OtlpConfigurations: []*armappcontainers.OtlpConfiguration{
-	// 						{
-	// 							Name: to.Ptr("dashboard"),
-	// 							Endpoint: to.Ptr("dashboard.k8s.region.azurecontainerapps.io:80"),
-	// 							Insecure: to.Ptr(true),
-	// 						},
-	// 					},
-	// 				},
-	// 				LogsConfiguration: &armappcontainers.LogsConfiguration{
-	// 					Destinations: []*string{
-	// 						to.Ptr("appInsights"),
-	// 					},
-	// 				},
-	// 				MetricsConfiguration: &armappcontainers.MetricsConfiguration{
-	// 					Destinations: []*string{
-	// 						to.Ptr("dataDog"),
-	// 					},
-	// 				},
-	// 				TracesConfiguration: &armappcontainers.TracesConfiguration{
-	// 					Destinations: []*string{
-	// 						to.Ptr("appInsights"),
-	// 					},
-	// 				},
-	// 			},
+	// 			EnvironmentMode: to.Ptr(armappcontainers.ManagedEnvironmentModeWorkloadProfiles),
 	// 			PeerAuthentication: &armappcontainers.ManagedEnvironmentPropertiesPeerAuthentication{
 	// 				Mtls: &armappcontainers.Mtls{
 	// 					Enabled: to.Ptr(true),
@@ -251,7 +299,6 @@ func ExampleManagedEnvironmentsClient_BeginCreateOrUpdate_createEnvironments() {
 	// 			WorkloadProfiles: []*armappcontainers.WorkloadProfile{
 	// 				{
 	// 					Name: to.Ptr("My-GP-01"),
-	// 					EnableFips: to.Ptr(true),
 	// 					MaximumCount: to.Ptr[int32](12),
 	// 					MinimumCount: to.Ptr[int32](3),
 	// 					WorkloadProfileType: to.Ptr("GeneralPurpose"),
@@ -279,7 +326,7 @@ func ExampleManagedEnvironmentsClient_BeginCreateOrUpdate_createEnvironments() {
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/ManagedEnvironments_CustomInfrastructureResourceGroup_Create.json
+// Generated from example definition: 2026-07-01/ManagedEnvironments_CustomInfrastructureResourceGroup_Create.json
 func ExampleManagedEnvironmentsClient_BeginCreateOrUpdate_createEnvironmentWithCustomInfrastructureResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -299,11 +346,6 @@ func ExampleManagedEnvironmentsClient_BeginCreateOrUpdate_createEnvironmentWithC
 					SharedKey:  to.Ptr("string"),
 				},
 			},
-			AvailabilityZones: []*string{
-				to.Ptr("1"),
-				to.Ptr("2"),
-				to.Ptr("3"),
-			},
 			CustomDomainConfiguration: &armappcontainers.CustomDomainConfiguration{
 				CertificatePassword: to.Ptr("1234"),
 				CertificateValue:    []byte("Y2VydA=="),
@@ -317,7 +359,6 @@ func ExampleManagedEnvironmentsClient_BeginCreateOrUpdate_createEnvironmentWithC
 			WorkloadProfiles: []*armappcontainers.WorkloadProfile{
 				{
 					Name:                to.Ptr("My-GP-01"),
-					EnableFips:          to.Ptr(true),
 					MaximumCount:        to.Ptr[int32](12),
 					MinimumCount:        to.Ptr[int32](3),
 					WorkloadProfileType: to.Ptr("GeneralPurpose"),
@@ -364,11 +405,6 @@ func ExampleManagedEnvironmentsClient_BeginCreateOrUpdate_createEnvironmentWithC
 	// 					CustomerID: to.Ptr("string"),
 	// 				},
 	// 			},
-	// 			AvailabilityZones: []*string{
-	// 				to.Ptr("1"),
-	// 				to.Ptr("2"),
-	// 				to.Ptr("3"),
-	// 			},
 	// 			CustomDomainConfiguration: &armappcontainers.CustomDomainConfiguration{
 	// 				CustomDomainVerificationID: to.Ptr("custom domain verification id"),
 	// 				DNSSuffix: to.Ptr("www.my-name.com"),
@@ -387,7 +423,6 @@ func ExampleManagedEnvironmentsClient_BeginCreateOrUpdate_createEnvironmentWithC
 	// 			WorkloadProfiles: []*armappcontainers.WorkloadProfile{
 	// 				{
 	// 					Name: to.Ptr("My-GP-01"),
-	// 					EnableFips: to.Ptr(true),
 	// 					MaximumCount: to.Ptr[int32](12),
 	// 					MinimumCount: to.Ptr[int32](3),
 	// 					WorkloadProfileType: to.Ptr("GeneralPurpose"),
@@ -415,7 +450,7 @@ func ExampleManagedEnvironmentsClient_BeginCreateOrUpdate_createEnvironmentWithC
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/ManagedEnvironments_Delete.json
+// Generated from example definition: 2026-07-01/ManagedEnvironments_Delete.json
 func ExampleManagedEnvironmentsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -441,7 +476,7 @@ func ExampleManagedEnvironmentsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/ManagedEnvironments_Get.json
+// Generated from example definition: 2026-07-01/ManagedEnvironments_Get.json
 func ExampleManagedEnvironmentsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -466,11 +501,6 @@ func ExampleManagedEnvironmentsClient_Get() {
 	// 		ID: to.Ptr("/subscriptions/8efdecc5-919e-44eb-b179-915dca89ebf9/resourceGroups/examplerg/providers/Microsoft.App/managedEnvironments/jlaw-demo1"),
 	// 		Location: to.Ptr("North Central US"),
 	// 		Properties: &armappcontainers.ManagedEnvironmentProperties{
-	// 			AvailabilityZones: []*string{
-	// 				to.Ptr("1"),
-	// 				to.Ptr("2"),
-	// 				to.Ptr("3"),
-	// 			},
 	// 			CustomDomainConfiguration: &armappcontainers.CustomDomainConfiguration{
 	// 				CustomDomainVerificationID: to.Ptr("custom domain verification id"),
 	// 				DNSSuffix: to.Ptr("www.my-name.com"),
@@ -503,6 +533,7 @@ func ExampleManagedEnvironmentsClient_Get() {
 	// 					Enabled: to.Ptr(true),
 	// 				},
 	// 			},
+	// 			EnvironmentMode: to.Ptr(armappcontainers.ManagedEnvironmentModeWorkloadProfiles),
 	// 			ProvisioningState: to.Ptr(armappcontainers.EnvironmentProvisioningStateSucceeded),
 	// 			StaticIP: to.Ptr("20.42.33.145"),
 	// 			VnetConfiguration: &armappcontainers.VnetConfiguration{
@@ -511,7 +542,6 @@ func ExampleManagedEnvironmentsClient_Get() {
 	// 			WorkloadProfiles: []*armappcontainers.WorkloadProfile{
 	// 				{
 	// 					Name: to.Ptr("My-GP-01"),
-	// 					EnableFips: to.Ptr(true),
 	// 					MaximumCount: to.Ptr[int32](12),
 	// 					MinimumCount: to.Ptr[int32](3),
 	// 					WorkloadProfileType: to.Ptr("GeneralPurpose"),
@@ -541,7 +571,7 @@ func ExampleManagedEnvironmentsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/ManagedEnvironments_GetAuthToken.json
+// Generated from example definition: 2026-07-01/ManagedEnvironments_GetAuthToken.json
 func ExampleManagedEnvironmentsClient_GetAuthToken() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -573,7 +603,7 @@ func ExampleManagedEnvironmentsClient_GetAuthToken() {
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/ManagedEnvironments_ListByResourceGroup.json
+// Generated from example definition: 2026-07-01/ManagedEnvironments_ListByResourceGroup.json
 func ExampleManagedEnvironmentsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -604,11 +634,6 @@ func ExampleManagedEnvironmentsClient_NewListByResourceGroupPager() {
 		// 				ID: to.Ptr("/subscriptions/8efdecc5-919e-44eb-b179-915dca89ebf9/resourceGroups/examplerg/providers/Microsoft.App/managedEnvironments/jlaw-demo1"),
 		// 				Location: to.Ptr("North Central US"),
 		// 				Properties: &armappcontainers.ManagedEnvironmentProperties{
-		// 					AvailabilityZones: []*string{
-		// 						to.Ptr("1"),
-		// 						to.Ptr("2"),
-		// 						to.Ptr("3"),
-		// 					},
 		// 					CustomDomainConfiguration: &armappcontainers.CustomDomainConfiguration{
 		// 						CustomDomainVerificationID: to.Ptr("custom domain verification id"),
 		// 						DNSSuffix: to.Ptr("www.my-name.com"),
@@ -624,6 +649,7 @@ func ExampleManagedEnvironmentsClient_NewListByResourceGroupPager() {
 		// 						TerminationGracePeriodSeconds: to.Ptr[int32](600),
 		// 						WorkloadProfileName: to.Ptr("My-GP-01"),
 		// 					},
+		// 					EnvironmentMode: to.Ptr(armappcontainers.ManagedEnvironmentModeWorkloadProfiles),
 		// 					ProvisioningState: to.Ptr(armappcontainers.EnvironmentProvisioningStateSucceeded),
 		// 					StaticIP: to.Ptr("20.42.33.145"),
 		// 					VnetConfiguration: &armappcontainers.VnetConfiguration{
@@ -632,7 +658,6 @@ func ExampleManagedEnvironmentsClient_NewListByResourceGroupPager() {
 		// 					WorkloadProfiles: []*armappcontainers.WorkloadProfile{
 		// 						{
 		// 							Name: to.Ptr("My-GP-01"),
-		// 							EnableFips: to.Ptr(true),
 		// 							MaximumCount: to.Ptr[int32](12),
 		// 							MinimumCount: to.Ptr[int32](3),
 		// 							WorkloadProfileType: to.Ptr("GeneralPurpose"),
@@ -665,11 +690,6 @@ func ExampleManagedEnvironmentsClient_NewListByResourceGroupPager() {
 		// 				ID: to.Ptr("/subscriptions/8efdecc5-919e-44eb-b179-915dca89ebf9/resourceGroups/examplerg/providers/Microsoft.App/managedEnvironments/demo1"),
 		// 				Location: to.Ptr("North Central US"),
 		// 				Properties: &armappcontainers.ManagedEnvironmentProperties{
-		// 					AvailabilityZones: []*string{
-		// 						to.Ptr("1"),
-		// 						to.Ptr("2"),
-		// 						to.Ptr("3"),
-		// 					},
 		// 					CustomDomainConfiguration: &armappcontainers.CustomDomainConfiguration{
 		// 						CustomDomainVerificationID: to.Ptr("custom domain verification id"),
 		// 						DNSSuffix: to.Ptr("www.my-name2.com"),
@@ -680,6 +700,7 @@ func ExampleManagedEnvironmentsClient_NewListByResourceGroupPager() {
 		// 					DefaultDomain: to.Ptr("demo1.k4apps.io"),
 		// 					EventStreamEndpoint: to.Ptr("testEndpoint"),
 		// 					InfrastructureResourceGroup: to.Ptr("capp-svc-demo1-northcentralus"),
+		// 					EnvironmentMode: to.Ptr(armappcontainers.ManagedEnvironmentModeWorkloadProfiles),
 		// 					ProvisioningState: to.Ptr(armappcontainers.EnvironmentProvisioningStateSucceeded),
 		// 					StaticIP: to.Ptr("52.142.21.61"),
 		// 					VnetConfiguration: &armappcontainers.VnetConfiguration{
@@ -696,7 +717,7 @@ func ExampleManagedEnvironmentsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-10-02-preview/ManagedEnvironments_ListBySubscription.json
+// Generated from example definition: 2026-07-01/ManagedEnvironments_ListBySubscription.json
 func ExampleManagedEnvironmentsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -727,11 +748,6 @@ func ExampleManagedEnvironmentsClient_NewListBySubscriptionPager() {
 		// 				ID: to.Ptr("/subscriptions/8efdecc5-919e-44eb-b179-915dca89ebf9/resourceGroups/examplerg/providers/Microsoft.App/managedEnvironments/jlaw-demo1"),
 		// 				Location: to.Ptr("North Central US"),
 		// 				Properties: &armappcontainers.ManagedEnvironmentProperties{
-		// 					AvailabilityZones: []*string{
-		// 						to.Ptr("1"),
-		// 						to.Ptr("2"),
-		// 						to.Ptr("3"),
-		// 					},
 		// 					CustomDomainConfiguration: &armappcontainers.CustomDomainConfiguration{
 		// 						CustomDomainVerificationID: to.Ptr("custom domain verification id"),
 		// 						DNSSuffix: to.Ptr("www.my-name.com"),
@@ -742,6 +758,7 @@ func ExampleManagedEnvironmentsClient_NewListBySubscriptionPager() {
 		// 					DefaultDomain: to.Ptr("jlaw-demo1.k4apps.io"),
 		// 					EventStreamEndpoint: to.Ptr("testEndpoint"),
 		// 					InfrastructureResourceGroup: to.Ptr("capp-svc-jlaw-demo1-northcentralus"),
+		// 					EnvironmentMode: to.Ptr(armappcontainers.ManagedEnvironmentModeWorkloadProfiles),
 		// 					ProvisioningState: to.Ptr(armappcontainers.EnvironmentProvisioningStateSucceeded),
 		// 					StaticIP: to.Ptr("20.42.33.145"),
 		// 					VnetConfiguration: &armappcontainers.VnetConfiguration{
@@ -750,7 +767,6 @@ func ExampleManagedEnvironmentsClient_NewListBySubscriptionPager() {
 		// 					WorkloadProfiles: []*armappcontainers.WorkloadProfile{
 		// 						{
 		// 							Name: to.Ptr("My-GP-01"),
-		// 							EnableFips: to.Ptr(true),
 		// 							MaximumCount: to.Ptr[int32](12),
 		// 							MinimumCount: to.Ptr[int32](3),
 		// 							WorkloadProfileType: to.Ptr("GeneralPurpose"),
@@ -787,13 +803,7 @@ func ExampleManagedEnvironmentsClient_NewListBySubscriptionPager() {
 		// 						Destination: to.Ptr("log-analytics"),
 		// 						LogAnalyticsConfiguration: &armappcontainers.LogAnalyticsConfiguration{
 		// 							CustomerID: to.Ptr("9ccccd4a-268f-4a9a-8d03-9bfe77c3fbd2"),
-		// 							DynamicJSONColumns: to.Ptr(true),
 		// 						},
-		// 					},
-		// 					AvailabilityZones: []*string{
-		// 						to.Ptr("1"),
-		// 						to.Ptr("2"),
-		// 						to.Ptr("3"),
 		// 					},
 		// 					CustomDomainConfiguration: &armappcontainers.CustomDomainConfiguration{
 		// 						CustomDomainVerificationID: to.Ptr("custom domain verification id"),
@@ -805,6 +815,7 @@ func ExampleManagedEnvironmentsClient_NewListBySubscriptionPager() {
 		// 					DefaultDomain: to.Ptr("demo1.k4apps.io"),
 		// 					EventStreamEndpoint: to.Ptr("testEndpoint"),
 		// 					InfrastructureResourceGroup: to.Ptr("capp-svc-demo1-northcentralus"),
+		// 					EnvironmentMode: to.Ptr(armappcontainers.ManagedEnvironmentModeWorkloadProfiles),
 		// 					ProvisioningState: to.Ptr(armappcontainers.EnvironmentProvisioningStateSucceeded),
 		// 					StaticIP: to.Ptr("52.142.21.61"),
 		// 					VnetConfiguration: &armappcontainers.VnetConfiguration{
@@ -825,13 +836,7 @@ func ExampleManagedEnvironmentsClient_NewListBySubscriptionPager() {
 		// 						Destination: to.Ptr("log-analytics"),
 		// 						LogAnalyticsConfiguration: &armappcontainers.LogAnalyticsConfiguration{
 		// 							CustomerID: to.Ptr("9ccccd4a-268f-4a9a-8d03-9bfe77c3fbd2"),
-		// 							DynamicJSONColumns: to.Ptr(true),
 		// 						},
-		// 					},
-		// 					AvailabilityZones: []*string{
-		// 						to.Ptr("1"),
-		// 						to.Ptr("2"),
-		// 						to.Ptr("3"),
 		// 					},
 		// 					CustomDomainConfiguration: &armappcontainers.CustomDomainConfiguration{
 		// 						CustomDomainVerificationID: to.Ptr("custom domain verification id"),
@@ -842,6 +847,7 @@ func ExampleManagedEnvironmentsClient_NewListBySubscriptionPager() {
 		// 					},
 		// 					DefaultDomain: to.Ptr("pl1.k4apps.io"),
 		// 					EventStreamEndpoint: to.Ptr("testEndpoint"),
+		// 					EnvironmentMode: to.Ptr(armappcontainers.ManagedEnvironmentModeWorkloadProfiles),
 		// 					PrivateEndpointConnections: []*armappcontainers.PrivateEndpointConnection{
 		// 						{
 		// 							Name: to.Ptr("96101496-ed84-44f9-a28c-d4798f053023-d1908429-ca41-48a0-a026-6a4014e6e615"),
@@ -863,7 +869,6 @@ func ExampleManagedEnvironmentsClient_NewListBySubscriptionPager() {
 		// 							},
 		// 						},
 		// 					},
-		// 					PrivateLinkDefaultDomain: to.Ptr("privatelink.pl1.k4apps.io"),
 		// 					ProvisioningState: to.Ptr(armappcontainers.EnvironmentProvisioningStateSucceeded),
 		// 					StaticIP: to.Ptr("52.142.21.61"),
 		// 					VnetConfiguration: &armappcontainers.VnetConfiguration{
@@ -880,7 +885,7 @@ func ExampleManagedEnvironmentsClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2025-10-02-preview/ManagedEnvironments_ListWorkloadProfileStates.json
+// Generated from example definition: 2026-07-01/ManagedEnvironments_ListWorkloadProfileStates.json
 func ExampleManagedEnvironmentsClient_NewListWorkloadProfileStatesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -931,7 +936,7 @@ func ExampleManagedEnvironmentsClient_NewListWorkloadProfileStatesPager() {
 	}
 }
 
-// Generated from example definition: 2025-10-02-preview/ManagedEnvironments_Patch.json
+// Generated from example definition: 2026-07-01/ManagedEnvironments_Patch.json
 func ExampleManagedEnvironmentsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -966,11 +971,6 @@ func ExampleManagedEnvironmentsClient_BeginUpdate() {
 	// 		ID: to.Ptr("/subscriptions/8efdecc5-919e-44eb-b179-915dca89ebf9/resourceGroups/examplerg/providers/Microsoft.App/managedEnvironments/jlaw-demo1"),
 	// 		Location: to.Ptr("East US"),
 	// 		Properties: &armappcontainers.ManagedEnvironmentProperties{
-	// 			AvailabilityZones: []*string{
-	// 				to.Ptr("1"),
-	// 				to.Ptr("2"),
-	// 				to.Ptr("3"),
-	// 			},
 	// 			CustomDomainConfiguration: &armappcontainers.CustomDomainConfiguration{
 	// 				CustomDomainVerificationID: to.Ptr("custom domain verification id"),
 	// 				DNSSuffix: to.Ptr("www.my-name.com"),
@@ -986,7 +986,6 @@ func ExampleManagedEnvironmentsClient_BeginUpdate() {
 	// 			WorkloadProfiles: []*armappcontainers.WorkloadProfile{
 	// 				{
 	// 					Name: to.Ptr("My-GP-01"),
-	// 					EnableFips: to.Ptr(true),
 	// 					MaximumCount: to.Ptr[int32](12),
 	// 					MinimumCount: to.Ptr[int32](3),
 	// 					WorkloadProfileType: to.Ptr("GeneralPurpose"),

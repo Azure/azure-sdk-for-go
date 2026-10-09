@@ -115,10 +115,7 @@ func (s *SuppressionsServerTransport) dispatchCreate(req *http.Request) (*http.R
 	if err != nil {
 		return nil, err
 	}
-	resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
-	if err != nil {
-		return nil, err
-	}
+	resourceURIParam := matches[regex.SubexpIndex("resourceUri")]
 	recommendationIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("recommendationId")])
 	if err != nil {
 		return nil, err
@@ -152,10 +149,7 @@ func (s *SuppressionsServerTransport) dispatchDelete(req *http.Request) (*http.R
 	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
-	if err != nil {
-		return nil, err
-	}
+	resourceURIParam := matches[regex.SubexpIndex("resourceUri")]
 	recommendationIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("recommendationId")])
 	if err != nil {
 		return nil, err
@@ -189,10 +183,7 @@ func (s *SuppressionsServerTransport) dispatchGet(req *http.Request) (*http.Resp
 	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
-	if err != nil {
-		return nil, err
-	}
+	resourceURIParam := matches[regex.SubexpIndex("resourceUri")]
 	recommendationIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("recommendationId")])
 	if err != nil {
 		return nil, err

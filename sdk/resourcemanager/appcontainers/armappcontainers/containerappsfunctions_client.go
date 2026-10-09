@@ -19,7 +19,7 @@ import (
 // ContainerAppsFunctionsClient contains the methods for the ContainerAppsFunctions group.
 // Don't use this type directly, use NewContainerAppsFunctionsClient() instead.
 //
-// Generated from API version 2025-10-02-preview
+// Generated from API version 2026-07-01
 type ContainerAppsFunctionsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -46,7 +46,7 @@ func NewContainerAppsFunctionsClient(subscriptionID string, credential azcore.To
 
 // Get - Get a specific function of a Container App from the latest Revision.
 //
-// Get a specific function of a Container App from the latest Revision.
+// Gets the details of a specific function from the latest Container App revision.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - containerAppName - Name of the Container App.
@@ -94,7 +94,7 @@ func (client *ContainerAppsFunctionsClient) getCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251002Preview)
+	reqQP.Set("api-version", version20260701)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -114,7 +114,7 @@ func (client *ContainerAppsFunctionsClient) getHandleResponse(resp *http.Respons
 
 // NewListPager - List the functions for a given Container App from the latest Revision.
 //
-// List the functions for a given Container App from the latest Revision.
+// Lists the functions available in the latest revision of a Container App.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - containerAppName - Name of the Container App.
 //   - options - ContainerAppsFunctionsClientListOptions contains the optional parameters for the ContainerAppsFunctionsClient.NewListPager
@@ -172,7 +172,7 @@ func (client *ContainerAppsFunctionsClient) listCreateRequest(ctx context.Contex
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20251002Preview)
+		reqQP.Set("api-version", version20260701)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

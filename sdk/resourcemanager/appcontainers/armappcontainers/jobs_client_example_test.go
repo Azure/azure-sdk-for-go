@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-10-02-preview/Job_CreateorUpdate.json
+// Generated from example definition: 2026-07-01/Job_CreateorUpdate.json
 func ExampleJobsClient_BeginCreateOrUpdate_createOrUpdateContainerAppsJob() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -101,7 +101,6 @@ func ExampleJobsClient_BeginCreateOrUpdate_createOrUpdateContainerAppsJob() {
 						Image: to.Ptr("repo/testcontainerAppsJob0:v4"),
 						Resources: &armappcontainers.ContainerResources{
 							CPU:    to.Ptr[float64](0.2),
-							Gpu:    to.Ptr[float64](1),
 							Memory: to.Ptr("100Mi"),
 						},
 					},
@@ -183,7 +182,6 @@ func ExampleJobsClient_BeginCreateOrUpdate_createOrUpdateContainerAppsJob() {
 	// 						},
 	// 						Resources: &armappcontainers.ContainerResources{
 	// 							CPU: to.Ptr[float64](0.2),
-	// 							Gpu: to.Ptr[float64](1),
 	// 							Memory: to.Ptr("100Mi"),
 	// 						},
 	// 						VolumeMounts: []*armappcontainers.VolumeMount{
@@ -213,7 +211,6 @@ func ExampleJobsClient_BeginCreateOrUpdate_createOrUpdateContainerAppsJob() {
 	// 						Image: to.Ptr("repo/testcontainerAppsJob0:v4"),
 	// 						Resources: &armappcontainers.ContainerResources{
 	// 							CPU: to.Ptr[float64](0.2),
-	// 							Gpu: to.Ptr[float64](1),
 	// 							Memory: to.Ptr("100Mi"),
 	// 						},
 	// 					},
@@ -236,7 +233,7 @@ func ExampleJobsClient_BeginCreateOrUpdate_createOrUpdateContainerAppsJob() {
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/Job_CreateorUpdate_ConnectedEnvironment.json
+// Generated from example definition: 2026-07-01/Job_CreateorUpdate_ConnectedEnvironment.json
 func ExampleJobsClient_BeginCreateOrUpdate_createOrUpdateContainerAppsJobOnAConnectedEnvironment() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -248,10 +245,6 @@ func ExampleJobsClient_BeginCreateOrUpdate_createOrUpdateContainerAppsJobOnAConn
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewJobsClient().BeginCreateOrUpdate(ctx, "rg", "testcontainerAppsJob0", armappcontainers.Job{
-		ExtendedLocation: &armappcontainers.ExtendedLocation{
-			Name: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.ExtendedLocation/customLocations/testcustomlocation"),
-			Type: to.Ptr(armappcontainers.ExtendedLocationTypesCustomLocation),
-		},
 		Location: to.Ptr("East US"),
 		Properties: &armappcontainers.JobProperties{
 			Configuration: &armappcontainers.JobConfiguration{
@@ -322,10 +315,6 @@ func ExampleJobsClient_BeginCreateOrUpdate_createOrUpdateContainerAppsJobOnAConn
 	// 	Job: armappcontainers.Job{
 	// 		Name: to.Ptr("testcontainerAppsJob0"),
 	// 		Type: to.Ptr("Microsoft.App/jobs"),
-	// 		ExtendedLocation: &armappcontainers.ExtendedLocation{
-	// 			Name: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.ExtendedLocation/customLocations/testcustomlocation"),
-	// 			Type: to.Ptr(armappcontainers.ExtendedLocationTypesCustomLocation),
-	// 		},
 	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.App/jobs/testcontainerAppsJob0"),
 	// 		Location: to.Ptr("East US"),
 	// 		Properties: &armappcontainers.JobProperties{
@@ -392,7 +381,7 @@ func ExampleJobsClient_BeginCreateOrUpdate_createOrUpdateContainerAppsJobOnAConn
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/Job_CreateorUpdate_EventTrigger.json
+// Generated from example definition: 2026-07-01/Job_CreateorUpdate_EventTrigger.json
 func ExampleJobsClient_BeginCreateOrUpdate_createOrUpdateContainerAppsJobWithEventDrivenTrigger() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -551,7 +540,7 @@ func ExampleJobsClient_BeginCreateOrUpdate_createOrUpdateContainerAppsJobWithEve
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/Job_Delete.json
+// Generated from example definition: 2026-07-01/Job_Delete.json
 func ExampleJobsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -577,7 +566,7 @@ func ExampleJobsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/Job_Get.json
+// Generated from example definition: 2026-07-01/Job_Get.json
 func ExampleJobsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -685,7 +674,7 @@ func ExampleJobsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/Job_GetDetector.json
+// Generated from example definition: 2026-07-01/Job_GetDetector.json
 func ExampleJobsClient_GetDetector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -762,7 +751,7 @@ func ExampleJobsClient_GetDetector() {
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/Jobs_ListByResourceGroup.json
+// Generated from example definition: 2026-07-01/Jobs_ListByResourceGroup.json
 func ExampleJobsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -876,7 +865,7 @@ func ExampleJobsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-10-02-preview/Jobs_ListBySubscription.json
+// Generated from example definition: 2026-07-01/Jobs_ListBySubscription.json
 func ExampleJobsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -990,7 +979,7 @@ func ExampleJobsClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2025-10-02-preview/Job_ListDetectors.json
+// Generated from example definition: 2026-07-01/Job_ListDetectors.json
 func ExampleJobsClient_NewListDetectorsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1043,7 +1032,7 @@ func ExampleJobsClient_NewListDetectorsPager() {
 	}
 }
 
-// Generated from example definition: 2025-10-02-preview/Job_ListSecrets.json
+// Generated from example definition: 2026-07-01/Job_ListSecrets.json
 func ExampleJobsClient_ListSecrets() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1075,7 +1064,7 @@ func ExampleJobsClient_ListSecrets() {
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/Job_ProxyGet.json
+// Generated from example definition: 2026-07-01/Job_ProxyGet.json
 func ExampleJobsClient_ProxyGet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1138,7 +1127,7 @@ func ExampleJobsClient_ProxyGet() {
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/Jobs_Resume.json
+// Generated from example definition: 2026-07-01/Jobs_Resume.json
 func ExampleJobsClient_BeginResume() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1240,7 +1229,7 @@ func ExampleJobsClient_BeginResume() {
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/Job_Start.json
+// Generated from example definition: 2026-07-01/Job_Start.json
 func ExampleJobsClient_BeginStart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1299,7 +1288,7 @@ func ExampleJobsClient_BeginStart() {
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/Job_Stop_Execution.json
+// Generated from example definition: 2026-07-01/Job_Stop_Execution.json
 func ExampleJobsClient_BeginStopExecution() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1325,7 +1314,7 @@ func ExampleJobsClient_BeginStopExecution() {
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/Job_Stop_Multiple.json
+// Generated from example definition: 2026-07-01/Job_Stop_Multiple.json
 func ExampleJobsClient_BeginStopMultipleExecutions() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1354,8 +1343,6 @@ func ExampleJobsClient_BeginStopMultipleExecutions() {
 	// 				Name: to.Ptr("jobExecution-27944453"),
 	// 				Properties: &armappcontainers.JobExecutionProperties{
 	// 					EndTime: to.Ptr(time.Date(2023, time.February, 13, 20, 47, 30, 0, time.UTC)),
-	// 					Message: to.Ptr("Job has reached the specified backoff limit"),
-	// 					Reason: to.Ptr("BackoffLimitExceeded"),
 	// 					StartTime: to.Ptr(time.Date(2023, time.February, 13, 20, 37, 30, 0, time.UTC)),
 	// 					Status: to.Ptr(armappcontainers.JobExecutionRunningStateRunning),
 	// 				},
@@ -1364,8 +1351,6 @@ func ExampleJobsClient_BeginStopMultipleExecutions() {
 	// 				Name: to.Ptr("jobExecution-27944452"),
 	// 				Properties: &armappcontainers.JobExecutionProperties{
 	// 					EndTime: to.Ptr(time.Date(2023, time.February, 13, 21, 47, 30, 0, time.UTC)),
-	// 					Message: to.Ptr("Job has reached the specified backoff limit"),
-	// 					Reason: to.Ptr("BackoffLimitExceeded"),
 	// 					StartTime: to.Ptr(time.Date(2023, time.February, 13, 21, 37, 30, 0, time.UTC)),
 	// 					Status: to.Ptr(armappcontainers.JobExecutionRunningStateRunning),
 	// 				},
@@ -1374,8 +1359,6 @@ func ExampleJobsClient_BeginStopMultipleExecutions() {
 	// 				Name: to.Ptr("jobExecution-27944453"),
 	// 				Properties: &armappcontainers.JobExecutionProperties{
 	// 					EndTime: to.Ptr(time.Date(2023, time.February, 13, 22, 47, 30, 0, time.UTC)),
-	// 					Message: to.Ptr("Job has reached the specified backoff limit"),
-	// 					Reason: to.Ptr("BackoffLimitExceeded"),
 	// 					StartTime: to.Ptr(time.Date(2023, time.February, 13, 22, 37, 30, 0, time.UTC)),
 	// 					Status: to.Ptr(armappcontainers.JobExecutionRunningStateRunning),
 	// 				},
@@ -1385,7 +1368,7 @@ func ExampleJobsClient_BeginStopMultipleExecutions() {
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/Jobs_Suspend.json
+// Generated from example definition: 2026-07-01/Jobs_Suspend.json
 func ExampleJobsClient_BeginSuspend() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1487,7 +1470,7 @@ func ExampleJobsClient_BeginSuspend() {
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/Job_Patch.json
+// Generated from example definition: 2026-07-01/Job_Patch.json
 func ExampleJobsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

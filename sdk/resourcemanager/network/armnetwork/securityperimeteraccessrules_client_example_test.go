@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v11"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v12"
 	"log"
 )
 
-// Generated from example definition: 2025-09-01/NspAccessRulePut.json
+// Generated from example definition: 2026-01-01/NspAccessRulePut.json
 func ExampleSecurityPerimeterAccessRulesClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -75,7 +75,7 @@ func ExampleSecurityPerimeterAccessRulesClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/NspAccessRuleDelete.json
+// Generated from example definition: 2026-01-01/NspAccessRuleDelete.json
 func ExampleSecurityPerimeterAccessRulesClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -97,7 +97,7 @@ func ExampleSecurityPerimeterAccessRulesClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/NspAccessRuleGet.json
+// Generated from example definition: 2026-01-01/NspAccessRuleGet.json
 func ExampleSecurityPerimeterAccessRulesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -152,7 +152,7 @@ func ExampleSecurityPerimeterAccessRulesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/NspAccessRuleList.json
+// Generated from example definition: 2026-01-01/NspAccessRuleList.json
 func ExampleSecurityPerimeterAccessRulesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -250,7 +250,7 @@ func ExampleSecurityPerimeterAccessRulesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-09-01/NspAccessRuleReconcile.json
+// Generated from example definition: 2026-01-01/NspAccessRuleReconcile.json
 func ExampleSecurityPerimeterAccessRulesClient_Reconcile() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

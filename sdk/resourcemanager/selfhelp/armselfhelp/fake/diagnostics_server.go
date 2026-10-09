@@ -103,10 +103,7 @@ func (d *DiagnosticsServerTransport) dispatchBeginCreate(req *http.Request) (*ht
 		if err != nil {
 			return nil, err
 		}
-		scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
-		if err != nil {
-			return nil, err
-		}
+		scopeParam := matches[regex.SubexpIndex("scope")]
 		diagnosticsResourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("diagnosticsResourceName")])
 		if err != nil {
 			return nil, err
@@ -145,10 +142,7 @@ func (d *DiagnosticsServerTransport) dispatchGet(req *http.Request) (*http.Respo
 	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
-	if err != nil {
-		return nil, err
-	}
+	scopeParam := matches[regex.SubexpIndex("scope")]
 	diagnosticsResourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("diagnosticsResourceName")])
 	if err != nil {
 		return nil, err

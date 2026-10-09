@@ -156,10 +156,7 @@ func (r *RecommendationsServerTransport) dispatchGet(req *http.Request) (*http.R
 	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
-	if err != nil {
-		return nil, err
-	}
+	resourceURIParam := matches[regex.SubexpIndex("resourceUri")]
 	recommendationIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("recommendationId")])
 	if err != nil {
 		return nil, err
@@ -278,10 +275,7 @@ func (r *RecommendationsServerTransport) dispatchNewListByTenantPager(req *http.
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
-		resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
-		if err != nil {
-			return nil, err
-		}
+		resourceURIParam := matches[regex.SubexpIndex("resourceUri")]
 		filterParam := getOptional(qp.Get("$filter"))
 		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
 			p, parseErr := strconv.ParseInt(v, 10, 32)
@@ -337,10 +331,7 @@ func (r *RecommendationsServerTransport) dispatchPatch(req *http.Request) (*http
 	if err != nil {
 		return nil, err
 	}
-	resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
-	if err != nil {
-		return nil, err
-	}
+	resourceURIParam := matches[regex.SubexpIndex("resourceUri")]
 	recommendationIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("recommendationId")])
 	if err != nil {
 		return nil, err

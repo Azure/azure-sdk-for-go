@@ -672,6 +672,162 @@ func TestSessionReceiver_ConnectionDeadForAccept(t *testing.T) {
 	require.Nil(t, receiver)
 }
 
+func TestSessionReceiver_AcceptNextTimeoutProperty(t *testing.T) {
+	tests := []struct {
+		name          string
+		entityPath    string
+		acceptNext    bool
+		subscription  bool
+		withDeadline  bool
+		expectTimeout bool
+	}{
+		{
+			name:          "next session with deadline",
+			entityPath:    "queue",
+			acceptNext:    true,
+			withDeadline:  true,
+			expectTimeout: true,
+		},
+		{
+			name:          "next subscription session with deadline",
+			entityPath:    "topic/Subscriptions/subscription",
+			acceptNext:    true,
+			subscription:  true,
+			withDeadline:  true,
+			expectTimeout: true,
+		},
+		{
+			name:         "next session without deadline",
+			entityPath:   "queue",
+			acceptNext:   true,
+			withDeadline: false,
+		},
+		{
+			name:         "named session with deadline",
+			entityPath:   "queue",
+			withDeadline: true,
+		},
+	}
+
+	for _, testCase := range tests {
+		t.Run(testCase.name, func(t *testing.T) {
+			var sessionLinkOptions *amqp.ReceiverOptions
+			_, client, cleanup := newClientWithMockedConn(t, &emulation.MockDataOptions{
+				PreReceiverMock: func(mr *emulation.MockReceiver, ctx context.Context) error {
+					if mr.Source == testCase.entityPath {
+						sessionLinkOptions = mr.Opts
+						mr.EXPECT().LinkSourceFilterValue("com.microsoft:session-filter").Return("session ID").AnyTimes()
+						mr.EXPECT().Properties().Return(map[string]any{}).AnyTimes()
+					}
+
+					return nil
+				},
+			}, nil)
+			defer cleanup()
+
+			ctx := context.Background()
+			if testCase.withDeadline {
+				var cancel context.CancelFunc
+				ctx, cancel = context.WithTimeout(ctx, time.Minute)
+				defer cancel()
+			}
+
+			var receiver *SessionReceiver
+			var err error
+			if testCase.subscription {
+				receiver, err = client.AcceptNextSessionForSubscription(ctx, "topic", "subscription", nil)
+			} else if testCase.acceptNext {
+				receiver, err = client.AcceptNextSessionForQueue(ctx, "queue", nil)
+			} else {
+				receiver, err = client.AcceptSessionForQueue(ctx, "queue", "session ID", nil)
+			}
+			require.NoError(t, err)
+			require.NotNil(t, receiver)
+			require.NotNil(t, sessionLinkOptions)
+
+			timeout, hasTimeout := sessionLinkOptions.Properties["com.microsoft:timeout"]
+			require.Equal(t, testCase.expectTimeout, hasTimeout)
+			if testCase.expectTimeout {
+				require.IsType(t, uint32(0), timeout)
+				require.NotZero(t, timeout)
+			}
+		})
+	}
+}
+
+func TestSessionReceiver_AcceptNextErrors(t *testing.T) {
+	tests := []struct {
+		name       string
+		entityPath string
+		accept     func(context.Context, *Client) (*SessionReceiver, error)
+	}{
+		{
+			name:       "queue",
+			entityPath: "queue",
+			accept: func(ctx context.Context, client *Client) (*SessionReceiver, error) {
+				return client.AcceptNextSessionForQueue(ctx, "queue", nil)
+			},
+		},
+		{
+			name:       "subscription",
+			entityPath: "topic/Subscriptions/subscription",
+			accept: func(ctx context.Context, client *Client) (*SessionReceiver, error) {
+				return client.AcceptNextSessionForSubscription(ctx, "topic", "subscription", nil)
+			},
+		},
+	}
+
+	for _, testCase := range tests {
+		t.Run(testCase.name, func(t *testing.T) {
+			t.Run("broker timeout", func(t *testing.T) {
+				_, client, cleanup := newClientWithMockedConn(t, &emulation.MockDataOptions{
+					PreReceiverMock: func(mr *emulation.MockReceiver, ctx context.Context) error {
+						if mr.Source == testCase.entityPath {
+							return &amqp.LinkError{
+								RemoteErr: &amqp.Error{Condition: amqp.ErrCond("com.microsoft:timeout")},
+							}
+						}
+
+						return nil
+					},
+				}, &ClientOptions{RetryOptions: noRetriesNeeded})
+				defer cleanup()
+
+				ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
+				defer cancel()
+
+				receiver, err := testCase.accept(ctx, client)
+				require.Nil(t, receiver)
+
+				var sbErr *Error
+				require.ErrorAs(t, err, &sbErr)
+				require.Equal(t, CodeTimeout, sbErr.Code)
+			})
+
+			t.Run("context cancellation", func(t *testing.T) {
+				var cancel context.CancelFunc
+				_, client, cleanup := newClientWithMockedConn(t, &emulation.MockDataOptions{
+					PreReceiverMock: func(mr *emulation.MockReceiver, ctx context.Context) error {
+						if mr.Source == testCase.entityPath {
+							cancel()
+							return ctx.Err()
+						}
+
+						return nil
+					},
+				}, &ClientOptions{RetryOptions: noRetriesNeeded})
+				defer cleanup()
+
+				ctx, cancel := context.WithCancel(context.Background())
+				defer cancel()
+				receiver, err := testCase.accept(ctx, client)
+				require.Nil(t, receiver)
+				require.ErrorIs(t, err, context.Canceled)
+			})
+		})
+	}
+}
+
 func TestSessionReceiverUserFacingErrors_Methods(t *testing.T) {
 	lockLost := false
 

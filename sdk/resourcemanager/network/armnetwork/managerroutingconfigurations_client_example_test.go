@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v11"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v12"
 	"log"
 )
 
-// Generated from example definition: 2025-09-01/NetworkManagerRoutingConfigurationPut.json
+// Generated from example definition: 2026-01-01/NetworkManagerRoutingConfigurationPut.json
 func ExampleManagerRoutingConfigurationsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -58,7 +58,7 @@ func ExampleManagerRoutingConfigurationsClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/NetworkManagerRoutingConfigurationDelete.json
+// Generated from example definition: 2026-01-01/NetworkManagerRoutingConfigurationDelete.json
 func ExampleManagerRoutingConfigurationsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -84,7 +84,7 @@ func ExampleManagerRoutingConfigurationsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/NetworkManagerRoutingConfigurationGet.json
+// Generated from example definition: 2026-01-01/NetworkManagerRoutingConfigurationGet.json
 func ExampleManagerRoutingConfigurationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -125,7 +125,7 @@ func ExampleManagerRoutingConfigurationsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/NetworkManagerRoutingConfigurationList.json
+// Generated from example definition: 2026-01-01/NetworkManagerRoutingConfigurationList.json
 func ExampleManagerRoutingConfigurationsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

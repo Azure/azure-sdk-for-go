@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v11"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v12"
 	"log"
 )
 
-// Generated from example definition: 2025-09-01/ServiceGatewayCreate.json
+// Generated from example definition: 2026-01-01/ServiceGatewayCreate.json
 func ExampleServiceGatewaysClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -73,7 +73,7 @@ func ExampleServiceGatewaysClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/ServiceGatewayDelete.json
+// Generated from example definition: 2026-01-01/ServiceGatewayDelete.json
 func ExampleServiceGatewaysClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -94,7 +94,7 @@ func ExampleServiceGatewaysClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-09-01/ServiceGatewayGet.json
+// Generated from example definition: 2026-01-01/ServiceGatewayGet.json
 func ExampleServiceGatewaysClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -137,7 +137,7 @@ func ExampleServiceGatewaysClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/ServiceGatewayGetAddressLocationsResponse.json
+// Generated from example definition: 2026-01-01/ServiceGatewayGetAddressLocationsResponse.json
 func ExampleServiceGatewaysClient_NewGetAddressLocationsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -190,7 +190,7 @@ func ExampleServiceGatewaysClient_NewGetAddressLocationsPager() {
 	}
 }
 
-// Generated from example definition: 2025-09-01/ServiceGatewayGetServicesResponse.json
+// Generated from example definition: 2026-01-01/ServiceGatewayGetServicesResponse.json
 func ExampleServiceGatewaysClient_NewGetServicesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -247,7 +247,7 @@ func ExampleServiceGatewaysClient_NewGetServicesPager() {
 	}
 }
 
-// Generated from example definition: 2025-09-01/ServiceGatewayList.json
+// Generated from example definition: 2026-01-01/ServiceGatewayList.json
 func ExampleServiceGatewaysClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -320,7 +320,7 @@ func ExampleServiceGatewaysClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-09-01/ServiceGatewayListAll.json
+// Generated from example definition: 2026-01-01/ServiceGatewayListAll.json
 func ExampleServiceGatewaysClient_NewListAllPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -393,7 +393,7 @@ func ExampleServiceGatewaysClient_NewListAllPager() {
 	}
 }
 
-// Generated from example definition: 2025-09-01/ServiceGatewayFullUpdateAddressLocationsRequest.json
+// Generated from example definition: 2026-01-01/ServiceGatewayFullUpdateAddressLocationsRequest.json
 func ExampleServiceGatewaysClient_UpdateAddressLocations_fullUpdateCreateUpdateOrDeleteAddressLocationsInTheServiceGateway() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -448,7 +448,7 @@ func ExampleServiceGatewaysClient_UpdateAddressLocations_fullUpdateCreateUpdateO
 	// }
 }
 
-// Generated from example definition: 2025-09-01/ServiceGatewayPartialUpdateAddressLocationsRequest.json
+// Generated from example definition: 2026-01-01/ServiceGatewayPartialUpdateAddressLocationsRequest.json
 func ExampleServiceGatewaysClient_UpdateAddressLocations_partialUpdateCreateUpdateOrDeleteAddressLocationsInTheServiceGateway() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -506,7 +506,7 @@ func ExampleServiceGatewaysClient_UpdateAddressLocations_partialUpdateCreateUpda
 	// }
 }
 
-// Generated from example definition: 2025-09-01/ServiceGatewayUpdateServicesRequest.json
+// Generated from example definition: 2026-01-01/ServiceGatewayUpdateServicesRequest.json
 func ExampleServiceGatewaysClient_UpdateServices() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -559,7 +559,7 @@ func ExampleServiceGatewaysClient_UpdateServices() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/ServiceGatewayUpdateTags.json
+// Generated from example definition: 2026-01-01/ServiceGatewayUpdateTags.json
 func ExampleServiceGatewaysClient_UpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

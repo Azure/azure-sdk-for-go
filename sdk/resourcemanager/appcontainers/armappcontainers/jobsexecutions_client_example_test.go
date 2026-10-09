@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-10-02-preview/Job_Executions_Get.json
+// Generated from example definition: 2026-07-01/Job_Executions_Get.json
 func ExampleJobsExecutionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -19,7 +19,7 @@ import (
 // AIModelsClient contains the methods for the AIModels group.
 // Don't use this type directly, use NewAIModelsClient() instead.
 //
-// Generated from API version 2026-05-02-preview
+// Generated from API version 2026-09-02-preview
 type AIModelsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -52,15 +52,14 @@ func NewAIModelsClient(subscriptionID string, credential azcore.TokenCredential,
 //     hex of the first 8 bytes (16 characters) of `SHA-256(modelId)` (e.g. upstream `microsoft/Phi-4-mini-instruct` produces
 //     `9806f0c862fdd920`). Callers should treat the name as opaque and use the `modelId` property as the human-readable reference.
 //     The encoding is a permanent contract of this resource provider and does not depend on any upstream naming policy.
-//   - body - The content of the action request
 //   - options - AIModelsClientCalculateCostOptions contains the optional parameters for the AIModelsClient.CalculateCost method.
-func (client *AIModelsClient) CalculateCost(ctx context.Context, location string, aiModelName string, body CalculateCostRequest, options *AIModelsClientCalculateCostOptions) (AIModelsClientCalculateCostResponse, error) {
+func (client *AIModelsClient) CalculateCost(ctx context.Context, location string, aiModelName string, options *AIModelsClientCalculateCostOptions) (AIModelsClientCalculateCostResponse, error) {
 	var err error
 	const operationName = "AIModelsClient.CalculateCost"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.calculateCostCreateRequest(ctx, location, aiModelName, body, options)
+	req, err := client.calculateCostCreateRequest(ctx, location, aiModelName, options)
 	if err != nil {
 		return AIModelsClientCalculateCostResponse{}, err
 	}
@@ -72,7 +71,7 @@ func (client *AIModelsClient) CalculateCost(ctx context.Context, location string
 }
 
 // calculateCostCreateRequest creates the CalculateCost request.
-func (client *AIModelsClient) calculateCostCreateRequest(ctx context.Context, location string, aiModelName string, body CalculateCostRequest, _ *AIModelsClientCalculateCostOptions) (*policy.Request, error) {
+func (client *AIModelsClient) calculateCostCreateRequest(ctx context.Context, location string, aiModelName string, _ *AIModelsClientCalculateCostOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ContainerService/locations/{location}/aiModels/{aiModelName}/calculateCost"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")
@@ -91,13 +90,9 @@ func (client *AIModelsClient) calculateCostCreateRequest(ctx context.Context, lo
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260502Preview)
+	reqQP.Set("api-version", version20260902Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, body); err != nil {
-		return nil, err
-	}
 	return req, nil
 }
 
@@ -158,7 +153,7 @@ func (client *AIModelsClient) getCreateRequest(ctx context.Context, location str
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260502Preview)
+	reqQP.Set("api-version", version20260902Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -228,7 +223,7 @@ func (client *AIModelsClient) listCreateRequest(ctx context.Context, location st
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260502Preview)
+		reqQP.Set("api-version", version20260902Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

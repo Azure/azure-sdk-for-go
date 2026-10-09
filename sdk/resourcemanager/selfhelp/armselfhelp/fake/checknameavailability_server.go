@@ -13,7 +13,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/selfhelp/armselfhelp/v2"
 	"net/http"
-	"net/url"
 	"reflect"
 	"regexp"
 	"slices"
@@ -92,10 +91,7 @@ func (c *CheckNameAvailabilityServerTransport) dispatchCheckAvailability(req *ht
 	if err != nil {
 		return nil, err
 	}
-	scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
-	if err != nil {
-		return nil, err
-	}
+	scopeParam := matches[regex.SubexpIndex("scope")]
 	var options *armselfhelp.CheckNameAvailabilityClientCheckAvailabilityOptions
 	if !reflect.ValueOf(body).IsZero() {
 		options = &armselfhelp.CheckNameAvailabilityClientCheckAvailabilityOptions{

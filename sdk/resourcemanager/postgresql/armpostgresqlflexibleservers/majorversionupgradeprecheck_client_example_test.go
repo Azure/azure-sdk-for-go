@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-04-01-preview/MajorVersionUpgradePrecheckGet.json
+// Generated from example definition: 2026-07-01-preview/MajorVersionUpgradePrecheckGet.json
 func ExampleMajorVersionUpgradePrecheckClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -143,7 +143,7 @@ func ExampleMajorVersionUpgradePrecheckClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/MajorVersionUpgradePrecheckListByServer.json
+// Generated from example definition: 2026-07-01-preview/MajorVersionUpgradePrecheckListByServer.json
 func ExampleMajorVersionUpgradePrecheckClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

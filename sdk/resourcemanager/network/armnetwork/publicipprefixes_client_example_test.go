@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v11"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v12"
 	"log"
 )
 
-// Generated from example definition: 2025-09-01/PublicIpPrefixCreateCustomizedValues.json
+// Generated from example definition: 2026-01-01/PublicIpPrefixCreateCustomizedValues.json
 func ExamplePublicIPPrefixesClient_BeginCreateOrUpdate_createPublicIPPrefixAllocationMethod() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -71,7 +71,7 @@ func ExamplePublicIPPrefixesClient_BeginCreateOrUpdate_createPublicIPPrefixAlloc
 	// }
 }
 
-// Generated from example definition: 2025-09-01/PublicIpPrefixCreateDefaults.json
+// Generated from example definition: 2026-01-01/PublicIpPrefixCreateDefaults.json
 func ExamplePublicIPPrefixesClient_BeginCreateOrUpdate_createPublicIPPrefixDefaults() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -124,7 +124,7 @@ func ExamplePublicIPPrefixesClient_BeginCreateOrUpdate_createPublicIPPrefixDefau
 	// }
 }
 
-// Generated from example definition: 2025-09-01/PublicIpPrefixCreateDefaultsStandardV2Sku.json
+// Generated from example definition: 2026-01-01/PublicIpPrefixCreateDefaultsStandardV2Sku.json
 func ExamplePublicIPPrefixesClient_BeginCreateOrUpdate_createPublicIPPrefixDefaultsWithStandardV2Sku() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -177,7 +177,7 @@ func ExamplePublicIPPrefixesClient_BeginCreateOrUpdate_createPublicIPPrefixDefau
 	// }
 }
 
-// Generated from example definition: 2025-09-01/PublicIpPrefixCreateWithFirstPartyServiceTag.json
+// Generated from example definition: 2026-01-01/PublicIpPrefixCreateWithFirstPartyServiceTag.json
 func ExamplePublicIPPrefixesClient_BeginCreateOrUpdate_createPublicIPPrefixWithFirstPartyServiceTag() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -245,7 +245,7 @@ func ExamplePublicIPPrefixesClient_BeginCreateOrUpdate_createPublicIPPrefixWithF
 	// }
 }
 
-// Generated from example definition: 2025-09-01/PublicIpPrefixDelete.json
+// Generated from example definition: 2026-01-01/PublicIpPrefixDelete.json
 func ExamplePublicIPPrefixesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -271,7 +271,7 @@ func ExamplePublicIPPrefixesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/PublicIpPrefixGet.json
+// Generated from example definition: 2026-01-01/PublicIpPrefixGet.json
 func ExamplePublicIPPrefixesClient_Get_getPublicIPPrefix() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -317,7 +317,7 @@ func ExamplePublicIPPrefixesClient_Get_getPublicIPPrefix() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/PublicIpPrefixGetStandardV2Sku.json
+// Generated from example definition: 2026-01-01/PublicIpPrefixGetStandardV2Sku.json
 func ExamplePublicIPPrefixesClient_Get_getPublicIPPrefixWithStandardV2Sku() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -364,7 +364,7 @@ func ExamplePublicIPPrefixesClient_Get_getPublicIPPrefixWithStandardV2Sku() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/PublicIpPrefixList.json
+// Generated from example definition: 2026-01-01/PublicIpPrefixList.json
 func ExamplePublicIPPrefixesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -437,7 +437,7 @@ func ExamplePublicIPPrefixesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-09-01/PublicIpPrefixListAll.json
+// Generated from example definition: 2026-01-01/PublicIpPrefixListAll.json
 func ExamplePublicIPPrefixesClient_NewListAllPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -533,7 +533,7 @@ func ExamplePublicIPPrefixesClient_NewListAllPager() {
 	}
 }
 
-// Generated from example definition: 2025-09-01/PublicIpPrefixUpdateTags.json
+// Generated from example definition: 2026-01-01/PublicIpPrefixUpdateTags.json
 func ExamplePublicIPPrefixesClient_UpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

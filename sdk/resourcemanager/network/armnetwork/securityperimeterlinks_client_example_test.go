@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v11"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v12"
 	"log"
 )
 
-// Generated from example definition: 2025-09-01/NspLinkPut.json
+// Generated from example definition: 2026-01-01/NspLinkPut.json
 func ExampleSecurityPerimeterLinksClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -77,7 +77,7 @@ func ExampleSecurityPerimeterLinksClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/NspLinkDelete.json
+// Generated from example definition: 2026-01-01/NspLinkDelete.json
 func ExampleSecurityPerimeterLinksClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -103,7 +103,7 @@ func ExampleSecurityPerimeterLinksClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/NspLinkGet.json
+// Generated from example definition: 2026-01-01/NspLinkGet.json
 func ExampleSecurityPerimeterLinksClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -158,7 +158,7 @@ func ExampleSecurityPerimeterLinksClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/NspLinkList.json
+// Generated from example definition: 2026-01-01/NspLinkList.json
 func ExampleSecurityPerimeterLinksClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-05-02-preview/AIManagerNamespaces_CreateOrUpdate.json
+// Generated from example definition: 2026-09-02-preview/AIManagerNamespaces_CreateOrUpdate.json
 func ExampleAIManagerNamespacesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -70,7 +70,7 @@ func ExampleAIManagerNamespacesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-05-02-preview/AIManagerNamespaces_Delete.json
+// Generated from example definition: 2026-09-02-preview/AIManagerNamespaces_Delete.json
 func ExampleAIManagerNamespacesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -91,7 +91,7 @@ func ExampleAIManagerNamespacesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-05-02-preview/AIManagerNamespaces_Get.json
+// Generated from example definition: 2026-09-02-preview/AIManagerNamespaces_Get.json
 func ExampleAIManagerNamespacesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -136,7 +136,7 @@ func ExampleAIManagerNamespacesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-05-02-preview/AIManagerNamespaces_ListAccessKeys.json
+// Generated from example definition: 2026-09-02-preview/AIManagerNamespaces_ListAccessKeys.json
 func ExampleAIManagerNamespacesClient_ListAccessKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -164,7 +164,7 @@ func ExampleAIManagerNamespacesClient_ListAccessKeys() {
 	// }
 }
 
-// Generated from example definition: 2026-05-02-preview/AIManagerNamespaces_ListByAIManager.json
+// Generated from example definition: 2026-09-02-preview/AIManagerNamespaces_ListByAIManager.json
 func ExampleAIManagerNamespacesClient_NewListByAIManagerPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -218,7 +218,7 @@ func ExampleAIManagerNamespacesClient_NewListByAIManagerPager() {
 	}
 }
 
-// Generated from example definition: 2026-05-02-preview/AIManagerNamespaces_ListCredential.json
+// Generated from example definition: 2026-09-02-preview/AIManagerNamespaces_ListCredential.json
 func ExampleAIManagerNamespacesClient_ListCredential() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -248,7 +248,7 @@ func ExampleAIManagerNamespacesClient_ListCredential() {
 	// }
 }
 
-// Generated from example definition: 2026-05-02-preview/AIManagerNamespaces_RotateKeys.json
+// Generated from example definition: 2026-09-02-preview/AIManagerNamespaces_RotateKeys.json
 func ExampleAIManagerNamespacesClient_RotateKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

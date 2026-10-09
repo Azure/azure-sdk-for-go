@@ -36,6 +36,23 @@ type DrillRunsClientBeginAddNotesOptions struct {
 
 // DrillRunsClientBeginFailOverOptions contains the optional parameters for the DrillRunsClient.BeginFailOver method.
 type DrillRunsClientBeginFailOverOptions struct {
+	// The content of the action request
+	Body *DrillRunFailoverRequest
+
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// DrillRunsClientBeginGenerateReportOptions contains the optional parameters for the DrillRunsClient.BeginGenerateReport
+// method.
+type DrillRunsClientBeginGenerateReportOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// DrillRunsClientBeginListReportDownloadURLOptions contains the optional parameters for the DrillRunsClient.BeginListReportDownloadURL
+// method.
+type DrillRunsClientBeginListReportDownloadURLOptions struct {
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
@@ -49,6 +66,9 @@ type DrillRunsClientBeginMarkAsCompleteOptions struct {
 
 // DrillRunsClientBeginReprotectOptions contains the optional parameters for the DrillRunsClient.BeginReprotect method.
 type DrillRunsClientBeginReprotectOptions struct {
+	// The content of the action request
+	Body *DrillRunReprotectRequest
+
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
@@ -218,39 +238,6 @@ type GoalResourcesClientGetOptions struct {
 
 // GoalResourcesClientListOptions contains the optional parameters for the GoalResourcesClient.NewListPager method.
 type GoalResourcesClientListOptions struct {
-	// Skip over when retrieving results.
-	SkipToken *string
-
-	// Number of elements to return when retrieving results.
-	Top *int32
-}
-
-// GoalTemplatesClientBeginCreateOrUpdateOptions contains the optional parameters for the GoalTemplatesClient.BeginCreateOrUpdate
-// method.
-type GoalTemplatesClientBeginCreateOrUpdateOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// GoalTemplatesClientBeginDeleteOptions contains the optional parameters for the GoalTemplatesClient.BeginDelete method.
-type GoalTemplatesClientBeginDeleteOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// GoalTemplatesClientBeginUpdateOptions contains the optional parameters for the GoalTemplatesClient.BeginUpdate method.
-type GoalTemplatesClientBeginUpdateOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// GoalTemplatesClientGetOptions contains the optional parameters for the GoalTemplatesClient.Get method.
-type GoalTemplatesClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// GoalTemplatesClientListOptions contains the optional parameters for the GoalTemplatesClient.NewListPager method.
-type GoalTemplatesClientListOptions struct {
 	// Skip over when retrieving results.
 	SkipToken *string
 

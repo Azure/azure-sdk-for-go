@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-07-01-preview/contentTemplates/DeleteTemplate.json
+// Generated from example definition: 2025-10-01-preview/contentTemplates/DeleteTemplate.json
 func ExampleContentTemplateClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -34,7 +34,7 @@ func ExampleContentTemplateClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/contentTemplates/GetTemplateById.json
+// Generated from example definition: 2025-10-01-preview/contentTemplates/GetTemplateById.json
 func ExampleContentTemplateClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -85,7 +85,7 @@ func ExampleContentTemplateClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/contentTemplates/InstallTemplate.json
+// Generated from example definition: 2025-10-01-preview/contentTemplates/InstallTemplate.json
 func ExampleContentTemplateClient_Install() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -216,7 +216,7 @@ func ExampleContentTemplateClient_Install() {
 	// 						Version: to.Ptr("2.0.0"),
 	// 					},
 	// 				},
-	// 				Operator: to.Ptr(armsecurityinsights.Operator("AND")),
+	// 				Operator: to.Ptr(armsecurityinsights.MetadataDependencyOperatorAND),
 	// 			},
 	// 			DisplayName: to.Ptr("API Protection workbook template"),
 	// 			FirstPublishDate: to.Ptr(time.Date(2022, time.April, 1, 0, 0, 0, 0, time.UTC)),

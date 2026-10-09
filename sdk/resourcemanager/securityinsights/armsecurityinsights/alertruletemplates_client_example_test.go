@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-07-01-preview/alertRuleTemplates/GetAlertRuleTemplateById.json
+// Generated from example definition: 2025-10-01-preview/alertRuleTemplates/GetAlertRuleTemplateById.json
 func ExampleAlertRuleTemplatesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -73,7 +73,7 @@ func ExampleAlertRuleTemplatesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/alertRuleTemplates/GetAlertRuleTemplates.json
+// Generated from example definition: 2025-10-01-preview/alertRuleTemplates/GetAlertRuleTemplates.json
 func ExampleAlertRuleTemplatesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v11"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v12"
 	"log"
 )
 
-// Generated from example definition: 2025-09-01/HubVirtualNetworkConnectionPut.json
+// Generated from example definition: 2026-01-01/HubVirtualNetworkConnectionPut.json
 func ExampleHubVirtualNetworkConnectionsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -26,7 +26,7 @@ func ExampleHubVirtualNetworkConnectionsClient_BeginCreateOrUpdate() {
 	poller, err := clientFactory.NewHubVirtualNetworkConnectionsClient().BeginCreateOrUpdate(ctx, "rg1", "virtualHub1", "connection1", armnetwork.HubVirtualNetworkConnection{
 		Properties: &armnetwork.HubVirtualNetworkConnectionProperties{
 			EnableInternetSecurity: to.Ptr(false),
-			EnableOnlyIPv6Peering:  to.Ptr(armnetwork.EnableOnlyIPv6PeeringStateDisabled),
+			EnableOnlyIPv6Peering:  to.Ptr(false),
 			RemoteVirtualNetwork: &armnetwork.SubResource{
 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/SpokeVnet1"),
 			},
@@ -94,7 +94,7 @@ func ExampleHubVirtualNetworkConnectionsClient_BeginCreateOrUpdate() {
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualHubs/virtualHub1/hubVirtualNetworkConnections/connection1"),
 	// 		Properties: &armnetwork.HubVirtualNetworkConnectionProperties{
 	// 			EnableInternetSecurity: to.Ptr(false),
-	// 			EnableOnlyIPv6Peering: to.Ptr(armnetwork.EnableOnlyIPv6PeeringStateDisabled),
+	// 			EnableOnlyIPv6Peering: to.Ptr(false),
 	// 			ProvisioningState: to.Ptr(armnetwork.ProvisioningStateUpdating),
 	// 			RemoteVirtualNetwork: &armnetwork.SubResource{
 	// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/SpokeVnet1"),
@@ -155,7 +155,7 @@ func ExampleHubVirtualNetworkConnectionsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/HubVirtualNetworkConnectionDelete.json
+// Generated from example definition: 2026-01-01/HubVirtualNetworkConnectionDelete.json
 func ExampleHubVirtualNetworkConnectionsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -181,7 +181,7 @@ func ExampleHubVirtualNetworkConnectionsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/HubVirtualNetworkConnectionGet.json
+// Generated from example definition: 2026-01-01/HubVirtualNetworkConnectionGet.json
 func ExampleHubVirtualNetworkConnectionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -206,7 +206,7 @@ func ExampleHubVirtualNetworkConnectionsClient_Get() {
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualHubs/virtualHub1/hubVirtualNetworkConnections/connection1"),
 	// 		Properties: &armnetwork.HubVirtualNetworkConnectionProperties{
 	// 			EnableInternetSecurity: to.Ptr(false),
-	// 			EnableOnlyIPv6Peering: to.Ptr(armnetwork.EnableOnlyIPv6PeeringStateDisabled),
+	// 			EnableOnlyIPv6Peering: to.Ptr(false),
 	// 			ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
 	// 			RemoteVirtualNetwork: &armnetwork.SubResource{
 	// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet1"),
@@ -273,7 +273,7 @@ func ExampleHubVirtualNetworkConnectionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/HubVirtualNetworkConnectionList.json
+// Generated from example definition: 2026-01-01/HubVirtualNetworkConnectionList.json
 func ExampleHubVirtualNetworkConnectionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -304,7 +304,7 @@ func ExampleHubVirtualNetworkConnectionsClient_NewListPager() {
 		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualHubs/virtualHub1/hubVirtualNetworkConnections/connection1"),
 		// 				Properties: &armnetwork.HubVirtualNetworkConnectionProperties{
 		// 					EnableInternetSecurity: to.Ptr(false),
-		// 					EnableOnlyIPv6Peering: to.Ptr(armnetwork.EnableOnlyIPv6PeeringStateDisabled),
+		// 					EnableOnlyIPv6Peering: to.Ptr(false),
 		// 					ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
 		// 					RemoteVirtualNetwork: &armnetwork.SubResource{
 		// 						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet1"),
@@ -368,7 +368,7 @@ func ExampleHubVirtualNetworkConnectionsClient_NewListPager() {
 		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualHubs/virtualHub1/hubVirtualNetworkConnections/connection2"),
 		// 				Properties: &armnetwork.HubVirtualNetworkConnectionProperties{
 		// 					EnableInternetSecurity: to.Ptr(false),
-		// 					EnableOnlyIPv6Peering: to.Ptr(armnetwork.EnableOnlyIPv6PeeringStateDisabled),
+		// 					EnableOnlyIPv6Peering: to.Ptr(false),
 		// 					ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
 		// 					RemoteVirtualNetwork: &armnetwork.SubResource{
 		// 						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet2"),

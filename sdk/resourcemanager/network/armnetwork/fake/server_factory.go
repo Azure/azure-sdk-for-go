@@ -42,6 +42,9 @@ type ServerFactory struct {
 	// ApplicationSecurityGroupsServer contains the fakes for client ApplicationSecurityGroupsClient
 	ApplicationSecurityGroupsServer ApplicationSecurityGroupsServer
 
+	// AuthenticationPoliciesServer contains the fakes for client AuthenticationPoliciesClient
+	AuthenticationPoliciesServer AuthenticationPoliciesServer
+
 	// AvailableDelegationsServer contains the fakes for client AvailableDelegationsClient
 	AvailableDelegationsServer AvailableDelegationsServer
 
@@ -540,6 +543,7 @@ type ServerFactoryTransport struct {
 	trApplicationGatewayWafDynamicManifestsDefaultServer    *ApplicationGatewayWafDynamicManifestsDefaultServerTransport
 	trApplicationGatewaysServer                             *ApplicationGatewaysServerTransport
 	trApplicationSecurityGroupsServer                       *ApplicationSecurityGroupsServerTransport
+	trAuthenticationPoliciesServer                          *AuthenticationPoliciesServerTransport
 	trAvailableDelegationsServer                            *AvailableDelegationsServerTransport
 	trAvailableEndpointServicesServer                       *AvailableEndpointServicesServerTransport
 	trAvailablePrivateEndpointTypesServer                   *AvailablePrivateEndpointTypesServerTransport
@@ -756,6 +760,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewApplicationSecurityGroupsServerTransport(&s.srv.ApplicationSecurityGroupsServer)
 		})
 		resp, err = s.trApplicationSecurityGroupsServer.Do(req)
+	case "AuthenticationPoliciesClient":
+		initServer(&s.trMu, &s.trAuthenticationPoliciesServer, func() *AuthenticationPoliciesServerTransport {
+			return NewAuthenticationPoliciesServerTransport(&s.srv.AuthenticationPoliciesServer)
+		})
+		resp, err = s.trAuthenticationPoliciesServer.Do(req)
 	case "AvailableDelegationsClient":
 		initServer(&s.trMu, &s.trAvailableDelegationsServer, func() *AvailableDelegationsServerTransport {
 			return NewAvailableDelegationsServerTransport(&s.srv.AvailableDelegationsServer)

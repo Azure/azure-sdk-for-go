@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-07-01-preview/officeConsents/DeleteOfficeConsents.json
+// Generated from example definition: 2025-10-01-preview/officeConsents/DeleteOfficeConsents.json
 func ExampleOfficeConsentsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -33,7 +33,7 @@ func ExampleOfficeConsentsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/officeConsents/GetOfficeConsentsById.json
+// Generated from example definition: 2025-10-01-preview/officeConsents/GetOfficeConsentsById.json
 func ExampleOfficeConsentsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -64,7 +64,7 @@ func ExampleOfficeConsentsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/officeConsents/GetOfficeConsents.json
+// Generated from example definition: 2025-10-01-preview/officeConsents/GetOfficeConsents.json
 func ExampleOfficeConsentsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-06-02-preview/OperationStatusResultGet.json
+// Generated from example definition: 2026-07-02-preview/OperationStatusResultGet.json
 func ExampleOperationStatusResultClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -43,7 +43,7 @@ func ExampleOperationStatusResultClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-06-02-preview/OperationStatusResultGetByAgentPool.json
+// Generated from example definition: 2026-07-02-preview/OperationStatusResultGetByAgentPool.json
 func ExampleOperationStatusResultClient_GetByAgentPool() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -74,7 +74,7 @@ func ExampleOperationStatusResultClient_GetByAgentPool() {
 	// }
 }
 
-// Generated from example definition: 2026-06-02-preview/OperationStatusResultList.json
+// Generated from example definition: 2026-07-02-preview/OperationStatusResultList.json
 func ExampleOperationStatusResultClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -127,7 +127,7 @@ func ExampleOperationStatusResultClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-06-02-preview/OperationStatusResultListByAgentPool.json
+// Generated from example definition: 2026-07-02-preview/OperationStatusResultListByAgentPool.json
 func ExampleOperationStatusResultClient_NewListByAgentPoolPager_listOperationsOnAgentPool() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -199,7 +199,7 @@ func ExampleOperationStatusResultClient_NewListByAgentPoolPager_listOperationsOn
 	}
 }
 
-// Generated from example definition: 2026-06-02-preview/OperationStatusResultListByAgentPool_Active.json
+// Generated from example definition: 2026-07-02-preview/OperationStatusResultListByAgentPool_Active.json
 func ExampleOperationStatusResultClient_NewListByAgentPoolPager_listActiveOperationsOnAgentPool() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

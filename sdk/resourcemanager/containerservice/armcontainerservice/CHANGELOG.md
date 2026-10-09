@@ -1,6 +1,6 @@
 # Release History
 
-## 9.6.0-beta.1 (2026-09-01)
+## 9.7.0-beta.1 (2026-10-02)
 ### Features Added
 
 - New value `AgentPoolModeMachines`, `AgentPoolModeManagedSystem` added to enum type `AgentPoolMode`
@@ -23,7 +23,6 @@
 - New enum type `DriftAction` with values `DriftActionRecreate`, `DriftActionSynced`
 - New enum type `DriverType` with values `DriverTypeCUDA`, `DriverTypeGRID`
 - New enum type `GuardrailsSupport` with values `GuardrailsSupportPreview`, `GuardrailsSupportStable`
-- New enum type `InfrastructureEncryption` with values `InfrastructureEncryptionDisabled`, `InfrastructureEncryptionEnabled`
 - New enum type `IpvsScheduler` with values `IpvsSchedulerLeastConnection`, `IpvsSchedulerRoundRobin`
 - New enum type `JWTAuthenticatorProvisioningState` with values `JWTAuthenticatorProvisioningStateCanceled`, `JWTAuthenticatorProvisioningStateCreating`, `JWTAuthenticatorProvisioningStateDeleting`, `JWTAuthenticatorProvisioningStateFailed`, `JWTAuthenticatorProvisioningStateSucceeded`, `JWTAuthenticatorProvisioningStateUpdating`
 - New enum type `ManagementMode` with values `ManagementModeManaged`, `ManagementModeUnmanaged`
@@ -141,7 +140,6 @@
 - New struct `JWTAuthenticatorProperties`
 - New struct `JWTAuthenticatorValidationRule`
 - New struct `KubeReserved`
-- New struct `KubernetesResourceObjectEncryptionProfile`
 - New struct `LabelSelector`
 - New struct `LabelSelectorRequirement`
 - New struct `ListBootstrapDataRequest`
@@ -198,12 +196,15 @@
 - New struct `ServiceAccountImagePullProfile`
 - New struct `SoftEvictionGracePeriod`
 - New struct `SoftEvictionThreshold`
+- New struct `UpgradeGateSettings`
 - New struct `VMSKUsListResult`
 - New field `NodePublicIPPrefixIDs`, `SecondaryNetworkInterfaces` in struct `AgentPoolNetworkProfile`
 - New field `ComponentsByReleases` in struct `AgentPoolUpgradeProfileProperties`
 - New field `IsOutOfSupport` in struct `AgentPoolUpgradeProfilePropertiesUpgradesItem`
-- New field `MaxBlockedNodes` in struct `AgentPoolUpgradeSettings`
+- New field `MaxBlockedNodes`, `UpgradeGateSettings` in struct `AgentPoolUpgradeSettings`
+- New field `UpgradeGateSettings` in struct `ClusterUpgradeSettings`
 - New field `DriverType`, `Nvidia` in struct `GPUProfile`
+- New field `ManagedBy` in struct `IdentityBinding`
 - New field `AllowedSubjects` in struct `IdentityBindingProperties`
 - New field `EvictionMaxPodGracePeriodInSeconds`, `HardEvictionThreshold`, `KubeReserved`, `SeccompDefault`, `SoftEvictionGracePeriod`, `SoftEvictionThreshold` in struct `KubeletConfig`
 - New field `EnableNodePublicIP`, `NodePublicIPPrefixID`, `NodePublicIPTags`, `PodSubnetID`, `VnetSubnetID` in struct `MachineNetworkProperties`
@@ -217,11 +218,20 @@
 - New field `ClusterServiceLoadBalancerHealthProbeMode` in struct `ManagedClusterLoadBalancerProfile`
 - New field `ComponentsByReleases` in struct `ManagedClusterPoolUpgradeProfile`
 - New field `IsOutOfSupport` in struct `ManagedClusterPoolUpgradeProfileUpgradesItem`
-- New field `ControlPlaneScalingProfile`, `CreationData`, `EnableFIPS`, `EnableNamespaceResources`, `EnableNodeHardening`, `HealthMonitorProfile`, `NodeDisruptionProfile` in struct `ManagedClusterProperties`
-- New field `ImageIntegrity`, `KubernetesResourceObjectEncryptionProfile`, `NodeRestriction`, `ServiceAccountImagePullProfile` in struct `ManagedClusterSecurityProfile`
+- New field `ControlPlaneScalingProfile`, `CreationData`, `EnableNamespaceResources`, `EnableNodeHardening`, `HealthMonitorProfile`, `NodeDisruptionProfile` in struct `ManagedClusterProperties`
+- New field `ImageIntegrity`, `NodeRestriction`, `ServiceAccountImagePullProfile` in struct `ManagedClusterSecurityProfile`
 - New field `AddonAutoscaling` in struct `ManagedClusterWorkloadAutoScalerProfileVerticalPodAutoscaler`
 - New field `IgnorePodDisruptionBudget` in struct `ManagedClustersClientBeginDeleteOptions`
 - New field `BastionProfile`, `KubeProxyConfig`, `NatGatewayID`, `PodLinkLocalAccess` in struct `NetworkProfile`
+
+
+## 9.6.0 (2026-09-29)
+### Features Added
+
+- New enum type `InfrastructureEncryption` with values `InfrastructureEncryptionEnabled`
+- New struct `KubernetesResourceObjectEncryptionProfile`
+- New field `EnableFIPS` in struct `ManagedClusterProperties`
+- New field `KubernetesResourceObjectEncryptionProfile` in struct `ManagedClusterSecurityProfile`
 
 
 ## 9.5.0 (2026-08-25)

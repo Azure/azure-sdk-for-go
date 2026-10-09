@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-07-01-preview/entityQueries/CreateEntityQueryActivity.json
+// Generated from example definition: 2025-10-01-preview/entityQueries/CreateEntityQueryActivity.json
 func ExampleEntityQueriesClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -108,7 +108,7 @@ func ExampleEntityQueriesClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/entityQueries/DeleteEntityQuery.json
+// Generated from example definition: 2025-10-01-preview/entityQueries/DeleteEntityQuery.json
 func ExampleEntityQueriesClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -130,7 +130,7 @@ func ExampleEntityQueriesClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/entityQueries/GetActivityEntityQueryById.json
+// Generated from example definition: 2025-10-01-preview/entityQueries/GetActivityEntityQueryById.json
 func ExampleEntityQueriesClient_Get_getAnActivityEntityQuery() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -191,7 +191,7 @@ func ExampleEntityQueriesClient_Get_getAnActivityEntityQuery() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/entityQueries/GetExpansionEntityQueryById.json
+// Generated from example definition: 2025-10-01-preview/entityQueries/GetExpansionEntityQueryById.json
 func ExampleEntityQueriesClient_Get_getAnExpansionEntityQuery() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -233,7 +233,7 @@ func ExampleEntityQueriesClient_Get_getAnExpansionEntityQuery() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/entityQueries/GetEntityQueries.json
+// Generated from example definition: 2025-10-01-preview/entityQueries/GetEntityQueries.json
 func ExampleEntityQueriesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -19,7 +19,7 @@ import (
 // AvailableVersionsClient contains the methods for the AvailableVersions group.
 // Don't use this type directly, use NewAvailableVersionsClient() instead.
 //
-// Generated from API version 2025-08-01-preview
+// Generated from API version 2026-08-01-preview
 type AvailableVersionsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -44,7 +44,7 @@ func NewAvailableVersionsClient(subscriptionID string, credential azcore.TokenCr
 	return client, nil
 }
 
-// NewListByLocationPager - List AvailableVersion resources by location.
+// NewListByLocationPager - List the Azure Kubernetes Application Network versions available in a location.
 //   - location - The name of the Azure region.
 //   - options - AvailableVersionsClientListByLocationOptions contains the optional parameters for the AvailableVersionsClient.NewListByLocationPager
 //     method.
@@ -97,7 +97,7 @@ func (client *AvailableVersionsClient) listByLocationCreateRequest(ctx context.C
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250801Preview)
+		reqQP.Set("api-version", version20260801Preview)
 		if options != nil && options.KubernetesVersion != nil {
 			reqQP.Set("kubernetesVersion", *options.KubernetesVersion)
 		}

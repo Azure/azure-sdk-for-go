@@ -12,7 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v11"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v12"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -21,6 +21,10 @@ import (
 
 // ExpressRouteCrossConnectionsServer is a fake server for instances of the armnetwork.ExpressRouteCrossConnectionsClient type.
 type ExpressRouteCrossConnectionsServer struct {
+	// BeginCommitCircuitMigration is the fake for method ExpressRouteCrossConnectionsClient.BeginCommitCircuitMigration
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginCommitCircuitMigration func(ctx context.Context, resourceGroupName string, crossConnectionName string, parameters armnetwork.MigrateExpressRouteCircuitRequest, options *armnetwork.ExpressRouteCrossConnectionsClientBeginCommitCircuitMigrationOptions) (resp azfake.PollerResponder[armnetwork.ExpressRouteCrossConnectionsClientCommitCircuitMigrationResponse], errResp azfake.ErrorResponder)
+
 	// BeginCreateOrUpdate is the fake for method ExpressRouteCrossConnectionsClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK
 	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, crossConnectionName string, parameters armnetwork.ExpressRouteCrossConnection, options *armnetwork.ExpressRouteCrossConnectionsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armnetwork.ExpressRouteCrossConnectionsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
@@ -28,6 +32,10 @@ type ExpressRouteCrossConnectionsServer struct {
 	// Get is the fake for method ExpressRouteCrossConnectionsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, crossConnectionName string, options *armnetwork.ExpressRouteCrossConnectionsClientGetOptions) (resp azfake.Responder[armnetwork.ExpressRouteCrossConnectionsClientGetResponse], errResp azfake.ErrorResponder)
+
+	// BeginGetCircuitMigrationInfo is the fake for method ExpressRouteCrossConnectionsClient.BeginGetCircuitMigrationInfo
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginGetCircuitMigrationInfo func(ctx context.Context, resourceGroupName string, crossConnectionName string, parameters armnetwork.MigrateExpressRouteCircuitValidateAndHealthCheckRequest, options *armnetwork.ExpressRouteCrossConnectionsClientBeginGetCircuitMigrationInfoOptions) (resp azfake.PollerResponder[armnetwork.ExpressRouteCrossConnectionsClientGetCircuitMigrationInfoResponse], errResp azfake.ErrorResponder)
 
 	// NewListPager is the fake for method ExpressRouteCrossConnectionsClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
@@ -49,9 +57,33 @@ type ExpressRouteCrossConnectionsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginListRoutesTableSummary func(ctx context.Context, resourceGroupName string, crossConnectionName string, peeringName string, devicePath string, options *armnetwork.ExpressRouteCrossConnectionsClientBeginListRoutesTableSummaryOptions) (resp azfake.PollerResponder[armnetwork.ExpressRouteCrossConnectionsClientListRoutesTableSummaryResponse], errResp azfake.ErrorResponder)
 
+	// BeginMigrateCircuit is the fake for method ExpressRouteCrossConnectionsClient.BeginMigrateCircuit
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginMigrateCircuit func(ctx context.Context, resourceGroupName string, crossConnectionName string, parameters armnetwork.MigrateExpressRouteCircuitRequest, options *armnetwork.ExpressRouteCrossConnectionsClientBeginMigrateCircuitOptions) (resp azfake.PollerResponder[armnetwork.ExpressRouteCrossConnectionsClientMigrateCircuitResponse], errResp azfake.ErrorResponder)
+
+	// BeginPrepareCircuitMigration is the fake for method ExpressRouteCrossConnectionsClient.BeginPrepareCircuitMigration
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginPrepareCircuitMigration func(ctx context.Context, resourceGroupName string, crossConnectionName string, parameters armnetwork.MigrateExpressRouteCircuitRequest, options *armnetwork.ExpressRouteCrossConnectionsClientBeginPrepareCircuitMigrationOptions) (resp azfake.PollerResponder[armnetwork.ExpressRouteCrossConnectionsClientPrepareCircuitMigrationResponse], errResp azfake.ErrorResponder)
+
+	// BeginRestoreBgpForCircuitMigration is the fake for method ExpressRouteCrossConnectionsClient.BeginRestoreBgpForCircuitMigration
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginRestoreBgpForCircuitMigration func(ctx context.Context, resourceGroupName string, crossConnectionName string, parameters armnetwork.MigrateExpressRouteCircuitRequest, options *armnetwork.ExpressRouteCrossConnectionsClientBeginRestoreBgpForCircuitMigrationOptions) (resp azfake.PollerResponder[armnetwork.ExpressRouteCrossConnectionsClientRestoreBgpForCircuitMigrationResponse], errResp azfake.ErrorResponder)
+
+	// BeginRollbackCircuitMigration is the fake for method ExpressRouteCrossConnectionsClient.BeginRollbackCircuitMigration
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginRollbackCircuitMigration func(ctx context.Context, resourceGroupName string, crossConnectionName string, parameters armnetwork.MigrateExpressRouteCircuitRequest, options *armnetwork.ExpressRouteCrossConnectionsClientBeginRollbackCircuitMigrationOptions) (resp azfake.PollerResponder[armnetwork.ExpressRouteCrossConnectionsClientRollbackCircuitMigrationResponse], errResp azfake.ErrorResponder)
+
+	// BeginShutDownBgpForCircuitMigration is the fake for method ExpressRouteCrossConnectionsClient.BeginShutDownBgpForCircuitMigration
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginShutDownBgpForCircuitMigration func(ctx context.Context, resourceGroupName string, crossConnectionName string, parameters armnetwork.MigrateExpressRouteCircuitRequest, options *armnetwork.ExpressRouteCrossConnectionsClientBeginShutDownBgpForCircuitMigrationOptions) (resp azfake.PollerResponder[armnetwork.ExpressRouteCrossConnectionsClientShutDownBgpForCircuitMigrationResponse], errResp azfake.ErrorResponder)
+
 	// UpdateTags is the fake for method ExpressRouteCrossConnectionsClient.UpdateTags
 	// HTTP status codes to indicate success: http.StatusOK
 	UpdateTags func(ctx context.Context, resourceGroupName string, crossConnectionName string, crossConnectionParameters armnetwork.TagsObject, options *armnetwork.ExpressRouteCrossConnectionsClientUpdateTagsOptions) (resp azfake.Responder[armnetwork.ExpressRouteCrossConnectionsClientUpdateTagsResponse], errResp azfake.ErrorResponder)
+
+	// BeginValidateCircuitMigration is the fake for method ExpressRouteCrossConnectionsClient.BeginValidateCircuitMigration
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginValidateCircuitMigration func(ctx context.Context, resourceGroupName string, crossConnectionName string, parameters armnetwork.MigrateExpressRouteCircuitValidateAndHealthCheckRequest, options *armnetwork.ExpressRouteCrossConnectionsClientBeginValidateCircuitMigrationOptions) (resp azfake.PollerResponder[armnetwork.ExpressRouteCrossConnectionsClientValidateCircuitMigrationResponse], errResp azfake.ErrorResponder)
 }
 
 // NewExpressRouteCrossConnectionsServerTransport creates a new instance of ExpressRouteCrossConnectionsServerTransport with the provided implementation.
@@ -59,26 +91,42 @@ type ExpressRouteCrossConnectionsServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewExpressRouteCrossConnectionsServerTransport(srv *ExpressRouteCrossConnectionsServer) *ExpressRouteCrossConnectionsServerTransport {
 	return &ExpressRouteCrossConnectionsServerTransport{
-		srv:                         srv,
-		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armnetwork.ExpressRouteCrossConnectionsClientCreateOrUpdateResponse]](),
-		newListPager:                newTracker[azfake.PagerResponder[armnetwork.ExpressRouteCrossConnectionsClientListResponse]](),
-		beginListArpTable:           newTracker[azfake.PollerResponder[armnetwork.ExpressRouteCrossConnectionsClientListArpTableResponse]](),
-		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armnetwork.ExpressRouteCrossConnectionsClientListByResourceGroupResponse]](),
-		beginListRoutesTable:        newTracker[azfake.PollerResponder[armnetwork.ExpressRouteCrossConnectionsClientListRoutesTableResponse]](),
-		beginListRoutesTableSummary: newTracker[azfake.PollerResponder[armnetwork.ExpressRouteCrossConnectionsClientListRoutesTableSummaryResponse]](),
+		srv:                                 srv,
+		beginCommitCircuitMigration:         newTracker[azfake.PollerResponder[armnetwork.ExpressRouteCrossConnectionsClientCommitCircuitMigrationResponse]](),
+		beginCreateOrUpdate:                 newTracker[azfake.PollerResponder[armnetwork.ExpressRouteCrossConnectionsClientCreateOrUpdateResponse]](),
+		beginGetCircuitMigrationInfo:        newTracker[azfake.PollerResponder[armnetwork.ExpressRouteCrossConnectionsClientGetCircuitMigrationInfoResponse]](),
+		newListPager:                        newTracker[azfake.PagerResponder[armnetwork.ExpressRouteCrossConnectionsClientListResponse]](),
+		beginListArpTable:                   newTracker[azfake.PollerResponder[armnetwork.ExpressRouteCrossConnectionsClientListArpTableResponse]](),
+		newListByResourceGroupPager:         newTracker[azfake.PagerResponder[armnetwork.ExpressRouteCrossConnectionsClientListByResourceGroupResponse]](),
+		beginListRoutesTable:                newTracker[azfake.PollerResponder[armnetwork.ExpressRouteCrossConnectionsClientListRoutesTableResponse]](),
+		beginListRoutesTableSummary:         newTracker[azfake.PollerResponder[armnetwork.ExpressRouteCrossConnectionsClientListRoutesTableSummaryResponse]](),
+		beginMigrateCircuit:                 newTracker[azfake.PollerResponder[armnetwork.ExpressRouteCrossConnectionsClientMigrateCircuitResponse]](),
+		beginPrepareCircuitMigration:        newTracker[azfake.PollerResponder[armnetwork.ExpressRouteCrossConnectionsClientPrepareCircuitMigrationResponse]](),
+		beginRestoreBgpForCircuitMigration:  newTracker[azfake.PollerResponder[armnetwork.ExpressRouteCrossConnectionsClientRestoreBgpForCircuitMigrationResponse]](),
+		beginRollbackCircuitMigration:       newTracker[azfake.PollerResponder[armnetwork.ExpressRouteCrossConnectionsClientRollbackCircuitMigrationResponse]](),
+		beginShutDownBgpForCircuitMigration: newTracker[azfake.PollerResponder[armnetwork.ExpressRouteCrossConnectionsClientShutDownBgpForCircuitMigrationResponse]](),
+		beginValidateCircuitMigration:       newTracker[azfake.PollerResponder[armnetwork.ExpressRouteCrossConnectionsClientValidateCircuitMigrationResponse]](),
 	}
 }
 
 // ExpressRouteCrossConnectionsServerTransport connects instances of armnetwork.ExpressRouteCrossConnectionsClient to instances of ExpressRouteCrossConnectionsServer.
 // Don't use this type directly, use NewExpressRouteCrossConnectionsServerTransport instead.
 type ExpressRouteCrossConnectionsServerTransport struct {
-	srv                         *ExpressRouteCrossConnectionsServer
-	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armnetwork.ExpressRouteCrossConnectionsClientCreateOrUpdateResponse]]
-	newListPager                *tracker[azfake.PagerResponder[armnetwork.ExpressRouteCrossConnectionsClientListResponse]]
-	beginListArpTable           *tracker[azfake.PollerResponder[armnetwork.ExpressRouteCrossConnectionsClientListArpTableResponse]]
-	newListByResourceGroupPager *tracker[azfake.PagerResponder[armnetwork.ExpressRouteCrossConnectionsClientListByResourceGroupResponse]]
-	beginListRoutesTable        *tracker[azfake.PollerResponder[armnetwork.ExpressRouteCrossConnectionsClientListRoutesTableResponse]]
-	beginListRoutesTableSummary *tracker[azfake.PollerResponder[armnetwork.ExpressRouteCrossConnectionsClientListRoutesTableSummaryResponse]]
+	srv                                 *ExpressRouteCrossConnectionsServer
+	beginCommitCircuitMigration         *tracker[azfake.PollerResponder[armnetwork.ExpressRouteCrossConnectionsClientCommitCircuitMigrationResponse]]
+	beginCreateOrUpdate                 *tracker[azfake.PollerResponder[armnetwork.ExpressRouteCrossConnectionsClientCreateOrUpdateResponse]]
+	beginGetCircuitMigrationInfo        *tracker[azfake.PollerResponder[armnetwork.ExpressRouteCrossConnectionsClientGetCircuitMigrationInfoResponse]]
+	newListPager                        *tracker[azfake.PagerResponder[armnetwork.ExpressRouteCrossConnectionsClientListResponse]]
+	beginListArpTable                   *tracker[azfake.PollerResponder[armnetwork.ExpressRouteCrossConnectionsClientListArpTableResponse]]
+	newListByResourceGroupPager         *tracker[azfake.PagerResponder[armnetwork.ExpressRouteCrossConnectionsClientListByResourceGroupResponse]]
+	beginListRoutesTable                *tracker[azfake.PollerResponder[armnetwork.ExpressRouteCrossConnectionsClientListRoutesTableResponse]]
+	beginListRoutesTableSummary         *tracker[azfake.PollerResponder[armnetwork.ExpressRouteCrossConnectionsClientListRoutesTableSummaryResponse]]
+	beginMigrateCircuit                 *tracker[azfake.PollerResponder[armnetwork.ExpressRouteCrossConnectionsClientMigrateCircuitResponse]]
+	beginPrepareCircuitMigration        *tracker[azfake.PollerResponder[armnetwork.ExpressRouteCrossConnectionsClientPrepareCircuitMigrationResponse]]
+	beginRestoreBgpForCircuitMigration  *tracker[azfake.PollerResponder[armnetwork.ExpressRouteCrossConnectionsClientRestoreBgpForCircuitMigrationResponse]]
+	beginRollbackCircuitMigration       *tracker[azfake.PollerResponder[armnetwork.ExpressRouteCrossConnectionsClientRollbackCircuitMigrationResponse]]
+	beginShutDownBgpForCircuitMigration *tracker[azfake.PollerResponder[armnetwork.ExpressRouteCrossConnectionsClientShutDownBgpForCircuitMigrationResponse]]
+	beginValidateCircuitMigration       *tracker[azfake.PollerResponder[armnetwork.ExpressRouteCrossConnectionsClientValidateCircuitMigrationResponse]]
 }
 
 // Do implements the policy.Transporter interface for ExpressRouteCrossConnectionsServerTransport.
@@ -102,10 +150,14 @@ func (e *ExpressRouteCrossConnectionsServerTransport) dispatchToMethodFake(req *
 		}
 		if !intercepted {
 			switch method {
+			case "ExpressRouteCrossConnectionsClient.BeginCommitCircuitMigration":
+				res.resp, res.err = e.dispatchBeginCommitCircuitMigration(req)
 			case "ExpressRouteCrossConnectionsClient.BeginCreateOrUpdate":
 				res.resp, res.err = e.dispatchBeginCreateOrUpdate(req)
 			case "ExpressRouteCrossConnectionsClient.Get":
 				res.resp, res.err = e.dispatchGet(req)
+			case "ExpressRouteCrossConnectionsClient.BeginGetCircuitMigrationInfo":
+				res.resp, res.err = e.dispatchBeginGetCircuitMigrationInfo(req)
 			case "ExpressRouteCrossConnectionsClient.NewListPager":
 				res.resp, res.err = e.dispatchNewListPager(req)
 			case "ExpressRouteCrossConnectionsClient.BeginListArpTable":
@@ -116,8 +168,20 @@ func (e *ExpressRouteCrossConnectionsServerTransport) dispatchToMethodFake(req *
 				res.resp, res.err = e.dispatchBeginListRoutesTable(req)
 			case "ExpressRouteCrossConnectionsClient.BeginListRoutesTableSummary":
 				res.resp, res.err = e.dispatchBeginListRoutesTableSummary(req)
+			case "ExpressRouteCrossConnectionsClient.BeginMigrateCircuit":
+				res.resp, res.err = e.dispatchBeginMigrateCircuit(req)
+			case "ExpressRouteCrossConnectionsClient.BeginPrepareCircuitMigration":
+				res.resp, res.err = e.dispatchBeginPrepareCircuitMigration(req)
+			case "ExpressRouteCrossConnectionsClient.BeginRestoreBgpForCircuitMigration":
+				res.resp, res.err = e.dispatchBeginRestoreBgpForCircuitMigration(req)
+			case "ExpressRouteCrossConnectionsClient.BeginRollbackCircuitMigration":
+				res.resp, res.err = e.dispatchBeginRollbackCircuitMigration(req)
+			case "ExpressRouteCrossConnectionsClient.BeginShutDownBgpForCircuitMigration":
+				res.resp, res.err = e.dispatchBeginShutDownBgpForCircuitMigration(req)
 			case "ExpressRouteCrossConnectionsClient.UpdateTags":
 				res.resp, res.err = e.dispatchUpdateTags(req)
+			case "ExpressRouteCrossConnectionsClient.BeginValidateCircuitMigration":
+				res.resp, res.err = e.dispatchBeginValidateCircuitMigration(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -132,6 +196,54 @@ func (e *ExpressRouteCrossConnectionsServerTransport) dispatchToMethodFake(req *
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
+}
+
+func (e *ExpressRouteCrossConnectionsServerTransport) dispatchBeginCommitCircuitMigration(req *http.Request) (*http.Response, error) {
+	if e.srv.BeginCommitCircuitMigration == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginCommitCircuitMigration not implemented")}
+	}
+	beginCommitCircuitMigration := e.beginCommitCircuitMigration.get(req)
+	if beginCommitCircuitMigration == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/expressRouteCrossConnections/(?P<crossConnectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/commitCircuitMigration`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armnetwork.MigrateExpressRouteCircuitRequest](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		crossConnectionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("crossConnectionName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := e.srv.BeginCommitCircuitMigration(req.Context(), resourceGroupNameParam, crossConnectionNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginCommitCircuitMigration = &respr
+		e.beginCommitCircuitMigration.add(req, beginCommitCircuitMigration)
+	}
+
+	resp, err := server.PollerResponderNext(beginCommitCircuitMigration, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		e.beginCommitCircuitMigration.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginCommitCircuitMigration) {
+		e.beginCommitCircuitMigration.remove(req)
+	}
+
+	return resp, nil
 }
 
 func (e *ExpressRouteCrossConnectionsServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (*http.Response, error) {
@@ -212,6 +324,54 @@ func (e *ExpressRouteCrossConnectionsServerTransport) dispatchGet(req *http.Requ
 	if err != nil {
 		return nil, err
 	}
+	return resp, nil
+}
+
+func (e *ExpressRouteCrossConnectionsServerTransport) dispatchBeginGetCircuitMigrationInfo(req *http.Request) (*http.Response, error) {
+	if e.srv.BeginGetCircuitMigrationInfo == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginGetCircuitMigrationInfo not implemented")}
+	}
+	beginGetCircuitMigrationInfo := e.beginGetCircuitMigrationInfo.get(req)
+	if beginGetCircuitMigrationInfo == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/expressRouteCrossConnections/(?P<crossConnectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/getCircuitMigrationInfo`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armnetwork.MigrateExpressRouteCircuitValidateAndHealthCheckRequest](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		crossConnectionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("crossConnectionName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := e.srv.BeginGetCircuitMigrationInfo(req.Context(), resourceGroupNameParam, crossConnectionNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginGetCircuitMigrationInfo = &respr
+		e.beginGetCircuitMigrationInfo.add(req, beginGetCircuitMigrationInfo)
+	}
+
+	resp, err := server.PollerResponderNext(beginGetCircuitMigrationInfo, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		e.beginGetCircuitMigrationInfo.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginGetCircuitMigrationInfo) {
+		e.beginGetCircuitMigrationInfo.remove(req)
+	}
+
 	return resp, nil
 }
 
@@ -449,6 +609,246 @@ func (e *ExpressRouteCrossConnectionsServerTransport) dispatchBeginListRoutesTab
 	return resp, nil
 }
 
+func (e *ExpressRouteCrossConnectionsServerTransport) dispatchBeginMigrateCircuit(req *http.Request) (*http.Response, error) {
+	if e.srv.BeginMigrateCircuit == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginMigrateCircuit not implemented")}
+	}
+	beginMigrateCircuit := e.beginMigrateCircuit.get(req)
+	if beginMigrateCircuit == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/expressRouteCrossConnections/(?P<crossConnectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/migrateCircuit`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armnetwork.MigrateExpressRouteCircuitRequest](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		crossConnectionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("crossConnectionName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := e.srv.BeginMigrateCircuit(req.Context(), resourceGroupNameParam, crossConnectionNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginMigrateCircuit = &respr
+		e.beginMigrateCircuit.add(req, beginMigrateCircuit)
+	}
+
+	resp, err := server.PollerResponderNext(beginMigrateCircuit, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		e.beginMigrateCircuit.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginMigrateCircuit) {
+		e.beginMigrateCircuit.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (e *ExpressRouteCrossConnectionsServerTransport) dispatchBeginPrepareCircuitMigration(req *http.Request) (*http.Response, error) {
+	if e.srv.BeginPrepareCircuitMigration == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginPrepareCircuitMigration not implemented")}
+	}
+	beginPrepareCircuitMigration := e.beginPrepareCircuitMigration.get(req)
+	if beginPrepareCircuitMigration == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/expressRouteCrossConnections/(?P<crossConnectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/prepareCircuitMigration`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armnetwork.MigrateExpressRouteCircuitRequest](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		crossConnectionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("crossConnectionName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := e.srv.BeginPrepareCircuitMigration(req.Context(), resourceGroupNameParam, crossConnectionNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginPrepareCircuitMigration = &respr
+		e.beginPrepareCircuitMigration.add(req, beginPrepareCircuitMigration)
+	}
+
+	resp, err := server.PollerResponderNext(beginPrepareCircuitMigration, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		e.beginPrepareCircuitMigration.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginPrepareCircuitMigration) {
+		e.beginPrepareCircuitMigration.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (e *ExpressRouteCrossConnectionsServerTransport) dispatchBeginRestoreBgpForCircuitMigration(req *http.Request) (*http.Response, error) {
+	if e.srv.BeginRestoreBgpForCircuitMigration == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginRestoreBgpForCircuitMigration not implemented")}
+	}
+	beginRestoreBgpForCircuitMigration := e.beginRestoreBgpForCircuitMigration.get(req)
+	if beginRestoreBgpForCircuitMigration == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/expressRouteCrossConnections/(?P<crossConnectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/restoreBgpForCircuitMigration`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armnetwork.MigrateExpressRouteCircuitRequest](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		crossConnectionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("crossConnectionName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := e.srv.BeginRestoreBgpForCircuitMigration(req.Context(), resourceGroupNameParam, crossConnectionNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginRestoreBgpForCircuitMigration = &respr
+		e.beginRestoreBgpForCircuitMigration.add(req, beginRestoreBgpForCircuitMigration)
+	}
+
+	resp, err := server.PollerResponderNext(beginRestoreBgpForCircuitMigration, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		e.beginRestoreBgpForCircuitMigration.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginRestoreBgpForCircuitMigration) {
+		e.beginRestoreBgpForCircuitMigration.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (e *ExpressRouteCrossConnectionsServerTransport) dispatchBeginRollbackCircuitMigration(req *http.Request) (*http.Response, error) {
+	if e.srv.BeginRollbackCircuitMigration == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginRollbackCircuitMigration not implemented")}
+	}
+	beginRollbackCircuitMigration := e.beginRollbackCircuitMigration.get(req)
+	if beginRollbackCircuitMigration == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/expressRouteCrossConnections/(?P<crossConnectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/rollbackCircuitMigration`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armnetwork.MigrateExpressRouteCircuitRequest](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		crossConnectionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("crossConnectionName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := e.srv.BeginRollbackCircuitMigration(req.Context(), resourceGroupNameParam, crossConnectionNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginRollbackCircuitMigration = &respr
+		e.beginRollbackCircuitMigration.add(req, beginRollbackCircuitMigration)
+	}
+
+	resp, err := server.PollerResponderNext(beginRollbackCircuitMigration, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		e.beginRollbackCircuitMigration.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginRollbackCircuitMigration) {
+		e.beginRollbackCircuitMigration.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (e *ExpressRouteCrossConnectionsServerTransport) dispatchBeginShutDownBgpForCircuitMigration(req *http.Request) (*http.Response, error) {
+	if e.srv.BeginShutDownBgpForCircuitMigration == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginShutDownBgpForCircuitMigration not implemented")}
+	}
+	beginShutDownBgpForCircuitMigration := e.beginShutDownBgpForCircuitMigration.get(req)
+	if beginShutDownBgpForCircuitMigration == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/expressRouteCrossConnections/(?P<crossConnectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/shutDownBgpForCircuitMigration`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armnetwork.MigrateExpressRouteCircuitRequest](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		crossConnectionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("crossConnectionName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := e.srv.BeginShutDownBgpForCircuitMigration(req.Context(), resourceGroupNameParam, crossConnectionNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginShutDownBgpForCircuitMigration = &respr
+		e.beginShutDownBgpForCircuitMigration.add(req, beginShutDownBgpForCircuitMigration)
+	}
+
+	resp, err := server.PollerResponderNext(beginShutDownBgpForCircuitMigration, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		e.beginShutDownBgpForCircuitMigration.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginShutDownBgpForCircuitMigration) {
+		e.beginShutDownBgpForCircuitMigration.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (e *ExpressRouteCrossConnectionsServerTransport) dispatchUpdateTags(req *http.Request) (*http.Response, error) {
 	if e.srv.UpdateTags == nil {
 		return nil, &nonRetriableError{errors.New("fake for method UpdateTags not implemented")}
@@ -483,6 +883,54 @@ func (e *ExpressRouteCrossConnectionsServerTransport) dispatchUpdateTags(req *ht
 	if err != nil {
 		return nil, err
 	}
+	return resp, nil
+}
+
+func (e *ExpressRouteCrossConnectionsServerTransport) dispatchBeginValidateCircuitMigration(req *http.Request) (*http.Response, error) {
+	if e.srv.BeginValidateCircuitMigration == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginValidateCircuitMigration not implemented")}
+	}
+	beginValidateCircuitMigration := e.beginValidateCircuitMigration.get(req)
+	if beginValidateCircuitMigration == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/expressRouteCrossConnections/(?P<crossConnectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/validateCircuitMigration`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armnetwork.MigrateExpressRouteCircuitValidateAndHealthCheckRequest](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		crossConnectionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("crossConnectionName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := e.srv.BeginValidateCircuitMigration(req.Context(), resourceGroupNameParam, crossConnectionNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginValidateCircuitMigration = &respr
+		e.beginValidateCircuitMigration.add(req, beginValidateCircuitMigration)
+	}
+
+	resp, err := server.PollerResponderNext(beginValidateCircuitMigration, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		e.beginValidateCircuitMigration.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginValidateCircuitMigration) {
+		e.beginValidateCircuitMigration.remove(req)
+	}
+
 	return resp, nil
 }
 

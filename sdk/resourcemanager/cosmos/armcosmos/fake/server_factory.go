@@ -24,6 +24,9 @@ type ServerFactory struct {
 	// CassandraResourcesServer contains the fakes for client CassandraResourcesClient
 	CassandraResourcesServer CassandraResourcesServer
 
+	// ChaosFaultServer contains the fakes for client ChaosFaultClient
+	ChaosFaultServer ChaosFaultServer
+
 	// CollectionServer contains the fakes for client CollectionClient
 	CollectionServer CollectionServer
 
@@ -36,6 +39,12 @@ type ServerFactory struct {
 	// CollectionRegionServer contains the fakes for client CollectionRegionClient
 	CollectionRegionServer CollectionRegionServer
 
+	// CopyJobsServer contains the fakes for client CopyJobsClient
+	CopyJobsServer CopyJobsServer
+
+	// DataTransferJobsServer contains the fakes for client DataTransferJobsClient
+	DataTransferJobsServer DataTransferJobsServer
+
 	// DatabaseAccountRegionServer contains the fakes for client DatabaseAccountRegionClient
 	DatabaseAccountRegionServer DatabaseAccountRegionServer
 
@@ -45,6 +54,9 @@ type ServerFactory struct {
 	// DatabaseServer contains the fakes for client DatabaseClient
 	DatabaseServer DatabaseServer
 
+	// FleetAnalyticsServer contains the fakes for client FleetAnalyticsClient
+	FleetAnalyticsServer FleetAnalyticsServer
+
 	// FleetServer contains the fakes for client FleetClient
 	FleetServer FleetServer
 
@@ -53,6 +65,12 @@ type ServerFactory struct {
 
 	// FleetspaceServer contains the fakes for client FleetspaceClient
 	FleetspaceServer FleetspaceServer
+
+	// GarnetClustersServer contains the fakes for client GarnetClustersClient
+	GarnetClustersServer GarnetClustersServer
+
+	// GraphResourcesServer contains the fakes for client GraphResourcesClient
+	GraphResourcesServer GraphResourcesServer
 
 	// GremlinResourcesServer contains the fakes for client GremlinResourcesClient
 	GremlinResourcesServer GremlinResourcesServer
@@ -65,6 +83,9 @@ type ServerFactory struct {
 
 	// MongoMIResourcesServer contains the fakes for client MongoMIResourcesClient
 	MongoMIResourcesServer MongoMIResourcesServer
+
+	// NetworkSecurityPerimeterConfigurationsServer contains the fakes for client NetworkSecurityPerimeterConfigurationsClient
+	NetworkSecurityPerimeterConfigurationsServer NetworkSecurityPerimeterConfigurationsServer
 
 	// NotebookWorkspacesServer contains the fakes for client NotebookWorkspacesClient
 	NotebookWorkspacesServer NotebookWorkspacesServer
@@ -135,8 +156,29 @@ type ServerFactory struct {
 	// ServiceServer contains the fakes for client ServiceClient
 	ServiceServer ServiceServer
 
+	// SoftDeletedDatabaseAccountsServer contains the fakes for client SoftDeletedDatabaseAccountsClient
+	SoftDeletedDatabaseAccountsServer SoftDeletedDatabaseAccountsServer
+
+	// SoftDeletedSQLContainersServer contains the fakes for client SoftDeletedSQLContainersClient
+	SoftDeletedSQLContainersServer SoftDeletedSQLContainersServer
+
+	// SoftDeletedSQLDatabasesServer contains the fakes for client SoftDeletedSQLDatabasesClient
+	SoftDeletedSQLDatabasesServer SoftDeletedSQLDatabasesServer
+
 	// TableResourcesServer contains the fakes for client TableResourcesClient
 	TableResourcesServer TableResourcesServer
+
+	// ThroughputPoolAccountServer contains the fakes for client ThroughputPoolAccountClient
+	ThroughputPoolAccountServer ThroughputPoolAccountServer
+
+	// ThroughputPoolAccountsServer contains the fakes for client ThroughputPoolAccountsClient
+	ThroughputPoolAccountsServer ThroughputPoolAccountsServer
+
+	// ThroughputPoolServer contains the fakes for client ThroughputPoolClient
+	ThroughputPoolServer ThroughputPoolServer
+
+	// ThroughputPoolsServer contains the fakes for client ThroughputPoolsClient
+	ThroughputPoolsServer ThroughputPoolsServer
 }
 
 // NewServerFactoryTransport creates a new instance of ServerFactoryTransport with the provided implementation.
@@ -151,49 +193,63 @@ func NewServerFactoryTransport(srv *ServerFactory) *ServerFactoryTransport {
 // ServerFactoryTransport connects instances of armcosmos.ClientFactory to instances of ServerFactory.
 // Don't use this type directly, use NewServerFactoryTransport instead.
 type ServerFactoryTransport struct {
-	srv                                  *ServerFactory
-	trMu                                 sync.Mutex
-	trCassandraClustersServer            *CassandraClustersServerTransport
-	trCassandraDataCentersServer         *CassandraDataCentersServerTransport
-	trCassandraResourcesServer           *CassandraResourcesServerTransport
-	trCollectionServer                   *CollectionServerTransport
-	trCollectionPartitionServer          *CollectionPartitionServerTransport
-	trCollectionPartitionRegionServer    *CollectionPartitionRegionServerTransport
-	trCollectionRegionServer             *CollectionRegionServerTransport
-	trDatabaseAccountRegionServer        *DatabaseAccountRegionServerTransport
-	trDatabaseAccountsServer             *DatabaseAccountsServerTransport
-	trDatabaseServer                     *DatabaseServerTransport
-	trFleetServer                        *FleetServerTransport
-	trFleetspaceAccountServer            *FleetspaceAccountServerTransport
-	trFleetspaceServer                   *FleetspaceServerTransport
-	trGremlinResourcesServer             *GremlinResourcesServerTransport
-	trLocationsServer                    *LocationsServerTransport
-	trMongoDBResourcesServer             *MongoDBResourcesServerTransport
-	trMongoMIResourcesServer             *MongoMIResourcesServerTransport
-	trNotebookWorkspacesServer           *NotebookWorkspacesServerTransport
-	trOperationsServer                   *OperationsServerTransport
-	trPartitionKeyRangeIDServer          *PartitionKeyRangeIDServerTransport
-	trPartitionKeyRangeIDRegionServer    *PartitionKeyRangeIDRegionServerTransport
-	trPercentileServer                   *PercentileServerTransport
-	trPercentileSourceTargetServer       *PercentileSourceTargetServerTransport
-	trPercentileTargetServer             *PercentileTargetServerTransport
-	trPrivateEndpointConnectionsServer   *PrivateEndpointConnectionsServerTransport
-	trPrivateLinkResourcesServer         *PrivateLinkResourcesServerTransport
-	trRestorableDatabaseAccountsServer   *RestorableDatabaseAccountsServerTransport
-	trRestorableGremlinDatabasesServer   *RestorableGremlinDatabasesServerTransport
-	trRestorableGremlinGraphsServer      *RestorableGremlinGraphsServerTransport
-	trRestorableGremlinResourcesServer   *RestorableGremlinResourcesServerTransport
-	trRestorableMongodbCollectionsServer *RestorableMongodbCollectionsServerTransport
-	trRestorableMongodbDatabasesServer   *RestorableMongodbDatabasesServerTransport
-	trRestorableMongodbResourcesServer   *RestorableMongodbResourcesServerTransport
-	trRestorableSQLContainersServer      *RestorableSQLContainersServerTransport
-	trRestorableSQLDatabasesServer       *RestorableSQLDatabasesServerTransport
-	trRestorableSQLResourcesServer       *RestorableSQLResourcesServerTransport
-	trRestorableTableResourcesServer     *RestorableTableResourcesServerTransport
-	trRestorableTablesServer             *RestorableTablesServerTransport
-	trSQLResourcesServer                 *SQLResourcesServerTransport
-	trServiceServer                      *ServiceServerTransport
-	trTableResourcesServer               *TableResourcesServerTransport
+	srv                                            *ServerFactory
+	trMu                                           sync.Mutex
+	trCassandraClustersServer                      *CassandraClustersServerTransport
+	trCassandraDataCentersServer                   *CassandraDataCentersServerTransport
+	trCassandraResourcesServer                     *CassandraResourcesServerTransport
+	trChaosFaultServer                             *ChaosFaultServerTransport
+	trCollectionServer                             *CollectionServerTransport
+	trCollectionPartitionServer                    *CollectionPartitionServerTransport
+	trCollectionPartitionRegionServer              *CollectionPartitionRegionServerTransport
+	trCollectionRegionServer                       *CollectionRegionServerTransport
+	trCopyJobsServer                               *CopyJobsServerTransport
+	trDataTransferJobsServer                       *DataTransferJobsServerTransport
+	trDatabaseAccountRegionServer                  *DatabaseAccountRegionServerTransport
+	trDatabaseAccountsServer                       *DatabaseAccountsServerTransport
+	trDatabaseServer                               *DatabaseServerTransport
+	trFleetAnalyticsServer                         *FleetAnalyticsServerTransport
+	trFleetServer                                  *FleetServerTransport
+	trFleetspaceAccountServer                      *FleetspaceAccountServerTransport
+	trFleetspaceServer                             *FleetspaceServerTransport
+	trGarnetClustersServer                         *GarnetClustersServerTransport
+	trGraphResourcesServer                         *GraphResourcesServerTransport
+	trGremlinResourcesServer                       *GremlinResourcesServerTransport
+	trLocationsServer                              *LocationsServerTransport
+	trMongoDBResourcesServer                       *MongoDBResourcesServerTransport
+	trMongoMIResourcesServer                       *MongoMIResourcesServerTransport
+	trNetworkSecurityPerimeterConfigurationsServer *NetworkSecurityPerimeterConfigurationsServerTransport
+	trNotebookWorkspacesServer                     *NotebookWorkspacesServerTransport
+	trOperationsServer                             *OperationsServerTransport
+	trPartitionKeyRangeIDServer                    *PartitionKeyRangeIDServerTransport
+	trPartitionKeyRangeIDRegionServer              *PartitionKeyRangeIDRegionServerTransport
+	trPercentileServer                             *PercentileServerTransport
+	trPercentileSourceTargetServer                 *PercentileSourceTargetServerTransport
+	trPercentileTargetServer                       *PercentileTargetServerTransport
+	trPrivateEndpointConnectionsServer             *PrivateEndpointConnectionsServerTransport
+	trPrivateLinkResourcesServer                   *PrivateLinkResourcesServerTransport
+	trRestorableDatabaseAccountsServer             *RestorableDatabaseAccountsServerTransport
+	trRestorableGremlinDatabasesServer             *RestorableGremlinDatabasesServerTransport
+	trRestorableGremlinGraphsServer                *RestorableGremlinGraphsServerTransport
+	trRestorableGremlinResourcesServer             *RestorableGremlinResourcesServerTransport
+	trRestorableMongodbCollectionsServer           *RestorableMongodbCollectionsServerTransport
+	trRestorableMongodbDatabasesServer             *RestorableMongodbDatabasesServerTransport
+	trRestorableMongodbResourcesServer             *RestorableMongodbResourcesServerTransport
+	trRestorableSQLContainersServer                *RestorableSQLContainersServerTransport
+	trRestorableSQLDatabasesServer                 *RestorableSQLDatabasesServerTransport
+	trRestorableSQLResourcesServer                 *RestorableSQLResourcesServerTransport
+	trRestorableTableResourcesServer               *RestorableTableResourcesServerTransport
+	trRestorableTablesServer                       *RestorableTablesServerTransport
+	trSQLResourcesServer                           *SQLResourcesServerTransport
+	trServiceServer                                *ServiceServerTransport
+	trSoftDeletedDatabaseAccountsServer            *SoftDeletedDatabaseAccountsServerTransport
+	trSoftDeletedSQLContainersServer               *SoftDeletedSQLContainersServerTransport
+	trSoftDeletedSQLDatabasesServer                *SoftDeletedSQLDatabasesServerTransport
+	trTableResourcesServer                         *TableResourcesServerTransport
+	trThroughputPoolAccountServer                  *ThroughputPoolAccountServerTransport
+	trThroughputPoolAccountsServer                 *ThroughputPoolAccountsServerTransport
+	trThroughputPoolServer                         *ThroughputPoolServerTransport
+	trThroughputPoolsServer                        *ThroughputPoolsServerTransport
 }
 
 // Do implements the policy.Transporter interface for ServerFactoryTransport.
@@ -224,6 +280,9 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewCassandraResourcesServerTransport(&s.srv.CassandraResourcesServer)
 		})
 		resp, err = s.trCassandraResourcesServer.Do(req)
+	case "ChaosFaultClient":
+		initServer(&s.trMu, &s.trChaosFaultServer, func() *ChaosFaultServerTransport { return NewChaosFaultServerTransport(&s.srv.ChaosFaultServer) })
+		resp, err = s.trChaosFaultServer.Do(req)
 	case "CollectionClient":
 		initServer(&s.trMu, &s.trCollectionServer, func() *CollectionServerTransport { return NewCollectionServerTransport(&s.srv.CollectionServer) })
 		resp, err = s.trCollectionServer.Do(req)
@@ -242,6 +301,14 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewCollectionRegionServerTransport(&s.srv.CollectionRegionServer)
 		})
 		resp, err = s.trCollectionRegionServer.Do(req)
+	case "CopyJobsClient":
+		initServer(&s.trMu, &s.trCopyJobsServer, func() *CopyJobsServerTransport { return NewCopyJobsServerTransport(&s.srv.CopyJobsServer) })
+		resp, err = s.trCopyJobsServer.Do(req)
+	case "DataTransferJobsClient":
+		initServer(&s.trMu, &s.trDataTransferJobsServer, func() *DataTransferJobsServerTransport {
+			return NewDataTransferJobsServerTransport(&s.srv.DataTransferJobsServer)
+		})
+		resp, err = s.trDataTransferJobsServer.Do(req)
 	case "DatabaseAccountRegionClient":
 		initServer(&s.trMu, &s.trDatabaseAccountRegionServer, func() *DatabaseAccountRegionServerTransport {
 			return NewDatabaseAccountRegionServerTransport(&s.srv.DatabaseAccountRegionServer)
@@ -255,6 +322,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "DatabaseClient":
 		initServer(&s.trMu, &s.trDatabaseServer, func() *DatabaseServerTransport { return NewDatabaseServerTransport(&s.srv.DatabaseServer) })
 		resp, err = s.trDatabaseServer.Do(req)
+	case "FleetAnalyticsClient":
+		initServer(&s.trMu, &s.trFleetAnalyticsServer, func() *FleetAnalyticsServerTransport {
+			return NewFleetAnalyticsServerTransport(&s.srv.FleetAnalyticsServer)
+		})
+		resp, err = s.trFleetAnalyticsServer.Do(req)
 	case "FleetClient":
 		initServer(&s.trMu, &s.trFleetServer, func() *FleetServerTransport { return NewFleetServerTransport(&s.srv.FleetServer) })
 		resp, err = s.trFleetServer.Do(req)
@@ -266,6 +338,16 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "FleetspaceClient":
 		initServer(&s.trMu, &s.trFleetspaceServer, func() *FleetspaceServerTransport { return NewFleetspaceServerTransport(&s.srv.FleetspaceServer) })
 		resp, err = s.trFleetspaceServer.Do(req)
+	case "GarnetClustersClient":
+		initServer(&s.trMu, &s.trGarnetClustersServer, func() *GarnetClustersServerTransport {
+			return NewGarnetClustersServerTransport(&s.srv.GarnetClustersServer)
+		})
+		resp, err = s.trGarnetClustersServer.Do(req)
+	case "GraphResourcesClient":
+		initServer(&s.trMu, &s.trGraphResourcesServer, func() *GraphResourcesServerTransport {
+			return NewGraphResourcesServerTransport(&s.srv.GraphResourcesServer)
+		})
+		resp, err = s.trGraphResourcesServer.Do(req)
 	case "GremlinResourcesClient":
 		initServer(&s.trMu, &s.trGremlinResourcesServer, func() *GremlinResourcesServerTransport {
 			return NewGremlinResourcesServerTransport(&s.srv.GremlinResourcesServer)
@@ -284,6 +366,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewMongoMIResourcesServerTransport(&s.srv.MongoMIResourcesServer)
 		})
 		resp, err = s.trMongoMIResourcesServer.Do(req)
+	case "NetworkSecurityPerimeterConfigurationsClient":
+		initServer(&s.trMu, &s.trNetworkSecurityPerimeterConfigurationsServer, func() *NetworkSecurityPerimeterConfigurationsServerTransport {
+			return NewNetworkSecurityPerimeterConfigurationsServerTransport(&s.srv.NetworkSecurityPerimeterConfigurationsServer)
+		})
+		resp, err = s.trNetworkSecurityPerimeterConfigurationsServer.Do(req)
 	case "NotebookWorkspacesClient":
 		initServer(&s.trMu, &s.trNotebookWorkspacesServer, func() *NotebookWorkspacesServerTransport {
 			return NewNotebookWorkspacesServerTransport(&s.srv.NotebookWorkspacesServer)
@@ -391,11 +478,46 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "ServiceClient":
 		initServer(&s.trMu, &s.trServiceServer, func() *ServiceServerTransport { return NewServiceServerTransport(&s.srv.ServiceServer) })
 		resp, err = s.trServiceServer.Do(req)
+	case "SoftDeletedDatabaseAccountsClient":
+		initServer(&s.trMu, &s.trSoftDeletedDatabaseAccountsServer, func() *SoftDeletedDatabaseAccountsServerTransport {
+			return NewSoftDeletedDatabaseAccountsServerTransport(&s.srv.SoftDeletedDatabaseAccountsServer)
+		})
+		resp, err = s.trSoftDeletedDatabaseAccountsServer.Do(req)
+	case "SoftDeletedSQLContainersClient":
+		initServer(&s.trMu, &s.trSoftDeletedSQLContainersServer, func() *SoftDeletedSQLContainersServerTransport {
+			return NewSoftDeletedSQLContainersServerTransport(&s.srv.SoftDeletedSQLContainersServer)
+		})
+		resp, err = s.trSoftDeletedSQLContainersServer.Do(req)
+	case "SoftDeletedSQLDatabasesClient":
+		initServer(&s.trMu, &s.trSoftDeletedSQLDatabasesServer, func() *SoftDeletedSQLDatabasesServerTransport {
+			return NewSoftDeletedSQLDatabasesServerTransport(&s.srv.SoftDeletedSQLDatabasesServer)
+		})
+		resp, err = s.trSoftDeletedSQLDatabasesServer.Do(req)
 	case "TableResourcesClient":
 		initServer(&s.trMu, &s.trTableResourcesServer, func() *TableResourcesServerTransport {
 			return NewTableResourcesServerTransport(&s.srv.TableResourcesServer)
 		})
 		resp, err = s.trTableResourcesServer.Do(req)
+	case "ThroughputPoolAccountClient":
+		initServer(&s.trMu, &s.trThroughputPoolAccountServer, func() *ThroughputPoolAccountServerTransport {
+			return NewThroughputPoolAccountServerTransport(&s.srv.ThroughputPoolAccountServer)
+		})
+		resp, err = s.trThroughputPoolAccountServer.Do(req)
+	case "ThroughputPoolAccountsClient":
+		initServer(&s.trMu, &s.trThroughputPoolAccountsServer, func() *ThroughputPoolAccountsServerTransport {
+			return NewThroughputPoolAccountsServerTransport(&s.srv.ThroughputPoolAccountsServer)
+		})
+		resp, err = s.trThroughputPoolAccountsServer.Do(req)
+	case "ThroughputPoolClient":
+		initServer(&s.trMu, &s.trThroughputPoolServer, func() *ThroughputPoolServerTransport {
+			return NewThroughputPoolServerTransport(&s.srv.ThroughputPoolServer)
+		})
+		resp, err = s.trThroughputPoolServer.Do(req)
+	case "ThroughputPoolsClient":
+		initServer(&s.trMu, &s.trThroughputPoolsServer, func() *ThroughputPoolsServerTransport {
+			return NewThroughputPoolsServerTransport(&s.srv.ThroughputPoolsServer)
+		})
+		resp, err = s.trThroughputPoolsServer.Do(req)
 	default:
 		err = fmt.Errorf("unhandled client %s", client)
 	}

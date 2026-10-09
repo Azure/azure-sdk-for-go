@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v11"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v12"
 	"log"
 )
 
-// Generated from example definition: 2025-09-01/ExpressRouteLagCreate.json
+// Generated from example definition: 2026-01-01/ExpressRouteLagCreate.json
 func ExampleExpressRouteLagsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -213,6 +213,8 @@ func ExampleExpressRouteLagsClient_BeginCreateOrUpdate() {
 	// 					Type: to.Ptr("Microsoft.Network/expressRouteLags/links"),
 	// 				},
 	// 			},
+	// 			Circuits: []*armnetwork.SubResource{
+	// 			},
 	// 			PeeringLocation: to.Ptr("peeringLocationName"),
 	// 			BandwidthInGbps: to.Ptr[int32](100),
 	// 			Encapsulation: to.Ptr(armnetwork.ExpressRouteLagEncapsulationDot1Q),
@@ -229,7 +231,7 @@ func ExampleExpressRouteLagsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/ExpressRouteLagDelete.json
+// Generated from example definition: 2026-01-01/ExpressRouteLagDelete.json
 func ExampleExpressRouteLagsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -250,7 +252,7 @@ func ExampleExpressRouteLagsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-09-01/GenerateExpressRouteLagsLOA.json
+// Generated from example definition: 2026-01-01/GenerateExpressRouteLagsLOA.json
 func ExampleExpressRouteLagsClient_GenerateLoa() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -283,7 +285,7 @@ func ExampleExpressRouteLagsClient_GenerateLoa() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/ExpressRouteLagGet.json
+// Generated from example definition: 2026-01-01/ExpressRouteLagGet.json
 func ExampleExpressRouteLagsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -469,6 +471,11 @@ func ExampleExpressRouteLagsClient_Get() {
 	// 					Type: to.Ptr("Microsoft.Network/expressRouteLags/links"),
 	// 				},
 	// 			},
+	// 			Circuits: []*armnetwork.SubResource{
+	// 				{
+	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/expressRouteCircuits/expressRouteCircuit1"),
+	// 				},
+	// 			},
 	// 			PeeringLocation: to.Ptr("peeringLocationName"),
 	// 			BandwidthInGbps: to.Ptr[int32](10),
 	// 			Encapsulation: to.Ptr(armnetwork.ExpressRouteLagEncapsulationQinQ),
@@ -485,7 +492,7 @@ func ExampleExpressRouteLagsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/ExpressRouteLagLinkGet.json
+// Generated from example definition: 2026-01-01/ExpressRouteLagLinkGet.json
 func ExampleExpressRouteLagsClient_LinksGet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -585,7 +592,7 @@ func ExampleExpressRouteLagsClient_LinksGet() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/ExpressRouteLagLinkList.json
+// Generated from example definition: 2026-01-01/ExpressRouteLagLinkList.json
 func ExampleExpressRouteLagsClient_NewLinksListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -772,7 +779,7 @@ func ExampleExpressRouteLagsClient_NewLinksListPager() {
 	}
 }
 
-// Generated from example definition: 2025-09-01/ExpressRouteLagList.json
+// Generated from example definition: 2026-01-01/ExpressRouteLagList.json
 func ExampleExpressRouteLagsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -964,6 +971,11 @@ func ExampleExpressRouteLagsClient_NewListPager() {
 		// 							Type: to.Ptr("Microsoft.Network/expressRouteLags/links"),
 		// 						},
 		// 					},
+		// 					Circuits: []*armnetwork.SubResource{
+		// 						{
+		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/expressRouteCircuits/expressRouteCircuit1"),
+		// 						},
+		// 					},
 		// 					PeeringLocation: to.Ptr("peeringLocationName"),
 		// 					BandwidthInGbps: to.Ptr[int32](10),
 		// 					Encapsulation: to.Ptr(armnetwork.ExpressRouteLagEncapsulationQinQ),
@@ -983,7 +995,7 @@ func ExampleExpressRouteLagsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-09-01/ExpressRouteLagListByResourceGroup.json
+// Generated from example definition: 2026-01-01/ExpressRouteLagListByResourceGroup.json
 func ExampleExpressRouteLagsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1175,6 +1187,11 @@ func ExampleExpressRouteLagsClient_NewListByResourceGroupPager() {
 		// 							Type: to.Ptr("Microsoft.Network/expressRouteLags/links"),
 		// 						},
 		// 					},
+		// 					Circuits: []*armnetwork.SubResource{
+		// 						{
+		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/expressRouteCircuits/expressRouteCircuit1"),
+		// 						},
+		// 					},
 		// 					PeeringLocation: to.Ptr("peeringLocationName"),
 		// 					BandwidthInGbps: to.Ptr[int32](10),
 		// 					Encapsulation: to.Ptr(armnetwork.ExpressRouteLagEncapsulationQinQ),
@@ -1194,7 +1211,7 @@ func ExampleExpressRouteLagsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-09-01/ExpressRouteLagMemberGet.json
+// Generated from example definition: 2026-01-01/ExpressRouteLagMemberGet.json
 func ExampleExpressRouteLagsClient_MembersGet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1231,7 +1248,7 @@ func ExampleExpressRouteLagsClient_MembersGet() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/ExpressRouteLagMemberList.json
+// Generated from example definition: 2026-01-01/ExpressRouteLagMemberList.json
 func ExampleExpressRouteLagsClient_NewMembersListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1322,7 +1339,7 @@ func ExampleExpressRouteLagsClient_NewMembersListPager() {
 	}
 }
 
-// Generated from example definition: 2025-09-01/ExpressRouteLagPatch.json
+// Generated from example definition: 2026-01-01/ExpressRouteLagPatch.json
 func ExampleExpressRouteLagsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -13,21 +13,90 @@ import (
 	"time"
 )
 
-// Generated from example definition: 2026-09-06-preview/Occurrences_Cancel_MaximumSet_Gen.json
-func ExampleOccurrencesClient_BeginCancel() {
+// Generated from example definition: 2026-10-06-preview/Occurrences_Cancel_BasicSuccess.json
+func ExampleOccurrencesClient_BeginCancel_oneCancelOperationsInARecurringScheduledActionOccurrence() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armbulkactions.NewClientFactory("CB26D7CB-3E27-465F-99C8-EAF7A4118245", cred, nil)
+	clientFactory, err := armbulkactions.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewOccurrencesClient().BeginCancel(ctx, "rgcompute", "myScheduledAction", "67b5bada-4772-43fc-8dbb-402476d98a45", armbulkactions.CancelOccurrenceRequest{
+	poller, err := clientFactory.NewOccurrencesClient().BeginCancel(ctx, "example-rg", "weekday-start", "77777777-7777-7777-7777-777777777777", armbulkactions.CancelOccurrenceRequest{
 		ResourceIDs: []*string{
-			to.Ptr("/subscriptions/CB26D7CB-3E27-465F-99C8-EAF7A4118245/resourceGroups/rgcompute/providers/Microsoft.Compute/virtualMachines/myVm"),
-			to.Ptr("/subscriptions/CB26D7CB-3E27-465F-99C8-EAF7A4118245/resourceGroups/rgcompute/providers/Microsoft.Compute/virtualMachines/myVm2"),
+			to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-01"),
+			to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-02"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armbulkactions.OccurrencesClientCancelResponse{
+	// 	ResourceOperationResponse: armbulkactions.ResourceOperationResponse{
+	// 		TotalResources: to.Ptr[int32](2),
+	// 		ResourcesStatuses: []*armbulkactions.ResourceStatus{
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-10-06-preview/Occurrences_Cancel_EntireOccurrenceSuccess.json
+func ExampleOccurrencesClient_BeginCancel_twoCancelAllOperationsInARecurringScheduledActionOccurrence() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armbulkactions.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewOccurrencesClient().BeginCancel(ctx, "example-rg", "weekday-start", "77777777-7777-7777-7777-777777777777", armbulkactions.CancelOccurrenceRequest{
+		ResourceIDs: []*string{},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armbulkactions.OccurrencesClientCancelResponse{
+	// 	ResourceOperationResponse: armbulkactions.ResourceOperationResponse{
+	// 		TotalResources: to.Ptr[int32](2),
+	// 		ResourcesStatuses: []*armbulkactions.ResourceStatus{
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-10-06-preview/Occurrences_Cancel_PartialSuccess.json
+func ExampleOccurrencesClient_BeginCancel_threeResponseWithPartialResultsWhenCancelingResourcesInARecurringScheduledActionOccurrence() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armbulkactions.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewOccurrencesClient().BeginCancel(ctx, "example-rg", "weekday-start", "77777777-7777-7777-7777-777777777777", armbulkactions.CancelOccurrenceRequest{
+		ResourceIDs: []*string{
+			to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-01"),
+			to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-02"),
 		},
 	}, nil)
 	if err != nil {
@@ -45,21 +114,12 @@ func ExampleOccurrencesClient_BeginCancel() {
 	// 		TotalResources: to.Ptr[int32](2),
 	// 		ResourcesStatuses: []*armbulkactions.ResourceStatus{
 	// 			{
-	// 				ResourceID: to.Ptr("/subscriptions/CB26D7CB-3E27-465F-99C8-EAF7A4118245/resourceGroups/rgcompute/providers/Microsoft.Compute/virtualMachines/myVm"),
-	// 				Status: to.Ptr(armbulkactions.ResourceOperationStatusSucceeded),
-	// 			},
-	// 			{
-	// 				ResourceID: to.Ptr("/subscriptions/CB26D7CB-3E27-465F-99C8-EAF7A4118245/resourceGroups/rgcompute/providers/Microsoft.Compute/virtualMachines/myVm2"),
+	// 				ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-02"),
 	// 				Status: to.Ptr(armbulkactions.ResourceOperationStatusFailed),
 	// 				Error: &armbulkactions.Error{
-	// 					Code: to.Ptr("InternalServerError"),
-	// 					Message: to.Ptr("An internal error occurred."),
-	// 					Target: to.Ptr("virtualMachines"),
-	// 					Details: []*armbulkactions.Error{
-	// 					},
-	// 					Innererror: &armbulkactions.InnerError{
-	// 						Code: to.Ptr("InnerErrorCode"),
-	// 					},
+	// 					Code: to.Ptr("OccurrenceCancelResourceRejected"),
+	// 					Message: to.Ptr("resource already ran; cannot cancel"),
+	// 					Target: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-02"),
 	// 				},
 	// 			},
 	// 		},
@@ -67,22 +127,93 @@ func ExampleOccurrencesClient_BeginCancel() {
 	// }
 }
 
-// Generated from example definition: 2026-09-06-preview/Occurrences_Delay_MaximumSet_Gen.json
-func ExampleOccurrencesClient_BeginDelay() {
+// Generated from example definition: 2026-10-06-preview/Occurrences_Delay_BasicSuccess.json
+func ExampleOccurrencesClient_BeginDelay_oneDelayOperationsInARecurringScheduledActionOccurrence() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armbulkactions.NewClientFactory("CB26D7CB-3E27-465F-99C8-EAF7A4118245", cred, nil)
+	clientFactory, err := armbulkactions.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewOccurrencesClient().BeginDelay(ctx, "rgcompute", "myScheduledAction", "67b5bada-4772-43fc-8dbb-402476d98a45", armbulkactions.DelayRequest{
-		Delay: to.Ptr(time.Date(2026, time.August, 5, 17, 0, 0, 0, time.FixedZone("", -25200))),
+	poller, err := clientFactory.NewOccurrencesClient().BeginDelay(ctx, "example-rg", "weekday-start", "77777777-7777-7777-7777-777777777777", armbulkactions.DelayRequest{
+		Delay: to.Ptr(time.Date(2026, time.September, 15, 9, 0, 0, 0, time.FixedZone("", -25200))),
 		ResourceIDs: []*string{
-			to.Ptr("/subscriptions/CB26D7CB-3E27-465F-99C8-EAF7A4118245/resourceGroups/rgcompute/providers/Microsoft.Compute/virtualMachines/myVm"),
-			to.Ptr("/subscriptions/CB26D7CB-3E27-465F-99C8-EAF7A4118245/resourceGroups/rgcompute/providers/Microsoft.Compute/virtualMachines/myVm2"),
+			to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-01"),
+			to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-02"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armbulkactions.OccurrencesClientDelayResponse{
+	// 	ResourceOperationResponse: armbulkactions.ResourceOperationResponse{
+	// 		TotalResources: to.Ptr[int32](2),
+	// 		ResourcesStatuses: []*armbulkactions.ResourceStatus{
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-10-06-preview/Occurrences_Delay_EntireOccurrenceSuccess.json
+func ExampleOccurrencesClient_BeginDelay_twoDelayAllOperationsInARecurringScheduledActionOccurrence() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armbulkactions.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewOccurrencesClient().BeginDelay(ctx, "example-rg", "weekday-start", "77777777-7777-7777-7777-777777777777", armbulkactions.DelayRequest{
+		Delay:       to.Ptr(time.Date(2026, time.September, 15, 9, 0, 0, 0, time.FixedZone("", -25200))),
+		ResourceIDs: []*string{},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armbulkactions.OccurrencesClientDelayResponse{
+	// 	ResourceOperationResponse: armbulkactions.ResourceOperationResponse{
+	// 		TotalResources: to.Ptr[int32](2),
+	// 		ResourcesStatuses: []*armbulkactions.ResourceStatus{
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-10-06-preview/Occurrences_Delay_PartialSuccess.json
+func ExampleOccurrencesClient_BeginDelay_threeResponseWithPartialSuccessResultsWhenDelayingOperationsInARecurringScheduledActionOccurrence() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armbulkactions.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewOccurrencesClient().BeginDelay(ctx, "example-rg", "weekday-start", "77777777-7777-7777-7777-777777777777", armbulkactions.DelayRequest{
+		Delay: to.Ptr(time.Date(2026, time.September, 15, 9, 0, 0, 0, time.FixedZone("", -25200))),
+		ResourceIDs: []*string{
+			to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-01"),
+			to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-02"),
 		},
 	}, nil)
 	if err != nil {
@@ -100,21 +231,16 @@ func ExampleOccurrencesClient_BeginDelay() {
 	// 		TotalResources: to.Ptr[int32](2),
 	// 		ResourcesStatuses: []*armbulkactions.ResourceStatus{
 	// 			{
-	// 				ResourceID: to.Ptr("/subscriptions/CB26D7CB-3E27-465F-99C8-EAF7A4118245/resourceGroups/rgcompute/providers/Microsoft.Compute/virtualMachines/myVm"),
+	// 				ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-01"),
 	// 				Status: to.Ptr(armbulkactions.ResourceOperationStatusSucceeded),
 	// 			},
 	// 			{
-	// 				ResourceID: to.Ptr("/subscriptions/CB26D7CB-3E27-465F-99C8-EAF7A4118245/resourceGroups/rgcompute/providers/Microsoft.Compute/virtualMachines/myVm2"),
+	// 				ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-02"),
 	// 				Status: to.Ptr(armbulkactions.ResourceOperationStatusFailed),
 	// 				Error: &armbulkactions.Error{
-	// 					Code: to.Ptr("InternalServerError"),
-	// 					Message: to.Ptr("An internal error occurred."),
-	// 					Target: to.Ptr("virtualMachines"),
-	// 					Details: []*armbulkactions.Error{
-	// 					},
-	// 					Innererror: &armbulkactions.InnerError{
-	// 						Code: to.Ptr("InnerErrorCode"),
-	// 					},
+	// 					Code: to.Ptr("OccurrenceDelayResourceRejected"),
+	// 					Message: to.Ptr("terminal"),
+	// 					Target: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-02"),
 	// 				},
 	// 			},
 	// 		},
@@ -122,18 +248,18 @@ func ExampleOccurrencesClient_BeginDelay() {
 	// }
 }
 
-// Generated from example definition: 2026-09-06-preview/Occurrences_Get_MaximumSet_Gen.json
-func ExampleOccurrencesClient_Get() {
+// Generated from example definition: 2026-10-06-preview/Occurrences_Get_BasicSuccess.json
+func ExampleOccurrencesClient_Get_oneReadARecurringScheduledActionOccurrence() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armbulkactions.NewClientFactory("CB26D7CB-3E27-465F-99C8-EAF7A4118245", cred, nil)
+	clientFactory, err := armbulkactions.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewOccurrencesClient().Get(ctx, "rgcompute", "myScheduledAction", "67b5bada-4772-43fc-8dbb-402476d98a45", nil)
+	res, err := clientFactory.NewOccurrencesClient().Get(ctx, "example-rg", "weekday-start", "77777777-7777-7777-7777-777777777777", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -143,59 +269,94 @@ func ExampleOccurrencesClient_Get() {
 	// res = armbulkactions.OccurrencesClientGetResponse{
 	// 	Occurrence: armbulkactions.Occurrence{
 	// 		Properties: &armbulkactions.OccurrenceProperties{
-	// 			ScheduledTime: to.Ptr(time.Date(2026, time.August, 5, 0, 30, 0, 0, time.UTC)),
+	// 			ScheduledTime: to.Ptr(time.Date(2026, time.September, 15, 14, 0, 0, 0, time.UTC)),
 	// 			ResultSummary: &armbulkactions.OccurrenceResultSummary{
-	// 				Total: to.Ptr[int32](25),
+	// 				Total: to.Ptr[int32](2),
 	// 				Statuses: []*armbulkactions.ResourceResultSummary{
 	// 					{
-	// 						Code: to.Ptr("Succeeded"),
-	// 						Count: to.Ptr[int32](24),
+	// 						Code: to.Ptr("Success"),
+	// 						Count: to.Ptr[int32](2),
+	// 					},
+	// 				},
+	// 			},
+	// 			ProvisioningState: to.Ptr(armbulkactions.OccurrenceStateSucceeded),
+	// 		},
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/scheduledActions/weekday-start/occurrences/77777777-7777-7777-7777-777777777777"),
+	// 		Name: to.Ptr("77777777-7777-7777-7777-777777777777"),
+	// 		Type: to.Ptr("microsoft.compute/scheduledActions/occurrences"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-10-06-preview/Occurrences_Get_ComprehensiveSuccess.json
+func ExampleOccurrencesClient_Get_twoReadARecurringScheduledActionOccurrenceWithMixedResults() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armbulkactions.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewOccurrencesClient().Get(ctx, "example-rg", "weekday-start", "88888888-8888-8888-8888-888888888888", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armbulkactions.OccurrencesClientGetResponse{
+	// 	Occurrence: armbulkactions.Occurrence{
+	// 		Properties: &armbulkactions.OccurrenceProperties{
+	// 			ScheduledTime: to.Ptr(time.Date(2026, time.September, 16, 14, 0, 0, 0, time.UTC)),
+	// 			ResultSummary: &armbulkactions.OccurrenceResultSummary{
+	// 				Total: to.Ptr[int32](2),
+	// 				Statuses: []*armbulkactions.ResourceResultSummary{
+	// 					{
+	// 						Code: to.Ptr("Success"),
+	// 						Count: to.Ptr[int32](1),
 	// 					},
 	// 					{
-	// 						Code: to.Ptr("Failed"),
+	// 						Code: to.Ptr("OperationNotAllowed"),
 	// 						Count: to.Ptr[int32](1),
 	// 						ErrorDetails: &armbulkactions.Error{
-	// 							Code: to.Ptr("InternalServerError"),
-	// 							Message: to.Ptr("An internal error occurred."),
+	// 							Code: to.Ptr("OperationNotAllowed"),
+	// 							Message: to.Ptr("The virtual machine cannot be started while it is being deallocated."),
 	// 							Target: to.Ptr("virtualMachines"),
-	// 							Details: []*armbulkactions.Error{
-	// 							},
-	// 							Innererror: &armbulkactions.InnerError{
-	// 								Code: to.Ptr("InnerErrorCode"),
-	// 							},
 	// 						},
 	// 					},
 	// 				},
 	// 			},
 	// 			ProvisioningState: to.Ptr(armbulkactions.OccurrenceStateFailed),
 	// 		},
-	// 		ID: to.Ptr("/subscriptions/CB26D7CB-3E27-465F-99C8-EAF7A4118245/resourceGroups/rgcompute/providers/Microsoft.Compute/scheduledActions/myScheduledAction/occurrences/67b5bada-4772-43fc-8dbb-402476d98a45"),
-	// 		Name: to.Ptr("67b5bada-4772-43fc-8dbb-402476d98a45"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/scheduledActions/weekday-start/occurrences/88888888-8888-8888-8888-888888888888"),
+	// 		Name: to.Ptr("88888888-8888-8888-8888-888888888888"),
 	// 		Type: to.Ptr("Microsoft.Compute/scheduledActions/occurrences"),
 	// 		SystemData: &armbulkactions.SystemData{
 	// 			CreatedBy: to.Ptr("user@contoso.com"),
 	// 			CreatedByType: to.Ptr(armbulkactions.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(time.Date(2026, time.August, 1, 12, 0, 0, 0, time.UTC)),
+	// 			CreatedAt: to.Ptr(time.Date(2026, time.September, 15, 14, 0, 0, 0, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user@contoso.com"),
 	// 			LastModifiedByType: to.Ptr(armbulkactions.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2026, time.August, 5, 0, 31, 0, 0, time.UTC)),
+	// 			LastModifiedAt: to.Ptr(time.Date(2026, time.September, 16, 14, 5, 0, 0, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-09-06-preview/Occurrences_ListByScheduledAction_MaximumSet_Gen.json
-func ExampleOccurrencesClient_NewListByScheduledActionPager() {
+// Generated from example definition: 2026-10-06-preview/Occurrences_ListByScheduledAction_BasicSuccess.json
+func ExampleOccurrencesClient_NewListByScheduledActionPager_oneListRecurringScheduledActionOccurrences() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armbulkactions.NewClientFactory("CB26D7CB-3E27-465F-99C8-EAF7A4118245", cred, nil)
+	clientFactory, err := armbulkactions.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewOccurrencesClient().NewListByScheduledActionPager("rgcompute", "myScheduledAction", nil)
+	pager := clientFactory.NewOccurrencesClient().NewListByScheduledActionPager("example-rg", "weekday-start", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -211,63 +372,135 @@ func ExampleOccurrencesClient_NewListByScheduledActionPager() {
 		// 		Value: []*armbulkactions.Occurrence{
 		// 			{
 		// 				Properties: &armbulkactions.OccurrenceProperties{
-		// 					ScheduledTime: to.Ptr(time.Date(2026, time.August, 5, 0, 30, 0, 0, time.UTC)),
+		// 					ScheduledTime: to.Ptr(time.Date(2026, time.September, 15, 14, 0, 0, 0, time.UTC)),
 		// 					ResultSummary: &armbulkactions.OccurrenceResultSummary{
-		// 						Total: to.Ptr[int32](25),
+		// 						Total: to.Ptr[int32](2),
 		// 						Statuses: []*armbulkactions.ResourceResultSummary{
 		// 							{
-		// 								Code: to.Ptr("Succeeded"),
-		// 								Count: to.Ptr[int32](24),
+		// 								Code: to.Ptr("Success"),
+		// 								Count: to.Ptr[int32](2),
+		// 							},
+		// 						},
+		// 					},
+		// 					ProvisioningState: to.Ptr(armbulkactions.OccurrenceStateSucceeded),
+		// 				},
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/scheduledActions/weekday-start/occurrences/77777777-7777-7777-7777-777777777777"),
+		// 				Name: to.Ptr("77777777-7777-7777-7777-777777777777"),
+		// 				Type: to.Ptr("Microsoft.Compute/scheduledActions/occurrences"),
+		// 			},
+		// 			{
+		// 				Properties: &armbulkactions.OccurrenceProperties{
+		// 					ScheduledTime: to.Ptr(time.Date(2026, time.September, 16, 14, 0, 0, 0, time.UTC)),
+		// 					ResultSummary: &armbulkactions.OccurrenceResultSummary{
+		// 						Total: to.Ptr[int32](2),
+		// 						Statuses: []*armbulkactions.ResourceResultSummary{
+		// 							{
+		// 								Code: to.Ptr("Success"),
+		// 								Count: to.Ptr[int32](2),
+		// 							},
+		// 						},
+		// 					},
+		// 					ProvisioningState: to.Ptr(armbulkactions.OccurrenceStateSucceeded),
+		// 				},
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/scheduledActions/weekday-start/occurrences/88888888-8888-8888-8888-888888888888"),
+		// 				Name: to.Ptr("88888888-8888-8888-8888-888888888888"),
+		// 				Type: to.Ptr("Microsoft.Compute/scheduledActions/occurrences"),
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2026-10-06-preview/Occurrences_ListByScheduledAction_PagedSuccess.json
+func ExampleOccurrencesClient_NewListByScheduledActionPager_twoListAPageOfRecurringScheduledActionOccurrences() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armbulkactions.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewOccurrencesClient().NewListByScheduledActionPager("example-rg", "weekday-start", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armbulkactions.OccurrencesClientListByScheduledActionResponse{
+		// 	OccurrenceListResult: armbulkactions.OccurrenceListResult{
+		// 		Value: []*armbulkactions.Occurrence{
+		// 			{
+		// 				Properties: &armbulkactions.OccurrenceProperties{
+		// 					ScheduledTime: to.Ptr(time.Date(2026, time.September, 16, 14, 0, 0, 0, time.UTC)),
+		// 					ResultSummary: &armbulkactions.OccurrenceResultSummary{
+		// 						Total: to.Ptr[int32](2),
+		// 						Statuses: []*armbulkactions.ResourceResultSummary{
+		// 							{
+		// 								Code: to.Ptr("Success"),
+		// 								Count: to.Ptr[int32](1),
 		// 							},
 		// 							{
-		// 								Code: to.Ptr("Failed"),
+		// 								Code: to.Ptr("OperationNotAllowed"),
 		// 								Count: to.Ptr[int32](1),
 		// 								ErrorDetails: &armbulkactions.Error{
-		// 									Code: to.Ptr("InternalServerError"),
-		// 									Message: to.Ptr("An internal error occurred."),
+		// 									Code: to.Ptr("OperationNotAllowed"),
+		// 									Message: to.Ptr("The virtual machine cannot be started while it is being deallocated."),
 		// 									Target: to.Ptr("virtualMachines"),
-		// 									Details: []*armbulkactions.Error{
-		// 									},
-		// 									Innererror: &armbulkactions.InnerError{
-		// 										Code: to.Ptr("InnerErrorCode"),
-		// 									},
 		// 								},
 		// 							},
 		// 						},
 		// 					},
 		// 					ProvisioningState: to.Ptr(armbulkactions.OccurrenceStateFailed),
 		// 				},
-		// 				ID: to.Ptr("/subscriptions/CB26D7CB-3E27-465F-99C8-EAF7A4118245/resourceGroups/rgcompute/providers/Microsoft.Compute/scheduledActions/myScheduledAction/occurrences/67b5bada-4772-43fc-8dbb-402476d98a45"),
-		// 				Name: to.Ptr("67b5bada-4772-43fc-8dbb-402476d98a45"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/scheduledActions/weekday-start/occurrences/88888888-8888-8888-8888-888888888888"),
+		// 				Name: to.Ptr("88888888-8888-8888-8888-888888888888"),
 		// 				Type: to.Ptr("Microsoft.Compute/scheduledActions/occurrences"),
-		// 				SystemData: &armbulkactions.SystemData{
-		// 					CreatedBy: to.Ptr("user@contoso.com"),
-		// 					CreatedByType: to.Ptr(armbulkactions.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(time.Date(2026, time.August, 1, 12, 0, 0, 0, time.UTC)),
-		// 					LastModifiedBy: to.Ptr("user@contoso.com"),
-		// 					LastModifiedByType: to.Ptr(armbulkactions.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(time.Date(2026, time.August, 5, 0, 31, 0, 0, time.UTC)),
+		// 			},
+		// 			{
+		// 				Properties: &armbulkactions.OccurrenceProperties{
+		// 					ScheduledTime: to.Ptr(time.Date(2026, time.September, 17, 14, 0, 0, 0, time.UTC)),
+		// 					ResultSummary: &armbulkactions.OccurrenceResultSummary{
+		// 						Total: to.Ptr[int32](2),
+		// 						Statuses: []*armbulkactions.ResourceResultSummary{
+		// 							{
+		// 								Code: to.Ptr("Success"),
+		// 								Count: to.Ptr[int32](2),
+		// 							},
+		// 						},
+		// 					},
+		// 					ProvisioningState: to.Ptr(armbulkactions.OccurrenceStateSucceeded),
 		// 				},
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/scheduledActions/weekday-start/occurrences/99999999-9999-9999-9999-999999999999"),
+		// 				Name: to.Ptr("99999999-9999-9999-9999-999999999999"),
+		// 				Type: to.Ptr("Microsoft.Compute/scheduledActions/occurrences"),
 		// 			},
 		// 		},
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/CB26D7CB-3E27-465F-99C8-EAF7A4118245/resourceGroups/rgcompute/providers/Microsoft.Compute/scheduledActions/myScheduledAction/occurrences?api-version=2026-09-06-preview&$skiptoken=page2"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/scheduledActions/weekday-start/occurrences?api-version=2026-10-06-preview&$skiptoken=page2"),
 		// 	},
 		// }
 	}
 }
 
-// Generated from example definition: 2026-09-06-preview/Occurrences_ListResources_MaximumSet_Gen.json
-func ExampleOccurrencesClient_NewListResourcesPager() {
+// Generated from example definition: 2026-10-06-preview/Occurrences_ListResources_BasicSuccess.json
+func ExampleOccurrencesClient_NewListResourcesPager_oneListResourcesInARecurringScheduledActionOccurrence() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armbulkactions.NewClientFactory("CB26D7CB-3E27-465F-99C8-EAF7A4118245", cred, nil)
+	clientFactory, err := armbulkactions.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewOccurrencesClient().NewListResourcesPager("rgcompute", "myScheduledAction", "67b5bada-4772-43fc-8dbb-402476d98a45", nil)
+	pager := clientFactory.NewOccurrencesClient().NewListResourcesPager("example-rg", "weekday-start", "77777777-7777-7777-7777-777777777777", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -282,33 +515,83 @@ func ExampleOccurrencesClient_NewListResourcesPager() {
 		// 	OccurrenceResourceListResponse: armbulkactions.OccurrenceResourceListResponse{
 		// 		Value: []*armbulkactions.OccurrenceResource{
 		// 			{
-		// 				ResourceID: to.Ptr("/subscriptions/CB26D7CB-3E27-465F-99C8-EAF7A4118245/resourceGroups/rgcompute/providers/Microsoft.Compute/virtualMachines/myVm"),
+		// 				ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-01"),
+		// 				ScheduledTime: to.Ptr(time.Date(2026, time.September, 15, 14, 0, 0, 0, time.UTC)),
+		// 				ProvisioningState: to.Ptr(armbulkactions.OccurrenceResourceProvisioningStateSucceeded),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-01"),
+		// 				Name: to.Ptr("web-vm-01"),
+		// 				Type: to.Ptr("Microsoft.Compute/virtualMachines"),
+		// 			},
+		// 			{
+		// 				ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-02"),
+		// 				ScheduledTime: to.Ptr(time.Date(2026, time.September, 15, 14, 0, 0, 0, time.UTC)),
+		// 				ProvisioningState: to.Ptr(armbulkactions.OccurrenceResourceProvisioningStateSucceeded),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-02"),
+		// 				Name: to.Ptr("web-vm-02"),
+		// 				Type: to.Ptr("Microsoft.Compute/virtualMachines"),
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2026-10-06-preview/Occurrences_ListResources_PagedSuccess.json
+func ExampleOccurrencesClient_NewListResourcesPager_twoListAPageOfResourcesInARecurringScheduledActionOccurrence() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armbulkactions.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewOccurrencesClient().NewListResourcesPager("example-rg", "weekday-start", "88888888-8888-8888-8888-888888888888", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armbulkactions.OccurrencesClientListResourcesResponse{
+		// 	OccurrenceResourceListResponse: armbulkactions.OccurrenceResourceListResponse{
+		// 		Value: []*armbulkactions.OccurrenceResource{
+		// 			{
+		// 				ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-01"),
 		// 				NotificationSettings: []*armbulkactions.NotificationProperties{
 		// 					{
 		// 						Destination: to.Ptr("admin@contoso.com"),
 		// 						Type: to.Ptr(armbulkactions.NotificationTypeEmail),
 		// 						Language: to.Ptr(armbulkactions.LanguageEnUs),
-		// 						Disabled: to.Ptr(true),
+		// 						Disabled: to.Ptr(false),
 		// 					},
 		// 				},
-		// 				ScheduledTime: to.Ptr(time.Date(2026, time.August, 5, 0, 30, 0, 0, time.UTC)),
+		// 				ScheduledTime: to.Ptr(time.Date(2026, time.September, 16, 14, 0, 0, 0, time.UTC)),
+		// 				ProvisioningState: to.Ptr(armbulkactions.OccurrenceResourceProvisioningStateSucceeded),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-01"),
+		// 				Name: to.Ptr("web-vm-01"),
+		// 				Type: to.Ptr("Microsoft.Compute/virtualMachines"),
+		// 			},
+		// 			{
+		// 				ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-02"),
+		// 				ScheduledTime: to.Ptr(time.Date(2026, time.September, 16, 14, 0, 0, 0, time.UTC)),
 		// 				ProvisioningState: to.Ptr(armbulkactions.OccurrenceResourceProvisioningStateFailed),
 		// 				ErrorDetails: &armbulkactions.Error{
-		// 					Code: to.Ptr("InternalServerError"),
-		// 					Message: to.Ptr("An internal error occurred."),
+		// 					Code: to.Ptr("OperationNotAllowed"),
+		// 					Message: to.Ptr("The virtual machine cannot be started while it is being deallocated."),
 		// 					Target: to.Ptr("virtualMachines"),
-		// 					Details: []*armbulkactions.Error{
-		// 					},
-		// 					Innererror: &armbulkactions.InnerError{
-		// 						Code: to.Ptr("InnerErrorCode"),
-		// 					},
 		// 				},
-		// 				ID: to.Ptr("/subscriptions/CB26D7CB-3E27-465F-99C8-EAF7A4118245/resourceGroups/rgcompute/providers/Microsoft.Compute/virtualMachines/myVm"),
-		// 				Name: to.Ptr("myVm"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-02"),
+		// 				Name: to.Ptr("web-vm-02"),
 		// 				Type: to.Ptr("Microsoft.Compute/virtualMachines"),
 		// 			},
 		// 		},
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/CB26D7CB-3E27-465F-99C8-EAF7A4118245/resourceGroups/rgcompute/providers/Microsoft.Compute/scheduledActions/myScheduledAction/occurrences/67b5bada-4772-43fc-8dbb-402476d98a45/resources?api-version=2026-09-06-preview&$skiptoken=page2"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/scheduledActions/weekday-start/occurrences/88888888-8888-8888-8888-888888888888/resources?api-version=2026-10-06-preview&$skiptoken=page2"),
 		// 	},
 		// }
 	}

@@ -63,22 +63,6 @@ func (c *ClientFactory) NewDefinitionsClient() *DefinitionsClient {
 	}
 }
 
-// NewEnrollmentsClient creates a new instance of EnrollmentsClient.
-func (c *ClientFactory) NewEnrollmentsClient() *EnrollmentsClient {
-	return &EnrollmentsClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
-// NewExemptionsClient creates a new instance of ExemptionsClient.
-func (c *ClientFactory) NewExemptionsClient() *ExemptionsClient {
-	return &ExemptionsClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
 // NewSetDefinitionVersionsClient creates a new instance of SetDefinitionVersionsClient.
 func (c *ClientFactory) NewSetDefinitionVersionsClient() *SetDefinitionVersionsClient {
 	return &SetDefinitionVersionsClient{
@@ -98,22 +82,6 @@ func (c *ClientFactory) NewSetDefinitionsClient() *SetDefinitionsClient {
 // NewTokensClient creates a new instance of TokensClient.
 func (c *ClientFactory) NewTokensClient() *TokensClient {
 	return &TokensClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
-// NewVariableValuesClient creates a new instance of VariableValuesClient.
-func (c *ClientFactory) NewVariableValuesClient() *VariableValuesClient {
-	return &VariableValuesClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
-// NewVariablesClient creates a new instance of VariablesClient.
-func (c *ClientFactory) NewVariablesClient() *VariablesClient {
-	return &VariablesClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}

@@ -289,6 +289,42 @@ type DNSPrivateZonesClientListByLocationOptions struct {
 	// placeholder for future optional parameters
 }
 
+// DatabaseEditionsClientGetOptions contains the optional parameters for the DatabaseEditionsClient.Get method.
+type DatabaseEditionsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DatabaseEditionsClientListByLocationOptions contains the optional parameters for the DatabaseEditionsClient.NewListByLocationPager
+// method.
+type DatabaseEditionsClientListByLocationOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DatabaseSystemShapeResourcesClientGetOptions contains the optional parameters for the DatabaseSystemShapeResourcesClient.Get
+// method.
+type DatabaseSystemShapeResourcesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DatabaseSystemShapeResourcesClientListByLocationOptions contains the optional parameters for the DatabaseSystemShapeResourcesClient.NewListByLocationPager
+// method.
+type DatabaseSystemShapeResourcesClientListByLocationOptions struct {
+	// If provided, filters the result by availability domain. Example: GWjz:US-ASHBURN-AD-1
+	AvailabilityDomain *string
+
+	// If provided, filters the result by database edition.
+	DatabaseEdition *string
+
+	// If provided, filters the result by database shape family. Example: VIRTUALMACHINE
+	DatabaseShapeFamily *string
+
+	// Filters the result for the given Shape Attribute, such as BLOCK_STORAGE or SMART_STORAGE.
+	ShapeAttribute *string
+
+	// Filters the result for the given Azure Availability Zone
+	Zone *string
+}
+
 // DbNodesClientBeginActionOptions contains the optional parameters for the DbNodesClient.BeginAction method.
 type DbNodesClientBeginActionOptions struct {
 	// Resumes the long-running operation from the provided token.
@@ -515,8 +551,17 @@ type GiMinorVersionsClientGetOptions struct {
 // GiMinorVersionsClientListByParentOptions contains the optional parameters for the GiMinorVersionsClient.NewListByParentPager
 // method.
 type GiMinorVersionsClientListByParentOptions struct {
+	// If true, filters the results to GI minor versions supported during VM cluster provisioning.
+	IsGiVersionForProvisioning *bool
+
+	// If provided, filters the results to the set of GI minor versions supported for the given shape.
+	Shape *string
+
 	// If provided, filters the results to the set of database versions which are supported for the given shape family.
 	ShapeFamily *ShapeFamily
+
+	// Sort order for the returned GI minor versions.
+	SortOrder *GiMinorVersionSortOrder
 
 	// Filters the result for the given Azure Availability Zone
 	Zone *string
@@ -538,6 +583,134 @@ type GiVersionsClientListByLocationOptions struct {
 
 	// Filters the result for the given Azure Availability Zone
 	Zone *string
+}
+
+// GoldenGateConnectionsClientBeginAssignDeploymentOptions contains the optional parameters for the GoldenGateConnectionsClient.BeginAssignDeployment
+// method.
+type GoldenGateConnectionsClientBeginAssignDeploymentOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// GoldenGateConnectionsClientBeginCreateOrUpdateOptions contains the optional parameters for the GoldenGateConnectionsClient.BeginCreateOrUpdate
+// method.
+type GoldenGateConnectionsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// GoldenGateConnectionsClientBeginDeleteOptions contains the optional parameters for the GoldenGateConnectionsClient.BeginDelete
+// method.
+type GoldenGateConnectionsClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// GoldenGateConnectionsClientBeginUnassignDeploymentOptions contains the optional parameters for the GoldenGateConnectionsClient.BeginUnassignDeployment
+// method.
+type GoldenGateConnectionsClientBeginUnassignDeploymentOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// GoldenGateConnectionsClientBeginUpdateOptions contains the optional parameters for the GoldenGateConnectionsClient.BeginUpdate
+// method.
+type GoldenGateConnectionsClientBeginUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// GoldenGateConnectionsClientGetAssignedDeploymentOptions contains the optional parameters for the GoldenGateConnectionsClient.GetAssignedDeployment
+// method.
+type GoldenGateConnectionsClientGetAssignedDeploymentOptions struct {
+	// placeholder for future optional parameters
+}
+
+// GoldenGateConnectionsClientGetOptions contains the optional parameters for the GoldenGateConnectionsClient.Get method.
+type GoldenGateConnectionsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// GoldenGateConnectionsClientListAssignedDeploymentsByParentOptions contains the optional parameters for the GoldenGateConnectionsClient.NewListAssignedDeploymentsByParentPager
+// method.
+type GoldenGateConnectionsClientListAssignedDeploymentsByParentOptions struct {
+	// placeholder for future optional parameters
+}
+
+// GoldenGateConnectionsClientListByResourceGroupOptions contains the optional parameters for the GoldenGateConnectionsClient.NewListByResourceGroupPager
+// method.
+type GoldenGateConnectionsClientListByResourceGroupOptions struct {
+	// placeholder for future optional parameters
+}
+
+// GoldenGateConnectionsClientListBySubscriptionOptions contains the optional parameters for the GoldenGateConnectionsClient.NewListBySubscriptionPager
+// method.
+type GoldenGateConnectionsClientListBySubscriptionOptions struct {
+	// placeholder for future optional parameters
+}
+
+// GoldenGateDeploymentsClientBeginAssignConnectionOptions contains the optional parameters for the GoldenGateDeploymentsClient.BeginAssignConnection
+// method.
+type GoldenGateDeploymentsClientBeginAssignConnectionOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// GoldenGateDeploymentsClientBeginCreateOrUpdateOptions contains the optional parameters for the GoldenGateDeploymentsClient.BeginCreateOrUpdate
+// method.
+type GoldenGateDeploymentsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// GoldenGateDeploymentsClientBeginDeleteOptions contains the optional parameters for the GoldenGateDeploymentsClient.BeginDelete
+// method.
+type GoldenGateDeploymentsClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// GoldenGateDeploymentsClientBeginUnassignConnectionOptions contains the optional parameters for the GoldenGateDeploymentsClient.BeginUnassignConnection
+// method.
+type GoldenGateDeploymentsClientBeginUnassignConnectionOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// GoldenGateDeploymentsClientBeginUpdateOptions contains the optional parameters for the GoldenGateDeploymentsClient.BeginUpdate
+// method.
+type GoldenGateDeploymentsClientBeginUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// GoldenGateDeploymentsClientGetAssignedConnectionOptions contains the optional parameters for the GoldenGateDeploymentsClient.GetAssignedConnection
+// method.
+type GoldenGateDeploymentsClientGetAssignedConnectionOptions struct {
+	// placeholder for future optional parameters
+}
+
+// GoldenGateDeploymentsClientGetOptions contains the optional parameters for the GoldenGateDeploymentsClient.Get method.
+type GoldenGateDeploymentsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// GoldenGateDeploymentsClientListAssignedConnectionsByParentOptions contains the optional parameters for the GoldenGateDeploymentsClient.NewListAssignedConnectionsByParentPager
+// method.
+type GoldenGateDeploymentsClientListAssignedConnectionsByParentOptions struct {
+	// placeholder for future optional parameters
+}
+
+// GoldenGateDeploymentsClientListByResourceGroupOptions contains the optional parameters for the GoldenGateDeploymentsClient.NewListByResourceGroupPager
+// method.
+type GoldenGateDeploymentsClientListByResourceGroupOptions struct {
+	// placeholder for future optional parameters
+}
+
+// GoldenGateDeploymentsClientListBySubscriptionOptions contains the optional parameters for the GoldenGateDeploymentsClient.NewListBySubscriptionPager
+// method.
+type GoldenGateDeploymentsClientListBySubscriptionOptions struct {
+	// placeholder for future optional parameters
 }
 
 // NetworkAnchorsClientBeginCreateOrUpdateOptions contains the optional parameters for the NetworkAnchorsClient.BeginCreateOrUpdate

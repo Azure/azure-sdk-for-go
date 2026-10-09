@@ -121,6 +121,43 @@ type AIModelsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
+// CustomAIModelsClientBeginCreateOrUpdateOptions contains the optional parameters for the CustomAIModelsClient.BeginCreateOrUpdate
+// method.
+type CustomAIModelsClientBeginCreateOrUpdateOptions struct {
+	// The request should only proceed if an entity matches this string.
+	IfMatch *string
+
+	// The request should only proceed if no entity matches this string.
+	IfNoneMatch *string
+
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// CustomAIModelsClientBeginDeleteOptions contains the optional parameters for the CustomAIModelsClient.BeginDelete method.
+type CustomAIModelsClientBeginDeleteOptions struct {
+	// The request should only proceed if an entity matches this string.
+	IfMatch *string
+
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// CustomAIModelsClientCalculateCostOptions contains the optional parameters for the CustomAIModelsClient.CalculateCost method.
+type CustomAIModelsClientCalculateCostOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CustomAIModelsClientGetOptions contains the optional parameters for the CustomAIModelsClient.Get method.
+type CustomAIModelsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CustomAIModelsClientListOptions contains the optional parameters for the CustomAIModelsClient.NewListPager method.
+type CustomAIModelsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
 // ModelDeploymentsClientBeginCreateOrUpdateOptions contains the optional parameters for the ModelDeploymentsClient.BeginCreateOrUpdate
 // method.
 type ModelDeploymentsClientBeginCreateOrUpdateOptions struct {

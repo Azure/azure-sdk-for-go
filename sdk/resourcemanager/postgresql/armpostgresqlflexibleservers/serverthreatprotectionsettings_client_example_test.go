@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-04-01-preview/AdvancedThreatProtectionSettingsCreateOrUpdate.json
+// Generated from example definition: 2026-07-01-preview/AdvancedThreatProtectionSettingsCreateOrUpdate.json
 func ExampleServerThreatProtectionSettingsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -5,7 +5,7 @@
 package armfabric
 
 const (
-	version20260801Preview string = "2026-08-01-preview"
+	version20260901Preview string = "2026-09-01-preview"
 )
 
 // ActionType - Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.

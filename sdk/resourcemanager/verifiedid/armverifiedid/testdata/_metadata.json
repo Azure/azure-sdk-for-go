@@ -1,0 +1,6 @@
+{
+  "apiVersions": {
+    "Microsoft.VerifiedId": "2024-01-26-preview"
+  },
+  "emitterVersion": "0.17.5"
+}

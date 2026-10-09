@@ -48,6 +48,22 @@ func (c *ClientFactory) NewIssueClient() *IssueClient {
 	}
 }
 
+// NewMetricConfigurationsClient creates a new instance of MetricConfigurationsClient.
+func (c *ClientFactory) NewMetricConfigurationsClient() *MetricConfigurationsClient {
+	return &MetricConfigurationsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewMetricNamespacesClient creates a new instance of MetricNamespacesClient.
+func (c *ClientFactory) NewMetricNamespacesClient() *MetricNamespacesClient {
+	return &MetricNamespacesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewMetricsContainersClient creates a new instance of MetricsContainersClient.
 func (c *ClientFactory) NewMetricsContainersClient() *MetricsContainersClient {
 	return &MetricsContainersClient{
@@ -60,5 +76,37 @@ func (c *ClientFactory) NewMetricsContainersClient() *MetricsContainersClient {
 func (c *ClientFactory) NewOperationsClient() *OperationsClient {
 	return &OperationsClient{
 		internal: c.internal,
+	}
+}
+
+// NewTraceAssociationsAtResourceGroupClient creates a new instance of TraceAssociationsAtResourceGroupClient.
+func (c *ClientFactory) NewTraceAssociationsAtResourceGroupClient() *TraceAssociationsAtResourceGroupClient {
+	return &TraceAssociationsAtResourceGroupClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewTraceAssociationsAtSubscriptionClient creates a new instance of TraceAssociationsAtSubscriptionClient.
+func (c *ClientFactory) NewTraceAssociationsAtSubscriptionClient() *TraceAssociationsAtSubscriptionClient {
+	return &TraceAssociationsAtSubscriptionClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewTraceAssociationsClient creates a new instance of TraceAssociationsClient.
+func (c *ClientFactory) NewTraceAssociationsClient() *TraceAssociationsClient {
+	return &TraceAssociationsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewTraceContainersClient creates a new instance of TraceContainersClient.
+func (c *ClientFactory) NewTraceContainersClient() *TraceContainersClient {
+	return &TraceContainersClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
 	}
 }

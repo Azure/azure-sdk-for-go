@@ -21,11 +21,29 @@ type ServerFactory struct {
 	// IssueServer contains the fakes for client IssueClient
 	IssueServer IssueServer
 
+	// MetricConfigurationsServer contains the fakes for client MetricConfigurationsClient
+	MetricConfigurationsServer MetricConfigurationsServer
+
+	// MetricNamespacesServer contains the fakes for client MetricNamespacesClient
+	MetricNamespacesServer MetricNamespacesServer
+
 	// MetricsContainersServer contains the fakes for client MetricsContainersClient
 	MetricsContainersServer MetricsContainersServer
 
 	// OperationsServer contains the fakes for client OperationsClient
 	OperationsServer OperationsServer
+
+	// TraceAssociationsAtResourceGroupServer contains the fakes for client TraceAssociationsAtResourceGroupClient
+	TraceAssociationsAtResourceGroupServer TraceAssociationsAtResourceGroupServer
+
+	// TraceAssociationsAtSubscriptionServer contains the fakes for client TraceAssociationsAtSubscriptionClient
+	TraceAssociationsAtSubscriptionServer TraceAssociationsAtSubscriptionServer
+
+	// TraceAssociationsServer contains the fakes for client TraceAssociationsClient
+	TraceAssociationsServer TraceAssociationsServer
+
+	// TraceContainersServer contains the fakes for client TraceContainersClient
+	TraceContainersServer TraceContainersServer
 }
 
 // NewServerFactoryTransport creates a new instance of ServerFactoryTransport with the provided implementation.
@@ -40,12 +58,18 @@ func NewServerFactoryTransport(srv *ServerFactory) *ServerFactoryTransport {
 // ServerFactoryTransport connects instances of armmonitorworkspaces.ClientFactory to instances of ServerFactory.
 // Don't use this type directly, use NewServerFactoryTransport instead.
 type ServerFactoryTransport struct {
-	srv                            *ServerFactory
-	trMu                           sync.Mutex
-	trAzureMonitorWorkspacesServer *AzureMonitorWorkspacesServerTransport
-	trIssueServer                  *IssueServerTransport
-	trMetricsContainersServer      *MetricsContainersServerTransport
-	trOperationsServer             *OperationsServerTransport
+	srv                                      *ServerFactory
+	trMu                                     sync.Mutex
+	trAzureMonitorWorkspacesServer           *AzureMonitorWorkspacesServerTransport
+	trIssueServer                            *IssueServerTransport
+	trMetricConfigurationsServer             *MetricConfigurationsServerTransport
+	trMetricNamespacesServer                 *MetricNamespacesServerTransport
+	trMetricsContainersServer                *MetricsContainersServerTransport
+	trOperationsServer                       *OperationsServerTransport
+	trTraceAssociationsAtResourceGroupServer *TraceAssociationsAtResourceGroupServerTransport
+	trTraceAssociationsAtSubscriptionServer  *TraceAssociationsAtSubscriptionServerTransport
+	trTraceAssociationsServer                *TraceAssociationsServerTransport
+	trTraceContainersServer                  *TraceContainersServerTransport
 }
 
 // Do implements the policy.Transporter interface for ServerFactoryTransport.
@@ -69,6 +93,16 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "IssueClient":
 		initServer(&s.trMu, &s.trIssueServer, func() *IssueServerTransport { return NewIssueServerTransport(&s.srv.IssueServer) })
 		resp, err = s.trIssueServer.Do(req)
+	case "MetricConfigurationsClient":
+		initServer(&s.trMu, &s.trMetricConfigurationsServer, func() *MetricConfigurationsServerTransport {
+			return NewMetricConfigurationsServerTransport(&s.srv.MetricConfigurationsServer)
+		})
+		resp, err = s.trMetricConfigurationsServer.Do(req)
+	case "MetricNamespacesClient":
+		initServer(&s.trMu, &s.trMetricNamespacesServer, func() *MetricNamespacesServerTransport {
+			return NewMetricNamespacesServerTransport(&s.srv.MetricNamespacesServer)
+		})
+		resp, err = s.trMetricNamespacesServer.Do(req)
 	case "MetricsContainersClient":
 		initServer(&s.trMu, &s.trMetricsContainersServer, func() *MetricsContainersServerTransport {
 			return NewMetricsContainersServerTransport(&s.srv.MetricsContainersServer)
@@ -77,6 +111,26 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "OperationsClient":
 		initServer(&s.trMu, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)
+	case "TraceAssociationsAtResourceGroupClient":
+		initServer(&s.trMu, &s.trTraceAssociationsAtResourceGroupServer, func() *TraceAssociationsAtResourceGroupServerTransport {
+			return NewTraceAssociationsAtResourceGroupServerTransport(&s.srv.TraceAssociationsAtResourceGroupServer)
+		})
+		resp, err = s.trTraceAssociationsAtResourceGroupServer.Do(req)
+	case "TraceAssociationsAtSubscriptionClient":
+		initServer(&s.trMu, &s.trTraceAssociationsAtSubscriptionServer, func() *TraceAssociationsAtSubscriptionServerTransport {
+			return NewTraceAssociationsAtSubscriptionServerTransport(&s.srv.TraceAssociationsAtSubscriptionServer)
+		})
+		resp, err = s.trTraceAssociationsAtSubscriptionServer.Do(req)
+	case "TraceAssociationsClient":
+		initServer(&s.trMu, &s.trTraceAssociationsServer, func() *TraceAssociationsServerTransport {
+			return NewTraceAssociationsServerTransport(&s.srv.TraceAssociationsServer)
+		})
+		resp, err = s.trTraceAssociationsServer.Do(req)
+	case "TraceContainersClient":
+		initServer(&s.trMu, &s.trTraceContainersServer, func() *TraceContainersServerTransport {
+			return NewTraceContainersServerTransport(&s.srv.TraceContainersServer)
+		})
+		resp, err = s.trTraceContainersServer.Do(req)
 	default:
 		err = fmt.Errorf("unhandled client %s", client)
 	}

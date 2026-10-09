@@ -192,8 +192,14 @@ type PublicMaintenanceConfigurationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ScheduledEventClientAcknowledgeOptions contains the optional parameters for the ScheduledEventClient.Acknowledge method.
-type ScheduledEventClientAcknowledgeOptions struct {
+// ScheduledEventsClientAcknowledgeListOptions contains the optional parameters for the ScheduledEventsClient.AcknowledgeList
+// method.
+type ScheduledEventsClientAcknowledgeListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ScheduledEventsClientAcknowledgeOptions contains the optional parameters for the ScheduledEventsClient.Acknowledge method.
+type ScheduledEventsClientAcknowledgeOptions struct {
 	// placeholder for future optional parameters
 }
 

@@ -50,29 +50,29 @@ type UpdateInstancesClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
 
-// updateInstancesClientBeginlinkInitiateOptions contains the optional parameters for the UpdateInstancesClient.BeginlinkInitiate
+// updateInstancesClientBeginLinkInitiateOptions contains the optional parameters for the UpdateInstancesClient.beginLinkInitiate
 // method.
-type updateInstancesClientBeginlinkInitiateOptions struct {
+type updateInstancesClientBeginLinkInitiateOptions struct {
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
-// updateInstancesClientBeginlinkNotifyOptions contains the optional parameters for the UpdateInstancesClient.BeginlinkNotify
+// updateInstancesClientBeginLinkNotifyOptions contains the optional parameters for the UpdateInstancesClient.beginLinkNotify
 // method.
-type updateInstancesClientBeginlinkNotifyOptions struct {
+type updateInstancesClientBeginLinkNotifyOptions struct {
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
-// updateInstancesClientBeginlinkUpdateOptions contains the optional parameters for the UpdateInstancesClient.BeginlinkUpdate
+// updateInstancesClientBeginLinkUpdateOptions contains the optional parameters for the UpdateInstancesClient.beginLinkUpdate
 // method.
-type updateInstancesClientBeginlinkUpdateOptions struct {
+type updateInstancesClientBeginLinkUpdateOptions struct {
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
-// updateInstancesClientlinkPreflightOptions contains the optional parameters for the UpdateInstancesClient.linkPreflight
+// updateInstancesClientLinkPreflightOptions contains the optional parameters for the UpdateInstancesClient.linkPreflight
 // method.
-type updateInstancesClientlinkPreflightOptions struct {
+type updateInstancesClientLinkPreflightOptions struct {
 	// placeholder for future optional parameters
 }

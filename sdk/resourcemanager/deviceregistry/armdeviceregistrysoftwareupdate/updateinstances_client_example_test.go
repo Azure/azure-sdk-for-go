@@ -12,34 +12,6 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-11-02-preview/UpdateInstances_CheckNameAvailability.json
-func ExampleUpdateInstancesClient_CheckNameAvailability() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armdeviceregistrysoftwareupdate.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewUpdateInstancesClient().CheckNameAvailability(ctx, armdeviceregistrysoftwareupdate.CheckNameAvailabilityRequest{
-		Name: to.Ptr("contoso"),
-		Type: to.Ptr("Microsoft.DeviceUpdate/updateInstances"),
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armdeviceregistrysoftwareupdate.UpdateInstancesClientCheckNameAvailabilityResponse{
-	// 	CheckNameAvailabilityResult: armdeviceregistrysoftwareupdate.CheckNameAvailabilityResult{
-	// 		NameAvailable: to.Ptr(true),
-	// 	},
-	// }
-}
-
 // Generated from example definition: 2026-11-02-preview/UpdateInstances_Create.json
 func ExampleUpdateInstancesClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -119,6 +91,86 @@ func ExampleUpdateInstancesClient_BeginDelete() {
 	if err != nil {
 		log.Fatalf("failed to poll the result: %v", err)
 	}
+}
+
+// Generated from example definition: 2026-11-02-preview/UpdateInstances_Update.json
+func ExampleUpdateInstancesClient_BeginUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdeviceregistrysoftwareupdate.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewUpdateInstancesClient().BeginUpdate(ctx, "test-rg", "contoso", armdeviceregistrysoftwareupdate.UpdateInstanceUpdate{
+		Tags: map[string]*string{
+			"tagKey": to.Ptr("tagValue"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armdeviceregistrysoftwareupdate.UpdateInstancesClientUpdateResponse{
+	// 	UpdateInstance: armdeviceregistrysoftwareupdate.UpdateInstance{
+	// 		Name: to.Ptr("contoso"),
+	// 		Type: to.Ptr("Microsoft.DeviceUpdate/updateInstances"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/test-rg/providers/Microsoft.DeviceUpdate/updateInstances/contoso"),
+	// 		Location: to.Ptr("eastus2"),
+	// 		Identity: &armdeviceregistrysoftwareupdate.ManagedServiceIdentity{
+	// 			Type: to.Ptr(armdeviceregistrysoftwareupdate.ManagedServiceIdentityTypeUserAssigned),
+	// 			UserAssignedIdentities: map[string]*armdeviceregistrysoftwareupdate.UserAssignedIdentity{
+	// 				"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/test-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/contoso-mi": &armdeviceregistrysoftwareupdate.UserAssignedIdentity{
+	// 					ClientID: to.Ptr("12345678-4321-1234-1234-123456789012"),
+	// 					PrincipalID: to.Ptr("12345678-1234-4321-1234-123456789012"),
+	// 				},
+	// 			},
+	// 		},
+	// 		Properties: &armdeviceregistrysoftwareupdate.UpdateInstanceProperties{
+	// 			ProvisioningState: to.Ptr(armdeviceregistrysoftwareupdate.ProvisioningStateSucceeded),
+	// 			ServiceAddress: to.Ptr("contoso.api.adu.microsoft.com"),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"tagKey": to.Ptr("tagValue"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-11-02-preview/UpdateInstances_CheckNameAvailability.json
+func ExampleUpdateInstancesClient_CheckNameAvailability() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdeviceregistrysoftwareupdate.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewUpdateInstancesClient().CheckNameAvailability(ctx, armdeviceregistrysoftwareupdate.CheckNameAvailabilityRequest{
+		Name: to.Ptr("contoso"),
+		Type: to.Ptr("Microsoft.DeviceUpdate/updateInstances"),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armdeviceregistrysoftwareupdate.UpdateInstancesClientCheckNameAvailabilityResponse{
+	// 	CheckNameAvailabilityResult: armdeviceregistrysoftwareupdate.CheckNameAvailabilityResult{
+	// 		NameAvailable: to.Ptr(true),
+	// 	},
+	// }
 }
 
 // Generated from example definition: 2026-11-02-preview/UpdateInstances_Get.json
@@ -273,56 +325,4 @@ func ExampleUpdateInstancesClient_NewListBySubscriptionPager() {
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2026-11-02-preview/UpdateInstances_Update.json
-func ExampleUpdateInstancesClient_BeginUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armdeviceregistrysoftwareupdate.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewUpdateInstancesClient().BeginUpdate(ctx, "test-rg", "contoso", armdeviceregistrysoftwareupdate.UpdateInstanceUpdate{
-		Tags: map[string]*string{
-			"tagKey": to.Ptr("tagValue"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armdeviceregistrysoftwareupdate.UpdateInstancesClientUpdateResponse{
-	// 	UpdateInstance: armdeviceregistrysoftwareupdate.UpdateInstance{
-	// 		Name: to.Ptr("contoso"),
-	// 		Type: to.Ptr("Microsoft.DeviceUpdate/updateInstances"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/test-rg/providers/Microsoft.DeviceUpdate/updateInstances/contoso"),
-	// 		Location: to.Ptr("eastus2"),
-	// 		Identity: &armdeviceregistrysoftwareupdate.ManagedServiceIdentity{
-	// 			Type: to.Ptr(armdeviceregistrysoftwareupdate.ManagedServiceIdentityTypeUserAssigned),
-	// 			UserAssignedIdentities: map[string]*armdeviceregistrysoftwareupdate.UserAssignedIdentity{
-	// 				"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/test-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/contoso-mi": &armdeviceregistrysoftwareupdate.UserAssignedIdentity{
-	// 					ClientID: to.Ptr("12345678-4321-1234-1234-123456789012"),
-	// 					PrincipalID: to.Ptr("12345678-1234-4321-1234-123456789012"),
-	// 				},
-	// 			},
-	// 		},
-	// 		Properties: &armdeviceregistrysoftwareupdate.UpdateInstanceProperties{
-	// 			ProvisioningState: to.Ptr(armdeviceregistrysoftwareupdate.ProvisioningStateSucceeded),
-	// 			ServiceAddress: to.Ptr("contoso.api.adu.microsoft.com"),
-	// 		},
-	// 		Tags: map[string]*string{
-	// 			"tagKey": to.Ptr("tagValue"),
-	// 		},
-	// 	},
-	// }
 }

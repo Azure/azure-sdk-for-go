@@ -61,6 +61,231 @@ func NewUpdateInstancesClient(subscriptionID string, credential azcore.TokenCred
 	return client, nil
 }
 
+// BeginCreate - Creates or updates an Update Instance.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - updateInstanceName - The user-chosen Update Instance name. Must be unique within the subscription and is used in the resource
+//     URL and ADU service routing. Allowed characters: alphanumeric and hyphens (not leading/trailing); length 3-36.
+//   - resource - Update Instance details.
+//   - options - UpdateInstancesClientBeginCreateOptions contains the optional parameters for the UpdateInstancesClient.BeginCreate
+//     method.
+func (client *UpdateInstancesClient) BeginCreate(ctx context.Context, resourceGroupName string, updateInstanceName string, resource UpdateInstance, options *UpdateInstancesClientBeginCreateOptions) (*runtime.Poller[UpdateInstancesClientCreateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.create(ctx, resourceGroupName, updateInstanceName, resource, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[UpdateInstancesClientCreateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[UpdateInstancesClientCreateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// create - Creates or updates an Update Instance.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *UpdateInstancesClient) create(ctx context.Context, resourceGroupName string, updateInstanceName string, resource UpdateInstance, options *UpdateInstancesClientBeginCreateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "UpdateInstancesClient.BeginCreate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.createCreateRequest(ctx, resourceGroupName, updateInstanceName, resource, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// createCreateRequest creates the create request.
+func (client *UpdateInstancesClient) createCreateRequest(ctx context.Context, resourceGroupName string, updateInstanceName string, resource UpdateInstance, _ *UpdateInstancesClientBeginCreateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceUpdate/updateInstances/{updateInstanceName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if updateInstanceName == "" {
+		return nil, errors.New("parameter updateInstanceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{updateInstanceName}", url.PathEscape(updateInstanceName))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20261102Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, resource); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginDelete - Deletes an update instance.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - updateInstanceName - The user-chosen Update Instance name. Must be unique within the subscription and is used in the resource
+//     URL and ADU service routing. Allowed characters: alphanumeric and hyphens (not leading/trailing); length 3-36.
+//   - options - UpdateInstancesClientBeginDeleteOptions contains the optional parameters for the UpdateInstancesClient.BeginDelete
+//     method.
+func (client *UpdateInstancesClient) BeginDelete(ctx context.Context, resourceGroupName string, updateInstanceName string, options *UpdateInstancesClientBeginDeleteOptions) (*runtime.Poller[UpdateInstancesClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.delete(ctx, resourceGroupName, updateInstanceName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[UpdateInstancesClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[UpdateInstancesClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// delete - Deletes an update instance.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *UpdateInstancesClient) delete(ctx context.Context, resourceGroupName string, updateInstanceName string, options *UpdateInstancesClientBeginDeleteOptions) (*http.Response, error) {
+	var err error
+	const operationName = "UpdateInstancesClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.deleteCreateRequest(ctx, resourceGroupName, updateInstanceName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// deleteCreateRequest creates the delete request.
+func (client *UpdateInstancesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, updateInstanceName string, _ *UpdateInstancesClientBeginDeleteOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceUpdate/updateInstances/{updateInstanceName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if updateInstanceName == "" {
+		return nil, errors.New("parameter updateInstanceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{updateInstanceName}", url.PathEscape(updateInstanceName))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20261102Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginUpdate - Updates update instance's patchable properties.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - updateInstanceName - The user-chosen Update Instance name. Must be unique within the subscription and is used in the resource
+//     URL and ADU service routing. Allowed characters: alphanumeric and hyphens (not leading/trailing); length 3-36.
+//   - properties - Updated Update Instance.
+//   - options - UpdateInstancesClientBeginUpdateOptions contains the optional parameters for the UpdateInstancesClient.BeginUpdate
+//     method.
+func (client *UpdateInstancesClient) BeginUpdate(ctx context.Context, resourceGroupName string, updateInstanceName string, properties UpdateInstanceUpdate, options *UpdateInstancesClientBeginUpdateOptions) (*runtime.Poller[UpdateInstancesClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, updateInstanceName, properties, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[UpdateInstancesClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[UpdateInstancesClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Updates update instance's patchable properties.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *UpdateInstancesClient) update(ctx context.Context, resourceGroupName string, updateInstanceName string, properties UpdateInstanceUpdate, options *UpdateInstancesClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "UpdateInstancesClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, updateInstanceName, properties, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *UpdateInstancesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, updateInstanceName string, properties UpdateInstanceUpdate, _ *UpdateInstancesClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceUpdate/updateInstances/{updateInstanceName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if updateInstanceName == "" {
+		return nil, errors.New("parameter updateInstanceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{updateInstanceName}", url.PathEscape(updateInstanceName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20261102Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, properties); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
 // CheckNameAvailability - Check if the Update Instance name is available.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - body - The CheckAvailability request
@@ -115,154 +340,6 @@ func (client *UpdateInstancesClient) checkNameAvailabilityHandleResponse(resp *h
 		return UpdateInstancesClientCheckNameAvailabilityResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginCreate - Creates or updates an Update Instance.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - updateInstanceName - The user-chosen Update Instance name. Must be unique within the subscription and is used in the resource
-//     URL and ADU service routing. Allowed characters: alphanumeric and hyphens (not leading/trailing); length 3-36.
-//   - resource - Update Instance details.
-//   - options - UpdateInstancesClientBeginCreateOptions contains the optional parameters for the UpdateInstancesClient.BeginCreate
-//     method.
-func (client *UpdateInstancesClient) BeginCreate(ctx context.Context, resourceGroupName string, updateInstanceName string, resource UpdateInstance, options *UpdateInstancesClientBeginCreateOptions) (*runtime.Poller[UpdateInstancesClientCreateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.create(ctx, resourceGroupName, updateInstanceName, resource, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[UpdateInstancesClientCreateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[UpdateInstancesClientCreateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Create - Creates or updates an Update Instance.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *UpdateInstancesClient) create(ctx context.Context, resourceGroupName string, updateInstanceName string, resource UpdateInstance, options *UpdateInstancesClientBeginCreateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "UpdateInstancesClient.BeginCreate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.createCreateRequest(ctx, resourceGroupName, updateInstanceName, resource, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// createCreateRequest creates the Create request.
-func (client *UpdateInstancesClient) createCreateRequest(ctx context.Context, resourceGroupName string, updateInstanceName string, resource UpdateInstance, _ *UpdateInstancesClientBeginCreateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceUpdate/updateInstances/{updateInstanceName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if updateInstanceName == "" {
-		return nil, errors.New("parameter updateInstanceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{updateInstanceName}", url.PathEscape(updateInstanceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20261102Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, resource); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// BeginDelete - Deletes an update instance.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - updateInstanceName - The user-chosen Update Instance name. Must be unique within the subscription and is used in the resource
-//     URL and ADU service routing. Allowed characters: alphanumeric and hyphens (not leading/trailing); length 3-36.
-//   - options - UpdateInstancesClientBeginDeleteOptions contains the optional parameters for the UpdateInstancesClient.BeginDelete
-//     method.
-func (client *UpdateInstancesClient) BeginDelete(ctx context.Context, resourceGroupName string, updateInstanceName string, options *UpdateInstancesClientBeginDeleteOptions) (*runtime.Poller[UpdateInstancesClientDeleteResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.deleteOperation(ctx, resourceGroupName, updateInstanceName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[UpdateInstancesClientDeleteResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[UpdateInstancesClientDeleteResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Delete - Deletes an update instance.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *UpdateInstancesClient) deleteOperation(ctx context.Context, resourceGroupName string, updateInstanceName string, options *UpdateInstancesClientBeginDeleteOptions) (*http.Response, error) {
-	var err error
-	const operationName = "UpdateInstancesClient.BeginDelete"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.deleteCreateRequest(ctx, resourceGroupName, updateInstanceName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// deleteCreateRequest creates the Delete request.
-func (client *UpdateInstancesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, updateInstanceName string, _ *UpdateInstancesClientBeginDeleteOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceUpdate/updateInstances/{updateInstanceName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if updateInstanceName == "" {
-		return nil, errors.New("parameter updateInstanceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{updateInstanceName}", url.PathEscape(updateInstanceName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20261102Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	return req, nil
 }
 
 // Get - Returns update instance details for the given update instance name.
@@ -465,103 +542,26 @@ func (client *UpdateInstancesClient) listBySubscriptionHandleResponse(resp *http
 	return result, nil
 }
 
-// BeginUpdate - Updates update instance's patchable properties.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - updateInstanceName - The user-chosen Update Instance name. Must be unique within the subscription and is used in the resource
-//     URL and ADU service routing. Allowed characters: alphanumeric and hyphens (not leading/trailing); length 3-36.
-//   - properties - Updated Update Instance.
-//   - options - UpdateInstancesClientBeginUpdateOptions contains the optional parameters for the UpdateInstancesClient.BeginUpdate
-//     method.
-func (client *UpdateInstancesClient) BeginUpdate(ctx context.Context, resourceGroupName string, updateInstanceName string, properties UpdateInstanceUpdate, options *UpdateInstancesClientBeginUpdateOptions) (*runtime.Poller[UpdateInstancesClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, updateInstanceName, properties, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[UpdateInstancesClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[UpdateInstancesClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Updates update instance's patchable properties.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *UpdateInstancesClient) update(ctx context.Context, resourceGroupName string, updateInstanceName string, properties UpdateInstanceUpdate, options *UpdateInstancesClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "UpdateInstancesClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, updateInstanceName, properties, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *UpdateInstancesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, updateInstanceName string, properties UpdateInstanceUpdate, _ *UpdateInstancesClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceUpdate/updateInstances/{updateInstanceName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if updateInstanceName == "" {
-		return nil, errors.New("parameter updateInstanceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{updateInstanceName}", url.PathEscape(updateInstanceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20261102Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, properties); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// BeginlinkInitiate - Initiate account linking. Validates and persists binding, sets linkingState=InProgress.
+// beginLinkInitiate - Initiate account linking. Validates and persists binding, sets linkingState=InProgress.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - updateInstanceName - The user-chosen Update Instance name. Must be unique within the subscription and is used in the resource
 //     URL and ADU service routing. Allowed characters: alphanumeric and hyphens (not leading/trailing); length 3-36.
 //   - body - The content of the action request
-//   - options - updateInstancesClientBeginlinkInitiateOptions contains the optional parameters for the UpdateInstancesClient.BeginlinkInitiate
+//   - options - updateInstancesClientBeginLinkInitiateOptions contains the optional parameters for the UpdateInstancesClient.beginLinkInitiate
 //     method.
-func (client *UpdateInstancesClient) BeginlinkInitiate(ctx context.Context, resourceGroupName string, updateInstanceName string, body linkInitiateRequest, options *updateInstancesClientBeginlinkInitiateOptions) (*runtime.Poller[updateInstancesClientlinkInitiateResponse], error) {
+func (client *UpdateInstancesClient) beginLinkInitiate(ctx context.Context, resourceGroupName string, updateInstanceName string, body linkInitiateRequest, options *updateInstancesClientBeginLinkInitiateOptions) (*runtime.Poller[updateInstancesClientLinkInitiateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.linkInitiate(ctx, resourceGroupName, updateInstanceName, body, options)
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[updateInstancesClientlinkInitiateResponse]{
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[updateInstancesClientLinkInitiateResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[updateInstancesClientlinkInitiateResponse]{
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[updateInstancesClientLinkInitiateResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 	}
@@ -569,9 +569,9 @@ func (client *UpdateInstancesClient) BeginlinkInitiate(ctx context.Context, reso
 
 // linkInitiate - Initiate account linking. Validates and persists binding, sets linkingState=InProgress.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *UpdateInstancesClient) linkInitiate(ctx context.Context, resourceGroupName string, updateInstanceName string, body linkInitiateRequest, options *updateInstancesClientBeginlinkInitiateOptions) (*http.Response, error) {
+func (client *UpdateInstancesClient) linkInitiate(ctx context.Context, resourceGroupName string, updateInstanceName string, body linkInitiateRequest, options *updateInstancesClientBeginLinkInitiateOptions) (*http.Response, error) {
 	var err error
-	const operationName = "UpdateInstancesClient.BeginlinkInitiate"
+	const operationName = "UpdateInstancesClient.beginLinkInitiate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
@@ -590,7 +590,7 @@ func (client *UpdateInstancesClient) linkInitiate(ctx context.Context, resourceG
 }
 
 // linkInitiateCreateRequest creates the linkInitiate request.
-func (client *UpdateInstancesClient) linkInitiateCreateRequest(ctx context.Context, resourceGroupName string, updateInstanceName string, body linkInitiateRequest, _ *updateInstancesClientBeginlinkInitiateOptions) (*policy.Request, error) {
+func (client *UpdateInstancesClient) linkInitiateCreateRequest(ctx context.Context, resourceGroupName string, updateInstanceName string, body linkInitiateRequest, _ *updateInstancesClientBeginLinkInitiateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceUpdate/updateInstances/{updateInstanceName}/linkInitiate"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")
@@ -619,26 +619,26 @@ func (client *UpdateInstancesClient) linkInitiateCreateRequest(ctx context.Conte
 	return req, nil
 }
 
-// BeginlinkNotify - Notify linking state change (commit, fail, or namespaceDeleted).
+// beginLinkNotify - Notify linking state change (commit, fail, or namespaceDeleted).
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - updateInstanceName - The user-chosen Update Instance name. Must be unique within the subscription and is used in the resource
 //     URL and ADU service routing. Allowed characters: alphanumeric and hyphens (not leading/trailing); length 3-36.
 //   - body - The content of the action request
-//   - options - updateInstancesClientBeginlinkNotifyOptions contains the optional parameters for the UpdateInstancesClient.BeginlinkNotify
+//   - options - updateInstancesClientBeginLinkNotifyOptions contains the optional parameters for the UpdateInstancesClient.beginLinkNotify
 //     method.
-func (client *UpdateInstancesClient) BeginlinkNotify(ctx context.Context, resourceGroupName string, updateInstanceName string, body linkNotifyRequest, options *updateInstancesClientBeginlinkNotifyOptions) (*runtime.Poller[updateInstancesClientlinkNotifyResponse], error) {
+func (client *UpdateInstancesClient) beginLinkNotify(ctx context.Context, resourceGroupName string, updateInstanceName string, body linkNotifyRequest, options *updateInstancesClientBeginLinkNotifyOptions) (*runtime.Poller[updateInstancesClientLinkNotifyResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.linkNotify(ctx, resourceGroupName, updateInstanceName, body, options)
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[updateInstancesClientlinkNotifyResponse]{
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[updateInstancesClientLinkNotifyResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[updateInstancesClientlinkNotifyResponse]{
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[updateInstancesClientLinkNotifyResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 	}
@@ -646,9 +646,9 @@ func (client *UpdateInstancesClient) BeginlinkNotify(ctx context.Context, resour
 
 // linkNotify - Notify linking state change (commit, fail, or namespaceDeleted).
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *UpdateInstancesClient) linkNotify(ctx context.Context, resourceGroupName string, updateInstanceName string, body linkNotifyRequest, options *updateInstancesClientBeginlinkNotifyOptions) (*http.Response, error) {
+func (client *UpdateInstancesClient) linkNotify(ctx context.Context, resourceGroupName string, updateInstanceName string, body linkNotifyRequest, options *updateInstancesClientBeginLinkNotifyOptions) (*http.Response, error) {
 	var err error
-	const operationName = "UpdateInstancesClient.BeginlinkNotify"
+	const operationName = "UpdateInstancesClient.beginLinkNotify"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
@@ -667,8 +667,85 @@ func (client *UpdateInstancesClient) linkNotify(ctx context.Context, resourceGro
 }
 
 // linkNotifyCreateRequest creates the linkNotify request.
-func (client *UpdateInstancesClient) linkNotifyCreateRequest(ctx context.Context, resourceGroupName string, updateInstanceName string, body linkNotifyRequest, _ *updateInstancesClientBeginlinkNotifyOptions) (*policy.Request, error) {
+func (client *UpdateInstancesClient) linkNotifyCreateRequest(ctx context.Context, resourceGroupName string, updateInstanceName string, body linkNotifyRequest, _ *updateInstancesClientBeginLinkNotifyOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceUpdate/updateInstances/{updateInstanceName}/linkNotify"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if updateInstanceName == "" {
+		return nil, errors.New("parameter updateInstanceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{updateInstanceName}", url.PathEscape(updateInstanceName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20261102Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// beginLinkUpdate - Update linking properties (e.g., identity rotation).
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - updateInstanceName - The user-chosen Update Instance name. Must be unique within the subscription and is used in the resource
+//     URL and ADU service routing. Allowed characters: alphanumeric and hyphens (not leading/trailing); length 3-36.
+//   - body - The content of the action request
+//   - options - updateInstancesClientBeginLinkUpdateOptions contains the optional parameters for the UpdateInstancesClient.beginLinkUpdate
+//     method.
+func (client *UpdateInstancesClient) beginLinkUpdate(ctx context.Context, resourceGroupName string, updateInstanceName string, body linkUpdateRequest, options *updateInstancesClientBeginLinkUpdateOptions) (*runtime.Poller[updateInstancesClientLinkUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.linkUpdate(ctx, resourceGroupName, updateInstanceName, body, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[updateInstancesClientLinkUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[updateInstancesClientLinkUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// linkUpdate - Update linking properties (e.g., identity rotation).
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *UpdateInstancesClient) linkUpdate(ctx context.Context, resourceGroupName string, updateInstanceName string, body linkUpdateRequest, options *updateInstancesClientBeginLinkUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "UpdateInstancesClient.beginLinkUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.linkUpdateCreateRequest(ctx, resourceGroupName, updateInstanceName, body, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// linkUpdateCreateRequest creates the linkUpdate request.
+func (client *UpdateInstancesClient) linkUpdateCreateRequest(ctx context.Context, resourceGroupName string, updateInstanceName string, body linkUpdateRequest, _ *updateInstancesClientBeginLinkUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceUpdate/updateInstances/{updateInstanceName}/linkUpdate"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
@@ -702,9 +779,9 @@ func (client *UpdateInstancesClient) linkNotifyCreateRequest(ctx context.Context
 //   - updateInstanceName - The user-chosen Update Instance name. Must be unique within the subscription and is used in the resource
 //     URL and ADU service routing. Allowed characters: alphanumeric and hyphens (not leading/trailing); length 3-36.
 //   - body - The content of the action request
-//   - options - updateInstancesClientlinkPreflightOptions contains the optional parameters for the UpdateInstancesClient.linkPreflight
+//   - options - updateInstancesClientLinkPreflightOptions contains the optional parameters for the UpdateInstancesClient.linkPreflight
 //     method.
-func (client *UpdateInstancesClient) linkPreflight(ctx context.Context, resourceGroupName string, updateInstanceName string, body linkPreflightRequest, options *updateInstancesClientlinkPreflightOptions) (updateInstancesClientlinkPreflightResponse, error) {
+func (client *UpdateInstancesClient) linkPreflight(ctx context.Context, resourceGroupName string, updateInstanceName string, body linkPreflightRequest, options *updateInstancesClientLinkPreflightOptions) (updateInstancesClientLinkPreflightResponse, error) {
 	var err error
 	const operationName = "UpdateInstancesClient.linkPreflight"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -712,17 +789,17 @@ func (client *UpdateInstancesClient) linkPreflight(ctx context.Context, resource
 	defer func() { endSpan(err) }()
 	req, err := client.linkPreflightCreateRequest(ctx, resourceGroupName, updateInstanceName, body, options)
 	if err != nil {
-		return updateInstancesClientlinkPreflightResponse{}, err
+		return updateInstancesClientLinkPreflightResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return updateInstancesClientlinkPreflightResponse{}, err
+		return updateInstancesClientLinkPreflightResponse{}, err
 	}
 	return client.linkPreflightHandleResponse(httpResp, http.StatusOK)
 }
 
 // linkPreflightCreateRequest creates the linkPreflight request.
-func (client *UpdateInstancesClient) linkPreflightCreateRequest(ctx context.Context, resourceGroupName string, updateInstanceName string, body linkPreflightRequest, _ *updateInstancesClientlinkPreflightOptions) (*policy.Request, error) {
+func (client *UpdateInstancesClient) linkPreflightCreateRequest(ctx context.Context, resourceGroupName string, updateInstanceName string, body linkPreflightRequest, _ *updateInstancesClientLinkPreflightOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceUpdate/updateInstances/{updateInstanceName}/linkPreflight"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")
@@ -752,90 +829,13 @@ func (client *UpdateInstancesClient) linkPreflightCreateRequest(ctx context.Cont
 }
 
 // linkPreflightHandleResponse handles the linkPreflight response.
-func (client *UpdateInstancesClient) linkPreflightHandleResponse(resp *http.Response, successCodes ...int) (updateInstancesClientlinkPreflightResponse, error) {
-	result := updateInstancesClientlinkPreflightResponse{}
+func (client *UpdateInstancesClient) linkPreflightHandleResponse(resp *http.Response, successCodes ...int) (updateInstancesClientLinkPreflightResponse, error) {
+	result := updateInstancesClientLinkPreflightResponse{}
 	if !runtime.HasStatusCode(resp, successCodes...) {
 		return result, runtime.NewResponseError(resp)
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.linkPreflightResponse); err != nil {
-		return updateInstancesClientlinkPreflightResponse{}, err
+		return updateInstancesClientLinkPreflightResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginlinkUpdate - Update linking properties (e.g., identity rotation).
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - updateInstanceName - The user-chosen Update Instance name. Must be unique within the subscription and is used in the resource
-//     URL and ADU service routing. Allowed characters: alphanumeric and hyphens (not leading/trailing); length 3-36.
-//   - body - The content of the action request
-//   - options - updateInstancesClientBeginlinkUpdateOptions contains the optional parameters for the UpdateInstancesClient.BeginlinkUpdate
-//     method.
-func (client *UpdateInstancesClient) BeginlinkUpdate(ctx context.Context, resourceGroupName string, updateInstanceName string, body linkUpdateRequest, options *updateInstancesClientBeginlinkUpdateOptions) (*runtime.Poller[updateInstancesClientlinkUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.linkUpdate(ctx, resourceGroupName, updateInstanceName, body, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[updateInstancesClientlinkUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[updateInstancesClientlinkUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// linkUpdate - Update linking properties (e.g., identity rotation).
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *UpdateInstancesClient) linkUpdate(ctx context.Context, resourceGroupName string, updateInstanceName string, body linkUpdateRequest, options *updateInstancesClientBeginlinkUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "UpdateInstancesClient.BeginlinkUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.linkUpdateCreateRequest(ctx, resourceGroupName, updateInstanceName, body, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// linkUpdateCreateRequest creates the linkUpdate request.
-func (client *UpdateInstancesClient) linkUpdateCreateRequest(ctx context.Context, resourceGroupName string, updateInstanceName string, body linkUpdateRequest, _ *updateInstancesClientBeginlinkUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceUpdate/updateInstances/{updateInstanceName}/linkUpdate"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if updateInstanceName == "" {
-		return nil, errors.New("parameter updateInstanceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{updateInstanceName}", url.PathEscape(updateInstanceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20261102Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, body); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

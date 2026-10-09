@@ -51,23 +51,23 @@ type UpdateInstancesClientUpdateResponse struct {
 	UpdateInstance
 }
 
-// updateInstancesClientlinkInitiateResponse contains the response from method UpdateInstancesClient.BeginlinkInitiate.
-type updateInstancesClientlinkInitiateResponse struct {
+// updateInstancesClientLinkInitiateResponse contains the response from method UpdateInstancesClient.beginLinkInitiate.
+type updateInstancesClientLinkInitiateResponse struct {
 	// placeholder for future response values
 }
 
-// updateInstancesClientlinkNotifyResponse contains the response from method UpdateInstancesClient.BeginlinkNotify.
-type updateInstancesClientlinkNotifyResponse struct {
+// updateInstancesClientLinkNotifyResponse contains the response from method UpdateInstancesClient.beginLinkNotify.
+type updateInstancesClientLinkNotifyResponse struct {
 	// placeholder for future response values
 }
 
-// updateInstancesClientlinkPreflightResponse contains the response from method UpdateInstancesClient.linkPreflight.
-type updateInstancesClientlinkPreflightResponse struct {
+// updateInstancesClientLinkPreflightResponse contains the response from method UpdateInstancesClient.linkPreflight.
+type updateInstancesClientLinkPreflightResponse struct {
 	// Response body for /link/preflight.
 	linkPreflightResponse
 }
 
-// updateInstancesClientlinkUpdateResponse contains the response from method UpdateInstancesClient.BeginlinkUpdate.
-type updateInstancesClientlinkUpdateResponse struct {
+// updateInstancesClientLinkUpdateResponse contains the response from method UpdateInstancesClient.beginLinkUpdate.
+type updateInstancesClientLinkUpdateResponse struct {
 	// placeholder for future response values
 }

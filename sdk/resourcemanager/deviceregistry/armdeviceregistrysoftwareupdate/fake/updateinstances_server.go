@@ -21,10 +21,6 @@ import (
 
 // UpdateInstancesServer is a fake server for instances of the armdeviceregistrysoftwareupdate.UpdateInstancesClient type.
 type UpdateInstancesServer struct {
-	// CheckNameAvailability is the fake for method UpdateInstancesClient.CheckNameAvailability
-	// HTTP status codes to indicate success: http.StatusOK
-	CheckNameAvailability func(ctx context.Context, body armdeviceregistrysoftwareupdate.CheckNameAvailabilityRequest, options *armdeviceregistrysoftwareupdate.UpdateInstancesClientCheckNameAvailabilityOptions) (resp azfake.Responder[armdeviceregistrysoftwareupdate.UpdateInstancesClientCheckNameAvailabilityResponse], errResp azfake.ErrorResponder)
-
 	// BeginCreate is the fake for method UpdateInstancesClient.BeginCreate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
 	BeginCreate func(ctx context.Context, resourceGroupName string, updateInstanceName string, resource armdeviceregistrysoftwareupdate.UpdateInstance, options *armdeviceregistrysoftwareupdate.UpdateInstancesClientBeginCreateOptions) (resp azfake.PollerResponder[armdeviceregistrysoftwareupdate.UpdateInstancesClientCreateResponse], errResp azfake.ErrorResponder)
@@ -32,6 +28,14 @@ type UpdateInstancesServer struct {
 	// BeginDelete is the fake for method UpdateInstancesClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, updateInstanceName string, options *armdeviceregistrysoftwareupdate.UpdateInstancesClientBeginDeleteOptions) (resp azfake.PollerResponder[armdeviceregistrysoftwareupdate.UpdateInstancesClientDeleteResponse], errResp azfake.ErrorResponder)
+
+	// BeginUpdate is the fake for method UpdateInstancesClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, updateInstanceName string, properties armdeviceregistrysoftwareupdate.UpdateInstanceUpdate, options *armdeviceregistrysoftwareupdate.UpdateInstancesClientBeginUpdateOptions) (resp azfake.PollerResponder[armdeviceregistrysoftwareupdate.UpdateInstancesClientUpdateResponse], errResp azfake.ErrorResponder)
+
+	// CheckNameAvailability is the fake for method UpdateInstancesClient.CheckNameAvailability
+	// HTTP status codes to indicate success: http.StatusOK
+	CheckNameAvailability func(ctx context.Context, body armdeviceregistrysoftwareupdate.CheckNameAvailabilityRequest, options *armdeviceregistrysoftwareupdate.UpdateInstancesClientCheckNameAvailabilityOptions) (resp azfake.Responder[armdeviceregistrysoftwareupdate.UpdateInstancesClientCheckNameAvailabilityResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method UpdateInstancesClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
@@ -44,10 +48,6 @@ type UpdateInstancesServer struct {
 	// NewListBySubscriptionPager is the fake for method UpdateInstancesClient.NewListBySubscriptionPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListBySubscriptionPager func(options *armdeviceregistrysoftwareupdate.UpdateInstancesClientListBySubscriptionOptions) (resp azfake.PagerResponder[armdeviceregistrysoftwareupdate.UpdateInstancesClientListBySubscriptionResponse])
-
-	// BeginUpdate is the fake for method UpdateInstancesClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, updateInstanceName string, properties armdeviceregistrysoftwareupdate.UpdateInstanceUpdate, options *armdeviceregistrysoftwareupdate.UpdateInstancesClientBeginUpdateOptions) (resp azfake.PollerResponder[armdeviceregistrysoftwareupdate.UpdateInstancesClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewUpdateInstancesServerTransport creates a new instance of UpdateInstancesServerTransport with the provided implementation.
@@ -58,9 +58,9 @@ func NewUpdateInstancesServerTransport(srv *UpdateInstancesServer) *UpdateInstan
 		srv:                         srv,
 		beginCreate:                 newTracker[azfake.PollerResponder[armdeviceregistrysoftwareupdate.UpdateInstancesClientCreateResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armdeviceregistrysoftwareupdate.UpdateInstancesClientDeleteResponse]](),
+		beginUpdate:                 newTracker[azfake.PollerResponder[armdeviceregistrysoftwareupdate.UpdateInstancesClientUpdateResponse]](),
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armdeviceregistrysoftwareupdate.UpdateInstancesClientListByResourceGroupResponse]](),
 		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armdeviceregistrysoftwareupdate.UpdateInstancesClientListBySubscriptionResponse]](),
-		beginUpdate:                 newTracker[azfake.PollerResponder[armdeviceregistrysoftwareupdate.UpdateInstancesClientUpdateResponse]](),
 	}
 }
 
@@ -70,9 +70,9 @@ type UpdateInstancesServerTransport struct {
 	srv                         *UpdateInstancesServer
 	beginCreate                 *tracker[azfake.PollerResponder[armdeviceregistrysoftwareupdate.UpdateInstancesClientCreateResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armdeviceregistrysoftwareupdate.UpdateInstancesClientDeleteResponse]]
+	beginUpdate                 *tracker[azfake.PollerResponder[armdeviceregistrysoftwareupdate.UpdateInstancesClientUpdateResponse]]
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armdeviceregistrysoftwareupdate.UpdateInstancesClientListByResourceGroupResponse]]
 	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armdeviceregistrysoftwareupdate.UpdateInstancesClientListBySubscriptionResponse]]
-	beginUpdate                 *tracker[azfake.PollerResponder[armdeviceregistrysoftwareupdate.UpdateInstancesClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for UpdateInstancesServerTransport.
@@ -96,20 +96,20 @@ func (u *UpdateInstancesServerTransport) dispatchToMethodFake(req *http.Request,
 		}
 		if !intercepted {
 			switch method {
-			case "UpdateInstancesClient.CheckNameAvailability":
-				res.resp, res.err = u.dispatchCheckNameAvailability(req)
 			case "UpdateInstancesClient.BeginCreate":
 				res.resp, res.err = u.dispatchBeginCreate(req)
 			case "UpdateInstancesClient.BeginDelete":
 				res.resp, res.err = u.dispatchBeginDelete(req)
+			case "UpdateInstancesClient.BeginUpdate":
+				res.resp, res.err = u.dispatchBeginUpdate(req)
+			case "UpdateInstancesClient.CheckNameAvailability":
+				res.resp, res.err = u.dispatchCheckNameAvailability(req)
 			case "UpdateInstancesClient.Get":
 				res.resp, res.err = u.dispatchGet(req)
 			case "UpdateInstancesClient.NewListByResourceGroupPager":
 				res.resp, res.err = u.dispatchNewListByResourceGroupPager(req)
 			case "UpdateInstancesClient.NewListBySubscriptionPager":
 				res.resp, res.err = u.dispatchNewListBySubscriptionPager(req)
-			case "UpdateInstancesClient.BeginUpdate":
-				res.resp, res.err = u.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -124,35 +124,6 @@ func (u *UpdateInstancesServerTransport) dispatchToMethodFake(req *http.Request,
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
-}
-
-func (u *UpdateInstancesServerTransport) dispatchCheckNameAvailability(req *http.Request) (*http.Response, error) {
-	if u.srv.CheckNameAvailability == nil {
-		return nil, &nonRetriableError{errors.New("fake for method CheckNameAvailability not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DeviceUpdate/checkNameAvailability`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 2 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armdeviceregistrysoftwareupdate.CheckNameAvailabilityRequest](req)
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := u.srv.CheckNameAvailability(req.Context(), body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CheckNameAvailabilityResult, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
 }
 
 func (u *UpdateInstancesServerTransport) dispatchBeginCreate(req *http.Request) (*http.Response, error) {
@@ -244,6 +215,83 @@ func (u *UpdateInstancesServerTransport) dispatchBeginDelete(req *http.Request) 
 		u.beginDelete.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (u *UpdateInstancesServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if u.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := u.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DeviceUpdate/updateInstances/(?P<updateInstanceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armdeviceregistrysoftwareupdate.UpdateInstanceUpdate](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		updateInstanceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("updateInstanceName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := u.srv.BeginUpdate(req.Context(), resourceGroupNameParam, updateInstanceNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		u.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		u.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		u.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (u *UpdateInstancesServerTransport) dispatchCheckNameAvailability(req *http.Request) (*http.Response, error) {
+	if u.srv.CheckNameAvailability == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CheckNameAvailability not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DeviceUpdate/checkNameAvailability`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 2 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armdeviceregistrysoftwareupdate.CheckNameAvailabilityRequest](req)
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := u.srv.CheckNameAvailability(req.Context(), body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CheckNameAvailabilityResult, req)
+	if err != nil {
+		return nil, err
+	}
 	return resp, nil
 }
 
@@ -347,54 +395,6 @@ func (u *UpdateInstancesServerTransport) dispatchNewListBySubscriptionPager(req 
 	if !server.PagerResponderMore(newListBySubscriptionPager) {
 		u.newListBySubscriptionPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (u *UpdateInstancesServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if u.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := u.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DeviceUpdate/updateInstances/(?P<updateInstanceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armdeviceregistrysoftwareupdate.UpdateInstanceUpdate](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		updateInstanceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("updateInstanceName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := u.srv.BeginUpdate(req.Context(), resourceGroupNameParam, updateInstanceNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		u.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		u.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		u.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

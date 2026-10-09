@@ -1,4 +1,4 @@
 directory: specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/DuDeviceRegistry
-commit: 1937998d2d092451f08d4aa5f35dd93ebf2cf6cf
+commit: 663934c93853cb58f6477c2e8e0f48d5eca2d770
 repo: Azure/azure-rest-api-specs
 additionalDirectories: 

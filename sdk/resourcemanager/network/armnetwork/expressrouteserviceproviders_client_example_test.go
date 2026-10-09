@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01/ExpressRouteProviderList.json
+// Generated from example definition: 2026-03-01/ExpressRouteProviderList.json
 func ExampleExpressRouteServiceProvidersClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

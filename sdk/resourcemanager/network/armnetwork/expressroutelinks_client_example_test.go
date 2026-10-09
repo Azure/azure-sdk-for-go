@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01/ExpressRouteLinkGet.json
+// Generated from example definition: 2026-03-01/ExpressRouteLinkGet.json
 func ExampleExpressRouteLinksClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -47,7 +47,7 @@ func ExampleExpressRouteLinksClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/ExpressRouteLinkList.json
+// Generated from example definition: 2026-03-01/ExpressRouteLinkList.json
 func ExampleExpressRouteLinksClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -20,13 +20,13 @@ import (
 
 // AvailableServiceAliasesServer is a fake server for instances of the armnetwork.AvailableServiceAliasesClient type.
 type AvailableServiceAliasesServer struct {
-	// NewListPager is the fake for method AvailableServiceAliasesClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(location string, options *armnetwork.AvailableServiceAliasesClientListOptions) (resp azfake.PagerResponder[armnetwork.AvailableServiceAliasesClientListResponse])
-
 	// NewListByResourceGroupPager is the fake for method AvailableServiceAliasesClient.NewListByResourceGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByResourceGroupPager func(resourceGroupName string, location string, options *armnetwork.AvailableServiceAliasesClientListByResourceGroupOptions) (resp azfake.PagerResponder[armnetwork.AvailableServiceAliasesClientListByResourceGroupResponse])
+
+	// NewListPager is the fake for method AvailableServiceAliasesClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(location string, options *armnetwork.AvailableServiceAliasesClientListOptions) (resp azfake.PagerResponder[armnetwork.AvailableServiceAliasesClientListResponse])
 }
 
 // NewAvailableServiceAliasesServerTransport creates a new instance of AvailableServiceAliasesServerTransport with the provided implementation.
@@ -35,8 +35,8 @@ type AvailableServiceAliasesServer struct {
 func NewAvailableServiceAliasesServerTransport(srv *AvailableServiceAliasesServer) *AvailableServiceAliasesServerTransport {
 	return &AvailableServiceAliasesServerTransport{
 		srv:                         srv,
-		newListPager:                newTracker[azfake.PagerResponder[armnetwork.AvailableServiceAliasesClientListResponse]](),
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armnetwork.AvailableServiceAliasesClientListByResourceGroupResponse]](),
+		newListPager:                newTracker[azfake.PagerResponder[armnetwork.AvailableServiceAliasesClientListResponse]](),
 	}
 }
 
@@ -44,8 +44,8 @@ func NewAvailableServiceAliasesServerTransport(srv *AvailableServiceAliasesServe
 // Don't use this type directly, use NewAvailableServiceAliasesServerTransport instead.
 type AvailableServiceAliasesServerTransport struct {
 	srv                         *AvailableServiceAliasesServer
-	newListPager                *tracker[azfake.PagerResponder[armnetwork.AvailableServiceAliasesClientListResponse]]
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armnetwork.AvailableServiceAliasesClientListByResourceGroupResponse]]
+	newListPager                *tracker[azfake.PagerResponder[armnetwork.AvailableServiceAliasesClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for AvailableServiceAliasesServerTransport.
@@ -69,10 +69,10 @@ func (a *AvailableServiceAliasesServerTransport) dispatchToMethodFake(req *http.
 		}
 		if !intercepted {
 			switch method {
-			case "AvailableServiceAliasesClient.NewListPager":
-				res.resp, res.err = a.dispatchNewListPager(req)
 			case "AvailableServiceAliasesClient.NewListByResourceGroupPager":
 				res.resp, res.err = a.dispatchNewListByResourceGroupPager(req)
+			case "AvailableServiceAliasesClient.NewListPager":
+				res.resp, res.err = a.dispatchNewListPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -87,43 +87,6 @@ func (a *AvailableServiceAliasesServerTransport) dispatchToMethodFake(req *http.
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
-}
-
-func (a *AvailableServiceAliasesServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if a.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := a.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/availableServiceAliases`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		locationParam, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
-		if err != nil {
-			return nil, err
-		}
-		resp := a.srv.NewListPager(locationParam, nil)
-		newListPager = &resp
-		a.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armnetwork.AvailableServiceAliasesClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		a.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		a.newListPager.remove(req)
-	}
-	return resp, nil
 }
 
 func (a *AvailableServiceAliasesServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
@@ -163,6 +126,43 @@ func (a *AvailableServiceAliasesServerTransport) dispatchNewListByResourceGroupP
 	}
 	if !server.PagerResponderMore(newListByResourceGroupPager) {
 		a.newListByResourceGroupPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (a *AvailableServiceAliasesServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if a.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := a.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/availableServiceAliases`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		locationParam, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
+		if err != nil {
+			return nil, err
+		}
+		resp := a.srv.NewListPager(locationParam, nil)
+		newListPager = &resp
+		a.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armnetwork.AvailableServiceAliasesClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		a.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPager) {
+		a.newListPager.remove(req)
 	}
 	return resp, nil
 }

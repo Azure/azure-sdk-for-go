@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01/LoadBalancerFrontendIPConfigurationGet.json
+// Generated from example definition: 2026-03-01/LoadBalancerFrontendIPConfigurationGet.json
 func ExampleLoadBalancerFrontendIPConfigurationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -58,7 +58,7 @@ func ExampleLoadBalancerFrontendIPConfigurationsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/LoadBalancerFrontendIPConfigurationList.json
+// Generated from example definition: 2026-03-01/LoadBalancerFrontendIPConfigurationList.json
 func ExampleLoadBalancerFrontendIPConfigurationsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

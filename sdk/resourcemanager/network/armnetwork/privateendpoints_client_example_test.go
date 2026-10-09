@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01/PrivateEndpointCreate.json
+// Generated from example definition: 2026-03-01/PrivateEndpointCreate.json
 func ExamplePrivateEndpointsClient_BeginCreateOrUpdate_createPrivateEndpoint() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -130,7 +130,7 @@ func ExamplePrivateEndpointsClient_BeginCreateOrUpdate_createPrivateEndpoint() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/PrivateEndpointCreateForManualApproval.json
+// Generated from example definition: 2026-03-01/PrivateEndpointCreateForManualApproval.json
 func ExamplePrivateEndpointsClient_BeginCreateOrUpdate_createPrivateEndpointWithManualApprovalConnection() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -247,7 +247,7 @@ func ExamplePrivateEndpointsClient_BeginCreateOrUpdate_createPrivateEndpointWith
 	// }
 }
 
-// Generated from example definition: 2026-01-01/PrivateEndpointCreateWithASG.json
+// Generated from example definition: 2026-03-01/PrivateEndpointCreateWithASG.json
 func ExamplePrivateEndpointsClient_BeginCreateOrUpdate_createPrivateEndpointWithApplicationSecurityGroups() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -350,7 +350,7 @@ func ExamplePrivateEndpointsClient_BeginCreateOrUpdate_createPrivateEndpointWith
 	// }
 }
 
-// Generated from example definition: 2026-01-01/PrivateEndpointDelete.json
+// Generated from example definition: 2026-03-01/PrivateEndpointDelete.json
 func ExamplePrivateEndpointsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -376,7 +376,7 @@ func ExamplePrivateEndpointsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/PrivateEndpointGet.json
+// Generated from example definition: 2026-03-01/PrivateEndpointGet.json
 func ExamplePrivateEndpointsClient_Get_getPrivateEndpoint() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -469,7 +469,7 @@ func ExamplePrivateEndpointsClient_Get_getPrivateEndpoint() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/PrivateEndpointGetForManualApproval.json
+// Generated from example definition: 2026-03-01/PrivateEndpointGetForManualApproval.json
 func ExamplePrivateEndpointsClient_Get_getPrivateEndpointWithManualApprovalConnection() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -554,7 +554,7 @@ func ExamplePrivateEndpointsClient_Get_getPrivateEndpointWithManualApprovalConne
 	// }
 }
 
-// Generated from example definition: 2026-01-01/PrivateEndpointGetWithASG.json
+// Generated from example definition: 2026-03-01/PrivateEndpointGetWithASG.json
 func ExamplePrivateEndpointsClient_Get_getPrivateEndpointWithApplicationSecurityGroups() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -631,180 +631,7 @@ func ExamplePrivateEndpointsClient_Get_getPrivateEndpointWithApplicationSecurity
 	// }
 }
 
-// Generated from example definition: 2026-01-01/PrivateEndpointList.json
-func ExamplePrivateEndpointsClient_NewListPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewPrivateEndpointsClient().NewListPager("rg1", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armnetwork.PrivateEndpointsClientListResponse{
-		// 	PrivateEndpointListResult: armnetwork.PrivateEndpointListResult{
-		// 		Value: []*armnetwork.PrivateEndpoint{
-		// 			{
-		// 				Name: to.Ptr("pe1"),
-		// 				Type: to.Ptr("Microsoft.Network/privateEndpoints"),
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/privateEndpoints/pe1"),
-		// 				Location: to.Ptr("eastus"),
-		// 				Properties: &armnetwork.PrivateEndpointProperties{
-		// 					ApplicationSecurityGroups: []*armnetwork.ApplicationSecurityGroup{
-		// 					},
-		// 					CustomDNSConfigs: []*armnetwork.CustomDNSConfigPropertiesFormat{
-		// 						{
-		// 							Fqdn: to.Ptr("abc.cosmos.com"),
-		// 							IPAddresses: []*string{
-		// 								to.Ptr("192.168.0.4"),
-		// 							},
-		// 						},
-		// 						{
-		// 							Fqdn: to.Ptr("abc2.cosmos.com"),
-		// 							IPAddresses: []*string{
-		// 								to.Ptr("192.168.0.5"),
-		// 							},
-		// 						},
-		// 					},
-		// 					CustomNetworkInterfaceName: to.Ptr("testPeNic"),
-		// 					IPConfigurations: []*armnetwork.PrivateEndpointIPConfiguration{
-		// 						{
-		// 							Name: to.Ptr("pestaticconfig"),
-		// 							Properties: &armnetwork.PrivateEndpointIPConfigurationProperties{
-		// 								GroupID: to.Ptr("file"),
-		// 								MemberName: to.Ptr("file"),
-		// 								PrivateIPAddress: to.Ptr("192.168.0.10"),
-		// 							},
-		// 						},
-		// 						{
-		// 							Name: to.Ptr("pestaticconfig"),
-		// 							Properties: &armnetwork.PrivateEndpointIPConfigurationProperties{
-		// 								GroupID: to.Ptr("file"),
-		// 								MemberName: to.Ptr("file2"),
-		// 								PrivateIPAddress: to.Ptr("192.168.0.11"),
-		// 							},
-		// 						},
-		// 					},
-		// 					ManualPrivateLinkServiceConnections: []*armnetwork.PrivateLinkServiceConnection{
-		// 					},
-		// 					NetworkInterfaces: []*armnetwork.Interface{
-		// 						{
-		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/provders/Microsoft.Network/networkInterfaces/pe1.nic.abcd1234"),
-		// 						},
-		// 					},
-		// 					PrivateLinkServiceConnections: []*armnetwork.PrivateLinkServiceConnection{
-		// 						{
-		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/privateEndpoints/pe1/privateLinkServiceConnections/plsconnection1"),
-		// 							Properties: &armnetwork.PrivateLinkServiceConnectionProperties{
-		// 								GroupIDs: []*string{
-		// 									to.Ptr("groupIdFromResource"),
-		// 								},
-		// 								PrivateLinkServiceConnectionState: &armnetwork.PrivateLinkServiceConnectionState{
-		// 									Description: to.Ptr("Auto-approved"),
-		// 									ActionsRequired: to.Ptr("None"),
-		// 									Status: to.Ptr("Approved"),
-		// 								},
-		// 								PrivateLinkServiceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/privateLinkServices/testPls1"),
-		// 								RequestMessage: to.Ptr("Please approve my connection for pe1."),
-		// 							},
-		// 						},
-		// 					},
-		// 					ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
-		// 					Subnet: &armnetwork.Subnet{
-		// 						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/myVnet/subnets/mySubnet"),
-		// 					},
-		// 				},
-		// 			},
-		// 			{
-		// 				Name: to.Ptr("pe2"),
-		// 				Type: to.Ptr("Microsoft.Network/privateEndpoints"),
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/privateEndpoints/pe2"),
-		// 				Location: to.Ptr("eastus"),
-		// 				Properties: &armnetwork.PrivateEndpointProperties{
-		// 					ApplicationSecurityGroups: []*armnetwork.ApplicationSecurityGroup{
-		// 					},
-		// 					CustomDNSConfigs: []*armnetwork.CustomDNSConfigPropertiesFormat{
-		// 						{
-		// 							Fqdn: to.Ptr("abc3.cosmos1.com"),
-		// 							IPAddresses: []*string{
-		// 								to.Ptr("192.168.0.6"),
-		// 							},
-		// 						},
-		// 						{
-		// 							Fqdn: to.Ptr("abc4.cosmos1.com"),
-		// 							IPAddresses: []*string{
-		// 								to.Ptr("192.168.0.7"),
-		// 							},
-		// 						},
-		// 					},
-		// 					CustomNetworkInterfaceName: to.Ptr("testPeNic"),
-		// 					IPConfigurations: []*armnetwork.PrivateEndpointIPConfiguration{
-		// 						{
-		// 							Name: to.Ptr("pestaticconfig3"),
-		// 							Properties: &armnetwork.PrivateEndpointIPConfigurationProperties{
-		// 								GroupID: to.Ptr("file"),
-		// 								MemberName: to.Ptr("file"),
-		// 								PrivateIPAddress: to.Ptr("192.168.0.8"),
-		// 							},
-		// 						},
-		// 						{
-		// 							Name: to.Ptr("pestaticconfig4"),
-		// 							Properties: &armnetwork.PrivateEndpointIPConfigurationProperties{
-		// 								GroupID: to.Ptr("file"),
-		// 								MemberName: to.Ptr("file2"),
-		// 								PrivateIPAddress: to.Ptr("192.168.0.9"),
-		// 							},
-		// 						},
-		// 					},
-		// 					ManualPrivateLinkServiceConnections: []*armnetwork.PrivateLinkServiceConnection{
-		// 						{
-		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/privateEndpoints/pe2/privateLinkServiceConnections/plsconnection2"),
-		// 							Properties: &armnetwork.PrivateLinkServiceConnectionProperties{
-		// 								GroupIDs: []*string{
-		// 									to.Ptr("groupIdFromResource"),
-		// 								},
-		// 								PrivateLinkServiceConnectionState: &armnetwork.PrivateLinkServiceConnectionState{
-		// 									Description: to.Ptr("Awaiting approval"),
-		// 									ActionsRequired: to.Ptr("None"),
-		// 									Status: to.Ptr("Pending"),
-		// 								},
-		// 								PrivateLinkServiceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/privateLinkServices/testPls2"),
-		// 								RequestMessage: to.Ptr("Please manually approve my connection for pe2."),
-		// 							},
-		// 						},
-		// 					},
-		// 					NetworkInterfaces: []*armnetwork.Interface{
-		// 						{
-		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/provders/Microsoft.Network/networkInterfaces/pe2.nic.zyxw9876"),
-		// 						},
-		// 					},
-		// 					PrivateLinkServiceConnections: []*armnetwork.PrivateLinkServiceConnection{
-		// 					},
-		// 					ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
-		// 					Subnet: &armnetwork.Subnet{
-		// 						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/myVnet/subnets/mySubnet2"),
-		// 					},
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2026-01-01/PrivateEndpointListAll.json
+// Generated from example definition: 2026-03-01/PrivateEndpointListAll.json
 func ExamplePrivateEndpointsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1035,6 +862,179 @@ func ExamplePrivateEndpointsClient_NewListBySubscriptionPager() {
 		// 					ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
 		// 					Subnet: &armnetwork.Subnet{
 		// 						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg3/providers/Microsoft.Network/virtualNetworks/myVnet/subnets/mySubnet3"),
+		// 					},
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2026-03-01/PrivateEndpointList.json
+func ExamplePrivateEndpointsClient_NewListPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewPrivateEndpointsClient().NewListPager("rg1", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armnetwork.PrivateEndpointsClientListResponse{
+		// 	PrivateEndpointListResult: armnetwork.PrivateEndpointListResult{
+		// 		Value: []*armnetwork.PrivateEndpoint{
+		// 			{
+		// 				Name: to.Ptr("pe1"),
+		// 				Type: to.Ptr("Microsoft.Network/privateEndpoints"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/privateEndpoints/pe1"),
+		// 				Location: to.Ptr("eastus"),
+		// 				Properties: &armnetwork.PrivateEndpointProperties{
+		// 					ApplicationSecurityGroups: []*armnetwork.ApplicationSecurityGroup{
+		// 					},
+		// 					CustomDNSConfigs: []*armnetwork.CustomDNSConfigPropertiesFormat{
+		// 						{
+		// 							Fqdn: to.Ptr("abc.cosmos.com"),
+		// 							IPAddresses: []*string{
+		// 								to.Ptr("192.168.0.4"),
+		// 							},
+		// 						},
+		// 						{
+		// 							Fqdn: to.Ptr("abc2.cosmos.com"),
+		// 							IPAddresses: []*string{
+		// 								to.Ptr("192.168.0.5"),
+		// 							},
+		// 						},
+		// 					},
+		// 					CustomNetworkInterfaceName: to.Ptr("testPeNic"),
+		// 					IPConfigurations: []*armnetwork.PrivateEndpointIPConfiguration{
+		// 						{
+		// 							Name: to.Ptr("pestaticconfig"),
+		// 							Properties: &armnetwork.PrivateEndpointIPConfigurationProperties{
+		// 								GroupID: to.Ptr("file"),
+		// 								MemberName: to.Ptr("file"),
+		// 								PrivateIPAddress: to.Ptr("192.168.0.10"),
+		// 							},
+		// 						},
+		// 						{
+		// 							Name: to.Ptr("pestaticconfig"),
+		// 							Properties: &armnetwork.PrivateEndpointIPConfigurationProperties{
+		// 								GroupID: to.Ptr("file"),
+		// 								MemberName: to.Ptr("file2"),
+		// 								PrivateIPAddress: to.Ptr("192.168.0.11"),
+		// 							},
+		// 						},
+		// 					},
+		// 					ManualPrivateLinkServiceConnections: []*armnetwork.PrivateLinkServiceConnection{
+		// 					},
+		// 					NetworkInterfaces: []*armnetwork.Interface{
+		// 						{
+		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/provders/Microsoft.Network/networkInterfaces/pe1.nic.abcd1234"),
+		// 						},
+		// 					},
+		// 					PrivateLinkServiceConnections: []*armnetwork.PrivateLinkServiceConnection{
+		// 						{
+		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/privateEndpoints/pe1/privateLinkServiceConnections/plsconnection1"),
+		// 							Properties: &armnetwork.PrivateLinkServiceConnectionProperties{
+		// 								GroupIDs: []*string{
+		// 									to.Ptr("groupIdFromResource"),
+		// 								},
+		// 								PrivateLinkServiceConnectionState: &armnetwork.PrivateLinkServiceConnectionState{
+		// 									Description: to.Ptr("Auto-approved"),
+		// 									ActionsRequired: to.Ptr("None"),
+		// 									Status: to.Ptr("Approved"),
+		// 								},
+		// 								PrivateLinkServiceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/privateLinkServices/testPls1"),
+		// 								RequestMessage: to.Ptr("Please approve my connection for pe1."),
+		// 							},
+		// 						},
+		// 					},
+		// 					ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+		// 					Subnet: &armnetwork.Subnet{
+		// 						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/myVnet/subnets/mySubnet"),
+		// 					},
+		// 				},
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("pe2"),
+		// 				Type: to.Ptr("Microsoft.Network/privateEndpoints"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/privateEndpoints/pe2"),
+		// 				Location: to.Ptr("eastus"),
+		// 				Properties: &armnetwork.PrivateEndpointProperties{
+		// 					ApplicationSecurityGroups: []*armnetwork.ApplicationSecurityGroup{
+		// 					},
+		// 					CustomDNSConfigs: []*armnetwork.CustomDNSConfigPropertiesFormat{
+		// 						{
+		// 							Fqdn: to.Ptr("abc3.cosmos1.com"),
+		// 							IPAddresses: []*string{
+		// 								to.Ptr("192.168.0.6"),
+		// 							},
+		// 						},
+		// 						{
+		// 							Fqdn: to.Ptr("abc4.cosmos1.com"),
+		// 							IPAddresses: []*string{
+		// 								to.Ptr("192.168.0.7"),
+		// 							},
+		// 						},
+		// 					},
+		// 					CustomNetworkInterfaceName: to.Ptr("testPeNic"),
+		// 					IPConfigurations: []*armnetwork.PrivateEndpointIPConfiguration{
+		// 						{
+		// 							Name: to.Ptr("pestaticconfig3"),
+		// 							Properties: &armnetwork.PrivateEndpointIPConfigurationProperties{
+		// 								GroupID: to.Ptr("file"),
+		// 								MemberName: to.Ptr("file"),
+		// 								PrivateIPAddress: to.Ptr("192.168.0.8"),
+		// 							},
+		// 						},
+		// 						{
+		// 							Name: to.Ptr("pestaticconfig4"),
+		// 							Properties: &armnetwork.PrivateEndpointIPConfigurationProperties{
+		// 								GroupID: to.Ptr("file"),
+		// 								MemberName: to.Ptr("file2"),
+		// 								PrivateIPAddress: to.Ptr("192.168.0.9"),
+		// 							},
+		// 						},
+		// 					},
+		// 					ManualPrivateLinkServiceConnections: []*armnetwork.PrivateLinkServiceConnection{
+		// 						{
+		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/privateEndpoints/pe2/privateLinkServiceConnections/plsconnection2"),
+		// 							Properties: &armnetwork.PrivateLinkServiceConnectionProperties{
+		// 								GroupIDs: []*string{
+		// 									to.Ptr("groupIdFromResource"),
+		// 								},
+		// 								PrivateLinkServiceConnectionState: &armnetwork.PrivateLinkServiceConnectionState{
+		// 									Description: to.Ptr("Awaiting approval"),
+		// 									ActionsRequired: to.Ptr("None"),
+		// 									Status: to.Ptr("Pending"),
+		// 								},
+		// 								PrivateLinkServiceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/privateLinkServices/testPls2"),
+		// 								RequestMessage: to.Ptr("Please manually approve my connection for pe2."),
+		// 							},
+		// 						},
+		// 					},
+		// 					NetworkInterfaces: []*armnetwork.Interface{
+		// 						{
+		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/provders/Microsoft.Network/networkInterfaces/pe2.nic.zyxw9876"),
+		// 						},
+		// 					},
+		// 					PrivateLinkServiceConnections: []*armnetwork.PrivateLinkServiceConnection{
+		// 					},
+		// 					ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+		// 					Subnet: &armnetwork.Subnet{
+		// 						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/myVnet/subnets/mySubnet2"),
 		// 					},
 		// 				},
 		// 			},

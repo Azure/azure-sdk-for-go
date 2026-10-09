@@ -33,13 +33,13 @@ type IPAllocationsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, ipAllocationName string, options *armnetwork.IPAllocationsClientGetOptions) (resp azfake.Responder[armnetwork.IPAllocationsClientGetResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method IPAllocationsClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(options *armnetwork.IPAllocationsClientListOptions) (resp azfake.PagerResponder[armnetwork.IPAllocationsClientListResponse])
-
 	// NewListByResourceGroupPager is the fake for method IPAllocationsClient.NewListByResourceGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByResourceGroupPager func(resourceGroupName string, options *armnetwork.IPAllocationsClientListByResourceGroupOptions) (resp azfake.PagerResponder[armnetwork.IPAllocationsClientListByResourceGroupResponse])
+
+	// NewListPager is the fake for method IPAllocationsClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(options *armnetwork.IPAllocationsClientListOptions) (resp azfake.PagerResponder[armnetwork.IPAllocationsClientListResponse])
 
 	// UpdateTags is the fake for method IPAllocationsClient.UpdateTags
 	// HTTP status codes to indicate success: http.StatusOK
@@ -54,8 +54,8 @@ func NewIPAllocationsServerTransport(srv *IPAllocationsServer) *IPAllocationsSer
 		srv:                         srv,
 		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armnetwork.IPAllocationsClientCreateOrUpdateResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armnetwork.IPAllocationsClientDeleteResponse]](),
-		newListPager:                newTracker[azfake.PagerResponder[armnetwork.IPAllocationsClientListResponse]](),
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armnetwork.IPAllocationsClientListByResourceGroupResponse]](),
+		newListPager:                newTracker[azfake.PagerResponder[armnetwork.IPAllocationsClientListResponse]](),
 	}
 }
 
@@ -65,8 +65,8 @@ type IPAllocationsServerTransport struct {
 	srv                         *IPAllocationsServer
 	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armnetwork.IPAllocationsClientCreateOrUpdateResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armnetwork.IPAllocationsClientDeleteResponse]]
-	newListPager                *tracker[azfake.PagerResponder[armnetwork.IPAllocationsClientListResponse]]
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armnetwork.IPAllocationsClientListByResourceGroupResponse]]
+	newListPager                *tracker[azfake.PagerResponder[armnetwork.IPAllocationsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for IPAllocationsServerTransport.
@@ -96,10 +96,10 @@ func (i *IPAllocationsServerTransport) dispatchToMethodFake(req *http.Request, m
 				res.resp, res.err = i.dispatchBeginDelete(req)
 			case "IPAllocationsClient.Get":
 				res.resp, res.err = i.dispatchGet(req)
-			case "IPAllocationsClient.NewListPager":
-				res.resp, res.err = i.dispatchNewListPager(req)
 			case "IPAllocationsClient.NewListByResourceGroupPager":
 				res.resp, res.err = i.dispatchNewListByResourceGroupPager(req)
+			case "IPAllocationsClient.NewListPager":
+				res.resp, res.err = i.dispatchNewListPager(req)
 			case "IPAllocationsClient.UpdateTags":
 				res.resp, res.err = i.dispatchUpdateTags(req)
 			default:
@@ -251,39 +251,6 @@ func (i *IPAllocationsServerTransport) dispatchGet(req *http.Request) (*http.Res
 	return resp, nil
 }
 
-func (i *IPAllocationsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if i.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := i.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/IpAllocations`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := i.srv.NewListPager(nil)
-		newListPager = &resp
-		i.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armnetwork.IPAllocationsClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		i.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		i.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (i *IPAllocationsServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
 	if i.srv.NewListByResourceGroupPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
@@ -317,6 +284,39 @@ func (i *IPAllocationsServerTransport) dispatchNewListByResourceGroupPager(req *
 	}
 	if !server.PagerResponderMore(newListByResourceGroupPager) {
 		i.newListByResourceGroupPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (i *IPAllocationsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if i.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := i.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/IpAllocations`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resp := i.srv.NewListPager(nil)
+		newListPager = &resp
+		i.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armnetwork.IPAllocationsClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		i.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPager) {
+		i.newListPager.remove(req)
 	}
 	return resp, nil
 }

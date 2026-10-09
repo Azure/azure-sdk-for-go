@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01/VirtualHubIpConfigurationPut.json
+// Generated from example definition: 2026-03-01/VirtualHubIpConfigurationPut.json
 func ExampleVirtualHubIPConfigurationClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -56,7 +56,7 @@ func ExampleVirtualHubIPConfigurationClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/VirtualHubIpConfigurationDelete.json
+// Generated from example definition: 2026-03-01/VirtualHubIpConfigurationDelete.json
 func ExampleVirtualHubIPConfigurationClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -82,7 +82,7 @@ func ExampleVirtualHubIPConfigurationClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/VirtualHubIpConfigurationGet.json
+// Generated from example definition: 2026-03-01/VirtualHubIpConfigurationGet.json
 func ExampleVirtualHubIPConfigurationClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -116,7 +116,7 @@ func ExampleVirtualHubIPConfigurationClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/VirtualHubIpConfigurationList.json
+// Generated from example definition: 2026-03-01/VirtualHubIpConfigurationList.json
 func ExampleVirtualHubIPConfigurationClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

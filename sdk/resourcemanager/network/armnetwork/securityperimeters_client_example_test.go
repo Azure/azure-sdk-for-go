@@ -12,7 +12,33 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01/NetworkSecurityPerimeterPut.json
+// Generated from example definition: 2026-03-01/NetworkSecurityPerimeterDelete.json
+func ExampleSecurityPerimetersClient_BeginDelete() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewSecurityPerimetersClient().BeginDelete(ctx, "rg1", "testNSP1", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armnetwork.SecurityPerimetersClientDeleteResponse{
+	// }
+}
+
+// Generated from example definition: 2026-03-01/NetworkSecurityPerimeterPut.json
 func ExampleSecurityPerimetersClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -57,33 +83,7 @@ func ExampleSecurityPerimetersClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/NetworkSecurityPerimeterDelete.json
-func ExampleSecurityPerimetersClient_BeginDelete() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewSecurityPerimetersClient().BeginDelete(ctx, "rg1", "testNSP1", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armnetwork.SecurityPerimetersClientDeleteResponse{
-	// }
-}
-
-// Generated from example definition: 2026-01-01/NetworkSecurityPerimeterGet.json
+// Generated from example definition: 2026-03-01/NetworkSecurityPerimeterGet.json
 func ExampleSecurityPerimetersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -125,79 +125,7 @@ func ExampleSecurityPerimetersClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/NetworkSecurityPerimeterList.json
-func ExampleSecurityPerimetersClient_NewListPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewSecurityPerimetersClient().NewListPager("rg1", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armnetwork.SecurityPerimetersClientListResponse{
-		// 	SecurityPerimeterListResult: armnetwork.SecurityPerimeterListResult{
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/networkSecurityPerimeters?api-version=2025-07-01&$skipToken=10"),
-		// 		Value: []*armnetwork.SecurityPerimeter{
-		// 			{
-		// 				Name: to.Ptr("testNSP1"),
-		// 				Type: to.Ptr("Microsoft.Network/networkSecurityPerimeters"),
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/networkSecurityPerimeters/testNSP1"),
-		// 				Location: to.Ptr("East US 2 EUAP"),
-		// 				Properties: &armnetwork.SecurityPerimeterProperties{
-		// 					PerimeterGUID: to.Ptr("guid"),
-		// 					ProvisioningState: to.Ptr(armnetwork.NspProvisioningStateSucceeded),
-		// 				},
-		// 				SystemData: &armnetwork.SystemData{
-		// 					CreatedAt: to.Ptr(time.Date(2024, time.February, 7, 18, 7, 36, 344671300, time.UTC)),
-		// 					CreatedBy: to.Ptr("user"),
-		// 					CreatedByType: to.Ptr(armnetwork.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(time.Date(2024, time.February, 7, 18, 7, 36, 344671300, time.UTC)),
-		// 					LastModifiedBy: to.Ptr("user"),
-		// 					LastModifiedByType: to.Ptr(armnetwork.CreatedByTypeUser),
-		// 				},
-		// 				Tags: map[string]*string{
-		// 				},
-		// 			},
-		// 			{
-		// 				Name: to.Ptr("testNSP2"),
-		// 				Type: to.Ptr("Microsoft.Network/networkSecurityPerimeters"),
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/networkSecurityPerimeters/testNSP2"),
-		// 				Location: to.Ptr("East US 2 EUAP"),
-		// 				Properties: &armnetwork.SecurityPerimeterProperties{
-		// 					PerimeterGUID: to.Ptr("guid"),
-		// 					ProvisioningState: to.Ptr(armnetwork.NspProvisioningStateSucceeded),
-		// 				},
-		// 				SystemData: &armnetwork.SystemData{
-		// 					CreatedAt: to.Ptr(time.Date(2024, time.February, 7, 18, 7, 36, 344671300, time.UTC)),
-		// 					CreatedBy: to.Ptr("user"),
-		// 					CreatedByType: to.Ptr(armnetwork.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(time.Date(2024, time.February, 7, 18, 7, 36, 344671300, time.UTC)),
-		// 					LastModifiedBy: to.Ptr("user"),
-		// 					LastModifiedByType: to.Ptr(armnetwork.CreatedByTypeUser),
-		// 				},
-		// 				Tags: map[string]*string{
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2026-01-01/NetworkSecurityPerimeterListAll.json
+// Generated from example definition: 2026-03-01/NetworkSecurityPerimeterListAll.json
 func ExampleSecurityPerimetersClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -269,7 +197,79 @@ func ExampleSecurityPerimetersClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2026-01-01/NetworkSecurityPerimeterPatch.json
+// Generated from example definition: 2026-03-01/NetworkSecurityPerimeterList.json
+func ExampleSecurityPerimetersClient_NewListPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewSecurityPerimetersClient().NewListPager("rg1", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armnetwork.SecurityPerimetersClientListResponse{
+		// 	SecurityPerimeterListResult: armnetwork.SecurityPerimeterListResult{
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/networkSecurityPerimeters?api-version=2025-07-01&$skipToken=10"),
+		// 		Value: []*armnetwork.SecurityPerimeter{
+		// 			{
+		// 				Name: to.Ptr("testNSP1"),
+		// 				Type: to.Ptr("Microsoft.Network/networkSecurityPerimeters"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/networkSecurityPerimeters/testNSP1"),
+		// 				Location: to.Ptr("East US 2 EUAP"),
+		// 				Properties: &armnetwork.SecurityPerimeterProperties{
+		// 					PerimeterGUID: to.Ptr("guid"),
+		// 					ProvisioningState: to.Ptr(armnetwork.NspProvisioningStateSucceeded),
+		// 				},
+		// 				SystemData: &armnetwork.SystemData{
+		// 					CreatedAt: to.Ptr(time.Date(2024, time.February, 7, 18, 7, 36, 344671300, time.UTC)),
+		// 					CreatedBy: to.Ptr("user"),
+		// 					CreatedByType: to.Ptr(armnetwork.CreatedByTypeUser),
+		// 					LastModifiedAt: to.Ptr(time.Date(2024, time.February, 7, 18, 7, 36, 344671300, time.UTC)),
+		// 					LastModifiedBy: to.Ptr("user"),
+		// 					LastModifiedByType: to.Ptr(armnetwork.CreatedByTypeUser),
+		// 				},
+		// 				Tags: map[string]*string{
+		// 				},
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("testNSP2"),
+		// 				Type: to.Ptr("Microsoft.Network/networkSecurityPerimeters"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/networkSecurityPerimeters/testNSP2"),
+		// 				Location: to.Ptr("East US 2 EUAP"),
+		// 				Properties: &armnetwork.SecurityPerimeterProperties{
+		// 					PerimeterGUID: to.Ptr("guid"),
+		// 					ProvisioningState: to.Ptr(armnetwork.NspProvisioningStateSucceeded),
+		// 				},
+		// 				SystemData: &armnetwork.SystemData{
+		// 					CreatedAt: to.Ptr(time.Date(2024, time.February, 7, 18, 7, 36, 344671300, time.UTC)),
+		// 					CreatedBy: to.Ptr("user"),
+		// 					CreatedByType: to.Ptr(armnetwork.CreatedByTypeUser),
+		// 					LastModifiedAt: to.Ptr(time.Date(2024, time.February, 7, 18, 7, 36, 344671300, time.UTC)),
+		// 					LastModifiedBy: to.Ptr("user"),
+		// 					LastModifiedByType: to.Ptr(armnetwork.CreatedByTypeUser),
+		// 				},
+		// 				Tags: map[string]*string{
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2026-03-01/NetworkSecurityPerimeterPatch.json
 func ExampleSecurityPerimetersClient_Patch() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

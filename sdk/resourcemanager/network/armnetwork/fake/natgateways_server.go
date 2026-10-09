@@ -33,13 +33,13 @@ type NatGatewaysServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, natGatewayName string, options *armnetwork.NatGatewaysClientGetOptions) (resp azfake.Responder[armnetwork.NatGatewaysClientGetResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method NatGatewaysClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(resourceGroupName string, options *armnetwork.NatGatewaysClientListOptions) (resp azfake.PagerResponder[armnetwork.NatGatewaysClientListResponse])
-
 	// NewListAllPager is the fake for method NatGatewaysClient.NewListAllPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListAllPager func(options *armnetwork.NatGatewaysClientListAllOptions) (resp azfake.PagerResponder[armnetwork.NatGatewaysClientListAllResponse])
+
+	// NewListPager is the fake for method NatGatewaysClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(resourceGroupName string, options *armnetwork.NatGatewaysClientListOptions) (resp azfake.PagerResponder[armnetwork.NatGatewaysClientListResponse])
 
 	// UpdateTags is the fake for method NatGatewaysClient.UpdateTags
 	// HTTP status codes to indicate success: http.StatusOK
@@ -54,8 +54,8 @@ func NewNatGatewaysServerTransport(srv *NatGatewaysServer) *NatGatewaysServerTra
 		srv:                 srv,
 		beginCreateOrUpdate: newTracker[azfake.PollerResponder[armnetwork.NatGatewaysClientCreateOrUpdateResponse]](),
 		beginDelete:         newTracker[azfake.PollerResponder[armnetwork.NatGatewaysClientDeleteResponse]](),
-		newListPager:        newTracker[azfake.PagerResponder[armnetwork.NatGatewaysClientListResponse]](),
 		newListAllPager:     newTracker[azfake.PagerResponder[armnetwork.NatGatewaysClientListAllResponse]](),
+		newListPager:        newTracker[azfake.PagerResponder[armnetwork.NatGatewaysClientListResponse]](),
 	}
 }
 
@@ -65,8 +65,8 @@ type NatGatewaysServerTransport struct {
 	srv                 *NatGatewaysServer
 	beginCreateOrUpdate *tracker[azfake.PollerResponder[armnetwork.NatGatewaysClientCreateOrUpdateResponse]]
 	beginDelete         *tracker[azfake.PollerResponder[armnetwork.NatGatewaysClientDeleteResponse]]
-	newListPager        *tracker[azfake.PagerResponder[armnetwork.NatGatewaysClientListResponse]]
 	newListAllPager     *tracker[azfake.PagerResponder[armnetwork.NatGatewaysClientListAllResponse]]
+	newListPager        *tracker[azfake.PagerResponder[armnetwork.NatGatewaysClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for NatGatewaysServerTransport.
@@ -96,10 +96,10 @@ func (n *NatGatewaysServerTransport) dispatchToMethodFake(req *http.Request, met
 				res.resp, res.err = n.dispatchBeginDelete(req)
 			case "NatGatewaysClient.Get":
 				res.resp, res.err = n.dispatchGet(req)
-			case "NatGatewaysClient.NewListPager":
-				res.resp, res.err = n.dispatchNewListPager(req)
 			case "NatGatewaysClient.NewListAllPager":
 				res.resp, res.err = n.dispatchNewListAllPager(req)
+			case "NatGatewaysClient.NewListPager":
+				res.resp, res.err = n.dispatchNewListPager(req)
 			case "NatGatewaysClient.UpdateTags":
 				res.resp, res.err = n.dispatchUpdateTags(req)
 			default:
@@ -251,6 +251,39 @@ func (n *NatGatewaysServerTransport) dispatchGet(req *http.Request) (*http.Respo
 	return resp, nil
 }
 
+func (n *NatGatewaysServerTransport) dispatchNewListAllPager(req *http.Request) (*http.Response, error) {
+	if n.srv.NewListAllPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListAllPager not implemented")}
+	}
+	newListAllPager := n.newListAllPager.get(req)
+	if newListAllPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/natGateways`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resp := n.srv.NewListAllPager(nil)
+		newListAllPager = &resp
+		n.newListAllPager.add(req, newListAllPager)
+		server.PagerResponderInjectNextLinks(newListAllPager, req, func(page *armnetwork.NatGatewaysClientListAllResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListAllPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		n.newListAllPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListAllPager) {
+		n.newListAllPager.remove(req)
+	}
+	return resp, nil
+}
+
 func (n *NatGatewaysServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
 	if n.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
@@ -284,39 +317,6 @@ func (n *NatGatewaysServerTransport) dispatchNewListPager(req *http.Request) (*h
 	}
 	if !server.PagerResponderMore(newListPager) {
 		n.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (n *NatGatewaysServerTransport) dispatchNewListAllPager(req *http.Request) (*http.Response, error) {
-	if n.srv.NewListAllPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListAllPager not implemented")}
-	}
-	newListAllPager := n.newListAllPager.get(req)
-	if newListAllPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/natGateways`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := n.srv.NewListAllPager(nil)
-		newListAllPager = &resp
-		n.newListAllPager.add(req, newListAllPager)
-		server.PagerResponderInjectNextLinks(newListAllPager, req, func(page *armnetwork.NatGatewaysClientListAllResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListAllPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		n.newListAllPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListAllPager) {
-		n.newListAllPager.remove(req)
 	}
 	return resp, nil
 }

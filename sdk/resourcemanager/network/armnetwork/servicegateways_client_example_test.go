@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01/ServiceGatewayCreate.json
+// Generated from example definition: 2026-03-01/ServiceGatewayCreate.json
 func ExampleServiceGatewaysClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -73,7 +73,7 @@ func ExampleServiceGatewaysClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/ServiceGatewayDelete.json
+// Generated from example definition: 2026-03-01/ServiceGatewayDelete.json
 func ExampleServiceGatewaysClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -94,7 +94,7 @@ func ExampleServiceGatewaysClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-01-01/ServiceGatewayGet.json
+// Generated from example definition: 2026-03-01/ServiceGatewayGet.json
 func ExampleServiceGatewaysClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -137,7 +137,7 @@ func ExampleServiceGatewaysClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/ServiceGatewayGetAddressLocationsResponse.json
+// Generated from example definition: 2026-03-01/ServiceGatewayGetAddressLocationsResponse.json
 func ExampleServiceGatewaysClient_NewGetAddressLocationsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -190,7 +190,7 @@ func ExampleServiceGatewaysClient_NewGetAddressLocationsPager() {
 	}
 }
 
-// Generated from example definition: 2026-01-01/ServiceGatewayGetServicesResponse.json
+// Generated from example definition: 2026-03-01/ServiceGatewayGetServicesResponse.json
 func ExampleServiceGatewaysClient_NewGetServicesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -247,80 +247,7 @@ func ExampleServiceGatewaysClient_NewGetServicesPager() {
 	}
 }
 
-// Generated from example definition: 2026-01-01/ServiceGatewayList.json
-func ExampleServiceGatewaysClient_NewListPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewServiceGatewaysClient().NewListPager("rg1", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armnetwork.ServiceGatewaysClientListResponse{
-		// 	ServiceGatewayListResult: armnetwork.ServiceGatewayListResult{
-		// 		Value: []*armnetwork.ServiceGateway{
-		// 			{
-		// 				Name: to.Ptr("sg"),
-		// 				Type: to.Ptr("Microsoft.Network/serviceGateways"),
-		// 				Etag: to.Ptr("W/\"00000000-0000-0000-0000-00000000\""),
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/serviceGateways/sg"),
-		// 				Location: to.Ptr("westus"),
-		// 				Properties: &armnetwork.ServiceGatewayPropertiesFormat{
-		// 					ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
-		// 					ResourceGUID: to.Ptr("00000000-0000-0000-0000-00000000"),
-		// 					RouteTargetAddress: &armnetwork.RouteTargetAddressPropertiesFormat{
-		// 						PrivateIPAddress: to.Ptr("10.0.1.4"),
-		// 						PrivateIPAllocationMethod: to.Ptr(armnetwork.IPAllocationMethodStatic),
-		// 						Subnet: &armnetwork.Subnet{
-		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet/subnets/subnet"),
-		// 						},
-		// 					},
-		// 					VirtualNetwork: &armnetwork.VirtualNetwork{
-		// 						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet"),
-		// 					},
-		// 				},
-		// 			},
-		// 			{
-		// 				Name: to.Ptr("sg2"),
-		// 				Type: to.Ptr("Microsoft.Network/serviceGateways"),
-		// 				Etag: to.Ptr("W/\"00000000-0000-0000-0000-00000000\""),
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/serviceGateways/sg2"),
-		// 				Location: to.Ptr("westus"),
-		// 				Properties: &armnetwork.ServiceGatewayPropertiesFormat{
-		// 					ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
-		// 					ResourceGUID: to.Ptr("00000000-0000-0000-0000-00000000"),
-		// 					RouteTargetAddress: &armnetwork.RouteTargetAddressPropertiesFormat{
-		// 						PrivateIPAddress: to.Ptr("10.0.1.4"),
-		// 						PrivateIPAllocationMethod: to.Ptr(armnetwork.IPAllocationMethodStatic),
-		// 						Subnet: &armnetwork.Subnet{
-		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet/subnets/subnet"),
-		// 						},
-		// 					},
-		// 					VirtualNetwork: &armnetwork.VirtualNetwork{
-		// 						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet"),
-		// 					},
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2026-01-01/ServiceGatewayListAll.json
+// Generated from example definition: 2026-03-01/ServiceGatewayListAll.json
 func ExampleServiceGatewaysClient_NewListAllPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -393,7 +320,80 @@ func ExampleServiceGatewaysClient_NewListAllPager() {
 	}
 }
 
-// Generated from example definition: 2026-01-01/ServiceGatewayFullUpdateAddressLocationsRequest.json
+// Generated from example definition: 2026-03-01/ServiceGatewayList.json
+func ExampleServiceGatewaysClient_NewListPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewServiceGatewaysClient().NewListPager("rg1", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armnetwork.ServiceGatewaysClientListResponse{
+		// 	ServiceGatewayListResult: armnetwork.ServiceGatewayListResult{
+		// 		Value: []*armnetwork.ServiceGateway{
+		// 			{
+		// 				Name: to.Ptr("sg"),
+		// 				Type: to.Ptr("Microsoft.Network/serviceGateways"),
+		// 				Etag: to.Ptr("W/\"00000000-0000-0000-0000-00000000\""),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/serviceGateways/sg"),
+		// 				Location: to.Ptr("westus"),
+		// 				Properties: &armnetwork.ServiceGatewayPropertiesFormat{
+		// 					ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+		// 					ResourceGUID: to.Ptr("00000000-0000-0000-0000-00000000"),
+		// 					RouteTargetAddress: &armnetwork.RouteTargetAddressPropertiesFormat{
+		// 						PrivateIPAddress: to.Ptr("10.0.1.4"),
+		// 						PrivateIPAllocationMethod: to.Ptr(armnetwork.IPAllocationMethodStatic),
+		// 						Subnet: &armnetwork.Subnet{
+		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet/subnets/subnet"),
+		// 						},
+		// 					},
+		// 					VirtualNetwork: &armnetwork.VirtualNetwork{
+		// 						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet"),
+		// 					},
+		// 				},
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("sg2"),
+		// 				Type: to.Ptr("Microsoft.Network/serviceGateways"),
+		// 				Etag: to.Ptr("W/\"00000000-0000-0000-0000-00000000\""),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/serviceGateways/sg2"),
+		// 				Location: to.Ptr("westus"),
+		// 				Properties: &armnetwork.ServiceGatewayPropertiesFormat{
+		// 					ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+		// 					ResourceGUID: to.Ptr("00000000-0000-0000-0000-00000000"),
+		// 					RouteTargetAddress: &armnetwork.RouteTargetAddressPropertiesFormat{
+		// 						PrivateIPAddress: to.Ptr("10.0.1.4"),
+		// 						PrivateIPAllocationMethod: to.Ptr(armnetwork.IPAllocationMethodStatic),
+		// 						Subnet: &armnetwork.Subnet{
+		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet/subnets/subnet"),
+		// 						},
+		// 					},
+		// 					VirtualNetwork: &armnetwork.VirtualNetwork{
+		// 						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet"),
+		// 					},
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2026-03-01/ServiceGatewayFullUpdateAddressLocationsRequest.json
 func ExampleServiceGatewaysClient_UpdateAddressLocations_fullUpdateCreateUpdateOrDeleteAddressLocationsInTheServiceGateway() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -448,7 +448,7 @@ func ExampleServiceGatewaysClient_UpdateAddressLocations_fullUpdateCreateUpdateO
 	// }
 }
 
-// Generated from example definition: 2026-01-01/ServiceGatewayPartialUpdateAddressLocationsRequest.json
+// Generated from example definition: 2026-03-01/ServiceGatewayPartialUpdateAddressLocationsRequest.json
 func ExampleServiceGatewaysClient_UpdateAddressLocations_partialUpdateCreateUpdateOrDeleteAddressLocationsInTheServiceGateway() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -506,7 +506,7 @@ func ExampleServiceGatewaysClient_UpdateAddressLocations_partialUpdateCreateUpda
 	// }
 }
 
-// Generated from example definition: 2026-01-01/ServiceGatewayUpdateServicesRequest.json
+// Generated from example definition: 2026-03-01/ServiceGatewayUpdateServicesRequest.json
 func ExampleServiceGatewaysClient_UpdateServices() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -559,7 +559,7 @@ func ExampleServiceGatewaysClient_UpdateServices() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/ServiceGatewayUpdateTags.json
+// Generated from example definition: 2026-03-01/ServiceGatewayUpdateTags.json
 func ExampleServiceGatewaysClient_UpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

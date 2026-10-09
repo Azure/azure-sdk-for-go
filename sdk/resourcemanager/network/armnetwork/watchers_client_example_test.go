@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-// Generated from example definition: 2026-01-01/NetworkWatcherConnectivityCheck.json
+// Generated from example definition: 2026-03-01/NetworkWatcherConnectivityCheck.json
 func ExampleWatchersClient_BeginCheckConnectivity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -79,7 +79,7 @@ func ExampleWatchersClient_BeginCheckConnectivity() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/NetworkWatcherConnectionAnalyzerCreate.json
+// Generated from example definition: 2026-03-01/NetworkWatcherConnectionAnalyzerCreate.json
 func ExampleWatchersClient_BeginConnectionAnalyzersCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -177,7 +177,7 @@ func ExampleWatchersClient_BeginConnectionAnalyzersCreate() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/NetworkWatcherConnectionAnalyzerDelete.json
+// Generated from example definition: 2026-03-01/NetworkWatcherConnectionAnalyzerDelete.json
 func ExampleWatchersClient_BeginConnectionAnalyzersDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -198,198 +198,7 @@ func ExampleWatchersClient_BeginConnectionAnalyzersDelete() {
 	}
 }
 
-// Generated from example definition: 2026-01-01/NetworkWatcherConnectionAnalyzerGet.json
-func ExampleWatchersClient_ConnectionAnalyzersGet() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetwork.NewClientFactory("7f4a1d92-3b6e-4c8f-9a25-e1b8c3d7f024", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewWatchersClient().ConnectionAnalyzersGet(ctx, "connectionAnalyzerRG", "nw1", "ca1", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armnetwork.WatchersClientConnectionAnalyzersGetResponse{
-	// 	ConnectionAnalyzer: armnetwork.ConnectionAnalyzer{
-	// 		Name: to.Ptr("ca1"),
-	// 		ID: to.Ptr("/subscriptions/7f4a1d92-3b6e-4c8f-9a25-e1b8c3d7f024/resourceGroups/connectionAnalyzerRG/providers/Microsoft.Network/networkWatchers/nw1/connectionAnalyzers/ca1"),
-	// 		Type: to.Ptr("Microsoft.Network/networkWatchers/connectionAnalyzers"),
-	// 		Etag: to.Ptr("W/\"e7497f26-5f09-4559-900b-fe98f3dedb6f\""),
-	// 		SystemData: &armnetwork.SystemData{
-	// 			CreatedBy: to.Ptr("user1@contoso.com"),
-	// 			CreatedByType: to.Ptr(armnetwork.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(time.Date(2025, time.September, 1, 0, 0, 0, 0, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("user1@contoso.com"),
-	// 			LastModifiedByType: to.Ptr(armnetwork.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.September, 1, 0, 0, 0, 0, time.UTC)),
-	// 		},
-	// 		Properties: &armnetwork.ConnectionAnalyzerProperties{
-	// 			ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
-	// 			Status: to.Ptr(armnetwork.ConnectionAnalyzerStatusRunning),
-	// 			DiagnosticOperations: []*armnetwork.DiagnosticOperation{
-	// 				to.Ptr(armnetwork.DiagnosticOperationConnectivityCheck),
-	// 			},
-	// 			Source: &armnetwork.ConnectionAnalyzerEndpoint{
-	// 				Type: to.Ptr(armnetwork.ConnectionAnalyzerEndpointTypeVM),
-	// 				ResourceID: to.Ptr("/subscriptions/7f4a1d92-3b6e-4c8f-9a25-e1b8c3d7f024/resourceGroups/connectionAnalyzerRG/providers/Microsoft.Compute/virtualMachines/ct1"),
-	// 			},
-	// 			Destination: &armnetwork.ConnectionAnalyzerEndpoint{
-	// 				Address: to.Ptr("www.bing.com"),
-	// 				Type: to.Ptr(armnetwork.ConnectionAnalyzerEndpointTypeExternalAddress),
-	// 			},
-	// 			ProtocolSettings: &armnetwork.ProtocolSettings{
-	// 				Protocol: to.Ptr(armnetwork.ProtocolTCP),
-	// 			},
-	// 			DiagnosticOperationsSettings: &armnetwork.DiagnosticOperationsSettings{
-	// 				ConnectivityCheckSettings: &armnetwork.ConnectivityCheckSettings{
-	// 					GeneratePath: to.Ptr(true),
-	// 					PreferredIPVersion: to.Ptr(armnetwork.PreferredIPVersionIPv4),
-	// 				},
-	// 			},
-	// 			ExpiryInDays: to.Ptr[int32](30),
-	// 			OutputSettings: &armnetwork.OutputSettings{
-	// 				StorageAccountSettings: &armnetwork.StorageAccountSettings{
-	// 					StorageAccountID: to.Ptr("/subscriptions/7f4a1d92-3b6e-4c8f-9a25-e1b8c3d7f024/resourceGroups/connectionAnalyzerRG/providers/Microsoft.Storage/storageAccounts/sa1"),
-	// 					Path: to.Ptr("connectionanalyzer/results"),
-	// 				},
-	// 			},
-	// 		},
-	// 		Location: to.Ptr("eastus"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-01-01/NetworkWatcherConnectionAnalyzerList.json
-func ExampleWatchersClient_NewConnectionAnalyzersListPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetwork.NewClientFactory("7f4a1d92-3b6e-4c8f-9a25-e1b8c3d7f024", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewWatchersClient().NewConnectionAnalyzersListPager("connectionAnalyzerRG", "nw1", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armnetwork.WatchersClientConnectionAnalyzersListResponse{
-		// 	ConnectionAnalyzerListResult: armnetwork.ConnectionAnalyzerListResult{
-		// 		Value: []*armnetwork.ConnectionAnalyzer{
-		// 			{
-		// 				Name: to.Ptr("ca1"),
-		// 				ID: to.Ptr("/subscriptions/7f4a1d92-3b6e-4c8f-9a25-e1b8c3d7f024/resourceGroups/connectionAnalyzerRG/providers/Microsoft.Network/networkWatchers/nw1/connectionAnalyzers/ca1"),
-		// 				Type: to.Ptr("Microsoft.Network/networkWatchers/connectionAnalyzers"),
-		// 				Etag: to.Ptr("W/\"e7497f26-5f09-4559-900b-fe98f3dedb6f\""),
-		// 				SystemData: &armnetwork.SystemData{
-		// 					CreatedBy: to.Ptr("user1@contoso.com"),
-		// 					CreatedByType: to.Ptr(armnetwork.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(time.Date(2025, time.September, 1, 0, 0, 0, 0, time.UTC)),
-		// 					LastModifiedBy: to.Ptr("user1@contoso.com"),
-		// 					LastModifiedByType: to.Ptr(armnetwork.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(time.Date(2025, time.September, 1, 0, 0, 0, 0, time.UTC)),
-		// 				},
-		// 				Properties: &armnetwork.ConnectionAnalyzerProperties{
-		// 					ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
-		// 					Status: to.Ptr(armnetwork.ConnectionAnalyzerStatusRunning),
-		// 					DiagnosticOperations: []*armnetwork.DiagnosticOperation{
-		// 						to.Ptr(armnetwork.DiagnosticOperationConnectivityCheck),
-		// 					},
-		// 					Source: &armnetwork.ConnectionAnalyzerEndpoint{
-		// 						Type: to.Ptr(armnetwork.ConnectionAnalyzerEndpointTypeVM),
-		// 						ResourceID: to.Ptr("/subscriptions/7f4a1d92-3b6e-4c8f-9a25-e1b8c3d7f024/resourceGroups/connectionAnalyzerRG/providers/Microsoft.Compute/virtualMachines/ct1"),
-		// 					},
-		// 					Destination: &armnetwork.ConnectionAnalyzerEndpoint{
-		// 						Address: to.Ptr("www.bing.com"),
-		// 						Type: to.Ptr(armnetwork.ConnectionAnalyzerEndpointTypeExternalAddress),
-		// 					},
-		// 					ProtocolSettings: &armnetwork.ProtocolSettings{
-		// 						Protocol: to.Ptr(armnetwork.ProtocolTCP),
-		// 					},
-		// 					DiagnosticOperationsSettings: &armnetwork.DiagnosticOperationsSettings{
-		// 						ConnectivityCheckSettings: &armnetwork.ConnectivityCheckSettings{
-		// 							GeneratePath: to.Ptr(true),
-		// 							PreferredIPVersion: to.Ptr(armnetwork.PreferredIPVersionIPv4),
-		// 						},
-		// 					},
-		// 					ExpiryInDays: to.Ptr[int32](30),
-		// 					OutputSettings: &armnetwork.OutputSettings{
-		// 						StorageAccountSettings: &armnetwork.StorageAccountSettings{
-		// 							StorageAccountID: to.Ptr("/subscriptions/7f4a1d92-3b6e-4c8f-9a25-e1b8c3d7f024/resourceGroups/connectionAnalyzerRG/providers/Microsoft.Storage/storageAccounts/sa1"),
-		// 							Path: to.Ptr("connectionanalyzer/results2"),
-		// 						},
-		// 					},
-		// 				},
-		// 				Location: to.Ptr("eastus"),
-		// 			},
-		// 			{
-		// 				Name: to.Ptr("ca2"),
-		// 				ID: to.Ptr("/subscriptions/7f4a1d92-3b6e-4c8f-9a25-e1b8c3d7f024/resourceGroups/connectionAnalyzerRG/providers/Microsoft.Network/networkWatchers/nw1/connectionAnalyzers/ca2"),
-		// 				Type: to.Ptr("Microsoft.Network/networkWatchers/connectionAnalyzers"),
-		// 				Etag: to.Ptr("W/\"e7497f26-5f09-4559-900b-fe98f3dedb6l\""),
-		// 				SystemData: &armnetwork.SystemData{
-		// 					CreatedBy: to.Ptr("user1@contoso.com"),
-		// 					CreatedByType: to.Ptr(armnetwork.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(time.Date(2025, time.September, 1, 0, 0, 0, 0, time.UTC)),
-		// 					LastModifiedBy: to.Ptr("user1@contoso.com"),
-		// 					LastModifiedByType: to.Ptr(armnetwork.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(time.Date(2025, time.September, 1, 0, 0, 0, 0, time.UTC)),
-		// 				},
-		// 				Properties: &armnetwork.ConnectionAnalyzerProperties{
-		// 					ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
-		// 					Status: to.Ptr(armnetwork.ConnectionAnalyzerStatusRunning),
-		// 					DiagnosticOperations: []*armnetwork.DiagnosticOperation{
-		// 						to.Ptr(armnetwork.DiagnosticOperationConnectivityCheck),
-		// 					},
-		// 					Source: &armnetwork.ConnectionAnalyzerEndpoint{
-		// 						Type: to.Ptr(armnetwork.ConnectionAnalyzerEndpointTypeVM),
-		// 						ResourceID: to.Ptr("/subscriptions/7f4a1d92-3b6e-4c8f-9a25-e1b8c3d7f024/resourceGroups/connectionAnalyzerRG/providers/Microsoft.Compute/virtualMachines/ct2"),
-		// 					},
-		// 					Destination: &armnetwork.ConnectionAnalyzerEndpoint{
-		// 						Address: to.Ptr("www.bing.com"),
-		// 						Type: to.Ptr(armnetwork.ConnectionAnalyzerEndpointTypeExternalAddress),
-		// 					},
-		// 					ProtocolSettings: &armnetwork.ProtocolSettings{
-		// 						Protocol: to.Ptr(armnetwork.ProtocolTCP),
-		// 					},
-		// 					DiagnosticOperationsSettings: &armnetwork.DiagnosticOperationsSettings{
-		// 						ConnectivityCheckSettings: &armnetwork.ConnectivityCheckSettings{
-		// 							GeneratePath: to.Ptr(true),
-		// 							PreferredIPVersion: to.Ptr(armnetwork.PreferredIPVersionIPv4),
-		// 						},
-		// 					},
-		// 					ExpiryInDays: to.Ptr[int32](30),
-		// 					OutputSettings: &armnetwork.OutputSettings{
-		// 						StorageAccountSettings: &armnetwork.StorageAccountSettings{
-		// 							StorageAccountID: to.Ptr("/subscriptions/7f4a1d92-3b6e-4c8f-9a25-e1b8c3d7f024/resourceGroups/connectionAnalyzerRG/providers/Microsoft.Storage/storageAccounts/sa1"),
-		// 							Path: to.Ptr("connectionanalyzer/results"),
-		// 						},
-		// 					},
-		// 				},
-		// 				Location: to.Ptr("eastus"),
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2026-01-01/NetworkWatcherConnectionAnalyzerQuery.json
+// Generated from example definition: 2026-03-01/NetworkWatcherConnectionAnalyzerQuery.json
 func ExampleWatchersClient_BeginConnectionAnalyzersQuery() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -427,121 +236,7 @@ func ExampleWatchersClient_BeginConnectionAnalyzersQuery() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/NetworkWatcherConnectionAnalyzerUpdateTags.json
-func ExampleWatchersClient_ConnectionAnalyzersUpdateTags() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetwork.NewClientFactory("7f4a1d92-3b6e-4c8f-9a25-e1b8c3d7f024", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewWatchersClient().ConnectionAnalyzersUpdateTags(ctx, "connectionAnalyzerRG", "nw1", "ca1", armnetwork.TagsObject{
-		Tags: map[string]*string{
-			"tag1": to.Ptr("value1"),
-			"tag2": to.Ptr("value2"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armnetwork.WatchersClientConnectionAnalyzersUpdateTagsResponse{
-	// 	ConnectionAnalyzer: armnetwork.ConnectionAnalyzer{
-	// 		Name: to.Ptr("ca1"),
-	// 		ID: to.Ptr("/subscriptions/7f4a1d92-3b6e-4c8f-9a25-e1b8c3d7f024/resourceGroups/connectionAnalyzerRG/providers/Microsoft.Network/networkWatchers/nw1/connectionAnalyzers/ca1"),
-	// 		Type: to.Ptr("Microsoft.Network/networkWatchers/connectionAnalyzers"),
-	// 		Etag: to.Ptr("W/\"e7497f26-5f09-4559-900b-fe98f3dedb6f\""),
-	// 		SystemData: &armnetwork.SystemData{
-	// 			CreatedBy: to.Ptr("user1@contoso.com"),
-	// 			CreatedByType: to.Ptr(armnetwork.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(time.Date(2025, time.September, 1, 0, 0, 0, 0, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("user1@contoso.com"),
-	// 			LastModifiedByType: to.Ptr(armnetwork.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.September, 1, 0, 0, 0, 0, time.UTC)),
-	// 		},
-	// 		Properties: &armnetwork.ConnectionAnalyzerProperties{
-	// 			ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
-	// 			Status: to.Ptr(armnetwork.ConnectionAnalyzerStatusRunning),
-	// 			DiagnosticOperations: []*armnetwork.DiagnosticOperation{
-	// 				to.Ptr(armnetwork.DiagnosticOperationConnectivityCheck),
-	// 			},
-	// 			Source: &armnetwork.ConnectionAnalyzerEndpoint{
-	// 				Type: to.Ptr(armnetwork.ConnectionAnalyzerEndpointTypeVM),
-	// 				ResourceID: to.Ptr("/subscriptions/7f4a1d92-3b6e-4c8f-9a25-e1b8c3d7f024/resourceGroups/connectionAnalyzerRG/providers/Microsoft.Compute/virtualMachines/ct1"),
-	// 			},
-	// 			Destination: &armnetwork.ConnectionAnalyzerEndpoint{
-	// 				Address: to.Ptr("www.bing.com"),
-	// 				Type: to.Ptr(armnetwork.ConnectionAnalyzerEndpointTypeExternalAddress),
-	// 			},
-	// 			ProtocolSettings: &armnetwork.ProtocolSettings{
-	// 				Protocol: to.Ptr(armnetwork.ProtocolTCP),
-	// 			},
-	// 			DiagnosticOperationsSettings: &armnetwork.DiagnosticOperationsSettings{
-	// 				ConnectivityCheckSettings: &armnetwork.ConnectivityCheckSettings{
-	// 					GeneratePath: to.Ptr(true),
-	// 					PreferredIPVersion: to.Ptr(armnetwork.PreferredIPVersionIPv4),
-	// 				},
-	// 			},
-	// 			ExpiryInDays: to.Ptr[int32](30),
-	// 			OutputSettings: &armnetwork.OutputSettings{
-	// 				StorageAccountSettings: &armnetwork.StorageAccountSettings{
-	// 					StorageAccountID: to.Ptr("/subscriptions/7f4a1d92-3b6e-4c8f-9a25-e1b8c3d7f024/resourceGroups/connectionAnalyzerRG/providers/Microsoft.Storage/storageAccounts/sa1"),
-	// 					Path: to.Ptr("connectionanalyzer/results"),
-	// 				},
-	// 			},
-	// 		},
-	// 		Tags: map[string]*string{
-	// 			"tag1": to.Ptr("value1"),
-	// 			"tag2": to.Ptr("value2"),
-	// 		},
-	// 		Location: to.Ptr("eastus"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-01-01/NetworkWatcherCreate.json
-func ExampleWatchersClient_CreateOrUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewWatchersClient().CreateOrUpdate(ctx, "rg1", "nw1", armnetwork.Watcher{
-		Location:   to.Ptr("eastus"),
-		Properties: &armnetwork.WatcherPropertiesFormat{},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armnetwork.WatchersClientCreateOrUpdateResponse{
-	// 	Watcher: armnetwork.Watcher{
-	// 		Name: to.Ptr("nw1"),
-	// 		Type: to.Ptr("Microsoft.Network/networkWatchers"),
-	// 		Etag: to.Ptr("W/\"00000000-0000-0000-0000-000000000000\""),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/networkWatchers/nw1"),
-	// 		Location: to.Ptr("eastus"),
-	// 		Properties: &armnetwork.WatcherPropertiesFormat{
-	// 			ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
-	// 		},
-	// 		Tags: map[string]*string{
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-01-01/NetworkWatcherDelete.json
+// Generated from example definition: 2026-03-01/NetworkWatcherDelete.json
 func ExampleWatchersClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -562,41 +257,7 @@ func ExampleWatchersClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-01-01/NetworkWatcherGet.json
-func ExampleWatchersClient_Get() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewWatchersClient().Get(ctx, "rg1", "nw1", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armnetwork.WatchersClientGetResponse{
-	// 	Watcher: armnetwork.Watcher{
-	// 		Name: to.Ptr("nw1"),
-	// 		Type: to.Ptr("Microsoft.Network/networkWatchers"),
-	// 		Etag: to.Ptr("W/\"00000000-0000-0000-0000-000000000000\""),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/networkWatchers/nw1"),
-	// 		Location: to.Ptr("eastus"),
-	// 		Properties: &armnetwork.WatcherPropertiesFormat{
-	// 			ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
-	// 		},
-	// 		Tags: map[string]*string{
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-01-01/NetworkWatcherAzureReachabilityReportGet.json
+// Generated from example definition: 2026-03-01/NetworkWatcherAzureReachabilityReportGet.json
 func ExampleWatchersClient_BeginGetAzureReachabilityReport() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -662,7 +323,7 @@ func ExampleWatchersClient_BeginGetAzureReachabilityReport() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/NetworkWatcherFlowLogStatusQuery.json
+// Generated from example definition: 2026-03-01/NetworkWatcherFlowLogStatusQuery.json
 func ExampleWatchersClient_BeginGetFlowLogStatus() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -706,7 +367,7 @@ func ExampleWatchersClient_BeginGetFlowLogStatus() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/NetworkWatcherNetworkConfigurationDiagnostic.json
+// Generated from example definition: 2026-03-01/NetworkWatcherNetworkConfigurationDiagnostic.json
 func ExampleWatchersClient_BeginGetNetworkConfigurationDiagnostic() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -829,7 +490,7 @@ func ExampleWatchersClient_BeginGetNetworkConfigurationDiagnostic() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/NetworkWatcherNextHopGet.json
+// Generated from example definition: 2026-03-01/NetworkWatcherNextHopGet.json
 func ExampleWatchersClient_BeginGetNextHop() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -865,55 +526,7 @@ func ExampleWatchersClient_BeginGetNextHop() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/NetworkWatcherTopologyGet.json
-func ExampleWatchersClient_GetTopology() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewWatchersClient().GetTopology(ctx, "rg1", "nw1", armnetwork.TopologyParameters{
-		TargetResourceGroupName: to.Ptr("rg2"),
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armnetwork.WatchersClientGetTopologyResponse{
-	// 	Topology: armnetwork.Topology{
-	// 		CreatedDateTime: to.Ptr(time.Date(2017, time.August, 2, 19, 31, 55, 946178100, time.UTC)),
-	// 		ID: to.Ptr("ce592f46-8164-4bf2-ad36-b8e4acf6fb68"),
-	// 		LastModified: to.Ptr(time.Date(2017, time.May, 27, 0, 0, 13, 200533700, time.UTC)),
-	// 		Resources: []*armnetwork.TopologyResource{
-	// 			{
-	// 				Name: to.Ptr("MultiTierApp0"),
-	// 				Associations: []*armnetwork.TopologyAssociation{
-	// 					{
-	// 						Name: to.Ptr("appNic0"),
-	// 						AssociationType: to.Ptr(armnetwork.AssociationTypeContains),
-	// 						ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg2/providers/Microsoft.Network/networkInterfaces/appNic0"),
-	// 					},
-	// 					{
-	// 						Name: to.Ptr("appNic10"),
-	// 						AssociationType: to.Ptr(armnetwork.AssociationTypeContains),
-	// 						ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg2/providers/Microsoft.Network/networkInterfaces/appNic10"),
-	// 					},
-	// 				},
-	// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg2/providers/Microsoft.Compute/virtualMachines/MultiTierApp0"),
-	// 				Location: to.Ptr("westus"),
-	// 			},
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-01-01/NetworkWatcherTroubleshootGet.json
+// Generated from example definition: 2026-03-01/NetworkWatcherTroubleshootGet.json
 func ExampleWatchersClient_BeginGetTroubleshooting() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -970,7 +583,7 @@ func ExampleWatchersClient_BeginGetTroubleshooting() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/NetworkWatcherTroubleshootResultQuery.json
+// Generated from example definition: 2026-03-01/NetworkWatcherTroubleshootResultQuery.json
 func ExampleWatchersClient_BeginGetTroubleshootingResult() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1023,7 +636,7 @@ func ExampleWatchersClient_BeginGetTroubleshootingResult() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/NetworkWatcherSecurityGroupViewGet.json
+// Generated from example definition: 2026-03-01/NetworkWatcherSecurityGroupViewGet.json
 func ExampleWatchersClient_BeginGetVMSecurityRules() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1113,117 +726,7 @@ func ExampleWatchersClient_BeginGetVMSecurityRules() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/NetworkWatcherList.json
-func ExampleWatchersClient_NewListPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewWatchersClient().NewListPager("rg1", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armnetwork.WatchersClientListResponse{
-		// 	WatcherListResult: armnetwork.WatcherListResult{
-		// 		Value: []*armnetwork.Watcher{
-		// 			{
-		// 				Name: to.Ptr("nw1"),
-		// 				Type: to.Ptr("Microsoft.Network/networkWatchers"),
-		// 				Etag: to.Ptr("W/\"00000000-0000-0000-0000-000000000000\""),
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/networkWatchers/nw1"),
-		// 				Location: to.Ptr("eastus"),
-		// 				Properties: &armnetwork.WatcherPropertiesFormat{
-		// 					ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
-		// 				},
-		// 				Tags: map[string]*string{
-		// 				},
-		// 			},
-		// 			{
-		// 				Name: to.Ptr("nw2"),
-		// 				Type: to.Ptr("Microsoft.Network/networkWatchers"),
-		// 				Etag: to.Ptr("W/\"00000000-0000-0000-0000-000000000000\""),
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/networkWatchers/nw2"),
-		// 				Location: to.Ptr("eastus"),
-		// 				Properties: &armnetwork.WatcherPropertiesFormat{
-		// 					ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
-		// 				},
-		// 				Tags: map[string]*string{
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2026-01-01/NetworkWatcherListAll.json
-func ExampleWatchersClient_NewListAllPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewWatchersClient().NewListAllPager(nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armnetwork.WatchersClientListAllResponse{
-		// 	WatcherListResult: armnetwork.WatcherListResult{
-		// 		Value: []*armnetwork.Watcher{
-		// 			{
-		// 				Name: to.Ptr("nw1"),
-		// 				Type: to.Ptr("Microsoft.Network/networkWatchers"),
-		// 				Etag: to.Ptr("W/\"00000000-0000-0000-0000-000000000000\""),
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/networkWatchers/nw1"),
-		// 				Location: to.Ptr("eastus"),
-		// 				Properties: &armnetwork.WatcherPropertiesFormat{
-		// 					ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
-		// 				},
-		// 				Tags: map[string]*string{
-		// 				},
-		// 			},
-		// 			{
-		// 				Name: to.Ptr("nw2"),
-		// 				Type: to.Ptr("Microsoft.Network/networkWatchers"),
-		// 				Etag: to.Ptr("W/\"00000000-0000-0000-0000-000000000000\""),
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/networkWatchers/nw2"),
-		// 				Location: to.Ptr("westus"),
-		// 				Properties: &armnetwork.WatcherPropertiesFormat{
-		// 					ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
-		// 				},
-		// 				Tags: map[string]*string{
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2026-01-01/NetworkWatcherAvailableProvidersListGet.json
+// Generated from example definition: 2026-03-01/NetworkWatcherAvailableProvidersListGet.json
 func ExampleWatchersClient_BeginListAvailableProviders() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1279,7 +782,7 @@ func ExampleWatchersClient_BeginListAvailableProviders() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/NetworkWatcherFlowLogConfigure.json
+// Generated from example definition: 2026-03-01/NetworkWatcherFlowLogConfigure.json
 func ExampleWatchersClient_BeginSetFlowLogConfiguration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1333,7 +836,542 @@ func ExampleWatchersClient_BeginSetFlowLogConfiguration() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/NetworkWatcherUpdateTags.json
+// Generated from example definition: 2026-03-01/NetworkWatcherIpFlowVerify.json
+func ExampleWatchersClient_BeginVerifyIPFlow() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewWatchersClient().BeginVerifyIPFlow(ctx, "rg1", "nw1", armnetwork.VerificationIPFlowParameters{
+		Direction:        to.Ptr(armnetwork.DirectionOutbound),
+		LocalIPAddress:   to.Ptr("10.2.0.4"),
+		LocalPort:        to.Ptr("80"),
+		RemoteIPAddress:  to.Ptr("121.10.1.1"),
+		RemotePort:       to.Ptr("80"),
+		TargetResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg2/providers/Microsoft.Compute/virtualMachines/vm1"),
+		Protocol:         to.Ptr(armnetwork.IPFlowProtocolTCP),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armnetwork.WatchersClientVerifyIPFlowResponse{
+	// 	VerificationIPFlowResult: armnetwork.VerificationIPFlowResult{
+	// 		Access: to.Ptr(armnetwork.AccessAllow),
+	// 		RuleName: to.Ptr("Rule1"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-03-01/NetworkWatcherConnectionAnalyzerGet.json
+func ExampleWatchersClient_ConnectionAnalyzersGet() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("7f4a1d92-3b6e-4c8f-9a25-e1b8c3d7f024", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewWatchersClient().ConnectionAnalyzersGet(ctx, "connectionAnalyzerRG", "nw1", "ca1", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armnetwork.WatchersClientConnectionAnalyzersGetResponse{
+	// 	ConnectionAnalyzer: armnetwork.ConnectionAnalyzer{
+	// 		Name: to.Ptr("ca1"),
+	// 		ID: to.Ptr("/subscriptions/7f4a1d92-3b6e-4c8f-9a25-e1b8c3d7f024/resourceGroups/connectionAnalyzerRG/providers/Microsoft.Network/networkWatchers/nw1/connectionAnalyzers/ca1"),
+	// 		Type: to.Ptr("Microsoft.Network/networkWatchers/connectionAnalyzers"),
+	// 		Etag: to.Ptr("W/\"e7497f26-5f09-4559-900b-fe98f3dedb6f\""),
+	// 		SystemData: &armnetwork.SystemData{
+	// 			CreatedBy: to.Ptr("user1@contoso.com"),
+	// 			CreatedByType: to.Ptr(armnetwork.CreatedByTypeUser),
+	// 			CreatedAt: to.Ptr(time.Date(2025, time.September, 1, 0, 0, 0, 0, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("user1@contoso.com"),
+	// 			LastModifiedByType: to.Ptr(armnetwork.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.September, 1, 0, 0, 0, 0, time.UTC)),
+	// 		},
+	// 		Properties: &armnetwork.ConnectionAnalyzerProperties{
+	// 			ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+	// 			Status: to.Ptr(armnetwork.ConnectionAnalyzerStatusRunning),
+	// 			DiagnosticOperations: []*armnetwork.DiagnosticOperation{
+	// 				to.Ptr(armnetwork.DiagnosticOperationConnectivityCheck),
+	// 			},
+	// 			Source: &armnetwork.ConnectionAnalyzerEndpoint{
+	// 				Type: to.Ptr(armnetwork.ConnectionAnalyzerEndpointTypeVM),
+	// 				ResourceID: to.Ptr("/subscriptions/7f4a1d92-3b6e-4c8f-9a25-e1b8c3d7f024/resourceGroups/connectionAnalyzerRG/providers/Microsoft.Compute/virtualMachines/ct1"),
+	// 			},
+	// 			Destination: &armnetwork.ConnectionAnalyzerEndpoint{
+	// 				Address: to.Ptr("www.bing.com"),
+	// 				Type: to.Ptr(armnetwork.ConnectionAnalyzerEndpointTypeExternalAddress),
+	// 			},
+	// 			ProtocolSettings: &armnetwork.ProtocolSettings{
+	// 				Protocol: to.Ptr(armnetwork.ProtocolTCP),
+	// 			},
+	// 			DiagnosticOperationsSettings: &armnetwork.DiagnosticOperationsSettings{
+	// 				ConnectivityCheckSettings: &armnetwork.ConnectivityCheckSettings{
+	// 					GeneratePath: to.Ptr(true),
+	// 					PreferredIPVersion: to.Ptr(armnetwork.PreferredIPVersionIPv4),
+	// 				},
+	// 			},
+	// 			ExpiryInDays: to.Ptr[int32](30),
+	// 			OutputSettings: &armnetwork.OutputSettings{
+	// 				StorageAccountSettings: &armnetwork.StorageAccountSettings{
+	// 					StorageAccountID: to.Ptr("/subscriptions/7f4a1d92-3b6e-4c8f-9a25-e1b8c3d7f024/resourceGroups/connectionAnalyzerRG/providers/Microsoft.Storage/storageAccounts/sa1"),
+	// 					Path: to.Ptr("connectionanalyzer/results"),
+	// 				},
+	// 			},
+	// 		},
+	// 		Location: to.Ptr("eastus"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-03-01/NetworkWatcherConnectionAnalyzerUpdateTags.json
+func ExampleWatchersClient_ConnectionAnalyzersUpdateTags() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("7f4a1d92-3b6e-4c8f-9a25-e1b8c3d7f024", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewWatchersClient().ConnectionAnalyzersUpdateTags(ctx, "connectionAnalyzerRG", "nw1", "ca1", armnetwork.TagsObject{
+		Tags: map[string]*string{
+			"tag1": to.Ptr("value1"),
+			"tag2": to.Ptr("value2"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armnetwork.WatchersClientConnectionAnalyzersUpdateTagsResponse{
+	// 	ConnectionAnalyzer: armnetwork.ConnectionAnalyzer{
+	// 		Name: to.Ptr("ca1"),
+	// 		ID: to.Ptr("/subscriptions/7f4a1d92-3b6e-4c8f-9a25-e1b8c3d7f024/resourceGroups/connectionAnalyzerRG/providers/Microsoft.Network/networkWatchers/nw1/connectionAnalyzers/ca1"),
+	// 		Type: to.Ptr("Microsoft.Network/networkWatchers/connectionAnalyzers"),
+	// 		Etag: to.Ptr("W/\"e7497f26-5f09-4559-900b-fe98f3dedb6f\""),
+	// 		SystemData: &armnetwork.SystemData{
+	// 			CreatedBy: to.Ptr("user1@contoso.com"),
+	// 			CreatedByType: to.Ptr(armnetwork.CreatedByTypeUser),
+	// 			CreatedAt: to.Ptr(time.Date(2025, time.September, 1, 0, 0, 0, 0, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("user1@contoso.com"),
+	// 			LastModifiedByType: to.Ptr(armnetwork.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.September, 1, 0, 0, 0, 0, time.UTC)),
+	// 		},
+	// 		Properties: &armnetwork.ConnectionAnalyzerProperties{
+	// 			ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+	// 			Status: to.Ptr(armnetwork.ConnectionAnalyzerStatusRunning),
+	// 			DiagnosticOperations: []*armnetwork.DiagnosticOperation{
+	// 				to.Ptr(armnetwork.DiagnosticOperationConnectivityCheck),
+	// 			},
+	// 			Source: &armnetwork.ConnectionAnalyzerEndpoint{
+	// 				Type: to.Ptr(armnetwork.ConnectionAnalyzerEndpointTypeVM),
+	// 				ResourceID: to.Ptr("/subscriptions/7f4a1d92-3b6e-4c8f-9a25-e1b8c3d7f024/resourceGroups/connectionAnalyzerRG/providers/Microsoft.Compute/virtualMachines/ct1"),
+	// 			},
+	// 			Destination: &armnetwork.ConnectionAnalyzerEndpoint{
+	// 				Address: to.Ptr("www.bing.com"),
+	// 				Type: to.Ptr(armnetwork.ConnectionAnalyzerEndpointTypeExternalAddress),
+	// 			},
+	// 			ProtocolSettings: &armnetwork.ProtocolSettings{
+	// 				Protocol: to.Ptr(armnetwork.ProtocolTCP),
+	// 			},
+	// 			DiagnosticOperationsSettings: &armnetwork.DiagnosticOperationsSettings{
+	// 				ConnectivityCheckSettings: &armnetwork.ConnectivityCheckSettings{
+	// 					GeneratePath: to.Ptr(true),
+	// 					PreferredIPVersion: to.Ptr(armnetwork.PreferredIPVersionIPv4),
+	// 				},
+	// 			},
+	// 			ExpiryInDays: to.Ptr[int32](30),
+	// 			OutputSettings: &armnetwork.OutputSettings{
+	// 				StorageAccountSettings: &armnetwork.StorageAccountSettings{
+	// 					StorageAccountID: to.Ptr("/subscriptions/7f4a1d92-3b6e-4c8f-9a25-e1b8c3d7f024/resourceGroups/connectionAnalyzerRG/providers/Microsoft.Storage/storageAccounts/sa1"),
+	// 					Path: to.Ptr("connectionanalyzer/results"),
+	// 				},
+	// 			},
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"tag1": to.Ptr("value1"),
+	// 			"tag2": to.Ptr("value2"),
+	// 		},
+	// 		Location: to.Ptr("eastus"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-03-01/NetworkWatcherCreate.json
+func ExampleWatchersClient_CreateOrUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewWatchersClient().CreateOrUpdate(ctx, "rg1", "nw1", armnetwork.Watcher{
+		Location:   to.Ptr("eastus"),
+		Properties: &armnetwork.WatcherPropertiesFormat{},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armnetwork.WatchersClientCreateOrUpdateResponse{
+	// 	Watcher: armnetwork.Watcher{
+	// 		Name: to.Ptr("nw1"),
+	// 		Type: to.Ptr("Microsoft.Network/networkWatchers"),
+	// 		Etag: to.Ptr("W/\"00000000-0000-0000-0000-000000000000\""),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/networkWatchers/nw1"),
+	// 		Location: to.Ptr("eastus"),
+	// 		Properties: &armnetwork.WatcherPropertiesFormat{
+	// 			ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-03-01/NetworkWatcherGet.json
+func ExampleWatchersClient_Get() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewWatchersClient().Get(ctx, "rg1", "nw1", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armnetwork.WatchersClientGetResponse{
+	// 	Watcher: armnetwork.Watcher{
+	// 		Name: to.Ptr("nw1"),
+	// 		Type: to.Ptr("Microsoft.Network/networkWatchers"),
+	// 		Etag: to.Ptr("W/\"00000000-0000-0000-0000-000000000000\""),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/networkWatchers/nw1"),
+	// 		Location: to.Ptr("eastus"),
+	// 		Properties: &armnetwork.WatcherPropertiesFormat{
+	// 			ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-03-01/NetworkWatcherTopologyGet.json
+func ExampleWatchersClient_GetTopology() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewWatchersClient().GetTopology(ctx, "rg1", "nw1", armnetwork.TopologyParameters{
+		TargetResourceGroupName: to.Ptr("rg2"),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armnetwork.WatchersClientGetTopologyResponse{
+	// 	Topology: armnetwork.Topology{
+	// 		CreatedDateTime: to.Ptr(time.Date(2017, time.August, 2, 19, 31, 55, 946178100, time.UTC)),
+	// 		ID: to.Ptr("ce592f46-8164-4bf2-ad36-b8e4acf6fb68"),
+	// 		LastModified: to.Ptr(time.Date(2017, time.May, 27, 0, 0, 13, 200533700, time.UTC)),
+	// 		Resources: []*armnetwork.TopologyResource{
+	// 			{
+	// 				Name: to.Ptr("MultiTierApp0"),
+	// 				Associations: []*armnetwork.TopologyAssociation{
+	// 					{
+	// 						Name: to.Ptr("appNic0"),
+	// 						AssociationType: to.Ptr(armnetwork.AssociationTypeContains),
+	// 						ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg2/providers/Microsoft.Network/networkInterfaces/appNic0"),
+	// 					},
+	// 					{
+	// 						Name: to.Ptr("appNic10"),
+	// 						AssociationType: to.Ptr(armnetwork.AssociationTypeContains),
+	// 						ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg2/providers/Microsoft.Network/networkInterfaces/appNic10"),
+	// 					},
+	// 				},
+	// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg2/providers/Microsoft.Compute/virtualMachines/MultiTierApp0"),
+	// 				Location: to.Ptr("westus"),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-03-01/NetworkWatcherConnectionAnalyzerList.json
+func ExampleWatchersClient_NewConnectionAnalyzersListPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("7f4a1d92-3b6e-4c8f-9a25-e1b8c3d7f024", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewWatchersClient().NewConnectionAnalyzersListPager("connectionAnalyzerRG", "nw1", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armnetwork.WatchersClientConnectionAnalyzersListResponse{
+		// 	ConnectionAnalyzerListResult: armnetwork.ConnectionAnalyzerListResult{
+		// 		Value: []*armnetwork.ConnectionAnalyzer{
+		// 			{
+		// 				Name: to.Ptr("ca1"),
+		// 				ID: to.Ptr("/subscriptions/7f4a1d92-3b6e-4c8f-9a25-e1b8c3d7f024/resourceGroups/connectionAnalyzerRG/providers/Microsoft.Network/networkWatchers/nw1/connectionAnalyzers/ca1"),
+		// 				Type: to.Ptr("Microsoft.Network/networkWatchers/connectionAnalyzers"),
+		// 				Etag: to.Ptr("W/\"e7497f26-5f09-4559-900b-fe98f3dedb6f\""),
+		// 				SystemData: &armnetwork.SystemData{
+		// 					CreatedBy: to.Ptr("user1@contoso.com"),
+		// 					CreatedByType: to.Ptr(armnetwork.CreatedByTypeUser),
+		// 					CreatedAt: to.Ptr(time.Date(2025, time.September, 1, 0, 0, 0, 0, time.UTC)),
+		// 					LastModifiedBy: to.Ptr("user1@contoso.com"),
+		// 					LastModifiedByType: to.Ptr(armnetwork.CreatedByTypeUser),
+		// 					LastModifiedAt: to.Ptr(time.Date(2025, time.September, 1, 0, 0, 0, 0, time.UTC)),
+		// 				},
+		// 				Properties: &armnetwork.ConnectionAnalyzerProperties{
+		// 					ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+		// 					Status: to.Ptr(armnetwork.ConnectionAnalyzerStatusRunning),
+		// 					DiagnosticOperations: []*armnetwork.DiagnosticOperation{
+		// 						to.Ptr(armnetwork.DiagnosticOperationConnectivityCheck),
+		// 					},
+		// 					Source: &armnetwork.ConnectionAnalyzerEndpoint{
+		// 						Type: to.Ptr(armnetwork.ConnectionAnalyzerEndpointTypeVM),
+		// 						ResourceID: to.Ptr("/subscriptions/7f4a1d92-3b6e-4c8f-9a25-e1b8c3d7f024/resourceGroups/connectionAnalyzerRG/providers/Microsoft.Compute/virtualMachines/ct1"),
+		// 					},
+		// 					Destination: &armnetwork.ConnectionAnalyzerEndpoint{
+		// 						Address: to.Ptr("www.bing.com"),
+		// 						Type: to.Ptr(armnetwork.ConnectionAnalyzerEndpointTypeExternalAddress),
+		// 					},
+		// 					ProtocolSettings: &armnetwork.ProtocolSettings{
+		// 						Protocol: to.Ptr(armnetwork.ProtocolTCP),
+		// 					},
+		// 					DiagnosticOperationsSettings: &armnetwork.DiagnosticOperationsSettings{
+		// 						ConnectivityCheckSettings: &armnetwork.ConnectivityCheckSettings{
+		// 							GeneratePath: to.Ptr(true),
+		// 							PreferredIPVersion: to.Ptr(armnetwork.PreferredIPVersionIPv4),
+		// 						},
+		// 					},
+		// 					ExpiryInDays: to.Ptr[int32](30),
+		// 					OutputSettings: &armnetwork.OutputSettings{
+		// 						StorageAccountSettings: &armnetwork.StorageAccountSettings{
+		// 							StorageAccountID: to.Ptr("/subscriptions/7f4a1d92-3b6e-4c8f-9a25-e1b8c3d7f024/resourceGroups/connectionAnalyzerRG/providers/Microsoft.Storage/storageAccounts/sa1"),
+		// 							Path: to.Ptr("connectionanalyzer/results2"),
+		// 						},
+		// 					},
+		// 				},
+		// 				Location: to.Ptr("eastus"),
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("ca2"),
+		// 				ID: to.Ptr("/subscriptions/7f4a1d92-3b6e-4c8f-9a25-e1b8c3d7f024/resourceGroups/connectionAnalyzerRG/providers/Microsoft.Network/networkWatchers/nw1/connectionAnalyzers/ca2"),
+		// 				Type: to.Ptr("Microsoft.Network/networkWatchers/connectionAnalyzers"),
+		// 				Etag: to.Ptr("W/\"e7497f26-5f09-4559-900b-fe98f3dedb6l\""),
+		// 				SystemData: &armnetwork.SystemData{
+		// 					CreatedBy: to.Ptr("user1@contoso.com"),
+		// 					CreatedByType: to.Ptr(armnetwork.CreatedByTypeUser),
+		// 					CreatedAt: to.Ptr(time.Date(2025, time.September, 1, 0, 0, 0, 0, time.UTC)),
+		// 					LastModifiedBy: to.Ptr("user1@contoso.com"),
+		// 					LastModifiedByType: to.Ptr(armnetwork.CreatedByTypeUser),
+		// 					LastModifiedAt: to.Ptr(time.Date(2025, time.September, 1, 0, 0, 0, 0, time.UTC)),
+		// 				},
+		// 				Properties: &armnetwork.ConnectionAnalyzerProperties{
+		// 					ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+		// 					Status: to.Ptr(armnetwork.ConnectionAnalyzerStatusRunning),
+		// 					DiagnosticOperations: []*armnetwork.DiagnosticOperation{
+		// 						to.Ptr(armnetwork.DiagnosticOperationConnectivityCheck),
+		// 					},
+		// 					Source: &armnetwork.ConnectionAnalyzerEndpoint{
+		// 						Type: to.Ptr(armnetwork.ConnectionAnalyzerEndpointTypeVM),
+		// 						ResourceID: to.Ptr("/subscriptions/7f4a1d92-3b6e-4c8f-9a25-e1b8c3d7f024/resourceGroups/connectionAnalyzerRG/providers/Microsoft.Compute/virtualMachines/ct2"),
+		// 					},
+		// 					Destination: &armnetwork.ConnectionAnalyzerEndpoint{
+		// 						Address: to.Ptr("www.bing.com"),
+		// 						Type: to.Ptr(armnetwork.ConnectionAnalyzerEndpointTypeExternalAddress),
+		// 					},
+		// 					ProtocolSettings: &armnetwork.ProtocolSettings{
+		// 						Protocol: to.Ptr(armnetwork.ProtocolTCP),
+		// 					},
+		// 					DiagnosticOperationsSettings: &armnetwork.DiagnosticOperationsSettings{
+		// 						ConnectivityCheckSettings: &armnetwork.ConnectivityCheckSettings{
+		// 							GeneratePath: to.Ptr(true),
+		// 							PreferredIPVersion: to.Ptr(armnetwork.PreferredIPVersionIPv4),
+		// 						},
+		// 					},
+		// 					ExpiryInDays: to.Ptr[int32](30),
+		// 					OutputSettings: &armnetwork.OutputSettings{
+		// 						StorageAccountSettings: &armnetwork.StorageAccountSettings{
+		// 							StorageAccountID: to.Ptr("/subscriptions/7f4a1d92-3b6e-4c8f-9a25-e1b8c3d7f024/resourceGroups/connectionAnalyzerRG/providers/Microsoft.Storage/storageAccounts/sa1"),
+		// 							Path: to.Ptr("connectionanalyzer/results"),
+		// 						},
+		// 					},
+		// 				},
+		// 				Location: to.Ptr("eastus"),
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2026-03-01/NetworkWatcherListAll.json
+func ExampleWatchersClient_NewListAllPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewWatchersClient().NewListAllPager(nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armnetwork.WatchersClientListAllResponse{
+		// 	WatcherListResult: armnetwork.WatcherListResult{
+		// 		Value: []*armnetwork.Watcher{
+		// 			{
+		// 				Name: to.Ptr("nw1"),
+		// 				Type: to.Ptr("Microsoft.Network/networkWatchers"),
+		// 				Etag: to.Ptr("W/\"00000000-0000-0000-0000-000000000000\""),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/networkWatchers/nw1"),
+		// 				Location: to.Ptr("eastus"),
+		// 				Properties: &armnetwork.WatcherPropertiesFormat{
+		// 					ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+		// 				},
+		// 				Tags: map[string]*string{
+		// 				},
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("nw2"),
+		// 				Type: to.Ptr("Microsoft.Network/networkWatchers"),
+		// 				Etag: to.Ptr("W/\"00000000-0000-0000-0000-000000000000\""),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/networkWatchers/nw2"),
+		// 				Location: to.Ptr("westus"),
+		// 				Properties: &armnetwork.WatcherPropertiesFormat{
+		// 					ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+		// 				},
+		// 				Tags: map[string]*string{
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2026-03-01/NetworkWatcherList.json
+func ExampleWatchersClient_NewListPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewWatchersClient().NewListPager("rg1", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armnetwork.WatchersClientListResponse{
+		// 	WatcherListResult: armnetwork.WatcherListResult{
+		// 		Value: []*armnetwork.Watcher{
+		// 			{
+		// 				Name: to.Ptr("nw1"),
+		// 				Type: to.Ptr("Microsoft.Network/networkWatchers"),
+		// 				Etag: to.Ptr("W/\"00000000-0000-0000-0000-000000000000\""),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/networkWatchers/nw1"),
+		// 				Location: to.Ptr("eastus"),
+		// 				Properties: &armnetwork.WatcherPropertiesFormat{
+		// 					ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+		// 				},
+		// 				Tags: map[string]*string{
+		// 				},
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("nw2"),
+		// 				Type: to.Ptr("Microsoft.Network/networkWatchers"),
+		// 				Etag: to.Ptr("W/\"00000000-0000-0000-0000-000000000000\""),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/networkWatchers/nw2"),
+		// 				Location: to.Ptr("eastus"),
+		// 				Properties: &armnetwork.WatcherPropertiesFormat{
+		// 					ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+		// 				},
+		// 				Tags: map[string]*string{
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2026-03-01/NetworkWatcherUpdateTags.json
 func ExampleWatchersClient_UpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1370,44 +1408,6 @@ func ExampleWatchersClient_UpdateTags() {
 	// 			"tag1": to.Ptr("value1"),
 	// 			"tag2": to.Ptr("value2"),
 	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-01-01/NetworkWatcherIpFlowVerify.json
-func ExampleWatchersClient_BeginVerifyIPFlow() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewWatchersClient().BeginVerifyIPFlow(ctx, "rg1", "nw1", armnetwork.VerificationIPFlowParameters{
-		Direction:        to.Ptr(armnetwork.DirectionOutbound),
-		LocalIPAddress:   to.Ptr("10.2.0.4"),
-		LocalPort:        to.Ptr("80"),
-		RemoteIPAddress:  to.Ptr("121.10.1.1"),
-		RemotePort:       to.Ptr("80"),
-		TargetResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg2/providers/Microsoft.Compute/virtualMachines/vm1"),
-		Protocol:         to.Ptr(armnetwork.IPFlowProtocolTCP),
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armnetwork.WatchersClientVerifyIPFlowResponse{
-	// 	VerificationIPFlowResult: armnetwork.VerificationIPFlowResult{
-	// 		Access: to.Ptr(armnetwork.AccessAllow),
-	// 		RuleName: to.Ptr("Rule1"),
 	// 	},
 	// }
 }

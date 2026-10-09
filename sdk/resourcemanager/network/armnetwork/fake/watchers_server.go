@@ -33,33 +33,13 @@ type WatchersServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginConnectionAnalyzersDelete func(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionAnalyzerName string, options *armnetwork.WatchersClientBeginConnectionAnalyzersDeleteOptions) (resp azfake.PollerResponder[armnetwork.WatchersClientConnectionAnalyzersDeleteResponse], errResp azfake.ErrorResponder)
 
-	// ConnectionAnalyzersGet is the fake for method WatchersClient.ConnectionAnalyzersGet
-	// HTTP status codes to indicate success: http.StatusOK
-	ConnectionAnalyzersGet func(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionAnalyzerName string, options *armnetwork.WatchersClientConnectionAnalyzersGetOptions) (resp azfake.Responder[armnetwork.WatchersClientConnectionAnalyzersGetResponse], errResp azfake.ErrorResponder)
-
-	// NewConnectionAnalyzersListPager is the fake for method WatchersClient.NewConnectionAnalyzersListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewConnectionAnalyzersListPager func(resourceGroupName string, networkWatcherName string, options *armnetwork.WatchersClientConnectionAnalyzersListOptions) (resp azfake.PagerResponder[armnetwork.WatchersClientConnectionAnalyzersListResponse])
-
 	// BeginConnectionAnalyzersQuery is the fake for method WatchersClient.BeginConnectionAnalyzersQuery
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginConnectionAnalyzersQuery func(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionAnalyzerName string, options *armnetwork.WatchersClientBeginConnectionAnalyzersQueryOptions) (resp azfake.PollerResponder[armnetwork.WatchersClientConnectionAnalyzersQueryResponse], errResp azfake.ErrorResponder)
 
-	// ConnectionAnalyzersUpdateTags is the fake for method WatchersClient.ConnectionAnalyzersUpdateTags
-	// HTTP status codes to indicate success: http.StatusOK
-	ConnectionAnalyzersUpdateTags func(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionAnalyzerName string, body armnetwork.TagsObject, options *armnetwork.WatchersClientConnectionAnalyzersUpdateTagsOptions) (resp azfake.Responder[armnetwork.WatchersClientConnectionAnalyzersUpdateTagsResponse], errResp azfake.ErrorResponder)
-
-	// CreateOrUpdate is the fake for method WatchersClient.CreateOrUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	CreateOrUpdate func(ctx context.Context, resourceGroupName string, networkWatcherName string, parameters armnetwork.Watcher, options *armnetwork.WatchersClientCreateOrUpdateOptions) (resp azfake.Responder[armnetwork.WatchersClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
-
 	// BeginDelete is the fake for method WatchersClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, networkWatcherName string, options *armnetwork.WatchersClientBeginDeleteOptions) (resp azfake.PollerResponder[armnetwork.WatchersClientDeleteResponse], errResp azfake.ErrorResponder)
-
-	// Get is the fake for method WatchersClient.Get
-	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, networkWatcherName string, options *armnetwork.WatchersClientGetOptions) (resp azfake.Responder[armnetwork.WatchersClientGetResponse], errResp azfake.ErrorResponder)
 
 	// BeginGetAzureReachabilityReport is the fake for method WatchersClient.BeginGetAzureReachabilityReport
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
@@ -77,10 +57,6 @@ type WatchersServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginGetNextHop func(ctx context.Context, resourceGroupName string, networkWatcherName string, parameters armnetwork.NextHopParameters, options *armnetwork.WatchersClientBeginGetNextHopOptions) (resp azfake.PollerResponder[armnetwork.WatchersClientGetNextHopResponse], errResp azfake.ErrorResponder)
 
-	// GetTopology is the fake for method WatchersClient.GetTopology
-	// HTTP status codes to indicate success: http.StatusOK
-	GetTopology func(ctx context.Context, resourceGroupName string, networkWatcherName string, parameters armnetwork.TopologyParameters, options *armnetwork.WatchersClientGetTopologyOptions) (resp azfake.Responder[armnetwork.WatchersClientGetTopologyResponse], errResp azfake.ErrorResponder)
-
 	// BeginGetTroubleshooting is the fake for method WatchersClient.BeginGetTroubleshooting
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginGetTroubleshooting func(ctx context.Context, resourceGroupName string, networkWatcherName string, parameters armnetwork.TroubleshootingParameters, options *armnetwork.WatchersClientBeginGetTroubleshootingOptions) (resp azfake.PollerResponder[armnetwork.WatchersClientGetTroubleshootingResponse], errResp azfake.ErrorResponder)
@@ -93,14 +69,6 @@ type WatchersServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginGetVMSecurityRules func(ctx context.Context, resourceGroupName string, networkWatcherName string, parameters armnetwork.SecurityGroupViewParameters, options *armnetwork.WatchersClientBeginGetVMSecurityRulesOptions) (resp azfake.PollerResponder[armnetwork.WatchersClientGetVMSecurityRulesResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method WatchersClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(resourceGroupName string, options *armnetwork.WatchersClientListOptions) (resp azfake.PagerResponder[armnetwork.WatchersClientListResponse])
-
-	// NewListAllPager is the fake for method WatchersClient.NewListAllPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListAllPager func(options *armnetwork.WatchersClientListAllOptions) (resp azfake.PagerResponder[armnetwork.WatchersClientListAllResponse])
-
 	// BeginListAvailableProviders is the fake for method WatchersClient.BeginListAvailableProviders
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginListAvailableProviders func(ctx context.Context, resourceGroupName string, networkWatcherName string, parameters armnetwork.AvailableProvidersListParameters, options *armnetwork.WatchersClientBeginListAvailableProvidersOptions) (resp azfake.PollerResponder[armnetwork.WatchersClientListAvailableProvidersResponse], errResp azfake.ErrorResponder)
@@ -109,13 +77,45 @@ type WatchersServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginSetFlowLogConfiguration func(ctx context.Context, resourceGroupName string, networkWatcherName string, parameters armnetwork.FlowLogInformation, options *armnetwork.WatchersClientBeginSetFlowLogConfigurationOptions) (resp azfake.PollerResponder[armnetwork.WatchersClientSetFlowLogConfigurationResponse], errResp azfake.ErrorResponder)
 
-	// UpdateTags is the fake for method WatchersClient.UpdateTags
-	// HTTP status codes to indicate success: http.StatusOK
-	UpdateTags func(ctx context.Context, resourceGroupName string, networkWatcherName string, parameters armnetwork.TagsObject, options *armnetwork.WatchersClientUpdateTagsOptions) (resp azfake.Responder[armnetwork.WatchersClientUpdateTagsResponse], errResp azfake.ErrorResponder)
-
 	// BeginVerifyIPFlow is the fake for method WatchersClient.BeginVerifyIPFlow
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginVerifyIPFlow func(ctx context.Context, resourceGroupName string, networkWatcherName string, parameters armnetwork.VerificationIPFlowParameters, options *armnetwork.WatchersClientBeginVerifyIPFlowOptions) (resp azfake.PollerResponder[armnetwork.WatchersClientVerifyIPFlowResponse], errResp azfake.ErrorResponder)
+
+	// ConnectionAnalyzersGet is the fake for method WatchersClient.ConnectionAnalyzersGet
+	// HTTP status codes to indicate success: http.StatusOK
+	ConnectionAnalyzersGet func(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionAnalyzerName string, options *armnetwork.WatchersClientConnectionAnalyzersGetOptions) (resp azfake.Responder[armnetwork.WatchersClientConnectionAnalyzersGetResponse], errResp azfake.ErrorResponder)
+
+	// ConnectionAnalyzersUpdateTags is the fake for method WatchersClient.ConnectionAnalyzersUpdateTags
+	// HTTP status codes to indicate success: http.StatusOK
+	ConnectionAnalyzersUpdateTags func(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionAnalyzerName string, body armnetwork.TagsObject, options *armnetwork.WatchersClientConnectionAnalyzersUpdateTagsOptions) (resp azfake.Responder[armnetwork.WatchersClientConnectionAnalyzersUpdateTagsResponse], errResp azfake.ErrorResponder)
+
+	// CreateOrUpdate is the fake for method WatchersClient.CreateOrUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
+	CreateOrUpdate func(ctx context.Context, resourceGroupName string, networkWatcherName string, parameters armnetwork.Watcher, options *armnetwork.WatchersClientCreateOrUpdateOptions) (resp azfake.Responder[armnetwork.WatchersClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
+
+	// Get is the fake for method WatchersClient.Get
+	// HTTP status codes to indicate success: http.StatusOK
+	Get func(ctx context.Context, resourceGroupName string, networkWatcherName string, options *armnetwork.WatchersClientGetOptions) (resp azfake.Responder[armnetwork.WatchersClientGetResponse], errResp azfake.ErrorResponder)
+
+	// GetTopology is the fake for method WatchersClient.GetTopology
+	// HTTP status codes to indicate success: http.StatusOK
+	GetTopology func(ctx context.Context, resourceGroupName string, networkWatcherName string, parameters armnetwork.TopologyParameters, options *armnetwork.WatchersClientGetTopologyOptions) (resp azfake.Responder[armnetwork.WatchersClientGetTopologyResponse], errResp azfake.ErrorResponder)
+
+	// NewConnectionAnalyzersListPager is the fake for method WatchersClient.NewConnectionAnalyzersListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewConnectionAnalyzersListPager func(resourceGroupName string, networkWatcherName string, options *armnetwork.WatchersClientConnectionAnalyzersListOptions) (resp azfake.PagerResponder[armnetwork.WatchersClientConnectionAnalyzersListResponse])
+
+	// NewListAllPager is the fake for method WatchersClient.NewListAllPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListAllPager func(options *armnetwork.WatchersClientListAllOptions) (resp azfake.PagerResponder[armnetwork.WatchersClientListAllResponse])
+
+	// NewListPager is the fake for method WatchersClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(resourceGroupName string, options *armnetwork.WatchersClientListOptions) (resp azfake.PagerResponder[armnetwork.WatchersClientListResponse])
+
+	// UpdateTags is the fake for method WatchersClient.UpdateTags
+	// HTTP status codes to indicate success: http.StatusOK
+	UpdateTags func(ctx context.Context, resourceGroupName string, networkWatcherName string, parameters armnetwork.TagsObject, options *armnetwork.WatchersClientUpdateTagsOptions) (resp azfake.Responder[armnetwork.WatchersClientUpdateTagsResponse], errResp azfake.ErrorResponder)
 }
 
 // NewWatchersServerTransport creates a new instance of WatchersServerTransport with the provided implementation.
@@ -127,7 +127,6 @@ func NewWatchersServerTransport(srv *WatchersServer) *WatchersServerTransport {
 		beginCheckConnectivity:                 newTracker[azfake.PollerResponder[armnetwork.WatchersClientCheckConnectivityResponse]](),
 		beginConnectionAnalyzersCreate:         newTracker[azfake.PollerResponder[armnetwork.WatchersClientConnectionAnalyzersCreateResponse]](),
 		beginConnectionAnalyzersDelete:         newTracker[azfake.PollerResponder[armnetwork.WatchersClientConnectionAnalyzersDeleteResponse]](),
-		newConnectionAnalyzersListPager:        newTracker[azfake.PagerResponder[armnetwork.WatchersClientConnectionAnalyzersListResponse]](),
 		beginConnectionAnalyzersQuery:          newTracker[azfake.PollerResponder[armnetwork.WatchersClientConnectionAnalyzersQueryResponse]](),
 		beginDelete:                            newTracker[azfake.PollerResponder[armnetwork.WatchersClientDeleteResponse]](),
 		beginGetAzureReachabilityReport:        newTracker[azfake.PollerResponder[armnetwork.WatchersClientGetAzureReachabilityReportResponse]](),
@@ -137,11 +136,12 @@ func NewWatchersServerTransport(srv *WatchersServer) *WatchersServerTransport {
 		beginGetTroubleshooting:                newTracker[azfake.PollerResponder[armnetwork.WatchersClientGetTroubleshootingResponse]](),
 		beginGetTroubleshootingResult:          newTracker[azfake.PollerResponder[armnetwork.WatchersClientGetTroubleshootingResultResponse]](),
 		beginGetVMSecurityRules:                newTracker[azfake.PollerResponder[armnetwork.WatchersClientGetVMSecurityRulesResponse]](),
-		newListPager:                           newTracker[azfake.PagerResponder[armnetwork.WatchersClientListResponse]](),
-		newListAllPager:                        newTracker[azfake.PagerResponder[armnetwork.WatchersClientListAllResponse]](),
 		beginListAvailableProviders:            newTracker[azfake.PollerResponder[armnetwork.WatchersClientListAvailableProvidersResponse]](),
 		beginSetFlowLogConfiguration:           newTracker[azfake.PollerResponder[armnetwork.WatchersClientSetFlowLogConfigurationResponse]](),
 		beginVerifyIPFlow:                      newTracker[azfake.PollerResponder[armnetwork.WatchersClientVerifyIPFlowResponse]](),
+		newConnectionAnalyzersListPager:        newTracker[azfake.PagerResponder[armnetwork.WatchersClientConnectionAnalyzersListResponse]](),
+		newListAllPager:                        newTracker[azfake.PagerResponder[armnetwork.WatchersClientListAllResponse]](),
+		newListPager:                           newTracker[azfake.PagerResponder[armnetwork.WatchersClientListResponse]](),
 	}
 }
 
@@ -152,7 +152,6 @@ type WatchersServerTransport struct {
 	beginCheckConnectivity                 *tracker[azfake.PollerResponder[armnetwork.WatchersClientCheckConnectivityResponse]]
 	beginConnectionAnalyzersCreate         *tracker[azfake.PollerResponder[armnetwork.WatchersClientConnectionAnalyzersCreateResponse]]
 	beginConnectionAnalyzersDelete         *tracker[azfake.PollerResponder[armnetwork.WatchersClientConnectionAnalyzersDeleteResponse]]
-	newConnectionAnalyzersListPager        *tracker[azfake.PagerResponder[armnetwork.WatchersClientConnectionAnalyzersListResponse]]
 	beginConnectionAnalyzersQuery          *tracker[azfake.PollerResponder[armnetwork.WatchersClientConnectionAnalyzersQueryResponse]]
 	beginDelete                            *tracker[azfake.PollerResponder[armnetwork.WatchersClientDeleteResponse]]
 	beginGetAzureReachabilityReport        *tracker[azfake.PollerResponder[armnetwork.WatchersClientGetAzureReachabilityReportResponse]]
@@ -162,11 +161,12 @@ type WatchersServerTransport struct {
 	beginGetTroubleshooting                *tracker[azfake.PollerResponder[armnetwork.WatchersClientGetTroubleshootingResponse]]
 	beginGetTroubleshootingResult          *tracker[azfake.PollerResponder[armnetwork.WatchersClientGetTroubleshootingResultResponse]]
 	beginGetVMSecurityRules                *tracker[azfake.PollerResponder[armnetwork.WatchersClientGetVMSecurityRulesResponse]]
-	newListPager                           *tracker[azfake.PagerResponder[armnetwork.WatchersClientListResponse]]
-	newListAllPager                        *tracker[azfake.PagerResponder[armnetwork.WatchersClientListAllResponse]]
 	beginListAvailableProviders            *tracker[azfake.PollerResponder[armnetwork.WatchersClientListAvailableProvidersResponse]]
 	beginSetFlowLogConfiguration           *tracker[azfake.PollerResponder[armnetwork.WatchersClientSetFlowLogConfigurationResponse]]
 	beginVerifyIPFlow                      *tracker[azfake.PollerResponder[armnetwork.WatchersClientVerifyIPFlowResponse]]
+	newConnectionAnalyzersListPager        *tracker[azfake.PagerResponder[armnetwork.WatchersClientConnectionAnalyzersListResponse]]
+	newListAllPager                        *tracker[azfake.PagerResponder[armnetwork.WatchersClientListAllResponse]]
+	newListPager                           *tracker[azfake.PagerResponder[armnetwork.WatchersClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for WatchersServerTransport.
@@ -196,20 +196,10 @@ func (w *WatchersServerTransport) dispatchToMethodFake(req *http.Request, method
 				res.resp, res.err = w.dispatchBeginConnectionAnalyzersCreate(req)
 			case "WatchersClient.BeginConnectionAnalyzersDelete":
 				res.resp, res.err = w.dispatchBeginConnectionAnalyzersDelete(req)
-			case "WatchersClient.ConnectionAnalyzersGet":
-				res.resp, res.err = w.dispatchConnectionAnalyzersGet(req)
-			case "WatchersClient.NewConnectionAnalyzersListPager":
-				res.resp, res.err = w.dispatchNewConnectionAnalyzersListPager(req)
 			case "WatchersClient.BeginConnectionAnalyzersQuery":
 				res.resp, res.err = w.dispatchBeginConnectionAnalyzersQuery(req)
-			case "WatchersClient.ConnectionAnalyzersUpdateTags":
-				res.resp, res.err = w.dispatchConnectionAnalyzersUpdateTags(req)
-			case "WatchersClient.CreateOrUpdate":
-				res.resp, res.err = w.dispatchCreateOrUpdate(req)
 			case "WatchersClient.BeginDelete":
 				res.resp, res.err = w.dispatchBeginDelete(req)
-			case "WatchersClient.Get":
-				res.resp, res.err = w.dispatchGet(req)
 			case "WatchersClient.BeginGetAzureReachabilityReport":
 				res.resp, res.err = w.dispatchBeginGetAzureReachabilityReport(req)
 			case "WatchersClient.BeginGetFlowLogStatus":
@@ -218,26 +208,36 @@ func (w *WatchersServerTransport) dispatchToMethodFake(req *http.Request, method
 				res.resp, res.err = w.dispatchBeginGetNetworkConfigurationDiagnostic(req)
 			case "WatchersClient.BeginGetNextHop":
 				res.resp, res.err = w.dispatchBeginGetNextHop(req)
-			case "WatchersClient.GetTopology":
-				res.resp, res.err = w.dispatchGetTopology(req)
 			case "WatchersClient.BeginGetTroubleshooting":
 				res.resp, res.err = w.dispatchBeginGetTroubleshooting(req)
 			case "WatchersClient.BeginGetTroubleshootingResult":
 				res.resp, res.err = w.dispatchBeginGetTroubleshootingResult(req)
 			case "WatchersClient.BeginGetVMSecurityRules":
 				res.resp, res.err = w.dispatchBeginGetVMSecurityRules(req)
-			case "WatchersClient.NewListPager":
-				res.resp, res.err = w.dispatchNewListPager(req)
-			case "WatchersClient.NewListAllPager":
-				res.resp, res.err = w.dispatchNewListAllPager(req)
 			case "WatchersClient.BeginListAvailableProviders":
 				res.resp, res.err = w.dispatchBeginListAvailableProviders(req)
 			case "WatchersClient.BeginSetFlowLogConfiguration":
 				res.resp, res.err = w.dispatchBeginSetFlowLogConfiguration(req)
-			case "WatchersClient.UpdateTags":
-				res.resp, res.err = w.dispatchUpdateTags(req)
 			case "WatchersClient.BeginVerifyIPFlow":
 				res.resp, res.err = w.dispatchBeginVerifyIPFlow(req)
+			case "WatchersClient.ConnectionAnalyzersGet":
+				res.resp, res.err = w.dispatchConnectionAnalyzersGet(req)
+			case "WatchersClient.ConnectionAnalyzersUpdateTags":
+				res.resp, res.err = w.dispatchConnectionAnalyzersUpdateTags(req)
+			case "WatchersClient.CreateOrUpdate":
+				res.resp, res.err = w.dispatchCreateOrUpdate(req)
+			case "WatchersClient.Get":
+				res.resp, res.err = w.dispatchGet(req)
+			case "WatchersClient.GetTopology":
+				res.resp, res.err = w.dispatchGetTopology(req)
+			case "WatchersClient.NewConnectionAnalyzersListPager":
+				res.resp, res.err = w.dispatchNewConnectionAnalyzersListPager(req)
+			case "WatchersClient.NewListAllPager":
+				res.resp, res.err = w.dispatchNewListAllPager(req)
+			case "WatchersClient.NewListPager":
+				res.resp, res.err = w.dispatchNewListPager(req)
+			case "WatchersClient.UpdateTags":
+				res.resp, res.err = w.dispatchUpdateTags(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -402,84 +402,6 @@ func (w *WatchersServerTransport) dispatchBeginConnectionAnalyzersDelete(req *ht
 	return resp, nil
 }
 
-func (w *WatchersServerTransport) dispatchConnectionAnalyzersGet(req *http.Request) (*http.Response, error) {
-	if w.srv.ConnectionAnalyzersGet == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ConnectionAnalyzersGet not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/networkWatchers/(?P<networkWatcherName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/connectionAnalyzers/(?P<connectionAnalyzerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	networkWatcherNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("networkWatcherName")])
-	if err != nil {
-		return nil, err
-	}
-	connectionAnalyzerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("connectionAnalyzerName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := w.srv.ConnectionAnalyzersGet(req.Context(), resourceGroupNameParam, networkWatcherNameParam, connectionAnalyzerNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ConnectionAnalyzer, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (w *WatchersServerTransport) dispatchNewConnectionAnalyzersListPager(req *http.Request) (*http.Response, error) {
-	if w.srv.NewConnectionAnalyzersListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewConnectionAnalyzersListPager not implemented")}
-	}
-	newConnectionAnalyzersListPager := w.newConnectionAnalyzersListPager.get(req)
-	if newConnectionAnalyzersListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/networkWatchers/(?P<networkWatcherName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/connectionAnalyzers`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		networkWatcherNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("networkWatcherName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := w.srv.NewConnectionAnalyzersListPager(resourceGroupNameParam, networkWatcherNameParam, nil)
-		newConnectionAnalyzersListPager = &resp
-		w.newConnectionAnalyzersListPager.add(req, newConnectionAnalyzersListPager)
-		server.PagerResponderInjectNextLinks(newConnectionAnalyzersListPager, req, func(page *armnetwork.WatchersClientConnectionAnalyzersListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newConnectionAnalyzersListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		w.newConnectionAnalyzersListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newConnectionAnalyzersListPager) {
-		w.newConnectionAnalyzersListPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (w *WatchersServerTransport) dispatchBeginConnectionAnalyzersQuery(req *http.Request) (*http.Response, error) {
 	if w.srv.BeginConnectionAnalyzersQuery == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginConnectionAnalyzersQuery not implemented")}
@@ -528,84 +450,6 @@ func (w *WatchersServerTransport) dispatchBeginConnectionAnalyzersQuery(req *htt
 	return resp, nil
 }
 
-func (w *WatchersServerTransport) dispatchConnectionAnalyzersUpdateTags(req *http.Request) (*http.Response, error) {
-	if w.srv.ConnectionAnalyzersUpdateTags == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ConnectionAnalyzersUpdateTags not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/networkWatchers/(?P<networkWatcherName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/connectionAnalyzers/(?P<connectionAnalyzerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armnetwork.TagsObject](req)
-	if err != nil {
-		return nil, err
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	networkWatcherNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("networkWatcherName")])
-	if err != nil {
-		return nil, err
-	}
-	connectionAnalyzerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("connectionAnalyzerName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := w.srv.ConnectionAnalyzersUpdateTags(req.Context(), resourceGroupNameParam, networkWatcherNameParam, connectionAnalyzerNameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ConnectionAnalyzer, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (w *WatchersServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Response, error) {
-	if w.srv.CreateOrUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/networkWatchers/(?P<networkWatcherName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armnetwork.Watcher](req)
-	if err != nil {
-		return nil, err
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	networkWatcherNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("networkWatcherName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := w.srv.CreateOrUpdate(req.Context(), resourceGroupNameParam, networkWatcherNameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Watcher, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
 func (w *WatchersServerTransport) dispatchBeginDelete(req *http.Request) (*http.Response, error) {
 	if w.srv.BeginDelete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
@@ -647,39 +491,6 @@ func (w *WatchersServerTransport) dispatchBeginDelete(req *http.Request) (*http.
 		w.beginDelete.remove(req)
 	}
 
-	return resp, nil
-}
-
-func (w *WatchersServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if w.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/networkWatchers/(?P<networkWatcherName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	networkWatcherNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("networkWatcherName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := w.srv.Get(req.Context(), resourceGroupNameParam, networkWatcherNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Watcher, req)
-	if err != nil {
-		return nil, err
-	}
 	return resp, nil
 }
 
@@ -875,43 +686,6 @@ func (w *WatchersServerTransport) dispatchBeginGetNextHop(req *http.Request) (*h
 	return resp, nil
 }
 
-func (w *WatchersServerTransport) dispatchGetTopology(req *http.Request) (*http.Response, error) {
-	if w.srv.GetTopology == nil {
-		return nil, &nonRetriableError{errors.New("fake for method GetTopology not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/networkWatchers/(?P<networkWatcherName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/topology`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armnetwork.TopologyParameters](req)
-	if err != nil {
-		return nil, err
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	networkWatcherNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("networkWatcherName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := w.srv.GetTopology(req.Context(), resourceGroupNameParam, networkWatcherNameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Topology, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
 func (w *WatchersServerTransport) dispatchBeginGetTroubleshooting(req *http.Request) (*http.Response, error) {
 	if w.srv.BeginGetTroubleshooting == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginGetTroubleshooting not implemented")}
@@ -1056,76 +830,6 @@ func (w *WatchersServerTransport) dispatchBeginGetVMSecurityRules(req *http.Requ
 	return resp, nil
 }
 
-func (w *WatchersServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if w.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := w.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/networkWatchers`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := w.srv.NewListPager(resourceGroupNameParam, nil)
-		newListPager = &resp
-		w.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armnetwork.WatchersClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		w.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		w.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (w *WatchersServerTransport) dispatchNewListAllPager(req *http.Request) (*http.Response, error) {
-	if w.srv.NewListAllPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListAllPager not implemented")}
-	}
-	newListAllPager := w.newListAllPager.get(req)
-	if newListAllPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/networkWatchers`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := w.srv.NewListAllPager(nil)
-		newListAllPager = &resp
-		w.newListAllPager.add(req, newListAllPager)
-		server.PagerResponderInjectNextLinks(newListAllPager, req, func(page *armnetwork.WatchersClientListAllResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListAllPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		w.newListAllPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListAllPager) {
-		w.newListAllPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (w *WatchersServerTransport) dispatchBeginListAvailableProviders(req *http.Request) (*http.Response, error) {
 	if w.srv.BeginListAvailableProviders == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginListAvailableProviders not implemented")}
@@ -1222,43 +926,6 @@ func (w *WatchersServerTransport) dispatchBeginSetFlowLogConfiguration(req *http
 	return resp, nil
 }
 
-func (w *WatchersServerTransport) dispatchUpdateTags(req *http.Request) (*http.Response, error) {
-	if w.srv.UpdateTags == nil {
-		return nil, &nonRetriableError{errors.New("fake for method UpdateTags not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/networkWatchers/(?P<networkWatcherName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armnetwork.TagsObject](req)
-	if err != nil {
-		return nil, err
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	networkWatcherNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("networkWatcherName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := w.srv.UpdateTags(req.Context(), resourceGroupNameParam, networkWatcherNameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Watcher, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
 func (w *WatchersServerTransport) dispatchBeginVerifyIPFlow(req *http.Request) (*http.Response, error) {
 	if w.srv.BeginVerifyIPFlow == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginVerifyIPFlow not implemented")}
@@ -1304,6 +971,339 @@ func (w *WatchersServerTransport) dispatchBeginVerifyIPFlow(req *http.Request) (
 		w.beginVerifyIPFlow.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (w *WatchersServerTransport) dispatchConnectionAnalyzersGet(req *http.Request) (*http.Response, error) {
+	if w.srv.ConnectionAnalyzersGet == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ConnectionAnalyzersGet not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/networkWatchers/(?P<networkWatcherName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/connectionAnalyzers/(?P<connectionAnalyzerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	networkWatcherNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("networkWatcherName")])
+	if err != nil {
+		return nil, err
+	}
+	connectionAnalyzerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("connectionAnalyzerName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := w.srv.ConnectionAnalyzersGet(req.Context(), resourceGroupNameParam, networkWatcherNameParam, connectionAnalyzerNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ConnectionAnalyzer, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (w *WatchersServerTransport) dispatchConnectionAnalyzersUpdateTags(req *http.Request) (*http.Response, error) {
+	if w.srv.ConnectionAnalyzersUpdateTags == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ConnectionAnalyzersUpdateTags not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/networkWatchers/(?P<networkWatcherName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/connectionAnalyzers/(?P<connectionAnalyzerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armnetwork.TagsObject](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	networkWatcherNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("networkWatcherName")])
+	if err != nil {
+		return nil, err
+	}
+	connectionAnalyzerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("connectionAnalyzerName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := w.srv.ConnectionAnalyzersUpdateTags(req.Context(), resourceGroupNameParam, networkWatcherNameParam, connectionAnalyzerNameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ConnectionAnalyzer, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (w *WatchersServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Response, error) {
+	if w.srv.CreateOrUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/networkWatchers/(?P<networkWatcherName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armnetwork.Watcher](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	networkWatcherNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("networkWatcherName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := w.srv.CreateOrUpdate(req.Context(), resourceGroupNameParam, networkWatcherNameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Watcher, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (w *WatchersServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if w.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/networkWatchers/(?P<networkWatcherName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	networkWatcherNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("networkWatcherName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := w.srv.Get(req.Context(), resourceGroupNameParam, networkWatcherNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Watcher, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (w *WatchersServerTransport) dispatchGetTopology(req *http.Request) (*http.Response, error) {
+	if w.srv.GetTopology == nil {
+		return nil, &nonRetriableError{errors.New("fake for method GetTopology not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/networkWatchers/(?P<networkWatcherName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/topology`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armnetwork.TopologyParameters](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	networkWatcherNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("networkWatcherName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := w.srv.GetTopology(req.Context(), resourceGroupNameParam, networkWatcherNameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Topology, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (w *WatchersServerTransport) dispatchNewConnectionAnalyzersListPager(req *http.Request) (*http.Response, error) {
+	if w.srv.NewConnectionAnalyzersListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewConnectionAnalyzersListPager not implemented")}
+	}
+	newConnectionAnalyzersListPager := w.newConnectionAnalyzersListPager.get(req)
+	if newConnectionAnalyzersListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/networkWatchers/(?P<networkWatcherName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/connectionAnalyzers`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		networkWatcherNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("networkWatcherName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := w.srv.NewConnectionAnalyzersListPager(resourceGroupNameParam, networkWatcherNameParam, nil)
+		newConnectionAnalyzersListPager = &resp
+		w.newConnectionAnalyzersListPager.add(req, newConnectionAnalyzersListPager)
+		server.PagerResponderInjectNextLinks(newConnectionAnalyzersListPager, req, func(page *armnetwork.WatchersClientConnectionAnalyzersListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newConnectionAnalyzersListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		w.newConnectionAnalyzersListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newConnectionAnalyzersListPager) {
+		w.newConnectionAnalyzersListPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (w *WatchersServerTransport) dispatchNewListAllPager(req *http.Request) (*http.Response, error) {
+	if w.srv.NewListAllPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListAllPager not implemented")}
+	}
+	newListAllPager := w.newListAllPager.get(req)
+	if newListAllPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/networkWatchers`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resp := w.srv.NewListAllPager(nil)
+		newListAllPager = &resp
+		w.newListAllPager.add(req, newListAllPager)
+		server.PagerResponderInjectNextLinks(newListAllPager, req, func(page *armnetwork.WatchersClientListAllResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListAllPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		w.newListAllPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListAllPager) {
+		w.newListAllPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (w *WatchersServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if w.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := w.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/networkWatchers`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := w.srv.NewListPager(resourceGroupNameParam, nil)
+		newListPager = &resp
+		w.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armnetwork.WatchersClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		w.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPager) {
+		w.newListPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (w *WatchersServerTransport) dispatchUpdateTags(req *http.Request) (*http.Response, error) {
+	if w.srv.UpdateTags == nil {
+		return nil, &nonRetriableError{errors.New("fake for method UpdateTags not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/networkWatchers/(?P<networkWatcherName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armnetwork.TagsObject](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	networkWatcherNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("networkWatcherName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := w.srv.UpdateTags(req.Context(), resourceGroupNameParam, networkWatcherNameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Watcher, req)
+	if err != nil {
+		return nil, err
+	}
 	return resp, nil
 }
 

@@ -20,7 +20,7 @@ import (
 // GoalResourcesClient contains the methods for the GoalResources group.
 // Don't use this type directly, use NewGoalResourcesClient() instead.
 //
-// Generated from API version 2026-08-31-preview
+// Generated from API version 2026-10-01
 type GoalResourcesClient struct {
 	internal *arm.Client
 }
@@ -39,11 +39,11 @@ func NewGoalResourcesClient(credential azcore.TokenCredential, options *arm.Clie
 	return client, nil
 }
 
-// Get - Get a GoalResource
+// Get - Gets a goal resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - serviceGroupName - The name of the service group.
-//   - goalAssignmentName - The name of the GoalAssignment
-//   - goalResourceName - The name of the GoalAssignment
+//   - goalAssignmentName - The name of the goal assignment.
+//   - goalResourceName - The name of the goal resource.
 //   - options - GoalResourcesClientGetOptions contains the optional parameters for the GoalResourcesClient.Get method.
 func (client *GoalResourcesClient) Get(ctx context.Context, serviceGroupName string, goalAssignmentName string, goalResourceName string, options *GoalResourcesClientGetOptions) (GoalResourcesClientGetResponse, error) {
 	var err error
@@ -82,7 +82,7 @@ func (client *GoalResourcesClient) getCreateRequest(ctx context.Context, service
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260831Preview)
+	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -100,9 +100,9 @@ func (client *GoalResourcesClient) getHandleResponse(resp *http.Response, succes
 	return result, nil
 }
 
-// NewListPager - List GoalResource resources by GoalAssignment
+// NewListPager - Lists goal resources under a goal assignment.
 //   - serviceGroupName - The name of the service group.
-//   - goalAssignmentName - The name of the GoalAssignment
+//   - goalAssignmentName - The name of the goal assignment.
 //   - options - GoalResourcesClientListOptions contains the optional parameters for the GoalResourcesClient.NewListPager method.
 func (client *GoalResourcesClient) NewListPager(serviceGroupName string, goalAssignmentName string, options *GoalResourcesClientListOptions) *runtime.Pager[GoalResourcesClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[GoalResourcesClientListResponse]{
@@ -159,7 +159,7 @@ func (client *GoalResourcesClient) listCreateRequest(ctx context.Context, servic
 		if options != nil && options.Top != nil {
 			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 		}
-		reqQP.Set("api-version", version20260831Preview)
+		reqQP.Set("api-version", version20261001)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

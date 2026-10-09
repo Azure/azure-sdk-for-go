@@ -1,6 +1,6 @@
 # Breaking Changes
 
-## v1.14.2-beta.1
+## v1.15.0
 
 ### Service Fabric transport requirements
 
@@ -16,7 +16,7 @@ pinned client without modifying a caller-supplied client and rejects redirects.
 ### New errors from `NewManagedIdentityCredential` in some environments
 
 `NewManagedIdentityCredential` now returns an error when `ManagedIdentityCredentialOptions.ID` is set in a hosting environment whose managed identity API doesn't support user-assigned identities. `ManagedIdentityCredential.GetToken()` formerly logged a warning in these cases. Returning an error instead prevents the credential authenticating an unexpected identity. The affected hosting environments are:
-  * Azure Arc
+  * Azure Arc (user-assigned identities are supported starting in v1.15.0 when the agent supports them)
   * Azure ML (when a resource or object ID is specified; client IDs are supported)
   * Cloud Shell
   * Service Fabric

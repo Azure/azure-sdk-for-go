@@ -37,13 +37,13 @@ type ComponentsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	GetPurgeStatus func(ctx context.Context, resourceGroupName string, resourceName string, purgeID string, options *armapplicationinsights.ComponentsClientGetPurgeStatusOptions) (resp azfake.Responder[armapplicationinsights.ComponentsClientGetPurgeStatusResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method ComponentsClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(options *armapplicationinsights.ComponentsClientListOptions) (resp azfake.PagerResponder[armapplicationinsights.ComponentsClientListResponse])
-
 	// NewListByResourceGroupPager is the fake for method ComponentsClient.NewListByResourceGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByResourceGroupPager func(resourceGroupName string, options *armapplicationinsights.ComponentsClientListByResourceGroupOptions) (resp azfake.PagerResponder[armapplicationinsights.ComponentsClientListByResourceGroupResponse])
+
+	// NewListPager is the fake for method ComponentsClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(options *armapplicationinsights.ComponentsClientListOptions) (resp azfake.PagerResponder[armapplicationinsights.ComponentsClientListResponse])
 
 	// Purge is the fake for method ComponentsClient.Purge
 	// HTTP status codes to indicate success: http.StatusAccepted
@@ -60,8 +60,8 @@ type ComponentsServer struct {
 func NewComponentsServerTransport(srv *ComponentsServer) *ComponentsServerTransport {
 	return &ComponentsServerTransport{
 		srv:                         srv,
-		newListPager:                newTracker[azfake.PagerResponder[armapplicationinsights.ComponentsClientListResponse]](),
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armapplicationinsights.ComponentsClientListByResourceGroupResponse]](),
+		newListPager:                newTracker[azfake.PagerResponder[armapplicationinsights.ComponentsClientListResponse]](),
 	}
 }
 
@@ -69,8 +69,8 @@ func NewComponentsServerTransport(srv *ComponentsServer) *ComponentsServerTransp
 // Don't use this type directly, use NewComponentsServerTransport instead.
 type ComponentsServerTransport struct {
 	srv                         *ComponentsServer
-	newListPager                *tracker[azfake.PagerResponder[armapplicationinsights.ComponentsClientListResponse]]
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armapplicationinsights.ComponentsClientListByResourceGroupResponse]]
+	newListPager                *tracker[azfake.PagerResponder[armapplicationinsights.ComponentsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for ComponentsServerTransport.
@@ -102,10 +102,10 @@ func (c *ComponentsServerTransport) dispatchToMethodFake(req *http.Request, meth
 				res.resp, res.err = c.dispatchGet(req)
 			case "ComponentsClient.GetPurgeStatus":
 				res.resp, res.err = c.dispatchGetPurgeStatus(req)
-			case "ComponentsClient.NewListPager":
-				res.resp, res.err = c.dispatchNewListPager(req)
 			case "ComponentsClient.NewListByResourceGroupPager":
 				res.resp, res.err = c.dispatchNewListByResourceGroupPager(req)
+			case "ComponentsClient.NewListPager":
+				res.resp, res.err = c.dispatchNewListPager(req)
 			case "ComponentsClient.Purge":
 				res.resp, res.err = c.dispatchPurge(req)
 			case "ComponentsClient.UpdateTags":
@@ -130,7 +130,7 @@ func (c *ComponentsServerTransport) dispatchCreateOrUpdate(req *http.Request) (*
 	if c.srv.CreateOrUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Insights/components/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Insights/components/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -167,7 +167,7 @@ func (c *ComponentsServerTransport) dispatchDelete(req *http.Request) (*http.Res
 	if c.srv.Delete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Delete not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Insights/components/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Insights/components/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -200,7 +200,7 @@ func (c *ComponentsServerTransport) dispatchGet(req *http.Request) (*http.Respon
 	if c.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Insights/components/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Insights/components/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -233,7 +233,7 @@ func (c *ComponentsServerTransport) dispatchGetPurgeStatus(req *http.Request) (*
 	if c.srv.GetPurgeStatus == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetPurgeStatus not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Insights/components/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/operations/(?P<purgeId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Insights/components/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/operations/(?P<purgeId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -266,46 +266,13 @@ func (c *ComponentsServerTransport) dispatchGetPurgeStatus(req *http.Request) (*
 	return resp, nil
 }
 
-func (c *ComponentsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if c.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := c.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Insights/components`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := c.srv.NewListPager(nil)
-		newListPager = &resp
-		c.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armapplicationinsights.ComponentsClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		c.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		c.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (c *ComponentsServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
 	if c.srv.NewListByResourceGroupPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
 	}
 	newListByResourceGroupPager := c.newListByResourceGroupPager.get(req)
 	if newListByResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Insights/components`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Insights/components`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
@@ -336,11 +303,44 @@ func (c *ComponentsServerTransport) dispatchNewListByResourceGroupPager(req *htt
 	return resp, nil
 }
 
+func (c *ComponentsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if c.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := c.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Insights/components`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resp := c.srv.NewListPager(nil)
+		newListPager = &resp
+		c.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armapplicationinsights.ComponentsClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		c.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPager) {
+		c.newListPager.remove(req)
+	}
+	return resp, nil
+}
+
 func (c *ComponentsServerTransport) dispatchPurge(req *http.Request) (*http.Response, error) {
 	if c.srv.Purge == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Purge not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Insights/components/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/purge`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Insights/components/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/purge`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -377,7 +377,7 @@ func (c *ComponentsServerTransport) dispatchUpdateTags(req *http.Request) (*http
 	if c.srv.UpdateTags == nil {
 		return nil, &nonRetriableError{errors.New("fake for method UpdateTags not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Insights/components/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Insights/components/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {

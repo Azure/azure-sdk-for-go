@@ -31,6 +31,9 @@ type FavoritesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewFavoritesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*FavoritesClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -64,19 +67,14 @@ func (client *FavoritesClient) Add(ctx context.Context, resourceGroupName string
 	if err != nil {
 		return FavoritesClientAddResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return FavoritesClientAddResponse{}, err
-	}
-	resp, err := client.addHandleResponse(httpResp)
-	return resp, err
+	return client.addHandleResponse(httpResp, http.StatusOK)
 }
 
 // addCreateRequest creates the Add request.
 func (client *FavoritesClient) addCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, favoriteID string, favoriteProperties ComponentFavorite, _ *FavoritesClientAddOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/favorites/{favoriteId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -107,8 +105,11 @@ func (client *FavoritesClient) addCreateRequest(ctx context.Context, resourceGro
 }
 
 // addHandleResponse handles the Add response.
-func (client *FavoritesClient) addHandleResponse(resp *http.Response) (FavoritesClientAddResponse, error) {
+func (client *FavoritesClient) addHandleResponse(resp *http.Response, successCodes ...int) (FavoritesClientAddResponse, error) {
 	result := FavoritesClientAddResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ComponentFavorite); err != nil {
 		return FavoritesClientAddResponse{}, err
 	}
@@ -136,8 +137,7 @@ func (client *FavoritesClient) Delete(ctx context.Context, resourceGroupName str
 		return FavoritesClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return FavoritesClientDeleteResponse{}, err
+		return FavoritesClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return FavoritesClientDeleteResponse{}, nil
 }
@@ -146,7 +146,7 @@ func (client *FavoritesClient) Delete(ctx context.Context, resourceGroupName str
 func (client *FavoritesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, favoriteID string, _ *FavoritesClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/favorites/{favoriteId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -191,19 +191,14 @@ func (client *FavoritesClient) Get(ctx context.Context, resourceGroupName string
 	if err != nil {
 		return FavoritesClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return FavoritesClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *FavoritesClient) getCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, favoriteID string, _ *FavoritesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/favorites/{favoriteId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -230,8 +225,11 @@ func (client *FavoritesClient) getCreateRequest(ctx context.Context, resourceGro
 }
 
 // getHandleResponse handles the Get response.
-func (client *FavoritesClient) getHandleResponse(resp *http.Response) (FavoritesClientGetResponse, error) {
+func (client *FavoritesClient) getHandleResponse(resp *http.Response, successCodes ...int) (FavoritesClientGetResponse, error) {
 	result := FavoritesClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ComponentFavorite); err != nil {
 		return FavoritesClientGetResponse{}, err
 	}
@@ -257,19 +255,14 @@ func (client *FavoritesClient) List(ctx context.Context, resourceGroupName strin
 	if err != nil {
 		return FavoritesClientListResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return FavoritesClientListResponse{}, err
-	}
-	resp, err := client.listHandleResponse(httpResp)
-	return resp, err
+	return client.listHandleResponse(httpResp, http.StatusOK)
 }
 
 // listCreateRequest creates the List request.
 func (client *FavoritesClient) listCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, options *FavoritesClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/favorites"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -304,8 +297,11 @@ func (client *FavoritesClient) listCreateRequest(ctx context.Context, resourceGr
 }
 
 // listHandleResponse handles the List response.
-func (client *FavoritesClient) listHandleResponse(resp *http.Response) (FavoritesClientListResponse, error) {
+func (client *FavoritesClient) listHandleResponse(resp *http.Response, successCodes ...int) (FavoritesClientListResponse, error) {
 	result := FavoritesClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ComponentFavoriteArray); err != nil {
 		return FavoritesClientListResponse{}, err
 	}
@@ -333,19 +329,14 @@ func (client *FavoritesClient) Update(ctx context.Context, resourceGroupName str
 	if err != nil {
 		return FavoritesClientUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return FavoritesClientUpdateResponse{}, err
-	}
-	resp, err := client.updateHandleResponse(httpResp)
-	return resp, err
+	return client.updateHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateCreateRequest creates the Update request.
 func (client *FavoritesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, favoriteID string, favoriteProperties ComponentFavorite, _ *FavoritesClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/favorites/{favoriteId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -376,8 +367,11 @@ func (client *FavoritesClient) updateCreateRequest(ctx context.Context, resource
 }
 
 // updateHandleResponse handles the Update response.
-func (client *FavoritesClient) updateHandleResponse(resp *http.Response) (FavoritesClientUpdateResponse, error) {
+func (client *FavoritesClient) updateHandleResponse(resp *http.Response, successCodes ...int) (FavoritesClientUpdateResponse, error) {
 	result := FavoritesClientUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ComponentFavorite); err != nil {
 		return FavoritesClientUpdateResponse{}, err
 	}

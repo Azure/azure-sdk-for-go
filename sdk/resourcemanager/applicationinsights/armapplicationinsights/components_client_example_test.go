@@ -12,14 +12,14 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2020-02-02/ComponentsCreate.json
+// Generated from example definition: 2025-01-23-preview/ComponentsCreate.json
 func ExampleComponentsClient_CreateOrUpdate_componentCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armapplicationinsights.NewClientFactory("subid", cred, nil)
+	clientFactory, err := armapplicationinsights.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -27,10 +27,12 @@ func ExampleComponentsClient_CreateOrUpdate_componentCreate() {
 		Kind:     to.Ptr("web"),
 		Location: to.Ptr("South Central US"),
 		Properties: &armapplicationinsights.ComponentProperties{
-			ApplicationType:     to.Ptr(armapplicationinsights.ApplicationTypeWeb),
-			FlowType:            to.Ptr(armapplicationinsights.FlowTypeBluefield),
-			RequestSource:       to.Ptr(armapplicationinsights.RequestSourceRest),
-			WorkspaceResourceID: to.Ptr("/subscriptions/subid/resourcegroups/my-resource-group/providers/microsoft.operationalinsights/workspaces/my-workspace"),
+			ApplicationType:                    to.Ptr(armapplicationinsights.ApplicationTypeWeb),
+			AzureMonitorWorkspaceIngestionMode: to.Ptr(armapplicationinsights.AzureMonitorWorkspaceIngestionModeEnabled),
+			AzureMonitorWorkspaceResourceID:    to.Ptr("/subscriptions/subid/resourcegroups/my-resource-group/providers/microsoft.monitor/accounts/my-azure-monitor-workspace"),
+			FlowType:                           to.Ptr(armapplicationinsights.FlowTypeBluefield),
+			RequestSource:                      to.Ptr(armapplicationinsights.RequestSourceRest),
+			WorkspaceResourceID:                to.Ptr("/subscriptions/subid/resourcegroups/my-resource-group/providers/microsoft.operationalinsights/workspaces/my-workspace"),
 		},
 	}, nil)
 	if err != nil {
@@ -50,12 +52,144 @@ func ExampleComponentsClient_CreateOrUpdate_componentCreate() {
 	// 			AppID: to.Ptr("887f4bfd-b5fd-40d7-9fc3-123456789abc"),
 	// 			ApplicationID: to.Ptr("my-component"),
 	// 			ApplicationType: to.Ptr(armapplicationinsights.ApplicationTypeWeb),
+	// 			AzureMonitorWorkspaceIngestionMode: to.Ptr(armapplicationinsights.AzureMonitorWorkspaceIngestionModeEnabled),
+	// 			AzureMonitorWorkspaceResourceID: to.Ptr("/subscriptions/subid/resourcegroups/my-resource-group/providers/microsoft.monitor/accounts/my-azure-monitor-workspace"),
 	// 			ConnectionString: to.Ptr("InstrumentationKey=bc095013-3cf2-45ac-ab47-123456789abc"),
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-01-24T01:05:38.5934061+00:00"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2017, time.January, 24, 1, 5, 38, 593406100, time.UTC)),
+	// 			DataCollectionRuleResourceID: to.Ptr("/subscriptions/subid/resourcegroups/my-resource-group/providers/microsoft.insights/dataCollectionRules/my-data-collection-rule"),
 	// 			DisableIPMasking: to.Ptr(false),
 	// 			FlowType: to.Ptr(armapplicationinsights.FlowTypeBluefield),
 	// 			HockeyAppID: to.Ptr(""),
 	// 			HockeyAppToken: to.Ptr(""),
+	// 			IngestionMode: to.Ptr(armapplicationinsights.IngestionModeLogAnalytics),
+	// 			InstrumentationKey: to.Ptr("bc095013-3cf2-45ac-ab47-123456789abc"),
+	// 			OtlpLogsEndpoint: to.Ptr("https://my-dce-abcd.southcentralus-1.ingest.monitor.azure.com/dataCollectionRules/dcr-0123456789abcdef0123456789abcdef/streams/Microsoft-OTLP-Logs/otlp/v1/logs"),
+	// 			OtlpMetricsEndpoint: to.Ptr("https://my-dce-abcd.southcentralus-1.metrics.ingest.monitor.azure.com/dataCollectionRules/dcr-0123456789abcdef0123456789abcdef/streams/Microsoft-OtelMetrics/otlp/v1/metrics"),
+	// 			OtlpTracesEndpoint: to.Ptr("https://my-dce-abcd.southcentralus-1.ingest.monitor.azure.com/dataCollectionRules/dcr-0123456789abcdef0123456789abcdef/streams/Microsoft-OTLP-Traces/otlp/v1/traces"),
+	// 			RequestSource: to.Ptr(armapplicationinsights.RequestSourceRest),
+	// 			SamplingPercentage: to.Ptr[float64](100),
+	// 			TenantID: to.Ptr("f438d567-7177-4fe1-a5e3-123456789abc"),
+	// 			WorkspaceResourceID: to.Ptr("/subscriptions/subid/resourcegroups/my-resource-group/providers/microsoft.operationalinsights/workspaces/my-workspace"),
+	// 			ProvisioningState: to.Ptr("Succeeded"),
+	// 			PublicNetworkAccessForIngestion: to.Ptr(armapplicationinsights.PublicNetworkAccessTypeEnabled),
+	// 			PublicNetworkAccessForQuery: to.Ptr(armapplicationinsights.PublicNetworkAccessTypeEnabled),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"key": to.Ptr("value"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-01-23-preview/ComponentsCreateWithManagedWorkspaces.json
+func ExampleComponentsClient_CreateOrUpdate_componentCreateWithManagedWorkspaces() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armapplicationinsights.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewComponentsClient().CreateOrUpdate(ctx, "my-resource-group", "my-component", armapplicationinsights.Component{
+		Kind:     to.Ptr("web"),
+		Location: to.Ptr("South Central US"),
+		Properties: &armapplicationinsights.ComponentProperties{
+			ApplicationType:                    to.Ptr(armapplicationinsights.ApplicationTypeWeb),
+			AzureMonitorWorkspaceIngestionMode: to.Ptr(armapplicationinsights.AzureMonitorWorkspaceIngestionModeEnabled),
+			FlowType:                           to.Ptr(armapplicationinsights.FlowTypeBluefield),
+			RequestSource:                      to.Ptr(armapplicationinsights.RequestSourceRest),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armapplicationinsights.ComponentsClientCreateOrUpdateResponse{
+	// 	Component: armapplicationinsights.Component{
+	// 		Name: to.Ptr("my-component"),
+	// 		Type: to.Ptr("Microsoft.Insights/components"),
+	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/my-resource-group/providers/Microsoft.Insights/components/my-component"),
+	// 		Kind: to.Ptr("web"),
+	// 		Location: to.Ptr("South Central US"),
+	// 		Properties: &armapplicationinsights.ComponentProperties{
+	// 			AppID: to.Ptr("887f4bfd-b5fd-40d7-9fc3-123456789abc"),
+	// 			ApplicationID: to.Ptr("my-component"),
+	// 			ApplicationType: to.Ptr(armapplicationinsights.ApplicationTypeWeb),
+	// 			AzureMonitorWorkspaceIngestionMode: to.Ptr(armapplicationinsights.AzureMonitorWorkspaceIngestionModeEnabled),
+	// 			AzureMonitorWorkspaceResourceID: to.Ptr("/subscriptions/subid/resourcegroups/ai_my-component_887f4bfd-b5fd-40d7-9fc3-123456789abc_managed/providers/microsoft.monitor/accounts/managed-my-component-amw"),
+	// 			ConnectionString: to.Ptr("InstrumentationKey=bc095013-3cf2-45ac-ab47-123456789abc"),
+	// 			CreationDate: to.Ptr(time.Date(2017, time.January, 24, 1, 5, 38, 593406100, time.UTC)),
+	// 			DataCollectionRuleResourceID: to.Ptr("/subscriptions/subid/resourcegroups/ai_my-component_887f4bfd-b5fd-40d7-9fc3-123456789abc_managed/providers/microsoft.insights/dataCollectionRules/managed-my-component-dcr"),
+	// 			DisableIPMasking: to.Ptr(false),
+	// 			FlowType: to.Ptr(armapplicationinsights.FlowTypeBluefield),
+	// 			IngestionMode: to.Ptr(armapplicationinsights.IngestionModeLogAnalytics),
+	// 			InstrumentationKey: to.Ptr("bc095013-3cf2-45ac-ab47-123456789abc"),
+	// 			OtlpLogsEndpoint: to.Ptr("https://managed-my-component-dce-abcd.southcentralus-1.ingest.monitor.azure.com/dataCollectionRules/dcr-0123456789abcdef0123456789abcdef/streams/Microsoft-OTLP-Logs/otlp/v1/logs"),
+	// 			OtlpMetricsEndpoint: to.Ptr("https://managed-my-component-dce-abcd.southcentralus-1.metrics.ingest.monitor.azure.com/dataCollectionRules/dcr-0123456789abcdef0123456789abcdef/streams/Microsoft-OtelMetrics/otlp/v1/metrics"),
+	// 			OtlpTracesEndpoint: to.Ptr("https://managed-my-component-dce-abcd.southcentralus-1.ingest.monitor.azure.com/dataCollectionRules/dcr-0123456789abcdef0123456789abcdef/streams/Microsoft-OTLP-Traces/otlp/v1/traces"),
+	// 			RequestSource: to.Ptr(armapplicationinsights.RequestSourceRest),
+	// 			SamplingPercentage: to.Ptr[float64](100),
+	// 			TenantID: to.Ptr("f438d567-7177-4fe1-a5e3-123456789abc"),
+	// 			WorkspaceResourceID: to.Ptr("/subscriptions/subid/resourcegroups/ai_my-component_887f4bfd-b5fd-40d7-9fc3-123456789abc_managed/providers/microsoft.operationalinsights/workspaces/managed-my-component-ws"),
+	// 			ProvisioningState: to.Ptr("Succeeded"),
+	// 			PublicNetworkAccessForIngestion: to.Ptr(armapplicationinsights.PublicNetworkAccessTypeEnabled),
+	// 			PublicNetworkAccessForQuery: to.Ptr(armapplicationinsights.PublicNetworkAccessTypeEnabled),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"key": to.Ptr("value"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-01-23-preview/ComponentsCreateWithoutOtlp.json
+func ExampleComponentsClient_CreateOrUpdate_componentCreateWithoutOtlp() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armapplicationinsights.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewComponentsClient().CreateOrUpdate(ctx, "my-resource-group", "my-component", armapplicationinsights.Component{
+		Kind:     to.Ptr("web"),
+		Location: to.Ptr("South Central US"),
+		Properties: &armapplicationinsights.ComponentProperties{
+			ApplicationType:                    to.Ptr(armapplicationinsights.ApplicationTypeWeb),
+			AzureMonitorWorkspaceIngestionMode: to.Ptr(armapplicationinsights.AzureMonitorWorkspaceIngestionModeNotOptedIn),
+			FlowType:                           to.Ptr(armapplicationinsights.FlowTypeBluefield),
+			RequestSource:                      to.Ptr(armapplicationinsights.RequestSourceRest),
+			WorkspaceResourceID:                to.Ptr("/subscriptions/subid/resourcegroups/my-resource-group/providers/microsoft.operationalinsights/workspaces/my-workspace"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armapplicationinsights.ComponentsClientCreateOrUpdateResponse{
+	// 	Component: armapplicationinsights.Component{
+	// 		Name: to.Ptr("my-component"),
+	// 		Type: to.Ptr("Microsoft.Insights/components"),
+	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/my-resource-group/providers/Microsoft.Insights/components/my-component"),
+	// 		Kind: to.Ptr("web"),
+	// 		Location: to.Ptr("South Central US"),
+	// 		Properties: &armapplicationinsights.ComponentProperties{
+	// 			AppID: to.Ptr("887f4bfd-b5fd-40d7-9fc3-123456789abc"),
+	// 			ApplicationID: to.Ptr("my-component"),
+	// 			ApplicationType: to.Ptr(armapplicationinsights.ApplicationTypeWeb),
+	// 			AzureMonitorWorkspaceIngestionMode: to.Ptr(armapplicationinsights.AzureMonitorWorkspaceIngestionModeNotOptedIn),
+	// 			ConnectionString: to.Ptr("InstrumentationKey=bc095013-3cf2-45ac-ab47-123456789abc"),
+	// 			CreationDate: to.Ptr(time.Date(2017, time.January, 24, 1, 5, 38, 593406100, time.UTC)),
+	// 			DisableIPMasking: to.Ptr(false),
+	// 			FlowType: to.Ptr(armapplicationinsights.FlowTypeBluefield),
 	// 			IngestionMode: to.Ptr(armapplicationinsights.IngestionModeLogAnalytics),
 	// 			InstrumentationKey: to.Ptr("bc095013-3cf2-45ac-ab47-123456789abc"),
 	// 			RequestSource: to.Ptr(armapplicationinsights.RequestSourceRest),
@@ -73,14 +207,14 @@ func ExampleComponentsClient_CreateOrUpdate_componentCreate() {
 	// }
 }
 
-// Generated from example definition: 2020-02-02/ComponentsUpdate.json
+// Generated from example definition: 2025-01-23-preview/ComponentsUpdate.json
 func ExampleComponentsClient_CreateOrUpdate_componentUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armapplicationinsights.NewClientFactory("subid", cred, nil)
+	clientFactory, err := armapplicationinsights.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -109,14 +243,20 @@ func ExampleComponentsClient_CreateOrUpdate_componentUpdate() {
 	// 			AppID: to.Ptr("887f4bfd-b5fd-40d7-9fc3-123456789abc"),
 	// 			ApplicationID: to.Ptr("my-component"),
 	// 			ApplicationType: to.Ptr(armapplicationinsights.ApplicationTypeWeb),
+	// 			AzureMonitorWorkspaceIngestionMode: to.Ptr(armapplicationinsights.AzureMonitorWorkspaceIngestionModeEnabled),
+	// 			AzureMonitorWorkspaceResourceID: to.Ptr("/subscriptions/subid/resourcegroups/my-resource-group/providers/microsoft.monitor/accounts/my-azure-monitor-workspace"),
 	// 			ConnectionString: to.Ptr("InstrumentationKey=bc095013-3cf2-45ac-ab47-123456789abc"),
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-01-24T01:05:38.5934061+00:00"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2017, time.January, 24, 1, 5, 38, 593406100, time.UTC)),
+	// 			DataCollectionRuleResourceID: to.Ptr("/subscriptions/subid/resourcegroups/my-resource-group/providers/microsoft.insights/dataCollectionRules/my-data-collection-rule"),
 	// 			DisableIPMasking: to.Ptr(false),
 	// 			FlowType: to.Ptr(armapplicationinsights.FlowTypeBluefield),
 	// 			HockeyAppID: to.Ptr(""),
 	// 			HockeyAppToken: to.Ptr(""),
 	// 			IngestionMode: to.Ptr(armapplicationinsights.IngestionModeLogAnalytics),
 	// 			InstrumentationKey: to.Ptr("bc095013-3cf2-45ac-ab47-123456789abc"),
+	// 			OtlpLogsEndpoint: to.Ptr("https://my-dce-abcd.southcentralus-1.ingest.monitor.azure.com/dataCollectionRules/dcr-0123456789abcdef0123456789abcdef/streams/Microsoft-OTLP-Logs/otlp/v1/logs"),
+	// 			OtlpMetricsEndpoint: to.Ptr("https://my-dce-abcd.southcentralus-1.metrics.ingest.monitor.azure.com/dataCollectionRules/dcr-0123456789abcdef0123456789abcdef/streams/Microsoft-OtelMetrics/otlp/v1/metrics"),
+	// 			OtlpTracesEndpoint: to.Ptr("https://my-dce-abcd.southcentralus-1.ingest.monitor.azure.com/dataCollectionRules/dcr-0123456789abcdef0123456789abcdef/streams/Microsoft-OTLP-Traces/otlp/v1/traces"),
 	// 			RequestSource: to.Ptr(armapplicationinsights.RequestSourceRest),
 	// 			SamplingPercentage: to.Ptr[float64](100),
 	// 			TenantID: to.Ptr("f438d567-7177-4fe1-a5e3-123456789abc"),
@@ -133,14 +273,14 @@ func ExampleComponentsClient_CreateOrUpdate_componentUpdate() {
 	// }
 }
 
-// Generated from example definition: 2020-02-02/ComponentsDelete.json
+// Generated from example definition: 2025-01-23-preview/ComponentsDelete.json
 func ExampleComponentsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armapplicationinsights.NewClientFactory("subid", cred, nil)
+	clientFactory, err := armapplicationinsights.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -155,14 +295,14 @@ func ExampleComponentsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2020-02-02/ComponentsGet.json
-func ExampleComponentsClient_Get() {
+// Generated from example definition: 2025-01-23-preview/ComponentsGet.json
+func ExampleComponentsClient_Get_componentGet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armapplicationinsights.NewClientFactory("subid", cred, nil)
+	clientFactory, err := armapplicationinsights.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -184,12 +324,69 @@ func ExampleComponentsClient_Get() {
 	// 			AppID: to.Ptr("887f4bfd-b5fd-40d7-9fc3-123456789abc"),
 	// 			ApplicationID: to.Ptr("my-component"),
 	// 			ApplicationType: to.Ptr(armapplicationinsights.ApplicationTypeWeb),
+	// 			AzureMonitorWorkspaceIngestionMode: to.Ptr(armapplicationinsights.AzureMonitorWorkspaceIngestionModeEnabled),
+	// 			AzureMonitorWorkspaceResourceID: to.Ptr("/subscriptions/subid/resourcegroups/my-resource-group/providers/microsoft.monitor/accounts/my-azure-monitor-workspace"),
 	// 			ConnectionString: to.Ptr("InstrumentationKey=bc095013-3cf2-45ac-ab47-123456789abc"),
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-01-24T01:05:38.5934061+00:00"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2017, time.January, 24, 1, 5, 38, 593406100, time.UTC)),
+	// 			DataCollectionRuleResourceID: to.Ptr("/subscriptions/subid/resourcegroups/my-resource-group/providers/microsoft.insights/dataCollectionRules/my-data-collection-rule"),
 	// 			DisableIPMasking: to.Ptr(false),
 	// 			FlowType: to.Ptr(armapplicationinsights.FlowTypeBluefield),
 	// 			HockeyAppID: to.Ptr(""),
 	// 			HockeyAppToken: to.Ptr(""),
+	// 			IngestionMode: to.Ptr(armapplicationinsights.IngestionModeLogAnalytics),
+	// 			InstrumentationKey: to.Ptr("bc095013-3cf2-45ac-ab47-123456789abc"),
+	// 			OtlpLogsEndpoint: to.Ptr("https://my-dce-abcd.southcentralus-1.ingest.monitor.azure.com/dataCollectionRules/dcr-0123456789abcdef0123456789abcdef/streams/Microsoft-OTLP-Logs/otlp/v1/logs"),
+	// 			OtlpMetricsEndpoint: to.Ptr("https://my-dce-abcd.southcentralus-1.metrics.ingest.monitor.azure.com/dataCollectionRules/dcr-0123456789abcdef0123456789abcdef/streams/Microsoft-OtelMetrics/otlp/v1/metrics"),
+	// 			OtlpTracesEndpoint: to.Ptr("https://my-dce-abcd.southcentralus-1.ingest.monitor.azure.com/dataCollectionRules/dcr-0123456789abcdef0123456789abcdef/streams/Microsoft-OTLP-Traces/otlp/v1/traces"),
+	// 			RequestSource: to.Ptr(armapplicationinsights.RequestSourceRest),
+	// 			SamplingPercentage: to.Ptr[float64](100),
+	// 			TenantID: to.Ptr("f438d567-7177-4fe1-a5e3-123456789abc"),
+	// 			WorkspaceResourceID: to.Ptr("/subscriptions/subid/resourcegroups/my-resource-group/providers/microsoft.operationalinsights/workspaces/my-workspace"),
+	// 			ProvisioningState: to.Ptr("Succeeded"),
+	// 			PublicNetworkAccessForIngestion: to.Ptr(armapplicationinsights.PublicNetworkAccessTypeEnabled),
+	// 			PublicNetworkAccessForQuery: to.Ptr(armapplicationinsights.PublicNetworkAccessTypeEnabled),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"key": to.Ptr("value"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-01-23-preview/ComponentsGetWithoutOtlp.json
+func ExampleComponentsClient_Get_componentGetWithoutOtlp() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armapplicationinsights.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewComponentsClient().Get(ctx, "my-resource-group", "my-component", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armapplicationinsights.ComponentsClientGetResponse{
+	// 	Component: armapplicationinsights.Component{
+	// 		Name: to.Ptr("my-component"),
+	// 		Type: to.Ptr("Microsoft.Insights/components"),
+	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/my-resource-group/providers/Microsoft.Insights/components/my-component"),
+	// 		Kind: to.Ptr("web"),
+	// 		Location: to.Ptr("South Central US"),
+	// 		Properties: &armapplicationinsights.ComponentProperties{
+	// 			AppID: to.Ptr("887f4bfd-b5fd-40d7-9fc3-123456789abc"),
+	// 			ApplicationID: to.Ptr("my-component"),
+	// 			ApplicationType: to.Ptr(armapplicationinsights.ApplicationTypeWeb),
+	// 			AzureMonitorWorkspaceIngestionMode: to.Ptr(armapplicationinsights.AzureMonitorWorkspaceIngestionModeNotOptedIn),
+	// 			ConnectionString: to.Ptr("InstrumentationKey=bc095013-3cf2-45ac-ab47-123456789abc"),
+	// 			CreationDate: to.Ptr(time.Date(2017, time.January, 24, 1, 5, 38, 593406100, time.UTC)),
+	// 			DisableIPMasking: to.Ptr(false),
+	// 			FlowType: to.Ptr(armapplicationinsights.FlowTypeBluefield),
 	// 			IngestionMode: to.Ptr(armapplicationinsights.IngestionModeLogAnalytics),
 	// 			InstrumentationKey: to.Ptr("bc095013-3cf2-45ac-ab47-123456789abc"),
 	// 			RequestSource: to.Ptr(armapplicationinsights.RequestSourceRest),
@@ -207,14 +404,14 @@ func ExampleComponentsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2020-02-02/ComponentsPurgeStatus.json
+// Generated from example definition: 2025-01-23-preview/ComponentsPurgeStatus.json
 func ExampleComponentsClient_GetPurgeStatus() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armapplicationinsights.NewClientFactory("00000000-0000-0000-0000-00000000000", cred, nil)
+	clientFactory, err := armapplicationinsights.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -232,105 +429,14 @@ func ExampleComponentsClient_GetPurgeStatus() {
 	// }
 }
 
-// Generated from example definition: 2020-02-02/ComponentsList.json
-func ExampleComponentsClient_NewListPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armapplicationinsights.NewClientFactory("subid", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewComponentsClient().NewListPager(nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armapplicationinsights.ComponentsClientListResponse{
-		// 	ComponentListResult: armapplicationinsights.ComponentListResult{
-		// 		Value: []*armapplicationinsights.Component{
-		// 			{
-		// 				Name: to.Ptr("my-component"),
-		// 				Type: to.Ptr("Microsoft.Insights/components"),
-		// 				ID: to.Ptr("/subscriptions/subid/resourceGroups/my-resource-group/providers/Microsoft.Insights/components/my-component"),
-		// 				Kind: to.Ptr("web"),
-		// 				Location: to.Ptr("South Central US"),
-		// 				Properties: &armapplicationinsights.ComponentProperties{
-		// 					AppID: to.Ptr("16526d1a-dfba-4362-a9e9-123456789abc"),
-		// 					ApplicationID: to.Ptr("my-component"),
-		// 					ApplicationType: to.Ptr(armapplicationinsights.ApplicationTypeWeb),
-		// 					ConnectionString: to.Ptr("InstrumentationKey=dc5931c7-a7ad-4ad0-89d6-123456789abc"),
-		// 					CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-14T12:24:05.0041213+00:00"); return t}()),
-		// 					DisableIPMasking: to.Ptr(false),
-		// 					FlowType: to.Ptr(armapplicationinsights.FlowTypeBluefield),
-		// 					HockeyAppID: to.Ptr(""),
-		// 					HockeyAppToken: to.Ptr(""),
-		// 					IngestionMode: to.Ptr(armapplicationinsights.IngestionModeLogAnalytics),
-		// 					InstrumentationKey: to.Ptr("dc5931c7-a7ad-4ad0-89d6-123456789abc"),
-		// 					RequestSource: to.Ptr(armapplicationinsights.RequestSourceRest),
-		// 					SamplingPercentage: to.Ptr[float64](75),
-		// 					TenantID: to.Ptr("f438d567-7177-4fe1-a5e3-123456789abc"),
-		// 					WorkspaceResourceID: to.Ptr("/subscriptions/subid/resourcegroups/my-resource-group/providers/microsoft.operationalinsights/workspaces/my-workspace"),
-		// 					ProvisioningState: to.Ptr("Succeeded"),
-		// 					PublicNetworkAccessForIngestion: to.Ptr(armapplicationinsights.PublicNetworkAccessTypeEnabled),
-		// 					PublicNetworkAccessForQuery: to.Ptr(armapplicationinsights.PublicNetworkAccessTypeEnabled),
-		// 				},
-		// 				Tags: map[string]*string{
-		// 					"key": to.Ptr("value"),
-		// 				},
-		// 			},
-		// 			{
-		// 				Name: to.Ptr("my-other-component"),
-		// 				Type: to.Ptr("Microsoft.Insights/components"),
-		// 				ID: to.Ptr("/subscriptions/subid/resourceGroups/my-other-resource-group/providers/Microsoft.Insights/components/my-other-component"),
-		// 				Kind: to.Ptr("web"),
-		// 				Location: to.Ptr("South Central US"),
-		// 				Properties: &armapplicationinsights.ComponentProperties{
-		// 					AppID: to.Ptr("887f4bfd-b5fd-40d7-9fc3-123456789abc"),
-		// 					ApplicationID: to.Ptr("my-other-component"),
-		// 					ApplicationType: to.Ptr(armapplicationinsights.ApplicationTypeWeb),
-		// 					ConnectionString: to.Ptr("InstrumentationKey=bc095013-3cf2-45ac-ab47-123456789abc"),
-		// 					CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-01-24T01:05:38.5934061+00:00"); return t}()),
-		// 					DisableIPMasking: to.Ptr(false),
-		// 					FlowType: to.Ptr(armapplicationinsights.FlowTypeBluefield),
-		// 					HockeyAppID: to.Ptr(""),
-		// 					HockeyAppToken: to.Ptr(""),
-		// 					IngestionMode: to.Ptr(armapplicationinsights.IngestionModeLogAnalytics),
-		// 					InstrumentationKey: to.Ptr("bc095013-3cf2-45ac-ab47-123456789abc"),
-		// 					RequestSource: to.Ptr(armapplicationinsights.RequestSourceRest),
-		// 					SamplingPercentage: to.Ptr[float64](30),
-		// 					TenantID: to.Ptr("f438d567-7177-4fe1-a5e3-123456789abc"),
-		// 					WorkspaceResourceID: to.Ptr("/subscriptions/subid/resourcegroups/my-resource-group/providers/microsoft.operationalinsights/workspaces/my-workspace"),
-		// 					ProvisioningState: to.Ptr("Succeeded"),
-		// 					PublicNetworkAccessForIngestion: to.Ptr(armapplicationinsights.PublicNetworkAccessTypeEnabled),
-		// 					PublicNetworkAccessForQuery: to.Ptr(armapplicationinsights.PublicNetworkAccessTypeEnabled),
-		// 				},
-		// 				Tags: map[string]*string{
-		// 					"key": to.Ptr("value"),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2020-02-02/ComponentsListByResourceGroup.json
+// Generated from example definition: 2025-01-23-preview/ComponentsListByResourceGroup.json
 func ExampleComponentsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armapplicationinsights.NewClientFactory("subid", cred, nil)
+	clientFactory, err := armapplicationinsights.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -358,14 +464,20 @@ func ExampleComponentsClient_NewListByResourceGroupPager() {
 		// 					AppID: to.Ptr("16526d1a-dfba-4362-a9e9-123456789abc"),
 		// 					ApplicationID: to.Ptr("my-component"),
 		// 					ApplicationType: to.Ptr(armapplicationinsights.ApplicationTypeWeb),
+		// 					AzureMonitorWorkspaceIngestionMode: to.Ptr(armapplicationinsights.AzureMonitorWorkspaceIngestionModeEnabled),
+		// 					AzureMonitorWorkspaceResourceID: to.Ptr("/subscriptions/subid/resourcegroups/my-resource-group/providers/microsoft.monitor/accounts/my-azure-monitor-workspace"),
 		// 					ConnectionString: to.Ptr("InstrumentationKey=dc5931c7-a7ad-4ad0-89d6-123456789abc"),
-		// 					CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-14T12:24:05.0041213+00:00"); return t}()),
+		// 					CreationDate: to.Ptr(time.Date(2017, time.February, 14, 12, 24, 5, 4121300, time.UTC)),
+		// 					DataCollectionRuleResourceID: to.Ptr("/subscriptions/subid/resourcegroups/my-resource-group/providers/microsoft.insights/dataCollectionRules/my-data-collection-rule"),
 		// 					DisableIPMasking: to.Ptr(false),
 		// 					FlowType: to.Ptr(armapplicationinsights.FlowTypeBluefield),
 		// 					HockeyAppID: to.Ptr(""),
 		// 					HockeyAppToken: to.Ptr(""),
 		// 					IngestionMode: to.Ptr(armapplicationinsights.IngestionModeLogAnalytics),
 		// 					InstrumentationKey: to.Ptr("dc5931c7-a7ad-4ad0-89d6-123456789abc"),
+		// 					OtlpLogsEndpoint: to.Ptr("https://my-dce-abcd.southcentralus-1.ingest.monitor.azure.com/dataCollectionRules/dcr-0123456789abcdef0123456789abcdef/streams/Microsoft-OTLP-Logs/otlp/v1/logs"),
+		// 					OtlpMetricsEndpoint: to.Ptr("https://my-dce-abcd.southcentralus-1.metrics.ingest.monitor.azure.com/dataCollectionRules/dcr-0123456789abcdef0123456789abcdef/streams/Microsoft-OtelMetrics/otlp/v1/metrics"),
+		// 					OtlpTracesEndpoint: to.Ptr("https://my-dce-abcd.southcentralus-1.ingest.monitor.azure.com/dataCollectionRules/dcr-0123456789abcdef0123456789abcdef/streams/Microsoft-OTLP-Traces/otlp/v1/traces"),
 		// 					RequestSource: to.Ptr(armapplicationinsights.RequestSourceRest),
 		// 					SamplingPercentage: to.Ptr[float64](100),
 		// 					TenantID: to.Ptr("f438d567-7177-4fe1-a5e3-123456789abc"),
@@ -388,14 +500,20 @@ func ExampleComponentsClient_NewListByResourceGroupPager() {
 		// 					AppID: to.Ptr("887f4bfd-b5fd-40d7-9fc3-123456789abc"),
 		// 					ApplicationID: to.Ptr("my-other-component"),
 		// 					ApplicationType: to.Ptr(armapplicationinsights.ApplicationTypeWeb),
+		// 					AzureMonitorWorkspaceIngestionMode: to.Ptr(armapplicationinsights.AzureMonitorWorkspaceIngestionModeEnabled),
+		// 					AzureMonitorWorkspaceResourceID: to.Ptr("/subscriptions/subid/resourcegroups/my-resource-group/providers/microsoft.monitor/accounts/my-azure-monitor-workspace"),
 		// 					ConnectionString: to.Ptr("InstrumentationKey=bc095013-3cf2-45ac-ab47-123456789abc"),
-		// 					CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-01-24T01:05:38.5934061+00:00"); return t}()),
+		// 					CreationDate: to.Ptr(time.Date(2017, time.January, 24, 1, 5, 38, 593406100, time.UTC)),
+		// 					DataCollectionRuleResourceID: to.Ptr("/subscriptions/subid/resourcegroups/my-resource-group/providers/microsoft.insights/dataCollectionRules/my-data-collection-rule"),
 		// 					DisableIPMasking: to.Ptr(false),
 		// 					FlowType: to.Ptr(armapplicationinsights.FlowTypeBluefield),
 		// 					HockeyAppID: to.Ptr(""),
 		// 					HockeyAppToken: to.Ptr(""),
 		// 					IngestionMode: to.Ptr(armapplicationinsights.IngestionModeLogAnalytics),
 		// 					InstrumentationKey: to.Ptr("bc095013-3cf2-45ac-ab47-123456789abc"),
+		// 					OtlpLogsEndpoint: to.Ptr("https://my-dce-abcd.southcentralus-1.ingest.monitor.azure.com/dataCollectionRules/dcr-0123456789abcdef0123456789abcdef/streams/Microsoft-OTLP-Logs/otlp/v1/logs"),
+		// 					OtlpMetricsEndpoint: to.Ptr("https://my-dce-abcd.southcentralus-1.metrics.ingest.monitor.azure.com/dataCollectionRules/dcr-0123456789abcdef0123456789abcdef/streams/Microsoft-OtelMetrics/otlp/v1/metrics"),
+		// 					OtlpTracesEndpoint: to.Ptr("https://my-dce-abcd.southcentralus-1.ingest.monitor.azure.com/dataCollectionRules/dcr-0123456789abcdef0123456789abcdef/streams/Microsoft-OTLP-Traces/otlp/v1/traces"),
 		// 					RequestSource: to.Ptr(armapplicationinsights.RequestSourceRest),
 		// 					SamplingPercentage: to.Ptr[float64](50),
 		// 					TenantID: to.Ptr("f438d567-7177-4fe1-a5e3-123456789abc"),
@@ -414,14 +532,117 @@ func ExampleComponentsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2020-02-02/ComponentsPurge.json
+// Generated from example definition: 2025-01-23-preview/ComponentsList.json
+func ExampleComponentsClient_NewListPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armapplicationinsights.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewComponentsClient().NewListPager(nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armapplicationinsights.ComponentsClientListResponse{
+		// 	ComponentListResult: armapplicationinsights.ComponentListResult{
+		// 		Value: []*armapplicationinsights.Component{
+		// 			{
+		// 				Name: to.Ptr("my-component"),
+		// 				Type: to.Ptr("Microsoft.Insights/components"),
+		// 				ID: to.Ptr("/subscriptions/subid/resourceGroups/my-resource-group/providers/Microsoft.Insights/components/my-component"),
+		// 				Kind: to.Ptr("web"),
+		// 				Location: to.Ptr("South Central US"),
+		// 				Properties: &armapplicationinsights.ComponentProperties{
+		// 					AppID: to.Ptr("16526d1a-dfba-4362-a9e9-123456789abc"),
+		// 					ApplicationID: to.Ptr("my-component"),
+		// 					ApplicationType: to.Ptr(armapplicationinsights.ApplicationTypeWeb),
+		// 					AzureMonitorWorkspaceIngestionMode: to.Ptr(armapplicationinsights.AzureMonitorWorkspaceIngestionModeEnabled),
+		// 					AzureMonitorWorkspaceResourceID: to.Ptr("/subscriptions/subid/resourcegroups/my-resource-group/providers/microsoft.monitor/accounts/my-azure-monitor-workspace"),
+		// 					ConnectionString: to.Ptr("InstrumentationKey=dc5931c7-a7ad-4ad0-89d6-123456789abc"),
+		// 					CreationDate: to.Ptr(time.Date(2017, time.February, 14, 12, 24, 5, 4121300, time.UTC)),
+		// 					DataCollectionRuleResourceID: to.Ptr("/subscriptions/subid/resourcegroups/my-resource-group/providers/microsoft.insights/dataCollectionRules/my-data-collection-rule"),
+		// 					DisableIPMasking: to.Ptr(false),
+		// 					FlowType: to.Ptr(armapplicationinsights.FlowTypeBluefield),
+		// 					HockeyAppID: to.Ptr(""),
+		// 					HockeyAppToken: to.Ptr(""),
+		// 					IngestionMode: to.Ptr(armapplicationinsights.IngestionModeLogAnalytics),
+		// 					InstrumentationKey: to.Ptr("dc5931c7-a7ad-4ad0-89d6-123456789abc"),
+		// 					OtlpLogsEndpoint: to.Ptr("https://my-dce-abcd.southcentralus-1.ingest.monitor.azure.com/dataCollectionRules/dcr-0123456789abcdef0123456789abcdef/streams/Microsoft-OTLP-Logs/otlp/v1/logs"),
+		// 					OtlpMetricsEndpoint: to.Ptr("https://my-dce-abcd.southcentralus-1.metrics.ingest.monitor.azure.com/dataCollectionRules/dcr-0123456789abcdef0123456789abcdef/streams/Microsoft-OtelMetrics/otlp/v1/metrics"),
+		// 					OtlpTracesEndpoint: to.Ptr("https://my-dce-abcd.southcentralus-1.ingest.monitor.azure.com/dataCollectionRules/dcr-0123456789abcdef0123456789abcdef/streams/Microsoft-OTLP-Traces/otlp/v1/traces"),
+		// 					RequestSource: to.Ptr(armapplicationinsights.RequestSourceRest),
+		// 					SamplingPercentage: to.Ptr[float64](75),
+		// 					TenantID: to.Ptr("f438d567-7177-4fe1-a5e3-123456789abc"),
+		// 					WorkspaceResourceID: to.Ptr("/subscriptions/subid/resourcegroups/my-resource-group/providers/microsoft.operationalinsights/workspaces/my-workspace"),
+		// 					ProvisioningState: to.Ptr("Succeeded"),
+		// 					PublicNetworkAccessForIngestion: to.Ptr(armapplicationinsights.PublicNetworkAccessTypeEnabled),
+		// 					PublicNetworkAccessForQuery: to.Ptr(armapplicationinsights.PublicNetworkAccessTypeEnabled),
+		// 				},
+		// 				Tags: map[string]*string{
+		// 					"key": to.Ptr("value"),
+		// 				},
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("my-other-component"),
+		// 				Type: to.Ptr("Microsoft.Insights/components"),
+		// 				ID: to.Ptr("/subscriptions/subid/resourceGroups/my-other-resource-group/providers/Microsoft.Insights/components/my-other-component"),
+		// 				Kind: to.Ptr("web"),
+		// 				Location: to.Ptr("South Central US"),
+		// 				Properties: &armapplicationinsights.ComponentProperties{
+		// 					AppID: to.Ptr("887f4bfd-b5fd-40d7-9fc3-123456789abc"),
+		// 					ApplicationID: to.Ptr("my-other-component"),
+		// 					ApplicationType: to.Ptr(armapplicationinsights.ApplicationTypeWeb),
+		// 					AzureMonitorWorkspaceIngestionMode: to.Ptr(armapplicationinsights.AzureMonitorWorkspaceIngestionModeEnabled),
+		// 					AzureMonitorWorkspaceResourceID: to.Ptr("/subscriptions/subid/resourcegroups/my-resource-group/providers/microsoft.monitor/accounts/my-azure-monitor-workspace"),
+		// 					ConnectionString: to.Ptr("InstrumentationKey=bc095013-3cf2-45ac-ab47-123456789abc"),
+		// 					CreationDate: to.Ptr(time.Date(2017, time.January, 24, 1, 5, 38, 593406100, time.UTC)),
+		// 					DataCollectionRuleResourceID: to.Ptr("/subscriptions/subid/resourcegroups/my-resource-group/providers/microsoft.insights/dataCollectionRules/my-data-collection-rule"),
+		// 					DisableIPMasking: to.Ptr(false),
+		// 					FlowType: to.Ptr(armapplicationinsights.FlowTypeBluefield),
+		// 					HockeyAppID: to.Ptr(""),
+		// 					HockeyAppToken: to.Ptr(""),
+		// 					IngestionMode: to.Ptr(armapplicationinsights.IngestionModeLogAnalytics),
+		// 					InstrumentationKey: to.Ptr("bc095013-3cf2-45ac-ab47-123456789abc"),
+		// 					OtlpLogsEndpoint: to.Ptr("https://my-dce-abcd.southcentralus-1.ingest.monitor.azure.com/dataCollectionRules/dcr-0123456789abcdef0123456789abcdef/streams/Microsoft-OTLP-Logs/otlp/v1/logs"),
+		// 					OtlpMetricsEndpoint: to.Ptr("https://my-dce-abcd.southcentralus-1.metrics.ingest.monitor.azure.com/dataCollectionRules/dcr-0123456789abcdef0123456789abcdef/streams/Microsoft-OtelMetrics/otlp/v1/metrics"),
+		// 					OtlpTracesEndpoint: to.Ptr("https://my-dce-abcd.southcentralus-1.ingest.monitor.azure.com/dataCollectionRules/dcr-0123456789abcdef0123456789abcdef/streams/Microsoft-OTLP-Traces/otlp/v1/traces"),
+		// 					RequestSource: to.Ptr(armapplicationinsights.RequestSourceRest),
+		// 					SamplingPercentage: to.Ptr[float64](30),
+		// 					TenantID: to.Ptr("f438d567-7177-4fe1-a5e3-123456789abc"),
+		// 					WorkspaceResourceID: to.Ptr("/subscriptions/subid/resourcegroups/my-resource-group/providers/microsoft.operationalinsights/workspaces/my-workspace"),
+		// 					ProvisioningState: to.Ptr("Succeeded"),
+		// 					PublicNetworkAccessForIngestion: to.Ptr(armapplicationinsights.PublicNetworkAccessTypeEnabled),
+		// 					PublicNetworkAccessForQuery: to.Ptr(armapplicationinsights.PublicNetworkAccessTypeEnabled),
+		// 				},
+		// 				Tags: map[string]*string{
+		// 					"key": to.Ptr("value"),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2025-01-23-preview/ComponentsPurge.json
 func ExampleComponentsClient_Purge() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armapplicationinsights.NewClientFactory("00000000-0000-0000-0000-00000000000", cred, nil)
+	clientFactory, err := armapplicationinsights.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -440,14 +661,14 @@ func ExampleComponentsClient_Purge() {
 	}
 }
 
-// Generated from example definition: 2020-02-02/ComponentsUpdateTagsOnly.json
+// Generated from example definition: 2025-01-23-preview/ComponentsUpdateTagsOnly.json
 func ExampleComponentsClient_UpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armapplicationinsights.NewClientFactory("subid", cred, nil)
+	clientFactory, err := armapplicationinsights.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -477,14 +698,20 @@ func ExampleComponentsClient_UpdateTags() {
 	// 			AppID: to.Ptr("887f4bfd-b5fd-40d7-9fc3-123456789abc"),
 	// 			ApplicationID: to.Ptr("my-component"),
 	// 			ApplicationType: to.Ptr(armapplicationinsights.ApplicationTypeWeb),
+	// 			AzureMonitorWorkspaceIngestionMode: to.Ptr(armapplicationinsights.AzureMonitorWorkspaceIngestionModeEnabled),
+	// 			AzureMonitorWorkspaceResourceID: to.Ptr("/subscriptions/subid/resourcegroups/my-resource-group/providers/microsoft.monitor/accounts/my-azure-monitor-workspace"),
 	// 			ConnectionString: to.Ptr("InstrumentationKey=bc095013-3cf2-45ac-ab47-123456789abc"),
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-01-24T01:05:38.5934061+00:00"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2017, time.January, 24, 1, 5, 38, 593406100, time.UTC)),
+	// 			DataCollectionRuleResourceID: to.Ptr("/subscriptions/subid/resourcegroups/my-resource-group/providers/microsoft.insights/dataCollectionRules/my-data-collection-rule"),
 	// 			DisableIPMasking: to.Ptr(false),
 	// 			FlowType: to.Ptr(armapplicationinsights.FlowTypeBluefield),
 	// 			HockeyAppID: to.Ptr(""),
 	// 			HockeyAppToken: to.Ptr(""),
 	// 			IngestionMode: to.Ptr(armapplicationinsights.IngestionModeLogAnalytics),
 	// 			InstrumentationKey: to.Ptr("bc095013-3cf2-45ac-ab47-123456789abc"),
+	// 			OtlpLogsEndpoint: to.Ptr("https://my-dce-abcd.southcentralus-1.ingest.monitor.azure.com/dataCollectionRules/dcr-0123456789abcdef0123456789abcdef/streams/Microsoft-OTLP-Logs/otlp/v1/logs"),
+	// 			OtlpMetricsEndpoint: to.Ptr("https://my-dce-abcd.southcentralus-1.metrics.ingest.monitor.azure.com/dataCollectionRules/dcr-0123456789abcdef0123456789abcdef/streams/Microsoft-OtelMetrics/otlp/v1/metrics"),
+	// 			OtlpTracesEndpoint: to.Ptr("https://my-dce-abcd.southcentralus-1.ingest.monitor.azure.com/dataCollectionRules/dcr-0123456789abcdef0123456789abcdef/streams/Microsoft-OTLP-Traces/otlp/v1/traces"),
 	// 			RequestSource: to.Ptr(armapplicationinsights.RequestSourceRest),
 	// 			SamplingPercentage: to.Ptr[float64](100),
 	// 			TenantID: to.Ptr("f438d567-7177-4fe1-a5e3-123456789abc"),

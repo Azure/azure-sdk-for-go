@@ -506,6 +506,13 @@ type ComponentProperties struct {
 	// REQUIRED; Type of application being monitored.
 	ApplicationType *ApplicationType
 
+	// Indicates the state of the OpenTelemetry ingestion into the linked Azure Monitor workspace. Clients may set this to `NotOptedIn`
+	// or `Enabled`; `Disabled` is set only by the service when the link to the Azure Monitor workspace is broken.
+	AzureMonitorWorkspaceIngestionMode *AzureMonitorWorkspaceIngestionMode
+
+	// Resource Id of the Azure Monitor workspace which the OpenTelemetry data will be ingested to.
+	AzureMonitorWorkspaceResourceID *string
+
 	// Disable IP masking.
 	DisableIPMasking *bool
 
@@ -560,6 +567,10 @@ type ComponentProperties struct {
 	// READ-ONLY; Creation Date for the Application Insights component, in ISO 8601 format.
 	CreationDate *time.Time
 
+	// READ-ONLY; Resource Id of the data collection rule that routes the OpenTelemetry data ingested through the OTLP endpoints
+	// of this component.
+	DataCollectionRuleResourceID *string
+
 	// READ-ONLY; Token used to authenticate communications with between Application Insights and HockeyApp.
 	HockeyAppToken *string
 
@@ -573,6 +584,15 @@ type ComponentProperties struct {
 
 	// READ-ONLY; Application name.
 	Name *string
+
+	// READ-ONLY; The OTLP endpoint to which OpenTelemetry logs for this component are sent.
+	OtlpLogsEndpoint *string
+
+	// READ-ONLY; The OTLP endpoint to which OpenTelemetry metrics for this component are sent.
+	OtlpMetricsEndpoint *string
+
+	// READ-ONLY; The OTLP endpoint to which OpenTelemetry traces for this component are sent.
+	OtlpTracesEndpoint *string
 
 	// READ-ONLY; List of linked private link scope resources.
 	PrivateLinkScopedResources []*PrivateLinkScopedResource

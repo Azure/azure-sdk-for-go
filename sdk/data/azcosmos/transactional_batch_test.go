@@ -50,6 +50,39 @@ func TestTransactionalBatchOwnsAppendSnapshots(t *testing.T) {
 	require.JSONEq(t, `[{"operationType":"Replace","id":"item","resourceBody":{"id":"item","value":"original"},"ifMatch":"\"original\""}]`, string(body))
 }
 
+func TestTransactionalBatchReadConditionsOwnSnapshots(t *testing.T) {
+	for _, test := range []struct {
+		name    string
+		options func(*azcore.ETag) *TransactionalBatchReadItemOptions
+		body    string
+	}{
+		{"nil options", func(*azcore.ETag) *TransactionalBatchReadItemOptions { return nil }, `[{"operationType":"Read","id":"item"}]`},
+		{"default options", func(*azcore.ETag) *TransactionalBatchReadItemOptions {
+			return &TransactionalBatchReadItemOptions{}
+		}, `[{"operationType":"Read","id":"item"}]`},
+		{"If-Match", func(etag *azcore.ETag) *TransactionalBatchReadItemOptions {
+			return &TransactionalBatchReadItemOptions{IfMatchETag: etag}
+		}, `[{"operationType":"Read","id":"item","ifMatch":"\"original\""}]`},
+		{"If-None-Match", func(etag *azcore.ETag) *TransactionalBatchReadItemOptions {
+			return &TransactionalBatchReadItemOptions{IfNoneMatchETag: etag}
+		}, `[{"operationType":"Read","id":"item","ifNoneMatch":"\"original\""}]`},
+	} {
+		t.Run(test.name, func(t *testing.T) {
+			etag := azcore.ETag(`"original"`)
+			options := test.options(&etag)
+			batch := NewTransactionalBatch(NewPartitionKeyString("pk"))
+			require.NoError(t, batch.ReadItem("item", options))
+			etag = `"changed"`
+			if options != nil {
+				options.IfMatchETag, options.IfNoneMatchETag = nil, nil
+			}
+			body, err := batch.marshal()
+			require.NoError(t, err)
+			require.JSONEq(t, test.body, string(body))
+		})
+	}
+}
+
 func TestTransactionalBatchCopiesAppendIndependently(t *testing.T) {
 	original := NewTransactionalBatch(NewPartitionKeyNull())
 	require.NoError(t, original.ReadItem("first", nil))
@@ -69,12 +102,15 @@ func TestTransactionalBatchEscapesEnvelopeStrings(t *testing.T) {
 	id := "quoted\"\\\n\u2603"
 	etag := azcore.ETag("etag\"\\\n\u2603")
 	require.NoError(t, batch.ReadItem(id, &TransactionalBatchReadItemOptions{IfMatchETag: &etag}))
+	require.NoError(t, batch.ReadItem(id, &TransactionalBatchReadItemOptions{IfNoneMatchETag: &etag}))
 	body, err := batch.marshal()
 	require.NoError(t, err)
 	var operations []transactionalBatchOperation
 	require.NoError(t, json.Unmarshal(body, &operations))
 	require.Equal(t, id, operations[0].ID)
 	require.Equal(t, string(etag), operations[0].IfMatch)
+	require.Equal(t, id, operations[1].ID)
+	require.Equal(t, string(etag), operations[1].IfNoneMatch)
 }
 
 func TestTransactionalBatchInvalidAppendIsSticky(t *testing.T) {
@@ -122,6 +158,9 @@ func TestTransactionalBatchValidatesConditions(t *testing.T) {
 					return b.ReadItem("item", &TransactionalBatchReadItemOptions{IfMatchETag: &etag})
 				},
 				func(b *TransactionalBatch) error {
+					return b.ReadItem("item", &TransactionalBatchReadItemOptions{IfNoneMatchETag: &etag})
+				},
+				func(b *TransactionalBatch) error {
 					return b.ReplaceItem("item", []byte(`{}`), &TransactionalBatchReplaceItemOptions{IfMatchETag: &etag})
 				},
 				func(b *TransactionalBatch) error {
@@ -142,10 +181,17 @@ func TestTransactionalBatchValidatesConditions(t *testing.T) {
 	}
 	etag := azcore.ETag("*")
 	batch := NewTransactionalBatch(NewPartitionKeyString("pk"))
+	require.NoError(t, batch.ReadItem("first", nil))
+	err := batch.ReadItem("item", &TransactionalBatchReadItemOptions{IfMatchETag: &etag, IfNoneMatchETag: &etag})
+	require.ErrorContains(t, err, "must not both be set")
+	body, marshalErr := batch.marshal()
+	require.Nil(t, body)
+	require.Equal(t, err, marshalErr, "an invalid conditional read must not submit the preceding operation")
+	batch = NewTransactionalBatch(NewPartitionKeyString("pk"))
 	require.Error(t, batch.UpsertItem([]byte(`{}`), &TransactionalBatchUpsertItemOptions{IfMatchETag: &etag, IfNoneMatchETag: &etag}))
 	batch = NewTransactionalBatch(NewPartitionKeyString("pk"))
 	require.NoError(t, batch.UpsertItem([]byte(`{"id":"new"}`), &TransactionalBatchUpsertItemOptions{IfNoneMatchETag: &etag}))
-	body, err := batch.marshal()
+	body, err = batch.marshal()
 	require.NoError(t, err)
 	require.JSONEq(t, `[{"operationType":"Upsert","resourceBody":{"id":"new"},"ifNoneMatch":"*"}]`, string(body))
 }

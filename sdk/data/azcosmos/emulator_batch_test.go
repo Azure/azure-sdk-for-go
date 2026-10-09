@@ -37,7 +37,6 @@ func TestEmulatorTransactionalBatchCommitsAllFiveOperations(t *testing.T) {
 		Operation: OperationOptions{EnableContentResponseOnWrite: &enabled},
 	})
 	require.NoError(t, err)
-	require.True(t, response.Success)
 	require.Equal(t, http.StatusOK, response.StatusCode)
 	require.Len(t, response.OperationResults, 5)
 	require.Equal(t, []int{201, 200, 201, 200, 204}, []int{
@@ -60,6 +59,54 @@ func TestEmulatorTransactionalBatchCommitsAllFiveOperations(t *testing.T) {
 	var cosmosErr *Error
 	require.ErrorAs(t, err, &cosmosErr)
 	require.Equal(t, CodeNotFound, cosmosErr.Code)
+}
+
+func TestEmulatorTransactionalBatchReadIfNoneMatch(t *testing.T) {
+	for _, test := range []struct {
+		name    string
+		matches bool
+		status  int
+	}{
+		{"matching ETag", true, http.StatusNotModified},
+		{"different ETag", false, http.StatusOK},
+	} {
+		t.Run(test.name, func(t *testing.T) {
+			container := emulatorContainer(t)
+			id := uniqueItemID(t)
+			key := NewPartitionKeyString(id)
+			trackEmulatorItem(t, container, key, id)
+			body, err := json.Marshal(map[string]any{"id": id, "pk": id, "value": "original"})
+			require.NoError(t, err)
+			original, err := container.CreateItem(t.Context(), key, id, body, nil)
+			require.NoError(t, err)
+			require.NotEmpty(t, original.ETag)
+			etag := original.ETag
+			if !test.matches {
+				etag = `"different"`
+			}
+			batch := NewTransactionalBatch(key)
+			require.NoError(t, batch.ReadItem(id, &TransactionalBatchReadItemOptions{IfNoneMatchETag: &etag}))
+			disabled := false
+			response, err := container.ExecuteTransactionalBatch(t.Context(), batch, &TransactionalBatchOptions{
+				Operation: OperationOptions{EnableContentResponseOnWrite: &disabled}, SessionToken: original.SessionToken,
+			})
+			require.NoError(t, err)
+			require.Len(t, response.OperationResults, 1)
+			result := response.OperationResults[0]
+			require.Equal(t, test.status, result.StatusCode)
+			require.Equal(t, original.ETag, result.ETag)
+			if test.matches {
+				require.Contains(t, []string{"", "null"}, string(result.ResourceBody))
+			} else {
+				var document map[string]any
+				require.NoError(t, json.Unmarshal(result.ResourceBody, &document))
+				require.Equal(t, "original", document["value"])
+			}
+			persisted, err := container.ReadItem(t.Context(), key, id, nil)
+			require.NoError(t, err)
+			require.Equal(t, original.ETag, persisted.ETag, "the conditional batch read must not modify the item")
+		})
+	}
 }
 
 func TestEmulatorTransactionalBatchRollbackPreservesPersistedState(t *testing.T) {
@@ -95,15 +142,11 @@ func TestEmulatorTransactionalBatchRollbackPreservesPersistedState(t *testing.T)
 			require.NoError(t, batch.DeleteItem(existing, nil))
 			response, err := container.ExecuteTransactionalBatch(t.Context(), batch, nil)
 			require.NoError(t, err, "a received rollback is a transaction result, not an execution error")
-			require.False(t, response.Success)
 			require.Equal(t, http.StatusMultiStatus, response.StatusCode)
 			require.Len(t, response.OperationResults, 3)
 			require.Equal(t, 424, response.OperationResults[0].StatusCode)
 			require.Equal(t, status, response.OperationResults[1].StatusCode)
 			require.Equal(t, 424, response.OperationResults[2].StatusCode)
-			index, failed := response.FailedOperationIndex()
-			require.True(t, failed)
-			require.Equal(t, 1, index)
 			require.Positive(t, response.RequestCharge)
 
 			persisted, err := container.ReadItem(t.Context(), key, existing, nil)
@@ -150,7 +193,10 @@ func TestEmulatorTransactionalBatchCompleteHierarchicalKeysAndIsolation(t *testi
 			require.NoError(t, batch.ReadItem(id, nil))
 			response, err := container.ExecuteTransactionalBatch(t.Context(), batch, nil)
 			require.NoError(t, err)
-			require.True(t, response.Success)
+			require.Equal(t, http.StatusOK, response.StatusCode)
+			require.Len(t, response.OperationResults, 2)
+			require.Equal(t, http.StatusCreated, response.OperationResults[0].StatusCode)
+			require.Equal(t, http.StatusOK, response.OperationResults[1].StatusCode)
 			var read map[string]any
 			require.NoError(t, json.Unmarshal(response.OperationResults[1].ResourceBody, &read))
 			require.Equal(t, float64(i), read["value"], "null and undefined HPK components must route distinctly")
@@ -202,7 +248,11 @@ func TestEmulatorTransactionalBatchContentResponsesAndLifetime(t *testing.T) {
 			Operation: OperationOptions{EnableContentResponseOnWrite: setting},
 		})
 		require.NoError(t, err)
-		require.True(t, response.Success)
+		require.Equal(t, http.StatusOK, response.StatusCode)
+		require.Len(t, response.OperationResults, 3)
+		require.Equal(t, http.StatusCreated, response.OperationResults[0].StatusCode)
+		require.Equal(t, http.StatusOK, response.OperationResults[1].StatusCode)
+		require.Equal(t, http.StatusNoContent, response.OperationResults[2].StatusCode)
 		require.NoError(t, client.Close())
 		if setting != nil && *setting {
 			require.NotEmpty(t, response.OperationResults[0].ResourceBody)

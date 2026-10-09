@@ -28,12 +28,13 @@ type TransactionalBatchOptions struct {
 // Errors can contain setup metadata even when the batch itself was never submitted.
 // Item bodies must match the batch's partition key; the driver/service validates their fields.
 //
-// A received rollback response is not an execution error: inspect [TransactionalBatchResponse.Success]
-// and [TransactionalBatchResponse.FailedOperationIndex]. Native admission, execution, and decoding
-// failures return the zero response and an error; a decoding or transport error is not proof that
-// writes did not commit. Error metadata includes the native body and status when available.
+// A received response can contain non-2xx operation statuses without an execution error. Inspect
+// [TransactionalBatchResponse.OperationResults]; HTTP 207 or a conditional read's HTTP 304 is not
+// interpreted as a commitment or rollback verdict. Native admission, execution, and decoding failures
+// return the zero response and an error; a decoding or transport error is not proof that writes did
+// not commit. Error metadata includes the native body and status when available.
 //
-// After admission, this method waits for the authoritative native write outcome, even if ctx ends.
+// After admission, this method waits for authoritative native completion, even if ctx ends.
 // The released native ABI cannot cancel an admitted operation. [Client.Close] waits for the operation
 // before releasing its resources. options may be nil. Do not mutate batch while it is executing.
 func (c *ContainerClient) ExecuteTransactionalBatch(ctx context.Context, batch TransactionalBatch, options *TransactionalBatchOptions) (TransactionalBatchResponse, error) {

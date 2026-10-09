@@ -20,6 +20,8 @@ func TestTransactionalBatchNativeRequest(t *testing.T) {
 	for _, contentResponse := range []*bool{nil, &disabled, &enabled} {
 		batch := NewTransactionalBatch(NewPartitionKeyString("tenant").AppendNull().AppendNumber(3))
 		require.NoError(t, batch.CreateItem([]byte(`{"id":"item","pk":"tenant","child":null,"leaf":3}`), nil))
+		etag := azcore.ETag(`"unchanged"`)
+		require.NoError(t, batch.ReadItem("item", &TransactionalBatchReadItemOptions{IfNoneMatchETag: &etag}))
 		req, err := newTransactionalBatchRequest(batch, &TransactionalBatchOptions{
 			Operation: OperationOptions{EnableContentResponseOnWrite: contentResponse}, SessionToken: "1:2",
 		})
@@ -33,6 +35,10 @@ func TestTransactionalBatchNativeRequest(t *testing.T) {
 		require.Equal(t, int32(-1), native.maxItemCount)
 		require.Zero(t, native.preconditionKind, "conditions belong to individual JSON operations")
 		require.Equal(t, req.body, native.body, "the singleton request carries the documented JSON operation array")
+		require.JSONEq(t, `[
+			{"operationType":"Create","resourceBody":{"id":"item","pk":"tenant","child":null,"leaf":3}},
+			{"operationType":"Read","id":"item","ifNoneMatch":"\"unchanged\""}
+		]`, string(native.body))
 		expected := int32(0)
 		if contentResponse != nil {
 			expected = 1
@@ -49,7 +55,7 @@ func TestTransactionalBatchNativeCompletionOwnsEnvelopeAndHeaders(t *testing.T) 
 	result := syntheticBatchCompletion(body, http.StatusOK)
 	response, err := result.batchResponse(Response{RequestCharge: 2.5}, 1)
 	require.NoError(t, err)
-	require.True(t, response.Success)
+	require.Equal(t, http.StatusOK, response.StatusCode)
 	require.Equal(t, 7.0, response.RequestCharge)
 	require.Equal(t, 3200, response.SubStatus)
 	require.Equal(t, "activity-123", response.ActivityID)
@@ -64,12 +70,13 @@ func TestTransactionalBatchNativeCompletionOwnsEnvelopeAndHeaders(t *testing.T) 
 
 func TestTransactionalBatchAuthoritativeCompletionSurvivesCancellation(t *testing.T) {
 	for _, test := range []struct {
-		status  int
-		body    string
-		success bool
+		status   int
+		body     string
+		statuses []int
 	}{
-		{200, `[{"statusCode":201},{"statusCode":204}]`, true},
-		{207, `[{"statusCode":424},{"statusCode":409}]`, false},
+		{200, `[{"statusCode":201},{"statusCode":204}]`, []int{201, 204}},
+		{207, `[{"statusCode":424},{"statusCode":409}]`, []int{424, 409}},
+		{207, `[{"statusCode":201},{"statusCode":304,"eTag":"\"unchanged\""}]`, []int{201, 304}},
 	} {
 		for range 100 {
 			ctx, cancel := context.WithCancel(t.Context())
@@ -80,7 +87,11 @@ func TestTransactionalBatchAuthoritativeCompletionSurvivesCancellation(t *testin
 			require.NoError(t, err, "received native write outcomes outrank context cancellation")
 			response, err := result.batchResponse(Response{RequestCharge: 2}, 2)
 			require.NoError(t, err)
-			require.Equal(t, test.success, response.Success)
+			require.Equal(t, test.status, response.StatusCode)
+			require.Len(t, response.OperationResults, len(test.statuses))
+			for i, status := range test.statuses {
+				require.Equal(t, status, response.OperationResults[i].StatusCode)
+			}
 			require.Equal(t, test.body, string(response.Body))
 			require.Equal(t, 6.5, response.RequestCharge)
 			require.Equal(t, SessionToken("1:2"), response.SessionToken)

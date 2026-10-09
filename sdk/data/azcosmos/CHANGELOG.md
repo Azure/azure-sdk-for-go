@@ -7,9 +7,10 @@
 ### Features Added
 
 * Added transactional batches for create, read, upsert, replace, and delete with complete
-  hierarchical partition keys, owned builders, conditional operations, ordered result metadata,
-  and authoritative native completion. Prefix batches, transactional PATCH, and batch read
-  If-None-Match are not exposed.
+  hierarchical partition keys, owned builders, conditional operations including read If-None-Match,
+  ordered raw result metadata, and authoritative native completion. Results preserve HTTP 304 and
+  207 without inferring transaction commitment or rollback. Prefix batches and transactional PATCH
+  are not exposed.
 * Query cursors now share a client-owned completion reactor instead of blocking one OS thread
   per waiting query. Cancellation and client shutdown retain late-completion cleanup.
   See [PR 27676](https://github.com/Azure/azure-sdk-for-go/pull/27676).

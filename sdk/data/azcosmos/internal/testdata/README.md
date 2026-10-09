@@ -45,13 +45,15 @@ the Go emulator suite. A successful source build alone is not a compatibility ch
 
 The configuration includes scalar `items`, two-level `query-hierarchical`, and three-level
 `batch-hierarchical` containers in `itemdb`. Focused batch tests cover commit, persisted-state
-rollback, null/undefined HPK isolation, prefix rejection, and content-response ownership:
+rollback, conditional reads, null/undefined HPK isolation, prefix rejection, and content-response
+ownership:
 
 ```sh
 EMULATOR=true AZCOSMOS_ENDPOINT="<accountEndpoint>" \
   go test -run '^TestEmulatorTransactionalBatch' ./...
 ```
 
-Batch Read If-None-Match is intentionally deferred. The pinned emulator can commit writes around
-a conditional 304 read and then report HTTP 207. It therefore cannot certify that option's
-service transaction semantics; do not treat this emulator behavior as the product contract.
+Batch Read If-None-Match tests check matching (304) and different (200) ETags without deriving
+commitment from the outer status. The pinned emulator can commit writes around a conditional
+304 read and then report HTTP 207. Go preserves such raw results, like the Rust SDK; emulator
+behavior does not establish real-service commit/rollback semantics.

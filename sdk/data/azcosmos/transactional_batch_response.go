@@ -8,14 +8,14 @@ import (
 	"errors"
 	"fmt"
 	"math"
-	"net/http"
 	"time"
 	"unicode/utf8"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
-// TransactionalBatchResponse contains the received transaction outcome and ordered operation results.
+// TransactionalBatchResponse contains native completion metadata and ordered operation results.
+// It preserves reported statuses without inferring whether the transaction committed or rolled back.
 type TransactionalBatchResponse struct {
 	Response
 
@@ -32,32 +32,15 @@ type TransactionalBatchResponse struct {
 	Body []byte
 
 	// OperationResults has exactly one result per submitted operation, in the same order.
+	// A received response can contain non-2xx operation statuses, including HTTP 304.
+	// Neither the outer status nor individual statuses alone are a commitment verdict.
 	OperationResults []TransactionalBatchResult
-
-	// Success reports a committed transaction. A rolled-back transaction has Success=false
-	// even though execution returned a response without an error, such as HTTP 207.
-	// Native diagnostics describe request completion, not transaction commitment.
-	Success bool
-}
-
-// FailedOperationIndex returns the zero-based index of the operation that caused rollback.
-// The second return value is false for a successful batch or a zero response.
-// Dependency failures (HTTP 424) are not attributed as the cause.
-func (r TransactionalBatchResponse) FailedOperationIndex() (int, bool) {
-	if !r.Success {
-		for i, result := range r.OperationResults {
-			if (result.StatusCode < 200 || result.StatusCode >= 300) && result.StatusCode != http.StatusFailedDependency {
-				return i, true
-			}
-		}
-	}
-	return -1, false
 }
 
 // TransactionalBatchResult describes one operation's outcome.
 type TransactionalBatchResult struct {
-	// StatusCode is the operation's raw HTTP status. HTTP 424 means the transaction
-	// was rolled back because another operation failed, not that this operation committed.
+	// StatusCode is the operation's raw HTTP status. HTTP 304 reports a not-modified read;
+	// HTTP 424 reports a dependency failure rather than an independently successful operation.
 	StatusCode int
 
 	// SubStatus is the operation's substatus, or zero when absent.
@@ -67,7 +50,7 @@ type TransactionalBatchResult struct {
 	RequestCharge float64
 
 	// ResourceBody is owned raw JSON returned for this operation. It is nil when absent.
-	// Reads return bodies regardless of the write-content-response option.
+	// Reads returning HTTP 200 include bodies regardless of the write-content-response option.
 	ResourceBody []byte
 
 	// ETag is the item ETag reported for this operation, when supplied.
@@ -111,9 +94,7 @@ func decodeTransactionalBatchResponse(response ItemResponse, body []byte, retryA
 		Response: response.Response, SessionToken: response.SessionToken, ETag: response.ETag,
 		RetryAfter: retryAfter, Body: append([]byte(nil), body...),
 		OperationResults: make([]TransactionalBatchResult, len(encoded)),
-		Success:          response.StatusCode != http.StatusMultiStatus,
 	}
-	failureCount := 0
 	for i, operation := range encoded {
 		if operation.StatusCode == nil || *operation.StatusCode <= 0 || *operation.StatusCode > math.MaxUint16 {
 			return fail(fmt.Errorf("operation %d has no valid statusCode", i))
@@ -128,30 +109,11 @@ func decodeTransactionalBatchResponse(response ItemResponse, body []byte, retryA
 		if operation.RequestCharge < 0 || operation.RetryAfterMilliseconds > uint64(math.MaxInt64/int64(time.Millisecond)) {
 			return fail(fmt.Errorf("operation %d has invalid charge or retry metadata", i))
 		}
-		status := *operation.StatusCode
-		succeeded := status >= 200 && status < 300
-		if result.Success && !succeeded {
-			return fail(fmt.Errorf("successful batch contains failing operation %d", i))
-		}
-		if !result.Success && succeeded {
-			// The released in-memory emulator can return 207 after committing writes around a
-			// conditional 304 read. Do not turn that contradictory envelope into a rollback claim.
-			return fail(fmt.Errorf("rollback response contains successful operation %d", i))
-		}
-		if !succeeded && status != http.StatusFailedDependency {
-			failureCount++
-		}
 		result.OperationResults[i] = TransactionalBatchResult{
-			StatusCode: status, SubStatus: subStatus, RequestCharge: operation.RequestCharge,
+			StatusCode: *operation.StatusCode, SubStatus: subStatus, RequestCharge: operation.RequestCharge,
 			ResourceBody: append([]byte(nil), operation.ResourceBody...), ETag: operation.ETag,
 			RetryAfter: time.Duration(operation.RetryAfterMilliseconds) * time.Millisecond,
 		}
-	}
-	if response.StatusCode != http.StatusOK && response.StatusCode != http.StatusMultiStatus {
-		return fail(fmt.Errorf("unexpected batch status %d", response.StatusCode))
-	}
-	if !result.Success && failureCount != 1 {
-		return fail(errors.New("rollback response must identify exactly one failed operation"))
 	}
 	return result, nil
 }

@@ -53,7 +53,13 @@ type TransactionalBatchCreateItemOptions struct{}
 type TransactionalBatchReadItemOptions struct {
 	// IfMatchETag makes the read conditional on the item having this ETag.
 	// A mismatch fails the entire transaction.
+	// It must not be set together with IfNoneMatchETag.
 	IfMatchETag *azcore.ETag
+
+	// IfNoneMatchETag applies cache validation to the read. A matching ETag is reported
+	// as HTTP 304 without an item body in the operation result.
+	// It must not be set together with IfMatchETag.
+	IfNoneMatchETag *azcore.ETag
 }
 
 // TransactionalBatchUpsertItemOptions configures [TransactionalBatch.UpsertItem].
@@ -100,14 +106,14 @@ func (b *TransactionalBatch) CreateItem(item []byte, options *TransactionalBatch
 
 // ReadItem appends a read operation. itemID must not be empty. options may be nil.
 //
-// Reads return item bodies even when write content responses are disabled. Conditional
-// If-None-Match reads are not exposed until native 304/transaction outcome semantics are verified.
+// Reads return item bodies even when write content responses are disabled, except for
+// a conditional read reported as HTTP 304. Operation statuses do not establish batch commitment.
 func (b *TransactionalBatch) ReadItem(itemID string, options *TransactionalBatchReadItemOptions) error {
-	var ifMatch *azcore.ETag
+	var ifMatch, ifNoneMatch *azcore.ETag
 	if options != nil {
-		ifMatch = options.IfMatchETag
+		ifMatch, ifNoneMatch = options.IfMatchETag, options.IfNoneMatchETag
 	}
-	return b.appendOperation(transactionalBatchOperation{OperationType: "Read", ID: itemID}, nil, false, ifMatch, nil)
+	return b.appendOperation(transactionalBatchOperation{OperationType: "Read", ID: itemID}, nil, false, ifMatch, ifNoneMatch)
 }
 
 // UpsertItem appends an operation that creates or replaces the item encoded in item.

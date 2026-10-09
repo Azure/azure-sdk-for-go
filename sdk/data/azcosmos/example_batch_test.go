@@ -6,7 +6,9 @@ package azcosmos_test
 import (
 	"context"
 	"log"
+	"net/http"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/data/azcosmos/v2"
 )
 
@@ -33,15 +35,38 @@ func ExampleContainerClient_ExecuteTransactionalBatch() {
 		// TODO: Update the following line with your application specific error handling logic
 		log.Fatalf("ERROR: %s", err)
 	}
-	if !response.Success {
-		if index, found := response.FailedOperationIndex(); found {
-			log.Printf("operation %d failed with HTTP %d", index, response.OperationResults[index].StatusCode)
-		}
+	log.Printf("batch HTTP %d, charge %.2f RU", response.StatusCode, response.RequestCharge)
+	for i, result := range response.OperationResults {
+		log.Printf("operation %d: HTTP %d", i, result.StatusCode)
+	}
+	log.Printf("read result: %s", response.OperationResults[1].ResourceBody)
+	closeClient()
+}
+
+func ExampleTransactionalBatch_ReadItem() {
+	container, closeClient := exampleContainer()
+	key := azcosmos.NewPartitionKeyString("Contoso").AppendString("west")
+	cachedETag := azcore.ETag(`"cached-etag"`)
+	batch := azcosmos.NewTransactionalBatch(key)
+	if err := batch.ReadItem("order-1", &azcosmos.TransactionalBatchReadItemOptions{IfNoneMatchETag: &cachedETag}); err != nil {
 		closeClient()
 		// TODO: Update the following line with your application specific error handling logic
-		log.Fatalf("ERROR: the batch did not commit")
+		log.Fatalf("ERROR: %s", err)
 	}
-	log.Printf("committed %d operations, charge %.2f RU", len(response.OperationResults), response.RequestCharge)
-	log.Printf("read result: %s", response.OperationResults[1].ResourceBody)
+	response, err := container.ExecuteTransactionalBatch(context.TODO(), batch, nil)
+	if err != nil {
+		closeClient()
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+	result := response.OperationResults[0]
+	switch result.StatusCode {
+	case http.StatusNotModified:
+		log.Print("the cached item is unchanged")
+	case http.StatusOK:
+		log.Printf("updated item: %s, ETag: %s", result.ResourceBody, result.ETag)
+	default:
+		log.Printf("read HTTP %d", result.StatusCode)
+	}
 	closeClient()
 }

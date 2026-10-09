@@ -125,23 +125,23 @@ JSON operation envelope sent to the native driver must be at most 2 MiB. Reusing
 a new transaction. A finished builder can be executed concurrently, but must not be mutated
 concurrently.
 
-Read, upsert, replace, and delete support If-Match; upsert also supports If-None-Match. The two
-conditions are mutually exclusive. Batch Read If-None-Match is deferred: although the released
-Rust model accepts it, matching-ETag 304 commit/rollback semantics have not been verified against
-the service. The pinned test emulator can commit writes while reporting a 304 read inside HTTP
-207, so that behavior is not used to define the Go API contract.
+Read, upsert, replace, and delete support If-Match; read and upsert also support If-None-Match.
+The two conditions are mutually exclusive. A batch read's `IfNoneMatchETag` enables cache
+validation: a matching ETag is reported as HTTP 304 without an item body. Like the Rust SDK,
+Go preserves the reported results without deriving a batch commitment or rollback verdict.
 
 `TransactionalBatchOptions.Operation.EnableContentResponseOnWrite` is request-wide: nil inherits
-the client/native default, false suppresses write bodies, and true requests them. Reads still
-return content. `SessionToken` and other shared operation settings are forwarded to the driver.
+the client/native default, false suppresses write bodies, and true requests them. Reads returning
+HTTP 200 still include content. `SessionToken` and other shared operation settings are forwarded
+to the driver.
 
-A received rollback is a response, not an execution error. Check `response.Success` and use
-`response.FailedOperationIndex()` to identify the cause instead of blaming HTTP 424 dependency
-results. `OperationResults` is ordered exactly like the builder and preserves statuses,
-substatuses, charges, raw JSON, ETags, and retry delays. Batch-level headers and the raw result
-envelope are also retained. HTTP 207 alone does not establish rollback: contradictory result
-envelopes return an explicit decoding error with the native body and metadata, not a fabricated
-transaction outcome.
+A received response can contain non-2xx operation statuses without an execution error.
+`OperationResults` is ordered exactly like the builder and preserves statuses, substatuses,
+charges, raw JSON, ETags, and retry delays. Batch-level headers and the raw result envelope are
+also retained. HTTP 304 reports a not-modified read; HTTP 424 reports a dependency failure.
+HTTP 207 alone does not establish rollback, and mixed results such as `[201, 304]` are preserved
+without inferring whether writes committed. Malformed result envelopes return an explicit
+decoding error with the native body and metadata.
 
 Admitted batches wait for authoritative native completion, including cancellation and shutdown
 races. `Client.Close` waits before freeing native resources. Responses and errors own their

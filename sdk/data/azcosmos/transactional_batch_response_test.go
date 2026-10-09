@@ -31,7 +31,6 @@ func TestTransactionalBatchResponsePreservesMetadataAndOwnership(t *testing.T) {
 	]`)
 	response, err := decodeTransactionalBatchResponse(metadata, body, 125*time.Millisecond, true, 4)
 	require.NoError(t, err)
-	require.True(t, response.Success)
 	require.Equal(t, metadata.Response, response.Response)
 	require.Same(t, diagnostics, response.Diagnostics)
 	require.Equal(t, metadata.SessionToken, response.SessionToken)
@@ -43,9 +42,6 @@ func TestTransactionalBatchResponsePreservesMetadataAndOwnership(t *testing.T) {
 		{StatusCode: 200, RequestCharge: 2.25, ResourceBody: []byte(`{"id":"read"}`)},
 		{StatusCode: 204}, {StatusCode: 299},
 	}, response.OperationResults)
-	index, failed := response.FailedOperationIndex()
-	require.Equal(t, -1, index)
-	require.False(t, failed)
 	ownedBody := string(response.Body)
 	for i := range body {
 		body[i] = 'x'
@@ -57,7 +53,7 @@ func TestTransactionalBatchResponsePreservesMetadataAndOwnership(t *testing.T) {
 	require.Equal(t, `{ "n":9007199254740993, "s":"\u0041" }`, string(response.OperationResults[0].ResourceBody))
 }
 
-func TestTransactionalBatchResponseAttributesRollback(t *testing.T) {
+func TestTransactionalBatchResponsePreservesFailureResults(t *testing.T) {
 	for _, failure := range []struct {
 		status int
 		body   string
@@ -71,19 +67,64 @@ func TestTransactionalBatchResponseAttributesRollback(t *testing.T) {
 		response, err := decodeTransactionalBatchResponse(ItemResponse{Response: Response{StatusCode: http.StatusMultiStatus}},
 			[]byte(failure.body), 0, true, 3)
 		require.NoError(t, err)
-		require.False(t, response.Success)
+		require.Equal(t, http.StatusMultiStatus, response.StatusCode)
 		require.Len(t, response.OperationResults, 3)
 		require.Equal(t, failure.status, response.OperationResults[1].StatusCode)
-		index, failed := response.FailedOperationIndex()
-		require.True(t, failed)
-		require.Equal(t, 1, index)
 	}
-	index, failed := (TransactionalBatchResponse{}).FailedOperationIndex()
-	require.Equal(t, -1, index)
-	require.False(t, failed)
 }
 
-func TestTransactionalBatchResponseRejectsMalformedOrContradictoryResults(t *testing.T) {
+func TestTransactionalBatchResponsePreservesRawOutcomes(t *testing.T) {
+	for _, test := range []struct {
+		name     string
+		status   int
+		body     string
+		statuses []int
+	}{
+		{"conditional read", 207, `[{"statusCode":304}]`, []int{304}},
+		{"conditional read with write", 207, `[{"statusCode":201},{"statusCode":304}]`, []int{201, 304}},
+		{"OK with conditional read", 200, `[{"statusCode":304}]`, []int{304}},
+		{"OK with failed operation", 200, `[{"statusCode":404}]`, []int{404}},
+		{"multi-status with created item", 207, `[{"statusCode":201}]`, []int{201}},
+		{"only dependency failures", 207, `[{"statusCode":424}]`, []int{424}},
+		{"multiple failures", 207, `[{"statusCode":404},{"statusCode":412}]`, []int{404, 412}},
+		{"other native completion status", 201, `[{"statusCode":201}]`, []int{201}},
+		{"unknown operation status", 207, `[{"statusCode":65535}]`, []int{65535}},
+	} {
+		t.Run(test.name, func(t *testing.T) {
+			response, err := decodeTransactionalBatchResponse(ItemResponse{Response: Response{StatusCode: test.status}},
+				[]byte(test.body), 0, true, len(test.statuses))
+			require.NoError(t, err, "native statuses are preserved without deriving a transaction verdict")
+			require.Equal(t, test.status, response.StatusCode)
+			require.Equal(t, test.body, string(response.Body))
+			require.Len(t, response.OperationResults, len(test.statuses))
+			for i, status := range test.statuses {
+				require.Equal(t, status, response.OperationResults[i].StatusCode)
+			}
+		})
+	}
+}
+
+func TestTransactionalBatchResponsePreservesConditionalReadMetadata(t *testing.T) {
+	body := []byte(`[{"statusCode":304,"substatusCode":17,"requestCharge":1.25,"eTag":"\"unchanged\"","retryAfterMilliseconds":25}]`)
+	response, err := decodeTransactionalBatchResponse(ItemResponse{Response: Response{StatusCode: 207, RequestCharge: 2.5},
+		SessionToken: "0:1", ETag: `"batch"`}, body, time.Second, true, 1)
+	require.NoError(t, err)
+	require.Equal(t, 207, response.StatusCode)
+	require.Equal(t, 2.5, response.RequestCharge)
+	require.Equal(t, SessionToken("0:1"), response.SessionToken)
+	require.Equal(t, azcore.ETag(`"batch"`), response.ETag)
+	require.Equal(t, time.Second, response.RetryAfter)
+	require.Equal(t, []TransactionalBatchResult{{
+		StatusCode: 304, SubStatus: 17, RequestCharge: 1.25, ETag: `"unchanged"`, RetryAfter: 25 * time.Millisecond,
+	}}, response.OperationResults)
+	original := string(body)
+	for i := range body {
+		body[i] = 'x'
+	}
+	require.Equal(t, original, string(response.Body))
+}
+
+func TestTransactionalBatchResponseRejectsMalformedResults(t *testing.T) {
 	for _, test := range []struct {
 		name   string
 		status int
@@ -107,12 +148,6 @@ func TestTransactionalBatchResponseRejectsMalformedOrContradictoryResults(t *tes
 		{"negative charge", 200, 1, `[{"statusCode":200,"requestCharge":-1}]`},
 		{"negative retry", 200, 1, `[{"statusCode":200,"retryAfterMilliseconds":-1}]`},
 		{"retry overflow", 200, 1, `[{"statusCode":200,"retryAfterMilliseconds":18446744073709551615}]`},
-		{"unexpected top status", 201, 1, `[{"statusCode":201}]`},
-		{"success with failure", 200, 1, `[{"statusCode":404}]`},
-		{"rollback without failure", 207, 1, `[{"statusCode":201}]`},
-		{"only dependency failures", 207, 1, `[{"statusCode":424}]`},
-		{"multiple causes", 207, 2, `[{"statusCode":404},{"statusCode":412}]`},
-		{"conditional read with committed write", 207, 2, `[{"statusCode":201},{"statusCode":304}]`},
 		{"no submitted operations", 200, 0, `[]`},
 	} {
 		t.Run(test.name, func(t *testing.T) {

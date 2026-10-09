@@ -50,6 +50,31 @@ type CertificateObjectLocalRulestackClientListByLocalRulestacksResponse struct {
 	CertificateObjectLocalRulestackResourceListResult
 }
 
+// CustomCaptureConfigurationsFirewallResourcesClientCreateOrUpdateResponse contains the response from method CustomCaptureConfigurationsFirewallResourcesClient.CreateOrUpdate.
+type CustomCaptureConfigurationsFirewallResourcesClientCreateOrUpdateResponse struct {
+	// Custom Capture Configuration on a firewall (singleton). Sync child resource — caller polls GET to track pcapStatus until
+	// terminal (Success / Failed).
+	CustomCaptureConfigurationsFirewallResource
+}
+
+// CustomCaptureConfigurationsFirewallResourcesClientDeleteResponse contains the response from method CustomCaptureConfigurationsFirewallResourcesClient.Delete.
+type CustomCaptureConfigurationsFirewallResourcesClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// CustomCaptureConfigurationsFirewallResourcesClientGetResponse contains the response from method CustomCaptureConfigurationsFirewallResourcesClient.Get.
+type CustomCaptureConfigurationsFirewallResourcesClientGetResponse struct {
+	// Custom Capture Configuration on a firewall (singleton). Sync child resource — caller polls GET to track pcapStatus until
+	// terminal (Success / Failed).
+	CustomCaptureConfigurationsFirewallResource
+}
+
+// CustomCaptureConfigurationsFirewallResourcesClientListByFirewallResponse contains the response from method CustomCaptureConfigurationsFirewallResourcesClient.NewListByFirewallPager.
+type CustomCaptureConfigurationsFirewallResourcesClientListByFirewallResponse struct {
+	// The response of a CustomCaptureConfigurationsFirewallResource list operation.
+	CustomCaptureConfigurationsFirewallResourceListResult
+}
+
 // FirewallStatusClientGetResponse contains the response from method FirewallStatusClient.Get.
 type FirewallStatusClientGetResponse struct {
 	// Firewall Status
@@ -376,6 +401,33 @@ type LocalRulestacksClientRevertResponse struct {
 type LocalRulestacksClientUpdateResponse struct {
 	// PaloAltoNetworks LocalRulestack
 	LocalRulestackResource
+}
+
+// LogIngestionSettingsResourcesClientCreateOrUpdateResponse contains the response from method LogIngestionSettingsResourcesClient.CreateOrUpdate.
+type LogIngestionSettingsResourcesClientCreateOrUpdateResponse struct {
+	// Log Ingestion Settings on a firewall (singleton — the name is always 'default'). This is the modern Azure Monitor Log Ingestion
+	// (Data Collection Rule based) surface that supersedes the legacy getLogProfile/saveLogProfile actions. Sync child resource
+	// — PUT/GET/DELETE forward to the partner synchronously; the caller does not poll a long-running operation.
+	LogIngestionSettingsResource
+}
+
+// LogIngestionSettingsResourcesClientDeleteResponse contains the response from method LogIngestionSettingsResourcesClient.Delete.
+type LogIngestionSettingsResourcesClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// LogIngestionSettingsResourcesClientGetResponse contains the response from method LogIngestionSettingsResourcesClient.Get.
+type LogIngestionSettingsResourcesClientGetResponse struct {
+	// Log Ingestion Settings on a firewall (singleton — the name is always 'default'). This is the modern Azure Monitor Log Ingestion
+	// (Data Collection Rule based) surface that supersedes the legacy getLogProfile/saveLogProfile actions. Sync child resource
+	// — PUT/GET/DELETE forward to the partner synchronously; the caller does not poll a long-running operation.
+	LogIngestionSettingsResource
+}
+
+// LogIngestionSettingsResourcesClientListByFirewallResponse contains the response from method LogIngestionSettingsResourcesClient.NewListByFirewallPager.
+type LogIngestionSettingsResourcesClientListByFirewallResponse struct {
+	// The response of a LogIngestionSettingsResource list operation.
+	LogIngestionSettingsResourceListResult
 }
 
 // MetricsObjectFirewallClientCreateOrUpdateResponse contains the response from method MetricsObjectFirewallClient.BeginCreateOrUpdate.

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-07-15-preview/TopicSpaces_CreateOrUpdate.json
+// Generated from example definition: 2026-06-15-preview/TopicSpaces_CreateOrUpdate.json
 func ExampleTopicSpacesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -57,7 +57,7 @@ func ExampleTopicSpacesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15-preview/TopicSpaces_Delete.json
+// Generated from example definition: 2026-06-15-preview/TopicSpaces_Delete.json
 func ExampleTopicSpacesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -83,7 +83,7 @@ func ExampleTopicSpacesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15-preview/TopicSpaces_Get.json
+// Generated from example definition: 2026-06-15-preview/TopicSpaces_Get.json
 func ExampleTopicSpacesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -117,7 +117,7 @@ func ExampleTopicSpacesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15-preview/TopicSpaces_ListByNamespace.json
+// Generated from example definition: 2026-06-15-preview/TopicSpaces_ListByNamespace.json
 func ExampleTopicSpacesClient_NewListByNamespacePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

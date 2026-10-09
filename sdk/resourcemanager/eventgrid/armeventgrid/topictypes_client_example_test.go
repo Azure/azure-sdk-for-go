@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-07-15-preview/TopicTypes_Get.json
+// Generated from example definition: 2026-06-15-preview/TopicTypes_Get.json
 func ExampleTopicTypesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -45,7 +45,58 @@ func ExampleTopicTypesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15-preview/TopicTypes_List.json
+// Generated from example definition: 2026-06-15-preview/TopicTypes_ListEventTypes.json
+func ExampleTopicTypesClient_NewListEventTypesPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armeventgrid.NewClientFactory("<subscriptionID>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewTopicTypesClient().NewListEventTypesPager("Microsoft.Storage.StorageAccounts", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armeventgrid.TopicTypesClientListEventTypesResponse{
+		// 	EventTypesListResult: armeventgrid.EventTypesListResult{
+		// 		Value: []*armeventgrid.EventType{
+		// 			{
+		// 				Name: to.Ptr("Microsoft.Storage.BlobCreated"),
+		// 				Type: to.Ptr("Microsoft.EventGrid/topicTypes/eventTypes"),
+		// 				ID: to.Ptr("/providers/Microsoft.EventGrid/topicTypes/Microsoft.Storage.StorageAccounts/eventTypes/Microsoft.Storage.BlobCreated"),
+		// 				Properties: &armeventgrid.EventTypeProperties{
+		// 					Description: to.Ptr("Raised when a blob is created."),
+		// 					DisplayName: to.Ptr("Blob Created"),
+		// 					SchemaURL: to.Ptr("tbd"),
+		// 				},
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("Microsoft.Storage.BlobDeleted"),
+		// 				Type: to.Ptr("Microsoft.EventGrid/topicTypes/eventTypes"),
+		// 				ID: to.Ptr("/providers/Microsoft.EventGrid/topicTypes/Microsoft.Storage.StorageAccounts/eventTypes/Microsoft.Storage.BlobDeleted"),
+		// 				Properties: &armeventgrid.EventTypeProperties{
+		// 					Description: to.Ptr("Raised when a blob is deleted."),
+		// 					DisplayName: to.Ptr("Blob Deleted"),
+		// 					SchemaURL: to.Ptr("tbd"),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2026-06-15-preview/TopicTypes_List.json
 func ExampleTopicTypesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -92,57 +143,6 @@ func ExampleTopicTypesClient_NewListPager() {
 		// 					Provider: to.Ptr("Microsoft.Storage"),
 		// 					ProvisioningState: to.Ptr(armeventgrid.TopicTypeProvisioningStateSucceeded),
 		// 					ResourceRegionType: to.Ptr(armeventgrid.ResourceRegionTypeRegionalResource),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2025-07-15-preview/TopicTypes_ListEventTypes.json
-func ExampleTopicTypesClient_NewListEventTypesPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armeventgrid.NewClientFactory("<subscriptionID>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewTopicTypesClient().NewListEventTypesPager("Microsoft.Storage.StorageAccounts", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armeventgrid.TopicTypesClientListEventTypesResponse{
-		// 	EventTypesListResult: armeventgrid.EventTypesListResult{
-		// 		Value: []*armeventgrid.EventType{
-		// 			{
-		// 				Name: to.Ptr("Microsoft.Storage.BlobCreated"),
-		// 				Type: to.Ptr("Microsoft.EventGrid/topicTypes/eventTypes"),
-		// 				ID: to.Ptr("/providers/Microsoft.EventGrid/topicTypes/Microsoft.Storage.StorageAccounts/eventTypes/Microsoft.Storage.BlobCreated"),
-		// 				Properties: &armeventgrid.EventTypeProperties{
-		// 					Description: to.Ptr("Raised when a blob is created."),
-		// 					DisplayName: to.Ptr("Blob Created"),
-		// 					SchemaURL: to.Ptr("tbd"),
-		// 				},
-		// 			},
-		// 			{
-		// 				Name: to.Ptr("Microsoft.Storage.BlobDeleted"),
-		// 				Type: to.Ptr("Microsoft.EventGrid/topicTypes/eventTypes"),
-		// 				ID: to.Ptr("/providers/Microsoft.EventGrid/topicTypes/Microsoft.Storage.StorageAccounts/eventTypes/Microsoft.Storage.BlobDeleted"),
-		// 				Properties: &armeventgrid.EventTypeProperties{
-		// 					Description: to.Ptr("Raised when a blob is deleted."),
-		// 					DisplayName: to.Ptr("Blob Deleted"),
-		// 					SchemaURL: to.Ptr("tbd"),
 		// 				},
 		// 			},
 		// 		},

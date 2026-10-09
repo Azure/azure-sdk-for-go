@@ -20,7 +20,7 @@ import (
 // TopicEventSubscriptionsClient contains the methods for the TopicEventSubscriptions group.
 // Don't use this type directly, use NewTopicEventSubscriptionsClient() instead.
 //
-// Generated from API version 2025-07-15-preview
+// Generated from API version 2026-06-15-preview
 type TopicEventSubscriptionsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -72,7 +72,7 @@ func (client *TopicEventSubscriptionsClient) BeginCreateOrUpdate(ctx context.Con
 	}
 }
 
-// CreateOrUpdate - Create or update an event subscription to a topic.
+// createOrUpdate - Create or update an event subscription to a topic.
 //
 // Asynchronously creates a new event subscription or updates an existing event subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -96,7 +96,7 @@ func (client *TopicEventSubscriptionsClient) createOrUpdate(ctx context.Context,
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *TopicEventSubscriptionsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, topicName string, eventSubscriptionName string, eventSubscriptionInfo EventSubscription, _ *TopicEventSubscriptionsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}/eventSubscriptions/{eventSubscriptionName}"
 	if client.subscriptionID == "" {
@@ -120,7 +120,7 @@ func (client *TopicEventSubscriptionsClient) createOrUpdateCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250715Preview)
+	reqQP.Set("api-version", version20260615Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -141,7 +141,7 @@ func (client *TopicEventSubscriptionsClient) createOrUpdateCreateRequest(ctx con
 //     method.
 func (client *TopicEventSubscriptionsClient) BeginDelete(ctx context.Context, resourceGroupName string, topicName string, eventSubscriptionName string, options *TopicEventSubscriptionsClientBeginDeleteOptions) (*runtime.Poller[TopicEventSubscriptionsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.deleteOperation(ctx, resourceGroupName, topicName, eventSubscriptionName, options)
+		resp, err := client.delete(ctx, resourceGroupName, topicName, eventSubscriptionName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -156,11 +156,11 @@ func (client *TopicEventSubscriptionsClient) BeginDelete(ctx context.Context, re
 	}
 }
 
-// Delete - Delete an event subscription for a topic.
+// delete - Delete an event subscription for a topic.
 //
 // Delete an existing event subscription for a topic.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *TopicEventSubscriptionsClient) deleteOperation(ctx context.Context, resourceGroupName string, topicName string, eventSubscriptionName string, options *TopicEventSubscriptionsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *TopicEventSubscriptionsClient) delete(ctx context.Context, resourceGroupName string, topicName string, eventSubscriptionName string, options *TopicEventSubscriptionsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "TopicEventSubscriptionsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -180,7 +180,7 @@ func (client *TopicEventSubscriptionsClient) deleteOperation(ctx context.Context
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *TopicEventSubscriptionsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, topicName string, eventSubscriptionName string, _ *TopicEventSubscriptionsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}/eventSubscriptions/{eventSubscriptionName}"
 	if client.subscriptionID == "" {
@@ -204,8 +204,93 @@ func (client *TopicEventSubscriptionsClient) deleteCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250715Preview)
+	reqQP.Set("api-version", version20260615Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginUpdate - Update an event subscription for a topic.
+//
+// Update an existing event subscription for a topic.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - topicName - Name of the topic.
+//   - eventSubscriptionName - Name of the event subscription to be found.
+//   - eventSubscriptionUpdateParameters - Updated event subscription information.
+//   - options - TopicEventSubscriptionsClientBeginUpdateOptions contains the optional parameters for the TopicEventSubscriptionsClient.BeginUpdate
+//     method.
+func (client *TopicEventSubscriptionsClient) BeginUpdate(ctx context.Context, resourceGroupName string, topicName string, eventSubscriptionName string, eventSubscriptionUpdateParameters EventSubscriptionUpdateParameters, options *TopicEventSubscriptionsClientBeginUpdateOptions) (*runtime.Poller[TopicEventSubscriptionsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, topicName, eventSubscriptionName, eventSubscriptionUpdateParameters, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[TopicEventSubscriptionsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[TopicEventSubscriptionsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Update an event subscription for a topic.
+//
+// Update an existing event subscription for a topic.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *TopicEventSubscriptionsClient) update(ctx context.Context, resourceGroupName string, topicName string, eventSubscriptionName string, eventSubscriptionUpdateParameters EventSubscriptionUpdateParameters, options *TopicEventSubscriptionsClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "TopicEventSubscriptionsClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, topicName, eventSubscriptionName, eventSubscriptionUpdateParameters, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusCreated) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *TopicEventSubscriptionsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, topicName string, eventSubscriptionName string, eventSubscriptionUpdateParameters EventSubscriptionUpdateParameters, _ *TopicEventSubscriptionsClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}/eventSubscriptions/{eventSubscriptionName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if topicName == "" {
+		return nil, errors.New("parameter topicName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{topicName}", url.PathEscape(topicName))
+	if eventSubscriptionName == "" {
+		return nil, errors.New("parameter eventSubscriptionName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{eventSubscriptionName}", url.PathEscape(eventSubscriptionName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260615Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, eventSubscriptionUpdateParameters); err != nil {
+		return nil, err
+	}
 	return req, nil
 }
 
@@ -259,7 +344,7 @@ func (client *TopicEventSubscriptionsClient) getCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250715Preview)
+	reqQP.Set("api-version", version20260615Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -327,7 +412,7 @@ func (client *TopicEventSubscriptionsClient) getDeliveryAttributesCreateRequest(
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250715Preview)
+	reqQP.Set("api-version", version20260615Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -395,7 +480,7 @@ func (client *TopicEventSubscriptionsClient) getFullURLCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250715Preview)
+	reqQP.Set("api-version", version20260615Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -479,7 +564,7 @@ func (client *TopicEventSubscriptionsClient) listCreateRequest(ctx context.Conte
 		if options != nil && options.Top != nil {
 			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 		}
-		reqQP.Set("api-version", version20250715Preview)
+		reqQP.Set("api-version", version20260615Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -496,89 +581,4 @@ func (client *TopicEventSubscriptionsClient) listHandleResponse(resp *http.Respo
 		return TopicEventSubscriptionsClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginUpdate - Update an event subscription for a topic.
-//
-// Update an existing event subscription for a topic.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - topicName - Name of the topic.
-//   - eventSubscriptionName - Name of the event subscription to be found.
-//   - eventSubscriptionUpdateParameters - Updated event subscription information.
-//   - options - TopicEventSubscriptionsClientBeginUpdateOptions contains the optional parameters for the TopicEventSubscriptionsClient.BeginUpdate
-//     method.
-func (client *TopicEventSubscriptionsClient) BeginUpdate(ctx context.Context, resourceGroupName string, topicName string, eventSubscriptionName string, eventSubscriptionUpdateParameters EventSubscriptionUpdateParameters, options *TopicEventSubscriptionsClientBeginUpdateOptions) (*runtime.Poller[TopicEventSubscriptionsClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, topicName, eventSubscriptionName, eventSubscriptionUpdateParameters, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[TopicEventSubscriptionsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[TopicEventSubscriptionsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Update an event subscription for a topic.
-//
-// Update an existing event subscription for a topic.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *TopicEventSubscriptionsClient) update(ctx context.Context, resourceGroupName string, topicName string, eventSubscriptionName string, eventSubscriptionUpdateParameters EventSubscriptionUpdateParameters, options *TopicEventSubscriptionsClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "TopicEventSubscriptionsClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, topicName, eventSubscriptionName, eventSubscriptionUpdateParameters, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *TopicEventSubscriptionsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, topicName string, eventSubscriptionName string, eventSubscriptionUpdateParameters EventSubscriptionUpdateParameters, _ *TopicEventSubscriptionsClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}/eventSubscriptions/{eventSubscriptionName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if topicName == "" {
-		return nil, errors.New("parameter topicName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{topicName}", url.PathEscape(topicName))
-	if eventSubscriptionName == "" {
-		return nil, errors.New("parameter eventSubscriptionName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{eventSubscriptionName}", url.PathEscape(eventSubscriptionName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250715Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, eventSubscriptionUpdateParameters); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

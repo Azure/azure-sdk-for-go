@@ -30,6 +30,10 @@ type NamespaceTopicEventSubscriptionsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, namespaceName string, topicName string, eventSubscriptionName string, options *armeventgrid.NamespaceTopicEventSubscriptionsClientBeginDeleteOptions) (resp azfake.PollerResponder[armeventgrid.NamespaceTopicEventSubscriptionsClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method NamespaceTopicEventSubscriptionsClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, namespaceName string, topicName string, eventSubscriptionName string, eventSubscriptionUpdateParameters armeventgrid.SubscriptionUpdateParameters, options *armeventgrid.NamespaceTopicEventSubscriptionsClientBeginUpdateOptions) (resp azfake.PollerResponder[armeventgrid.NamespaceTopicEventSubscriptionsClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method NamespaceTopicEventSubscriptionsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, namespaceName string, topicName string, eventSubscriptionName string, options *armeventgrid.NamespaceTopicEventSubscriptionsClientGetOptions) (resp azfake.Responder[armeventgrid.NamespaceTopicEventSubscriptionsClientGetResponse], errResp azfake.ErrorResponder)
@@ -45,10 +49,6 @@ type NamespaceTopicEventSubscriptionsServer struct {
 	// NewListByNamespaceTopicPager is the fake for method NamespaceTopicEventSubscriptionsClient.NewListByNamespaceTopicPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByNamespaceTopicPager func(resourceGroupName string, namespaceName string, topicName string, options *armeventgrid.NamespaceTopicEventSubscriptionsClientListByNamespaceTopicOptions) (resp azfake.PagerResponder[armeventgrid.NamespaceTopicEventSubscriptionsClientListByNamespaceTopicResponse])
-
-	// BeginUpdate is the fake for method NamespaceTopicEventSubscriptionsClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, namespaceName string, topicName string, eventSubscriptionName string, eventSubscriptionUpdateParameters armeventgrid.SubscriptionUpdateParameters, options *armeventgrid.NamespaceTopicEventSubscriptionsClientBeginUpdateOptions) (resp azfake.PollerResponder[armeventgrid.NamespaceTopicEventSubscriptionsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewNamespaceTopicEventSubscriptionsServerTransport creates a new instance of NamespaceTopicEventSubscriptionsServerTransport with the provided implementation.
@@ -59,8 +59,8 @@ func NewNamespaceTopicEventSubscriptionsServerTransport(srv *NamespaceTopicEvent
 		srv:                          srv,
 		beginCreateOrUpdate:          newTracker[azfake.PollerResponder[armeventgrid.NamespaceTopicEventSubscriptionsClientCreateOrUpdateResponse]](),
 		beginDelete:                  newTracker[azfake.PollerResponder[armeventgrid.NamespaceTopicEventSubscriptionsClientDeleteResponse]](),
-		newListByNamespaceTopicPager: newTracker[azfake.PagerResponder[armeventgrid.NamespaceTopicEventSubscriptionsClientListByNamespaceTopicResponse]](),
 		beginUpdate:                  newTracker[azfake.PollerResponder[armeventgrid.NamespaceTopicEventSubscriptionsClientUpdateResponse]](),
+		newListByNamespaceTopicPager: newTracker[azfake.PagerResponder[armeventgrid.NamespaceTopicEventSubscriptionsClientListByNamespaceTopicResponse]](),
 	}
 }
 
@@ -70,8 +70,8 @@ type NamespaceTopicEventSubscriptionsServerTransport struct {
 	srv                          *NamespaceTopicEventSubscriptionsServer
 	beginCreateOrUpdate          *tracker[azfake.PollerResponder[armeventgrid.NamespaceTopicEventSubscriptionsClientCreateOrUpdateResponse]]
 	beginDelete                  *tracker[azfake.PollerResponder[armeventgrid.NamespaceTopicEventSubscriptionsClientDeleteResponse]]
-	newListByNamespaceTopicPager *tracker[azfake.PagerResponder[armeventgrid.NamespaceTopicEventSubscriptionsClientListByNamespaceTopicResponse]]
 	beginUpdate                  *tracker[azfake.PollerResponder[armeventgrid.NamespaceTopicEventSubscriptionsClientUpdateResponse]]
+	newListByNamespaceTopicPager *tracker[azfake.PagerResponder[armeventgrid.NamespaceTopicEventSubscriptionsClientListByNamespaceTopicResponse]]
 }
 
 // Do implements the policy.Transporter interface for NamespaceTopicEventSubscriptionsServerTransport.
@@ -99,6 +99,8 @@ func (n *NamespaceTopicEventSubscriptionsServerTransport) dispatchToMethodFake(r
 				res.resp, res.err = n.dispatchBeginCreateOrUpdate(req)
 			case "NamespaceTopicEventSubscriptionsClient.BeginDelete":
 				res.resp, res.err = n.dispatchBeginDelete(req)
+			case "NamespaceTopicEventSubscriptionsClient.BeginUpdate":
+				res.resp, res.err = n.dispatchBeginUpdate(req)
 			case "NamespaceTopicEventSubscriptionsClient.Get":
 				res.resp, res.err = n.dispatchGet(req)
 			case "NamespaceTopicEventSubscriptionsClient.GetDeliveryAttributes":
@@ -107,8 +109,6 @@ func (n *NamespaceTopicEventSubscriptionsServerTransport) dispatchToMethodFake(r
 				res.resp, res.err = n.dispatchGetFullURL(req)
 			case "NamespaceTopicEventSubscriptionsClient.NewListByNamespaceTopicPager":
 				res.resp, res.err = n.dispatchNewListByNamespaceTopicPager(req)
-			case "NamespaceTopicEventSubscriptionsClient.BeginUpdate":
-				res.resp, res.err = n.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -228,6 +228,62 @@ func (n *NamespaceTopicEventSubscriptionsServerTransport) dispatchBeginDelete(re
 	}
 	if !server.PollerResponderMore(beginDelete) {
 		n.beginDelete.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (n *NamespaceTopicEventSubscriptionsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if n.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := n.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.EventGrid/namespaces/(?P<namespaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/topics/(?P<topicName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/eventSubscriptions/(?P<eventSubscriptionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 6 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armeventgrid.SubscriptionUpdateParameters](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		namespaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("namespaceName")])
+		if err != nil {
+			return nil, err
+		}
+		topicNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("topicName")])
+		if err != nil {
+			return nil, err
+		}
+		eventSubscriptionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("eventSubscriptionName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := n.srv.BeginUpdate(req.Context(), resourceGroupNameParam, namespaceNameParam, topicNameParam, eventSubscriptionNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		n.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		n.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		n.beginUpdate.remove(req)
 	}
 
 	return resp, nil
@@ -417,62 +473,6 @@ func (n *NamespaceTopicEventSubscriptionsServerTransport) dispatchNewListByNames
 	if !server.PagerResponderMore(newListByNamespaceTopicPager) {
 		n.newListByNamespaceTopicPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (n *NamespaceTopicEventSubscriptionsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if n.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := n.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.EventGrid/namespaces/(?P<namespaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/topics/(?P<topicName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/eventSubscriptions/(?P<eventSubscriptionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 6 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armeventgrid.SubscriptionUpdateParameters](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		namespaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("namespaceName")])
-		if err != nil {
-			return nil, err
-		}
-		topicNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("topicName")])
-		if err != nil {
-			return nil, err
-		}
-		eventSubscriptionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("eventSubscriptionName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := n.srv.BeginUpdate(req.Context(), resourceGroupNameParam, namespaceNameParam, topicNameParam, eventSubscriptionNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		n.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		n.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		n.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

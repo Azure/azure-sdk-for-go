@@ -20,7 +20,7 @@ import (
 // TopicSpacesClient contains the methods for the TopicSpaces group.
 // Don't use this type directly, use NewTopicSpacesClient() instead.
 //
-// Generated from API version 2025-07-15-preview
+// Generated from API version 2026-06-15-preview
 type TopicSpacesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -72,7 +72,7 @@ func (client *TopicSpacesClient) BeginCreateOrUpdate(ctx context.Context, resour
 	}
 }
 
-// CreateOrUpdate - Create or update a topic space.
+// createOrUpdate - Create or update a topic space.
 //
 // Create or update a topic space with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -96,7 +96,7 @@ func (client *TopicSpacesClient) createOrUpdate(ctx context.Context, resourceGro
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *TopicSpacesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, topicSpaceName string, topicSpaceInfo TopicSpace, _ *TopicSpacesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/namespaces/{namespaceName}/topicSpaces/{topicSpaceName}"
 	if client.subscriptionID == "" {
@@ -120,7 +120,7 @@ func (client *TopicSpacesClient) createOrUpdateCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250715Preview)
+	reqQP.Set("api-version", version20260615Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -140,7 +140,7 @@ func (client *TopicSpacesClient) createOrUpdateCreateRequest(ctx context.Context
 //   - options - TopicSpacesClientBeginDeleteOptions contains the optional parameters for the TopicSpacesClient.BeginDelete method.
 func (client *TopicSpacesClient) BeginDelete(ctx context.Context, resourceGroupName string, namespaceName string, topicSpaceName string, options *TopicSpacesClientBeginDeleteOptions) (*runtime.Poller[TopicSpacesClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.deleteOperation(ctx, resourceGroupName, namespaceName, topicSpaceName, options)
+		resp, err := client.delete(ctx, resourceGroupName, namespaceName, topicSpaceName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -155,11 +155,11 @@ func (client *TopicSpacesClient) BeginDelete(ctx context.Context, resourceGroupN
 	}
 }
 
-// Delete - Delete a topic space.
+// delete - Delete a topic space.
 //
 // Delete an existing topic space.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *TopicSpacesClient) deleteOperation(ctx context.Context, resourceGroupName string, namespaceName string, topicSpaceName string, options *TopicSpacesClientBeginDeleteOptions) (*http.Response, error) {
+func (client *TopicSpacesClient) delete(ctx context.Context, resourceGroupName string, namespaceName string, topicSpaceName string, options *TopicSpacesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "TopicSpacesClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -179,7 +179,7 @@ func (client *TopicSpacesClient) deleteOperation(ctx context.Context, resourceGr
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *TopicSpacesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, topicSpaceName string, _ *TopicSpacesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/namespaces/{namespaceName}/topicSpaces/{topicSpaceName}"
 	if client.subscriptionID == "" {
@@ -203,7 +203,7 @@ func (client *TopicSpacesClient) deleteCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250715Preview)
+	reqQP.Set("api-version", version20260615Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -257,7 +257,7 @@ func (client *TopicSpacesClient) getCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250715Preview)
+	reqQP.Set("api-version", version20260615Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -341,7 +341,7 @@ func (client *TopicSpacesClient) listByNamespaceCreateRequest(ctx context.Contex
 		if options != nil && options.Top != nil {
 			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 		}
-		reqQP.Set("api-version", version20250715Preview)
+		reqQP.Set("api-version", version20260615Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

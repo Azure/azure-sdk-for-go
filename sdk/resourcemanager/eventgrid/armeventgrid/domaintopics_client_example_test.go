@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-07-15-preview/DomainTopics_CreateOrUpdate.json
+// Generated from example definition: 2026-06-15-preview/DomainTopics_CreateOrUpdate.json
 func ExampleDomainTopicsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -32,7 +32,7 @@ func ExampleDomainTopicsClient_BeginCreateOrUpdate() {
 	}
 }
 
-// Generated from example definition: 2025-07-15-preview/DomainTopics_Delete.json
+// Generated from example definition: 2026-06-15-preview/DomainTopics_Delete.json
 func ExampleDomainTopicsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -58,7 +58,7 @@ func ExampleDomainTopicsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15-preview/DomainTopics_Get.json
+// Generated from example definition: 2026-06-15-preview/DomainTopics_Get.json
 func ExampleDomainTopicsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -88,7 +88,7 @@ func ExampleDomainTopicsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15-preview/DomainTopics_ListByDomain.json
+// Generated from example definition: 2026-06-15-preview/DomainTopics_ListByDomain.json
 func ExampleDomainTopicsClient_NewListByDomainPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

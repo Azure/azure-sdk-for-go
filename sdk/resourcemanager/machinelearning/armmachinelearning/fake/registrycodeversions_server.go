@@ -22,10 +22,6 @@ import (
 
 // RegistryCodeVersionsServer is a fake server for instances of the armmachinelearning.RegistryCodeVersionsClient type.
 type RegistryCodeVersionsServer struct {
-	// CreateOrGetStartPendingUpload is the fake for method RegistryCodeVersionsClient.CreateOrGetStartPendingUpload
-	// HTTP status codes to indicate success: http.StatusOK
-	CreateOrGetStartPendingUpload func(ctx context.Context, resourceGroupName string, registryName string, codeName string, version string, body armmachinelearning.PendingUploadRequestDto, options *armmachinelearning.RegistryCodeVersionsClientCreateOrGetStartPendingUploadOptions) (resp azfake.Responder[armmachinelearning.RegistryCodeVersionsClientCreateOrGetStartPendingUploadResponse], errResp azfake.ErrorResponder)
-
 	// BeginCreateOrUpdate is the fake for method RegistryCodeVersionsClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
 	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, registryName string, codeName string, version string, body armmachinelearning.CodeVersion, options *armmachinelearning.RegistryCodeVersionsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armmachinelearning.RegistryCodeVersionsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
@@ -33,6 +29,10 @@ type RegistryCodeVersionsServer struct {
 	// BeginDelete is the fake for method RegistryCodeVersionsClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, registryName string, codeName string, version string, options *armmachinelearning.RegistryCodeVersionsClientBeginDeleteOptions) (resp azfake.PollerResponder[armmachinelearning.RegistryCodeVersionsClientDeleteResponse], errResp azfake.ErrorResponder)
+
+	// CreateOrGetStartPendingUpload is the fake for method RegistryCodeVersionsClient.CreateOrGetStartPendingUpload
+	// HTTP status codes to indicate success: http.StatusOK
+	CreateOrGetStartPendingUpload func(ctx context.Context, resourceGroupName string, registryName string, codeName string, version string, body armmachinelearning.PendingUploadRequestDto, options *armmachinelearning.RegistryCodeVersionsClientCreateOrGetStartPendingUploadOptions) (resp azfake.Responder[armmachinelearning.RegistryCodeVersionsClientCreateOrGetStartPendingUploadResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method RegistryCodeVersionsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
@@ -85,12 +85,12 @@ func (r *RegistryCodeVersionsServerTransport) dispatchToMethodFake(req *http.Req
 		}
 		if !intercepted {
 			switch method {
-			case "RegistryCodeVersionsClient.CreateOrGetStartPendingUpload":
-				res.resp, res.err = r.dispatchCreateOrGetStartPendingUpload(req)
 			case "RegistryCodeVersionsClient.BeginCreateOrUpdate":
 				res.resp, res.err = r.dispatchBeginCreateOrUpdate(req)
 			case "RegistryCodeVersionsClient.BeginDelete":
 				res.resp, res.err = r.dispatchBeginDelete(req)
+			case "RegistryCodeVersionsClient.CreateOrGetStartPendingUpload":
+				res.resp, res.err = r.dispatchCreateOrGetStartPendingUpload(req)
 			case "RegistryCodeVersionsClient.Get":
 				res.resp, res.err = r.dispatchGet(req)
 			case "RegistryCodeVersionsClient.NewListPager":
@@ -109,51 +109,6 @@ func (r *RegistryCodeVersionsServerTransport) dispatchToMethodFake(req *http.Req
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
-}
-
-func (r *RegistryCodeVersionsServerTransport) dispatchCreateOrGetStartPendingUpload(req *http.Request) (*http.Response, error) {
-	if r.srv.CreateOrGetStartPendingUpload == nil {
-		return nil, &nonRetriableError{errors.New("fake for method CreateOrGetStartPendingUpload not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.MachineLearningServices/registries/(?P<registryName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/codes/(?P<codeName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/versions/(?P<version>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/startPendingUpload`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 6 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armmachinelearning.PendingUploadRequestDto](req)
-	if err != nil {
-		return nil, err
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	registryNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("registryName")])
-	if err != nil {
-		return nil, err
-	}
-	codeNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("codeName")])
-	if err != nil {
-		return nil, err
-	}
-	versionParam, err := url.PathUnescape(matches[regex.SubexpIndex("version")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := r.srv.CreateOrGetStartPendingUpload(req.Context(), resourceGroupNameParam, registryNameParam, codeNameParam, versionParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).PendingUploadResponseDto, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
 }
 
 func (r *RegistryCodeVersionsServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (*http.Response, error) {
@@ -261,6 +216,51 @@ func (r *RegistryCodeVersionsServerTransport) dispatchBeginDelete(req *http.Requ
 		r.beginDelete.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (r *RegistryCodeVersionsServerTransport) dispatchCreateOrGetStartPendingUpload(req *http.Request) (*http.Response, error) {
+	if r.srv.CreateOrGetStartPendingUpload == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CreateOrGetStartPendingUpload not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.MachineLearningServices/registries/(?P<registryName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/codes/(?P<codeName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/versions/(?P<version>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/startPendingUpload`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 6 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armmachinelearning.PendingUploadRequestDto](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	registryNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("registryName")])
+	if err != nil {
+		return nil, err
+	}
+	codeNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("codeName")])
+	if err != nil {
+		return nil, err
+	}
+	versionParam, err := url.PathUnescape(matches[regex.SubexpIndex("version")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := r.srv.CreateOrGetStartPendingUpload(req.Context(), resourceGroupNameParam, registryNameParam, codeNameParam, versionParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).PendingUploadResponseDto, req)
+	if err != nil {
+		return nil, err
+	}
 	return resp, nil
 }
 

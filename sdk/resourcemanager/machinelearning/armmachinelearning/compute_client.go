@@ -19,7 +19,7 @@ import (
 // ComputeClient contains the methods for the Compute group.
 // Don't use this type directly, use NewComputeClient() instead.
 //
-// Generated from API version 2026-03-15-preview
+// Generated from API version 2026-09-01
 type ComputeClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -71,7 +71,7 @@ func (client *ComputeClient) BeginCreateOrUpdate(ctx context.Context, resourceGr
 	}
 }
 
-// CreateOrUpdate - Creates or updates compute. This call will overwrite a compute if it exists. This is a nonrecoverable
+// createOrUpdate - Creates or updates compute. This call will overwrite a compute if it exists. This is a nonrecoverable
 // operation. If your intent is to create a new compute, do a GET first to verify that it does not exist yet.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ComputeClient) createOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, parameters ComputeResource, options *ComputeClientBeginCreateOrUpdateOptions) (*http.Response, error) {
@@ -94,7 +94,7 @@ func (client *ComputeClient) createOrUpdate(ctx context.Context, resourceGroupNa
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *ComputeClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, parameters ComputeResource, _ *ComputeClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/computes/{computeName}"
 	if client.subscriptionID == "" {
@@ -118,7 +118,7 @@ func (client *ComputeClient) createOrUpdateCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
+	reqQP.Set("api-version", version20260901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -138,7 +138,7 @@ func (client *ComputeClient) createOrUpdateCreateRequest(ctx context.Context, re
 //   - options - ComputeClientBeginDeleteOptions contains the optional parameters for the ComputeClient.BeginDelete method.
 func (client *ComputeClient) BeginDelete(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, underlyingResourceAction UnderlyingResourceAction, options *ComputeClientBeginDeleteOptions) (*runtime.Poller[ComputeClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.deleteOperation(ctx, resourceGroupName, workspaceName, computeName, underlyingResourceAction, options)
+		resp, err := client.delete(ctx, resourceGroupName, workspaceName, computeName, underlyingResourceAction, options)
 		if err != nil {
 			return nil, err
 		}
@@ -153,9 +153,9 @@ func (client *ComputeClient) BeginDelete(ctx context.Context, resourceGroupName 
 	}
 }
 
-// Delete - Deletes specified Machine Learning compute.
+// delete - Deletes specified Machine Learning compute.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *ComputeClient) deleteOperation(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, underlyingResourceAction UnderlyingResourceAction, options *ComputeClientBeginDeleteOptions) (*http.Response, error) {
+func (client *ComputeClient) delete(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, underlyingResourceAction UnderlyingResourceAction, options *ComputeClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ComputeClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -175,7 +175,7 @@ func (client *ComputeClient) deleteOperation(ctx context.Context, resourceGroupN
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *ComputeClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, underlyingResourceAction UnderlyingResourceAction, _ *ComputeClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/computes/{computeName}"
 	if client.subscriptionID == "" {
@@ -199,9 +199,313 @@ func (client *ComputeClient) deleteCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
+	reqQP.Set("api-version", version20260901)
 	reqQP.Set("underlyingResourceAction", string(underlyingResourceAction))
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginRestart - Posts a restart action to a compute instance
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - Azure Machine Learning Workspace Name
+//   - computeName - Name of the Azure Machine Learning compute.
+//   - options - ComputeClientBeginRestartOptions contains the optional parameters for the ComputeClient.BeginRestart method.
+func (client *ComputeClient) BeginRestart(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, options *ComputeClientBeginRestartOptions) (*runtime.Poller[ComputeClientRestartResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.restart(ctx, resourceGroupName, workspaceName, computeName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ComputeClientRestartResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ComputeClientRestartResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// restart - Posts a restart action to a compute instance
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ComputeClient) restart(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, options *ComputeClientBeginRestartOptions) (*http.Response, error) {
+	var err error
+	const operationName = "ComputeClient.BeginRestart"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.restartCreateRequest(ctx, resourceGroupName, workspaceName, computeName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// restartCreateRequest creates the restart request.
+func (client *ComputeClient) restartCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, _ *ComputeClientBeginRestartOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/computes/{computeName}/restart"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if workspaceName == "" {
+		return nil, errors.New("parameter workspaceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
+	if computeName == "" {
+		return nil, errors.New("parameter computeName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{computeName}", url.PathEscape(computeName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginStart - Posts a start action to a compute instance
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - Azure Machine Learning Workspace Name
+//   - computeName - Name of the Azure Machine Learning compute.
+//   - options - ComputeClientBeginStartOptions contains the optional parameters for the ComputeClient.BeginStart method.
+func (client *ComputeClient) BeginStart(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, options *ComputeClientBeginStartOptions) (*runtime.Poller[ComputeClientStartResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.start(ctx, resourceGroupName, workspaceName, computeName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ComputeClientStartResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ComputeClientStartResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// start - Posts a start action to a compute instance
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ComputeClient) start(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, options *ComputeClientBeginStartOptions) (*http.Response, error) {
+	var err error
+	const operationName = "ComputeClient.BeginStart"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.startCreateRequest(ctx, resourceGroupName, workspaceName, computeName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// startCreateRequest creates the start request.
+func (client *ComputeClient) startCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, _ *ComputeClientBeginStartOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/computes/{computeName}/start"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if workspaceName == "" {
+		return nil, errors.New("parameter workspaceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
+	if computeName == "" {
+		return nil, errors.New("parameter computeName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{computeName}", url.PathEscape(computeName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginStop - Posts a stop action to a compute instance
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - Azure Machine Learning Workspace Name
+//   - computeName - Name of the Azure Machine Learning compute.
+//   - options - ComputeClientBeginStopOptions contains the optional parameters for the ComputeClient.BeginStop method.
+func (client *ComputeClient) BeginStop(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, options *ComputeClientBeginStopOptions) (*runtime.Poller[ComputeClientStopResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.stop(ctx, resourceGroupName, workspaceName, computeName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ComputeClientStopResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ComputeClientStopResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// stop - Posts a stop action to a compute instance
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ComputeClient) stop(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, options *ComputeClientBeginStopOptions) (*http.Response, error) {
+	var err error
+	const operationName = "ComputeClient.BeginStop"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.stopCreateRequest(ctx, resourceGroupName, workspaceName, computeName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// stopCreateRequest creates the stop request.
+func (client *ComputeClient) stopCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, _ *ComputeClientBeginStopOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/computes/{computeName}/stop"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if workspaceName == "" {
+		return nil, errors.New("parameter workspaceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
+	if computeName == "" {
+		return nil, errors.New("parameter computeName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{computeName}", url.PathEscape(computeName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginUpdate - Updates properties of a compute. This call will overwrite a compute if it exists. This is a nonrecoverable
+// operation.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - Azure Machine Learning Workspace Name
+//   - computeName - Name of the Azure Machine Learning compute.
+//   - parameters - Additional parameters for cluster update.
+//   - options - ComputeClientBeginUpdateOptions contains the optional parameters for the ComputeClient.BeginUpdate method.
+func (client *ComputeClient) BeginUpdate(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, parameters ClusterUpdateParameters, options *ComputeClientBeginUpdateOptions) (*runtime.Poller[ComputeClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, workspaceName, computeName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ComputeClientUpdateResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ComputeClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Updates properties of a compute. This call will overwrite a compute if it exists. This is a nonrecoverable operation.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ComputeClient) update(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, parameters ClusterUpdateParameters, options *ComputeClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "ComputeClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, workspaceName, computeName, parameters, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *ComputeClient) updateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, parameters ClusterUpdateParameters, _ *ComputeClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/computes/{computeName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if workspaceName == "" {
+		return nil, errors.New("parameter workspaceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
+	if computeName == "" {
+		return nil, errors.New("parameter computeName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{computeName}", url.PathEscape(computeName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
+		return nil, err
+	}
 	return req, nil
 }
 
@@ -253,7 +557,7 @@ func (client *ComputeClient) getCreateRequest(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
+	reqQP.Set("api-version", version20260901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -267,151 +571,6 @@ func (client *ComputeClient) getHandleResponse(resp *http.Response, successCodes
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ComputeResource); err != nil {
 		return ComputeClientGetResponse{}, err
-	}
-	return result, nil
-}
-
-// GetAllowedResizeSizes - Returns supported virtual machine sizes for resize.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - Azure Machine Learning Workspace Name
-//   - computeName - Name of the Azure Machine Learning compute.
-//   - options - ComputeClientGetAllowedResizeSizesOptions contains the optional parameters for the ComputeClient.GetAllowedResizeSizes
-//     method.
-func (client *ComputeClient) GetAllowedResizeSizes(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, options *ComputeClientGetAllowedResizeSizesOptions) (ComputeClientGetAllowedResizeSizesResponse, error) {
-	var err error
-	const operationName = "ComputeClient.GetAllowedResizeSizes"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.getAllowedResizeSizesCreateRequest(ctx, resourceGroupName, workspaceName, computeName, options)
-	if err != nil {
-		return ComputeClientGetAllowedResizeSizesResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return ComputeClientGetAllowedResizeSizesResponse{}, err
-	}
-	return client.getAllowedResizeSizesHandleResponse(httpResp, http.StatusOK)
-}
-
-// getAllowedResizeSizesCreateRequest creates the GetAllowedResizeSizes request.
-func (client *ComputeClient) getAllowedResizeSizesCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, _ *ComputeClientGetAllowedResizeSizesOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/computes/{computeName}/getAllowedVmSizesForResize"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if workspaceName == "" {
-		return nil, errors.New("parameter workspaceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	if computeName == "" {
-		return nil, errors.New("parameter computeName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{computeName}", url.PathEscape(computeName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// getAllowedResizeSizesHandleResponse handles the GetAllowedResizeSizes response.
-func (client *ComputeClient) getAllowedResizeSizesHandleResponse(resp *http.Response, successCodes ...int) (ComputeClientGetAllowedResizeSizesResponse, error) {
-	result := ComputeClientGetAllowedResizeSizesResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.VirtualMachineSizeListResult); err != nil {
-		return ComputeClientGetAllowedResizeSizesResponse{}, err
-	}
-	return result, nil
-}
-
-// NewListPager - Gets computes in specified workspace.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - Azure Machine Learning Workspace Name
-//   - options - ComputeClientListOptions contains the optional parameters for the ComputeClient.NewListPager method.
-func (client *ComputeClient) NewListPager(resourceGroupName string, workspaceName string, options *ComputeClientListOptions) *runtime.Pager[ComputeClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[ComputeClientListResponse]{
-		More: func(page ComputeClientListResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *ComputeClientListResponse) (ComputeClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ComputeClient.NewListPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			req, err := client.listCreateRequest(ctx, resourceGroupName, workspaceName, nextLink, options)
-			if err != nil {
-				return ComputeClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ComputeClientListResponse{}, err
-			}
-			return client.listHandleResponse(resp, http.StatusOK)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listCreateRequest creates the List request.
-func (client *ComputeClient) listCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, nextLink string, options *ComputeClientListOptions) (*policy.Request, error) {
-	firstPage := nextLink == ""
-	var req *policy.Request
-	var err error
-	if firstPage {
-		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/computes"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter subscriptionID cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-		if resourceGroupName == "" {
-			return nil, errors.New("parameter resourceGroupName cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-		if workspaceName == "" {
-			return nil, errors.New("parameter workspaceName cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	} else {
-		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
-	}
-	if err != nil {
-		return nil, err
-	}
-	if firstPage {
-		reqQP := req.Raw().URL.Query()
-		if options != nil && options.Skip != nil {
-			reqQP.Set("$skip", *options.Skip)
-		}
-		reqQP.Set("api-version", version20260315Preview)
-		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-		req.Raw().Header["Accept"] = []string{"application/json"}
-	}
-	return req, nil
-}
-
-// listHandleResponse handles the List response.
-func (client *ComputeClient) listHandleResponse(resp *http.Response, successCodes ...int) (ComputeClientListResponse, error) {
-	result := ComputeClientListResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.PaginatedComputeResourcesList); err != nil {
-		return ComputeClientListResponse{}, err
 	}
 	return result, nil
 }
@@ -463,7 +622,7 @@ func (client *ComputeClient) listKeysCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
+	reqQP.Set("api-version", version20260901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -543,7 +702,7 @@ func (client *ComputeClient) listNodesCreateRequest(ctx context.Context, resourc
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260315Preview)
+		reqQP.Set("api-version", version20260901)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -562,570 +721,81 @@ func (client *ComputeClient) listNodesHandleResponse(resp *http.Response, succes
 	return result, nil
 }
 
-// BeginResize - Updates the size of a Compute Instance.
-// If the operation fails it returns an *azcore.ResponseError type.
+// NewListPager - Gets computes in specified workspace.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - Azure Machine Learning Workspace Name
-//   - computeName - Name of the Azure Machine Learning compute.
-//   - parameters - The object for updating VM size setting of specified Compute Instance.
-//   - options - ComputeClientBeginResizeOptions contains the optional parameters for the ComputeClient.BeginResize method.
-func (client *ComputeClient) BeginResize(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, parameters ResizeSchema, options *ComputeClientBeginResizeOptions) (*runtime.Poller[ComputeClientResizeResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.resize(ctx, resourceGroupName, workspaceName, computeName, parameters, options)
-		if err != nil {
-			return nil, err
+//   - options - ComputeClientListOptions contains the optional parameters for the ComputeClient.NewListPager method.
+func (client *ComputeClient) NewListPager(resourceGroupName string, workspaceName string, options *ComputeClientListOptions) *runtime.Pager[ComputeClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[ComputeClientListResponse]{
+		More: func(page ComputeClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *ComputeClientListResponse) (ComputeClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ComputeClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listCreateRequest(ctx, resourceGroupName, workspaceName, nextLink, options)
+			if err != nil {
+				return ComputeClientListResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ComputeClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listCreateRequest creates the List request.
+func (client *ComputeClient) listCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, nextLink string, options *ComputeClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/computes"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ComputeClientResizeResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ComputeClientResizeResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Resize - Updates the size of a Compute Instance.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *ComputeClient) resize(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, parameters ResizeSchema, options *ComputeClientBeginResizeOptions) (*http.Response, error) {
-	var err error
-	const operationName = "ComputeClient.BeginResize"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.resizeCreateRequest(ctx, resourceGroupName, workspaceName, computeName, parameters, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// resizeCreateRequest creates the Resize request.
-func (client *ComputeClient) resizeCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, parameters ResizeSchema, _ *ComputeClientBeginResizeOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/computes/{computeName}/resize"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if workspaceName == "" {
-		return nil, errors.New("parameter workspaceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	if computeName == "" {
-		return nil, errors.New("parameter computeName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{computeName}", url.PathEscape(computeName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// BeginRestart - Posts a restart action to a compute instance
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - Azure Machine Learning Workspace Name
-//   - computeName - Name of the Azure Machine Learning compute.
-//   - options - ComputeClientBeginRestartOptions contains the optional parameters for the ComputeClient.BeginRestart method.
-func (client *ComputeClient) BeginRestart(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, options *ComputeClientBeginRestartOptions) (*runtime.Poller[ComputeClientRestartResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.restart(ctx, resourceGroupName, workspaceName, computeName, options)
-		if err != nil {
-			return nil, err
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
 		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ComputeClientRestartResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ComputeClientRestartResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Restart - Posts a restart action to a compute instance
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *ComputeClient) restart(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, options *ComputeClientBeginRestartOptions) (*http.Response, error) {
-	var err error
-	const operationName = "ComputeClient.BeginRestart"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.restartCreateRequest(ctx, resourceGroupName, workspaceName, computeName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// restartCreateRequest creates the Restart request.
-func (client *ComputeClient) restartCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, _ *ComputeClientBeginRestartOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/computes/{computeName}/restart"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if workspaceName == "" {
-		return nil, errors.New("parameter workspaceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	if computeName == "" {
-		return nil, errors.New("parameter computeName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{computeName}", url.PathEscape(computeName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	return req, nil
-}
-
-// BeginStart - Posts a start action to a compute instance
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - Azure Machine Learning Workspace Name
-//   - computeName - Name of the Azure Machine Learning compute.
-//   - options - ComputeClientBeginStartOptions contains the optional parameters for the ComputeClient.BeginStart method.
-func (client *ComputeClient) BeginStart(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, options *ComputeClientBeginStartOptions) (*runtime.Poller[ComputeClientStartResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.start(ctx, resourceGroupName, workspaceName, computeName, options)
-		if err != nil {
-			return nil, err
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if workspaceName == "" {
+			return nil, errors.New("parameter workspaceName cannot be empty")
 		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ComputeClientStartResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
+		urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ComputeClientStartResponse]{
-			Tracer: client.internal.Tracer(),
-		})
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-}
-
-// Start - Posts a start action to a compute instance
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *ComputeClient) start(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, options *ComputeClientBeginStartOptions) (*http.Response, error) {
-	var err error
-	const operationName = "ComputeClient.BeginStart"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.startCreateRequest(ctx, resourceGroupName, workspaceName, computeName, options)
 	if err != nil {
 		return nil, err
 	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// startCreateRequest creates the Start request.
-func (client *ComputeClient) startCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, _ *ComputeClientBeginStartOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/computes/{computeName}/start"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if workspaceName == "" {
-		return nil, errors.New("parameter workspaceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	if computeName == "" {
-		return nil, errors.New("parameter computeName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{computeName}", url.PathEscape(computeName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	return req, nil
-}
-
-// BeginStop - Posts a stop action to a compute instance
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - Azure Machine Learning Workspace Name
-//   - computeName - Name of the Azure Machine Learning compute.
-//   - options - ComputeClientBeginStopOptions contains the optional parameters for the ComputeClient.BeginStop method.
-func (client *ComputeClient) BeginStop(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, options *ComputeClientBeginStopOptions) (*runtime.Poller[ComputeClientStopResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.stop(ctx, resourceGroupName, workspaceName, computeName, options)
-		if err != nil {
-			return nil, err
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Skip != nil {
+			reqQP.Set("$skip", *options.Skip)
 		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ComputeClientStopResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ComputeClientStopResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Stop - Posts a stop action to a compute instance
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *ComputeClient) stop(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, options *ComputeClientBeginStopOptions) (*http.Response, error) {
-	var err error
-	const operationName = "ComputeClient.BeginStop"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.stopCreateRequest(ctx, resourceGroupName, workspaceName, computeName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// stopCreateRequest creates the Stop request.
-func (client *ComputeClient) stopCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, _ *ComputeClientBeginStopOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/computes/{computeName}/stop"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if workspaceName == "" {
-		return nil, errors.New("parameter workspaceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	if computeName == "" {
-		return nil, errors.New("parameter computeName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{computeName}", url.PathEscape(computeName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	return req, nil
-}
-
-// BeginUpdate - Updates properties of a compute. This call will overwrite a compute if it exists. This is a nonrecoverable
-// operation.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - Azure Machine Learning Workspace Name
-//   - computeName - Name of the Azure Machine Learning compute.
-//   - parameters - Additional parameters for cluster update.
-//   - options - ComputeClientBeginUpdateOptions contains the optional parameters for the ComputeClient.BeginUpdate method.
-func (client *ComputeClient) BeginUpdate(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, parameters ClusterUpdateParameters, options *ComputeClientBeginUpdateOptions) (*runtime.Poller[ComputeClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, workspaceName, computeName, parameters, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ComputeClientUpdateResponse]{
-			FinalStateVia: runtime.FinalStateViaLocation,
-			Tracer:        client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ComputeClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Updates properties of a compute. This call will overwrite a compute if it exists. This is a nonrecoverable operation.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *ComputeClient) update(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, parameters ClusterUpdateParameters, options *ComputeClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "ComputeClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, workspaceName, computeName, parameters, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *ComputeClient) updateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, parameters ClusterUpdateParameters, _ *ComputeClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/computes/{computeName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if workspaceName == "" {
-		return nil, errors.New("parameter workspaceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	if computeName == "" {
-		return nil, errors.New("parameter computeName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{computeName}", url.PathEscape(computeName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
+		reqQP.Set("api-version", version20260901)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
 	return req, nil
 }
 
-// UpdateCustomServices - Updates the custom services list. The list of custom services provided shall be overwritten.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - Azure Machine Learning Workspace Name
-//   - computeName - Name of the Azure Machine Learning compute.
-//   - customServices - New list of Custom Services.
-//   - options - ComputeClientUpdateCustomServicesOptions contains the optional parameters for the ComputeClient.UpdateCustomServices
-//     method.
-func (client *ComputeClient) UpdateCustomServices(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, customServices []*CustomService, options *ComputeClientUpdateCustomServicesOptions) (ComputeClientUpdateCustomServicesResponse, error) {
-	var err error
-	const operationName = "ComputeClient.UpdateCustomServices"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCustomServicesCreateRequest(ctx, resourceGroupName, workspaceName, computeName, customServices, options)
-	if err != nil {
-		return ComputeClientUpdateCustomServicesResponse{}, err
+// listHandleResponse handles the List response.
+func (client *ComputeClient) listHandleResponse(resp *http.Response, successCodes ...int) (ComputeClientListResponse, error) {
+	result := ComputeClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
 	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return ComputeClientUpdateCustomServicesResponse{}, err
+	if err := runtime.UnmarshalAsJSON(resp, &result.PaginatedComputeResourcesList); err != nil {
+		return ComputeClientListResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return ComputeClientUpdateCustomServicesResponse{}, runtime.NewResponseError(httpResp)
-	}
-	return ComputeClientUpdateCustomServicesResponse{}, nil
-}
-
-// updateCustomServicesCreateRequest creates the UpdateCustomServices request.
-func (client *ComputeClient) updateCustomServicesCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, customServices []*CustomService, _ *ComputeClientUpdateCustomServicesOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/computes/{computeName}/customServices"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if workspaceName == "" {
-		return nil, errors.New("parameter workspaceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	if computeName == "" {
-		return nil, errors.New("parameter computeName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{computeName}", url.PathEscape(computeName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, customServices); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// UpdateDataMounts - Update Data Mounts of a Machine Learning compute.
-//
-// Update Data Mounts of a Machine Learning compute.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - Azure Machine Learning Workspace Name
-//   - computeName - Name of the Azure Machine Learning compute.
-//   - dataMounts - The parameters for creating or updating a machine learning workspace.
-//   - options - ComputeClientUpdateDataMountsOptions contains the optional parameters for the ComputeClient.UpdateDataMounts
-//     method.
-func (client *ComputeClient) UpdateDataMounts(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, dataMounts []*ComputeInstanceDataMount, options *ComputeClientUpdateDataMountsOptions) (ComputeClientUpdateDataMountsResponse, error) {
-	var err error
-	const operationName = "ComputeClient.UpdateDataMounts"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateDataMountsCreateRequest(ctx, resourceGroupName, workspaceName, computeName, dataMounts, options)
-	if err != nil {
-		return ComputeClientUpdateDataMountsResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return ComputeClientUpdateDataMountsResponse{}, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return ComputeClientUpdateDataMountsResponse{}, runtime.NewResponseError(httpResp)
-	}
-	return ComputeClientUpdateDataMountsResponse{}, nil
-}
-
-// updateDataMountsCreateRequest creates the UpdateDataMounts request.
-func (client *ComputeClient) updateDataMountsCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, dataMounts []*ComputeInstanceDataMount, _ *ComputeClientUpdateDataMountsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/computes/{computeName}/updateDataMounts"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if workspaceName == "" {
-		return nil, errors.New("parameter workspaceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	if computeName == "" {
-		return nil, errors.New("parameter computeName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{computeName}", url.PathEscape(computeName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, dataMounts); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// UpdateIdleShutdownSetting - Updates the idle shutdown setting of a compute instance.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - Azure Machine Learning Workspace Name
-//   - computeName - Name of the Azure Machine Learning compute.
-//   - parameters - The object for updating idle shutdown setting of specified ComputeInstance.
-//   - options - ComputeClientUpdateIdleShutdownSettingOptions contains the optional parameters for the ComputeClient.UpdateIdleShutdownSetting
-//     method.
-func (client *ComputeClient) UpdateIdleShutdownSetting(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, parameters IdleShutdownSetting, options *ComputeClientUpdateIdleShutdownSettingOptions) (ComputeClientUpdateIdleShutdownSettingResponse, error) {
-	var err error
-	const operationName = "ComputeClient.UpdateIdleShutdownSetting"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateIdleShutdownSettingCreateRequest(ctx, resourceGroupName, workspaceName, computeName, parameters, options)
-	if err != nil {
-		return ComputeClientUpdateIdleShutdownSettingResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return ComputeClientUpdateIdleShutdownSettingResponse{}, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return ComputeClientUpdateIdleShutdownSettingResponse{}, runtime.NewResponseError(httpResp)
-	}
-	return ComputeClientUpdateIdleShutdownSettingResponse{}, nil
-}
-
-// updateIdleShutdownSettingCreateRequest creates the UpdateIdleShutdownSetting request.
-func (client *ComputeClient) updateIdleShutdownSettingCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, parameters IdleShutdownSetting, _ *ComputeClientUpdateIdleShutdownSettingOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/computes/{computeName}/updateIdleShutdownSetting"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if workspaceName == "" {
-		return nil, errors.New("parameter workspaceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	if computeName == "" {
-		return nil, errors.New("parameter computeName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{computeName}", url.PathEscape(computeName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
-	return req, nil
+	return result, nil
 }

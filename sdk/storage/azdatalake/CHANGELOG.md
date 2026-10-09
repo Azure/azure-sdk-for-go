@@ -1,5 +1,35 @@
 # Release History
 
+## 1.7.0 (Unreleased)
+
+### Features Added
+* Added support for session authentication. Set `Session` on `ClientOptions` to configure it. Sessions apply only to
+  clients authenticated with an `azcore.TokenCredential`, and only to the file reads they send to the blob endpoint;
+  requests to the DFS endpoint, writes and every other operation keep using the bearer token. With
+  `SessionModeEnabled`, reads are authenticated with a session created and cached per file system. The default,
+  `SessionModeAuto`, currently resolves to `SessionModeDisabled`.
+  * A client and every client derived from it share one session cache. Create a `ContainerSessionProvider` with
+    `azdatalake.NewContainerSessionProvider` and pass it as `SessionOptions.Provider` to share one cache across
+    separately constructed clients, so that sessions survive the clients that created them.
+  * The account name that signs session requests is derived from the client's URL, or set with
+    `SessionOptions.AccountName` for a custom domain. When it can be determined from neither, client construction
+    fails if `SessionModeEnabled` was set explicitly.
+* Added support for data locality. `file.Client.GetLayoutPager` returns a file's layout: the byte ranges making up the
+  file and the storage endpoint that serves each one. Pass the endpoint covering a given offset as
+  `DownloadStreamOptions.LayoutEndpoint` to route that read to it; retries of the read stay on that endpoint.
+* Added `LayoutAwareRouting` to `file.DownloadBufferOptions` and `file.DownloadFileOptions`. With
+  `LayoutAwareRoutingEnabled`, when the initial read carries the layout download hint, the remaining chunks are routed
+  to the endpoint that serves each one. The default, `LayoutAwareRoutingAuto`, currently resolves to
+  `LayoutAwareRoutingDisabled`.
+
+### Breaking Changes
+
+### Bugs Fixed
+* The token credential constructors now return the error from creating their blob client instead of discarding it.
+
+### Other Changes
+* Updated `azblob` version to `1.9.0`
+
 ## 1.6.1 (2026-10-07)
 
 ### Bugs Fixed

@@ -419,6 +419,16 @@ type DownloadStreamOptions struct {
 	// data wrapped in a structured message with per-segment CRC64 checksums. The SDK
 	// automatically decodes the structured message and validates checksums before returning data.
 	TransactionalValidation TransferValidationType
+	// LayoutEndpoint routes this read to a layout endpoint, the Value of a LayoutEndpoint returned
+	// by Client.GetLayoutPager, instead of the client's configured endpoint. The request still
+	// authenticates against the account. It is read from the blob endpoint, and retries of the read
+	// stay on the same layout endpoint.
+	//
+	// Most callers don't need to set it: use DownloadBuffer or DownloadFile with
+	// LayoutAwareRoutingEnabled, which select endpoints automatically. Set it only when implementing
+	// a custom chunked download: page through Client.GetLayoutPager, find the layout range covering
+	// Range.Offset, and pass that range's endpoint here.
+	LayoutEndpoint string
 }
 
 func (o *DownloadStreamOptions) format() *blob.DownloadStreamOptions {
@@ -441,6 +451,7 @@ func (o *DownloadStreamOptions) format() *blob.DownloadStreamOptions {
 	downloadStreamOptions.RangeGetContentMD5 = o.RangeGetContentMD5
 	downloadStreamOptions.AccessConditions = exported.FormatBlobAccessConditions(o.AccessConditions)
 	downloadStreamOptions.CPKScopeInfo = o.CPKScopeInfo
+	downloadStreamOptions.LayoutEndpoint = o.LayoutEndpoint
 	if o.TransactionalValidation != nil {
 		if h := exported.GetStructuredBodyType(o.TransactionalValidation); h != "" {
 			downloadStreamOptions.TransactionalValidation = blob.TransferValidationTypeComputeStructuredMessageCRC64(0)
@@ -470,6 +481,10 @@ type DownloadBufferOptions struct {
 	RetryReaderOptionsPerChunk *RetryReaderOptions
 	// TransactionalValidation specifies the transfer validation type to use on download.
 	TransactionalValidation TransferValidationType
+	// LayoutAwareRouting indicates whether the parallel reads should be routed to the endpoint that serves
+	// each range, based on the file's layout. The default, LayoutAwareRoutingAuto, currently resolves to
+	// disabled; set LayoutAwareRoutingEnabled to opt in.
+	LayoutAwareRouting LayoutAwareRouting
 }
 
 func (o *DownloadBufferOptions) format() *blob.DownloadBufferOptions {
@@ -494,6 +509,7 @@ func (o *DownloadBufferOptions) format() *blob.DownloadBufferOptions {
 
 	downloadBufferOptions.AccessConditions = exported.FormatBlobAccessConditions(o.AccessConditions)
 	downloadBufferOptions.CPKScopeInfo = o.CPKScopeInfo
+	downloadBufferOptions.LayoutAwareRouting = o.LayoutAwareRouting
 	downloadBufferOptions.BlockSize = o.ChunkSize
 	downloadBufferOptions.Progress = o.Progress
 	downloadBufferOptions.Concurrency = o.Concurrency
@@ -532,6 +548,10 @@ type DownloadFileOptions struct {
 	RetryReaderOptionsPerChunk *RetryReaderOptions
 	// TransactionalValidation specifies the transfer validation type to use on download.
 	TransactionalValidation TransferValidationType
+	// LayoutAwareRouting indicates whether the parallel reads should be routed to the endpoint that serves
+	// each range, based on the file's layout. The default, LayoutAwareRoutingAuto, currently resolves to
+	// disabled; set LayoutAwareRoutingEnabled to opt in.
+	LayoutAwareRouting LayoutAwareRouting
 }
 
 func (o *DownloadFileOptions) format() *blob.DownloadFileOptions {
@@ -556,6 +576,7 @@ func (o *DownloadFileOptions) format() *blob.DownloadFileOptions {
 
 	downloadFileOptions.AccessConditions = exported.FormatBlobAccessConditions(o.AccessConditions)
 	downloadFileOptions.CPKScopeInfo = o.CPKScopeInfo
+	downloadFileOptions.LayoutAwareRouting = o.LayoutAwareRouting
 	downloadFileOptions.BlockSize = o.ChunkSize
 	downloadFileOptions.Progress = o.Progress
 	downloadFileOptions.Concurrency = o.Concurrency

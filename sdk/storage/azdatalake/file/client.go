@@ -67,10 +67,17 @@ func NewClient(fileURL string, cred azcore.TokenCredential, options *ClientOptio
 		perCallPolicies = append(perCallPolicies, options.PerCallPolicies...)
 	}
 	options.PerCallPolicies = perCallPolicies
+	// one session provider for this client and every client derived from it
+	conOptions = (*ClientOptions)(base.WithSessionProvider((*base.ClientOptions)(conOptions), blobURL, cred))
 	blobClientOpts := blockblob.ClientOptions{
 		ClientOptions: options.ClientOptions,
+		// sessions apply only to the requests this client sends to the blob endpoint
+		Session: conOptions.Session,
 	}
-	blobClient, _ := blockblob.NewClient(blobURL, cred, &blobClientOpts)
+	blobClient, err := blockblob.NewClient(blobURL, cred, &blobClientOpts)
+	if err != nil {
+		return nil, err
+	}
 	fileClient := base.NewPathClient(fileURL, blobURL, blobClient, azClient, nil, &cred, (*base.ClientOptions)(conOptions))
 
 	return (*Client)(fileClient), nil
@@ -658,6 +665,7 @@ func (f *Client) DownloadStream(ctx context.Context, o *DownloadStreamOptions) (
 		cpkInfo:                 o.CPKInfo,
 		cpkScope:                o.CPKScopeInfo,
 		transactionalValidation: o.TransactionalValidation,
+		layoutEndpoint:          o.LayoutEndpoint,
 	}
 
 	return fullResp, nil

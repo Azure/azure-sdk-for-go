@@ -6,6 +6,7 @@ package base
 import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blockblob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/container"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/service"
@@ -24,6 +25,37 @@ type ClientOptions struct {
 	// Only has an effect when credential is of type TokenCredential. The value could be
 	// https://storage.azure.com/ (default) or https://<account>.blob.core.windows.net.
 	Audience string
+
+	// Session configures session authentication. It applies only to clients authenticated with an
+	// azcore.TokenCredential, and only to the file reads they send to the blob endpoint; requests
+	// to the DFS endpoint always use the bearer token. The default, SessionModeAuto, currently
+	// resolves to disabled.
+	Session azblob.SessionOptions
+}
+
+// WithSessionProvider returns a copy of clOpts whose Session.Provider is set, so that a token
+// credential client and every client derived from it share one session cache, as they would if
+// they shared a pipeline. A provider the caller supplied is kept; otherwise a
+// ContainerSessionProvider for blobURL is created, which makes no requests until a session is
+// needed. If one can't be created, Provider stays nil and the blob client reports any
+// configuration error itself.
+func WithSessionProvider(clOpts *ClientOptions, blobURL string, cred azcore.TokenCredential) *ClientOptions {
+	opts := *clOpts
+	if opts.Session.Provider == nil {
+		if p, err := azblob.NewContainerSessionProvider(blobURL, cred, &azblob.ClientOptions{ClientOptions: opts.ClientOptions}); err == nil {
+			opts.Session.Provider = p
+		}
+	}
+	return &opts
+}
+
+// BlobClientOptions returns the options for the blob client a data lake client uses for the
+// requests it sends to the blob endpoint.
+func BlobClientOptions(clOpts *ClientOptions) azblob.ClientOptions {
+	if clOpts == nil {
+		return azblob.ClientOptions{}
+	}
+	return azblob.ClientOptions{ClientOptions: clOpts.ClientOptions, Session: clOpts.Session}
 }
 
 func GetPipelineOptions(clOpts *ClientOptions) *runtime.PipelineOptions {

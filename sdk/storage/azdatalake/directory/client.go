@@ -62,10 +62,17 @@ func NewClient(directoryURL string, cred azcore.TokenCredential, options *Client
 		perCallPolicies = append(perCallPolicies, options.PerCallPolicies...)
 	}
 	options.PerCallPolicies = perCallPolicies
+	// one session provider for this client and every client derived from it
+	conOptions = (*ClientOptions)(base.WithSessionProvider((*base.ClientOptions)(conOptions), blobURL, cred))
 	blobClientOpts := blockblob.ClientOptions{
 		ClientOptions: options.ClientOptions,
+		// sessions apply only to the requests this client sends to the blob endpoint
+		Session: conOptions.Session,
 	}
-	blobClient, _ := blockblob.NewClient(blobURL, cred, &blobClientOpts)
+	blobClient, err := blockblob.NewClient(blobURL, cred, &blobClientOpts)
+	if err != nil {
+		return nil, err
+	}
 	dirClient := base.NewPathClient(directoryURL, blobURL, blobClient, azClient, nil, &cred, (*base.ClientOptions)(conOptions))
 
 	return (*Client)(dirClient), nil
@@ -212,7 +219,7 @@ func (d *Client) NewFileClient(fileName string) (*file.Client, error) {
 	fileURL := runtime.JoinPaths(d.DFSURL(), fileName)
 	newBlobURL, fileURL := shared.GetURLs(fileURL)
 	var newBlobClient *blockblob.Client
-	clientOptions := &blockblob.ClientOptions{ClientOptions: d.getClientOptions().ClientOptions}
+	clientOptions := &blockblob.ClientOptions{ClientOptions: d.getClientOptions().ClientOptions, Session: d.getClientOptions().Session}
 	// The blob client built here must capture the raw response so that file.GetProperties
 	// can read the datalake-specific headers (owner, group, permissions). Without this the
 	// captured response is nil and GetProperties panics. See issue #25490.
@@ -239,7 +246,7 @@ func (d *Client) NewSubdirectoryClient(subdirectoryName string) (*Client, error)
 	subDirectoryURL := runtime.JoinPaths(d.DFSURL(), subdirectoryName)
 	newBlobURL, subDirectoryURL := shared.GetURLs(subDirectoryURL)
 	var newBlobClient *blockblob.Client
-	clientOptions := &blockblob.ClientOptions{ClientOptions: d.getClientOptions().ClientOptions}
+	clientOptions := &blockblob.ClientOptions{ClientOptions: d.getClientOptions().ClientOptions, Session: d.getClientOptions().Session}
 	// The blob client built here must capture the raw response so that GetProperties can read
 	// the datalake-specific headers (owner, group, permissions). Without this the captured
 	// response is nil and GetProperties panics. See issue #25490.

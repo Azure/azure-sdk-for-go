@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-15-preview/Workspace/ComponentContainer/createOrUpdate.json
+// Generated from example definition: 2026-07-01/Workspace/ComponentContainer/createOrUpdate.json
 func ExampleComponentContainersClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -66,7 +66,7 @@ func ExampleComponentContainersClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Workspace/ComponentContainer/delete.json
+// Generated from example definition: 2026-07-01/Workspace/ComponentContainer/delete.json
 func ExampleComponentContainersClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -88,7 +88,7 @@ func ExampleComponentContainersClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Workspace/ComponentContainer/get.json
+// Generated from example definition: 2026-07-01/Workspace/ComponentContainer/get.json
 func ExampleComponentContainersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -132,7 +132,7 @@ func ExampleComponentContainersClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Workspace/ComponentContainer/list.json
+// Generated from example definition: 2026-07-01/Workspace/ComponentContainer/list.json
 func ExampleComponentContainersClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -156,7 +156,7 @@ func ExampleComponentContainersClient_NewListPager() {
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page = armmachinelearning.ComponentContainersClientListResponse{
 		// 	ComponentContainerResourceArmPaginatedResult: armmachinelearning.ComponentContainerResourceArmPaginatedResult{
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.MachineLearningServices/workspaces/my-aml-workspace/components?api-version=2025-07-01-preview&$skip=2"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.MachineLearningServices/workspaces/my-aml-workspace/components?api-version=2026-07-01&$skip=2"),
 		// 		Value: []*armmachinelearning.ComponentContainer{
 		// 			{
 		// 				Name: to.Ptr("string"),

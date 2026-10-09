@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-15-preview/Workspace/create.json
+// Generated from example definition: 2026-07-01/Workspace/create.json
 func ExampleWorkspacesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -129,7 +129,7 @@ func ExampleWorkspacesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Workspace/delete.json
+// Generated from example definition: 2026-07-01/Workspace/delete.json
 func ExampleWorkspacesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -155,7 +155,7 @@ func ExampleWorkspacesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Workspace/diagnose.json
+// Generated from example definition: 2026-07-01/Workspace/diagnose.json
 func ExampleWorkspacesClient_BeginDiagnose() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -221,7 +221,7 @@ func ExampleWorkspacesClient_BeginDiagnose() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Workspace/get.json
+// Generated from example definition: 2026-07-01/Workspace/get.json
 func ExampleWorkspacesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -331,7 +331,7 @@ func ExampleWorkspacesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Workspace/listByResourceGroup.json
+// Generated from example definition: 2026-07-01/Workspace/listByResourceGroup.json
 func ExampleWorkspacesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -355,7 +355,7 @@ func ExampleWorkspacesClient_NewListByResourceGroupPager() {
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page = armmachinelearning.WorkspacesClientListByResourceGroupResponse{
 		// 	WorkspaceListResult: armmachinelearning.WorkspaceListResult{
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.MachineLearningServices/workspaces?api-version=2025-07-01-preview&$skip=2"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.MachineLearningServices/workspaces?api-version=2026-07-01&$skip=2"),
 		// 		Value: []*armmachinelearning.Workspace{
 		// 			{
 		// 				Name: to.Ptr("testworkspace"),
@@ -393,7 +393,7 @@ func ExampleWorkspacesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-15-preview/Workspace/listBySubscription.json
+// Generated from example definition: 2026-07-01/Workspace/listBySubscription.json
 func ExampleWorkspacesClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -417,7 +417,7 @@ func ExampleWorkspacesClient_NewListBySubscriptionPager() {
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page = armmachinelearning.WorkspacesClientListBySubscriptionResponse{
 		// 	WorkspaceListResult: armmachinelearning.WorkspaceListResult{
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/providers/Microsoft.MachineLearningServices/workspaces?api-version=2025-07-01-preview&$skip=2"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/providers/Microsoft.MachineLearningServices/workspaces?api-version=2026-07-01&$skip=2"),
 		// 		Value: []*armmachinelearning.Workspace{
 		// 			{
 		// 				Name: to.Ptr("testworkspace"),
@@ -455,7 +455,7 @@ func ExampleWorkspacesClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-15-preview/Workspace/listKeys.json
+// Generated from example definition: 2026-07-01/Workspace/listKeys.json
 func ExampleWorkspacesClient_ListKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -495,7 +495,7 @@ func ExampleWorkspacesClient_ListKeys() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Workspace/listNotebookAccessToken.json
+// Generated from example definition: 2026-07-01/Workspace/listNotebookAccessToken.json
 func ExampleWorkspacesClient_ListNotebookAccessToken() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -525,7 +525,7 @@ func ExampleWorkspacesClient_ListNotebookAccessToken() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Notebook/listKeys.json
+// Generated from example definition: 2026-07-01/Notebook/listKeys.json
 func ExampleWorkspacesClient_ListNotebookKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -549,7 +549,7 @@ func ExampleWorkspacesClient_ListNotebookKeys() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/ExternalFQDN/get.json
+// Generated from example definition: 2026-07-01/ExternalFQDN/get.json
 func ExampleWorkspacesClient_ListOutboundNetworkDependenciesEndpoints() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -605,7 +605,7 @@ func ExampleWorkspacesClient_ListOutboundNetworkDependenciesEndpoints() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Workspace/listStorageAccountKeys.json
+// Generated from example definition: 2026-07-01/Workspace/listStorageAccountKeys.json
 func ExampleWorkspacesClient_ListStorageAccountKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -629,7 +629,7 @@ func ExampleWorkspacesClient_ListStorageAccountKeys() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Notebook/prepare.json
+// Generated from example definition: 2026-07-01/Notebook/prepare.json
 func ExampleWorkspacesClient_BeginPrepareNotebook() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -663,7 +663,7 @@ func ExampleWorkspacesClient_BeginPrepareNotebook() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Workspace/resyncKeys.json
+// Generated from example definition: 2026-07-01/Workspace/resyncKeys.json
 func ExampleWorkspacesClient_BeginResyncKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -689,7 +689,7 @@ func ExampleWorkspacesClient_BeginResyncKeys() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Workspace/update.json
+// Generated from example definition: 2026-07-01/Workspace/update.json
 func ExampleWorkspacesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

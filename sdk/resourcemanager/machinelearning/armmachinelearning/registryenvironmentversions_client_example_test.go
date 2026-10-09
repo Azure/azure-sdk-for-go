@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-15-preview/Registry/EnvironmentVersion/createOrUpdate.json
+// Generated from example definition: 2026-07-01/Registry/EnvironmentVersion/createOrUpdate.json
 func ExampleRegistryEnvironmentVersionsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -113,7 +113,7 @@ func ExampleRegistryEnvironmentVersionsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Registry/EnvironmentVersion/delete.json
+// Generated from example definition: 2026-07-01/Registry/EnvironmentVersion/delete.json
 func ExampleRegistryEnvironmentVersionsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -139,7 +139,7 @@ func ExampleRegistryEnvironmentVersionsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Registry/EnvironmentVersion/get.json
+// Generated from example definition: 2026-07-01/Registry/EnvironmentVersion/get.json
 func ExampleRegistryEnvironmentVersionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -205,7 +205,7 @@ func ExampleRegistryEnvironmentVersionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Registry/EnvironmentVersion/list.json
+// Generated from example definition: 2026-07-01/Registry/EnvironmentVersion/list.json
 func ExampleRegistryEnvironmentVersionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -231,7 +231,7 @@ func ExampleRegistryEnvironmentVersionsClient_NewListPager() {
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page = armmachinelearning.RegistryEnvironmentVersionsClientListResponse{
 		// 	EnvironmentVersionResourceArmPaginatedResult: armmachinelearning.EnvironmentVersionResourceArmPaginatedResult{
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.MachineLearningServices/registries/registries123/environments/string/versions?api-version=2025-07-01-preview&$skip=2"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.MachineLearningServices/registries/registries123/environments/string/versions?api-version=2026-07-01&$skip=2"),
 		// 		Value: []*armmachinelearning.EnvironmentVersion{
 		// 			{
 		// 				Name: to.Ptr("string"),

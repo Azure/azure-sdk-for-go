@@ -8,12 +8,12 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/deviceregistry/armdeviceregistry/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/deviceregistry/armdeviceregistry/v3"
 	"log"
 	"time"
 )
 
-// Generated from example definition: 2026-03-01-preview/CreateOrReplace_NamespaceDiscoveredAsset.json
+// Generated from example definition: 2026-11-01/CreateOrReplace_NamespaceDiscoveredAsset.json
 func ExampleNamespaceDiscoveredAssetsClient_BeginCreateOrReplace() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -40,7 +40,6 @@ func ExampleNamespaceDiscoveredAssetsClient_BeginCreateOrReplace() {
 			},
 			AssetTypeRefs: []*string{
 				to.Ptr("myAssetTypeRef1"),
-				to.Ptr("myAssetTypeRef2"),
 			},
 			DiscoveryID:      to.Ptr("11111111-1111-1111-1111-111111111111"),
 			Version:          to.Ptr[int64](73766),
@@ -109,12 +108,30 @@ func ExampleNamespaceDiscoveredAssetsClient_BeginCreateOrReplace() {
 							TypeRef:                to.Ptr("dataset1DataPoint1TypeRef"),
 							LastUpdatedOn:          to.Ptr(time.Date(2024, time.April, 9, 14, 20, 0, 520000000, time.UTC)),
 						},
+					},
+				},
+			},
+			EventGroups: []*armdeviceregistry.NamespaceDiscoveredEventGroup{
+				{
+					Name: to.Ptr("default"),
+					Events: []*armdeviceregistry.NamespaceDiscoveredEvent{
 						{
-							Name:                   to.Ptr("dataset1DataPoint2"),
-							DataSource:             to.Ptr("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt4"),
-							DataPointConfiguration: to.Ptr("{\"publishingInterval\":8,\"samplingInterval\":8,\"queueSize\":4}"),
-							TypeRef:                to.Ptr("dataset1DataPoint2TypeRef"),
-							LastUpdatedOn:          to.Ptr(time.Date(2024, time.April, 9, 14, 20, 0, 520000000, time.UTC)),
+							Name:               to.Ptr("event1"),
+							DataSource:         to.Ptr("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt3"),
+							EventConfiguration: to.Ptr("{\"publishingInterval\":7,\"samplingInterval\":1,\"queueSize\":8}"),
+							LastUpdatedOn:      to.Ptr(time.Date(2024, time.April, 9, 14, 20, 0, 520000000, time.UTC)),
+							Destinations: []armdeviceregistry.EventDestinationClassification{
+								&armdeviceregistry.EventMqttDestination{
+									Target: to.Ptr(armdeviceregistry.EventDestinationTargetMqtt),
+									Configuration: &armdeviceregistry.MqttDestinationConfiguration{
+										Topic:  to.Ptr("/contoso/testEvent1"),
+										Retain: to.Ptr(armdeviceregistry.TopicRetainTypeKeep),
+										Qos:    to.Ptr(armdeviceregistry.MqttDestinationQosQos0),
+										TTL:    to.Ptr[int64](7200),
+									},
+								},
+							},
+							TypeRef: to.Ptr("event1Ref"),
 						},
 					},
 				},
@@ -130,23 +147,6 @@ func ExampleNamespaceDiscoveredAssetsClient_BeginCreateOrReplace() {
 							Target: to.Ptr(armdeviceregistry.StreamDestinationTargetStorage),
 							Configuration: &armdeviceregistry.StorageDestinationConfiguration{
 								Path: to.Ptr("/tmp/stream1"),
-							},
-						},
-					},
-				},
-				{
-					Name:                to.Ptr("stream2"),
-					StreamConfiguration: to.Ptr("{\"publishingInterval\":8,\"samplingInterval\":8,\"queueSize\":4}"),
-					LastUpdatedOn:       to.Ptr(time.Date(2024, time.April, 9, 14, 20, 0, 520000000, time.UTC)),
-					TypeRef:             to.Ptr("stream2TypeRef"),
-					Destinations: []armdeviceregistry.StreamDestinationClassification{
-						&armdeviceregistry.StreamMqttDestination{
-							Target: to.Ptr(armdeviceregistry.StreamDestinationTargetMqtt),
-							Configuration: &armdeviceregistry.MqttDestinationConfiguration{
-								Topic:  to.Ptr("/contoso/testStream2"),
-								Retain: to.Ptr(armdeviceregistry.TopicRetainTypeNever),
-								Qos:    to.Ptr(armdeviceregistry.MqttDestinationQosQos0),
-								TTL:    to.Ptr[int64](7200),
 							},
 						},
 					},
@@ -167,16 +167,6 @@ func ExampleNamespaceDiscoveredAssetsClient_BeginCreateOrReplace() {
 							TargetURI:           to.Ptr("/onvif/device_service?ONVIFProfile=Profile1"),
 							Topic:               to.Ptr("/contoso/managementGroup1/action1"),
 							TypeRef:             to.Ptr("action1TypeRef"),
-							ActionType:          to.Ptr(armdeviceregistry.NamespaceDiscoveredManagementActionTypeCall),
-							TimeoutInSeconds:    to.Ptr[int32](60),
-							LastUpdatedOn:       to.Ptr(time.Date(2024, time.April, 9, 14, 20, 0, 520000000, time.UTC)),
-						},
-						{
-							Name:                to.Ptr("action2"),
-							ActionConfiguration: to.Ptr("{\"retryCount\":5,\"retryBackoffInterval\":5}"),
-							TargetURI:           to.Ptr("/onvif/device_service?ONVIFProfile=Profile2"),
-							Topic:               to.Ptr("/contoso/managementGroup1/action2"),
-							TypeRef:             to.Ptr("action2TypeRef"),
 							ActionType:          to.Ptr(armdeviceregistry.NamespaceDiscoveredManagementActionTypeCall),
 							TimeoutInSeconds:    to.Ptr[int32](60),
 							LastUpdatedOn:       to.Ptr(time.Date(2024, time.April, 9, 14, 20, 0, 520000000, time.UTC)),
@@ -224,7 +214,6 @@ func ExampleNamespaceDiscoveredAssetsClient_BeginCreateOrReplace() {
 	// 			},
 	// 			AssetTypeRefs: []*string{
 	// 				to.Ptr("myAssetTypeRef1"),
-	// 				to.Ptr("myAssetTypeRef2"),
 	// 			},
 	// 			DiscoveryID: to.Ptr("11111111-1111-1111-1111-111111111111"),
 	// 			Version: to.Ptr[int64](73766),
@@ -293,12 +282,30 @@ func ExampleNamespaceDiscoveredAssetsClient_BeginCreateOrReplace() {
 	// 							TypeRef: to.Ptr("dataset1DataPoint1TypeRef"),
 	// 							LastUpdatedOn: to.Ptr(time.Date(2024, time.April, 9, 14, 20, 0, 520000000, time.UTC)),
 	// 						},
+	// 					},
+	// 				},
+	// 			},
+	// 			EventGroups: []*armdeviceregistry.NamespaceDiscoveredEventGroup{
+	// 				{
+	// 					Name: to.Ptr("default"),
+	// 					Events: []*armdeviceregistry.NamespaceDiscoveredEvent{
 	// 						{
-	// 							Name: to.Ptr("dataset1DataPoint2"),
-	// 							DataSource: to.Ptr("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt4"),
-	// 							DataPointConfiguration: to.Ptr("{\"publishingInterval\":8,\"samplingInterval\":8,\"queueSize\":4}"),
-	// 							TypeRef: to.Ptr("dataset1DataPoint2TypeRef"),
+	// 							Name: to.Ptr("event1"),
+	// 							DataSource: to.Ptr("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt3"),
+	// 							EventConfiguration: to.Ptr("{\"publishingInterval\":7,\"samplingInterval\":1,\"queueSize\":8}"),
 	// 							LastUpdatedOn: to.Ptr(time.Date(2024, time.April, 9, 14, 20, 0, 520000000, time.UTC)),
+	// 							Destinations: []armdeviceregistry.EventDestinationClassification{
+	// 								&armdeviceregistry.EventMqttDestination{
+	// 									Target: to.Ptr(armdeviceregistry.EventDestinationTargetMqtt),
+	// 									Configuration: &armdeviceregistry.MqttDestinationConfiguration{
+	// 										Topic: to.Ptr("/contoso/testEvent1"),
+	// 										Retain: to.Ptr(armdeviceregistry.TopicRetainTypeKeep),
+	// 										Qos: to.Ptr(armdeviceregistry.MqttDestinationQosQos0),
+	// 										TTL: to.Ptr[int64](7200),
+	// 									},
+	// 								},
+	// 							},
+	// 							TypeRef: to.Ptr("event1Ref"),
 	// 						},
 	// 					},
 	// 				},
@@ -314,23 +321,6 @@ func ExampleNamespaceDiscoveredAssetsClient_BeginCreateOrReplace() {
 	// 							Target: to.Ptr(armdeviceregistry.StreamDestinationTargetStorage),
 	// 							Configuration: &armdeviceregistry.StorageDestinationConfiguration{
 	// 								Path: to.Ptr("/tmp/stream1"),
-	// 							},
-	// 						},
-	// 					},
-	// 				},
-	// 				{
-	// 					Name: to.Ptr("stream2"),
-	// 					StreamConfiguration: to.Ptr("{\"publishingInterval\":8,\"samplingInterval\":8,\"queueSize\":4}"),
-	// 					LastUpdatedOn: to.Ptr(time.Date(2024, time.April, 9, 14, 20, 0, 520000000, time.UTC)),
-	// 					TypeRef: to.Ptr("stream2TypeRef"),
-	// 					Destinations: []armdeviceregistry.StreamDestinationClassification{
-	// 						&armdeviceregistry.StreamMqttDestination{
-	// 							Target: to.Ptr(armdeviceregistry.StreamDestinationTargetMqtt),
-	// 							Configuration: &armdeviceregistry.MqttDestinationConfiguration{
-	// 								Topic: to.Ptr("/contoso/testStream2"),
-	// 								Retain: to.Ptr(armdeviceregistry.TopicRetainTypeNever),
-	// 								Qos: to.Ptr(armdeviceregistry.MqttDestinationQosQos0),
-	// 								TTL: to.Ptr[int64](7200),
 	// 							},
 	// 						},
 	// 					},
@@ -355,26 +345,16 @@ func ExampleNamespaceDiscoveredAssetsClient_BeginCreateOrReplace() {
 	// 							TimeoutInSeconds: to.Ptr[int32](60),
 	// 							LastUpdatedOn: to.Ptr(time.Date(2024, time.April, 9, 14, 20, 0, 520000000, time.UTC)),
 	// 						},
-	// 						{
-	// 							Name: to.Ptr("action2"),
-	// 							ActionConfiguration: to.Ptr("{\"retryCount\":5,\"retryBackoffInterval\":5}"),
-	// 							TargetURI: to.Ptr("/onvif/device_service?ONVIFProfile=Profile2"),
-	// 							Topic: to.Ptr("/contoso/managementGroup1/action2"),
-	// 							TypeRef: to.Ptr("action2TypeRef"),
-	// 							ActionType: to.Ptr(armdeviceregistry.NamespaceDiscoveredManagementActionTypeCall),
-	// 							TimeoutInSeconds: to.Ptr[int32](60),
-	// 							LastUpdatedOn: to.Ptr(time.Date(2024, time.April, 9, 14, 20, 0, 520000000, time.UTC)),
-	// 						},
 	// 					},
 	// 				},
 	// 			},
-	// 			ProvisioningState: to.Ptr(armdeviceregistry.ProvisioningStateSucceeded),
+	// 			ProvisioningState: to.Ptr(armdeviceregistry.ProvisioningStateAccepted),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/Delete_NamespaceDiscoveredAsset.json
+// Generated from example definition: 2026-11-01/Delete_NamespaceDiscoveredAsset.json
 func ExampleNamespaceDiscoveredAssetsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -395,7 +375,7 @@ func ExampleNamespaceDiscoveredAssetsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-03-01-preview/Get_NamespaceDiscoveredAsset.json
+// Generated from example definition: 2026-11-01/Get_NamespaceDiscoveredAsset.json
 func ExampleNamespaceDiscoveredAssetsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -477,6 +457,23 @@ func ExampleNamespaceDiscoveredAssetsClient_Get() {
 	// 					},
 	// 				},
 	// 			},
+	// 			EventGroups: []*armdeviceregistry.NamespaceDiscoveredEventGroup{
+	// 				{
+	// 					Name: to.Ptr("default"),
+	// 					Events: []*armdeviceregistry.NamespaceDiscoveredEvent{
+	// 						{
+	// 							Name: to.Ptr("event1"),
+	// 							DataSource: to.Ptr("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt3"),
+	// 							LastUpdatedOn: to.Ptr(time.Date(2024, time.April, 9, 14, 20, 0, 520000000, time.UTC)),
+	// 						},
+	// 						{
+	// 							Name: to.Ptr("event2"),
+	// 							DataSource: to.Ptr("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt5"),
+	// 							LastUpdatedOn: to.Ptr(time.Date(2024, time.April, 9, 14, 20, 0, 520000000, time.UTC)),
+	// 						},
+	// 					},
+	// 				},
+	// 			},
 	// 			Streams: []*armdeviceregistry.NamespaceDiscoveredStream{
 	// 				{
 	// 					Name: to.Ptr("stream1"),
@@ -548,8 +545,8 @@ func ExampleNamespaceDiscoveredAssetsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/List_NamespaceDiscoveredAssets_ByResourceGroup.json
-func ExampleNamespaceDiscoveredAssetsClient_NewListByResourceGroupPager() {
+// Generated from example definition: 2026-11-01/List_NamespaceDiscoveredAssets_ByNamespace.json
+func ExampleNamespaceDiscoveredAssetsClient_NewListByNamespacePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -559,7 +556,7 @@ func ExampleNamespaceDiscoveredAssetsClient_NewListByResourceGroupPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewNamespaceDiscoveredAssetsClient().NewListByResourceGroupPager("myResourceGroup", "my-namespace-1", nil)
+	pager := clientFactory.NewNamespaceDiscoveredAssetsClient().NewListByNamespacePager("myResourceGroup", "my-namespace-1", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -570,7 +567,7 @@ func ExampleNamespaceDiscoveredAssetsClient_NewListByResourceGroupPager() {
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armdeviceregistry.NamespaceDiscoveredAssetsClientListByResourceGroupResponse{
+		// page = armdeviceregistry.NamespaceDiscoveredAssetsClientListByNamespaceResponse{
 		// 	NamespaceDiscoveredAssetListResult: armdeviceregistry.NamespaceDiscoveredAssetListResult{
 		// 		Value: []*armdeviceregistry.NamespaceDiscoveredAsset{
 		// 			{
@@ -631,6 +628,23 @@ func ExampleNamespaceDiscoveredAssetsClient_NewListByResourceGroupPager() {
 		// 								{
 		// 									Name: to.Ptr("dataPoint2"),
 		// 									DataSource: to.Ptr("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt2"),
+		// 									LastUpdatedOn: to.Ptr(time.Date(2024, time.April, 9, 14, 20, 0, 520000000, time.UTC)),
+		// 								},
+		// 							},
+		// 						},
+		// 					},
+		// 					EventGroups: []*armdeviceregistry.NamespaceDiscoveredEventGroup{
+		// 						{
+		// 							Name: to.Ptr("default"),
+		// 							Events: []*armdeviceregistry.NamespaceDiscoveredEvent{
+		// 								{
+		// 									Name: to.Ptr("event1"),
+		// 									DataSource: to.Ptr("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt3"),
+		// 									LastUpdatedOn: to.Ptr(time.Date(2024, time.April, 9, 14, 20, 0, 520000000, time.UTC)),
+		// 								},
+		// 								{
+		// 									Name: to.Ptr("event2"),
+		// 									DataSource: to.Ptr("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt4"),
 		// 									LastUpdatedOn: to.Ptr(time.Date(2024, time.April, 9, 14, 20, 0, 520000000, time.UTC)),
 		// 								},
 		// 							},
@@ -726,6 +740,23 @@ func ExampleNamespaceDiscoveredAssetsClient_NewListByResourceGroupPager() {
 		// 							},
 		// 						},
 		// 					},
+		// 					EventGroups: []*armdeviceregistry.NamespaceDiscoveredEventGroup{
+		// 						{
+		// 							Name: to.Ptr("default"),
+		// 							Events: []*armdeviceregistry.NamespaceDiscoveredEvent{
+		// 								{
+		// 									Name: to.Ptr("event1"),
+		// 									DataSource: to.Ptr("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt3"),
+		// 									LastUpdatedOn: to.Ptr(time.Date(2024, time.April, 9, 14, 20, 0, 520000000, time.UTC)),
+		// 								},
+		// 								{
+		// 									Name: to.Ptr("event2"),
+		// 									DataSource: to.Ptr("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt4"),
+		// 									LastUpdatedOn: to.Ptr(time.Date(2024, time.April, 9, 14, 20, 0, 520000000, time.UTC)),
+		// 								},
+		// 							},
+		// 						},
+		// 					},
 		// 					ProvisioningState: to.Ptr(armdeviceregistry.ProvisioningStateSucceeded),
 		// 				},
 		// 			},
@@ -735,7 +766,7 @@ func ExampleNamespaceDiscoveredAssetsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-01-preview/Update_NamespaceDiscoveredAsset.json
+// Generated from example definition: 2026-11-01/Update_NamespaceDiscoveredAsset.json
 func ExampleNamespaceDiscoveredAssetsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -820,6 +851,23 @@ func ExampleNamespaceDiscoveredAssetsClient_BeginUpdate() {
 	// 						{
 	// 							Name: to.Ptr("dataPoint2"),
 	// 							DataSource: to.Ptr("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt2"),
+	// 							LastUpdatedOn: to.Ptr(time.Date(2024, time.April, 9, 14, 20, 0, 520000000, time.UTC)),
+	// 						},
+	// 					},
+	// 				},
+	// 			},
+	// 			EventGroups: []*armdeviceregistry.NamespaceDiscoveredEventGroup{
+	// 				{
+	// 					Name: to.Ptr("default"),
+	// 					Events: []*armdeviceregistry.NamespaceDiscoveredEvent{
+	// 						{
+	// 							Name: to.Ptr("event1"),
+	// 							DataSource: to.Ptr("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt3"),
+	// 							LastUpdatedOn: to.Ptr(time.Date(2024, time.April, 9, 14, 20, 0, 520000000, time.UTC)),
+	// 						},
+	// 						{
+	// 							Name: to.Ptr("event2"),
+	// 							DataSource: to.Ptr("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt4"),
 	// 							LastUpdatedOn: to.Ptr(time.Date(2024, time.April, 9, 14, 20, 0, 520000000, time.UTC)),
 	// 						},
 	// 					},

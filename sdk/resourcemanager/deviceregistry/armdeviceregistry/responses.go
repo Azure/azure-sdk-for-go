@@ -74,6 +74,12 @@ type AssetsClientUpdateResponse struct {
 	Asset
 }
 
+// AsyncOperationStatusClientGetResponse contains the response from method AsyncOperationStatusClient.Get.
+type AsyncOperationStatusClientGetResponse struct {
+	// The current status of an async operation.
+	OperationStatusResult
+}
+
 // BillingContainersClientGetResponse contains the response from method BillingContainersClient.Get.
 type BillingContainersClientGetResponse struct {
 	// billingContainer Model as Azure resource whose sole purpose is to keep track of billables resources under a subscription.
@@ -86,38 +92,72 @@ type BillingContainersClientListBySubscriptionResponse struct {
 	BillingContainerListResult
 }
 
-// CredentialsClientCreateOrUpdateResponse contains the response from method CredentialsClient.BeginCreateOrUpdate.
-type CredentialsClientCreateOrUpdateResponse struct {
-	// A Credential Resource
-	Credential
-}
-
-// CredentialsClientDeleteResponse contains the response from method CredentialsClient.BeginDelete.
-type CredentialsClientDeleteResponse struct {
+// CertificateAuthoritiesClientActivateResponse contains the response from method CertificateAuthoritiesClient.BeginActivate.
+type CertificateAuthoritiesClientActivateResponse struct {
 	// placeholder for future response values
 }
 
-// CredentialsClientGetResponse contains the response from method CredentialsClient.Get.
-type CredentialsClientGetResponse struct {
-	// A Credential Resource
-	Credential
+// CertificateAuthoritiesClientCreateOrReplaceResponse contains the response from method CertificateAuthoritiesClient.BeginCreateOrReplace.
+type CertificateAuthoritiesClientCreateOrReplaceResponse struct {
+	// A Certificate Authority resource.
+	CertificateAuthority
 }
 
-// CredentialsClientListByResourceGroupResponse contains the response from method CredentialsClient.NewListByResourceGroupPager.
-type CredentialsClientListByResourceGroupResponse struct {
-	// The response of a Credential list operation.
-	CredentialListResult
-}
-
-// CredentialsClientSynchronizeResponse contains the response from method CredentialsClient.BeginSynchronize.
-type CredentialsClientSynchronizeResponse struct {
+// CertificateAuthoritiesClientDeleteResponse contains the response from method CertificateAuthoritiesClient.BeginDelete.
+type CertificateAuthoritiesClientDeleteResponse struct {
 	// placeholder for future response values
 }
 
-// CredentialsClientUpdateResponse contains the response from method CredentialsClient.BeginUpdate.
-type CredentialsClientUpdateResponse struct {
-	// A Credential Resource
-	Credential
+// CertificateAuthoritiesClientGetResponse contains the response from method CertificateAuthoritiesClient.Get.
+type CertificateAuthoritiesClientGetResponse struct {
+	// A Certificate Authority resource.
+	CertificateAuthority
+}
+
+// CertificateAuthoritiesClientListByNamespaceResponse contains the response from method CertificateAuthoritiesClient.NewListByNamespacePager.
+type CertificateAuthoritiesClientListByNamespaceResponse struct {
+	// The response of a CertificateAuthority list operation.
+	CertificateAuthorityListResult
+}
+
+// CertificateAuthoritiesClientRevokeAndRotateResponse contains the response from method CertificateAuthoritiesClient.BeginRevokeAndRotate.
+type CertificateAuthoritiesClientRevokeAndRotateResponse struct {
+	// placeholder for future response values
+}
+
+// CertificateAuthoritiesClientUpdateResponse contains the response from method CertificateAuthoritiesClient.BeginUpdate.
+type CertificateAuthoritiesClientUpdateResponse struct {
+	// A Certificate Authority resource.
+	CertificateAuthority
+}
+
+// CertificatePoliciesClientCreateOrReplaceResponse contains the response from method CertificatePoliciesClient.BeginCreateOrReplace.
+type CertificatePoliciesClientCreateOrReplaceResponse struct {
+	// A Certificate Policy resource.
+	CertificatePolicy
+}
+
+// CertificatePoliciesClientDeleteResponse contains the response from method CertificatePoliciesClient.BeginDelete.
+type CertificatePoliciesClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// CertificatePoliciesClientGetResponse contains the response from method CertificatePoliciesClient.Get.
+type CertificatePoliciesClientGetResponse struct {
+	// A Certificate Policy resource.
+	CertificatePolicy
+}
+
+// CertificatePoliciesClientListByCertificateAuthorityResponse contains the response from method CertificatePoliciesClient.NewListByCertificateAuthorityPager.
+type CertificatePoliciesClientListByCertificateAuthorityResponse struct {
+	// The response of a CertificatePolicy list operation.
+	CertificatePolicyListResult
+}
+
+// CertificatePoliciesClientUpdateResponse contains the response from method CertificatePoliciesClient.BeginUpdate.
+type CertificatePoliciesClientUpdateResponse struct {
+	// A Certificate Policy resource.
+	CertificatePolicy
 }
 
 // NamespaceAssetsClientCreateOrReplaceResponse contains the response from method NamespaceAssetsClient.BeginCreateOrReplace.
@@ -131,14 +171,19 @@ type NamespaceAssetsClientDeleteResponse struct {
 	// placeholder for future response values
 }
 
+// NamespaceAssetsClientExecuteActionResponse contains the response from method NamespaceAssetsClient.BeginExecuteAction.
+type NamespaceAssetsClientExecuteActionResponse struct {
+	// placeholder for future response values
+}
+
 // NamespaceAssetsClientGetResponse contains the response from method NamespaceAssetsClient.Get.
 type NamespaceAssetsClientGetResponse struct {
 	// Asset definition.
 	NamespaceAsset
 }
 
-// NamespaceAssetsClientListByResourceGroupResponse contains the response from method NamespaceAssetsClient.NewListByResourceGroupPager.
-type NamespaceAssetsClientListByResourceGroupResponse struct {
+// NamespaceAssetsClientListByNamespaceResponse contains the response from method NamespaceAssetsClient.NewListByNamespacePager.
+type NamespaceAssetsClientListByNamespaceResponse struct {
 	// The response of a NamespaceAsset list operation.
 	NamespaceAssetListResult
 }
@@ -166,15 +211,10 @@ type NamespaceDevicesClientGetResponse struct {
 	NamespaceDevice
 }
 
-// NamespaceDevicesClientListByResourceGroupResponse contains the response from method NamespaceDevicesClient.NewListByResourceGroupPager.
-type NamespaceDevicesClientListByResourceGroupResponse struct {
+// NamespaceDevicesClientListByNamespaceResponse contains the response from method NamespaceDevicesClient.NewListByNamespacePager.
+type NamespaceDevicesClientListByNamespaceResponse struct {
 	// The response of a NamespaceDevice list operation.
 	NamespaceDeviceListResult
-}
-
-// NamespaceDevicesClientRevokeResponse contains the response from method NamespaceDevicesClient.BeginRevoke.
-type NamespaceDevicesClientRevokeResponse struct {
-	// placeholder for future response values
 }
 
 // NamespaceDevicesClientUpdateResponse contains the response from method NamespaceDevicesClient.BeginUpdate.
@@ -200,8 +240,8 @@ type NamespaceDiscoveredAssetsClientGetResponse struct {
 	NamespaceDiscoveredAsset
 }
 
-// NamespaceDiscoveredAssetsClientListByResourceGroupResponse contains the response from method NamespaceDiscoveredAssetsClient.NewListByResourceGroupPager.
-type NamespaceDiscoveredAssetsClientListByResourceGroupResponse struct {
+// NamespaceDiscoveredAssetsClientListByNamespaceResponse contains the response from method NamespaceDiscoveredAssetsClient.NewListByNamespacePager.
+type NamespaceDiscoveredAssetsClientListByNamespaceResponse struct {
 	// The response of a NamespaceDiscoveredAsset list operation.
 	NamespaceDiscoveredAssetListResult
 }
@@ -229,8 +269,8 @@ type NamespaceDiscoveredDevicesClientGetResponse struct {
 	NamespaceDiscoveredDevice
 }
 
-// NamespaceDiscoveredDevicesClientListByResourceGroupResponse contains the response from method NamespaceDiscoveredDevicesClient.NewListByResourceGroupPager.
-type NamespaceDiscoveredDevicesClientListByResourceGroupResponse struct {
+// NamespaceDiscoveredDevicesClientListByNamespaceResponse contains the response from method NamespaceDiscoveredDevicesClient.NewListByNamespacePager.
+type NamespaceDiscoveredDevicesClientListByNamespaceResponse struct {
 	// The response of a NamespaceDiscoveredDevice list operation.
 	NamespaceDiscoveredDeviceListResult
 }
@@ -293,43 +333,36 @@ type OperationsClientListResponse struct {
 	OperationListResult
 }
 
-// PoliciesClientActivateBringYourOwnRootResponse contains the response from method PoliciesClient.BeginActivateBringYourOwnRoot.
-type PoliciesClientActivateBringYourOwnRootResponse struct {
+// RegistryDevicesClientCreateOrReplaceResponse contains the response from method RegistryDevicesClient.BeginCreateOrReplace.
+type RegistryDevicesClientCreateOrReplaceResponse struct {
+	// A Registry Device resource is a tracked resource with a provisioning lifecycle. The different capabilities of the device
+	// are defined through child Device Capability resources.
+	RegistryDevice
+}
+
+// RegistryDevicesClientDeleteResponse contains the response from method RegistryDevicesClient.BeginDelete.
+type RegistryDevicesClientDeleteResponse struct {
 	// placeholder for future response values
 }
 
-// PoliciesClientCreateOrUpdateResponse contains the response from method PoliciesClient.BeginCreateOrUpdate.
-type PoliciesClientCreateOrUpdateResponse struct {
-	// A Credential Policy
-	Policy
+// RegistryDevicesClientGetResponse contains the response from method RegistryDevicesClient.Get.
+type RegistryDevicesClientGetResponse struct {
+	// A Registry Device resource is a tracked resource with a provisioning lifecycle. The different capabilities of the device
+	// are defined through child Device Capability resources.
+	RegistryDevice
 }
 
-// PoliciesClientDeleteResponse contains the response from method PoliciesClient.BeginDelete.
-type PoliciesClientDeleteResponse struct {
-	// placeholder for future response values
+// RegistryDevicesClientListByNamespaceResponse contains the response from method RegistryDevicesClient.NewListByNamespacePager.
+type RegistryDevicesClientListByNamespaceResponse struct {
+	// The response of a RegistryDevice list operation.
+	RegistryDeviceListResult
 }
 
-// PoliciesClientGetResponse contains the response from method PoliciesClient.Get.
-type PoliciesClientGetResponse struct {
-	// A Credential Policy
-	Policy
-}
-
-// PoliciesClientListByResourceGroupResponse contains the response from method PoliciesClient.NewListByResourceGroupPager.
-type PoliciesClientListByResourceGroupResponse struct {
-	// The response of a Policy list operation.
-	PolicyListResult
-}
-
-// PoliciesClientRevokeIssuerResponse contains the response from method PoliciesClient.BeginRevokeIssuer.
-type PoliciesClientRevokeIssuerResponse struct {
-	// placeholder for future response values
-}
-
-// PoliciesClientUpdateResponse contains the response from method PoliciesClient.BeginUpdate.
-type PoliciesClientUpdateResponse struct {
-	// A Credential Policy
-	Policy
+// RegistryDevicesClientUpdateResponse contains the response from method RegistryDevicesClient.BeginUpdate.
+type RegistryDevicesClientUpdateResponse struct {
+	// A Registry Device resource is a tracked resource with a provisioning lifecycle. The different capabilities of the device
+	// are defined through child Device Capability resources.
+	RegistryDevice
 }
 
 // SchemaRegistriesClientCreateOrReplaceResponse contains the response from method SchemaRegistriesClient.BeginCreateOrReplace.

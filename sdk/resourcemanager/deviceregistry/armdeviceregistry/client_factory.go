@@ -48,6 +48,14 @@ func (c *ClientFactory) NewAssetsClient() *AssetsClient {
 	}
 }
 
+// NewAsyncOperationStatusClient creates a new instance of AsyncOperationStatusClient.
+func (c *ClientFactory) NewAsyncOperationStatusClient() *AsyncOperationStatusClient {
+	return &AsyncOperationStatusClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewBillingContainersClient creates a new instance of BillingContainersClient.
 func (c *ClientFactory) NewBillingContainersClient() *BillingContainersClient {
 	return &BillingContainersClient{
@@ -56,9 +64,17 @@ func (c *ClientFactory) NewBillingContainersClient() *BillingContainersClient {
 	}
 }
 
-// NewCredentialsClient creates a new instance of CredentialsClient.
-func (c *ClientFactory) NewCredentialsClient() *CredentialsClient {
-	return &CredentialsClient{
+// NewCertificateAuthoritiesClient creates a new instance of CertificateAuthoritiesClient.
+func (c *ClientFactory) NewCertificateAuthoritiesClient() *CertificateAuthoritiesClient {
+	return &CertificateAuthoritiesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewCertificatePoliciesClient creates a new instance of CertificatePoliciesClient.
+func (c *ClientFactory) NewCertificatePoliciesClient() *CertificatePoliciesClient {
+	return &CertificatePoliciesClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}
@@ -119,9 +135,9 @@ func (c *ClientFactory) NewOperationsClient() *OperationsClient {
 	}
 }
 
-// NewPoliciesClient creates a new instance of PoliciesClient.
-func (c *ClientFactory) NewPoliciesClient() *PoliciesClient {
-	return &PoliciesClient{
+// NewRegistryDevicesClient creates a new instance of RegistryDevicesClient.
+func (c *ClientFactory) NewRegistryDevicesClient() *RegistryDevicesClient {
+	return &RegistryDevicesClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}

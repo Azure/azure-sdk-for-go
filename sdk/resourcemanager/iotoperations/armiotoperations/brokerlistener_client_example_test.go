@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-07-01/BrokerListener_CreateOrUpdate_Complex.json
+// Generated from example definition: 2026-10-01/BrokerListener_CreateOrUpdate_Complex.json
 func ExampleBrokerListenerClient_BeginCreateOrUpdate_brokerListenerCreateOrUpdateComplex() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -40,9 +40,8 @@ func ExampleBrokerListenerClient_BeginCreateOrUpdate_brokerListenerCreateOrUpdat
 						Mode: to.Ptr(armiotoperations.TLSCertMethodModeAutomatic),
 						CertManagerCertificateSpec: &armiotoperations.CertManagerCertificateSpec{
 							IssuerRef: &armiotoperations.CertManagerIssuerRef{
-								Group: to.Ptr("jtmuladdkpasfpoyvewekmiy"),
-								Name:  to.Ptr("example-issuer"),
-								Kind:  to.Ptr(armiotoperations.CertManagerIssuerKindIssuer),
+								Name: to.Ptr("example-issuer"),
+								Kind: to.Ptr(armiotoperations.CertManagerIssuerKindIssuer),
 							},
 						},
 					},
@@ -97,7 +96,6 @@ func ExampleBrokerListenerClient_BeginCreateOrUpdate_brokerListenerCreateOrUpdat
 	// 						Mode: to.Ptr(armiotoperations.TLSCertMethodModeAutomatic),
 	// 						CertManagerCertificateSpec: &armiotoperations.CertManagerCertificateSpec{
 	// 							IssuerRef: &armiotoperations.CertManagerIssuerRef{
-	// 								Group: to.Ptr("jtmuladdkpasfpoyvewekmiy"),
 	// 								Name: to.Ptr("example-issuer"),
 	// 								Kind: to.Ptr(armiotoperations.CertManagerIssuerKindIssuer),
 	// 							},
@@ -140,7 +138,7 @@ func ExampleBrokerListenerClient_BeginCreateOrUpdate_brokerListenerCreateOrUpdat
 	// }
 }
 
-// Generated from example definition: 2026-07-01/BrokerListener_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-01/BrokerListener_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleBrokerListenerClient_BeginCreateOrUpdate_brokerListenerCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -271,7 +269,7 @@ func ExampleBrokerListenerClient_BeginCreateOrUpdate_brokerListenerCreateOrUpdat
 	// }
 }
 
-// Generated from example definition: 2026-07-01/BrokerListener_CreateOrUpdate_Simple.json
+// Generated from example definition: 2026-10-01/BrokerListener_CreateOrUpdate_Simple.json
 func ExampleBrokerListenerClient_BeginCreateOrUpdate_brokerListenerCreateOrUpdateSimple() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -336,7 +334,7 @@ func ExampleBrokerListenerClient_BeginCreateOrUpdate_brokerListenerCreateOrUpdat
 	// }
 }
 
-// Generated from example definition: 2026-07-01/BrokerListener_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-01/BrokerListener_Delete_MaximumSet_Gen.json
 func ExampleBrokerListenerClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -357,7 +355,7 @@ func ExampleBrokerListenerClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-07-01/BrokerListener_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-01/BrokerListener_Get_MaximumSet_Gen.json
 func ExampleBrokerListenerClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -438,7 +436,7 @@ func ExampleBrokerListenerClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-07-01/BrokerListener_ListByResourceGroup_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-01/BrokerListener_ListByResourceGroup_MaximumSet_Gen.json
 func ExampleBrokerListenerClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

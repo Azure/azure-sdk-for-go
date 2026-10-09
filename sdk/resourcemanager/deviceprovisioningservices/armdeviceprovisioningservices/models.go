@@ -66,6 +66,31 @@ type CertificateResponse struct {
 	Type *string
 }
 
+// DeviceRegistryNamespaceDescription - Description of the Device Registry namespace that is linked to the provisioning service.
+type DeviceRegistryNamespaceDescription struct {
+	// REQUIRED; Device Registry Namespace MI authentication type: UserAssigned, SystemAssigned.
+	AuthenticationType *DeviceRegistryNamespaceAuthenticationType
+
+	// REQUIRED; The ARM resource ID of the Device Registry namespace.
+	ResourceID *string
+
+	// The data plane address of the linked Azure Device Registry namespace.
+	DataAddress *string
+
+	// The linking state of this namespace.
+	LinkingState *LinkingState
+
+	// Azure location of the linked Device Registry namespace.
+	Location *string
+
+	// Unique identifier of the linked Device Registry namespace.
+	NamespaceUUID *string
+
+	// The selected user-assigned identity resource Id associated with Device Registry namespace. This is required when authenticationType
+	// is UserAssigned.
+	SelectedUserAssignedIdentityResourceID *string
+}
+
 // ErrorMessage - Error response containing message and code.
 type ErrorMessage struct {
 	// standard error code
@@ -162,6 +187,9 @@ type IotDpsPropertiesDescription struct {
 
 	// READ-ONLY; Device endpoint for this provisioning service.
 	DeviceProvisioningHostName *string
+
+	// READ-ONLY; The Device Registry namespaces linked to the provisioning service.
+	DeviceRegistryNamespaces []*DeviceRegistryNamespaceDescription
 
 	// READ-ONLY; Unique identifier of this provisioning service.
 	IDScope *string

@@ -16,7 +16,12 @@ import (
 // MarshalJSON implements the json.Marshaller interface for type BaseExportModel.
 func (b BaseExportModel) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
+	populate(objectMap, "excludeAzureResource", b.ExcludeAzureResource)
+	populate(objectMap, "excludeTerraformResource", b.ExcludeTerraformResource)
 	populate(objectMap, "fullProperties", b.FullProperties)
+	populate(objectMap, "includeExtensions", b.IncludeExtensions)
+	populate(objectMap, "includeManagedResource", b.IncludeManagedResource)
+	populate(objectMap, "includeRoleAssignment", b.IncludeRoleAssignment)
 	populate(objectMap, "maskSensitive", b.MaskSensitive)
 	populate(objectMap, "targetProvider", b.TargetProvider)
 	populate(objectMap, "type", b.Type)
@@ -32,8 +37,23 @@ func (b *BaseExportModel) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "excludeAzureResource":
+			err = unpopulate(val, "ExcludeAzureResource", &b.ExcludeAzureResource)
+			delete(rawMsg, key)
+		case "excludeTerraformResource":
+			err = unpopulate(val, "ExcludeTerraformResource", &b.ExcludeTerraformResource)
+			delete(rawMsg, key)
 		case "fullProperties":
 			err = unpopulate(val, "FullProperties", &b.FullProperties)
+			delete(rawMsg, key)
+		case "includeExtensions":
+			err = unpopulate(val, "IncludeExtensions", &b.IncludeExtensions)
+			delete(rawMsg, key)
+		case "includeManagedResource":
+			err = unpopulate(val, "IncludeManagedResource", &b.IncludeManagedResource)
+			delete(rawMsg, key)
+		case "includeRoleAssignment":
+			err = unpopulate(val, "IncludeRoleAssignment", &b.IncludeRoleAssignment)
 			delete(rawMsg, key)
 		case "maskSensitive":
 			err = unpopulate(val, "MaskSensitive", &b.MaskSensitive)
@@ -130,7 +150,13 @@ func (e *ErrorDetail) UnmarshalJSON(data []byte) error {
 func (e ExportQuery) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "authorizationScopeFilter", e.AuthorizationScopeFilter)
+	populate(objectMap, "excludeAzureResource", e.ExcludeAzureResource)
+	populate(objectMap, "excludeTerraformResource", e.ExcludeTerraformResource)
 	populate(objectMap, "fullProperties", e.FullProperties)
+	populate(objectMap, "includeExtensions", e.IncludeExtensions)
+	populate(objectMap, "includeManagedResource", e.IncludeManagedResource)
+	populate(objectMap, "includeResourceGroup", e.IncludeResourceGroup)
+	populate(objectMap, "includeRoleAssignment", e.IncludeRoleAssignment)
 	populate(objectMap, "maskSensitive", e.MaskSensitive)
 	populate(objectMap, "namePattern", e.NamePattern)
 	populate(objectMap, "query", e.Query)
@@ -153,8 +179,26 @@ func (e *ExportQuery) UnmarshalJSON(data []byte) error {
 		case "authorizationScopeFilter":
 			err = unpopulate(val, "AuthorizationScopeFilter", &e.AuthorizationScopeFilter)
 			delete(rawMsg, key)
+		case "excludeAzureResource":
+			err = unpopulate(val, "ExcludeAzureResource", &e.ExcludeAzureResource)
+			delete(rawMsg, key)
+		case "excludeTerraformResource":
+			err = unpopulate(val, "ExcludeTerraformResource", &e.ExcludeTerraformResource)
+			delete(rawMsg, key)
 		case "fullProperties":
 			err = unpopulate(val, "FullProperties", &e.FullProperties)
+			delete(rawMsg, key)
+		case "includeExtensions":
+			err = unpopulate(val, "IncludeExtensions", &e.IncludeExtensions)
+			delete(rawMsg, key)
+		case "includeManagedResource":
+			err = unpopulate(val, "IncludeManagedResource", &e.IncludeManagedResource)
+			delete(rawMsg, key)
+		case "includeResourceGroup":
+			err = unpopulate(val, "IncludeResourceGroup", &e.IncludeResourceGroup)
+			delete(rawMsg, key)
+		case "includeRoleAssignment":
+			err = unpopulate(val, "IncludeRoleAssignment", &e.IncludeRoleAssignment)
 			delete(rawMsg, key)
 		case "maskSensitive":
 			err = unpopulate(val, "MaskSensitive", &e.MaskSensitive)
@@ -188,9 +232,16 @@ func (e *ExportQuery) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type ExportResource.
 func (e ExportResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
+	populate(objectMap, "excludeAzureResource", e.ExcludeAzureResource)
+	populate(objectMap, "excludeTerraformResource", e.ExcludeTerraformResource)
 	populate(objectMap, "fullProperties", e.FullProperties)
+	populate(objectMap, "includeExtensions", e.IncludeExtensions)
+	populate(objectMap, "includeManagedResource", e.IncludeManagedResource)
+	populate(objectMap, "includeResourceGroup", e.IncludeResourceGroup)
+	populate(objectMap, "includeRoleAssignment", e.IncludeRoleAssignment)
 	populate(objectMap, "maskSensitive", e.MaskSensitive)
 	populate(objectMap, "namePattern", e.NamePattern)
+	populate(objectMap, "recursive", e.Recursive)
 	populate(objectMap, "resourceIds", e.ResourceIDs)
 	populate(objectMap, "resourceName", e.ResourceName)
 	populate(objectMap, "resourceType", e.ResourceType)
@@ -208,14 +259,35 @@ func (e *ExportResource) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "excludeAzureResource":
+			err = unpopulate(val, "ExcludeAzureResource", &e.ExcludeAzureResource)
+			delete(rawMsg, key)
+		case "excludeTerraformResource":
+			err = unpopulate(val, "ExcludeTerraformResource", &e.ExcludeTerraformResource)
+			delete(rawMsg, key)
 		case "fullProperties":
 			err = unpopulate(val, "FullProperties", &e.FullProperties)
+			delete(rawMsg, key)
+		case "includeExtensions":
+			err = unpopulate(val, "IncludeExtensions", &e.IncludeExtensions)
+			delete(rawMsg, key)
+		case "includeManagedResource":
+			err = unpopulate(val, "IncludeManagedResource", &e.IncludeManagedResource)
+			delete(rawMsg, key)
+		case "includeResourceGroup":
+			err = unpopulate(val, "IncludeResourceGroup", &e.IncludeResourceGroup)
+			delete(rawMsg, key)
+		case "includeRoleAssignment":
+			err = unpopulate(val, "IncludeRoleAssignment", &e.IncludeRoleAssignment)
 			delete(rawMsg, key)
 		case "maskSensitive":
 			err = unpopulate(val, "MaskSensitive", &e.MaskSensitive)
 			delete(rawMsg, key)
 		case "namePattern":
 			err = unpopulate(val, "NamePattern", &e.NamePattern)
+			delete(rawMsg, key)
+		case "recursive":
+			err = unpopulate(val, "Recursive", &e.Recursive)
 			delete(rawMsg, key)
 		case "resourceIds":
 			err = unpopulate(val, "ResourceIDs", &e.ResourceIDs)
@@ -243,7 +315,12 @@ func (e *ExportResource) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type ExportResourceGroup.
 func (e ExportResourceGroup) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
+	populate(objectMap, "excludeAzureResource", e.ExcludeAzureResource)
+	populate(objectMap, "excludeTerraformResource", e.ExcludeTerraformResource)
 	populate(objectMap, "fullProperties", e.FullProperties)
+	populate(objectMap, "includeExtensions", e.IncludeExtensions)
+	populate(objectMap, "includeManagedResource", e.IncludeManagedResource)
+	populate(objectMap, "includeRoleAssignment", e.IncludeRoleAssignment)
 	populate(objectMap, "maskSensitive", e.MaskSensitive)
 	populate(objectMap, "namePattern", e.NamePattern)
 	populate(objectMap, "resourceGroupName", e.ResourceGroupName)
@@ -261,8 +338,23 @@ func (e *ExportResourceGroup) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "excludeAzureResource":
+			err = unpopulate(val, "ExcludeAzureResource", &e.ExcludeAzureResource)
+			delete(rawMsg, key)
+		case "excludeTerraformResource":
+			err = unpopulate(val, "ExcludeTerraformResource", &e.ExcludeTerraformResource)
+			delete(rawMsg, key)
 		case "fullProperties":
 			err = unpopulate(val, "FullProperties", &e.FullProperties)
+			delete(rawMsg, key)
+		case "includeExtensions":
+			err = unpopulate(val, "IncludeExtensions", &e.IncludeExtensions)
+			delete(rawMsg, key)
+		case "includeManagedResource":
+			err = unpopulate(val, "IncludeManagedResource", &e.IncludeManagedResource)
+			delete(rawMsg, key)
+		case "includeRoleAssignment":
+			err = unpopulate(val, "IncludeRoleAssignment", &e.IncludeRoleAssignment)
 			delete(rawMsg, key)
 		case "maskSensitive":
 			err = unpopulate(val, "MaskSensitive", &e.MaskSensitive)

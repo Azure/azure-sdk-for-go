@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-07-03-preview/CloudAccounts_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-30/CloudAccounts_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleCloudAccountsClient_BeginCreateOrUpdate_cloudAccountsCreateOrUpdateMaximumSetGeneratedByMaximumSetRuleGeneratedByMaximumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -45,15 +45,62 @@ func ExampleCloudAccountsClient_BeginCreateOrUpdate_cloudAccountsCreateOrUpdateM
 				Upn:          to.Ptr("frlpmyk"),
 				PhoneNumber:  to.Ptr("mpunfyfckyzpqxotsmclzk"),
 			},
-			BackupAdminOnCcaCreate: &armcommvaultcontentstore.EntityInfo{
-				ID:          to.Ptr("aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"),
-				DisplayName: to.Ptr("Tenant Admins"),
-				EntityType:  to.Ptr(armcommvaultcontentstore.EntityTypeGroup),
+			Company: &armcommvaultcontentstore.CompanyProfile{
+				JobTitle:    to.Ptr("Backup Administrator"),
+				CompanyName: to.Ptr("Contoso"),
+				Website:     to.Ptr("https://www.contoso.com"),
+				Street:      to.Ptr("1 Microsoft Way"),
+				City:        to.Ptr("Redmond"),
+				Country:     to.Ptr("USA"),
+				PostalCode:  to.Ptr("98052"),
+				State:       to.Ptr("WA"),
 			},
-			MultiPersonAuthorizationOnCcaCreate: &armcommvaultcontentstore.EntityInfo{
-				ID:          to.Ptr("11111111-2222-3333-4444-555555555555"),
-				DisplayName: to.Ptr("John Smith"),
-				EntityType:  to.Ptr(armcommvaultcontentstore.EntityTypeUser),
+			RoleAssignmentsOnCcaCreate: []*armcommvaultcontentstore.RoleAssignment{
+				{
+					RoleName: to.Ptr(armcommvaultcontentstore.RoleNameBackupAdmin),
+					Entities: []*armcommvaultcontentstore.EntityInfo{
+						{
+							ID:          to.Ptr("aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"),
+							DisplayName: to.Ptr("Tenant Admins"),
+							EntityType:  to.Ptr(armcommvaultcontentstore.EntityTypeGroup),
+						},
+					},
+				},
+				{
+					RoleName: to.Ptr(armcommvaultcontentstore.RoleNameBackupUser),
+					Entities: []*armcommvaultcontentstore.EntityInfo{
+						{
+							ID:          to.Ptr("22222222-3333-4444-5555-666666666666"),
+							DisplayName: to.Ptr("Backup Users SG"),
+							EntityType:  to.Ptr(armcommvaultcontentstore.EntityTypeGroup),
+						},
+						{
+							ID:          to.Ptr("33333333-4444-5555-6666-777777777777"),
+							DisplayName: to.Ptr("Jane Doe"),
+							EntityType:  to.Ptr(armcommvaultcontentstore.EntityTypeUser),
+						},
+					},
+				},
+				{
+					RoleName: to.Ptr(armcommvaultcontentstore.RoleNameBackupOperator),
+					Entities: []*armcommvaultcontentstore.EntityInfo{
+						{
+							ID:          to.Ptr("44444444-5555-6666-7777-888888888888"),
+							DisplayName: to.Ptr("Ops Team"),
+							EntityType:  to.Ptr(armcommvaultcontentstore.EntityTypeGroup),
+						},
+					},
+				},
+				{
+					RoleName: to.Ptr(armcommvaultcontentstore.RoleNameMultiPersonAuthorization),
+					Entities: []*armcommvaultcontentstore.EntityInfo{
+						{
+							ID:          to.Ptr("11111111-2222-3333-4444-555555555555"),
+							DisplayName: to.Ptr("MPA Approvers"),
+							EntityType:  to.Ptr(armcommvaultcontentstore.EntityTypeGroup),
+						},
+					},
+				},
 			},
 		},
 		Identity: &armcommvaultcontentstore.ManagedServiceIdentity{
@@ -96,6 +143,16 @@ func ExampleCloudAccountsClient_BeginCreateOrUpdate_cloudAccountsCreateOrUpdateM
 	// 				Upn: to.Ptr("frlpmyk"),
 	// 				PhoneNumber: to.Ptr("mpunfyfckyzpqxotsmclzk"),
 	// 			},
+	// 			Company: &armcommvaultcontentstore.CompanyProfile{
+	// 				JobTitle: to.Ptr("Backup Administrator"),
+	// 				CompanyName: to.Ptr("Contoso"),
+	// 				Website: to.Ptr("https://www.contoso.com"),
+	// 				Street: to.Ptr("1 Microsoft Way"),
+	// 				City: to.Ptr("Redmond"),
+	// 				Country: to.Ptr("USA"),
+	// 				PostalCode: to.Ptr("98052"),
+	// 				State: to.Ptr("WA"),
+	// 			},
 	// 			ProvisioningState: to.Ptr(armcommvaultcontentstore.ResourceProvisioningStateSucceeded),
 	// 			SsoURL: to.Ptr("o"),
 	// 		},
@@ -124,8 +181,8 @@ func ExampleCloudAccountsClient_BeginCreateOrUpdate_cloudAccountsCreateOrUpdateM
 	// }
 }
 
-// Generated from example definition: 2026-07-03-preview/CloudAccounts_CreateOrUpdate_MinimumSet_Gen.json
-func ExampleCloudAccountsClient_BeginCreateOrUpdate_cloudAccountsCreateOrUpdateMinimumSetCcaCreateWithCreateOnlyRoleBootstrapFieldsOmitted() {
+// Generated from example definition: 2026-09-30/CloudAccounts_CreateOrUpdate_MinimumSet_Gen.json
+func ExampleCloudAccountsClient_BeginCreateOrUpdate_cloudAccountsCreateOrUpdateMinimumSetCcaCreateWithRoleAssignments() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -155,6 +212,53 @@ func ExampleCloudAccountsClient_BeginCreateOrUpdate_cloudAccountsCreateOrUpdateM
 				EmailAddress: to.Ptr("john.doe@contoso.com"),
 				Upn:          to.Ptr("john.doe@contoso.com"),
 				PhoneNumber:  to.Ptr("1234567890"),
+			},
+			RoleAssignmentsOnCcaCreate: []*armcommvaultcontentstore.RoleAssignment{
+				{
+					RoleName: to.Ptr(armcommvaultcontentstore.RoleNameBackupAdmin),
+					Entities: []*armcommvaultcontentstore.EntityInfo{
+						{
+							ID:          to.Ptr("aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"),
+							DisplayName: to.Ptr("Tenant Admins"),
+							EntityType:  to.Ptr(armcommvaultcontentstore.EntityTypeGroup),
+						},
+					},
+				},
+				{
+					RoleName: to.Ptr(armcommvaultcontentstore.RoleNameBackupUser),
+					Entities: []*armcommvaultcontentstore.EntityInfo{
+						{
+							ID:          to.Ptr("22222222-3333-4444-5555-666666666666"),
+							DisplayName: to.Ptr("Backup Users SG"),
+							EntityType:  to.Ptr(armcommvaultcontentstore.EntityTypeGroup),
+						},
+						{
+							ID:          to.Ptr("33333333-4444-5555-6666-777777777777"),
+							DisplayName: to.Ptr("Jane Doe"),
+							EntityType:  to.Ptr(armcommvaultcontentstore.EntityTypeUser),
+						},
+					},
+				},
+				{
+					RoleName: to.Ptr(armcommvaultcontentstore.RoleNameBackupOperator),
+					Entities: []*armcommvaultcontentstore.EntityInfo{
+						{
+							ID:          to.Ptr("44444444-5555-6666-7777-888888888888"),
+							DisplayName: to.Ptr("Ops Team"),
+							EntityType:  to.Ptr(armcommvaultcontentstore.EntityTypeGroup),
+						},
+					},
+				},
+				{
+					RoleName: to.Ptr(armcommvaultcontentstore.RoleNameMultiPersonAuthorization),
+					Entities: []*armcommvaultcontentstore.EntityInfo{
+						{
+							ID:          to.Ptr("11111111-2222-3333-4444-555555555555"),
+							DisplayName: to.Ptr("MPA Approvers"),
+							EntityType:  to.Ptr(armcommvaultcontentstore.EntityTypeGroup),
+						},
+					},
+				},
 			},
 		},
 		Identity: &armcommvaultcontentstore.ManagedServiceIdentity{
@@ -224,7 +328,7 @@ func ExampleCloudAccountsClient_BeginCreateOrUpdate_cloudAccountsCreateOrUpdateM
 	// }
 }
 
-// Generated from example definition: 2026-07-03-preview/CloudAccounts_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-30/CloudAccounts_Delete_MaximumSet_Gen.json
 func ExampleCloudAccountsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -245,102 +349,7 @@ func ExampleCloudAccountsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-07-03-preview/CloudAccounts_Get_MaximumSet_Gen.json
-func ExampleCloudAccountsClient_Get() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcommvaultcontentstore.NewClientFactory("65D4E6D7-7063-4C4B-BAC5-13C45474009E", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewCloudAccountsClient().Get(ctx, "rgcommvault", "sample-cloudAccountName", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcommvaultcontentstore.CloudAccountsClientGetResponse{
-	// 	CloudAccount: armcommvaultcontentstore.CloudAccount{
-	// 		Properties: &armcommvaultcontentstore.CloudAccountProperties{
-	// 			Marketplace: &armcommvaultcontentstore.MarketplaceDetails{
-	// 				SubscriptionID: to.Ptr("tblwyuznrazgchhfczgtlaifwamndt"),
-	// 				SubscriptionStatus: to.Ptr(armcommvaultcontentstore.MarketplaceSubscriptionStatusPendingFulfillmentStart),
-	// 				SaasResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg-commvault/providers/Microsoft.SaaS/resources/commvault-saas"),
-	// 				OfferDetails: &armcommvaultcontentstore.OfferDetails{
-	// 					PublisherID: to.Ptr("npghpdbgiohslbbeihxdwucejb"),
-	// 					OfferID: to.Ptr("recofyvhkddgkuvducosjstenmy"),
-	// 					PlanID: to.Ptr("pqoyqqavjh"),
-	// 					PlanName: to.Ptr("hwcltkdvndwfmmnthzwvocujri"),
-	// 					TermUnit: to.Ptr("wzrzqyfzrpqhy"),
-	// 					TermID: to.Ptr("avpgkctrkwdmudsz"),
-	// 				},
-	// 			},
-	// 			User: &armcommvaultcontentstore.UserDetails{
-	// 				FirstName: to.Ptr("mpiviyooskqkyjqqpgnkderu"),
-	// 				LastName: to.Ptr("ppkcvfjylquebr"),
-	// 				EmailAddress: to.Ptr("user@example.com"),
-	// 				Upn: to.Ptr("frlpmyk"),
-	// 				PhoneNumber: to.Ptr("mpunfyfckyzpqxotsmclzk"),
-	// 			},
-	// 			ProvisioningState: to.Ptr(armcommvaultcontentstore.ResourceProvisioningStateSucceeded),
-	// 			SsoURL: to.Ptr("o"),
-	// 		},
-	// 		Identity: &armcommvaultcontentstore.ManagedServiceIdentity{
-	// 			Type: to.Ptr(armcommvaultcontentstore.ManagedServiceIdentityTypeNone),
-	// 			UserAssignedIdentities: map[string]*armcommvaultcontentstore.UserAssignedIdentity{
-	// 			},
-	// 			PrincipalID: to.Ptr("11111111-1111-1111-1111-111111111111"),
-	// 			TenantID: to.Ptr("22222222-2222-2222-2222-222222222222"),
-	// 		},
-	// 		Tags: map[string]*string{
-	// 		},
-	// 		Location: to.Ptr("sxzmmidsfbba"),
-	// 		ID: to.Ptr("/subscriptions/65D4E6D7-7063-4C4B-BAC5-13C45474009E/resourceGroups/rgcommvault/providers/Commvault.ContentStore/cloudAccounts/myCloudAccount"),
-	// 		Name: to.Ptr("hgu"),
-	// 		Type: to.Ptr("wque"),
-	// 		SystemData: &armcommvaultcontentstore.SystemData{
-	// 			CreatedBy: to.Ptr("wg"),
-	// 			CreatedByType: to.Ptr(armcommvaultcontentstore.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(time.Date(2026, time.April, 1, 6, 14, 57, 355000000, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("hbpzxzzwhqfy"),
-	// 			LastModifiedByType: to.Ptr(armcommvaultcontentstore.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2026, time.April, 1, 6, 14, 57, 355000000, time.UTC)),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-07-03-preview/CloudAccounts_LatestLinkedSaaS_MaximumSet_Gen.json
-func ExampleCloudAccountsClient_LatestLinkedSaaS() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcommvaultcontentstore.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewCloudAccountsClient().LatestLinkedSaaS(ctx, "rg-commvault", "contoso-cloud-account", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcommvaultcontentstore.CloudAccountsClientLatestLinkedSaaSResponse{
-	// 	LatestLinkedSaaSResponse: armcommvaultcontentstore.LatestLinkedSaaSResponse{
-	// 		SaaSResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg-commvault/providers/Microsoft.SaaS/resources/commvault-saas"),
-	// 		IsHiddenSaaS: to.Ptr(false),
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-07-03-preview/CloudAccounts_LinkSaaS_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-30/CloudAccounts_LinkSaaS_MaximumSet_Gen.json
 func ExampleCloudAccountsClient_BeginLinkSaaS() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -416,7 +425,221 @@ func ExampleCloudAccountsClient_BeginLinkSaaS() {
 	// }
 }
 
-// Generated from example definition: 2026-07-03-preview/CloudAccounts_ListByResourceGroup_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-30/CloudAccounts_Update_MaximumSet_Gen.json
+func ExampleCloudAccountsClient_BeginUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcommvaultcontentstore.NewClientFactory("65D4E6D7-7063-4C4B-BAC5-13C45474009E", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewCloudAccountsClient().BeginUpdate(ctx, "rgcommvault", "sample-cloudAccountName", armcommvaultcontentstore.CloudAccount{
+		Properties: &armcommvaultcontentstore.CloudAccountProperties{
+			Marketplace: &armcommvaultcontentstore.MarketplaceDetails{
+				SubscriptionID: to.Ptr("bojdg"),
+				OfferDetails: &armcommvaultcontentstore.OfferDetails{
+					PublisherID: to.Ptr("loowntsnvoynhzto"),
+					OfferID:     to.Ptr("ysmwsuakhwvkosz"),
+					PlanID:      to.Ptr("iskbkfpr"),
+					PlanName:    to.Ptr("pmmlirssfdvdmywddvtl"),
+					TermUnit:    to.Ptr("wbeqzbtvq"),
+					TermID:      to.Ptr("qoebjvpjc"),
+				},
+			},
+			User: &armcommvaultcontentstore.UserDetails{
+				FirstName:    to.Ptr("dudsiomjk"),
+				LastName:     to.Ptr("szqupklkgojwozjo"),
+				EmailAddress: to.Ptr("user@example.com"),
+				Upn:          to.Ptr("wiwwe"),
+				PhoneNumber:  to.Ptr("ebszyfnuyzk"),
+			},
+			Company: &armcommvaultcontentstore.CompanyProfile{
+				JobTitle:    to.Ptr("Backup Operator"),
+				CompanyName: to.Ptr("Contoso"),
+				Website:     to.Ptr("https://www.contoso.com"),
+				Street:      to.Ptr("1 Microsoft Way"),
+				City:        to.Ptr("Redmond"),
+				Country:     to.Ptr("USA"),
+				PostalCode:  to.Ptr("98052"),
+				State:       to.Ptr("WA"),
+			},
+		},
+		Identity: &armcommvaultcontentstore.ManagedServiceIdentity{
+			Type:                   to.Ptr(armcommvaultcontentstore.ManagedServiceIdentityTypeNone),
+			UserAssignedIdentities: map[string]*armcommvaultcontentstore.UserAssignedIdentity{},
+		},
+		Tags: map[string]*string{},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcommvaultcontentstore.CloudAccountsClientUpdateResponse{
+	// 	CloudAccount: armcommvaultcontentstore.CloudAccount{
+	// 		Properties: &armcommvaultcontentstore.CloudAccountProperties{
+	// 			Marketplace: &armcommvaultcontentstore.MarketplaceDetails{
+	// 				SubscriptionID: to.Ptr("bojdg"),
+	// 				SubscriptionStatus: to.Ptr(armcommvaultcontentstore.MarketplaceSubscriptionStatusPendingFulfillmentStart),
+	// 				SaasResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg-commvault/providers/Microsoft.SaaS/resources/commvault-saas"),
+	// 				OfferDetails: &armcommvaultcontentstore.OfferDetails{
+	// 					PublisherID: to.Ptr("loowntsnvoynhzto"),
+	// 					OfferID: to.Ptr("ysmwsuakhwvkosz"),
+	// 					PlanID: to.Ptr("iskbkfpr"),
+	// 					PlanName: to.Ptr("pmmlirssfdvdmywddvtl"),
+	// 					TermUnit: to.Ptr("wbeqzbtvq"),
+	// 					TermID: to.Ptr("qoebjvpjc"),
+	// 				},
+	// 			},
+	// 			User: &armcommvaultcontentstore.UserDetails{
+	// 				FirstName: to.Ptr("dudsiomjk"),
+	// 				LastName: to.Ptr("szqupklkgojwozjo"),
+	// 				EmailAddress: to.Ptr("user@example.com"),
+	// 				Upn: to.Ptr("wiwwe"),
+	// 				PhoneNumber: to.Ptr("ebszyfnuyzk"),
+	// 			},
+	// 			Company: &armcommvaultcontentstore.CompanyProfile{
+	// 				JobTitle: to.Ptr("Backup Operator"),
+	// 				CompanyName: to.Ptr("Contoso"),
+	// 				Website: to.Ptr("https://www.contoso.com"),
+	// 				Street: to.Ptr("1 Microsoft Way"),
+	// 				City: to.Ptr("Redmond"),
+	// 				Country: to.Ptr("USA"),
+	// 				PostalCode: to.Ptr("98052"),
+	// 				State: to.Ptr("WA"),
+	// 			},
+	// 			ProvisioningState: to.Ptr(armcommvaultcontentstore.ResourceProvisioningStateSucceeded),
+	// 			SsoURL: to.Ptr("o"),
+	// 		},
+	// 		Identity: &armcommvaultcontentstore.ManagedServiceIdentity{
+	// 			Type: to.Ptr(armcommvaultcontentstore.ManagedServiceIdentityTypeNone),
+	// 			UserAssignedIdentities: map[string]*armcommvaultcontentstore.UserAssignedIdentity{
+	// 			},
+	// 			PrincipalID: to.Ptr("11111111-1111-1111-1111-111111111111"),
+	// 			TenantID: to.Ptr("22222222-2222-2222-2222-222222222222"),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 		},
+	// 		Location: to.Ptr("sxzmmidsfbba"),
+	// 		ID: to.Ptr("/subscriptions/65D4E6D7-7063-4C4B-BAC5-13C45474009E/resourceGroups/rgcommvault/providers/Commvault.ContentStore/cloudAccounts/myCloudAccount"),
+	// 		Name: to.Ptr("hgu"),
+	// 		Type: to.Ptr("wque"),
+	// 		SystemData: &armcommvaultcontentstore.SystemData{
+	// 			CreatedBy: to.Ptr("wg"),
+	// 			CreatedByType: to.Ptr(armcommvaultcontentstore.CreatedByTypeUser),
+	// 			CreatedAt: to.Ptr(time.Date(2026, time.April, 1, 6, 14, 57, 355000000, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("hbpzxzzwhqfy"),
+	// 			LastModifiedByType: to.Ptr(armcommvaultcontentstore.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2026, time.April, 1, 6, 14, 57, 355000000, time.UTC)),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-09-30/CloudAccounts_Get_MaximumSet_Gen.json
+func ExampleCloudAccountsClient_Get() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcommvaultcontentstore.NewClientFactory("65D4E6D7-7063-4C4B-BAC5-13C45474009E", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewCloudAccountsClient().Get(ctx, "rgcommvault", "sample-cloudAccountName", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcommvaultcontentstore.CloudAccountsClientGetResponse{
+	// 	CloudAccount: armcommvaultcontentstore.CloudAccount{
+	// 		Properties: &armcommvaultcontentstore.CloudAccountProperties{
+	// 			Marketplace: &armcommvaultcontentstore.MarketplaceDetails{
+	// 				SubscriptionID: to.Ptr("tblwyuznrazgchhfczgtlaifwamndt"),
+	// 				SubscriptionStatus: to.Ptr(armcommvaultcontentstore.MarketplaceSubscriptionStatusPendingFulfillmentStart),
+	// 				SaasResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg-commvault/providers/Microsoft.SaaS/resources/commvault-saas"),
+	// 				OfferDetails: &armcommvaultcontentstore.OfferDetails{
+	// 					PublisherID: to.Ptr("npghpdbgiohslbbeihxdwucejb"),
+	// 					OfferID: to.Ptr("recofyvhkddgkuvducosjstenmy"),
+	// 					PlanID: to.Ptr("pqoyqqavjh"),
+	// 					PlanName: to.Ptr("hwcltkdvndwfmmnthzwvocujri"),
+	// 					TermUnit: to.Ptr("wzrzqyfzrpqhy"),
+	// 					TermID: to.Ptr("avpgkctrkwdmudsz"),
+	// 				},
+	// 			},
+	// 			User: &armcommvaultcontentstore.UserDetails{
+	// 				FirstName: to.Ptr("mpiviyooskqkyjqqpgnkderu"),
+	// 				LastName: to.Ptr("ppkcvfjylquebr"),
+	// 				EmailAddress: to.Ptr("user@example.com"),
+	// 				Upn: to.Ptr("frlpmyk"),
+	// 				PhoneNumber: to.Ptr("mpunfyfckyzpqxotsmclzk"),
+	// 			},
+	// 			ProvisioningState: to.Ptr(armcommvaultcontentstore.ResourceProvisioningStateSucceeded),
+	// 			SsoURL: to.Ptr("o"),
+	// 		},
+	// 		Identity: &armcommvaultcontentstore.ManagedServiceIdentity{
+	// 			Type: to.Ptr(armcommvaultcontentstore.ManagedServiceIdentityTypeNone),
+	// 			UserAssignedIdentities: map[string]*armcommvaultcontentstore.UserAssignedIdentity{
+	// 			},
+	// 			PrincipalID: to.Ptr("11111111-1111-1111-1111-111111111111"),
+	// 			TenantID: to.Ptr("22222222-2222-2222-2222-222222222222"),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 		},
+	// 		Location: to.Ptr("sxzmmidsfbba"),
+	// 		ID: to.Ptr("/subscriptions/65D4E6D7-7063-4C4B-BAC5-13C45474009E/resourceGroups/rgcommvault/providers/Commvault.ContentStore/cloudAccounts/myCloudAccount"),
+	// 		Name: to.Ptr("hgu"),
+	// 		Type: to.Ptr("wque"),
+	// 		SystemData: &armcommvaultcontentstore.SystemData{
+	// 			CreatedBy: to.Ptr("wg"),
+	// 			CreatedByType: to.Ptr(armcommvaultcontentstore.CreatedByTypeUser),
+	// 			CreatedAt: to.Ptr(time.Date(2026, time.April, 1, 6, 14, 57, 355000000, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("hbpzxzzwhqfy"),
+	// 			LastModifiedByType: to.Ptr(armcommvaultcontentstore.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2026, time.April, 1, 6, 14, 57, 355000000, time.UTC)),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-09-30/CloudAccounts_LatestLinkedSaaS_MaximumSet_Gen.json
+func ExampleCloudAccountsClient_LatestLinkedSaaS() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcommvaultcontentstore.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewCloudAccountsClient().LatestLinkedSaaS(ctx, "rg-commvault", "contoso-cloud-account", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcommvaultcontentstore.CloudAccountsClientLatestLinkedSaaSResponse{
+	// 	LatestLinkedSaaSResponse: armcommvaultcontentstore.LatestLinkedSaaSResponse{
+	// 		SaaSResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg-commvault/providers/Microsoft.SaaS/resources/commvault-saas"),
+	// 		IsHiddenSaaS: to.Ptr(false),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-09-30/CloudAccounts_ListByResourceGroup_MaximumSet_Gen.json
 func ExampleCloudAccountsClient_NewListByResourceGroupPager_cloudAccountsListByResourceGroupMaximumSetGeneratedByMaximumSetRuleGeneratedByMaximumSetRuleGeneratedByMaximumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -495,7 +718,7 @@ func ExampleCloudAccountsClient_NewListByResourceGroupPager_cloudAccountsListByR
 	}
 }
 
-// Generated from example definition: 2026-07-03-preview/CloudAccounts_ListByResourceGroup_MinimumSet_Gen.json
+// Generated from example definition: 2026-09-30/CloudAccounts_ListByResourceGroup_MinimumSet_Gen.json
 func ExampleCloudAccountsClient_NewListByResourceGroupPager_cloudAccountsListByResourceGroupMaximumSetGeneratedByMaximumSetRuleGeneratedByMaximumSetRuleGeneratedByMinimumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -530,7 +753,7 @@ func ExampleCloudAccountsClient_NewListByResourceGroupPager_cloudAccountsListByR
 	}
 }
 
-// Generated from example definition: 2026-07-03-preview/CloudAccounts_ListBySubscription_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-30/CloudAccounts_ListBySubscription_MaximumSet_Gen.json
 func ExampleCloudAccountsClient_NewListBySubscriptionPager_cloudAccountsListBySubscriptionMaximumSetGeneratedByMaximumSetRuleGeneratedByMaximumSetRuleGeneratedByMaximumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -609,7 +832,7 @@ func ExampleCloudAccountsClient_NewListBySubscriptionPager_cloudAccountsListBySu
 	}
 }
 
-// Generated from example definition: 2026-07-03-preview/CloudAccounts_ListBySubscription_MinimumSet_Gen.json
+// Generated from example definition: 2026-09-30/CloudAccounts_ListBySubscription_MinimumSet_Gen.json
 func ExampleCloudAccountsClient_NewListBySubscriptionPager_cloudAccountsListBySubscriptionMaximumSetGeneratedByMaximumSetRuleGeneratedByMaximumSetRuleGeneratedByMinimumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -642,103 +865,4 @@ func ExampleCloudAccountsClient_NewListBySubscriptionPager_cloudAccountsListBySu
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2026-07-03-preview/CloudAccounts_Update_MaximumSet_Gen.json
-func ExampleCloudAccountsClient_BeginUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcommvaultcontentstore.NewClientFactory("65D4E6D7-7063-4C4B-BAC5-13C45474009E", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewCloudAccountsClient().BeginUpdate(ctx, "rgcommvault", "sample-cloudAccountName", armcommvaultcontentstore.CloudAccountUpdate{
-		Properties: &armcommvaultcontentstore.CloudAccountUpdateProperties{
-			Marketplace: &armcommvaultcontentstore.MarketplaceDetails{
-				SubscriptionID: to.Ptr("bojdg"),
-				OfferDetails: &armcommvaultcontentstore.OfferDetails{
-					PublisherID: to.Ptr("loowntsnvoynhzto"),
-					OfferID:     to.Ptr("ysmwsuakhwvkosz"),
-					PlanID:      to.Ptr("iskbkfpr"),
-					PlanName:    to.Ptr("pmmlirssfdvdmywddvtl"),
-					TermUnit:    to.Ptr("wbeqzbtvq"),
-					TermID:      to.Ptr("qoebjvpjc"),
-				},
-			},
-			User: &armcommvaultcontentstore.UserDetails{
-				FirstName:    to.Ptr("dudsiomjk"),
-				LastName:     to.Ptr("szqupklkgojwozjo"),
-				EmailAddress: to.Ptr("user@example.com"),
-				Upn:          to.Ptr("wiwwe"),
-				PhoneNumber:  to.Ptr("ebszyfnuyzk"),
-			},
-		},
-		Identity: &armcommvaultcontentstore.ManagedServiceIdentity{
-			Type:                   to.Ptr(armcommvaultcontentstore.ManagedServiceIdentityTypeNone),
-			UserAssignedIdentities: map[string]*armcommvaultcontentstore.UserAssignedIdentity{},
-		},
-		Tags: map[string]*string{},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcommvaultcontentstore.CloudAccountsClientUpdateResponse{
-	// 	CloudAccount: armcommvaultcontentstore.CloudAccount{
-	// 		Properties: &armcommvaultcontentstore.CloudAccountProperties{
-	// 			Marketplace: &armcommvaultcontentstore.MarketplaceDetails{
-	// 				SubscriptionID: to.Ptr("bojdg"),
-	// 				SubscriptionStatus: to.Ptr(armcommvaultcontentstore.MarketplaceSubscriptionStatusPendingFulfillmentStart),
-	// 				SaasResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg-commvault/providers/Microsoft.SaaS/resources/commvault-saas"),
-	// 				OfferDetails: &armcommvaultcontentstore.OfferDetails{
-	// 					PublisherID: to.Ptr("loowntsnvoynhzto"),
-	// 					OfferID: to.Ptr("ysmwsuakhwvkosz"),
-	// 					PlanID: to.Ptr("iskbkfpr"),
-	// 					PlanName: to.Ptr("pmmlirssfdvdmywddvtl"),
-	// 					TermUnit: to.Ptr("wbeqzbtvq"),
-	// 					TermID: to.Ptr("qoebjvpjc"),
-	// 				},
-	// 			},
-	// 			User: &armcommvaultcontentstore.UserDetails{
-	// 				FirstName: to.Ptr("dudsiomjk"),
-	// 				LastName: to.Ptr("szqupklkgojwozjo"),
-	// 				EmailAddress: to.Ptr("user@example.com"),
-	// 				Upn: to.Ptr("wiwwe"),
-	// 				PhoneNumber: to.Ptr("ebszyfnuyzk"),
-	// 			},
-	// 			ProvisioningState: to.Ptr(armcommvaultcontentstore.ResourceProvisioningStateSucceeded),
-	// 			SsoURL: to.Ptr("o"),
-	// 		},
-	// 		Identity: &armcommvaultcontentstore.ManagedServiceIdentity{
-	// 			Type: to.Ptr(armcommvaultcontentstore.ManagedServiceIdentityTypeNone),
-	// 			UserAssignedIdentities: map[string]*armcommvaultcontentstore.UserAssignedIdentity{
-	// 			},
-	// 			PrincipalID: to.Ptr("11111111-1111-1111-1111-111111111111"),
-	// 			TenantID: to.Ptr("22222222-2222-2222-2222-222222222222"),
-	// 		},
-	// 		Tags: map[string]*string{
-	// 		},
-	// 		Location: to.Ptr("sxzmmidsfbba"),
-	// 		ID: to.Ptr("/subscriptions/65D4E6D7-7063-4C4B-BAC5-13C45474009E/resourceGroups/rgcommvault/providers/Commvault.ContentStore/cloudAccounts/myCloudAccount"),
-	// 		Name: to.Ptr("hgu"),
-	// 		Type: to.Ptr("wque"),
-	// 		SystemData: &armcommvaultcontentstore.SystemData{
-	// 			CreatedBy: to.Ptr("wg"),
-	// 			CreatedByType: to.Ptr(armcommvaultcontentstore.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(time.Date(2026, time.April, 1, 6, 14, 57, 355000000, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("hbpzxzzwhqfy"),
-	// 			LastModifiedByType: to.Ptr(armcommvaultcontentstore.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2026, time.April, 1, 6, 14, 57, 355000000, time.UTC)),
-	// 		},
-	// 	},
-	// }
 }

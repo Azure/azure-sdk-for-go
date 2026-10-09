@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-07-03-preview/SaaSOperationGroup_ActivateResource_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-30/SaaSOperationGroup_ActivateResource_MaximumSet_Gen.json
 func ExampleSaaSOperationGroupClient_BeginActivateResource_saaSOperationGroupActivateResourceMaximumSetGeneratedByMaximumSetRuleGeneratedByMaximumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -24,7 +24,28 @@ func ExampleSaaSOperationGroupClient_BeginActivateResource_saaSOperationGroupAct
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewSaaSOperationGroupClient().BeginActivateResource(ctx, armcommvaultcontentstore.ActivateSaaSParameterRequest{
-		SaaSGUID: to.Ptr("55555555-6666-7777-8888-999999999999"),
+		SaasGUID:    to.Ptr("55555555-6666-7777-8888-999999999999"),
+		PublisherID: to.Ptr("contoso-publisher"),
+		ActivateSaaSRequestParam: &armcommvaultcontentstore.ActivateSaaSRequestParam{
+			SaasResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg-commvault/providers/Microsoft.SaaS/resources/commvault-saas"),
+			User: &armcommvaultcontentstore.UserDetails{
+				FirstName:    to.Ptr("John"),
+				LastName:     to.Ptr("Smith"),
+				EmailAddress: to.Ptr("john.smith@contoso.com"),
+				Upn:          to.Ptr("john.smith@contoso.com"),
+				PhoneNumber:  to.Ptr("+1-555-0101"),
+			},
+			Company: &armcommvaultcontentstore.CompanyProfile{
+				JobTitle:    to.Ptr("Security Administrator"),
+				CompanyName: to.Ptr("Contoso"),
+				Website:     to.Ptr("https://www.contoso.com"),
+				Street:      to.Ptr("1 Microsoft Way"),
+				City:        to.Ptr("Redmond"),
+				Country:     to.Ptr("USA"),
+				PostalCode:  to.Ptr("98052"),
+				State:       to.Ptr("WA"),
+			},
+		},
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -54,7 +75,7 @@ func ExampleSaaSOperationGroupClient_BeginActivateResource_saaSOperationGroupAct
 	// }
 }
 
-// Generated from example definition: 2026-07-03-preview/SaaSOperationGroup_ActivateResource_MinimumSet_Gen.json
+// Generated from example definition: 2026-09-30/SaaSOperationGroup_ActivateResource_MinimumSet_Gen.json
 func ExampleSaaSOperationGroupClient_BeginActivateResource_saaSOperationGroupActivateResourceMaximumSetGeneratedByMaximumSetRuleGeneratedByMinimumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -66,7 +87,7 @@ func ExampleSaaSOperationGroupClient_BeginActivateResource_saaSOperationGroupAct
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewSaaSOperationGroupClient().BeginActivateResource(ctx, armcommvaultcontentstore.ActivateSaaSParameterRequest{
-		SaaSGUID: to.Ptr("55555555-6666-7777-8888-999999999999"),
+		SaasGUID: to.Ptr("55555555-6666-7777-8888-999999999999"),
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

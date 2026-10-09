@@ -197,6 +197,18 @@ type StoragesClientDeleteResponse struct {
 	// placeholder for future response values
 }
 
+// StoragesClientDisableComplianceLockResponse contains the response from method StoragesClient.DisableComplianceLock.
+type StoragesClientDisableComplianceLockResponse struct {
+	// A Commvault Storage Resource
+	Storage
+}
+
+// StoragesClientEnableComplianceLockResponse contains the response from method StoragesClient.EnableComplianceLock.
+type StoragesClientEnableComplianceLockResponse struct {
+	// A Commvault Storage Resource
+	Storage
+}
+
 // StoragesClientGetResponse contains the response from method StoragesClient.Get.
 type StoragesClientGetResponse struct {
 	// A Commvault Storage Resource
@@ -207,4 +219,10 @@ type StoragesClientGetResponse struct {
 type StoragesClientListByCloudAccountResponse struct {
 	// The response of a Storage list operation.
 	StorageListResult
+}
+
+// StoragesClientRefreshResponse contains the response from method StoragesClient.Refresh.
+type StoragesClientRefreshResponse struct {
+	// A Commvault Storage Resource
+	Storage
 }

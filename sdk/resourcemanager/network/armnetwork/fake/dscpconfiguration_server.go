@@ -33,13 +33,13 @@ type DscpConfigurationServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, dscpConfigurationName string, options *armnetwork.DscpConfigurationClientGetOptions) (resp azfake.Responder[armnetwork.DscpConfigurationClientGetResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method DscpConfigurationClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(resourceGroupName string, options *armnetwork.DscpConfigurationClientListOptions) (resp azfake.PagerResponder[armnetwork.DscpConfigurationClientListResponse])
-
 	// NewListAllPager is the fake for method DscpConfigurationClient.NewListAllPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListAllPager func(options *armnetwork.DscpConfigurationClientListAllOptions) (resp azfake.PagerResponder[armnetwork.DscpConfigurationClientListAllResponse])
+
+	// NewListPager is the fake for method DscpConfigurationClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(resourceGroupName string, options *armnetwork.DscpConfigurationClientListOptions) (resp azfake.PagerResponder[armnetwork.DscpConfigurationClientListResponse])
 }
 
 // NewDscpConfigurationServerTransport creates a new instance of DscpConfigurationServerTransport with the provided implementation.
@@ -50,8 +50,8 @@ func NewDscpConfigurationServerTransport(srv *DscpConfigurationServer) *DscpConf
 		srv:                 srv,
 		beginCreateOrUpdate: newTracker[azfake.PollerResponder[armnetwork.DscpConfigurationClientCreateOrUpdateResponse]](),
 		beginDelete:         newTracker[azfake.PollerResponder[armnetwork.DscpConfigurationClientDeleteResponse]](),
-		newListPager:        newTracker[azfake.PagerResponder[armnetwork.DscpConfigurationClientListResponse]](),
 		newListAllPager:     newTracker[azfake.PagerResponder[armnetwork.DscpConfigurationClientListAllResponse]](),
+		newListPager:        newTracker[azfake.PagerResponder[armnetwork.DscpConfigurationClientListResponse]](),
 	}
 }
 
@@ -61,8 +61,8 @@ type DscpConfigurationServerTransport struct {
 	srv                 *DscpConfigurationServer
 	beginCreateOrUpdate *tracker[azfake.PollerResponder[armnetwork.DscpConfigurationClientCreateOrUpdateResponse]]
 	beginDelete         *tracker[azfake.PollerResponder[armnetwork.DscpConfigurationClientDeleteResponse]]
-	newListPager        *tracker[azfake.PagerResponder[armnetwork.DscpConfigurationClientListResponse]]
 	newListAllPager     *tracker[azfake.PagerResponder[armnetwork.DscpConfigurationClientListAllResponse]]
+	newListPager        *tracker[azfake.PagerResponder[armnetwork.DscpConfigurationClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for DscpConfigurationServerTransport.
@@ -92,10 +92,10 @@ func (d *DscpConfigurationServerTransport) dispatchToMethodFake(req *http.Reques
 				res.resp, res.err = d.dispatchBeginDelete(req)
 			case "DscpConfigurationClient.Get":
 				res.resp, res.err = d.dispatchGet(req)
-			case "DscpConfigurationClient.NewListPager":
-				res.resp, res.err = d.dispatchNewListPager(req)
 			case "DscpConfigurationClient.NewListAllPager":
 				res.resp, res.err = d.dispatchNewListAllPager(req)
+			case "DscpConfigurationClient.NewListPager":
+				res.resp, res.err = d.dispatchNewListPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -237,6 +237,39 @@ func (d *DscpConfigurationServerTransport) dispatchGet(req *http.Request) (*http
 	return resp, nil
 }
 
+func (d *DscpConfigurationServerTransport) dispatchNewListAllPager(req *http.Request) (*http.Response, error) {
+	if d.srv.NewListAllPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListAllPager not implemented")}
+	}
+	newListAllPager := d.newListAllPager.get(req)
+	if newListAllPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/dscpConfigurations`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resp := d.srv.NewListAllPager(nil)
+		newListAllPager = &resp
+		d.newListAllPager.add(req, newListAllPager)
+		server.PagerResponderInjectNextLinks(newListAllPager, req, func(page *armnetwork.DscpConfigurationClientListAllResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListAllPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		d.newListAllPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListAllPager) {
+		d.newListAllPager.remove(req)
+	}
+	return resp, nil
+}
+
 func (d *DscpConfigurationServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
 	if d.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
@@ -270,39 +303,6 @@ func (d *DscpConfigurationServerTransport) dispatchNewListPager(req *http.Reques
 	}
 	if !server.PagerResponderMore(newListPager) {
 		d.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (d *DscpConfigurationServerTransport) dispatchNewListAllPager(req *http.Request) (*http.Response, error) {
-	if d.srv.NewListAllPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListAllPager not implemented")}
-	}
-	newListAllPager := d.newListAllPager.get(req)
-	if newListAllPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/dscpConfigurations`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := d.srv.NewListAllPager(nil)
-		newListAllPager = &resp
-		d.newListAllPager.add(req, newListAllPager)
-		server.PagerResponderInjectNextLinks(newListAllPager, req, func(page *armnetwork.DscpConfigurationClientListAllResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListAllPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		d.newListAllPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListAllPager) {
-		d.newListAllPager.remove(req)
 	}
 	return resp, nil
 }

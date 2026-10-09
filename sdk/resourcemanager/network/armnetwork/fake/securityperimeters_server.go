@@ -22,25 +22,25 @@ import (
 
 // SecurityPerimetersServer is a fake server for instances of the armnetwork.SecurityPerimetersClient type.
 type SecurityPerimetersServer struct {
-	// CreateOrUpdate is the fake for method SecurityPerimetersClient.CreateOrUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	CreateOrUpdate func(ctx context.Context, resourceGroupName string, networkSecurityPerimeterName string, parameters armnetwork.SecurityPerimeter, options *armnetwork.SecurityPerimetersClientCreateOrUpdateOptions) (resp azfake.Responder[armnetwork.SecurityPerimetersClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
-
 	// BeginDelete is the fake for method SecurityPerimetersClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, networkSecurityPerimeterName string, options *armnetwork.SecurityPerimetersClientBeginDeleteOptions) (resp azfake.PollerResponder[armnetwork.SecurityPerimetersClientDeleteResponse], errResp azfake.ErrorResponder)
+
+	// CreateOrUpdate is the fake for method SecurityPerimetersClient.CreateOrUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
+	CreateOrUpdate func(ctx context.Context, resourceGroupName string, networkSecurityPerimeterName string, parameters armnetwork.SecurityPerimeter, options *armnetwork.SecurityPerimetersClientCreateOrUpdateOptions) (resp azfake.Responder[armnetwork.SecurityPerimetersClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method SecurityPerimetersClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, networkSecurityPerimeterName string, options *armnetwork.SecurityPerimetersClientGetOptions) (resp azfake.Responder[armnetwork.SecurityPerimetersClientGetResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method SecurityPerimetersClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(resourceGroupName string, options *armnetwork.SecurityPerimetersClientListOptions) (resp azfake.PagerResponder[armnetwork.SecurityPerimetersClientListResponse])
-
 	// NewListBySubscriptionPager is the fake for method SecurityPerimetersClient.NewListBySubscriptionPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListBySubscriptionPager func(options *armnetwork.SecurityPerimetersClientListBySubscriptionOptions) (resp azfake.PagerResponder[armnetwork.SecurityPerimetersClientListBySubscriptionResponse])
+
+	// NewListPager is the fake for method SecurityPerimetersClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(resourceGroupName string, options *armnetwork.SecurityPerimetersClientListOptions) (resp azfake.PagerResponder[armnetwork.SecurityPerimetersClientListResponse])
 
 	// Patch is the fake for method SecurityPerimetersClient.Patch
 	// HTTP status codes to indicate success: http.StatusOK
@@ -54,8 +54,8 @@ func NewSecurityPerimetersServerTransport(srv *SecurityPerimetersServer) *Securi
 	return &SecurityPerimetersServerTransport{
 		srv:                        srv,
 		beginDelete:                newTracker[azfake.PollerResponder[armnetwork.SecurityPerimetersClientDeleteResponse]](),
-		newListPager:               newTracker[azfake.PagerResponder[armnetwork.SecurityPerimetersClientListResponse]](),
 		newListBySubscriptionPager: newTracker[azfake.PagerResponder[armnetwork.SecurityPerimetersClientListBySubscriptionResponse]](),
+		newListPager:               newTracker[azfake.PagerResponder[armnetwork.SecurityPerimetersClientListResponse]](),
 	}
 }
 
@@ -64,8 +64,8 @@ func NewSecurityPerimetersServerTransport(srv *SecurityPerimetersServer) *Securi
 type SecurityPerimetersServerTransport struct {
 	srv                        *SecurityPerimetersServer
 	beginDelete                *tracker[azfake.PollerResponder[armnetwork.SecurityPerimetersClientDeleteResponse]]
-	newListPager               *tracker[azfake.PagerResponder[armnetwork.SecurityPerimetersClientListResponse]]
 	newListBySubscriptionPager *tracker[azfake.PagerResponder[armnetwork.SecurityPerimetersClientListBySubscriptionResponse]]
+	newListPager               *tracker[azfake.PagerResponder[armnetwork.SecurityPerimetersClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for SecurityPerimetersServerTransport.
@@ -89,16 +89,16 @@ func (s *SecurityPerimetersServerTransport) dispatchToMethodFake(req *http.Reque
 		}
 		if !intercepted {
 			switch method {
-			case "SecurityPerimetersClient.CreateOrUpdate":
-				res.resp, res.err = s.dispatchCreateOrUpdate(req)
 			case "SecurityPerimetersClient.BeginDelete":
 				res.resp, res.err = s.dispatchBeginDelete(req)
+			case "SecurityPerimetersClient.CreateOrUpdate":
+				res.resp, res.err = s.dispatchCreateOrUpdate(req)
 			case "SecurityPerimetersClient.Get":
 				res.resp, res.err = s.dispatchGet(req)
-			case "SecurityPerimetersClient.NewListPager":
-				res.resp, res.err = s.dispatchNewListPager(req)
 			case "SecurityPerimetersClient.NewListBySubscriptionPager":
 				res.resp, res.err = s.dispatchNewListBySubscriptionPager(req)
+			case "SecurityPerimetersClient.NewListPager":
+				res.resp, res.err = s.dispatchNewListPager(req)
 			case "SecurityPerimetersClient.Patch":
 				res.resp, res.err = s.dispatchPatch(req)
 			default:
@@ -115,43 +115,6 @@ func (s *SecurityPerimetersServerTransport) dispatchToMethodFake(req *http.Reque
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
-}
-
-func (s *SecurityPerimetersServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Response, error) {
-	if s.srv.CreateOrUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/networkSecurityPerimeters/(?P<networkSecurityPerimeterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armnetwork.SecurityPerimeter](req)
-	if err != nil {
-		return nil, err
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	networkSecurityPerimeterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("networkSecurityPerimeterName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := s.srv.CreateOrUpdate(req.Context(), resourceGroupNameParam, networkSecurityPerimeterNameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).SecurityPerimeter, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
 }
 
 func (s *SecurityPerimetersServerTransport) dispatchBeginDelete(req *http.Request) (*http.Response, error) {
@@ -209,6 +172,43 @@ func (s *SecurityPerimetersServerTransport) dispatchBeginDelete(req *http.Reques
 	return resp, nil
 }
 
+func (s *SecurityPerimetersServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Response, error) {
+	if s.srv.CreateOrUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/networkSecurityPerimeters/(?P<networkSecurityPerimeterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armnetwork.SecurityPerimeter](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	networkSecurityPerimeterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("networkSecurityPerimeterName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := s.srv.CreateOrUpdate(req.Context(), resourceGroupNameParam, networkSecurityPerimeterNameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).SecurityPerimeter, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
 func (s *SecurityPerimetersServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if s.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -238,6 +238,58 @@ func (s *SecurityPerimetersServerTransport) dispatchGet(req *http.Request) (*htt
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).SecurityPerimeter, req)
 	if err != nil {
 		return nil, err
+	}
+	return resp, nil
+}
+
+func (s *SecurityPerimetersServerTransport) dispatchNewListBySubscriptionPager(req *http.Request) (*http.Response, error) {
+	if s.srv.NewListBySubscriptionPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListBySubscriptionPager not implemented")}
+	}
+	newListBySubscriptionPager := s.newListBySubscriptionPager.get(req)
+	if newListBySubscriptionPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/networkSecurityPerimeters`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		qp := req.URL.Query()
+		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 32)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return int32(p), nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		skipTokenParam := getOptional(qp.Get("$skipToken"))
+		var options *armnetwork.SecurityPerimetersClientListBySubscriptionOptions
+		if topParam != nil || skipTokenParam != nil {
+			options = &armnetwork.SecurityPerimetersClientListBySubscriptionOptions{
+				Top:       topParam,
+				SkipToken: skipTokenParam,
+			}
+		}
+		resp := s.srv.NewListBySubscriptionPager(options)
+		newListBySubscriptionPager = &resp
+		s.newListBySubscriptionPager.add(req, newListBySubscriptionPager)
+		server.PagerResponderInjectNextLinks(newListBySubscriptionPager, req, func(page *armnetwork.SecurityPerimetersClientListBySubscriptionResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListBySubscriptionPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		s.newListBySubscriptionPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListBySubscriptionPager) {
+		s.newListBySubscriptionPager.remove(req)
 	}
 	return resp, nil
 }
@@ -294,58 +346,6 @@ func (s *SecurityPerimetersServerTransport) dispatchNewListPager(req *http.Reque
 	}
 	if !server.PagerResponderMore(newListPager) {
 		s.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (s *SecurityPerimetersServerTransport) dispatchNewListBySubscriptionPager(req *http.Request) (*http.Response, error) {
-	if s.srv.NewListBySubscriptionPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListBySubscriptionPager not implemented")}
-	}
-	newListBySubscriptionPager := s.newListBySubscriptionPager.get(req)
-	if newListBySubscriptionPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/networkSecurityPerimeters`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		qp := req.URL.Query()
-		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 32)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return int32(p), nil
-		})
-		if err != nil {
-			return nil, err
-		}
-		skipTokenParam := getOptional(qp.Get("$skipToken"))
-		var options *armnetwork.SecurityPerimetersClientListBySubscriptionOptions
-		if topParam != nil || skipTokenParam != nil {
-			options = &armnetwork.SecurityPerimetersClientListBySubscriptionOptions{
-				Top:       topParam,
-				SkipToken: skipTokenParam,
-			}
-		}
-		resp := s.srv.NewListBySubscriptionPager(options)
-		newListBySubscriptionPager = &resp
-		s.newListBySubscriptionPager.add(req, newListBySubscriptionPager)
-		server.PagerResponderInjectNextLinks(newListBySubscriptionPager, req, func(page *armnetwork.SecurityPerimetersClientListBySubscriptionResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListBySubscriptionPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		s.newListBySubscriptionPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListBySubscriptionPager) {
-		s.newListBySubscriptionPager.remove(req)
 	}
 	return resp, nil
 }

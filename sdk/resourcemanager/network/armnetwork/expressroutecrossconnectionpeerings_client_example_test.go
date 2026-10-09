@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01/ExpressRouteCrossConnectionBgpPeeringCreate.json
+// Generated from example definition: 2026-03-01/ExpressRouteCrossConnectionBgpPeeringCreate.json
 func ExampleExpressRouteCrossConnectionPeeringsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -73,7 +73,7 @@ func ExampleExpressRouteCrossConnectionPeeringsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/ExpressRouteCrossConnectionBgpPeeringDelete.json
+// Generated from example definition: 2026-03-01/ExpressRouteCrossConnectionBgpPeeringDelete.json
 func ExampleExpressRouteCrossConnectionPeeringsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -99,7 +99,7 @@ func ExampleExpressRouteCrossConnectionPeeringsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/ExpressRouteCrossConnectionBgpPeeringGet.json
+// Generated from example definition: 2026-03-01/ExpressRouteCrossConnectionBgpPeeringGet.json
 func ExampleExpressRouteCrossConnectionPeeringsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -145,7 +145,7 @@ func ExampleExpressRouteCrossConnectionPeeringsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/ExpressRouteCrossConnectionBgpPeeringList.json
+// Generated from example definition: 2026-03-01/ExpressRouteCrossConnectionBgpPeeringList.json
 func ExampleExpressRouteCrossConnectionPeeringsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

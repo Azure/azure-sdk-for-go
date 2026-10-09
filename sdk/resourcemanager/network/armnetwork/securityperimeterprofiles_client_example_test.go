@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01/NspProfilePut.json
+// Generated from example definition: 2026-03-01/NspProfilePut.json
 func ExampleSecurityPerimeterProfilesClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -52,7 +52,7 @@ func ExampleSecurityPerimeterProfilesClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/NspProfileDelete.json
+// Generated from example definition: 2026-03-01/NspProfileDelete.json
 func ExampleSecurityPerimeterProfilesClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -74,7 +74,7 @@ func ExampleSecurityPerimeterProfilesClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/NspProfileGet.json
+// Generated from example definition: 2026-03-01/NspProfileGet.json
 func ExampleSecurityPerimeterProfilesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -113,7 +113,7 @@ func ExampleSecurityPerimeterProfilesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/NspProfileList.json
+// Generated from example definition: 2026-03-01/NspProfileList.json
 func ExampleSecurityPerimeterProfilesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

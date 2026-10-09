@@ -22,13 +22,13 @@ import (
 
 // SecurityUserRulesServer is a fake server for instances of the armnetwork.SecurityUserRulesClient type.
 type SecurityUserRulesServer struct {
-	// CreateOrUpdate is the fake for method SecurityUserRulesClient.CreateOrUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	CreateOrUpdate func(ctx context.Context, resourceGroupName string, networkManagerName string, configurationName string, ruleCollectionName string, ruleName string, securityUserRule armnetwork.SecurityUserRule, options *armnetwork.SecurityUserRulesClientCreateOrUpdateOptions) (resp azfake.Responder[armnetwork.SecurityUserRulesClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
-
 	// BeginDelete is the fake for method SecurityUserRulesClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, networkManagerName string, configurationName string, ruleCollectionName string, ruleName string, options *armnetwork.SecurityUserRulesClientBeginDeleteOptions) (resp azfake.PollerResponder[armnetwork.SecurityUserRulesClientDeleteResponse], errResp azfake.ErrorResponder)
+
+	// CreateOrUpdate is the fake for method SecurityUserRulesClient.CreateOrUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
+	CreateOrUpdate func(ctx context.Context, resourceGroupName string, networkManagerName string, configurationName string, ruleCollectionName string, ruleName string, securityUserRule armnetwork.SecurityUserRule, options *armnetwork.SecurityUserRulesClientCreateOrUpdateOptions) (resp azfake.Responder[armnetwork.SecurityUserRulesClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method SecurityUserRulesClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
@@ -79,10 +79,10 @@ func (s *SecurityUserRulesServerTransport) dispatchToMethodFake(req *http.Reques
 		}
 		if !intercepted {
 			switch method {
-			case "SecurityUserRulesClient.CreateOrUpdate":
-				res.resp, res.err = s.dispatchCreateOrUpdate(req)
 			case "SecurityUserRulesClient.BeginDelete":
 				res.resp, res.err = s.dispatchBeginDelete(req)
+			case "SecurityUserRulesClient.CreateOrUpdate":
+				res.resp, res.err = s.dispatchCreateOrUpdate(req)
 			case "SecurityUserRulesClient.Get":
 				res.resp, res.err = s.dispatchGet(req)
 			case "SecurityUserRulesClient.NewListPager":
@@ -101,55 +101,6 @@ func (s *SecurityUserRulesServerTransport) dispatchToMethodFake(req *http.Reques
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
-}
-
-func (s *SecurityUserRulesServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Response, error) {
-	if s.srv.CreateOrUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/networkManagers/(?P<networkManagerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/securityUserConfigurations/(?P<configurationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/ruleCollections/(?P<ruleCollectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/rules/(?P<ruleName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 7 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armnetwork.SecurityUserRule](req)
-	if err != nil {
-		return nil, err
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	networkManagerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("networkManagerName")])
-	if err != nil {
-		return nil, err
-	}
-	configurationNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("configurationName")])
-	if err != nil {
-		return nil, err
-	}
-	ruleCollectionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("ruleCollectionName")])
-	if err != nil {
-		return nil, err
-	}
-	ruleNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("ruleName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := s.srv.CreateOrUpdate(req.Context(), resourceGroupNameParam, networkManagerNameParam, configurationNameParam, ruleCollectionNameParam, ruleNameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).SecurityUserRule, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
 }
 
 func (s *SecurityUserRulesServerTransport) dispatchBeginDelete(req *http.Request) (*http.Response, error) {
@@ -216,6 +167,55 @@ func (s *SecurityUserRulesServerTransport) dispatchBeginDelete(req *http.Request
 		s.beginDelete.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (s *SecurityUserRulesServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Response, error) {
+	if s.srv.CreateOrUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/networkManagers/(?P<networkManagerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/securityUserConfigurations/(?P<configurationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/ruleCollections/(?P<ruleCollectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/rules/(?P<ruleName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 7 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armnetwork.SecurityUserRule](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	networkManagerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("networkManagerName")])
+	if err != nil {
+		return nil, err
+	}
+	configurationNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("configurationName")])
+	if err != nil {
+		return nil, err
+	}
+	ruleCollectionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("ruleCollectionName")])
+	if err != nil {
+		return nil, err
+	}
+	ruleNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("ruleName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := s.srv.CreateOrUpdate(req.Context(), resourceGroupNameParam, networkManagerNameParam, configurationNameParam, ruleCollectionNameParam, ruleNameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).SecurityUserRule, req)
+	if err != nil {
+		return nil, err
+	}
 	return resp, nil
 }
 

@@ -33,13 +33,13 @@ type VirtualNetworkAppliancesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, virtualNetworkApplianceName string, options *armnetwork.VirtualNetworkAppliancesClientGetOptions) (resp azfake.Responder[armnetwork.VirtualNetworkAppliancesClientGetResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method VirtualNetworkAppliancesClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(resourceGroupName string, options *armnetwork.VirtualNetworkAppliancesClientListOptions) (resp azfake.PagerResponder[armnetwork.VirtualNetworkAppliancesClientListResponse])
-
 	// NewListAllPager is the fake for method VirtualNetworkAppliancesClient.NewListAllPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListAllPager func(options *armnetwork.VirtualNetworkAppliancesClientListAllOptions) (resp azfake.PagerResponder[armnetwork.VirtualNetworkAppliancesClientListAllResponse])
+
+	// NewListPager is the fake for method VirtualNetworkAppliancesClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(resourceGroupName string, options *armnetwork.VirtualNetworkAppliancesClientListOptions) (resp azfake.PagerResponder[armnetwork.VirtualNetworkAppliancesClientListResponse])
 
 	// UpdateTags is the fake for method VirtualNetworkAppliancesClient.UpdateTags
 	// HTTP status codes to indicate success: http.StatusOK
@@ -54,8 +54,8 @@ func NewVirtualNetworkAppliancesServerTransport(srv *VirtualNetworkAppliancesSer
 		srv:                 srv,
 		beginCreateOrUpdate: newTracker[azfake.PollerResponder[armnetwork.VirtualNetworkAppliancesClientCreateOrUpdateResponse]](),
 		beginDelete:         newTracker[azfake.PollerResponder[armnetwork.VirtualNetworkAppliancesClientDeleteResponse]](),
-		newListPager:        newTracker[azfake.PagerResponder[armnetwork.VirtualNetworkAppliancesClientListResponse]](),
 		newListAllPager:     newTracker[azfake.PagerResponder[armnetwork.VirtualNetworkAppliancesClientListAllResponse]](),
+		newListPager:        newTracker[azfake.PagerResponder[armnetwork.VirtualNetworkAppliancesClientListResponse]](),
 	}
 }
 
@@ -65,8 +65,8 @@ type VirtualNetworkAppliancesServerTransport struct {
 	srv                 *VirtualNetworkAppliancesServer
 	beginCreateOrUpdate *tracker[azfake.PollerResponder[armnetwork.VirtualNetworkAppliancesClientCreateOrUpdateResponse]]
 	beginDelete         *tracker[azfake.PollerResponder[armnetwork.VirtualNetworkAppliancesClientDeleteResponse]]
-	newListPager        *tracker[azfake.PagerResponder[armnetwork.VirtualNetworkAppliancesClientListResponse]]
 	newListAllPager     *tracker[azfake.PagerResponder[armnetwork.VirtualNetworkAppliancesClientListAllResponse]]
+	newListPager        *tracker[azfake.PagerResponder[armnetwork.VirtualNetworkAppliancesClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for VirtualNetworkAppliancesServerTransport.
@@ -96,10 +96,10 @@ func (v *VirtualNetworkAppliancesServerTransport) dispatchToMethodFake(req *http
 				res.resp, res.err = v.dispatchBeginDelete(req)
 			case "VirtualNetworkAppliancesClient.Get":
 				res.resp, res.err = v.dispatchGet(req)
-			case "VirtualNetworkAppliancesClient.NewListPager":
-				res.resp, res.err = v.dispatchNewListPager(req)
 			case "VirtualNetworkAppliancesClient.NewListAllPager":
 				res.resp, res.err = v.dispatchNewListAllPager(req)
+			case "VirtualNetworkAppliancesClient.NewListPager":
+				res.resp, res.err = v.dispatchNewListPager(req)
 			case "VirtualNetworkAppliancesClient.UpdateTags":
 				res.resp, res.err = v.dispatchUpdateTags(req)
 			default:
@@ -243,6 +243,39 @@ func (v *VirtualNetworkAppliancesServerTransport) dispatchGet(req *http.Request)
 	return resp, nil
 }
 
+func (v *VirtualNetworkAppliancesServerTransport) dispatchNewListAllPager(req *http.Request) (*http.Response, error) {
+	if v.srv.NewListAllPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListAllPager not implemented")}
+	}
+	newListAllPager := v.newListAllPager.get(req)
+	if newListAllPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/virtualNetworkAppliances`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resp := v.srv.NewListAllPager(nil)
+		newListAllPager = &resp
+		v.newListAllPager.add(req, newListAllPager)
+		server.PagerResponderInjectNextLinks(newListAllPager, req, func(page *armnetwork.VirtualNetworkAppliancesClientListAllResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListAllPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		v.newListAllPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListAllPager) {
+		v.newListAllPager.remove(req)
+	}
+	return resp, nil
+}
+
 func (v *VirtualNetworkAppliancesServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
 	if v.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
@@ -276,39 +309,6 @@ func (v *VirtualNetworkAppliancesServerTransport) dispatchNewListPager(req *http
 	}
 	if !server.PagerResponderMore(newListPager) {
 		v.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (v *VirtualNetworkAppliancesServerTransport) dispatchNewListAllPager(req *http.Request) (*http.Response, error) {
-	if v.srv.NewListAllPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListAllPager not implemented")}
-	}
-	newListAllPager := v.newListAllPager.get(req)
-	if newListAllPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/virtualNetworkAppliances`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := v.srv.NewListAllPager(nil)
-		newListAllPager = &resp
-		v.newListAllPager.add(req, newListAllPager)
-		server.PagerResponderInjectNextLinks(newListAllPager, req, func(page *armnetwork.VirtualNetworkAppliancesClientListAllResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListAllPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		v.newListAllPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListAllPager) {
-		v.newListAllPager.remove(req)
 	}
 	return resp, nil
 }

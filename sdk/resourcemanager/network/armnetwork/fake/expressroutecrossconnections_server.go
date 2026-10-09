@@ -29,25 +29,13 @@ type ExpressRouteCrossConnectionsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, crossConnectionName string, parameters armnetwork.ExpressRouteCrossConnection, options *armnetwork.ExpressRouteCrossConnectionsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armnetwork.ExpressRouteCrossConnectionsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
-	// Get is the fake for method ExpressRouteCrossConnectionsClient.Get
-	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, crossConnectionName string, options *armnetwork.ExpressRouteCrossConnectionsClientGetOptions) (resp azfake.Responder[armnetwork.ExpressRouteCrossConnectionsClientGetResponse], errResp azfake.ErrorResponder)
-
 	// BeginGetCircuitMigrationInfo is the fake for method ExpressRouteCrossConnectionsClient.BeginGetCircuitMigrationInfo
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginGetCircuitMigrationInfo func(ctx context.Context, resourceGroupName string, crossConnectionName string, parameters armnetwork.MigrateExpressRouteCircuitValidateAndHealthCheckRequest, options *armnetwork.ExpressRouteCrossConnectionsClientBeginGetCircuitMigrationInfoOptions) (resp azfake.PollerResponder[armnetwork.ExpressRouteCrossConnectionsClientGetCircuitMigrationInfoResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method ExpressRouteCrossConnectionsClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(options *armnetwork.ExpressRouteCrossConnectionsClientListOptions) (resp azfake.PagerResponder[armnetwork.ExpressRouteCrossConnectionsClientListResponse])
-
 	// BeginListArpTable is the fake for method ExpressRouteCrossConnectionsClient.BeginListArpTable
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginListArpTable func(ctx context.Context, resourceGroupName string, crossConnectionName string, peeringName string, devicePath string, options *armnetwork.ExpressRouteCrossConnectionsClientBeginListArpTableOptions) (resp azfake.PollerResponder[armnetwork.ExpressRouteCrossConnectionsClientListArpTableResponse], errResp azfake.ErrorResponder)
-
-	// NewListByResourceGroupPager is the fake for method ExpressRouteCrossConnectionsClient.NewListByResourceGroupPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListByResourceGroupPager func(resourceGroupName string, options *armnetwork.ExpressRouteCrossConnectionsClientListByResourceGroupOptions) (resp azfake.PagerResponder[armnetwork.ExpressRouteCrossConnectionsClientListByResourceGroupResponse])
 
 	// BeginListRoutesTable is the fake for method ExpressRouteCrossConnectionsClient.BeginListRoutesTable
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
@@ -77,13 +65,25 @@ type ExpressRouteCrossConnectionsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginShutDownBgpForCircuitMigration func(ctx context.Context, resourceGroupName string, crossConnectionName string, parameters armnetwork.MigrateExpressRouteCircuitRequest, options *armnetwork.ExpressRouteCrossConnectionsClientBeginShutDownBgpForCircuitMigrationOptions) (resp azfake.PollerResponder[armnetwork.ExpressRouteCrossConnectionsClientShutDownBgpForCircuitMigrationResponse], errResp azfake.ErrorResponder)
 
-	// UpdateTags is the fake for method ExpressRouteCrossConnectionsClient.UpdateTags
-	// HTTP status codes to indicate success: http.StatusOK
-	UpdateTags func(ctx context.Context, resourceGroupName string, crossConnectionName string, crossConnectionParameters armnetwork.TagsObject, options *armnetwork.ExpressRouteCrossConnectionsClientUpdateTagsOptions) (resp azfake.Responder[armnetwork.ExpressRouteCrossConnectionsClientUpdateTagsResponse], errResp azfake.ErrorResponder)
-
 	// BeginValidateCircuitMigration is the fake for method ExpressRouteCrossConnectionsClient.BeginValidateCircuitMigration
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginValidateCircuitMigration func(ctx context.Context, resourceGroupName string, crossConnectionName string, parameters armnetwork.MigrateExpressRouteCircuitValidateAndHealthCheckRequest, options *armnetwork.ExpressRouteCrossConnectionsClientBeginValidateCircuitMigrationOptions) (resp azfake.PollerResponder[armnetwork.ExpressRouteCrossConnectionsClientValidateCircuitMigrationResponse], errResp azfake.ErrorResponder)
+
+	// Get is the fake for method ExpressRouteCrossConnectionsClient.Get
+	// HTTP status codes to indicate success: http.StatusOK
+	Get func(ctx context.Context, resourceGroupName string, crossConnectionName string, options *armnetwork.ExpressRouteCrossConnectionsClientGetOptions) (resp azfake.Responder[armnetwork.ExpressRouteCrossConnectionsClientGetResponse], errResp azfake.ErrorResponder)
+
+	// NewListByResourceGroupPager is the fake for method ExpressRouteCrossConnectionsClient.NewListByResourceGroupPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListByResourceGroupPager func(resourceGroupName string, options *armnetwork.ExpressRouteCrossConnectionsClientListByResourceGroupOptions) (resp azfake.PagerResponder[armnetwork.ExpressRouteCrossConnectionsClientListByResourceGroupResponse])
+
+	// NewListPager is the fake for method ExpressRouteCrossConnectionsClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(options *armnetwork.ExpressRouteCrossConnectionsClientListOptions) (resp azfake.PagerResponder[armnetwork.ExpressRouteCrossConnectionsClientListResponse])
+
+	// UpdateTags is the fake for method ExpressRouteCrossConnectionsClient.UpdateTags
+	// HTTP status codes to indicate success: http.StatusOK
+	UpdateTags func(ctx context.Context, resourceGroupName string, crossConnectionName string, crossConnectionParameters armnetwork.TagsObject, options *armnetwork.ExpressRouteCrossConnectionsClientUpdateTagsOptions) (resp azfake.Responder[armnetwork.ExpressRouteCrossConnectionsClientUpdateTagsResponse], errResp azfake.ErrorResponder)
 }
 
 // NewExpressRouteCrossConnectionsServerTransport creates a new instance of ExpressRouteCrossConnectionsServerTransport with the provided implementation.
@@ -95,9 +95,7 @@ func NewExpressRouteCrossConnectionsServerTransport(srv *ExpressRouteCrossConnec
 		beginCommitCircuitMigration:         newTracker[azfake.PollerResponder[armnetwork.ExpressRouteCrossConnectionsClientCommitCircuitMigrationResponse]](),
 		beginCreateOrUpdate:                 newTracker[azfake.PollerResponder[armnetwork.ExpressRouteCrossConnectionsClientCreateOrUpdateResponse]](),
 		beginGetCircuitMigrationInfo:        newTracker[azfake.PollerResponder[armnetwork.ExpressRouteCrossConnectionsClientGetCircuitMigrationInfoResponse]](),
-		newListPager:                        newTracker[azfake.PagerResponder[armnetwork.ExpressRouteCrossConnectionsClientListResponse]](),
 		beginListArpTable:                   newTracker[azfake.PollerResponder[armnetwork.ExpressRouteCrossConnectionsClientListArpTableResponse]](),
-		newListByResourceGroupPager:         newTracker[azfake.PagerResponder[armnetwork.ExpressRouteCrossConnectionsClientListByResourceGroupResponse]](),
 		beginListRoutesTable:                newTracker[azfake.PollerResponder[armnetwork.ExpressRouteCrossConnectionsClientListRoutesTableResponse]](),
 		beginListRoutesTableSummary:         newTracker[azfake.PollerResponder[armnetwork.ExpressRouteCrossConnectionsClientListRoutesTableSummaryResponse]](),
 		beginMigrateCircuit:                 newTracker[azfake.PollerResponder[armnetwork.ExpressRouteCrossConnectionsClientMigrateCircuitResponse]](),
@@ -106,6 +104,8 @@ func NewExpressRouteCrossConnectionsServerTransport(srv *ExpressRouteCrossConnec
 		beginRollbackCircuitMigration:       newTracker[azfake.PollerResponder[armnetwork.ExpressRouteCrossConnectionsClientRollbackCircuitMigrationResponse]](),
 		beginShutDownBgpForCircuitMigration: newTracker[azfake.PollerResponder[armnetwork.ExpressRouteCrossConnectionsClientShutDownBgpForCircuitMigrationResponse]](),
 		beginValidateCircuitMigration:       newTracker[azfake.PollerResponder[armnetwork.ExpressRouteCrossConnectionsClientValidateCircuitMigrationResponse]](),
+		newListByResourceGroupPager:         newTracker[azfake.PagerResponder[armnetwork.ExpressRouteCrossConnectionsClientListByResourceGroupResponse]](),
+		newListPager:                        newTracker[azfake.PagerResponder[armnetwork.ExpressRouteCrossConnectionsClientListResponse]](),
 	}
 }
 
@@ -116,9 +116,7 @@ type ExpressRouteCrossConnectionsServerTransport struct {
 	beginCommitCircuitMigration         *tracker[azfake.PollerResponder[armnetwork.ExpressRouteCrossConnectionsClientCommitCircuitMigrationResponse]]
 	beginCreateOrUpdate                 *tracker[azfake.PollerResponder[armnetwork.ExpressRouteCrossConnectionsClientCreateOrUpdateResponse]]
 	beginGetCircuitMigrationInfo        *tracker[azfake.PollerResponder[armnetwork.ExpressRouteCrossConnectionsClientGetCircuitMigrationInfoResponse]]
-	newListPager                        *tracker[azfake.PagerResponder[armnetwork.ExpressRouteCrossConnectionsClientListResponse]]
 	beginListArpTable                   *tracker[azfake.PollerResponder[armnetwork.ExpressRouteCrossConnectionsClientListArpTableResponse]]
-	newListByResourceGroupPager         *tracker[azfake.PagerResponder[armnetwork.ExpressRouteCrossConnectionsClientListByResourceGroupResponse]]
 	beginListRoutesTable                *tracker[azfake.PollerResponder[armnetwork.ExpressRouteCrossConnectionsClientListRoutesTableResponse]]
 	beginListRoutesTableSummary         *tracker[azfake.PollerResponder[armnetwork.ExpressRouteCrossConnectionsClientListRoutesTableSummaryResponse]]
 	beginMigrateCircuit                 *tracker[azfake.PollerResponder[armnetwork.ExpressRouteCrossConnectionsClientMigrateCircuitResponse]]
@@ -127,6 +125,8 @@ type ExpressRouteCrossConnectionsServerTransport struct {
 	beginRollbackCircuitMigration       *tracker[azfake.PollerResponder[armnetwork.ExpressRouteCrossConnectionsClientRollbackCircuitMigrationResponse]]
 	beginShutDownBgpForCircuitMigration *tracker[azfake.PollerResponder[armnetwork.ExpressRouteCrossConnectionsClientShutDownBgpForCircuitMigrationResponse]]
 	beginValidateCircuitMigration       *tracker[azfake.PollerResponder[armnetwork.ExpressRouteCrossConnectionsClientValidateCircuitMigrationResponse]]
+	newListByResourceGroupPager         *tracker[azfake.PagerResponder[armnetwork.ExpressRouteCrossConnectionsClientListByResourceGroupResponse]]
+	newListPager                        *tracker[azfake.PagerResponder[armnetwork.ExpressRouteCrossConnectionsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for ExpressRouteCrossConnectionsServerTransport.
@@ -154,16 +154,10 @@ func (e *ExpressRouteCrossConnectionsServerTransport) dispatchToMethodFake(req *
 				res.resp, res.err = e.dispatchBeginCommitCircuitMigration(req)
 			case "ExpressRouteCrossConnectionsClient.BeginCreateOrUpdate":
 				res.resp, res.err = e.dispatchBeginCreateOrUpdate(req)
-			case "ExpressRouteCrossConnectionsClient.Get":
-				res.resp, res.err = e.dispatchGet(req)
 			case "ExpressRouteCrossConnectionsClient.BeginGetCircuitMigrationInfo":
 				res.resp, res.err = e.dispatchBeginGetCircuitMigrationInfo(req)
-			case "ExpressRouteCrossConnectionsClient.NewListPager":
-				res.resp, res.err = e.dispatchNewListPager(req)
 			case "ExpressRouteCrossConnectionsClient.BeginListArpTable":
 				res.resp, res.err = e.dispatchBeginListArpTable(req)
-			case "ExpressRouteCrossConnectionsClient.NewListByResourceGroupPager":
-				res.resp, res.err = e.dispatchNewListByResourceGroupPager(req)
 			case "ExpressRouteCrossConnectionsClient.BeginListRoutesTable":
 				res.resp, res.err = e.dispatchBeginListRoutesTable(req)
 			case "ExpressRouteCrossConnectionsClient.BeginListRoutesTableSummary":
@@ -178,10 +172,16 @@ func (e *ExpressRouteCrossConnectionsServerTransport) dispatchToMethodFake(req *
 				res.resp, res.err = e.dispatchBeginRollbackCircuitMigration(req)
 			case "ExpressRouteCrossConnectionsClient.BeginShutDownBgpForCircuitMigration":
 				res.resp, res.err = e.dispatchBeginShutDownBgpForCircuitMigration(req)
-			case "ExpressRouteCrossConnectionsClient.UpdateTags":
-				res.resp, res.err = e.dispatchUpdateTags(req)
 			case "ExpressRouteCrossConnectionsClient.BeginValidateCircuitMigration":
 				res.resp, res.err = e.dispatchBeginValidateCircuitMigration(req)
+			case "ExpressRouteCrossConnectionsClient.Get":
+				res.resp, res.err = e.dispatchGet(req)
+			case "ExpressRouteCrossConnectionsClient.NewListByResourceGroupPager":
+				res.resp, res.err = e.dispatchNewListByResourceGroupPager(req)
+			case "ExpressRouteCrossConnectionsClient.NewListPager":
+				res.resp, res.err = e.dispatchNewListPager(req)
+			case "ExpressRouteCrossConnectionsClient.UpdateTags":
+				res.resp, res.err = e.dispatchUpdateTags(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -294,39 +294,6 @@ func (e *ExpressRouteCrossConnectionsServerTransport) dispatchBeginCreateOrUpdat
 	return resp, nil
 }
 
-func (e *ExpressRouteCrossConnectionsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if e.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/expressRouteCrossConnections/(?P<crossConnectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	crossConnectionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("crossConnectionName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := e.srv.Get(req.Context(), resourceGroupNameParam, crossConnectionNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ExpressRouteCrossConnection, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
 func (e *ExpressRouteCrossConnectionsServerTransport) dispatchBeginGetCircuitMigrationInfo(req *http.Request) (*http.Response, error) {
 	if e.srv.BeginGetCircuitMigrationInfo == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginGetCircuitMigrationInfo not implemented")}
@@ -372,47 +339,6 @@ func (e *ExpressRouteCrossConnectionsServerTransport) dispatchBeginGetCircuitMig
 		e.beginGetCircuitMigrationInfo.remove(req)
 	}
 
-	return resp, nil
-}
-
-func (e *ExpressRouteCrossConnectionsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if e.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := e.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/expressRouteCrossConnections`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		qp := req.URL.Query()
-		filterParam := getOptional(qp.Get("$filter"))
-		var options *armnetwork.ExpressRouteCrossConnectionsClientListOptions
-		if filterParam != nil {
-			options = &armnetwork.ExpressRouteCrossConnectionsClientListOptions{
-				Filter: filterParam,
-			}
-		}
-		resp := e.srv.NewListPager(options)
-		newListPager = &resp
-		e.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armnetwork.ExpressRouteCrossConnectionsClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		e.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		e.newListPager.remove(req)
-	}
 	return resp, nil
 }
 
@@ -465,43 +391,6 @@ func (e *ExpressRouteCrossConnectionsServerTransport) dispatchBeginListArpTable(
 		e.beginListArpTable.remove(req)
 	}
 
-	return resp, nil
-}
-
-func (e *ExpressRouteCrossConnectionsServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
-	if e.srv.NewListByResourceGroupPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
-	}
-	newListByResourceGroupPager := e.newListByResourceGroupPager.get(req)
-	if newListByResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/expressRouteCrossConnections`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := e.srv.NewListByResourceGroupPager(resourceGroupNameParam, nil)
-		newListByResourceGroupPager = &resp
-		e.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
-		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armnetwork.ExpressRouteCrossConnectionsClientListByResourceGroupResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		e.newListByResourceGroupPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListByResourceGroupPager) {
-		e.newListByResourceGroupPager.remove(req)
-	}
 	return resp, nil
 }
 
@@ -849,43 +738,6 @@ func (e *ExpressRouteCrossConnectionsServerTransport) dispatchBeginShutDownBgpFo
 	return resp, nil
 }
 
-func (e *ExpressRouteCrossConnectionsServerTransport) dispatchUpdateTags(req *http.Request) (*http.Response, error) {
-	if e.srv.UpdateTags == nil {
-		return nil, &nonRetriableError{errors.New("fake for method UpdateTags not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/expressRouteCrossConnections/(?P<crossConnectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armnetwork.TagsObject](req)
-	if err != nil {
-		return nil, err
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	crossConnectionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("crossConnectionName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := e.srv.UpdateTags(req.Context(), resourceGroupNameParam, crossConnectionNameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ExpressRouteCrossConnection, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
 func (e *ExpressRouteCrossConnectionsServerTransport) dispatchBeginValidateCircuitMigration(req *http.Request) (*http.Response, error) {
 	if e.srv.BeginValidateCircuitMigration == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginValidateCircuitMigration not implemented")}
@@ -931,6 +783,154 @@ func (e *ExpressRouteCrossConnectionsServerTransport) dispatchBeginValidateCircu
 		e.beginValidateCircuitMigration.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (e *ExpressRouteCrossConnectionsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if e.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/expressRouteCrossConnections/(?P<crossConnectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	crossConnectionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("crossConnectionName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := e.srv.Get(req.Context(), resourceGroupNameParam, crossConnectionNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ExpressRouteCrossConnection, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (e *ExpressRouteCrossConnectionsServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
+	if e.srv.NewListByResourceGroupPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
+	}
+	newListByResourceGroupPager := e.newListByResourceGroupPager.get(req)
+	if newListByResourceGroupPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/expressRouteCrossConnections`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := e.srv.NewListByResourceGroupPager(resourceGroupNameParam, nil)
+		newListByResourceGroupPager = &resp
+		e.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
+		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armnetwork.ExpressRouteCrossConnectionsClientListByResourceGroupResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		e.newListByResourceGroupPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListByResourceGroupPager) {
+		e.newListByResourceGroupPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (e *ExpressRouteCrossConnectionsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if e.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := e.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/expressRouteCrossConnections`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		qp := req.URL.Query()
+		filterParam := getOptional(qp.Get("$filter"))
+		var options *armnetwork.ExpressRouteCrossConnectionsClientListOptions
+		if filterParam != nil {
+			options = &armnetwork.ExpressRouteCrossConnectionsClientListOptions{
+				Filter: filterParam,
+			}
+		}
+		resp := e.srv.NewListPager(options)
+		newListPager = &resp
+		e.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armnetwork.ExpressRouteCrossConnectionsClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		e.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPager) {
+		e.newListPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (e *ExpressRouteCrossConnectionsServerTransport) dispatchUpdateTags(req *http.Request) (*http.Response, error) {
+	if e.srv.UpdateTags == nil {
+		return nil, &nonRetriableError{errors.New("fake for method UpdateTags not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/expressRouteCrossConnections/(?P<crossConnectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armnetwork.TagsObject](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	crossConnectionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("crossConnectionName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := e.srv.UpdateTags(req.Context(), resourceGroupNameParam, crossConnectionNameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ExpressRouteCrossConnection, req)
+	if err != nil {
+		return nil, err
+	}
 	return resp, nil
 }
 

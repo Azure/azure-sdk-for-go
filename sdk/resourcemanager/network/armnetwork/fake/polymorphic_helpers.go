@@ -31,3 +31,30 @@ func unmarshalBaseAdminRuleClassification(rawMsg json.RawMessage) (armnetwork.Ba
 	}
 	return b, nil
 }
+
+func unmarshalVirtualNetworkApplianceCapabilityClassification(rawMsg json.RawMessage) (armnetwork.VirtualNetworkApplianceCapabilityClassification, error) {
+	if rawMsg == nil || string(rawMsg) == "null" {
+		return nil, nil
+	}
+	var m map[string]any
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b armnetwork.VirtualNetworkApplianceCapabilityClassification
+	switch m["kind"] {
+	case string(armnetwork.VirtualNetworkApplianceCapabilityKindNAT64):
+		b = &armnetwork.Nat64Capability{}
+	case string(armnetwork.VirtualNetworkApplianceCapabilityKindPLGateway):
+		b = &armnetwork.PLGatewayCapability{}
+	case string(armnetwork.VirtualNetworkApplianceCapabilityKindPLGatewayFastpath):
+		b = &armnetwork.PLGatewayFastpathCapability{}
+	case string(armnetwork.VirtualNetworkApplianceCapabilityKindPLIPForwarders):
+		b = &armnetwork.PLIPForwardersCapability{}
+	default:
+		b = &armnetwork.VirtualNetworkApplianceCapability{}
+	}
+	if err := json.Unmarshal(rawMsg, b); err != nil {
+		return nil, err
+	}
+	return b, nil
+}

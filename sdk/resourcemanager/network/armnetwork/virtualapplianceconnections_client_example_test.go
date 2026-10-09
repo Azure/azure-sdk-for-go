@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01/NetworkVirtualApplianceConnectionPut.json
+// Generated from example definition: 2026-03-01/NetworkVirtualApplianceConnectionPut.json
 func ExampleVirtualApplianceConnectionsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -105,7 +105,7 @@ func ExampleVirtualApplianceConnectionsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/NetworkVirtualApplianceConnectionDelete.json
+// Generated from example definition: 2026-03-01/NetworkVirtualApplianceConnectionDelete.json
 func ExampleVirtualApplianceConnectionsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -131,7 +131,7 @@ func ExampleVirtualApplianceConnectionsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/NetworkVirtualApplianceConnectionGet.json
+// Generated from example definition: 2026-03-01/NetworkVirtualApplianceConnectionGet.json
 func ExampleVirtualApplianceConnectionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -188,7 +188,7 @@ func ExampleVirtualApplianceConnectionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/NetworkVirtualApplianceConnectionList.json
+// Generated from example definition: 2026-03-01/NetworkVirtualApplianceConnectionList.json
 func ExampleVirtualApplianceConnectionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

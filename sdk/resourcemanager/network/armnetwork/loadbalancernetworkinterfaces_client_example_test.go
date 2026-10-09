@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01/LoadBalancerNetworkInterfaceListSimple.json
+// Generated from example definition: 2026-03-01/LoadBalancerNetworkInterfaceListSimple.json
 func ExampleLoadBalancerNetworkInterfacesClient_NewListPager_loadBalancerNetworkInterfaceListSimple() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -87,7 +87,7 @@ func ExampleLoadBalancerNetworkInterfacesClient_NewListPager_loadBalancerNetwork
 	}
 }
 
-// Generated from example definition: 2026-01-01/LoadBalancerNetworkInterfaceListVmss.json
+// Generated from example definition: 2026-03-01/LoadBalancerNetworkInterfaceListVmss.json
 func ExampleLoadBalancerNetworkInterfacesClient_NewListPager_loadBalancerNetworkInterfaceListVmss() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01/PrivateEndpointDnsZoneGroupCreate.json
+// Generated from example definition: 2026-03-01/PrivateEndpointDnsZoneGroupCreate.json
 func ExamplePrivateDNSZoneGroupsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -80,7 +80,7 @@ func ExamplePrivateDNSZoneGroupsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/PrivateEndpointDnsZoneGroupDelete.json
+// Generated from example definition: 2026-03-01/PrivateEndpointDnsZoneGroupDelete.json
 func ExamplePrivateDNSZoneGroupsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -106,7 +106,7 @@ func ExamplePrivateDNSZoneGroupsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/PrivateEndpointDnsZoneGroupGet.json
+// Generated from example definition: 2026-03-01/PrivateEndpointDnsZoneGroupGet.json
 func ExamplePrivateDNSZoneGroupsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -183,7 +183,7 @@ func ExamplePrivateDNSZoneGroupsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/PrivateEndpointDnsZoneGroupList.json
+// Generated from example definition: 2026-03-01/PrivateEndpointDnsZoneGroupList.json
 func ExamplePrivateDNSZoneGroupsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

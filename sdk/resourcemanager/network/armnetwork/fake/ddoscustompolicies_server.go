@@ -33,13 +33,13 @@ type DdosCustomPoliciesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, ddosCustomPolicyName string, options *armnetwork.DdosCustomPoliciesClientGetOptions) (resp azfake.Responder[armnetwork.DdosCustomPoliciesClientGetResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method DdosCustomPoliciesClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(resourceGroupName string, options *armnetwork.DdosCustomPoliciesClientListOptions) (resp azfake.PagerResponder[armnetwork.DdosCustomPoliciesClientListResponse])
-
 	// NewListAllPager is the fake for method DdosCustomPoliciesClient.NewListAllPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListAllPager func(options *armnetwork.DdosCustomPoliciesClientListAllOptions) (resp azfake.PagerResponder[armnetwork.DdosCustomPoliciesClientListAllResponse])
+
+	// NewListPager is the fake for method DdosCustomPoliciesClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(resourceGroupName string, options *armnetwork.DdosCustomPoliciesClientListOptions) (resp azfake.PagerResponder[armnetwork.DdosCustomPoliciesClientListResponse])
 
 	// UpdateTags is the fake for method DdosCustomPoliciesClient.UpdateTags
 	// HTTP status codes to indicate success: http.StatusOK
@@ -54,8 +54,8 @@ func NewDdosCustomPoliciesServerTransport(srv *DdosCustomPoliciesServer) *DdosCu
 		srv:                 srv,
 		beginCreateOrUpdate: newTracker[azfake.PollerResponder[armnetwork.DdosCustomPoliciesClientCreateOrUpdateResponse]](),
 		beginDelete:         newTracker[azfake.PollerResponder[armnetwork.DdosCustomPoliciesClientDeleteResponse]](),
-		newListPager:        newTracker[azfake.PagerResponder[armnetwork.DdosCustomPoliciesClientListResponse]](),
 		newListAllPager:     newTracker[azfake.PagerResponder[armnetwork.DdosCustomPoliciesClientListAllResponse]](),
+		newListPager:        newTracker[azfake.PagerResponder[armnetwork.DdosCustomPoliciesClientListResponse]](),
 	}
 }
 
@@ -65,8 +65,8 @@ type DdosCustomPoliciesServerTransport struct {
 	srv                 *DdosCustomPoliciesServer
 	beginCreateOrUpdate *tracker[azfake.PollerResponder[armnetwork.DdosCustomPoliciesClientCreateOrUpdateResponse]]
 	beginDelete         *tracker[azfake.PollerResponder[armnetwork.DdosCustomPoliciesClientDeleteResponse]]
-	newListPager        *tracker[azfake.PagerResponder[armnetwork.DdosCustomPoliciesClientListResponse]]
 	newListAllPager     *tracker[azfake.PagerResponder[armnetwork.DdosCustomPoliciesClientListAllResponse]]
+	newListPager        *tracker[azfake.PagerResponder[armnetwork.DdosCustomPoliciesClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for DdosCustomPoliciesServerTransport.
@@ -96,10 +96,10 @@ func (d *DdosCustomPoliciesServerTransport) dispatchToMethodFake(req *http.Reque
 				res.resp, res.err = d.dispatchBeginDelete(req)
 			case "DdosCustomPoliciesClient.Get":
 				res.resp, res.err = d.dispatchGet(req)
-			case "DdosCustomPoliciesClient.NewListPager":
-				res.resp, res.err = d.dispatchNewListPager(req)
 			case "DdosCustomPoliciesClient.NewListAllPager":
 				res.resp, res.err = d.dispatchNewListAllPager(req)
+			case "DdosCustomPoliciesClient.NewListPager":
+				res.resp, res.err = d.dispatchNewListPager(req)
 			case "DdosCustomPoliciesClient.UpdateTags":
 				res.resp, res.err = d.dispatchUpdateTags(req)
 			default:
@@ -243,6 +243,39 @@ func (d *DdosCustomPoliciesServerTransport) dispatchGet(req *http.Request) (*htt
 	return resp, nil
 }
 
+func (d *DdosCustomPoliciesServerTransport) dispatchNewListAllPager(req *http.Request) (*http.Response, error) {
+	if d.srv.NewListAllPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListAllPager not implemented")}
+	}
+	newListAllPager := d.newListAllPager.get(req)
+	if newListAllPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/ddosCustomPolicies`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resp := d.srv.NewListAllPager(nil)
+		newListAllPager = &resp
+		d.newListAllPager.add(req, newListAllPager)
+		server.PagerResponderInjectNextLinks(newListAllPager, req, func(page *armnetwork.DdosCustomPoliciesClientListAllResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListAllPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		d.newListAllPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListAllPager) {
+		d.newListAllPager.remove(req)
+	}
+	return resp, nil
+}
+
 func (d *DdosCustomPoliciesServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
 	if d.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
@@ -276,39 +309,6 @@ func (d *DdosCustomPoliciesServerTransport) dispatchNewListPager(req *http.Reque
 	}
 	if !server.PagerResponderMore(newListPager) {
 		d.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (d *DdosCustomPoliciesServerTransport) dispatchNewListAllPager(req *http.Request) (*http.Response, error) {
-	if d.srv.NewListAllPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListAllPager not implemented")}
-	}
-	newListAllPager := d.newListAllPager.get(req)
-	if newListAllPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/ddosCustomPolicies`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := d.srv.NewListAllPager(nil)
-		newListAllPager = &resp
-		d.newListAllPager.add(req, newListAllPager)
-		server.PagerResponderInjectNextLinks(newListAllPager, req, func(page *armnetwork.DdosCustomPoliciesClientListAllResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListAllPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		d.newListAllPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListAllPager) {
-		d.newListAllPager.remove(req)
 	}
 	return resp, nil
 }

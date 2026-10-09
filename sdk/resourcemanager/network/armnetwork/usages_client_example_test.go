@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01/UsageList.json
+// Generated from example definition: 2026-03-01/UsageList.json
 func ExampleUsagesClient_NewListPager_listUsages() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -292,7 +292,7 @@ func ExampleUsagesClient_NewListPager_listUsages() {
 	}
 }
 
-// Generated from example definition: 2026-01-01/UsageListSpacedLocation.json
+// Generated from example definition: 2026-03-01/UsageListSpacedLocation.json
 func ExampleUsagesClient_NewListPager_listUsagesSpacedLocation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

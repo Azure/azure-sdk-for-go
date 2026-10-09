@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-08-02/Firmwares_Create_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-01-preview/Firmwares_Create_MaximumSet_Gen.json
 func ExampleFirmwaresClient_Create_firmwaresCreateMaximumSetGenGeneratedByMaximumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -79,7 +79,7 @@ func ExampleFirmwaresClient_Create_firmwaresCreateMaximumSetGenGeneratedByMaximu
 	// }
 }
 
-// Generated from example definition: 2025-08-02/Firmwares_Create_MinimumSet_Gen.json
+// Generated from example definition: 2026-06-01-preview/Firmwares_Create_MinimumSet_Gen.json
 func ExampleFirmwaresClient_Create_firmwaresCreateMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -105,7 +105,7 @@ func ExampleFirmwaresClient_Create_firmwaresCreateMinimumSetGen() {
 	// }
 }
 
-// Generated from example definition: 2025-08-02/Firmwares_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-01-preview/Firmwares_Delete_MaximumSet_Gen.json
 func ExampleFirmwaresClient_Delete_firmwaresDeleteMaximumSetGenGeneratedByMaximumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -127,7 +127,7 @@ func ExampleFirmwaresClient_Delete_firmwaresDeleteMaximumSetGenGeneratedByMaximu
 	// }
 }
 
-// Generated from example definition: 2025-08-02/Firmwares_Delete_MinimumSet_Gen.json
+// Generated from example definition: 2026-06-01-preview/Firmwares_Delete_MinimumSet_Gen.json
 func ExampleFirmwaresClient_Delete_firmwaresDeleteMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -149,7 +149,7 @@ func ExampleFirmwaresClient_Delete_firmwaresDeleteMinimumSetGen() {
 	// }
 }
 
-// Generated from example definition: 2025-08-02/Firmwares_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-01-preview/Firmwares_Get_MaximumSet_Gen.json
 func ExampleFirmwaresClient_Get_firmwaresGetMaximumSetGenGeneratedByMaximumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -200,7 +200,7 @@ func ExampleFirmwaresClient_Get_firmwaresGetMaximumSetGenGeneratedByMaximumSetRu
 	// }
 }
 
-// Generated from example definition: 2025-08-02/Firmwares_Get_MinimumSet_Gen.json
+// Generated from example definition: 2026-06-01-preview/Firmwares_Get_MinimumSet_Gen.json
 func ExampleFirmwaresClient_Get_firmwaresGetMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -224,7 +224,7 @@ func ExampleFirmwaresClient_Get_firmwaresGetMinimumSetGen() {
 	// }
 }
 
-// Generated from example definition: 2025-08-02/Firmwares_ListByWorkspace_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-01-preview/Firmwares_ListByWorkspace_MaximumSet_Gen.json
 func ExampleFirmwaresClient_NewListByWorkspacePager_firmwaresListByWorkspaceMaximumSetGenGeneratedByMaximumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -285,7 +285,7 @@ func ExampleFirmwaresClient_NewListByWorkspacePager_firmwaresListByWorkspaceMaxi
 	}
 }
 
-// Generated from example definition: 2025-08-02/Firmwares_ListByWorkspace_MinimumSet_Gen.json
+// Generated from example definition: 2026-06-01-preview/Firmwares_ListByWorkspace_MinimumSet_Gen.json
 func ExampleFirmwaresClient_NewListByWorkspacePager_firmwaresListByWorkspaceMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -316,7 +316,7 @@ func ExampleFirmwaresClient_NewListByWorkspacePager_firmwaresListByWorkspaceMini
 	}
 }
 
-// Generated from example definition: 2025-08-02/Firmwares_Update_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-01-preview/Firmwares_Update_MaximumSet_Gen.json
 func ExampleFirmwaresClient_Update_firmwaresUpdateMaximumSetGenGeneratedByMaximumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -383,7 +383,7 @@ func ExampleFirmwaresClient_Update_firmwaresUpdateMaximumSetGenGeneratedByMaximu
 	// }
 }
 
-// Generated from example definition: 2025-08-02/Firmwares_Update_MinimumSet_Gen.json
+// Generated from example definition: 2026-06-01-preview/Firmwares_Update_MinimumSet_Gen.json
 func ExampleFirmwaresClient_Update_firmwaresUpdateMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -19,7 +19,7 @@ import (
 // PasswordHashesClient contains the methods for the PasswordHashes group.
 // Don't use this type directly, use NewPasswordHashesClient() instead.
 //
-// Generated from API version 2025-08-02
+// Generated from API version 2026-06-01-preview
 type PasswordHashesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -107,7 +107,7 @@ func (client *PasswordHashesClient) listByFirmwareCreateRequest(ctx context.Cont
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250802)
+		reqQP.Set("api-version", version20260601Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

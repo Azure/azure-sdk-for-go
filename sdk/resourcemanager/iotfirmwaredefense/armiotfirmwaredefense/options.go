@@ -80,6 +80,12 @@ type SummariesClientListByFirmwareOptions struct {
 	// placeholder for future optional parameters
 }
 
+// UnsafeFunctionCallsClientListByFirmwareOptions contains the optional parameters for the UnsafeFunctionCallsClient.NewListByFirmwarePager
+// method.
+type UnsafeFunctionCallsClientListByFirmwareOptions struct {
+	// placeholder for future optional parameters
+}
+
 // UsageMetricsClientGetOptions contains the optional parameters for the UsageMetricsClient.Get method.
 type UsageMetricsClientGetOptions struct {
 	// placeholder for future optional parameters

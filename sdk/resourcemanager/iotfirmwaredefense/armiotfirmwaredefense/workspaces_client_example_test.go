@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-08-02/Workspaces_Create_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-01-preview/Workspaces_Create_MaximumSet_Gen.json
 func ExampleWorkspacesClient_Create_workspacesCreateMaximumSetGenGeneratedByMaximumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -73,7 +73,7 @@ func ExampleWorkspacesClient_Create_workspacesCreateMaximumSetGenGeneratedByMaxi
 	// }
 }
 
-// Generated from example definition: 2025-08-02/Workspaces_Create_MinimumSet_Gen.json
+// Generated from example definition: 2026-06-01-preview/Workspaces_Create_MinimumSet_Gen.json
 func ExampleWorkspacesClient_Create_workspacesCreateMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -104,7 +104,7 @@ func ExampleWorkspacesClient_Create_workspacesCreateMinimumSetGen() {
 	// }
 }
 
-// Generated from example definition: 2025-08-02/Workspaces_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-01-preview/Workspaces_Delete_MaximumSet_Gen.json
 func ExampleWorkspacesClient_BeginDelete_workspacesDeleteMaximumSetGenGeneratedByMaximumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -125,7 +125,7 @@ func ExampleWorkspacesClient_BeginDelete_workspacesDeleteMaximumSetGenGeneratedB
 	}
 }
 
-// Generated from example definition: 2025-08-02/Workspaces_Delete_MinimumSet_Gen.json
+// Generated from example definition: 2026-06-01-preview/Workspaces_Delete_MinimumSet_Gen.json
 func ExampleWorkspacesClient_BeginDelete_workspacesDeleteMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -146,7 +146,7 @@ func ExampleWorkspacesClient_BeginDelete_workspacesDeleteMinimumSetGen() {
 	}
 }
 
-// Generated from example definition: 2025-08-02/Workspaces_GenerateUploadUrl_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-01-preview/Workspaces_GenerateUploadUrl_MaximumSet_Gen.json
 func ExampleWorkspacesClient_GenerateUploadURL_workspacesGenerateUploadUrlMaximumSetGenGeneratedByMaximumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -173,7 +173,7 @@ func ExampleWorkspacesClient_GenerateUploadURL_workspacesGenerateUploadUrlMaximu
 	// }
 }
 
-// Generated from example definition: 2025-08-02/Workspaces_GenerateUploadUrl_MinimumSet_Gen.json
+// Generated from example definition: 2026-06-01-preview/Workspaces_GenerateUploadUrl_MinimumSet_Gen.json
 func ExampleWorkspacesClient_GenerateUploadURL_workspacesGenerateUploadUrlMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -199,7 +199,7 @@ func ExampleWorkspacesClient_GenerateUploadURL_workspacesGenerateUploadUrlMinimu
 	// }
 }
 
-// Generated from example definition: 2025-08-02/Workspaces_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-01-preview/Workspaces_Get_MaximumSet_Gen.json
 func ExampleWorkspacesClient_Get_workspacesGetMaximumSetGenGeneratedByMaximumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -248,7 +248,7 @@ func ExampleWorkspacesClient_Get_workspacesGetMaximumSetGenGeneratedByMaximumSet
 	// }
 }
 
-// Generated from example definition: 2025-08-02/Workspaces_Get_MinimumSet_Gen.json
+// Generated from example definition: 2026-06-01-preview/Workspaces_Get_MinimumSet_Gen.json
 func ExampleWorkspacesClient_Get_workspacesGetMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -276,7 +276,7 @@ func ExampleWorkspacesClient_Get_workspacesGetMinimumSetGen() {
 	// }
 }
 
-// Generated from example definition: 2025-08-02/Workspaces_ListByResourceGroup_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-01-preview/Workspaces_ListByResourceGroup_MaximumSet_Gen.json
 func ExampleWorkspacesClient_NewListByResourceGroupPager_workspacesListByResourceGroupMaximumSetGenGeneratedByMaximumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -335,7 +335,7 @@ func ExampleWorkspacesClient_NewListByResourceGroupPager_workspacesListByResourc
 	}
 }
 
-// Generated from example definition: 2025-08-02/Workspaces_ListByResourceGroup_MinimumSet_Gen.json
+// Generated from example definition: 2026-06-01-preview/Workspaces_ListByResourceGroup_MinimumSet_Gen.json
 func ExampleWorkspacesClient_NewListByResourceGroupPager_workspacesListByResourceGroupMinimumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -370,7 +370,7 @@ func ExampleWorkspacesClient_NewListByResourceGroupPager_workspacesListByResourc
 	}
 }
 
-// Generated from example definition: 2025-08-02/Workspaces_ListBySubscription_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-01-preview/Workspaces_ListBySubscription_MaximumSet_Gen.json
 func ExampleWorkspacesClient_NewListBySubscriptionPager_workspacesListBySubscriptionMaximumSetGenGeneratedByMaximumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -429,7 +429,7 @@ func ExampleWorkspacesClient_NewListBySubscriptionPager_workspacesListBySubscrip
 	}
 }
 
-// Generated from example definition: 2025-08-02/Workspaces_ListBySubscription_MinimumSet_Gen.json
+// Generated from example definition: 2026-06-01-preview/Workspaces_ListBySubscription_MinimumSet_Gen.json
 func ExampleWorkspacesClient_NewListBySubscriptionPager_workspacesListBySubscriptionMaximumSetGenGeneratedByMinimumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -464,7 +464,7 @@ func ExampleWorkspacesClient_NewListBySubscriptionPager_workspacesListBySubscrip
 	}
 }
 
-// Generated from example definition: 2025-08-02/Workspaces_Update_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-01-preview/Workspaces_Update_MaximumSet_Gen.json
 func ExampleWorkspacesClient_Update_workspacesUpdateMaximumSetGenGeneratedByMaximumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -522,7 +522,7 @@ func ExampleWorkspacesClient_Update_workspacesUpdateMaximumSetGenGeneratedByMaxi
 	// }
 }
 
-// Generated from example definition: 2025-08-02/Workspaces_Update_MinimumSet_Gen.json
+// Generated from example definition: 2026-06-01-preview/Workspaces_Update_MinimumSet_Gen.json
 func ExampleWorkspacesClient_Update_workspacesUpdateMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

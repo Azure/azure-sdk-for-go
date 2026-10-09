@@ -16,58 +16,55 @@ import (
 	"strings"
 )
 
-// BinaryHardeningClient contains the methods for the BinaryHardening group.
-// Don't use this type directly, use NewBinaryHardeningClient() instead.
+// UnsafeFunctionCallsClient contains the methods for the UnsafeFunctionCalls group.
+// Don't use this type directly, use NewUnsafeFunctionCallsClient() instead.
 //
 // Generated from API version 2026-06-01-preview
-type BinaryHardeningClient struct {
+type UnsafeFunctionCallsClient struct {
 	internal       *arm.Client
 	subscriptionID string
 }
 
-// NewBinaryHardeningClient creates a new instance of BinaryHardeningClient with the specified values.
+// NewUnsafeFunctionCallsClient creates a new instance of UnsafeFunctionCallsClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
-func NewBinaryHardeningClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*BinaryHardeningClient, error) {
-	if subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
+func NewUnsafeFunctionCallsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*UnsafeFunctionCallsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
-	client := &BinaryHardeningClient{
+	client := &UnsafeFunctionCallsClient{
 		subscriptionID: subscriptionID,
 		internal:       cl,
 	}
 	return client, nil
 }
 
-// NewListByFirmwarePager - Lists binary hardening analysis results of a firmware.
+// NewListByFirmwarePager - Lists unsafe function call analysis results of a firmware.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the firmware analysis workspace.
 //   - firmwareID - The id of the firmware.
-//   - options - BinaryHardeningClientListByFirmwareOptions contains the optional parameters for the BinaryHardeningClient.NewListByFirmwarePager
+//   - options - UnsafeFunctionCallsClientListByFirmwareOptions contains the optional parameters for the UnsafeFunctionCallsClient.NewListByFirmwarePager
 //     method.
-func (client *BinaryHardeningClient) NewListByFirmwarePager(resourceGroupName string, workspaceName string, firmwareID string, options *BinaryHardeningClientListByFirmwareOptions) *runtime.Pager[BinaryHardeningClientListByFirmwareResponse] {
-	return runtime.NewPager(runtime.PagingHandler[BinaryHardeningClientListByFirmwareResponse]{
-		More: func(page BinaryHardeningClientListByFirmwareResponse) bool {
+func (client *UnsafeFunctionCallsClient) NewListByFirmwarePager(resourceGroupName string, workspaceName string, firmwareID string, options *UnsafeFunctionCallsClientListByFirmwareOptions) *runtime.Pager[UnsafeFunctionCallsClientListByFirmwareResponse] {
+	return runtime.NewPager(runtime.PagingHandler[UnsafeFunctionCallsClientListByFirmwareResponse]{
+		More: func(page UnsafeFunctionCallsClientListByFirmwareResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *BinaryHardeningClientListByFirmwareResponse) (BinaryHardeningClientListByFirmwareResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "BinaryHardeningClient.NewListByFirmwarePager")
+		Fetcher: func(ctx context.Context, page *UnsafeFunctionCallsClientListByFirmwareResponse) (UnsafeFunctionCallsClientListByFirmwareResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "UnsafeFunctionCallsClient.NewListByFirmwarePager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
 			}
 			req, err := client.listByFirmwareCreateRequest(ctx, resourceGroupName, workspaceName, firmwareID, nextLink, options)
 			if err != nil {
-				return BinaryHardeningClientListByFirmwareResponse{}, err
+				return UnsafeFunctionCallsClientListByFirmwareResponse{}, err
 			}
 			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
-				return BinaryHardeningClientListByFirmwareResponse{}, err
+				return UnsafeFunctionCallsClientListByFirmwareResponse{}, err
 			}
 			return client.listByFirmwareHandleResponse(resp, http.StatusOK)
 		},
@@ -76,14 +73,14 @@ func (client *BinaryHardeningClient) NewListByFirmwarePager(resourceGroupName st
 }
 
 // listByFirmwareCreateRequest creates the ListByFirmware request.
-func (client *BinaryHardeningClient) listByFirmwareCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, firmwareID string, nextLink string, _ *BinaryHardeningClientListByFirmwareOptions) (*policy.Request, error) {
+func (client *UnsafeFunctionCallsClient) listByFirmwareCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, firmwareID string, nextLink string, _ *UnsafeFunctionCallsClientListByFirmwareOptions) (*policy.Request, error) {
 	firstPage := nextLink == ""
 	var req *policy.Request
 	var err error
 	if firstPage {
-		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTFirmwareDefense/workspaces/{workspaceName}/firmwares/{firmwareId}/binaryHardeningResults"
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTFirmwareDefense/workspaces/{workspaceName}/firmwares/{firmwareId}/unsafeFunctionCalls"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter subscriptionID cannot be empty")
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -115,13 +112,13 @@ func (client *BinaryHardeningClient) listByFirmwareCreateRequest(ctx context.Con
 }
 
 // listByFirmwareHandleResponse handles the ListByFirmware response.
-func (client *BinaryHardeningClient) listByFirmwareHandleResponse(resp *http.Response, successCodes ...int) (BinaryHardeningClientListByFirmwareResponse, error) {
-	result := BinaryHardeningClientListByFirmwareResponse{}
+func (client *UnsafeFunctionCallsClient) listByFirmwareHandleResponse(resp *http.Response, successCodes ...int) (UnsafeFunctionCallsClientListByFirmwareResponse, error) {
+	result := UnsafeFunctionCallsClientListByFirmwareResponse{}
 	if !runtime.HasStatusCode(resp, successCodes...) {
 		return result, runtime.NewResponseError(resp)
 	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.BinaryHardeningResourceListResult); err != nil {
-		return BinaryHardeningClientListByFirmwareResponse{}, err
+	if err := runtime.UnmarshalAsJSON(resp, &result.UnsafeFunctionCallsResourceListResult); err != nil {
+		return UnsafeFunctionCallsClientListByFirmwareResponse{}, err
 	}
 	return result, nil
 }

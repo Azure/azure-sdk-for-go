@@ -246,43 +246,33 @@ func queryResponseError(response Response, sessionToken SessionToken, cause erro
 }
 
 func validateQueryPartitionKey(body []byte, partitionKey PartitionKey) error {
-	var metadata struct {
-		PartitionKey struct {
-			Paths   []string `json:"paths"`
-			Kind    string   `json:"kind"`
-			Version *int     `json:"version"`
-		} `json:"partitionKey"`
+	count, err := partitionKeyPathCount(body, "query scope")
+	if err != nil {
+		return err
 	}
-	if err := json.Unmarshal(body, &metadata); err != nil {
-		return &Error{Code: CodeSerializationFailed, Message: "decoding container partition key definition", cause: err}
-	}
-	definition := metadata.PartitionKey
-	if len(definition.Paths) == 0 {
-		return &Error{Code: CodeSerializationFailed, Message: "container has no partition key paths"}
-	}
-	if definition.Kind != "Hash" && definition.Kind != "MultiHash" {
-		return &Error{Code: CodeBadRequest, Message: "query scope requires a Hash or MultiHash partition key definition"}
-	}
-	if (definition.Kind == "Hash" && len(definition.Paths) != 1) ||
-		(definition.Kind == "MultiHash" && (definition.Version == nil || *definition.Version != 2)) ||
-		(definition.Version != nil && *definition.Version != 1 && *definition.Version != 2) {
-		return &Error{Code: CodeBadRequest, Message: "unsupported query partition key definition"}
-	}
-	if partitionKey.Len() == 0 || partitionKey.Len() > len(definition.Paths) {
+	if partitionKey.Len() == 0 || partitionKey.Len() > count {
 		return &Error{Code: CodeBadRequest, Message: fmt.Sprintf(
 			"query scope requires between 1 and %d partition key components; got %d",
-			len(definition.Paths), partitionKey.Len())}
+			count, partitionKey.Len())}
 	}
 	return nil
 }
 
 func addQuerySetupCharge(err error, setup Response) error {
+	return addSetupCharge(err, setup, "fetching query page")
+}
+
+func addSetupCharge(err error, setup Response, message string) error {
 	// RequestCharge alone is not a reliable "no setup" sentinel: a successful setup completion can
 	// carry diagnostics/status/attempt metadata even when the charge header is absent or zero.
 	// Only treat the zero Response itself as "nothing to add".
 	if setup == (Response{}) {
 		return err
 	}
+	return setupChargeError(err, setup, message)
+}
+
+func setupChargeError(err error, setup Response, message string) *Error {
 	var cosmosErr *Error
 	if errors.As(err, &cosmosErr) {
 		copied := *cosmosErr
@@ -318,7 +308,7 @@ func addQuerySetupCharge(err error, setup Response) error {
 	// the *Error branch above backfills.
 	return &Error{
 		Code:          code,
-		Message:       "fetching query page",
+		Message:       message,
 		RequestCharge: setup.RequestCharge,
 		ActivityID:    setup.ActivityID,
 		Diagnostics:   setup.Diagnostics,

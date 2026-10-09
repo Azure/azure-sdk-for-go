@@ -13,6 +13,7 @@ import (
 type operationKind int32
 
 const (
+	operationKindBatch       operationKind = 18
 	operationKindCreateItem  operationKind = 19
 	operationKindReadItem    operationKind = 20
 	operationKindUpsertItem  operationKind = 21

@@ -48,6 +48,8 @@ type completionResult struct {
 	err              error
 	cancelled        bool
 	httpStatus       int
+	retryAfter       time.Duration
+	fromWire         bool
 	nextContinuation string
 
 	// driver and container are detached from the completion rather than copied, because they are
@@ -136,6 +138,8 @@ func translateCompletionOutcome(completion *C.cosmos_completion_t, verbosity Dia
 			response:         response,
 			body:             copyCompletionBody(completion),
 			httpStatus:       int(completion.http_status_code),
+			retryAfter:       headers.retryAfter,
+			fromWire:         completion.is_from_wire == 1,
 			nextContinuation: C.GoString(completion.next_continuation),
 		}
 
@@ -149,6 +153,13 @@ func translateCompletionOutcome(completion *C.cosmos_completion_t, verbosity Dia
 				ActivityID:    headers.activityID,
 				AttemptCount:  response.AttemptCount,
 				Diagnostics:   diagnostics,
+				StatusCode:    response.StatusCode,
+				SubStatus:     response.SubStatus,
+				SessionToken:  headers.sessionToken,
+				ETag:          headers.etag,
+				RetryAfter:    headers.retryAfter,
+				FromWire:      completion.is_from_wire == 1,
+				Body:          copyCompletionBody(completion),
 			},
 		}
 
@@ -250,7 +261,7 @@ func readCompletionHeaders(completion *C.cosmos_completion_t) completionHeaders 
 			headers.subStatus = normalizeSubStatus(int32(headerInt(&header.value)))
 		case C.COSMOS_HEADER_ID_RETRY_AFTER_MS:
 			if ms := headerInt(&header.value); ms > 0 {
-				headers.retryAfter = time.Duration(ms) * time.Millisecond
+				headers.retryAfter = durationMillis(uint64(ms))
 			}
 		}
 	}
@@ -305,6 +316,16 @@ func headerInt(value *C.cosmos_value_t) int64 {
 // syntheticThrottledCompletion builds and translates a C-owned completion for native tests. Every
 // borrowed buffer is freed before it returns, so assertions also prove the translator copied out.
 func syntheticThrottledCompletion(packedSubStatus int) *Error {
+	result := syntheticCompletionWithHeaders(C.COSMOS_COMPLETION_OUTCOME_ERROR, 429, packedSubStatus,
+		[]byte(`{"code":"TooManyRequests","message":"slow down"}`))
+	return result.err.(*Error)
+}
+
+func syntheticBatchCompletion(body []byte, httpStatus int) completionResult {
+	return syntheticCompletionWithHeaders(C.COSMOS_COMPLETION_OUTCOME_OK, httpStatus, 0, body)
+}
+
+func syntheticCompletionWithHeaders(outcome C.cosmos_completion_outcome_t, httpStatus, packedSubStatus int, body []byte) completionResult {
 	var allocations []unsafe.Pointer
 	cString := func(value string) *C.char {
 		ptr := C.CString(value)
@@ -347,14 +368,13 @@ func syntheticThrottledCompletion(packedSubStatus int) *Error {
 		value: C.cosmos_test_i64_value(125),
 	}
 
-	body := []byte(`{"code":"TooManyRequests","message":"slow down"}`)
 	bodyMemory := C.CBytes(body)
 	defer C.free(bodyMemory)
 
 	completion := C.cosmos_completion_t{
-		outcome:          C.COSMOS_COMPLETION_OUTCOME_ERROR,
-		status:           C.cosmos_status_code_t((429 << 16) | packedSubStatus),
-		http_status_code: 429,
+		outcome:          outcome,
+		status:           C.cosmos_status_code_t((httpStatus << 16) | packedSubStatus),
+		http_status_code: C.uint16_t(httpStatus),
 		is_from_wire:     1,
 		message:          cString("Request rate is large."),
 		headers:          (*C.cosmos_response_header_t)(headerMemory),
@@ -362,8 +382,7 @@ func syntheticThrottledCompletion(packedSubStatus int) *Error {
 		body:             (*C.uint8_t)(bodyMemory),
 		body_len:         C.uintptr_t(len(body)),
 	}
-	result := translateCompletion(&completion, DiagnosticsVerbosityDefault)
-	return result.err.(*Error)
+	return translateCompletion(&completion, DiagnosticsVerbosityDefault)
 }
 
 // syntheticOutcome mirrors cosmos_completion_outcome_t without exposing the cgo type to tests, so

@@ -12,8 +12,8 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-09-03-preview/MetricsContainers_CreateOrUpdate_MaximumSet_Gen.json
-func ExampleMetricsContainersClient_CreateOrUpdate() {
+// Generated from example definition: 2026-09-03-preview/TraceAssociationsAtSubscription_CreateOrUpdate_MaximumSet_Gen.json
+func ExampleTraceAssociationsAtSubscriptionClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -23,14 +23,9 @@ func ExampleMetricsContainersClient_CreateOrUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewMetricsContainersClient().CreateOrUpdate(ctx, "rgazuremonitorworkspace", "myAzureMonitorWorkspace", "default", armmonitorworkspaces.MetricsContainerResource{
-		Properties: &armmonitorworkspaces.MetricsContainer{
-			Limits: &armmonitorworkspaces.MetricsLimits{
-				MaxActiveTimeSeries: to.Ptr[int64](100000),
-				MaxEventsPerMinute:  to.Ptr[int64](100000),
-				EnableAutoScale:     to.Ptr(true),
-			},
-			Version: to.Ptr("2.0"),
+	res, err := clientFactory.NewTraceAssociationsAtSubscriptionClient().CreateOrUpdate(ctx, armmonitorworkspaces.TraceAssociationResource{
+		Properties: &armmonitorworkspaces.TraceAssociation{
+			AzureMonitorWorkspaceResourceID: to.Ptr("/subscriptions/703362b3-f278-4e4b-9179-c76eaf41ffc2/resourceGroups/rgazuremonitorworkspace/providers/Microsoft.Monitor/accounts/traceDestination"),
 		},
 	}, nil)
 	if err != nil {
@@ -39,19 +34,14 @@ func ExampleMetricsContainersClient_CreateOrUpdate() {
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armmonitorworkspaces.MetricsContainersClientCreateOrUpdateResponse{
-	// 	MetricsContainerResource: armmonitorworkspaces.MetricsContainerResource{
-	// 		Properties: &armmonitorworkspaces.MetricsContainer{
-	// 			Limits: &armmonitorworkspaces.MetricsLimits{
-	// 				MaxActiveTimeSeries: to.Ptr[int64](100000),
-	// 				MaxEventsPerMinute: to.Ptr[int64](100000),
-	// 				EnableAutoScale: to.Ptr(true),
-	// 			},
-	// 			Version: to.Ptr("2.0"),
+	// res = armmonitorworkspaces.TraceAssociationsAtSubscriptionClientCreateOrUpdateResponse{
+	// 	TraceAssociationResource: armmonitorworkspaces.TraceAssociationResource{
+	// 		Properties: &armmonitorworkspaces.TraceAssociation{
+	// 			AzureMonitorWorkspaceResourceID: to.Ptr("/subscriptions/703362b3-f278-4e4b-9179-c76eaf41ffc2/resourceGroups/rgazuremonitorworkspace/providers/Microsoft.Monitor/accounts/traceDestination"),
 	// 		},
-	// 		ID: to.Ptr("/subscriptions/703362b3-f278-4e4b-9179-c76eaf41ffc2/resourceGroups/rgazuremonitorworkspace/providers/Microsoft.Monitor/accounts/myAzureMonitorWorkspace/metricsContainers/default"),
+	// 		ID: to.Ptr("/subscriptions/703362b3-f278-4e4b-9179-c76eaf41ffc2/providers/Microsoft.Monitor/traceAssociations/default"),
 	// 		Name: to.Ptr("default"),
-	// 		Type: to.Ptr("Microsoft.Monitor/accounts/metricsContainers"),
+	// 		Type: to.Ptr("Microsoft.Monitor/traceAssociations"),
 	// 		SystemData: &armmonitorworkspaces.SystemData{
 	// 			CreatedBy: to.Ptr("user1"),
 	// 			CreatedByType: to.Ptr(armmonitorworkspaces.CreatedByTypeUser),
@@ -64,8 +54,8 @@ func ExampleMetricsContainersClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-09-03-preview/MetricsContainers_Get_MaximumSet_Gen.json
-func ExampleMetricsContainersClient_Get() {
+// Generated from example definition: 2026-09-03-preview/TraceAssociationsAtSubscription_Delete_MaximumSet_Gen.json
+func ExampleTraceAssociationsAtSubscriptionClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -75,26 +65,43 @@ func ExampleMetricsContainersClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewMetricsContainersClient().Get(ctx, "rgazuremonitorworkspace", "myAzureMonitorWorkspace", "default", nil)
+	res, err := clientFactory.NewTraceAssociationsAtSubscriptionClient().Delete(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armmonitorworkspaces.MetricsContainersClientGetResponse{
-	// 	MetricsContainerResource: armmonitorworkspaces.MetricsContainerResource{
-	// 		Properties: &armmonitorworkspaces.MetricsContainer{
-	// 			Limits: &armmonitorworkspaces.MetricsLimits{
-	// 				MaxActiveTimeSeries: to.Ptr[int64](100000),
-	// 				MaxEventsPerMinute: to.Ptr[int64](100000),
-	// 				EnableAutoScale: to.Ptr(true),
-	// 			},
-	// 			Version: to.Ptr("2.0"),
+	// res = armmonitorworkspaces.TraceAssociationsAtSubscriptionClientDeleteResponse{
+	// }
+}
+
+// Generated from example definition: 2026-09-03-preview/TraceAssociationsAtSubscription_Get_MaximumSet_Gen.json
+func ExampleTraceAssociationsAtSubscriptionClient_Get() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armmonitorworkspaces.NewClientFactory("703362b3-f278-4e4b-9179-c76eaf41ffc2", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewTraceAssociationsAtSubscriptionClient().Get(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armmonitorworkspaces.TraceAssociationsAtSubscriptionClientGetResponse{
+	// 	TraceAssociationResource: armmonitorworkspaces.TraceAssociationResource{
+	// 		Properties: &armmonitorworkspaces.TraceAssociation{
+	// 			AzureMonitorWorkspaceResourceID: to.Ptr("/subscriptions/703362b3-f278-4e4b-9179-c76eaf41ffc2/resourceGroups/rgazuremonitorworkspace/providers/Microsoft.Monitor/accounts/traceDestination"),
 	// 		},
-	// 		ID: to.Ptr("/subscriptions/703362b3-f278-4e4b-9179-c76eaf41ffc2/resourceGroups/rgazuremonitorworkspace/providers/Microsoft.Monitor/accounts/myAzureMonitorWorkspace/metricsContainers/default"),
+	// 		ID: to.Ptr("/subscriptions/703362b3-f278-4e4b-9179-c76eaf41ffc2/providers/Microsoft.Monitor/traceAssociations/default"),
 	// 		Name: to.Ptr("default"),
-	// 		Type: to.Ptr("Microsoft.Monitor/accounts/metricsContainers"),
+	// 		Type: to.Ptr("Microsoft.Monitor/traceAssociations"),
 	// 		SystemData: &armmonitorworkspaces.SystemData{
 	// 			CreatedBy: to.Ptr("user1"),
 	// 			CreatedByType: to.Ptr(armmonitorworkspaces.CreatedByTypeUser),
@@ -107,8 +114,8 @@ func ExampleMetricsContainersClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-09-03-preview/MetricsContainers_ListByAzureMonitorWorkspace_MaximumSet_Gen.json
-func ExampleMetricsContainersClient_NewListByAzureMonitorWorkspacePager() {
+// Generated from example definition: 2026-09-03-preview/TraceAssociationsAtSubscription_List_MaximumSet_Gen.json
+func ExampleTraceAssociationsAtSubscriptionClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -118,7 +125,7 @@ func ExampleMetricsContainersClient_NewListByAzureMonitorWorkspacePager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewMetricsContainersClient().NewListByAzureMonitorWorkspacePager("rgazuremonitorworkspace", "myAzureMonitorWorkspace", nil)
+	pager := clientFactory.NewTraceAssociationsAtSubscriptionClient().NewListPager(nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -129,21 +136,16 @@ func ExampleMetricsContainersClient_NewListByAzureMonitorWorkspacePager() {
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armmonitorworkspaces.MetricsContainersClientListByAzureMonitorWorkspaceResponse{
-		// 	MetricsContainerResourceListResult: armmonitorworkspaces.MetricsContainerResourceListResult{
-		// 		Value: []*armmonitorworkspaces.MetricsContainerResource{
+		// page = armmonitorworkspaces.TraceAssociationsAtSubscriptionClientListResponse{
+		// 	TraceAssociationResourceListResult: armmonitorworkspaces.TraceAssociationResourceListResult{
+		// 		Value: []*armmonitorworkspaces.TraceAssociationResource{
 		// 			{
-		// 				Properties: &armmonitorworkspaces.MetricsContainer{
-		// 					Limits: &armmonitorworkspaces.MetricsLimits{
-		// 						MaxActiveTimeSeries: to.Ptr[int64](1000000),
-		// 						MaxEventsPerMinute: to.Ptr[int64](100000),
-		// 						EnableAutoScale: to.Ptr(true),
-		// 					},
-		// 					Version: to.Ptr("2.0"),
+		// 				Properties: &armmonitorworkspaces.TraceAssociation{
+		// 					AzureMonitorWorkspaceResourceID: to.Ptr("/subscriptions/703362b3-f278-4e4b-9179-c76eaf41ffc2/resourceGroups/rgazuremonitorworkspace/providers/Microsoft.Monitor/accounts/traceDestination"),
 		// 				},
-		// 				ID: to.Ptr("/subscriptions/703362b3-f278-4e4b-9179-c76eaf41ffc2/resourceGroups/rgazuremonitorworkspace/providers/Microsoft.Monitor/accounts/myAzureMonitorWorkspace/metricsContainers/default"),
+		// 				ID: to.Ptr("/subscriptions/703362b3-f278-4e4b-9179-c76eaf41ffc2/providers/Microsoft.Monitor/traceAssociations/default"),
 		// 				Name: to.Ptr("default"),
-		// 				Type: to.Ptr("Microsoft.Monitor/accounts/metricsContainers"),
+		// 				Type: to.Ptr("Microsoft.Monitor/traceAssociations"),
 		// 				SystemData: &armmonitorworkspaces.SystemData{
 		// 					CreatedBy: to.Ptr("user1"),
 		// 					CreatedByType: to.Ptr(armmonitorworkspaces.CreatedByTypeUser),
@@ -154,6 +156,7 @@ func ExampleMetricsContainersClient_NewListByAzureMonitorWorkspacePager() {
 		// 				},
 		// 			},
 		// 		},
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/nextPage"),
 		// 	},
 		// }
 	}

@@ -5,7 +5,7 @@
 package armmonitorworkspaces
 
 const (
-	version20251003 string = "2025-10-03"
+	version20260903Preview string = "2026-09-03-preview"
 )
 
 // ActionType - Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
@@ -108,6 +108,24 @@ func PossibleManagedServiceIdentityTypeValues() []ManagedServiceIdentityType {
 		ManagedServiceIdentityTypeSystemAssigned,
 		ManagedServiceIdentityTypeSystemAssignedUserAssigned,
 		ManagedServiceIdentityTypeUserAssigned,
+	}
+}
+
+// MetricConfigurationType - The type of metric stored in the Azure Monitor Workspace.
+type MetricConfigurationType string
+
+const (
+	// MetricConfigurationTypeAggregated - A metric aggregated from another metric.
+	MetricConfigurationTypeAggregated MetricConfigurationType = "Aggregated"
+	// MetricConfigurationTypeRaw - A raw metric.
+	MetricConfigurationTypeRaw MetricConfigurationType = "Raw"
+)
+
+// PossibleMetricConfigurationTypeValues returns the possible values for the MetricConfigurationType const type.
+func PossibleMetricConfigurationTypeValues() []MetricConfigurationType {
+	return []MetricConfigurationType{
+		MetricConfigurationTypeAggregated,
+		MetricConfigurationTypeRaw,
 	}
 }
 
@@ -240,6 +258,24 @@ func PossibleStatusValues() []Status {
 		StatusInProgress,
 		StatusMitigated,
 		StatusNew,
+	}
+}
+
+// TraceMetricsState - The state of trace-derived metrics for a trace container.
+type TraceMetricsState string
+
+const (
+	// TraceMetricsStateDisabled - Trace-derived metrics are not emitted.
+	TraceMetricsStateDisabled TraceMetricsState = "Disabled"
+	// TraceMetricsStateEnabled - Trace-derived metrics are emitted.
+	TraceMetricsStateEnabled TraceMetricsState = "Enabled"
+)
+
+// PossibleTraceMetricsStateValues returns the possible values for the TraceMetricsState const type.
+func PossibleTraceMetricsStateValues() []TraceMetricsState {
+	return []TraceMetricsState{
+		TraceMetricsStateDisabled,
+		TraceMetricsStateEnabled,
 	}
 }
 

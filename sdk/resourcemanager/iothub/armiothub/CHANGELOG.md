@@ -1,6 +1,6 @@
 # Release History
 
-## 2.0.0-beta.3 (2026-09-14)
+## 2.0.0-beta.3 (2026-10-09)
 ### Breaking Changes
 
 - Field `PolicyResourceID` of struct `CertificateProperties` has been removed

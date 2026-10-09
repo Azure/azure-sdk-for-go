@@ -12,21 +12,21 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-06-01/Workflows_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-01-preview/Workflows_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleWorkflowsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armworkloadorchestration.NewClientFactory("9D54FE4C-00AF-4836-8F48-B6A9C4E47192", cred, nil)
+	clientFactory, err := armworkloadorchestration.NewClientFactory("612CB927-8AC8-42DD-B74E-C676C3960BA5", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewWorkflowsClient().BeginCreateOrUpdate(ctx, "rgconfigurationmanager", "testname", "testname", armworkloadorchestration.Workflow{
 		Properties: &armworkloadorchestration.WorkflowProperties{},
 		ExtendedLocation: &armworkloadorchestration.ExtendedLocation{
-			Name: to.Ptr("szjrwimeqyiue"),
+			Name: to.Ptr("ggfwkwklvvkrmlysvvhcj"),
 			Type: to.Ptr(armworkloadorchestration.ExtendedLocationTypeEdgeZone),
 		},
 	}, nil)
@@ -43,37 +43,37 @@ func ExampleWorkflowsClient_BeginCreateOrUpdate() {
 	// res = armworkloadorchestration.WorkflowsClientCreateOrUpdateResponse{
 	// 	Workflow: armworkloadorchestration.Workflow{
 	// 		Properties: &armworkloadorchestration.WorkflowProperties{
-	// 			WorkflowTemplateID: to.Ptr("ujmzzr"),
+	// 			WorkflowTemplateID: to.Ptr("rzshmlsq"),
 	// 			ProvisioningState: to.Ptr(armworkloadorchestration.ProvisioningStateSucceeded),
 	// 		},
 	// 		ExtendedLocation: &armworkloadorchestration.ExtendedLocation{
-	// 			Name: to.Ptr("szjrwimeqyiue"),
+	// 			Name: to.Ptr("ggfwkwklvvkrmlysvvhcj"),
 	// 			Type: to.Ptr(armworkloadorchestration.ExtendedLocationTypeEdgeZone),
 	// 		},
-	// 		ETag: to.Ptr("trbfrhlyyemhojcteofvr"),
-	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"),
-	// 		Name: to.Ptr("jcivjgtzcfdrfsq"),
-	// 		Type: to.Ptr("nkacxxkrvouyglz"),
+	// 		ETag: to.Ptr("nmjjcn"),
+	// 		ID: to.Ptr("/subscriptions/612CB927-8AC8-42DD-B74E-C676C3960BA5/resourceGroups/rgconfigurationmanager/providers/Microsoft.Edge/contexts/testname/workflows/testname"),
+	// 		Name: to.Ptr("testname"),
+	// 		Type: to.Ptr("Microsoft.Edge/contexts/workflows"),
 	// 		SystemData: &armworkloadorchestration.SystemData{
-	// 			CreatedBy: to.Ptr("nvjczgdguyvllp"),
+	// 			CreatedBy: to.Ptr("qbgzyk"),
 	// 			CreatedByType: to.Ptr(armworkloadorchestration.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(time.Date(2025, time.June, 9, 10, 11, 50, 747000000, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("uzbznzjgvaspvtqhyg"),
+	// 			CreatedAt: to.Ptr(time.Date(2026, time.April, 3, 6, 50, 27, 630000000, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("hmamoiwonploytccyutjjpyukmsty"),
 	// 			LastModifiedByType: to.Ptr(armworkloadorchestration.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.June, 9, 10, 11, 50, 747000000, time.UTC)),
+	// 			LastModifiedAt: to.Ptr(time.Date(2026, time.April, 3, 6, 50, 27, 631000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-06-01/Workflows_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-01-preview/Workflows_Delete_MaximumSet_Gen.json
 func ExampleWorkflowsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armworkloadorchestration.NewClientFactory("9D54FE4C-00AF-4836-8F48-B6A9C4E47192", cred, nil)
+	clientFactory, err := armworkloadorchestration.NewClientFactory("612CB927-8AC8-42DD-B74E-C676C3960BA5", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -87,14 +87,14 @@ func ExampleWorkflowsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-06-01/Workflows_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-01-preview/Workflows_Get_MaximumSet_Gen.json
 func ExampleWorkflowsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armworkloadorchestration.NewClientFactory("9D54FE4C-00AF-4836-8F48-B6A9C4E47192", cred, nil)
+	clientFactory, err := armworkloadorchestration.NewClientFactory("612CB927-8AC8-42DD-B74E-C676C3960BA5", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -108,37 +108,37 @@ func ExampleWorkflowsClient_Get() {
 	// res = armworkloadorchestration.WorkflowsClientGetResponse{
 	// 	Workflow: armworkloadorchestration.Workflow{
 	// 		Properties: &armworkloadorchestration.WorkflowProperties{
-	// 			WorkflowTemplateID: to.Ptr("ujmzzr"),
+	// 			WorkflowTemplateID: to.Ptr("rzshmlsq"),
 	// 			ProvisioningState: to.Ptr(armworkloadorchestration.ProvisioningStateSucceeded),
 	// 		},
 	// 		ExtendedLocation: &armworkloadorchestration.ExtendedLocation{
-	// 			Name: to.Ptr("szjrwimeqyiue"),
+	// 			Name: to.Ptr("ggfwkwklvvkrmlysvvhcj"),
 	// 			Type: to.Ptr(armworkloadorchestration.ExtendedLocationTypeEdgeZone),
 	// 		},
-	// 		ETag: to.Ptr("trbfrhlyyemhojcteofvr"),
-	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"),
-	// 		Name: to.Ptr("jcivjgtzcfdrfsq"),
-	// 		Type: to.Ptr("nkacxxkrvouyglz"),
+	// 		ETag: to.Ptr("nmjjcn"),
+	// 		ID: to.Ptr("/subscriptions/612CB927-8AC8-42DD-B74E-C676C3960BA5/resourceGroups/rgconfigurationmanager/providers/Microsoft.Edge/contexts/testname/workflows/testname"),
+	// 		Name: to.Ptr("testname"),
+	// 		Type: to.Ptr("Microsoft.Edge/contexts/workflows"),
 	// 		SystemData: &armworkloadorchestration.SystemData{
-	// 			CreatedBy: to.Ptr("nvjczgdguyvllp"),
+	// 			CreatedBy: to.Ptr("qbgzyk"),
 	// 			CreatedByType: to.Ptr(armworkloadorchestration.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(time.Date(2025, time.June, 9, 10, 11, 50, 747000000, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("uzbznzjgvaspvtqhyg"),
+	// 			CreatedAt: to.Ptr(time.Date(2026, time.April, 3, 6, 50, 27, 630000000, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("hmamoiwonploytccyutjjpyukmsty"),
 	// 			LastModifiedByType: to.Ptr(armworkloadorchestration.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.June, 9, 10, 11, 50, 747000000, time.UTC)),
+	// 			LastModifiedAt: to.Ptr(time.Date(2026, time.April, 3, 6, 50, 27, 631000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-06-01/Workflows_ListByContext_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-01-preview/Workflows_ListByContext_MaximumSet_Gen.json
 func ExampleWorkflowsClient_NewListByContextPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armworkloadorchestration.NewClientFactory("9D54FE4C-00AF-4836-8F48-B6A9C4E47192", cred, nil)
+	clientFactory, err := armworkloadorchestration.NewClientFactory("612CB927-8AC8-42DD-B74E-C676C3960BA5", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -158,41 +158,41 @@ func ExampleWorkflowsClient_NewListByContextPager() {
 		// 		Value: []*armworkloadorchestration.Workflow{
 		// 			{
 		// 				Properties: &armworkloadorchestration.WorkflowProperties{
-		// 					WorkflowTemplateID: to.Ptr("ujmzzr"),
+		// 					WorkflowTemplateID: to.Ptr("rzshmlsq"),
 		// 					ProvisioningState: to.Ptr(armworkloadorchestration.ProvisioningStateSucceeded),
 		// 				},
 		// 				ExtendedLocation: &armworkloadorchestration.ExtendedLocation{
-		// 					Name: to.Ptr("szjrwimeqyiue"),
+		// 					Name: to.Ptr("ggfwkwklvvkrmlysvvhcj"),
 		// 					Type: to.Ptr(armworkloadorchestration.ExtendedLocationTypeEdgeZone),
 		// 				},
-		// 				ETag: to.Ptr("trbfrhlyyemhojcteofvr"),
-		// 				ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"),
-		// 				Name: to.Ptr("jcivjgtzcfdrfsq"),
-		// 				Type: to.Ptr("nkacxxkrvouyglz"),
+		// 				ETag: to.Ptr("nmjjcn"),
+		// 				ID: to.Ptr("/subscriptions/612CB927-8AC8-42DD-B74E-C676C3960BA5/resourceGroups/rgconfigurationmanager/providers/Microsoft.Edge/contexts/testname/workflows/testWorkflow"),
+		// 				Name: to.Ptr("testWorkflow"),
+		// 				Type: to.Ptr("Microsoft.Edge/contexts/workflows"),
 		// 				SystemData: &armworkloadorchestration.SystemData{
-		// 					CreatedBy: to.Ptr("nvjczgdguyvllp"),
+		// 					CreatedBy: to.Ptr("qbgzyk"),
 		// 					CreatedByType: to.Ptr(armworkloadorchestration.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(time.Date(2025, time.June, 9, 10, 11, 50, 747000000, time.UTC)),
-		// 					LastModifiedBy: to.Ptr("uzbznzjgvaspvtqhyg"),
+		// 					CreatedAt: to.Ptr(time.Date(2026, time.April, 3, 6, 50, 27, 630000000, time.UTC)),
+		// 					LastModifiedBy: to.Ptr("hmamoiwonploytccyutjjpyukmsty"),
 		// 					LastModifiedByType: to.Ptr(armworkloadorchestration.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(time.Date(2025, time.June, 9, 10, 11, 50, 747000000, time.UTC)),
+		// 					LastModifiedAt: to.Ptr(time.Date(2026, time.April, 3, 6, 50, 27, 631000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
-		// 		NextLink: to.Ptr("https://microsoft.com/a"),
+		// 		NextLink: to.Ptr("https://microsoft.com/afpkref"),
 		// 	},
 		// }
 	}
 }
 
-// Generated from example definition: 2025-06-01/Workflows_Update_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-01-preview/Workflows_Update_MaximumSet_Gen.json
 func ExampleWorkflowsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armworkloadorchestration.NewClientFactory("9D54FE4C-00AF-4836-8F48-B6A9C4E47192", cred, nil)
+	clientFactory, err := armworkloadorchestration.NewClientFactory("612CB927-8AC8-42DD-B74E-C676C3960BA5", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -212,24 +212,24 @@ func ExampleWorkflowsClient_BeginUpdate() {
 	// res = armworkloadorchestration.WorkflowsClientUpdateResponse{
 	// 	Workflow: armworkloadorchestration.Workflow{
 	// 		Properties: &armworkloadorchestration.WorkflowProperties{
-	// 			WorkflowTemplateID: to.Ptr("ujmzzr"),
+	// 			WorkflowTemplateID: to.Ptr("rzshmlsq"),
 	// 			ProvisioningState: to.Ptr(armworkloadorchestration.ProvisioningStateSucceeded),
 	// 		},
 	// 		ExtendedLocation: &armworkloadorchestration.ExtendedLocation{
-	// 			Name: to.Ptr("szjrwimeqyiue"),
+	// 			Name: to.Ptr("ggfwkwklvvkrmlysvvhcj"),
 	// 			Type: to.Ptr(armworkloadorchestration.ExtendedLocationTypeEdgeZone),
 	// 		},
-	// 		ETag: to.Ptr("trbfrhlyyemhojcteofvr"),
-	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"),
-	// 		Name: to.Ptr("jcivjgtzcfdrfsq"),
-	// 		Type: to.Ptr("nkacxxkrvouyglz"),
+	// 		ETag: to.Ptr("nmjjcn"),
+	// 		ID: to.Ptr("/subscriptions/612CB927-8AC8-42DD-B74E-C676C3960BA5/resourceGroups/rgconfigurationmanager/providers/Microsoft.Edge/contexts/testname/workflows/testname"),
+	// 		Name: to.Ptr("testname"),
+	// 		Type: to.Ptr("Microsoft.Edge/contexts/workflows"),
 	// 		SystemData: &armworkloadorchestration.SystemData{
-	// 			CreatedBy: to.Ptr("nvjczgdguyvllp"),
+	// 			CreatedBy: to.Ptr("qbgzyk"),
 	// 			CreatedByType: to.Ptr(armworkloadorchestration.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(time.Date(2025, time.June, 9, 10, 11, 50, 747000000, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("uzbznzjgvaspvtqhyg"),
+	// 			CreatedAt: to.Ptr(time.Date(2026, time.April, 3, 6, 50, 27, 630000000, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("hmamoiwonploytccyutjjpyukmsty"),
 	// 			LastModifiedByType: to.Ptr(armworkloadorchestration.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.June, 9, 10, 11, 50, 747000000, time.UTC)),
+	// 			LastModifiedAt: to.Ptr(time.Date(2026, time.April, 3, 6, 50, 27, 631000000, time.UTC)),
 	// 		},
 	// 	},
 	// }

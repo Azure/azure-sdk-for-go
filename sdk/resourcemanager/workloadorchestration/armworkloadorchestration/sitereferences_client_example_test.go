@@ -12,20 +12,20 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-06-01/SiteReferences_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-01-preview/SiteReferences_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleSiteReferencesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armworkloadorchestration.NewClientFactory("9D54FE4C-00AF-4836-8F48-B6A9C4E47192", cred, nil)
+	clientFactory, err := armworkloadorchestration.NewClientFactory("612CB927-8AC8-42DD-B74E-C676C3960BA5", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewSiteReferencesClient().BeginCreateOrUpdate(ctx, "rgconfigurationmanager", "testname", "testname", armworkloadorchestration.SiteReference{
 		Properties: &armworkloadorchestration.SiteReferenceProperties{
-			SiteID: to.Ptr("xxjpxdcaumewwgpbwzkcrgrcw"),
+			SiteID: to.Ptr("gaehctrehvyhasstg"),
 		},
 	}, nil)
 	if err != nil {
@@ -41,32 +41,32 @@ func ExampleSiteReferencesClient_BeginCreateOrUpdate() {
 	// res = armworkloadorchestration.SiteReferencesClientCreateOrUpdateResponse{
 	// 	SiteReference: armworkloadorchestration.SiteReference{
 	// 		Properties: &armworkloadorchestration.SiteReferenceProperties{
-	// 			SiteID: to.Ptr("xxjpxdcaumewwgpbwzkcrgrcw"),
+	// 			SiteID: to.Ptr("gaehctrehvyhasstg"),
 	// 			ProvisioningState: to.Ptr(armworkloadorchestration.ProvisioningStateSucceeded),
 	// 		},
-	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"),
-	// 		Name: to.Ptr("egcgxnnunldslhvcg"),
-	// 		Type: to.Ptr("gwoqfrkh"),
+	// 		ID: to.Ptr("/subscriptions/612CB927-8AC8-42DD-B74E-C676C3960BA5/resourceGroups/rgconfigurationmanager/providers/Microsoft.Edge/contexts/testname/siteReferences/testname"),
+	// 		Name: to.Ptr("testname"),
+	// 		Type: to.Ptr("Microsoft.Edge/contexts/siteReferences"),
 	// 		SystemData: &armworkloadorchestration.SystemData{
-	// 			CreatedBy: to.Ptr("nvjczgdguyvllp"),
+	// 			CreatedBy: to.Ptr("qbgzyk"),
 	// 			CreatedByType: to.Ptr(armworkloadorchestration.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(time.Date(2025, time.June, 9, 10, 11, 50, 747000000, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("uzbznzjgvaspvtqhyg"),
+	// 			CreatedAt: to.Ptr(time.Date(2026, time.April, 3, 6, 50, 27, 630000000, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("hmamoiwonploytccyutjjpyukmsty"),
 	// 			LastModifiedByType: to.Ptr(armworkloadorchestration.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.June, 9, 10, 11, 50, 747000000, time.UTC)),
+	// 			LastModifiedAt: to.Ptr(time.Date(2026, time.April, 3, 6, 50, 27, 631000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-06-01/SiteReferences_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-01-preview/SiteReferences_Delete_MaximumSet_Gen.json
 func ExampleSiteReferencesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armworkloadorchestration.NewClientFactory("9D54FE4C-00AF-4836-8F48-B6A9C4E47192", cred, nil)
+	clientFactory, err := armworkloadorchestration.NewClientFactory("612CB927-8AC8-42DD-B74E-C676C3960BA5", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -80,14 +80,14 @@ func ExampleSiteReferencesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-06-01/SiteReferences_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-01-preview/SiteReferences_Get_MaximumSet_Gen.json
 func ExampleSiteReferencesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armworkloadorchestration.NewClientFactory("9D54FE4C-00AF-4836-8F48-B6A9C4E47192", cred, nil)
+	clientFactory, err := armworkloadorchestration.NewClientFactory("612CB927-8AC8-42DD-B74E-C676C3960BA5", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -101,32 +101,32 @@ func ExampleSiteReferencesClient_Get() {
 	// res = armworkloadorchestration.SiteReferencesClientGetResponse{
 	// 	SiteReference: armworkloadorchestration.SiteReference{
 	// 		Properties: &armworkloadorchestration.SiteReferenceProperties{
-	// 			SiteID: to.Ptr("xxjpxdcaumewwgpbwzkcrgrcw"),
+	// 			SiteID: to.Ptr("gaehctrehvyhasstg"),
 	// 			ProvisioningState: to.Ptr(armworkloadorchestration.ProvisioningStateSucceeded),
 	// 		},
-	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"),
-	// 		Name: to.Ptr("egcgxnnunldslhvcg"),
-	// 		Type: to.Ptr("gwoqfrkh"),
+	// 		ID: to.Ptr("/subscriptions/612CB927-8AC8-42DD-B74E-C676C3960BA5/resourceGroups/rgconfigurationmanager/providers/Microsoft.Edge/contexts/testname/siteReferences/testname"),
+	// 		Name: to.Ptr("testname"),
+	// 		Type: to.Ptr("Microsoft.Edge/contexts/siteReferences"),
 	// 		SystemData: &armworkloadorchestration.SystemData{
-	// 			CreatedBy: to.Ptr("nvjczgdguyvllp"),
+	// 			CreatedBy: to.Ptr("qbgzyk"),
 	// 			CreatedByType: to.Ptr(armworkloadorchestration.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(time.Date(2025, time.June, 9, 10, 11, 50, 747000000, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("uzbznzjgvaspvtqhyg"),
+	// 			CreatedAt: to.Ptr(time.Date(2026, time.April, 3, 6, 50, 27, 630000000, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("hmamoiwonploytccyutjjpyukmsty"),
 	// 			LastModifiedByType: to.Ptr(armworkloadorchestration.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.June, 9, 10, 11, 50, 747000000, time.UTC)),
+	// 			LastModifiedAt: to.Ptr(time.Date(2026, time.April, 3, 6, 50, 27, 631000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-06-01/SiteReferences_ListByContext_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-01-preview/SiteReferences_ListByContext_MaximumSet_Gen.json
 func ExampleSiteReferencesClient_NewListByContextPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armworkloadorchestration.NewClientFactory("9D54FE4C-00AF-4836-8F48-B6A9C4E47192", cred, nil)
+	clientFactory, err := armworkloadorchestration.NewClientFactory("612CB927-8AC8-42DD-B74E-C676C3960BA5", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -146,42 +146,42 @@ func ExampleSiteReferencesClient_NewListByContextPager() {
 		// 		Value: []*armworkloadorchestration.SiteReference{
 		// 			{
 		// 				Properties: &armworkloadorchestration.SiteReferenceProperties{
-		// 					SiteID: to.Ptr("xxjpxdcaumewwgpbwzkcrgrcw"),
+		// 					SiteID: to.Ptr("gaehctrehvyhasstg"),
 		// 					ProvisioningState: to.Ptr(armworkloadorchestration.ProvisioningStateSucceeded),
 		// 				},
-		// 				ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"),
-		// 				Name: to.Ptr("egcgxnnunldslhvcg"),
-		// 				Type: to.Ptr("gwoqfrkh"),
+		// 				ID: to.Ptr("/subscriptions/612CB927-8AC8-42DD-B74E-C676C3960BA5/resourceGroups/rgconfigurationmanager/providers/Microsoft.Edge/contexts/testname/siteReferences/testSiteReference"),
+		// 				Name: to.Ptr("testSiteReference"),
+		// 				Type: to.Ptr("Microsoft.Edge/contexts/siteReferences"),
 		// 				SystemData: &armworkloadorchestration.SystemData{
-		// 					CreatedBy: to.Ptr("nvjczgdguyvllp"),
+		// 					CreatedBy: to.Ptr("qbgzyk"),
 		// 					CreatedByType: to.Ptr(armworkloadorchestration.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(time.Date(2025, time.June, 9, 10, 11, 50, 747000000, time.UTC)),
-		// 					LastModifiedBy: to.Ptr("uzbznzjgvaspvtqhyg"),
+		// 					CreatedAt: to.Ptr(time.Date(2026, time.April, 3, 6, 50, 27, 630000000, time.UTC)),
+		// 					LastModifiedBy: to.Ptr("hmamoiwonploytccyutjjpyukmsty"),
 		// 					LastModifiedByType: to.Ptr(armworkloadorchestration.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(time.Date(2025, time.June, 9, 10, 11, 50, 747000000, time.UTC)),
+		// 					LastModifiedAt: to.Ptr(time.Date(2026, time.April, 3, 6, 50, 27, 631000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
-		// 		NextLink: to.Ptr("https://microsoft.com/aojcswnb"),
+		// 		NextLink: to.Ptr("https://microsoft.com/alrrip"),
 		// 	},
 		// }
 	}
 }
 
-// Generated from example definition: 2025-06-01/SiteReferences_Update_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-01-preview/SiteReferences_Update_MaximumSet_Gen.json
 func ExampleSiteReferencesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armworkloadorchestration.NewClientFactory("9D54FE4C-00AF-4836-8F48-B6A9C4E47192", cred, nil)
+	clientFactory, err := armworkloadorchestration.NewClientFactory("612CB927-8AC8-42DD-B74E-C676C3960BA5", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewSiteReferencesClient().BeginUpdate(ctx, "rgconfigurationmanager", "testname", "testname", armworkloadorchestration.SiteReference{
 		Properties: &armworkloadorchestration.SiteReferenceProperties{
-			SiteID: to.Ptr("nwiuyaro"),
+			SiteID: to.Ptr("cifefexczjlpyn"),
 		},
 	}, nil)
 	if err != nil {
@@ -197,19 +197,19 @@ func ExampleSiteReferencesClient_BeginUpdate() {
 	// res = armworkloadorchestration.SiteReferencesClientUpdateResponse{
 	// 	SiteReference: armworkloadorchestration.SiteReference{
 	// 		Properties: &armworkloadorchestration.SiteReferenceProperties{
-	// 			SiteID: to.Ptr("xxjpxdcaumewwgpbwzkcrgrcw"),
+	// 			SiteID: to.Ptr("gaehctrehvyhasstg"),
 	// 			ProvisioningState: to.Ptr(armworkloadorchestration.ProvisioningStateSucceeded),
 	// 		},
-	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"),
-	// 		Name: to.Ptr("egcgxnnunldslhvcg"),
-	// 		Type: to.Ptr("gwoqfrkh"),
+	// 		ID: to.Ptr("/subscriptions/612CB927-8AC8-42DD-B74E-C676C3960BA5/resourceGroups/rgconfigurationmanager/providers/Microsoft.Edge/contexts/testname/siteReferences/testname"),
+	// 		Name: to.Ptr("testname"),
+	// 		Type: to.Ptr("Microsoft.Edge/contexts/siteReferences"),
 	// 		SystemData: &armworkloadorchestration.SystemData{
-	// 			CreatedBy: to.Ptr("nvjczgdguyvllp"),
+	// 			CreatedBy: to.Ptr("qbgzyk"),
 	// 			CreatedByType: to.Ptr(armworkloadorchestration.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(time.Date(2025, time.June, 9, 10, 11, 50, 747000000, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("uzbznzjgvaspvtqhyg"),
+	// 			CreatedAt: to.Ptr(time.Date(2026, time.April, 3, 6, 50, 27, 630000000, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("hmamoiwonploytccyutjjpyukmsty"),
 	// 			LastModifiedByType: to.Ptr(armworkloadorchestration.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.June, 9, 10, 11, 50, 747000000, time.UTC)),
+	// 			LastModifiedAt: to.Ptr(time.Date(2026, time.April, 3, 6, 50, 27, 631000000, time.UTC)),
 	// 		},
 	// 	},
 	// }

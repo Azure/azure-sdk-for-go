@@ -4,6 +4,47 @@
 
 package armcontainerinstance
 
+// AiAgentsGroupsClientBeginCreateOrUpdateOptions contains the optional parameters for the AiAgentsGroupsClient.BeginCreateOrUpdate
+// method.
+type AiAgentsGroupsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// AiAgentsGroupsClientBeginDeleteOptions contains the optional parameters for the AiAgentsGroupsClient.BeginDelete method.
+type AiAgentsGroupsClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// AiAgentsGroupsClientBeginUpdateOptions contains the optional parameters for the AiAgentsGroupsClient.BeginUpdate method.
+type AiAgentsGroupsClientBeginUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// AiAgentsGroupsClientConnectOptions contains the optional parameters for the AiAgentsGroupsClient.Connect method.
+type AiAgentsGroupsClientConnectOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AiAgentsGroupsClientGetOptions contains the optional parameters for the AiAgentsGroupsClient.Get method.
+type AiAgentsGroupsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AiAgentsGroupsClientListByResourceGroupOptions contains the optional parameters for the AiAgentsGroupsClient.NewListByResourceGroupPager
+// method.
+type AiAgentsGroupsClientListByResourceGroupOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AiAgentsGroupsClientListBySubscriptionOptions contains the optional parameters for the AiAgentsGroupsClient.NewListBySubscriptionPager
+// method.
+type AiAgentsGroupsClientListBySubscriptionOptions struct {
+	// placeholder for future optional parameters
+}
+
 // CGProfileClientCreateOrUpdateOptions contains the optional parameters for the CGProfileClient.CreateOrUpdate method.
 type CGProfileClientCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
@@ -139,6 +180,44 @@ type LocationClientListCapabilitiesOptions struct {
 
 // LocationClientListUsageOptions contains the optional parameters for the LocationClient.NewListUsagePager method.
 type LocationClientListUsageOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ManagedVirtualNodePoolsClientBeginCreateOrUpdateOptions contains the optional parameters for the ManagedVirtualNodePoolsClient.BeginCreateOrUpdate
+// method.
+type ManagedVirtualNodePoolsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ManagedVirtualNodePoolsClientBeginDeleteOptions contains the optional parameters for the ManagedVirtualNodePoolsClient.BeginDelete
+// method.
+type ManagedVirtualNodePoolsClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ManagedVirtualNodePoolsClientBeginUpdateOptions contains the optional parameters for the ManagedVirtualNodePoolsClient.BeginUpdate
+// method.
+type ManagedVirtualNodePoolsClientBeginUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ManagedVirtualNodePoolsClientGetOptions contains the optional parameters for the ManagedVirtualNodePoolsClient.Get method.
+type ManagedVirtualNodePoolsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ManagedVirtualNodePoolsClientListByResourceGroupOptions contains the optional parameters for the ManagedVirtualNodePoolsClient.NewListByResourceGroupPager
+// method.
+type ManagedVirtualNodePoolsClientListByResourceGroupOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ManagedVirtualNodePoolsClientListBySubscriptionOptions contains the optional parameters for the ManagedVirtualNodePoolsClient.NewListBySubscriptionPager
+// method.
+type ManagedVirtualNodePoolsClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
 

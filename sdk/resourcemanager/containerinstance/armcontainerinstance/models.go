@@ -12,6 +12,81 @@ type APIEntityReference struct {
 	ID *string
 }
 
+// AiAgentsGroup - An AiAgentsGroup tracked resource.
+type AiAgentsGroup struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
+	// The managed service identities assigned to this resource.
+	Identity *ManagedServiceIdentity
+
+	// The resource-specific properties for this resource.
+	Properties *AiAgentsGroupProperties
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// AiAgentsGroupAccessToken - The result of getting an access token for an AiAgentsGroup.
+type AiAgentsGroupAccessToken struct {
+	// REQUIRED; The access token used to authenticate against the endpoint.
+	AccessToken *string
+
+	// REQUIRED; The endpoint URL to use with the access token.
+	Endpoint *string
+
+	// REQUIRED; The UTC date and time at which the access token expires.
+	NotAfter *time.Time
+}
+
+// AiAgentsGroupListResult - The response of a AiAgentsGroup list operation.
+type AiAgentsGroupListResult struct {
+	// REQUIRED; The AiAgentsGroup items on this page
+	Value []*AiAgentsGroup
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// AiAgentsGroupNetworkProfile - The network profile for an AiAgentsGroup.
+type AiAgentsGroupNetworkProfile struct {
+	// The list of subnets associated with the AiAgentsGroup.
+	Subnets []*SubnetReference
+}
+
+// AiAgentsGroupProperties - Properties of an AiAgentsGroup.
+type AiAgentsGroupProperties struct {
+	// The network profile of the AiAgentsGroup.
+	NetworkProfile *AiAgentsGroupNetworkProfile
+
+	// READ-ONLY; The ARM resource ID of the management resource group associated with this AiAgentsGroup.
+	ManagementResourceGroupID *string
+
+	// READ-ONLY; The status of the last operation.
+	ProvisioningState *AiAgentsGroupProvisioningState
+}
+
+// AiAgentsGroupTagsUpdate - The type used for updating an AiAgentsGroup resource.
+type AiAgentsGroupTagsUpdate struct {
+	// The managed service identities assigned to this resource.
+	Identity *ManagedServiceIdentity
+
+	// Resource tags.
+	Tags map[string]*string
+}
+
 // ApplicationGateway - Application Gateway the CG profile will use to interact with CGs in a backend pool
 type ApplicationGateway struct {
 	// List of Application Gateway Backend Address Pools.
@@ -43,6 +118,9 @@ type AzureFileVolume struct {
 
 	// The reference to the storage account access key used to access the Azure File share.
 	StorageAccountKeyReference *string
+
+	// The client id of the user-assigned managed identity that has access to the Azure File share.
+	UserAssignedIdentityClientID *string
 }
 
 // CachedImages - The cached image and OS type.
@@ -879,6 +957,126 @@ type Logs struct {
 	Content *string
 }
 
+// ManagedServiceIdentity - Managed service identity (system assigned and/or user assigned identities)
+type ManagedServiceIdentity struct {
+	// REQUIRED; The type of managed identity assigned to this resource.
+	Type *ManagedServiceIdentityType
+
+	// The identities assigned to this resource by the user.
+	UserAssignedIdentities map[string]*UserAssignedIdentity
+
+	// READ-ONLY; The service principal ID of the system assigned identity. This property will only be provided for a system assigned
+	// identity.
+	PrincipalID *string
+
+	// READ-ONLY; The tenant ID of the system assigned identity. This property will only be provided for a system assigned identity.
+	TenantID *string
+}
+
+// ManagedVirtualNodePool - A managed virtual node pool resource.
+type ManagedVirtualNodePool struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
+	// The managed service identities assigned to this resource.
+	Identity *ManagedServiceIdentity
+
+	// The properties of the managed virtual node pool.
+	Properties *ManagedVirtualNodePoolProperties
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// ManagedVirtualNodePoolContainerGroup - A container group associated with a managed virtual node pool.
+type ManagedVirtualNodePoolContainerGroup struct {
+	// READ-ONLY; The Azure resource ID of the container group.
+	ResourceID *string
+
+	// READ-ONLY; The state of the container group.
+	State *string
+
+	// READ-ONLY; The type of the container group.
+	Type *string
+}
+
+// ManagedVirtualNodePoolListResult - The response of a ManagedVirtualNodePool list operation.
+type ManagedVirtualNodePoolListResult struct {
+	// REQUIRED; The ManagedVirtualNodePool items on this page
+	Value []*ManagedVirtualNodePool
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// ManagedVirtualNodePoolPatchProperties - Updatable resource-specific properties for `ManagedVirtualNodePool` PATCH.
+type ManagedVirtualNodePoolPatchProperties struct {
+	// Maximum number of nodes the pool can scale to.
+	MaxNodes *int32
+
+	// Minimum number of nodes maintained by the pool.
+	MinNodes *int32
+}
+
+// ManagedVirtualNodePoolProperties - Properties of a managed virtual node pool.
+type ManagedVirtualNodePoolProperties struct {
+	// REQUIRED; The Azure resource ID of the AI agents group associated with the node pool. Set at create time and immutable
+	// thereafter.
+	AiAgentGroupResourceID *string
+
+	// REQUIRED; The Azure resource ID of the backing AKS managed cluster. Set at create time and immutable thereafter.
+	AksClusterResourceID *string
+
+	// REQUIRED; The Azure resource ID of the user-assigned managed identity used by the node pool. Set at create time and immutable
+	// thereafter.
+	ManagedIdentityResourceID *string
+
+	// Maximum number of nodes the pool can scale to.
+	MaxNodes *int32
+
+	// Minimum number of nodes maintained by the pool.
+	MinNodes *int32
+
+	// READ-ONLY; The container groups associated with the node pool.
+	ContainerGroups []*ManagedVirtualNodePoolContainerGroup
+
+	// READ-ONLY; The status of the last provisioning operation on the resource.
+	ProvisioningState *ManagedVirtualNodePoolProvisioningState
+
+	// READ-ONLY; The number of container groups that are ready in the node pool.
+	ReadyCount *int32
+
+	// READ-ONLY; The Azure resource ID of the subnet used by container groups in the node pool.
+	SubnetResourceID *string
+
+	// READ-ONLY; The desired number of container groups for the node pool.
+	TargetCount *int32
+}
+
+// ManagedVirtualNodePoolUpdate - The type used for updating a `ManagedVirtualNodePool` resource.
+type ManagedVirtualNodePoolUpdate struct {
+	// The managed service identities assigned to this resource.
+	Identity *ManagedServiceIdentity
+
+	// Resource-specific properties that can be updated via PATCH.
+	Properties *ManagedVirtualNodePoolPatchProperties
+
+	// Resource tags.
+	Tags map[string]*string
+}
+
 // NGroup - Describes the NGroups resource.
 type NGroup struct {
 	// The identity of the NGroup, if configured.
@@ -1185,6 +1383,13 @@ type StorageProfile struct {
 	FileShares []*FileShare
 }
 
+// SubnetReference - A reference to a subnet resource.
+type SubnetReference struct {
+	// REQUIRED; The ARM resource ID of the subnet. The caller must have `Microsoft.Network/virtualNetworks/subnets/join/action`
+	// permission on this subnet (enforced via a linked access check at create/update time).
+	ID *string
+}
+
 // SystemData - Metadata pertaining to creation and last modification of the resource.
 type SystemData struct {
 	// The timestamp of resource creation (UTC).
@@ -1275,6 +1480,15 @@ type UserAssignedIdentities struct {
 	PrincipalID *string
 }
 
+// UserAssignedIdentity - User assigned identity properties
+type UserAssignedIdentity struct {
+	// READ-ONLY; The client ID of the assigned identity.
+	ClientID *string
+
+	// READ-ONLY; The principal ID of the assigned identity.
+	PrincipalID *string
+}
+
 // Volume - The properties of the volume.
 type Volume struct {
 	// REQUIRED; The name of the volume.
@@ -1289,10 +1503,12 @@ type Volume struct {
 	// The git repo volume.
 	GitRepo *GitRepoVolume
 
-	// The secret volume.
+	// Defines files for a secret volume. Dictionary keys are file names and values are Base64-encoded secret data used as file
+	// contents. The values are sensitive, and the service does not return the contents of this property in GET responses.
 	Secret map[string]*string
 
-	// The secret reference volume.
+	// Defines files for a secret reference volume. Dictionary keys are file names and values identify entries in the container
+	// group's secretReferences collection. This property contains reference names rather than secret values.
 	SecretReference map[string]*string
 }
 

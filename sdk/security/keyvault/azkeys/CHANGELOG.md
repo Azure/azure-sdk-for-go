@@ -3,12 +3,17 @@
 ## 1.6.0-beta.2 (Unreleased)
 
 ### Features Added
+* Added support for ML-DSA keys: the `KeyTypeAKP` and `KeyTypeAKPHSM` key types and the
+  `AKPAlgorithm` type (`ML-DSA-44`, `ML-DSA-65`, `ML-DSA-87`)
+* Added the `Alg` field to `CreateKeyParameters`, and the `Alg` and `Pub` fields to `JSONWebKey`
+* Added the `Context` and `ExternalMu` fields to `SignParameters` and `VerifyParameters`
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+* Upgraded to API service version `2026-07-01-preview`
 
 ## 1.6.0-beta.1 (2026-06-09)
 

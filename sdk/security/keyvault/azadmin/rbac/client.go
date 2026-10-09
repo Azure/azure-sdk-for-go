@@ -18,7 +18,7 @@ import (
 // Client contains the methods for the service.
 // Don't use this type directly, use a constructor function instead.
 //
-// Generated from API version 2026-01-01-preview
+// Generated from API version 2026-07-01-preview
 type Client struct {
 	internal     *azcore.Client
 	vaultBaseUrl string
@@ -45,12 +45,7 @@ func (client *Client) CreateOrUpdateRoleDefinition(ctx context.Context, scope Ro
 	if err != nil {
 		return CreateOrUpdateRoleDefinitionResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return CreateOrUpdateRoleDefinitionResponse{}, err
-	}
-	resp, err := client.createOrUpdateRoleDefinitionHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateRoleDefinitionHandleResponse(httpResp, http.StatusCreated)
 }
 
 // createOrUpdateRoleDefinitionCreateRequest creates the CreateOrUpdateRoleDefinition request.
@@ -69,7 +64,7 @@ func (client *Client) createOrUpdateRoleDefinitionCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101Preview)
+	reqQP.Set("api-version", version20260701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -80,8 +75,11 @@ func (client *Client) createOrUpdateRoleDefinitionCreateRequest(ctx context.Cont
 }
 
 // createOrUpdateRoleDefinitionHandleResponse handles the CreateOrUpdateRoleDefinition response.
-func (client *Client) createOrUpdateRoleDefinitionHandleResponse(resp *http.Response) (CreateOrUpdateRoleDefinitionResponse, error) {
+func (client *Client) createOrUpdateRoleDefinitionHandleResponse(resp *http.Response, successCodes ...int) (CreateOrUpdateRoleDefinitionResponse, error) {
 	result := CreateOrUpdateRoleDefinitionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RoleDefinition); err != nil {
 		return CreateOrUpdateRoleDefinitionResponse{}, err
 	}
@@ -108,12 +106,7 @@ func (client *Client) CreateRoleAssignment(ctx context.Context, scope RoleScope,
 	if err != nil {
 		return CreateRoleAssignmentResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return CreateRoleAssignmentResponse{}, err
-	}
-	resp, err := client.createRoleAssignmentHandleResponse(httpResp)
-	return resp, err
+	return client.createRoleAssignmentHandleResponse(httpResp, http.StatusCreated)
 }
 
 // createRoleAssignmentCreateRequest creates the CreateRoleAssignment request.
@@ -132,7 +125,7 @@ func (client *Client) createRoleAssignmentCreateRequest(ctx context.Context, sco
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101Preview)
+	reqQP.Set("api-version", version20260701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -143,8 +136,11 @@ func (client *Client) createRoleAssignmentCreateRequest(ctx context.Context, sco
 }
 
 // createRoleAssignmentHandleResponse handles the CreateRoleAssignment response.
-func (client *Client) createRoleAssignmentHandleResponse(resp *http.Response) (CreateRoleAssignmentResponse, error) {
+func (client *Client) createRoleAssignmentHandleResponse(resp *http.Response, successCodes ...int) (CreateRoleAssignmentResponse, error) {
 	result := CreateRoleAssignmentResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RoleAssignment); err != nil {
 		return CreateRoleAssignmentResponse{}, err
 	}
@@ -170,12 +166,7 @@ func (client *Client) DeleteRoleAssignment(ctx context.Context, scope RoleScope,
 	if err != nil {
 		return DeleteRoleAssignmentResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DeleteRoleAssignmentResponse{}, err
-	}
-	resp, err := client.deleteRoleAssignmentHandleResponse(httpResp)
-	return resp, err
+	return client.deleteRoleAssignmentHandleResponse(httpResp, http.StatusOK)
 }
 
 // deleteRoleAssignmentCreateRequest creates the DeleteRoleAssignment request.
@@ -194,15 +185,18 @@ func (client *Client) deleteRoleAssignmentCreateRequest(ctx context.Context, sco
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101Preview)
+	reqQP.Set("api-version", version20260701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // deleteRoleAssignmentHandleResponse handles the DeleteRoleAssignment response.
-func (client *Client) deleteRoleAssignmentHandleResponse(resp *http.Response) (DeleteRoleAssignmentResponse, error) {
+func (client *Client) deleteRoleAssignmentHandleResponse(resp *http.Response, successCodes ...int) (DeleteRoleAssignmentResponse, error) {
 	result := DeleteRoleAssignmentResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RoleAssignment); err != nil {
 		return DeleteRoleAssignmentResponse{}, err
 	}
@@ -228,12 +222,7 @@ func (client *Client) DeleteRoleDefinition(ctx context.Context, scope RoleScope,
 	if err != nil {
 		return DeleteRoleDefinitionResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DeleteRoleDefinitionResponse{}, err
-	}
-	resp, err := client.deleteRoleDefinitionHandleResponse(httpResp)
-	return resp, err
+	return client.deleteRoleDefinitionHandleResponse(httpResp, http.StatusOK)
 }
 
 // deleteRoleDefinitionCreateRequest creates the DeleteRoleDefinition request.
@@ -252,15 +241,18 @@ func (client *Client) deleteRoleDefinitionCreateRequest(ctx context.Context, sco
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101Preview)
+	reqQP.Set("api-version", version20260701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // deleteRoleDefinitionHandleResponse handles the DeleteRoleDefinition response.
-func (client *Client) deleteRoleDefinitionHandleResponse(resp *http.Response) (DeleteRoleDefinitionResponse, error) {
+func (client *Client) deleteRoleDefinitionHandleResponse(resp *http.Response, successCodes ...int) (DeleteRoleDefinitionResponse, error) {
 	result := DeleteRoleDefinitionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RoleDefinition); err != nil {
 		return DeleteRoleDefinitionResponse{}, err
 	}
@@ -286,12 +278,7 @@ func (client *Client) GetRoleAssignment(ctx context.Context, scope RoleScope, ro
 	if err != nil {
 		return GetRoleAssignmentResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return GetRoleAssignmentResponse{}, err
-	}
-	resp, err := client.getRoleAssignmentHandleResponse(httpResp)
-	return resp, err
+	return client.getRoleAssignmentHandleResponse(httpResp, http.StatusOK)
 }
 
 // getRoleAssignmentCreateRequest creates the GetRoleAssignment request.
@@ -310,15 +297,18 @@ func (client *Client) getRoleAssignmentCreateRequest(ctx context.Context, scope 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101Preview)
+	reqQP.Set("api-version", version20260701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getRoleAssignmentHandleResponse handles the GetRoleAssignment response.
-func (client *Client) getRoleAssignmentHandleResponse(resp *http.Response) (GetRoleAssignmentResponse, error) {
+func (client *Client) getRoleAssignmentHandleResponse(resp *http.Response, successCodes ...int) (GetRoleAssignmentResponse, error) {
 	result := GetRoleAssignmentResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RoleAssignment); err != nil {
 		return GetRoleAssignmentResponse{}, err
 	}
@@ -344,12 +334,7 @@ func (client *Client) GetRoleDefinition(ctx context.Context, scope RoleScope, ro
 	if err != nil {
 		return GetRoleDefinitionResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return GetRoleDefinitionResponse{}, err
-	}
-	resp, err := client.getRoleDefinitionHandleResponse(httpResp)
-	return resp, err
+	return client.getRoleDefinitionHandleResponse(httpResp, http.StatusOK)
 }
 
 // getRoleDefinitionCreateRequest creates the GetRoleDefinition request.
@@ -368,15 +353,18 @@ func (client *Client) getRoleDefinitionCreateRequest(ctx context.Context, scope 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101Preview)
+	reqQP.Set("api-version", version20260701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getRoleDefinitionHandleResponse handles the GetRoleDefinition response.
-func (client *Client) getRoleDefinitionHandleResponse(resp *http.Response) (GetRoleDefinitionResponse, error) {
+func (client *Client) getRoleDefinitionHandleResponse(resp *http.Response, successCodes ...int) (GetRoleDefinitionResponse, error) {
 	result := GetRoleDefinitionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RoleDefinition); err != nil {
 		return GetRoleDefinitionResponse{}, err
 	}
@@ -397,42 +385,56 @@ func (client *Client) NewListRoleAssignmentsPager(scope RoleScope, options *List
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listRoleAssignmentsCreateRequest(ctx, scope, options)
-			}, nil)
+			req, err := client.listRoleAssignmentsCreateRequest(ctx, scope, nextLink, options)
 			if err != nil {
 				return ListRoleAssignmentsResponse{}, err
 			}
-			return client.listRoleAssignmentsHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ListRoleAssignmentsResponse{}, err
+			}
+			return client.listRoleAssignmentsHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listRoleAssignmentsCreateRequest creates the ListRoleAssignments request.
-func (client *Client) listRoleAssignmentsCreateRequest(ctx context.Context, scope RoleScope, options *ListRoleAssignmentsOptions) (*policy.Request, error) {
-	urlPath := "/{scope}/providers/Microsoft.Authorization/roleAssignments"
-	if scope == "" {
-		return nil, errors.New("parameter scope cannot be empty")
+func (client *Client) listRoleAssignmentsCreateRequest(ctx context.Context, scope RoleScope, nextLink string, options *ListRoleAssignmentsOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/{scope}/providers/Microsoft.Authorization/roleAssignments"
+		if scope == "" {
+			return nil, errors.New("parameter scope cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{scope}", string(scope))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.vaultBaseUrl, urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.vaultBaseUrl, nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{scope}", string(scope))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.vaultBaseUrl, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Filter != nil {
+			reqQP.Set("$filter", *options.Filter)
+		}
+		reqQP.Set("api-version", version20260701Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	reqQP.Set("api-version", version20260101Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listRoleAssignmentsHandleResponse handles the ListRoleAssignments response.
-func (client *Client) listRoleAssignmentsHandleResponse(resp *http.Response) (ListRoleAssignmentsResponse, error) {
+func (client *Client) listRoleAssignmentsHandleResponse(resp *http.Response, successCodes ...int) (ListRoleAssignmentsResponse, error) {
 	result := ListRoleAssignmentsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RoleAssignmentListResult); err != nil {
 		return ListRoleAssignmentsResponse{}, err
 	}
@@ -453,42 +455,56 @@ func (client *Client) NewListRoleDefinitionsPager(scope RoleScope, options *List
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listRoleDefinitionsCreateRequest(ctx, scope, options)
-			}, nil)
+			req, err := client.listRoleDefinitionsCreateRequest(ctx, scope, nextLink, options)
 			if err != nil {
 				return ListRoleDefinitionsResponse{}, err
 			}
-			return client.listRoleDefinitionsHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ListRoleDefinitionsResponse{}, err
+			}
+			return client.listRoleDefinitionsHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listRoleDefinitionsCreateRequest creates the ListRoleDefinitions request.
-func (client *Client) listRoleDefinitionsCreateRequest(ctx context.Context, scope RoleScope, options *ListRoleDefinitionsOptions) (*policy.Request, error) {
-	urlPath := "/{scope}/providers/Microsoft.Authorization/roleDefinitions"
-	if scope == "" {
-		return nil, errors.New("parameter scope cannot be empty")
+func (client *Client) listRoleDefinitionsCreateRequest(ctx context.Context, scope RoleScope, nextLink string, options *ListRoleDefinitionsOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/{scope}/providers/Microsoft.Authorization/roleDefinitions"
+		if scope == "" {
+			return nil, errors.New("parameter scope cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{scope}", string(scope))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.vaultBaseUrl, urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.vaultBaseUrl, nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{scope}", string(scope))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.vaultBaseUrl, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Filter != nil {
+			reqQP.Set("$filter", *options.Filter)
+		}
+		reqQP.Set("api-version", version20260701Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	reqQP.Set("api-version", version20260101Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listRoleDefinitionsHandleResponse handles the ListRoleDefinitions response.
-func (client *Client) listRoleDefinitionsHandleResponse(resp *http.Response) (ListRoleDefinitionsResponse, error) {
+func (client *Client) listRoleDefinitionsHandleResponse(resp *http.Response, successCodes ...int) (ListRoleDefinitionsResponse, error) {
 	result := ListRoleDefinitionsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RoleDefinitionListResult); err != nil {
 		return ListRoleDefinitionsResponse{}, err
 	}

@@ -5,8 +5,29 @@
 package azkeys
 
 const (
-	version20260101Preview string = "2026-01-01-preview"
+	version20260701Preview string = "2026-07-01-preview"
 )
+
+// AKPAlgorithm - The algorithm identifier for Algorithm Key Pair (AKP) keys.
+type AKPAlgorithm string
+
+const (
+	// AKPAlgorithmMLDSA44 - ML-DSA-44, as defined by FIPS 204 and draft-ietf-cose-dilithium.
+	AKPAlgorithmMLDSA44 AKPAlgorithm = "ML-DSA-44"
+	// AKPAlgorithmMLDSA65 - ML-DSA-65, as defined by FIPS 204 and draft-ietf-cose-dilithium.
+	AKPAlgorithmMLDSA65 AKPAlgorithm = "ML-DSA-65"
+	// AKPAlgorithmMLDSA87 - ML-DSA-87, as defined by FIPS 204 and draft-ietf-cose-dilithium.
+	AKPAlgorithmMLDSA87 AKPAlgorithm = "ML-DSA-87"
+)
+
+// PossibleAKPAlgorithmValues returns the possible values for the AKPAlgorithm const type.
+func PossibleAKPAlgorithmValues() []AKPAlgorithm {
+	return []AKPAlgorithm{
+		AKPAlgorithmMLDSA44,
+		AKPAlgorithmMLDSA65,
+		AKPAlgorithmMLDSA87,
+	}
+}
 
 // CurveName - Elliptic curve name.
 type CurveName string
@@ -109,15 +130,15 @@ type JSONWebKeyWrapAlgorithm string
 const (
 	// JSONWebKeyWrapAlgorithmA128KW - 128-bit AES key wrap.
 	JSONWebKeyWrapAlgorithmA128KW JSONWebKeyWrapAlgorithm = "A128KW"
-	// JSONWebKeyWrapAlgorithmA128KWPAD - 192-bit AES key wrap with padding.
+	// JSONWebKeyWrapAlgorithmA128KWPAD - 128-bit AES key wrap with padding.
 	JSONWebKeyWrapAlgorithmA128KWPAD JSONWebKeyWrapAlgorithm = "A128KWPAD"
 	// JSONWebKeyWrapAlgorithmA192KW - 192-bit AES key wrap.
 	JSONWebKeyWrapAlgorithmA192KW JSONWebKeyWrapAlgorithm = "A192KW"
-	// JSONWebKeyWrapAlgorithmA192KWPAD - 256-bit AES key wrap with padding.
+	// JSONWebKeyWrapAlgorithmA192KWPAD - 192-bit AES key wrap with padding.
 	JSONWebKeyWrapAlgorithmA192KWPAD JSONWebKeyWrapAlgorithm = "A192KWPAD"
 	// JSONWebKeyWrapAlgorithmA256KW - 256-bit AES key wrap.
 	JSONWebKeyWrapAlgorithmA256KW JSONWebKeyWrapAlgorithm = "A256KW"
-	// JSONWebKeyWrapAlgorithmA256KWPAD - 128-bit AES key wrap with padding.
+	// JSONWebKeyWrapAlgorithmA256KWPAD - 256-bit AES key wrap with padding.
 	JSONWebKeyWrapAlgorithmA256KWPAD JSONWebKeyWrapAlgorithm = "A256KWPAD"
 	// JSONWebKeyWrapAlgorithmCKMAESKEYWRAP - CKM AES key wrap.
 	JSONWebKeyWrapAlgorithmCKMAESKEYWRAP JSONWebKeyWrapAlgorithm = "CKM_AES_KEY_WRAP"
@@ -175,6 +196,10 @@ const (
 
 	// KeyOperationImport - Indicates that the key can be imported during creation.
 	KeyOperationImport KeyOperation = "import"
+	// KeyOperationSecureUnwrapKey - Indicates that the key can be used to securely unwrap another key.
+	KeyOperationSecureUnwrapKey KeyOperation = "secureUnwrapKey"
+	// KeyOperationSecureWrapKey - Indicates that the key can be used to securely wrap another key.
+	KeyOperationSecureWrapKey KeyOperation = "secureWrapKey"
 	// KeyOperationSign - Indicates that the key can be used to sign.
 	KeyOperationSign KeyOperation = "sign"
 	// KeyOperationUnwrapKey - Indicates that the key can be used to unwrap another key.
@@ -192,6 +217,8 @@ func PossibleKeyOperationValues() []KeyOperation {
 		KeyOperationEncrypt,
 
 		KeyOperationImport,
+		KeyOperationSecureUnwrapKey,
+		KeyOperationSecureWrapKey,
 		KeyOperationSign,
 		KeyOperationUnwrapKey,
 		KeyOperationVerify,
@@ -221,6 +248,10 @@ func PossibleKeyRotationPolicyActionValues() []KeyRotationPolicyAction {
 type KeyType string
 
 const (
+	// KeyTypeAKP - Algorithm Key Pair.
+	KeyTypeAKP KeyType = "AKP"
+	// KeyTypeAKPHSM - Algorithm Key Pair with private key material stored in HSM.
+	KeyTypeAKPHSM KeyType = "AKP-HSM"
 	// KeyTypeEC - Elliptic Curve.
 	KeyTypeEC KeyType = "EC"
 	// KeyTypeECHSM - Elliptic Curve with a private key which is stored in the HSM.
@@ -238,6 +269,8 @@ const (
 // PossibleKeyTypeValues returns the possible values for the KeyType const type.
 func PossibleKeyTypeValues() []KeyType {
 	return []KeyType{
+		KeyTypeAKP,
+		KeyTypeAKPHSM,
 		KeyTypeEC,
 		KeyTypeECHSM,
 		KeyTypeOct,

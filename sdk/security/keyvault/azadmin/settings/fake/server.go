@@ -93,7 +93,7 @@ func (s *ServerTransport) dispatchGetSetting(req *http.Request) (*http.Response,
 	if s.srv.GetSetting == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetSetting not implemented")}
 	}
-	const regexStr = `/settings/(?P<setting_name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/settings/(?P<setting_name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 2 {
@@ -141,7 +141,7 @@ func (s *ServerTransport) dispatchUpdateSetting(req *http.Request) (*http.Respon
 	if s.srv.UpdateSetting == nil {
 		return nil, &nonRetriableError{errors.New("fake for method UpdateSetting not implemented")}
 	}
-	const regexStr = `/settings/(?P<setting_name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/settings/(?P<setting_name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 2 {

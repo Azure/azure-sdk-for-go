@@ -13,11 +13,21 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azadmin/ekm"
 	"net/http"
+	"net/url"
+	"regexp"
 	"slices"
 )
 
 // KeyVaultServer is a fake server for instances of the ekm.KeyVaultClient type.
 type KeyVaultServer struct {
+	// BeginCreateEkmPrivateEndpoint is the fake for method KeyVaultClient.BeginCreateEkmPrivateEndpoint
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginCreateEkmPrivateEndpoint func(ctx context.Context, peName string, parameters ekm.PrivateEndpointCreateParameters, options *ekm.BeginCreateEkmPrivateEndpointOptions) (resp azfake.PollerResponder[ekm.CreateEkmPrivateEndpointResponse], errResp azfake.ErrorResponder)
+
+	// BeginDeleteEkmPrivateEndpoint is the fake for method KeyVaultClient.BeginDeleteEkmPrivateEndpoint
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginDeleteEkmPrivateEndpoint func(ctx context.Context, peName string, options *ekm.BeginDeleteEkmPrivateEndpointOptions) (resp azfake.PollerResponder[ekm.DeleteEkmPrivateEndpointResponse], errResp azfake.ErrorResponder)
+
 	// CheckEkmConnection is the fake for method KeyVaultClient.CheckEkmConnection
 	// HTTP status codes to indicate success: http.StatusOK
 	CheckEkmConnection func(ctx context.Context, options *ekm.CheckEkmConnectionOptions) (resp azfake.Responder[ekm.CheckEkmConnectionResponse], errResp azfake.ErrorResponder)
@@ -38,6 +48,18 @@ type KeyVaultServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	GetEkmConnection func(ctx context.Context, options *ekm.GetEkmConnectionOptions) (resp azfake.Responder[ekm.GetEkmConnectionResponse], errResp azfake.ErrorResponder)
 
+	// GetEkmPrivateEndpoint is the fake for method KeyVaultClient.GetEkmPrivateEndpoint
+	// HTTP status codes to indicate success: http.StatusOK
+	GetEkmPrivateEndpoint func(ctx context.Context, peName string, options *ekm.GetEkmPrivateEndpointOptions) (resp azfake.Responder[ekm.GetEkmPrivateEndpointResponse], errResp azfake.ErrorResponder)
+
+	// GetEkmPrivateEndpointOperationStatus is the fake for method KeyVaultClient.GetEkmPrivateEndpointOperationStatus
+	// HTTP status codes to indicate success: http.StatusOK
+	GetEkmPrivateEndpointOperationStatus func(ctx context.Context, operationID string, options *ekm.GetEkmPrivateEndpointOperationStatusOptions) (resp azfake.Responder[ekm.GetEkmPrivateEndpointOperationStatusResponse], errResp azfake.ErrorResponder)
+
+	// ListEkmPrivateEndpoints is the fake for method KeyVaultClient.ListEkmPrivateEndpoints
+	// HTTP status codes to indicate success: http.StatusOK
+	ListEkmPrivateEndpoints func(ctx context.Context, options *ekm.ListEkmPrivateEndpointsOptions) (resp azfake.Responder[ekm.ListEkmPrivateEndpointsResponse], errResp azfake.ErrorResponder)
+
 	// UpdateEkmConnection is the fake for method KeyVaultClient.UpdateEkmConnection
 	// HTTP status codes to indicate success: http.StatusOK
 	UpdateEkmConnection func(ctx context.Context, ekmConnection ekm.Connection, options *ekm.UpdateEkmConnectionOptions) (resp azfake.Responder[ekm.UpdateEkmConnectionResponse], errResp azfake.ErrorResponder)
@@ -47,13 +69,19 @@ type KeyVaultServer struct {
 // The returned KeyVaultServerTransport instance is connected to an instance of ekm.KeyVaultClient via the
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewKeyVaultServerTransport(srv *KeyVaultServer) *KeyVaultServerTransport {
-	return &KeyVaultServerTransport{srv: srv}
+	return &KeyVaultServerTransport{
+		srv:                           srv,
+		beginCreateEkmPrivateEndpoint: newTracker[azfake.PollerResponder[ekm.CreateEkmPrivateEndpointResponse]](),
+		beginDeleteEkmPrivateEndpoint: newTracker[azfake.PollerResponder[ekm.DeleteEkmPrivateEndpointResponse]](),
+	}
 }
 
 // KeyVaultServerTransport connects instances of ekm.KeyVaultClient to instances of KeyVaultServer.
 // Don't use this type directly, use NewKeyVaultServerTransport instead.
 type KeyVaultServerTransport struct {
-	srv *KeyVaultServer
+	srv                           *KeyVaultServer
+	beginCreateEkmPrivateEndpoint *tracker[azfake.PollerResponder[ekm.CreateEkmPrivateEndpointResponse]]
+	beginDeleteEkmPrivateEndpoint *tracker[azfake.PollerResponder[ekm.DeleteEkmPrivateEndpointResponse]]
 }
 
 // Do implements the policy.Transporter interface for KeyVaultServerTransport.
@@ -77,6 +105,10 @@ func (k *KeyVaultServerTransport) dispatchToMethodFake(req *http.Request, method
 		}
 		if !intercepted {
 			switch method {
+			case "KeyVaultClient.BeginCreateEkmPrivateEndpoint":
+				res.resp, res.err = k.dispatchBeginCreateEkmPrivateEndpoint(req)
+			case "KeyVaultClient.BeginDeleteEkmPrivateEndpoint":
+				res.resp, res.err = k.dispatchBeginDeleteEkmPrivateEndpoint(req)
 			case "KeyVaultClient.CheckEkmConnection":
 				res.resp, res.err = k.dispatchCheckEkmConnection(req)
 			case "KeyVaultClient.CreateEkmConnection":
@@ -87,6 +119,12 @@ func (k *KeyVaultServerTransport) dispatchToMethodFake(req *http.Request, method
 				res.resp, res.err = k.dispatchGetEkmCertificate(req)
 			case "KeyVaultClient.GetEkmConnection":
 				res.resp, res.err = k.dispatchGetEkmConnection(req)
+			case "KeyVaultClient.GetEkmPrivateEndpoint":
+				res.resp, res.err = k.dispatchGetEkmPrivateEndpoint(req)
+			case "KeyVaultClient.GetEkmPrivateEndpointOperationStatus":
+				res.resp, res.err = k.dispatchGetEkmPrivateEndpointOperationStatus(req)
+			case "KeyVaultClient.ListEkmPrivateEndpoints":
+				res.resp, res.err = k.dispatchListEkmPrivateEndpoints(req)
 			case "KeyVaultClient.UpdateEkmConnection":
 				res.resp, res.err = k.dispatchUpdateEkmConnection(req)
 			default:
@@ -103,6 +141,90 @@ func (k *KeyVaultServerTransport) dispatchToMethodFake(req *http.Request, method
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
+}
+
+func (k *KeyVaultServerTransport) dispatchBeginCreateEkmPrivateEndpoint(req *http.Request) (*http.Response, error) {
+	if k.srv.BeginCreateEkmPrivateEndpoint == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginCreateEkmPrivateEndpoint not implemented")}
+	}
+	beginCreateEkmPrivateEndpoint := k.beginCreateEkmPrivateEndpoint.get(req)
+	if beginCreateEkmPrivateEndpoint == nil {
+		const regexStr = `/ekm/privateendpoint/(?P<peName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[ekm.PrivateEndpointCreateParameters](req)
+		if err != nil {
+			return nil, err
+		}
+		peNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("peName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := k.srv.BeginCreateEkmPrivateEndpoint(req.Context(), peNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginCreateEkmPrivateEndpoint = &respr
+		k.beginCreateEkmPrivateEndpoint.add(req, beginCreateEkmPrivateEndpoint)
+	}
+
+	resp, err := server.PollerResponderNext(beginCreateEkmPrivateEndpoint, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		k.beginCreateEkmPrivateEndpoint.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginCreateEkmPrivateEndpoint) {
+		k.beginCreateEkmPrivateEndpoint.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (k *KeyVaultServerTransport) dispatchBeginDeleteEkmPrivateEndpoint(req *http.Request) (*http.Response, error) {
+	if k.srv.BeginDeleteEkmPrivateEndpoint == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginDeleteEkmPrivateEndpoint not implemented")}
+	}
+	beginDeleteEkmPrivateEndpoint := k.beginDeleteEkmPrivateEndpoint.get(req)
+	if beginDeleteEkmPrivateEndpoint == nil {
+		const regexStr = `/ekm/privateendpoint/(?P<peName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		peNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("peName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := k.srv.BeginDeleteEkmPrivateEndpoint(req.Context(), peNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginDeleteEkmPrivateEndpoint = &respr
+		k.beginDeleteEkmPrivateEndpoint.add(req, beginDeleteEkmPrivateEndpoint)
+	}
+
+	resp, err := server.PollerResponderNext(beginDeleteEkmPrivateEndpoint, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		k.beginDeleteEkmPrivateEndpoint.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginDeleteEkmPrivateEndpoint) {
+		k.beginDeleteEkmPrivateEndpoint.remove(req)
+	}
+
+	return resp, nil
 }
 
 func (k *KeyVaultServerTransport) dispatchCheckEkmConnection(req *http.Request) (*http.Response, error) {
@@ -198,6 +320,83 @@ func (k *KeyVaultServerTransport) dispatchGetEkmConnection(req *http.Request) (*
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Connection, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (k *KeyVaultServerTransport) dispatchGetEkmPrivateEndpoint(req *http.Request) (*http.Response, error) {
+	if k.srv.GetEkmPrivateEndpoint == nil {
+		return nil, &nonRetriableError{errors.New("fake for method GetEkmPrivateEndpoint not implemented")}
+	}
+	const regexStr = `/ekm/privateendpoint/(?P<peName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 2 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	peNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("peName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := k.srv.GetEkmPrivateEndpoint(req.Context(), peNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).PrivateEndpoint, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (k *KeyVaultServerTransport) dispatchGetEkmPrivateEndpointOperationStatus(req *http.Request) (*http.Response, error) {
+	if k.srv.GetEkmPrivateEndpointOperationStatus == nil {
+		return nil, &nonRetriableError{errors.New("fake for method GetEkmPrivateEndpointOperationStatus not implemented")}
+	}
+	const regexStr = `/ekm/privateendpoint/operations/(?P<operationId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 2 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	operationIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("operationId")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := k.srv.GetEkmPrivateEndpointOperationStatus(req.Context(), operationIDParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).PrivateEndpointOperation, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (k *KeyVaultServerTransport) dispatchListEkmPrivateEndpoints(req *http.Request) (*http.Response, error) {
+	if k.srv.ListEkmPrivateEndpoints == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListEkmPrivateEndpoints not implemented")}
+	}
+	respr, errRespr := k.srv.ListEkmPrivateEndpoints(req.Context(), nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).PrivateEndpointListResult, req)
 	if err != nil {
 		return nil, err
 	}

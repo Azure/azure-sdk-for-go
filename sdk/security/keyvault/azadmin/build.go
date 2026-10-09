@@ -2,6 +2,7 @@
 //go:generate tsp-client update --output-dir ./rbac
 //go:generate tsp-client update --output-dir ./backup
 //go:generate tsp-client update --output-dir ./ekm
+//go:generate go generate ./ekm
 //go:generate go run ./internal/generate/transforms.go
 //go:generate goimports -w .
 //go:generate rm ./backup/constants.go

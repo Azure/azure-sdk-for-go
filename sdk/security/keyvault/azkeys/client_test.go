@@ -713,6 +713,67 @@ func TestSignVerify(t *testing.T) {
 	}
 }
 
+func TestSignVerifyMLDSA(t *testing.T) {
+	// ML-DSA (AKP) keys are HSM-protected, so this test requires a premium vault (the default for test-resources.json)
+	client := startTest(t, false)
+
+	keyName := createRandomName(t, "mldsa")
+
+	createParams := azkeys.CreateKeyParameters{
+		Alg:    to.Ptr(azkeys.AKPAlgorithmMLDSA65),
+		KeyOps: to.SliceOfPtrs(azkeys.KeyOperationSign, azkeys.KeyOperationVerify),
+		Kty:    to.Ptr(azkeys.KeyTypeAKP),
+	}
+	testSerde(t, &createParams)
+	createResp, err := client.CreateKey(context.Background(), keyName, createParams, nil)
+	require.NoError(t, err)
+	require.NotNil(t, createResp.Key)
+	require.NotNil(t, createResp.Key.KID)
+	defer cleanUpKey(t, client, createResp.Key.KID)
+	require.NotNil(t, createResp.Key.Kty)
+	require.Contains(t, []azkeys.KeyType{azkeys.KeyTypeAKP, azkeys.KeyTypeAKPHSM}, *createResp.Key.Kty)
+	require.NotNil(t, createResp.Key.Alg)
+	require.Equal(t, azkeys.AKPAlgorithmMLDSA65, *createResp.Key.Alg)
+	require.NotEmpty(t, createResp.Key.Pub)
+	testSerde(t, &createResp.KeyBundle)
+	version := createResp.Key.KID.Version()
+
+	// ML-DSA signs the message itself (not a digest), and the key's algorithm is implied
+	msg := []byte("plaintext")
+	mlDSAContext := []byte("azkeys-test")
+	signParams := azkeys.SignParameters{Context: mlDSAContext, Value: msg}
+	testSerde(t, &signParams)
+	signResp, err := client.Sign(context.Background(), keyName, version, signParams, nil)
+	require.NoError(t, err)
+	require.NotEmpty(t, signResp.Result)
+	testSerde(t, &signResp.KeyOperationResult)
+
+	verifyParams := azkeys.VerifyParameters{Context: mlDSAContext, Digest: msg, Signature: signResp.Result}
+	testSerde(t, &verifyParams)
+	verifyResp, err := client.Verify(context.Background(), keyName, version, verifyParams, nil)
+	require.NoError(t, err)
+	require.True(t, *verifyResp.Value)
+
+	// external mu mode: the client computes mu from the public key, context and message, and the
+	// service signs it directly. The result is a standard ML-DSA signature over the message.
+	mu := mlDSAExternalMu(t, createResp.Key.Pub, nil, msg)
+	signParams = azkeys.SignParameters{ExternalMu: mu}
+	testSerde(t, &signParams)
+	signResp, err = client.Sign(context.Background(), keyName, version, signParams, nil)
+	require.NoError(t, err)
+	require.NotEmpty(t, signResp.Result)
+
+	verifyResp, err = client.Verify(context.Background(), keyName, version, azkeys.VerifyParameters{Digest: msg, Signature: signResp.Result}, nil)
+	require.NoError(t, err)
+	require.True(t, *verifyResp.Value)
+
+	verifyParams = azkeys.VerifyParameters{ExternalMu: mu, Signature: signResp.Result}
+	testSerde(t, &verifyParams)
+	verifyResp, err = client.Verify(context.Background(), keyName, version, verifyParams, nil)
+	require.NoError(t, err)
+	require.True(t, *verifyResp.Value)
+}
+
 func TestWrapUnwrap(t *testing.T) {
 	for _, mhsm := range []bool{false, true} {
 		name := "KV"

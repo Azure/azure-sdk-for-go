@@ -57,7 +57,7 @@ func main() {
 
 ### Keys
 
-Azure Key Vault can create and store RSA and elliptic curve keys. Both can optionally be protected by hardware security modules (HSMs). Azure Key Vault can also perform cryptographic operations with them. For more information about keys and supported operations and algorithms, see the [Key Vault documentation](https://learn.microsoft.com/azure/key-vault/keys/about-keys).
+Azure Key Vault can create and store RSA and elliptic curve keys, and ML-DSA (post-quantum) keys in preview. All can optionally be protected by hardware security modules (HSMs). Azure Key Vault can also perform cryptographic operations with them. For more information about keys and supported operations and algorithms, see the [Key Vault documentation](https://learn.microsoft.com/azure/key-vault/keys/about-keys).
 
 [Client][client_docs] can create keys in the vault, get existing keys from the vault, update key metadata, and delete keys, as shown in the examples below.
 

@@ -29,5 +29,5 @@ func main() {
 	// fix up the scope parameter for fakes
 	regexReplace("fake/server.go", `\, scopeParam\,`, ", rbac.RoleScope(`/`+scopeParam),")
 	regexReplace("fake/server.go", `\(scopeParam\, `, "(rbac.RoleScope(`/`+scopeParam), ")
-	regexReplace("fake/server.go", `(\(\?P<scope\>(.*?)\))`, `?$1?`)
+	regexReplace("fake/server.go", `(\(\?P<scope\>\[[^\]]+\]\+\))`, `?$1?`)
 }

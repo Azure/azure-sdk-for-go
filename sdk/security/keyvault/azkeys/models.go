@@ -17,6 +17,9 @@ type CreateKeyParameters struct {
 	// REQUIRED; The type of key to create.
 	Kty *KeyType
 
+	// The algorithm for Algorithm Key Pair (AKP) keys.
+	Alg *AKPAlgorithm
+
 	// Elliptic curve name.
 	Curve *CurveName
 
@@ -135,6 +138,9 @@ type ImportKeyParameters struct {
 
 // JSONWebKey - As of http://tools.ietf.org/html/draft-ietf-jose-json-web-key-18
 type JSONWebKey struct {
+	// The algorithm identifier. This parameter is required when kty is AKP.
+	Alg *AKPAlgorithm
+
 	// Elliptic curve name.
 	Crv *CurveName
 
@@ -167,6 +173,9 @@ type JSONWebKey struct {
 
 	// RSA secret prime.
 	P []byte
+
+	// The public key for Algorithm Key Pair (AKP) keys.
+	Pub []byte
 
 	// RSA secret prime, with p < q.
 	Q []byte
@@ -454,10 +463,18 @@ type SecureKeyWrapOperationParameters struct {
 
 // SignParameters - The key operations parameters.
 type SignParameters struct {
-	// REQUIRED; The signing/verification algorithm identifier.
+	// The signing/verification algorithm identifier.
 	Algorithm *SignatureAlgorithm
 
-	// REQUIRED; The value to operate on.
+	// The application context string for ML-DSA signing (FIPS 204 Section 5.2). Must be 0-255 bytes.
+	// Must not be set when external_mu is specified. Only supported for ML-DSA (AKP) keys.
+	Context []byte
+
+	// The pre-computed mu value for ML-DSA external mu mode (FIPS 204 Section 6.2). Must be exactly 64 bytes.
+	// When specified, the algorithm and value fields must not be set. Only supported for ML-DSA (AKP) keys.
+	ExternalMu []byte
+
+	// The value to operate on.
 	Value []byte
 }
 
@@ -478,12 +495,20 @@ type UpdateKeyParameters struct {
 
 // VerifyParameters - The key verify parameters.
 type VerifyParameters struct {
-	// REQUIRED; The signing/verification algorithm.
-	Algorithm *SignatureAlgorithm
-
-	// REQUIRED; The digest used for signing.
-	Digest []byte
-
 	// REQUIRED; The signature to be verified.
 	Signature []byte
+
+	// The signing/verification algorithm.
+	Algorithm *SignatureAlgorithm
+
+	// The application context string for ML-DSA verification (FIPS 204 Section 5.2). Must be 0-255 bytes.
+	// Must not be set when external_mu is specified. Only supported for ML-DSA (AKP) keys.
+	Context []byte
+
+	// The digest used for signing.
+	Digest []byte
+
+	// The pre-computed mu value for ML-DSA external mu mode (FIPS 204 Section 6.2). Must be exactly 64 bytes.
+	// When specified, the algorithm and digest fields must not be set. Only supported for ML-DSA (AKP) keys.
+	ExternalMu []byte
 }

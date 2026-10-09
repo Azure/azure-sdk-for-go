@@ -5,7 +5,7 @@
 package settings
 
 const (
-	version20260101Preview string = "2026-01-01-preview"
+	version20260701Preview string = "2026-07-01-preview"
 )
 
 // SettingType - The type specifier of the value.

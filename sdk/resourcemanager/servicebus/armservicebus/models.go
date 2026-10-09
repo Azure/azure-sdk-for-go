@@ -325,10 +325,6 @@ type NamespaceFailoverProperties struct {
 
 // NamespaceReplicaLocation - Namespace replication properties
 type NamespaceReplicaLocation struct {
-	// Optional property that denotes the ARM ID of the Cluster. This is required, if a namespace replica should be placed in
-	// a Dedicated Event Hub Cluster
-	ClusterArmID *string
-
 	// Azure regions where a replica of the namespace is maintained
 	LocationName *string
 
@@ -820,6 +816,10 @@ type SBNamespaceProperties struct {
 
 	// Geo Data Replication settings for the namespace
 	GeoDataReplication *GeoDataReplicationProperties
+
+	// The IP address type for the namespace. Determines whether the namespace supports IPv4 only or both IPv4 and IPv6 (dual
+	// stack).
+	IPAddressType *IPAddressType
 
 	// The minimum TLS version for the cluster to support, e.g. '1.2'
 	MinimumTLSVersion    *TLSVersion

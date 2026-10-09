@@ -20,7 +20,7 @@ import (
 // FeaturesetContainersClient contains the methods for the FeaturesetContainers group.
 // Don't use this type directly, use NewFeaturesetContainersClient() instead.
 //
-// Generated from API version 2026-03-15-preview
+// Generated from API version 2026-09-01
 type FeaturesetContainersClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -73,7 +73,7 @@ func (client *FeaturesetContainersClient) BeginCreateOrUpdate(ctx context.Contex
 	}
 }
 
-// CreateOrUpdate - Create or update container.
+// createOrUpdate - Create or update container.
 //
 // Create or update container.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -97,7 +97,7 @@ func (client *FeaturesetContainersClient) createOrUpdate(ctx context.Context, re
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *FeaturesetContainersClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, name string, body FeaturesetContainer, _ *FeaturesetContainersClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/featuresets/{name}"
 	if client.subscriptionID == "" {
@@ -121,7 +121,7 @@ func (client *FeaturesetContainersClient) createOrUpdateCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
+	reqQP.Set("api-version", version20260901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -142,7 +142,7 @@ func (client *FeaturesetContainersClient) createOrUpdateCreateRequest(ctx contex
 //     method.
 func (client *FeaturesetContainersClient) BeginDelete(ctx context.Context, resourceGroupName string, workspaceName string, name string, options *FeaturesetContainersClientBeginDeleteOptions) (*runtime.Poller[FeaturesetContainersClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.deleteOperation(ctx, resourceGroupName, workspaceName, name, options)
+		resp, err := client.delete(ctx, resourceGroupName, workspaceName, name, options)
 		if err != nil {
 			return nil, err
 		}
@@ -157,11 +157,11 @@ func (client *FeaturesetContainersClient) BeginDelete(ctx context.Context, resou
 	}
 }
 
-// Delete - Delete container.
+// delete - Delete container.
 //
 // Delete container.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *FeaturesetContainersClient) deleteOperation(ctx context.Context, resourceGroupName string, workspaceName string, name string, options *FeaturesetContainersClientBeginDeleteOptions) (*http.Response, error) {
+func (client *FeaturesetContainersClient) delete(ctx context.Context, resourceGroupName string, workspaceName string, name string, options *FeaturesetContainersClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "FeaturesetContainersClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -181,7 +181,7 @@ func (client *FeaturesetContainersClient) deleteOperation(ctx context.Context, r
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *FeaturesetContainersClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, name string, _ *FeaturesetContainersClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/featuresets/{name}"
 	if client.subscriptionID == "" {
@@ -205,7 +205,7 @@ func (client *FeaturesetContainersClient) deleteCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
+	reqQP.Set("api-version", version20260901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -260,7 +260,7 @@ func (client *FeaturesetContainersClient) getEntityCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
+	reqQP.Set("api-version", version20260901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -341,7 +341,7 @@ func (client *FeaturesetContainersClient) listCreateRequest(ctx context.Context,
 		if options != nil && options.Skip != nil {
 			reqQP.Set("$skip", *options.Skip)
 		}
-		reqQP.Set("api-version", version20260315Preview)
+		reqQP.Set("api-version", version20260901)
 		if options != nil && options.CreatedBy != nil {
 			reqQP.Set("createdBy", *options.CreatedBy)
 		}

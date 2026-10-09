@@ -12,7 +12,37 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-15-preview/Workspace/DataVersionBase/createOrUpdate.json
+// Generated from example definition: 2026-09-01/Workspace/DataVersionBase/publish.json
+func ExampleDataVersionsClient_BeginPublish() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armmachinelearning.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewDataVersionsClient().BeginPublish(ctx, "test-rg", "my-aml-workspace", "string", "string", armmachinelearning.DestinationAsset{
+		DestinationName:    to.Ptr("string"),
+		DestinationVersion: to.Ptr("string"),
+		RegistryName:       to.Ptr("string"),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armmachinelearning.DataVersionsClientPublishResponse{
+	// }
+}
+
+// Generated from example definition: 2026-09-01/Workspace/DataVersionBase/createOrUpdate.json
 func ExampleDataVersionsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -72,7 +102,7 @@ func ExampleDataVersionsClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Workspace/DataVersionBase/delete.json
+// Generated from example definition: 2026-09-01/Workspace/DataVersionBase/delete.json
 func ExampleDataVersionsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -94,7 +124,7 @@ func ExampleDataVersionsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Workspace/DataVersionBase/get.json
+// Generated from example definition: 2026-09-01/Workspace/DataVersionBase/get.json
 func ExampleDataVersionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -141,7 +171,7 @@ func ExampleDataVersionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Workspace/DataVersionBase/list.json
+// Generated from example definition: 2026-09-01/Workspace/DataVersionBase/list.json
 func ExampleDataVersionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -168,7 +198,7 @@ func ExampleDataVersionsClient_NewListPager() {
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page = armmachinelearning.DataVersionsClientListResponse{
 		// 	DataVersionBaseResourceArmPaginatedResult: armmachinelearning.DataVersionBaseResourceArmPaginatedResult{
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.MachineLearningServices/workspaces/my-aml-workspace/data/string/versions?api-version=2025-07-01-preview&$skip=2"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.MachineLearningServices/workspaces/my-aml-workspace/data/string/versions?api-version=2026-09-01&$skip=2"),
 		// 		Value: []*armmachinelearning.DataVersionBase{
 		// 			{
 		// 				Name: to.Ptr("string"),
@@ -199,34 +229,4 @@ func ExampleDataVersionsClient_NewListPager() {
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2026-03-15-preview/Workspace/DataVersionBase/publish.json
-func ExampleDataVersionsClient_BeginPublish() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armmachinelearning.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewDataVersionsClient().BeginPublish(ctx, "test-rg", "my-aml-workspace", "string", "string", armmachinelearning.DestinationAsset{
-		DestinationName:    to.Ptr("string"),
-		DestinationVersion: to.Ptr("string"),
-		RegistryName:       to.Ptr("string"),
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armmachinelearning.DataVersionsClientPublishResponse{
-	// }
 }

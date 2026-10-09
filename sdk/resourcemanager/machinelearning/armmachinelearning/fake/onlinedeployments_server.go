@@ -30,6 +30,10 @@ type OnlineDeploymentsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, workspaceName string, endpointName string, deploymentName string, options *armmachinelearning.OnlineDeploymentsClientBeginDeleteOptions) (resp azfake.PollerResponder[armmachinelearning.OnlineDeploymentsClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method OnlineDeploymentsClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, workspaceName string, endpointName string, deploymentName string, body armmachinelearning.PartialMinimalTrackedResourceWithSKU, options *armmachinelearning.OnlineDeploymentsClientBeginUpdateOptions) (resp azfake.PollerResponder[armmachinelearning.OnlineDeploymentsClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method OnlineDeploymentsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, workspaceName string, endpointName string, deploymentName string, options *armmachinelearning.OnlineDeploymentsClientGetOptions) (resp azfake.Responder[armmachinelearning.OnlineDeploymentsClientGetResponse], errResp azfake.ErrorResponder)
@@ -45,10 +49,6 @@ type OnlineDeploymentsServer struct {
 	// NewListSKUsPager is the fake for method OnlineDeploymentsClient.NewListSKUsPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListSKUsPager func(resourceGroupName string, workspaceName string, endpointName string, deploymentName string, options *armmachinelearning.OnlineDeploymentsClientListSKUsOptions) (resp azfake.PagerResponder[armmachinelearning.OnlineDeploymentsClientListSKUsResponse])
-
-	// BeginUpdate is the fake for method OnlineDeploymentsClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, workspaceName string, endpointName string, deploymentName string, body armmachinelearning.PartialMinimalTrackedResourceWithSKU, options *armmachinelearning.OnlineDeploymentsClientBeginUpdateOptions) (resp azfake.PollerResponder[armmachinelearning.OnlineDeploymentsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewOnlineDeploymentsServerTransport creates a new instance of OnlineDeploymentsServerTransport with the provided implementation.
@@ -59,9 +59,9 @@ func NewOnlineDeploymentsServerTransport(srv *OnlineDeploymentsServer) *OnlineDe
 		srv:                 srv,
 		beginCreateOrUpdate: newTracker[azfake.PollerResponder[armmachinelearning.OnlineDeploymentsClientCreateOrUpdateResponse]](),
 		beginDelete:         newTracker[azfake.PollerResponder[armmachinelearning.OnlineDeploymentsClientDeleteResponse]](),
+		beginUpdate:         newTracker[azfake.PollerResponder[armmachinelearning.OnlineDeploymentsClientUpdateResponse]](),
 		newListPager:        newTracker[azfake.PagerResponder[armmachinelearning.OnlineDeploymentsClientListResponse]](),
 		newListSKUsPager:    newTracker[azfake.PagerResponder[armmachinelearning.OnlineDeploymentsClientListSKUsResponse]](),
-		beginUpdate:         newTracker[azfake.PollerResponder[armmachinelearning.OnlineDeploymentsClientUpdateResponse]](),
 	}
 }
 
@@ -71,9 +71,9 @@ type OnlineDeploymentsServerTransport struct {
 	srv                 *OnlineDeploymentsServer
 	beginCreateOrUpdate *tracker[azfake.PollerResponder[armmachinelearning.OnlineDeploymentsClientCreateOrUpdateResponse]]
 	beginDelete         *tracker[azfake.PollerResponder[armmachinelearning.OnlineDeploymentsClientDeleteResponse]]
+	beginUpdate         *tracker[azfake.PollerResponder[armmachinelearning.OnlineDeploymentsClientUpdateResponse]]
 	newListPager        *tracker[azfake.PagerResponder[armmachinelearning.OnlineDeploymentsClientListResponse]]
 	newListSKUsPager    *tracker[azfake.PagerResponder[armmachinelearning.OnlineDeploymentsClientListSKUsResponse]]
-	beginUpdate         *tracker[azfake.PollerResponder[armmachinelearning.OnlineDeploymentsClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for OnlineDeploymentsServerTransport.
@@ -101,6 +101,8 @@ func (o *OnlineDeploymentsServerTransport) dispatchToMethodFake(req *http.Reques
 				res.resp, res.err = o.dispatchBeginCreateOrUpdate(req)
 			case "OnlineDeploymentsClient.BeginDelete":
 				res.resp, res.err = o.dispatchBeginDelete(req)
+			case "OnlineDeploymentsClient.BeginUpdate":
+				res.resp, res.err = o.dispatchBeginUpdate(req)
 			case "OnlineDeploymentsClient.Get":
 				res.resp, res.err = o.dispatchGet(req)
 			case "OnlineDeploymentsClient.GetLogs":
@@ -109,8 +111,6 @@ func (o *OnlineDeploymentsServerTransport) dispatchToMethodFake(req *http.Reques
 				res.resp, res.err = o.dispatchNewListPager(req)
 			case "OnlineDeploymentsClient.NewListSKUsPager":
 				res.resp, res.err = o.dispatchNewListSKUsPager(req)
-			case "OnlineDeploymentsClient.BeginUpdate":
-				res.resp, res.err = o.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -230,6 +230,62 @@ func (o *OnlineDeploymentsServerTransport) dispatchBeginDelete(req *http.Request
 	}
 	if !server.PollerResponderMore(beginDelete) {
 		o.beginDelete.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (o *OnlineDeploymentsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if o.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := o.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.MachineLearningServices/workspaces/(?P<workspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/onlineEndpoints/(?P<endpointName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/deployments/(?P<deploymentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 6 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armmachinelearning.PartialMinimalTrackedResourceWithSKU](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		workspaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("workspaceName")])
+		if err != nil {
+			return nil, err
+		}
+		endpointNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("endpointName")])
+		if err != nil {
+			return nil, err
+		}
+		deploymentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := o.srv.BeginUpdate(req.Context(), resourceGroupNameParam, workspaceNameParam, endpointNameParam, deploymentNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		o.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		o.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		o.beginUpdate.remove(req)
 	}
 
 	return resp, nil
@@ -452,62 +508,6 @@ func (o *OnlineDeploymentsServerTransport) dispatchNewListSKUsPager(req *http.Re
 	if !server.PagerResponderMore(newListSKUsPager) {
 		o.newListSKUsPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (o *OnlineDeploymentsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if o.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := o.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.MachineLearningServices/workspaces/(?P<workspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/onlineEndpoints/(?P<endpointName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/deployments/(?P<deploymentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 6 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armmachinelearning.PartialMinimalTrackedResourceWithSKU](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		workspaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("workspaceName")])
-		if err != nil {
-			return nil, err
-		}
-		endpointNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("endpointName")])
-		if err != nil {
-			return nil, err
-		}
-		deploymentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := o.srv.BeginUpdate(req.Context(), resourceGroupNameParam, workspaceNameParam, endpointNameParam, deploymentNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		o.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		o.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		o.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

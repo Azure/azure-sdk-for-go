@@ -19,7 +19,7 @@ import (
 // MarketplaceSubscriptionsClient contains the methods for the MarketplaceSubscriptions group.
 // Don't use this type directly, use NewMarketplaceSubscriptionsClient() instead.
 //
-// Generated from API version 2026-03-15-preview
+// Generated from API version 2026-09-01
 type MarketplaceSubscriptionsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -72,7 +72,7 @@ func (client *MarketplaceSubscriptionsClient) BeginCreateOrUpdate(ctx context.Co
 	}
 }
 
-// CreateOrUpdate - Create or update Marketplace Subscription (asynchronous).
+// createOrUpdate - Create or update Marketplace Subscription (asynchronous).
 //
 // Create or update Marketplace Subscription (asynchronous).
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -96,7 +96,7 @@ func (client *MarketplaceSubscriptionsClient) createOrUpdate(ctx context.Context
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *MarketplaceSubscriptionsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, name string, body MarketplaceSubscription, _ *MarketplaceSubscriptionsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/marketplaceSubscriptions/{name}"
 	if client.subscriptionID == "" {
@@ -120,7 +120,7 @@ func (client *MarketplaceSubscriptionsClient) createOrUpdateCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
+	reqQP.Set("api-version", version20260901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -141,7 +141,7 @@ func (client *MarketplaceSubscriptionsClient) createOrUpdateCreateRequest(ctx co
 //     method.
 func (client *MarketplaceSubscriptionsClient) BeginDelete(ctx context.Context, resourceGroupName string, workspaceName string, name string, options *MarketplaceSubscriptionsClientBeginDeleteOptions) (*runtime.Poller[MarketplaceSubscriptionsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.deleteOperation(ctx, resourceGroupName, workspaceName, name, options)
+		resp, err := client.delete(ctx, resourceGroupName, workspaceName, name, options)
 		if err != nil {
 			return nil, err
 		}
@@ -156,11 +156,11 @@ func (client *MarketplaceSubscriptionsClient) BeginDelete(ctx context.Context, r
 	}
 }
 
-// Delete - Delete Marketplace Subscription (asynchronous).
+// delete - Delete Marketplace Subscription (asynchronous).
 //
 // Delete Marketplace Subscription (asynchronous).
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *MarketplaceSubscriptionsClient) deleteOperation(ctx context.Context, resourceGroupName string, workspaceName string, name string, options *MarketplaceSubscriptionsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *MarketplaceSubscriptionsClient) delete(ctx context.Context, resourceGroupName string, workspaceName string, name string, options *MarketplaceSubscriptionsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "MarketplaceSubscriptionsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -180,7 +180,7 @@ func (client *MarketplaceSubscriptionsClient) deleteOperation(ctx context.Contex
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *MarketplaceSubscriptionsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, name string, _ *MarketplaceSubscriptionsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/marketplaceSubscriptions/{name}"
 	if client.subscriptionID == "" {
@@ -204,7 +204,7 @@ func (client *MarketplaceSubscriptionsClient) deleteCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
+	reqQP.Set("api-version", version20260901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -259,7 +259,7 @@ func (client *MarketplaceSubscriptionsClient) getCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
+	reqQP.Set("api-version", version20260901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -340,7 +340,7 @@ func (client *MarketplaceSubscriptionsClient) listCreateRequest(ctx context.Cont
 		if options != nil && options.Skip != nil {
 			reqQP.Set("$skip", *options.Skip)
 		}
-		reqQP.Set("api-version", version20260315Preview)
+		reqQP.Set("api-version", version20260901)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

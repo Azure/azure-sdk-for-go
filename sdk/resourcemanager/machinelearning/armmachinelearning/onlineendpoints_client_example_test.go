@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-15-preview/Workspace/OnlineEndpoint/createOrUpdate.json
+// Generated from example definition: 2026-09-01/Workspace/OnlineEndpoint/createOrUpdate.json
 func ExampleOnlineEndpointsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -115,7 +115,7 @@ func ExampleOnlineEndpointsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Workspace/OnlineEndpoint/delete.json
+// Generated from example definition: 2026-09-01/Workspace/OnlineEndpoint/delete.json
 func ExampleOnlineEndpointsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -141,219 +141,7 @@ func ExampleOnlineEndpointsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Workspace/OnlineEndpoint/get.json
-func ExampleOnlineEndpointsClient_Get() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armmachinelearning.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewOnlineEndpointsClient().Get(ctx, "test-rg", "my-aml-workspace", "testEndpointName", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armmachinelearning.OnlineEndpointsClientGetResponse{
-	// 	OnlineEndpoint: armmachinelearning.OnlineEndpoint{
-	// 		Name: to.Ptr("string"),
-	// 		Type: to.Ptr("string"),
-	// 		ID: to.Ptr("string"),
-	// 		Identity: &armmachinelearning.ManagedServiceIdentity{
-	// 			Type: to.Ptr(armmachinelearning.ManagedServiceIdentityTypeSystemAssigned),
-	// 			PrincipalID: to.Ptr("00000000-1111-2222-3333-444444444444"),
-	// 			TenantID: to.Ptr("00000000-1111-2222-3333-444444444444"),
-	// 			UserAssignedIdentities: map[string]*armmachinelearning.UserAssignedIdentity{
-	// 				"string": &armmachinelearning.UserAssignedIdentity{
-	// 					ClientID: to.Ptr("00000000-1111-2222-3333-444444444444"),
-	// 					PrincipalID: to.Ptr("00000000-1111-2222-3333-444444444444"),
-	// 				},
-	// 			},
-	// 		},
-	// 		Kind: to.Ptr("string"),
-	// 		Location: to.Ptr("string"),
-	// 		Properties: &armmachinelearning.OnlineEndpointProperties{
-	// 			Description: to.Ptr("string"),
-	// 			AuthMode: to.Ptr(armmachinelearning.EndpointAuthModeAMLToken),
-	// 			Compute: to.Ptr("string"),
-	// 			Properties: map[string]*string{
-	// 				"string": to.Ptr("string"),
-	// 			},
-	// 			ProvisioningState: to.Ptr(armmachinelearning.EndpointProvisioningStateCreating),
-	// 			ScoringURI: to.Ptr("https://www.contoso.com/example"),
-	// 			SwaggerURI: to.Ptr("https://www.contoso.com/example"),
-	// 			Traffic: map[string]*int32{
-	// 				"string": to.Ptr[int32](1),
-	// 			},
-	// 		},
-	// 		SKU: &armmachinelearning.SKU{
-	// 			Name: to.Ptr("string"),
-	// 			Capacity: to.Ptr[int32](1),
-	// 			Family: to.Ptr("string"),
-	// 			Size: to.Ptr("string"),
-	// 			Tier: to.Ptr(armmachinelearning.SKUTierFree),
-	// 		},
-	// 		SystemData: &armmachinelearning.SystemData{
-	// 			CreatedAt: to.Ptr(time.Date(2020, time.January, 1, 12, 34, 56, 999000000, time.UTC)),
-	// 			CreatedBy: to.Ptr("string"),
-	// 			CreatedByType: to.Ptr(armmachinelearning.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2020, time.January, 1, 12, 34, 56, 999000000, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("string"),
-	// 			LastModifiedByType: to.Ptr(armmachinelearning.CreatedByTypeUser),
-	// 		},
-	// 		Tags: map[string]*string{
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-03-15-preview/Workspace/OnlineEndpoint/getToken.json
-func ExampleOnlineEndpointsClient_GetToken() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armmachinelearning.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewOnlineEndpointsClient().GetToken(ctx, "test-rg", "my-aml-workspace", "testEndpointName", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armmachinelearning.OnlineEndpointsClientGetTokenResponse{
-	// 	EndpointAuthToken: armmachinelearning.EndpointAuthToken{
-	// 		AccessToken: to.Ptr("string"),
-	// 		ExpiryTimeUTC: to.Ptr[int64](1),
-	// 		RefreshAfterTimeUTC: to.Ptr[int64](1),
-	// 		TokenType: to.Ptr("string"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-03-15-preview/Workspace/OnlineEndpoint/list.json
-func ExampleOnlineEndpointsClient_NewListPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armmachinelearning.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewOnlineEndpointsClient().NewListPager("test-rg", "my-aml-workspace", &armmachinelearning.OnlineEndpointsClientListOptions{
-		Name:        to.Ptr("string"),
-		ComputeType: to.Ptr(armmachinelearning.EndpointComputeTypeManaged),
-		Count:       to.Ptr[int32](1),
-		OrderBy:     to.Ptr(armmachinelearning.OrderStringCreatedAtDesc),
-		Properties:  to.Ptr("string"),
-		Tags:        to.Ptr("string")})
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armmachinelearning.OnlineEndpointsClientListResponse{
-		// 	OnlineEndpointTrackedResourceArmPaginatedResult: armmachinelearning.OnlineEndpointTrackedResourceArmPaginatedResult{
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.MachineLearningServices/workspaces/my-aml-workspace/onlineEndpoints?api-version=2025-07-01-preview&$skip=2"),
-		// 		Value: []*armmachinelearning.OnlineEndpoint{
-		// 			{
-		// 				Name: to.Ptr("string"),
-		// 				Type: to.Ptr("string"),
-		// 				ID: to.Ptr("string"),
-		// 				Identity: &armmachinelearning.ManagedServiceIdentity{
-		// 					Type: to.Ptr(armmachinelearning.ManagedServiceIdentityTypeSystemAssigned),
-		// 					PrincipalID: to.Ptr("00000000-1111-2222-3333-444444444444"),
-		// 					TenantID: to.Ptr("00000000-1111-2222-3333-444444444444"),
-		// 					UserAssignedIdentities: map[string]*armmachinelearning.UserAssignedIdentity{
-		// 						"string": &armmachinelearning.UserAssignedIdentity{
-		// 							ClientID: to.Ptr("00000000-1111-2222-3333-444444444444"),
-		// 							PrincipalID: to.Ptr("00000000-1111-2222-3333-444444444444"),
-		// 						},
-		// 					},
-		// 				},
-		// 				Kind: to.Ptr("string"),
-		// 				Location: to.Ptr("string"),
-		// 				Properties: &armmachinelearning.OnlineEndpointProperties{
-		// 					Description: to.Ptr("string"),
-		// 					AuthMode: to.Ptr(armmachinelearning.EndpointAuthModeAMLToken),
-		// 					Compute: to.Ptr("string"),
-		// 					Properties: map[string]*string{
-		// 						"string": to.Ptr("string"),
-		// 					},
-		// 					ProvisioningState: to.Ptr(armmachinelearning.EndpointProvisioningStateCreating),
-		// 					ScoringURI: to.Ptr("https://www.contoso.com/example"),
-		// 					SwaggerURI: to.Ptr("https://www.contoso.com/example"),
-		// 					Traffic: map[string]*int32{
-		// 						"string": to.Ptr[int32](1),
-		// 					},
-		// 				},
-		// 				SKU: &armmachinelearning.SKU{
-		// 					Name: to.Ptr("string"),
-		// 					Capacity: to.Ptr[int32](1),
-		// 					Family: to.Ptr("string"),
-		// 					Size: to.Ptr("string"),
-		// 					Tier: to.Ptr(armmachinelearning.SKUTierFree),
-		// 				},
-		// 				SystemData: &armmachinelearning.SystemData{
-		// 					CreatedAt: to.Ptr(time.Date(2020, time.January, 1, 12, 34, 56, 999000000, time.UTC)),
-		// 					CreatedBy: to.Ptr("string"),
-		// 					CreatedByType: to.Ptr(armmachinelearning.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(time.Date(2020, time.January, 1, 12, 34, 56, 999000000, time.UTC)),
-		// 					LastModifiedBy: to.Ptr("string"),
-		// 					LastModifiedByType: to.Ptr(armmachinelearning.CreatedByTypeUser),
-		// 				},
-		// 				Tags: map[string]*string{
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2026-03-15-preview/Workspace/OnlineEndpoint/listKeys.json
-func ExampleOnlineEndpointsClient_ListKeys() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armmachinelearning.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewOnlineEndpointsClient().ListKeys(ctx, "test-rg", "my-aml-workspace", "testEndpointName", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armmachinelearning.OnlineEndpointsClientListKeysResponse{
-	// 	EndpointAuthKeys: armmachinelearning.EndpointAuthKeys{
-	// 		PrimaryKey: to.Ptr("string"),
-	// 		SecondaryKey: to.Ptr("string"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-03-15-preview/Workspace/OnlineEndpoint/regenerateKeys.json
+// Generated from example definition: 2026-09-01/Workspace/OnlineEndpoint/regenerateKeys.json
 func ExampleOnlineEndpointsClient_BeginRegenerateKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -382,7 +170,7 @@ func ExampleOnlineEndpointsClient_BeginRegenerateKeys() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Workspace/OnlineEndpoint/update.json
+// Generated from example definition: 2026-09-01/Workspace/OnlineEndpoint/update.json
 func ExampleOnlineEndpointsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -463,4 +251,216 @@ func ExampleOnlineEndpointsClient_BeginUpdate() {
 	// 		},
 	// 	},
 	// }
+}
+
+// Generated from example definition: 2026-09-01/Workspace/OnlineEndpoint/get.json
+func ExampleOnlineEndpointsClient_Get() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armmachinelearning.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewOnlineEndpointsClient().Get(ctx, "test-rg", "my-aml-workspace", "testEndpointName", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armmachinelearning.OnlineEndpointsClientGetResponse{
+	// 	OnlineEndpoint: armmachinelearning.OnlineEndpoint{
+	// 		Name: to.Ptr("string"),
+	// 		Type: to.Ptr("string"),
+	// 		ID: to.Ptr("string"),
+	// 		Identity: &armmachinelearning.ManagedServiceIdentity{
+	// 			Type: to.Ptr(armmachinelearning.ManagedServiceIdentityTypeSystemAssigned),
+	// 			PrincipalID: to.Ptr("00000000-1111-2222-3333-444444444444"),
+	// 			TenantID: to.Ptr("00000000-1111-2222-3333-444444444444"),
+	// 			UserAssignedIdentities: map[string]*armmachinelearning.UserAssignedIdentity{
+	// 				"string": &armmachinelearning.UserAssignedIdentity{
+	// 					ClientID: to.Ptr("00000000-1111-2222-3333-444444444444"),
+	// 					PrincipalID: to.Ptr("00000000-1111-2222-3333-444444444444"),
+	// 				},
+	// 			},
+	// 		},
+	// 		Kind: to.Ptr("string"),
+	// 		Location: to.Ptr("string"),
+	// 		Properties: &armmachinelearning.OnlineEndpointProperties{
+	// 			Description: to.Ptr("string"),
+	// 			AuthMode: to.Ptr(armmachinelearning.EndpointAuthModeAMLToken),
+	// 			Compute: to.Ptr("string"),
+	// 			Properties: map[string]*string{
+	// 				"string": to.Ptr("string"),
+	// 			},
+	// 			ProvisioningState: to.Ptr(armmachinelearning.EndpointProvisioningStateCreating),
+	// 			ScoringURI: to.Ptr("https://www.contoso.com/example"),
+	// 			SwaggerURI: to.Ptr("https://www.contoso.com/example"),
+	// 			Traffic: map[string]*int32{
+	// 				"string": to.Ptr[int32](1),
+	// 			},
+	// 		},
+	// 		SKU: &armmachinelearning.SKU{
+	// 			Name: to.Ptr("string"),
+	// 			Capacity: to.Ptr[int32](1),
+	// 			Family: to.Ptr("string"),
+	// 			Size: to.Ptr("string"),
+	// 			Tier: to.Ptr(armmachinelearning.SKUTierFree),
+	// 		},
+	// 		SystemData: &armmachinelearning.SystemData{
+	// 			CreatedAt: to.Ptr(time.Date(2020, time.January, 1, 12, 34, 56, 999000000, time.UTC)),
+	// 			CreatedBy: to.Ptr("string"),
+	// 			CreatedByType: to.Ptr(armmachinelearning.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2020, time.January, 1, 12, 34, 56, 999000000, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("string"),
+	// 			LastModifiedByType: to.Ptr(armmachinelearning.CreatedByTypeUser),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-09-01/Workspace/OnlineEndpoint/getToken.json
+func ExampleOnlineEndpointsClient_GetToken() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armmachinelearning.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewOnlineEndpointsClient().GetToken(ctx, "test-rg", "my-aml-workspace", "testEndpointName", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armmachinelearning.OnlineEndpointsClientGetTokenResponse{
+	// 	EndpointAuthToken: armmachinelearning.EndpointAuthToken{
+	// 		AccessToken: to.Ptr("string"),
+	// 		ExpiryTimeUTC: to.Ptr[int64](1),
+	// 		RefreshAfterTimeUTC: to.Ptr[int64](1),
+	// 		TokenType: to.Ptr("string"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-09-01/Workspace/OnlineEndpoint/listKeys.json
+func ExampleOnlineEndpointsClient_ListKeys() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armmachinelearning.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewOnlineEndpointsClient().ListKeys(ctx, "test-rg", "my-aml-workspace", "testEndpointName", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armmachinelearning.OnlineEndpointsClientListKeysResponse{
+	// 	EndpointAuthKeys: armmachinelearning.EndpointAuthKeys{
+	// 		PrimaryKey: to.Ptr("string"),
+	// 		SecondaryKey: to.Ptr("string"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-09-01/Workspace/OnlineEndpoint/list.json
+func ExampleOnlineEndpointsClient_NewListPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armmachinelearning.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewOnlineEndpointsClient().NewListPager("test-rg", "my-aml-workspace", &armmachinelearning.OnlineEndpointsClientListOptions{
+		Name:        to.Ptr("string"),
+		ComputeType: to.Ptr(armmachinelearning.EndpointComputeTypeManaged),
+		Count:       to.Ptr[int32](1),
+		OrderBy:     to.Ptr(armmachinelearning.OrderStringCreatedAtDesc),
+		Properties:  to.Ptr("string"),
+		Tags:        to.Ptr("string")})
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armmachinelearning.OnlineEndpointsClientListResponse{
+		// 	OnlineEndpointTrackedResourceArmPaginatedResult: armmachinelearning.OnlineEndpointTrackedResourceArmPaginatedResult{
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.MachineLearningServices/workspaces/my-aml-workspace/onlineEndpoints?api-version=2026-09-01&$skip=2"),
+		// 		Value: []*armmachinelearning.OnlineEndpoint{
+		// 			{
+		// 				Name: to.Ptr("string"),
+		// 				Type: to.Ptr("string"),
+		// 				ID: to.Ptr("string"),
+		// 				Identity: &armmachinelearning.ManagedServiceIdentity{
+		// 					Type: to.Ptr(armmachinelearning.ManagedServiceIdentityTypeSystemAssigned),
+		// 					PrincipalID: to.Ptr("00000000-1111-2222-3333-444444444444"),
+		// 					TenantID: to.Ptr("00000000-1111-2222-3333-444444444444"),
+		// 					UserAssignedIdentities: map[string]*armmachinelearning.UserAssignedIdentity{
+		// 						"string": &armmachinelearning.UserAssignedIdentity{
+		// 							ClientID: to.Ptr("00000000-1111-2222-3333-444444444444"),
+		// 							PrincipalID: to.Ptr("00000000-1111-2222-3333-444444444444"),
+		// 						},
+		// 					},
+		// 				},
+		// 				Kind: to.Ptr("string"),
+		// 				Location: to.Ptr("string"),
+		// 				Properties: &armmachinelearning.OnlineEndpointProperties{
+		// 					Description: to.Ptr("string"),
+		// 					AuthMode: to.Ptr(armmachinelearning.EndpointAuthModeAMLToken),
+		// 					Compute: to.Ptr("string"),
+		// 					Properties: map[string]*string{
+		// 						"string": to.Ptr("string"),
+		// 					},
+		// 					ProvisioningState: to.Ptr(armmachinelearning.EndpointProvisioningStateCreating),
+		// 					ScoringURI: to.Ptr("https://www.contoso.com/example"),
+		// 					SwaggerURI: to.Ptr("https://www.contoso.com/example"),
+		// 					Traffic: map[string]*int32{
+		// 						"string": to.Ptr[int32](1),
+		// 					},
+		// 				},
+		// 				SKU: &armmachinelearning.SKU{
+		// 					Name: to.Ptr("string"),
+		// 					Capacity: to.Ptr[int32](1),
+		// 					Family: to.Ptr("string"),
+		// 					Size: to.Ptr("string"),
+		// 					Tier: to.Ptr(armmachinelearning.SKUTierFree),
+		// 				},
+		// 				SystemData: &armmachinelearning.SystemData{
+		// 					CreatedAt: to.Ptr(time.Date(2020, time.January, 1, 12, 34, 56, 999000000, time.UTC)),
+		// 					CreatedBy: to.Ptr("string"),
+		// 					CreatedByType: to.Ptr(armmachinelearning.CreatedByTypeUser),
+		// 					LastModifiedAt: to.Ptr(time.Date(2020, time.January, 1, 12, 34, 56, 999000000, time.UTC)),
+		// 					LastModifiedBy: to.Ptr("string"),
+		// 					LastModifiedByType: to.Ptr(armmachinelearning.CreatedByTypeUser),
+		// 				},
+		// 				Tags: map[string]*string{
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
 }

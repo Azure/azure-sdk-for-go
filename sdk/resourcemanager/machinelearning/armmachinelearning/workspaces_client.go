@@ -20,7 +20,7 @@ import (
 // WorkspacesClient contains the methods for the Workspaces group.
 // Don't use this type directly, use NewWorkspacesClient() instead.
 //
-// Generated from API version 2026-03-15-preview
+// Generated from API version 2026-09-01
 type WorkspacesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -71,7 +71,7 @@ func (client *WorkspacesClient) BeginCreateOrUpdate(ctx context.Context, resourc
 	}
 }
 
-// CreateOrUpdate - Creates or updates a workspace with the specified parameters.
+// createOrUpdate - Creates or updates a workspace with the specified parameters.
 //
 // Creates or updates a workspace with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -95,7 +95,7 @@ func (client *WorkspacesClient) createOrUpdate(ctx context.Context, resourceGrou
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *WorkspacesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, body Workspace, _ *WorkspacesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}"
 	if client.subscriptionID == "" {
@@ -115,7 +115,7 @@ func (client *WorkspacesClient) createOrUpdateCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
+	reqQP.Set("api-version", version20260901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -134,7 +134,7 @@ func (client *WorkspacesClient) createOrUpdateCreateRequest(ctx context.Context,
 //   - options - WorkspacesClientBeginDeleteOptions contains the optional parameters for the WorkspacesClient.BeginDelete method.
 func (client *WorkspacesClient) BeginDelete(ctx context.Context, resourceGroupName string, workspaceName string, options *WorkspacesClientBeginDeleteOptions) (*runtime.Poller[WorkspacesClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.deleteOperation(ctx, resourceGroupName, workspaceName, options)
+		resp, err := client.delete(ctx, resourceGroupName, workspaceName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -149,11 +149,11 @@ func (client *WorkspacesClient) BeginDelete(ctx context.Context, resourceGroupNa
 	}
 }
 
-// Delete - Deletes a machine learning workspace.
+// delete - Deletes a machine learning workspace.
 //
 // Deletes a machine learning workspace.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *WorkspacesClient) deleteOperation(ctx context.Context, resourceGroupName string, workspaceName string, options *WorkspacesClientBeginDeleteOptions) (*http.Response, error) {
+func (client *WorkspacesClient) delete(ctx context.Context, resourceGroupName string, workspaceName string, options *WorkspacesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "WorkspacesClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -173,7 +173,7 @@ func (client *WorkspacesClient) deleteOperation(ctx context.Context, resourceGro
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *WorkspacesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, options *WorkspacesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}"
 	if client.subscriptionID == "" {
@@ -193,7 +193,7 @@ func (client *WorkspacesClient) deleteCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
+	reqQP.Set("api-version", version20260901)
 	if options != nil && options.ForceToPurge != nil {
 		reqQP.Set("forceToPurge", strconv.FormatBool(*options.ForceToPurge))
 	}
@@ -226,7 +226,7 @@ func (client *WorkspacesClient) BeginDiagnose(ctx context.Context, resourceGroup
 	}
 }
 
-// Diagnose - Diagnose workspace setup issue.
+// diagnose - Diagnose workspace setup issue.
 //
 // Diagnose workspace setup issue.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -250,7 +250,7 @@ func (client *WorkspacesClient) diagnose(ctx context.Context, resourceGroupName 
 	return httpResp, nil
 }
 
-// diagnoseCreateRequest creates the Diagnose request.
+// diagnoseCreateRequest creates the diagnose request.
 func (client *WorkspacesClient) diagnoseCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, options *WorkspacesClientBeginDiagnoseOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/diagnose"
 	if client.subscriptionID == "" {
@@ -270,7 +270,7 @@ func (client *WorkspacesClient) diagnoseCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
+	reqQP.Set("api-version", version20260901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Body != nil {
@@ -279,6 +279,238 @@ func (client *WorkspacesClient) diagnoseCreateRequest(ctx context.Context, resou
 			return nil, err
 		}
 		return req, nil
+	}
+	return req, nil
+}
+
+// BeginPrepareNotebook - Prepare Azure Machine Learning Workspace's notebook resource
+//
+// Prepare Azure Machine Learning Workspace's notebook resource
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - Azure Machine Learning Workspace Name
+//   - options - WorkspacesClientBeginPrepareNotebookOptions contains the optional parameters for the WorkspacesClient.BeginPrepareNotebook
+//     method.
+func (client *WorkspacesClient) BeginPrepareNotebook(ctx context.Context, resourceGroupName string, workspaceName string, options *WorkspacesClientBeginPrepareNotebookOptions) (*runtime.Poller[WorkspacesClientPrepareNotebookResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.prepareNotebook(ctx, resourceGroupName, workspaceName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[WorkspacesClientPrepareNotebookResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[WorkspacesClientPrepareNotebookResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// prepareNotebook - Prepare Azure Machine Learning Workspace's notebook resource
+//
+// Prepare Azure Machine Learning Workspace's notebook resource
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *WorkspacesClient) prepareNotebook(ctx context.Context, resourceGroupName string, workspaceName string, options *WorkspacesClientBeginPrepareNotebookOptions) (*http.Response, error) {
+	var err error
+	const operationName = "WorkspacesClient.BeginPrepareNotebook"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.prepareNotebookCreateRequest(ctx, resourceGroupName, workspaceName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// prepareNotebookCreateRequest creates the prepareNotebook request.
+func (client *WorkspacesClient) prepareNotebookCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, _ *WorkspacesClientBeginPrepareNotebookOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/prepareNotebook"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if workspaceName == "" {
+		return nil, errors.New("parameter workspaceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// BeginResyncKeys - Resync all the keys associated with this workspace.This includes keys for the storage account, app insights
+// and password for container registry
+//
+// Resync all the keys associated with this workspace.This includes keys for the storage account, app insights and password
+// for container registry
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - Azure Machine Learning Workspace Name
+//   - options - WorkspacesClientBeginResyncKeysOptions contains the optional parameters for the WorkspacesClient.BeginResyncKeys
+//     method.
+func (client *WorkspacesClient) BeginResyncKeys(ctx context.Context, resourceGroupName string, workspaceName string, options *WorkspacesClientBeginResyncKeysOptions) (*runtime.Poller[WorkspacesClientResyncKeysResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.resyncKeys(ctx, resourceGroupName, workspaceName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[WorkspacesClientResyncKeysResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[WorkspacesClientResyncKeysResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// resyncKeys - Resync all the keys associated with this workspace.This includes keys for the storage account, app insights
+// and password for container registry
+//
+// Resync all the keys associated with this workspace.This includes keys for the storage account, app insights and password
+// for container registry
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *WorkspacesClient) resyncKeys(ctx context.Context, resourceGroupName string, workspaceName string, options *WorkspacesClientBeginResyncKeysOptions) (*http.Response, error) {
+	var err error
+	const operationName = "WorkspacesClient.BeginResyncKeys"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.resyncKeysCreateRequest(ctx, resourceGroupName, workspaceName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// resyncKeysCreateRequest creates the resyncKeys request.
+func (client *WorkspacesClient) resyncKeysCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, _ *WorkspacesClientBeginResyncKeysOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/resyncKeys"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if workspaceName == "" {
+		return nil, errors.New("parameter workspaceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginUpdate - Updates a machine learning workspace with the specified parameters.
+//
+// Updates a machine learning workspace with the specified parameters.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - Azure Machine Learning Workspace Name
+//   - body - The parameters for updating a machine learning workspace.
+//   - options - WorkspacesClientBeginUpdateOptions contains the optional parameters for the WorkspacesClient.BeginUpdate method.
+func (client *WorkspacesClient) BeginUpdate(ctx context.Context, resourceGroupName string, workspaceName string, body WorkspaceUpdateParameters, options *WorkspacesClientBeginUpdateOptions) (*runtime.Poller[WorkspacesClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, workspaceName, body, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[WorkspacesClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[WorkspacesClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Updates a machine learning workspace with the specified parameters.
+//
+// Updates a machine learning workspace with the specified parameters.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *WorkspacesClient) update(ctx context.Context, resourceGroupName string, workspaceName string, body WorkspaceUpdateParameters, options *WorkspacesClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "WorkspacesClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, workspaceName, body, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *WorkspacesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, body WorkspaceUpdateParameters, _ *WorkspacesClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if workspaceName == "" {
+		return nil, errors.New("parameter workspaceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
 	}
 	return req, nil
 }
@@ -327,7 +559,7 @@ func (client *WorkspacesClient) getCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
+	reqQP.Set("api-version", version20260901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -341,6 +573,323 @@ func (client *WorkspacesClient) getHandleResponse(resp *http.Response, successCo
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Workspace); err != nil {
 		return WorkspacesClientGetResponse{}, err
+	}
+	return result, nil
+}
+
+// ListKeys - Lists all the keys associated with this workspace. This includes keys for the storage account, app insights
+// and password for container registry.
+//
+// Lists all the keys associated with this workspace. This includes keys for the storage account, app insights and password
+// for container registry.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - Azure Machine Learning Workspace Name
+//   - options - WorkspacesClientListKeysOptions contains the optional parameters for the WorkspacesClient.ListKeys method.
+func (client *WorkspacesClient) ListKeys(ctx context.Context, resourceGroupName string, workspaceName string, options *WorkspacesClientListKeysOptions) (WorkspacesClientListKeysResponse, error) {
+	var err error
+	const operationName = "WorkspacesClient.ListKeys"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.listKeysCreateRequest(ctx, resourceGroupName, workspaceName, options)
+	if err != nil {
+		return WorkspacesClientListKeysResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return WorkspacesClientListKeysResponse{}, err
+	}
+	return client.listKeysHandleResponse(httpResp, http.StatusOK)
+}
+
+// listKeysCreateRequest creates the ListKeys request.
+func (client *WorkspacesClient) listKeysCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, _ *WorkspacesClientListKeysOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/listKeys"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if workspaceName == "" {
+		return nil, errors.New("parameter workspaceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// listKeysHandleResponse handles the ListKeys response.
+func (client *WorkspacesClient) listKeysHandleResponse(resp *http.Response, successCodes ...int) (WorkspacesClientListKeysResponse, error) {
+	result := WorkspacesClientListKeysResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ListWorkspaceKeysResult); err != nil {
+		return WorkspacesClientListKeysResponse{}, err
+	}
+	return result, nil
+}
+
+// ListNotebookAccessToken - Get Azure Machine Learning Workspace notebook access token
+//
+// Get Azure Machine Learning Workspace notebook access token
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - Azure Machine Learning Workspace Name
+//   - options - WorkspacesClientListNotebookAccessTokenOptions contains the optional parameters for the WorkspacesClient.ListNotebookAccessToken
+//     method.
+func (client *WorkspacesClient) ListNotebookAccessToken(ctx context.Context, resourceGroupName string, workspaceName string, options *WorkspacesClientListNotebookAccessTokenOptions) (WorkspacesClientListNotebookAccessTokenResponse, error) {
+	var err error
+	const operationName = "WorkspacesClient.ListNotebookAccessToken"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.listNotebookAccessTokenCreateRequest(ctx, resourceGroupName, workspaceName, options)
+	if err != nil {
+		return WorkspacesClientListNotebookAccessTokenResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return WorkspacesClientListNotebookAccessTokenResponse{}, err
+	}
+	return client.listNotebookAccessTokenHandleResponse(httpResp, http.StatusOK)
+}
+
+// listNotebookAccessTokenCreateRequest creates the ListNotebookAccessToken request.
+func (client *WorkspacesClient) listNotebookAccessTokenCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, _ *WorkspacesClientListNotebookAccessTokenOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/listNotebookAccessToken"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if workspaceName == "" {
+		return nil, errors.New("parameter workspaceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// listNotebookAccessTokenHandleResponse handles the ListNotebookAccessToken response.
+func (client *WorkspacesClient) listNotebookAccessTokenHandleResponse(resp *http.Response, successCodes ...int) (WorkspacesClientListNotebookAccessTokenResponse, error) {
+	result := WorkspacesClientListNotebookAccessTokenResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.NotebookAccessTokenResult); err != nil {
+		return WorkspacesClientListNotebookAccessTokenResponse{}, err
+	}
+	return result, nil
+}
+
+// ListNotebookKeys - Lists keys of Azure Machine Learning Workspaces notebook.
+//
+// Lists keys of Azure Machine Learning Workspaces notebook.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - Azure Machine Learning Workspace Name
+//   - options - WorkspacesClientListNotebookKeysOptions contains the optional parameters for the WorkspacesClient.ListNotebookKeys
+//     method.
+func (client *WorkspacesClient) ListNotebookKeys(ctx context.Context, resourceGroupName string, workspaceName string, options *WorkspacesClientListNotebookKeysOptions) (WorkspacesClientListNotebookKeysResponse, error) {
+	var err error
+	const operationName = "WorkspacesClient.ListNotebookKeys"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.listNotebookKeysCreateRequest(ctx, resourceGroupName, workspaceName, options)
+	if err != nil {
+		return WorkspacesClientListNotebookKeysResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return WorkspacesClientListNotebookKeysResponse{}, err
+	}
+	return client.listNotebookKeysHandleResponse(httpResp, http.StatusOK)
+}
+
+// listNotebookKeysCreateRequest creates the ListNotebookKeys request.
+func (client *WorkspacesClient) listNotebookKeysCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, _ *WorkspacesClientListNotebookKeysOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/listNotebookKeys"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if workspaceName == "" {
+		return nil, errors.New("parameter workspaceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// listNotebookKeysHandleResponse handles the ListNotebookKeys response.
+func (client *WorkspacesClient) listNotebookKeysHandleResponse(resp *http.Response, successCodes ...int) (WorkspacesClientListNotebookKeysResponse, error) {
+	result := WorkspacesClientListNotebookKeysResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ListNotebookKeysResult); err != nil {
+		return WorkspacesClientListNotebookKeysResponse{}, err
+	}
+	return result, nil
+}
+
+// ListOutboundNetworkDependenciesEndpoints - Called by Client (Portal, CLI, etc) to get a list of all external outbound dependencies
+// (FQDNs) programmatically.
+//
+// Called by Client (Portal, CLI, etc) to get a list of all external outbound dependencies (FQDNs) programmatically.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - Azure Machine Learning Workspace Name
+//   - options - WorkspacesClientListOutboundNetworkDependenciesEndpointsOptions contains the optional parameters for the WorkspacesClient.ListOutboundNetworkDependenciesEndpoints
+//     method.
+func (client *WorkspacesClient) ListOutboundNetworkDependenciesEndpoints(ctx context.Context, resourceGroupName string, workspaceName string, options *WorkspacesClientListOutboundNetworkDependenciesEndpointsOptions) (WorkspacesClientListOutboundNetworkDependenciesEndpointsResponse, error) {
+	var err error
+	const operationName = "WorkspacesClient.ListOutboundNetworkDependenciesEndpoints"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.listOutboundNetworkDependenciesEndpointsCreateRequest(ctx, resourceGroupName, workspaceName, options)
+	if err != nil {
+		return WorkspacesClientListOutboundNetworkDependenciesEndpointsResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return WorkspacesClientListOutboundNetworkDependenciesEndpointsResponse{}, err
+	}
+	return client.listOutboundNetworkDependenciesEndpointsHandleResponse(httpResp, http.StatusOK)
+}
+
+// listOutboundNetworkDependenciesEndpointsCreateRequest creates the ListOutboundNetworkDependenciesEndpoints request.
+func (client *WorkspacesClient) listOutboundNetworkDependenciesEndpointsCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, _ *WorkspacesClientListOutboundNetworkDependenciesEndpointsOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/outboundNetworkDependenciesEndpoints"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if workspaceName == "" {
+		return nil, errors.New("parameter workspaceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// listOutboundNetworkDependenciesEndpointsHandleResponse handles the ListOutboundNetworkDependenciesEndpoints response.
+func (client *WorkspacesClient) listOutboundNetworkDependenciesEndpointsHandleResponse(resp *http.Response, successCodes ...int) (WorkspacesClientListOutboundNetworkDependenciesEndpointsResponse, error) {
+	result := WorkspacesClientListOutboundNetworkDependenciesEndpointsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ExternalFQDNResponse); err != nil {
+		return WorkspacesClientListOutboundNetworkDependenciesEndpointsResponse{}, err
+	}
+	return result, nil
+}
+
+// ListStorageAccountKeys - Lists keys of Azure Machine Learning Workspace's storage account.
+//
+// Lists keys of Azure Machine Learning Workspace's storage account.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - Azure Machine Learning Workspace Name
+//   - options - WorkspacesClientListStorageAccountKeysOptions contains the optional parameters for the WorkspacesClient.ListStorageAccountKeys
+//     method.
+func (client *WorkspacesClient) ListStorageAccountKeys(ctx context.Context, resourceGroupName string, workspaceName string, options *WorkspacesClientListStorageAccountKeysOptions) (WorkspacesClientListStorageAccountKeysResponse, error) {
+	var err error
+	const operationName = "WorkspacesClient.ListStorageAccountKeys"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.listStorageAccountKeysCreateRequest(ctx, resourceGroupName, workspaceName, options)
+	if err != nil {
+		return WorkspacesClientListStorageAccountKeysResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return WorkspacesClientListStorageAccountKeysResponse{}, err
+	}
+	return client.listStorageAccountKeysHandleResponse(httpResp, http.StatusOK)
+}
+
+// listStorageAccountKeysCreateRequest creates the ListStorageAccountKeys request.
+func (client *WorkspacesClient) listStorageAccountKeysCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, _ *WorkspacesClientListStorageAccountKeysOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/listStorageAccountKeys"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if workspaceName == "" {
+		return nil, errors.New("parameter workspaceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// listStorageAccountKeysHandleResponse handles the ListStorageAccountKeys response.
+func (client *WorkspacesClient) listStorageAccountKeysHandleResponse(resp *http.Response, successCodes ...int) (WorkspacesClientListStorageAccountKeysResponse, error) {
+	result := WorkspacesClientListStorageAccountKeysResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ListStorageAccountKeysResult); err != nil {
+		return WorkspacesClientListStorageAccountKeysResponse{}, err
 	}
 	return result, nil
 }
@@ -406,7 +955,7 @@ func (client *WorkspacesClient) listByResourceGroupCreateRequest(ctx context.Con
 		if options != nil && options.AiCapabilities != nil {
 			reqQP.Set("aiCapabilities", *options.AiCapabilities)
 		}
-		reqQP.Set("api-version", version20260315Preview)
+		reqQP.Set("api-version", version20260901)
 		if options != nil && options.Kind != nil {
 			reqQP.Set("kind", *options.Kind)
 		}
@@ -484,7 +1033,7 @@ func (client *WorkspacesClient) listBySubscriptionCreateRequest(ctx context.Cont
 		if options != nil && options.AiCapabilities != nil {
 			reqQP.Set("aiCapabilities", *options.AiCapabilities)
 		}
-		reqQP.Set("api-version", version20260315Preview)
+		reqQP.Set("api-version", version20260901)
 		if options != nil && options.Kind != nil {
 			reqQP.Set("kind", *options.Kind)
 		}
@@ -504,553 +1053,4 @@ func (client *WorkspacesClient) listBySubscriptionHandleResponse(resp *http.Resp
 		return WorkspacesClientListBySubscriptionResponse{}, err
 	}
 	return result, nil
-}
-
-// ListKeys - Lists all the keys associated with this workspace. This includes keys for the storage account, app insights
-// and password for container registry.
-//
-// Lists all the keys associated with this workspace. This includes keys for the storage account, app insights and password
-// for container registry.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - Azure Machine Learning Workspace Name
-//   - options - WorkspacesClientListKeysOptions contains the optional parameters for the WorkspacesClient.ListKeys method.
-func (client *WorkspacesClient) ListKeys(ctx context.Context, resourceGroupName string, workspaceName string, options *WorkspacesClientListKeysOptions) (WorkspacesClientListKeysResponse, error) {
-	var err error
-	const operationName = "WorkspacesClient.ListKeys"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.listKeysCreateRequest(ctx, resourceGroupName, workspaceName, options)
-	if err != nil {
-		return WorkspacesClientListKeysResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return WorkspacesClientListKeysResponse{}, err
-	}
-	return client.listKeysHandleResponse(httpResp, http.StatusOK)
-}
-
-// listKeysCreateRequest creates the ListKeys request.
-func (client *WorkspacesClient) listKeysCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, _ *WorkspacesClientListKeysOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/listKeys"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if workspaceName == "" {
-		return nil, errors.New("parameter workspaceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// listKeysHandleResponse handles the ListKeys response.
-func (client *WorkspacesClient) listKeysHandleResponse(resp *http.Response, successCodes ...int) (WorkspacesClientListKeysResponse, error) {
-	result := WorkspacesClientListKeysResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ListWorkspaceKeysResult); err != nil {
-		return WorkspacesClientListKeysResponse{}, err
-	}
-	return result, nil
-}
-
-// ListNotebookAccessToken - Get Azure Machine Learning Workspace notebook access token
-//
-// Get Azure Machine Learning Workspace notebook access token
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - Azure Machine Learning Workspace Name
-//   - options - WorkspacesClientListNotebookAccessTokenOptions contains the optional parameters for the WorkspacesClient.ListNotebookAccessToken
-//     method.
-func (client *WorkspacesClient) ListNotebookAccessToken(ctx context.Context, resourceGroupName string, workspaceName string, options *WorkspacesClientListNotebookAccessTokenOptions) (WorkspacesClientListNotebookAccessTokenResponse, error) {
-	var err error
-	const operationName = "WorkspacesClient.ListNotebookAccessToken"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.listNotebookAccessTokenCreateRequest(ctx, resourceGroupName, workspaceName, options)
-	if err != nil {
-		return WorkspacesClientListNotebookAccessTokenResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return WorkspacesClientListNotebookAccessTokenResponse{}, err
-	}
-	return client.listNotebookAccessTokenHandleResponse(httpResp, http.StatusOK)
-}
-
-// listNotebookAccessTokenCreateRequest creates the ListNotebookAccessToken request.
-func (client *WorkspacesClient) listNotebookAccessTokenCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, _ *WorkspacesClientListNotebookAccessTokenOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/listNotebookAccessToken"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if workspaceName == "" {
-		return nil, errors.New("parameter workspaceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// listNotebookAccessTokenHandleResponse handles the ListNotebookAccessToken response.
-func (client *WorkspacesClient) listNotebookAccessTokenHandleResponse(resp *http.Response, successCodes ...int) (WorkspacesClientListNotebookAccessTokenResponse, error) {
-	result := WorkspacesClientListNotebookAccessTokenResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.NotebookAccessTokenResult); err != nil {
-		return WorkspacesClientListNotebookAccessTokenResponse{}, err
-	}
-	return result, nil
-}
-
-// ListNotebookKeys - Lists keys of Azure Machine Learning Workspaces notebook.
-//
-// Lists keys of Azure Machine Learning Workspaces notebook.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - Azure Machine Learning Workspace Name
-//   - options - WorkspacesClientListNotebookKeysOptions contains the optional parameters for the WorkspacesClient.ListNotebookKeys
-//     method.
-func (client *WorkspacesClient) ListNotebookKeys(ctx context.Context, resourceGroupName string, workspaceName string, options *WorkspacesClientListNotebookKeysOptions) (WorkspacesClientListNotebookKeysResponse, error) {
-	var err error
-	const operationName = "WorkspacesClient.ListNotebookKeys"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.listNotebookKeysCreateRequest(ctx, resourceGroupName, workspaceName, options)
-	if err != nil {
-		return WorkspacesClientListNotebookKeysResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return WorkspacesClientListNotebookKeysResponse{}, err
-	}
-	return client.listNotebookKeysHandleResponse(httpResp, http.StatusOK)
-}
-
-// listNotebookKeysCreateRequest creates the ListNotebookKeys request.
-func (client *WorkspacesClient) listNotebookKeysCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, _ *WorkspacesClientListNotebookKeysOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/listNotebookKeys"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if workspaceName == "" {
-		return nil, errors.New("parameter workspaceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// listNotebookKeysHandleResponse handles the ListNotebookKeys response.
-func (client *WorkspacesClient) listNotebookKeysHandleResponse(resp *http.Response, successCodes ...int) (WorkspacesClientListNotebookKeysResponse, error) {
-	result := WorkspacesClientListNotebookKeysResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ListNotebookKeysResult); err != nil {
-		return WorkspacesClientListNotebookKeysResponse{}, err
-	}
-	return result, nil
-}
-
-// ListOutboundNetworkDependenciesEndpoints - Called by Client (Portal, CLI, etc) to get a list of all external outbound dependencies
-// (FQDNs) programmatically.
-//
-// Called by Client (Portal, CLI, etc) to get a list of all external outbound dependencies (FQDNs) programmatically.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - Azure Machine Learning Workspace Name
-//   - options - WorkspacesClientListOutboundNetworkDependenciesEndpointsOptions contains the optional parameters for the WorkspacesClient.ListOutboundNetworkDependenciesEndpoints
-//     method.
-func (client *WorkspacesClient) ListOutboundNetworkDependenciesEndpoints(ctx context.Context, resourceGroupName string, workspaceName string, options *WorkspacesClientListOutboundNetworkDependenciesEndpointsOptions) (WorkspacesClientListOutboundNetworkDependenciesEndpointsResponse, error) {
-	var err error
-	const operationName = "WorkspacesClient.ListOutboundNetworkDependenciesEndpoints"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.listOutboundNetworkDependenciesEndpointsCreateRequest(ctx, resourceGroupName, workspaceName, options)
-	if err != nil {
-		return WorkspacesClientListOutboundNetworkDependenciesEndpointsResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return WorkspacesClientListOutboundNetworkDependenciesEndpointsResponse{}, err
-	}
-	return client.listOutboundNetworkDependenciesEndpointsHandleResponse(httpResp, http.StatusOK)
-}
-
-// listOutboundNetworkDependenciesEndpointsCreateRequest creates the ListOutboundNetworkDependenciesEndpoints request.
-func (client *WorkspacesClient) listOutboundNetworkDependenciesEndpointsCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, _ *WorkspacesClientListOutboundNetworkDependenciesEndpointsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/outboundNetworkDependenciesEndpoints"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if workspaceName == "" {
-		return nil, errors.New("parameter workspaceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// listOutboundNetworkDependenciesEndpointsHandleResponse handles the ListOutboundNetworkDependenciesEndpoints response.
-func (client *WorkspacesClient) listOutboundNetworkDependenciesEndpointsHandleResponse(resp *http.Response, successCodes ...int) (WorkspacesClientListOutboundNetworkDependenciesEndpointsResponse, error) {
-	result := WorkspacesClientListOutboundNetworkDependenciesEndpointsResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ExternalFQDNResponse); err != nil {
-		return WorkspacesClientListOutboundNetworkDependenciesEndpointsResponse{}, err
-	}
-	return result, nil
-}
-
-// ListStorageAccountKeys - Lists keys of Azure Machine Learning Workspace's storage account.
-//
-// Lists keys of Azure Machine Learning Workspace's storage account.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - Azure Machine Learning Workspace Name
-//   - options - WorkspacesClientListStorageAccountKeysOptions contains the optional parameters for the WorkspacesClient.ListStorageAccountKeys
-//     method.
-func (client *WorkspacesClient) ListStorageAccountKeys(ctx context.Context, resourceGroupName string, workspaceName string, options *WorkspacesClientListStorageAccountKeysOptions) (WorkspacesClientListStorageAccountKeysResponse, error) {
-	var err error
-	const operationName = "WorkspacesClient.ListStorageAccountKeys"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.listStorageAccountKeysCreateRequest(ctx, resourceGroupName, workspaceName, options)
-	if err != nil {
-		return WorkspacesClientListStorageAccountKeysResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return WorkspacesClientListStorageAccountKeysResponse{}, err
-	}
-	return client.listStorageAccountKeysHandleResponse(httpResp, http.StatusOK)
-}
-
-// listStorageAccountKeysCreateRequest creates the ListStorageAccountKeys request.
-func (client *WorkspacesClient) listStorageAccountKeysCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, _ *WorkspacesClientListStorageAccountKeysOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/listStorageAccountKeys"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if workspaceName == "" {
-		return nil, errors.New("parameter workspaceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// listStorageAccountKeysHandleResponse handles the ListStorageAccountKeys response.
-func (client *WorkspacesClient) listStorageAccountKeysHandleResponse(resp *http.Response, successCodes ...int) (WorkspacesClientListStorageAccountKeysResponse, error) {
-	result := WorkspacesClientListStorageAccountKeysResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ListStorageAccountKeysResult); err != nil {
-		return WorkspacesClientListStorageAccountKeysResponse{}, err
-	}
-	return result, nil
-}
-
-// BeginPrepareNotebook - Prepare Azure Machine Learning Workspace's notebook resource
-//
-// Prepare Azure Machine Learning Workspace's notebook resource
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - Azure Machine Learning Workspace Name
-//   - options - WorkspacesClientBeginPrepareNotebookOptions contains the optional parameters for the WorkspacesClient.BeginPrepareNotebook
-//     method.
-func (client *WorkspacesClient) BeginPrepareNotebook(ctx context.Context, resourceGroupName string, workspaceName string, options *WorkspacesClientBeginPrepareNotebookOptions) (*runtime.Poller[WorkspacesClientPrepareNotebookResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.prepareNotebook(ctx, resourceGroupName, workspaceName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[WorkspacesClientPrepareNotebookResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[WorkspacesClientPrepareNotebookResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// PrepareNotebook - Prepare Azure Machine Learning Workspace's notebook resource
-//
-// Prepare Azure Machine Learning Workspace's notebook resource
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *WorkspacesClient) prepareNotebook(ctx context.Context, resourceGroupName string, workspaceName string, options *WorkspacesClientBeginPrepareNotebookOptions) (*http.Response, error) {
-	var err error
-	const operationName = "WorkspacesClient.BeginPrepareNotebook"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.prepareNotebookCreateRequest(ctx, resourceGroupName, workspaceName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// prepareNotebookCreateRequest creates the PrepareNotebook request.
-func (client *WorkspacesClient) prepareNotebookCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, _ *WorkspacesClientBeginPrepareNotebookOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/prepareNotebook"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if workspaceName == "" {
-		return nil, errors.New("parameter workspaceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// BeginResyncKeys - Resync all the keys associated with this workspace.This includes keys for the storage account, app insights
-// and password for container registry
-//
-// Resync all the keys associated with this workspace.This includes keys for the storage account, app insights and password
-// for container registry
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - Azure Machine Learning Workspace Name
-//   - options - WorkspacesClientBeginResyncKeysOptions contains the optional parameters for the WorkspacesClient.BeginResyncKeys
-//     method.
-func (client *WorkspacesClient) BeginResyncKeys(ctx context.Context, resourceGroupName string, workspaceName string, options *WorkspacesClientBeginResyncKeysOptions) (*runtime.Poller[WorkspacesClientResyncKeysResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.resyncKeys(ctx, resourceGroupName, workspaceName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[WorkspacesClientResyncKeysResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[WorkspacesClientResyncKeysResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// ResyncKeys - Resync all the keys associated with this workspace.This includes keys for the storage account, app insights
-// and password for container registry
-//
-// Resync all the keys associated with this workspace.This includes keys for the storage account, app insights and password
-// for container registry
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *WorkspacesClient) resyncKeys(ctx context.Context, resourceGroupName string, workspaceName string, options *WorkspacesClientBeginResyncKeysOptions) (*http.Response, error) {
-	var err error
-	const operationName = "WorkspacesClient.BeginResyncKeys"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.resyncKeysCreateRequest(ctx, resourceGroupName, workspaceName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// resyncKeysCreateRequest creates the ResyncKeys request.
-func (client *WorkspacesClient) resyncKeysCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, _ *WorkspacesClientBeginResyncKeysOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/resyncKeys"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if workspaceName == "" {
-		return nil, errors.New("parameter workspaceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	return req, nil
-}
-
-// BeginUpdate - Updates a machine learning workspace with the specified parameters.
-//
-// Updates a machine learning workspace with the specified parameters.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - Azure Machine Learning Workspace Name
-//   - body - The parameters for updating a machine learning workspace.
-//   - options - WorkspacesClientBeginUpdateOptions contains the optional parameters for the WorkspacesClient.BeginUpdate method.
-func (client *WorkspacesClient) BeginUpdate(ctx context.Context, resourceGroupName string, workspaceName string, body WorkspaceUpdateParameters, options *WorkspacesClientBeginUpdateOptions) (*runtime.Poller[WorkspacesClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, workspaceName, body, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[WorkspacesClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[WorkspacesClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Updates a machine learning workspace with the specified parameters.
-//
-// Updates a machine learning workspace with the specified parameters.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *WorkspacesClient) update(ctx context.Context, resourceGroupName string, workspaceName string, body WorkspaceUpdateParameters, options *WorkspacesClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "WorkspacesClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, workspaceName, body, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *WorkspacesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, body WorkspaceUpdateParameters, _ *WorkspacesClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if workspaceName == "" {
-		return nil, errors.New("parameter workspaceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, body); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

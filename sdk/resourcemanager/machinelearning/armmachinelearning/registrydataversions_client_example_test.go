@@ -12,44 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-15-preview/Registry/DataVersionBase/createOrGetStartPendingUpload.json
-func ExampleRegistryDataVersionsClient_CreateOrGetStartPendingUpload() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armmachinelearning.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewRegistryDataVersionsClient().CreateOrGetStartPendingUpload(ctx, "test-rg", "registryName", "string", "string", armmachinelearning.PendingUploadRequestDto{
-		PendingUploadID:   to.Ptr("string"),
-		PendingUploadType: to.Ptr(armmachinelearning.PendingUploadTypeNone),
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armmachinelearning.RegistryDataVersionsClientCreateOrGetStartPendingUploadResponse{
-	// 	PendingUploadResponseDto: armmachinelearning.PendingUploadResponseDto{
-	// 		BlobReferenceForConsumption: &armmachinelearning.BlobReferenceForConsumptionDto{
-	// 			BlobURI: to.Ptr("https://www.contoso.com/example"),
-	// 			Credential: &armmachinelearning.SASCredentialDto{
-	// 				CredentialType: to.Ptr(armmachinelearning.PendingUploadCredentialTypeSAS),
-	// 				SasURI: to.Ptr("https://www.contoso.com/example"),
-	// 			},
-	// 			StorageAccountArmID: to.Ptr("string"),
-	// 		},
-	// 		PendingUploadID: to.Ptr("string"),
-	// 		PendingUploadType: to.Ptr(armmachinelearning.PendingUploadTypeNone),
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-03-15-preview/Registry/DataVersionBase/createOrUpdate.json
+// Generated from example definition: 2026-09-01/Registry/DataVersionBase/createOrUpdate.json
 func ExampleRegistryDataVersionsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -121,7 +84,7 @@ func ExampleRegistryDataVersionsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Registry/DataVersionBase/delete.json
+// Generated from example definition: 2026-09-01/Registry/DataVersionBase/delete.json
 func ExampleRegistryDataVersionsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -147,7 +110,44 @@ func ExampleRegistryDataVersionsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Registry/DataVersionBase/get.json
+// Generated from example definition: 2026-09-01/Registry/DataVersionBase/createOrGetStartPendingUpload.json
+func ExampleRegistryDataVersionsClient_CreateOrGetStartPendingUpload() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armmachinelearning.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewRegistryDataVersionsClient().CreateOrGetStartPendingUpload(ctx, "test-rg", "registryName", "string", "string", armmachinelearning.PendingUploadRequestDto{
+		PendingUploadID:   to.Ptr("string"),
+		PendingUploadType: to.Ptr(armmachinelearning.PendingUploadTypeNone),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armmachinelearning.RegistryDataVersionsClientCreateOrGetStartPendingUploadResponse{
+	// 	PendingUploadResponseDto: armmachinelearning.PendingUploadResponseDto{
+	// 		BlobReferenceForConsumption: &armmachinelearning.BlobReferenceForConsumptionDto{
+	// 			BlobURI: to.Ptr("https://www.contoso.com/example"),
+	// 			Credential: &armmachinelearning.SASCredentialDto{
+	// 				CredentialType: to.Ptr(armmachinelearning.PendingUploadCredentialTypeSAS),
+	// 				SasURI: to.Ptr("https://www.contoso.com/example"),
+	// 			},
+	// 			StorageAccountArmID: to.Ptr("string"),
+	// 		},
+	// 		PendingUploadID: to.Ptr("string"),
+	// 		PendingUploadType: to.Ptr(armmachinelearning.PendingUploadTypeNone),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-09-01/Registry/DataVersionBase/get.json
 func ExampleRegistryDataVersionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -198,7 +198,7 @@ func ExampleRegistryDataVersionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Registry/DataVersionBase/registryList.json
+// Generated from example definition: 2026-09-01/Registry/DataVersionBase/registryList.json
 func ExampleRegistryDataVersionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -226,7 +226,7 @@ func ExampleRegistryDataVersionsClient_NewListPager() {
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page = armmachinelearning.RegistryDataVersionsClientListResponse{
 		// 	DataVersionBaseResourceArmPaginatedResult: armmachinelearning.DataVersionBaseResourceArmPaginatedResult{
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.MachineLearningServices/registries/registries123/data/string/versions?api-version=2025-07-01-preview&$skip=2"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.MachineLearningServices/registries/registries123/data/string/versions?api-version=2026-09-01&$skip=2"),
 		// 		Value: []*armmachinelearning.DataVersionBase{
 		// 			{
 		// 				Name: to.Ptr("string"),

@@ -22,6 +22,10 @@ import (
 
 // DataVersionsServer is a fake server for instances of the armmachinelearning.DataVersionsClient type.
 type DataVersionsServer struct {
+	// BeginPublish is the fake for method DataVersionsClient.BeginPublish
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	BeginPublish func(ctx context.Context, resourceGroupName string, workspaceName string, name string, version string, body armmachinelearning.DestinationAsset, options *armmachinelearning.DataVersionsClientBeginPublishOptions) (resp azfake.PollerResponder[armmachinelearning.DataVersionsClientPublishResponse], errResp azfake.ErrorResponder)
+
 	// CreateOrUpdate is the fake for method DataVersionsClient.CreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
 	CreateOrUpdate func(ctx context.Context, resourceGroupName string, workspaceName string, name string, version string, body armmachinelearning.DataVersionBase, options *armmachinelearning.DataVersionsClientCreateOrUpdateOptions) (resp azfake.Responder[armmachinelearning.DataVersionsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
@@ -37,10 +41,6 @@ type DataVersionsServer struct {
 	// NewListPager is the fake for method DataVersionsClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListPager func(resourceGroupName string, workspaceName string, name string, options *armmachinelearning.DataVersionsClientListOptions) (resp azfake.PagerResponder[armmachinelearning.DataVersionsClientListResponse])
-
-	// BeginPublish is the fake for method DataVersionsClient.BeginPublish
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginPublish func(ctx context.Context, resourceGroupName string, workspaceName string, name string, version string, body armmachinelearning.DestinationAsset, options *armmachinelearning.DataVersionsClientBeginPublishOptions) (resp azfake.PollerResponder[armmachinelearning.DataVersionsClientPublishResponse], errResp azfake.ErrorResponder)
 }
 
 // NewDataVersionsServerTransport creates a new instance of DataVersionsServerTransport with the provided implementation.
@@ -49,8 +49,8 @@ type DataVersionsServer struct {
 func NewDataVersionsServerTransport(srv *DataVersionsServer) *DataVersionsServerTransport {
 	return &DataVersionsServerTransport{
 		srv:          srv,
-		newListPager: newTracker[azfake.PagerResponder[armmachinelearning.DataVersionsClientListResponse]](),
 		beginPublish: newTracker[azfake.PollerResponder[armmachinelearning.DataVersionsClientPublishResponse]](),
+		newListPager: newTracker[azfake.PagerResponder[armmachinelearning.DataVersionsClientListResponse]](),
 	}
 }
 
@@ -58,8 +58,8 @@ func NewDataVersionsServerTransport(srv *DataVersionsServer) *DataVersionsServer
 // Don't use this type directly, use NewDataVersionsServerTransport instead.
 type DataVersionsServerTransport struct {
 	srv          *DataVersionsServer
-	newListPager *tracker[azfake.PagerResponder[armmachinelearning.DataVersionsClientListResponse]]
 	beginPublish *tracker[azfake.PollerResponder[armmachinelearning.DataVersionsClientPublishResponse]]
+	newListPager *tracker[azfake.PagerResponder[armmachinelearning.DataVersionsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for DataVersionsServerTransport.
@@ -83,6 +83,8 @@ func (d *DataVersionsServerTransport) dispatchToMethodFake(req *http.Request, me
 		}
 		if !intercepted {
 			switch method {
+			case "DataVersionsClient.BeginPublish":
+				res.resp, res.err = d.dispatchBeginPublish(req)
 			case "DataVersionsClient.CreateOrUpdate":
 				res.resp, res.err = d.dispatchCreateOrUpdate(req)
 			case "DataVersionsClient.Delete":
@@ -91,8 +93,6 @@ func (d *DataVersionsServerTransport) dispatchToMethodFake(req *http.Request, me
 				res.resp, res.err = d.dispatchGet(req)
 			case "DataVersionsClient.NewListPager":
 				res.resp, res.err = d.dispatchNewListPager(req)
-			case "DataVersionsClient.BeginPublish":
-				res.resp, res.err = d.dispatchBeginPublish(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -107,6 +107,62 @@ func (d *DataVersionsServerTransport) dispatchToMethodFake(req *http.Request, me
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
+}
+
+func (d *DataVersionsServerTransport) dispatchBeginPublish(req *http.Request) (*http.Response, error) {
+	if d.srv.BeginPublish == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginPublish not implemented")}
+	}
+	beginPublish := d.beginPublish.get(req)
+	if beginPublish == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.MachineLearningServices/workspaces/(?P<workspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/data/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/versions/(?P<version>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/publish`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 6 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armmachinelearning.DestinationAsset](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		workspaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("workspaceName")])
+		if err != nil {
+			return nil, err
+		}
+		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+		if err != nil {
+			return nil, err
+		}
+		versionParam, err := url.PathUnescape(matches[regex.SubexpIndex("version")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := d.srv.BeginPublish(req.Context(), resourceGroupNameParam, workspaceNameParam, nameParam, versionParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginPublish = &respr
+		d.beginPublish.add(req, beginPublish)
+	}
+
+	resp, err := server.PollerResponderNext(beginPublish, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		d.beginPublish.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginPublish) {
+		d.beginPublish.remove(req)
+	}
+
+	return resp, nil
 }
 
 func (d *DataVersionsServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Response, error) {
@@ -303,62 +359,6 @@ func (d *DataVersionsServerTransport) dispatchNewListPager(req *http.Request) (*
 	if !server.PagerResponderMore(newListPager) {
 		d.newListPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (d *DataVersionsServerTransport) dispatchBeginPublish(req *http.Request) (*http.Response, error) {
-	if d.srv.BeginPublish == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginPublish not implemented")}
-	}
-	beginPublish := d.beginPublish.get(req)
-	if beginPublish == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.MachineLearningServices/workspaces/(?P<workspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/data/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/versions/(?P<version>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/publish`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 6 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armmachinelearning.DestinationAsset](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		workspaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("workspaceName")])
-		if err != nil {
-			return nil, err
-		}
-		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-		if err != nil {
-			return nil, err
-		}
-		versionParam, err := url.PathUnescape(matches[regex.SubexpIndex("version")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := d.srv.BeginPublish(req.Context(), resourceGroupNameParam, workspaceNameParam, nameParam, versionParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginPublish = &respr
-		d.beginPublish.add(req, beginPublish)
-	}
-
-	resp, err := server.PollerResponderNext(beginPublish, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
-		d.beginPublish.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginPublish) {
-		d.beginPublish.remove(req)
-	}
-
 	return resp, nil
 }
 

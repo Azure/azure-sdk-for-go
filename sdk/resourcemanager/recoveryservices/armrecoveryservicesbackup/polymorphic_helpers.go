@@ -207,6 +207,8 @@ func unmarshalProtectedItemClassification(rawMsg json.RawMessage) (ProtectedItem
 		b = &AzureVMWorkloadSAPHanaDatabaseProtectedItem{}
 	case "AzureVmWorkloadSQLDatabase":
 		b = &AzureVMWorkloadSQLDatabaseProtectedItem{}
+	case "AzureVmWorkloadSQLInstance":
+		b = &AzureVMWorkloadSQLInstanceProtectedItem{}
 	case "DPMProtectedItem":
 		b = &DPMProtectedItem{}
 	case "GenericProtectedItem":
@@ -504,6 +506,8 @@ func unmarshalValidateOperationRequestClassification(rawMsg json.RawMessage) (Va
 	}
 	var b ValidateOperationRequestClassification
 	switch m["objectType"] {
+	case "ValidateAzureWorkloadRestoreOperationRequest":
+		b = &ValidateAzureWorkloadRestoreOperationRequest{}
 	case "ValidateIaasVMRestoreOperationRequest":
 		b = &ValidateIaasVMRestoreOperationRequest{}
 	case "ValidateRestoreOperationRequest":

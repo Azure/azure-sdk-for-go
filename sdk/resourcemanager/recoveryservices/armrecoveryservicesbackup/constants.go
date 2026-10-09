@@ -5,7 +5,7 @@
 package armrecoveryservicesbackup
 
 const (
-	version20260801 string = "2026-08-01"
+	version20261001 string = "2026-10-01"
 )
 
 // AccessType - Whether access to the storage account is key-based or identity-based.
@@ -385,6 +385,22 @@ func PossibleEnhancedSecurityStateValues() []EnhancedSecurityState {
 	}
 }
 
+// ExistingBasicVMProtection - Specifies how existing Basic VM protection is handled when configuring protection.
+type ExistingBasicVMProtection string
+
+const (
+	// ExistingBasicVMProtectionDisableWithDeleteRPsNow - Disables existing Basic VM protection and immediately deletes its recovery
+	// points.
+	ExistingBasicVMProtectionDisableWithDeleteRPsNow ExistingBasicVMProtection = "DisableWithDeleteRPsNow"
+)
+
+// PossibleExistingBasicVMProtectionValues returns the possible values for the ExistingBasicVMProtection const type.
+func PossibleExistingBasicVMProtectionValues() []ExistingBasicVMProtection {
+	return []ExistingBasicVMProtection{
+		ExistingBasicVMProtectionDisableWithDeleteRPsNow,
+	}
+}
+
 // FabricName - Specifies the fabric name - Azure or AD
 type FabricName string
 
@@ -589,6 +605,33 @@ func PossibleInquiryStatusValues() []InquiryStatus {
 		InquiryStatusFailed,
 		InquiryStatusInvalid,
 		InquiryStatusSuccess,
+	}
+}
+
+// InstanceProtectionReadiness - The state of instance protection.
+type InstanceProtectionReadiness string
+
+const (
+	// InstanceProtectionReadinessPartialProtection - Instance is partially protected
+	InstanceProtectionReadinessPartialProtection InstanceProtectionReadiness = "PartialProtection"
+	// InstanceProtectionReadinessProtectionError - Instance protection encountered an error
+	InstanceProtectionReadinessProtectionError InstanceProtectionReadiness = "ProtectionError"
+	// InstanceProtectionReadinessReady - Instance is ready for protection
+	InstanceProtectionReadinessReady InstanceProtectionReadiness = "Ready"
+	// InstanceProtectionReadinessScheduleDisabled - Backup schedule is disabled for this instance
+	InstanceProtectionReadinessScheduleDisabled InstanceProtectionReadiness = "ScheduleDisabled"
+	// InstanceProtectionReadinessUnknown - Instance protection readiness is unknown
+	InstanceProtectionReadinessUnknown InstanceProtectionReadiness = "Unknown"
+)
+
+// PossibleInstanceProtectionReadinessValues returns the possible values for the InstanceProtectionReadiness const type.
+func PossibleInstanceProtectionReadinessValues() []InstanceProtectionReadiness {
+	return []InstanceProtectionReadiness{
+		InstanceProtectionReadinessPartialProtection,
+		InstanceProtectionReadinessProtectionError,
+		InstanceProtectionReadinessReady,
+		InstanceProtectionReadinessScheduleDisabled,
+		InstanceProtectionReadinessUnknown,
 	}
 }
 
@@ -966,6 +1009,24 @@ func PossibleProtectionIntentItemTypeValues() []ProtectionIntentItemType {
 	}
 }
 
+// ProtectionLevel - Protection type in case protected as part of a parent.
+type ProtectionLevel string
+
+const (
+	// ProtectionLevelDatabase - Protected at database level
+	ProtectionLevelDatabase ProtectionLevel = "Database"
+	// ProtectionLevelDatabaseUnderInstance - Database protected under an instance
+	ProtectionLevelDatabaseUnderInstance ProtectionLevel = "DatabaseUnderInstance"
+)
+
+// PossibleProtectionLevelValues returns the possible values for the ProtectionLevel const type.
+func PossibleProtectionLevelValues() []ProtectionLevel {
+	return []ProtectionLevel{
+		ProtectionLevelDatabase,
+		ProtectionLevelDatabaseUnderInstance,
+	}
+}
+
 // ProtectionState - Backup state of this backup item.
 type ProtectionState string
 
@@ -1086,8 +1147,10 @@ type RecoveryPointTierType string
 const (
 	RecoveryPointTierTypeArchivedRP RecoveryPointTierType = "ArchivedRP"
 	RecoveryPointTierTypeHardenedRP RecoveryPointTierType = "HardenedRP"
-	RecoveryPointTierTypeInstantRP  RecoveryPointTierType = "InstantRP"
-	RecoveryPointTierTypeInvalid    RecoveryPointTierType = "Invalid"
+	// RecoveryPointTierTypeIASnapshotRP - Instant Access snapshot tier, retained for the policy's instantAccessDurationMinutes.
+	RecoveryPointTierTypeIASnapshotRP RecoveryPointTierType = "IASnapshotRP"
+	RecoveryPointTierTypeInstantRP    RecoveryPointTierType = "InstantRP"
+	RecoveryPointTierTypeInvalid      RecoveryPointTierType = "Invalid"
 )
 
 // PossibleRecoveryPointTierTypeValues returns the possible values for the RecoveryPointTierType const type.
@@ -1095,6 +1158,7 @@ func PossibleRecoveryPointTierTypeValues() []RecoveryPointTierType {
 	return []RecoveryPointTierType{
 		RecoveryPointTierTypeArchivedRP,
 		RecoveryPointTierTypeHardenedRP,
+		RecoveryPointTierTypeIASnapshotRP,
 		RecoveryPointTierTypeInstantRP,
 		RecoveryPointTierTypeInvalid,
 	}
@@ -1574,6 +1638,30 @@ func PossibleUsagesUnitValues() []UsagesUnit {
 		UsagesUnitCountPerSecond,
 		UsagesUnitPercent,
 		UsagesUnitSeconds,
+	}
+}
+
+// VMWorkloadPolicyType - Type of the protection policy
+type VMWorkloadPolicyType string
+
+const (
+	// VMWorkloadPolicyTypeInvalid - Invalid policy type
+	VMWorkloadPolicyTypeInvalid VMWorkloadPolicyType = "Invalid"
+	// VMWorkloadPolicyTypeSnapshotV1 - Snapshot V1 policy type
+	VMWorkloadPolicyTypeSnapshotV1 VMWorkloadPolicyType = "SnapshotV1"
+	// VMWorkloadPolicyTypeSnapshotV2 - Snapshot V2 policy type
+	VMWorkloadPolicyTypeSnapshotV2 VMWorkloadPolicyType = "SnapshotV2"
+	// VMWorkloadPolicyTypeStreaming - Streaming policy type
+	VMWorkloadPolicyTypeStreaming VMWorkloadPolicyType = "Streaming"
+)
+
+// PossibleVMWorkloadPolicyTypeValues returns the possible values for the VMWorkloadPolicyType const type.
+func PossibleVMWorkloadPolicyTypeValues() []VMWorkloadPolicyType {
+	return []VMWorkloadPolicyType{
+		VMWorkloadPolicyTypeInvalid,
+		VMWorkloadPolicyTypeSnapshotV1,
+		VMWorkloadPolicyTypeSnapshotV2,
+		VMWorkloadPolicyTypeStreaming,
 	}
 }
 

@@ -310,6 +310,12 @@ type ProtectionContainerRefreshOperationResultsClientGetResponse struct {
 	// placeholder for future response values
 }
 
+// ProtectionContainerRefreshOperationStatusesClientGetResponse contains the response from method ProtectionContainerRefreshOperationStatusesClient.Get.
+type ProtectionContainerRefreshOperationStatusesClientGetResponse struct {
+	// Operation status.
+	OperationStatus
+}
+
 // ProtectionContainersClientGetResponse contains the response from method ProtectionContainersClient.Get.
 type ProtectionContainersClientGetResponse struct {
 	// Base class for container with backup items. Containers with specific workloads are derived from this class.
@@ -387,6 +393,16 @@ type ProtectionPolicyOperationResultsClientGetResponse struct {
 type ProtectionPolicyOperationStatusesClientGetResponse struct {
 	// Operation status.
 	OperationStatus
+}
+
+// RecoveryPointsClientGetRPExtendedInfoOperationResultResponse contains the response from method RecoveryPointsClient.BeginGetRPExtendedInfoOperationResult.
+type RecoveryPointsClientGetRPExtendedInfoOperationResultResponse struct {
+	// placeholder for future response values
+}
+
+// RecoveryPointsClientGetRPExtendedInfoResponse contains the response from method RecoveryPointsClient.BeginGetRPExtendedInfo.
+type RecoveryPointsClientGetRPExtendedInfoResponse struct {
+	// placeholder for future response values
 }
 
 // RecoveryPointsClientGetResponse contains the response from method RecoveryPointsClient.Get.

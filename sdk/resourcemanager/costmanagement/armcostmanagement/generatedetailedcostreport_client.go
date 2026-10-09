@@ -18,7 +18,7 @@ import (
 // GenerateDetailedCostReportClient contains the methods for the GenerateDetailedCostReport group.
 // Don't use this type directly, use NewGenerateDetailedCostReportClient() instead.
 //
-// Generated from API version 2025-03-01
+// Generated from API version 2026-06-01
 type GenerateDetailedCostReportClient struct {
 	internal *arm.Client
 }
@@ -101,7 +101,7 @@ func (client *GenerateDetailedCostReportClient) createOperationCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250301)
+	reqQP.Set("api-version", version20260601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

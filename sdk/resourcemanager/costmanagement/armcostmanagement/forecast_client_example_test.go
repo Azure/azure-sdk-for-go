@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-// Generated from example definition: 2025-03-01/ExternalBillingAccountForecast.json
+// Generated from example definition: 2026-06-01/ExternalBillingAccountForecast.json
 func ExampleForecastClient_ExternalCloudProviderUsage_externalBillingAccountForecast() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -131,7 +131,7 @@ func ExampleForecastClient_ExternalCloudProviderUsage_externalBillingAccountFore
 	// }
 }
 
-// Generated from example definition: 2025-03-01/ExternalSubscriptionForecast.json
+// Generated from example definition: 2026-06-01/ExternalSubscriptionForecast.json
 func ExampleForecastClient_ExternalCloudProviderUsage_externalSubscriptionForecast() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -233,7 +233,7 @@ func ExampleForecastClient_ExternalCloudProviderUsage_externalSubscriptionForeca
 	// }
 }
 
-// Generated from example definition: 2025-03-01/BillingAccountForecast.json
+// Generated from example definition: 2026-06-01/BillingAccountForecast.json
 func ExampleForecastClient_Usage_billingAccountForecast() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -362,7 +362,7 @@ func ExampleForecastClient_Usage_billingAccountForecast() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/BillingProfileForecast.json
+// Generated from example definition: 2026-06-01/BillingProfileForecast.json
 func ExampleForecastClient_Usage_billingProfileForecast() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -491,7 +491,7 @@ func ExampleForecastClient_Usage_billingProfileForecast() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/DepartmentForecast.json
+// Generated from example definition: 2026-06-01/DepartmentForecast.json
 func ExampleForecastClient_Usage_departmentForecast() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -620,7 +620,7 @@ func ExampleForecastClient_Usage_departmentForecast() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/EnrollmentAccountForecast.json
+// Generated from example definition: 2026-06-01/EnrollmentAccountForecast.json
 func ExampleForecastClient_Usage_enrollmentAccountForecast() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -749,7 +749,7 @@ func ExampleForecastClient_Usage_enrollmentAccountForecast() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/InvoiceSectionForecast.json
+// Generated from example definition: 2026-06-01/InvoiceSectionForecast.json
 func ExampleForecastClient_Usage_invoiceSectionForecast() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -878,7 +878,7 @@ func ExampleForecastClient_Usage_invoiceSectionForecast() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/ResourceGroupForecast.json
+// Generated from example definition: 2026-06-01/ResourceGroupForecast.json
 func ExampleForecastClient_Usage_resourceGroupForecast() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -988,7 +988,7 @@ func ExampleForecastClient_Usage_resourceGroupForecast() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/SubscriptionForecast.json
+// Generated from example definition: 2026-06-01/SubscriptionForecast.json
 func ExampleForecastClient_Usage_subscriptionForecast() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

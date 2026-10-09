@@ -19,7 +19,7 @@ import (
 // DeletedBackupInstancesClient contains the methods for the DeletedBackupInstances group.
 // Don't use this type directly, use NewDeletedBackupInstancesClient() instead.
 //
-// Generated from API version 2026-06-01
+// Generated from API version 2026-07-01
 type DeletedBackupInstancesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -92,7 +92,7 @@ func (client *DeletedBackupInstancesClient) getCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260601)
+	reqQP.Set("api-version", version20260701)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -168,7 +168,7 @@ func (client *DeletedBackupInstancesClient) listCreateRequest(ctx context.Contex
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260601)
+		reqQP.Set("api-version", version20260701)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -257,7 +257,7 @@ func (client *DeletedBackupInstancesClient) undeleteCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260601)
+	reqQP.Set("api-version", version20260701)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }

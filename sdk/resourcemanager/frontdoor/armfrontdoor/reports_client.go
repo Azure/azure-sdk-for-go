@@ -7,19 +7,21 @@ package armfrontdoor
 import (
 	"context"
 	"errors"
-	"net/http"
-	"net/url"
-	"strings"
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime/datetime"
+	"net/http"
+	"net/url"
+	"strings"
+	"time"
 )
 
 // ReportsClient contains the methods for the Reports group.
 // Don't use this type directly, use NewReportsClient() instead.
+//
+// Generated from API version 2026-04-01
 type ReportsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -30,6 +32,9 @@ type ReportsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewReportsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ReportsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -45,8 +50,6 @@ func NewReportsClient(subscriptionID string, credential azcore.TokenCredential, 
 //
 // Gets a Latency Scorecard for a given Experiment
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - profileName - The Profile identifier associated with the Tenant and Partner
 //   - experimentName - The Experiment identifier associated with the Experiment
@@ -67,19 +70,14 @@ func (client *ReportsClient) GetLatencyScorecards(ctx context.Context, resourceG
 	if err != nil {
 		return ReportsClientGetLatencyScorecardsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ReportsClientGetLatencyScorecardsResponse{}, err
-	}
-	resp, err := client.getLatencyScorecardsHandleResponse(httpResp)
-	return resp, err
+	return client.getLatencyScorecardsHandleResponse(httpResp, http.StatusOK)
 }
 
 // getLatencyScorecardsCreateRequest creates the GetLatencyScorecards request.
 func (client *ReportsClient) getLatencyScorecardsCreateRequest(ctx context.Context, resourceGroupName string, profileName string, experimentName string, aggregationInterval LatencyScorecardAggregationInterval, options *ReportsClientGetLatencyScorecardsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/NetworkExperimentProfiles/{profileName}/Experiments/{experimentName}/latencyScorecard"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -100,21 +98,24 @@ func (client *ReportsClient) getLatencyScorecardsCreateRequest(ctx context.Conte
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("aggregationInterval", string(aggregationInterval))
-	reqQP.Set("api-version", "2025-10-01")
+	reqQP.Set("api-version", version20260401)
 	if options != nil && options.Country != nil {
 		reqQP.Set("country", *options.Country)
 	}
 	if options != nil && options.EndDateTimeUTC != nil {
 		reqQP.Set("endDateTimeUTC", *options.EndDateTimeUTC)
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getLatencyScorecardsHandleResponse handles the GetLatencyScorecards response.
-func (client *ReportsClient) getLatencyScorecardsHandleResponse(resp *http.Response) (ReportsClientGetLatencyScorecardsResponse, error) {
+func (client *ReportsClient) getLatencyScorecardsHandleResponse(resp *http.Response, successCodes ...int) (ReportsClientGetLatencyScorecardsResponse, error) {
 	result := ReportsClientGetLatencyScorecardsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LatencyScorecard); err != nil {
 		return ReportsClientGetLatencyScorecardsResponse{}, err
 	}
@@ -125,8 +126,6 @@ func (client *ReportsClient) getLatencyScorecardsHandleResponse(resp *http.Respo
 //
 // Gets a Timeseries for a given Experiment
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - profileName - The Profile identifier associated with the Tenant and Partner
 //   - experimentName - The Experiment identifier associated with the Experiment
@@ -149,19 +148,14 @@ func (client *ReportsClient) GetTimeseries(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return ReportsClientGetTimeseriesResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ReportsClientGetTimeseriesResponse{}, err
-	}
-	resp, err := client.getTimeseriesHandleResponse(httpResp)
-	return resp, err
+	return client.getTimeseriesHandleResponse(httpResp, http.StatusOK)
 }
 
 // getTimeseriesCreateRequest creates the GetTimeseries request.
 func (client *ReportsClient) getTimeseriesCreateRequest(ctx context.Context, resourceGroupName string, profileName string, experimentName string, startDateTimeUTC time.Time, endDateTimeUTC time.Time, aggregationInterval TimeseriesAggregationInterval, timeseriesType TimeseriesType, options *ReportsClientGetTimeseriesOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/NetworkExperimentProfiles/{profileName}/Experiments/{experimentName}/timeseries"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -182,24 +176,27 @@ func (client *ReportsClient) getTimeseriesCreateRequest(ctx context.Context, res
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("aggregationInterval", string(aggregationInterval))
-	reqQP.Set("api-version", "2025-10-01")
+	reqQP.Set("api-version", version20260401)
 	if options != nil && options.Country != nil {
 		reqQP.Set("country", *options.Country)
 	}
-	reqQP.Set("endDateTimeUTC", endDateTimeUTC.Format(time.RFC3339Nano))
+	reqQP.Set("endDateTimeUTC", datetime.RFC3339((endDateTimeUTC).UTC()).String())
 	if options != nil && options.Endpoint != nil {
 		reqQP.Set("endpoint", *options.Endpoint)
 	}
-	reqQP.Set("startDateTimeUTC", startDateTimeUTC.Format(time.RFC3339Nano))
+	reqQP.Set("startDateTimeUTC", datetime.RFC3339((startDateTimeUTC).UTC()).String())
 	reqQP.Set("timeseriesType", string(timeseriesType))
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getTimeseriesHandleResponse handles the GetTimeseries response.
-func (client *ReportsClient) getTimeseriesHandleResponse(resp *http.Response) (ReportsClientGetTimeseriesResponse, error) {
+func (client *ReportsClient) getTimeseriesHandleResponse(resp *http.Response, successCodes ...int) (ReportsClientGetTimeseriesResponse, error) {
 	result := ReportsClientGetTimeseriesResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Timeseries); err != nil {
 		return ReportsClientGetTimeseriesResponse{}, err
 	}

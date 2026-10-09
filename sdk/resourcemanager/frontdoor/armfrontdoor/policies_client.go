@@ -7,18 +7,19 @@ package armfrontdoor
 import (
 	"context"
 	"errors"
-	"net/http"
-	"net/url"
-	"strings"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // PoliciesClient contains the methods for the Policies group.
 // Don't use this type directly, use NewPoliciesClient() instead.
+//
+// Generated from API version 2026-04-01
 type PoliciesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -29,6 +30,9 @@ type PoliciesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewPoliciesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PoliciesClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -42,8 +46,6 @@ func NewPoliciesClient(subscriptionID string, credential azcore.TokenCredential,
 
 // BeginCreateOrUpdate - Create or update policy with specified rule set name within a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - policyName - The name of the Web Application Firewall Policy.
 //   - parameters - Policy to be created.
@@ -68,8 +70,6 @@ func (client *PoliciesClient) BeginCreateOrUpdate(ctx context.Context, resourceG
 
 // CreateOrUpdate - Create or update policy with specified rule set name within a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-01
 func (client *PoliciesClient) createOrUpdate(ctx context.Context, resourceGroupName string, policyName string, parameters WebApplicationFirewallPolicy, options *PoliciesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "PoliciesClient.BeginCreateOrUpdate"
@@ -85,8 +85,7 @@ func (client *PoliciesClient) createOrUpdate(ctx context.Context, resourceGroupN
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -95,7 +94,7 @@ func (client *PoliciesClient) createOrUpdate(ctx context.Context, resourceGroupN
 func (client *PoliciesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, policyName string, parameters WebApplicationFirewallPolicy, _ *PoliciesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/FrontDoorWebApplicationFirewallPolicies/{policyName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -111,8 +110,8 @@ func (client *PoliciesClient) createOrUpdateCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260401)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -123,8 +122,6 @@ func (client *PoliciesClient) createOrUpdateCreateRequest(ctx context.Context, r
 
 // BeginDelete - Deletes Policy
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - policyName - The name of the Web Application Firewall Policy.
 //   - options - PoliciesClientBeginDeleteOptions contains the optional parameters for the PoliciesClient.BeginDelete method.
@@ -147,8 +144,6 @@ func (client *PoliciesClient) BeginDelete(ctx context.Context, resourceGroupName
 
 // Delete - Deletes Policy
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-01
 func (client *PoliciesClient) deleteOperation(ctx context.Context, resourceGroupName string, policyName string, options *PoliciesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "PoliciesClient.BeginDelete"
@@ -164,8 +159,7 @@ func (client *PoliciesClient) deleteOperation(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -174,7 +168,7 @@ func (client *PoliciesClient) deleteOperation(ctx context.Context, resourceGroup
 func (client *PoliciesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, policyName string, _ *PoliciesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/FrontDoorWebApplicationFirewallPolicies/{policyName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -190,15 +184,13 @@ func (client *PoliciesClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260401)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Retrieve protection policy with specified name within a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - policyName - The name of the Web Application Firewall Policy.
 //   - options - PoliciesClientGetOptions contains the optional parameters for the PoliciesClient.Get method.
@@ -216,19 +208,14 @@ func (client *PoliciesClient) Get(ctx context.Context, resourceGroupName string,
 	if err != nil {
 		return PoliciesClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return PoliciesClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *PoliciesClient) getCreateRequest(ctx context.Context, resourceGroupName string, policyName string, _ *PoliciesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/FrontDoorWebApplicationFirewallPolicies/{policyName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -244,15 +231,18 @@ func (client *PoliciesClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260401)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *PoliciesClient) getHandleResponse(resp *http.Response) (PoliciesClientGetResponse, error) {
+func (client *PoliciesClient) getHandleResponse(resp *http.Response, successCodes ...int) (PoliciesClientGetResponse, error) {
 	result := PoliciesClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WebApplicationFirewallPolicy); err != nil {
 		return PoliciesClientGetResponse{}, err
 	}
@@ -260,8 +250,6 @@ func (client *PoliciesClient) getHandleResponse(resp *http.Response) (PoliciesCl
 }
 
 // NewListPager - Lists all of the protection policies within a resource group.
-//
-// Generated from API version 2025-10-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - PoliciesClientListOptions contains the optional parameters for the PoliciesClient.NewListPager method.
 func (client *PoliciesClient) NewListPager(resourceGroupName string, options *PoliciesClientListOptions) *runtime.Pager[PoliciesClientListResponse] {
@@ -275,43 +263,57 @@ func (client *PoliciesClient) NewListPager(resourceGroupName string, options *Po
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, resourceGroupName, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, resourceGroupName, nextLink, options)
 			if err != nil {
 				return PoliciesClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return PoliciesClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *PoliciesClient) listCreateRequest(ctx context.Context, resourceGroupName string, _ *PoliciesClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/FrontDoorWebApplicationFirewallPolicies"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *PoliciesClient) listCreateRequest(ctx context.Context, resourceGroupName string, nextLink string, _ *PoliciesClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/FrontDoorWebApplicationFirewallPolicies"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260401)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *PoliciesClient) listHandleResponse(resp *http.Response) (PoliciesClientListResponse, error) {
+func (client *PoliciesClient) listHandleResponse(resp *http.Response, successCodes ...int) (PoliciesClientListResponse, error) {
 	result := PoliciesClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WebApplicationFirewallPolicyList); err != nil {
 		return PoliciesClientListResponse{}, err
 	}
@@ -319,8 +321,6 @@ func (client *PoliciesClient) listHandleResponse(resp *http.Response) (PoliciesC
 }
 
 // NewListBySubscriptionPager - Lists all of the protection policies within a subscription.
-//
-// Generated from API version 2025-10-01
 //   - options - PoliciesClientListBySubscriptionOptions contains the optional parameters for the PoliciesClient.NewListBySubscriptionPager
 //     method.
 func (client *PoliciesClient) NewListBySubscriptionPager(options *PoliciesClientListBySubscriptionOptions) *runtime.Pager[PoliciesClientListBySubscriptionResponse] {
@@ -334,39 +334,53 @@ func (client *PoliciesClient) NewListBySubscriptionPager(options *PoliciesClient
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listBySubscriptionCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.listBySubscriptionCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return PoliciesClientListBySubscriptionResponse{}, err
 			}
-			return client.listBySubscriptionHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return PoliciesClientListBySubscriptionResponse{}, err
+			}
+			return client.listBySubscriptionHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *PoliciesClient) listBySubscriptionCreateRequest(ctx context.Context, _ *PoliciesClientListBySubscriptionOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Network/FrontDoorWebApplicationFirewallPolicies"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *PoliciesClient) listBySubscriptionCreateRequest(ctx context.Context, nextLink string, _ *PoliciesClientListBySubscriptionOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Network/FrontDoorWebApplicationFirewallPolicies"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260401)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
-func (client *PoliciesClient) listBySubscriptionHandleResponse(resp *http.Response) (PoliciesClientListBySubscriptionResponse, error) {
+func (client *PoliciesClient) listBySubscriptionHandleResponse(resp *http.Response, successCodes ...int) (PoliciesClientListBySubscriptionResponse, error) {
 	result := PoliciesClientListBySubscriptionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WebApplicationFirewallPolicyList); err != nil {
 		return PoliciesClientListBySubscriptionResponse{}, err
 	}
@@ -376,8 +390,6 @@ func (client *PoliciesClient) listBySubscriptionHandleResponse(resp *http.Respon
 // BeginUpdate - Patch a specific frontdoor webApplicationFirewall policy for tags update under the specified subscription
 // and resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - policyName - The name of the Web Application Firewall Policy.
 //   - parameters - FrontdoorWebApplicationFirewallPolicy parameters to be patched.
@@ -402,8 +414,6 @@ func (client *PoliciesClient) BeginUpdate(ctx context.Context, resourceGroupName
 // Update - Patch a specific frontdoor webApplicationFirewall policy for tags update under the specified subscription and
 // resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-01
 func (client *PoliciesClient) update(ctx context.Context, resourceGroupName string, policyName string, parameters TagsObject, options *PoliciesClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "PoliciesClient.BeginUpdate"
@@ -419,8 +429,7 @@ func (client *PoliciesClient) update(ctx context.Context, resourceGroupName stri
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -429,7 +438,7 @@ func (client *PoliciesClient) update(ctx context.Context, resourceGroupName stri
 func (client *PoliciesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, policyName string, parameters TagsObject, _ *PoliciesClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/FrontDoorWebApplicationFirewallPolicies/{policyName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -445,8 +454,8 @@ func (client *PoliciesClient) updateCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260401)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

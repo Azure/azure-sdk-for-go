@@ -1,5 +1,26 @@
 # Release History
 
+## 2.1.0 (2026-09-14)
+### Features Added
+
+- New value `MatchVariableJA4` added to enum type `MatchVariable`
+- New value `OperatorAsnMatch`, `OperatorClientFingerprint` added to enum type `Operator`
+- New value `VariableNameAsn`, `VariableNameJa4` added to enum type `VariableName`
+- New enum type `ExceptionMatchVariable` with values `ExceptionMatchVariableRequestHeaderNames`, `ExceptionMatchVariableRequestURI`, `ExceptionMatchVariableSocketAddr`
+- New enum type `ExceptionSelectorMatchOperator` with values `ExceptionSelectorMatchOperatorEquals`
+- New enum type `ExceptionValueMatchOperator` with values `ExceptionValueMatchOperatorContains`, `ExceptionValueMatchOperatorEndsWith`, `ExceptionValueMatchOperatorEquals`, `ExceptionValueMatchOperatorEqualsAny`, `ExceptionValueMatchOperatorIPMatch`, `ExceptionValueMatchOperatorStartsWith`
+- New enum type `ManagedRuleSetStatus` with values `ManagedRuleSetStatusDeprecated`, `ManagedRuleSetStatusGA`, `ManagedRuleSetStatusPreview`, `ManagedRuleSetStatusSupported`
+- New enum type `ParanoiaLevel` with values `ParanoiaLevelPL1`, `ParanoiaLevelPL2`, `ParanoiaLevelPL3`, `ParanoiaLevelPL4`
+- New struct `ManagedRuleSetException`
+- New struct `ManagedRuleSetExceptionList`
+- New struct `ManagedRuleSetScope`
+- New struct `RuleGroupScope`
+- New struct `RuleScope`
+- New field `ParanoiaLevel` in struct `ManagedRuleDefinition`
+- New field `DisplayName`, `Status` in struct `ManagedRuleSetDefinitionProperties`
+- New field `ExceptionsList` in struct `ManagedRuleSetList`
+
+
 ## 2.0.0 (2026-06-24)
 ### Breaking Changes
 

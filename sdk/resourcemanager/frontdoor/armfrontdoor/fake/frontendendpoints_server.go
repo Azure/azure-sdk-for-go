@@ -8,15 +8,15 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/http"
-	"net/url"
-	"regexp"
-
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/frontdoor/armfrontdoor/v2"
+	"net/http"
+	"net/url"
+	"regexp"
+	"slices"
 )
 
 // FrontendEndpointsServer is a fake server for instances of the armfrontdoor.FrontendEndpointsClient type.
@@ -71,9 +71,7 @@ func (f *FrontendEndpointsServerTransport) Do(req *http.Request) (*http.Response
 }
 
 func (f *FrontendEndpointsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result)
-	defer close(resultChan)
-
+	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
 		var res result
@@ -95,10 +93,7 @@ func (f *FrontendEndpointsServerTransport) dispatchToMethodFake(req *http.Reques
 			}
 
 		}
-		select {
-		case resultChan <- res:
-		case <-req.Context().Done():
-		}
+		resultChan <- res
 	}()
 
 	select {
@@ -115,7 +110,7 @@ func (f *FrontendEndpointsServerTransport) dispatchBeginDisableHTTPS(req *http.R
 	}
 	beginDisableHTTPS := f.beginDisableHTTPS.get(req)
 	if beginDisableHTTPS == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/frontDoors/(?P<frontDoorName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/frontendEndpoints/(?P<frontendEndpointName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/disableHttps`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/frontDoors/(?P<frontDoorName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/frontendEndpoints/(?P<frontendEndpointName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/disableHttps`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -146,7 +141,7 @@ func (f *FrontendEndpointsServerTransport) dispatchBeginDisableHTTPS(req *http.R
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		f.beginDisableHTTPS.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
@@ -163,7 +158,7 @@ func (f *FrontendEndpointsServerTransport) dispatchBeginEnableHTTPS(req *http.Re
 	}
 	beginEnableHTTPS := f.beginEnableHTTPS.get(req)
 	if beginEnableHTTPS == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/frontDoors/(?P<frontDoorName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/frontendEndpoints/(?P<frontendEndpointName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/enableHttps`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/frontDoors/(?P<frontDoorName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/frontendEndpoints/(?P<frontendEndpointName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/enableHttps`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -198,7 +193,7 @@ func (f *FrontendEndpointsServerTransport) dispatchBeginEnableHTTPS(req *http.Re
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		f.beginEnableHTTPS.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
@@ -213,7 +208,7 @@ func (f *FrontendEndpointsServerTransport) dispatchGet(req *http.Request) (*http
 	if f.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/frontDoors/(?P<frontDoorName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/frontendEndpoints/(?P<frontendEndpointName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/frontDoors/(?P<frontDoorName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/frontendEndpoints/(?P<frontendEndpointName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -236,7 +231,7 @@ func (f *FrontendEndpointsServerTransport) dispatchGet(req *http.Request) (*http
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).FrontendEndpoint, req)
@@ -252,7 +247,7 @@ func (f *FrontendEndpointsServerTransport) dispatchNewListByFrontDoorPager(req *
 	}
 	newListByFrontDoorPager := f.newListByFrontDoorPager.get(req)
 	if newListByFrontDoorPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/frontDoors/(?P<frontDoorName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/frontendEndpoints`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/frontDoors/(?P<frontDoorName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/frontendEndpoints`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -277,7 +272,7 @@ func (f *FrontendEndpointsServerTransport) dispatchNewListByFrontDoorPager(req *
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		f.newListByFrontDoorPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}

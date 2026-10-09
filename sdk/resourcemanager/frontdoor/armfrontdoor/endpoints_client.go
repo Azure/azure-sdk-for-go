@@ -7,18 +7,19 @@ package armfrontdoor
 import (
 	"context"
 	"errors"
-	"net/http"
-	"net/url"
-	"strings"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // EndpointsClient contains the methods for the Endpoints group.
 // Don't use this type directly, use NewEndpointsClient() instead.
+//
+// Generated from API version 2026-04-01
 type EndpointsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -29,6 +30,9 @@ type EndpointsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewEndpointsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*EndpointsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -42,8 +46,6 @@ func NewEndpointsClient(subscriptionID string, credential azcore.TokenCredential
 
 // BeginPurgeContent - Removes a content from Front Door.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - frontDoorName - Name of the Front Door which is globally unique.
 //   - contentFilePaths - The path to the content to be purged. Path can be a full URL, e.g. '/pictures/city.png' which removes
@@ -69,8 +71,6 @@ func (client *EndpointsClient) BeginPurgeContent(ctx context.Context, resourceGr
 
 // PurgeContent - Removes a content from Front Door.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-01
 func (client *EndpointsClient) purgeContent(ctx context.Context, resourceGroupName string, frontDoorName string, contentFilePaths PurgeParameters, options *EndpointsClientBeginPurgeContentOptions) (*http.Response, error) {
 	var err error
 	const operationName = "EndpointsClient.BeginPurgeContent"
@@ -86,8 +86,7 @@ func (client *EndpointsClient) purgeContent(ctx context.Context, resourceGroupNa
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -96,7 +95,7 @@ func (client *EndpointsClient) purgeContent(ctx context.Context, resourceGroupNa
 func (client *EndpointsClient) purgeContentCreateRequest(ctx context.Context, resourceGroupName string, frontDoorName string, contentFilePaths PurgeParameters, _ *EndpointsClientBeginPurgeContentOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/frontDoors/{frontDoorName}/purge"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -112,8 +111,8 @@ func (client *EndpointsClient) purgeContentCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260401)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, contentFilePaths); err != nil {
 		return nil, err

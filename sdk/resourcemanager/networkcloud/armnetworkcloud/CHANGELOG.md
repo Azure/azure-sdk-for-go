@@ -1,6 +1,6 @@
 # Release History
 
-## 2.1.0-beta.1 (2026-09-21)
+## 2.1.0-beta.1 (2026-10-09)
 ### Features Added
 
 - New value `AccessBridgeAllowedNameEdgeManagement` added to enum type `AccessBridgeAllowedName`

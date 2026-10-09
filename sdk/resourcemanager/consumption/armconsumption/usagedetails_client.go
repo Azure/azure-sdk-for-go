@@ -19,7 +19,7 @@ import (
 // UsageDetailsClient contains the methods for the UsageDetails group.
 // Don't use this type directly, use NewUsageDetailsClient() instead.
 //
-// Generated from API version 2024-08-01
+// Generated from API version 2026-06-01
 type UsageDetailsClient struct {
 	internal *arm.Client
 }
@@ -102,7 +102,7 @@ func (client *UsageDetailsClient) listCreateRequest(ctx context.Context, scope s
 		if options != nil && options.Top != nil {
 			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 		}
-		reqQP.Set("api-version", version20240801)
+		reqQP.Set("api-version", version20260601)
 		if options != nil && options.Metric != nil {
 			reqQP.Set("metric", string(*options.Metric))
 		}

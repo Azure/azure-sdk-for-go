@@ -7,12 +7,12 @@ package armcdn_test
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn/v4"
 	"log"
 )
 
-// Generated from example definition: 2025-06-01/RuleSets_Create.json
-func ExampleRuleSetsClient_Create() {
+// Generated from example definition: 2026-07-01/RuleSets_Create.json
+func ExampleRuleSetsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -22,9 +22,13 @@ func ExampleRuleSetsClient_Create() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewRuleSetsClient().Create(ctx, "RG", "profile1", "ruleSet1", nil)
+	poller, err := clientFactory.NewRuleSetsClient().BeginCreate(ctx, "RG", "profile1", "ruleSet1", armcdn.RuleSet{}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -35,6 +39,7 @@ func ExampleRuleSetsClient_Create() {
 	// 		Type: to.Ptr("Microsoft.Cdn/profiles/rulesets"),
 	// 		ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/rulesets/ruleSet1"),
 	// 		Properties: &armcdn.RuleSetProperties{
+	// 			BatchMode: to.Ptr(false),
 	// 			DeploymentStatus: to.Ptr(armcdn.DeploymentStatusNotStarted),
 	// 			ProvisioningState: to.Ptr(armcdn.AfdProvisioningStateSucceeded),
 	// 		},
@@ -42,7 +47,7 @@ func ExampleRuleSetsClient_Create() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/RuleSets_Delete.json
+// Generated from example definition: 2026-07-01/RuleSets_Delete.json
 func ExampleRuleSetsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -68,7 +73,7 @@ func ExampleRuleSetsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/RuleSets_Get.json
+// Generated from example definition: 2026-07-01/RuleSets_Get.json
 func ExampleRuleSetsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -99,7 +104,7 @@ func ExampleRuleSetsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/RuleSets_ListByProfile.json
+// Generated from example definition: 2026-07-01/RuleSets_ListByProfile.json
 func ExampleRuleSetsClient_NewListByProfilePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -139,7 +144,7 @@ func ExampleRuleSetsClient_NewListByProfilePager() {
 	}
 }
 
-// Generated from example definition: 2025-06-01/RuleSets_ListResourceUsage.json
+// Generated from example definition: 2026-07-01/RuleSets_ListResourceUsage.json
 func ExampleRuleSetsClient_NewListResourceUsagePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

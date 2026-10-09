@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn/v4"
 	"log"
 )
 
-// Generated from example definition: 2025-06-01/AFDCustomDomains_Create.json
+// Generated from example definition: 2026-07-01/AFDCustomDomains_Create.json
 func ExampleAFDCustomDomainsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -41,7 +41,14 @@ func ExampleAFDCustomDomainsClient_BeginCreate() {
 						to.Ptr(armcdn.AfdCustomizedCipherSuiteForTls13TLSAES256GCMSHA384),
 					},
 				},
-				MinimumTLSVersion: to.Ptr(armcdn.AfdMinimumTLSVersionTLS12),
+				MinimumTLSVersion:    to.Ptr(armcdn.AfdMinimumTLSVersionTLS12),
+				ServerTLSGroupPolicy: to.Ptr(armcdn.AfdServerTLSGroupPolicyCustom),
+				ServerTLSGroups: []*armcdn.AfdServerTLSGroup{
+					to.Ptr(armcdn.AfdServerTLSGroupX25519MLKEM768),
+					to.Ptr(armcdn.AfdServerTLSGroupSecP256R1MLKEM768),
+					to.Ptr(armcdn.AfdServerTLSGroupX25519),
+					to.Ptr(armcdn.AfdServerTLSGroupPrime256V1),
+				},
 			},
 		},
 	}, nil)
@@ -85,6 +92,13 @@ func ExampleAFDCustomDomainsClient_BeginCreate() {
 	// 					},
 	// 				},
 	// 				MinimumTLSVersion: to.Ptr(armcdn.AfdMinimumTLSVersionTLS12),
+	// 				ServerTLSGroupPolicy: to.Ptr(armcdn.AfdServerTLSGroupPolicyCustom),
+	// 				ServerTLSGroups: []*armcdn.AfdServerTLSGroup{
+	// 					to.Ptr(armcdn.AfdServerTLSGroupX25519MLKEM768),
+	// 					to.Ptr(armcdn.AfdServerTLSGroupSecP256R1MLKEM768),
+	// 					to.Ptr(armcdn.AfdServerTLSGroupX25519),
+	// 					to.Ptr(armcdn.AfdServerTLSGroupPrime256V1),
+	// 				},
 	// 				Secret: &armcdn.ResourceReference{
 	// 					ID: to.Ptr(""),
 	// 				},
@@ -98,7 +112,7 @@ func ExampleAFDCustomDomainsClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/AFDCustomDomains_Delete.json
+// Generated from example definition: 2026-07-01/AFDCustomDomains_Delete.json
 func ExampleAFDCustomDomainsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -124,7 +138,7 @@ func ExampleAFDCustomDomainsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/AFDCustomDomains_Get.json
+// Generated from example definition: 2026-07-01/AFDCustomDomains_Get.json
 func ExampleAFDCustomDomainsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -172,6 +186,7 @@ func ExampleAFDCustomDomainsClient_Get() {
 	// 					},
 	// 				},
 	// 				MinimumTLSVersion: to.Ptr(armcdn.AfdMinimumTLSVersionTLS12),
+	// 				ServerTLSGroupPolicy: to.Ptr(armcdn.AfdServerTLSGroupPolicyEnhanced),
 	// 				Secret: &armcdn.ResourceReference{
 	// 					ID: to.Ptr(""),
 	// 				},
@@ -185,7 +200,7 @@ func ExampleAFDCustomDomainsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/AFDCustomDomains_ListByProfile.json
+// Generated from example definition: 2026-07-01/AFDCustomDomains_ListByProfile.json
 func ExampleAFDCustomDomainsClient_NewListByProfilePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -239,6 +254,7 @@ func ExampleAFDCustomDomainsClient_NewListByProfilePager() {
 		// 							},
 		// 						},
 		// 						MinimumTLSVersion: to.Ptr(armcdn.AfdMinimumTLSVersionTLS12),
+		// 						ServerTLSGroupPolicy: to.Ptr(armcdn.AfdServerTLSGroupPolicyEnhanced),
 		// 						Secret: &armcdn.ResourceReference{
 		// 							ID: to.Ptr(""),
 		// 						},
@@ -255,7 +271,7 @@ func ExampleAFDCustomDomainsClient_NewListByProfilePager() {
 	}
 }
 
-// Generated from example definition: 2025-06-01/AFDCustomDomains_RefreshValidationToken.json
+// Generated from example definition: 2026-07-01/AFDCustomDomains_RefreshValidationToken.json
 func ExampleAFDCustomDomainsClient_BeginRefreshValidationToken() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -281,7 +297,7 @@ func ExampleAFDCustomDomainsClient_BeginRefreshValidationToken() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/AFDCustomDomains_Update.json
+// Generated from example definition: 2026-07-01/AFDCustomDomains_Update.json
 func ExampleAFDCustomDomainsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -309,7 +325,14 @@ func ExampleAFDCustomDomainsClient_BeginUpdate() {
 						to.Ptr(armcdn.AfdCustomizedCipherSuiteForTls13TLSAES256GCMSHA384),
 					},
 				},
-				MinimumTLSVersion: to.Ptr(armcdn.AfdMinimumTLSVersionTLS12),
+				MinimumTLSVersion:    to.Ptr(armcdn.AfdMinimumTLSVersionTLS12),
+				ServerTLSGroupPolicy: to.Ptr(armcdn.AfdServerTLSGroupPolicyCustom),
+				ServerTLSGroups: []*armcdn.AfdServerTLSGroup{
+					to.Ptr(armcdn.AfdServerTLSGroupX25519MLKEM768),
+					to.Ptr(armcdn.AfdServerTLSGroupSecP256R1MLKEM768),
+					to.Ptr(armcdn.AfdServerTLSGroupX25519),
+					to.Ptr(armcdn.AfdServerTLSGroupPrime256V1),
+				},
 			},
 		},
 	}, nil)
@@ -353,6 +376,13 @@ func ExampleAFDCustomDomainsClient_BeginUpdate() {
 	// 					},
 	// 				},
 	// 				MinimumTLSVersion: to.Ptr(armcdn.AfdMinimumTLSVersionTLS12),
+	// 				ServerTLSGroupPolicy: to.Ptr(armcdn.AfdServerTLSGroupPolicyCustom),
+	// 				ServerTLSGroups: []*armcdn.AfdServerTLSGroup{
+	// 					to.Ptr(armcdn.AfdServerTLSGroupX25519MLKEM768),
+	// 					to.Ptr(armcdn.AfdServerTLSGroupSecP256R1MLKEM768),
+	// 					to.Ptr(armcdn.AfdServerTLSGroupX25519),
+	// 					to.Ptr(armcdn.AfdServerTLSGroupPrime256V1),
+	// 				},
 	// 				Secret: &armcdn.ResourceReference{
 	// 					ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/secrets/mysecert"),
 	// 				},

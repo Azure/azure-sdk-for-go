@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-15-preview/WorkspaceConnection/createDeployment.json
+// Generated from example definition: 2026-05-15-preview/WorkspaceConnection/createDeployment.json
 func ExampleConnectionClient_BeginCreateOrUpdateDeployment() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -70,7 +70,7 @@ func ExampleConnectionClient_BeginCreateOrUpdateDeployment() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/WorkspaceConnection/deleteDeployment.json
+// Generated from example definition: 2026-05-15-preview/WorkspaceConnection/deleteDeployment.json
 func ExampleConnectionClient_BeginDeleteDeployment() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -91,7 +91,7 @@ func ExampleConnectionClient_BeginDeleteDeployment() {
 	}
 }
 
-// Generated from example definition: 2026-03-15-preview/WorkspaceConnection/listConnectionModels.json
+// Generated from example definition: 2026-05-15-preview/WorkspaceConnection/listConnectionModels.json
 func ExampleConnectionClient_GetAllModels() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -230,7 +230,7 @@ func ExampleConnectionClient_GetAllModels() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/WorkspaceConnection/getDeployment.json
+// Generated from example definition: 2026-05-15-preview/WorkspaceConnection/getDeployment.json
 func ExampleConnectionClient_GetDeployment() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -274,7 +274,7 @@ func ExampleConnectionClient_GetDeployment() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/WorkspaceConnection/getModels.json
+// Generated from example definition: 2026-05-15-preview/WorkspaceConnection/getModels.json
 func ExampleConnectionClient_NewGetModelsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -411,7 +411,7 @@ func ExampleConnectionClient_NewGetModelsPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-15-preview/WorkspaceConnection/listDeployments.json
+// Generated from example definition: 2026-05-15-preview/WorkspaceConnection/listDeployments.json
 func ExampleConnectionClient_NewListDeploymentsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

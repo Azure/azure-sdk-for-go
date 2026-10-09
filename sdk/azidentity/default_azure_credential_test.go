@@ -39,6 +39,23 @@ func TestDefaultAzureCredential_GetTokenSuccess(t *testing.T) {
 	}
 }
 
+func TestDefaultAzureCredential_AzureArcUserAssigned(t *testing.T) {
+	t.Setenv(azureClientID, fakeClientID)
+	t.Setenv(azureTokenCredentials, credNameManagedIdentity)
+	srv := newAzureArcUserAssignedTestServer(t, ClientID(fakeClientID), qpClientID, fakeClientID)
+	cred, err := NewDefaultAzureCredential(&DefaultAzureCredentialOptions{
+		ClientOptions: azcore.ClientOptions{
+			Retry:     policy.RetryOptions{MaxRetries: -1},
+			Transport: srv,
+		},
+	})
+	require.NoError(t, err)
+	token, err := cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{t.Name() + defaultSuffix}})
+	require.NoError(t, err)
+	require.Equal(t, tokenValue, token.Token)
+	require.Equal(t, 2, srv.Requests(), "both requests in the Arc challenge flow must be sent")
+}
+
 func TestDefaultAzureCredential_AZURE_TOKEN_CREDENTIALS(t *testing.T) {
 	if v, ok := os.LookupEnv(azureTokenCredentials); ok {
 		require.NoError(t, os.Unsetenv(azureTokenCredentials))

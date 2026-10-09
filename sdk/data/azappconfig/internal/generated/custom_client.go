@@ -30,6 +30,60 @@ func (a *AzureAppConfigurationClient) Tracer() tracing.Tracer {
 	return a.internal.Tracer()
 }
 
+func (client *AzureAppConfigurationClient) NewGetKeyValuesPagerWithRelativeNextLinks(options *AzureAppConfigurationClientGetKeyValuesOptions) *runtime.Pager[AzureAppConfigurationClientGetKeyValuesResponse] {
+	return newPagerWithRelativeNextLinks(client,
+		func(ctx context.Context) (*policy.Request, error) {
+			return client.getKeyValuesCreateRequest(ctx, options)
+		},
+		client.getKeyValuesHandleResponse,
+		func(page AzureAppConfigurationClientGetKeyValuesResponse) *string { return page.NextLink },
+	)
+}
+
+func (client *AzureAppConfigurationClient) NewGetRevisionsPagerWithRelativeNextLinks(options *AzureAppConfigurationClientGetRevisionsOptions) *runtime.Pager[AzureAppConfigurationClientGetRevisionsResponse] {
+	return newPagerWithRelativeNextLinks(client,
+		func(ctx context.Context) (*policy.Request, error) {
+			return client.getRevisionsCreateRequest(ctx, options)
+		},
+		client.getRevisionsHandleResponse,
+		func(page AzureAppConfigurationClientGetRevisionsResponse) *string { return page.NextLink },
+	)
+}
+
+func (client *AzureAppConfigurationClient) NewGetSnapshotsPagerWithRelativeNextLinks(options *AzureAppConfigurationClientGetSnapshotsOptions) *runtime.Pager[AzureAppConfigurationClientGetSnapshotsResponse] {
+	return newPagerWithRelativeNextLinks(client,
+		func(ctx context.Context) (*policy.Request, error) {
+			return client.getSnapshotsCreateRequest(ctx, options)
+		},
+		client.getSnapshotsHandleResponse,
+		func(page AzureAppConfigurationClientGetSnapshotsResponse) *string { return page.NextLink },
+	)
+}
+
+// The service can return endpoint-relative next links, which the generated pagers don't resolve.
+func newPagerWithRelativeNextLinks[T any](client *AzureAppConfigurationClient, createRequest func(context.Context) (*policy.Request, error), handleResponse func(*http.Response) (T, error), getNextLink func(T) *string) *runtime.Pager[T] {
+	return runtime.NewPager(runtime.PagingHandler[T]{
+		More: func(page T) bool {
+			nextLink := getNextLink(page)
+			return nextLink != nil && *nextLink != ""
+		},
+		Fetcher: func(ctx context.Context, page *T) (T, error) {
+			nextLink := ""
+			if page != nil {
+				nextLink = *getNextLink(*page)
+			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, createRequest, &runtime.FetcherForNextLinkOptions{
+				NextReq: client.getNextPageCreateRequest,
+			})
+			if err != nil {
+				var zero T
+				return zero, err
+			}
+			return handleResponse(resp)
+		},
+	})
+}
+
 // copy of NewGetKeyValuesPager with slice of match conditions and other tweaks
 func (client *AzureAppConfigurationClient) NewGetKeyValuesPagerWithMatchConditions(matchConditions []azcore.MatchConditions, options *AzureAppConfigurationClientGetKeyValuesOptions) *runtime.Pager[AzureAppConfigurationClientGetKeyValuesResponse] {
 	return runtime.NewPager(runtime.PagingHandler[AzureAppConfigurationClientGetKeyValuesResponse]{
@@ -148,8 +202,7 @@ func (client *AzureAppConfigurationClient) NewCheckKeyValuesPagerWithMatchCondit
 
 // adds match conditions to the HEAD request for the next page
 func (a *AzureAppConfigurationClient) checkNextPageCreateRequestWithMatchConditions(ctx context.Context, nextLink string, matchConditions azcore.MatchConditions) (*policy.Request, error) {
-	urlPath := nextLink
-	req, err := runtime.NewRequest(ctx, http.MethodHead, runtime.JoinPaths(a.endpoint, urlPath))
+	req, err := runtime.NewRequestForNextLink(ctx, http.MethodHead, a.endpoint, nextLink)
 	if err != nil {
 		return nil, err
 	}
@@ -193,8 +246,7 @@ func (a *AzureAppConfigurationClient) CreateSnapshot(ctx context.Context, conten
 
 // getNextPageCreateRequest creates the getNextPageCreateRequest request.
 func (client *AzureAppConfigurationClient) getNextPageCreateRequest(ctx context.Context, nextLink string) (*policy.Request, error) {
-	urlPath := nextLink
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.endpoint, urlPath))
+	req, err := runtime.NewRequestForNextLink(ctx, http.MethodGet, client.endpoint, nextLink)
 	if err != nil {
 		return nil, err
 	}

@@ -7,6 +7,9 @@
 * Added `Description` field to `AddSettingOptions`, `SetSettingOptions`, and `BeginCreateSnapshotOptions`.
 * Added `SettingFieldsDescription` and `SnapshotFieldsDescription` field selector constants.
 
+### Bugs Fixed
+* Fixed paging through settings, revisions, and snapshots when the service returns relative or absolute continuation URLs.
+
 ### Other Changes
 * Updated to API version `2026-04-01`.
 * Updated dependencies.

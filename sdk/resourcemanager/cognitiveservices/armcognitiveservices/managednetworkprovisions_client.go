@@ -19,7 +19,7 @@ import (
 // ManagedNetworkProvisionsClient contains the methods for the ManagedNetworkProvisions group.
 // Don't use this type directly, use NewManagedNetworkProvisionsClient() instead.
 //
-// Generated from API version 2026-07-15-preview
+// Generated from API version 2026-09-15-preview
 type ManagedNetworkProvisionsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -70,7 +70,7 @@ func (client *ManagedNetworkProvisionsClient) BeginProvisionManagedNetwork(ctx c
 	}
 }
 
-// ProvisionManagedNetwork - Provisions the managed network of a cognitive services account.
+// provisionManagedNetwork - Provisions the managed network of a cognitive services account.
 //
 // Provisions the managed network of a cognitive services account.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -94,7 +94,7 @@ func (client *ManagedNetworkProvisionsClient) provisionManagedNetwork(ctx contex
 	return httpResp, nil
 }
 
-// provisionManagedNetworkCreateRequest creates the ProvisionManagedNetwork request.
+// provisionManagedNetworkCreateRequest creates the provisionManagedNetwork request.
 func (client *ManagedNetworkProvisionsClient) provisionManagedNetworkCreateRequest(ctx context.Context, resourceGroupName string, accountName string, managedNetworkName string, options *ManagedNetworkProvisionsClientBeginProvisionManagedNetworkOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/managedNetworks/{managedNetworkName}/provision"
 	if client.subscriptionID == "" {
@@ -118,7 +118,7 @@ func (client *ManagedNetworkProvisionsClient) provisionManagedNetworkCreateReque
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260715Preview)
+	reqQP.Set("api-version", version20260915Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Body != nil {

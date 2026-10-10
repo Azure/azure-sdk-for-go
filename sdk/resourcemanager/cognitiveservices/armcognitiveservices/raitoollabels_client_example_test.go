@@ -12,7 +12,28 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-07-15-preview/PutRaiToolLabel.json
+// Generated from example definition: 2026-09-15-preview/DeleteRaiToolLabel.json
+func ExampleRaiToolLabelsClient_BeginDelete() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcognitiveservices.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewRaiToolLabelsClient().BeginDelete(ctx, "resourceGroupName", "accountName", "Web_Search", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+}
+
+// Generated from example definition: 2026-09-15-preview/PutRaiToolLabel.json
 func ExampleRaiToolLabelsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -84,28 +105,7 @@ func ExampleRaiToolLabelsClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-07-15-preview/DeleteRaiToolLabel.json
-func ExampleRaiToolLabelsClient_BeginDelete() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcognitiveservices.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewRaiToolLabelsClient().BeginDelete(ctx, "resourceGroupName", "accountName", "Web_Search", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-}
-
-// Generated from example definition: 2026-07-15-preview/GetRaiToolLabel.json
+// Generated from example definition: 2026-09-15-preview/GetRaiToolLabel.json
 func ExampleRaiToolLabelsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -156,7 +156,7 @@ func ExampleRaiToolLabelsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-07-15-preview/ListRaiToolLabels.json
+// Generated from example definition: 2026-09-15-preview/ListRaiToolLabels.json
 func ExampleRaiToolLabelsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

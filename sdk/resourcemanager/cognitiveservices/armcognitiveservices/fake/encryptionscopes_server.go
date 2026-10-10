@@ -21,13 +21,13 @@ import (
 
 // EncryptionScopesServer is a fake server for instances of the armcognitiveservices.EncryptionScopesClient type.
 type EncryptionScopesServer struct {
-	// CreateOrUpdate is the fake for method EncryptionScopesClient.CreateOrUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	CreateOrUpdate func(ctx context.Context, resourceGroupName string, accountName string, encryptionScopeName string, encryptionScope armcognitiveservices.EncryptionScope, options *armcognitiveservices.EncryptionScopesClientCreateOrUpdateOptions) (resp azfake.Responder[armcognitiveservices.EncryptionScopesClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
-
 	// BeginDelete is the fake for method EncryptionScopesClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, accountName string, encryptionScopeName string, options *armcognitiveservices.EncryptionScopesClientBeginDeleteOptions) (resp azfake.PollerResponder[armcognitiveservices.EncryptionScopesClientDeleteResponse], errResp azfake.ErrorResponder)
+
+	// CreateOrUpdate is the fake for method EncryptionScopesClient.CreateOrUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
+	CreateOrUpdate func(ctx context.Context, resourceGroupName string, accountName string, encryptionScopeName string, encryptionScope armcognitiveservices.EncryptionScope, options *armcognitiveservices.EncryptionScopesClientCreateOrUpdateOptions) (resp azfake.Responder[armcognitiveservices.EncryptionScopesClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method EncryptionScopesClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
@@ -78,10 +78,10 @@ func (e *EncryptionScopesServerTransport) dispatchToMethodFake(req *http.Request
 		}
 		if !intercepted {
 			switch method {
-			case "EncryptionScopesClient.CreateOrUpdate":
-				res.resp, res.err = e.dispatchCreateOrUpdate(req)
 			case "EncryptionScopesClient.BeginDelete":
 				res.resp, res.err = e.dispatchBeginDelete(req)
+			case "EncryptionScopesClient.CreateOrUpdate":
+				res.resp, res.err = e.dispatchCreateOrUpdate(req)
 			case "EncryptionScopesClient.Get":
 				res.resp, res.err = e.dispatchGet(req)
 			case "EncryptionScopesClient.NewListPager":
@@ -100,47 +100,6 @@ func (e *EncryptionScopesServerTransport) dispatchToMethodFake(req *http.Request
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
-}
-
-func (e *EncryptionScopesServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Response, error) {
-	if e.srv.CreateOrUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.CognitiveServices/accounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/encryptionScopes/(?P<encryptionScopeName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armcognitiveservices.EncryptionScope](req)
-	if err != nil {
-		return nil, err
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
-	if err != nil {
-		return nil, err
-	}
-	encryptionScopeNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("encryptionScopeName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := e.srv.CreateOrUpdate(req.Context(), resourceGroupNameParam, accountNameParam, encryptionScopeNameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).EncryptionScope, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
 }
 
 func (e *EncryptionScopesServerTransport) dispatchBeginDelete(req *http.Request) (*http.Response, error) {
@@ -188,6 +147,47 @@ func (e *EncryptionScopesServerTransport) dispatchBeginDelete(req *http.Request)
 		e.beginDelete.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (e *EncryptionScopesServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Response, error) {
+	if e.srv.CreateOrUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.CognitiveServices/accounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/encryptionScopes/(?P<encryptionScopeName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armcognitiveservices.EncryptionScope](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+	if err != nil {
+		return nil, err
+	}
+	encryptionScopeNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("encryptionScopeName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := e.srv.CreateOrUpdate(req.Context(), resourceGroupNameParam, accountNameParam, encryptionScopeNameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).EncryptionScope, req)
+	if err != nil {
+		return nil, err
+	}
 	return resp, nil
 }
 

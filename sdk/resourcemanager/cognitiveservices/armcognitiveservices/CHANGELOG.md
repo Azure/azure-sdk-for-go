@@ -1,5 +1,106 @@
 # Release History
 
+## 4.0.0-beta.5 (2026-10-10)
+### Breaking Changes
+
+- Type of `WorkbenchProperties.ProvisioningState` has been changed from `*ComputeProvisioningState` to `*WorkbenchProvisioningState`
+- Operation `*WorkbenchesClient.BeginUpdate` has been changed to non-LRO, use `*WorkbenchesClient.Update` instead.
+- Field `Tags` of struct `Compute` has been removed
+- Field `Location`, `Tags` of struct `Workbench` has been removed
+
+### Features Added
+
+- New value `ConnectionCategoryOpenAPI` added to enum type `ConnectionCategory`
+- New enum type `AdapterDeploymentOperationState` with values `AdapterDeploymentOperationStateAccepted`, `AdapterDeploymentOperationStateFailed`, `AdapterDeploymentOperationStateRunning`, `AdapterDeploymentOperationStateSucceeded`
+- New enum type `AdapterDeploymentOperationType` with values `AdapterDeploymentOperationTypeCreate`, `AdapterDeploymentOperationTypeDelete`, `AdapterDeploymentOperationTypeUpdate`
+- New enum type `CostControlDimensionType` with values `CostControlDimensionTypeAccount`, `CostControlDimensionTypeAgent`, `CostControlDimensionTypeCustom`, `CostControlDimensionTypeIdentity`, `CostControlDimensionTypeProject`, `CostControlDimensionTypeSession`
+- New enum type `CostControlPeriod` with values `CostControlPeriodDay`, `CostControlPeriodHour`, `CostControlPeriodMinute`, `CostControlPeriodMonth`, `CostControlPeriodWeek`, `CostControlPeriodYear`
+- New enum type `CostControlThresholdAction` with values `CostControlThresholdActionAlert`, `CostControlThresholdActionAudit`, `CostControlThresholdActionBlock`
+- New enum type `CostControlThresholdType` with values `CostControlThresholdTypeAbsolute`, `CostControlThresholdTypePercentage`
+- New enum type `CostControlUnit` with values `CostControlUnitUsd`
+- New enum type `RaiAcsHarmCategory` with values `RaiAcsHarmCategoryHate`, `RaiAcsHarmCategoryPromptInjection`, `RaiAcsHarmCategoryProtectedMaterialCode`, `RaiAcsHarmCategoryProtectedMaterialText`, `RaiAcsHarmCategorySelfHarm`, `RaiAcsHarmCategorySexual`, `RaiAcsHarmCategoryViolence`
+- New enum type `RaiAcsModerationSubjectFormat` with values `RaiAcsModerationSubjectFormatCanonicalJSON`, `RaiAcsModerationSubjectFormatText`
+- New enum type `RaiAcsPolicyDefinitionType` with values `RaiAcsPolicyDefinitionTypeRego`
+- New enum type `RaiAcsPolicyTarget` with values `RaiAcsPolicyTargetInput`, `RaiAcsPolicyTargetOutput`, `RaiAcsPolicyTargetToolArguments`, `RaiAcsPolicyTargetToolResult`
+- New enum type `RaiAcsPolicyTargetKind` with values `RaiAcsPolicyTargetKindAssistantOutput`, `RaiAcsPolicyTargetKindToolArguments`, `RaiAcsPolicyTargetKindToolResult`, `RaiAcsPolicyTargetKindUserInput`
+- New enum type `RaiAcsToolNameSelector` with values `RaiAcsToolNameSelectorToolCallName`, `RaiAcsToolNameSelectorToolCallNameAlias`
+- New enum type `RaiPolicyFormat` with values `RaiPolicyFormatACS`, `RaiPolicyFormatContentFilters`
+- New enum type `RaiRegoEncoding` with values `RaiRegoEncodingBase64`, `RaiRegoEncodingNone`
+- New enum type `WorkbenchProvisioningState` with values `WorkbenchProvisioningStateCanceled`, `WorkbenchProvisioningStateCreating`, `WorkbenchProvisioningStateFailed`, `WorkbenchProvisioningStateSucceeded`
+- New enum type `WorkbenchStatus` with values `WorkbenchStatusCreating`, `WorkbenchStatusDeleting`, `WorkbenchStatusFailed`, `WorkbenchStatusRestarting`, `WorkbenchStatusRunning`, `WorkbenchStatusStarting`, `WorkbenchStatusStopped`, `WorkbenchStatusStopping`, `WorkbenchStatusUnknown`, `WorkbenchStatusUpdating`
+- New function `NewAdapterDeploymentsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AdapterDeploymentsClient, error)`
+- New function `*AdapterDeploymentsClient.BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, adapterDeploymentName string, resource AdapterDeployment, options *AdapterDeploymentsClientBeginCreateOrUpdateOptions) (*runtime.Poller[AdapterDeploymentsClientCreateOrUpdateResponse], error)`
+- New function `*AdapterDeploymentsClient.BeginDelete(ctx context.Context, resourceGroupName string, accountName string, adapterDeploymentName string, options *AdapterDeploymentsClientBeginDeleteOptions) (*runtime.Poller[AdapterDeploymentsClientDeleteResponse], error)`
+- New function `*AdapterDeploymentsClient.Get(ctx context.Context, resourceGroupName string, accountName string, adapterDeploymentName string, options *AdapterDeploymentsClientGetOptions) (AdapterDeploymentsClientGetResponse, error)`
+- New function `*AdapterDeploymentsClient.NewListPager(resourceGroupName string, accountName string, options *AdapterDeploymentsClientListOptions) *runtime.Pager[AdapterDeploymentsClientListResponse]`
+- New function `*ClientFactory.NewAdapterDeploymentsClient() *AdapterDeploymentsClient`
+- New function `*ClientFactory.NewCostControlsClient() *CostControlsClient`
+- New function `*ClientFactory.NewRaiBindingsClient() *RaiBindingsClient`
+- New function `*ClientFactory.NewRaiRegosClient() *RaiRegosClient`
+- New function `NewCostControlsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CostControlsClient, error)`
+- New function `*CostControlsClient.CreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, costControlName string, resource CostControl, options *CostControlsClientCreateOrUpdateOptions) (CostControlsClientCreateOrUpdateResponse, error)`
+- New function `*CostControlsClient.Delete(ctx context.Context, resourceGroupName string, accountName string, costControlName string, options *CostControlsClientDeleteOptions) (CostControlsClientDeleteResponse, error)`
+- New function `*CostControlsClient.Get(ctx context.Context, resourceGroupName string, accountName string, costControlName string, options *CostControlsClientGetOptions) (CostControlsClientGetResponse, error)`
+- New function `*CostControlsClient.NewListPager(resourceGroupName string, accountName string, options *CostControlsClientListOptions) *runtime.Pager[CostControlsClientListResponse]`
+- New function `*CostControlsClient.Update(ctx context.Context, resourceGroupName string, accountName string, costControlName string, properties CostControlPatch, options *CostControlsClientUpdateOptions) (CostControlsClientUpdateResponse, error)`
+- New function `PossibleRaiAcsPolicyTargetValues() []RaiAcsPolicyTarget`
+- New function `NewRaiBindingsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RaiBindingsClient, error)`
+- New function `*RaiBindingsClient.CreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, raiBindingName string, raiBinding RaiBinding, options *RaiBindingsClientCreateOrUpdateOptions) (RaiBindingsClientCreateOrUpdateResponse, error)`
+- New function `*RaiBindingsClient.Delete(ctx context.Context, resourceGroupName string, accountName string, raiBindingName string, options *RaiBindingsClientDeleteOptions) (RaiBindingsClientDeleteResponse, error)`
+- New function `*RaiBindingsClient.Get(ctx context.Context, resourceGroupName string, accountName string, raiBindingName string, options *RaiBindingsClientGetOptions) (RaiBindingsClientGetResponse, error)`
+- New function `*RaiBindingsClient.NewListPager(resourceGroupName string, accountName string, options *RaiBindingsClientListOptions) *runtime.Pager[RaiBindingsClientListResponse]`
+- New function `NewRaiRegosClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RaiRegosClient, error)`
+- New function `*RaiRegosClient.CreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, raiRegoName string, raiRego RaiRego, options *RaiRegosClientCreateOrUpdateOptions) (RaiRegosClientCreateOrUpdateResponse, error)`
+- New function `*RaiRegosClient.Delete(ctx context.Context, resourceGroupName string, accountName string, raiRegoName string, options *RaiRegosClientDeleteOptions) (RaiRegosClientDeleteResponse, error)`
+- New function `*RaiRegosClient.Get(ctx context.Context, resourceGroupName string, accountName string, raiRegoName string, options *RaiRegosClientGetOptions) (RaiRegosClientGetResponse, error)`
+- New function `*RaiRegosClient.NewListPager(resourceGroupName string, accountName string, options *RaiRegosClientListOptions) *runtime.Pager[RaiRegosClientListResponse]`
+- New struct `AdapterDeployment`
+- New struct `AdapterDeploymentLastOperation`
+- New struct `AdapterDeploymentListResult`
+- New struct `AdapterDeploymentProperties`
+- New struct `CostControl`
+- New struct `CostControlConnections`
+- New struct `CostControlDimension`
+- New struct `CostControlListResult`
+- New struct `CostControlMatch`
+- New struct `CostControlPatch`
+- New struct `CostControlPatchProperties`
+- New struct `CostControlProperties`
+- New struct `CostControlRule`
+- New struct `CostControlThreshold`
+- New struct `GatedModelAccessProperties`
+- New struct `RaiAcsEmptyObject`
+- New struct `RaiAcsHarmConfiguration`
+- New struct `RaiAcsInterventionPoint`
+- New struct `RaiAcsInterventionPoints`
+- New struct `RaiAcsManifest`
+- New struct `RaiAcsModerationBindingExtension`
+- New struct `RaiAcsPolicyBinding`
+- New struct `RaiAcsRegoPolicyDefinition`
+- New struct `RaiAcsToolDefinition`
+- New struct `RaiAcsToolInterventionPoint`
+- New struct `RaiBinding`
+- New struct `RaiBindingListResult`
+- New struct `RaiBindingProperties`
+- New struct `RaiPolicyCustomExternalSafetyProviderReference`
+- New struct `RaiRego`
+- New struct `RaiRegoListResult`
+- New struct `RaiRegoProperties`
+- New struct `RaiRegoReference`
+- New struct `WorkbenchUpdate`
+- New struct `WorkbenchUpdateProperties`
+- New field `CostControlConnections`, `CostControlIDs` in struct `AccountProperties`
+- New field `CostControlIDs` in struct `DeploymentProperties`
+- New field `GatedModelAccess` in struct `ManagedComputeDeploymentProperties`
+- New field `IfMatch` in struct `RaiPoliciesClientBeginDeleteOptions`
+- New field `IfMatch`, `IfNoneMatch` in struct `RaiPoliciesClientCreateOrUpdateOptions`
+- New field `EtagHeader` in struct `RaiPoliciesClientCreateOrUpdateResponse`
+- New field `EtagHeader` in struct `RaiPoliciesClientGetResponse`
+- New field `Acs`, `AcsRegos`, `CustomExternalSafetyProviders`, `Format` in struct `RaiPolicyProperties`
+- New field `ID`, `Type` in struct `Usage`
+- New field `GpuCount`, `InstanceType`, `Status` in struct `WorkbenchProperties`
+
+
 ## 4.0.0-beta.4 (2026-08-27)
 ### Breaking Changes
 

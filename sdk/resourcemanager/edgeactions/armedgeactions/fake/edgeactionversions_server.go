@@ -33,17 +33,9 @@ type EdgeActionVersionsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginDeployVersionCode func(ctx context.Context, resourceGroupName string, edgeActionName string, version string, body armedgeactions.VersionCode, options *armedgeactions.EdgeActionVersionsClientBeginDeployVersionCodeOptions) (resp azfake.PollerResponder[armedgeactions.EdgeActionVersionsClientDeployVersionCodeResponse], errResp azfake.ErrorResponder)
 
-	// Get is the fake for method EdgeActionVersionsClient.Get
-	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, edgeActionName string, version string, options *armedgeactions.EdgeActionVersionsClientGetOptions) (resp azfake.Responder[armedgeactions.EdgeActionVersionsClientGetResponse], errResp azfake.ErrorResponder)
-
 	// BeginGetVersionCode is the fake for method EdgeActionVersionsClient.BeginGetVersionCode
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginGetVersionCode func(ctx context.Context, resourceGroupName string, edgeActionName string, version string, options *armedgeactions.EdgeActionVersionsClientBeginGetVersionCodeOptions) (resp azfake.PollerResponder[armedgeactions.EdgeActionVersionsClientGetVersionCodeResponse], errResp azfake.ErrorResponder)
-
-	// NewListByEdgeActionPager is the fake for method EdgeActionVersionsClient.NewListByEdgeActionPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListByEdgeActionPager func(resourceGroupName string, edgeActionName string, options *armedgeactions.EdgeActionVersionsClientListByEdgeActionOptions) (resp azfake.PagerResponder[armedgeactions.EdgeActionVersionsClientListByEdgeActionResponse])
 
 	// BeginSwapDefault is the fake for method EdgeActionVersionsClient.BeginSwapDefault
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
@@ -52,6 +44,14 @@ type EdgeActionVersionsServer struct {
 	// BeginUpdate is the fake for method EdgeActionVersionsClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginUpdate func(ctx context.Context, resourceGroupName string, edgeActionName string, version string, properties armedgeactions.EdgeActionVersionUpdate, options *armedgeactions.EdgeActionVersionsClientBeginUpdateOptions) (resp azfake.PollerResponder[armedgeactions.EdgeActionVersionsClientUpdateResponse], errResp azfake.ErrorResponder)
+
+	// Get is the fake for method EdgeActionVersionsClient.Get
+	// HTTP status codes to indicate success: http.StatusOK
+	Get func(ctx context.Context, resourceGroupName string, edgeActionName string, version string, options *armedgeactions.EdgeActionVersionsClientGetOptions) (resp azfake.Responder[armedgeactions.EdgeActionVersionsClientGetResponse], errResp azfake.ErrorResponder)
+
+	// NewListByEdgeActionPager is the fake for method EdgeActionVersionsClient.NewListByEdgeActionPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListByEdgeActionPager func(resourceGroupName string, edgeActionName string, options *armedgeactions.EdgeActionVersionsClientListByEdgeActionOptions) (resp azfake.PagerResponder[armedgeactions.EdgeActionVersionsClientListByEdgeActionResponse])
 }
 
 // NewEdgeActionVersionsServerTransport creates a new instance of EdgeActionVersionsServerTransport with the provided implementation.
@@ -64,9 +64,9 @@ func NewEdgeActionVersionsServerTransport(srv *EdgeActionVersionsServer) *EdgeAc
 		beginDelete:              newTracker[azfake.PollerResponder[armedgeactions.EdgeActionVersionsClientDeleteResponse]](),
 		beginDeployVersionCode:   newTracker[azfake.PollerResponder[armedgeactions.EdgeActionVersionsClientDeployVersionCodeResponse]](),
 		beginGetVersionCode:      newTracker[azfake.PollerResponder[armedgeactions.EdgeActionVersionsClientGetVersionCodeResponse]](),
-		newListByEdgeActionPager: newTracker[azfake.PagerResponder[armedgeactions.EdgeActionVersionsClientListByEdgeActionResponse]](),
 		beginSwapDefault:         newTracker[azfake.PollerResponder[armedgeactions.EdgeActionVersionsClientSwapDefaultResponse]](),
 		beginUpdate:              newTracker[azfake.PollerResponder[armedgeactions.EdgeActionVersionsClientUpdateResponse]](),
+		newListByEdgeActionPager: newTracker[azfake.PagerResponder[armedgeactions.EdgeActionVersionsClientListByEdgeActionResponse]](),
 	}
 }
 
@@ -78,9 +78,9 @@ type EdgeActionVersionsServerTransport struct {
 	beginDelete              *tracker[azfake.PollerResponder[armedgeactions.EdgeActionVersionsClientDeleteResponse]]
 	beginDeployVersionCode   *tracker[azfake.PollerResponder[armedgeactions.EdgeActionVersionsClientDeployVersionCodeResponse]]
 	beginGetVersionCode      *tracker[azfake.PollerResponder[armedgeactions.EdgeActionVersionsClientGetVersionCodeResponse]]
-	newListByEdgeActionPager *tracker[azfake.PagerResponder[armedgeactions.EdgeActionVersionsClientListByEdgeActionResponse]]
 	beginSwapDefault         *tracker[azfake.PollerResponder[armedgeactions.EdgeActionVersionsClientSwapDefaultResponse]]
 	beginUpdate              *tracker[azfake.PollerResponder[armedgeactions.EdgeActionVersionsClientUpdateResponse]]
+	newListByEdgeActionPager *tracker[azfake.PagerResponder[armedgeactions.EdgeActionVersionsClientListByEdgeActionResponse]]
 }
 
 // Do implements the policy.Transporter interface for EdgeActionVersionsServerTransport.
@@ -110,16 +110,16 @@ func (e *EdgeActionVersionsServerTransport) dispatchToMethodFake(req *http.Reque
 				res.resp, res.err = e.dispatchBeginDelete(req)
 			case "EdgeActionVersionsClient.BeginDeployVersionCode":
 				res.resp, res.err = e.dispatchBeginDeployVersionCode(req)
-			case "EdgeActionVersionsClient.Get":
-				res.resp, res.err = e.dispatchGet(req)
 			case "EdgeActionVersionsClient.BeginGetVersionCode":
 				res.resp, res.err = e.dispatchBeginGetVersionCode(req)
-			case "EdgeActionVersionsClient.NewListByEdgeActionPager":
-				res.resp, res.err = e.dispatchNewListByEdgeActionPager(req)
 			case "EdgeActionVersionsClient.BeginSwapDefault":
 				res.resp, res.err = e.dispatchBeginSwapDefault(req)
 			case "EdgeActionVersionsClient.BeginUpdate":
 				res.resp, res.err = e.dispatchBeginUpdate(req)
+			case "EdgeActionVersionsClient.Get":
+				res.resp, res.err = e.dispatchGet(req)
+			case "EdgeActionVersionsClient.NewListByEdgeActionPager":
+				res.resp, res.err = e.dispatchNewListByEdgeActionPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -288,43 +288,6 @@ func (e *EdgeActionVersionsServerTransport) dispatchBeginDeployVersionCode(req *
 	return resp, nil
 }
 
-func (e *EdgeActionVersionsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if e.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Cdn/edgeActions/(?P<edgeActionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/versions/(?P<version>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	edgeActionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("edgeActionName")])
-	if err != nil {
-		return nil, err
-	}
-	versionParam, err := url.PathUnescape(matches[regex.SubexpIndex("version")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := e.srv.Get(req.Context(), resourceGroupNameParam, edgeActionNameParam, versionParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).EdgeActionVersion, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
 func (e *EdgeActionVersionsServerTransport) dispatchBeginGetVersionCode(req *http.Request) (*http.Response, error) {
 	if e.srv.BeginGetVersionCode == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginGetVersionCode not implemented")}
@@ -370,47 +333,6 @@ func (e *EdgeActionVersionsServerTransport) dispatchBeginGetVersionCode(req *htt
 		e.beginGetVersionCode.remove(req)
 	}
 
-	return resp, nil
-}
-
-func (e *EdgeActionVersionsServerTransport) dispatchNewListByEdgeActionPager(req *http.Request) (*http.Response, error) {
-	if e.srv.NewListByEdgeActionPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListByEdgeActionPager not implemented")}
-	}
-	newListByEdgeActionPager := e.newListByEdgeActionPager.get(req)
-	if newListByEdgeActionPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Cdn/edgeActions/(?P<edgeActionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/versions`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		edgeActionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("edgeActionName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := e.srv.NewListByEdgeActionPager(resourceGroupNameParam, edgeActionNameParam, nil)
-		newListByEdgeActionPager = &resp
-		e.newListByEdgeActionPager.add(req, newListByEdgeActionPager)
-		server.PagerResponderInjectNextLinks(newListByEdgeActionPager, req, func(page *armedgeactions.EdgeActionVersionsClientListByEdgeActionResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListByEdgeActionPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		e.newListByEdgeActionPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListByEdgeActionPager) {
-		e.newListByEdgeActionPager.remove(req)
-	}
 	return resp, nil
 }
 
@@ -511,6 +433,84 @@ func (e *EdgeActionVersionsServerTransport) dispatchBeginUpdate(req *http.Reques
 		e.beginUpdate.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (e *EdgeActionVersionsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if e.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Cdn/edgeActions/(?P<edgeActionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/versions/(?P<version>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	edgeActionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("edgeActionName")])
+	if err != nil {
+		return nil, err
+	}
+	versionParam, err := url.PathUnescape(matches[regex.SubexpIndex("version")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := e.srv.Get(req.Context(), resourceGroupNameParam, edgeActionNameParam, versionParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).EdgeActionVersion, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (e *EdgeActionVersionsServerTransport) dispatchNewListByEdgeActionPager(req *http.Request) (*http.Response, error) {
+	if e.srv.NewListByEdgeActionPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListByEdgeActionPager not implemented")}
+	}
+	newListByEdgeActionPager := e.newListByEdgeActionPager.get(req)
+	if newListByEdgeActionPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Cdn/edgeActions/(?P<edgeActionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/versions`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		edgeActionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("edgeActionName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := e.srv.NewListByEdgeActionPager(resourceGroupNameParam, edgeActionNameParam, nil)
+		newListByEdgeActionPager = &resp
+		e.newListByEdgeActionPager.add(req, newListByEdgeActionPager)
+		server.PagerResponderInjectNextLinks(newListByEdgeActionPager, req, func(page *armedgeactions.EdgeActionVersionsClientListByEdgeActionResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListByEdgeActionPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		e.newListByEdgeActionPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListByEdgeActionPager) {
+		e.newListByEdgeActionPager.remove(req)
+	}
 	return resp, nil
 }
 

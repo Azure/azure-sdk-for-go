@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-12-01-preview/EdgeActionVersions_Create.json
+// Generated from example definition: 2026-10-01/EdgeActionVersions_Create.json
 func ExampleEdgeActionVersionsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -57,7 +57,7 @@ func ExampleEdgeActionVersionsClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2025-12-01-preview/EdgeActionVersions_Delete.json
+// Generated from example definition: 2026-10-01/EdgeActionVersions_Delete.json
 func ExampleEdgeActionVersionsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -83,7 +83,7 @@ func ExampleEdgeActionVersionsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-12-01-preview/EdgeActionVersions_DeployVersionCode.json
+// Generated from example definition: 2026-10-01/EdgeActionVersions_DeployVersionCode.json
 func ExampleEdgeActionVersionsClient_BeginDeployVersionCode() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -95,8 +95,8 @@ func ExampleEdgeActionVersionsClient_BeginDeployVersionCode() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewEdgeActionVersionsClient().BeginDeployVersionCode(ctx, "testrg", "edgeAction1", "version2", armedgeactions.VersionCode{
-		Name:    to.Ptr("zippedFile"),
-		Content: to.Ptr("UEsDBBQAAAAIAI1NzkQAAAAABQAAAA=="),
+		Name:    to.Ptr("edge_action.js"),
+		Content: to.Ptr("UEsDBBQAAAAIAAAAIQAqlc+OKAAAACoAAAAOAAAAZWRnZV9hY3Rpb24uanNLK81LLsnMz1PISMxLyUkt0kgtS80r0VSoVihKLSktylMA860VarkAUEsBAhQAFAAAAAgAAAAhACqVz44oAAAAKgAAAA4AAAAAAAAAAAAAAKSBAAAAAGVkZ2VfYWN0aW9uLmpzUEsFBgAAAAABAAEAPAAAAFQAAAAAAA=="),
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -119,7 +119,108 @@ func ExampleEdgeActionVersionsClient_BeginDeployVersionCode() {
 	// }
 }
 
-// Generated from example definition: 2025-12-01-preview/EdgeActionVersions_Get.json
+// Generated from example definition: 2026-10-01/EdgeActionVersions_GetVersionCode.json
+func ExampleEdgeActionVersionsClient_BeginGetVersionCode() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armedgeactions.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewEdgeActionVersionsClient().BeginGetVersionCode(ctx, "testrg", "edgeAction1", "version1", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armedgeactions.EdgeActionVersionsClientGetVersionCodeResponse{
+	// 	VersionCode: armedgeactions.VersionCode{
+	// 		Name: to.Ptr("EdgeActionCode"),
+	// 		Content: to.Ptr("UEsDBBQAAAAIAAAAIQAqlc+OKAAAACoAAAAOAAAAZWRnZV9hY3Rpb24uanNLK81LLsnMz1PISMxLyUkt0kgtS80r0VSoVihKLSktylMA860VarkAUEsBAhQAFAAAAAgAAAAhACqVz44oAAAAKgAAAA4AAAAAAAAAAAAAAKSBAAAAAGVkZ2VfYWN0aW9uLmpzUEsFBgAAAAABAAEAPAAAAFQAAAAAAA=="),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-10-01/EdgeActionVersions_SwapDefault.json
+func ExampleEdgeActionVersionsClient_BeginSwapDefault() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armedgeactions.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewEdgeActionVersionsClient().BeginSwapDefault(ctx, "testrg", "edgeAction1", "version1", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+}
+
+// Generated from example definition: 2026-10-01/EdgeActionVersions_Update.json
+func ExampleEdgeActionVersionsClient_BeginUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armedgeactions.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewEdgeActionVersionsClient().BeginUpdate(ctx, "testrg", "edgeAction1", "version1", armedgeactions.EdgeActionVersionUpdate{
+		Tags: map[string]*string{
+			"environment": to.Ptr("production"),
+		},
+		Properties: &armedgeactions.EdgeActionVersionUpdateProperties{
+			DeploymentType:   to.Ptr(armedgeactions.EdgeActionVersionDeploymentTypeZip),
+			IsDefaultVersion: to.Ptr(armedgeactions.EdgeActionIsDefaultVersionTrue),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armedgeactions.EdgeActionVersionsClientUpdateResponse{
+	// 	EdgeActionVersion: armedgeactions.EdgeActionVersion{
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testrg/providers/Microsoft.Cdn/edgeActions/edgeAction1/versions/version1"),
+	// 		Name: to.Ptr("version1"),
+	// 		Type: to.Ptr("Microsoft.Cdn/edgeActions/versions"),
+	// 		Location: to.Ptr("global"),
+	// 		Tags: map[string]*string{
+	// 			"environment": to.Ptr("production"),
+	// 		},
+	// 		Properties: &armedgeactions.EdgeActionVersionProperties{
+	// 			ProvisioningState: to.Ptr(armedgeactions.ProvisioningStateSucceeded),
+	// 			DeploymentType: to.Ptr(armedgeactions.EdgeActionVersionDeploymentTypeZip),
+	// 			ValidationStatus: to.Ptr(armedgeactions.EdgeActionVersionValidationStatusSucceeded),
+	// 			IsDefaultVersion: to.Ptr(armedgeactions.EdgeActionIsDefaultVersionTrue),
+	// 			LastPackageUpdateTime: to.Ptr(time.Date(2024, time.May, 25, 16, 19, 23, 0, time.UTC)),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-10-01/EdgeActionVersions_Get.json
 func ExampleEdgeActionVersionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -154,37 +255,7 @@ func ExampleEdgeActionVersionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-12-01-preview/EdgeActionVersions_GetVersionCode.json
-func ExampleEdgeActionVersionsClient_BeginGetVersionCode() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armedgeactions.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewEdgeActionVersionsClient().BeginGetVersionCode(ctx, "testrg", "edgeAction1", "version1", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armedgeactions.EdgeActionVersionsClientGetVersionCodeResponse{
-	// 	VersionCode: armedgeactions.VersionCode{
-	// 		Name: to.Ptr("zipfile"),
-	// 		Content: to.Ptr("encodedzip"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-12-01-preview/EdgeActionVersions_ListByEdgeAction.json
+// Generated from example definition: 2026-10-01/EdgeActionVersions_ListByEdgeAction.json
 func ExampleEdgeActionVersionsClient_NewListByEdgeActionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -239,68 +310,4 @@ func ExampleEdgeActionVersionsClient_NewListByEdgeActionPager() {
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2025-12-01-preview/EdgeActionVersions_SwapDefault.json
-func ExampleEdgeActionVersionsClient_BeginSwapDefault() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armedgeactions.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewEdgeActionVersionsClient().BeginSwapDefault(ctx, "testrg", "edgeAction1", "1.0", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-}
-
-// Generated from example definition: 2025-12-01-preview/EdgeActionVersions_Update.json
-func ExampleEdgeActionVersionsClient_BeginUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armedgeactions.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewEdgeActionVersionsClient().BeginUpdate(ctx, "testrg", "edgeAction1", "version1", armedgeactions.EdgeActionVersionUpdate{
-		Properties: &armedgeactions.EdgeActionVersionUpdateProperties{
-			DeploymentType: to.Ptr(armedgeactions.EdgeActionVersionDeploymentTypeOthers),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armedgeactions.EdgeActionVersionsClientUpdateResponse{
-	// 	EdgeActionVersion: armedgeactions.EdgeActionVersion{
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testrg/providers/Microsoft.Cdn/edgeActions/edgeAction1/versions/version1"),
-	// 		Name: to.Ptr("version1"),
-	// 		Type: to.Ptr("Microsoft.Cdn/edgeActions/versions"),
-	// 		Location: to.Ptr("global"),
-	// 		Properties: &armedgeactions.EdgeActionVersionProperties{
-	// 			ProvisioningState: to.Ptr(armedgeactions.ProvisioningStateSucceeded),
-	// 			DeploymentType: to.Ptr(armedgeactions.EdgeActionVersionDeploymentTypeOthers),
-	// 			ValidationStatus: to.Ptr(armedgeactions.EdgeActionVersionValidationStatusSucceeded),
-	// 			IsDefaultVersion: to.Ptr(armedgeactions.EdgeActionIsDefaultVersionTrue),
-	// 			LastPackageUpdateTime: to.Ptr(time.Date(2024, time.May, 25, 16, 19, 23, 0, time.UTC)),
-	// 		},
-	// 	},
-	// }
 }

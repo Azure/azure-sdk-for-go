@@ -12,8 +12,8 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-07-15-preview/PutWorkbench.json
-func ExampleWorkbenchesClient_BeginCreateOrUpdate() {
+// Generated from example definition: 2026-09-15-preview/PutWorkbench.json
+func ExampleWorkbenchesClient_BeginCreateOrUpdate_putWorkbench() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -25,8 +25,10 @@ func ExampleWorkbenchesClient_BeginCreateOrUpdate() {
 	}
 	poller, err := clientFactory.NewWorkbenchesClient().BeginCreateOrUpdate(ctx, "rgcognitiveservices", "myAccount", "myProject", "myWorkbench", armcognitiveservices.Workbench{
 		Properties: &armcognitiveservices.WorkbenchProperties{
-			TargetClusterID:        to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rgcognitiveservices/providers/Microsoft.CognitiveServices/accounts/myAccount/computes/myCluster"),
+			TargetClusterID:        to.Ptr("/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/vc-rg/providers/Microsoft.MachineLearningServices/virtualClusters/test-vc"),
 			ImageLink:              to.Ptr("mcr.microsoft.com/azureml/curated/pytorch-gpu:latest"),
+			InstanceType:           to.Ptr("Singularity.ND12_H100_v5-n1"),
+			GpuCount:               to.Ptr[int32](1),
 			IdleTimeBeforeShutdown: to.Ptr("PT30M"),
 			DatasetID:              to.Ptr("dataset-12345"),
 			SSHSettings: &armcognitiveservices.SSHSettings{
@@ -34,7 +36,6 @@ func ExampleWorkbenchesClient_BeginCreateOrUpdate() {
 				AdminEnabled: to.Ptr(true),
 			},
 		},
-		Location: to.Ptr("eastus"),
 		Identity: &armcognitiveservices.Identity{
 			Type: to.Ptr(armcognitiveservices.ResourceIdentityTypeUserAssigned),
 			UserAssignedIdentities: map[string]*armcognitiveservices.UserAssignedIdentity{
@@ -55,8 +56,10 @@ func ExampleWorkbenchesClient_BeginCreateOrUpdate() {
 	// res = armcognitiveservices.WorkbenchesClientCreateOrUpdateResponse{
 	// 	Workbench: armcognitiveservices.Workbench{
 	// 		Properties: &armcognitiveservices.WorkbenchProperties{
-	// 			TargetClusterID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rgcognitiveservices/providers/Microsoft.CognitiveServices/accounts/myAccount/computes/myCluster"),
+	// 			TargetClusterID: to.Ptr("/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/vc-rg/providers/Microsoft.MachineLearningServices/virtualClusters/test-vc"),
 	// 			ImageLink: to.Ptr("mcr.microsoft.com/azureml/curated/pytorch-gpu:latest"),
+	// 			InstanceType: to.Ptr("Singularity.ND12_H100_v5-n1"),
+	// 			GpuCount: to.Ptr[int32](1),
 	// 			IdleTimeBeforeShutdown: to.Ptr("PT30M"),
 	// 			DatasetID: to.Ptr("dataset-12345"),
 	// 			SSHSettings: &armcognitiveservices.SSHSettings{
@@ -68,12 +71,12 @@ func ExampleWorkbenchesClient_BeginCreateOrUpdate() {
 	// 				SSHPort: to.Ptr[int32](50000),
 	// 			},
 	// 			WebEndpoint: to.Ptr("https://myworkbench.eastus.api.azureml.ms"),
-	// 			ProvisioningState: to.Ptr(armcognitiveservices.ComputeProvisioningStateAccepted),
+	// 			ProvisioningState: to.Ptr(armcognitiveservices.WorkbenchProvisioningStateSucceeded),
+	// 			Status: to.Ptr(armcognitiveservices.WorkbenchStatusRunning),
 	// 			Errors: []*armcognitiveservices.ErrorDetail{
 	// 			},
 	// 			CreationTime: to.Ptr(time.Date(2026, time.March, 24, 12, 0, 0, 0, time.UTC)),
 	// 		},
-	// 		Location: to.Ptr("eastus"),
 	// 		Identity: &armcognitiveservices.Identity{
 	// 			Type: to.Ptr(armcognitiveservices.ResourceIdentityTypeUserAssigned),
 	// 			TenantID: to.Ptr("72f988bf-86f1-41af-91ab-2d7cd011db47"),
@@ -99,7 +102,49 @@ func ExampleWorkbenchesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-07-15-preview/DeleteWorkbench.json
+// Generated from example definition: 2026-09-15-preview/PutWorkbenchPending.json
+func ExampleWorkbenchesClient_BeginCreateOrUpdate_putWorkbenchPending() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcognitiveservices.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewWorkbenchesClient().BeginCreateOrUpdate(ctx, "rgcognitiveservices", "myAccount", "myProject", "myWorkbench", armcognitiveservices.Workbench{
+		Properties: &armcognitiveservices.WorkbenchProperties{
+			TargetClusterID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rgcognitiveservices/providers/Microsoft.CognitiveServices/accounts/myAccount/computes/myCluster"),
+			ImageLink:       to.Ptr("mcr.microsoft.com/azureml/curated/pytorch-gpu:latest"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcognitiveservices.WorkbenchesClientCreateOrUpdateResponse{
+	// 	Workbench: armcognitiveservices.Workbench{
+	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rgcognitiveservices/providers/Microsoft.CognitiveServices/accounts/myAccount/projects/myProject/workbenches/myWorkbench"),
+	// 		Name: to.Ptr("myWorkbench"),
+	// 		Type: to.Ptr("Microsoft.CognitiveServices/accounts/projects/workbenches"),
+	// 		Properties: &armcognitiveservices.WorkbenchProperties{
+	// 			TargetClusterID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rgcognitiveservices/providers/Microsoft.CognitiveServices/accounts/myAccount/computes/myCluster"),
+	// 			ImageLink: to.Ptr("mcr.microsoft.com/azureml/curated/pytorch-gpu:latest"),
+	// 			ProvisioningState: to.Ptr(armcognitiveservices.WorkbenchProvisioningStateCreating),
+	// 			Status: to.Ptr(armcognitiveservices.WorkbenchStatusCreating),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-09-15-preview/DeleteWorkbench.json
 func ExampleWorkbenchesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -120,7 +165,70 @@ func ExampleWorkbenchesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-07-15-preview/GetWorkbench.json
+// Generated from example definition: 2026-09-15-preview/RestartWorkbench.json
+func ExampleWorkbenchesClient_BeginRestart() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcognitiveservices.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewWorkbenchesClient().BeginRestart(ctx, "rgcognitiveservices", "myAccount", "myProject", "myWorkbench", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+}
+
+// Generated from example definition: 2026-09-15-preview/StartWorkbench.json
+func ExampleWorkbenchesClient_BeginStart() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcognitiveservices.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewWorkbenchesClient().BeginStart(ctx, "rgcognitiveservices", "myAccount", "myProject", "myWorkbench", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+}
+
+// Generated from example definition: 2026-09-15-preview/StopWorkbench.json
+func ExampleWorkbenchesClient_BeginStop() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcognitiveservices.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewWorkbenchesClient().BeginStop(ctx, "rgcognitiveservices", "myAccount", "myProject", "myWorkbench", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+}
+
+// Generated from example definition: 2026-09-15-preview/GetWorkbench.json
 func ExampleWorkbenchesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -141,8 +249,10 @@ func ExampleWorkbenchesClient_Get() {
 	// res = armcognitiveservices.WorkbenchesClientGetResponse{
 	// 	Workbench: armcognitiveservices.Workbench{
 	// 		Properties: &armcognitiveservices.WorkbenchProperties{
-	// 			TargetClusterID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rgcognitiveservices/providers/Microsoft.CognitiveServices/accounts/myAccount/computes/myCluster"),
+	// 			TargetClusterID: to.Ptr("/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/vc-rg/providers/Microsoft.MachineLearningServices/virtualClusters/test-vc"),
 	// 			ImageLink: to.Ptr("mcr.microsoft.com/azureml/curated/pytorch-gpu:latest"),
+	// 			InstanceType: to.Ptr("Singularity.ND12_H100_v5-n1"),
+	// 			GpuCount: to.Ptr[int32](1),
 	// 			IdleTimeBeforeShutdown: to.Ptr("PT30M"),
 	// 			DatasetID: to.Ptr("dataset-12345"),
 	// 			SSHSettings: &armcognitiveservices.SSHSettings{
@@ -154,12 +264,12 @@ func ExampleWorkbenchesClient_Get() {
 	// 				SSHPort: to.Ptr[int32](50000),
 	// 			},
 	// 			WebEndpoint: to.Ptr("https://myworkbench.eastus.api.azureml.ms"),
-	// 			ProvisioningState: to.Ptr(armcognitiveservices.ComputeProvisioningStateSucceeded),
+	// 			ProvisioningState: to.Ptr(armcognitiveservices.WorkbenchProvisioningStateSucceeded),
+	// 			Status: to.Ptr(armcognitiveservices.WorkbenchStatusRunning),
 	// 			Errors: []*armcognitiveservices.ErrorDetail{
 	// 			},
 	// 			CreationTime: to.Ptr(time.Date(2026, time.March, 24, 12, 0, 0, 0, time.UTC)),
 	// 		},
-	// 		Location: to.Ptr("eastus"),
 	// 		Identity: &armcognitiveservices.Identity{
 	// 			Type: to.Ptr(armcognitiveservices.ResourceIdentityTypeUserAssigned),
 	// 			TenantID: to.Ptr("72f988bf-86f1-41af-91ab-2d7cd011db47"),
@@ -185,7 +295,7 @@ func ExampleWorkbenchesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-07-15-preview/ListWorkbenches.json
+// Generated from example definition: 2026-09-15-preview/ListWorkbenches.json
 func ExampleWorkbenchesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -212,8 +322,10 @@ func ExampleWorkbenchesClient_NewListPager() {
 		// 		Value: []*armcognitiveservices.Workbench{
 		// 			{
 		// 				Properties: &armcognitiveservices.WorkbenchProperties{
-		// 					TargetClusterID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rgcognitiveservices/providers/Microsoft.CognitiveServices/accounts/myAccount/computes/myCluster"),
+		// 					TargetClusterID: to.Ptr("/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/vc-rg/providers/Microsoft.MachineLearningServices/virtualClusters/test-vc"),
 		// 					ImageLink: to.Ptr("mcr.microsoft.com/azureml/curated/pytorch-gpu:latest"),
+		// 					InstanceType: to.Ptr("Singularity.ND12_H100_v5-n1"),
+		// 					GpuCount: to.Ptr[int32](1),
 		// 					IdleTimeBeforeShutdown: to.Ptr("PT30M"),
 		// 					DatasetID: to.Ptr("dataset-12345"),
 		// 					SSHSettings: &armcognitiveservices.SSHSettings{
@@ -225,12 +337,12 @@ func ExampleWorkbenchesClient_NewListPager() {
 		// 						SSHPort: to.Ptr[int32](50000),
 		// 					},
 		// 					WebEndpoint: to.Ptr("https://myworkbench.eastus.api.azureml.ms"),
-		// 					ProvisioningState: to.Ptr(armcognitiveservices.ComputeProvisioningStateSucceeded),
+		// 					ProvisioningState: to.Ptr(armcognitiveservices.WorkbenchProvisioningStateSucceeded),
+		// 					Status: to.Ptr(armcognitiveservices.WorkbenchStatusRunning),
 		// 					Errors: []*armcognitiveservices.ErrorDetail{
 		// 					},
 		// 					CreationTime: to.Ptr(time.Date(2026, time.March, 24, 12, 0, 0, 0, time.UTC)),
 		// 				},
-		// 				Location: to.Ptr("eastus"),
 		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcognitiveservices/providers/Microsoft.CognitiveServices/accounts/myAccount/projects/myProject/workbenches/myWorkbench"),
 		// 				Name: to.Ptr("myWorkbench"),
 		// 				Type: to.Ptr("Microsoft.CognitiveServices/accounts/projects/workbenches"),
@@ -241,8 +353,8 @@ func ExampleWorkbenchesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-07-15-preview/RestartWorkbench.json
-func ExampleWorkbenchesClient_BeginRestart() {
+// Generated from example definition: 2026-09-15-preview/UpdateWorkbench.json
+func ExampleWorkbenchesClient_Update_updateWorkbench() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -252,90 +364,13 @@ func ExampleWorkbenchesClient_BeginRestart() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewWorkbenchesClient().BeginRestart(ctx, "rgcognitiveservices", "myAccount", "myProject", "myWorkbench", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-}
-
-// Generated from example definition: 2026-07-15-preview/StartWorkbench.json
-func ExampleWorkbenchesClient_BeginStart() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcognitiveservices.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewWorkbenchesClient().BeginStart(ctx, "rgcognitiveservices", "myAccount", "myProject", "myWorkbench", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-}
-
-// Generated from example definition: 2026-07-15-preview/StopWorkbench.json
-func ExampleWorkbenchesClient_BeginStop() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcognitiveservices.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewWorkbenchesClient().BeginStop(ctx, "rgcognitiveservices", "myAccount", "myProject", "myWorkbench", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-}
-
-// Generated from example definition: 2026-07-15-preview/UpdateWorkbench.json
-func ExampleWorkbenchesClient_BeginUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcognitiveservices.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewWorkbenchesClient().BeginUpdate(ctx, "rgcognitiveservices", "myAccount", "myProject", "myWorkbench", armcognitiveservices.Workbench{
-		Properties: &armcognitiveservices.WorkbenchProperties{
-			TargetClusterID:        to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rgcognitiveservices/providers/Microsoft.CognitiveServices/accounts/myAccount/computes/myCluster"),
-			ImageLink:              to.Ptr("mcr.microsoft.com/azureml/curated/pytorch-gpu:v2"),
+	res, err := clientFactory.NewWorkbenchesClient().Update(ctx, "rgcognitiveservices", "myAccount", "myProject", "myWorkbench", armcognitiveservices.WorkbenchUpdate{
+		Properties: &armcognitiveservices.WorkbenchUpdateProperties{
 			IdleTimeBeforeShutdown: to.Ptr("PT1H"),
-			DatasetID:              to.Ptr("dataset-67890"),
-			SSHSettings: &armcognitiveservices.SSHSettings{
-				SSHPublicKey: to.Ptr("ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQ..."),
-				AdminEnabled: to.Ptr(true),
-			},
-		},
-		Tags: map[string]*string{
-			"environment": to.Ptr("production"),
 		},
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -343,10 +378,12 @@ func ExampleWorkbenchesClient_BeginUpdate() {
 	// res = armcognitiveservices.WorkbenchesClientUpdateResponse{
 	// 	Workbench: armcognitiveservices.Workbench{
 	// 		Properties: &armcognitiveservices.WorkbenchProperties{
-	// 			TargetClusterID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rgcognitiveservices/providers/Microsoft.CognitiveServices/accounts/myAccount/computes/myCluster"),
-	// 			ImageLink: to.Ptr("mcr.microsoft.com/azureml/curated/pytorch-gpu:v2"),
+	// 			TargetClusterID: to.Ptr("/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/vc-rg/providers/Microsoft.MachineLearningServices/virtualClusters/test-vc"),
+	// 			ImageLink: to.Ptr("mcr.microsoft.com/azureml/curated/pytorch-gpu:latest"),
+	// 			InstanceType: to.Ptr("Singularity.ND12_H100_v5-n1"),
+	// 			GpuCount: to.Ptr[int32](1),
 	// 			IdleTimeBeforeShutdown: to.Ptr("PT1H"),
-	// 			DatasetID: to.Ptr("dataset-67890"),
+	// 			DatasetID: to.Ptr("dataset-12345"),
 	// 			SSHSettings: &armcognitiveservices.SSHSettings{
 	// 				SSHPublicKey: to.Ptr("ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQ..."),
 	// 				AdminEnabled: to.Ptr(true),
@@ -356,14 +393,11 @@ func ExampleWorkbenchesClient_BeginUpdate() {
 	// 				SSHPort: to.Ptr[int32](50000),
 	// 			},
 	// 			WebEndpoint: to.Ptr("https://myworkbench.eastus.api.azureml.ms"),
-	// 			ProvisioningState: to.Ptr(armcognitiveservices.ComputeProvisioningStateAccepted),
+	// 			ProvisioningState: to.Ptr(armcognitiveservices.WorkbenchProvisioningStateSucceeded),
+	// 			Status: to.Ptr(armcognitiveservices.WorkbenchStatusRunning),
 	// 			Errors: []*armcognitiveservices.ErrorDetail{
 	// 			},
 	// 			CreationTime: to.Ptr(time.Date(2026, time.March, 24, 12, 0, 0, 0, time.UTC)),
-	// 		},
-	// 		Location: to.Ptr("eastus"),
-	// 		Tags: map[string]*string{
-	// 			"environment": to.Ptr("production"),
 	// 		},
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcognitiveservices/providers/Microsoft.CognitiveServices/accounts/myAccount/projects/myProject/workbenches/myWorkbench"),
 	// 		Name: to.Ptr("myWorkbench"),
@@ -375,6 +409,103 @@ func ExampleWorkbenchesClient_BeginUpdate() {
 	// 			LastModifiedBy: to.Ptr("xxx@microsoft.com"),
 	// 			LastModifiedByType: to.Ptr(armcognitiveservices.CreatedByTypeUser),
 	// 			LastModifiedAt: to.Ptr(time.Date(2026, time.March, 24, 12, 0, 0, 0, time.UTC)),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-09-15-preview/UpdateWorkbenchComputeProperties.json
+func ExampleWorkbenchesClient_Update_updateWorkbenchComputeProperties() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcognitiveservices.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewWorkbenchesClient().Update(ctx, "rgcognitiveservices", "myAccount", "myProject", "myWorkbench", armcognitiveservices.WorkbenchUpdate{
+		Properties: &armcognitiveservices.WorkbenchUpdateProperties{
+			TargetClusterID:        to.Ptr("/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/vc-rg/providers/Microsoft.MachineLearningServices/virtualClusters/test-vc"),
+			IdleTimeBeforeShutdown: to.Ptr("PT1H"),
+			InstanceType:           to.Ptr("Singularity.ND12_H100_v5-n1"),
+			GpuCount:               to.Ptr[int32](1),
+		},
+		Identity: &armcognitiveservices.Identity{
+			Type: to.Ptr(armcognitiveservices.ResourceIdentityTypeUserAssigned),
+			UserAssignedIdentities: map[string]*armcognitiveservices.UserAssignedIdentity{
+				"/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rgcognitiveservices/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myIdentity": {},
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcognitiveservices.WorkbenchesClientUpdateResponse{
+	// 	Workbench: armcognitiveservices.Workbench{
+	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rgcognitiveservices/providers/Microsoft.CognitiveServices/accounts/myAccount/projects/myProject/workbenches/myWorkbench"),
+	// 		Name: to.Ptr("myWorkbench"),
+	// 		Type: to.Ptr("Microsoft.CognitiveServices/accounts/projects/workbenches"),
+	// 		Properties: &armcognitiveservices.WorkbenchProperties{
+	// 			TargetClusterID: to.Ptr("/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/vc-rg/providers/Microsoft.MachineLearningServices/virtualClusters/test-vc"),
+	// 			ImageLink: to.Ptr("mcr.microsoft.com/azureml/curated/pytorch-gpu:latest"),
+	// 			IdleTimeBeforeShutdown: to.Ptr("PT1H"),
+	// 			InstanceType: to.Ptr("Singularity.ND12_H100_v5-n1"),
+	// 			GpuCount: to.Ptr[int32](1),
+	// 			ProvisioningState: to.Ptr(armcognitiveservices.WorkbenchProvisioningStateSucceeded),
+	// 			Status: to.Ptr(armcognitiveservices.WorkbenchStatusStopped),
+	// 		},
+	// 		Identity: &armcognitiveservices.Identity{
+	// 			Type: to.Ptr(armcognitiveservices.ResourceIdentityTypeUserAssigned),
+	// 			UserAssignedIdentities: map[string]*armcognitiveservices.UserAssignedIdentity{
+	// 				"/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rgcognitiveservices/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myIdentity": &armcognitiveservices.UserAssignedIdentity{
+	// 					PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000001"),
+	// 					ClientID: to.Ptr("00000000-0000-0000-0000-000000000002"),
+	// 				},
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-09-15-preview/UpdateWorkbenchResetComputeProperties.json
+func ExampleWorkbenchesClient_Update_updateWorkbenchResetComputeProperties() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcognitiveservices.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewWorkbenchesClient().Update(ctx, "rgcognitiveservices", "myAccount", "myProject", "myWorkbench", armcognitiveservices.WorkbenchUpdate{
+		Properties: &armcognitiveservices.WorkbenchUpdateProperties{
+			InstanceType: nil,
+			GpuCount:     nil,
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcognitiveservices.WorkbenchesClientUpdateResponse{
+	// 	Workbench: armcognitiveservices.Workbench{
+	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rgcognitiveservices/providers/Microsoft.CognitiveServices/accounts/myAccount/projects/myProject/workbenches/myWorkbench"),
+	// 		Name: to.Ptr("myWorkbench"),
+	// 		Type: to.Ptr("Microsoft.CognitiveServices/accounts/projects/workbenches"),
+	// 		Properties: &armcognitiveservices.WorkbenchProperties{
+	// 			TargetClusterID: to.Ptr("/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/vc-rg/providers/Microsoft.MachineLearningServices/virtualClusters/test-vc"),
+	// 			ImageLink: to.Ptr("mcr.microsoft.com/azureml/curated/pytorch-gpu:latest"),
+	// 			IdleTimeBeforeShutdown: to.Ptr("PT1H"),
+	// 			ProvisioningState: to.Ptr(armcognitiveservices.WorkbenchProvisioningStateSucceeded),
+	// 			Status: to.Ptr(armcognitiveservices.WorkbenchStatusStopped),
 	// 		},
 	// 	},
 	// }

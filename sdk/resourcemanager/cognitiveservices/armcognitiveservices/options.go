@@ -128,6 +128,39 @@ type AccountsClientRegenerateKeyOptions struct {
 	// placeholder for future optional parameters
 }
 
+// AdapterDeploymentsClientBeginCreateOrUpdateOptions contains the optional parameters for the AdapterDeploymentsClient.BeginCreateOrUpdate
+// method.
+type AdapterDeploymentsClientBeginCreateOrUpdateOptions struct {
+	// Proceed only when the current adapter deployment ETag matches this value.
+	IfMatch *string
+
+	// Proceed only when no current adapter deployment ETag matches this value.
+	IfNoneMatch *string
+
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// AdapterDeploymentsClientBeginDeleteOptions contains the optional parameters for the AdapterDeploymentsClient.BeginDelete
+// method.
+type AdapterDeploymentsClientBeginDeleteOptions struct {
+	// Proceed only when the current adapter deployment ETag matches this value.
+	IfMatch *string
+
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// AdapterDeploymentsClientGetOptions contains the optional parameters for the AdapterDeploymentsClient.Get method.
+type AdapterDeploymentsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AdapterDeploymentsClientListOptions contains the optional parameters for the AdapterDeploymentsClient.NewListPager method.
+type AdapterDeploymentsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
 // AgentApplicationsClientBeginCreateOrUpdateOptions contains the optional parameters for the AgentApplicationsClient.BeginCreateOrUpdate
 // method.
 type AgentApplicationsClientBeginCreateOrUpdateOptions struct {
@@ -395,6 +428,37 @@ type ComputesClientGetOptions struct {
 // ComputesClientListOptions contains the optional parameters for the ComputesClient.NewListPager method.
 type ComputesClientListOptions struct {
 	// placeholder for future optional parameters
+}
+
+// CostControlsClientCreateOrUpdateOptions contains the optional parameters for the CostControlsClient.CreateOrUpdate method.
+type CostControlsClientCreateOrUpdateOptions struct {
+	// Proceeds only when the current entity tag matches this value.
+	IfMatch *string
+
+	// Proceeds only when the current entity tag does not match this value.
+	IfNoneMatch *string
+}
+
+// CostControlsClientDeleteOptions contains the optional parameters for the CostControlsClient.Delete method.
+type CostControlsClientDeleteOptions struct {
+	// Proceeds only when the current entity tag matches this value.
+	IfMatch *string
+}
+
+// CostControlsClientGetOptions contains the optional parameters for the CostControlsClient.Get method.
+type CostControlsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CostControlsClientListOptions contains the optional parameters for the CostControlsClient.NewListPager method.
+type CostControlsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CostControlsClientUpdateOptions contains the optional parameters for the CostControlsClient.Update method.
+type CostControlsClientUpdateOptions struct {
+	// Proceeds only when the current entity tag matches this value.
+	IfMatch *string
 }
 
 // DefenderForAISettingsClientCreateOrUpdateOptions contains the optional parameters for the DefenderForAISettingsClient.CreateOrUpdate
@@ -817,6 +881,32 @@ type QuotaTiersClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
+// RaiBindingsClientCreateOrUpdateOptions contains the optional parameters for the RaiBindingsClient.CreateOrUpdate method.
+type RaiBindingsClientCreateOrUpdateOptions struct {
+	// Proceed only when the current resource ETag matches this value.
+	IfMatch *string
+
+	// Proceed only when no current resource ETag matches this value.
+	IfNoneMatch *string
+}
+
+// RaiBindingsClientDeleteOptions contains the optional parameters for the RaiBindingsClient.Delete method.
+type RaiBindingsClientDeleteOptions struct {
+	// Proceed only when the current resource ETag matches this value.
+	IfMatch *string
+}
+
+// RaiBindingsClientGetOptions contains the optional parameters for the RaiBindingsClient.Get method.
+type RaiBindingsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// RaiBindingsClientListOptions contains the optional parameters for the RaiBindingsClient.NewListPager method.
+type RaiBindingsClientListOptions struct {
+	// The maximum number of RAI bindings to return. Defaults to 50.
+	Top *int32
+}
+
 // RaiBlocklistItemsClientBatchAddOptions contains the optional parameters for the RaiBlocklistItemsClient.BatchAdd method.
 type RaiBlocklistItemsClientBatchAddOptions struct {
 	// placeholder for future optional parameters
@@ -909,13 +999,20 @@ type RaiExternalSafetyProvidersClientListOptions struct {
 
 // RaiPoliciesClientBeginDeleteOptions contains the optional parameters for the RaiPoliciesClient.BeginDelete method.
 type RaiPoliciesClientBeginDeleteOptions struct {
+	// Proceed only when the current resource ETag matches this value.
+	IfMatch *string
+
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // RaiPoliciesClientCreateOrUpdateOptions contains the optional parameters for the RaiPoliciesClient.CreateOrUpdate method.
 type RaiPoliciesClientCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
+	// Proceed only when the current resource ETag matches this value.
+	IfMatch *string
+
+	// Proceed only when no current resource ETag matches this value.
+	IfNoneMatch *string
 }
 
 // RaiPoliciesClientGetOptions contains the optional parameters for the RaiPoliciesClient.Get method.
@@ -926,6 +1023,32 @@ type RaiPoliciesClientGetOptions struct {
 // RaiPoliciesClientListOptions contains the optional parameters for the RaiPoliciesClient.NewListPager method.
 type RaiPoliciesClientListOptions struct {
 	// placeholder for future optional parameters
+}
+
+// RaiRegosClientCreateOrUpdateOptions contains the optional parameters for the RaiRegosClient.CreateOrUpdate method.
+type RaiRegosClientCreateOrUpdateOptions struct {
+	// Proceed only when the current resource ETag matches this value.
+	IfMatch *string
+
+	// Proceed only when no current resource ETag matches this value.
+	IfNoneMatch *string
+}
+
+// RaiRegosClientDeleteOptions contains the optional parameters for the RaiRegosClient.Delete method.
+type RaiRegosClientDeleteOptions struct {
+	// Proceed only when the current resource ETag matches this value.
+	IfMatch *string
+}
+
+// RaiRegosClientGetOptions contains the optional parameters for the RaiRegosClient.Get method.
+type RaiRegosClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// RaiRegosClientListOptions contains the optional parameters for the RaiRegosClient.NewListPager method.
+type RaiRegosClientListOptions struct {
+	// The maximum number of reusable Rego artifacts to return. Defaults to 10.
+	Top *int32
 }
 
 // RaiToolLabelsClientBeginDeleteOptions contains the optional parameters for the RaiToolLabelsClient.BeginDelete method.
@@ -1037,12 +1160,6 @@ type WorkbenchesClientBeginStopOptions struct {
 	ResumeToken string
 }
 
-// WorkbenchesClientBeginUpdateOptions contains the optional parameters for the WorkbenchesClient.BeginUpdate method.
-type WorkbenchesClientBeginUpdateOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
 // WorkbenchesClientGetOptions contains the optional parameters for the WorkbenchesClient.Get method.
 type WorkbenchesClientGetOptions struct {
 	// placeholder for future optional parameters
@@ -1050,5 +1167,10 @@ type WorkbenchesClientGetOptions struct {
 
 // WorkbenchesClientListOptions contains the optional parameters for the WorkbenchesClient.NewListPager method.
 type WorkbenchesClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WorkbenchesClientUpdateOptions contains the optional parameters for the WorkbenchesClient.Update method.
+type WorkbenchesClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }

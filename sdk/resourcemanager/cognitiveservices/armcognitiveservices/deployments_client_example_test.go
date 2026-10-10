@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-07-15-preview/PutDeployment.json
+// Generated from example definition: 2026-09-15-preview/PutDeployment.json
 func ExampleDeploymentsClient_BeginCreateOrUpdate_putDeployment() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -71,7 +71,7 @@ func ExampleDeploymentsClient_BeginCreateOrUpdate_putDeployment() {
 	// }
 }
 
-// Generated from example definition: 2026-07-15-preview/PutDeploymentWithSpeculativeDecoding.json
+// Generated from example definition: 2026-09-15-preview/PutDeploymentWithSpeculativeDecoding.json
 func ExampleDeploymentsClient_BeginCreateOrUpdate_putDeploymentWithSpeculativeDecoding() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -148,7 +148,7 @@ func ExampleDeploymentsClient_BeginCreateOrUpdate_putDeploymentWithSpeculativeDe
 	// }
 }
 
-// Generated from example definition: 2026-07-15-preview/DeleteDeployment.json
+// Generated from example definition: 2026-09-15-preview/DeleteDeployment.json
 func ExampleDeploymentsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -174,7 +174,57 @@ func ExampleDeploymentsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-07-15-preview/GetDeployment.json
+// Generated from example definition: 2026-09-15-preview/UpdateDeployment.json
+func ExampleDeploymentsClient_BeginUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcognitiveservices.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewDeploymentsClient().BeginUpdate(ctx, "resourceGroupName", "accountName", "deploymentName", armcognitiveservices.PatchResourceTagsAndSKU{
+		SKU: &armcognitiveservices.SKU{
+			Name:     to.Ptr("Standard"),
+			Capacity: to.Ptr[int32](1),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcognitiveservices.DeploymentsClientUpdateResponse{
+	// 	Deployment: armcognitiveservices.Deployment{
+	// 		Name: to.Ptr("deploymentName"),
+	// 		Type: to.Ptr("Microsoft.CognitiveServices/accounts/deployments"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resourceGroupName/providers/Microsoft.CognitiveServices/accounts/accountName/deployments/deploymentName"),
+	// 		Properties: &armcognitiveservices.DeploymentProperties{
+	// 			DeploymentState: to.Ptr(armcognitiveservices.DeploymentStatePaused),
+	// 			Model: &armcognitiveservices.DeploymentModel{
+	// 				Name: to.Ptr("ada"),
+	// 				Format: to.Ptr("OpenAI"),
+	// 				Version: to.Ptr("1"),
+	// 			},
+	// 			ProvisioningState: to.Ptr(armcognitiveservices.DeploymentProvisioningStateSucceeded),
+	// 			ServiceTier: to.Ptr(armcognitiveservices.ServiceTierPriority),
+	// 		},
+	// 		SKU: &armcognitiveservices.SKU{
+	// 			Name: to.Ptr("Standard"),
+	// 			Capacity: to.Ptr[int32](1),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-09-15-preview/GetDeployment.json
 func ExampleDeploymentsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -215,7 +265,7 @@ func ExampleDeploymentsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-07-15-preview/ListDeployments.json
+// Generated from example definition: 2026-09-15-preview/ListDeployments.json
 func ExampleDeploymentsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -265,7 +315,7 @@ func ExampleDeploymentsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-07-15-preview/ListDeploymentSkus.json
+// Generated from example definition: 2026-09-15-preview/ListDeploymentSkus.json
 func ExampleDeploymentsClient_NewListSKUsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -313,7 +363,7 @@ func ExampleDeploymentsClient_NewListSKUsPager() {
 	}
 }
 
-// Generated from example definition: 2026-07-15-preview/PauseDeployment.json
+// Generated from example definition: 2026-09-15-preview/PauseDeployment.json
 func ExampleDeploymentsClient_Pause() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -353,7 +403,7 @@ func ExampleDeploymentsClient_Pause() {
 	// }
 }
 
-// Generated from example definition: 2026-07-15-preview/ResumeDeployment.json
+// Generated from example definition: 2026-09-15-preview/ResumeDeployment.json
 func ExampleDeploymentsClient_Resume() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -384,56 +434,6 @@ func ExampleDeploymentsClient_Resume() {
 	// 				Version: to.Ptr("0613"),
 	// 			},
 	// 			ProvisioningState: to.Ptr(armcognitiveservices.DeploymentProvisioningStateSucceeded),
-	// 		},
-	// 		SKU: &armcognitiveservices.SKU{
-	// 			Name: to.Ptr("Standard"),
-	// 			Capacity: to.Ptr[int32](1),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-07-15-preview/UpdateDeployment.json
-func ExampleDeploymentsClient_BeginUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcognitiveservices.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewDeploymentsClient().BeginUpdate(ctx, "resourceGroupName", "accountName", "deploymentName", armcognitiveservices.PatchResourceTagsAndSKU{
-		SKU: &armcognitiveservices.SKU{
-			Name:     to.Ptr("Standard"),
-			Capacity: to.Ptr[int32](1),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcognitiveservices.DeploymentsClientUpdateResponse{
-	// 	Deployment: armcognitiveservices.Deployment{
-	// 		Name: to.Ptr("deploymentName"),
-	// 		Type: to.Ptr("Microsoft.CognitiveServices/accounts/deployments"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resourceGroupName/providers/Microsoft.CognitiveServices/accounts/accountName/deployments/deploymentName"),
-	// 		Properties: &armcognitiveservices.DeploymentProperties{
-	// 			DeploymentState: to.Ptr(armcognitiveservices.DeploymentStatePaused),
-	// 			Model: &armcognitiveservices.DeploymentModel{
-	// 				Name: to.Ptr("ada"),
-	// 				Format: to.Ptr("OpenAI"),
-	// 				Version: to.Ptr("1"),
-	// 			},
-	// 			ProvisioningState: to.Ptr(armcognitiveservices.DeploymentProvisioningStateSucceeded),
-	// 			ServiceTier: to.Ptr(armcognitiveservices.ServiceTierPriority),
 	// 		},
 	// 		SKU: &armcognitiveservices.SKU{
 	// 			Name: to.Ptr("Standard"),

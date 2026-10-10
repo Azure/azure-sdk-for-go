@@ -25,14 +25,6 @@ type ManagedNetworkSettingsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, accountName string, managedNetworkName string, options *armcognitiveservices.ManagedNetworkSettingsClientBeginDeleteOptions) (resp azfake.PollerResponder[armcognitiveservices.ManagedNetworkSettingsClientDeleteResponse], errResp azfake.ErrorResponder)
 
-	// Get is the fake for method ManagedNetworkSettingsClient.Get
-	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, accountName string, managedNetworkName string, options *armcognitiveservices.ManagedNetworkSettingsClientGetOptions) (resp azfake.Responder[armcognitiveservices.ManagedNetworkSettingsClientGetResponse], errResp azfake.ErrorResponder)
-
-	// NewListPager is the fake for method ManagedNetworkSettingsClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(resourceGroupName string, accountName string, options *armcognitiveservices.ManagedNetworkSettingsClientListOptions) (resp azfake.PagerResponder[armcognitiveservices.ManagedNetworkSettingsClientListResponse])
-
 	// BeginPatch is the fake for method ManagedNetworkSettingsClient.BeginPatch
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginPatch func(ctx context.Context, resourceGroupName string, accountName string, managedNetworkName string, body armcognitiveservices.ManagedNetworkSettingsPropertiesBasicResource, options *armcognitiveservices.ManagedNetworkSettingsClientBeginPatchOptions) (resp azfake.PollerResponder[armcognitiveservices.ManagedNetworkSettingsClientPatchResponse], errResp azfake.ErrorResponder)
@@ -40,6 +32,14 @@ type ManagedNetworkSettingsServer struct {
 	// BeginPut is the fake for method ManagedNetworkSettingsClient.BeginPut
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginPut func(ctx context.Context, resourceGroupName string, accountName string, managedNetworkName string, body armcognitiveservices.ManagedNetworkSettingsPropertiesBasicResource, options *armcognitiveservices.ManagedNetworkSettingsClientBeginPutOptions) (resp azfake.PollerResponder[armcognitiveservices.ManagedNetworkSettingsClientPutResponse], errResp azfake.ErrorResponder)
+
+	// Get is the fake for method ManagedNetworkSettingsClient.Get
+	// HTTP status codes to indicate success: http.StatusOK
+	Get func(ctx context.Context, resourceGroupName string, accountName string, managedNetworkName string, options *armcognitiveservices.ManagedNetworkSettingsClientGetOptions) (resp azfake.Responder[armcognitiveservices.ManagedNetworkSettingsClientGetResponse], errResp azfake.ErrorResponder)
+
+	// NewListPager is the fake for method ManagedNetworkSettingsClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(resourceGroupName string, accountName string, options *armcognitiveservices.ManagedNetworkSettingsClientListOptions) (resp azfake.PagerResponder[armcognitiveservices.ManagedNetworkSettingsClientListResponse])
 }
 
 // NewManagedNetworkSettingsServerTransport creates a new instance of ManagedNetworkSettingsServerTransport with the provided implementation.
@@ -49,9 +49,9 @@ func NewManagedNetworkSettingsServerTransport(srv *ManagedNetworkSettingsServer)
 	return &ManagedNetworkSettingsServerTransport{
 		srv:          srv,
 		beginDelete:  newTracker[azfake.PollerResponder[armcognitiveservices.ManagedNetworkSettingsClientDeleteResponse]](),
-		newListPager: newTracker[azfake.PagerResponder[armcognitiveservices.ManagedNetworkSettingsClientListResponse]](),
 		beginPatch:   newTracker[azfake.PollerResponder[armcognitiveservices.ManagedNetworkSettingsClientPatchResponse]](),
 		beginPut:     newTracker[azfake.PollerResponder[armcognitiveservices.ManagedNetworkSettingsClientPutResponse]](),
+		newListPager: newTracker[azfake.PagerResponder[armcognitiveservices.ManagedNetworkSettingsClientListResponse]](),
 	}
 }
 
@@ -60,9 +60,9 @@ func NewManagedNetworkSettingsServerTransport(srv *ManagedNetworkSettingsServer)
 type ManagedNetworkSettingsServerTransport struct {
 	srv          *ManagedNetworkSettingsServer
 	beginDelete  *tracker[azfake.PollerResponder[armcognitiveservices.ManagedNetworkSettingsClientDeleteResponse]]
-	newListPager *tracker[azfake.PagerResponder[armcognitiveservices.ManagedNetworkSettingsClientListResponse]]
 	beginPatch   *tracker[azfake.PollerResponder[armcognitiveservices.ManagedNetworkSettingsClientPatchResponse]]
 	beginPut     *tracker[azfake.PollerResponder[armcognitiveservices.ManagedNetworkSettingsClientPutResponse]]
+	newListPager *tracker[azfake.PagerResponder[armcognitiveservices.ManagedNetworkSettingsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for ManagedNetworkSettingsServerTransport.
@@ -88,14 +88,14 @@ func (m *ManagedNetworkSettingsServerTransport) dispatchToMethodFake(req *http.R
 			switch method {
 			case "ManagedNetworkSettingsClient.BeginDelete":
 				res.resp, res.err = m.dispatchBeginDelete(req)
-			case "ManagedNetworkSettingsClient.Get":
-				res.resp, res.err = m.dispatchGet(req)
-			case "ManagedNetworkSettingsClient.NewListPager":
-				res.resp, res.err = m.dispatchNewListPager(req)
 			case "ManagedNetworkSettingsClient.BeginPatch":
 				res.resp, res.err = m.dispatchBeginPatch(req)
 			case "ManagedNetworkSettingsClient.BeginPut":
 				res.resp, res.err = m.dispatchBeginPut(req)
+			case "ManagedNetworkSettingsClient.Get":
+				res.resp, res.err = m.dispatchGet(req)
+			case "ManagedNetworkSettingsClient.NewListPager":
+				res.resp, res.err = m.dispatchNewListPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -157,84 +157,6 @@ func (m *ManagedNetworkSettingsServerTransport) dispatchBeginDelete(req *http.Re
 		m.beginDelete.remove(req)
 	}
 
-	return resp, nil
-}
-
-func (m *ManagedNetworkSettingsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if m.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.CognitiveServices/accounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/managedNetworks/(?P<managedNetworkName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
-	if err != nil {
-		return nil, err
-	}
-	managedNetworkNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("managedNetworkName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := m.srv.Get(req.Context(), resourceGroupNameParam, accountNameParam, managedNetworkNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ManagedNetworkSettingsPropertiesBasicResource, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (m *ManagedNetworkSettingsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if m.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := m.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.CognitiveServices/accounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/managedNetworks`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := m.srv.NewListPager(resourceGroupNameParam, accountNameParam, nil)
-		newListPager = &resp
-		m.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armcognitiveservices.ManagedNetworkSettingsClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		m.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		m.newListPager.remove(req)
-	}
 	return resp, nil
 }
 
@@ -339,6 +261,84 @@ func (m *ManagedNetworkSettingsServerTransport) dispatchBeginPut(req *http.Reque
 		m.beginPut.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (m *ManagedNetworkSettingsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if m.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.CognitiveServices/accounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/managedNetworks/(?P<managedNetworkName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+	if err != nil {
+		return nil, err
+	}
+	managedNetworkNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("managedNetworkName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := m.srv.Get(req.Context(), resourceGroupNameParam, accountNameParam, managedNetworkNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ManagedNetworkSettingsPropertiesBasicResource, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (m *ManagedNetworkSettingsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if m.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := m.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.CognitiveServices/accounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/managedNetworks`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := m.srv.NewListPager(resourceGroupNameParam, accountNameParam, nil)
+		newListPager = &resp
+		m.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armcognitiveservices.ManagedNetworkSettingsClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		m.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPager) {
+		m.newListPager.remove(req)
+	}
 	return resp, nil
 }
 

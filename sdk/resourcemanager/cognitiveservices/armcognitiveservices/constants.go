@@ -5,7 +5,7 @@
 package armcognitiveservices
 
 const (
-	version20260715Preview string = "2026-07-15-preview"
+	version20260915Preview string = "2026-09-15-preview"
 )
 
 // AbusePenaltyAction - The action of AbusePenalty.
@@ -36,6 +36,51 @@ const (
 func PossibleActionTypeValues() []ActionType {
 	return []ActionType{
 		ActionTypeInternal,
+	}
+}
+
+// AdapterDeploymentOperationState - Lifecycle operation states reported by an adapter deployment.
+type AdapterDeploymentOperationState string
+
+const (
+	// AdapterDeploymentOperationStateAccepted - The operation was accepted.
+	AdapterDeploymentOperationStateAccepted AdapterDeploymentOperationState = "Accepted"
+	// AdapterDeploymentOperationStateFailed - The operation failed.
+	AdapterDeploymentOperationStateFailed AdapterDeploymentOperationState = "Failed"
+	// AdapterDeploymentOperationStateRunning - The operation is running.
+	AdapterDeploymentOperationStateRunning AdapterDeploymentOperationState = "Running"
+	// AdapterDeploymentOperationStateSucceeded - The operation completed successfully.
+	AdapterDeploymentOperationStateSucceeded AdapterDeploymentOperationState = "Succeeded"
+)
+
+// PossibleAdapterDeploymentOperationStateValues returns the possible values for the AdapterDeploymentOperationState const type.
+func PossibleAdapterDeploymentOperationStateValues() []AdapterDeploymentOperationState {
+	return []AdapterDeploymentOperationState{
+		AdapterDeploymentOperationStateAccepted,
+		AdapterDeploymentOperationStateFailed,
+		AdapterDeploymentOperationStateRunning,
+		AdapterDeploymentOperationStateSucceeded,
+	}
+}
+
+// AdapterDeploymentOperationType - Lifecycle operation types reported by an adapter deployment.
+type AdapterDeploymentOperationType string
+
+const (
+	// AdapterDeploymentOperationTypeCreate - Creates the adapter deployment.
+	AdapterDeploymentOperationTypeCreate AdapterDeploymentOperationType = "Create"
+	// AdapterDeploymentOperationTypeDelete - Deletes the adapter deployment.
+	AdapterDeploymentOperationTypeDelete AdapterDeploymentOperationType = "Delete"
+	// AdapterDeploymentOperationTypeUpdate - Re-targets the adapter deployment.
+	AdapterDeploymentOperationTypeUpdate AdapterDeploymentOperationType = "Update"
+)
+
+// PossibleAdapterDeploymentOperationTypeValues returns the possible values for the AdapterDeploymentOperationType const type.
+func PossibleAdapterDeploymentOperationTypeValues() []AdapterDeploymentOperationType {
+	return []AdapterDeploymentOperationType{
+		AdapterDeploymentOperationTypeCreate,
+		AdapterDeploymentOperationTypeDelete,
+		AdapterDeploymentOperationTypeUpdate,
 	}
 }
 
@@ -566,48 +611,50 @@ const (
 	ConnectionCategoryOdbc                         ConnectionCategory = "Odbc"
 	ConnectionCategoryOffice365                    ConnectionCategory = "Office365"
 	ConnectionCategoryOpenAI                       ConnectionCategory = "OpenAI"
-	ConnectionCategoryOracle                       ConnectionCategory = "Oracle"
-	ConnectionCategoryOracleCloudStorage           ConnectionCategory = "OracleCloudStorage"
-	ConnectionCategoryOracleServiceCloud           ConnectionCategory = "OracleServiceCloud"
-	ConnectionCategoryPayPal                       ConnectionCategory = "PayPal"
-	ConnectionCategoryPhoenix                      ConnectionCategory = "Phoenix"
-	ConnectionCategoryPinecone                     ConnectionCategory = "Pinecone"
-	ConnectionCategoryPostgreSQL                   ConnectionCategory = "PostgreSql"
-	ConnectionCategoryPowerPlatformEnvironment     ConnectionCategory = "PowerPlatformEnvironment"
-	ConnectionCategoryPresto                       ConnectionCategory = "Presto"
-	ConnectionCategoryPythonFeed                   ConnectionCategory = "PythonFeed"
-	ConnectionCategoryQuickBooks                   ConnectionCategory = "QuickBooks"
-	ConnectionCategoryRedis                        ConnectionCategory = "Redis"
-	ConnectionCategoryRemoteA2A                    ConnectionCategory = "RemoteA2A"
-	ConnectionCategoryRemoteTool                   ConnectionCategory = "RemoteTool"
-	ConnectionCategoryResponsys                    ConnectionCategory = "Responsys"
-	ConnectionCategoryS3                           ConnectionCategory = "S3"
-	ConnectionCategorySQLServer                    ConnectionCategory = "SqlServer"
-	ConnectionCategorySalesforce                   ConnectionCategory = "Salesforce"
-	ConnectionCategorySalesforceMarketingCloud     ConnectionCategory = "SalesforceMarketingCloud"
-	ConnectionCategorySalesforceServiceCloud       ConnectionCategory = "SalesforceServiceCloud"
-	ConnectionCategorySapBw                        ConnectionCategory = "SapBw"
-	ConnectionCategorySapCloudForCustomer          ConnectionCategory = "SapCloudForCustomer"
-	ConnectionCategorySapEcc                       ConnectionCategory = "SapEcc"
-	ConnectionCategorySapHana                      ConnectionCategory = "SapHana"
-	ConnectionCategorySapOpenHub                   ConnectionCategory = "SapOpenHub"
-	ConnectionCategorySapTable                     ConnectionCategory = "SapTable"
-	ConnectionCategorySerp                         ConnectionCategory = "Serp"
-	ConnectionCategoryServerless                   ConnectionCategory = "Serverless"
-	ConnectionCategoryServiceNow                   ConnectionCategory = "ServiceNow"
-	ConnectionCategorySftp                         ConnectionCategory = "Sftp"
-	ConnectionCategorySharePointOnlineList         ConnectionCategory = "SharePointOnlineList"
-	ConnectionCategorySharepoint                   ConnectionCategory = "Sharepoint"
-	ConnectionCategoryShopify                      ConnectionCategory = "Shopify"
-	ConnectionCategorySnowflake                    ConnectionCategory = "Snowflake"
-	ConnectionCategorySpark                        ConnectionCategory = "Spark"
-	ConnectionCategorySquare                       ConnectionCategory = "Square"
-	ConnectionCategorySybase                       ConnectionCategory = "Sybase"
-	ConnectionCategoryTeradata                     ConnectionCategory = "Teradata"
-	ConnectionCategoryVertica                      ConnectionCategory = "Vertica"
-	ConnectionCategoryWebTable                     ConnectionCategory = "WebTable"
-	ConnectionCategoryXero                         ConnectionCategory = "Xero"
-	ConnectionCategoryZoho                         ConnectionCategory = "Zoho"
+	// ConnectionCategoryOpenAPI - Connection to an endpoint described by an OpenAPI specification.
+	ConnectionCategoryOpenAPI                  ConnectionCategory = "OpenAPI"
+	ConnectionCategoryOracle                   ConnectionCategory = "Oracle"
+	ConnectionCategoryOracleCloudStorage       ConnectionCategory = "OracleCloudStorage"
+	ConnectionCategoryOracleServiceCloud       ConnectionCategory = "OracleServiceCloud"
+	ConnectionCategoryPayPal                   ConnectionCategory = "PayPal"
+	ConnectionCategoryPhoenix                  ConnectionCategory = "Phoenix"
+	ConnectionCategoryPinecone                 ConnectionCategory = "Pinecone"
+	ConnectionCategoryPostgreSQL               ConnectionCategory = "PostgreSql"
+	ConnectionCategoryPowerPlatformEnvironment ConnectionCategory = "PowerPlatformEnvironment"
+	ConnectionCategoryPresto                   ConnectionCategory = "Presto"
+	ConnectionCategoryPythonFeed               ConnectionCategory = "PythonFeed"
+	ConnectionCategoryQuickBooks               ConnectionCategory = "QuickBooks"
+	ConnectionCategoryRedis                    ConnectionCategory = "Redis"
+	ConnectionCategoryRemoteA2A                ConnectionCategory = "RemoteA2A"
+	ConnectionCategoryRemoteTool               ConnectionCategory = "RemoteTool"
+	ConnectionCategoryResponsys                ConnectionCategory = "Responsys"
+	ConnectionCategoryS3                       ConnectionCategory = "S3"
+	ConnectionCategorySQLServer                ConnectionCategory = "SqlServer"
+	ConnectionCategorySalesforce               ConnectionCategory = "Salesforce"
+	ConnectionCategorySalesforceMarketingCloud ConnectionCategory = "SalesforceMarketingCloud"
+	ConnectionCategorySalesforceServiceCloud   ConnectionCategory = "SalesforceServiceCloud"
+	ConnectionCategorySapBw                    ConnectionCategory = "SapBw"
+	ConnectionCategorySapCloudForCustomer      ConnectionCategory = "SapCloudForCustomer"
+	ConnectionCategorySapEcc                   ConnectionCategory = "SapEcc"
+	ConnectionCategorySapHana                  ConnectionCategory = "SapHana"
+	ConnectionCategorySapOpenHub               ConnectionCategory = "SapOpenHub"
+	ConnectionCategorySapTable                 ConnectionCategory = "SapTable"
+	ConnectionCategorySerp                     ConnectionCategory = "Serp"
+	ConnectionCategoryServerless               ConnectionCategory = "Serverless"
+	ConnectionCategoryServiceNow               ConnectionCategory = "ServiceNow"
+	ConnectionCategorySftp                     ConnectionCategory = "Sftp"
+	ConnectionCategorySharePointOnlineList     ConnectionCategory = "SharePointOnlineList"
+	ConnectionCategorySharepoint               ConnectionCategory = "Sharepoint"
+	ConnectionCategoryShopify                  ConnectionCategory = "Shopify"
+	ConnectionCategorySnowflake                ConnectionCategory = "Snowflake"
+	ConnectionCategorySpark                    ConnectionCategory = "Spark"
+	ConnectionCategorySquare                   ConnectionCategory = "Square"
+	ConnectionCategorySybase                   ConnectionCategory = "Sybase"
+	ConnectionCategoryTeradata                 ConnectionCategory = "Teradata"
+	ConnectionCategoryVertica                  ConnectionCategory = "Vertica"
+	ConnectionCategoryWebTable                 ConnectionCategory = "WebTable"
+	ConnectionCategoryXero                     ConnectionCategory = "Xero"
+	ConnectionCategoryZoho                     ConnectionCategory = "Zoho"
 )
 
 // PossibleConnectionCategoryValues returns the possible values for the ConnectionCategory const type.
@@ -691,6 +738,7 @@ func PossibleConnectionCategoryValues() []ConnectionCategory {
 		ConnectionCategoryOdbc,
 		ConnectionCategoryOffice365,
 		ConnectionCategoryOpenAI,
+		ConnectionCategoryOpenAPI,
 		ConnectionCategoryOracle,
 		ConnectionCategoryOracleCloudStorage,
 		ConnectionCategoryOracleServiceCloud,
@@ -777,6 +825,122 @@ func PossibleContentLevelValues() []ContentLevel {
 		ContentLevelHigh,
 		ContentLevelLow,
 		ContentLevelMedium,
+	}
+}
+
+// CostControlDimensionType - Cost control counter dimensions, including Custom retained for legacy read compatibility.
+type CostControlDimensionType string
+
+const (
+	// CostControlDimensionTypeAccount - Consumption is partitioned by the owning Cognitive Services account.
+	CostControlDimensionTypeAccount CostControlDimensionType = "Account"
+	// CostControlDimensionTypeAgent - Consumption is partitioned by the stable Foundry agent ID.
+	CostControlDimensionTypeAgent CostControlDimensionType = "Agent"
+	// CostControlDimensionTypeCustom - Legacy read-only dimension using `CostControlDimension.Attribute`.
+	// New Custom counter authoring is reserved for future support.
+	CostControlDimensionTypeCustom CostControlDimensionType = "Custom"
+	// CostControlDimensionTypeIdentity - Consumption is partitioned by the authenticated principal object ID.
+	CostControlDimensionTypeIdentity CostControlDimensionType = "Identity"
+	// CostControlDimensionTypeProject - Consumption is partitioned by the Foundry project resource ID.
+	CostControlDimensionTypeProject CostControlDimensionType = "Project"
+	// CostControlDimensionTypeSession - Consumption is partitioned by the Foundry session ID.
+	CostControlDimensionTypeSession CostControlDimensionType = "Session"
+)
+
+// PossibleCostControlDimensionTypeValues returns the possible values for the CostControlDimensionType const type.
+func PossibleCostControlDimensionTypeValues() []CostControlDimensionType {
+	return []CostControlDimensionType{
+		CostControlDimensionTypeAccount,
+		CostControlDimensionTypeAgent,
+		CostControlDimensionTypeCustom,
+		CostControlDimensionTypeIdentity,
+		CostControlDimensionTypeProject,
+		CostControlDimensionTypeSession,
+	}
+}
+
+// CostControlPeriod - Calendar-aligned UTC renewal periods, including legacy values retained for read compatibility.
+type CostControlPeriod string
+
+const (
+	// CostControlPeriodDay - Renews daily at 00:00 UTC.
+	CostControlPeriodDay CostControlPeriod = "Day"
+	// CostControlPeriodHour - Legacy read-only period renewing at the start of the next UTC hour.
+	CostControlPeriodHour CostControlPeriod = "Hour"
+	// CostControlPeriodMinute - Legacy read-only period renewing at the start of the next UTC minute.
+	CostControlPeriodMinute CostControlPeriod = "Minute"
+	// CostControlPeriodMonth - Renews on the first day of each month at 00:00 UTC.
+	CostControlPeriodMonth CostControlPeriod = "Month"
+	// CostControlPeriodWeek - Renews Monday at 00:00 UTC.
+	CostControlPeriodWeek CostControlPeriod = "Week"
+	// CostControlPeriodYear - Legacy read-only period renewing January 1 at 00:00 UTC.
+	CostControlPeriodYear CostControlPeriod = "Year"
+)
+
+// PossibleCostControlPeriodValues returns the possible values for the CostControlPeriod const type.
+func PossibleCostControlPeriodValues() []CostControlPeriod {
+	return []CostControlPeriod{
+		CostControlPeriodDay,
+		CostControlPeriodHour,
+		CostControlPeriodMinute,
+		CostControlPeriodMonth,
+		CostControlPeriodWeek,
+		CostControlPeriodYear,
+	}
+}
+
+// CostControlThresholdAction - The supported actions when a threshold is reached.
+type CostControlThresholdAction string
+
+const (
+	// CostControlThresholdActionAlert - Emits a customer-facing alert without blocking requests.
+	CostControlThresholdActionAlert CostControlThresholdAction = "Alert"
+	// CostControlThresholdActionAudit - Legacy read-only action retained to deserialize existing definitions without changing
+	// their semantics.
+	CostControlThresholdActionAudit CostControlThresholdAction = "Audit"
+	// CostControlThresholdActionBlock - Blocks the request without emitting a customer-facing alert.
+	CostControlThresholdActionBlock CostControlThresholdAction = "Block"
+)
+
+// PossibleCostControlThresholdActionValues returns the possible values for the CostControlThresholdAction const type.
+func PossibleCostControlThresholdActionValues() []CostControlThresholdAction {
+	return []CostControlThresholdAction{
+		CostControlThresholdActionAlert,
+		CostControlThresholdActionAudit,
+		CostControlThresholdActionBlock,
+	}
+}
+
+// CostControlThresholdType - The supported threshold value interpretations.
+type CostControlThresholdType string
+
+const (
+	// CostControlThresholdTypeAbsolute - The value is expressed in the rule's unit.
+	CostControlThresholdTypeAbsolute CostControlThresholdType = "Absolute"
+	// CostControlThresholdTypePercentage - The value is a percentage of the configured rule amount.
+	CostControlThresholdTypePercentage CostControlThresholdType = "Percentage"
+)
+
+// PossibleCostControlThresholdTypeValues returns the possible values for the CostControlThresholdType const type.
+func PossibleCostControlThresholdTypeValues() []CostControlThresholdType {
+	return []CostControlThresholdType{
+		CostControlThresholdTypeAbsolute,
+		CostControlThresholdTypePercentage,
+	}
+}
+
+// CostControlUnit - The supported unit for cost control amounts and thresholds.
+type CostControlUnit string
+
+const (
+	// CostControlUnitUsd - Estimated cost in United States dollars.
+	CostControlUnitUsd CostControlUnit = "Usd"
+)
+
+// PossibleCostControlUnitValues returns the possible values for the CostControlUnit const type.
+func PossibleCostControlUnitValues() []CostControlUnit {
+	return []CostControlUnit{
+		CostControlUnitUsd,
 	}
 }
 
@@ -1474,6 +1638,140 @@ func PossibleQuotaUsageStatusValues() []QuotaUsageStatus {
 	}
 }
 
+// RaiAcsHarmCategory - Harm categories supported by the Unified Moderate text profile.
+type RaiAcsHarmCategory string
+
+const (
+	// RaiAcsHarmCategoryHate - Hate-related content.
+	RaiAcsHarmCategoryHate RaiAcsHarmCategory = "Hate"
+	// RaiAcsHarmCategoryPromptInjection - Prompt-injection content.
+	RaiAcsHarmCategoryPromptInjection RaiAcsHarmCategory = "PromptInjection"
+	// RaiAcsHarmCategoryProtectedMaterialCode - Protected source-code material.
+	RaiAcsHarmCategoryProtectedMaterialCode RaiAcsHarmCategory = "ProtectedMaterialCode"
+	// RaiAcsHarmCategoryProtectedMaterialText - Protected text material.
+	RaiAcsHarmCategoryProtectedMaterialText RaiAcsHarmCategory = "ProtectedMaterialText"
+	// RaiAcsHarmCategorySelfHarm - Self-harm-related content.
+	RaiAcsHarmCategorySelfHarm RaiAcsHarmCategory = "SelfHarm"
+	// RaiAcsHarmCategorySexual - Sexual content.
+	RaiAcsHarmCategorySexual RaiAcsHarmCategory = "Sexual"
+	// RaiAcsHarmCategoryViolence - Violent content.
+	RaiAcsHarmCategoryViolence RaiAcsHarmCategory = "Violence"
+)
+
+// PossibleRaiAcsHarmCategoryValues returns the possible values for the RaiAcsHarmCategory const type.
+func PossibleRaiAcsHarmCategoryValues() []RaiAcsHarmCategory {
+	return []RaiAcsHarmCategory{
+		RaiAcsHarmCategoryHate,
+		RaiAcsHarmCategoryPromptInjection,
+		RaiAcsHarmCategoryProtectedMaterialCode,
+		RaiAcsHarmCategoryProtectedMaterialText,
+		RaiAcsHarmCategorySelfHarm,
+		RaiAcsHarmCategorySexual,
+		RaiAcsHarmCategoryViolence,
+	}
+}
+
+// RaiAcsModerationSubjectFormat - The representation sent to Azure AI Content Safety moderation capabilities.
+type RaiAcsModerationSubjectFormat string
+
+const (
+	// RaiAcsModerationSubjectFormatCanonicalJSON - Moderates the canonical JSON representation of the selected policy target.
+	RaiAcsModerationSubjectFormatCanonicalJSON RaiAcsModerationSubjectFormat = "canonical_json"
+	// RaiAcsModerationSubjectFormatText - Moderates the selected policy target as text.
+	RaiAcsModerationSubjectFormatText RaiAcsModerationSubjectFormat = "text"
+)
+
+// PossibleRaiAcsModerationSubjectFormatValues returns the possible values for the RaiAcsModerationSubjectFormat const type.
+func PossibleRaiAcsModerationSubjectFormatValues() []RaiAcsModerationSubjectFormat {
+	return []RaiAcsModerationSubjectFormat{
+		RaiAcsModerationSubjectFormatCanonicalJSON,
+		RaiAcsModerationSubjectFormatText,
+	}
+}
+
+// RaiAcsPolicyDefinitionType - The policy language supported by the Azure AI Content Safety Unified Moderate host profile.
+type RaiAcsPolicyDefinitionType string
+
+const (
+	// RaiAcsPolicyDefinitionTypeRego - A policy evaluated by Rego.
+	RaiAcsPolicyDefinitionTypeRego RaiAcsPolicyDefinitionType = "rego"
+)
+
+// PossibleRaiAcsPolicyDefinitionTypeValues returns the possible values for the RaiAcsPolicyDefinitionType const type.
+func PossibleRaiAcsPolicyDefinitionTypeValues() []RaiAcsPolicyDefinitionType {
+	return []RaiAcsPolicyDefinitionType{
+		RaiAcsPolicyDefinitionTypeRego,
+	}
+}
+
+// RaiAcsPolicyTarget - Canonical policy targets supported by the Azure AI Content Safety Unified Moderate host profile.
+type RaiAcsPolicyTarget string
+
+const (
+	// RaiAcsPolicyTargetInput - Selects the incoming user input.
+	RaiAcsPolicyTargetInput RaiAcsPolicyTarget = "$snap.input"
+	// RaiAcsPolicyTargetOutput - Selects the assistant output.
+	RaiAcsPolicyTargetOutput RaiAcsPolicyTarget = "$snap.output"
+	// RaiAcsPolicyTargetToolArguments - Selects tool-call arguments.
+	RaiAcsPolicyTargetToolArguments RaiAcsPolicyTarget = "$snap.tool_call.args"
+	// RaiAcsPolicyTargetToolResult - Selects a tool result.
+	RaiAcsPolicyTargetToolResult RaiAcsPolicyTarget = "$snap.tool_result.value"
+)
+
+// PossibleRaiAcsPolicyTargetValues returns the possible values for the RaiAcsPolicyTarget const type.
+func PossibleRaiAcsPolicyTargetValues() []RaiAcsPolicyTarget {
+	return []RaiAcsPolicyTarget{
+		RaiAcsPolicyTargetInput,
+		RaiAcsPolicyTargetOutput,
+		RaiAcsPolicyTargetToolArguments,
+		RaiAcsPolicyTargetToolResult,
+	}
+}
+
+// RaiAcsPolicyTargetKind - Canonical target kinds supported by the Azure AI Content Safety Unified Moderate host profile.
+type RaiAcsPolicyTargetKind string
+
+const (
+	// RaiAcsPolicyTargetKindAssistantOutput - The target contains assistant output.
+	RaiAcsPolicyTargetKindAssistantOutput RaiAcsPolicyTargetKind = "assistant_output"
+	// RaiAcsPolicyTargetKindToolArguments - The target contains tool-call arguments.
+	RaiAcsPolicyTargetKindToolArguments RaiAcsPolicyTargetKind = "tool_args"
+	// RaiAcsPolicyTargetKindToolResult - The target contains a tool result.
+	RaiAcsPolicyTargetKindToolResult RaiAcsPolicyTargetKind = "tool_result"
+	// RaiAcsPolicyTargetKindUserInput - The target contains user input.
+	RaiAcsPolicyTargetKindUserInput RaiAcsPolicyTargetKind = "user_input"
+)
+
+// PossibleRaiAcsPolicyTargetKindValues returns the possible values for the RaiAcsPolicyTargetKind const type.
+func PossibleRaiAcsPolicyTargetKindValues() []RaiAcsPolicyTargetKind {
+	return []RaiAcsPolicyTargetKind{
+		RaiAcsPolicyTargetKindAssistantOutput,
+		RaiAcsPolicyTargetKindToolArguments,
+		RaiAcsPolicyTargetKindToolResult,
+		RaiAcsPolicyTargetKindUserInput,
+	}
+}
+
+// RaiAcsToolNameSelector - Snapshot paths for selecting a tool catalog entry.
+// The listed values are recognized by the Azure AI Content Safety Unified Moderate host profile; other values are allowed
+// for forward compatibility.
+type RaiAcsToolNameSelector string
+
+const (
+	// RaiAcsToolNameSelectorToolCallName - Selects the tool-call name from the canonical snapshot root.
+	RaiAcsToolNameSelectorToolCallName RaiAcsToolNameSelector = "$snap.tool_call.name"
+	// RaiAcsToolNameSelectorToolCallNameAlias - Selects the tool-call name through the snapshot-root alias.
+	RaiAcsToolNameSelectorToolCallNameAlias RaiAcsToolNameSelector = "$.tool_call.name"
+)
+
+// PossibleRaiAcsToolNameSelectorValues returns the possible values for the RaiAcsToolNameSelector const type.
+func PossibleRaiAcsToolNameSelectorValues() []RaiAcsToolNameSelector {
+	return []RaiAcsToolNameSelector{
+		RaiAcsToolNameSelectorToolCallName,
+		RaiAcsToolNameSelectorToolCallNameAlias,
+	}
+}
+
 // RaiActionType - The action types to apply to the content filters
 type RaiActionType string
 
@@ -1639,6 +1937,24 @@ func PossibleRaiPolicyContentSourceValues() []RaiPolicyContentSource {
 	}
 }
 
+// RaiPolicyFormat - The public representation used by a RAI policy body.
+type RaiPolicyFormat string
+
+const (
+	// RaiPolicyFormatACS - An Agent Control Specification policy.
+	RaiPolicyFormatACS RaiPolicyFormat = "ACS"
+	// RaiPolicyFormatContentFilters - A legacy content-filter policy.
+	RaiPolicyFormatContentFilters RaiPolicyFormat = "ContentFilters"
+)
+
+// PossibleRaiPolicyFormatValues returns the possible values for the RaiPolicyFormat const type.
+func PossibleRaiPolicyFormatValues() []RaiPolicyFormat {
+	return []RaiPolicyFormat{
+		RaiPolicyFormatACS,
+		RaiPolicyFormatContentFilters,
+	}
+}
+
 // RaiPolicyMode - Rai policy mode. The enum value mapping is as below: Default = 0, Deferred=1, Blocking=2, Asynchronous_filter
 // =3. Please use 'Asynchronous_filter' after 2025-06-01. It is the same as 'Deferred' in previous version.
 type RaiPolicyMode string
@@ -1673,6 +1989,24 @@ func PossibleRaiPolicyTypeValues() []RaiPolicyType {
 	return []RaiPolicyType{
 		RaiPolicyTypeSystemManaged,
 		RaiPolicyTypeUserManaged,
+	}
+}
+
+// RaiRegoEncoding - The transport encoding of reusable Rego source.
+type RaiRegoEncoding string
+
+const (
+	// RaiRegoEncodingBase64 - The Rego property contains Base64-encoded UTF-8 source.
+	RaiRegoEncodingBase64 RaiRegoEncoding = "Base64"
+	// RaiRegoEncodingNone - The Rego property contains plain UTF-8 source.
+	RaiRegoEncodingNone RaiRegoEncoding = "None"
+)
+
+// PossibleRaiRegoEncodingValues returns the possible values for the RaiRegoEncoding const type.
+func PossibleRaiRegoEncodingValues() []RaiRegoEncoding {
+	return []RaiRegoEncoding{
+		RaiRegoEncodingBase64,
+		RaiRegoEncodingNone,
 	}
 }
 
@@ -1993,5 +2327,71 @@ func PossibleVMPriorityValues() []VMPriority {
 	return []VMPriority{
 		VMPriorityRegular,
 		VMPrioritySpot,
+	}
+}
+
+// WorkbenchProvisioningState - Provisioning state of a workbench resource, independent of runtime lifecycle status.
+type WorkbenchProvisioningState string
+
+const (
+	// WorkbenchProvisioningStateCanceled - Provisioning of the workbench resource was canceled.
+	WorkbenchProvisioningStateCanceled WorkbenchProvisioningState = "Canceled"
+	// WorkbenchProvisioningStateCreating - The workbench resource is being created.
+	WorkbenchProvisioningStateCreating WorkbenchProvisioningState = "Creating"
+	// WorkbenchProvisioningStateFailed - Provisioning of the workbench resource failed.
+	WorkbenchProvisioningStateFailed WorkbenchProvisioningState = "Failed"
+	// WorkbenchProvisioningStateSucceeded - The workbench resource has been provisioned.
+	WorkbenchProvisioningStateSucceeded WorkbenchProvisioningState = "Succeeded"
+)
+
+// PossibleWorkbenchProvisioningStateValues returns the possible values for the WorkbenchProvisioningState const type.
+func PossibleWorkbenchProvisioningStateValues() []WorkbenchProvisioningState {
+	return []WorkbenchProvisioningState{
+		WorkbenchProvisioningStateCanceled,
+		WorkbenchProvisioningStateCreating,
+		WorkbenchProvisioningStateFailed,
+		WorkbenchProvisioningStateSucceeded,
+	}
+}
+
+// WorkbenchStatus - Runtime lifecycle status of a workbench.
+type WorkbenchStatus string
+
+const (
+	// WorkbenchStatusCreating - The runtime is being created.
+	WorkbenchStatusCreating WorkbenchStatus = "Creating"
+	// WorkbenchStatusDeleting - The runtime is being deleted.
+	WorkbenchStatusDeleting WorkbenchStatus = "Deleting"
+	// WorkbenchStatusFailed - The runtime has failed.
+	WorkbenchStatusFailed WorkbenchStatus = "Failed"
+	// WorkbenchStatusRestarting - The runtime is restarting.
+	WorkbenchStatusRestarting WorkbenchStatus = "Restarting"
+	// WorkbenchStatusRunning - The runtime is running.
+	WorkbenchStatusRunning WorkbenchStatus = "Running"
+	// WorkbenchStatusStarting - The runtime is starting.
+	WorkbenchStatusStarting WorkbenchStatus = "Starting"
+	// WorkbenchStatusStopped - The runtime is stopped.
+	WorkbenchStatusStopped WorkbenchStatus = "Stopped"
+	// WorkbenchStatusStopping - The runtime is stopping.
+	WorkbenchStatusStopping WorkbenchStatus = "Stopping"
+	// WorkbenchStatusUnknown - The runtime status is unknown.
+	WorkbenchStatusUnknown WorkbenchStatus = "Unknown"
+	// WorkbenchStatusUpdating - The runtime is being updated.
+	WorkbenchStatusUpdating WorkbenchStatus = "Updating"
+)
+
+// PossibleWorkbenchStatusValues returns the possible values for the WorkbenchStatus const type.
+func PossibleWorkbenchStatusValues() []WorkbenchStatus {
+	return []WorkbenchStatus{
+		WorkbenchStatusCreating,
+		WorkbenchStatusDeleting,
+		WorkbenchStatusFailed,
+		WorkbenchStatusRestarting,
+		WorkbenchStatusRunning,
+		WorkbenchStatusStarting,
+		WorkbenchStatusStopped,
+		WorkbenchStatusStopping,
+		WorkbenchStatusUnknown,
+		WorkbenchStatusUpdating,
 	}
 }

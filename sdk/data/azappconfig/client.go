@@ -259,7 +259,7 @@ func (c *Client) SetSetting(ctx context.Context, key string, value *string, opti
 // NewListRevisionsPager creates a pager that retrieves the revisions of one or more
 // configuration setting entities that match the specified setting selector.
 func (c *Client) NewListRevisionsPager(selector SettingSelector, options *ListRevisionsOptions) *runtime.Pager[ListRevisionsPageResponse] {
-	pagerInternal := c.appConfigClient.NewGetRevisionsPager(selector.toGeneratedGetRevisions())
+	pagerInternal := c.appConfigClient.NewGetRevisionsPagerWithRelativeNextLinks(selector.toGeneratedGetRevisions())
 	return runtime.NewPager(runtime.PagingHandler[ListRevisionsPageResponse]{
 		More: func(ListRevisionsPageResponse) bool {
 			return pagerInternal.More()
@@ -358,7 +358,7 @@ func (c *Client) NewListSnapshotsPager(options *ListSnapshotsOptions) *runtime.P
 		}
 	}
 
-	ssRespPager := c.appConfigClient.NewGetSnapshotsPager(opts)
+	ssRespPager := c.appConfigClient.NewGetSnapshotsPagerWithRelativeNextLinks(opts)
 
 	return runtime.NewPager(runtime.PagingHandler[ListSnapshotsResponse]{
 		More: func(ListSnapshotsResponse) bool {
@@ -417,7 +417,7 @@ func (c *Client) NewListSettingsForSnapshotPager(snapshotName string, options *L
 		options = &ListSettingsForSnapshotOptions{}
 	}
 
-	ssRespPager := c.appConfigClient.NewGetKeyValuesPager(&generated.AzureAppConfigurationClientGetKeyValuesOptions{
+	ssRespPager := c.appConfigClient.NewGetKeyValuesPagerWithRelativeNextLinks(&generated.AzureAppConfigurationClientGetKeyValuesOptions{
 		AcceptDatetime: options.AcceptDatetime,
 		After:          options.After,
 		IfMatch:        (*string)(options.IfMatch),

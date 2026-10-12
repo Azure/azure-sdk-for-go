@@ -81,7 +81,12 @@ func (d *nativeDriver) executeManagement(
 	submit := func(queue *C.cosmos_completion_queue_t, cookie C.intptr_t, preError *C.cosmos_status_code_t) *C.cosmos_operation_handle_t {
 		request, release := buildNativeManagementRequest(kind, d.account, database, container.handle(), body, operation)
 		defer release()
-		return C.cosmos_submit_singleton_operation(driver, &request, queue, cookie, preError) //nolint:gocritic // dupSubExpr targets cgo-generated code.
+		handle := C.cosmos_submit_singleton_operation(driver, &request, queue, cookie, preError) //nolint:gocritic // dupSubExpr targets cgo-generated code.
+		// Request conversion synchronously clones the container reference, so the cache borrow is
+		// no longer needed after submission. The function-level defer remains the fallback for a
+		// context that ends before this closure is invoked.
+		container.release()
+		return handle
 	}
 
 	// Only a write can leave a side effect that must not be misreported as cancelled after it
@@ -190,7 +195,7 @@ func (d *nativeDriver) createDatabaseRef(databaseID string) (*C.cosmos_database_
 }
 
 // evictContainer removes a cached container handle from lookup immediately. It frees the handle
-// once any operation that already borrowed it has completed.
+// once any submission that already borrowed it has finished request conversion.
 func (d *nativeDriver) evictContainer(databaseID, containerID string) {
 	key := databaseID + "/" + containerID
 	d.mu.Lock()
@@ -209,7 +214,7 @@ func (d *nativeDriver) evictContainer(databaseID, containerID string) {
 }
 
 // evictDatabase removes every cached container handle scoped to databaseID from lookup, then frees
-// each once its existing borrowers have completed.
+// each once its existing submitters have finished request conversion.
 func (d *nativeDriver) evictDatabase(databaseID string) {
 	prefix := databaseID + "/"
 	d.mu.Lock()

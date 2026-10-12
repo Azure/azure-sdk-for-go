@@ -58,7 +58,12 @@ func (d *nativeDriver) execute(ctx context.Context, req itemRequest) (ItemRespon
 	req.options.EndToEndTimeout = endToEndTimeout(ctx, 0)
 
 	submit := func(queue *C.cosmos_completion_queue_t, cookie C.intptr_t, preError *C.cosmos_status_code_t) *C.cosmos_operation_handle_t {
-		return d.submit(driver, container.handle(), req, queue, cookie, preError)
+		operation := d.submit(driver, container.handle(), req, queue, cookie, preError)
+		// The native submit path synchronously clones the container reference while converting
+		// the request, so eviction may free this cache handle once the call returns. The deferred
+		// release above remains as the fallback when cancellation prevents submission entirely.
+		container.release()
+		return operation
 	}
 
 	// Only a write can leave a side effect that must not be misreported as cancelled after it

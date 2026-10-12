@@ -89,8 +89,9 @@ type nativeDriver struct {
 
 	// containers caches resolved container handles by "database/container". Resolving reads
 	// container metadata from the gateway on a miss, so an item operation would otherwise pay
-	// for that lookup on every call. Entries are borrowed while operations use them so eviction
-	// can remove stale identities immediately without freeing a handle still in flight.
+	// for that lookup on every call. Entries are borrowed while requests are submitted so
+	// eviction can remove stale identities immediately without freeing a handle still being
+	// converted by the native wrapper.
 	containers    map[string]*containerCacheEntry
 	cursors       map[*nativeQueryCursor]struct{}
 	cursorReactor *cursorReactor

@@ -1,6 +1,6 @@
 # Release History
 
-## 2.3.0 (2026-10-08)
+## 2.3.0 (2026-10-12)
 
 ### Features Added
 * Added `Description` field to the `Setting` and `Snapshot` structs.

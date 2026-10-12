@@ -11,7 +11,7 @@
 
 ### Bugs Fixed
 
-* Fixed transport per-try timeouts and timeouts during HTTP 408 read backoff being marked non-retriable. These timeouts now honor the configured `RetryOptions.MaxRetries` while caller cancellation and deadlines still stop retries. Timeouts during internal connection-error backoff remain non-retriable.
+* Fixed transport per-try timeouts being marked non-retriable by returning the original downstream error, preserving its retry classification as in v1.4.2. Unmarked timeouts honor `RetryOptions.MaxRetries` for reads and writes; downstream non-retriable errors, including POST/PATCH response-body timeouts, remain non-retriable. HTTP 408 read-backoff timeouts also honor `MaxRetries`. Caller cancellation and deadlines still stop retries. Timeouts during internal connection-error backoff remain non-retriable.
 
 ### Other Changes
 

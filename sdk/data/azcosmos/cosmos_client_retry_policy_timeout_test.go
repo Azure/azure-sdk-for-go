@@ -122,7 +122,7 @@ func TestClientRetryPolicyTryTimeout(t *testing.T) {
 					} else {
 						require.NoError(t, err)
 						require.Len(t, attempts, 2, "a timed-out try must reach the next outer attempt")
-						assert.NotEqual(t, attempts[0], attempts[1], "each outer attempt must get a fresh timeout context")
+						assert.True(t, attempts[0].Done() != attempts[1].Done(), "each outer attempt must get a fresh timeout context")
 					}
 					assert.Empty(t, gem.locationCache.locationUnavailabilityInfoMap,
 						"an expired try must not mark an endpoint unavailable")

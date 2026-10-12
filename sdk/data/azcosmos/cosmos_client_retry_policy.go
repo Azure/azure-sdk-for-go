@@ -212,11 +212,10 @@ func (p *clientRetryPolicy) Do(req *policy.Request) (*http.Response, error) {
 			if state := requestDiagnosticsStateFromContext(req.Raw().Context()); state != nil && state.clientSideStats != nil {
 				state.clientSideStats.recordHTTPError(attemptStartTime, req.Raw(), err, o.resourceType, regionName.String())
 			}
-			// This is azcore's per-try context, not necessarily the caller's.
-			// Return an ordinary error so azcore can retry an expired try;
-			// its outer retry policy also checks the original caller's context.
-			if ctxErr := req.Raw().Context().Err(); ctxErr != nil {
-				return nil, fmt.Errorf("%w: underlying transport error: %v", ctxErr, err)
+			// Preserve downstream retry markers, as in v1.4.2. azcore checks
+			// the original caller's context before retrying an expired try.
+			if req.Raw().Context().Err() != nil {
+				return nil, err
 			}
 			kind := classifyNetworkError(err)
 			if kind != connectionErrorNone {

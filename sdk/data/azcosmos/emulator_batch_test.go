@@ -176,9 +176,10 @@ func TestEmulatorTransactionalBatchCompleteHierarchicalKeysAndIsolation(t *testi
 		prefix := NewPartitionKeyString(id)
 		for i, key := range []PartitionKey{prefix.AppendNull(), prefix.AppendUndefined(), prefix.AppendNumber(42)} {
 			document := map[string]any{"id": id, "pk": id, "value": i}
-			if i == 0 {
+			switch i {
+			case 0:
 				document["child"] = nil
-			} else if i == 2 {
+			case 2:
 				document["child"] = 42
 			}
 			if levels == 3 {

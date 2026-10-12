@@ -7,9 +7,13 @@ target-specific driver libraries consumed as Go modules.
 
 The `DriverEmulator` stage in [`ci.yml`](../../ci.yml) pins:
 
-- Rust source revision: `a05f024d22cd0a70f6ccac5e310cbbbaf40bf20e`.
+- Rust source revision: `13b9707cf9a73d274c6e2309321d4b0e92b52375`.
 - Rust toolchain: `1.95.0`.
 - Dependency versions: the source revision's `Cargo.lock`, enforced with `--locked`.
+
+This revision recognizes the empty-object `{}` partition-key header sentinel as undefined,
+preserving its distinction from null. The native driver version is pinned separately and is
+unchanged by this emulator update.
 
 Building requires Git, rustup, a C compiler/linker, and network access to GitHub,
 Rust toolchain downloads, and Cargo dependencies. CI builds on glibc Linux/amd64.
@@ -27,7 +31,7 @@ rustup toolchain install 1.95.0 --profile minimal
 git init cosmos-emulator-source
 git -C cosmos-emulator-source fetch --depth=1 \
   https://github.com/Azure/azure-sdk-for-rust.git \
-  a05f024d22cd0a70f6ccac5e310cbbbaf40bf20e
+  13b9707cf9a73d274c6e2309321d4b0e92b52375
 git -C cosmos-emulator-source checkout --detach FETCH_HEAD
 cd cosmos-emulator-source
 cargo +1.95.0 build --locked --release -p azure_data_cosmos_emulator \

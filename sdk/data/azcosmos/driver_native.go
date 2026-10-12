@@ -89,8 +89,9 @@ type nativeDriver struct {
 
 	// containers caches resolved container handles by "database/container". Resolving reads
 	// container metadata from the gateway on a miss, so an item operation would otherwise pay
-	// for that lookup on every call.
-	containers    map[string]*C.cosmos_container_ref_t
+	// for that lookup on every call. Entries are borrowed while operations use them so eviction
+	// can remove stale identities immediately without freeing a handle still in flight.
+	containers    map[string]*containerCacheEntry
 	cursors       map[*nativeQueryCursor]struct{}
 	cursorReactor *cursorReactor
 	pending       sync.WaitGroup
@@ -112,6 +113,80 @@ type driverCreation struct {
 	done   chan struct{}
 	driver *C.cosmos_driver_t
 	err    error
+}
+
+type containerCacheEntry struct {
+	handle *C.cosmos_container_ref_t
+	state  containerCacheState
+}
+
+type containerCacheState struct {
+	borrowers int
+	retired   bool
+	freed     bool
+}
+
+func (s *containerCacheState) borrow() bool {
+	if s.retired {
+		return false
+	}
+	s.borrowers++
+	return true
+}
+
+func (s *containerCacheState) release() bool {
+	if s.borrowers <= 0 {
+		panic("azcosmos: releasing an unborrowed container cache entry")
+	}
+	s.borrowers--
+	return s.takeFree()
+}
+
+func (s *containerCacheState) retire() bool {
+	if s.retired {
+		return false
+	}
+	s.retired = true
+	return s.takeFree()
+}
+
+func (s *containerCacheState) takeFree() bool {
+	if !s.retired || s.borrowers != 0 || s.freed {
+		return false
+	}
+	s.freed = true
+	return true
+}
+
+type containerLease struct {
+	driver *nativeDriver
+	entry  *containerCacheEntry
+	once   sync.Once
+}
+
+func (l *containerLease) handle() *C.cosmos_container_ref_t {
+	if l == nil || l.entry == nil {
+		return nil
+	}
+	return l.entry.handle
+}
+
+func (l *containerLease) release() {
+	if l == nil || l.driver == nil || l.entry == nil {
+		return
+	}
+	l.once.Do(func() {
+		l.driver.mu.Lock()
+		shouldFree := l.entry.state.release()
+		handle := l.entry.handle
+		if shouldFree {
+			l.entry.handle = nil
+		}
+		l.driver.mu.Unlock()
+		if shouldFree {
+			C.cosmos_container_ref_free(handle)
+		}
+	})
 }
 
 // initialize eagerly creates the driver, which fills its account-properties and routing caches.
@@ -460,9 +535,12 @@ func (d *nativeDriver) close() error {
 	d.reactor.close()
 	d.reactor = nil
 
-	for key, container := range d.containers {
-		C.cosmos_container_ref_free(container)
+	for key, entry := range d.containers {
 		delete(d.containers, key)
+		if entry.state.retire() {
+			C.cosmos_container_ref_free(entry.handle)
+			entry.handle = nil
+		}
 	}
 
 	C.cosmos_driver_free(d.driver)

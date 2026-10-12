@@ -6,11 +6,13 @@
 
 ### Features Added
 
-* Added key-auth-only database/container management: `Client.CreateDatabase`;
+* Added database/container management: `Client.CreateDatabase`;
   `DatabaseClient.Read`, `DatabaseClient.Delete`, `DatabaseClient.CreateContainer`;
-  `ContainerClient.ReadContainer`, `ContainerClient.DeleteContainer`; and the
+  `ContainerClient.Read`, `ContainerClient.Delete`; and the
   `DatabaseProperties`/`ContainerProperties` model types, including `IndexingPolicy` and
-  `UniqueKeyPolicy`. These require a key-credential client (`NewClientWithKey`).
+  `UniqueKeyPolicy`. Creates and deletes require a key-credential client (`NewClientWithKey`);
+  reads also support Microsoft Entra ID identities with the `readMetadata` data action. Container
+  creates infer the partition-key kind and default to partition-key version 2.
   See [PR 27700](https://github.com/Azure/azure-sdk-for-go/pull/27700).
 * Query cursors now share a client-owned completion reactor instead of blocking one OS thread
   per waiting query. Cancellation and client shutdown retain late-completion cleanup.

@@ -51,13 +51,14 @@ func (d *nativeDriver) execute(ctx context.Context, req itemRequest) (ItemRespon
 	if err != nil {
 		return ItemResponse{}, nil, err
 	}
+	defer container.release()
 
 	// Initialization and resolution have already spent part of the budget, so the operation gets
 	// only what remains rather than restarting the configured duration.
 	req.options.EndToEndTimeout = endToEndTimeout(ctx, 0)
 
 	submit := func(queue *C.cosmos_completion_queue_t, cookie C.intptr_t, preError *C.cosmos_status_code_t) *C.cosmos_operation_handle_t {
-		return d.submit(driver, container, req, queue, cookie, preError)
+		return d.submit(driver, container.handle(), req, queue, cookie, preError)
 	}
 
 	// Only a write can leave a side effect that must not be misreported as cancelled after it
@@ -370,7 +371,7 @@ func inspectNativeItemRequest(req itemRequest) (nativeItemRequest, func()) {
 	return converted, release
 }
 
-// resolveContainer returns the driver's handle for a container, resolving it on first use.
+// resolveContainer borrows the driver's handle for a container, resolving it on first use.
 //
 // Resolution reads the container's metadata from the gateway on a cache miss, so the handle is
 // cached per client: an item operation would otherwise pay for that lookup every call. It is
@@ -384,7 +385,7 @@ func (d *nativeDriver) resolveContainer(
 	ctx context.Context,
 	driver *C.cosmos_driver_t,
 	databaseID, containerID string,
-) (*C.cosmos_container_ref_t, error) {
+) (*containerLease, error) {
 	key := databaseID + "/" + containerID
 
 	d.mu.Lock()
@@ -392,35 +393,47 @@ func (d *nativeDriver) resolveContainer(
 		d.mu.Unlock()
 		return nil, errClientClosed()
 	}
-	if container, ok := d.containers[key]; ok {
+	if entry, ok := d.containers[key]; ok {
+		if !entry.state.borrow() {
+			d.mu.Unlock()
+			panic("azcosmos: retired container cache entry remained addressable")
+		}
 		d.mu.Unlock()
-		return container, nil
+		return &containerLease{driver: d, entry: entry}, nil
 	}
 	d.mu.Unlock()
 
-	container, err := d.submitResolveContainer(ctx, driver, databaseID, containerID)
+	handle, err := d.submitResolveContainer(ctx, driver, databaseID, containerID)
 	if err != nil {
 		return nil, err
 	}
 
 	d.mu.Lock()
-	defer d.mu.Unlock()
-
 	if d.closed {
 		// Closed while the resolution was in flight, so close has already emptied the cache and
 		// this handle has no other owner.
-		C.cosmos_container_ref_free(container)
+		d.mu.Unlock()
+		C.cosmos_container_ref_free(handle)
 		return nil, errClientClosed()
 	}
 	if existing, ok := d.containers[key]; ok {
-		C.cosmos_container_ref_free(container)
-		return existing, nil
+		if !existing.state.borrow() {
+			d.mu.Unlock()
+			C.cosmos_container_ref_free(handle)
+			panic("azcosmos: retired container cache entry remained addressable")
+		}
+		d.mu.Unlock()
+		C.cosmos_container_ref_free(handle)
+		return &containerLease{driver: d, entry: existing}, nil
 	}
 	if d.containers == nil {
-		d.containers = make(map[string]*C.cosmos_container_ref_t)
+		d.containers = make(map[string]*containerCacheEntry)
 	}
-	d.containers[key] = container
-	return container, nil
+	entry := &containerCacheEntry{handle: handle}
+	entry.state.borrow()
+	d.containers[key] = entry
+	d.mu.Unlock()
+	return &containerLease{driver: d, entry: entry}, nil
 }
 
 // submitResolveContainer runs one container resolution against the driver.

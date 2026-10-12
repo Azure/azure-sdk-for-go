@@ -15,6 +15,7 @@ import "C"
 
 import (
 	"context"
+	"errors"
 	"strings"
 	"unsafe"
 )
@@ -30,7 +31,7 @@ func (c *Client) executeManagement(
 	databaseID, containerID string,
 	body []byte,
 	operation OperationOptions,
-) (Response, []byte, error) {
+) (ItemResponse, []byte, error) {
 	return c.driver.executeManagement(ctx, kind, databaseID, containerID, body, operation)
 }
 
@@ -46,32 +47,31 @@ func (d *nativeDriver) executeManagement(
 	databaseID, containerID string,
 	body []byte,
 	operation OperationOptions,
-) (Response, []byte, error) {
+) (ItemResponse, []byte, error) {
 	ctx, cancel := contextWithEndToEndTimeout(ctx, operation.EndToEndTimeout)
 	defer cancel()
 
 	driver, err := d.ensureDriver(ctx)
 	if err != nil {
-		return Response{}, nil, err
+		return ItemResponse{}, nil, err
 	}
 
 	var database *C.cosmos_database_ref_t
-	var container *C.cosmos_container_ref_t
+	var container *containerLease
 
 	switch kind {
 	case operationKindReadDatabase, operationKindDeleteDatabase, operationKindCreateContainer:
 		database, err = d.createDatabaseRef(databaseID)
 		if err != nil {
-			return Response{}, nil, err
+			return ItemResponse{}, nil, err
 		}
 		defer C.cosmos_database_ref_free(database)
 	case operationKindReadContainer, operationKindDeleteContainer:
-		// Shares the item-operation cache: the handle this returns is cache-owned and must not be
-		// freed here.
 		container, err = d.resolveContainer(ctx, driver, databaseID, containerID)
 		if err != nil {
-			return Response{}, nil, err
+			return ItemResponse{}, nil, err
 		}
+		defer container.release()
 	}
 
 	// Resolution has already spent part of the budget, so the operation gets only what remains
@@ -79,7 +79,7 @@ func (d *nativeDriver) executeManagement(
 	operation.EndToEndTimeout = endToEndTimeout(ctx, 0)
 
 	submit := func(queue *C.cosmos_completion_queue_t, cookie C.intptr_t, preError *C.cosmos_status_code_t) *C.cosmos_operation_handle_t {
-		request, release := buildNativeManagementRequest(kind, d.account, database, container, body, operation)
+		request, release := buildNativeManagementRequest(kind, d.account, database, container.handle(), body, operation)
 		defer release()
 		return C.cosmos_submit_singleton_operation(driver, &request, queue, cookie, preError) //nolint:gocritic // dupSubExpr targets cgo-generated code.
 	}
@@ -93,33 +93,43 @@ func (d *nativeDriver) executeManagement(
 		result, err = d.awaitAuthoritativeCompletion(ctx, "submitting the operation", submit)
 	}
 	if err != nil {
-		return Response{}, nil, err
+		return ItemResponse{}, nil, err
 	}
-	if result.err == nil {
-		switch kind {
-		case operationKindDeleteContainer:
-			// The cached handle's RID is now stale; drop it so the next item or management
-			// operation against this database/container pair resolves fresh rather than reusing a
-			// deleted container's identity.
+	switch kind {
+	case operationKindCreateContainer:
+		if result.err == nil {
 			d.evictContainer(databaseID, containerID)
-		case operationKindDeleteDatabase:
-			// Every container under this database is gone too, so every cached handle scoped to
-			// it is stale, not just one directly deleted container.
+		}
+	case operationKindDeleteContainer:
+		if invalidatesContainerCache(result.err) {
+			d.evictContainer(databaseID, containerID)
+		}
+	case operationKindDeleteDatabase:
+		if invalidatesContainerCache(result.err) {
 			d.evictDatabase(databaseID)
 		}
 	}
-	return result.response.Response, result.body, result.err
+	return result.response, result.body, result.err
+}
+
+func invalidatesContainerCache(err error) bool {
+	if err == nil {
+		return true
+	}
+	var cosmosErr *Error
+	return errors.As(err, &cosmosErr) && cosmosErr.Code == CodeNotFound
 }
 
 // nativeManagementRequest is a converted management request in Go types, for tests that cannot
 // import C.
 type nativeManagementRequest struct {
-	kind         int32
-	hasAccount   bool
-	hasDatabase  bool
-	hasContainer bool
-	body         []byte
-	maxItemCount int32
+	kind                 int32
+	hasAccount           bool
+	hasDatabase          bool
+	hasContainer         bool
+	body                 []byte
+	maxItemCount         int32
+	contentResponseWrite int32
 }
 
 // inspectNativeManagementRequest converts a request and reads it back before releasing its C
@@ -131,7 +141,18 @@ func inspectNativeManagementRequest(
 	container *C.cosmos_container_ref_t,
 	body []byte,
 ) (nativeManagementRequest, func()) {
-	request, release := buildNativeManagementRequest(kind, account, database, container, body, OperationOptions{})
+	return inspectNativeManagementRequestWithOptions(kind, account, database, container, body, OperationOptions{})
+}
+
+func inspectNativeManagementRequestWithOptions(
+	kind operationKind,
+	account *C.cosmos_account_ref_t,
+	database *C.cosmos_database_ref_t,
+	container *C.cosmos_container_ref_t,
+	body []byte,
+	operation OperationOptions,
+) (nativeManagementRequest, func()) {
+	request, release := buildNativeManagementRequest(kind, account, database, container, body, operation)
 	converted := nativeManagementRequest{
 		kind:         int32(request.kind),
 		hasAccount:   request.account != nil,
@@ -141,6 +162,9 @@ func inspectNativeManagementRequest(
 	}
 	if request.body != nil {
 		converted.body = C.GoBytes(unsafe.Pointer(request.body), C.int(request.body_len))
+	}
+	if request.options != nil {
+		converted.contentResponseWrite = int32(request.options.content_response_on_write)
 	}
 	return converted, release
 }
@@ -165,31 +189,43 @@ func (d *nativeDriver) createDatabaseRef(databaseID string) (*C.cosmos_database_
 	return out, nil
 }
 
-// evictContainer drops a cached container handle, if present, and frees it. Safe to call whether
-// or not the key is cached.
+// evictContainer removes a cached container handle from lookup immediately. It frees the handle
+// once any operation that already borrowed it has completed.
 func (d *nativeDriver) evictContainer(databaseID, containerID string) {
 	key := databaseID + "/" + containerID
 	d.mu.Lock()
-	defer d.mu.Unlock()
-	if container, ok := d.containers[key]; ok {
+	var handle *C.cosmos_container_ref_t
+	if entry, ok := d.containers[key]; ok {
 		delete(d.containers, key)
-		C.cosmos_container_ref_free(container)
+		if entry.state.retire() {
+			handle = entry.handle
+			entry.handle = nil
+		}
+	}
+	d.mu.Unlock()
+	if handle != nil {
+		C.cosmos_container_ref_free(handle)
 	}
 }
 
-// evictDatabase drops every cached container handle scoped to databaseID, freeing each. A
-// successful database delete invalidates all of its containers' resource IDs too, not just one
-// directly deleted container, so the cache must not keep serving stale handles for any of them if
-// the database and a same-named container are recreated later.
+// evictDatabase removes every cached container handle scoped to databaseID from lookup, then frees
+// each once its existing borrowers have completed.
 func (d *nativeDriver) evictDatabase(databaseID string) {
 	prefix := databaseID + "/"
 	d.mu.Lock()
-	defer d.mu.Unlock()
-	for key, container := range d.containers {
+	var handles []*C.cosmos_container_ref_t
+	for key, entry := range d.containers {
 		if strings.HasPrefix(key, prefix) {
 			delete(d.containers, key)
-			C.cosmos_container_ref_free(container)
+			if entry.state.retire() {
+				handles = append(handles, entry.handle)
+				entry.handle = nil
+			}
 		}
+	}
+	d.mu.Unlock()
+	for _, handle := range handles {
+		C.cosmos_container_ref_free(handle)
 	}
 }
 

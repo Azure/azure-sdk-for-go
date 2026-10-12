@@ -31,9 +31,8 @@ func (d *DatabaseClient) NewContainer(id string) (*ContainerClient, error) {
 
 // Read reads the database's properties. options may be nil.
 //
-// Azure Cosmos DB only accepts master-key authentication for this operation: a client created
-// with [NewClient] (Microsoft Entra ID) returns an error rather than reaching the service. Use
-// [NewClientWithKey].
+// Microsoft Entra ID authentication through [NewClient] is supported when the identity has the
+// Microsoft.DocumentDB/databaseAccounts/readMetadata data action.
 func (d *DatabaseClient) Read(ctx context.Context, options *ReadDatabaseOptions) (DatabaseResponse, error) {
 	return d.read(ctx, options)
 }
@@ -50,7 +49,10 @@ func (d *DatabaseClient) Delete(ctx context.Context, options *DeleteDatabaseOpti
 // CreateContainer creates a new container in the database.
 //
 // properties.ID and properties.PartitionKeyDefinition are required; the partition key definition
-// is immutable once created. options may be nil.
+// is immutable once created. An omitted partition key kind is inferred from the number of paths,
+// and an omitted version creates a version 2 partition key. options may be nil. The operation
+// always requests response content, so
+// CreateContainerOptions.Operation.EnableContentResponseOnWrite is ignored.
 //
 // Azure Cosmos DB only accepts master-key authentication for this operation: a client created
 // with [NewClient] (Microsoft Entra ID) returns an error rather than reaching the service. Use

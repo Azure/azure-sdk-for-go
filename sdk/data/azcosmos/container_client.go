@@ -17,20 +17,19 @@ func (c *ContainerClient) ID() string {
 	return c.id
 }
 
-// ReadContainer reads the container's properties. options may be nil.
+// Read reads the container's properties. options may be nil.
 //
-// Azure Cosmos DB only accepts master-key authentication for this operation: a client created
-// with [NewClient] (Microsoft Entra ID) returns an error rather than reaching the service. Use
-// [NewClientWithKey].
-func (c *ContainerClient) ReadContainer(ctx context.Context, options *ReadContainerOptions) (ContainerResponse, error) {
+// Microsoft Entra ID authentication through [NewClient] is supported when the identity has the
+// Microsoft.DocumentDB/databaseAccounts/readMetadata data action.
+func (c *ContainerClient) Read(ctx context.Context, options *ReadContainerOptions) (ContainerResponse, error) {
 	return c.readContainer(ctx, options)
 }
 
-// DeleteContainer deletes the container and every item in it. options may be nil.
+// Delete deletes the container and every item in it. options may be nil.
 //
 // Azure Cosmos DB only accepts master-key authentication for this operation: a client created
 // with [NewClient] (Microsoft Entra ID) returns an error rather than reaching the service. Use
 // [NewClientWithKey].
-func (c *ContainerClient) DeleteContainer(ctx context.Context, options *DeleteContainerOptions) (ContainerResponse, error) {
+func (c *ContainerClient) Delete(ctx context.Context, options *DeleteContainerOptions) (ContainerResponse, error) {
 	return c.deleteContainer(ctx, options)
 }

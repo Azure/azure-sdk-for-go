@@ -235,7 +235,8 @@ func (c *Client) NewDatabase(id string) (*DatabaseClient, error) {
 // CreateDatabase creates a new database.
 //
 // properties.ID is required; every other field is server-assigned and ignored. options may be
-// nil.
+// nil. The operation always requests response content so the returned properties contain the
+// server-assigned fields; CreateDatabaseOptions.Operation.EnableContentResponseOnWrite is ignored.
 //
 // Azure Cosmos DB only accepts master-key authentication for this operation: a client created
 // with [NewClient] (Microsoft Entra ID) returns an error rather than reaching the service. Use

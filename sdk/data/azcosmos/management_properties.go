@@ -5,6 +5,7 @@ package azcosmos
 
 import (
 	"encoding/json"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
@@ -20,6 +21,29 @@ type DatabaseProperties struct {
 	SelfLink string `json:"_self,omitempty"`
 	// ResourceID is the resource id of the database (`_rid`).
 	ResourceID string `json:"_rid,omitempty"`
+	// LastModified is when the database was last modified (`_ts`).
+	LastModified time.Time `json:"-"`
+}
+
+type databasePropertiesWire struct {
+	ID           string       `json:"id"`
+	ETag         *azcore.ETag `json:"_etag,omitempty"`
+	SelfLink     string       `json:"_self,omitempty"`
+	ResourceID   string       `json:"_rid,omitempty"`
+	LastModified int64        `json:"_ts"`
+}
+
+func (p databasePropertiesWire) properties() DatabaseProperties {
+	properties := DatabaseProperties{
+		ID:         p.ID,
+		ETag:       p.ETag,
+		SelfLink:   p.SelfLink,
+		ResourceID: p.ResourceID,
+	}
+	if p.LastModified != 0 {
+		properties.LastModified = time.Unix(p.LastModified, 0).UTC()
+	}
+	return properties
 }
 
 // PartitionKeyKind represents the type of partition key used by a container.
@@ -35,11 +59,11 @@ const (
 // PartitionKeyDefinition defines the partition key path(s) of a container.
 type PartitionKeyDefinition struct {
 	// Kind is the partition key kind. Empty infers [PartitionKeyKindHash] for a single path and
-	// [PartitionKeyKindMultiHash] for more than one, matching the service default.
+	// [PartitionKeyKindMultiHash] for more than one.
 	Kind PartitionKeyKind `json:"kind,omitempty"`
 	// Paths is the list of partition key paths, for example "/tenantId".
 	Paths []string `json:"paths"`
-	// Version is the partition key hash version. Zero uses the service default.
+	// Version is the partition key hash version. Zero creates the container with version 2.
 	Version int `json:"version,omitempty"`
 }
 
@@ -57,8 +81,12 @@ func (p PartitionKeyDefinition) MarshalJSON() ([]byte, error) {
 			kind = PartitionKeyKindMultiHash
 		}
 	}
+	version := p.Version
+	if version == 0 {
+		version = 2
+	}
 	type alias PartitionKeyDefinition
-	return json.Marshal(alias{Kind: kind, Paths: p.Paths, Version: p.Version})
+	return json.Marshal(alias{Kind: kind, Paths: p.Paths, Version: version})
 }
 
 // IndexingMode selects how a container's indexing policy is applied.
@@ -137,6 +165,8 @@ type ContainerProperties struct {
 	SelfLink string `json:"_self,omitempty"`
 	// ResourceID is the resource id of the container (`_rid`).
 	ResourceID string `json:"_rid,omitempty"`
+	// LastModified is when the container was last modified (`_ts`).
+	LastModified time.Time `json:"-"`
 	// DefaultTimeToLive is the default time to live, in seconds, for items in the container. Nil
 	// disables TTL expiration.
 	// https://learn.microsoft.com/azure/cosmos-db/time-to-live
@@ -148,4 +178,33 @@ type ContainerProperties struct {
 	IndexingPolicy *IndexingPolicy `json:"indexingPolicy,omitempty"`
 	// UniqueKeyPolicy configures unique key constraints. Can only be set on create.
 	UniqueKeyPolicy *UniqueKeyPolicy `json:"uniqueKeyPolicy,omitempty"`
+}
+
+type containerPropertiesWire struct {
+	ID                     string                 `json:"id"`
+	ETag                   *azcore.ETag           `json:"_etag,omitempty"`
+	SelfLink               string                 `json:"_self,omitempty"`
+	ResourceID             string                 `json:"_rid,omitempty"`
+	LastModified           int64                  `json:"_ts"`
+	DefaultTimeToLive      *int32                 `json:"defaultTtl,omitempty"`
+	PartitionKeyDefinition PartitionKeyDefinition `json:"partitionKey"`
+	IndexingPolicy         *IndexingPolicy        `json:"indexingPolicy,omitempty"`
+	UniqueKeyPolicy        *UniqueKeyPolicy       `json:"uniqueKeyPolicy,omitempty"`
+}
+
+func (p containerPropertiesWire) properties() ContainerProperties {
+	properties := ContainerProperties{
+		ID:                     p.ID,
+		ETag:                   p.ETag,
+		SelfLink:               p.SelfLink,
+		ResourceID:             p.ResourceID,
+		DefaultTimeToLive:      p.DefaultTimeToLive,
+		PartitionKeyDefinition: p.PartitionKeyDefinition,
+		IndexingPolicy:         p.IndexingPolicy,
+		UniqueKeyPolicy:        p.UniqueKeyPolicy,
+	}
+	if p.LastModified != 0 {
+		properties.LastModified = time.Unix(p.LastModified, 0).UTC()
+	}
+	return properties
 }

@@ -7,6 +7,7 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"fmt"
 )
 
 // Management operation kinds, mirroring the driver's CosmosOperationKind discriminants used for
@@ -24,7 +25,8 @@ const (
 // CreateDatabaseOptions configures [Client.CreateDatabase]. A nil *CreateDatabaseOptions selects
 // the defaults for every field.
 type CreateDatabaseOptions struct {
-	// Operation holds the settings every operation accepts.
+	// Operation holds the settings every operation accepts. CreateDatabase always requests the
+	// response body, so Operation.EnableContentResponseOnWrite is ignored.
 	Operation OperationOptions
 }
 
@@ -45,34 +47,34 @@ type DeleteDatabaseOptions struct {
 // CreateContainerOptions configures [DatabaseClient.CreateContainer]. A nil *CreateContainerOptions
 // selects the defaults for every field.
 type CreateContainerOptions struct {
-	// Operation holds the settings every operation accepts.
+	// Operation holds the settings every operation accepts. CreateContainer always requests the
+	// response body, so Operation.EnableContentResponseOnWrite is ignored.
 	Operation OperationOptions
 }
 
-// ReadContainerOptions configures [ContainerClient.ReadContainer]. A nil *ReadContainerOptions
+// ReadContainerOptions configures [ContainerClient.Read]. A nil *ReadContainerOptions
 // selects the defaults for every field.
 type ReadContainerOptions struct {
 	// Operation holds the settings every operation accepts.
 	Operation OperationOptions
 }
 
-// DeleteContainerOptions configures [ContainerClient.DeleteContainer]. A nil
+// DeleteContainerOptions configures [ContainerClient.Delete]. A nil
 // *DeleteContainerOptions selects the defaults for every field.
 type DeleteContainerOptions struct {
 	// Operation holds the settings every operation accepts.
 	Operation OperationOptions
 }
 
-// errKeyCredentialRequired reports that a management operation requires a client created with
-// [NewClientWithKey]. Azure Cosmos DB only accepts master-key authentication for database and
-// container management operations issued through the data-plane SQL API; a client authenticated
-// with Microsoft Entra ID (NewClient) cannot perform them.
+// errKeyCredentialRequired reports that a management mutation requires a client created with
+// [NewClientWithKey]. Microsoft Entra ID can read metadata with the appropriate data-plane role,
+// but the service requires master-key authentication for database and container mutations.
 func errKeyCredentialRequired() error {
 	return &Error{
 		Code: CodeClientError,
-		Message: "azcosmos: database and container management operations require a client " +
+		Message: "azcosmos: database and container management mutations require a client " +
 			"created with NewClientWithKey; Microsoft Entra ID authentication (NewClient) is not " +
-			"supported for these operations",
+			"supported for create or delete operations",
 	}
 }
 
@@ -127,33 +129,52 @@ type databaseCreateBody struct {
 	ID string `json:"id"`
 }
 
-func newDatabaseResponse(response Response, body []byte) (DatabaseResponse, error) {
-	result := DatabaseResponse{Response: response}
+func newDatabaseResponse(response ItemResponse, body []byte) (DatabaseResponse, error) {
+	result := DatabaseResponse{Response: response.Response}
 	if len(body) == 0 {
 		return result, nil
 	}
-	if err := json.Unmarshal(body, &result.DatabaseProperties); err != nil {
-		return DatabaseResponse{}, err
+	var properties databasePropertiesWire
+	if err := json.Unmarshal(body, &properties); err != nil {
+		return DatabaseResponse{}, newManagementSerializationError(response, body, "database", err)
 	}
+	result.DatabaseProperties = properties.properties()
 	return result, nil
 }
 
-func newContainerResponse(response Response, body []byte) (ContainerResponse, error) {
-	result := ContainerResponse{Response: response}
+func newContainerResponse(response ItemResponse, body []byte) (ContainerResponse, error) {
+	result := ContainerResponse{Response: response.Response}
 	if len(body) == 0 {
 		return result, nil
 	}
-	if err := json.Unmarshal(body, &result.ContainerProperties); err != nil {
-		return ContainerResponse{}, err
+	var properties containerPropertiesWire
+	if err := json.Unmarshal(body, &properties); err != nil {
+		return ContainerResponse{}, newManagementSerializationError(response, body, "container", err)
 	}
+	result.ContainerProperties = properties.properties()
 	return result, nil
+}
+
+func newManagementSerializationError(response ItemResponse, body []byte, resource string, cause error) *Error {
+	return &Error{
+		Code:          CodeSerializationFailed,
+		Diagnostics:   response.Diagnostics,
+		StatusCode:    response.StatusCode,
+		SubStatus:     response.SubStatus,
+		AttemptCount:  response.AttemptCount,
+		RequestCharge: response.RequestCharge,
+		ActivityID:    response.ActivityID,
+		SessionToken:  response.SessionToken,
+		ETag:          response.ETag,
+		Message:       fmt.Sprintf("azcosmos: decoding %s response", resource),
+		Body:          append([]byte(nil), body...),
+		FromWire:      true,
+		cause:         cause,
+	}
 }
 
 // read implements [DatabaseClient.Read].
 func (d *DatabaseClient) read(ctx context.Context, options *ReadDatabaseOptions) (DatabaseResponse, error) {
-	if !d.client.usesKeyAuth {
-		return DatabaseResponse{}, errKeyCredentialRequired()
-	}
 	release, err := d.client.acquire()
 	if err != nil {
 		return DatabaseResponse{}, err
@@ -234,18 +255,15 @@ func (d *DatabaseClient) createContainer(ctx context.Context, properties Contain
 	// properties back from a container create.
 	forceContentResponseOnWrite(&operation)
 
-	response, respBody, err := d.client.executeManagement(ctx, operationKindCreateContainer, d.id, "", body, operation)
+	response, respBody, err := d.client.executeManagement(ctx, operationKindCreateContainer, d.id, properties.ID, body, operation)
 	if err != nil {
 		return ContainerResponse{}, err
 	}
 	return newContainerResponse(response, respBody)
 }
 
-// readContainer implements [ContainerClient.ReadContainer].
+// readContainer implements [ContainerClient.Read].
 func (c *ContainerClient) readContainer(ctx context.Context, options *ReadContainerOptions) (ContainerResponse, error) {
-	if !c.database.client.usesKeyAuth {
-		return ContainerResponse{}, errKeyCredentialRequired()
-	}
 	release, err := c.database.client.acquire()
 	if err != nil {
 		return ContainerResponse{}, err
@@ -267,7 +285,7 @@ func (c *ContainerClient) readContainer(ctx context.Context, options *ReadContai
 	return newContainerResponse(response, body)
 }
 
-// deleteContainer implements [ContainerClient.DeleteContainer].
+// deleteContainer implements [ContainerClient.Delete].
 func (c *ContainerClient) deleteContainer(ctx context.Context, options *DeleteContainerOptions) (ContainerResponse, error) {
 	if !c.database.client.usesKeyAuth {
 		return ContainerResponse{}, errKeyCredentialRequired()

@@ -61,11 +61,12 @@ func TestEmulatorDatabaseAndContainerLifecycle(t *testing.T) {
 	require.Equal(t, []string{"/pk"}, containerResp.ContainerProperties.PartitionKeyDefinition.Paths)
 	require.Equal(t, PartitionKeyKindHash, containerResp.ContainerProperties.PartitionKeyDefinition.Kind,
 		"a single path has to infer Hash on the wire, not leave the kind unset")
+	require.Equal(t, 2, containerResp.ContainerProperties.PartitionKeyDefinition.Version)
 
 	container, err := database.NewContainer(containerID)
 	require.NoError(t, err)
 
-	readContainerResp, err := container.ReadContainer(ctx, nil)
+	readContainerResp, err := container.Read(ctx, nil)
 	require.NoError(t, err)
 	require.Equal(t, 200, readContainerResp.StatusCode)
 	require.Equal(t, containerID, readContainerResp.ContainerProperties.ID)
@@ -78,7 +79,7 @@ func TestEmulatorDatabaseAndContainerLifecycle(t *testing.T) {
 	_, err = container.CreateItem(ctx, pk, id, item, nil)
 	require.NoError(t, err)
 
-	deleteContainerResp, err := container.DeleteContainer(ctx, nil)
+	deleteContainerResp, err := container.Delete(ctx, nil)
 	require.NoError(t, err)
 	require.Equal(t, 204, deleteContainerResp.StatusCode)
 
@@ -91,7 +92,7 @@ func TestEmulatorDatabaseAndContainerLifecycle(t *testing.T) {
 	require.NoError(t, err)
 	_, err = recreatedContainer.CreateItem(ctx, pk, id, item, nil)
 	require.NoError(t, err, "the recreated container has to accept writes under its own, fresh resource id")
-	_, err = recreatedContainer.DeleteContainer(ctx, nil)
+	_, err = recreatedContainer.Delete(ctx, nil)
 	require.NoError(t, err)
 
 	deleteDBResp, err := database.Delete(ctx, nil)
@@ -103,4 +104,116 @@ func TestEmulatorDatabaseAndContainerLifecycle(t *testing.T) {
 	var cosmosErr *Error
 	require.ErrorAs(t, err, &cosmosErr)
 	require.Equal(t, CodeNotFound, cosmosErr.Code)
+}
+
+func TestEmulatorDatabaseDeleteInvalidatesEveryCachedContainer(t *testing.T) {
+	client, _, _ := emulatorClientConfigured(t, nil, false)
+	ctx := t.Context()
+
+	databaseID := uniqueItemID(t) + "-db"
+	database, err := client.NewDatabase(databaseID)
+	require.NoError(t, err)
+	t.Cleanup(func() {
+		_, _ = database.Delete(context.Background(), nil)
+	})
+
+	_, err = client.CreateDatabase(ctx, DatabaseProperties{ID: databaseID}, nil)
+	require.NoError(t, err)
+
+	containerIDs := []string{uniqueItemID(t) + "-one", uniqueItemID(t) + "-two"}
+	for _, containerID := range containerIDs {
+		props := ContainerProperties{
+			ID: containerID,
+			PartitionKeyDefinition: PartitionKeyDefinition{
+				Paths: []string{"/pk"},
+			},
+		}
+		_, err = database.CreateContainer(ctx, props, nil)
+		require.NoError(t, err)
+		container, err := database.NewContainer(containerID)
+		require.NoError(t, err)
+		itemID := uniqueItemID(t)
+		_, err = container.CreateItem(ctx, NewPartitionKeyString(itemID), itemID,
+			[]byte(`{"id":"`+itemID+`","pk":"`+itemID+`"}`), nil)
+		require.NoError(t, err)
+	}
+
+	_, err = database.Delete(ctx, nil)
+	require.NoError(t, err)
+	_, err = client.CreateDatabase(ctx, DatabaseProperties{ID: databaseID}, nil)
+	require.NoError(t, err)
+
+	for _, containerID := range containerIDs {
+		props := ContainerProperties{
+			ID: containerID,
+			PartitionKeyDefinition: PartitionKeyDefinition{
+				Paths: []string{"/pk"},
+			},
+		}
+		_, err = database.CreateContainer(ctx, props, nil)
+		require.NoError(t, err)
+		container, err := database.NewContainer(containerID)
+		require.NoError(t, err)
+		itemID := uniqueItemID(t)
+		_, err = container.CreateItem(ctx, NewPartitionKeyString(itemID), itemID,
+			[]byte(`{"id":"`+itemID+`","pk":"`+itemID+`"}`), nil)
+		require.NoError(t, err, "a recreated container must resolve its fresh resource id")
+	}
+}
+
+func TestEmulatorOutOfBandContainerRecreationInvalidatesCachedIdentity(t *testing.T) {
+	clientA, _, _ := emulatorClientConfigured(t, nil, false)
+	clientB, _, _ := emulatorClientConfigured(t, nil, false)
+	ctx := t.Context()
+
+	databaseID := uniqueItemID(t) + "-db"
+	containerID := uniqueItemID(t) + "-container"
+	props := ContainerProperties{
+		ID: containerID,
+		PartitionKeyDefinition: PartitionKeyDefinition{
+			Paths: []string{"/pk"},
+		},
+	}
+
+	_, err := clientA.CreateDatabase(ctx, DatabaseProperties{ID: databaseID}, nil)
+	require.NoError(t, err)
+	databaseA, err := clientA.NewDatabase(databaseID)
+	require.NoError(t, err)
+	databaseB, err := clientB.NewDatabase(databaseID)
+	require.NoError(t, err)
+	t.Cleanup(func() {
+		_, _ = databaseA.Delete(context.Background(), nil)
+	})
+
+	_, err = databaseA.CreateContainer(ctx, props, nil)
+	require.NoError(t, err)
+	containerA, err := databaseA.NewContainer(containerID)
+	require.NoError(t, err)
+	containerB, err := databaseB.NewContainer(containerID)
+	require.NoError(t, err)
+
+	createItem := func(container *ContainerClient) {
+		itemID := uniqueItemID(t)
+		_, err := container.CreateItem(ctx, NewPartitionKeyString(itemID), itemID,
+			[]byte(`{"id":"`+itemID+`","pk":"`+itemID+`"}`), nil)
+		require.NoError(t, err)
+	}
+	createItem(containerA)
+
+	_, err = containerB.Delete(ctx, nil)
+	require.NoError(t, err)
+	_, err = databaseA.CreateContainer(ctx, props, nil)
+	require.NoError(t, err)
+	createItem(containerA)
+
+	_, err = containerB.Delete(ctx, nil)
+	require.NoError(t, err)
+	_, err = containerA.Delete(ctx, nil)
+	var cosmosErr *Error
+	require.ErrorAs(t, err, &cosmosErr)
+	require.Equal(t, CodeNotFound, cosmosErr.Code)
+
+	_, err = databaseB.CreateContainer(ctx, props, nil)
+	require.NoError(t, err)
+	createItem(containerA)
 }

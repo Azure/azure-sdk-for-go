@@ -147,6 +147,64 @@ func ExampleNewClientWithKey() {
 	}
 }
 
+func ExampleClient_CreateDatabase() {
+	cred, err := azcosmos.NewKeyCredential("bXktYWNjb3VudC1rZXk=")
+	if err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+	client, err := azcosmos.NewClientWithKey("https://myaccount.documents.azure.com", cred, nil)
+	if err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+
+	databaseResponse, err := client.CreateDatabase(context.TODO(), azcosmos.DatabaseProperties{
+		ID: "catalog",
+	}, nil)
+	if err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+	database, err := client.NewDatabase(databaseResponse.DatabaseProperties.ID)
+	if err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+
+	containerResponse, err := database.CreateContainer(context.TODO(), azcosmos.ContainerProperties{
+		ID: "products",
+		PartitionKeyDefinition: azcosmos.PartitionKeyDefinition{
+			Paths: []string{"/category"},
+		},
+	}, nil)
+	if err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+	container, err := database.NewContainer(containerResponse.ContainerProperties.ID)
+	if err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+	if _, err := container.Read(context.TODO(), nil); err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+	if _, err := container.Delete(context.TODO(), nil); err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+	if _, err := database.Delete(context.TODO(), nil); err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+	if err := client.Close(); err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+}
+
 // When the regions to prefer are known ahead of time, give them explicitly. The order is a
 // preference, not a restriction: once it is exhausted the client may still use other regions.
 func ExamplePreferredRegions() {

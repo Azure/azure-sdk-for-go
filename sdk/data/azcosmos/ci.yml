@@ -25,6 +25,10 @@ extends:
   parameters:
     ServiceDirectory: 'data/azcosmos'
     UsePipelineProxy: false
+    AnalysisGoVersion: '1.27.2'
+    LintVersion: 'v2.14.0'
+    MatrixReplace:
+      - GoVersion=.*/1.27.2
     AdditionalStages:
       - stage: Emulator
         displayName: 'Cosmos Emulator'
@@ -59,7 +63,7 @@ extends:
 
           - task: GoTool@0
             inputs:
-              version: '1.26.1'
+              version: '1.27.2'
             displayName: "Select Go Version"
 
           - template: /eng/pipelines/templates/steps/create-go-workspace.yml@self
@@ -68,7 +72,7 @@ extends:
             parameters:
               ServiceDirectory: 'data/azcosmos'
               Image: $(vm.image)
-              GoVersion: '1.26.1'
+              GoVersion: '1.27.2'
               EnableRaceDetector: true
               EnvVars:
                 EMULATOR: 'true'
@@ -188,7 +192,7 @@ extends:
 
           - task: GoTool@0
             inputs:
-              version: '1.26.1'
+              version: '1.27.2'
             displayName: "Select Go Version"
 
           - template: /eng/pipelines/templates/steps/create-go-workspace.yml@self
@@ -197,7 +201,7 @@ extends:
             parameters:
               ServiceDirectory: 'data/azcosmos'
               Image: $(vm.image)
-              GoVersion: '1.26.1'
+              GoVersion: '1.27.2'
               EnableRaceDetector: true
               EnvVars:
                 EMULATOR: 'true'

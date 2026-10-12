@@ -30,7 +30,7 @@ func TestEmulatorCursorCheckpointCancellation(t *testing.T) {
 	key, query, _ := seedQueryContractItems(t, emulatorContainer(t))
 	container := queryContractContainer(t, nil, nil)
 	client := container.database.client
-	pager := container.NewQueryItemsPager(query, NewFeedScopeForPartitionKey(key),
+	pager := container.NewQueryItemsPager[json.RawMessage](query, NewFeedScopeForPartitionKey(key),
 		&QueryOptions{Feed: FeedOptions{PageSizeHint: 1}})
 	defer func() { require.NoError(t, pager.Close()) }()
 	_, err := pager.NextPage(t.Context())
@@ -112,7 +112,7 @@ func TestEmulatorCursorCompletionCancellationRace(t *testing.T) {
 	for _, operation := range []string{"page", "checkpoint"} {
 		t.Run(operation, func(t *testing.T) {
 			for range 20 {
-				pager := container.NewQueryItemsPager(query, NewFeedScopeForPartitionKey(key),
+				pager := container.NewQueryItemsPager[json.RawMessage](query, NewFeedScopeForPartitionKey(key),
 					&QueryOptions{Feed: FeedOptions{PageSizeHint: 1}})
 				_, err := pager.NextPage(t.Context())
 				require.NoError(t, err)
@@ -207,7 +207,7 @@ func seedQueryContractItems(t *testing.T, container *ContainerClient) (Partition
 		id := fmt.Sprintf("%s-%d", partition, value)
 		body, err := json.Marshal(map[string]any{"id": id, "pk": partition, "value": value})
 		require.NoError(t, err)
-		item, err := container.CreateItem(t.Context(), key, id, body, nil)
+		item, err := container.CreateItem(t.Context(), key, id, json.RawMessage(body), nil)
 		require.NoError(t, err)
 		session = item.SessionToken
 		trackEmulatorItem(t, container, key, id)
@@ -261,17 +261,17 @@ func TestEmulatorQueryMidPaginationFailureMetadata(t *testing.T) {
 		}
 		return nil
 	})
-	pager := container.NewQueryItemsPager(query, NewFeedScopeForPartitionKey(key), &QueryOptions{Feed: FeedOptions{PageSizeHint: 2}})
+	pager := container.NewQueryItemsPager[json.RawMessage](query, NewFeedScopeForPartitionKey(key), &QueryOptions{Feed: FeedOptions{PageSizeHint: 2}})
 	defer func() { require.NoError(t, pager.Close()) }()
 	first, err := pager.NextPage(t.Context())
 	require.NoError(t, err)
-	require.Equal(t, [][]byte{[]byte("0"), []byte("1")}, first.Items)
+	require.Equal(t, []json.RawMessage{[]byte("0"), []byte("1")}, first.Items)
 	require.Equal(t, 3.75, first.RequestCharge, "first fetch includes the extra metadata-validation charge")
 	require.Equal(t, successActivity, first.ActivityID)
 	require.NotEmpty(t, first.SessionToken)
 	second, err := pager.NextPage(t.Context())
 	require.NoError(t, err)
-	require.Equal(t, [][]byte{[]byte("2"), []byte("3")}, second.Items)
+	require.Equal(t, []json.RawMessage{[]byte("2"), []byte("3")}, second.Items)
 	require.Equal(t, 2.5, second.RequestCharge, "subsequent pages must not repeat setup charges")
 	require.Equal(t, successActivity, second.ActivityID)
 	require.NotEmpty(t, second.SessionToken)
@@ -323,7 +323,7 @@ func TestEmulatorQueryMetricsAndSessionOptions(t *testing.T) {
 				}
 				return nil
 			})
-			pager := container.NewQueryItemsPager(query, NewFeedScopeForPartitionKey(key), &QueryOptions{
+			pager := container.NewQueryItemsPager[json.RawMessage](query, NewFeedScopeForPartitionKey(key), &QueryOptions{
 				Feed: FeedOptions{PageSizeHint: 2}, SessionToken: session,
 				PopulateIndexMetrics: &enabled, PopulateQueryMetrics: &enabled,
 			})
@@ -331,7 +331,7 @@ func TestEmulatorQueryMetricsAndSessionOptions(t *testing.T) {
 			for pageNumber := range 2 {
 				page, err := pager.NextPage(t.Context())
 				require.NoError(t, err)
-				require.Equal(t, [][]byte{[]byte(fmt.Sprint(pageNumber * 2)), []byte(fmt.Sprint(pageNumber*2 + 1))}, page.Items)
+				require.Equal(t, []json.RawMessage{[]byte(fmt.Sprint(pageNumber * 2)), []byte(fmt.Sprint(pageNumber*2 + 1))}, page.Items)
 				mu.Lock()
 				observedRequests := append([]http.Header(nil), requests...)
 				observedSessions := append([]SessionToken(nil), sessions...)

@@ -7,6 +7,7 @@ package azcosmos
 
 import (
 	"context"
+	"encoding/json"
 	"errors"
 	"strings"
 	"sync"
@@ -274,7 +275,7 @@ func TestOperationsAfterCloseAreRejected(t *testing.T) {
 	require.True(t, errors.As(err, &cosmosErr))
 	require.Equal(t, CodeClientClosed, cosmosErr.Code)
 
-	_, err = container.CreateItem(context.Background(), NewPartitionKeyString("pk"), "x", []byte(`{"id":"x"}`), nil)
+	_, err = container.CreateItem(context.Background(), NewPartitionKeyString("pk"), "x", json.RawMessage(`{"id":"x"}`), nil)
 	require.True(t, errors.As(err, &cosmosErr))
 	require.Equal(t, CodeClientClosed, cosmosErr.Code)
 }

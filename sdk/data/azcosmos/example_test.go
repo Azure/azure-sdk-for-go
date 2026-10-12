@@ -6,14 +6,22 @@
 package azcosmos_test
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 	"errors"
+	"io"
 	"log"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/data/azcosmos/v2"
 )
+
+type catalogItem struct {
+	ID           string `json:"id"`
+	CategoryName string `json:"categoryName"`
+	Quantity     int    `json:"quantity"`
+}
 
 func ExampleContainerClient_NewQueryItemsPager() {
 	container, closeClient := exampleContainer()
@@ -24,7 +32,7 @@ func ExampleContainerClient_NewQueryItemsPager() {
 		log.Fatalf("ERROR: %s", err)
 	}
 	scope := azcosmos.NewFeedScopeForPartitionKey(azcosmos.NewPartitionKeyString("catalog"))
-	pager := container.NewQueryItemsPager(query, scope, &azcosmos.QueryOptions{
+	pager := container.NewQueryItemsPager[catalogItem](query, scope, &azcosmos.QueryOptions{
 		Feed: azcosmos.FeedOptions{PageSizeHint: 25},
 	})
 	for pager.More() {
@@ -160,13 +168,7 @@ func ExamplePreferredRegions() {
 func ExampleContainerClient_CreateItem() {
 	container, closeClient := exampleContainer()
 
-	item, err := json.Marshal(map[string]string{
-		"id":           "item-1",
-		"categoryName": "gear-surf-surfboards",
-	})
-	if err != nil {
-		log.Fatalf("ERROR: %s", err)
-	}
+	item := catalogItem{ID: "item-1", CategoryName: "gear-surf-surfboards"}
 
 	// The partition key value must match the value of the partition key path in the item, and the
 	// id must match the item's own id property.
@@ -174,6 +176,7 @@ func ExampleContainerClient_CreateItem() {
 
 	response, err := container.CreateItem(context.TODO(), pk, "item-1", item, nil)
 	if err != nil {
+		// TODO: Update the following line with your application specific error handling logic
 		log.Fatalf("ERROR: %s", err)
 	}
 	log.Printf("created the item, charged %v RU", response.RequestCharge)
@@ -191,12 +194,12 @@ func ExampleContainerClient_ReadItem() {
 		log.Fatalf("ERROR: %s", err)
 	}
 
-	var item map[string]any
-	if err := json.Unmarshal(response.Value, &item); err != nil {
+	item, err := response.IntoModel[catalogItem]()
+	if err != nil {
 		// TODO: Update the following line with your application specific error handling logic
 		log.Fatalf("ERROR: %s", err)
 	}
-	log.Printf("read item %v, charged %v RU", item["id"], response.RequestCharge)
+	log.Printf("read item %v, charged %v RU", item.ID, response.RequestCharge)
 
 	closeClient()
 }
@@ -205,15 +208,7 @@ func ExampleContainerClient_ReplaceItem() {
 	container, closeClient := exampleContainer()
 	pk := azcosmos.NewPartitionKeyString("gear-surf-surfboards")
 
-	item, err := json.Marshal(map[string]any{
-		"id":           "item-1",
-		"categoryName": "gear-surf-surfboards",
-		"quantity":     3,
-	})
-	if err != nil {
-		// TODO: Update the following line with your application specific error handling logic
-		log.Fatalf("ERROR: %s", err)
-	}
+	item := catalogItem{ID: "item-1", CategoryName: "gear-surf-surfboards", Quantity: 3}
 
 	response, err := container.ReplaceItem(context.TODO(), pk, "item-1", item, nil)
 	if err != nil {
@@ -229,15 +224,7 @@ func ExampleContainerClient_UpsertItem() {
 	container, closeClient := exampleContainer()
 	pk := azcosmos.NewPartitionKeyString("gear-surf-surfboards")
 
-	item, err := json.Marshal(map[string]any{
-		"id":           "item-1",
-		"categoryName": "gear-surf-surfboards",
-		"quantity":     3,
-	})
-	if err != nil {
-		// TODO: Update the following line with your application specific error handling logic
-		log.Fatalf("ERROR: %s", err)
-	}
+	item := catalogItem{ID: "item-1", CategoryName: "gear-surf-surfboards", Quantity: 3}
 
 	response, err := container.UpsertItem(context.TODO(), pk, "item-1", item, nil)
 	if err != nil {
@@ -283,7 +270,102 @@ func ExampleContainerClient_PatchItem() {
 		log.Fatalf("ERROR: %s", err)
 	}
 	log.Printf("patched the item, charged %v RU", response.RequestCharge)
+	if len(response.Value) != 0 {
+		item, err := response.IntoModel[catalogItem]()
+		if err != nil {
+			// TODO: Update the following line with your application specific error handling logic
+			log.Fatalf("ERROR: %s", err)
+		}
+		log.Printf("updated quantity: %d", item.Quantity)
+	}
 
+	closeClient()
+}
+
+type numberPreservingSerializer struct{}
+
+func (numberPreservingSerializer) Marshal(value any) ([]byte, error) {
+	return json.Marshal(value)
+}
+
+func (numberPreservingSerializer) Unmarshal(data []byte, value any) error {
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.UseNumber()
+	if err := decoder.Decode(value); err != nil {
+		return err
+	}
+	var trailing any
+	if err := decoder.Decode(&trailing); err != io.EOF {
+		if err == nil {
+			return errors.New("unexpected trailing JSON value")
+		}
+		return err
+	}
+	return nil
+}
+
+func ExampleClientOptions_serializer() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+	client, err := azcosmos.NewClient("https://myaccount.documents.azure.com", cred, &azcosmos.ClientOptions{
+		Serializer: numberPreservingSerializer{},
+	})
+	if err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+	container, err := client.NewContainer("myDatabase", "myContainer")
+	if err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+	pager := container.NewQueryItemsPager[map[string]any](
+		azcosmos.NewQuery("SELECT c.quantity FROM c"),
+		azcosmos.NewFeedScopeForPartitionKey(azcosmos.NewPartitionKeyString("catalog")), nil)
+	for pager.More() {
+		page, err := pager.NextPage(context.TODO())
+		if err != nil {
+			// TODO: Update the following line with your application specific error handling logic
+			log.Fatalf("ERROR: %s", err)
+		}
+		for _, projection := range page.Items {
+			log.Printf("quantity without float64 rounding: %v", projection["quantity"])
+		}
+	}
+	if err := pager.Close(); err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+	if err := client.Close(); err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+}
+
+func ExampleContainerClient_NewQueryItemsPager_scalar() {
+	container, closeClient := exampleContainer()
+	pager := container.NewQueryItemsPager[*int](
+		azcosmos.NewQuery("SELECT VALUE c.quantity FROM c"),
+		azcosmos.NewFeedScopeForPartitionKey(azcosmos.NewPartitionKeyString("catalog")), nil)
+	for pager.More() {
+		page, err := pager.NextPage(context.TODO())
+		if err != nil {
+			// TODO: Update the following line with your application specific error handling logic
+			log.Fatalf("ERROR: %s", err)
+		}
+		for _, quantity := range page.Items {
+			if quantity != nil {
+				log.Printf("quantity: %d", *quantity)
+			}
+		}
+	}
+	if err := pager.Close(); err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
 	closeClient()
 }
 

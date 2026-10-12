@@ -19,6 +19,11 @@ Cosmos DB SDKs.
 
 ### Building with the driver
 
+This module requires **Go 1.27 or later** for concrete generic methods. Unlike the
+repository's usual two-release support policy, this provisional API does not support Go 1.26.
+Its `ci.yml` pins analysis compiler and linter versions. Repository-wide PR analysis
+honors those pins only while checking this module; other packages keep their existing tools.
+
 The driver binding is selected automatically when cgo is enabled on glibc `linux/amd64` or
 `darwin/arm64`. No build tag or linker environment variable is required:
 
@@ -82,6 +87,58 @@ Service requests include `azsdk-go-azcosmos/<version>` in the User-Agent header 
 Cosmos driver identity and feature flags. `ClientOptions.ApplicationID` remains an optional,
 unchanged application suffix; SDK identity does not consume its length allowance.
 
+### Application models and serialization
+
+`CreateItem`, `ReplaceItem`, and `UpsertItem` accept models and infer their type parameter:
+
+```go
+type Product struct {
+    ID       string `json:"id"`
+    Category string `json:"category"`
+    Quantity int    `json:"quantity"`
+}
+
+item := Product{ID: "item-1", Category: "catalog", Quantity: 3}
+response, err := container.CreateItem(ctx, azcosmos.NewPartitionKeyString("catalog"), item.ID, item, nil)
+```
+
+IDs and partition keys remain explicit; the SDK never infers or changes model fields.
+`ReadItem`, content-returning writes, and `PatchItem` return `ItemResponse`. Decode it
+with `response.IntoModel[Product]()`, or inspect `response.Value` directly.
+Model conversion is local and leaves response metadata and bytes intact, including after
+`Client.Close`. Delete and body-disabled writes have no model body; calling `IntoModel`
+on an absent body returns an error. Check for a body before decoding an optional write response.
+
+By default, serialization uses `encoding/json`, honoring struct tags and
+`json.Marshaler` / `json.Unmarshaler`. For application-wide conventions, set
+`ClientOptions.Serializer` to an implementation of `Marshal(any) ([]byte, error)` and
+`Unmarshal([]byte, any) error`. Nil selects the default. The serializer boundary uses
+UTF-8 JSON, independently of native transport representation.
+The SDK retains the serializer without cloning or closing it; implementations must support
+concurrent calls and remain valid for responses and pagers that retain them. They must not
+reuse returned write buffers until the operation returns, or mutate/retain borrowed decode
+buffers without copying. Callbacks are synchronous and cannot be interrupted by context
+cancellation. There is no per-operation override.
+
+Custom serializers apply only to item models and query result values, not query parameters,
+PATCH values, partition keys, diagnostics, or internal metadata. See the compiling
+[examples](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/data/azcosmos/v2#pkg-examples)
+for model-based operations and a serializer that preserves numbers in untyped projections.
+
+Conversion failures return `*Error` with `CodeSerializationFailed` and unwrap their cause.
+Response decoding errors retain available RU charge, ETag, session token, status, and
+diagnostics while `FromWire` remains false because the failure is local. A write already
+completed before `IntoModel` was called; a decoding error never retries or rolls it back.
+No partial model or partial query page is returned on error.
+
+#### Migrating provisional v2 callers
+
+There are no separate `Typed` or `Raw` operation variants. Pass models directly instead of
+calling `json.Marshal` before each write. For intentionally pre-encoded JSON, pass
+`json.RawMessage(payload)`; plain `[]byte` now follows encoding/json's base64 encoding
+behavior rather than acting as a passthrough. With the default serializer, select
+`NewQueryItemsPager[json.RawMessage]` to obtain encoded query values.
+
 ### Patching items
 
 > [!IMPORTANT]
@@ -102,20 +159,22 @@ Client-side execution of a patch that is not intrinsically retry-safe permanentl
 
 ### Querying items
 
-`ContainerClient.NewQueryItemsPager` accepts a `Query`, an explicit `FeedScope`, and optional
+`ContainerClient.NewQueryItemsPager[T]` accepts a `Query`, an explicit `FeedScope`, and optional
 `QueryOptions`. Use `NewQuery(sql).WithParameter(name, value)` to capture JSON parameter values,
 and `NewFeedScopeForPartitionKey(pk)` to target a logical partition or hierarchical key prefix.
 Use `NewFeedScopeForFullContainer()` for cross-partition queries. Query values are immutable; `WithParameter` returns a
 new query and an error if the value cannot be serialized.
 
 The API follows the Rust SDK's separation of query, scope, and feed options. Its Cosmos-owned
-`QueryItemsPager` retains the native query plan and provides `More`, `NextPage`, and `Close`.
+`QueryItemsPager[T]` retains the native query plan and provides `More`, `NextPage`, and `Close`.
 Use `defer pager.Close()` to release native resources on early exit; exhaustion also releases
 them, and `Client.Close` reclaims any remaining cursors. This unreleased-v2 API intentionally
 differs from `runtime.Pager[T]` and requires Go SDK API review before stabilization.
 `QueryOptions.Feed.PageSizeHint` is a positive per-partition page-size hint; zero leaves
-sizing to the driver, and negative hints are rejected. Results are raw JSON values in
-`QueryItemsResponse.Items`, including scalar `SELECT VALUE` results. An empty page does not
+sizing to the driver, and negative hints are rejected. Results are decoded values in
+`QueryItemsResponse[T].Items`. Select a document or projection type, or a scalar for
+`SELECT VALUE`. Pointer types preserve JSON null as nil with the default serializer;
+other null conversions follow encoding/json semantics. An empty page does not
 necessarily end the query: use `More`, not the number of items.
 
 Call `pager.ContinuationToken(ctx)` after a page, before exhaustion or Close, and pass the result
@@ -128,8 +187,10 @@ mark exhaustion; check `More()` again after fetching it.
 Each new pager resolves its container reference through the native driver's cache, allowing queries
 started after container recreation to use the replacement. Tokens from the deleted container
 cannot be used to resume against the replacement.
-An execution failure terminates the pager; the native driver owns retries. An unsupported
-checkpoint does not terminate it.
+An execution or model-decoding failure terminates and closes the pager; the native driver
+owns execution retries. A failed page delivers no partial results and cannot be checkpointed.
+Resume from a checkpoint saved before the failure if needed. An unsupported checkpoint does
+not terminate the pager.
 
 Pager construction performs no network I/O and snapshots its inputs. Each pager's first fetch
 (including a resumed pager) performs an additional container-metadata read to verify that the

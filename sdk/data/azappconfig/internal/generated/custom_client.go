@@ -30,8 +30,8 @@ func (a *AzureAppConfigurationClient) Tracer() tracing.Tracer {
 	return a.internal.Tracer()
 }
 
-func (client *AzureAppConfigurationClient) NewGetKeyValuesPagerWithRelativeNextLinks(options *AzureAppConfigurationClientGetKeyValuesOptions) *runtime.Pager[AzureAppConfigurationClientGetKeyValuesResponse] {
-	return newPagerWithRelativeNextLinks(client,
+func (client *AzureAppConfigurationClient) NewGetKeyValuesPagerWithNextLinks(options *AzureAppConfigurationClientGetKeyValuesOptions) *runtime.Pager[AzureAppConfigurationClientGetKeyValuesResponse] {
+	return newPagerWithNextLinks(client,
 		func(ctx context.Context) (*policy.Request, error) {
 			return client.getKeyValuesCreateRequest(ctx, options)
 		},
@@ -40,8 +40,8 @@ func (client *AzureAppConfigurationClient) NewGetKeyValuesPagerWithRelativeNextL
 	)
 }
 
-func (client *AzureAppConfigurationClient) NewGetRevisionsPagerWithRelativeNextLinks(options *AzureAppConfigurationClientGetRevisionsOptions) *runtime.Pager[AzureAppConfigurationClientGetRevisionsResponse] {
-	return newPagerWithRelativeNextLinks(client,
+func (client *AzureAppConfigurationClient) NewGetRevisionsPagerWithNextLinks(options *AzureAppConfigurationClientGetRevisionsOptions) *runtime.Pager[AzureAppConfigurationClientGetRevisionsResponse] {
+	return newPagerWithNextLinks(client,
 		func(ctx context.Context) (*policy.Request, error) {
 			return client.getRevisionsCreateRequest(ctx, options)
 		},
@@ -50,8 +50,8 @@ func (client *AzureAppConfigurationClient) NewGetRevisionsPagerWithRelativeNextL
 	)
 }
 
-func (client *AzureAppConfigurationClient) NewGetSnapshotsPagerWithRelativeNextLinks(options *AzureAppConfigurationClientGetSnapshotsOptions) *runtime.Pager[AzureAppConfigurationClientGetSnapshotsResponse] {
-	return newPagerWithRelativeNextLinks(client,
+func (client *AzureAppConfigurationClient) NewGetSnapshotsPagerWithNextLinks(options *AzureAppConfigurationClientGetSnapshotsOptions) *runtime.Pager[AzureAppConfigurationClientGetSnapshotsResponse] {
+	return newPagerWithNextLinks(client,
 		func(ctx context.Context) (*policy.Request, error) {
 			return client.getSnapshotsCreateRequest(ctx, options)
 		},
@@ -61,7 +61,7 @@ func (client *AzureAppConfigurationClient) NewGetSnapshotsPagerWithRelativeNextL
 }
 
 // The service can return endpoint-relative next links, which the generated pagers don't resolve.
-func newPagerWithRelativeNextLinks[T any](client *AzureAppConfigurationClient, createRequest func(context.Context) (*policy.Request, error), handleResponse func(*http.Response) (T, error), getNextLink func(T) *string) *runtime.Pager[T] {
+func newPagerWithNextLinks[T any](client *AzureAppConfigurationClient, createRequest func(context.Context) (*policy.Request, error), handleResponse func(*http.Response) (T, error), getNextLink func(T) *string) *runtime.Pager[T] {
 	return runtime.NewPager(runtime.PagingHandler[T]{
 		More: func(page T) bool {
 			nextLink := getNextLink(page)

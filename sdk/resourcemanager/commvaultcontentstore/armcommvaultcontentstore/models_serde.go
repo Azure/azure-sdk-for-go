@@ -18,7 +18,7 @@ func (a ActivateSaaSParameterRequest) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "activateSaaSRequestParam", a.ActivateSaaSRequestParam)
 	populate(objectMap, "publisherId", a.PublisherID)
-	populate(objectMap, "saasGuid", a.SaasGUID)
+	populate(objectMap, "saasGuid", a.SaaSGUID)
 	return json.Marshal(objectMap)
 }
 
@@ -38,7 +38,7 @@ func (a *ActivateSaaSParameterRequest) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "PublisherID", &a.PublisherID)
 			delete(rawMsg, key)
 		case "saasGuid":
-			err = unpopulate(val, "SaasGUID", &a.SaasGUID)
+			err = unpopulate(val, "SaaSGUID", &a.SaaSGUID)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -52,7 +52,7 @@ func (a *ActivateSaaSParameterRequest) UnmarshalJSON(data []byte) error {
 func (a ActivateSaaSRequestParam) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "company", a.Company)
-	populate(objectMap, "saasResourceId", a.SaasResourceID)
+	populate(objectMap, "saasResourceId", a.SaaSResourceID)
 	populate(objectMap, "user", a.User)
 	return json.Marshal(objectMap)
 }
@@ -70,7 +70,7 @@ func (a *ActivateSaaSRequestParam) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "Company", &a.Company)
 			delete(rawMsg, key)
 		case "saasResourceId":
-			err = unpopulate(val, "SaasResourceID", &a.SaasResourceID)
+			err = unpopulate(val, "SaaSResourceID", &a.SaaSResourceID)
 			delete(rawMsg, key)
 		case "user":
 			err = unpopulate(val, "User", &a.User)
@@ -280,7 +280,7 @@ func (c CloudAccountProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "company", c.Company)
 	populate(objectMap, "marketplace", c.Marketplace)
 	populate(objectMap, "provisioningState", c.ProvisioningState)
-	populate(objectMap, "roleAssignmentsOnCcaCreate", c.RoleAssignmentsOnCcaCreate)
+	populate(objectMap, "roleAssignmentsOnCcaCreate", c.RoleAssignmentsOnCCACreate)
 	populate(objectMap, "ssoUrl", c.SsoURL)
 	populate(objectMap, "user", c.User)
 	return json.Marshal(objectMap)
@@ -305,7 +305,7 @@ func (c *CloudAccountProperties) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "ProvisioningState", &c.ProvisioningState)
 			delete(rawMsg, key)
 		case "roleAssignmentsOnCcaCreate":
-			err = unpopulate(val, "RoleAssignmentsOnCcaCreate", &c.RoleAssignmentsOnCcaCreate)
+			err = unpopulate(val, "RoleAssignmentsOnCCACreate", &c.RoleAssignmentsOnCCACreate)
 			delete(rawMsg, key)
 		case "ssoUrl":
 			err = unpopulate(val, "SsoURL", &c.SsoURL)

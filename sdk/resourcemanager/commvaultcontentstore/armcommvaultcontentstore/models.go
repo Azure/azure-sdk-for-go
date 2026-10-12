@@ -9,7 +9,7 @@ import "time"
 // ActivateSaaSParameterRequest - SaaS guid for Activate and Validate SaaS Resource
 type ActivateSaaSParameterRequest struct {
 	// REQUIRED; SaaS guid for Activate and Validate SaaS Resource
-	SaasGUID *string
+	SaaSGUID *string
 
 	// Optional activation request parameters containing user and company details
 	ActivateSaaSRequestParam *ActivateSaaSRequestParam
@@ -24,7 +24,7 @@ type ActivateSaaSRequestParam struct {
 	Company *CompanyProfile
 
 	// Optional Marketplace SaaS resource identifier
-	SaasResourceID *string
+	SaaSResourceID *string
 
 	// Optional user details
 	User *UserDetails
@@ -114,7 +114,7 @@ type CloudAccountProperties struct {
 	Company *CompanyProfile
 
 	// Role assignments to provision during CCA creation. Each entry maps a Commvault role to its assigned Entra principals.
-	RoleAssignmentsOnCcaCreate []*RoleAssignment
+	RoleAssignmentsOnCCACreate []*RoleAssignment
 
 	// READ-ONLY; Provisioning state of the resource.
 	ProvisioningState *ResourceProvisioningState

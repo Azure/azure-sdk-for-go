@@ -24,10 +24,10 @@ func ExampleSaaSOperationGroupClient_BeginActivateResource_saaSOperationGroupAct
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewSaaSOperationGroupClient().BeginActivateResource(ctx, armcommvaultcontentstore.ActivateSaaSParameterRequest{
-		SaasGUID:    to.Ptr("55555555-6666-7777-8888-999999999999"),
+		SaaSGUID:    to.Ptr("55555555-6666-7777-8888-999999999999"),
 		PublisherID: to.Ptr("contoso-publisher"),
 		ActivateSaaSRequestParam: &armcommvaultcontentstore.ActivateSaaSRequestParam{
-			SaasResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg-commvault/providers/Microsoft.SaaS/resources/commvault-saas"),
+			SaaSResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg-commvault/providers/Microsoft.SaaS/resources/commvault-saas"),
 			User: &armcommvaultcontentstore.UserDetails{
 				FirstName:    to.Ptr("John"),
 				LastName:     to.Ptr("Smith"),
@@ -87,7 +87,7 @@ func ExampleSaaSOperationGroupClient_BeginActivateResource_saaSOperationGroupAct
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewSaaSOperationGroupClient().BeginActivateResource(ctx, armcommvaultcontentstore.ActivateSaaSParameterRequest{
-		SaasGUID: to.Ptr("55555555-6666-7777-8888-999999999999"),
+		SaaSGUID: to.Ptr("55555555-6666-7777-8888-999999999999"),
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

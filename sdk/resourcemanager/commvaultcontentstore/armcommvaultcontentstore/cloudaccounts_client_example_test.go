@@ -55,7 +55,7 @@ func ExampleCloudAccountsClient_BeginCreateOrUpdate_cloudAccountsCreateOrUpdateM
 				PostalCode:  to.Ptr("98052"),
 				State:       to.Ptr("WA"),
 			},
-			RoleAssignmentsOnCcaCreate: []*armcommvaultcontentstore.RoleAssignment{
+			RoleAssignmentsOnCCACreate: []*armcommvaultcontentstore.RoleAssignment{
 				{
 					RoleName: to.Ptr(armcommvaultcontentstore.RoleNameBackupAdmin),
 					Entities: []*armcommvaultcontentstore.EntityInfo{
@@ -213,7 +213,7 @@ func ExampleCloudAccountsClient_BeginCreateOrUpdate_cloudAccountsCreateOrUpdateM
 				Upn:          to.Ptr("john.doe@contoso.com"),
 				PhoneNumber:  to.Ptr("1234567890"),
 			},
-			RoleAssignmentsOnCcaCreate: []*armcommvaultcontentstore.RoleAssignment{
+			RoleAssignmentsOnCCACreate: []*armcommvaultcontentstore.RoleAssignment{
 				{
 					RoleName: to.Ptr(armcommvaultcontentstore.RoleNameBackupAdmin),
 					Entities: []*armcommvaultcontentstore.EntityInfo{

@@ -6,7 +6,6 @@
 - Function `*CloudAccountsClient.BeginUpdate` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, cloudAccountName string, properties CloudAccountUpdate, options *CloudAccountsClientBeginUpdateOptions)` to `(ctx context.Context, resourceGroupName string, cloudAccountName string, properties CloudAccount, options *CloudAccountsClientBeginUpdateOptions)`
 - Struct `CloudAccountUpdate` has been removed
 - Struct `CloudAccountUpdateProperties` has been removed
-- Field `SaaSGUID` of struct `ActivateSaaSParameterRequest` has been removed
 - Field `BackupAdminOnCcaCreate`, `MultiPersonAuthorizationOnCcaCreate` of struct `CloudAccountProperties` has been removed
 
 ### Features Added
@@ -17,8 +16,8 @@
 - New function `*StoragesClient.Refresh(ctx context.Context, resourceGroupName string, cloudAccountName string, storageName string, options *StoragesClientRefreshOptions) (StoragesClientRefreshResponse, error)`
 - New struct `ActivateSaaSRequestParam`
 - New struct `CompanyProfile`
-- New field `ActivateSaaSRequestParam`, `PublisherID`, `SaasGUID` in struct `ActivateSaaSParameterRequest`
-- New field `Company`, `RoleAssignmentsOnCcaCreate` in struct `CloudAccountProperties`
+- New field `ActivateSaaSRequestParam`, `PublisherID` in struct `ActivateSaaSParameterRequest`
+- New field `Company`, `RoleAssignmentsOnCCACreate` in struct `CloudAccountProperties`
 - New field `ComplianceLockStatus` in struct `StorageProperties`
 
 

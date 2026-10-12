@@ -3,6 +3,7 @@
 ## 1.0.0 (2026-10-10)
 ### Other Changes
 
+- Released the stable `v1.0.0` client using service API version `2026-10-01`.
 
 ## 0.1.0 (2026-02-07)
 ### Other Changes

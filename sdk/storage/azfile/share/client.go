@@ -151,6 +151,7 @@ func (s *Client) NewRootDirectoryClient() *directory.Client {
 // e.g. https://<account>.file.core.windows.net/<share>?fileid=<fileID>. The new file.Client uses the same request
 // policy pipeline as the Client, and keeps the share snapshot of the Client, if any.
 //   - fileID - the file ID of the file, e.g. the ID returned by file.Client.GetProperties or a change feed event.
+//     fileID must not be empty, as the returned file.Client would then address the share rather than a file.
 //
 // The file.Client only supports GetProperties and GetFileLinks. All other operations return an error wrapping
 // fileerror.ErrFileIDNotSupported without sending a request.
@@ -166,6 +167,7 @@ func (s *Client) NewFileClientByFileID(fileID string) *file.Client {
 // its path, e.g. https://<account>.file.core.windows.net/<share>?fileid=<fileID>. The new directory.Client uses the
 // same request policy pipeline as the Client, and keeps the share snapshot of the Client, if any.
 //   - fileID - the file ID of the directory, e.g. the ID returned by directory.Client.GetProperties.
+//     fileID must not be empty, as the returned directory.Client would then address the root directory of the share.
 //
 // The directory.Client only supports GetProperties. All other operations return an error wrapping
 // fileerror.ErrFileIDNotSupported without sending a request.

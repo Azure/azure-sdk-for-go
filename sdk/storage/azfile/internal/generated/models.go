@@ -171,7 +171,7 @@ func (h *HardLink) UnmarshalXML(dec *xml.Decoder, start xml.StartElement) error 
 			if err != nil {
 				return err
 			}
-			h.FileName = to.Ptr(string(name))
+			h.FileName = to.Ptr(name)
 		} else {
 			h.FileName = aux.FileName.Content
 		}

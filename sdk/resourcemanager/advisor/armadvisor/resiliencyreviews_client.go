@@ -20,7 +20,7 @@ import (
 // ResiliencyReviewsClient contains the methods for the ResiliencyReviews group.
 // Don't use this type directly, use NewResiliencyReviewsClient() instead.
 //
-// Generated from API version 2025-05-01-preview
+// Generated from API version 2026-08-01-preview
 type ResiliencyReviewsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -84,7 +84,7 @@ func (client *ResiliencyReviewsClient) getCreateRequest(ctx context.Context, rev
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501Preview)
+	reqQP.Set("api-version", version20260801Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -161,7 +161,7 @@ func (client *ResiliencyReviewsClient) listCreateRequest(ctx context.Context, ne
 		if options != nil && options.Top != nil {
 			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 		}
-		reqQP.Set("api-version", version20250501Preview)
+		reqQP.Set("api-version", version20260801Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

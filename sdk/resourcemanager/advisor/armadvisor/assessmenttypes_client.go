@@ -19,7 +19,7 @@ import (
 // AssessmentTypesClient contains the methods for the AssessmentTypes group.
 // Don't use this type directly, use NewAssessmentTypesClient() instead.
 //
-// Generated from API version 2025-05-01-preview
+// Generated from API version 2026-08-01-preview
 type AssessmentTypesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -94,7 +94,7 @@ func (client *AssessmentTypesClient) listCreateRequest(ctx context.Context, next
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250501Preview)
+		reqQP.Set("api-version", version20260801Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

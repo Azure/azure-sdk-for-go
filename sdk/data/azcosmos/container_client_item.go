@@ -9,8 +9,6 @@ import (
 	"context"
 	"errors"
 	"time"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
 // ReadItemOptions configures [ContainerClient.ReadItem]. A nil *ReadItemOptions selects the
@@ -31,8 +29,6 @@ type ReadItemOptions struct {
 // CreateItemOptions configures [ContainerClient.CreateItem]. A nil *CreateItemOptions selects the
 // defaults for every field.
 type CreateItemOptions struct {
-	// Precondition applies an ETag condition. Zero adds no condition; service support is operation-specific.
-	Precondition Precondition
 	// Operation holds the settings every operation accepts.
 	Operation OperationOptions
 
@@ -112,8 +108,9 @@ type PatchItemOptions struct {
 	// itself.
 	SessionToken SessionToken
 
-	// IfMatchETag makes the patch conditional on the item still having this ETag.
-	IfMatchETag *azcore.ETag
+	// Precondition applies an IfMatch ETag condition. Zero adds no condition.
+	// IfNoneMatch is not supported for PATCH and is rejected before submission.
+	Precondition Precondition
 
 	// Strategy selects how the driver executes the patch. The zero value inherits the strategy
 	// configured for the driver, runtime, or environment.
@@ -204,7 +201,6 @@ func (c *ContainerClient) CreateItem(ctx context.Context, partitionKey Partition
 	if options != nil {
 		req.options = options.Operation
 		req.sessionToken = options.SessionToken
-		options.Precondition.apply(&req)
 	}
 
 	return c.executeItem(ctx, req, true)
@@ -332,8 +328,8 @@ func (c *ContainerClient) PatchItem(ctx context.Context, partitionKey PartitionK
 		if err := options.SessionToken.validate(); err != nil {
 			return ItemResponse{}, err
 		}
-		if err := validateETag("IfMatchETag", options.IfMatchETag); err != nil {
-			return ItemResponse{}, err
+		if options.Precondition.kind == preconditionKindIfNoneMatch {
+			return ItemResponse{}, errors.New("azcosmos: PATCH does not support IfNoneMatch preconditions")
 		}
 		if err := options.Strategy.validate(); err != nil {
 			return ItemResponse{}, err
@@ -362,7 +358,7 @@ func (c *ContainerClient) PatchItem(ctx context.Context, partitionKey PartitionK
 		}
 		req.patchTrackingCapacity = clonePointer(options.TrackingCapacity)
 		req.patchTrackingRetention = clonePointer(options.TrackingRetention)
-		setIfMatchPrecondition(&req, options.IfMatchETag)
+		options.Precondition.apply(&req)
 	}
 	return c.executeItem(ctx, req, true)
 }
@@ -440,14 +436,6 @@ func validateItemWriteArguments(partitionKey PartitionKey, id string, item []byt
 		return errors.New("azcosmos: item must not be empty")
 	}
 	return nil
-}
-
-func setIfMatchPrecondition(req *itemRequest, etag *azcore.ETag) {
-	if etag == nil {
-		return
-	}
-	req.preconditionKind = preconditionKindIfMatch
-	req.preconditionETag = string(*etag)
 }
 
 // validateItemArguments rejects a partition key with no components. No container has a partition

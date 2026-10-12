@@ -146,51 +146,16 @@ func (d *nativeDriver) awaitCompletion(
 }
 
 func awaitOperationResult(ctx context.Context, pending *pendingOperation) (completionResult, error) {
-	finish := func(result completionResult) (completionResult, error) {
-		if cause := ctx.Err(); cause != nil {
-			defer result.release()
-			return completionResult{}, completionCancellationError(cause, result)
-		}
-		return result, nil
-	}
 	select {
 	case result := <-pending.result:
-		return finish(result)
+		return result, nil
 	case <-ctx.Done():
-		// Claim buffered metadata atomically, or let late delivery release the result.
+		// Preserve an available outcome; otherwise let late delivery release the result.
 		if result, ok := pending.abandon(); ok {
-			return finish(result)
+			return result, nil
 		}
 		return completionResult{}, newOperationCancelledError(ctx.Err(), 0, "")
 	}
-}
-
-func completionCancellationError(cause error, result completionResult) error {
-	requestCharge := result.response.RequestCharge
-	activityID := result.response.ActivityID
-	diagnostics := result.response.Diagnostics
-	attemptCount := result.response.AttemptCount
-	statusCode := result.response.StatusCode
-	subStatus := result.response.SubStatus
-	var completionErr *Error
-	if errors.As(result.err, &completionErr) {
-		requestCharge = completionErr.RequestCharge
-		activityID = completionErr.ActivityID
-		diagnostics = completionErr.Diagnostics
-		attemptCount = completionErr.AttemptCount
-		statusCode = completionErr.StatusCode
-		subStatus = completionErr.SubStatus
-	}
-	err := newOperationCancelledError(cause, requestCharge, activityID)
-	err.PatchTrackingID = result.response.PatchTrackingID
-	if completionErr != nil {
-		err.PatchTrackingID = completionErr.PatchTrackingID
-	}
-	err.Diagnostics = diagnostics
-	err.AttemptCount = attemptCount
-	err.StatusCode = statusCode
-	err.SubStatus = subStatus
-	return err
 }
 
 // inspectAwaitCompletionSubmission reports whether awaitCompletion invoked its submit closure.

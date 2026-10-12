@@ -17,8 +17,8 @@ func TestPreconditionNativeMapping(t *testing.T) {
 	none, err := IfNoneMatch(`"etag"`)
 	require.NoError(t, err)
 	for _, kind := range []operationKind{
-		operationKindReadItem, operationKindCreateItem, operationKindReplaceItem,
-		operationKindUpsertItem, operationKindDeleteItem,
+		operationKindReadItem, operationKindReplaceItem,
+		operationKindUpsertItem, operationKindDeleteItem, operationKindPatchItem,
 	} {
 		for _, tt := range []struct {
 			condition Precondition
@@ -29,6 +29,9 @@ func TestPreconditionNativeMapping(t *testing.T) {
 			{match, 1, `"etag"`},
 			{none, 2, `"etag"`},
 		} {
+			if kind == operationKindPatchItem && tt.condition.kind == preconditionKindIfNoneMatch {
+				continue
+			}
 			req := itemRequest{kind: kind, itemID: "id", partitionKey: NewPartitionKeyString("pk")}
 			tt.condition.apply(&req)
 			native, release := inspectNativeItemRequest(req)

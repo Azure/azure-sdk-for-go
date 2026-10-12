@@ -12,7 +12,6 @@ import (
 	"testing"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/stretchr/testify/require"
 )
 
@@ -456,19 +455,18 @@ func TestItemOperationsRejectNULSessionToken(t *testing.T) {
 	require.ErrorContains(t, err, "session token must not contain a NUL byte")
 }
 
-func TestPatchItemRejectsInvalidIfMatchETag(t *testing.T) {
+func TestPatchItemRejectsIfNoneMatchBeforeSubmission(t *testing.T) {
 	container := newTestContainer(t)
 	pk := NewPartitionKeyString("pk")
-
-	for _, etag := range []azcore.ETag{"", "\"etag\x00suffix\""} {
-		t.Run(string(etag), func(t *testing.T) {
-			_, patchErr := container.PatchItem(context.Background(), pk, "item-1", validPatchOperations(t),
-				&PatchItemOptions{IfMatchETag: &etag})
-
-			require.Error(t, patchErr)
-			requireNotDriverUnavailable(t, patchErr)
-		})
-	}
+	condition, err := IfNoneMatch(`"etag"`)
+	require.NoError(t, err)
+	acquired := false
+	container.database.client.beforeItemAcquire = func() { acquired = true }
+	response, err := container.PatchItem(t.Context(), pk, "item-1", validPatchOperations(t),
+		&PatchItemOptions{Precondition: condition})
+	require.Zero(t, response)
+	require.ErrorContains(t, err, "PATCH does not support IfNoneMatch")
+	require.False(t, acquired, "unsupported conditions must be rejected before entering the client")
 }
 
 func TestPatchClientSidePreconditionErrorIsClassified(t *testing.T) {

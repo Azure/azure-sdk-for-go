@@ -69,6 +69,32 @@ func TestFullOperationOptionsNativePresence(t *testing.T) {
 	require.Empty(t, empty.customHeaders)
 }
 
+func TestNativeDurationMillisecondsPreservePresence(t *testing.T) {
+	for _, tt := range []struct {
+		name     string
+		duration *time.Duration
+		want     int64
+	}{
+		{"unset", nil, -1},
+		{"zero", to(time.Duration(0)), 0},
+		{"nanosecond", to(time.Nanosecond), 1},
+		{"below millisecond", to(time.Millisecond - time.Nanosecond), 1},
+		{"millisecond", to(time.Millisecond), 1},
+		{"fractional milliseconds", to(2500 * time.Microsecond), 2},
+		{"maximum", to(time.Duration(math.MaxInt64)), math.MaxInt64 / int64(time.Millisecond)},
+	} {
+		t.Run(tt.name, func(t *testing.T) {
+			native, release := inspectNativeOperationOptions(OperationOptions{
+				EndpointUnavailabilityTTL: tt.duration,
+				ThrottlingRetry:           ThrottlingRetryOptions{MaxRetryWaitTime: tt.duration},
+			})
+			defer release()
+			require.Equal(t, tt.want, native.endpointTTLMillis)
+			require.Equal(t, tt.want, native.maxThrottleRetryWaitMillis)
+		})
+	}
+}
+
 func TestPatchTrackingNativeFieldsAndPrecedence(t *testing.T) {
 	for _, retention := range []time.Duration{0, time.Nanosecond, 1900 * time.Millisecond, 2 * time.Second, time.Duration(math.MaxInt64)} {
 		request, release := inspectNativeItemRequest(itemRequest{

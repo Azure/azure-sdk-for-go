@@ -62,25 +62,44 @@ func (r *nativeRuntime) close() {
 }
 
 func (d *nativeDriver) snapshot(ctx context.Context, request OperationOptions) (context.Context, *C.cosmos_operation_options_snapshot_t, func(), error) {
-	client, releaseClient := d.cfg.options.Operation.toNative()
-	defer releaseClient()
-	options, releaseOptions := request.toNative()
-	defer releaseOptions()
-	var snapshot *C.cosmos_operation_options_snapshot_t
-	var timeout C.int64_t
-	status := C.cosmos_operation_options_snapshot_create(d.runtime, client, options, &snapshot, &timeout) //nolint:gocritic // dupSubExpr is reported against cgo-generated code.
-	if err := statusError(status, nil, "capturing operation options"); err != nil {
+	snapshot, timeout, release, err := d.captureSnapshot(ctx, request)
+	if err != nil {
 		return ctx, nil, func() {}, err
 	}
 	var budget time.Duration
 	if timeout > 0 {
 		// Native milliseconds can exceed Go's duration range through environment configuration.
 		const maxMillis = int64((1<<63 - 1) / time.Millisecond)
-		budget = time.Duration(min(int64(timeout), maxMillis)) * time.Millisecond
+		budget = time.Duration(min(timeout, maxMillis)) * time.Millisecond
 	}
 	ctx, cancelSnapshot := contextWithEndToEndTimeout(ctx, budget)
 	return ctx, snapshot, func() {
 		cancelSnapshot()
+		release()
+	}, nil
+}
+
+func (d *nativeDriver) captureSnapshot(ctx context.Context, request OperationOptions) (*C.cosmos_operation_options_snapshot_t, int64, func(), error) {
+	options, releaseOptions := request.toNative()
+	defer releaseOptions()
+	var snapshot *C.cosmos_operation_options_snapshot_t
+	var timeout C.int64_t
+	status := C.cosmos_operation_options_snapshot_create(d.runtime, d.clientOptions, options, &snapshot, &timeout) //nolint:gocritic // dupSubExpr is reported against cgo-generated code.
+	if err := statusError(status, nil, "capturing operation options"); err != nil {
+		return nil, 0, func() {}, err
+	}
+	// Resolve in Rust first so a context fallback never replaces an inherited timeout.
+	// No native work starts until the final snapshot has been captured.
+	if deadline, ok := ctx.Deadline(); ok && timeout < 0 {
+		C.cosmos_operation_options_snapshot_free(snapshot)
+		snapshot = nil
+		options.end_to_end_timeout_ms = C.int64_t(max(time.Until(deadline).Milliseconds(), 1000))
+		status = C.cosmos_operation_options_snapshot_create(d.runtime, d.clientOptions, options, &snapshot, &timeout) //nolint:gocritic // dupSubExpr is reported against cgo-generated code.
+		if err := statusError(status, nil, "capturing context timeout fallback"); err != nil {
+			return nil, 0, func() {}, err
+		}
+	}
+	return snapshot, int64(timeout), func() {
 		C.cosmos_operation_options_snapshot_free(snapshot)
 	}, nil
 }

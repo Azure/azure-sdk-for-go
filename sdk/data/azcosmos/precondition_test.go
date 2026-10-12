@@ -74,9 +74,6 @@ func TestItemPreconditionsPreserveLifetimeOrdering(t *testing.T) {
 			return container.ReadItem(ctx, pk, "id", &ReadItemOptions{Precondition: p})
 		},
 		func(p Precondition) (ItemResponse, error) {
-			return container.CreateItem(ctx, pk, "id", []byte(`{"id":"id","pk":"pk"}`), &CreateItemOptions{Precondition: p})
-		},
-		func(p Precondition) (ItemResponse, error) {
 			return container.ReplaceItem(ctx, pk, "id", []byte(`{"id":"id","pk":"pk"}`), &ReplaceItemOptions{Precondition: p})
 		},
 		func(p Precondition) (ItemResponse, error) {
@@ -93,6 +90,15 @@ func TestItemPreconditionsPreserveLifetimeOrdering(t *testing.T) {
 			require.ErrorIs(t, err, context.Canceled)
 		}
 	}
+	patch := func(p Precondition) (ItemResponse, error) {
+		return container.PatchItem(ctx, pk, "id", validPatchOperations(t), &PatchItemOptions{Precondition: p})
+	}
+	for _, condition := range []Precondition{{}, match} {
+		response, err := patch(condition)
+		require.Zero(t, response)
+		require.ErrorIs(t, err, context.Canceled)
+	}
+	calls = append(calls, patch)
 	require.NoError(t, container.database.client.Close())
 	for _, call := range calls {
 		response, err := call(match)

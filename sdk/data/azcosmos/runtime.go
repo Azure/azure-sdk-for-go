@@ -25,6 +25,8 @@ type RuntimeOptions struct {
 // Close releases the owner's reference; attached clients keep the resources alive.
 // Same-account clients share native caches, including cached credentials. Use separate
 // runtimes when accounts must be accessed under isolated identities.
+// Sharing is intentional: reusing authentication state reduces duplicate token requests
+// and helps prevent authentication-service overload when many clients target one account.
 type Runtime struct {
 	mu      sync.Mutex
 	native  *nativeRuntime

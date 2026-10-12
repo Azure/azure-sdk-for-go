@@ -54,6 +54,10 @@ type nativeDriver struct {
 	ownedRuntime *nativeRuntime
 	account      *C.cosmos_account_ref_t
 
+	// Client defaults are immutable and borrowed read-only while snapshots are captured.
+	clientOptions        *C.cosmos_operation_options_t
+	releaseClientOptions func()
+
 	tokenProvider *tokenProviderState
 	// pending retains resources for submitted work after its Go caller stops waiting.
 	pending sync.WaitGroup
@@ -159,6 +163,7 @@ func openDriver(cfg driverConfig) (*nativeDriver, error) {
 			return nil, err
 		}
 	}
+	d.clientOptions, d.releaseClientOptions = cfg.options.Operation.toNative()
 	if err := d.buildAccount(cfg); err != nil {
 		_ = d.close()
 		return nil, err
@@ -440,6 +445,11 @@ func (d *nativeDriver) close() error {
 	d.driver = nil
 	C.cosmos_account_ref_free(d.account)
 	d.account = nil
+	if d.releaseClientOptions != nil {
+		d.releaseClientOptions()
+		d.releaseClientOptions = nil
+		d.clientOptions = nil
+	}
 	d.ownedRuntime.close()
 	d.ownedRuntime = nil
 	d.runtime = nil

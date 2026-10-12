@@ -11,6 +11,10 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"net/http"
+	"net/http/httptest"
+	"net/http/httputil"
+	"net/url"
 	"sync/atomic"
 	"testing"
 	"time"
@@ -143,4 +147,55 @@ func TestEmulatorSameAccountClientsShareCachedCredentials(t *testing.T) {
 	time.Sleep(1100 * time.Millisecond)
 	readMissing(second)
 	require.Greater(t, firstCredential.calls.Load(), calls, "native cache keeps the first resolved account credential")
+}
+
+func TestEmulatorDefaultRuntimeSharesSameAccountCredentials(t *testing.T) {
+	endpoint, database, containerID := emulatorConfiguration(t)
+	target, err := url.Parse(endpoint)
+	require.NoError(t, err)
+	proxy := httputil.NewSingleHostReverseProxy(target)
+	// A fresh endpoint avoids global cache entries populated by unrelated tests.
+	var proxyURL string
+	proxy.ModifyResponse = func(response *http.Response) error {
+		return rewriteQueryAccountResponse(response, proxyURL)
+	}
+	server := httptest.NewUnstartedServer(proxy)
+	proxyURL = "http://" + server.Listener.Addr().String()
+	server.Start()
+	t.Cleanup(server.Close)
+
+	firstCredential := &shortLivedIdentityCredential{identity: "default-runtime-client-a"}
+	secondCredential := &shortLivedIdentityCredential{identity: "default-runtime-client-b"}
+	first, err := NewClient(server.URL, firstCredential, nil)
+	require.NoError(t, err)
+	t.Cleanup(func() { require.NoError(t, first.Close()) })
+	second, err := NewClient(server.URL, secondCredential, nil)
+	require.NoError(t, err)
+	t.Cleanup(func() { require.NoError(t, second.Close()) })
+	require.Same(t, first.runtime, second.runtime)
+	shared, err := defaultRuntime()
+	require.NoError(t, err)
+	require.Same(t, shared, first.runtime, "nil options must use the implicit process-wide runtime")
+
+	ctx, cancel := context.WithTimeout(t.Context(), 15*time.Second)
+	defer cancel()
+	require.NoError(t, first.Initialize(ctx))
+	require.NoError(t, second.Initialize(ctx))
+	readMissing := func(client *Client) {
+		container, err := client.NewContainer(database, containerID)
+		require.NoError(t, err)
+		_, err = container.ReadItem(ctx, NewPartitionKeyString("missing"), uniqueItemID(t), nil)
+		var serviceErr *Error
+		require.ErrorAs(t, err, &serviceErr)
+		require.Equal(t, CodeNotFound, serviceErr.Code)
+	}
+	readMissing(first)
+	firstCalls, secondCalls := firstCredential.calls.Load(), secondCredential.calls.Load()
+	require.Positive(t, firstCalls)
+	require.Positive(t, secondCalls, "each client's bootstrap initially uses its supplied credential")
+	require.NoError(t, first.Close())
+	time.Sleep(1100 * time.Millisecond)
+	readMissing(second)
+	require.Greater(t, firstCredential.calls.Load(), firstCalls, "cached container refreshes through its retained credential")
+	require.Equal(t, secondCalls, secondCredential.calls.Load(), "cached container must not acquire a separate token from the second identity")
 }

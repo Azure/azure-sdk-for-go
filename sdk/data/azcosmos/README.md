@@ -58,6 +58,11 @@ later request. The v0.2 native ABI does not support on-demand operation cancella
 a Go context returns promptly and releases its Go-side resources, but the native request can
 continue until its own timeout or retry budget ends. Avoid assuming a cancelled write did not
 reach the service.
+If an item operation's native completion is already available when cancellation is observed,
+the SDK returns that outcome, including its response body and ETag, rather than a cancellation error.
+When no end-to-end timeout is configured or inherited for an item operation, the remaining context
+deadline supplies its native timeout, subject to its one-second minimum. Explicit and inherited timeouts
+remain unchanged; an earlier context deadline still limits the Go wait.
 
 ### Client initialization
 

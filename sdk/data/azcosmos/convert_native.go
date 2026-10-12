@@ -15,6 +15,7 @@ import "C"
 
 import (
 	"strings"
+	"time"
 	"unsafe"
 )
 
@@ -89,6 +90,13 @@ func (pk PartitionKey) partitionKeyLen() C.uintptr_t {
 	return C.uintptr_t(len(pk.components))
 }
 
+func durationMilliseconds(duration time.Duration) int64 {
+	if duration > 0 {
+		return max(1, duration.Milliseconds())
+	}
+	return duration.Milliseconds()
+}
+
 // toNative builds the driver's per-operation options. The returned function releases them.
 func (o OperationOptions) toNative() (*C.cosmos_operation_options_t, func()) {
 	// Starting from the driver's defaults rather than a zero struct, so that every field this
@@ -120,7 +128,7 @@ func (o OperationOptions) toNative() (*C.cosmos_operation_options_t, func()) {
 		options.max_session_retry_count = C.int64_t(*o.MaxSessionRetryCount)
 	}
 	if o.EndpointUnavailabilityTTL != nil {
-		options.endpoint_unavailability_ttl_ms = C.int64_t(o.EndpointUnavailabilityTTL.Milliseconds())
+		options.endpoint_unavailability_ttl_ms = C.int64_t(durationMilliseconds(*o.EndpointUnavailabilityTTL))
 	}
 	if o.BinaryEncoding != nil {
 		options.binary_encoding_enabled = nativeBool(o.BinaryEncoding.enabled())
@@ -139,7 +147,7 @@ func (o OperationOptions) toNative() (*C.cosmos_operation_options_t, func()) {
 		options.max_throttle_retry_count = C.int64_t(*o.ThrottlingRetry.MaxRetryCount)
 	}
 	if o.ThrottlingRetry.MaxRetryWaitTime != nil {
-		options.max_throttle_retry_wait_time_ms = C.int64_t(o.ThrottlingRetry.MaxRetryWaitTime.Milliseconds())
+		options.max_throttle_retry_wait_time_ms = C.int64_t(durationMilliseconds(*o.ThrottlingRetry.MaxRetryWaitTime))
 	}
 	if o.HedgingEnabled != nil {
 		options.hedging_enabled = nativeBool(*o.HedgingEnabled)

@@ -27,7 +27,7 @@ func TestAwaitOperationResultWithoutCancellation(t *testing.T) {
 	}
 }
 
-func TestAwaitOperationResultCancelledWithDeliveredMetadata(t *testing.T) {
+func TestAwaitOperationResultCancellationPreservesDeliveredOutcome(t *testing.T) {
 	const trackingID PatchTrackingID = "00112233-4455-6677-8899-aabbccddeeff"
 	for _, code := range []Code{"", CodeBadRequest, CodeClientOperationTimeout} {
 		for _, cause := range []error{context.Canceled, context.DeadlineExceeded} {
@@ -39,10 +39,10 @@ func TestAwaitOperationResultCancelledWithDeliveredMetadata(t *testing.T) {
 				}
 				cancel()
 				diagnostics := &Diagnostics{AttemptCount: 2}
-				result := completionResult{response: ItemResponse{
+				result := completionResult{body: []byte(`{"id":"committed"}`), response: ItemResponse{
 					Response: Response{RequestCharge: 3.5, ActivityID: "activity", AttemptCount: 2,
 						StatusCode: 200, SubStatus: 42, Diagnostics: diagnostics},
-					PatchTrackingID: trackingID,
+					PatchTrackingID: trackingID, ETag: "committed-etag",
 				}}
 				if code != "" {
 					result.err = &Error{Code: code, RequestCharge: 3.5, ActivityID: "activity",
@@ -52,20 +52,10 @@ func TestAwaitOperationResultCancelledWithDeliveredMetadata(t *testing.T) {
 				pending := &pendingOperation{result: make(chan completionResult, 1)}
 				pending.deliver(result)
 				got, err := awaitOperationResult(ctx, pending)
-				require.Zero(t, got)
-				require.ErrorIs(t, err, cause)
+				require.NoError(t, err)
+				require.Equal(t, result, got, "available success or failure must survive context cancellation intact")
+				require.Same(t, diagnostics, got.response.Diagnostics)
 				require.Empty(t, pending.result)
-				var cancelled *Error
-				require.ErrorAs(t, err, &cancelled)
-				require.Equal(t, CodeOperationCancelled, cancelled.Code)
-				require.Equal(t, 3.5, cancelled.RequestCharge)
-				require.Equal(t, "activity", cancelled.ActivityID)
-				require.Equal(t, uint32(2), cancelled.AttemptCount)
-				require.Equal(t, 42, cancelled.SubStatus)
-				require.Same(t, diagnostics, cancelled.Diagnostics)
-				require.Equal(t, trackingID, cancelled.PatchTrackingID)
-				require.Same(t, err, patchCancellationError(err, ""))
-				require.Equal(t, trackingID, cancelled.PatchTrackingID)
 			}
 		}
 	}

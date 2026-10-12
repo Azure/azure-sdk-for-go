@@ -25,6 +25,7 @@ type OperationOptions struct {
 	ExcludedRegions []Region
 	// EndToEndTimeout bounds the operation. Nil inherits; explicit values below one second
 	// clamp to one second, including zero. Context deadlines can stop waiting earlier.
+	// If no timeout is inherited, the caller's remaining deadline supplies the native timeout.
 	EndToEndTimeout *time.Duration
 	// PatchStrategy selects patch execution. A patch-specific Strategy takes precedence.
 	PatchStrategy PatchStrategy
@@ -35,6 +36,7 @@ type OperationOptions struct {
 	// MaxSessionRetryCount overrides the session retry limit, including explicit zero.
 	MaxSessionRetryCount *uint32
 	// EndpointUnavailabilityTTL controls how long unavailable endpoints are avoided. Nil inherits.
+	// Positive values below 1 ms clamp to 1 ms; larger values truncate to whole milliseconds.
 	EndpointUnavailabilityTTL *time.Duration
 	// CustomHeaders replaces inherited custom headers. Nil inherits; an empty map clears them.
 	CustomHeaders map[string]string
@@ -76,6 +78,7 @@ type ThrottlingRetryOptions struct {
 	// MaxRetryCount allows this many retries after the initial attempt. Zero disables retries.
 	MaxRetryCount *uint32
 	// MaxRetryWaitTime bounds cumulative throttling delay. Nil inherits; zero is explicit.
+	// Positive values below 1 ms clamp to 1 ms; larger values truncate to whole milliseconds.
 	MaxRetryWaitTime *time.Duration
 }
 
@@ -114,19 +117,21 @@ func (o BinaryEncodingOptions) enabled() bool {
 	return o.Enabled == nil || *o.Enabled
 }
 
-func resolveClientBinaryEncoding(explicit *BinaryEncodingOptions) BinaryEncodingOptions {
+func resolveClientBinaryEncoding(explicit *BinaryEncodingOptions) *BinaryEncodingOptions {
 	if explicit != nil {
-		return *explicit.clone()
+		return explicit.clone()
+	}
+	value, set := os.LookupEnv("AZURE_COSMOS_BINARY_ENCODING_ENABLED")
+	if !set {
+		return nil
 	}
 	enabled := true
-	if value, set := os.LookupEnv("AZURE_COSMOS_BINARY_ENCODING_ENABLED"); set {
-		switch strings.ToLower(strings.TrimSpace(value)) {
-		case "1", "true", "yes", "on":
-		default:
-			enabled = false
-		}
+	switch strings.ToLower(strings.TrimSpace(value)) {
+	case "1", "true", "yes", "on":
+	default:
+		enabled = false
 	}
-	return BinaryEncodingOptions{Enabled: &enabled}
+	return &BinaryEncodingOptions{Enabled: &enabled}
 }
 
 func clonePointer[T any](value *T) *T {

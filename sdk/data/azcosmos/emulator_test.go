@@ -464,7 +464,7 @@ func TestEmulatorConditionalItemWrites(t *testing.T) {
 	requireWireError(t, err, CodePreconditionFailed, 412)
 	_, err = container.UpsertItem(ctx, pk, id, replacement, &UpsertItemOptions{Precondition: staleCondition})
 	requireWireError(t, err, CodePreconditionFailed, 412)
-	_, err = container.PatchItem(ctx, pk, id, patch, &PatchItemOptions{IfMatchETag: &stale})
+	_, err = container.PatchItem(ctx, pk, id, patch, &PatchItemOptions{Precondition: staleCondition})
 	requirePatchPreconditionError(t, err)
 	_, err = container.DeleteItem(ctx, pk, id, &DeleteItemOptions{Precondition: staleCondition})
 	requireWireError(t, err, CodePreconditionFailed, 412)
@@ -475,8 +475,9 @@ func TestEmulatorConditionalItemWrites(t *testing.T) {
 	require.NoError(t, err)
 	require.NotEmpty(t, replaced.ETag)
 
-	current := replaced.ETag
-	patched, err := container.PatchItem(ctx, pk, id, patch, &PatchItemOptions{IfMatchETag: &current})
+	current, err := IfMatch(replaced.ETag)
+	require.NoError(t, err)
+	patched, err := container.PatchItem(ctx, pk, id, patch, &PatchItemOptions{Precondition: current})
 	require.NoError(t, err)
 	require.NotEmpty(t, patched.ETag)
 

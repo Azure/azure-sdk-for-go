@@ -34,7 +34,8 @@ type ClientOptions struct {
 	Routing RoutingStrategy
 
 	// BinaryEncoding sets the SDK's client wire-encoding default for create/read/replace/upsert and queries.
-	// Nil resolves AZURE_COSMOS_BINARY_ENCODING_ENABLED at construction, then defaults to enabled.
+	// Nil resolves AZURE_COSMOS_BINARY_ENCODING_ENABLED at construction; if unset, common
+	// client/runtime Operation options apply, ultimately defaulting to enabled.
 	// Explicit request encoding overrides this value. Responses are text JSON.
 	// PATCH and delete use Operation inheritance.
 	BinaryEncoding *BinaryEncodingOptions
@@ -57,7 +58,7 @@ type Client struct {
 	endpoint       string
 	options        ClientOptions
 	runtime        *Runtime
-	binaryEncoding BinaryEncodingOptions
+	binaryEncoding *BinaryEncodingOptions
 	// mu guards the client's lifetime rather than its fields. Operations hold it for read while
 	// they run, so Close taking it for write is exactly "wait for in-flight operations to
 	// finish". That matters more here than it would in a pure-Go client: closing releases handles
@@ -81,6 +82,11 @@ type Client struct {
 // endpoint is the Cosmos DB account endpoint. cred is any [azcore.TokenCredential], such as the
 // implementations in the azidentity module. options may be nil to accept the defaults. Construction
 // performs no network I/O; call [Client.Initialize] to fill account-level caches eagerly.
+//
+// Clients sharing a runtime and account also share native authentication state; cached resources
+// may use a credential supplied by another client, even after that client closes. This reuse
+// reduces duplicate token requests and authentication-service load. A nil Runtime uses the
+// process-wide runtime; supply separate runtimes when credential identities must be isolated.
 func NewClient(endpoint string, cred azcore.TokenCredential, options *ClientOptions) (*Client, error) {
 	if cred == nil {
 		return nil, errors.New("azcosmos: credential must not be nil")
@@ -203,6 +209,7 @@ func (c *Client) Endpoint() string {
 
 // Close releases this client's driver resources after all submitted native work finishes.
 // Cached credentials remain alive with the runtime and are not cancelled by closing one client.
+// Each token acquisition has a 60-second timeout; custom credentials must honor context cancellation.
 // Afterwards every operation on the client
 // fails with [CodeClientClosed] rather than reaching the driver.
 //

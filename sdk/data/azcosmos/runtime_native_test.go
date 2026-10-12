@@ -122,6 +122,79 @@ func TestRuntimeTimeoutPresenceAndClamp(t *testing.T) {
 	require.Equal(t, want, got)
 }
 
+func TestRuntimeContextDeadlineFallback(t *testing.T) {
+	for _, tt := range []struct {
+		name     string
+		runtime  *time.Duration
+		client   *time.Duration
+		request  *time.Duration
+		deadline time.Duration
+		wantMS   int64
+	}{
+		{name: "no deadline", wantMS: -1},
+		{name: "context fallback", deadline: 3 * time.Second, wantMS: 3000},
+		{name: "subsecond clamp", deadline: 100 * time.Millisecond, wantMS: 1000},
+		{name: "shorter runtime timeout", runtime: to(time.Second), deadline: 3 * time.Second, wantMS: 1000},
+		{name: "explicit runtime preserved", runtime: to(5 * time.Second), deadline: 3 * time.Second, wantMS: 5000},
+		{name: "explicit client preserved", client: to(5 * time.Second), deadline: 3 * time.Second, wantMS: 5000},
+		{name: "explicit request preserved", request: to(5 * time.Second), deadline: 3 * time.Second, wantMS: 5000},
+	} {
+		t.Run(tt.name, func(t *testing.T) {
+			runtime, err := NewRuntime(&RuntimeOptions{Operation: OperationOptions{EndToEndTimeout: tt.runtime}})
+			require.NoError(t, err)
+			t.Cleanup(func() { require.NoError(t, runtime.Close()) })
+			client := sharedTestClient(t, runtime, OperationOptions{EndToEndTimeout: tt.client})
+			ctx := t.Context()
+			if tt.deadline != 0 {
+				var cancel context.CancelFunc
+				ctx, cancel = context.WithTimeout(ctx, tt.deadline)
+				defer cancel()
+			}
+			_, timeout, release, err := client.driver.captureSnapshot(ctx, OperationOptions{EndToEndTimeout: tt.request})
+			require.NoError(t, err)
+			defer release()
+			if tt.name == "context fallback" {
+				require.InDelta(t, tt.wantMS, timeout, 200, "assert the native snapshot timeout, not just the Go deadline")
+				require.LessOrEqual(t, timeout, tt.wantMS)
+			} else {
+				require.Equal(t, tt.wantMS, timeout)
+			}
+		})
+	}
+}
+
+func TestClientNativeDefaultsReusedAcrossSnapshots(t *testing.T) {
+	runtime, err := NewRuntime(nil)
+	require.NoError(t, err)
+	t.Cleanup(func() { require.NoError(t, runtime.Close()) })
+	client := sharedTestClient(t, runtime, OperationOptions{
+		EndToEndTimeout: to(4 * time.Second), CustomHeaders: map[string]string{"x-test": "original"},
+	})
+	driver := client.driver
+	options := driver.clientOptions
+	require.NotNil(t, options)
+	// Mutating the internal Go copy proves snapshots use the construction-time native allocation.
+	driver.cfg.options.Operation.EndToEndTimeout = to(8 * time.Second)
+	for range 4 {
+		t.Run("snapshot", func(t *testing.T) {
+			t.Parallel()
+			_, timeout, release, err := driver.captureSnapshot(t.Context(), OperationOptions{})
+			require.NoError(t, err)
+			defer release()
+			require.Equal(t, int64(4000), timeout)
+			require.Same(t, options, driver.clientOptions)
+		})
+	}
+	t.Cleanup(func() {
+		driver.beforePendingWait = func() {
+			require.Same(t, options, driver.clientOptions, "defaults must remain alive until work drains")
+		}
+		require.NoError(t, client.Close())
+		require.Nil(t, driver.clientOptions)
+		require.Nil(t, driver.releaseClientOptions)
+	})
+}
+
 func TestRuntimeSamplingValidation(t *testing.T) {
 	for _, duration := range []time.Duration{0, time.Second - 1, time.Minute + 1} {
 		_, err := NewRuntime(&RuntimeOptions{CPURefreshInterval: &duration})

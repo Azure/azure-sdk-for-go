@@ -16,6 +16,7 @@ import "C"
 import (
 	"context"
 	"runtime/cgo"
+	"time"
 	"unsafe"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -28,6 +29,12 @@ type tokenProviderState struct {
 	credential azcore.TokenCredential
 	ctx        context.Context
 	cancel     context.CancelFunc
+}
+
+func (s *tokenProviderState) getToken(scope string) (azcore.AccessToken, error) {
+	ctx, cancel := context.WithTimeout(s.ctx, time.Minute)
+	defer cancel()
+	return s.credential.GetToken(ctx, policy.TokenRequestOptions{Scopes: []string{scope}})
 }
 
 // buildTokenAccount adapts an azcore.TokenCredential to the driver's asynchronous callback ABI.
@@ -102,9 +109,7 @@ func completeTokenRequest(
 	state *tokenProviderState,
 	scope string,
 ) {
-	token, err := state.credential.GetToken(state.ctx, policy.TokenRequestOptions{
-		Scopes: []string{scope},
-	})
+	token, err := state.getToken(scope)
 	if err != nil {
 		message := []byte(err.Error())
 		C.cosmos_token_request_complete(

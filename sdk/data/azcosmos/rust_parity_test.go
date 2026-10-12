@@ -5,6 +5,7 @@ package azcosmos
 
 import (
 	"math"
+	"os"
 	"testing"
 	"time"
 
@@ -12,6 +13,9 @@ import (
 )
 
 func TestBinaryEncodingRustDefaultsAndEnvironment(t *testing.T) {
+	t.Setenv("AZURE_COSMOS_BINARY_ENCODING_ENABLED", "")
+	require.NoError(t, os.Unsetenv("AZURE_COSMOS_BINARY_ENCODING_ENABLED"))
+	require.Nil(t, resolveClientBinaryEncoding(nil), "absence must preserve native option inheritance")
 	for _, value := range []string{"1", "true", "YES", " on ", "false", "", "nope"} {
 		t.Run(value, func(t *testing.T) {
 			t.Setenv("AZURE_COSMOS_BINARY_ENCODING_ENABLED", value)

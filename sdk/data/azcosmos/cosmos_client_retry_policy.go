@@ -149,8 +149,7 @@ const maxServerErrorRetryCount = 2
 
 // sleepWithContext sleeps for d, but returns early with the context's error
 // if ctx is cancelled or its deadline expires. Use this in retry paths so
-// the policy honors caller-set context deadlines instead of consuming the
-// caller's e2e timeout budget asleep.
+// the policy honors both per-try timeouts and caller cancellation.
 func sleepWithContext(ctx context.Context, d time.Duration) error {
 	t := time.NewTimer(d)
 	defer t.Stop()
@@ -212,17 +211,22 @@ func (p *clientRetryPolicy) Do(req *policy.Request) (*http.Response, error) {
 			if state := requestDiagnosticsStateFromContext(req.Raw().Context()); state != nil && state.clientSideStats != nil {
 				state.clientSideStats.recordHTTPError(attemptStartTime, req.Raw(), err, o.resourceType, regionName.String())
 			}
-			// Honor the caller's context: if their deadline expired or
-			// they cancelled the request, do not consume their budget
-			// with our retries. Preserve both the cancellation reason
-			// (so errors.Is(returned, context.DeadlineExceeded) works)
-			// and the underlying transport error for diagnostics.
+			// This is azcore's per-try context, not necessarily the caller's.
+			// Return an ordinary error so azcore can retry an expired try;
+			// its outer retry policy also checks the original caller's context.
 			if ctxErr := req.Raw().Context().Err(); ctxErr != nil {
-				return nil, errorinfo.NonRetriableError(fmt.Errorf("%w: underlying transport error: %v", ctxErr, err))
+				return nil, fmt.Errorf("%w: underlying transport error: %v", ctxErr, err)
 			}
 			kind := classifyNetworkError(err)
 			if kind != connectionErrorNone {
 				shouldRetry, errRetry := p.attemptRetryOnNetworkError(req, kind, o.isWriteOperation, err, &retryContext)
+				// The try can also expire during the internal network backoff.
+				if ctxErr := req.Raw().Context().Err(); ctxErr != nil {
+					if errRetry != nil {
+						return nil, errRetry
+					}
+					return nil, fmt.Errorf("%w: underlying transport error: %v", ctxErr, err)
+				}
 				if errRetry != nil {
 					return nil, errorinfo.NonRetriableError(errRetry)
 				}
@@ -268,7 +272,9 @@ func (p *clientRetryPolicy) Do(req *policy.Request) (*http.Response, error) {
 			case http.StatusRequestTimeout:
 				shouldRetry, err := p.attemptRetryOnRequestTimeout(req, o.isWriteOperation, &retryContext)
 				if err != nil {
-					return nil, errorinfo.NonRetriableError(err)
+					// Only an interrupted per-try backoff returns an error here.
+					// Leave caller cancellation and the retry budget to azcore.
+					return nil, err
 				}
 				if !shouldRetry {
 					return nil, errorinfo.NonRetriableError(azruntime.NewResponseErrorWithErrorCode(response, response.Status))
@@ -332,10 +338,9 @@ func (p *clientRetryPolicy) shouldRetryStatus(status int, subStatus string) (sho
 // it bumps retryContext.retryCount so the Do loop resolves a different
 // locationIndex on the next iteration (mirroring the 503/408 paths).
 //
-// transportErr is preserved alongside the caller's context error when
-// the backoff is interrupted by ctx cancellation, so callers can
-// errors.Is against both context.DeadlineExceeded and the transport
-// error class.
+// transportErr is preserved for diagnostics alongside the current try's
+// context error when the backoff is interrupted. The context error is
+// wrapped so callers can use errors.Is to check the cancellation reason.
 func (p *clientRetryPolicy) attemptRetryOnNetworkError(req *policy.Request, kind connectionErrorKind, isWriteOperation bool, transportErr error, retryContext *retryContext) (bool, error) {
 	if retryContext.retryCount > maxRetryCount {
 		return false, nil
@@ -583,7 +588,7 @@ func (p *clientRetryPolicy) attemptRetryOnRequestTimeout(req *policy.Request, is
 	}
 
 	retryContext.requestTimeoutRetryDone = true
-	// Preserve the caller's cancellation cause if their context fires
+	// Preserve the current try's cancellation cause if its context fires
 	// during the backoff so errors.Is(returned, context.DeadlineExceeded)
 	// works at the call site. There is no transport error to compose
 	// with here (the 408 path is reached from a successful HTTP

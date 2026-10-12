@@ -11,6 +11,8 @@
 
 ### Bugs Fixed
 
+* Fixed per-try timeouts, including timeouts during connection-error and HTTP 408 backoff, being marked non-retriable. These timeouts now honor the configured `RetryOptions.MaxRetries` while caller cancellation and deadlines still stop retries.
+
 ### Other Changes
 
 ## 1.6.0-beta.3 (2026-09-01)

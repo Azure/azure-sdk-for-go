@@ -147,7 +147,13 @@ func (s *Client) NewRootDirectoryClient() *directory.Client {
 	return (*directory.Client)(base.NewDirectoryClient(rootDirURL, s.generated().InternalClient().WithClientName(exported.ModuleName), s.sharedKey(), s.getClientOptions()))
 }
 
-// NewFileClientByFileID creates a new file.Client for accessing a file via its FileId.
+// NewFileClientByFileID creates a new file.Client that addresses a file by its file ID rather than by its path,
+// e.g. https://<account>.file.core.windows.net/<share>?fileid=<fileID>. The new file.Client uses the same request
+// policy pipeline as the Client, and keeps the share snapshot of the Client, if any.
+//   - fileID - the file ID of the file, e.g. the ID returned by file.Client.GetProperties or a change feed event.
+//
+// The file.Client only supports GetProperties and GetFileLinks. All other operations return an error wrapping
+// fileerror.ErrFileIDNotSupported without sending a request.
 func (s *Client) NewFileClientByFileID(fileID string) *file.Client {
 	p, _ := sas.ParseURL(s.URL())
 	p.DirectoryOrFilePath = ""
@@ -156,7 +162,13 @@ func (s *Client) NewFileClientByFileID(fileID string) *file.Client {
 	return (*file.Client)(base.NewFileClient(fileURL, s.generated().InternalClient().WithClientName(exported.ModuleName), s.sharedKey(), s.getClientOptions()))
 }
 
-// NewDirectoryClientByFileID creates a new directory.Client for accessing a directory via its FileId.
+// NewDirectoryClientByFileID creates a new directory.Client that addresses a directory by its file ID rather than by
+// its path, e.g. https://<account>.file.core.windows.net/<share>?fileid=<fileID>. The new directory.Client uses the
+// same request policy pipeline as the Client, and keeps the share snapshot of the Client, if any.
+//   - fileID - the file ID of the directory, e.g. the ID returned by directory.Client.GetProperties.
+//
+// The directory.Client only supports GetProperties. All other operations return an error wrapping
+// fileerror.ErrFileIDNotSupported without sending a request.
 func (s *Client) NewDirectoryClientByFileID(fileID string) *directory.Client {
 	p, _ := sas.ParseURL(s.URL())
 	p.DirectoryOrFilePath = ""

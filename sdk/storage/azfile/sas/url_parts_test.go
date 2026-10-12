@@ -70,3 +70,90 @@ func TestParseURL(t *testing.T) {
 		validateSAS(t, sasStr, fileURLParts.SAS)
 	}
 }
+
+func TestParseURLFileID(t *testing.T) {
+	const fileID = "12384898975283830"
+	for _, u := range []string{
+		"https://account.file.core.windows.net/share?fileid=" + fileID,
+		"https://account.file.core.windows.net/share?FileId=" + fileID,
+		"https://account.file.core.windows.net/share?FILEID=" + fileID,
+	} {
+		fileURLParts, err := ParseURL(u)
+		require.NoError(t, err)
+		require.Equal(t, "https", fileURLParts.Scheme)
+		require.Equal(t, "account.file.core.windows.net", fileURLParts.Host)
+		require.Equal(t, "share", fileURLParts.ShareName)
+		require.Empty(t, fileURLParts.DirectoryOrFilePath)
+		require.Equal(t, fileID, fileURLParts.FileID)
+		require.Empty(t, fileURLParts.UnparsedParams, "the file ID must not also be kept as an unparsed parameter")
+		require.Empty(t, fileURLParts.SAS.Encode())
+
+		// the file ID is emitted exactly once, using the canonical parameter name
+		require.Equal(t, "https://account.file.core.windows.net/share?fileid="+fileID, fileURLParts.String())
+	}
+}
+
+func TestParseURLFileIDEmptyForPathBasedURL(t *testing.T) {
+	fileURLParts, err := ParseURL("https://account.file.core.windows.net/share/directory/file")
+	require.NoError(t, err)
+	require.Empty(t, fileURLParts.FileID)
+	require.Equal(t, "directory/file", fileURLParts.DirectoryOrFilePath)
+	require.Equal(t, "https://account.file.core.windows.net/share/directory/file", fileURLParts.String())
+}
+
+func TestParseURLFileIDAndSnapshot(t *testing.T) {
+	const u = "https://account.file.core.windows.net/share?fileid=12384898975283830&sharesnapshot=2011-03-09T01:42:34.9360000Z"
+	fileURLParts, err := ParseURL(u)
+	require.NoError(t, err)
+	require.Equal(t, "share", fileURLParts.ShareName)
+	require.Empty(t, fileURLParts.DirectoryOrFilePath)
+	require.Equal(t, "12384898975283830", fileURLParts.FileID)
+	require.Equal(t, "2011-03-09T01:42:34.9360000Z", fileURLParts.ShareSnapshot)
+	require.Empty(t, fileURLParts.UnparsedParams)
+	require.Equal(t, u, fileURLParts.String())
+}
+
+func TestParseURLFileIDAndSAS(t *testing.T) {
+	const sasQuery = "se=2015-04-30T02%3A23%3A26Z&sig=Z%2FRHIX5Xcg0Mq2rqI3OlWTjEg2tYkboXr1P9ZUXDtkk%3D&sip=168.1.5.60-168.1.5.70&sp=rw&spr=https&sr=b&st=2015-04-29T22%3A18%3A26Z&sv=2015-04-05"
+	fileURLParts, err := ParseURL("https://account.file.core.windows.net/share?fileid=12384898975283830&" + sasQuery)
+	require.NoError(t, err)
+	require.Equal(t, "share", fileURLParts.ShareName)
+	require.Empty(t, fileURLParts.DirectoryOrFilePath)
+	require.Equal(t, "12384898975283830", fileURLParts.FileID)
+	require.Empty(t, fileURLParts.UnparsedParams)
+	require.Equal(t, "rw", fileURLParts.SAS.Permissions())
+	require.Equal(t, "Z/RHIX5Xcg0Mq2rqI3OlWTjEg2tYkboXr1P9ZUXDtkk=", fileURLParts.SAS.Signature())
+	require.Equal(t, "2015-04-05", fileURLParts.SAS.Version())
+
+	// the file ID is emitted before the SAS
+	require.Equal(t, "https://account.file.core.windows.net/share?fileid=12384898975283830&"+sasQuery, fileURLParts.String())
+}
+
+func TestURLPartsSetFileID(t *testing.T) {
+	fileURLParts, err := ParseURL("https://account.file.core.windows.net/share")
+	require.NoError(t, err)
+
+	fileURLParts.FileID = "12384898975283830"
+	require.Equal(t, "https://account.file.core.windows.net/share?fileid=12384898975283830", fileURLParts.String())
+
+	fileURLParts.FileID = "99999999999999999"
+	require.Equal(t, "https://account.file.core.windows.net/share?fileid=99999999999999999", fileURLParts.String())
+
+	// clearing the file ID removes it from the URL
+	fileURLParts.FileID = ""
+	require.Equal(t, "https://account.file.core.windows.net/share", fileURLParts.String())
+}
+
+func TestURLPartsFileIDIsEscaped(t *testing.T) {
+	fileURLParts, err := ParseURL("https://account.file.core.windows.net/share")
+	require.NoError(t, err)
+
+	fileURLParts.FileID = "a&b=c"
+	u := fileURLParts.String()
+	require.Equal(t, "https://account.file.core.windows.net/share?fileid=a%26b%3Dc", u)
+
+	roundTrip, err := ParseURL(u)
+	require.NoError(t, err)
+	require.Equal(t, "a&b=c", roundTrip.FileID)
+	require.Empty(t, roundTrip.UnparsedParams)
+}

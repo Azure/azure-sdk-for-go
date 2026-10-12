@@ -146,12 +146,29 @@ func (f *Client) URL() string {
 	return f.generated().Endpoint()
 }
 
+// FileID returns the file ID of the file if the Client addresses the file by its file ID rather than by its path,
+// e.g. a Client returned by share.Client.NewFileClientByFileID. It returns an empty string if the Client addresses
+// the file by its path.
+//
+// A Client that addresses the file by its file ID only supports GetProperties and GetFileLinks. All other operations
+// return an error wrapping fileerror.ErrFileIDNotSupported without sending a request.
+func (f *Client) FileID() string {
+	return base.FileID(f.URL())
+}
+
+func (f *Client) checkAddressing(operation string, addressing base.Addressing) error {
+	return base.CheckAddressing(f.URL(), "file.Client."+operation, addressing)
+}
+
 // Create operation creates a new file or replaces a file. Note it only initializes the file with no content.
 //   - fileContentLength: Specifies the maximum size for the file in bytes, up to 4 TB.
 //
 // ParseNTFSFileAttributes method can be used to convert the file attributes returned in response to NTFSFileAttributes.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/create-file.
 func (f *Client) Create(ctx context.Context, fileContentLength int64, options *CreateOptions) (CreateResponse, error) {
+	if err := f.checkAddressing("Create", base.PathOnly); err != nil {
+		return CreateResponse{}, err
+	}
 	opts := options.format(f.getClientOptions().FileRequestIntent, f.getClientOptions().AllowTrailingDot)
 
 	if options != nil && options.OptionalBody != nil && options.TransactionalValidation != nil {
@@ -174,6 +191,9 @@ func (f *Client) Create(ctx context.Context, fileContentLength int64, options *C
 // Delete operation removes the file from the storage account.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/delete-file2.
 func (f *Client) Delete(ctx context.Context, options *DeleteOptions) (DeleteResponse, error) {
+	if err := f.checkAddressing("Delete", base.PathOnly); err != nil {
+		return DeleteResponse{}, err
+	}
 	opts := options.format(f.getClientOptions().FileRequestIntent, f.getClientOptions().AllowTrailingDot)
 	return f.generated().Delete(ctx, opts)
 }
@@ -183,6 +203,9 @@ func (f *Client) Delete(ctx context.Context, options *DeleteOptions) (DeleteResp
 //
 // For more information, see https://learn.microsoft.com/rest/api/storageservices/rename-file.
 func (f *Client) Rename(ctx context.Context, destinationPath string, options *RenameOptions) (RenameResponse, error) {
+	if err := f.checkAddressing("Rename", base.PathOnly); err != nil {
+		return RenameResponse{}, err
+	}
 	destinationPath = strings.Trim(strings.TrimSpace(destinationPath), "/")
 	if len(destinationPath) == 0 {
 		return RenameResponse{}, errors.New("destination path must not be empty")
@@ -221,6 +244,9 @@ func (f *Client) Rename(ctx context.Context, destinationPath string, options *Re
 // ParseNTFSFileAttributes method can be used to convert the file attributes returned in response to NTFSFileAttributes.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/get-file-properties.
 func (f *Client) GetProperties(ctx context.Context, options *GetPropertiesOptions) (GetPropertiesResponse, error) {
+	if err := f.checkAddressing("GetProperties", base.PathOrFileID); err != nil {
+		return GetPropertiesResponse{}, err
+	}
 	opts := options.format(f.getClientOptions().FileRequestIntent, f.getClientOptions().AllowTrailingDot)
 	return f.generated().GetProperties(ctx, opts)
 }
@@ -229,6 +255,9 @@ func (f *Client) GetProperties(ctx context.Context, options *GetPropertiesOption
 // ParseNTFSFileAttributes method can be used to convert the file attributes returned in response to NTFSFileAttributes.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/set-file-properties.
 func (f *Client) SetHTTPHeaders(ctx context.Context, options *SetHTTPHeadersOptions) (SetHTTPHeadersResponse, error) {
+	if err := f.checkAddressing("SetHTTPHeaders", base.PathOnly); err != nil {
+		return SetHTTPHeadersResponse{}, err
+	}
 	opts := options.format(f.getClientOptions().FileRequestIntent, f.getClientOptions().AllowTrailingDot)
 	return f.generated().SetHTTPHeaders(ctx, opts)
 }
@@ -236,6 +265,9 @@ func (f *Client) SetHTTPHeaders(ctx context.Context, options *SetHTTPHeadersOpti
 // SetMetadata operation sets user-defined metadata for the specified file.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/set-file-metadata.
 func (f *Client) SetMetadata(ctx context.Context, options *SetMetadataOptions) (SetMetadataResponse, error) {
+	if err := f.checkAddressing("SetMetadata", base.PathOnly); err != nil {
+		return SetMetadataResponse{}, err
+	}
 	opts := options.format(f.getClientOptions().FileRequestIntent, f.getClientOptions().AllowTrailingDot)
 	return f.generated().SetMetadata(ctx, opts)
 }
@@ -245,6 +277,9 @@ func (f *Client) SetMetadata(ctx context.Context, options *SetMetadataOptions) (
 //
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/copy-file.
 func (f *Client) StartCopyFromURL(ctx context.Context, copySource string, options *StartCopyFromURLOptions) (StartCopyFromURLResponse, error) {
+	if err := f.checkAddressing("StartCopyFromURL", base.PathOnly); err != nil {
+		return StartCopyFromURLResponse{}, err
+	}
 	opts := options.format(f.getClientOptions().FileRequestIntent, f.getClientOptions().AllowTrailingDot, f.getClientOptions().AllowSourceTrailingDot)
 	resp, err := f.generated().StartCopy(ctx, copySource, opts)
 	return resp, err
@@ -255,6 +290,9 @@ func (f *Client) StartCopyFromURL(ctx context.Context, copySource string, option
 //
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/abort-copy-file.
 func (f *Client) AbortCopy(ctx context.Context, copyID string, options *AbortCopyOptions) (AbortCopyResponse, error) {
+	if err := f.checkAddressing("AbortCopy", base.PathOnly); err != nil {
+		return AbortCopyResponse{}, err
+	}
 	opts := options.format(f.getClientOptions().FileRequestIntent, f.getClientOptions().AllowTrailingDot)
 	return f.generated().AbortCopy(ctx, copyID, opts)
 }
@@ -262,6 +300,9 @@ func (f *Client) AbortCopy(ctx context.Context, copyID string, options *AbortCop
 // Resize operation resizes the file to the specified size.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/set-file-properties.
 func (f *Client) Resize(ctx context.Context, size int64, options *ResizeOptions) (ResizeResponse, error) {
+	if err := f.checkAddressing("Resize", base.PathOnly); err != nil {
+		return ResizeResponse{}, err
+	}
 	opts := options.format(size, f.getClientOptions().FileRequestIntent, f.getClientOptions().AllowTrailingDot)
 	return f.generated().SetHTTPHeaders(ctx, opts)
 }
@@ -272,6 +313,9 @@ func (f *Client) Resize(ctx context.Context, size int64, options *ResizeOptions)
 //
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/put-range.
 func (f *Client) UploadRange(ctx context.Context, offset int64, body io.ReadSeekCloser, options *UploadRangeOptions) (UploadRangeResponse, error) {
+	if err := f.checkAddressing("UploadRange", base.PathOnly); err != nil {
+		return UploadRangeResponse{}, err
+	}
 	rangeParam, contentLength, uploadRangeOptions, err := options.format(offset, body, f.getClientOptions().FileRequestIntent, f.getClientOptions().AllowTrailingDot)
 	if err != nil {
 		return UploadRangeResponse{}, err
@@ -304,6 +348,9 @@ func (f *Client) UploadRange(ctx context.Context, offset int64, body io.ReadSeek
 //
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/put-range.
 func (f *Client) ClearRange(ctx context.Context, contentRange HTTPRange, options *ClearRangeOptions) (ClearRangeResponse, error) {
+	if err := f.checkAddressing("ClearRange", base.PathOnly); err != nil {
+		return ClearRangeResponse{}, err
+	}
 	rangeParam, opts, err := options.format(contentRange, f.getClientOptions().FileRequestIntent, f.getClientOptions().AllowTrailingDot)
 	if err != nil {
 		return ClearRangeResponse{}, err
@@ -319,6 +366,9 @@ func (f *Client) ClearRange(ctx context.Context, contentRange HTTPRange, options
 //
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/put-range-from-url.
 func (f *Client) UploadRangeFromURL(ctx context.Context, copySource string, sourceOffset int64, destinationOffset int64, count int64, options *UploadRangeFromURLOptions) (UploadRangeFromURLResponse, error) {
+	if err := f.checkAddressing("UploadRangeFromURL", base.PathOnly); err != nil {
+		return UploadRangeFromURLResponse{}, err
+	}
 	destRange, opts, err := options.format(sourceOffset, destinationOffset, count, f.getClientOptions().FileRequestIntent, f.getClientOptions().AllowTrailingDot, f.getClientOptions().AllowSourceTrailingDot)
 	if err != nil {
 		return UploadRangeFromURLResponse{}, err
@@ -330,6 +380,9 @@ func (f *Client) UploadRangeFromURL(ctx context.Context, copySource string, sour
 // GetRangeList operation returns the list of valid ranges for a file.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/list-ranges.
 func (f *Client) GetRangeList(ctx context.Context, options *GetRangeListOptions) (GetRangeListResponse, error) {
+	if err := f.checkAddressing("GetRangeList", base.PathOnly); err != nil {
+		return GetRangeListResponse{}, err
+	}
 	opts := options.format(f.getClientOptions().FileRequestIntent, f.getClientOptions().AllowTrailingDot)
 	return f.generated().GetRangeList(ctx, opts)
 }
@@ -346,6 +399,9 @@ func (f *Client) NewListRangesPager(options *ListRangesOptions) *runtime.Pager[L
 			return page.NextMarker != nil && len(*page.NextMarker) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ListRangesSegmentResponse) (ListRangesSegmentResponse, error) {
+			if err := f.checkAddressing("NewListRangesPager", base.PathOnly); err != nil {
+				return ListRangesSegmentResponse{}, err
+			}
 			if page != nil {
 				listOptions.Marker = page.NextMarker
 			}
@@ -370,6 +426,9 @@ func (f *Client) NewListRangesPager(options *ListRangesOptions) *runtime.Pager[L
 //
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/force-close-handles.
 func (f *Client) ForceCloseHandles(ctx context.Context, handleID string, options *ForceCloseHandlesOptions) (ForceCloseHandlesResponse, error) {
+	if err := f.checkAddressing("ForceCloseHandles", base.PathOnly); err != nil {
+		return ForceCloseHandlesResponse{}, err
+	}
 	opts := options.format(f.getClientOptions().FileRequestIntent, f.getClientOptions().AllowTrailingDot)
 	return f.generated().ForceCloseHandles(ctx, handleID, opts)
 }
@@ -377,6 +436,9 @@ func (f *Client) ForceCloseHandles(ctx context.Context, handleID string, options
 // ListHandles operation returns a list of open handles on a file.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/list-handles.
 func (f *Client) ListHandles(ctx context.Context, options *ListHandlesOptions) (ListHandlesResponse, error) {
+	if err := f.checkAddressing("ListHandles", base.PathOnly); err != nil {
+		return ListHandlesResponse{}, err
+	}
 	opts := options.format(f.getClientOptions().FileRequestIntent, f.getClientOptions().AllowTrailingDot)
 	return f.generated().ListHandles(ctx, opts)
 }
@@ -384,6 +446,9 @@ func (f *Client) ListHandles(ctx context.Context, options *ListHandlesOptions) (
 // CreateHardLink operation creates Hard Link to targetFile in same share.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/create-hard-link.
 func (f *Client) CreateHardLink(ctx context.Context, targetFile string, options *CreateHardLinkOptions) (CreateHardLinkResponse, error) {
+	if err := f.checkAddressing("CreateHardLink", base.PathOnly); err != nil {
+		return CreateHardLinkResponse{}, err
+	}
 	opts := options.format(f.getClientOptions().FileRequestIntent)
 	return f.generated().CreateHardLink(ctx, targetFile, opts)
 }
@@ -391,6 +456,9 @@ func (f *Client) CreateHardLink(ctx context.Context, targetFile string, options 
 // CreateSymbolicLink operation creates a Symbolic Link to targetFile in same share.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/create-symbolic-link.
 func (f *Client) CreateSymbolicLink(ctx context.Context, linkText string, options *CreateSymbolicLinkOptions) (CreateSymbolicLinkResponse, error) {
+	if err := f.checkAddressing("CreateSymbolicLink", base.PathOnly); err != nil {
+		return CreateSymbolicLinkResponse{}, err
+	}
 	opts := options.format(f.getClientOptions().FileRequestIntent)
 	return f.generated().CreateSymbolicLink(ctx, linkText, opts)
 }
@@ -398,12 +466,23 @@ func (f *Client) CreateSymbolicLink(ctx context.Context, linkText string, option
 // GetSymbolicLink operation allows to read the value of a symbolic link.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/read-symbolic-link.
 func (f *Client) GetSymbolicLink(ctx context.Context, options *GetSymbolicLinkOptions) (GetSymbolicLinkResponse, error) {
+	if err := f.checkAddressing("GetSymbolicLink", base.PathOnly); err != nil {
+		return GetSymbolicLinkResponse{}, err
+	}
 	opts := options.format(f.getClientOptions().FileRequestIntent)
 	return f.generated().GetSymbolicLink(ctx, opts)
 }
 
-// GetFileLinks returns the hard links for a file. This API only supports FileId-based clients.
+// GetFileLinks operation returns the hard links of the file, along with all user-defined metadata, content properties,
+// and system properties for the file. The name of each hard link is decoded if the service returned it encoded.
+//
+// This operation is only supported when the Client addresses the file by its file ID; use
+// share.Client.NewFileClientByFileID to create such a Client. On a Client that addresses the file by its path,
+// it returns an error wrapping fileerror.ErrFileIDRequired without sending a request.
 func (f *Client) GetFileLinks(ctx context.Context, options *GetFileLinksOptions) (GetFileLinksResponse, error) {
+	if err := f.checkAddressing("GetFileLinks", base.FileIDOnly); err != nil {
+		return GetFileLinksResponse{}, err
+	}
 	opts := options.format(f.getClientOptions().FileRequestIntent)
 	return f.generated().GetHardLinks(ctx, opts)
 }
@@ -411,6 +490,9 @@ func (f *Client) GetFileLinks(ctx context.Context, options *GetFileLinksOptions)
 // GetSASURL is a convenience method for generating a SAS token for the currently pointed at file.
 // It can only be used if the credential supplied during creation was a SharedKeyCredential.
 func (f *Client) GetSASURL(permissions sas.FilePermissions, expiry time.Time, o *GetSASURLOptions) (string, error) {
+	if err := f.checkAddressing("GetSASURL", base.PathOnly); err != nil {
+		return "", err
+	}
 	if f.sharedKey() == nil {
 		return "", fileerror.MissingSharedKeyCredential
 	}
@@ -497,6 +579,9 @@ func (f *Client) uploadFromReader(ctx context.Context, reader io.ReaderAt, actua
 
 // UploadBuffer uploads a buffer in chunks to an Azure file.
 func (f *Client) UploadBuffer(ctx context.Context, buffer []byte, options *UploadBufferOptions) error {
+	if err := f.checkAddressing("UploadBuffer", base.PathOnly); err != nil {
+		return err
+	}
 	uploadOptions := uploadFromReaderOptions{}
 	if options != nil {
 		uploadOptions = *options
@@ -512,6 +597,9 @@ func (f *Client) UploadBuffer(ctx context.Context, buffer []byte, options *Uploa
 
 // UploadFile uploads a file in chunks to an Azure file.
 func (f *Client) UploadFile(ctx context.Context, file *os.File, options *UploadFileOptions) error {
+	if err := f.checkAddressing("UploadFile", base.PathOnly); err != nil {
+		return err
+	}
 	stat, err := file.Stat()
 	if err != nil {
 		return err
@@ -532,6 +620,9 @@ func (f *Client) UploadFile(ctx context.Context, file *os.File, options *UploadF
 // UploadStream copies the file held in io.Reader to the file at fileClient.
 // A Context deadline or cancellation will cause this to error.
 func (f *Client) UploadStream(ctx context.Context, body io.Reader, options *UploadStreamOptions) error {
+	if err := f.checkAddressing("UploadStream", base.PathOnly); err != nil {
+		return err
+	}
 	if options == nil {
 		options = &UploadStreamOptions{}
 	}
@@ -630,6 +721,9 @@ func (f *Client) download(ctx context.Context, writer io.WriterAt, o downloadOpt
 // ParseNTFSFileAttributes method can be used to convert the file attributes returned in response to NTFSFileAttributes.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/get-file.
 func (f *Client) DownloadStream(ctx context.Context, options *DownloadStreamOptions) (DownloadStreamResponse, error) {
+	if err := f.checkAddressing("DownloadStream", base.PathOnly); err != nil {
+		return DownloadStreamResponse{}, err
+	}
 	if options == nil {
 		options = &DownloadStreamOptions{}
 	}
@@ -655,6 +749,9 @@ func (f *Client) DownloadStream(ctx context.Context, options *DownloadStreamOpti
 
 // DownloadBuffer downloads an Azure file to a buffer with parallel.
 func (f *Client) DownloadBuffer(ctx context.Context, buffer []byte, o *DownloadBufferOptions) (int64, error) {
+	if err := f.checkAddressing("DownloadBuffer", base.PathOnly); err != nil {
+		return 0, err
+	}
 	if o == nil {
 		o = &DownloadBufferOptions{}
 	}
@@ -665,6 +762,9 @@ func (f *Client) DownloadBuffer(ctx context.Context, buffer []byte, o *DownloadB
 // DownloadFile downloads an Azure file to a local file.
 // The file would be truncated if the size doesn't match.
 func (f *Client) DownloadFile(ctx context.Context, file *os.File, o *DownloadFileOptions) (int64, error) {
+	if err := f.checkAddressing("DownloadFile", base.PathOnly); err != nil {
+		return 0, err
+	}
 	if o == nil {
 		o = &DownloadFileOptions{}
 	}

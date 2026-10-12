@@ -29,7 +29,7 @@ type URLParts struct {
 	IPEndpointStyleInfo IPEndpointStyleInfo // Useful Parts for IP endpoint style URL.
 	ShareName           string              // Share name, Ex: "myshare"
 	DirectoryOrFilePath string              // Path of directory or file, Ex: "mydirectory/myfile"
-	FileID              string              // File ID for FileId-based URLs, Ex: "12384898975283830"
+	FileID              string              // File ID of a file or directory addressed by its file ID rather than its path, Ex: "12384898975283830"
 	ShareSnapshot       string              // IsZero is true if not a snapshot
 	SAS                 QueryParameters
 	UnparsedParams      string
@@ -85,7 +85,9 @@ func ParseURL(u string) (URLParts, error) {
 	up.FileID = ""
 	if fileIDStr, ok := caseInsensitiveValues(paramsMap).Get(fileIDParam); ok {
 		up.FileID = fileIDStr[0]
-		delete(paramsMap, fileIDParam)
+		// If we recognized the query parameter, remove it from the map. The key is matched case-insensitively,
+		// so remove every spelling of it (e.g. "FileId") to avoid emitting it twice from String().
+		caseInsensitiveValues(paramsMap).Delete(fileIDParam)
 	}
 
 	up.SAS = NewQueryParameters(paramsMap, true)
@@ -121,7 +123,7 @@ func (up URLParts) String() string {
 		if len(rawQuery) > 0 {
 			rawQuery += "&"
 		}
-		rawQuery += fileIDParam + "=" + up.FileID
+		rawQuery += fileIDParam + "=" + url.QueryEscape(up.FileID)
 	}
 
 	// Concatenate share snapshot query parameter (if it exists)
@@ -157,4 +159,14 @@ func (values caseInsensitiveValues) Get(key string) ([]string, bool) {
 		}
 	}
 	return []string{}, false
+}
+
+// Delete removes every key that matches the given key case-insensitively.
+func (values caseInsensitiveValues) Delete(key string) {
+	key = strings.ToLower(key)
+	for k := range values {
+		if strings.ToLower(k) == key {
+			delete(values, k)
+		}
+	}
 }

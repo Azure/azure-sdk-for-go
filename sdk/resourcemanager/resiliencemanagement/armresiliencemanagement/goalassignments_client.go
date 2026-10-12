@@ -20,7 +20,7 @@ import (
 // GoalAssignmentsClient contains the methods for the GoalAssignments group.
 // Don't use this type directly, use NewGoalAssignmentsClient() instead.
 //
-// Generated from API version 2026-08-31-preview
+// Generated from API version 2026-10-01
 type GoalAssignmentsClient struct {
 	internal *arm.Client
 }
@@ -39,10 +39,10 @@ func NewGoalAssignmentsClient(credential azcore.TokenCredential, options *arm.Cl
 	return client, nil
 }
 
-// BeginCreateOrUpdate - Create a GoalAssignment
+// BeginCreateOrUpdate - Creates or updates a goal assignment.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - serviceGroupName - The name of the service group.
-//   - goalAssignmentName - The name of the GoalAssignment
+//   - goalAssignmentName - The name of the goal assignment.
 //   - resource - Resource create parameters.
 //   - options - GoalAssignmentsClientBeginCreateOrUpdateOptions contains the optional parameters for the GoalAssignmentsClient.BeginCreateOrUpdate
 //     method.
@@ -63,7 +63,7 @@ func (client *GoalAssignmentsClient) BeginCreateOrUpdate(ctx context.Context, se
 	}
 }
 
-// CreateOrUpdate - Create a GoalAssignment
+// CreateOrUpdate - Creates or updates a goal assignment.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *GoalAssignmentsClient) createOrUpdate(ctx context.Context, serviceGroupName string, goalAssignmentName string, resource GoalAssignment, options *GoalAssignmentsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -101,7 +101,7 @@ func (client *GoalAssignmentsClient) createOrUpdateCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260831Preview)
+	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -111,10 +111,10 @@ func (client *GoalAssignmentsClient) createOrUpdateCreateRequest(ctx context.Con
 	return req, nil
 }
 
-// BeginDelete - Delete a GoalAssignment
+// BeginDelete - Deletes a goal assignment.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - serviceGroupName - The name of the service group.
-//   - goalAssignmentName - The name of the GoalAssignment
+//   - goalAssignmentName - The name of the goal assignment.
 //   - options - GoalAssignmentsClientBeginDeleteOptions contains the optional parameters for the GoalAssignmentsClient.BeginDelete
 //     method.
 func (client *GoalAssignmentsClient) BeginDelete(ctx context.Context, serviceGroupName string, goalAssignmentName string, options *GoalAssignmentsClientBeginDeleteOptions) (*runtime.Poller[GoalAssignmentsClientDeleteResponse], error) {
@@ -134,7 +134,7 @@ func (client *GoalAssignmentsClient) BeginDelete(ctx context.Context, serviceGro
 	}
 }
 
-// Delete - Delete a GoalAssignment
+// Delete - Deletes a goal assignment.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *GoalAssignmentsClient) deleteOperation(ctx context.Context, serviceGroupName string, goalAssignmentName string, options *GoalAssignmentsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -172,15 +172,15 @@ func (client *GoalAssignmentsClient) deleteCreateRequest(ctx context.Context, se
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260831Preview)
+	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
-// Get - Get a GoalAssignment
+// Get - Gets a goal assignment.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - serviceGroupName - The name of the service group.
-//   - goalAssignmentName - The name of the GoalAssignment
+//   - goalAssignmentName - The name of the goal assignment.
 //   - options - GoalAssignmentsClientGetOptions contains the optional parameters for the GoalAssignmentsClient.Get method.
 func (client *GoalAssignmentsClient) Get(ctx context.Context, serviceGroupName string, goalAssignmentName string, options *GoalAssignmentsClientGetOptions) (GoalAssignmentsClientGetResponse, error) {
 	var err error
@@ -215,7 +215,7 @@ func (client *GoalAssignmentsClient) getCreateRequest(ctx context.Context, servi
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260831Preview)
+	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -233,7 +233,7 @@ func (client *GoalAssignmentsClient) getHandleResponse(resp *http.Response, succ
 	return result, nil
 }
 
-// NewListPager - List GoalAssignment resources by tenant
+// NewListPager - Lists goal assignments in a service group.
 //   - serviceGroupName - The name of the service group.
 //   - options - GoalAssignmentsClientListOptions contains the optional parameters for the GoalAssignmentsClient.NewListPager
 //     method.
@@ -288,7 +288,7 @@ func (client *GoalAssignmentsClient) listCreateRequest(ctx context.Context, serv
 		if options != nil && options.Top != nil {
 			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 		}
-		reqQP.Set("api-version", version20260831Preview)
+		reqQP.Set("api-version", version20261001)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -307,11 +307,11 @@ func (client *GoalAssignmentsClient) listHandleResponse(resp *http.Response, suc
 	return result, nil
 }
 
-// BeginRecommendCapacity - Recommends capacity improvements for resources under the goal assignments scope. Returns AI-powered
+// BeginRecommendCapacity - Recommends capacity improvements for resources under the goal assignment's scope. Returns AI-powered
 // capacity assessments and recommendations.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - serviceGroupName - The name of the service group.
-//   - goalAssignmentName - The name of the GoalAssignment
+//   - goalAssignmentName - The name of the goal assignment.
 //   - body - The content of the action request
 //   - options - GoalAssignmentsClientBeginRecommendCapacityOptions contains the optional parameters for the GoalAssignmentsClient.BeginRecommendCapacity
 //     method.
@@ -332,7 +332,7 @@ func (client *GoalAssignmentsClient) BeginRecommendCapacity(ctx context.Context,
 	}
 }
 
-// RecommendCapacity - Recommends capacity improvements for resources under the goal assignments scope. Returns AI-powered
+// RecommendCapacity - Recommends capacity improvements for resources under the goal assignment's scope. Returns AI-powered
 // capacity assessments and recommendations.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *GoalAssignmentsClient) recommendCapacity(ctx context.Context, serviceGroupName string, goalAssignmentName string, body RecommendCapacityRequest, options *GoalAssignmentsClientBeginRecommendCapacityOptions) (*http.Response, error) {
@@ -371,7 +371,7 @@ func (client *GoalAssignmentsClient) recommendCapacityCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260831Preview)
+	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -385,7 +385,7 @@ func (client *GoalAssignmentsClient) recommendCapacityCreateRequest(ctx context.
 // under the scope of the assignment.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - serviceGroupName - The name of the service group.
-//   - goalAssignmentName - The name of the GoalAssignment
+//   - goalAssignmentName - The name of the goal assignment.
 //   - options - GoalAssignmentsClientBeginRefreshGoalResourcesOptions contains the optional parameters for the GoalAssignmentsClient.BeginRefreshGoalResources
 //     method.
 func (client *GoalAssignmentsClient) BeginRefreshGoalResources(ctx context.Context, serviceGroupName string, goalAssignmentName string, options *GoalAssignmentsClientBeginRefreshGoalResourcesOptions) (*runtime.Poller[GoalAssignmentsClientRefreshGoalResourcesResponse], error) {
@@ -444,16 +444,16 @@ func (client *GoalAssignmentsClient) refreshGoalResourcesCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260831Preview)
+	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
-// BeginUpdate - Update a GoalAssignment
+// BeginUpdate - Updates a goal assignment.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - serviceGroupName - The name of the service group.
-//   - goalAssignmentName - The name of the GoalAssignment
+//   - goalAssignmentName - The name of the goal assignment.
 //   - properties - The resource properties to be updated.
 //   - options - GoalAssignmentsClientBeginUpdateOptions contains the optional parameters for the GoalAssignmentsClient.BeginUpdate
 //     method.
@@ -474,7 +474,7 @@ func (client *GoalAssignmentsClient) BeginUpdate(ctx context.Context, serviceGro
 	}
 }
 
-// Update - Update a GoalAssignment
+// Update - Updates a goal assignment.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *GoalAssignmentsClient) update(ctx context.Context, serviceGroupName string, goalAssignmentName string, properties GoalAssignment, options *GoalAssignmentsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
@@ -512,7 +512,7 @@ func (client *GoalAssignmentsClient) updateCreateRequest(ctx context.Context, se
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260831Preview)
+	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -522,10 +522,10 @@ func (client *GoalAssignmentsClient) updateCreateRequest(ctx context.Context, se
 	return req, nil
 }
 
-// BeginUpdateGoalResources - Action to exclude a resource from goal assignment.
+// BeginUpdateGoalResources - Updates goal resources under a goal assignment.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - serviceGroupName - The name of the service group.
-//   - goalAssignmentName - The name of the GoalAssignment
+//   - goalAssignmentName - The name of the goal assignment.
 //   - body - The content of the action request
 //   - options - GoalAssignmentsClientBeginUpdateGoalResourcesOptions contains the optional parameters for the GoalAssignmentsClient.BeginUpdateGoalResources
 //     method.
@@ -546,7 +546,7 @@ func (client *GoalAssignmentsClient) BeginUpdateGoalResources(ctx context.Contex
 	}
 }
 
-// UpdateGoalResources - Action to exclude a resource from goal assignment.
+// UpdateGoalResources - Updates goal resources under a goal assignment.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *GoalAssignmentsClient) updateGoalResources(ctx context.Context, serviceGroupName string, goalAssignmentName string, body UpdateGoalResourceRequest, options *GoalAssignmentsClientBeginUpdateGoalResourcesOptions) (*http.Response, error) {
 	var err error
@@ -584,7 +584,7 @@ func (client *GoalAssignmentsClient) updateGoalResourcesCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260831Preview)
+	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

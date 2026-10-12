@@ -136,6 +136,9 @@ type AzureBackupDiscreteRecoveryPoint struct {
 
 	// READ-ONLY
 	ExpiryTime *time.Time
+
+	// READ-ONLY; Immutability properties of the recovery point.
+	ImmutabilityProperties *RecoveryPointImmutabilityProperties
 }
 
 // GetAzureBackupRecoveryPoint implements the AzureBackupRecoveryPointClassification interface for type AzureBackupDiscreteRecoveryPoint.
@@ -1640,8 +1643,21 @@ func (i *ImmediateCopyOption) GetCopyOption() *CopyOption {
 	}
 }
 
+// ImmutabilityConfiguration - Immutability configuration containing type and duration.
+type ImmutabilityConfiguration struct {
+	// Duration in days for time-based immutability.
+	// Required when type is TimeBased. Must be null when type is AsPerPolicy.
+	DurationInDays *int32
+
+	// Type of immutability. Supported values: AsPerPolicy or TimeBased.
+	Type *ImmutabilityType
+}
+
 // ImmutabilitySettings - Immutability Settings at vault level
 type ImmutabilitySettings struct {
+	// Immutability configuration containing type and duration.
+	Configuration *ImmutabilityConfiguration
+
 	// Immutability state
 	State *ImmutabilityState
 }
@@ -2062,13 +2078,13 @@ type OperationResource struct {
 
 	// Required if status == failed or status == canceled. This is the OData v4 error format, used by the RPC and will go into
 	// the v2.2 Azure REST API guidelines.
-	// The full set of optional properties (e.g. inner errors / details) can be found in the "Error Response" section.
+	// The full set of optional properties (e.g. inner errors / details) can be found in the `Error Response` section.
 	Error *Error
 
 	// It should match what is used to GET the operation result
 	ID *string
 
-	// It must match the last segment of the "id" field, and will typically be a GUID / system generated value
+	// It must match the last segment of the `id` field, and will typically be a GUID / system generated value.
 	Name *string
 
 	// End time of the operation
@@ -2136,6 +2152,23 @@ type PolicyParameters struct {
 	DataStoreParametersList []DataStoreParametersClassification
 }
 
+// PostgreSQLFlexibleServerBackupDatasourceParameters - Parameters to be used during configuration of backup of PostgreSQL
+// Flexible Servers
+type PostgreSQLFlexibleServerBackupDatasourceParameters struct {
+	// CONSTANT; Field has constant value "PostgreSqlFlexibleServerBackupDatasourceParameters", any specified value is ignored.
+	ObjectType *string
+
+	// Type of backup taken, Logical/Physical
+	BackupSolutionType *BackupSolutionType
+}
+
+// GetBackupDatasourceParameters implements the BackupDatasourceParametersClassification interface for type PostgreSQLFlexibleServerBackupDatasourceParameters.
+func (p *PostgreSQLFlexibleServerBackupDatasourceParameters) GetBackupDatasourceParameters() *BackupDatasourceParameters {
+	return &BackupDatasourceParameters{
+		ObjectType: p.ObjectType,
+	}
+}
+
 // ProtectionStatusDetails - Protection status details
 type ProtectionStatusDetails struct {
 	// Specifies the protection status error of the resource
@@ -2180,6 +2213,16 @@ type RecoveryPointDataStoreDetails struct {
 
 	// READ-ONLY
 	RehydrationStatus *RehydrationStatus
+}
+
+// RecoveryPointImmutabilityProperties - Immutability properties of a recovery point.
+type RecoveryPointImmutabilityProperties struct {
+	// REQUIRED; Whether the recovery point is currently within its immutability window.
+	IsImmutable *bool
+
+	// UTC time when the recovery point's immutability window expires.
+	// Null for AsPerPolicy vaults.
+	ExpiryTime *time.Time
 }
 
 // ResourceDeletionInfo - Deletion info for a tracked resource (Backup Vault)
@@ -2432,8 +2475,8 @@ type ScheduleBasedBackupCriteria struct {
 	// Field has constant value "ScheduleBasedBackupCriteria", any specified value is ignored.
 	ObjectType *string
 
-	// it contains absolute values like "AllBackup" / "FirstOfDay" / "FirstOfWeek" / "FirstOfMonth"
-	// and should be part of AbsoluteMarker enum
+	// It contains absolute marker values such as `AllBackup`, `FirstOfDay`, `FirstOfWeek`, and `FirstOfMonth`.
+	// These values should be part of the `AbsoluteMarker` enum.
 	AbsoluteCriteria []*AbsoluteMarker
 
 	// This is day of the month from 1 to 28 other wise last of month

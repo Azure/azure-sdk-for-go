@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-08-31-preview/OperationStatus_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-01/OperationStatus_Get_MaximumSet_Gen.json
 func ExampleOperationStatusClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

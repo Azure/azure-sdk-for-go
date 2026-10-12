@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-06-01/CheckfeatureSupport.json
+// Generated from example definition: 2026-07-01/CheckfeatureSupport.json
 func ExampleClient_CheckFeatureSupport() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

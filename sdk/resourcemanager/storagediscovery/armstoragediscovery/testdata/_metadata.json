@@ -1,6 +1,6 @@
 {
   "apiVersions": {
-    "Microsoft.StorageDiscovery": "2025-09-01"
+    "Microsoft.StorageDiscovery": "2026-10-01-preview"
   },
   "emitterVersion": "0.17.4"
 }

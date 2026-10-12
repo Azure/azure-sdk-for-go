@@ -5,7 +5,7 @@
 package armresiliencemanagement
 
 const (
-	version20260831Preview string = "2026-08-31-preview"
+	version20261001 string = "2026-10-01"
 )
 
 // ActionTask - An action task type indicates the type of action task.
@@ -438,9 +438,9 @@ func PossibleExclusionReasonValues() []ExclusionReason {
 type ExclusionState string
 
 const (
-	// ExclusionStateExcluded - Resource is not included in the goals.
+	// ExclusionStateExcluded - The resource is excluded from the goals.
 	ExclusionStateExcluded ExclusionState = "Excluded"
-	// ExclusionStateIncluded - Resource is excluded from the goals.
+	// ExclusionStateIncluded - The resource is included in the goals.
 	ExclusionStateIncluded ExclusionState = "Included"
 )
 
@@ -566,36 +566,6 @@ func PossibleForceInclusionAndUpdateValues() []ForceInclusionAndUpdate {
 	}
 }
 
-// GoalAssignmentType - Supported type of goal assignment.
-type GoalAssignmentType string
-
-const (
-	// GoalAssignmentTypeResiliency - Resiliency goal assignment type.
-	GoalAssignmentTypeResiliency GoalAssignmentType = "Resiliency"
-)
-
-// PossibleGoalAssignmentTypeValues returns the possible values for the GoalAssignmentType const type.
-func PossibleGoalAssignmentTypeValues() []GoalAssignmentType {
-	return []GoalAssignmentType{
-		GoalAssignmentTypeResiliency,
-	}
-}
-
-// GoalType - Supported type of goal.
-type GoalType string
-
-const (
-	// GoalTypeResiliency - Resiliency goal type.
-	GoalTypeResiliency GoalType = "Resiliency"
-)
-
-// PossibleGoalTypeValues returns the possible values for the GoalType const type.
-func PossibleGoalTypeValues() []GoalType {
-	return []GoalType{
-		GoalTypeResiliency,
-	}
-}
-
 // HAStatus - HA Status
 type HAStatus string
 
@@ -629,30 +599,6 @@ func PossibleInitialConfigValues() []InitialConfig {
 	return []InitialConfig{
 		InitialConfigComplete,
 		InitialConfigPending,
-	}
-}
-
-// IsoDuration - ISO 8601 duration formats.
-type IsoDuration string
-
-const (
-	// IsoDurationPT15M - 15 minutes.
-	IsoDurationPT15M IsoDuration = "PT15M"
-	// IsoDurationPT1H - 1 hour.
-	IsoDurationPT1H IsoDuration = "PT1H"
-	// IsoDurationPT24H - 24 hours.
-	IsoDurationPT24H IsoDuration = "PT24H"
-	// IsoDurationPT4H - 4 hours.
-	IsoDurationPT4H IsoDuration = "PT4H"
-)
-
-// PossibleIsoDurationValues returns the possible values for the IsoDuration const type.
-func PossibleIsoDurationValues() []IsoDuration {
-	return []IsoDuration{
-		IsoDurationPT15M,
-		IsoDurationPT1H,
-		IsoDurationPT24H,
-		IsoDurationPT4H,
 	}
 }
 
@@ -782,27 +728,6 @@ func PossibleManagedServiceIdentityTypeValues() []ManagedServiceIdentityType {
 		ManagedServiceIdentityTypeSystemAssigned,
 		ManagedServiceIdentityTypeSystemAssignedUserAssigned,
 		ManagedServiceIdentityTypeUserAssigned,
-	}
-}
-
-// MembershipType - Membership type of the service group to resource.
-type MembershipType string
-
-const (
-	// MembershipTypeDirect - Resource is direct member of service group.
-	MembershipTypeDirect MembershipType = "Direct"
-	// MembershipTypeThroughResourceGroup - Resource is member of service group through resource group.
-	MembershipTypeThroughResourceGroup MembershipType = "ThroughResourceGroup"
-	// MembershipTypeThroughSubscription - Resource is member of service group through subscription.
-	MembershipTypeThroughSubscription MembershipType = "ThroughSubscription"
-)
-
-// PossibleMembershipTypeValues returns the possible values for the MembershipType const type.
-func PossibleMembershipTypeValues() []MembershipType {
-	return []MembershipType{
-		MembershipTypeDirect,
-		MembershipTypeThroughResourceGroup,
-		MembershipTypeThroughSubscription,
 	}
 }
 
@@ -1104,45 +1029,6 @@ func PossibleRelativeResourceCompositionStateValues() []RelativeResourceComposit
 	}
 }
 
-// RequirementSelected - Enum for the requirement status of the resource in the goal.
-type RequirementSelected string
-
-const (
-	// RequirementSelectedNotRequired - The resource is not required for the specified goal.
-	RequirementSelectedNotRequired RequirementSelected = "NotRequired"
-	// RequirementSelectedRequired - The resource is required for the specified goal.
-	RequirementSelectedRequired RequirementSelected = "Required"
-)
-
-// PossibleRequirementSelectedValues returns the possible values for the RequirementSelected const type.
-func PossibleRequirementSelectedValues() []RequirementSelected {
-	return []RequirementSelected{
-		RequirementSelectedNotRequired,
-		RequirementSelectedRequired,
-	}
-}
-
-// ResilienceHealthStatus - enum for Resilience health status.
-type ResilienceHealthStatus string
-
-const (
-	// ResilienceHealthStatusHealthy - Resource is Healthy.
-	ResilienceHealthStatusHealthy ResilienceHealthStatus = "Healthy"
-	// ResilienceHealthStatusNotEvaluated - Resource is not evaluated.
-	ResilienceHealthStatusNotEvaluated ResilienceHealthStatus = "NotEvaluated"
-	// ResilienceHealthStatusUnhealthy - Resource is Unhealthy.
-	ResilienceHealthStatusUnhealthy ResilienceHealthStatus = "Unhealthy"
-)
-
-// PossibleResilienceHealthStatusValues returns the possible values for the ResilienceHealthStatus const type.
-func PossibleResilienceHealthStatusValues() []ResilienceHealthStatus {
-	return []ResilienceHealthStatus{
-		ResilienceHealthStatusHealthy,
-		ResilienceHealthStatusNotEvaluated,
-		ResilienceHealthStatusUnhealthy,
-	}
-}
-
 // ResourceFeasibilityReviewStatus - Outcome of a resource feasibility review for a recovery resource.
 type ResourceFeasibilityReviewStatus string
 
@@ -1282,7 +1168,7 @@ func PossibleResourceReplicationRoleValues() []ResourceReplicationRole {
 type ResourceTypeCategories string
 
 const (
-	// ResourceTypeCategoriesAzureSiteRecoveryVMsPresent - Indicates that alteast one Azure Site Recovery VMs are present.
+	// ResourceTypeCategoriesAzureSiteRecoveryVMsPresent - Indicates that at least one Azure Site Recovery VM is present.
 	ResourceTypeCategoriesAzureSiteRecoveryVMsPresent ResourceTypeCategories = "AzureSiteRecoveryVMsPresent"
 )
 
@@ -1366,33 +1252,10 @@ func PossibleTestFailoverStateValues() []TestFailoverState {
 	}
 }
 
-// UnifiedResilienceItemRequirementSelected - Enum for the requirement status of the resource in the goal.
-type UnifiedResilienceItemRequirementSelected string
-
-const (
-	// UnifiedResilienceItemRequirementSelectedNotRequired - The resource is not required for the specified goal.
-	UnifiedResilienceItemRequirementSelectedNotRequired UnifiedResilienceItemRequirementSelected = "NotRequired"
-	// UnifiedResilienceItemRequirementSelectedNotSelected - The resource is not selected for the specified goal.
-	UnifiedResilienceItemRequirementSelectedNotSelected UnifiedResilienceItemRequirementSelected = "NotSelected"
-	// UnifiedResilienceItemRequirementSelectedRequired - The resource is required for the specified goal.
-	UnifiedResilienceItemRequirementSelectedRequired UnifiedResilienceItemRequirementSelected = "Required"
-)
-
-// PossibleUnifiedResilienceItemRequirementSelectedValues returns the possible values for the UnifiedResilienceItemRequirementSelected const type.
-func PossibleUnifiedResilienceItemRequirementSelectedValues() []UnifiedResilienceItemRequirementSelected {
-	return []UnifiedResilienceItemRequirementSelected{
-		UnifiedResilienceItemRequirementSelectedNotRequired,
-		UnifiedResilienceItemRequirementSelectedNotSelected,
-		UnifiedResilienceItemRequirementSelectedRequired,
-	}
-}
-
 // UsagePlanType - The type of usage plan.
 type UsagePlanType string
 
 const (
-	// UsagePlanTypeBasic - Basic usage plan with restricted functionality without any charges.
-	UsagePlanTypeBasic UsagePlanType = "Basic"
 	// UsagePlanTypeStandard - Standard usage plan with comprehensive functionality and usage based charges.
 	UsagePlanTypeStandard UsagePlanType = "Standard"
 )
@@ -1400,7 +1263,6 @@ const (
 // PossibleUsagePlanTypeValues returns the possible values for the UsagePlanType const type.
 func PossibleUsagePlanTypeValues() []UsagePlanType {
 	return []UsagePlanType{
-		UsagePlanTypeBasic,
 		UsagePlanTypeStandard,
 	}
 }
@@ -1429,7 +1291,7 @@ type VMPresent string
 const (
 	// VMPresentAbsent - No VM present.
 	VMPresentAbsent VMPresent = "Absent"
-	// VMPresentPresent - Atleast one VM Present.
+	// VMPresentPresent - At least one VM is present.
 	VMPresentPresent VMPresent = "Present"
 )
 

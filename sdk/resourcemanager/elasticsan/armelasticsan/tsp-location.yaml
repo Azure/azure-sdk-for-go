@@ -1,4 +1,4 @@
 directory: specification/elasticsan/resource-manager/Microsoft.ElasticSan/ElasticSan
-commit: 9bb28560c09f7e60f6df095e9530d27f77748bdf
+commit: 0b8708e5213a35638b7d8627de4ea9b1735c31fb
 repo: Azure/azure-rest-api-specs
 additionalDirectories: 

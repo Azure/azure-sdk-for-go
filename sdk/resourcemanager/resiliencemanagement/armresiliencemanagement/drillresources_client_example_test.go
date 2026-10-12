@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-08-31-preview/DrillResources_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-01/DrillResources_Get_MaximumSet_Gen.json
 func ExampleDrillResourcesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -32,9 +32,10 @@ func ExampleDrillResourcesClient_Get() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armresiliencemanagement.DrillResourcesClientGetResponse{
 	// 	DrillResource: armresiliencemanagement.DrillResource{
-	// 		Properties: &armresiliencemanagement.DrillResourceProperties{
+	// 		Properties: &armresiliencemanagement.ZonalDrillResourceProperties{
 	// 			ResourceID: to.Ptr("/subscriptions/f2edfd5d-5496-4683-b94f-b3588c579009/resourceGroups/testRG/providers/Microsoft.Compute/virtualMachines/vm1"),
 	// 			ResourceType: to.Ptr("Microsoft.Compute/virtualMachines"),
+	// 			DrillType: to.Ptr(armresiliencemanagement.DrillTypeZonal),
 	// 			InclusionState: to.Ptr(armresiliencemanagement.DrillResourceInclusionStateExcluded),
 	// 			ReadinessState: to.Ptr(armresiliencemanagement.DrillResourceReadinessStateReady),
 	// 			FaultState: to.Ptr(armresiliencemanagement.DrillResourceFaultStateSystemNative),
@@ -64,7 +65,7 @@ func ExampleDrillResourcesClient_Get() {
 	// 			HaStatus: to.Ptr(armresiliencemanagement.HAStatusEnabled),
 	// 			AttentionReason: &armresiliencemanagement.DrillResourceAttentionReason{
 	// 				ResourceState: []*armresiliencemanagement.DrillResourceState{
-	// 					to.Ptr(armresiliencemanagement.DrillResourceState("InSGNotInDrill")),
+	// 					to.Ptr(armresiliencemanagement.DrillResourceStateInServiceGroupNotInDrill),
 	// 				},
 	// 				RunbookFaultRbacOnTargets: to.Ptr(armresiliencemanagement.RBACStateSet),
 	// 				MonitoringRbacOnTargets: to.Ptr(armresiliencemanagement.RBACStateNotSet),
@@ -98,9 +99,9 @@ func ExampleDrillResourcesClient_Get() {
 	// 				to.Ptr("eastus-az2"),
 	// 			},
 	// 		},
-	// 		ID: to.Ptr("/providers/Microsoft.Management/serviceGroups/sampleServiceGroupName/providers/Microsoft.AzureResilienceManagement/drills/drill1/drillResources/2c9b3a1f-f96e-42c2-98fe-15005da8a133"),
-	// 		Name: to.Ptr("2c9b3a1f-f96e-42c2-98fe-15005da8a133"),
-	// 		Type: to.Ptr("Microsoft.AzureResilienceManagement/drillResources"),
+	// 		ID: to.Ptr("/providers/Microsoft.Management/serviceGroups/sampleServiceGroupName/providers/Microsoft.AzureResilienceManagement/drills/drill1/drillResources/b6378181-9dc0-4a43-8e09-97a8b08aabaa"),
+	// 		Name: to.Ptr("b6378181-9dc0-4a43-8e09-97a8b08aabaa"),
+	// 		Type: to.Ptr("Microsoft.AzureResilienceManagement/drills/drillResources"),
 	// 		SystemData: &armresiliencemanagement.SystemData{
 	// 			CreatedBy: to.Ptr("dvnfxbuyqhvivfjddjccdtlwajfht"),
 	// 			CreatedByType: to.Ptr(armresiliencemanagement.CreatedByTypeUser),
@@ -113,7 +114,7 @@ func ExampleDrillResourcesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-08-31-preview/DrillResources_List_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-01/DrillResources_List_MaximumSet_Gen.json
 func ExampleDrillResourcesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -141,9 +142,10 @@ func ExampleDrillResourcesClient_NewListPager() {
 		// 	DrillResourceListResult: armresiliencemanagement.DrillResourceListResult{
 		// 		Value: []*armresiliencemanagement.DrillResource{
 		// 			{
-		// 				Properties: &armresiliencemanagement.DrillResourceProperties{
+		// 				Properties: &armresiliencemanagement.ZonalDrillResourceProperties{
 		// 					ResourceID: to.Ptr("/subscriptions/f2edfd5d-5496-4683-b94f-b3588c579009/resourceGroups/testRG/providers/Microsoft.Compute/virtualMachines/vm1"),
 		// 					ResourceType: to.Ptr("Microsoft.Compute/virtualMachines"),
+		// 					DrillType: to.Ptr(armresiliencemanagement.DrillTypeZonal),
 		// 					InclusionState: to.Ptr(armresiliencemanagement.DrillResourceInclusionStateExcluded),
 		// 					ReadinessState: to.Ptr(armresiliencemanagement.DrillResourceReadinessStateReady),
 		// 					FaultState: to.Ptr(armresiliencemanagement.DrillResourceFaultStateSystemNative),
@@ -173,7 +175,7 @@ func ExampleDrillResourcesClient_NewListPager() {
 		// 					HaStatus: to.Ptr(armresiliencemanagement.HAStatusEnabled),
 		// 					AttentionReason: &armresiliencemanagement.DrillResourceAttentionReason{
 		// 						ResourceState: []*armresiliencemanagement.DrillResourceState{
-		// 							to.Ptr(armresiliencemanagement.DrillResourceState("InSGNotInDrill")),
+		// 							to.Ptr(armresiliencemanagement.DrillResourceStateInServiceGroupNotInDrill),
 		// 						},
 		// 						RunbookFaultRbacOnTargets: to.Ptr(armresiliencemanagement.RBACStateSet),
 		// 						MonitoringRbacOnTargets: to.Ptr(armresiliencemanagement.RBACStateNotSet),
@@ -208,8 +210,8 @@ func ExampleDrillResourcesClient_NewListPager() {
 		// 					},
 		// 				},
 		// 				ID: to.Ptr("/providers/Microsoft.Management/serviceGroups/sampleServiceGroupName/providers/Microsoft.AzureResilienceManagement/drills/drill1/drillResources/2c9b3a1f-f96e-42c2-98fe-15005da8a133"),
-		// 				Name: to.Ptr("drillResource1"),
-		// 				Type: to.Ptr("Microsoft.AzureResilienceManagement/drillResources"),
+		// 				Name: to.Ptr("2c9b3a1f-f96e-42c2-98fe-15005da8a133"),
+		// 				Type: to.Ptr("Microsoft.AzureResilienceManagement/drills/drillResources"),
 		// 				SystemData: &armresiliencemanagement.SystemData{
 		// 					CreatedBy: to.Ptr("dvnfxbuyqhvivfjddjccdtlwajfht"),
 		// 					CreatedByType: to.Ptr(armresiliencemanagement.CreatedByTypeUser),
@@ -220,9 +222,10 @@ func ExampleDrillResourcesClient_NewListPager() {
 		// 				},
 		// 			},
 		// 			{
-		// 				Properties: &armresiliencemanagement.DrillResourceProperties{
+		// 				Properties: &armresiliencemanagement.ZonalDrillResourceProperties{
 		// 					ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resourceGroups1/providers/Microsoft.Sql/managedInstances/managedInstances1"),
 		// 					ResourceType: to.Ptr("Microsoft.Sql/managedInstances"),
+		// 					DrillType: to.Ptr(armresiliencemanagement.DrillTypeZonal),
 		// 					InclusionState: to.Ptr(armresiliencemanagement.DrillResourceInclusionStateExcluded),
 		// 					ReadinessState: to.Ptr(armresiliencemanagement.DrillResourceReadinessStateReady),
 		// 					FaultState: to.Ptr(armresiliencemanagement.DrillResourceFaultStateSystemNative),
@@ -252,7 +255,7 @@ func ExampleDrillResourcesClient_NewListPager() {
 		// 					HaStatus: to.Ptr(armresiliencemanagement.HAStatusEnabled),
 		// 					AttentionReason: &armresiliencemanagement.DrillResourceAttentionReason{
 		// 						ResourceState: []*armresiliencemanagement.DrillResourceState{
-		// 							to.Ptr(armresiliencemanagement.DrillResourceState("InSGNotInDrill")),
+		// 							to.Ptr(armresiliencemanagement.DrillResourceStateInServiceGroupNotInDrill),
 		// 						},
 		// 						RunbookFaultRbacOnTargets: to.Ptr(armresiliencemanagement.RBACStateSet),
 		// 						MonitoringRbacOnTargets: to.Ptr(armresiliencemanagement.RBACStateSet),
@@ -288,7 +291,7 @@ func ExampleDrillResourcesClient_NewListPager() {
 		// 				},
 		// 				ID: to.Ptr("/providers/Microsoft.Management/serviceGroups/sampleServiceGroupName/providers/Microsoft.AzureResilienceManagement/drills/drill1/drillResources/a3d5571f-7b5a-4de4-a0fd-77bd06601af5"),
 		// 				Name: to.Ptr("a3d5571f-7b5a-4de4-a0fd-77bd06601af5"),
-		// 				Type: to.Ptr("Microsoft.AzureResilienceManagement/drillResources"),
+		// 				Type: to.Ptr("Microsoft.AzureResilienceManagement/drills/drillResources"),
 		// 				SystemData: &armresiliencemanagement.SystemData{
 		// 					CreatedBy: to.Ptr("dvnfxbuyqhvivfjddjccdtlwajfht"),
 		// 					CreatedByType: to.Ptr(armresiliencemanagement.CreatedByTypeUser),
@@ -299,7 +302,7 @@ func ExampleDrillResourcesClient_NewListPager() {
 		// 				},
 		// 			},
 		// 		},
-		// 		NextLink: to.Ptr("https://microsoft.com/a"),
+		// 		NextLink: to.Ptr("https://management.azure.com/providers/Microsoft.Management/serviceGroups/sampleServiceGroupName/providers/Microsoft.AzureResilienceManagement/drills/drill1/drillResources?api-version=2026-10-01&$skipToken=eyJuZXh0UGFnZSI6Mn0%3D"),
 		// 	},
 		// }
 	}

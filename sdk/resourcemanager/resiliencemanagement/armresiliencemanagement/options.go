@@ -245,39 +245,6 @@ type GoalResourcesClientListOptions struct {
 	Top *int32
 }
 
-// GoalTemplatesClientBeginCreateOrUpdateOptions contains the optional parameters for the GoalTemplatesClient.BeginCreateOrUpdate
-// method.
-type GoalTemplatesClientBeginCreateOrUpdateOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// GoalTemplatesClientBeginDeleteOptions contains the optional parameters for the GoalTemplatesClient.BeginDelete method.
-type GoalTemplatesClientBeginDeleteOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// GoalTemplatesClientBeginUpdateOptions contains the optional parameters for the GoalTemplatesClient.BeginUpdate method.
-type GoalTemplatesClientBeginUpdateOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// GoalTemplatesClientGetOptions contains the optional parameters for the GoalTemplatesClient.Get method.
-type GoalTemplatesClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// GoalTemplatesClientListOptions contains the optional parameters for the GoalTemplatesClient.NewListPager method.
-type GoalTemplatesClientListOptions struct {
-	// Skip over when retrieving results.
-	SkipToken *string
-
-	// Number of elements to return when retrieving results.
-	Top *int32
-}
-
 // OperationStatusClientGetOptions contains the optional parameters for the OperationStatusClient.Get method.
 type OperationStatusClientGetOptions struct {
 	// placeholder for future optional parameters

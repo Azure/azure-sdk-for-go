@@ -69,7 +69,7 @@ func (client *ExpressRouteCircuitPeeringsClient) BeginCreateOrUpdate(ctx context
 	}
 }
 
-// CreateOrUpdate - Creates or updates a peering in the specified express route circuits.
+// createOrUpdate - Creates or updates a peering in the specified express route circuits.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ExpressRouteCircuitPeeringsClient) createOrUpdate(ctx context.Context, resourceGroupName string, circuitName string, peeringName string, peeringParameters ExpressRouteCircuitPeering, options *ExpressRouteCircuitPeeringsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -91,7 +91,7 @@ func (client *ExpressRouteCircuitPeeringsClient) createOrUpdate(ctx context.Cont
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *ExpressRouteCircuitPeeringsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, circuitName string, peeringName string, peeringParameters ExpressRouteCircuitPeering, _ *ExpressRouteCircuitPeeringsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/expressRouteCircuits/{circuitName}/peerings/{peeringName}"
 	if client.subscriptionID == "" {
@@ -149,7 +149,7 @@ func (client *ExpressRouteCircuitPeeringsClient) BeginDelete(ctx context.Context
 	}
 }
 
-// Delete - Deletes the specified peering from the specified express route circuit.
+// deleteOperation - Deletes the specified peering from the specified express route circuit.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ExpressRouteCircuitPeeringsClient) deleteOperation(ctx context.Context, resourceGroupName string, circuitName string, peeringName string, options *ExpressRouteCircuitPeeringsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -171,7 +171,7 @@ func (client *ExpressRouteCircuitPeeringsClient) deleteOperation(ctx context.Con
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *ExpressRouteCircuitPeeringsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, circuitName string, peeringName string, _ *ExpressRouteCircuitPeeringsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/expressRouteCircuits/{circuitName}/peerings/{peeringName}"
 	if client.subscriptionID == "" {

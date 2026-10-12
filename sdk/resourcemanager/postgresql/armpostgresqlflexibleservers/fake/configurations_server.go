@@ -21,14 +21,6 @@ import (
 
 // ConfigurationsServer is a fake server for instances of the armpostgresqlflexibleservers.ConfigurationsClient type.
 type ConfigurationsServer struct {
-	// Get is the fake for method ConfigurationsClient.Get
-	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, serverName string, configurationName string, options *armpostgresqlflexibleservers.ConfigurationsClientGetOptions) (resp azfake.Responder[armpostgresqlflexibleservers.ConfigurationsClientGetResponse], errResp azfake.ErrorResponder)
-
-	// NewListByServerPager is the fake for method ConfigurationsClient.NewListByServerPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListByServerPager func(resourceGroupName string, serverName string, options *armpostgresqlflexibleservers.ConfigurationsClientListByServerOptions) (resp azfake.PagerResponder[armpostgresqlflexibleservers.ConfigurationsClientListByServerResponse])
-
 	// BeginPut is the fake for method ConfigurationsClient.BeginPut
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginPut func(ctx context.Context, resourceGroupName string, serverName string, configurationName string, parameters armpostgresqlflexibleservers.ConfigurationForUpdate, options *armpostgresqlflexibleservers.ConfigurationsClientBeginPutOptions) (resp azfake.PollerResponder[armpostgresqlflexibleservers.ConfigurationsClientPutResponse], errResp azfake.ErrorResponder)
@@ -36,6 +28,14 @@ type ConfigurationsServer struct {
 	// BeginUpdate is the fake for method ConfigurationsClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginUpdate func(ctx context.Context, resourceGroupName string, serverName string, configurationName string, parameters armpostgresqlflexibleservers.ConfigurationForUpdate, options *armpostgresqlflexibleservers.ConfigurationsClientBeginUpdateOptions) (resp azfake.PollerResponder[armpostgresqlflexibleservers.ConfigurationsClientUpdateResponse], errResp azfake.ErrorResponder)
+
+	// Get is the fake for method ConfigurationsClient.Get
+	// HTTP status codes to indicate success: http.StatusOK
+	Get func(ctx context.Context, resourceGroupName string, serverName string, configurationName string, options *armpostgresqlflexibleservers.ConfigurationsClientGetOptions) (resp azfake.Responder[armpostgresqlflexibleservers.ConfigurationsClientGetResponse], errResp azfake.ErrorResponder)
+
+	// NewListByServerPager is the fake for method ConfigurationsClient.NewListByServerPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListByServerPager func(resourceGroupName string, serverName string, options *armpostgresqlflexibleservers.ConfigurationsClientListByServerOptions) (resp azfake.PagerResponder[armpostgresqlflexibleservers.ConfigurationsClientListByServerResponse])
 }
 
 // NewConfigurationsServerTransport creates a new instance of ConfigurationsServerTransport with the provided implementation.
@@ -44,9 +44,9 @@ type ConfigurationsServer struct {
 func NewConfigurationsServerTransport(srv *ConfigurationsServer) *ConfigurationsServerTransport {
 	return &ConfigurationsServerTransport{
 		srv:                  srv,
-		newListByServerPager: newTracker[azfake.PagerResponder[armpostgresqlflexibleservers.ConfigurationsClientListByServerResponse]](),
 		beginPut:             newTracker[azfake.PollerResponder[armpostgresqlflexibleservers.ConfigurationsClientPutResponse]](),
 		beginUpdate:          newTracker[azfake.PollerResponder[armpostgresqlflexibleservers.ConfigurationsClientUpdateResponse]](),
+		newListByServerPager: newTracker[azfake.PagerResponder[armpostgresqlflexibleservers.ConfigurationsClientListByServerResponse]](),
 	}
 }
 
@@ -54,9 +54,9 @@ func NewConfigurationsServerTransport(srv *ConfigurationsServer) *Configurations
 // Don't use this type directly, use NewConfigurationsServerTransport instead.
 type ConfigurationsServerTransport struct {
 	srv                  *ConfigurationsServer
-	newListByServerPager *tracker[azfake.PagerResponder[armpostgresqlflexibleservers.ConfigurationsClientListByServerResponse]]
 	beginPut             *tracker[azfake.PollerResponder[armpostgresqlflexibleservers.ConfigurationsClientPutResponse]]
 	beginUpdate          *tracker[azfake.PollerResponder[armpostgresqlflexibleservers.ConfigurationsClientUpdateResponse]]
+	newListByServerPager *tracker[azfake.PagerResponder[armpostgresqlflexibleservers.ConfigurationsClientListByServerResponse]]
 }
 
 // Do implements the policy.Transporter interface for ConfigurationsServerTransport.
@@ -80,14 +80,14 @@ func (c *ConfigurationsServerTransport) dispatchToMethodFake(req *http.Request, 
 		}
 		if !intercepted {
 			switch method {
-			case "ConfigurationsClient.Get":
-				res.resp, res.err = c.dispatchGet(req)
-			case "ConfigurationsClient.NewListByServerPager":
-				res.resp, res.err = c.dispatchNewListByServerPager(req)
 			case "ConfigurationsClient.BeginPut":
 				res.resp, res.err = c.dispatchBeginPut(req)
 			case "ConfigurationsClient.BeginUpdate":
 				res.resp, res.err = c.dispatchBeginUpdate(req)
+			case "ConfigurationsClient.Get":
+				res.resp, res.err = c.dispatchGet(req)
+			case "ConfigurationsClient.NewListByServerPager":
+				res.resp, res.err = c.dispatchNewListByServerPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -102,84 +102,6 @@ func (c *ConfigurationsServerTransport) dispatchToMethodFake(req *http.Request, 
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
-}
-
-func (c *ConfigurationsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if c.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DBforPostgreSQL/flexibleServers/(?P<serverName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/configurations/(?P<configurationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	serverNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serverName")])
-	if err != nil {
-		return nil, err
-	}
-	configurationNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("configurationName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := c.srv.Get(req.Context(), resourceGroupNameParam, serverNameParam, configurationNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Configuration, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (c *ConfigurationsServerTransport) dispatchNewListByServerPager(req *http.Request) (*http.Response, error) {
-	if c.srv.NewListByServerPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListByServerPager not implemented")}
-	}
-	newListByServerPager := c.newListByServerPager.get(req)
-	if newListByServerPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DBforPostgreSQL/flexibleServers/(?P<serverName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/configurations`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		serverNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serverName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := c.srv.NewListByServerPager(resourceGroupNameParam, serverNameParam, nil)
-		newListByServerPager = &resp
-		c.newListByServerPager.add(req, newListByServerPager)
-		server.PagerResponderInjectNextLinks(newListByServerPager, req, func(page *armpostgresqlflexibleservers.ConfigurationsClientListByServerResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListByServerPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		c.newListByServerPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListByServerPager) {
-		c.newListByServerPager.remove(req)
-	}
-	return resp, nil
 }
 
 func (c *ConfigurationsServerTransport) dispatchBeginPut(req *http.Request) (*http.Response, error) {
@@ -283,6 +205,84 @@ func (c *ConfigurationsServerTransport) dispatchBeginUpdate(req *http.Request) (
 		c.beginUpdate.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (c *ConfigurationsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if c.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DBforPostgreSQL/flexibleServers/(?P<serverName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/configurations/(?P<configurationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	serverNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serverName")])
+	if err != nil {
+		return nil, err
+	}
+	configurationNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("configurationName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := c.srv.Get(req.Context(), resourceGroupNameParam, serverNameParam, configurationNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Configuration, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (c *ConfigurationsServerTransport) dispatchNewListByServerPager(req *http.Request) (*http.Response, error) {
+	if c.srv.NewListByServerPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListByServerPager not implemented")}
+	}
+	newListByServerPager := c.newListByServerPager.get(req)
+	if newListByServerPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DBforPostgreSQL/flexibleServers/(?P<serverName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/configurations`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		serverNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serverName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := c.srv.NewListByServerPager(resourceGroupNameParam, serverNameParam, nil)
+		newListByServerPager = &resp
+		c.newListByServerPager.add(req, newListByServerPager)
+		server.PagerResponderInjectNextLinks(newListByServerPager, req, func(page *armpostgresqlflexibleservers.ConfigurationsClientListByServerResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListByServerPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		c.newListByServerPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListByServerPager) {
+		c.newListByServerPager.remove(req)
+	}
 	return resp, nil
 }
 

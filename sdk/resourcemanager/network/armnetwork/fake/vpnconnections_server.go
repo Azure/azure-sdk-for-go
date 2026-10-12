@@ -30,14 +30,6 @@ type VPNConnectionsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, gatewayName string, connectionName string, options *armnetwork.VPNConnectionsClientBeginDeleteOptions) (resp azfake.PollerResponder[armnetwork.VPNConnectionsClientDeleteResponse], errResp azfake.ErrorResponder)
 
-	// Get is the fake for method VPNConnectionsClient.Get
-	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, gatewayName string, connectionName string, options *armnetwork.VPNConnectionsClientGetOptions) (resp azfake.Responder[armnetwork.VPNConnectionsClientGetResponse], errResp azfake.ErrorResponder)
-
-	// NewListByVPNGatewayPager is the fake for method VPNConnectionsClient.NewListByVPNGatewayPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListByVPNGatewayPager func(resourceGroupName string, gatewayName string, options *armnetwork.VPNConnectionsClientListByVPNGatewayOptions) (resp azfake.PagerResponder[armnetwork.VPNConnectionsClientListByVPNGatewayResponse])
-
 	// BeginStartPacketCapture is the fake for method VPNConnectionsClient.BeginStartPacketCapture
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginStartPacketCapture func(ctx context.Context, resourceGroupName string, gatewayName string, vpnConnectionName string, options *armnetwork.VPNConnectionsClientBeginStartPacketCaptureOptions) (resp azfake.PollerResponder[armnetwork.VPNConnectionsClientStartPacketCaptureResponse], errResp azfake.ErrorResponder)
@@ -45,6 +37,14 @@ type VPNConnectionsServer struct {
 	// BeginStopPacketCapture is the fake for method VPNConnectionsClient.BeginStopPacketCapture
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginStopPacketCapture func(ctx context.Context, resourceGroupName string, gatewayName string, vpnConnectionName string, options *armnetwork.VPNConnectionsClientBeginStopPacketCaptureOptions) (resp azfake.PollerResponder[armnetwork.VPNConnectionsClientStopPacketCaptureResponse], errResp azfake.ErrorResponder)
+
+	// Get is the fake for method VPNConnectionsClient.Get
+	// HTTP status codes to indicate success: http.StatusOK
+	Get func(ctx context.Context, resourceGroupName string, gatewayName string, connectionName string, options *armnetwork.VPNConnectionsClientGetOptions) (resp azfake.Responder[armnetwork.VPNConnectionsClientGetResponse], errResp azfake.ErrorResponder)
+
+	// NewListByVPNGatewayPager is the fake for method VPNConnectionsClient.NewListByVPNGatewayPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListByVPNGatewayPager func(resourceGroupName string, gatewayName string, options *armnetwork.VPNConnectionsClientListByVPNGatewayOptions) (resp azfake.PagerResponder[armnetwork.VPNConnectionsClientListByVPNGatewayResponse])
 }
 
 // NewVPNConnectionsServerTransport creates a new instance of VPNConnectionsServerTransport with the provided implementation.
@@ -55,9 +55,9 @@ func NewVPNConnectionsServerTransport(srv *VPNConnectionsServer) *VPNConnections
 		srv:                      srv,
 		beginCreateOrUpdate:      newTracker[azfake.PollerResponder[armnetwork.VPNConnectionsClientCreateOrUpdateResponse]](),
 		beginDelete:              newTracker[azfake.PollerResponder[armnetwork.VPNConnectionsClientDeleteResponse]](),
-		newListByVPNGatewayPager: newTracker[azfake.PagerResponder[armnetwork.VPNConnectionsClientListByVPNGatewayResponse]](),
 		beginStartPacketCapture:  newTracker[azfake.PollerResponder[armnetwork.VPNConnectionsClientStartPacketCaptureResponse]](),
 		beginStopPacketCapture:   newTracker[azfake.PollerResponder[armnetwork.VPNConnectionsClientStopPacketCaptureResponse]](),
+		newListByVPNGatewayPager: newTracker[azfake.PagerResponder[armnetwork.VPNConnectionsClientListByVPNGatewayResponse]](),
 	}
 }
 
@@ -67,9 +67,9 @@ type VPNConnectionsServerTransport struct {
 	srv                      *VPNConnectionsServer
 	beginCreateOrUpdate      *tracker[azfake.PollerResponder[armnetwork.VPNConnectionsClientCreateOrUpdateResponse]]
 	beginDelete              *tracker[azfake.PollerResponder[armnetwork.VPNConnectionsClientDeleteResponse]]
-	newListByVPNGatewayPager *tracker[azfake.PagerResponder[armnetwork.VPNConnectionsClientListByVPNGatewayResponse]]
 	beginStartPacketCapture  *tracker[azfake.PollerResponder[armnetwork.VPNConnectionsClientStartPacketCaptureResponse]]
 	beginStopPacketCapture   *tracker[azfake.PollerResponder[armnetwork.VPNConnectionsClientStopPacketCaptureResponse]]
+	newListByVPNGatewayPager *tracker[azfake.PagerResponder[armnetwork.VPNConnectionsClientListByVPNGatewayResponse]]
 }
 
 // Do implements the policy.Transporter interface for VPNConnectionsServerTransport.
@@ -97,14 +97,14 @@ func (v *VPNConnectionsServerTransport) dispatchToMethodFake(req *http.Request, 
 				res.resp, res.err = v.dispatchBeginCreateOrUpdate(req)
 			case "VPNConnectionsClient.BeginDelete":
 				res.resp, res.err = v.dispatchBeginDelete(req)
-			case "VPNConnectionsClient.Get":
-				res.resp, res.err = v.dispatchGet(req)
-			case "VPNConnectionsClient.NewListByVPNGatewayPager":
-				res.resp, res.err = v.dispatchNewListByVPNGatewayPager(req)
 			case "VPNConnectionsClient.BeginStartPacketCapture":
 				res.resp, res.err = v.dispatchBeginStartPacketCapture(req)
 			case "VPNConnectionsClient.BeginStopPacketCapture":
 				res.resp, res.err = v.dispatchBeginStopPacketCapture(req)
+			case "VPNConnectionsClient.Get":
+				res.resp, res.err = v.dispatchGet(req)
+			case "VPNConnectionsClient.NewListByVPNGatewayPager":
+				res.resp, res.err = v.dispatchNewListByVPNGatewayPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -221,84 +221,6 @@ func (v *VPNConnectionsServerTransport) dispatchBeginDelete(req *http.Request) (
 	return resp, nil
 }
 
-func (v *VPNConnectionsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if v.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/vpnGateways/(?P<gatewayName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/vpnConnections/(?P<connectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	gatewayNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("gatewayName")])
-	if err != nil {
-		return nil, err
-	}
-	connectionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("connectionName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := v.srv.Get(req.Context(), resourceGroupNameParam, gatewayNameParam, connectionNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).VPNConnection, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (v *VPNConnectionsServerTransport) dispatchNewListByVPNGatewayPager(req *http.Request) (*http.Response, error) {
-	if v.srv.NewListByVPNGatewayPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListByVPNGatewayPager not implemented")}
-	}
-	newListByVPNGatewayPager := v.newListByVPNGatewayPager.get(req)
-	if newListByVPNGatewayPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/vpnGateways/(?P<gatewayName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/vpnConnections`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		gatewayNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("gatewayName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := v.srv.NewListByVPNGatewayPager(resourceGroupNameParam, gatewayNameParam, nil)
-		newListByVPNGatewayPager = &resp
-		v.newListByVPNGatewayPager.add(req, newListByVPNGatewayPager)
-		server.PagerResponderInjectNextLinks(newListByVPNGatewayPager, req, func(page *armnetwork.VPNConnectionsClientListByVPNGatewayResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListByVPNGatewayPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		v.newListByVPNGatewayPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListByVPNGatewayPager) {
-		v.newListByVPNGatewayPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (v *VPNConnectionsServerTransport) dispatchBeginStartPacketCapture(req *http.Request) (*http.Response, error) {
 	if v.srv.BeginStartPacketCapture == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginStartPacketCapture not implemented")}
@@ -412,6 +334,84 @@ func (v *VPNConnectionsServerTransport) dispatchBeginStopPacketCapture(req *http
 		v.beginStopPacketCapture.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (v *VPNConnectionsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if v.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/vpnGateways/(?P<gatewayName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/vpnConnections/(?P<connectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	gatewayNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("gatewayName")])
+	if err != nil {
+		return nil, err
+	}
+	connectionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("connectionName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := v.srv.Get(req.Context(), resourceGroupNameParam, gatewayNameParam, connectionNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).VPNConnection, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (v *VPNConnectionsServerTransport) dispatchNewListByVPNGatewayPager(req *http.Request) (*http.Response, error) {
+	if v.srv.NewListByVPNGatewayPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListByVPNGatewayPager not implemented")}
+	}
+	newListByVPNGatewayPager := v.newListByVPNGatewayPager.get(req)
+	if newListByVPNGatewayPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/vpnGateways/(?P<gatewayName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/vpnConnections`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		gatewayNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("gatewayName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := v.srv.NewListByVPNGatewayPager(resourceGroupNameParam, gatewayNameParam, nil)
+		newListByVPNGatewayPager = &resp
+		v.newListByVPNGatewayPager.add(req, newListByVPNGatewayPager)
+		server.PagerResponderInjectNextLinks(newListByVPNGatewayPager, req, func(page *armnetwork.VPNConnectionsClientListByVPNGatewayResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListByVPNGatewayPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		v.newListByVPNGatewayPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListByVPNGatewayPager) {
+		v.newListByVPNGatewayPager.remove(req)
+	}
 	return resp, nil
 }
 

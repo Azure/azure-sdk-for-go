@@ -68,7 +68,7 @@ func (client *LocalNetworkGatewaysClient) BeginCreateOrUpdate(ctx context.Contex
 	}
 }
 
-// CreateOrUpdate - Creates or updates a local network gateway in the specified resource group.
+// createOrUpdate - Creates or updates a local network gateway in the specified resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *LocalNetworkGatewaysClient) createOrUpdate(ctx context.Context, resourceGroupName string, localNetworkGatewayName string, parameters LocalNetworkGateway, options *LocalNetworkGatewaysClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -90,7 +90,7 @@ func (client *LocalNetworkGatewaysClient) createOrUpdate(ctx context.Context, re
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *LocalNetworkGatewaysClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, localNetworkGatewayName string, parameters LocalNetworkGateway, _ *LocalNetworkGatewaysClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/localNetworkGateways/{localNetworkGatewayName}"
 	if client.subscriptionID == "" {
@@ -143,7 +143,7 @@ func (client *LocalNetworkGatewaysClient) BeginDelete(ctx context.Context, resou
 	}
 }
 
-// Delete - Deletes the specified local network gateway.
+// deleteOperation - Deletes the specified local network gateway.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *LocalNetworkGatewaysClient) deleteOperation(ctx context.Context, resourceGroupName string, localNetworkGatewayName string, options *LocalNetworkGatewaysClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -165,7 +165,7 @@ func (client *LocalNetworkGatewaysClient) deleteOperation(ctx context.Context, r
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *LocalNetworkGatewaysClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, localNetworkGatewayName string, _ *LocalNetworkGatewaysClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/localNetworkGateways/{localNetworkGatewayName}"
 	if client.subscriptionID == "" {

@@ -70,7 +70,7 @@ func (client *InboundSecurityRuleClient) BeginCreateOrUpdate(ctx context.Context
 	}
 }
 
-// CreateOrUpdate - Creates or updates the specified Network Virtual Appliance Inbound Security Rules.
+// createOrUpdate - Creates or updates the specified Network Virtual Appliance Inbound Security Rules.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *InboundSecurityRuleClient) createOrUpdate(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, ruleCollectionName string, parameters InboundSecurityRule, options *InboundSecurityRuleClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -92,7 +92,7 @@ func (client *InboundSecurityRuleClient) createOrUpdate(ctx context.Context, res
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *InboundSecurityRuleClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, ruleCollectionName string, parameters InboundSecurityRule, _ *InboundSecurityRuleClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkVirtualAppliances/{networkVirtualApplianceName}/inboundSecurityRules/{ruleCollectionName}"
 	if client.subscriptionID == "" {

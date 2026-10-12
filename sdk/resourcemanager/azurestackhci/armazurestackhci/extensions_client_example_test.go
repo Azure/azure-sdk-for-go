@@ -145,6 +145,134 @@ func ExampleExtensionsClient_BeginDelete() {
 	// }
 }
 
+// Generated from example definition: 2026-04-30/PatchExtension.json
+func ExampleExtensionsClient_BeginUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armazurestackhci.NewClientFactory("fd3c3665-1729-4b7b-9a38-238e83b0f98b", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewExtensionsClient().BeginUpdate(ctx, "test-rg", "myCluster", "default", "MicrosoftMonitoringAgent", armazurestackhci.ExtensionPatch{
+		Properties: &armazurestackhci.ExtensionPatchProperties{
+			ExtensionParameters: &armazurestackhci.ExtensionPatchParameters{
+				EnableAutomaticUpgrade: to.Ptr(false),
+				ProtectedSettings: map[string]any{
+					"workspaceKey": "xx",
+				},
+				Settings: map[string]any{
+					"workspaceId": "xx",
+				},
+				TypeHandlerVersion: to.Ptr("1.10"),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armazurestackhci.ExtensionsClientUpdateResponse{
+	// 	Extension: armazurestackhci.Extension{
+	// 		Name: to.Ptr("MicrosoftMonitoringAgent"),
+	// 		Type: to.Ptr("Microsoft.AzureStackHCI/clusters/arcSettings/extensions"),
+	// 		ID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/test-rg/providers/Microsoft.AzureStackHCI/clusters/myCluster/arcSettings/default/extensions/MicrosoftMonitoringAgent"),
+	// 		Properties: &armazurestackhci.ExtensionProperties{
+	// 			AggregateState: to.Ptr(armazurestackhci.ExtensionAggregateStatePartiallyConnected),
+	// 			ExtensionParameters: &armazurestackhci.ExtensionParameters{
+	// 				Type: to.Ptr("string"),
+	// 				AutoUpgradeMinorVersion: to.Ptr(false),
+	// 				EnableAutomaticUpgrade: to.Ptr(false),
+	// 				Publisher: to.Ptr("Microsoft.Compute"),
+	// 				Settings: map[string]any{
+	// 					"workspaceId": "xx",
+	// 				},
+	// 				TypeHandlerVersion: to.Ptr("1.10"),
+	// 			},
+	// 			ManagedBy: to.Ptr(armazurestackhci.ExtensionManagedByUser),
+	// 			PerNodeExtensionDetails: []*armazurestackhci.PerNodeExtensionState{
+	// 				{
+	// 					Name: to.Ptr("Node-1"),
+	// 					Extension: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/ArcInstance-rg/providers/Microsoft.HybridCompute/machines/Node-1/Extensions/MicrosoftMonitoringAgent"),
+	// 					InstanceView: &armazurestackhci.ExtensionInstanceView{
+	// 						Name: to.Ptr("MicrosoftMonitoringAgent"),
+	// 						Type: to.Ptr("MicrosoftMonitoringAgent"),
+	// 						Status: &armazurestackhci.ExtensionInstanceViewStatus{
+	// 							Code: to.Ptr("success"),
+	// 							DisplayStatus: to.Ptr("Provisioning succeeded"),
+	// 							Level: to.Ptr(armazurestackhci.StatusLevelTypes("Information")),
+	// 							Message: to.Ptr("Finished executing command, StdOut: , StdErr:"),
+	// 							Time: to.Ptr(time.Date(2019, time.August, 8, 20, 42, 10, 999000000, time.UTC)),
+	// 						},
+	// 						TypeHandlerVersion: to.Ptr("1.10.0"),
+	// 					},
+	// 					State: to.Ptr(armazurestackhci.NodeExtensionStateConnected),
+	// 					TypeHandlerVersion: to.Ptr("1.10.0"),
+	// 				},
+	// 				{
+	// 					Name: to.Ptr("Node-2"),
+	// 					Extension: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/ArcInstance-rg/providers/Microsoft.HybridCompute/machines/Node-2/Extensions/MicrosoftMonitoringAgent"),
+	// 					InstanceView: &armazurestackhci.ExtensionInstanceView{
+	// 						Name: to.Ptr("MicrosoftMonitoringAgent"),
+	// 						Type: to.Ptr("MicrosoftMonitoringAgent"),
+	// 						Status: &armazurestackhci.ExtensionInstanceViewStatus{
+	// 							Code: to.Ptr("error"),
+	// 							DisplayStatus: to.Ptr("Provisioning failed"),
+	// 							Level: to.Ptr(armazurestackhci.StatusLevelTypesError),
+	// 							Message: to.Ptr("Finished executing command, StdOut: , StdErr:"),
+	// 							Time: to.Ptr(time.Date(2019, time.August, 8, 20, 42, 10, 999000000, time.UTC)),
+	// 						},
+	// 						TypeHandlerVersion: to.Ptr("1.10.3"),
+	// 					},
+	// 					State: to.Ptr(armazurestackhci.NodeExtensionStateDisconnected),
+	// 					TypeHandlerVersion: to.Ptr("1.10.3"),
+	// 				},
+	// 			},
+	// 			ProvisioningState: to.Ptr(armazurestackhci.ProvisioningStateSucceeded),
+	// 		},
+	// 		SystemData: &armazurestackhci.SystemData{
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.January, 1, 17, 18, 19, 123456700, time.UTC)),
+	// 			CreatedBy: to.Ptr("user1"),
+	// 			CreatedByType: to.Ptr(armazurestackhci.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.January, 2, 17, 18, 19, 123456700, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("user2"),
+	// 			LastModifiedByType: to.Ptr(armazurestackhci.CreatedByTypeUser),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-04-30/Extensions_Upgrade.json
+func ExampleExtensionsClient_BeginUpgrade() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armazurestackhci.NewClientFactory("fd3c3665-1729-4b7b-9a38-238e83b0f98b", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewExtensionsClient().BeginUpgrade(ctx, "test-rg", "myCluster", "default", "MicrosoftMonitoringAgent", armazurestackhci.ExtensionUpgradeParameters{
+		TargetVersion: to.Ptr("1.0.18062.0"),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+}
+
 // Generated from example definition: 2026-04-30/GetExtension.json
 func ExampleExtensionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -339,133 +467,5 @@ func ExampleExtensionsClient_NewListByArcSettingPager() {
 		// 		},
 		// 	},
 		// }
-	}
-}
-
-// Generated from example definition: 2026-04-30/PatchExtension.json
-func ExampleExtensionsClient_BeginUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armazurestackhci.NewClientFactory("fd3c3665-1729-4b7b-9a38-238e83b0f98b", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewExtensionsClient().BeginUpdate(ctx, "test-rg", "myCluster", "default", "MicrosoftMonitoringAgent", armazurestackhci.ExtensionPatch{
-		Properties: &armazurestackhci.ExtensionPatchProperties{
-			ExtensionParameters: &armazurestackhci.ExtensionPatchParameters{
-				EnableAutomaticUpgrade: to.Ptr(false),
-				ProtectedSettings: map[string]any{
-					"workspaceKey": "xx",
-				},
-				Settings: map[string]any{
-					"workspaceId": "xx",
-				},
-				TypeHandlerVersion: to.Ptr("1.10"),
-			},
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armazurestackhci.ExtensionsClientUpdateResponse{
-	// 	Extension: armazurestackhci.Extension{
-	// 		Name: to.Ptr("MicrosoftMonitoringAgent"),
-	// 		Type: to.Ptr("Microsoft.AzureStackHCI/clusters/arcSettings/extensions"),
-	// 		ID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/test-rg/providers/Microsoft.AzureStackHCI/clusters/myCluster/arcSettings/default/extensions/MicrosoftMonitoringAgent"),
-	// 		Properties: &armazurestackhci.ExtensionProperties{
-	// 			AggregateState: to.Ptr(armazurestackhci.ExtensionAggregateStatePartiallyConnected),
-	// 			ExtensionParameters: &armazurestackhci.ExtensionParameters{
-	// 				Type: to.Ptr("string"),
-	// 				AutoUpgradeMinorVersion: to.Ptr(false),
-	// 				EnableAutomaticUpgrade: to.Ptr(false),
-	// 				Publisher: to.Ptr("Microsoft.Compute"),
-	// 				Settings: map[string]any{
-	// 					"workspaceId": "xx",
-	// 				},
-	// 				TypeHandlerVersion: to.Ptr("1.10"),
-	// 			},
-	// 			ManagedBy: to.Ptr(armazurestackhci.ExtensionManagedByUser),
-	// 			PerNodeExtensionDetails: []*armazurestackhci.PerNodeExtensionState{
-	// 				{
-	// 					Name: to.Ptr("Node-1"),
-	// 					Extension: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/ArcInstance-rg/providers/Microsoft.HybridCompute/machines/Node-1/Extensions/MicrosoftMonitoringAgent"),
-	// 					InstanceView: &armazurestackhci.ExtensionInstanceView{
-	// 						Name: to.Ptr("MicrosoftMonitoringAgent"),
-	// 						Type: to.Ptr("MicrosoftMonitoringAgent"),
-	// 						Status: &armazurestackhci.ExtensionInstanceViewStatus{
-	// 							Code: to.Ptr("success"),
-	// 							DisplayStatus: to.Ptr("Provisioning succeeded"),
-	// 							Level: to.Ptr(armazurestackhci.StatusLevelTypes("Information")),
-	// 							Message: to.Ptr("Finished executing command, StdOut: , StdErr:"),
-	// 							Time: to.Ptr(time.Date(2019, time.August, 8, 20, 42, 10, 999000000, time.UTC)),
-	// 						},
-	// 						TypeHandlerVersion: to.Ptr("1.10.0"),
-	// 					},
-	// 					State: to.Ptr(armazurestackhci.NodeExtensionStateConnected),
-	// 					TypeHandlerVersion: to.Ptr("1.10.0"),
-	// 				},
-	// 				{
-	// 					Name: to.Ptr("Node-2"),
-	// 					Extension: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/ArcInstance-rg/providers/Microsoft.HybridCompute/machines/Node-2/Extensions/MicrosoftMonitoringAgent"),
-	// 					InstanceView: &armazurestackhci.ExtensionInstanceView{
-	// 						Name: to.Ptr("MicrosoftMonitoringAgent"),
-	// 						Type: to.Ptr("MicrosoftMonitoringAgent"),
-	// 						Status: &armazurestackhci.ExtensionInstanceViewStatus{
-	// 							Code: to.Ptr("error"),
-	// 							DisplayStatus: to.Ptr("Provisioning failed"),
-	// 							Level: to.Ptr(armazurestackhci.StatusLevelTypesError),
-	// 							Message: to.Ptr("Finished executing command, StdOut: , StdErr:"),
-	// 							Time: to.Ptr(time.Date(2019, time.August, 8, 20, 42, 10, 999000000, time.UTC)),
-	// 						},
-	// 						TypeHandlerVersion: to.Ptr("1.10.3"),
-	// 					},
-	// 					State: to.Ptr(armazurestackhci.NodeExtensionStateDisconnected),
-	// 					TypeHandlerVersion: to.Ptr("1.10.3"),
-	// 				},
-	// 			},
-	// 			ProvisioningState: to.Ptr(armazurestackhci.ProvisioningStateSucceeded),
-	// 		},
-	// 		SystemData: &armazurestackhci.SystemData{
-	// 			CreatedAt: to.Ptr(time.Date(2021, time.January, 1, 17, 18, 19, 123456700, time.UTC)),
-	// 			CreatedBy: to.Ptr("user1"),
-	// 			CreatedByType: to.Ptr(armazurestackhci.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.January, 2, 17, 18, 19, 123456700, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("user2"),
-	// 			LastModifiedByType: to.Ptr(armazurestackhci.CreatedByTypeUser),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-04-30/Extensions_Upgrade.json
-func ExampleExtensionsClient_BeginUpgrade() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armazurestackhci.NewClientFactory("fd3c3665-1729-4b7b-9a38-238e83b0f98b", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewExtensionsClient().BeginUpgrade(ctx, "test-rg", "myCluster", "default", "MicrosoftMonitoringAgent", armazurestackhci.ExtensionUpgradeParameters{
-		TargetVersion: to.Ptr("1.0.18062.0"),
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
 	}
 }

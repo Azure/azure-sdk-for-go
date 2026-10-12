@@ -70,7 +70,7 @@ func (client *DatabaseMigrationsSQLMiClient) BeginCancel(ctx context.Context, re
 	}
 }
 
-// Cancel - Stop in-progress database migration to SQL Managed Instance.
+// cancel - Stop in-progress database migration to SQL Managed Instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *DatabaseMigrationsSQLMiClient) cancel(ctx context.Context, resourceGroupName string, managedInstanceName string, targetDbName string, parameters MigrationOperationInput, options *DatabaseMigrationsSQLMiClientBeginCancelOptions) (*http.Response, error) {
 	var err error
@@ -92,7 +92,7 @@ func (client *DatabaseMigrationsSQLMiClient) cancel(ctx context.Context, resourc
 	return httpResp, nil
 }
 
-// cancelCreateRequest creates the Cancel request.
+// cancelCreateRequest creates the cancel request.
 func (client *DatabaseMigrationsSQLMiClient) cancelCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, targetDbName string, parameters MigrationOperationInput, _ *DatabaseMigrationsSQLMiClientBeginCancelOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/providers/Microsoft.DataMigration/databaseMigrations/{targetDbName}/cancel"
 	if client.subscriptionID == "" {
@@ -150,7 +150,7 @@ func (client *DatabaseMigrationsSQLMiClient) BeginCreateOrUpdate(ctx context.Con
 	}
 }
 
-// CreateOrUpdate - Create a new database migration to a given SQL Managed Instance.
+// createOrUpdate - Create a new database migration to a given SQL Managed Instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *DatabaseMigrationsSQLMiClient) createOrUpdate(ctx context.Context, resourceGroupName string, managedInstanceName string, targetDbName string, parameters DatabaseMigrationSQLMi, options *DatabaseMigrationsSQLMiClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -172,7 +172,7 @@ func (client *DatabaseMigrationsSQLMiClient) createOrUpdate(ctx context.Context,
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *DatabaseMigrationsSQLMiClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, targetDbName string, parameters DatabaseMigrationSQLMi, _ *DatabaseMigrationsSQLMiClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/providers/Microsoft.DataMigration/databaseMigrations/{targetDbName}"
 	if client.subscriptionID == "" {
@@ -231,7 +231,7 @@ func (client *DatabaseMigrationsSQLMiClient) BeginCutover(ctx context.Context, r
 	}
 }
 
-// Cutover - Initiate cutover for in-progress online database migration to SQL Managed Instance.
+// cutover - Initiate cutover for in-progress online database migration to SQL Managed Instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *DatabaseMigrationsSQLMiClient) cutover(ctx context.Context, resourceGroupName string, managedInstanceName string, targetDbName string, parameters MigrationOperationInput, options *DatabaseMigrationsSQLMiClientBeginCutoverOptions) (*http.Response, error) {
 	var err error
@@ -253,7 +253,7 @@ func (client *DatabaseMigrationsSQLMiClient) cutover(ctx context.Context, resour
 	return httpResp, nil
 }
 
-// cutoverCreateRequest creates the Cutover request.
+// cutoverCreateRequest creates the cutover request.
 func (client *DatabaseMigrationsSQLMiClient) cutoverCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, targetDbName string, parameters MigrationOperationInput, _ *DatabaseMigrationsSQLMiClientBeginCutoverOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/providers/Microsoft.DataMigration/databaseMigrations/{targetDbName}/cutover"
 	if client.subscriptionID == "" {
@@ -310,7 +310,7 @@ func (client *DatabaseMigrationsSQLMiClient) BeginDelete(ctx context.Context, re
 	}
 }
 
-// Delete - Delete Database Migration resource.
+// deleteOperation - Delete Database Migration resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *DatabaseMigrationsSQLMiClient) deleteOperation(ctx context.Context, resourceGroupName string, managedInstanceName string, targetDbName string, options *DatabaseMigrationsSQLMiClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -332,7 +332,7 @@ func (client *DatabaseMigrationsSQLMiClient) deleteOperation(ctx context.Context
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *DatabaseMigrationsSQLMiClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, targetDbName string, options *DatabaseMigrationsSQLMiClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/providers/Microsoft.DataMigration/databaseMigrations/{targetDbName}"
 	if client.subscriptionID == "" {

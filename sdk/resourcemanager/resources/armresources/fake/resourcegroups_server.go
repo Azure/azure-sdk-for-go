@@ -22,14 +22,6 @@ import (
 
 // ResourceGroupsServer is a fake server for instances of the armresources.ResourceGroupsClient type.
 type ResourceGroupsServer struct {
-	// CheckExistence is the fake for method ResourceGroupsClient.CheckExistence
-	// HTTP status codes to indicate success: http.StatusNoContent, http.StatusNotFound
-	CheckExistence func(ctx context.Context, resourceGroupName string, options *armresources.ResourceGroupsClientCheckExistenceOptions) (resp azfake.Responder[armresources.ResourceGroupsClientCheckExistenceResponse], errResp azfake.ErrorResponder)
-
-	// CreateOrUpdate is the fake for method ResourceGroupsClient.CreateOrUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	CreateOrUpdate func(ctx context.Context, resourceGroupName string, parameters armresources.ResourceGroup, options *armresources.ResourceGroupsClientCreateOrUpdateOptions) (resp azfake.Responder[armresources.ResourceGroupsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
-
 	// BeginDelete is the fake for method ResourceGroupsClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, options *armresources.ResourceGroupsClientBeginDeleteOptions) (resp azfake.PollerResponder[armresources.ResourceGroupsClientDeleteResponse], errResp azfake.ErrorResponder)
@@ -37,6 +29,14 @@ type ResourceGroupsServer struct {
 	// BeginExportTemplate is the fake for method ResourceGroupsClient.BeginExportTemplate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginExportTemplate func(ctx context.Context, resourceGroupName string, parameters armresources.ExportTemplateRequest, options *armresources.ResourceGroupsClientBeginExportTemplateOptions) (resp azfake.PollerResponder[armresources.ResourceGroupsClientExportTemplateResponse], errResp azfake.ErrorResponder)
+
+	// CheckExistence is the fake for method ResourceGroupsClient.CheckExistence
+	// HTTP status codes to indicate success: http.StatusNoContent, http.StatusNotFound
+	CheckExistence func(ctx context.Context, resourceGroupName string, options *armresources.ResourceGroupsClientCheckExistenceOptions) (resp azfake.Responder[armresources.ResourceGroupsClientCheckExistenceResponse], errResp azfake.ErrorResponder)
+
+	// CreateOrUpdate is the fake for method ResourceGroupsClient.CreateOrUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
+	CreateOrUpdate func(ctx context.Context, resourceGroupName string, parameters armresources.ResourceGroup, options *armresources.ResourceGroupsClientCreateOrUpdateOptions) (resp azfake.Responder[armresources.ResourceGroupsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method ResourceGroupsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
@@ -93,14 +93,14 @@ func (r *ResourceGroupsServerTransport) dispatchToMethodFake(req *http.Request, 
 		}
 		if !intercepted {
 			switch method {
-			case "ResourceGroupsClient.CheckExistence":
-				res.resp, res.err = r.dispatchCheckExistence(req)
-			case "ResourceGroupsClient.CreateOrUpdate":
-				res.resp, res.err = r.dispatchCreateOrUpdate(req)
 			case "ResourceGroupsClient.BeginDelete":
 				res.resp, res.err = r.dispatchBeginDelete(req)
 			case "ResourceGroupsClient.BeginExportTemplate":
 				res.resp, res.err = r.dispatchBeginExportTemplate(req)
+			case "ResourceGroupsClient.CheckExistence":
+				res.resp, res.err = r.dispatchCheckExistence(req)
+			case "ResourceGroupsClient.CreateOrUpdate":
+				res.resp, res.err = r.dispatchCreateOrUpdate(req)
 			case "ResourceGroupsClient.Get":
 				res.resp, res.err = r.dispatchGet(req)
 			case "ResourceGroupsClient.NewListPager":
@@ -121,68 +121,6 @@ func (r *ResourceGroupsServerTransport) dispatchToMethodFake(req *http.Request, 
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
-}
-
-func (r *ResourceGroupsServerTransport) dispatchCheckExistence(req *http.Request) (*http.Response, error) {
-	if r.srv.CheckExistence == nil {
-		return nil, &nonRetriableError{errors.New("fake for method CheckExistence not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourcegroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 3 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := r.srv.CheckExistence(req.Context(), resourceGroupNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusNoContent, http.StatusNotFound}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusNoContent, http.StatusNotFound", respContent.HTTPStatus)}
-	}
-	resp, err := server.NewResponse(respContent, req, nil)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (r *ResourceGroupsServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Response, error) {
-	if r.srv.CreateOrUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourcegroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 3 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armresources.ResourceGroup](req)
-	if err != nil {
-		return nil, err
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := r.srv.CreateOrUpdate(req.Context(), resourceGroupNameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ResourceGroup, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
 }
 
 func (r *ResourceGroupsServerTransport) dispatchBeginDelete(req *http.Request) (*http.Response, error) {
@@ -274,6 +212,68 @@ func (r *ResourceGroupsServerTransport) dispatchBeginExportTemplate(req *http.Re
 		r.beginExportTemplate.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (r *ResourceGroupsServerTransport) dispatchCheckExistence(req *http.Request) (*http.Response, error) {
+	if r.srv.CheckExistence == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CheckExistence not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourcegroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := r.srv.CheckExistence(req.Context(), resourceGroupNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusNoContent, http.StatusNotFound}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusNoContent, http.StatusNotFound", respContent.HTTPStatus)}
+	}
+	resp, err := server.NewResponse(respContent, req, nil)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (r *ResourceGroupsServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Response, error) {
+	if r.srv.CreateOrUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourcegroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armresources.ResourceGroup](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := r.srv.CreateOrUpdate(req.Context(), resourceGroupNameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ResourceGroup, req)
+	if err != nil {
+		return nil, err
+	}
 	return resp, nil
 }
 

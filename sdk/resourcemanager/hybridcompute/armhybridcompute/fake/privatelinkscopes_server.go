@@ -21,13 +21,13 @@ import (
 
 // PrivateLinkScopesServer is a fake server for instances of the armhybridcompute.PrivateLinkScopesClient type.
 type PrivateLinkScopesServer struct {
-	// CreateOrUpdate is the fake for method PrivateLinkScopesClient.CreateOrUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	CreateOrUpdate func(ctx context.Context, resourceGroupName string, scopeName string, parameters armhybridcompute.PrivateLinkScope, options *armhybridcompute.PrivateLinkScopesClientCreateOrUpdateOptions) (resp azfake.Responder[armhybridcompute.PrivateLinkScopesClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
-
 	// BeginDelete is the fake for method PrivateLinkScopesClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, scopeName string, options *armhybridcompute.PrivateLinkScopesClientBeginDeleteOptions) (resp azfake.PollerResponder[armhybridcompute.PrivateLinkScopesClientDeleteResponse], errResp azfake.ErrorResponder)
+
+	// CreateOrUpdate is the fake for method PrivateLinkScopesClient.CreateOrUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
+	CreateOrUpdate func(ctx context.Context, resourceGroupName string, scopeName string, parameters armhybridcompute.PrivateLinkScope, options *armhybridcompute.PrivateLinkScopesClientCreateOrUpdateOptions) (resp azfake.Responder[armhybridcompute.PrivateLinkScopesClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method PrivateLinkScopesClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
@@ -41,13 +41,13 @@ type PrivateLinkScopesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	GetValidationDetailsForMachine func(ctx context.Context, resourceGroupName string, machineName string, options *armhybridcompute.PrivateLinkScopesClientGetValidationDetailsForMachineOptions) (resp azfake.Responder[armhybridcompute.PrivateLinkScopesClientGetValidationDetailsForMachineResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method PrivateLinkScopesClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(options *armhybridcompute.PrivateLinkScopesClientListOptions) (resp azfake.PagerResponder[armhybridcompute.PrivateLinkScopesClientListResponse])
-
 	// NewListByResourceGroupPager is the fake for method PrivateLinkScopesClient.NewListByResourceGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByResourceGroupPager func(resourceGroupName string, options *armhybridcompute.PrivateLinkScopesClientListByResourceGroupOptions) (resp azfake.PagerResponder[armhybridcompute.PrivateLinkScopesClientListByResourceGroupResponse])
+
+	// NewListPager is the fake for method PrivateLinkScopesClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(options *armhybridcompute.PrivateLinkScopesClientListOptions) (resp azfake.PagerResponder[armhybridcompute.PrivateLinkScopesClientListResponse])
 
 	// UpdateTags is the fake for method PrivateLinkScopesClient.UpdateTags
 	// HTTP status codes to indicate success: http.StatusOK
@@ -61,8 +61,8 @@ func NewPrivateLinkScopesServerTransport(srv *PrivateLinkScopesServer) *PrivateL
 	return &PrivateLinkScopesServerTransport{
 		srv:                         srv,
 		beginDelete:                 newTracker[azfake.PollerResponder[armhybridcompute.PrivateLinkScopesClientDeleteResponse]](),
-		newListPager:                newTracker[azfake.PagerResponder[armhybridcompute.PrivateLinkScopesClientListResponse]](),
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armhybridcompute.PrivateLinkScopesClientListByResourceGroupResponse]](),
+		newListPager:                newTracker[azfake.PagerResponder[armhybridcompute.PrivateLinkScopesClientListResponse]](),
 	}
 }
 
@@ -71,8 +71,8 @@ func NewPrivateLinkScopesServerTransport(srv *PrivateLinkScopesServer) *PrivateL
 type PrivateLinkScopesServerTransport struct {
 	srv                         *PrivateLinkScopesServer
 	beginDelete                 *tracker[azfake.PollerResponder[armhybridcompute.PrivateLinkScopesClientDeleteResponse]]
-	newListPager                *tracker[azfake.PagerResponder[armhybridcompute.PrivateLinkScopesClientListResponse]]
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armhybridcompute.PrivateLinkScopesClientListByResourceGroupResponse]]
+	newListPager                *tracker[azfake.PagerResponder[armhybridcompute.PrivateLinkScopesClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for PrivateLinkScopesServerTransport.
@@ -96,20 +96,20 @@ func (p *PrivateLinkScopesServerTransport) dispatchToMethodFake(req *http.Reques
 		}
 		if !intercepted {
 			switch method {
-			case "PrivateLinkScopesClient.CreateOrUpdate":
-				res.resp, res.err = p.dispatchCreateOrUpdate(req)
 			case "PrivateLinkScopesClient.BeginDelete":
 				res.resp, res.err = p.dispatchBeginDelete(req)
+			case "PrivateLinkScopesClient.CreateOrUpdate":
+				res.resp, res.err = p.dispatchCreateOrUpdate(req)
 			case "PrivateLinkScopesClient.Get":
 				res.resp, res.err = p.dispatchGet(req)
 			case "PrivateLinkScopesClient.GetValidationDetails":
 				res.resp, res.err = p.dispatchGetValidationDetails(req)
 			case "PrivateLinkScopesClient.GetValidationDetailsForMachine":
 				res.resp, res.err = p.dispatchGetValidationDetailsForMachine(req)
-			case "PrivateLinkScopesClient.NewListPager":
-				res.resp, res.err = p.dispatchNewListPager(req)
 			case "PrivateLinkScopesClient.NewListByResourceGroupPager":
 				res.resp, res.err = p.dispatchNewListByResourceGroupPager(req)
+			case "PrivateLinkScopesClient.NewListPager":
+				res.resp, res.err = p.dispatchNewListPager(req)
 			case "PrivateLinkScopesClient.UpdateTags":
 				res.resp, res.err = p.dispatchUpdateTags(req)
 			default:
@@ -126,43 +126,6 @@ func (p *PrivateLinkScopesServerTransport) dispatchToMethodFake(req *http.Reques
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
-}
-
-func (p *PrivateLinkScopesServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Response, error) {
-	if p.srv.CreateOrUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.HybridCompute/privateLinkScopes/(?P<scopeName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armhybridcompute.PrivateLinkScope](req)
-	if err != nil {
-		return nil, err
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	scopeNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("scopeName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := p.srv.CreateOrUpdate(req.Context(), resourceGroupNameParam, scopeNameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).PrivateLinkScope, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
 }
 
 func (p *PrivateLinkScopesServerTransport) dispatchBeginDelete(req *http.Request) (*http.Response, error) {
@@ -206,6 +169,43 @@ func (p *PrivateLinkScopesServerTransport) dispatchBeginDelete(req *http.Request
 		p.beginDelete.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (p *PrivateLinkScopesServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Response, error) {
+	if p.srv.CreateOrUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.HybridCompute/privateLinkScopes/(?P<scopeName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armhybridcompute.PrivateLinkScope](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	scopeNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("scopeName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := p.srv.CreateOrUpdate(req.Context(), resourceGroupNameParam, scopeNameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).PrivateLinkScope, req)
+	if err != nil {
+		return nil, err
+	}
 	return resp, nil
 }
 
@@ -308,39 +308,6 @@ func (p *PrivateLinkScopesServerTransport) dispatchGetValidationDetailsForMachin
 	return resp, nil
 }
 
-func (p *PrivateLinkScopesServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if p.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := p.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.HybridCompute/privateLinkScopes`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := p.srv.NewListPager(nil)
-		newListPager = &resp
-		p.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armhybridcompute.PrivateLinkScopesClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		p.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		p.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (p *PrivateLinkScopesServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
 	if p.srv.NewListByResourceGroupPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
@@ -374,6 +341,39 @@ func (p *PrivateLinkScopesServerTransport) dispatchNewListByResourceGroupPager(r
 	}
 	if !server.PagerResponderMore(newListByResourceGroupPager) {
 		p.newListByResourceGroupPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (p *PrivateLinkScopesServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if p.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := p.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.HybridCompute/privateLinkScopes`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resp := p.srv.NewListPager(nil)
+		newListPager = &resp
+		p.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armhybridcompute.PrivateLinkScopesClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		p.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPager) {
+		p.newListPager.remove(req)
 	}
 	return resp, nil
 }

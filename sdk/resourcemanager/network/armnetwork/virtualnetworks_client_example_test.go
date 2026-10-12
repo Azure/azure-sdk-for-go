@@ -12,38 +12,6 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01/VirtualNetworkCheckIPAddressAvailability.json
-func ExampleVirtualNetworksClient_CheckIPAddressAvailability() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewVirtualNetworksClient().CheckIPAddressAvailability(ctx, "rg1", "test-vnet", "10.0.1.4", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armnetwork.VirtualNetworksClientCheckIPAddressAvailabilityResponse{
-	// 	IPAddressAvailabilityResult: armnetwork.IPAddressAvailabilityResult{
-	// 		Available: to.Ptr(false),
-	// 		AvailableIPAddresses: []*string{
-	// 			to.Ptr("10.0.1.5"),
-	// 			to.Ptr("10.0.1.6"),
-	// 			to.Ptr("10.0.1.7"),
-	// 			to.Ptr("10.0.1.8"),
-	// 			to.Ptr("10.0.1.9"),
-	// 		},
-	// 	},
-	// }
-}
-
 // Generated from example definition: 2026-01-01/VirtualNetworkCreate.json
 func ExampleVirtualNetworksClient_BeginCreateOrUpdate_createVirtualNetwork() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -803,6 +771,133 @@ func ExampleVirtualNetworksClient_BeginDelete() {
 	// }
 }
 
+// Generated from example definition: 2026-01-01/VirtualNetworkGetDdosProtectionStatus.json
+func ExampleVirtualNetworksClient_BeginListDdosProtectionStatus() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewVirtualNetworksClient().BeginListDdosProtectionStatus(ctx, "rg1", "test-vnet", &armnetwork.VirtualNetworksClientBeginListDdosProtectionStatusOptions{
+		Top: to.Ptr[int32](75)})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	for res.More() {
+		page, err := res.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armnetwork.VirtualNetworksClientListDdosProtectionStatusResponse{
+		// 	VirtualNetworkDdosProtectionStatusResult: armnetwork.VirtualNetworkDdosProtectionStatusResult{
+		// 		Value: []*armnetwork.PublicIPDdosProtectionStatusResult{
+		// 			{
+		// 				DdosProtectionPlanID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/ddosProtectionPlans/test-plan"),
+		// 				IsWorkloadProtected: to.Ptr(armnetwork.IsWorkloadProtectedTrue),
+		// 				PublicIPAddress: to.Ptr("10.0.1.5"),
+		// 				PublicIPAddressID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/publicIPAddresses/test-pip"),
+		// 			},
+		// 			{
+		// 				IsWorkloadProtected: to.Ptr(armnetwork.IsWorkloadProtectedFalse),
+		// 				PublicIPAddress: to.Ptr("10.0.1.6"),
+		// 				PublicIPAddressID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/publicIPAddresses/test-pip2"),
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2026-01-01/VirtualNetworkMoveIpConfigurations.json
+func ExampleVirtualNetworksClient_BeginMoveIPConfigurations() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewVirtualNetworksClient().BeginMoveIPConfigurations(ctx, "rg1", "test-vnet", armnetwork.MoveIPConfigurationsRequest{
+		MoveIPConfigurationItems: []*armnetwork.MoveIPConfigurationItem{
+			{
+				SourceIPConfiguration: &armnetwork.MoveIPConfigurationResourceReference{
+					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/networkInterfaces/nic1/ipConfigurations/ipconfig1"),
+				},
+				TargetIPConfiguration: &armnetwork.MoveIPConfigurationResourceReference{
+					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/networkInterfaces/nic2/ipConfigurations/ipconfig2"),
+				},
+			},
+			{
+				SourceIPConfiguration: &armnetwork.MoveIPConfigurationResourceReference{
+					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/networkInterfaces/nic3/ipConfigurations/ipconfig3"),
+				},
+				TargetIPConfiguration: &armnetwork.MoveIPConfigurationResourceReference{
+					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/networkInterfaces/nic4/ipConfigurations/ipconfig4"),
+				},
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armnetwork.VirtualNetworksClientMoveIPConfigurationsResponse{
+	// }
+}
+
+// Generated from example definition: 2026-01-01/VirtualNetworkCheckIPAddressAvailability.json
+func ExampleVirtualNetworksClient_CheckIPAddressAvailability() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewVirtualNetworksClient().CheckIPAddressAvailability(ctx, "rg1", "test-vnet", "10.0.1.4", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armnetwork.VirtualNetworksClientCheckIPAddressAvailabilityResponse{
+	// 	IPAddressAvailabilityResult: armnetwork.IPAddressAvailabilityResult{
+	// 		Available: to.Ptr(false),
+	// 		AvailableIPAddresses: []*string{
+	// 			to.Ptr("10.0.1.5"),
+	// 			to.Ptr("10.0.1.6"),
+	// 			to.Ptr("10.0.1.7"),
+	// 			to.Ptr("10.0.1.8"),
+	// 			to.Ptr("10.0.1.9"),
+	// 		},
+	// 	},
+	// }
+}
+
 // Generated from example definition: 2026-01-01/VirtualNetworkGet.json
 func ExampleVirtualNetworksClient_Get_getVirtualNetwork() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -1006,96 +1101,6 @@ func ExampleVirtualNetworksClient_Get_getVirtualNetworkWithADelegatedSubnet() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/VirtualNetworkList.json
-func ExampleVirtualNetworksClient_NewListPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewVirtualNetworksClient().NewListPager("rg1", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armnetwork.VirtualNetworksClientListResponse{
-		// 	VirtualNetworkListResult: armnetwork.VirtualNetworkListResult{
-		// 		Value: []*armnetwork.VirtualNetwork{
-		// 			{
-		// 				Name: to.Ptr("vnet1"),
-		// 				Type: to.Ptr("Microsoft.Network/virtualNetworks"),
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet1"),
-		// 				Location: to.Ptr("westus"),
-		// 				Properties: &armnetwork.VirtualNetworkPropertiesFormat{
-		// 					AddressSpace: &armnetwork.AddressSpace{
-		// 						AddressPrefixes: []*string{
-		// 							to.Ptr("10.0.0.0/8"),
-		// 						},
-		// 					},
-		// 					DefaultPublicNatGateway: &armnetwork.SubResource{
-		// 						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/natGateways/test-ngw"),
-		// 					},
-		// 					DhcpOptions: &armnetwork.DhcpOptions{
-		// 						DNSServers: []*string{
-		// 						},
-		// 					},
-		// 					ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
-		// 					Subnets: []*armnetwork.Subnet{
-		// 						{
-		// 							Name: to.Ptr("test-1"),
-		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/test-1"),
-		// 							Properties: &armnetwork.SubnetPropertiesFormat{
-		// 								AddressPrefix: to.Ptr("10.0.0.0/24"),
-		// 								ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
-		// 							},
-		// 						},
-		// 					},
-		// 					VirtualNetworkPeerings: []*armnetwork.VirtualNetworkPeering{
-		// 					},
-		// 				},
-		// 			},
-		// 			{
-		// 				Name: to.Ptr("vnet2"),
-		// 				Type: to.Ptr("Microsoft.Network/virtualNetworks"),
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet2"),
-		// 				Location: to.Ptr("westus"),
-		// 				Properties: &armnetwork.VirtualNetworkPropertiesFormat{
-		// 					AddressSpace: &armnetwork.AddressSpace{
-		// 						AddressPrefixes: []*string{
-		// 							to.Ptr("10.0.0.0/16"),
-		// 						},
-		// 					},
-		// 					DefaultPublicNatGateway: &armnetwork.SubResource{
-		// 						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/natGateways/test-ngw"),
-		// 					},
-		// 					DhcpOptions: &armnetwork.DhcpOptions{
-		// 						DNSServers: []*string{
-		// 							to.Ptr("8.8.8.8"),
-		// 						},
-		// 					},
-		// 					ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
-		// 					Subnets: []*armnetwork.Subnet{
-		// 					},
-		// 					VirtualNetworkPeerings: []*armnetwork.VirtualNetworkPeering{
-		// 					},
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
 // Generated from example definition: 2026-01-01/VirtualNetworkListAll.json
 func ExampleVirtualNetworksClient_NewListAllPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -1186,8 +1191,8 @@ func ExampleVirtualNetworksClient_NewListAllPager() {
 	}
 }
 
-// Generated from example definition: 2026-01-01/VirtualNetworkGetDdosProtectionStatus.json
-func ExampleVirtualNetworksClient_BeginListDdosProtectionStatus() {
+// Generated from example definition: 2026-01-01/VirtualNetworkList.json
+func ExampleVirtualNetworksClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -1197,17 +1202,9 @@ func ExampleVirtualNetworksClient_BeginListDdosProtectionStatus() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewVirtualNetworksClient().BeginListDdosProtectionStatus(ctx, "rg1", "test-vnet", &armnetwork.VirtualNetworksClientBeginListDdosProtectionStatusOptions{
-		Top: to.Ptr[int32](75)})
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	for res.More() {
-		page, err := res.NextPage(ctx)
+	pager := clientFactory.NewVirtualNetworksClient().NewListPager("rg1", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
@@ -1216,19 +1213,67 @@ func ExampleVirtualNetworksClient_BeginListDdosProtectionStatus() {
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armnetwork.VirtualNetworksClientListDdosProtectionStatusResponse{
-		// 	VirtualNetworkDdosProtectionStatusResult: armnetwork.VirtualNetworkDdosProtectionStatusResult{
-		// 		Value: []*armnetwork.PublicIPDdosProtectionStatusResult{
+		// page = armnetwork.VirtualNetworksClientListResponse{
+		// 	VirtualNetworkListResult: armnetwork.VirtualNetworkListResult{
+		// 		Value: []*armnetwork.VirtualNetwork{
 		// 			{
-		// 				DdosProtectionPlanID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/ddosProtectionPlans/test-plan"),
-		// 				IsWorkloadProtected: to.Ptr(armnetwork.IsWorkloadProtectedTrue),
-		// 				PublicIPAddress: to.Ptr("10.0.1.5"),
-		// 				PublicIPAddressID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/publicIPAddresses/test-pip"),
+		// 				Name: to.Ptr("vnet1"),
+		// 				Type: to.Ptr("Microsoft.Network/virtualNetworks"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet1"),
+		// 				Location: to.Ptr("westus"),
+		// 				Properties: &armnetwork.VirtualNetworkPropertiesFormat{
+		// 					AddressSpace: &armnetwork.AddressSpace{
+		// 						AddressPrefixes: []*string{
+		// 							to.Ptr("10.0.0.0/8"),
+		// 						},
+		// 					},
+		// 					DefaultPublicNatGateway: &armnetwork.SubResource{
+		// 						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/natGateways/test-ngw"),
+		// 					},
+		// 					DhcpOptions: &armnetwork.DhcpOptions{
+		// 						DNSServers: []*string{
+		// 						},
+		// 					},
+		// 					ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+		// 					Subnets: []*armnetwork.Subnet{
+		// 						{
+		// 							Name: to.Ptr("test-1"),
+		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/test-1"),
+		// 							Properties: &armnetwork.SubnetPropertiesFormat{
+		// 								AddressPrefix: to.Ptr("10.0.0.0/24"),
+		// 								ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+		// 							},
+		// 						},
+		// 					},
+		// 					VirtualNetworkPeerings: []*armnetwork.VirtualNetworkPeering{
+		// 					},
+		// 				},
 		// 			},
 		// 			{
-		// 				IsWorkloadProtected: to.Ptr(armnetwork.IsWorkloadProtectedFalse),
-		// 				PublicIPAddress: to.Ptr("10.0.1.6"),
-		// 				PublicIPAddressID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/publicIPAddresses/test-pip2"),
+		// 				Name: to.Ptr("vnet2"),
+		// 				Type: to.Ptr("Microsoft.Network/virtualNetworks"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet2"),
+		// 				Location: to.Ptr("westus"),
+		// 				Properties: &armnetwork.VirtualNetworkPropertiesFormat{
+		// 					AddressSpace: &armnetwork.AddressSpace{
+		// 						AddressPrefixes: []*string{
+		// 							to.Ptr("10.0.0.0/16"),
+		// 						},
+		// 					},
+		// 					DefaultPublicNatGateway: &armnetwork.SubResource{
+		// 						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/natGateways/test-ngw"),
+		// 					},
+		// 					DhcpOptions: &armnetwork.DhcpOptions{
+		// 						DNSServers: []*string{
+		// 							to.Ptr("8.8.8.8"),
+		// 						},
+		// 					},
+		// 					ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+		// 					Subnets: []*armnetwork.Subnet{
+		// 					},
+		// 					VirtualNetworkPeerings: []*armnetwork.VirtualNetworkPeering{
+		// 					},
+		// 				},
 		// 			},
 		// 		},
 		// 	},
@@ -1285,51 +1330,6 @@ func ExampleVirtualNetworksClient_NewListUsagePager() {
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2026-01-01/VirtualNetworkMoveIpConfigurations.json
-func ExampleVirtualNetworksClient_BeginMoveIPConfigurations() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewVirtualNetworksClient().BeginMoveIPConfigurations(ctx, "rg1", "test-vnet", armnetwork.MoveIPConfigurationsRequest{
-		MoveIPConfigurationItems: []*armnetwork.MoveIPConfigurationItem{
-			{
-				SourceIPConfiguration: &armnetwork.MoveIPConfigurationResourceReference{
-					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/networkInterfaces/nic1/ipConfigurations/ipconfig1"),
-				},
-				TargetIPConfiguration: &armnetwork.MoveIPConfigurationResourceReference{
-					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/networkInterfaces/nic2/ipConfigurations/ipconfig2"),
-				},
-			},
-			{
-				SourceIPConfiguration: &armnetwork.MoveIPConfigurationResourceReference{
-					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/networkInterfaces/nic3/ipConfigurations/ipconfig3"),
-				},
-				TargetIPConfiguration: &armnetwork.MoveIPConfigurationResourceReference{
-					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/networkInterfaces/nic4/ipConfigurations/ipconfig4"),
-				},
-			},
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armnetwork.VirtualNetworksClientMoveIPConfigurationsResponse{
-	// }
 }
 
 // Generated from example definition: 2026-01-01/VirtualNetworkUpdateTags.json

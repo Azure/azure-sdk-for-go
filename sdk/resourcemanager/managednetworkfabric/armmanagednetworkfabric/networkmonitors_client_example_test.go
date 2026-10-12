@@ -143,6 +143,167 @@ func ExampleNetworkMonitorsClient_BeginDelete() {
 	}
 }
 
+// Generated from example definition: 2025-07-15/NetworkMonitors_Update.json
+func ExampleNetworkMonitorsClient_BeginUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armmanagednetworkfabric.NewClientFactory("1234ABCD-0A1B-1234-5678-123456ABCDEF", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewNetworkMonitorsClient().BeginUpdate(ctx, "example-rg", "example-monitor", armmanagednetworkfabric.NetworkMonitorPatch{
+		Tags: map[string]*string{
+			"key": to.Ptr("value"),
+		},
+		Properties: &armmanagednetworkfabric.NetworkMonitorPatchProperties{
+			BmpConfiguration: &armmanagednetworkfabric.BmpConfigurationPatchProperties{
+				ScopeResourceID:           to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkFabrics/example-fabric"),
+				StationConfigurationState: to.Ptr(armmanagednetworkfabric.StationConfigurationStateEnabled),
+				StationName:               to.Ptr("name"),
+				StationIP:                 to.Ptr("10.0.0.1"),
+				StationPort:               to.Ptr[int32](64685),
+				StationConnectionMode:     to.Ptr(armmanagednetworkfabric.StationConnectionModeActive),
+				StationConnectionProperties: &armmanagednetworkfabric.StationConnectionPatchProperties{
+					KeepaliveIdleTime: to.Ptr[int32](49),
+					ProbeInterval:     to.Ptr[int32](3558),
+					ProbeCount:        to.Ptr[int32](43),
+				},
+				StationNetwork: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/example-l3domain/internalNetworks/example-internalnetwork"),
+				MonitoredNetworks: []*string{
+					to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/example-l3domain"),
+				},
+				ExportPolicy: to.Ptr(armmanagednetworkfabric.BmpExportPolicyPrePolicy),
+				ExportPolicyConfiguration: &armmanagednetworkfabric.BmpExportPolicyPatchProperties{
+					ExportPolicies: []*armmanagednetworkfabric.BmpExportPolicy{
+						to.Ptr(armmanagednetworkfabric.BmpExportPolicyPrePolicy),
+					},
+				},
+				MonitoredAddressFamilies: []*armmanagednetworkfabric.BmpMonitoredAddressFamily{
+					to.Ptr(armmanagednetworkfabric.BmpMonitoredAddressFamilyIPv4Unicast),
+				},
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armmanagednetworkfabric.NetworkMonitorsClientUpdateResponse{
+	// 	NetworkMonitor: armmanagednetworkfabric.NetworkMonitor{
+	// 		Properties: &armmanagednetworkfabric.NetworkMonitorProperties{
+	// 			Annotation: to.Ptr("annotation"),
+	// 			BmpConfiguration: &armmanagednetworkfabric.BmpConfigurationProperties{
+	// 				ScopeResourceID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkFabrics/example-fabric"),
+	// 				StationConfigurationState: to.Ptr(armmanagednetworkfabric.StationConfigurationStateEnabled),
+	// 				StationName: to.Ptr("name"),
+	// 				StationIP: to.Ptr("10.0.0.1"),
+	// 				StationPort: to.Ptr[int32](64685),
+	// 				StationConnectionMode: to.Ptr(armmanagednetworkfabric.StationConnectionModeActive),
+	// 				StationConnectionProperties: &armmanagednetworkfabric.StationConnectionProperties{
+	// 					KeepaliveIdleTime: to.Ptr[int32](49),
+	// 					ProbeInterval: to.Ptr[int32](3558),
+	// 					ProbeCount: to.Ptr[int32](43),
+	// 				},
+	// 				StationNetwork: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/example-l3domain/internalNetworks/example-internalnetwork"),
+	// 				MonitoredNetworks: []*string{
+	// 					to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/example-l3domain"),
+	// 				},
+	// 				ExportPolicy: to.Ptr(armmanagednetworkfabric.BmpExportPolicyPrePolicy),
+	// 				ExportPolicyConfiguration: &armmanagednetworkfabric.BmpExportPolicyProperties{
+	// 					ExportPolicies: []*armmanagednetworkfabric.BmpExportPolicy{
+	// 						to.Ptr(armmanagednetworkfabric.BmpExportPolicyPrePolicy),
+	// 					},
+	// 				},
+	// 				MonitoredAddressFamilies: []*armmanagednetworkfabric.BmpMonitoredAddressFamily{
+	// 					to.Ptr(armmanagednetworkfabric.BmpMonitoredAddressFamilyIPv4Unicast),
+	// 				},
+	// 			},
+	// 			ConfigurationState: to.Ptr(armmanagednetworkfabric.ConfigurationStateSucceeded),
+	// 			ProvisioningState: to.Ptr(armmanagednetworkfabric.ProvisioningStateAccepted),
+	// 			AdministrativeState: to.Ptr(armmanagednetworkfabric.AdministrativeStateEnabled),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"key": to.Ptr("value"),
+	// 		},
+	// 		Location: to.Ptr("eastus"),
+	// 		ID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkMonitors/example-monitor"),
+	// 		Name: to.Ptr("example-monitor"),
+	// 		Type: to.Ptr("microsoft.managednetworkfabric/networkmonitors"),
+	// 		SystemData: &armmanagednetworkfabric.SystemData{
+	// 			CreatedBy: to.Ptr("email@address.com"),
+	// 			CreatedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
+	// 			CreatedAt: to.Ptr(time.Date(2023, time.June, 9, 4, 51, 41, 251000000, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("UserId"),
+	// 			LastModifiedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.June, 9, 4, 51, 41, 251000000, time.UTC)),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-07-15/NetworkMonitors_UpdateAdministrativeState.json
+func ExampleNetworkMonitorsClient_BeginUpdateAdministrativeState() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armmanagednetworkfabric.NewClientFactory("1234ABCD-0A1B-1234-5678-123456ABCDEF", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewNetworkMonitorsClient().BeginUpdateAdministrativeState(ctx, "example-rg", "example-monitor", armmanagednetworkfabric.UpdateAdministrativeState{
+		ResourceIDs: []*string{
+			to.Ptr(""),
+		},
+		State: to.Ptr(armmanagednetworkfabric.EnableDisableStateEnable),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armmanagednetworkfabric.NetworkMonitorsClientUpdateAdministrativeStateResponse{
+	// 	CommonPostActionResponseForDeviceUpdate: armmanagednetworkfabric.CommonPostActionResponseForDeviceUpdate{
+	// 		Error: &armmanagednetworkfabric.ErrorDetail{
+	// 			Code: to.Ptr(""),
+	// 			Message: to.Ptr(""),
+	// 			Target: to.Ptr(""),
+	// 			Details: []*armmanagednetworkfabric.ErrorDetail{
+	// 			},
+	// 			AdditionalInfo: []*armmanagednetworkfabric.ErrorAdditionalInfo{
+	// 				{
+	// 					Type: to.Ptr(""),
+	// 					Info: map[string]any{
+	// 					},
+	// 				},
+	// 			},
+	// 		},
+	// 		ConfigurationState: to.Ptr(armmanagednetworkfabric.ConfigurationStateSucceeded),
+	// 		SuccessfulDevices: []*string{
+	// 			to.Ptr(""),
+	// 		},
+	// 		FailedDevices: []*string{
+	// 			to.Ptr(""),
+	// 		},
+	// 	},
+	// }
+}
+
 // Generated from example definition: 2025-07-15/NetworkMonitors_Get.json
 func ExampleNetworkMonitorsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -383,165 +544,4 @@ func ExampleNetworkMonitorsClient_NewListBySubscriptionPager() {
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2025-07-15/NetworkMonitors_Update.json
-func ExampleNetworkMonitorsClient_BeginUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armmanagednetworkfabric.NewClientFactory("1234ABCD-0A1B-1234-5678-123456ABCDEF", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewNetworkMonitorsClient().BeginUpdate(ctx, "example-rg", "example-monitor", armmanagednetworkfabric.NetworkMonitorPatch{
-		Tags: map[string]*string{
-			"key": to.Ptr("value"),
-		},
-		Properties: &armmanagednetworkfabric.NetworkMonitorPatchProperties{
-			BmpConfiguration: &armmanagednetworkfabric.BmpConfigurationPatchProperties{
-				ScopeResourceID:           to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkFabrics/example-fabric"),
-				StationConfigurationState: to.Ptr(armmanagednetworkfabric.StationConfigurationStateEnabled),
-				StationName:               to.Ptr("name"),
-				StationIP:                 to.Ptr("10.0.0.1"),
-				StationPort:               to.Ptr[int32](64685),
-				StationConnectionMode:     to.Ptr(armmanagednetworkfabric.StationConnectionModeActive),
-				StationConnectionProperties: &armmanagednetworkfabric.StationConnectionPatchProperties{
-					KeepaliveIdleTime: to.Ptr[int32](49),
-					ProbeInterval:     to.Ptr[int32](3558),
-					ProbeCount:        to.Ptr[int32](43),
-				},
-				StationNetwork: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/example-l3domain/internalNetworks/example-internalnetwork"),
-				MonitoredNetworks: []*string{
-					to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/example-l3domain"),
-				},
-				ExportPolicy: to.Ptr(armmanagednetworkfabric.BmpExportPolicyPrePolicy),
-				ExportPolicyConfiguration: &armmanagednetworkfabric.BmpExportPolicyPatchProperties{
-					ExportPolicies: []*armmanagednetworkfabric.BmpExportPolicy{
-						to.Ptr(armmanagednetworkfabric.BmpExportPolicyPrePolicy),
-					},
-				},
-				MonitoredAddressFamilies: []*armmanagednetworkfabric.BmpMonitoredAddressFamily{
-					to.Ptr(armmanagednetworkfabric.BmpMonitoredAddressFamilyIPv4Unicast),
-				},
-			},
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armmanagednetworkfabric.NetworkMonitorsClientUpdateResponse{
-	// 	NetworkMonitor: armmanagednetworkfabric.NetworkMonitor{
-	// 		Properties: &armmanagednetworkfabric.NetworkMonitorProperties{
-	// 			Annotation: to.Ptr("annotation"),
-	// 			BmpConfiguration: &armmanagednetworkfabric.BmpConfigurationProperties{
-	// 				ScopeResourceID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkFabrics/example-fabric"),
-	// 				StationConfigurationState: to.Ptr(armmanagednetworkfabric.StationConfigurationStateEnabled),
-	// 				StationName: to.Ptr("name"),
-	// 				StationIP: to.Ptr("10.0.0.1"),
-	// 				StationPort: to.Ptr[int32](64685),
-	// 				StationConnectionMode: to.Ptr(armmanagednetworkfabric.StationConnectionModeActive),
-	// 				StationConnectionProperties: &armmanagednetworkfabric.StationConnectionProperties{
-	// 					KeepaliveIdleTime: to.Ptr[int32](49),
-	// 					ProbeInterval: to.Ptr[int32](3558),
-	// 					ProbeCount: to.Ptr[int32](43),
-	// 				},
-	// 				StationNetwork: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/example-l3domain/internalNetworks/example-internalnetwork"),
-	// 				MonitoredNetworks: []*string{
-	// 					to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/example-l3domain"),
-	// 				},
-	// 				ExportPolicy: to.Ptr(armmanagednetworkfabric.BmpExportPolicyPrePolicy),
-	// 				ExportPolicyConfiguration: &armmanagednetworkfabric.BmpExportPolicyProperties{
-	// 					ExportPolicies: []*armmanagednetworkfabric.BmpExportPolicy{
-	// 						to.Ptr(armmanagednetworkfabric.BmpExportPolicyPrePolicy),
-	// 					},
-	// 				},
-	// 				MonitoredAddressFamilies: []*armmanagednetworkfabric.BmpMonitoredAddressFamily{
-	// 					to.Ptr(armmanagednetworkfabric.BmpMonitoredAddressFamilyIPv4Unicast),
-	// 				},
-	// 			},
-	// 			ConfigurationState: to.Ptr(armmanagednetworkfabric.ConfigurationStateSucceeded),
-	// 			ProvisioningState: to.Ptr(armmanagednetworkfabric.ProvisioningStateAccepted),
-	// 			AdministrativeState: to.Ptr(armmanagednetworkfabric.AdministrativeStateEnabled),
-	// 		},
-	// 		Tags: map[string]*string{
-	// 			"key": to.Ptr("value"),
-	// 		},
-	// 		Location: to.Ptr("eastus"),
-	// 		ID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkMonitors/example-monitor"),
-	// 		Name: to.Ptr("example-monitor"),
-	// 		Type: to.Ptr("microsoft.managednetworkfabric/networkmonitors"),
-	// 		SystemData: &armmanagednetworkfabric.SystemData{
-	// 			CreatedBy: to.Ptr("email@address.com"),
-	// 			CreatedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(time.Date(2023, time.June, 9, 4, 51, 41, 251000000, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("UserId"),
-	// 			LastModifiedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.June, 9, 4, 51, 41, 251000000, time.UTC)),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-07-15/NetworkMonitors_UpdateAdministrativeState.json
-func ExampleNetworkMonitorsClient_BeginUpdateAdministrativeState() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armmanagednetworkfabric.NewClientFactory("1234ABCD-0A1B-1234-5678-123456ABCDEF", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewNetworkMonitorsClient().BeginUpdateAdministrativeState(ctx, "example-rg", "example-monitor", armmanagednetworkfabric.UpdateAdministrativeState{
-		ResourceIDs: []*string{
-			to.Ptr(""),
-		},
-		State: to.Ptr(armmanagednetworkfabric.EnableDisableStateEnable),
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armmanagednetworkfabric.NetworkMonitorsClientUpdateAdministrativeStateResponse{
-	// 	CommonPostActionResponseForDeviceUpdate: armmanagednetworkfabric.CommonPostActionResponseForDeviceUpdate{
-	// 		Error: &armmanagednetworkfabric.ErrorDetail{
-	// 			Code: to.Ptr(""),
-	// 			Message: to.Ptr(""),
-	// 			Target: to.Ptr(""),
-	// 			Details: []*armmanagednetworkfabric.ErrorDetail{
-	// 			},
-	// 			AdditionalInfo: []*armmanagednetworkfabric.ErrorAdditionalInfo{
-	// 				{
-	// 					Type: to.Ptr(""),
-	// 					Info: map[string]any{
-	// 					},
-	// 				},
-	// 			},
-	// 		},
-	// 		ConfigurationState: to.Ptr(armmanagednetworkfabric.ConfigurationStateSucceeded),
-	// 		SuccessfulDevices: []*string{
-	// 			to.Ptr(""),
-	// 		},
-	// 		FailedDevices: []*string{
-	// 			to.Ptr(""),
-	// 		},
-	// 	},
-	// }
 }

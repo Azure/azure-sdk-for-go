@@ -69,7 +69,7 @@ func (client *IscsiPathsClient) BeginCreateOrUpdate(ctx context.Context, resourc
 	}
 }
 
-// CreateOrUpdate - Create a IscsiPath
+// createOrUpdate - Create a IscsiPath
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *IscsiPathsClient) createOrUpdate(ctx context.Context, resourceGroupName string, privateCloudName string, resource IscsiPath, options *IscsiPathsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -91,7 +91,7 @@ func (client *IscsiPathsClient) createOrUpdate(ctx context.Context, resourceGrou
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *IscsiPathsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, resource IscsiPath, _ *IscsiPathsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/iscsiPaths/default"
 	if client.subscriptionID == "" {
@@ -143,7 +143,7 @@ func (client *IscsiPathsClient) BeginDelete(ctx context.Context, resourceGroupNa
 	}
 }
 
-// Delete - Delete a IscsiPath
+// deleteOperation - Delete a IscsiPath
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *IscsiPathsClient) deleteOperation(ctx context.Context, resourceGroupName string, privateCloudName string, options *IscsiPathsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -165,7 +165,7 @@ func (client *IscsiPathsClient) deleteOperation(ctx context.Context, resourceGro
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *IscsiPathsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, _ *IscsiPathsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/iscsiPaths/default"
 	if client.subscriptionID == "" {

@@ -12,6 +12,32 @@ import (
 	"log"
 )
 
+// Generated from example definition: 2026-01-01/NetworkProfileDelete.json
+func ExampleProfilesClient_BeginDelete() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewProfilesClient().BeginDelete(ctx, "rg1", "networkProfile1", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armnetwork.ProfilesClientDeleteResponse{
+	// }
+}
+
 // Generated from example definition: 2026-01-01/NetworkProfileCreateConfigOnly.json
 func ExampleProfilesClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -90,32 +116,6 @@ func ExampleProfilesClient_CreateOrUpdate() {
 	// 			ResourceGUID: to.Ptr("1570d8b6-ab8a-4ad2-81d6-d2799b429cbf"),
 	// 		},
 	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-01-01/NetworkProfileDelete.json
-func ExampleProfilesClient_BeginDelete() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewProfilesClient().BeginDelete(ctx, "rg1", "networkProfile1", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armnetwork.ProfilesClientDeleteResponse{
 	// }
 }
 
@@ -433,6 +433,109 @@ func ExampleProfilesClient_Get_getNetworkProfileWithContainerNetworkInterfaces()
 	// }
 }
 
+// Generated from example definition: 2026-01-01/NetworkProfileListAll.json
+func ExampleProfilesClient_NewListAllPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewProfilesClient().NewListAllPager(nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armnetwork.ProfilesClientListAllResponse{
+		// 	ProfileListResult: armnetwork.ProfileListResult{
+		// 		Value: []*armnetwork.Profile{
+		// 			{
+		// 				Name: to.Ptr("networkProfile1"),
+		// 				Type: to.Ptr("Microsoft.Network/networkProfiles"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/networkProfiles/networkProfile1"),
+		// 				Location: to.Ptr("centraluseuap"),
+		// 				Properties: &armnetwork.ProfilePropertiesFormat{
+		// 					ContainerNetworkInterfaceConfigurations: []*armnetwork.ContainerNetworkInterfaceConfiguration{
+		// 						{
+		// 							Name: to.Ptr("eth0"),
+		// 							Type: to.Ptr("Microsoft.Network/networkProfiles/containerNetworkInterfaceConfigurations"),
+		// 							Etag: to.Ptr("W/\"4d705a71-752f-4e0a-8057-c02b125b1c08\""),
+		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/networkProfiles/networkProfile1/containerNetworkInterfaceConfigurations/eth0"),
+		// 							Properties: &armnetwork.ContainerNetworkInterfaceConfigurationPropertiesFormat{
+		// 								IPConfigurations: []*armnetwork.IPConfigurationProfile{
+		// 									{
+		// 										Name: to.Ptr("ipconfigprofile1"),
+		// 										Type: to.Ptr("Microsoft.Network/networkProfiles/containerNetworkInterfaceConfigurations/ipConfigurations"),
+		// 										Etag: to.Ptr("W/\"4d705a71-752f-4e0a-8057-c02b125b1c08\""),
+		// 										ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/networkProfiles/networkProfile1/containerNetworkInterfaceConfigurations/eth0/ipConfigurations/ipconfigprofile1"),
+		// 										Properties: &armnetwork.IPConfigurationProfilePropertiesFormat{
+		// 											ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+		// 											Subnet: &armnetwork.Subnet{
+		// 												ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/networkProfileVnet/subnets/networkProfileSubnet1"),
+		// 											},
+		// 										},
+		// 									},
+		// 								},
+		// 								ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+		// 							},
+		// 						},
+		// 					},
+		// 					ContainerNetworkInterfaces: []*armnetwork.ContainerNetworkInterface{
+		// 					},
+		// 					ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+		// 					ResourceGUID: to.Ptr("1570d8b6-ab8a-4ad2-81d6-d2799b429cbf"),
+		// 				},
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("networkProfile2"),
+		// 				Type: to.Ptr("Microsoft.Network/networkProfiles"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg2/providers/Microsoft.Network/networkProfiles/networkProfile2"),
+		// 				Location: to.Ptr("centraluseuap"),
+		// 				Properties: &armnetwork.ProfilePropertiesFormat{
+		// 					ContainerNetworkInterfaceConfigurations: []*armnetwork.ContainerNetworkInterfaceConfiguration{
+		// 						{
+		// 							Name: to.Ptr("eth1"),
+		// 							Type: to.Ptr("Microsoft.Network/networkProfiles/containerNetworkInterfaceConfigurations"),
+		// 							Etag: to.Ptr("W/\"4d705a71-752f-4e0a-8057-c02b125b1c08\""),
+		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg2/providers/Microsoft.Network/networkProfiles/networkProfile1/containerNetworkInterfaceConfigurations/eth1"),
+		// 							Properties: &armnetwork.ContainerNetworkInterfaceConfigurationPropertiesFormat{
+		// 								IPConfigurations: []*armnetwork.IPConfigurationProfile{
+		// 									{
+		// 										Name: to.Ptr("ipconfigprofile3"),
+		// 										Type: to.Ptr("Microsoft.Network/networkProfiles/containerNetworkInterfaceConfigurations/ipConfigurations"),
+		// 										Etag: to.Ptr("W/\"4d705a71-752f-4e0a-8057-c02b125b1c08\""),
+		// 										ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg2/providers/Microsoft.Network/networkProfiles/networkProfile1/containerNetworkInterfaceConfigurations/eth1/ipConfigurations/ipconfigprofile3"),
+		// 										Properties: &armnetwork.IPConfigurationProfilePropertiesFormat{
+		// 											ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+		// 											Subnet: &armnetwork.Subnet{
+		// 												ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg2/providers/Microsoft.Network/virtualNetworks/networkProfileVnet/subnets/networkProfileSubnet1"),
+		// 											},
+		// 										},
+		// 									},
+		// 								},
+		// 								ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+		// 							},
+		// 						},
+		// 					},
+		// 					ContainerNetworkInterfaces: []*armnetwork.ContainerNetworkInterface{
+		// 					},
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
 // Generated from example definition: 2026-01-01/NetworkProfileList.json
 func ExampleProfilesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -530,109 +633,6 @@ func ExampleProfilesClient_NewListPager() {
 		// 											ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
 		// 											Subnet: &armnetwork.Subnet{
 		// 												ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/networkProfileVnet/subnets/networkProfileSubnet1"),
-		// 											},
-		// 										},
-		// 									},
-		// 								},
-		// 								ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
-		// 							},
-		// 						},
-		// 					},
-		// 					ContainerNetworkInterfaces: []*armnetwork.ContainerNetworkInterface{
-		// 					},
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2026-01-01/NetworkProfileListAll.json
-func ExampleProfilesClient_NewListAllPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewProfilesClient().NewListAllPager(nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armnetwork.ProfilesClientListAllResponse{
-		// 	ProfileListResult: armnetwork.ProfileListResult{
-		// 		Value: []*armnetwork.Profile{
-		// 			{
-		// 				Name: to.Ptr("networkProfile1"),
-		// 				Type: to.Ptr("Microsoft.Network/networkProfiles"),
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/networkProfiles/networkProfile1"),
-		// 				Location: to.Ptr("centraluseuap"),
-		// 				Properties: &armnetwork.ProfilePropertiesFormat{
-		// 					ContainerNetworkInterfaceConfigurations: []*armnetwork.ContainerNetworkInterfaceConfiguration{
-		// 						{
-		// 							Name: to.Ptr("eth0"),
-		// 							Type: to.Ptr("Microsoft.Network/networkProfiles/containerNetworkInterfaceConfigurations"),
-		// 							Etag: to.Ptr("W/\"4d705a71-752f-4e0a-8057-c02b125b1c08\""),
-		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/networkProfiles/networkProfile1/containerNetworkInterfaceConfigurations/eth0"),
-		// 							Properties: &armnetwork.ContainerNetworkInterfaceConfigurationPropertiesFormat{
-		// 								IPConfigurations: []*armnetwork.IPConfigurationProfile{
-		// 									{
-		// 										Name: to.Ptr("ipconfigprofile1"),
-		// 										Type: to.Ptr("Microsoft.Network/networkProfiles/containerNetworkInterfaceConfigurations/ipConfigurations"),
-		// 										Etag: to.Ptr("W/\"4d705a71-752f-4e0a-8057-c02b125b1c08\""),
-		// 										ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/networkProfiles/networkProfile1/containerNetworkInterfaceConfigurations/eth0/ipConfigurations/ipconfigprofile1"),
-		// 										Properties: &armnetwork.IPConfigurationProfilePropertiesFormat{
-		// 											ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
-		// 											Subnet: &armnetwork.Subnet{
-		// 												ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/networkProfileVnet/subnets/networkProfileSubnet1"),
-		// 											},
-		// 										},
-		// 									},
-		// 								},
-		// 								ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
-		// 							},
-		// 						},
-		// 					},
-		// 					ContainerNetworkInterfaces: []*armnetwork.ContainerNetworkInterface{
-		// 					},
-		// 					ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
-		// 					ResourceGUID: to.Ptr("1570d8b6-ab8a-4ad2-81d6-d2799b429cbf"),
-		// 				},
-		// 			},
-		// 			{
-		// 				Name: to.Ptr("networkProfile2"),
-		// 				Type: to.Ptr("Microsoft.Network/networkProfiles"),
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg2/providers/Microsoft.Network/networkProfiles/networkProfile2"),
-		// 				Location: to.Ptr("centraluseuap"),
-		// 				Properties: &armnetwork.ProfilePropertiesFormat{
-		// 					ContainerNetworkInterfaceConfigurations: []*armnetwork.ContainerNetworkInterfaceConfiguration{
-		// 						{
-		// 							Name: to.Ptr("eth1"),
-		// 							Type: to.Ptr("Microsoft.Network/networkProfiles/containerNetworkInterfaceConfigurations"),
-		// 							Etag: to.Ptr("W/\"4d705a71-752f-4e0a-8057-c02b125b1c08\""),
-		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg2/providers/Microsoft.Network/networkProfiles/networkProfile1/containerNetworkInterfaceConfigurations/eth1"),
-		// 							Properties: &armnetwork.ContainerNetworkInterfaceConfigurationPropertiesFormat{
-		// 								IPConfigurations: []*armnetwork.IPConfigurationProfile{
-		// 									{
-		// 										Name: to.Ptr("ipconfigprofile3"),
-		// 										Type: to.Ptr("Microsoft.Network/networkProfiles/containerNetworkInterfaceConfigurations/ipConfigurations"),
-		// 										Etag: to.Ptr("W/\"4d705a71-752f-4e0a-8057-c02b125b1c08\""),
-		// 										ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg2/providers/Microsoft.Network/networkProfiles/networkProfile1/containerNetworkInterfaceConfigurations/eth1/ipConfigurations/ipconfigprofile3"),
-		// 										Properties: &armnetwork.IPConfigurationProfilePropertiesFormat{
-		// 											ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
-		// 											Subnet: &armnetwork.Subnet{
-		// 												ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg2/providers/Microsoft.Network/virtualNetworks/networkProfileVnet/subnets/networkProfileSubnet1"),
 		// 											},
 		// 										},
 		// 									},

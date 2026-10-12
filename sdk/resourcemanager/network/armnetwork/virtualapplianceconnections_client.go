@@ -69,7 +69,7 @@ func (client *VirtualApplianceConnectionsClient) BeginCreateOrUpdate(ctx context
 	}
 }
 
-// CreateOrUpdate - Creates a connection to Network Virtual Appliance, if it doesn't exist else updates the existing NVA connection'
+// createOrUpdate - Creates a connection to Network Virtual Appliance, if it doesn't exist else updates the existing NVA connection'
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *VirtualApplianceConnectionsClient) createOrUpdate(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, connectionName string, networkVirtualApplianceConnectionParameters VirtualApplianceConnection, options *VirtualApplianceConnectionsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -91,7 +91,7 @@ func (client *VirtualApplianceConnectionsClient) createOrUpdate(ctx context.Cont
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *VirtualApplianceConnectionsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, connectionName string, networkVirtualApplianceConnectionParameters VirtualApplianceConnection, _ *VirtualApplianceConnectionsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkVirtualAppliances/{networkVirtualApplianceName}/networkVirtualApplianceConnections/{connectionName}"
 	if client.subscriptionID == "" {
@@ -148,7 +148,7 @@ func (client *VirtualApplianceConnectionsClient) BeginDelete(ctx context.Context
 	}
 }
 
-// Delete - Deletes a NVA connection.
+// deleteOperation - Deletes a NVA connection.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *VirtualApplianceConnectionsClient) deleteOperation(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, connectionName string, options *VirtualApplianceConnectionsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -170,7 +170,7 @@ func (client *VirtualApplianceConnectionsClient) deleteOperation(ctx context.Con
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *VirtualApplianceConnectionsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, connectionName string, _ *VirtualApplianceConnectionsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkVirtualAppliances/{networkVirtualApplianceName}/networkVirtualApplianceConnections/{connectionName}"
 	if client.subscriptionID == "" {

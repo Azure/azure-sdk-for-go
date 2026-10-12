@@ -21,13 +21,13 @@ import (
 
 // ReservationTransactionsServer is a fake server for instances of the armconsumption.ReservationTransactionsClient type.
 type ReservationTransactionsServer struct {
-	// NewListPager is the fake for method ReservationTransactionsClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(billingAccountID string, options *armconsumption.ReservationTransactionsClientListOptions) (resp azfake.PagerResponder[armconsumption.ReservationTransactionsClientListResponse])
-
 	// NewListByBillingProfilePager is the fake for method ReservationTransactionsClient.NewListByBillingProfilePager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByBillingProfilePager func(billingAccountID string, billingProfileID string, options *armconsumption.ReservationTransactionsClientListByBillingProfileOptions) (resp azfake.PagerResponder[armconsumption.ReservationTransactionsClientListByBillingProfileResponse])
+
+	// NewListPager is the fake for method ReservationTransactionsClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(billingAccountID string, options *armconsumption.ReservationTransactionsClientListOptions) (resp azfake.PagerResponder[armconsumption.ReservationTransactionsClientListResponse])
 }
 
 // NewReservationTransactionsServerTransport creates a new instance of ReservationTransactionsServerTransport with the provided implementation.
@@ -36,8 +36,8 @@ type ReservationTransactionsServer struct {
 func NewReservationTransactionsServerTransport(srv *ReservationTransactionsServer) *ReservationTransactionsServerTransport {
 	return &ReservationTransactionsServerTransport{
 		srv:                          srv,
-		newListPager:                 newTracker[azfake.PagerResponder[armconsumption.ReservationTransactionsClientListResponse]](),
 		newListByBillingProfilePager: newTracker[azfake.PagerResponder[armconsumption.ReservationTransactionsClientListByBillingProfileResponse]](),
+		newListPager:                 newTracker[azfake.PagerResponder[armconsumption.ReservationTransactionsClientListResponse]](),
 	}
 }
 
@@ -45,8 +45,8 @@ func NewReservationTransactionsServerTransport(srv *ReservationTransactionsServe
 // Don't use this type directly, use NewReservationTransactionsServerTransport instead.
 type ReservationTransactionsServerTransport struct {
 	srv                          *ReservationTransactionsServer
-	newListPager                 *tracker[azfake.PagerResponder[armconsumption.ReservationTransactionsClientListResponse]]
 	newListByBillingProfilePager *tracker[azfake.PagerResponder[armconsumption.ReservationTransactionsClientListByBillingProfileResponse]]
+	newListPager                 *tracker[azfake.PagerResponder[armconsumption.ReservationTransactionsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for ReservationTransactionsServerTransport.
@@ -70,10 +70,10 @@ func (r *ReservationTransactionsServerTransport) dispatchToMethodFake(req *http.
 		}
 		if !intercepted {
 			switch method {
-			case "ReservationTransactionsClient.NewListPager":
-				res.resp, res.err = r.dispatchNewListPager(req)
 			case "ReservationTransactionsClient.NewListByBillingProfilePager":
 				res.resp, res.err = r.dispatchNewListByBillingProfilePager(req)
+			case "ReservationTransactionsClient.NewListPager":
+				res.resp, res.err = r.dispatchNewListPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -88,6 +88,55 @@ func (r *ReservationTransactionsServerTransport) dispatchToMethodFake(req *http.
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
+}
+
+func (r *ReservationTransactionsServerTransport) dispatchNewListByBillingProfilePager(req *http.Request) (*http.Response, error) {
+	if r.srv.NewListByBillingProfilePager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListByBillingProfilePager not implemented")}
+	}
+	newListByBillingProfilePager := r.newListByBillingProfilePager.get(req)
+	if newListByBillingProfilePager == nil {
+		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/billingProfiles/(?P<billingProfileId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Consumption/reservationTransactions`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		qp := req.URL.Query()
+		billingAccountIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingAccountId")])
+		if err != nil {
+			return nil, err
+		}
+		billingProfileIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingProfileId")])
+		if err != nil {
+			return nil, err
+		}
+		filterParam := getOptional(qp.Get("$filter"))
+		var options *armconsumption.ReservationTransactionsClientListByBillingProfileOptions
+		if filterParam != nil {
+			options = &armconsumption.ReservationTransactionsClientListByBillingProfileOptions{
+				Filter: filterParam,
+			}
+		}
+		resp := r.srv.NewListByBillingProfilePager(billingAccountIDParam, billingProfileIDParam, options)
+		newListByBillingProfilePager = &resp
+		r.newListByBillingProfilePager.add(req, newListByBillingProfilePager)
+		server.PagerResponderInjectNextLinks(newListByBillingProfilePager, req, func(page *armconsumption.ReservationTransactionsClientListByBillingProfileResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListByBillingProfilePager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		r.newListByBillingProfilePager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListByBillingProfilePager) {
+		r.newListByBillingProfilePager.remove(req)
+	}
+	return resp, nil
 }
 
 func (r *ReservationTransactionsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
@@ -147,55 +196,6 @@ func (r *ReservationTransactionsServerTransport) dispatchNewListPager(req *http.
 	}
 	if !server.PagerResponderMore(newListPager) {
 		r.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (r *ReservationTransactionsServerTransport) dispatchNewListByBillingProfilePager(req *http.Request) (*http.Response, error) {
-	if r.srv.NewListByBillingProfilePager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListByBillingProfilePager not implemented")}
-	}
-	newListByBillingProfilePager := r.newListByBillingProfilePager.get(req)
-	if newListByBillingProfilePager == nil {
-		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/billingProfiles/(?P<billingProfileId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Consumption/reservationTransactions`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		qp := req.URL.Query()
-		billingAccountIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingAccountId")])
-		if err != nil {
-			return nil, err
-		}
-		billingProfileIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingProfileId")])
-		if err != nil {
-			return nil, err
-		}
-		filterParam := getOptional(qp.Get("$filter"))
-		var options *armconsumption.ReservationTransactionsClientListByBillingProfileOptions
-		if filterParam != nil {
-			options = &armconsumption.ReservationTransactionsClientListByBillingProfileOptions{
-				Filter: filterParam,
-			}
-		}
-		resp := r.srv.NewListByBillingProfilePager(billingAccountIDParam, billingProfileIDParam, options)
-		newListByBillingProfilePager = &resp
-		r.newListByBillingProfilePager.add(req, newListByBillingProfilePager)
-		server.PagerResponderInjectNextLinks(newListByBillingProfilePager, req, func(page *armconsumption.ReservationTransactionsClientListByBillingProfileResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListByBillingProfilePager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		r.newListByBillingProfilePager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListByBillingProfilePager) {
-		r.newListByBillingProfilePager.remove(req)
 	}
 	return resp, nil
 }

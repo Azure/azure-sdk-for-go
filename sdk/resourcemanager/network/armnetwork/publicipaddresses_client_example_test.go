@@ -446,6 +446,52 @@ func ExamplePublicIPAddressesClient_BeginDisassociateCloudServiceReservedPublicI
 	// }
 }
 
+// Generated from example definition: 2026-01-01/PublicIpAddressReserve.json
+func ExamplePublicIPAddressesClient_BeginReserveCloudServicePublicIPAddress() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewPublicIPAddressesClient().BeginReserveCloudServicePublicIPAddress(ctx, "rg1", "test-ip", armnetwork.ReserveCloudServicePublicIPAddressRequest{
+		IsRollback: to.Ptr(armnetwork.IsRollbackFalse),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armnetwork.PublicIPAddressesClientReserveCloudServicePublicIPAddressResponse{
+	// 	PublicIPAddress: armnetwork.PublicIPAddress{
+	// 		Name: to.Ptr("test-ip"),
+	// 		Type: to.Ptr("Microsoft.Network/publicIPAddresses"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/publicIPAddresses/test-ip"),
+	// 		Location: to.Ptr("eastus"),
+	// 		Properties: &armnetwork.PublicIPAddressPropertiesFormat{
+	// 			IdleTimeoutInMinutes: to.Ptr[int32](4),
+	// 			IPConfiguration: &armnetwork.IPConfiguration{
+	// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/networkInterfaces/testDNS649/ipConfigurations/ipconfig1"),
+	// 			},
+	// 			ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+	// 			PublicIPAddressVersion: to.Ptr(armnetwork.IPVersionIPv4),
+	// 			PublicIPAllocationMethod: to.Ptr(armnetwork.IPAllocationMethodStatic),
+	// 		},
+	// 		SKU: &armnetwork.PublicIPAddressSKU{
+	// 			Name: to.Ptr(armnetwork.PublicIPAddressSKUNameBasic),
+	// 		},
+	// 	},
+	// }
+}
+
 // Generated from example definition: 2026-01-01/PublicIpAddressGet.json
 func ExamplePublicIPAddressesClient_Get_getPublicIPAddress() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -594,112 +640,6 @@ func ExamplePublicIPAddressesClient_GetCloudServicePublicIPAddress() {
 	// 		},
 	// 	},
 	// }
-}
-
-// Generated from example definition: 2026-01-01/PublicIpAddressList.json
-func ExamplePublicIPAddressesClient_NewListPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewPublicIPAddressesClient().NewListPager("rg1", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armnetwork.PublicIPAddressesClientListResponse{
-		// 	PublicIPAddressListResult: armnetwork.PublicIPAddressListResult{
-		// 		Value: []*armnetwork.PublicIPAddress{
-		// 			{
-		// 				Name: to.Ptr("testDNS-ip"),
-		// 				Type: to.Ptr("Microsoft.Network/publicIPAddresses"),
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/publicIPAddresses/testDNS-ip"),
-		// 				Location: to.Ptr("westus"),
-		// 				Properties: &armnetwork.PublicIPAddressPropertiesFormat{
-		// 					DdosSettings: &armnetwork.DdosSettings{
-		// 						ProtectionMode: to.Ptr(armnetwork.DdosSettingsProtectionModeVirtualNetworkInherited),
-		// 					},
-		// 					IdleTimeoutInMinutes: to.Ptr[int32](4),
-		// 					IPConfiguration: &armnetwork.IPConfiguration{
-		// 						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/networkInterfaces/testDNS649/ipConfigurations/ipconfig1"),
-		// 					},
-		// 					IPTags: []*armnetwork.IPTag{
-		// 						{
-		// 							IPTagType: to.Ptr("FirstPartyUsage"),
-		// 							Tag: to.Ptr("SQL"),
-		// 						},
-		// 						{
-		// 							IPTagType: to.Ptr("FirstPartyUsage"),
-		// 							Tag: to.Ptr("Storage"),
-		// 						},
-		// 					},
-		// 					ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
-		// 					PublicIPAddressVersion: to.Ptr(armnetwork.IPVersionIPv4),
-		// 					PublicIPAllocationMethod: to.Ptr(armnetwork.IPAllocationMethodDynamic),
-		// 				},
-		// 			},
-		// 			{
-		// 				Name: to.Ptr("ip03"),
-		// 				Type: to.Ptr("Microsoft.Network/publicIPAddresses"),
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/publicIPAddresses/ip03"),
-		// 				Location: to.Ptr("westus"),
-		// 				Properties: &armnetwork.PublicIPAddressPropertiesFormat{
-		// 					DdosSettings: &armnetwork.DdosSettings{
-		// 						ProtectionMode: to.Ptr(armnetwork.DdosSettingsProtectionModeVirtualNetworkInherited),
-		// 					},
-		// 					DNSSettings: &armnetwork.PublicIPAddressDNSSettings{
-		// 						DomainNameLabel: to.Ptr("testlbl"),
-		// 						Fqdn: to.Ptr("testlbl.westus.cloudapp.azure.com"),
-		// 					},
-		// 					IdleTimeoutInMinutes: to.Ptr[int32](4),
-		// 					IPAddress: to.Ptr("40.85.154.247"),
-		// 					IPConfiguration: &armnetwork.IPConfiguration{
-		// 						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/loadBalancers/testLb/frontendIPConfigurations/LoadBalancerFrontEnd"),
-		// 					},
-		// 					ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
-		// 					PublicIPAddressVersion: to.Ptr(armnetwork.IPVersionIPv4),
-		// 					PublicIPAllocationMethod: to.Ptr(armnetwork.IPAllocationMethodDynamic),
-		// 				},
-		// 			},
-		// 			{
-		// 				Name: to.Ptr("ip04"),
-		// 				Type: to.Ptr("Microsoft.Network/publicIPAddresses"),
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/publicIPAddresses/ip04"),
-		// 				Location: to.Ptr("westus"),
-		// 				Properties: &armnetwork.PublicIPAddressPropertiesFormat{
-		// 					DdosSettings: &armnetwork.DdosSettings{
-		// 						ProtectionMode: to.Ptr(armnetwork.DdosSettingsProtectionModeVirtualNetworkInherited),
-		// 					},
-		// 					DNSSettings: &armnetwork.PublicIPAddressDNSSettings{
-		// 						DomainNameLabel: to.Ptr("testlbl"),
-		// 						DomainNameLabelScope: to.Ptr(armnetwork.PublicIPAddressDNSSettingsDomainNameLabelScopeTenantReuse),
-		// 						Fqdn: to.Ptr("testlbl.hxdwgjcdfgbhgebs.eastus.sysgen.cloudapp.azure.com"),
-		// 					},
-		// 					IdleTimeoutInMinutes: to.Ptr[int32](4),
-		// 					IPAddress: to.Ptr("40.85.154.248"),
-		// 					IPConfiguration: &armnetwork.IPConfiguration{
-		// 						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/loadBalancers/testLb/frontendIPConfigurations/LoadBalancerFrontEnd"),
-		// 					},
-		// 					ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
-		// 					PublicIPAddressVersion: to.Ptr(armnetwork.IPVersionIPv4),
-		// 					PublicIPAllocationMethod: to.Ptr(armnetwork.IPAllocationMethodDynamic),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
 }
 
 // Generated from example definition: 2026-01-01/PublicIpAddressListAll.json
@@ -914,8 +854,8 @@ func ExamplePublicIPAddressesClient_NewListCloudServiceRoleInstancePublicIPAddre
 	}
 }
 
-// Generated from example definition: 2026-01-01/PublicIpAddressReserve.json
-func ExamplePublicIPAddressesClient_BeginReserveCloudServicePublicIPAddress() {
+// Generated from example definition: 2026-01-01/PublicIpAddressList.json
+func ExamplePublicIPAddressesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -925,39 +865,99 @@ func ExamplePublicIPAddressesClient_BeginReserveCloudServicePublicIPAddress() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewPublicIPAddressesClient().BeginReserveCloudServicePublicIPAddress(ctx, "rg1", "test-ip", armnetwork.ReserveCloudServicePublicIPAddressRequest{
-		IsRollback: to.Ptr(armnetwork.IsRollbackFalse),
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
+	pager := clientFactory.NewPublicIPAddressesClient().NewListPager("rg1", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armnetwork.PublicIPAddressesClientListResponse{
+		// 	PublicIPAddressListResult: armnetwork.PublicIPAddressListResult{
+		// 		Value: []*armnetwork.PublicIPAddress{
+		// 			{
+		// 				Name: to.Ptr("testDNS-ip"),
+		// 				Type: to.Ptr("Microsoft.Network/publicIPAddresses"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/publicIPAddresses/testDNS-ip"),
+		// 				Location: to.Ptr("westus"),
+		// 				Properties: &armnetwork.PublicIPAddressPropertiesFormat{
+		// 					DdosSettings: &armnetwork.DdosSettings{
+		// 						ProtectionMode: to.Ptr(armnetwork.DdosSettingsProtectionModeVirtualNetworkInherited),
+		// 					},
+		// 					IdleTimeoutInMinutes: to.Ptr[int32](4),
+		// 					IPConfiguration: &armnetwork.IPConfiguration{
+		// 						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/networkInterfaces/testDNS649/ipConfigurations/ipconfig1"),
+		// 					},
+		// 					IPTags: []*armnetwork.IPTag{
+		// 						{
+		// 							IPTagType: to.Ptr("FirstPartyUsage"),
+		// 							Tag: to.Ptr("SQL"),
+		// 						},
+		// 						{
+		// 							IPTagType: to.Ptr("FirstPartyUsage"),
+		// 							Tag: to.Ptr("Storage"),
+		// 						},
+		// 					},
+		// 					ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+		// 					PublicIPAddressVersion: to.Ptr(armnetwork.IPVersionIPv4),
+		// 					PublicIPAllocationMethod: to.Ptr(armnetwork.IPAllocationMethodDynamic),
+		// 				},
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("ip03"),
+		// 				Type: to.Ptr("Microsoft.Network/publicIPAddresses"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/publicIPAddresses/ip03"),
+		// 				Location: to.Ptr("westus"),
+		// 				Properties: &armnetwork.PublicIPAddressPropertiesFormat{
+		// 					DdosSettings: &armnetwork.DdosSettings{
+		// 						ProtectionMode: to.Ptr(armnetwork.DdosSettingsProtectionModeVirtualNetworkInherited),
+		// 					},
+		// 					DNSSettings: &armnetwork.PublicIPAddressDNSSettings{
+		// 						DomainNameLabel: to.Ptr("testlbl"),
+		// 						Fqdn: to.Ptr("testlbl.westus.cloudapp.azure.com"),
+		// 					},
+		// 					IdleTimeoutInMinutes: to.Ptr[int32](4),
+		// 					IPAddress: to.Ptr("40.85.154.247"),
+		// 					IPConfiguration: &armnetwork.IPConfiguration{
+		// 						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/loadBalancers/testLb/frontendIPConfigurations/LoadBalancerFrontEnd"),
+		// 					},
+		// 					ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+		// 					PublicIPAddressVersion: to.Ptr(armnetwork.IPVersionIPv4),
+		// 					PublicIPAllocationMethod: to.Ptr(armnetwork.IPAllocationMethodDynamic),
+		// 				},
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("ip04"),
+		// 				Type: to.Ptr("Microsoft.Network/publicIPAddresses"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/publicIPAddresses/ip04"),
+		// 				Location: to.Ptr("westus"),
+		// 				Properties: &armnetwork.PublicIPAddressPropertiesFormat{
+		// 					DdosSettings: &armnetwork.DdosSettings{
+		// 						ProtectionMode: to.Ptr(armnetwork.DdosSettingsProtectionModeVirtualNetworkInherited),
+		// 					},
+		// 					DNSSettings: &armnetwork.PublicIPAddressDNSSettings{
+		// 						DomainNameLabel: to.Ptr("testlbl"),
+		// 						DomainNameLabelScope: to.Ptr(armnetwork.PublicIPAddressDNSSettingsDomainNameLabelScopeTenantReuse),
+		// 						Fqdn: to.Ptr("testlbl.hxdwgjcdfgbhgebs.eastus.sysgen.cloudapp.azure.com"),
+		// 					},
+		// 					IdleTimeoutInMinutes: to.Ptr[int32](4),
+		// 					IPAddress: to.Ptr("40.85.154.248"),
+		// 					IPConfiguration: &armnetwork.IPConfiguration{
+		// 						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/loadBalancers/testLb/frontendIPConfigurations/LoadBalancerFrontEnd"),
+		// 					},
+		// 					ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+		// 					PublicIPAddressVersion: to.Ptr(armnetwork.IPVersionIPv4),
+		// 					PublicIPAllocationMethod: to.Ptr(armnetwork.IPAllocationMethodDynamic),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
 	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armnetwork.PublicIPAddressesClientReserveCloudServicePublicIPAddressResponse{
-	// 	PublicIPAddress: armnetwork.PublicIPAddress{
-	// 		Name: to.Ptr("test-ip"),
-	// 		Type: to.Ptr("Microsoft.Network/publicIPAddresses"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/publicIPAddresses/test-ip"),
-	// 		Location: to.Ptr("eastus"),
-	// 		Properties: &armnetwork.PublicIPAddressPropertiesFormat{
-	// 			IdleTimeoutInMinutes: to.Ptr[int32](4),
-	// 			IPConfiguration: &armnetwork.IPConfiguration{
-	// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/networkInterfaces/testDNS649/ipConfigurations/ipconfig1"),
-	// 			},
-	// 			ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
-	// 			PublicIPAddressVersion: to.Ptr(armnetwork.IPVersionIPv4),
-	// 			PublicIPAllocationMethod: to.Ptr(armnetwork.IPAllocationMethodStatic),
-	// 		},
-	// 		SKU: &armnetwork.PublicIPAddressSKU{
-	// 			Name: to.Ptr(armnetwork.PublicIPAddressSKUNameBasic),
-	// 		},
-	// 	},
-	// }
 }
 
 // Generated from example definition: 2026-01-01/PublicIpAddressUpdateTags.json

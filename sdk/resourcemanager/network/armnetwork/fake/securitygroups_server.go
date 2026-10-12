@@ -33,13 +33,13 @@ type SecurityGroupsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, networkSecurityGroupName string, options *armnetwork.SecurityGroupsClientGetOptions) (resp azfake.Responder[armnetwork.SecurityGroupsClientGetResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method SecurityGroupsClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(resourceGroupName string, options *armnetwork.SecurityGroupsClientListOptions) (resp azfake.PagerResponder[armnetwork.SecurityGroupsClientListResponse])
-
 	// NewListAllPager is the fake for method SecurityGroupsClient.NewListAllPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListAllPager func(options *armnetwork.SecurityGroupsClientListAllOptions) (resp azfake.PagerResponder[armnetwork.SecurityGroupsClientListAllResponse])
+
+	// NewListPager is the fake for method SecurityGroupsClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(resourceGroupName string, options *armnetwork.SecurityGroupsClientListOptions) (resp azfake.PagerResponder[armnetwork.SecurityGroupsClientListResponse])
 
 	// UpdateTags is the fake for method SecurityGroupsClient.UpdateTags
 	// HTTP status codes to indicate success: http.StatusOK
@@ -54,8 +54,8 @@ func NewSecurityGroupsServerTransport(srv *SecurityGroupsServer) *SecurityGroups
 		srv:                 srv,
 		beginCreateOrUpdate: newTracker[azfake.PollerResponder[armnetwork.SecurityGroupsClientCreateOrUpdateResponse]](),
 		beginDelete:         newTracker[azfake.PollerResponder[armnetwork.SecurityGroupsClientDeleteResponse]](),
-		newListPager:        newTracker[azfake.PagerResponder[armnetwork.SecurityGroupsClientListResponse]](),
 		newListAllPager:     newTracker[azfake.PagerResponder[armnetwork.SecurityGroupsClientListAllResponse]](),
+		newListPager:        newTracker[azfake.PagerResponder[armnetwork.SecurityGroupsClientListResponse]](),
 	}
 }
 
@@ -65,8 +65,8 @@ type SecurityGroupsServerTransport struct {
 	srv                 *SecurityGroupsServer
 	beginCreateOrUpdate *tracker[azfake.PollerResponder[armnetwork.SecurityGroupsClientCreateOrUpdateResponse]]
 	beginDelete         *tracker[azfake.PollerResponder[armnetwork.SecurityGroupsClientDeleteResponse]]
-	newListPager        *tracker[azfake.PagerResponder[armnetwork.SecurityGroupsClientListResponse]]
 	newListAllPager     *tracker[azfake.PagerResponder[armnetwork.SecurityGroupsClientListAllResponse]]
+	newListPager        *tracker[azfake.PagerResponder[armnetwork.SecurityGroupsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for SecurityGroupsServerTransport.
@@ -96,10 +96,10 @@ func (s *SecurityGroupsServerTransport) dispatchToMethodFake(req *http.Request, 
 				res.resp, res.err = s.dispatchBeginDelete(req)
 			case "SecurityGroupsClient.Get":
 				res.resp, res.err = s.dispatchGet(req)
-			case "SecurityGroupsClient.NewListPager":
-				res.resp, res.err = s.dispatchNewListPager(req)
 			case "SecurityGroupsClient.NewListAllPager":
 				res.resp, res.err = s.dispatchNewListAllPager(req)
+			case "SecurityGroupsClient.NewListPager":
+				res.resp, res.err = s.dispatchNewListPager(req)
 			case "SecurityGroupsClient.UpdateTags":
 				res.resp, res.err = s.dispatchUpdateTags(req)
 			default:
@@ -251,6 +251,39 @@ func (s *SecurityGroupsServerTransport) dispatchGet(req *http.Request) (*http.Re
 	return resp, nil
 }
 
+func (s *SecurityGroupsServerTransport) dispatchNewListAllPager(req *http.Request) (*http.Response, error) {
+	if s.srv.NewListAllPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListAllPager not implemented")}
+	}
+	newListAllPager := s.newListAllPager.get(req)
+	if newListAllPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/networkSecurityGroups`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resp := s.srv.NewListAllPager(nil)
+		newListAllPager = &resp
+		s.newListAllPager.add(req, newListAllPager)
+		server.PagerResponderInjectNextLinks(newListAllPager, req, func(page *armnetwork.SecurityGroupsClientListAllResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListAllPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		s.newListAllPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListAllPager) {
+		s.newListAllPager.remove(req)
+	}
+	return resp, nil
+}
+
 func (s *SecurityGroupsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
 	if s.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
@@ -284,39 +317,6 @@ func (s *SecurityGroupsServerTransport) dispatchNewListPager(req *http.Request) 
 	}
 	if !server.PagerResponderMore(newListPager) {
 		s.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (s *SecurityGroupsServerTransport) dispatchNewListAllPager(req *http.Request) (*http.Response, error) {
-	if s.srv.NewListAllPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListAllPager not implemented")}
-	}
-	newListAllPager := s.newListAllPager.get(req)
-	if newListAllPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/networkSecurityGroups`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := s.srv.NewListAllPager(nil)
-		newListAllPager = &resp
-		s.newListAllPager.add(req, newListAllPager)
-		server.PagerResponderInjectNextLinks(newListAllPager, req, func(page *armnetwork.SecurityGroupsClientListAllResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListAllPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		s.newListAllPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListAllPager) {
-		s.newListAllPager.remove(req)
 	}
 	return resp, nil
 }

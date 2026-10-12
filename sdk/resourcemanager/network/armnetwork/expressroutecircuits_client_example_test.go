@@ -424,108 +424,6 @@ func ExampleExpressRouteCircuitsClient_BeginDelete_deleteMultiCloudExpressRouteC
 	// }
 }
 
-// Generated from example definition: 2026-01-01/ExpressRouteCircuitGet.json
-func ExampleExpressRouteCircuitsClient_Get_getExpressRouteCircuit() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewExpressRouteCircuitsClient().Get(ctx, "rg1", "circuitName", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armnetwork.ExpressRouteCircuitsClientGetResponse{
-	// 	ExpressRouteCircuit: armnetwork.ExpressRouteCircuit{
-	// 		Name: to.Ptr("circuitName"),
-	// 		Type: to.Ptr("Microsoft.Network/expressRouteCircuits"),
-	// 		Etag: to.Ptr("w/\\00000000-0000-0000-0000-000000000000\\"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/expressRouteCircuits/circuitName"),
-	// 		Location: to.Ptr("westus"),
-	// 		Properties: &armnetwork.ExpressRouteCircuitPropertiesFormat{
-	// 			AllowClassicOperations: to.Ptr(false),
-	// 			Authorizations: []*armnetwork.ExpressRouteCircuitAuthorization{
-	// 			},
-	// 			CircuitProvisioningState: to.Ptr("Enabled"),
-	// 			Peerings: []*armnetwork.ExpressRouteCircuitPeering{
-	// 			},
-	// 			ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
-	// 			ServiceKey: to.Ptr("a1410692-0000-4ceb-b94a-b90b94d398d1"),
-	// 			ServiceProviderProperties: &armnetwork.ExpressRouteCircuitServiceProviderProperties{
-	// 				BandwidthInMbps: to.Ptr[int32](200),
-	// 				PeeringLocation: to.Ptr("peeringLocation"),
-	// 				ServiceProviderName: to.Ptr("providerName"),
-	// 			},
-	// 			ResiliencyLevel: to.Ptr(armnetwork.ResiliencyLevelStandard),
-	// 			ServiceProviderProvisioningState: to.Ptr(armnetwork.ServiceProviderProvisioningStateNotProvisioned),
-	// 		},
-	// 		SKU: &armnetwork.ExpressRouteCircuitSKU{
-	// 			Name: to.Ptr("Standard_MeteredData"),
-	// 			Family: to.Ptr(armnetwork.ExpressRouteCircuitSKUFamilyMeteredData),
-	// 			Tier: to.Ptr(armnetwork.ExpressRouteCircuitSKUTierStandard),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-01-01/ExpressRouteMultiCloudCircuitGet.json
-func ExampleExpressRouteCircuitsClient_Get_getMultiCloudExpressRouteCircuit() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewExpressRouteCircuitsClient().Get(ctx, "rg1", "circuitName", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armnetwork.ExpressRouteCircuitsClientGetResponse{
-	// 	ExpressRouteCircuit: armnetwork.ExpressRouteCircuit{
-	// 		Name: to.Ptr("circuitName"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/expressRouteCircuits/circuitName"),
-	// 		Etag: to.Ptr("W/\"00000000-0000-0000-0000-000000000000\""),
-	// 		Type: to.Ptr("Microsoft.Network/expressRouteCircuits"),
-	// 		Location: to.Ptr("eastus2euap"),
-	// 		Properties: &armnetwork.ExpressRouteCircuitPropertiesFormat{
-	// 			ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
-	// 			Authorizations: []*armnetwork.ExpressRouteCircuitAuthorization{
-	// 			},
-	// 			ServiceProviderProperties: &armnetwork.ExpressRouteCircuitServiceProviderProperties{
-	// 				ServiceProviderName: to.Ptr("AWS"),
-	// 				PeeringLocation: to.Ptr("uswest2"),
-	// 				BandwidthInMbps: to.Ptr[int32](200),
-	// 			},
-	// 			PartnerAccountID: to.Ptr("123-456-789"),
-	// 			ActivationKey: to.Ptr("ew0KICAic2hhcmVkQ29ubmVjdGlvblV1aWQiOiAiM2YxYTZjOWUtOGIzZi00YjllLTljM2EtMmU2ZDdmNGExYzU5IiwNCiAgImNvbm5lY3Rpb25TaXplTWJwcyI6IDIwMCwNCiAgImRlc3RpbmF0aW9uQWNjb3VudCI6ICI3ZDc0N2VlZC1iNDRjLTQyNTctOGQ0My1kZjllYmQ5NDU0NmIiDQp9"),
-	// 			ResiliencyLevel: to.Ptr(armnetwork.ResiliencyLevelMaximum),
-	// 			CircuitProvisioningState: to.Ptr("Enabled"),
-	// 			AllowClassicOperations: to.Ptr(false),
-	// 			ServiceKey: to.Ptr("a1410692-0000-4ceb-b94a-b90b94d398d1"),
-	// 			ServiceProviderProvisioningState: to.Ptr(armnetwork.ServiceProviderProvisioningStateDeProvisioned),
-	// 		},
-	// 		SKU: &armnetwork.ExpressRouteCircuitSKU{
-	// 			Name: to.Ptr("MultiCloud_MeteredData"),
-	// 			Tier: to.Ptr(armnetwork.ExpressRouteCircuitSKUTierMultiCloud),
-	// 			Family: to.Ptr(armnetwork.ExpressRouteCircuitSKUFamilyMeteredData),
-	// 		},
-	// 	},
-	// }
-}
-
 // Generated from example definition: 2026-01-01/ExpressRouteCircuitGetCircuitLinkFailoverAllTestsDetails.json
 func ExampleExpressRouteCircuitsClient_BeginGetCircuitLinkFailoverAllTestsDetails() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -643,280 +541,6 @@ func ExampleExpressRouteCircuitsClient_BeginGetCircuitLinkFailoverSingleTestDeta
 	// 		},
 	// 	},
 	// }
-}
-
-// Generated from example definition: 2026-01-01/ExpressRouteCircuitPeeringStats.json
-func ExampleExpressRouteCircuitsClient_GetPeeringStats() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewExpressRouteCircuitsClient().GetPeeringStats(ctx, "rg1", "circuitName", "peeringName", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armnetwork.ExpressRouteCircuitsClientGetPeeringStatsResponse{
-	// 	ExpressRouteCircuitStats: armnetwork.ExpressRouteCircuitStats{
-	// 		PrimarybytesIn: to.Ptr[int64](537408),
-	// 		PrimarybytesOut: to.Ptr[int64](44032550),
-	// 		SecondarybytesIn: to.Ptr[int64](0),
-	// 		SecondarybytesOut: to.Ptr[int64](39002500),
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-01-01/ExpressRouteCircuitStats.json
-func ExampleExpressRouteCircuitsClient_GetStats() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewExpressRouteCircuitsClient().GetStats(ctx, "rg1", "circuitName", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armnetwork.ExpressRouteCircuitsClientGetStatsResponse{
-	// 	ExpressRouteCircuitStats: armnetwork.ExpressRouteCircuitStats{
-	// 		PrimarybytesIn: to.Ptr[int64](537408),
-	// 		PrimarybytesOut: to.Ptr[int64](44032550),
-	// 		SecondarybytesIn: to.Ptr[int64](0),
-	// 		SecondarybytesOut: to.Ptr[int64](39002500),
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-01-01/ExpressRouteCircuitListByResourceGroup.json
-func ExampleExpressRouteCircuitsClient_NewListPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewExpressRouteCircuitsClient().NewListPager("rg1", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armnetwork.ExpressRouteCircuitsClientListResponse{
-		// 	ExpressRouteCircuitListResult: armnetwork.ExpressRouteCircuitListResult{
-		// 		Value: []*armnetwork.ExpressRouteCircuit{
-		// 			{
-		// 				Name: to.Ptr("circuitName1"),
-		// 				Type: to.Ptr("Microsoft.Network/expressRouteCircuits"),
-		// 				Etag: to.Ptr("W/\"832b28c3-f5fd-4d2a-a2cb-6e4a2fe452b3\""),
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/expressRouteCircuits/circuitName1"),
-		// 				Location: to.Ptr("westus"),
-		// 				Properties: &armnetwork.ExpressRouteCircuitPropertiesFormat{
-		// 					AllowClassicOperations: to.Ptr(false),
-		// 					Authorizations: []*armnetwork.ExpressRouteCircuitAuthorization{
-		// 						{
-		// 							Name: to.Ptr("MyAuthorization1"),
-		// 							Etag: to.Ptr("W/\"832b28c3-f5fd-4d2a-a2cb-6e4a2fe452b3\""),
-		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/expressRouteCircuits/circuitName/authorizations/MyAuthorization1"),
-		// 							Properties: &armnetwork.AuthorizationPropertiesFormat{
-		// 								AuthorizationKey: to.Ptr("authkey"),
-		// 								AuthorizationUseStatus: to.Ptr(armnetwork.AuthorizationUseStatusAvailable),
-		// 								ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
-		// 							},
-		// 						},
-		// 					},
-		// 					CircuitProvisioningState: to.Ptr("Enabled"),
-		// 					GatewayManagerEtag: to.Ptr("113"),
-		// 					Peerings: []*armnetwork.ExpressRouteCircuitPeering{
-		// 					},
-		// 					ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
-		// 					ServiceKey: to.Ptr("a1410692-ed3b-4ceb-b94a-b90b95d398d1"),
-		// 					ServiceProviderProperties: &armnetwork.ExpressRouteCircuitServiceProviderProperties{
-		// 						BandwidthInMbps: to.Ptr[int32](200),
-		// 						PeeringLocation: to.Ptr("peeringLocation"),
-		// 						ServiceProviderName: to.Ptr("providerName"),
-		// 					},
-		// 					ServiceProviderProvisioningState: to.Ptr(armnetwork.ServiceProviderProvisioningStateProvisioned),
-		// 				},
-		// 				SKU: &armnetwork.ExpressRouteCircuitSKU{
-		// 					Name: to.Ptr("Standard_MeteredData"),
-		// 					Family: to.Ptr(armnetwork.ExpressRouteCircuitSKUFamilyMeteredData),
-		// 					Tier: to.Ptr(armnetwork.ExpressRouteCircuitSKUTierStandard),
-		// 				},
-		// 			},
-		// 			{
-		// 				Name: to.Ptr("circuitName2"),
-		// 				Type: to.Ptr("Microsoft.Network/expressRouteCircuits"),
-		// 				Etag: to.Ptr("W/\"e33c875f-48df-4a91-b7d3-eb95b5ddbb89\""),
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/expressRouteCircuits/circuitName2"),
-		// 				Location: to.Ptr("westus"),
-		// 				Properties: &armnetwork.ExpressRouteCircuitPropertiesFormat{
-		// 					AllowClassicOperations: to.Ptr(false),
-		// 					Authorizations: []*armnetwork.ExpressRouteCircuitAuthorization{
-		// 						{
-		// 							Name: to.Ptr("MyAuthorization2"),
-		// 							Etag: to.Ptr("W/\"e33c875f-48df-4a91-b7d3-eb95b5ddbb89\""),
-		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/expressRouteCircuits/circuitName2/authorizations/MyAuthorization2"),
-		// 							Properties: &armnetwork.AuthorizationPropertiesFormat{
-		// 								AuthorizationKey: to.Ptr("authkey"),
-		// 								AuthorizationUseStatus: to.Ptr(armnetwork.AuthorizationUseStatusAvailable),
-		// 								ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
-		// 							},
-		// 						},
-		// 					},
-		// 					CircuitProvisioningState: to.Ptr("Enabled"),
-		// 					GatewayManagerEtag: to.Ptr(""),
-		// 					Peerings: []*armnetwork.ExpressRouteCircuitPeering{
-		// 					},
-		// 					ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
-		// 					ServiceKey: to.Ptr("6569625a-9ba4-498b-9719-14d778eef609"),
-		// 					ServiceProviderProperties: &armnetwork.ExpressRouteCircuitServiceProviderProperties{
-		// 						BandwidthInMbps: to.Ptr[int32](200),
-		// 						PeeringLocation: to.Ptr("peeringLocation"),
-		// 						ServiceProviderName: to.Ptr("providerName"),
-		// 					},
-		// 					ServiceProviderProvisioningState: to.Ptr(armnetwork.ServiceProviderProvisioningStateNotProvisioned),
-		// 				},
-		// 				SKU: &armnetwork.ExpressRouteCircuitSKU{
-		// 					Name: to.Ptr("Standard_MeteredData"),
-		// 					Family: to.Ptr(armnetwork.ExpressRouteCircuitSKUFamilyMeteredData),
-		// 					Tier: to.Ptr(armnetwork.ExpressRouteCircuitSKUTierStandard),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2026-01-01/ExpressRouteCircuitListBySubscription.json
-func ExampleExpressRouteCircuitsClient_NewListAllPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewExpressRouteCircuitsClient().NewListAllPager(nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armnetwork.ExpressRouteCircuitsClientListAllResponse{
-		// 	ExpressRouteCircuitListResult: armnetwork.ExpressRouteCircuitListResult{
-		// 		Value: []*armnetwork.ExpressRouteCircuit{
-		// 			{
-		// 				Name: to.Ptr("circuitName1"),
-		// 				Type: to.Ptr("Microsoft.Network/expressRouteCircuits"),
-		// 				Etag: to.Ptr("W/\"832b28c3-f5fd-4d2a-a2cb-6e4a2fe452b3\""),
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/expressRouteCircuits/circuitName1"),
-		// 				Location: to.Ptr("westus"),
-		// 				Properties: &armnetwork.ExpressRouteCircuitPropertiesFormat{
-		// 					AllowClassicOperations: to.Ptr(false),
-		// 					Authorizations: []*armnetwork.ExpressRouteCircuitAuthorization{
-		// 						{
-		// 							Name: to.Ptr("MyAuthorization1"),
-		// 							Etag: to.Ptr("W/\"832b28c3-f5fd-4d2a-a2cb-6e4a2fe452b3\""),
-		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/expressRouteCircuits/circuitName/authorizations/MyAuthorization1"),
-		// 							Properties: &armnetwork.AuthorizationPropertiesFormat{
-		// 								AuthorizationKey: to.Ptr("authkey"),
-		// 								AuthorizationUseStatus: to.Ptr(armnetwork.AuthorizationUseStatusAvailable),
-		// 								ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
-		// 							},
-		// 						},
-		// 					},
-		// 					CircuitProvisioningState: to.Ptr("Enabled"),
-		// 					GatewayManagerEtag: to.Ptr("113"),
-		// 					Peerings: []*armnetwork.ExpressRouteCircuitPeering{
-		// 					},
-		// 					ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
-		// 					ServiceKey: to.Ptr("a1410692-ed3b-4ceb-b94a-b90b95d398d1"),
-		// 					ServiceProviderProperties: &armnetwork.ExpressRouteCircuitServiceProviderProperties{
-		// 						BandwidthInMbps: to.Ptr[int32](200),
-		// 						PeeringLocation: to.Ptr("peeringLocation"),
-		// 						ServiceProviderName: to.Ptr("providerName"),
-		// 					},
-		// 					ServiceProviderProvisioningState: to.Ptr(armnetwork.ServiceProviderProvisioningStateProvisioned),
-		// 				},
-		// 				SKU: &armnetwork.ExpressRouteCircuitSKU{
-		// 					Name: to.Ptr("Standard_MeteredData"),
-		// 					Family: to.Ptr(armnetwork.ExpressRouteCircuitSKUFamilyMeteredData),
-		// 					Tier: to.Ptr(armnetwork.ExpressRouteCircuitSKUTierStandard),
-		// 				},
-		// 			},
-		// 			{
-		// 				Name: to.Ptr("circuitName2"),
-		// 				Type: to.Ptr("Microsoft.Network/expressRouteCircuits"),
-		// 				Etag: to.Ptr("W/\"e33c875f-48df-4a91-b7d3-eb95b5ddbb89\""),
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/expressRouteCircuits/circuitName2"),
-		// 				Location: to.Ptr("westus"),
-		// 				Properties: &armnetwork.ExpressRouteCircuitPropertiesFormat{
-		// 					AllowClassicOperations: to.Ptr(false),
-		// 					Authorizations: []*armnetwork.ExpressRouteCircuitAuthorization{
-		// 						{
-		// 							Name: to.Ptr("MyAuthorization2"),
-		// 							Etag: to.Ptr("W/\"e33c875f-48df-4a91-b7d3-eb95b5ddbb89\""),
-		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/expressRouteCircuits/circuitName2/authorizations/MyAuthorization2"),
-		// 							Properties: &armnetwork.AuthorizationPropertiesFormat{
-		// 								AuthorizationKey: to.Ptr("authkey"),
-		// 								AuthorizationUseStatus: to.Ptr(armnetwork.AuthorizationUseStatusAvailable),
-		// 								ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
-		// 							},
-		// 						},
-		// 					},
-		// 					CircuitProvisioningState: to.Ptr("Enabled"),
-		// 					GatewayManagerEtag: to.Ptr(""),
-		// 					Peerings: []*armnetwork.ExpressRouteCircuitPeering{
-		// 					},
-		// 					ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
-		// 					ServiceKey: to.Ptr("6569625a-9ba4-498b-9719-14d778eef609"),
-		// 					ServiceProviderProperties: &armnetwork.ExpressRouteCircuitServiceProviderProperties{
-		// 						BandwidthInMbps: to.Ptr[int32](200),
-		// 						PeeringLocation: to.Ptr("peeringLocation"),
-		// 						ServiceProviderName: to.Ptr("providerName"),
-		// 					},
-		// 					ServiceProviderProvisioningState: to.Ptr(armnetwork.ServiceProviderProvisioningStateNotProvisioned),
-		// 				},
-		// 				SKU: &armnetwork.ExpressRouteCircuitSKU{
-		// 					Name: to.Ptr("Standard_MeteredData"),
-		// 					Family: to.Ptr(armnetwork.ExpressRouteCircuitSKUFamilyMeteredData),
-		// 					Tier: to.Ptr(armnetwork.ExpressRouteCircuitSKUTierStandard),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
 }
 
 // Generated from example definition: 2026-01-01/ExpressRouteCircuitARPTableList.json
@@ -1086,6 +710,382 @@ func ExampleExpressRouteCircuitsClient_BeginStopCircuitLinkFailoverTest() {
 	// res = armnetwork.ExpressRouteCircuitsClientStopCircuitLinkFailoverTestResponse{
 	// 	Value: to.Ptr(""),
 	// }
+}
+
+// Generated from example definition: 2026-01-01/ExpressRouteCircuitGet.json
+func ExampleExpressRouteCircuitsClient_Get_getExpressRouteCircuit() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewExpressRouteCircuitsClient().Get(ctx, "rg1", "circuitName", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armnetwork.ExpressRouteCircuitsClientGetResponse{
+	// 	ExpressRouteCircuit: armnetwork.ExpressRouteCircuit{
+	// 		Name: to.Ptr("circuitName"),
+	// 		Type: to.Ptr("Microsoft.Network/expressRouteCircuits"),
+	// 		Etag: to.Ptr("w/\\00000000-0000-0000-0000-000000000000\\"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/expressRouteCircuits/circuitName"),
+	// 		Location: to.Ptr("westus"),
+	// 		Properties: &armnetwork.ExpressRouteCircuitPropertiesFormat{
+	// 			AllowClassicOperations: to.Ptr(false),
+	// 			Authorizations: []*armnetwork.ExpressRouteCircuitAuthorization{
+	// 			},
+	// 			CircuitProvisioningState: to.Ptr("Enabled"),
+	// 			Peerings: []*armnetwork.ExpressRouteCircuitPeering{
+	// 			},
+	// 			ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+	// 			ServiceKey: to.Ptr("a1410692-0000-4ceb-b94a-b90b94d398d1"),
+	// 			ServiceProviderProperties: &armnetwork.ExpressRouteCircuitServiceProviderProperties{
+	// 				BandwidthInMbps: to.Ptr[int32](200),
+	// 				PeeringLocation: to.Ptr("peeringLocation"),
+	// 				ServiceProviderName: to.Ptr("providerName"),
+	// 			},
+	// 			ResiliencyLevel: to.Ptr(armnetwork.ResiliencyLevelStandard),
+	// 			ServiceProviderProvisioningState: to.Ptr(armnetwork.ServiceProviderProvisioningStateNotProvisioned),
+	// 		},
+	// 		SKU: &armnetwork.ExpressRouteCircuitSKU{
+	// 			Name: to.Ptr("Standard_MeteredData"),
+	// 			Family: to.Ptr(armnetwork.ExpressRouteCircuitSKUFamilyMeteredData),
+	// 			Tier: to.Ptr(armnetwork.ExpressRouteCircuitSKUTierStandard),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-01-01/ExpressRouteMultiCloudCircuitGet.json
+func ExampleExpressRouteCircuitsClient_Get_getMultiCloudExpressRouteCircuit() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewExpressRouteCircuitsClient().Get(ctx, "rg1", "circuitName", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armnetwork.ExpressRouteCircuitsClientGetResponse{
+	// 	ExpressRouteCircuit: armnetwork.ExpressRouteCircuit{
+	// 		Name: to.Ptr("circuitName"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/expressRouteCircuits/circuitName"),
+	// 		Etag: to.Ptr("W/\"00000000-0000-0000-0000-000000000000\""),
+	// 		Type: to.Ptr("Microsoft.Network/expressRouteCircuits"),
+	// 		Location: to.Ptr("eastus2euap"),
+	// 		Properties: &armnetwork.ExpressRouteCircuitPropertiesFormat{
+	// 			ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+	// 			Authorizations: []*armnetwork.ExpressRouteCircuitAuthorization{
+	// 			},
+	// 			ServiceProviderProperties: &armnetwork.ExpressRouteCircuitServiceProviderProperties{
+	// 				ServiceProviderName: to.Ptr("AWS"),
+	// 				PeeringLocation: to.Ptr("uswest2"),
+	// 				BandwidthInMbps: to.Ptr[int32](200),
+	// 			},
+	// 			PartnerAccountID: to.Ptr("123-456-789"),
+	// 			ActivationKey: to.Ptr("ew0KICAic2hhcmVkQ29ubmVjdGlvblV1aWQiOiAiM2YxYTZjOWUtOGIzZi00YjllLTljM2EtMmU2ZDdmNGExYzU5IiwNCiAgImNvbm5lY3Rpb25TaXplTWJwcyI6IDIwMCwNCiAgImRlc3RpbmF0aW9uQWNjb3VudCI6ICI3ZDc0N2VlZC1iNDRjLTQyNTctOGQ0My1kZjllYmQ5NDU0NmIiDQp9"),
+	// 			ResiliencyLevel: to.Ptr(armnetwork.ResiliencyLevelMaximum),
+	// 			CircuitProvisioningState: to.Ptr("Enabled"),
+	// 			AllowClassicOperations: to.Ptr(false),
+	// 			ServiceKey: to.Ptr("a1410692-0000-4ceb-b94a-b90b94d398d1"),
+	// 			ServiceProviderProvisioningState: to.Ptr(armnetwork.ServiceProviderProvisioningStateDeProvisioned),
+	// 		},
+	// 		SKU: &armnetwork.ExpressRouteCircuitSKU{
+	// 			Name: to.Ptr("MultiCloud_MeteredData"),
+	// 			Tier: to.Ptr(armnetwork.ExpressRouteCircuitSKUTierMultiCloud),
+	// 			Family: to.Ptr(armnetwork.ExpressRouteCircuitSKUFamilyMeteredData),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-01-01/ExpressRouteCircuitPeeringStats.json
+func ExampleExpressRouteCircuitsClient_GetPeeringStats() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewExpressRouteCircuitsClient().GetPeeringStats(ctx, "rg1", "circuitName", "peeringName", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armnetwork.ExpressRouteCircuitsClientGetPeeringStatsResponse{
+	// 	ExpressRouteCircuitStats: armnetwork.ExpressRouteCircuitStats{
+	// 		PrimarybytesIn: to.Ptr[int64](537408),
+	// 		PrimarybytesOut: to.Ptr[int64](44032550),
+	// 		SecondarybytesIn: to.Ptr[int64](0),
+	// 		SecondarybytesOut: to.Ptr[int64](39002500),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-01-01/ExpressRouteCircuitStats.json
+func ExampleExpressRouteCircuitsClient_GetStats() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewExpressRouteCircuitsClient().GetStats(ctx, "rg1", "circuitName", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armnetwork.ExpressRouteCircuitsClientGetStatsResponse{
+	// 	ExpressRouteCircuitStats: armnetwork.ExpressRouteCircuitStats{
+	// 		PrimarybytesIn: to.Ptr[int64](537408),
+	// 		PrimarybytesOut: to.Ptr[int64](44032550),
+	// 		SecondarybytesIn: to.Ptr[int64](0),
+	// 		SecondarybytesOut: to.Ptr[int64](39002500),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-01-01/ExpressRouteCircuitListBySubscription.json
+func ExampleExpressRouteCircuitsClient_NewListAllPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewExpressRouteCircuitsClient().NewListAllPager(nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armnetwork.ExpressRouteCircuitsClientListAllResponse{
+		// 	ExpressRouteCircuitListResult: armnetwork.ExpressRouteCircuitListResult{
+		// 		Value: []*armnetwork.ExpressRouteCircuit{
+		// 			{
+		// 				Name: to.Ptr("circuitName1"),
+		// 				Type: to.Ptr("Microsoft.Network/expressRouteCircuits"),
+		// 				Etag: to.Ptr("W/\"832b28c3-f5fd-4d2a-a2cb-6e4a2fe452b3\""),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/expressRouteCircuits/circuitName1"),
+		// 				Location: to.Ptr("westus"),
+		// 				Properties: &armnetwork.ExpressRouteCircuitPropertiesFormat{
+		// 					AllowClassicOperations: to.Ptr(false),
+		// 					Authorizations: []*armnetwork.ExpressRouteCircuitAuthorization{
+		// 						{
+		// 							Name: to.Ptr("MyAuthorization1"),
+		// 							Etag: to.Ptr("W/\"832b28c3-f5fd-4d2a-a2cb-6e4a2fe452b3\""),
+		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/expressRouteCircuits/circuitName/authorizations/MyAuthorization1"),
+		// 							Properties: &armnetwork.AuthorizationPropertiesFormat{
+		// 								AuthorizationKey: to.Ptr("authkey"),
+		// 								AuthorizationUseStatus: to.Ptr(armnetwork.AuthorizationUseStatusAvailable),
+		// 								ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+		// 							},
+		// 						},
+		// 					},
+		// 					CircuitProvisioningState: to.Ptr("Enabled"),
+		// 					GatewayManagerEtag: to.Ptr("113"),
+		// 					Peerings: []*armnetwork.ExpressRouteCircuitPeering{
+		// 					},
+		// 					ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+		// 					ServiceKey: to.Ptr("a1410692-ed3b-4ceb-b94a-b90b95d398d1"),
+		// 					ServiceProviderProperties: &armnetwork.ExpressRouteCircuitServiceProviderProperties{
+		// 						BandwidthInMbps: to.Ptr[int32](200),
+		// 						PeeringLocation: to.Ptr("peeringLocation"),
+		// 						ServiceProviderName: to.Ptr("providerName"),
+		// 					},
+		// 					ServiceProviderProvisioningState: to.Ptr(armnetwork.ServiceProviderProvisioningStateProvisioned),
+		// 				},
+		// 				SKU: &armnetwork.ExpressRouteCircuitSKU{
+		// 					Name: to.Ptr("Standard_MeteredData"),
+		// 					Family: to.Ptr(armnetwork.ExpressRouteCircuitSKUFamilyMeteredData),
+		// 					Tier: to.Ptr(armnetwork.ExpressRouteCircuitSKUTierStandard),
+		// 				},
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("circuitName2"),
+		// 				Type: to.Ptr("Microsoft.Network/expressRouteCircuits"),
+		// 				Etag: to.Ptr("W/\"e33c875f-48df-4a91-b7d3-eb95b5ddbb89\""),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/expressRouteCircuits/circuitName2"),
+		// 				Location: to.Ptr("westus"),
+		// 				Properties: &armnetwork.ExpressRouteCircuitPropertiesFormat{
+		// 					AllowClassicOperations: to.Ptr(false),
+		// 					Authorizations: []*armnetwork.ExpressRouteCircuitAuthorization{
+		// 						{
+		// 							Name: to.Ptr("MyAuthorization2"),
+		// 							Etag: to.Ptr("W/\"e33c875f-48df-4a91-b7d3-eb95b5ddbb89\""),
+		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/expressRouteCircuits/circuitName2/authorizations/MyAuthorization2"),
+		// 							Properties: &armnetwork.AuthorizationPropertiesFormat{
+		// 								AuthorizationKey: to.Ptr("authkey"),
+		// 								AuthorizationUseStatus: to.Ptr(armnetwork.AuthorizationUseStatusAvailable),
+		// 								ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+		// 							},
+		// 						},
+		// 					},
+		// 					CircuitProvisioningState: to.Ptr("Enabled"),
+		// 					GatewayManagerEtag: to.Ptr(""),
+		// 					Peerings: []*armnetwork.ExpressRouteCircuitPeering{
+		// 					},
+		// 					ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+		// 					ServiceKey: to.Ptr("6569625a-9ba4-498b-9719-14d778eef609"),
+		// 					ServiceProviderProperties: &armnetwork.ExpressRouteCircuitServiceProviderProperties{
+		// 						BandwidthInMbps: to.Ptr[int32](200),
+		// 						PeeringLocation: to.Ptr("peeringLocation"),
+		// 						ServiceProviderName: to.Ptr("providerName"),
+		// 					},
+		// 					ServiceProviderProvisioningState: to.Ptr(armnetwork.ServiceProviderProvisioningStateNotProvisioned),
+		// 				},
+		// 				SKU: &armnetwork.ExpressRouteCircuitSKU{
+		// 					Name: to.Ptr("Standard_MeteredData"),
+		// 					Family: to.Ptr(armnetwork.ExpressRouteCircuitSKUFamilyMeteredData),
+		// 					Tier: to.Ptr(armnetwork.ExpressRouteCircuitSKUTierStandard),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2026-01-01/ExpressRouteCircuitListByResourceGroup.json
+func ExampleExpressRouteCircuitsClient_NewListPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewExpressRouteCircuitsClient().NewListPager("rg1", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armnetwork.ExpressRouteCircuitsClientListResponse{
+		// 	ExpressRouteCircuitListResult: armnetwork.ExpressRouteCircuitListResult{
+		// 		Value: []*armnetwork.ExpressRouteCircuit{
+		// 			{
+		// 				Name: to.Ptr("circuitName1"),
+		// 				Type: to.Ptr("Microsoft.Network/expressRouteCircuits"),
+		// 				Etag: to.Ptr("W/\"832b28c3-f5fd-4d2a-a2cb-6e4a2fe452b3\""),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/expressRouteCircuits/circuitName1"),
+		// 				Location: to.Ptr("westus"),
+		// 				Properties: &armnetwork.ExpressRouteCircuitPropertiesFormat{
+		// 					AllowClassicOperations: to.Ptr(false),
+		// 					Authorizations: []*armnetwork.ExpressRouteCircuitAuthorization{
+		// 						{
+		// 							Name: to.Ptr("MyAuthorization1"),
+		// 							Etag: to.Ptr("W/\"832b28c3-f5fd-4d2a-a2cb-6e4a2fe452b3\""),
+		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/expressRouteCircuits/circuitName/authorizations/MyAuthorization1"),
+		// 							Properties: &armnetwork.AuthorizationPropertiesFormat{
+		// 								AuthorizationKey: to.Ptr("authkey"),
+		// 								AuthorizationUseStatus: to.Ptr(armnetwork.AuthorizationUseStatusAvailable),
+		// 								ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+		// 							},
+		// 						},
+		// 					},
+		// 					CircuitProvisioningState: to.Ptr("Enabled"),
+		// 					GatewayManagerEtag: to.Ptr("113"),
+		// 					Peerings: []*armnetwork.ExpressRouteCircuitPeering{
+		// 					},
+		// 					ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+		// 					ServiceKey: to.Ptr("a1410692-ed3b-4ceb-b94a-b90b95d398d1"),
+		// 					ServiceProviderProperties: &armnetwork.ExpressRouteCircuitServiceProviderProperties{
+		// 						BandwidthInMbps: to.Ptr[int32](200),
+		// 						PeeringLocation: to.Ptr("peeringLocation"),
+		// 						ServiceProviderName: to.Ptr("providerName"),
+		// 					},
+		// 					ServiceProviderProvisioningState: to.Ptr(armnetwork.ServiceProviderProvisioningStateProvisioned),
+		// 				},
+		// 				SKU: &armnetwork.ExpressRouteCircuitSKU{
+		// 					Name: to.Ptr("Standard_MeteredData"),
+		// 					Family: to.Ptr(armnetwork.ExpressRouteCircuitSKUFamilyMeteredData),
+		// 					Tier: to.Ptr(armnetwork.ExpressRouteCircuitSKUTierStandard),
+		// 				},
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("circuitName2"),
+		// 				Type: to.Ptr("Microsoft.Network/expressRouteCircuits"),
+		// 				Etag: to.Ptr("W/\"e33c875f-48df-4a91-b7d3-eb95b5ddbb89\""),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/expressRouteCircuits/circuitName2"),
+		// 				Location: to.Ptr("westus"),
+		// 				Properties: &armnetwork.ExpressRouteCircuitPropertiesFormat{
+		// 					AllowClassicOperations: to.Ptr(false),
+		// 					Authorizations: []*armnetwork.ExpressRouteCircuitAuthorization{
+		// 						{
+		// 							Name: to.Ptr("MyAuthorization2"),
+		// 							Etag: to.Ptr("W/\"e33c875f-48df-4a91-b7d3-eb95b5ddbb89\""),
+		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/expressRouteCircuits/circuitName2/authorizations/MyAuthorization2"),
+		// 							Properties: &armnetwork.AuthorizationPropertiesFormat{
+		// 								AuthorizationKey: to.Ptr("authkey"),
+		// 								AuthorizationUseStatus: to.Ptr(armnetwork.AuthorizationUseStatusAvailable),
+		// 								ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+		// 							},
+		// 						},
+		// 					},
+		// 					CircuitProvisioningState: to.Ptr("Enabled"),
+		// 					GatewayManagerEtag: to.Ptr(""),
+		// 					Peerings: []*armnetwork.ExpressRouteCircuitPeering{
+		// 					},
+		// 					ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+		// 					ServiceKey: to.Ptr("6569625a-9ba4-498b-9719-14d778eef609"),
+		// 					ServiceProviderProperties: &armnetwork.ExpressRouteCircuitServiceProviderProperties{
+		// 						BandwidthInMbps: to.Ptr[int32](200),
+		// 						PeeringLocation: to.Ptr("peeringLocation"),
+		// 						ServiceProviderName: to.Ptr("providerName"),
+		// 					},
+		// 					ServiceProviderProvisioningState: to.Ptr(armnetwork.ServiceProviderProvisioningStateNotProvisioned),
+		// 				},
+		// 				SKU: &armnetwork.ExpressRouteCircuitSKU{
+		// 					Name: to.Ptr("Standard_MeteredData"),
+		// 					Family: to.Ptr(armnetwork.ExpressRouteCircuitSKUFamilyMeteredData),
+		// 					Tier: to.Ptr(armnetwork.ExpressRouteCircuitSKUTierStandard),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
 }
 
 // Generated from example definition: 2026-01-01/ExpressRouteCircuitUpdateTags.json

@@ -69,7 +69,7 @@ func (client *ServerSecurityAlertPoliciesClient) BeginCreateOrUpdate(ctx context
 	}
 }
 
-// CreateOrUpdate - Creates or updates a threat detection policy.
+// createOrUpdate - Creates or updates a threat detection policy.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ServerSecurityAlertPoliciesClient) createOrUpdate(ctx context.Context, resourceGroupName string, serverName string, securityAlertPolicyName SecurityAlertPolicyName, parameters ServerSecurityAlertPolicy, options *ServerSecurityAlertPoliciesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -91,7 +91,7 @@ func (client *ServerSecurityAlertPoliciesClient) createOrUpdate(ctx context.Cont
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *ServerSecurityAlertPoliciesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, securityAlertPolicyName SecurityAlertPolicyName, parameters ServerSecurityAlertPolicy, _ *ServerSecurityAlertPoliciesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/securityAlertPolicies/{securityAlertPolicyName}"
 	if client.subscriptionID == "" {

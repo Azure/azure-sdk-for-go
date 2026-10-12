@@ -21,10 +21,6 @@ import (
 
 // DatabaseAccountsServer is a fake server for instances of the armcosmos.DatabaseAccountsClient type.
 type DatabaseAccountsServer struct {
-	// CheckNameExists is the fake for method DatabaseAccountsClient.CheckNameExists
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusNotFound
-	CheckNameExists func(ctx context.Context, accountName string, options *armcosmos.DatabaseAccountsClientCheckNameExistsOptions) (resp azfake.Responder[armcosmos.DatabaseAccountsClientCheckNameExistsResponse], errResp azfake.ErrorResponder)
-
 	// BeginCreateOrUpdate is the fake for method DatabaseAccountsClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK
 	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, accountName string, createUpdateParameters armcosmos.DatabaseAccountCreateUpdateParameters, options *armcosmos.DatabaseAccountsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armcosmos.DatabaseAccountsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
@@ -36,46 +32,6 @@ type DatabaseAccountsServer struct {
 	// BeginFailoverPriorityChange is the fake for method DatabaseAccountsClient.BeginFailoverPriorityChange
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginFailoverPriorityChange func(ctx context.Context, resourceGroupName string, accountName string, failoverParameters armcosmos.FailoverPolicies, options *armcosmos.DatabaseAccountsClientBeginFailoverPriorityChangeOptions) (resp azfake.PollerResponder[armcosmos.DatabaseAccountsClientFailoverPriorityChangeResponse], errResp azfake.ErrorResponder)
-
-	// Get is the fake for method DatabaseAccountsClient.Get
-	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, accountName string, options *armcosmos.DatabaseAccountsClientGetOptions) (resp azfake.Responder[armcosmos.DatabaseAccountsClientGetResponse], errResp azfake.ErrorResponder)
-
-	// GetReadOnlyKeys is the fake for method DatabaseAccountsClient.GetReadOnlyKeys
-	// HTTP status codes to indicate success: http.StatusOK
-	GetReadOnlyKeys func(ctx context.Context, resourceGroupName string, accountName string, options *armcosmos.DatabaseAccountsClientGetReadOnlyKeysOptions) (resp azfake.Responder[armcosmos.DatabaseAccountsClientGetReadOnlyKeysResponse], errResp azfake.ErrorResponder)
-
-	// NewListPager is the fake for method DatabaseAccountsClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(options *armcosmos.DatabaseAccountsClientListOptions) (resp azfake.PagerResponder[armcosmos.DatabaseAccountsClientListResponse])
-
-	// NewListByResourceGroupPager is the fake for method DatabaseAccountsClient.NewListByResourceGroupPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListByResourceGroupPager func(resourceGroupName string, options *armcosmos.DatabaseAccountsClientListByResourceGroupOptions) (resp azfake.PagerResponder[armcosmos.DatabaseAccountsClientListByResourceGroupResponse])
-
-	// ListConnectionStrings is the fake for method DatabaseAccountsClient.ListConnectionStrings
-	// HTTP status codes to indicate success: http.StatusOK
-	ListConnectionStrings func(ctx context.Context, resourceGroupName string, accountName string, options *armcosmos.DatabaseAccountsClientListConnectionStringsOptions) (resp azfake.Responder[armcosmos.DatabaseAccountsClientListConnectionStringsResponse], errResp azfake.ErrorResponder)
-
-	// ListKeys is the fake for method DatabaseAccountsClient.ListKeys
-	// HTTP status codes to indicate success: http.StatusOK
-	ListKeys func(ctx context.Context, resourceGroupName string, accountName string, options *armcosmos.DatabaseAccountsClientListKeysOptions) (resp azfake.Responder[armcosmos.DatabaseAccountsClientListKeysResponse], errResp azfake.ErrorResponder)
-
-	// NewListMetricDefinitionsPager is the fake for method DatabaseAccountsClient.NewListMetricDefinitionsPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListMetricDefinitionsPager func(resourceGroupName string, accountName string, options *armcosmos.DatabaseAccountsClientListMetricDefinitionsOptions) (resp azfake.PagerResponder[armcosmos.DatabaseAccountsClientListMetricDefinitionsResponse])
-
-	// NewListMetricsPager is the fake for method DatabaseAccountsClient.NewListMetricsPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListMetricsPager func(resourceGroupName string, accountName string, filter string, options *armcosmos.DatabaseAccountsClientListMetricsOptions) (resp azfake.PagerResponder[armcosmos.DatabaseAccountsClientListMetricsResponse])
-
-	// ListReadOnlyKeys is the fake for method DatabaseAccountsClient.ListReadOnlyKeys
-	// HTTP status codes to indicate success: http.StatusOK
-	ListReadOnlyKeys func(ctx context.Context, resourceGroupName string, accountName string, options *armcosmos.DatabaseAccountsClientListReadOnlyKeysOptions) (resp azfake.Responder[armcosmos.DatabaseAccountsClientListReadOnlyKeysResponse], errResp azfake.ErrorResponder)
-
-	// NewListUsagesPager is the fake for method DatabaseAccountsClient.NewListUsagesPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListUsagesPager func(resourceGroupName string, accountName string, options *armcosmos.DatabaseAccountsClientListUsagesOptions) (resp azfake.PagerResponder[armcosmos.DatabaseAccountsClientListUsagesResponse])
 
 	// BeginOfflineRegion is the fake for method DatabaseAccountsClient.BeginOfflineRegion
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
@@ -92,6 +48,50 @@ type DatabaseAccountsServer struct {
 	// BeginUpdate is the fake for method DatabaseAccountsClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK
 	BeginUpdate func(ctx context.Context, resourceGroupName string, accountName string, updateParameters armcosmos.DatabaseAccountUpdateParameters, options *armcosmos.DatabaseAccountsClientBeginUpdateOptions) (resp azfake.PollerResponder[armcosmos.DatabaseAccountsClientUpdateResponse], errResp azfake.ErrorResponder)
+
+	// CheckNameExists is the fake for method DatabaseAccountsClient.CheckNameExists
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusNotFound
+	CheckNameExists func(ctx context.Context, accountName string, options *armcosmos.DatabaseAccountsClientCheckNameExistsOptions) (resp azfake.Responder[armcosmos.DatabaseAccountsClientCheckNameExistsResponse], errResp azfake.ErrorResponder)
+
+	// Get is the fake for method DatabaseAccountsClient.Get
+	// HTTP status codes to indicate success: http.StatusOK
+	Get func(ctx context.Context, resourceGroupName string, accountName string, options *armcosmos.DatabaseAccountsClientGetOptions) (resp azfake.Responder[armcosmos.DatabaseAccountsClientGetResponse], errResp azfake.ErrorResponder)
+
+	// GetReadOnlyKeys is the fake for method DatabaseAccountsClient.GetReadOnlyKeys
+	// HTTP status codes to indicate success: http.StatusOK
+	GetReadOnlyKeys func(ctx context.Context, resourceGroupName string, accountName string, options *armcosmos.DatabaseAccountsClientGetReadOnlyKeysOptions) (resp azfake.Responder[armcosmos.DatabaseAccountsClientGetReadOnlyKeysResponse], errResp azfake.ErrorResponder)
+
+	// ListConnectionStrings is the fake for method DatabaseAccountsClient.ListConnectionStrings
+	// HTTP status codes to indicate success: http.StatusOK
+	ListConnectionStrings func(ctx context.Context, resourceGroupName string, accountName string, options *armcosmos.DatabaseAccountsClientListConnectionStringsOptions) (resp azfake.Responder[armcosmos.DatabaseAccountsClientListConnectionStringsResponse], errResp azfake.ErrorResponder)
+
+	// ListKeys is the fake for method DatabaseAccountsClient.ListKeys
+	// HTTP status codes to indicate success: http.StatusOK
+	ListKeys func(ctx context.Context, resourceGroupName string, accountName string, options *armcosmos.DatabaseAccountsClientListKeysOptions) (resp azfake.Responder[armcosmos.DatabaseAccountsClientListKeysResponse], errResp azfake.ErrorResponder)
+
+	// ListReadOnlyKeys is the fake for method DatabaseAccountsClient.ListReadOnlyKeys
+	// HTTP status codes to indicate success: http.StatusOK
+	ListReadOnlyKeys func(ctx context.Context, resourceGroupName string, accountName string, options *armcosmos.DatabaseAccountsClientListReadOnlyKeysOptions) (resp azfake.Responder[armcosmos.DatabaseAccountsClientListReadOnlyKeysResponse], errResp azfake.ErrorResponder)
+
+	// NewListByResourceGroupPager is the fake for method DatabaseAccountsClient.NewListByResourceGroupPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListByResourceGroupPager func(resourceGroupName string, options *armcosmos.DatabaseAccountsClientListByResourceGroupOptions) (resp azfake.PagerResponder[armcosmos.DatabaseAccountsClientListByResourceGroupResponse])
+
+	// NewListMetricDefinitionsPager is the fake for method DatabaseAccountsClient.NewListMetricDefinitionsPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListMetricDefinitionsPager func(resourceGroupName string, accountName string, options *armcosmos.DatabaseAccountsClientListMetricDefinitionsOptions) (resp azfake.PagerResponder[armcosmos.DatabaseAccountsClientListMetricDefinitionsResponse])
+
+	// NewListMetricsPager is the fake for method DatabaseAccountsClient.NewListMetricsPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListMetricsPager func(resourceGroupName string, accountName string, filter string, options *armcosmos.DatabaseAccountsClientListMetricsOptions) (resp azfake.PagerResponder[armcosmos.DatabaseAccountsClientListMetricsResponse])
+
+	// NewListPager is the fake for method DatabaseAccountsClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(options *armcosmos.DatabaseAccountsClientListOptions) (resp azfake.PagerResponder[armcosmos.DatabaseAccountsClientListResponse])
+
+	// NewListUsagesPager is the fake for method DatabaseAccountsClient.NewListUsagesPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListUsagesPager func(resourceGroupName string, accountName string, options *armcosmos.DatabaseAccountsClientListUsagesOptions) (resp azfake.PagerResponder[armcosmos.DatabaseAccountsClientListUsagesResponse])
 }
 
 // NewDatabaseAccountsServerTransport creates a new instance of DatabaseAccountsServerTransport with the provided implementation.
@@ -103,15 +103,15 @@ func NewDatabaseAccountsServerTransport(srv *DatabaseAccountsServer) *DatabaseAc
 		beginCreateOrUpdate:           newTracker[azfake.PollerResponder[armcosmos.DatabaseAccountsClientCreateOrUpdateResponse]](),
 		beginDelete:                   newTracker[azfake.PollerResponder[armcosmos.DatabaseAccountsClientDeleteResponse]](),
 		beginFailoverPriorityChange:   newTracker[azfake.PollerResponder[armcosmos.DatabaseAccountsClientFailoverPriorityChangeResponse]](),
-		newListPager:                  newTracker[azfake.PagerResponder[armcosmos.DatabaseAccountsClientListResponse]](),
-		newListByResourceGroupPager:   newTracker[azfake.PagerResponder[armcosmos.DatabaseAccountsClientListByResourceGroupResponse]](),
-		newListMetricDefinitionsPager: newTracker[azfake.PagerResponder[armcosmos.DatabaseAccountsClientListMetricDefinitionsResponse]](),
-		newListMetricsPager:           newTracker[azfake.PagerResponder[armcosmos.DatabaseAccountsClientListMetricsResponse]](),
-		newListUsagesPager:            newTracker[azfake.PagerResponder[armcosmos.DatabaseAccountsClientListUsagesResponse]](),
 		beginOfflineRegion:            newTracker[azfake.PollerResponder[armcosmos.DatabaseAccountsClientOfflineRegionResponse]](),
 		beginOnlineRegion:             newTracker[azfake.PollerResponder[armcosmos.DatabaseAccountsClientOnlineRegionResponse]](),
 		beginRegenerateKey:            newTracker[azfake.PollerResponder[armcosmos.DatabaseAccountsClientRegenerateKeyResponse]](),
 		beginUpdate:                   newTracker[azfake.PollerResponder[armcosmos.DatabaseAccountsClientUpdateResponse]](),
+		newListByResourceGroupPager:   newTracker[azfake.PagerResponder[armcosmos.DatabaseAccountsClientListByResourceGroupResponse]](),
+		newListMetricDefinitionsPager: newTracker[azfake.PagerResponder[armcosmos.DatabaseAccountsClientListMetricDefinitionsResponse]](),
+		newListMetricsPager:           newTracker[azfake.PagerResponder[armcosmos.DatabaseAccountsClientListMetricsResponse]](),
+		newListPager:                  newTracker[azfake.PagerResponder[armcosmos.DatabaseAccountsClientListResponse]](),
+		newListUsagesPager:            newTracker[azfake.PagerResponder[armcosmos.DatabaseAccountsClientListUsagesResponse]](),
 	}
 }
 
@@ -122,15 +122,15 @@ type DatabaseAccountsServerTransport struct {
 	beginCreateOrUpdate           *tracker[azfake.PollerResponder[armcosmos.DatabaseAccountsClientCreateOrUpdateResponse]]
 	beginDelete                   *tracker[azfake.PollerResponder[armcosmos.DatabaseAccountsClientDeleteResponse]]
 	beginFailoverPriorityChange   *tracker[azfake.PollerResponder[armcosmos.DatabaseAccountsClientFailoverPriorityChangeResponse]]
-	newListPager                  *tracker[azfake.PagerResponder[armcosmos.DatabaseAccountsClientListResponse]]
-	newListByResourceGroupPager   *tracker[azfake.PagerResponder[armcosmos.DatabaseAccountsClientListByResourceGroupResponse]]
-	newListMetricDefinitionsPager *tracker[azfake.PagerResponder[armcosmos.DatabaseAccountsClientListMetricDefinitionsResponse]]
-	newListMetricsPager           *tracker[azfake.PagerResponder[armcosmos.DatabaseAccountsClientListMetricsResponse]]
-	newListUsagesPager            *tracker[azfake.PagerResponder[armcosmos.DatabaseAccountsClientListUsagesResponse]]
 	beginOfflineRegion            *tracker[azfake.PollerResponder[armcosmos.DatabaseAccountsClientOfflineRegionResponse]]
 	beginOnlineRegion             *tracker[azfake.PollerResponder[armcosmos.DatabaseAccountsClientOnlineRegionResponse]]
 	beginRegenerateKey            *tracker[azfake.PollerResponder[armcosmos.DatabaseAccountsClientRegenerateKeyResponse]]
 	beginUpdate                   *tracker[azfake.PollerResponder[armcosmos.DatabaseAccountsClientUpdateResponse]]
+	newListByResourceGroupPager   *tracker[azfake.PagerResponder[armcosmos.DatabaseAccountsClientListByResourceGroupResponse]]
+	newListMetricDefinitionsPager *tracker[azfake.PagerResponder[armcosmos.DatabaseAccountsClientListMetricDefinitionsResponse]]
+	newListMetricsPager           *tracker[azfake.PagerResponder[armcosmos.DatabaseAccountsClientListMetricsResponse]]
+	newListPager                  *tracker[azfake.PagerResponder[armcosmos.DatabaseAccountsClientListResponse]]
+	newListUsagesPager            *tracker[azfake.PagerResponder[armcosmos.DatabaseAccountsClientListUsagesResponse]]
 }
 
 // Do implements the policy.Transporter interface for DatabaseAccountsServerTransport.
@@ -154,34 +154,12 @@ func (d *DatabaseAccountsServerTransport) dispatchToMethodFake(req *http.Request
 		}
 		if !intercepted {
 			switch method {
-			case "DatabaseAccountsClient.CheckNameExists":
-				res.resp, res.err = d.dispatchCheckNameExists(req)
 			case "DatabaseAccountsClient.BeginCreateOrUpdate":
 				res.resp, res.err = d.dispatchBeginCreateOrUpdate(req)
 			case "DatabaseAccountsClient.BeginDelete":
 				res.resp, res.err = d.dispatchBeginDelete(req)
 			case "DatabaseAccountsClient.BeginFailoverPriorityChange":
 				res.resp, res.err = d.dispatchBeginFailoverPriorityChange(req)
-			case "DatabaseAccountsClient.Get":
-				res.resp, res.err = d.dispatchGet(req)
-			case "DatabaseAccountsClient.GetReadOnlyKeys":
-				res.resp, res.err = d.dispatchGetReadOnlyKeys(req)
-			case "DatabaseAccountsClient.NewListPager":
-				res.resp, res.err = d.dispatchNewListPager(req)
-			case "DatabaseAccountsClient.NewListByResourceGroupPager":
-				res.resp, res.err = d.dispatchNewListByResourceGroupPager(req)
-			case "DatabaseAccountsClient.ListConnectionStrings":
-				res.resp, res.err = d.dispatchListConnectionStrings(req)
-			case "DatabaseAccountsClient.ListKeys":
-				res.resp, res.err = d.dispatchListKeys(req)
-			case "DatabaseAccountsClient.NewListMetricDefinitionsPager":
-				res.resp, res.err = d.dispatchNewListMetricDefinitionsPager(req)
-			case "DatabaseAccountsClient.NewListMetricsPager":
-				res.resp, res.err = d.dispatchNewListMetricsPager(req)
-			case "DatabaseAccountsClient.ListReadOnlyKeys":
-				res.resp, res.err = d.dispatchListReadOnlyKeys(req)
-			case "DatabaseAccountsClient.NewListUsagesPager":
-				res.resp, res.err = d.dispatchNewListUsagesPager(req)
 			case "DatabaseAccountsClient.BeginOfflineRegion":
 				res.resp, res.err = d.dispatchBeginOfflineRegion(req)
 			case "DatabaseAccountsClient.BeginOnlineRegion":
@@ -190,6 +168,28 @@ func (d *DatabaseAccountsServerTransport) dispatchToMethodFake(req *http.Request
 				res.resp, res.err = d.dispatchBeginRegenerateKey(req)
 			case "DatabaseAccountsClient.BeginUpdate":
 				res.resp, res.err = d.dispatchBeginUpdate(req)
+			case "DatabaseAccountsClient.CheckNameExists":
+				res.resp, res.err = d.dispatchCheckNameExists(req)
+			case "DatabaseAccountsClient.Get":
+				res.resp, res.err = d.dispatchGet(req)
+			case "DatabaseAccountsClient.GetReadOnlyKeys":
+				res.resp, res.err = d.dispatchGetReadOnlyKeys(req)
+			case "DatabaseAccountsClient.ListConnectionStrings":
+				res.resp, res.err = d.dispatchListConnectionStrings(req)
+			case "DatabaseAccountsClient.ListKeys":
+				res.resp, res.err = d.dispatchListKeys(req)
+			case "DatabaseAccountsClient.ListReadOnlyKeys":
+				res.resp, res.err = d.dispatchListReadOnlyKeys(req)
+			case "DatabaseAccountsClient.NewListByResourceGroupPager":
+				res.resp, res.err = d.dispatchNewListByResourceGroupPager(req)
+			case "DatabaseAccountsClient.NewListMetricDefinitionsPager":
+				res.resp, res.err = d.dispatchNewListMetricDefinitionsPager(req)
+			case "DatabaseAccountsClient.NewListMetricsPager":
+				res.resp, res.err = d.dispatchNewListMetricsPager(req)
+			case "DatabaseAccountsClient.NewListPager":
+				res.resp, res.err = d.dispatchNewListPager(req)
+			case "DatabaseAccountsClient.NewListUsagesPager":
+				res.resp, res.err = d.dispatchNewListUsagesPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -204,35 +204,6 @@ func (d *DatabaseAccountsServerTransport) dispatchToMethodFake(req *http.Request
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
-}
-
-func (d *DatabaseAccountsServerTransport) dispatchCheckNameExists(req *http.Request) (*http.Response, error) {
-	if d.srv.CheckNameExists == nil {
-		return nil, &nonRetriableError{errors.New("fake for method CheckNameExists not implemented")}
-	}
-	const regexStr = `/providers/Microsoft\.DocumentDB/databaseAccountNames/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 2 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := d.srv.CheckNameExists(req.Context(), accountNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK, http.StatusNotFound}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusNotFound", respContent.HTTPStatus)}
-	}
-	resp, err := server.NewResponse(respContent, req, nil)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
 }
 
 func (d *DatabaseAccountsServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (*http.Response, error) {
@@ -372,373 +343,6 @@ func (d *DatabaseAccountsServerTransport) dispatchBeginFailoverPriorityChange(re
 		d.beginFailoverPriorityChange.remove(req)
 	}
 
-	return resp, nil
-}
-
-func (d *DatabaseAccountsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if d.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := d.srv.Get(req.Context(), resourceGroupNameParam, accountNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DatabaseAccountGetResults, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (d *DatabaseAccountsServerTransport) dispatchGetReadOnlyKeys(req *http.Request) (*http.Response, error) {
-	if d.srv.GetReadOnlyKeys == nil {
-		return nil, &nonRetriableError{errors.New("fake for method GetReadOnlyKeys not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/readonlykeys`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := d.srv.GetReadOnlyKeys(req.Context(), resourceGroupNameParam, accountNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DatabaseAccountListReadOnlyKeysResult, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (d *DatabaseAccountsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if d.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := d.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := d.srv.NewListPager(nil)
-		newListPager = &resp
-		d.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armcosmos.DatabaseAccountsClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		d.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		d.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (d *DatabaseAccountsServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
-	if d.srv.NewListByResourceGroupPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
-	}
-	newListByResourceGroupPager := d.newListByResourceGroupPager.get(req)
-	if newListByResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := d.srv.NewListByResourceGroupPager(resourceGroupNameParam, nil)
-		newListByResourceGroupPager = &resp
-		d.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
-		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armcosmos.DatabaseAccountsClientListByResourceGroupResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		d.newListByResourceGroupPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListByResourceGroupPager) {
-		d.newListByResourceGroupPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (d *DatabaseAccountsServerTransport) dispatchListConnectionStrings(req *http.Request) (*http.Response, error) {
-	if d.srv.ListConnectionStrings == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ListConnectionStrings not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listConnectionStrings`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := d.srv.ListConnectionStrings(req.Context(), resourceGroupNameParam, accountNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DatabaseAccountListConnectionStringsResult, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (d *DatabaseAccountsServerTransport) dispatchListKeys(req *http.Request) (*http.Response, error) {
-	if d.srv.ListKeys == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ListKeys not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listKeys`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := d.srv.ListKeys(req.Context(), resourceGroupNameParam, accountNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DatabaseAccountListKeysResult, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (d *DatabaseAccountsServerTransport) dispatchNewListMetricDefinitionsPager(req *http.Request) (*http.Response, error) {
-	if d.srv.NewListMetricDefinitionsPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListMetricDefinitionsPager not implemented")}
-	}
-	newListMetricDefinitionsPager := d.newListMetricDefinitionsPager.get(req)
-	if newListMetricDefinitionsPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/metricDefinitions`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := d.srv.NewListMetricDefinitionsPager(resourceGroupNameParam, accountNameParam, nil)
-		newListMetricDefinitionsPager = &resp
-		d.newListMetricDefinitionsPager.add(req, newListMetricDefinitionsPager)
-		server.PagerResponderInjectNextLinks(newListMetricDefinitionsPager, req, func(page *armcosmos.DatabaseAccountsClientListMetricDefinitionsResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListMetricDefinitionsPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		d.newListMetricDefinitionsPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListMetricDefinitionsPager) {
-		d.newListMetricDefinitionsPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (d *DatabaseAccountsServerTransport) dispatchNewListMetricsPager(req *http.Request) (*http.Response, error) {
-	if d.srv.NewListMetricsPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListMetricsPager not implemented")}
-	}
-	newListMetricsPager := d.newListMetricsPager.get(req)
-	if newListMetricsPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/metrics`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		qp := req.URL.Query()
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := d.srv.NewListMetricsPager(resourceGroupNameParam, accountNameParam, qp.Get("$filter"), nil)
-		newListMetricsPager = &resp
-		d.newListMetricsPager.add(req, newListMetricsPager)
-		server.PagerResponderInjectNextLinks(newListMetricsPager, req, func(page *armcosmos.DatabaseAccountsClientListMetricsResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListMetricsPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		d.newListMetricsPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListMetricsPager) {
-		d.newListMetricsPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (d *DatabaseAccountsServerTransport) dispatchListReadOnlyKeys(req *http.Request) (*http.Response, error) {
-	if d.srv.ListReadOnlyKeys == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ListReadOnlyKeys not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/readonlykeys`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := d.srv.ListReadOnlyKeys(req.Context(), resourceGroupNameParam, accountNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DatabaseAccountListReadOnlyKeysResult, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (d *DatabaseAccountsServerTransport) dispatchNewListUsagesPager(req *http.Request) (*http.Response, error) {
-	if d.srv.NewListUsagesPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListUsagesPager not implemented")}
-	}
-	newListUsagesPager := d.newListUsagesPager.get(req)
-	if newListUsagesPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/usages`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		qp := req.URL.Query()
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
-		if err != nil {
-			return nil, err
-		}
-		filterParam := getOptional(qp.Get("$filter"))
-		var options *armcosmos.DatabaseAccountsClientListUsagesOptions
-		if filterParam != nil {
-			options = &armcosmos.DatabaseAccountsClientListUsagesOptions{
-				Filter: filterParam,
-			}
-		}
-		resp := d.srv.NewListUsagesPager(resourceGroupNameParam, accountNameParam, options)
-		newListUsagesPager = &resp
-		d.newListUsagesPager.add(req, newListUsagesPager)
-		server.PagerResponderInjectNextLinks(newListUsagesPager, req, func(page *armcosmos.DatabaseAccountsClientListUsagesResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListUsagesPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		d.newListUsagesPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListUsagesPager) {
-		d.newListUsagesPager.remove(req)
-	}
 	return resp, nil
 }
 
@@ -931,6 +535,402 @@ func (d *DatabaseAccountsServerTransport) dispatchBeginUpdate(req *http.Request)
 		d.beginUpdate.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (d *DatabaseAccountsServerTransport) dispatchCheckNameExists(req *http.Request) (*http.Response, error) {
+	if d.srv.CheckNameExists == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CheckNameExists not implemented")}
+	}
+	const regexStr = `/providers/Microsoft\.DocumentDB/databaseAccountNames/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 2 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := d.srv.CheckNameExists(req.Context(), accountNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK, http.StatusNotFound}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusNotFound", respContent.HTTPStatus)}
+	}
+	resp, err := server.NewResponse(respContent, req, nil)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (d *DatabaseAccountsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if d.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := d.srv.Get(req.Context(), resourceGroupNameParam, accountNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DatabaseAccountGetResults, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (d *DatabaseAccountsServerTransport) dispatchGetReadOnlyKeys(req *http.Request) (*http.Response, error) {
+	if d.srv.GetReadOnlyKeys == nil {
+		return nil, &nonRetriableError{errors.New("fake for method GetReadOnlyKeys not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/readonlykeys`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := d.srv.GetReadOnlyKeys(req.Context(), resourceGroupNameParam, accountNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DatabaseAccountListReadOnlyKeysResult, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (d *DatabaseAccountsServerTransport) dispatchListConnectionStrings(req *http.Request) (*http.Response, error) {
+	if d.srv.ListConnectionStrings == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListConnectionStrings not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listConnectionStrings`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := d.srv.ListConnectionStrings(req.Context(), resourceGroupNameParam, accountNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DatabaseAccountListConnectionStringsResult, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (d *DatabaseAccountsServerTransport) dispatchListKeys(req *http.Request) (*http.Response, error) {
+	if d.srv.ListKeys == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListKeys not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listKeys`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := d.srv.ListKeys(req.Context(), resourceGroupNameParam, accountNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DatabaseAccountListKeysResult, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (d *DatabaseAccountsServerTransport) dispatchListReadOnlyKeys(req *http.Request) (*http.Response, error) {
+	if d.srv.ListReadOnlyKeys == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListReadOnlyKeys not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/readonlykeys`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := d.srv.ListReadOnlyKeys(req.Context(), resourceGroupNameParam, accountNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DatabaseAccountListReadOnlyKeysResult, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (d *DatabaseAccountsServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
+	if d.srv.NewListByResourceGroupPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
+	}
+	newListByResourceGroupPager := d.newListByResourceGroupPager.get(req)
+	if newListByResourceGroupPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := d.srv.NewListByResourceGroupPager(resourceGroupNameParam, nil)
+		newListByResourceGroupPager = &resp
+		d.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
+		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armcosmos.DatabaseAccountsClientListByResourceGroupResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		d.newListByResourceGroupPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListByResourceGroupPager) {
+		d.newListByResourceGroupPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (d *DatabaseAccountsServerTransport) dispatchNewListMetricDefinitionsPager(req *http.Request) (*http.Response, error) {
+	if d.srv.NewListMetricDefinitionsPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListMetricDefinitionsPager not implemented")}
+	}
+	newListMetricDefinitionsPager := d.newListMetricDefinitionsPager.get(req)
+	if newListMetricDefinitionsPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/metricDefinitions`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := d.srv.NewListMetricDefinitionsPager(resourceGroupNameParam, accountNameParam, nil)
+		newListMetricDefinitionsPager = &resp
+		d.newListMetricDefinitionsPager.add(req, newListMetricDefinitionsPager)
+		server.PagerResponderInjectNextLinks(newListMetricDefinitionsPager, req, func(page *armcosmos.DatabaseAccountsClientListMetricDefinitionsResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListMetricDefinitionsPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		d.newListMetricDefinitionsPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListMetricDefinitionsPager) {
+		d.newListMetricDefinitionsPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (d *DatabaseAccountsServerTransport) dispatchNewListMetricsPager(req *http.Request) (*http.Response, error) {
+	if d.srv.NewListMetricsPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListMetricsPager not implemented")}
+	}
+	newListMetricsPager := d.newListMetricsPager.get(req)
+	if newListMetricsPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/metrics`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		qp := req.URL.Query()
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := d.srv.NewListMetricsPager(resourceGroupNameParam, accountNameParam, qp.Get("$filter"), nil)
+		newListMetricsPager = &resp
+		d.newListMetricsPager.add(req, newListMetricsPager)
+		server.PagerResponderInjectNextLinks(newListMetricsPager, req, func(page *armcosmos.DatabaseAccountsClientListMetricsResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListMetricsPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		d.newListMetricsPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListMetricsPager) {
+		d.newListMetricsPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (d *DatabaseAccountsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if d.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := d.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resp := d.srv.NewListPager(nil)
+		newListPager = &resp
+		d.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armcosmos.DatabaseAccountsClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		d.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPager) {
+		d.newListPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (d *DatabaseAccountsServerTransport) dispatchNewListUsagesPager(req *http.Request) (*http.Response, error) {
+	if d.srv.NewListUsagesPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListUsagesPager not implemented")}
+	}
+	newListUsagesPager := d.newListUsagesPager.get(req)
+	if newListUsagesPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/usages`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		qp := req.URL.Query()
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+		if err != nil {
+			return nil, err
+		}
+		filterParam := getOptional(qp.Get("$filter"))
+		var options *armcosmos.DatabaseAccountsClientListUsagesOptions
+		if filterParam != nil {
+			options = &armcosmos.DatabaseAccountsClientListUsagesOptions{
+				Filter: filterParam,
+			}
+		}
+		resp := d.srv.NewListUsagesPager(resourceGroupNameParam, accountNameParam, options)
+		newListUsagesPager = &resp
+		d.newListUsagesPager.add(req, newListUsagesPager)
+		server.PagerResponderInjectNextLinks(newListUsagesPager, req, func(page *armcosmos.DatabaseAccountsClientListUsagesResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListUsagesPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		d.newListUsagesPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListUsagesPager) {
+		d.newListUsagesPager.remove(req)
+	}
 	return resp, nil
 }
 

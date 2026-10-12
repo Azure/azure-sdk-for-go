@@ -25,13 +25,13 @@ type PTUQuotaServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	GetAvailable func(ctx context.Context, location string, options *armmachinelearning.PTUQuotaClientGetAvailableOptions) (resp azfake.Responder[armmachinelearning.PTUQuotaClientGetAvailableResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method PTUQuotaClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(location string, options *armmachinelearning.PTUQuotaClientListOptions) (resp azfake.PagerResponder[armmachinelearning.PTUQuotaClientListResponse])
-
 	// NewListAvailablePager is the fake for method PTUQuotaClient.NewListAvailablePager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListAvailablePager func(location string, options *armmachinelearning.PTUQuotaClientListAvailableOptions) (resp azfake.PagerResponder[armmachinelearning.PTUQuotaClientListAvailableResponse])
+
+	// NewListPager is the fake for method PTUQuotaClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(location string, options *armmachinelearning.PTUQuotaClientListOptions) (resp azfake.PagerResponder[armmachinelearning.PTUQuotaClientListResponse])
 }
 
 // NewPTUQuotaServerTransport creates a new instance of PTUQuotaServerTransport with the provided implementation.
@@ -40,8 +40,8 @@ type PTUQuotaServer struct {
 func NewPTUQuotaServerTransport(srv *PTUQuotaServer) *PTUQuotaServerTransport {
 	return &PTUQuotaServerTransport{
 		srv:                   srv,
-		newListPager:          newTracker[azfake.PagerResponder[armmachinelearning.PTUQuotaClientListResponse]](),
 		newListAvailablePager: newTracker[azfake.PagerResponder[armmachinelearning.PTUQuotaClientListAvailableResponse]](),
+		newListPager:          newTracker[azfake.PagerResponder[armmachinelearning.PTUQuotaClientListResponse]](),
 	}
 }
 
@@ -49,8 +49,8 @@ func NewPTUQuotaServerTransport(srv *PTUQuotaServer) *PTUQuotaServerTransport {
 // Don't use this type directly, use NewPTUQuotaServerTransport instead.
 type PTUQuotaServerTransport struct {
 	srv                   *PTUQuotaServer
-	newListPager          *tracker[azfake.PagerResponder[armmachinelearning.PTUQuotaClientListResponse]]
 	newListAvailablePager *tracker[azfake.PagerResponder[armmachinelearning.PTUQuotaClientListAvailableResponse]]
+	newListPager          *tracker[azfake.PagerResponder[armmachinelearning.PTUQuotaClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for PTUQuotaServerTransport.
@@ -76,10 +76,10 @@ func (p *PTUQuotaServerTransport) dispatchToMethodFake(req *http.Request, method
 			switch method {
 			case "PTUQuotaClient.GetAvailable":
 				res.resp, res.err = p.dispatchGetAvailable(req)
-			case "PTUQuotaClient.NewListPager":
-				res.resp, res.err = p.dispatchNewListPager(req)
 			case "PTUQuotaClient.NewListAvailablePager":
 				res.resp, res.err = p.dispatchNewListAvailablePager(req)
+			case "PTUQuotaClient.NewListPager":
+				res.resp, res.err = p.dispatchNewListPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -125,51 +125,6 @@ func (p *PTUQuotaServerTransport) dispatchGetAvailable(req *http.Request) (*http
 	return resp, nil
 }
 
-func (p *PTUQuotaServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if p.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := p.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.MachineLearningServices/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/quotaAndUsage`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		qp := req.URL.Query()
-		locationParam, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
-		if err != nil {
-			return nil, err
-		}
-		skipParam := getOptional(qp.Get("$skip"))
-		var options *armmachinelearning.PTUQuotaClientListOptions
-		if skipParam != nil {
-			options = &armmachinelearning.PTUQuotaClientListOptions{
-				Skip: skipParam,
-			}
-		}
-		resp := p.srv.NewListPager(locationParam, options)
-		newListPager = &resp
-		p.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armmachinelearning.PTUQuotaClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		p.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		p.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (p *PTUQuotaServerTransport) dispatchNewListAvailablePager(req *http.Request) (*http.Response, error) {
 	if p.srv.NewListAvailablePager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListAvailablePager not implemented")}
@@ -211,6 +166,51 @@ func (p *PTUQuotaServerTransport) dispatchNewListAvailablePager(req *http.Reques
 	}
 	if !server.PagerResponderMore(newListAvailablePager) {
 		p.newListAvailablePager.remove(req)
+	}
+	return resp, nil
+}
+
+func (p *PTUQuotaServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if p.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := p.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.MachineLearningServices/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/quotaAndUsage`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		qp := req.URL.Query()
+		locationParam, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
+		if err != nil {
+			return nil, err
+		}
+		skipParam := getOptional(qp.Get("$skip"))
+		var options *armmachinelearning.PTUQuotaClientListOptions
+		if skipParam != nil {
+			options = &armmachinelearning.PTUQuotaClientListOptions{
+				Skip: skipParam,
+			}
+		}
+		resp := p.srv.NewListPager(locationParam, options)
+		newListPager = &resp
+		p.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armmachinelearning.PTUQuotaClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		p.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPager) {
+		p.newListPager.remove(req)
 	}
 	return resp, nil
 }

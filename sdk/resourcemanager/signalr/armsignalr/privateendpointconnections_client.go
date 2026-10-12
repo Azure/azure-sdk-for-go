@@ -65,7 +65,7 @@ func (client *PrivateEndpointConnectionsClient) BeginDelete(ctx context.Context,
 	}
 }
 
-// Delete - Delete the specified private endpoint connection
+// deleteOperation - Delete the specified private endpoint connection
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *PrivateEndpointConnectionsClient) deleteOperation(ctx context.Context, privateEndpointConnectionName string, resourceGroupName string, resourceName string, options *PrivateEndpointConnectionsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -87,7 +87,7 @@ func (client *PrivateEndpointConnectionsClient) deleteOperation(ctx context.Cont
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *PrivateEndpointConnectionsClient) deleteCreateRequest(ctx context.Context, privateEndpointConnectionName string, resourceGroupName string, resourceName string, _ *PrivateEndpointConnectionsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/signalR/{resourceName}/privateEndpointConnections/{privateEndpointConnectionName}"
 	if client.subscriptionID == "" {

@@ -68,7 +68,7 @@ func (client *VirtualNetworkTapsClient) BeginCreateOrUpdate(ctx context.Context,
 	}
 }
 
-// CreateOrUpdate - Create a VirtualNetworkTap
+// createOrUpdate - Create a VirtualNetworkTap
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *VirtualNetworkTapsClient) createOrUpdate(ctx context.Context, resourceGroupName string, tapName string, parameters VirtualNetworkTap, options *VirtualNetworkTapsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -90,7 +90,7 @@ func (client *VirtualNetworkTapsClient) createOrUpdate(ctx context.Context, reso
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *VirtualNetworkTapsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, tapName string, parameters VirtualNetworkTap, _ *VirtualNetworkTapsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworkTaps/{tapName}"
 	if client.subscriptionID == "" {
@@ -143,7 +143,7 @@ func (client *VirtualNetworkTapsClient) BeginDelete(ctx context.Context, resourc
 	}
 }
 
-// Delete - Delete a VirtualNetworkTap
+// deleteOperation - Delete a VirtualNetworkTap
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *VirtualNetworkTapsClient) deleteOperation(ctx context.Context, resourceGroupName string, tapName string, options *VirtualNetworkTapsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -165,7 +165,7 @@ func (client *VirtualNetworkTapsClient) deleteOperation(ctx context.Context, res
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *VirtualNetworkTapsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, tapName string, _ *VirtualNetworkTapsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworkTaps/{tapName}"
 	if client.subscriptionID == "" {

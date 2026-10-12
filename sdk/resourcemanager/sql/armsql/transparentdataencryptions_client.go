@@ -71,7 +71,7 @@ func (client *TransparentDataEncryptionsClient) BeginCreateOrUpdate(ctx context.
 	}
 }
 
-// CreateOrUpdate - Updates a logical database's transparent data encryption configuration.
+// createOrUpdate - Updates a logical database's transparent data encryption configuration.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *TransparentDataEncryptionsClient) createOrUpdate(ctx context.Context, resourceGroupName string, serverName string, databaseName string, tdeName TransparentDataEncryptionName, parameters LogicalDatabaseTransparentDataEncryption, options *TransparentDataEncryptionsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -93,7 +93,7 @@ func (client *TransparentDataEncryptionsClient) createOrUpdate(ctx context.Conte
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *TransparentDataEncryptionsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, tdeName TransparentDataEncryptionName, parameters LogicalDatabaseTransparentDataEncryption, _ *TransparentDataEncryptionsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/transparentDataEncryption/{tdeName}"
 	if client.subscriptionID == "" {
@@ -128,6 +128,168 @@ func (client *TransparentDataEncryptionsClient) createOrUpdateCreateRequest(ctx 
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
 		return nil, err
 	}
+	return req, nil
+}
+
+// BeginResume - Resume ongoing logical database's Transparent Data Encryption scan configuration.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - serverName - The name of the server.
+//   - databaseName - The name of the database.
+//   - tdeName - The name of the transparent data encryption configuration.
+//   - options - TransparentDataEncryptionsClientBeginResumeOptions contains the optional parameters for the TransparentDataEncryptionsClient.BeginResume
+//     method.
+func (client *TransparentDataEncryptionsClient) BeginResume(ctx context.Context, resourceGroupName string, serverName string, databaseName string, tdeName TransparentDataEncryptionName, options *TransparentDataEncryptionsClientBeginResumeOptions) (*runtime.Poller[TransparentDataEncryptionsClientResumeResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.resume(ctx, resourceGroupName, serverName, databaseName, tdeName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[TransparentDataEncryptionsClientResumeResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[TransparentDataEncryptionsClientResumeResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// resume - Resume ongoing logical database's Transparent Data Encryption scan configuration.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *TransparentDataEncryptionsClient) resume(ctx context.Context, resourceGroupName string, serverName string, databaseName string, tdeName TransparentDataEncryptionName, options *TransparentDataEncryptionsClientBeginResumeOptions) (*http.Response, error) {
+	var err error
+	const operationName = "TransparentDataEncryptionsClient.BeginResume"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.resumeCreateRequest(ctx, resourceGroupName, serverName, databaseName, tdeName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// resumeCreateRequest creates the resume request.
+func (client *TransparentDataEncryptionsClient) resumeCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, tdeName TransparentDataEncryptionName, _ *TransparentDataEncryptionsClientBeginResumeOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/transparentDataEncryption/{tdeName}/resume"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if serverName == "" {
+		return nil, errors.New("parameter serverName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{serverName}", url.PathEscape(serverName))
+	if databaseName == "" {
+		return nil, errors.New("parameter databaseName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
+	if tdeName == "" {
+		return nil, errors.New("parameter tdeName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{tdeName}", url.PathEscape(string(tdeName)))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260801Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// BeginSuspend - Suspend ongoing logical database's Transparent Data Encryption scan configuration.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - serverName - The name of the server.
+//   - databaseName - The name of the database.
+//   - tdeName - The name of the transparent data encryption configuration.
+//   - options - TransparentDataEncryptionsClientBeginSuspendOptions contains the optional parameters for the TransparentDataEncryptionsClient.BeginSuspend
+//     method.
+func (client *TransparentDataEncryptionsClient) BeginSuspend(ctx context.Context, resourceGroupName string, serverName string, databaseName string, tdeName TransparentDataEncryptionName, options *TransparentDataEncryptionsClientBeginSuspendOptions) (*runtime.Poller[TransparentDataEncryptionsClientSuspendResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.suspend(ctx, resourceGroupName, serverName, databaseName, tdeName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[TransparentDataEncryptionsClientSuspendResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[TransparentDataEncryptionsClientSuspendResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// suspend - Suspend ongoing logical database's Transparent Data Encryption scan configuration.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *TransparentDataEncryptionsClient) suspend(ctx context.Context, resourceGroupName string, serverName string, databaseName string, tdeName TransparentDataEncryptionName, options *TransparentDataEncryptionsClientBeginSuspendOptions) (*http.Response, error) {
+	var err error
+	const operationName = "TransparentDataEncryptionsClient.BeginSuspend"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.suspendCreateRequest(ctx, resourceGroupName, serverName, databaseName, tdeName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// suspendCreateRequest creates the suspend request.
+func (client *TransparentDataEncryptionsClient) suspendCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, tdeName TransparentDataEncryptionName, _ *TransparentDataEncryptionsClientBeginSuspendOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/transparentDataEncryption/{tdeName}/suspend"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if serverName == "" {
+		return nil, errors.New("parameter serverName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{serverName}", url.PathEscape(serverName))
+	if databaseName == "" {
+		return nil, errors.New("parameter databaseName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
+	if tdeName == "" {
+		return nil, errors.New("parameter tdeName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{tdeName}", url.PathEscape(string(tdeName)))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260801Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -282,166 +444,4 @@ func (client *TransparentDataEncryptionsClient) listByDatabaseHandleResponse(res
 		return TransparentDataEncryptionsClientListByDatabaseResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginResume - Resume ongoing logical database's Transparent Data Encryption scan configuration.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - serverName - The name of the server.
-//   - databaseName - The name of the database.
-//   - tdeName - The name of the transparent data encryption configuration.
-//   - options - TransparentDataEncryptionsClientBeginResumeOptions contains the optional parameters for the TransparentDataEncryptionsClient.BeginResume
-//     method.
-func (client *TransparentDataEncryptionsClient) BeginResume(ctx context.Context, resourceGroupName string, serverName string, databaseName string, tdeName TransparentDataEncryptionName, options *TransparentDataEncryptionsClientBeginResumeOptions) (*runtime.Poller[TransparentDataEncryptionsClientResumeResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.resume(ctx, resourceGroupName, serverName, databaseName, tdeName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[TransparentDataEncryptionsClientResumeResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[TransparentDataEncryptionsClientResumeResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Resume - Resume ongoing logical database's Transparent Data Encryption scan configuration.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *TransparentDataEncryptionsClient) resume(ctx context.Context, resourceGroupName string, serverName string, databaseName string, tdeName TransparentDataEncryptionName, options *TransparentDataEncryptionsClientBeginResumeOptions) (*http.Response, error) {
-	var err error
-	const operationName = "TransparentDataEncryptionsClient.BeginResume"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.resumeCreateRequest(ctx, resourceGroupName, serverName, databaseName, tdeName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// resumeCreateRequest creates the Resume request.
-func (client *TransparentDataEncryptionsClient) resumeCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, tdeName TransparentDataEncryptionName, _ *TransparentDataEncryptionsClientBeginResumeOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/transparentDataEncryption/{tdeName}/resume"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if serverName == "" {
-		return nil, errors.New("parameter serverName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{serverName}", url.PathEscape(serverName))
-	if databaseName == "" {
-		return nil, errors.New("parameter databaseName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
-	if tdeName == "" {
-		return nil, errors.New("parameter tdeName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{tdeName}", url.PathEscape(string(tdeName)))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260801Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// BeginSuspend - Suspend ongoing logical database's Transparent Data Encryption scan configuration.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - serverName - The name of the server.
-//   - databaseName - The name of the database.
-//   - tdeName - The name of the transparent data encryption configuration.
-//   - options - TransparentDataEncryptionsClientBeginSuspendOptions contains the optional parameters for the TransparentDataEncryptionsClient.BeginSuspend
-//     method.
-func (client *TransparentDataEncryptionsClient) BeginSuspend(ctx context.Context, resourceGroupName string, serverName string, databaseName string, tdeName TransparentDataEncryptionName, options *TransparentDataEncryptionsClientBeginSuspendOptions) (*runtime.Poller[TransparentDataEncryptionsClientSuspendResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.suspend(ctx, resourceGroupName, serverName, databaseName, tdeName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[TransparentDataEncryptionsClientSuspendResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[TransparentDataEncryptionsClientSuspendResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Suspend - Suspend ongoing logical database's Transparent Data Encryption scan configuration.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *TransparentDataEncryptionsClient) suspend(ctx context.Context, resourceGroupName string, serverName string, databaseName string, tdeName TransparentDataEncryptionName, options *TransparentDataEncryptionsClientBeginSuspendOptions) (*http.Response, error) {
-	var err error
-	const operationName = "TransparentDataEncryptionsClient.BeginSuspend"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.suspendCreateRequest(ctx, resourceGroupName, serverName, databaseName, tdeName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// suspendCreateRequest creates the Suspend request.
-func (client *TransparentDataEncryptionsClient) suspendCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, tdeName TransparentDataEncryptionName, _ *TransparentDataEncryptionsClientBeginSuspendOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/transparentDataEncryption/{tdeName}/suspend"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if serverName == "" {
-		return nil, errors.New("parameter serverName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{serverName}", url.PathEscape(serverName))
-	if databaseName == "" {
-		return nil, errors.New("parameter databaseName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
-	if tdeName == "" {
-		return nil, errors.New("parameter tdeName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{tdeName}", url.PathEscape(string(tdeName)))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260801Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
 }

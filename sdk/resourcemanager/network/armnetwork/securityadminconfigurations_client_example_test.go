@@ -12,6 +12,33 @@ import (
 	"log"
 )
 
+// Generated from example definition: 2026-01-01/NetworkManagerSecurityAdminConfigurationDelete.json
+func ExampleSecurityAdminConfigurationsClient_BeginDelete() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewSecurityAdminConfigurationsClient().BeginDelete(ctx, "rg1", "testNetworkManager", "myTestSecurityConfig", &armnetwork.SecurityAdminConfigurationsClientBeginDeleteOptions{
+		Force: to.Ptr(false)})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armnetwork.SecurityAdminConfigurationsClientDeleteResponse{
+	// }
+}
+
 // Generated from example definition: 2026-01-01/NetworkManagerSecurityAdminConfigurationPut.json
 func ExampleSecurityAdminConfigurationsClient_CreateOrUpdate_createNetworkManagerSecurityAdminConfiguration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -104,33 +131,6 @@ func ExampleSecurityAdminConfigurationsClient_CreateOrUpdate_createManualModeSec
 	// 			LastModifiedByType: to.Ptr(armnetwork.CreatedByTypeUser),
 	// 		},
 	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-01-01/NetworkManagerSecurityAdminConfigurationDelete.json
-func ExampleSecurityAdminConfigurationsClient_BeginDelete() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewSecurityAdminConfigurationsClient().BeginDelete(ctx, "rg1", "testNetworkManager", "myTestSecurityConfig", &armnetwork.SecurityAdminConfigurationsClientBeginDeleteOptions{
-		Force: to.Ptr(false)})
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armnetwork.SecurityAdminConfigurationsClientDeleteResponse{
 	// }
 }
 

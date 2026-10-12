@@ -12,6 +12,29 @@ import (
 	"log"
 )
 
+// Generated from example definition: 2026-03-01/VirtualMachines_RestrictMovement.json
+func ExampleVirtualMachinesClient_BeginRestrictMovement() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armavs.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewVirtualMachinesClient().BeginRestrictMovement(ctx, "group1", "cloud1", "cluster1", "vm-209", armavs.VirtualMachineRestrictMovement{
+		RestrictMovement: to.Ptr(armavs.VirtualMachineRestrictMovementStateEnabled),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+}
+
 // Generated from example definition: 2026-03-01/VirtualMachines_Get.json
 func ExampleVirtualMachinesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -95,28 +118,5 @@ func ExampleVirtualMachinesClient_NewListPager() {
 		// 		},
 		// 	},
 		// }
-	}
-}
-
-// Generated from example definition: 2026-03-01/VirtualMachines_RestrictMovement.json
-func ExampleVirtualMachinesClient_BeginRestrictMovement() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armavs.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewVirtualMachinesClient().BeginRestrictMovement(ctx, "group1", "cloud1", "cluster1", "vm-209", armavs.VirtualMachineRestrictMovement{
-		RestrictMovement: to.Ptr(armavs.VirtualMachineRestrictMovementStateEnabled),
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
 	}
 }

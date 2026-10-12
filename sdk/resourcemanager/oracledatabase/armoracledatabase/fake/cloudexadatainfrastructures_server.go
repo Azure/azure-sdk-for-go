@@ -37,6 +37,10 @@ type CloudExadataInfrastructuresServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, cloudexadatainfrastructurename string, options *armoracledatabase.CloudExadataInfrastructuresClientBeginDeleteOptions) (resp azfake.PollerResponder[armoracledatabase.CloudExadataInfrastructuresClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method CloudExadataInfrastructuresClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, cloudexadatainfrastructurename string, properties armoracledatabase.CloudExadataInfrastructureUpdate, options *armoracledatabase.CloudExadataInfrastructuresClientBeginUpdateOptions) (resp azfake.PollerResponder[armoracledatabase.CloudExadataInfrastructuresClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method CloudExadataInfrastructuresClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, cloudexadatainfrastructurename string, options *armoracledatabase.CloudExadataInfrastructuresClientGetOptions) (resp azfake.Responder[armoracledatabase.CloudExadataInfrastructuresClientGetResponse], errResp azfake.ErrorResponder)
@@ -48,10 +52,6 @@ type CloudExadataInfrastructuresServer struct {
 	// NewListBySubscriptionPager is the fake for method CloudExadataInfrastructuresClient.NewListBySubscriptionPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListBySubscriptionPager func(options *armoracledatabase.CloudExadataInfrastructuresClientListBySubscriptionOptions) (resp azfake.PagerResponder[armoracledatabase.CloudExadataInfrastructuresClientListBySubscriptionResponse])
-
-	// BeginUpdate is the fake for method CloudExadataInfrastructuresClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, cloudexadatainfrastructurename string, properties armoracledatabase.CloudExadataInfrastructureUpdate, options *armoracledatabase.CloudExadataInfrastructuresClientBeginUpdateOptions) (resp azfake.PollerResponder[armoracledatabase.CloudExadataInfrastructuresClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewCloudExadataInfrastructuresServerTransport creates a new instance of CloudExadataInfrastructuresServerTransport with the provided implementation.
@@ -64,9 +64,9 @@ func NewCloudExadataInfrastructuresServerTransport(srv *CloudExadataInfrastructu
 		beginConfigureExascale:      newTracker[azfake.PollerResponder[armoracledatabase.CloudExadataInfrastructuresClientConfigureExascaleResponse]](),
 		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armoracledatabase.CloudExadataInfrastructuresClientCreateOrUpdateResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armoracledatabase.CloudExadataInfrastructuresClientDeleteResponse]](),
+		beginUpdate:                 newTracker[azfake.PollerResponder[armoracledatabase.CloudExadataInfrastructuresClientUpdateResponse]](),
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armoracledatabase.CloudExadataInfrastructuresClientListByResourceGroupResponse]](),
 		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armoracledatabase.CloudExadataInfrastructuresClientListBySubscriptionResponse]](),
-		beginUpdate:                 newTracker[azfake.PollerResponder[armoracledatabase.CloudExadataInfrastructuresClientUpdateResponse]](),
 	}
 }
 
@@ -78,9 +78,9 @@ type CloudExadataInfrastructuresServerTransport struct {
 	beginConfigureExascale      *tracker[azfake.PollerResponder[armoracledatabase.CloudExadataInfrastructuresClientConfigureExascaleResponse]]
 	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armoracledatabase.CloudExadataInfrastructuresClientCreateOrUpdateResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armoracledatabase.CloudExadataInfrastructuresClientDeleteResponse]]
+	beginUpdate                 *tracker[azfake.PollerResponder[armoracledatabase.CloudExadataInfrastructuresClientUpdateResponse]]
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armoracledatabase.CloudExadataInfrastructuresClientListByResourceGroupResponse]]
 	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armoracledatabase.CloudExadataInfrastructuresClientListBySubscriptionResponse]]
-	beginUpdate                 *tracker[azfake.PollerResponder[armoracledatabase.CloudExadataInfrastructuresClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for CloudExadataInfrastructuresServerTransport.
@@ -112,14 +112,14 @@ func (c *CloudExadataInfrastructuresServerTransport) dispatchToMethodFake(req *h
 				res.resp, res.err = c.dispatchBeginCreateOrUpdate(req)
 			case "CloudExadataInfrastructuresClient.BeginDelete":
 				res.resp, res.err = c.dispatchBeginDelete(req)
+			case "CloudExadataInfrastructuresClient.BeginUpdate":
+				res.resp, res.err = c.dispatchBeginUpdate(req)
 			case "CloudExadataInfrastructuresClient.Get":
 				res.resp, res.err = c.dispatchGet(req)
 			case "CloudExadataInfrastructuresClient.NewListByResourceGroupPager":
 				res.resp, res.err = c.dispatchNewListByResourceGroupPager(req)
 			case "CloudExadataInfrastructuresClient.NewListBySubscriptionPager":
 				res.resp, res.err = c.dispatchNewListBySubscriptionPager(req)
-			case "CloudExadataInfrastructuresClient.BeginUpdate":
-				res.resp, res.err = c.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -320,6 +320,54 @@ func (c *CloudExadataInfrastructuresServerTransport) dispatchBeginDelete(req *ht
 	return resp, nil
 }
 
+func (c *CloudExadataInfrastructuresServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if c.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := c.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Oracle\.Database/cloudExadataInfrastructures/(?P<cloudexadatainfrastructurename>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armoracledatabase.CloudExadataInfrastructureUpdate](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		cloudexadatainfrastructurenameParam, err := url.PathUnescape(matches[regex.SubexpIndex("cloudexadatainfrastructurename")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := c.srv.BeginUpdate(req.Context(), resourceGroupNameParam, cloudexadatainfrastructurenameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		c.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		c.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		c.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (c *CloudExadataInfrastructuresServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if c.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -420,54 +468,6 @@ func (c *CloudExadataInfrastructuresServerTransport) dispatchNewListBySubscripti
 	if !server.PagerResponderMore(newListBySubscriptionPager) {
 		c.newListBySubscriptionPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (c *CloudExadataInfrastructuresServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if c.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := c.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Oracle\.Database/cloudExadataInfrastructures/(?P<cloudexadatainfrastructurename>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armoracledatabase.CloudExadataInfrastructureUpdate](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		cloudexadatainfrastructurenameParam, err := url.PathUnescape(matches[regex.SubexpIndex("cloudexadatainfrastructurename")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := c.srv.BeginUpdate(req.Context(), resourceGroupNameParam, cloudexadatainfrastructurenameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		c.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		c.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		c.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

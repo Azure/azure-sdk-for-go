@@ -68,7 +68,7 @@ func (client *VirtualNetworkAppliancesClient) BeginCreateOrUpdate(ctx context.Co
 	}
 }
 
-// CreateOrUpdate - Creates or updates a virtual network appliance.
+// createOrUpdate - Creates or updates a virtual network appliance.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *VirtualNetworkAppliancesClient) createOrUpdate(ctx context.Context, resourceGroupName string, virtualNetworkApplianceName string, parameters VirtualNetworkAppliance, options *VirtualNetworkAppliancesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -90,7 +90,7 @@ func (client *VirtualNetworkAppliancesClient) createOrUpdate(ctx context.Context
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *VirtualNetworkAppliancesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, virtualNetworkApplianceName string, parameters VirtualNetworkAppliance, _ *VirtualNetworkAppliancesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworkAppliances/{virtualNetworkApplianceName}"
 	if client.subscriptionID == "" {
@@ -143,7 +143,7 @@ func (client *VirtualNetworkAppliancesClient) BeginDelete(ctx context.Context, r
 	}
 }
 
-// Delete - Deletes the specified virtual network appliance.
+// deleteOperation - Deletes the specified virtual network appliance.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *VirtualNetworkAppliancesClient) deleteOperation(ctx context.Context, resourceGroupName string, virtualNetworkApplianceName string, options *VirtualNetworkAppliancesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -165,7 +165,7 @@ func (client *VirtualNetworkAppliancesClient) deleteOperation(ctx context.Contex
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *VirtualNetworkAppliancesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, virtualNetworkApplianceName string, _ *VirtualNetworkAppliancesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworkAppliances/{virtualNetworkApplianceName}"
 	if client.subscriptionID == "" {
@@ -251,6 +251,73 @@ func (client *VirtualNetworkAppliancesClient) getHandleResponse(resp *http.Respo
 	return result, nil
 }
 
+// NewListAllPager - Gets all virtual network appliances in a subscription.
+//   - options - VirtualNetworkAppliancesClientListAllOptions contains the optional parameters for the VirtualNetworkAppliancesClient.NewListAllPager
+//     method.
+func (client *VirtualNetworkAppliancesClient) NewListAllPager(options *VirtualNetworkAppliancesClientListAllOptions) *runtime.Pager[VirtualNetworkAppliancesClientListAllResponse] {
+	return runtime.NewPager(runtime.PagingHandler[VirtualNetworkAppliancesClientListAllResponse]{
+		More: func(page VirtualNetworkAppliancesClientListAllResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *VirtualNetworkAppliancesClientListAllResponse) (VirtualNetworkAppliancesClientListAllResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "VirtualNetworkAppliancesClient.NewListAllPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listAllCreateRequest(ctx, nextLink, options)
+			if err != nil {
+				return VirtualNetworkAppliancesClientListAllResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return VirtualNetworkAppliancesClientListAllResponse{}, err
+			}
+			return client.listAllHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listAllCreateRequest creates the ListAll request.
+func (client *VirtualNetworkAppliancesClient) listAllCreateRequest(ctx context.Context, nextLink string, _ *VirtualNetworkAppliancesClientListAllOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Network/virtualNetworkAppliances"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260101)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// listAllHandleResponse handles the ListAll response.
+func (client *VirtualNetworkAppliancesClient) listAllHandleResponse(resp *http.Response, successCodes ...int) (VirtualNetworkAppliancesClientListAllResponse, error) {
+	result := VirtualNetworkAppliancesClientListAllResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.VirtualNetworkApplianceListResult); err != nil {
+		return VirtualNetworkAppliancesClientListAllResponse{}, err
+	}
+	return result, nil
+}
+
 // NewListPager - Gets all virtual network appliances in a resource group.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - VirtualNetworkAppliancesClientListOptions contains the optional parameters for the VirtualNetworkAppliancesClient.NewListPager
@@ -319,73 +386,6 @@ func (client *VirtualNetworkAppliancesClient) listHandleResponse(resp *http.Resp
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VirtualNetworkApplianceListResult); err != nil {
 		return VirtualNetworkAppliancesClientListResponse{}, err
-	}
-	return result, nil
-}
-
-// NewListAllPager - Gets all virtual network appliances in a subscription.
-//   - options - VirtualNetworkAppliancesClientListAllOptions contains the optional parameters for the VirtualNetworkAppliancesClient.NewListAllPager
-//     method.
-func (client *VirtualNetworkAppliancesClient) NewListAllPager(options *VirtualNetworkAppliancesClientListAllOptions) *runtime.Pager[VirtualNetworkAppliancesClientListAllResponse] {
-	return runtime.NewPager(runtime.PagingHandler[VirtualNetworkAppliancesClientListAllResponse]{
-		More: func(page VirtualNetworkAppliancesClientListAllResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *VirtualNetworkAppliancesClientListAllResponse) (VirtualNetworkAppliancesClientListAllResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "VirtualNetworkAppliancesClient.NewListAllPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			req, err := client.listAllCreateRequest(ctx, nextLink, options)
-			if err != nil {
-				return VirtualNetworkAppliancesClientListAllResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return VirtualNetworkAppliancesClientListAllResponse{}, err
-			}
-			return client.listAllHandleResponse(resp, http.StatusOK)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listAllCreateRequest creates the ListAll request.
-func (client *VirtualNetworkAppliancesClient) listAllCreateRequest(ctx context.Context, nextLink string, _ *VirtualNetworkAppliancesClientListAllOptions) (*policy.Request, error) {
-	firstPage := nextLink == ""
-	var req *policy.Request
-	var err error
-	if firstPage {
-		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Network/virtualNetworkAppliances"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter subscriptionID cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	} else {
-		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
-	}
-	if err != nil {
-		return nil, err
-	}
-	if firstPage {
-		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260101)
-		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-		req.Raw().Header["Accept"] = []string{"application/json"}
-	}
-	return req, nil
-}
-
-// listAllHandleResponse handles the ListAll response.
-func (client *VirtualNetworkAppliancesClient) listAllHandleResponse(resp *http.Response, successCodes ...int) (VirtualNetworkAppliancesClientListAllResponse, error) {
-	result := VirtualNetworkAppliancesClientListAllResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.VirtualNetworkApplianceListResult); err != nil {
-		return VirtualNetworkAppliancesClientListAllResponse{}, err
 	}
 	return result, nil
 }

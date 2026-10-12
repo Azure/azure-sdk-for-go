@@ -69,7 +69,7 @@ func (client *VirtualApplianceSitesClient) BeginCreateOrUpdate(ctx context.Conte
 	}
 }
 
-// CreateOrUpdate - Creates or updates the specified Network Virtual Appliance Site.
+// createOrUpdate - Creates or updates the specified Network Virtual Appliance Site.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *VirtualApplianceSitesClient) createOrUpdate(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, siteName string, parameters VirtualApplianceSite, options *VirtualApplianceSitesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -91,7 +91,7 @@ func (client *VirtualApplianceSitesClient) createOrUpdate(ctx context.Context, r
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *VirtualApplianceSitesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, siteName string, parameters VirtualApplianceSite, _ *VirtualApplianceSitesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkVirtualAppliances/{networkVirtualApplianceName}/virtualApplianceSites/{siteName}"
 	if client.subscriptionID == "" {
@@ -149,7 +149,7 @@ func (client *VirtualApplianceSitesClient) BeginDelete(ctx context.Context, reso
 	}
 }
 
-// Delete - Deletes the specified site from a Virtual Appliance.
+// deleteOperation - Deletes the specified site from a Virtual Appliance.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *VirtualApplianceSitesClient) deleteOperation(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, siteName string, options *VirtualApplianceSitesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -171,7 +171,7 @@ func (client *VirtualApplianceSitesClient) deleteOperation(ctx context.Context, 
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *VirtualApplianceSitesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, siteName string, _ *VirtualApplianceSitesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkVirtualAppliances/{networkVirtualApplianceName}/virtualApplianceSites/{siteName}"
 	if client.subscriptionID == "" {

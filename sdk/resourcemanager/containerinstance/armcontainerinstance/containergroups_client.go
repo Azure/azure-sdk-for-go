@@ -70,7 +70,7 @@ func (client *ContainerGroupsClient) BeginCreateOrUpdate(ctx context.Context, re
 	}
 }
 
-// CreateOrUpdate - Create or update container groups.
+// createOrUpdate - Create or update container groups.
 //
 // Create or update container groups with specified configurations.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -94,7 +94,7 @@ func (client *ContainerGroupsClient) createOrUpdate(ctx context.Context, resourc
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *ContainerGroupsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, containerGroupName string, containerGroup ContainerGroup, _ *ContainerGroupsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance/containerGroups/{containerGroupName}"
 	if client.subscriptionID == "" {
@@ -150,7 +150,7 @@ func (client *ContainerGroupsClient) BeginDelete(ctx context.Context, resourceGr
 	}
 }
 
-// Delete - Delete the specified container group.
+// deleteOperation - Delete the specified container group.
 //
 // Delete the specified container group in the specified subscription and resource group. The operation does not delete other
 // resources provided by the user, such as volumes.
@@ -175,7 +175,7 @@ func (client *ContainerGroupsClient) deleteOperation(ctx context.Context, resour
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *ContainerGroupsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, containerGroupName string, _ *ContainerGroupsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance/containerGroups/{containerGroupName}"
 	if client.subscriptionID == "" {
@@ -198,6 +198,154 @@ func (client *ContainerGroupsClient) deleteCreateRequest(ctx context.Context, re
 	reqQP.Set("api-version", version20250901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// BeginRestart - Restarts all containers in a container group.
+//
+// Restarts all containers in a container group in place. If container image has updates, new image will be downloaded.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - containerGroupName - The name of the container group.
+//   - options - ContainerGroupsClientBeginRestartOptions contains the optional parameters for the ContainerGroupsClient.BeginRestart
+//     method.
+func (client *ContainerGroupsClient) BeginRestart(ctx context.Context, resourceGroupName string, containerGroupName string, options *ContainerGroupsClientBeginRestartOptions) (*runtime.Poller[ContainerGroupsClientRestartResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.restart(ctx, resourceGroupName, containerGroupName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ContainerGroupsClientRestartResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ContainerGroupsClientRestartResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// restart - Restarts all containers in a container group.
+//
+// Restarts all containers in a container group in place. If container image has updates, new image will be downloaded.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ContainerGroupsClient) restart(ctx context.Context, resourceGroupName string, containerGroupName string, options *ContainerGroupsClientBeginRestartOptions) (*http.Response, error) {
+	var err error
+	const operationName = "ContainerGroupsClient.BeginRestart"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.restartCreateRequest(ctx, resourceGroupName, containerGroupName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// restartCreateRequest creates the restart request.
+func (client *ContainerGroupsClient) restartCreateRequest(ctx context.Context, resourceGroupName string, containerGroupName string, _ *ContainerGroupsClientBeginRestartOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance/containerGroups/{containerGroupName}/restart"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if containerGroupName == "" {
+		return nil, errors.New("parameter containerGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{containerGroupName}", url.PathEscape(containerGroupName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20250901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginStart - Starts all containers in a container group.
+//
+// Starts all containers in a container group. Compute resources will be allocated and billing will start.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - containerGroupName - The name of the container group.
+//   - options - ContainerGroupsClientBeginStartOptions contains the optional parameters for the ContainerGroupsClient.BeginStart
+//     method.
+func (client *ContainerGroupsClient) BeginStart(ctx context.Context, resourceGroupName string, containerGroupName string, options *ContainerGroupsClientBeginStartOptions) (*runtime.Poller[ContainerGroupsClientStartResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.start(ctx, resourceGroupName, containerGroupName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ContainerGroupsClientStartResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ContainerGroupsClientStartResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// start - Starts all containers in a container group.
+//
+// Starts all containers in a container group. Compute resources will be allocated and billing will start.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ContainerGroupsClient) start(ctx context.Context, resourceGroupName string, containerGroupName string, options *ContainerGroupsClientBeginStartOptions) (*http.Response, error) {
+	var err error
+	const operationName = "ContainerGroupsClient.BeginStart"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.startCreateRequest(ctx, resourceGroupName, containerGroupName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// startCreateRequest creates the start request.
+func (client *ContainerGroupsClient) startCreateRequest(ctx context.Context, resourceGroupName string, containerGroupName string, _ *ContainerGroupsClientBeginStartOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance/containerGroups/{containerGroupName}/start"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if containerGroupName == "" {
+		return nil, errors.New("parameter containerGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{containerGroupName}", url.PathEscape(containerGroupName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20250901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
@@ -329,76 +477,6 @@ func (client *ContainerGroupsClient) getOutboundNetworkDependenciesEndpointsHand
 	return result, nil
 }
 
-// NewListPager - Get a list of container groups in the specified subscription.
-//
-// Get a list of container groups in the specified subscription. This operation returns properties of each container group
-// including containers, image registry credentials, restart policy, IP address type, OS type, state, and volumes.
-//   - options - ContainerGroupsClientListOptions contains the optional parameters for the ContainerGroupsClient.NewListPager
-//     method.
-func (client *ContainerGroupsClient) NewListPager(options *ContainerGroupsClientListOptions) *runtime.Pager[ContainerGroupsClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[ContainerGroupsClientListResponse]{
-		More: func(page ContainerGroupsClientListResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *ContainerGroupsClientListResponse) (ContainerGroupsClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ContainerGroupsClient.NewListPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			req, err := client.listCreateRequest(ctx, nextLink, options)
-			if err != nil {
-				return ContainerGroupsClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ContainerGroupsClientListResponse{}, err
-			}
-			return client.listHandleResponse(resp, http.StatusOK)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listCreateRequest creates the List request.
-func (client *ContainerGroupsClient) listCreateRequest(ctx context.Context, nextLink string, _ *ContainerGroupsClientListOptions) (*policy.Request, error) {
-	firstPage := nextLink == ""
-	var req *policy.Request
-	var err error
-	if firstPage {
-		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ContainerInstance/containerGroups"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter subscriptionID cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	} else {
-		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
-	}
-	if err != nil {
-		return nil, err
-	}
-	if firstPage {
-		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250901)
-		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-		req.Raw().Header["Accept"] = []string{"application/json"}
-	}
-	return req, nil
-}
-
-// listHandleResponse handles the List response.
-func (client *ContainerGroupsClient) listHandleResponse(resp *http.Response, successCodes ...int) (ContainerGroupsClientListResponse, error) {
-	result := ContainerGroupsClientListResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ContainerGroupListResult); err != nil {
-		return ContainerGroupsClientListResponse{}, err
-	}
-	return result, nil
-}
-
 // NewListByResourceGroupPager - Get a list of container groups in the specified subscription and resource group.
 //
 // Get a list of container groups in a specified subscription and resource group. This operation returns properties of each
@@ -475,152 +553,74 @@ func (client *ContainerGroupsClient) listByResourceGroupHandleResponse(resp *htt
 	return result, nil
 }
 
-// BeginRestart - Restarts all containers in a container group.
+// NewListPager - Get a list of container groups in the specified subscription.
 //
-// Restarts all containers in a container group in place. If container image has updates, new image will be downloaded.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - containerGroupName - The name of the container group.
-//   - options - ContainerGroupsClientBeginRestartOptions contains the optional parameters for the ContainerGroupsClient.BeginRestart
+// Get a list of container groups in the specified subscription. This operation returns properties of each container group
+// including containers, image registry credentials, restart policy, IP address type, OS type, state, and volumes.
+//   - options - ContainerGroupsClientListOptions contains the optional parameters for the ContainerGroupsClient.NewListPager
 //     method.
-func (client *ContainerGroupsClient) BeginRestart(ctx context.Context, resourceGroupName string, containerGroupName string, options *ContainerGroupsClientBeginRestartOptions) (*runtime.Poller[ContainerGroupsClientRestartResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.restart(ctx, resourceGroupName, containerGroupName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ContainerGroupsClientRestartResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ContainerGroupsClientRestartResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
+func (client *ContainerGroupsClient) NewListPager(options *ContainerGroupsClientListOptions) *runtime.Pager[ContainerGroupsClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[ContainerGroupsClientListResponse]{
+		More: func(page ContainerGroupsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *ContainerGroupsClientListResponse) (ContainerGroupsClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ContainerGroupsClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listCreateRequest(ctx, nextLink, options)
+			if err != nil {
+				return ContainerGroupsClientListResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ContainerGroupsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
 }
 
-// Restart - Restarts all containers in a container group.
-//
-// Restarts all containers in a container group in place. If container image has updates, new image will be downloaded.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *ContainerGroupsClient) restart(ctx context.Context, resourceGroupName string, containerGroupName string, options *ContainerGroupsClientBeginRestartOptions) (*http.Response, error) {
+// listCreateRequest creates the List request.
+func (client *ContainerGroupsClient) listCreateRequest(ctx context.Context, nextLink string, _ *ContainerGroupsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
 	var err error
-	const operationName = "ContainerGroupsClient.BeginRestart"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.restartCreateRequest(ctx, resourceGroupName, containerGroupName, options)
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ContainerInstance/containerGroups"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
 	if err != nil {
 		return nil, err
 	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250901)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// restartCreateRequest creates the Restart request.
-func (client *ContainerGroupsClient) restartCreateRequest(ctx context.Context, resourceGroupName string, containerGroupName string, _ *ContainerGroupsClientBeginRestartOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance/containerGroups/{containerGroupName}/restart"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if containerGroupName == "" {
-		return nil, errors.New("parameter containerGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{containerGroupName}", url.PathEscape(containerGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250901)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
-// BeginStart - Starts all containers in a container group.
-//
-// Starts all containers in a container group. Compute resources will be allocated and billing will start.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - containerGroupName - The name of the container group.
-//   - options - ContainerGroupsClientBeginStartOptions contains the optional parameters for the ContainerGroupsClient.BeginStart
-//     method.
-func (client *ContainerGroupsClient) BeginStart(ctx context.Context, resourceGroupName string, containerGroupName string, options *ContainerGroupsClientBeginStartOptions) (*runtime.Poller[ContainerGroupsClientStartResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.start(ctx, resourceGroupName, containerGroupName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ContainerGroupsClientStartResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ContainerGroupsClientStartResponse]{
-			Tracer: client.internal.Tracer(),
-		})
+// listHandleResponse handles the List response.
+func (client *ContainerGroupsClient) listHandleResponse(resp *http.Response, successCodes ...int) (ContainerGroupsClientListResponse, error) {
+	result := ContainerGroupsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
 	}
-}
-
-// Start - Starts all containers in a container group.
-//
-// Starts all containers in a container group. Compute resources will be allocated and billing will start.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *ContainerGroupsClient) start(ctx context.Context, resourceGroupName string, containerGroupName string, options *ContainerGroupsClientBeginStartOptions) (*http.Response, error) {
-	var err error
-	const operationName = "ContainerGroupsClient.BeginStart"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.startCreateRequest(ctx, resourceGroupName, containerGroupName, options)
-	if err != nil {
-		return nil, err
+	if err := runtime.UnmarshalAsJSON(resp, &result.ContainerGroupListResult); err != nil {
+		return ContainerGroupsClientListResponse{}, err
 	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// startCreateRequest creates the Start request.
-func (client *ContainerGroupsClient) startCreateRequest(ctx context.Context, resourceGroupName string, containerGroupName string, _ *ContainerGroupsClientBeginStartOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance/containerGroups/{containerGroupName}/start"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if containerGroupName == "" {
-		return nil, errors.New("parameter containerGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{containerGroupName}", url.PathEscape(containerGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250901)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	return req, nil
+	return result, nil
 }
 
 // Stop - Stops all containers in a container group.

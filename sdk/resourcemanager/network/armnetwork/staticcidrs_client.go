@@ -45,6 +45,89 @@ func NewStaticCidrsClient(subscriptionID string, credential azcore.TokenCredenti
 	return client, nil
 }
 
+// BeginDelete - Delete the Static CIDR resource.
+//
+// Delete the Static CIDR resource.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - networkManagerName - The name of the network manager.
+//   - poolName - Pool resource name.
+//   - staticCidrName - StaticCidr resource name to retrieve.
+//   - options - StaticCidrsClientBeginDeleteOptions contains the optional parameters for the StaticCidrsClient.BeginDelete method.
+func (client *StaticCidrsClient) BeginDelete(ctx context.Context, resourceGroupName string, networkManagerName string, poolName string, staticCidrName string, options *StaticCidrsClientBeginDeleteOptions) (*runtime.Poller[StaticCidrsClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, networkManagerName, poolName, staticCidrName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[StaticCidrsClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[StaticCidrsClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// deleteOperation - Delete the Static CIDR resource.
+//
+// Delete the Static CIDR resource.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *StaticCidrsClient) deleteOperation(ctx context.Context, resourceGroupName string, networkManagerName string, poolName string, staticCidrName string, options *StaticCidrsClientBeginDeleteOptions) (*http.Response, error) {
+	var err error
+	const operationName = "StaticCidrsClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.deleteCreateRequest(ctx, resourceGroupName, networkManagerName, poolName, staticCidrName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// deleteCreateRequest creates the delete request.
+func (client *StaticCidrsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, networkManagerName string, poolName string, staticCidrName string, _ *StaticCidrsClientBeginDeleteOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkManagers/{networkManagerName}/ipamPools/{poolName}/staticCidrs/{staticCidrName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if networkManagerName == "" {
+		return nil, errors.New("parameter networkManagerName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{networkManagerName}", url.PathEscape(networkManagerName))
+	if poolName == "" {
+		return nil, errors.New("parameter poolName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{poolName}", url.PathEscape(poolName))
+	if staticCidrName == "" {
+		return nil, errors.New("parameter staticCidrName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{staticCidrName}", url.PathEscape(staticCidrName))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
 // Create - Creates/Updates the Static CIDR resource.
 //
 // Creates/Updates the Static CIDR resource.
@@ -119,89 +202,6 @@ func (client *StaticCidrsClient) createHandleResponse(resp *http.Response, succe
 		return StaticCidrsClientCreateResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginDelete - Delete the Static CIDR resource.
-//
-// Delete the Static CIDR resource.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - networkManagerName - The name of the network manager.
-//   - poolName - Pool resource name.
-//   - staticCidrName - StaticCidr resource name to retrieve.
-//   - options - StaticCidrsClientBeginDeleteOptions contains the optional parameters for the StaticCidrsClient.BeginDelete method.
-func (client *StaticCidrsClient) BeginDelete(ctx context.Context, resourceGroupName string, networkManagerName string, poolName string, staticCidrName string, options *StaticCidrsClientBeginDeleteOptions) (*runtime.Poller[StaticCidrsClientDeleteResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.deleteOperation(ctx, resourceGroupName, networkManagerName, poolName, staticCidrName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[StaticCidrsClientDeleteResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[StaticCidrsClientDeleteResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Delete - Delete the Static CIDR resource.
-//
-// Delete the Static CIDR resource.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *StaticCidrsClient) deleteOperation(ctx context.Context, resourceGroupName string, networkManagerName string, poolName string, staticCidrName string, options *StaticCidrsClientBeginDeleteOptions) (*http.Response, error) {
-	var err error
-	const operationName = "StaticCidrsClient.BeginDelete"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.deleteCreateRequest(ctx, resourceGroupName, networkManagerName, poolName, staticCidrName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// deleteCreateRequest creates the Delete request.
-func (client *StaticCidrsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, networkManagerName string, poolName string, staticCidrName string, _ *StaticCidrsClientBeginDeleteOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkManagers/{networkManagerName}/ipamPools/{poolName}/staticCidrs/{staticCidrName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if networkManagerName == "" {
-		return nil, errors.New("parameter networkManagerName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{networkManagerName}", url.PathEscape(networkManagerName))
-	if poolName == "" {
-		return nil, errors.New("parameter poolName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{poolName}", url.PathEscape(poolName))
-	if staticCidrName == "" {
-		return nil, errors.New("parameter staticCidrName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{staticCidrName}", url.PathEscape(staticCidrName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	return req, nil
 }
 
 // Get - Gets the specific Static CIDR resource.

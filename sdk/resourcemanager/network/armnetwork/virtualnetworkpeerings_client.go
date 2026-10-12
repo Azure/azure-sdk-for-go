@@ -69,7 +69,7 @@ func (client *VirtualNetworkPeeringsClient) BeginCreateOrUpdate(ctx context.Cont
 	}
 }
 
-// CreateOrUpdate - Creates or updates a peering in the specified virtual network.
+// createOrUpdate - Creates or updates a peering in the specified virtual network.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *VirtualNetworkPeeringsClient) createOrUpdate(ctx context.Context, resourceGroupName string, virtualNetworkName string, virtualNetworkPeeringName string, virtualNetworkPeeringParameters VirtualNetworkPeering, options *VirtualNetworkPeeringsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -91,7 +91,7 @@ func (client *VirtualNetworkPeeringsClient) createOrUpdate(ctx context.Context, 
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *VirtualNetworkPeeringsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, virtualNetworkName string, virtualNetworkPeeringName string, virtualNetworkPeeringParameters VirtualNetworkPeering, options *VirtualNetworkPeeringsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/virtualNetworkPeerings/{virtualNetworkPeeringName}"
 	if client.subscriptionID == "" {
@@ -152,7 +152,7 @@ func (client *VirtualNetworkPeeringsClient) BeginDelete(ctx context.Context, res
 	}
 }
 
-// Delete - Deletes the specified virtual network peering.
+// deleteOperation - Deletes the specified virtual network peering.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *VirtualNetworkPeeringsClient) deleteOperation(ctx context.Context, resourceGroupName string, virtualNetworkName string, virtualNetworkPeeringName string, options *VirtualNetworkPeeringsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -174,7 +174,7 @@ func (client *VirtualNetworkPeeringsClient) deleteOperation(ctx context.Context,
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *VirtualNetworkPeeringsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, virtualNetworkName string, virtualNetworkPeeringName string, _ *VirtualNetworkPeeringsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/virtualNetworkPeerings/{virtualNetworkPeeringName}"
 	if client.subscriptionID == "" {

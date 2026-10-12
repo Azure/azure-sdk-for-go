@@ -12,6 +12,32 @@ import (
 	"log"
 )
 
+// Generated from example definition: 2026-01-01/NetworkSecurityPerimeterDelete.json
+func ExampleSecurityPerimetersClient_BeginDelete() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewSecurityPerimetersClient().BeginDelete(ctx, "rg1", "testNSP1", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armnetwork.SecurityPerimetersClientDeleteResponse{
+	// }
+}
+
 // Generated from example definition: 2026-01-01/NetworkSecurityPerimeterPut.json
 func ExampleSecurityPerimetersClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -57,32 +83,6 @@ func ExampleSecurityPerimetersClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/NetworkSecurityPerimeterDelete.json
-func ExampleSecurityPerimetersClient_BeginDelete() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewSecurityPerimetersClient().BeginDelete(ctx, "rg1", "testNSP1", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armnetwork.SecurityPerimetersClientDeleteResponse{
-	// }
-}
-
 // Generated from example definition: 2026-01-01/NetworkSecurityPerimeterGet.json
 func ExampleSecurityPerimetersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -125,8 +125,8 @@ func ExampleSecurityPerimetersClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/NetworkSecurityPerimeterList.json
-func ExampleSecurityPerimetersClient_NewListPager() {
+// Generated from example definition: 2026-01-01/NetworkSecurityPerimeterListAll.json
+func ExampleSecurityPerimetersClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -136,7 +136,7 @@ func ExampleSecurityPerimetersClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewSecurityPerimetersClient().NewListPager("rg1", nil)
+	pager := clientFactory.NewSecurityPerimetersClient().NewListBySubscriptionPager(nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -147,9 +147,9 @@ func ExampleSecurityPerimetersClient_NewListPager() {
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armnetwork.SecurityPerimetersClientListResponse{
+		// page = armnetwork.SecurityPerimetersClientListBySubscriptionResponse{
 		// 	SecurityPerimeterListResult: armnetwork.SecurityPerimeterListResult{
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/networkSecurityPerimeters?api-version=2025-07-01&$skipToken=10"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/networkSecurityPerimeters?api-version=2025-07-01&$skipToken=10"),
 		// 		Value: []*armnetwork.SecurityPerimeter{
 		// 			{
 		// 				Name: to.Ptr("testNSP1"),
@@ -197,8 +197,8 @@ func ExampleSecurityPerimetersClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-01-01/NetworkSecurityPerimeterListAll.json
-func ExampleSecurityPerimetersClient_NewListBySubscriptionPager() {
+// Generated from example definition: 2026-01-01/NetworkSecurityPerimeterList.json
+func ExampleSecurityPerimetersClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -208,7 +208,7 @@ func ExampleSecurityPerimetersClient_NewListBySubscriptionPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewSecurityPerimetersClient().NewListBySubscriptionPager(nil)
+	pager := clientFactory.NewSecurityPerimetersClient().NewListPager("rg1", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -219,9 +219,9 @@ func ExampleSecurityPerimetersClient_NewListBySubscriptionPager() {
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armnetwork.SecurityPerimetersClientListBySubscriptionResponse{
+		// page = armnetwork.SecurityPerimetersClientListResponse{
 		// 	SecurityPerimeterListResult: armnetwork.SecurityPerimeterListResult{
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/networkSecurityPerimeters?api-version=2025-07-01&$skipToken=10"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/networkSecurityPerimeters?api-version=2025-07-01&$skipToken=10"),
 		// 		Value: []*armnetwork.SecurityPerimeter{
 		// 			{
 		// 				Name: to.Ptr("testNSP1"),

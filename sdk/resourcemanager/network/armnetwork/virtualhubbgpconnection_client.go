@@ -69,7 +69,7 @@ func (client *VirtualHubBgpConnectionClient) BeginCreateOrUpdate(ctx context.Con
 	}
 }
 
-// CreateOrUpdate - Creates a VirtualHubBgpConnection resource if it doesn't exist else updates the existing VirtualHubBgpConnection.
+// createOrUpdate - Creates a VirtualHubBgpConnection resource if it doesn't exist else updates the existing VirtualHubBgpConnection.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *VirtualHubBgpConnectionClient) createOrUpdate(ctx context.Context, resourceGroupName string, virtualHubName string, connectionName string, parameters BgpConnection, options *VirtualHubBgpConnectionClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -91,7 +91,7 @@ func (client *VirtualHubBgpConnectionClient) createOrUpdate(ctx context.Context,
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *VirtualHubBgpConnectionClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, virtualHubName string, connectionName string, parameters BgpConnection, _ *VirtualHubBgpConnectionClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs/{virtualHubName}/bgpConnections/{connectionName}"
 	if client.subscriptionID == "" {
@@ -149,7 +149,7 @@ func (client *VirtualHubBgpConnectionClient) BeginDelete(ctx context.Context, re
 	}
 }
 
-// Delete - Deletes a VirtualHubBgpConnection.
+// deleteOperation - Deletes a VirtualHubBgpConnection.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *VirtualHubBgpConnectionClient) deleteOperation(ctx context.Context, resourceGroupName string, virtualHubName string, connectionName string, options *VirtualHubBgpConnectionClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -171,7 +171,7 @@ func (client *VirtualHubBgpConnectionClient) deleteOperation(ctx context.Context
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *VirtualHubBgpConnectionClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, virtualHubName string, connectionName string, _ *VirtualHubBgpConnectionClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs/{virtualHubName}/bgpConnections/{connectionName}"
 	if client.subscriptionID == "" {

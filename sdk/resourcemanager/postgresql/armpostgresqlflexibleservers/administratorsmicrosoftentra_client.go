@@ -70,7 +70,7 @@ func (client *AdministratorsMicrosoftEntraClient) BeginCreateOrUpdate(ctx contex
 	}
 }
 
-// CreateOrUpdate - Creates a new server administrator associated to a Microsoft Entra principal.
+// createOrUpdate - Creates a new server administrator associated to a Microsoft Entra principal.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *AdministratorsMicrosoftEntraClient) createOrUpdate(ctx context.Context, resourceGroupName string, serverName string, objectID string, parameters AdministratorMicrosoftEntraAdd, options *AdministratorsMicrosoftEntraClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -92,7 +92,7 @@ func (client *AdministratorsMicrosoftEntraClient) createOrUpdate(ctx context.Con
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *AdministratorsMicrosoftEntraClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, objectID string, parameters AdministratorMicrosoftEntraAdd, _ *AdministratorsMicrosoftEntraClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/administrators/{objectId}"
 	if client.subscriptionID == "" {
@@ -149,7 +149,7 @@ func (client *AdministratorsMicrosoftEntraClient) BeginDelete(ctx context.Contex
 	}
 }
 
-// Delete - Deletes an existing server administrator associated to a Microsoft Entra principal.
+// deleteOperation - Deletes an existing server administrator associated to a Microsoft Entra principal.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *AdministratorsMicrosoftEntraClient) deleteOperation(ctx context.Context, resourceGroupName string, serverName string, objectID string, options *AdministratorsMicrosoftEntraClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -171,7 +171,7 @@ func (client *AdministratorsMicrosoftEntraClient) deleteOperation(ctx context.Co
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *AdministratorsMicrosoftEntraClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serverName string, objectID string, _ *AdministratorsMicrosoftEntraClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/administrators/{objectId}"
 	if client.subscriptionID == "" {

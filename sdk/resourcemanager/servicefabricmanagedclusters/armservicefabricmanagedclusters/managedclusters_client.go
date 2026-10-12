@@ -68,7 +68,7 @@ func (client *ManagedClustersClient) BeginCreateOrUpdate(ctx context.Context, re
 	}
 }
 
-// CreateOrUpdate - Create or update a Service Fabric managed cluster resource with the specified name.
+// createOrUpdate - Create or update a Service Fabric managed cluster resource with the specified name.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ManagedClustersClient) createOrUpdate(ctx context.Context, resourceGroupName string, clusterName string, parameters ManagedCluster, options *ManagedClustersClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -90,7 +90,7 @@ func (client *ManagedClustersClient) createOrUpdate(ctx context.Context, resourc
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *ManagedClustersClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, parameters ManagedCluster, _ *ManagedClustersClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}"
 	if client.subscriptionID == "" {
@@ -143,7 +143,7 @@ func (client *ManagedClustersClient) BeginDelete(ctx context.Context, resourceGr
 	}
 }
 
-// Delete - Delete a Service Fabric managed cluster resource with the specified name.
+// deleteOperation - Delete a Service Fabric managed cluster resource with the specified name.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ManagedClustersClient) deleteOperation(ctx context.Context, resourceGroupName string, clusterName string, options *ManagedClustersClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -165,7 +165,7 @@ func (client *ManagedClustersClient) deleteOperation(ctx context.Context, resour
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *ManagedClustersClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, _ *ManagedClustersClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}"
 	if client.subscriptionID == "" {
@@ -187,6 +187,232 @@ func (client *ManagedClustersClient) deleteCreateRequest(ctx context.Context, re
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", version20260501Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginStartFaultSimulation - Starts a fault simulation on the cluster.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - clusterName - The name of the cluster resource.
+//   - parameters - parameters describing the fault simulation.
+//   - options - ManagedClustersClientBeginStartFaultSimulationOptions contains the optional parameters for the ManagedClustersClient.BeginStartFaultSimulation
+//     method.
+func (client *ManagedClustersClient) BeginStartFaultSimulation(ctx context.Context, resourceGroupName string, clusterName string, parameters FaultSimulationContentWrapper, options *ManagedClustersClientBeginStartFaultSimulationOptions) (*runtime.Poller[ManagedClustersClientStartFaultSimulationResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.startFaultSimulation(ctx, resourceGroupName, clusterName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ManagedClustersClientStartFaultSimulationResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ManagedClustersClientStartFaultSimulationResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// startFaultSimulation - Starts a fault simulation on the cluster.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ManagedClustersClient) startFaultSimulation(ctx context.Context, resourceGroupName string, clusterName string, parameters FaultSimulationContentWrapper, options *ManagedClustersClientBeginStartFaultSimulationOptions) (*http.Response, error) {
+	var err error
+	const operationName = "ManagedClustersClient.BeginStartFaultSimulation"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.startFaultSimulationCreateRequest(ctx, resourceGroupName, clusterName, parameters, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// startFaultSimulationCreateRequest creates the startFaultSimulation request.
+func (client *ManagedClustersClient) startFaultSimulationCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, parameters FaultSimulationContentWrapper, _ *ManagedClustersClientBeginStartFaultSimulationOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}/startFaultSimulation"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if clusterName == "" {
+		return nil, errors.New("parameter clusterName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260501Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginStopFaultSimulation - Stops a fault simulation on the cluster.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - clusterName - The name of the cluster resource.
+//   - parameters - parameter with fault simulation id.
+//   - options - ManagedClustersClientBeginStopFaultSimulationOptions contains the optional parameters for the ManagedClustersClient.BeginStopFaultSimulation
+//     method.
+func (client *ManagedClustersClient) BeginStopFaultSimulation(ctx context.Context, resourceGroupName string, clusterName string, parameters FaultSimulationIDContent, options *ManagedClustersClientBeginStopFaultSimulationOptions) (*runtime.Poller[ManagedClustersClientStopFaultSimulationResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.stopFaultSimulation(ctx, resourceGroupName, clusterName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ManagedClustersClientStopFaultSimulationResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ManagedClustersClientStopFaultSimulationResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// stopFaultSimulation - Stops a fault simulation on the cluster.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ManagedClustersClient) stopFaultSimulation(ctx context.Context, resourceGroupName string, clusterName string, parameters FaultSimulationIDContent, options *ManagedClustersClientBeginStopFaultSimulationOptions) (*http.Response, error) {
+	var err error
+	const operationName = "ManagedClustersClient.BeginStopFaultSimulation"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.stopFaultSimulationCreateRequest(ctx, resourceGroupName, clusterName, parameters, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// stopFaultSimulationCreateRequest creates the stopFaultSimulation request.
+func (client *ManagedClustersClient) stopFaultSimulationCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, parameters FaultSimulationIDContent, _ *ManagedClustersClientBeginStopFaultSimulationOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}/stopFaultSimulation"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if clusterName == "" {
+		return nil, errors.New("parameter clusterName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260501Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginUpdate - Update the tags of of a Service Fabric managed cluster resource with the specified name.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - clusterName - The name of the cluster resource.
+//   - parameters - The managed cluster resource updated tags.
+//   - options - ManagedClustersClientBeginUpdateOptions contains the optional parameters for the ManagedClustersClient.BeginUpdate
+//     method.
+func (client *ManagedClustersClient) BeginUpdate(ctx context.Context, resourceGroupName string, clusterName string, parameters ManagedClusterUpdateParameters, options *ManagedClustersClientBeginUpdateOptions) (*runtime.Poller[ManagedClustersClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, clusterName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ManagedClustersClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ManagedClustersClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Update the tags of of a Service Fabric managed cluster resource with the specified name.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ManagedClustersClient) update(ctx context.Context, resourceGroupName string, clusterName string, parameters ManagedClusterUpdateParameters, options *ManagedClustersClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "ManagedClustersClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, clusterName, parameters, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *ManagedClustersClient) updateCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, parameters ManagedClusterUpdateParameters, _ *ManagedClustersClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if clusterName == "" {
+		return nil, errors.New("parameter clusterName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260501Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
+		return nil, err
+	}
 	return req, nil
 }
 
@@ -533,230 +759,4 @@ func (client *ManagedClustersClient) listFaultSimulationHandleResponse(resp *htt
 		return ManagedClustersClientListFaultSimulationResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginStartFaultSimulation - Starts a fault simulation on the cluster.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - clusterName - The name of the cluster resource.
-//   - parameters - parameters describing the fault simulation.
-//   - options - ManagedClustersClientBeginStartFaultSimulationOptions contains the optional parameters for the ManagedClustersClient.BeginStartFaultSimulation
-//     method.
-func (client *ManagedClustersClient) BeginStartFaultSimulation(ctx context.Context, resourceGroupName string, clusterName string, parameters FaultSimulationContentWrapper, options *ManagedClustersClientBeginStartFaultSimulationOptions) (*runtime.Poller[ManagedClustersClientStartFaultSimulationResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.startFaultSimulation(ctx, resourceGroupName, clusterName, parameters, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ManagedClustersClientStartFaultSimulationResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ManagedClustersClientStartFaultSimulationResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// StartFaultSimulation - Starts a fault simulation on the cluster.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *ManagedClustersClient) startFaultSimulation(ctx context.Context, resourceGroupName string, clusterName string, parameters FaultSimulationContentWrapper, options *ManagedClustersClientBeginStartFaultSimulationOptions) (*http.Response, error) {
-	var err error
-	const operationName = "ManagedClustersClient.BeginStartFaultSimulation"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.startFaultSimulationCreateRequest(ctx, resourceGroupName, clusterName, parameters, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// startFaultSimulationCreateRequest creates the StartFaultSimulation request.
-func (client *ManagedClustersClient) startFaultSimulationCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, parameters FaultSimulationContentWrapper, _ *ManagedClustersClientBeginStartFaultSimulationOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}/startFaultSimulation"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if clusterName == "" {
-		return nil, errors.New("parameter clusterName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260501Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// BeginStopFaultSimulation - Stops a fault simulation on the cluster.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - clusterName - The name of the cluster resource.
-//   - parameters - parameter with fault simulation id.
-//   - options - ManagedClustersClientBeginStopFaultSimulationOptions contains the optional parameters for the ManagedClustersClient.BeginStopFaultSimulation
-//     method.
-func (client *ManagedClustersClient) BeginStopFaultSimulation(ctx context.Context, resourceGroupName string, clusterName string, parameters FaultSimulationIDContent, options *ManagedClustersClientBeginStopFaultSimulationOptions) (*runtime.Poller[ManagedClustersClientStopFaultSimulationResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.stopFaultSimulation(ctx, resourceGroupName, clusterName, parameters, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ManagedClustersClientStopFaultSimulationResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ManagedClustersClientStopFaultSimulationResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// StopFaultSimulation - Stops a fault simulation on the cluster.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *ManagedClustersClient) stopFaultSimulation(ctx context.Context, resourceGroupName string, clusterName string, parameters FaultSimulationIDContent, options *ManagedClustersClientBeginStopFaultSimulationOptions) (*http.Response, error) {
-	var err error
-	const operationName = "ManagedClustersClient.BeginStopFaultSimulation"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.stopFaultSimulationCreateRequest(ctx, resourceGroupName, clusterName, parameters, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// stopFaultSimulationCreateRequest creates the StopFaultSimulation request.
-func (client *ManagedClustersClient) stopFaultSimulationCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, parameters FaultSimulationIDContent, _ *ManagedClustersClientBeginStopFaultSimulationOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}/stopFaultSimulation"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if clusterName == "" {
-		return nil, errors.New("parameter clusterName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260501Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// BeginUpdate - Update the tags of of a Service Fabric managed cluster resource with the specified name.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - clusterName - The name of the cluster resource.
-//   - parameters - The managed cluster resource updated tags.
-//   - options - ManagedClustersClientBeginUpdateOptions contains the optional parameters for the ManagedClustersClient.BeginUpdate
-//     method.
-func (client *ManagedClustersClient) BeginUpdate(ctx context.Context, resourceGroupName string, clusterName string, parameters ManagedClusterUpdateParameters, options *ManagedClustersClientBeginUpdateOptions) (*runtime.Poller[ManagedClustersClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, clusterName, parameters, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ManagedClustersClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ManagedClustersClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Update the tags of of a Service Fabric managed cluster resource with the specified name.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *ManagedClustersClient) update(ctx context.Context, resourceGroupName string, clusterName string, parameters ManagedClusterUpdateParameters, options *ManagedClustersClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "ManagedClustersClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, clusterName, parameters, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *ManagedClustersClient) updateCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, parameters ManagedClusterUpdateParameters, _ *ManagedClustersClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if clusterName == "" {
-		return nil, errors.New("parameter clusterName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260501Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

@@ -214,6 +214,335 @@ func ExampleMonitorsClient_BeginDelete_monitorsDeleteMinimumSetGen() {
 	// }
 }
 
+// Generated from example definition: 2026-06-01/Monitors_LinkSaaS.json
+func ExampleMonitorsClient_BeginLinkSaaS() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnewrelicobservability.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewMonitorsClient().BeginLinkSaaS(ctx, "myResourceGroup", "myMonitor", armnewrelicobservability.SaaSData{
+		SaaSResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgNewRelic/providers/Microsoft.SaaS/resources/abcd"),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armnewrelicobservability.MonitorsClientLinkSaaSResponse{
+	// 	NewRelicMonitorResource: armnewrelicobservability.NewRelicMonitorResource{
+	// 		Name: to.Ptr("fteaqmtwspcfgyopqzrepiqu"),
+	// 		Type: to.Ptr("hdj"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/NewRelic.Observability/monitors/myMonitor"),
+	// 		Identity: &armnewrelicobservability.ManagedServiceIdentity{
+	// 			Type: to.Ptr(armnewrelicobservability.ManagedServiceIdentityTypeNone),
+	// 			PrincipalID: to.Ptr("cac47a92-2856-11ed-a261-0242ac120002"),
+	// 			TenantID: to.Ptr("cac47a92-2856-11ed-a261-0242ac120002"),
+	// 			UserAssignedIdentities: map[string]*armnewrelicobservability.UserAssignedIdentity{
+	// 				"key8903": &armnewrelicobservability.UserAssignedIdentity{
+	// 					ClientID: to.Ptr("cac47a92-2856-11ed-a261-0242ac120002"),
+	// 					PrincipalID: to.Ptr("cac47a92-2856-11ed-a261-0242ac120002"),
+	// 				},
+	// 			},
+	// 		},
+	// 		Location: to.Ptr("k"),
+	// 		Properties: &armnewrelicobservability.MonitorProperties{
+	// 			AccountCreationSource: to.Ptr(armnewrelicobservability.AccountCreationSourceLIFTR),
+	// 			LiftrResourceCategory: to.Ptr(armnewrelicobservability.LiftrResourceCategoriesUnknown),
+	// 			LiftrResourcePreference: to.Ptr[int32](12),
+	// 			MarketplaceSubscriptionID: to.Ptr("jizcsbgrdjhrfqqvvruhgftqhra"),
+	// 			MarketplaceSubscriptionStatus: to.Ptr(armnewrelicobservability.MarketplaceSubscriptionStatusActive),
+	// 			MonitoringStatus: to.Ptr(armnewrelicobservability.MonitoringStatusEnabled),
+	// 			NewRelicAccountProperties: &armnewrelicobservability.AccountPropertiesForNewRelic{
+	// 				AccountInfo: &armnewrelicobservability.AccountInfo{
+	// 					AccountID: to.Ptr("xhqmg"),
+	// 					Region: to.Ptr("ljcf"),
+	// 				},
+	// 				OrganizationInfo: &armnewrelicobservability.OrganizationInfo{
+	// 					OrganizationID: to.Ptr("k"),
+	// 				},
+	// 				SingleSignOnProperties: &armnewrelicobservability.NewRelicSingleSignOnProperties{
+	// 					EnterpriseAppID: to.Ptr("kwiwfz"),
+	// 					ProvisioningState: to.Ptr(armnewrelicobservability.ProvisioningStateAccepted),
+	// 					SingleSignOnState: to.Ptr(armnewrelicobservability.SingleSignOnStatesInitial),
+	// 					SingleSignOnURL: to.Ptr("kvseueuljsxmfwpqctz"),
+	// 				},
+	// 				UserID: to.Ptr("vcscxlncofcuduadesd"),
+	// 			},
+	// 			OrgCreationSource: to.Ptr(armnewrelicobservability.OrgCreationSourceLIFTR),
+	// 			PlanData: &armnewrelicobservability.PlanData{
+	// 				BillingCycle: to.Ptr("YEARLY"),
+	// 				EffectiveDate: to.Ptr(time.Date(2022, time.December, 5, 14, 11, 37, 786000000, time.UTC)),
+	// 				PlanDetails: to.Ptr("tbbiaga"),
+	// 				UsageType: to.Ptr(armnewrelicobservability.UsageTypePAYG),
+	// 			},
+	// 			ProvisioningState: to.Ptr(armnewrelicobservability.ProvisioningStateAccepted),
+	// 			SaaSAzureSubscriptionStatus: to.Ptr("Subscribed"),
+	// 			SubscriptionState: to.Ptr("Suspended"),
+	// 			UserInfo: &armnewrelicobservability.UserInfo{
+	// 				Country: to.Ptr("hslqnwdanrconqyekwbnttaetv"),
+	// 				EmailAddress: to.Ptr("%6%@4-g.N1.3F-kI1.Ue-.lJso"),
+	// 				FirstName: to.Ptr("vdftzcggirefejajwahhwhyibutramdaotvnuf"),
+	// 				LastName: to.Ptr("bcsztgqovdlmzfkjdrngidwzqsevagexzzilnlc"),
+	// 				PhoneNumber: to.Ptr("krf"),
+	// 			},
+	// 		},
+	// 		SystemData: &armnewrelicobservability.SystemData{
+	// 			CreatedAt: to.Ptr(time.Date(2022, time.December, 5, 14, 11, 37, 787000000, time.UTC)),
+	// 			CreatedBy: to.Ptr("pcdjzdldbwsdlfi"),
+	// 			CreatedByType: to.Ptr(armnewrelicobservability.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2022, time.December, 5, 14, 11, 37, 787000000, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("xbsjrxmwwlmpnpvcica"),
+	// 			LastModifiedByType: to.Ptr(armnewrelicobservability.CreatedByTypeUser),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"key6976": to.Ptr("oaxfhf"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-06-01/Monitors_Resubscribe.json
+func ExampleMonitorsClient_BeginResubscribe() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnewrelicobservability.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewMonitorsClient().BeginResubscribe(ctx, "myResourceGroup", "myMonitor", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armnewrelicobservability.MonitorsClientResubscribeResponse{
+	// 	NewRelicMonitorResource: armnewrelicobservability.NewRelicMonitorResource{
+	// 		Name: to.Ptr("fteaqmtwspcfgyopqzrepiqu"),
+	// 		Type: to.Ptr("hdj"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/NewRelic.Observability/monitors/myMonitor"),
+	// 		Identity: &armnewrelicobservability.ManagedServiceIdentity{
+	// 			Type: to.Ptr(armnewrelicobservability.ManagedServiceIdentityTypeNone),
+	// 			PrincipalID: to.Ptr("cac47a92-2856-11ed-a261-0242ac120002"),
+	// 			TenantID: to.Ptr("cac47a92-2856-11ed-a261-0242ac120002"),
+	// 			UserAssignedIdentities: map[string]*armnewrelicobservability.UserAssignedIdentity{
+	// 				"key8903": &armnewrelicobservability.UserAssignedIdentity{
+	// 					ClientID: to.Ptr("cac47a92-2856-11ed-a261-0242ac120002"),
+	// 					PrincipalID: to.Ptr("cac47a92-2856-11ed-a261-0242ac120002"),
+	// 				},
+	// 			},
+	// 		},
+	// 		Location: to.Ptr("k"),
+	// 		Properties: &armnewrelicobservability.MonitorProperties{
+	// 			AccountCreationSource: to.Ptr(armnewrelicobservability.AccountCreationSourceLIFTR),
+	// 			LiftrResourceCategory: to.Ptr(armnewrelicobservability.LiftrResourceCategoriesUnknown),
+	// 			LiftrResourcePreference: to.Ptr[int32](12),
+	// 			MarketplaceSubscriptionID: to.Ptr("jizcsbgrdjhrfqqvvruhgftqhra"),
+	// 			MarketplaceSubscriptionStatus: to.Ptr(armnewrelicobservability.MarketplaceSubscriptionStatusActive),
+	// 			MonitoringStatus: to.Ptr(armnewrelicobservability.MonitoringStatusEnabled),
+	// 			NewRelicAccountProperties: &armnewrelicobservability.AccountPropertiesForNewRelic{
+	// 				AccountInfo: &armnewrelicobservability.AccountInfo{
+	// 					AccountID: to.Ptr("xhqmg"),
+	// 					Region: to.Ptr("ljcf"),
+	// 				},
+	// 				OrganizationInfo: &armnewrelicobservability.OrganizationInfo{
+	// 					OrganizationID: to.Ptr("k"),
+	// 				},
+	// 				SingleSignOnProperties: &armnewrelicobservability.NewRelicSingleSignOnProperties{
+	// 					EnterpriseAppID: to.Ptr("kwiwfz"),
+	// 					ProvisioningState: to.Ptr(armnewrelicobservability.ProvisioningStateAccepted),
+	// 					SingleSignOnState: to.Ptr(armnewrelicobservability.SingleSignOnStatesInitial),
+	// 					SingleSignOnURL: to.Ptr("kvseueuljsxmfwpqctz"),
+	// 				},
+	// 				UserID: to.Ptr("vcscxlncofcuduadesd"),
+	// 			},
+	// 			OrgCreationSource: to.Ptr(armnewrelicobservability.OrgCreationSourceLIFTR),
+	// 			PlanData: &armnewrelicobservability.PlanData{
+	// 				BillingCycle: to.Ptr("YEARLY"),
+	// 				EffectiveDate: to.Ptr(time.Date(2022, time.December, 5, 14, 11, 37, 786000000, time.UTC)),
+	// 				PlanDetails: to.Ptr("tbbiaga"),
+	// 				UsageType: to.Ptr(armnewrelicobservability.UsageTypePAYG),
+	// 			},
+	// 			ProvisioningState: to.Ptr(armnewrelicobservability.ProvisioningStateAccepted),
+	// 			SaaSAzureSubscriptionStatus: to.Ptr("Subscribed"),
+	// 			SubscriptionState: to.Ptr("Suspended"),
+	// 			UserInfo: &armnewrelicobservability.UserInfo{
+	// 				Country: to.Ptr("hslqnwdanrconqyekwbnttaetv"),
+	// 				EmailAddress: to.Ptr("%6%@4-g.N1.3F-kI1.Ue-.lJso"),
+	// 				FirstName: to.Ptr("vdftzcggirefejajwahhwhyibutramdaotvnuf"),
+	// 				LastName: to.Ptr("bcsztgqovdlmzfkjdrngidwzqsevagexzzilnlc"),
+	// 				PhoneNumber: to.Ptr("krf"),
+	// 			},
+	// 		},
+	// 		SystemData: &armnewrelicobservability.SystemData{
+	// 			CreatedAt: to.Ptr(time.Date(2022, time.December, 5, 14, 11, 37, 787000000, time.UTC)),
+	// 			CreatedBy: to.Ptr("pcdjzdldbwsdlfi"),
+	// 			CreatedByType: to.Ptr(armnewrelicobservability.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2022, time.December, 5, 14, 11, 37, 787000000, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("xbsjrxmwwlmpnpvcica"),
+	// 			LastModifiedByType: to.Ptr(armnewrelicobservability.CreatedByTypeUser),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"key6976": to.Ptr("oaxfhf"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-06-01/Monitors_Update_MaximumSet_Gen.json
+func ExampleMonitorsClient_BeginUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnewrelicobservability.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewMonitorsClient().BeginUpdate(ctx, "rgNewRelic", "cdlymktqw", armnewrelicobservability.NewRelicMonitorResourceUpdate{
+		Identity: &armnewrelicobservability.ManagedServiceIdentity{
+			Type: to.Ptr(armnewrelicobservability.ManagedServiceIdentityTypeNone),
+			UserAssignedIdentities: map[string]*armnewrelicobservability.UserAssignedIdentity{
+				"key8903": {},
+			},
+		},
+		Properties: &armnewrelicobservability.NewRelicMonitorResourceUpdateProperties{
+			AccountCreationSource: to.Ptr(armnewrelicobservability.AccountCreationSourceLIFTR),
+			NewRelicAccountProperties: &armnewrelicobservability.AccountPropertiesForNewRelic{
+				AccountInfo: &armnewrelicobservability.AccountInfo{
+					AccountID:    to.Ptr("xhqmg"),
+					IngestionKey: to.Ptr("wltnimmhqt"),
+					Region:       to.Ptr("ljcf"),
+				},
+				OrganizationInfo: &armnewrelicobservability.OrganizationInfo{
+					OrganizationID: to.Ptr("k"),
+				},
+				SingleSignOnProperties: &armnewrelicobservability.NewRelicSingleSignOnProperties{
+					EnterpriseAppID:   to.Ptr("kwiwfz"),
+					ProvisioningState: to.Ptr(armnewrelicobservability.ProvisioningStateAccepted),
+					SingleSignOnState: to.Ptr(armnewrelicobservability.SingleSignOnStatesInitial),
+					SingleSignOnURL:   to.Ptr("kvseueuljsxmfwpqctz"),
+				},
+				UserID: to.Ptr("vcscxlncofcuduadesd"),
+			},
+			OrgCreationSource: to.Ptr(armnewrelicobservability.OrgCreationSourceLIFTR),
+			PlanData: &armnewrelicobservability.PlanData{
+				BillingCycle:  to.Ptr("Yearly"),
+				EffectiveDate: to.Ptr(time.Date(2022, time.December, 5, 14, 11, 37, 786000000, time.UTC)),
+				PlanDetails:   to.Ptr("tbbiaga"),
+				UsageType:     to.Ptr(armnewrelicobservability.UsageTypePAYG),
+			},
+			UserInfo: &armnewrelicobservability.UserInfo{
+				Country:      to.Ptr("hslqnwdanrconqyekwbnttaetv"),
+				EmailAddress: to.Ptr("%6%@4-g.N1.3F-kI1.Ue-.lJso"),
+				FirstName:    to.Ptr("vdftzcggirefejajwahhwhyibutramdaotvnuf"),
+				LastName:     to.Ptr("bcsztgqovdlmzfkjdrngidwzqsevagexzzilnlc"),
+				PhoneNumber:  to.Ptr("krf"),
+			},
+		},
+		Tags: map[string]*string{
+			"key164": to.Ptr("jqakdrrmmyzytqu"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armnewrelicobservability.MonitorsClientUpdateResponse{
+	// 	NewRelicMonitorResource: armnewrelicobservability.NewRelicMonitorResource{
+	// 		Name: to.Ptr("fteaqmtwspcfgyopqzrepiqu"),
+	// 		Type: to.Ptr("hdj"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/NewRelic.Observability/monitors/myMonitor"),
+	// 		Identity: &armnewrelicobservability.ManagedServiceIdentity{
+	// 			Type: to.Ptr(armnewrelicobservability.ManagedServiceIdentityTypeNone),
+	// 			PrincipalID: to.Ptr("cac47a92-2856-11ed-a261-0242ac120002"),
+	// 			TenantID: to.Ptr("cac47a92-2856-11ed-a261-0242ac120002"),
+	// 			UserAssignedIdentities: map[string]*armnewrelicobservability.UserAssignedIdentity{
+	// 				"key8903": &armnewrelicobservability.UserAssignedIdentity{
+	// 					ClientID: to.Ptr("cac47a92-2856-11ed-a261-0242ac120002"),
+	// 					PrincipalID: to.Ptr("cac47a92-2856-11ed-a261-0242ac120002"),
+	// 				},
+	// 			},
+	// 		},
+	// 		Location: to.Ptr("k"),
+	// 		Properties: &armnewrelicobservability.MonitorProperties{
+	// 			AccountCreationSource: to.Ptr(armnewrelicobservability.AccountCreationSourceLIFTR),
+	// 			LiftrResourceCategory: to.Ptr(armnewrelicobservability.LiftrResourceCategoriesUnknown),
+	// 			LiftrResourcePreference: to.Ptr[int32](12),
+	// 			MarketplaceSubscriptionID: to.Ptr("jizcsbgrdjhrfqqvvruhgftqhra"),
+	// 			MarketplaceSubscriptionStatus: to.Ptr(armnewrelicobservability.MarketplaceSubscriptionStatusActive),
+	// 			MonitoringStatus: to.Ptr(armnewrelicobservability.MonitoringStatusEnabled),
+	// 			NewRelicAccountProperties: &armnewrelicobservability.AccountPropertiesForNewRelic{
+	// 				AccountInfo: &armnewrelicobservability.AccountInfo{
+	// 					AccountID: to.Ptr("xhqmg"),
+	// 					Region: to.Ptr("ljcf"),
+	// 				},
+	// 				OrganizationInfo: &armnewrelicobservability.OrganizationInfo{
+	// 					OrganizationID: to.Ptr("k"),
+	// 				},
+	// 				SingleSignOnProperties: &armnewrelicobservability.NewRelicSingleSignOnProperties{
+	// 					EnterpriseAppID: to.Ptr("kwiwfz"),
+	// 					ProvisioningState: to.Ptr(armnewrelicobservability.ProvisioningStateAccepted),
+	// 					SingleSignOnState: to.Ptr(armnewrelicobservability.SingleSignOnStatesInitial),
+	// 					SingleSignOnURL: to.Ptr("kvseueuljsxmfwpqctz"),
+	// 				},
+	// 				UserID: to.Ptr("vcscxlncofcuduadesd"),
+	// 			},
+	// 			OrgCreationSource: to.Ptr(armnewrelicobservability.OrgCreationSourceLIFTR),
+	// 			PlanData: &armnewrelicobservability.PlanData{
+	// 				BillingCycle: to.Ptr("Yearly"),
+	// 				EffectiveDate: to.Ptr(time.Date(2022, time.December, 5, 14, 11, 37, 786000000, time.UTC)),
+	// 				PlanDetails: to.Ptr("tbbiaga"),
+	// 				UsageType: to.Ptr(armnewrelicobservability.UsageTypePAYG),
+	// 			},
+	// 			ProvisioningState: to.Ptr(armnewrelicobservability.ProvisioningStateAccepted),
+	// 			UserInfo: &armnewrelicobservability.UserInfo{
+	// 				Country: to.Ptr("hslqnwdanrconqyekwbnttaetv"),
+	// 				EmailAddress: to.Ptr("%6%@4-g.N1.3F-kI1.Ue-.lJso"),
+	// 				FirstName: to.Ptr("vdftzcggirefejajwahhwhyibutramdaotvnuf"),
+	// 				LastName: to.Ptr("bcsztgqovdlmzfkjdrngidwzqsevagexzzilnlc"),
+	// 				PhoneNumber: to.Ptr("krf"),
+	// 			},
+	// 		},
+	// 		SystemData: &armnewrelicobservability.SystemData{
+	// 			CreatedAt: to.Ptr(time.Date(2022, time.December, 5, 14, 11, 37, 787000000, time.UTC)),
+	// 			CreatedBy: to.Ptr("pcdjzdldbwsdlfi"),
+	// 			CreatedByType: to.Ptr(armnewrelicobservability.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2022, time.December, 5, 14, 11, 37, 787000000, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("xbsjrxmwwlmpnpvcica"),
+	// 			LastModifiedByType: to.Ptr(armnewrelicobservability.CreatedByTypeUser),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"key6976": to.Ptr("oaxfhf"),
+	// 		},
+	// 	},
+	// }
+}
+
 // Generated from example definition: 2026-06-01/Monitors_Get_MaximumSet_Gen.json
 func ExampleMonitorsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -478,103 +807,6 @@ func ExampleMonitorsClient_LatestLinkedSaaS_monitorsLatestLinkedSaaSMinimumSetGe
 	// 	LatestLinkedSaaSResponse: armnewrelicobservability.LatestLinkedSaaSResponse{
 	// 		IsHiddenSaaS: to.Ptr(false),
 	// 		SaaSResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgNewRelic/providers/Microsoft.SaaS/resources/abcd"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-06-01/Monitors_LinkSaaS.json
-func ExampleMonitorsClient_BeginLinkSaaS() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnewrelicobservability.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewMonitorsClient().BeginLinkSaaS(ctx, "myResourceGroup", "myMonitor", armnewrelicobservability.SaaSData{
-		SaaSResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgNewRelic/providers/Microsoft.SaaS/resources/abcd"),
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armnewrelicobservability.MonitorsClientLinkSaaSResponse{
-	// 	NewRelicMonitorResource: armnewrelicobservability.NewRelicMonitorResource{
-	// 		Name: to.Ptr("fteaqmtwspcfgyopqzrepiqu"),
-	// 		Type: to.Ptr("hdj"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/NewRelic.Observability/monitors/myMonitor"),
-	// 		Identity: &armnewrelicobservability.ManagedServiceIdentity{
-	// 			Type: to.Ptr(armnewrelicobservability.ManagedServiceIdentityTypeNone),
-	// 			PrincipalID: to.Ptr("cac47a92-2856-11ed-a261-0242ac120002"),
-	// 			TenantID: to.Ptr("cac47a92-2856-11ed-a261-0242ac120002"),
-	// 			UserAssignedIdentities: map[string]*armnewrelicobservability.UserAssignedIdentity{
-	// 				"key8903": &armnewrelicobservability.UserAssignedIdentity{
-	// 					ClientID: to.Ptr("cac47a92-2856-11ed-a261-0242ac120002"),
-	// 					PrincipalID: to.Ptr("cac47a92-2856-11ed-a261-0242ac120002"),
-	// 				},
-	// 			},
-	// 		},
-	// 		Location: to.Ptr("k"),
-	// 		Properties: &armnewrelicobservability.MonitorProperties{
-	// 			AccountCreationSource: to.Ptr(armnewrelicobservability.AccountCreationSourceLIFTR),
-	// 			LiftrResourceCategory: to.Ptr(armnewrelicobservability.LiftrResourceCategoriesUnknown),
-	// 			LiftrResourcePreference: to.Ptr[int32](12),
-	// 			MarketplaceSubscriptionID: to.Ptr("jizcsbgrdjhrfqqvvruhgftqhra"),
-	// 			MarketplaceSubscriptionStatus: to.Ptr(armnewrelicobservability.MarketplaceSubscriptionStatusActive),
-	// 			MonitoringStatus: to.Ptr(armnewrelicobservability.MonitoringStatusEnabled),
-	// 			NewRelicAccountProperties: &armnewrelicobservability.AccountPropertiesForNewRelic{
-	// 				AccountInfo: &armnewrelicobservability.AccountInfo{
-	// 					AccountID: to.Ptr("xhqmg"),
-	// 					Region: to.Ptr("ljcf"),
-	// 				},
-	// 				OrganizationInfo: &armnewrelicobservability.OrganizationInfo{
-	// 					OrganizationID: to.Ptr("k"),
-	// 				},
-	// 				SingleSignOnProperties: &armnewrelicobservability.NewRelicSingleSignOnProperties{
-	// 					EnterpriseAppID: to.Ptr("kwiwfz"),
-	// 					ProvisioningState: to.Ptr(armnewrelicobservability.ProvisioningStateAccepted),
-	// 					SingleSignOnState: to.Ptr(armnewrelicobservability.SingleSignOnStatesInitial),
-	// 					SingleSignOnURL: to.Ptr("kvseueuljsxmfwpqctz"),
-	// 				},
-	// 				UserID: to.Ptr("vcscxlncofcuduadesd"),
-	// 			},
-	// 			OrgCreationSource: to.Ptr(armnewrelicobservability.OrgCreationSourceLIFTR),
-	// 			PlanData: &armnewrelicobservability.PlanData{
-	// 				BillingCycle: to.Ptr("YEARLY"),
-	// 				EffectiveDate: to.Ptr(time.Date(2022, time.December, 5, 14, 11, 37, 786000000, time.UTC)),
-	// 				PlanDetails: to.Ptr("tbbiaga"),
-	// 				UsageType: to.Ptr(armnewrelicobservability.UsageTypePAYG),
-	// 			},
-	// 			ProvisioningState: to.Ptr(armnewrelicobservability.ProvisioningStateAccepted),
-	// 			SaaSAzureSubscriptionStatus: to.Ptr("Subscribed"),
-	// 			SubscriptionState: to.Ptr("Suspended"),
-	// 			UserInfo: &armnewrelicobservability.UserInfo{
-	// 				Country: to.Ptr("hslqnwdanrconqyekwbnttaetv"),
-	// 				EmailAddress: to.Ptr("%6%@4-g.N1.3F-kI1.Ue-.lJso"),
-	// 				FirstName: to.Ptr("vdftzcggirefejajwahhwhyibutramdaotvnuf"),
-	// 				LastName: to.Ptr("bcsztgqovdlmzfkjdrngidwzqsevagexzzilnlc"),
-	// 				PhoneNumber: to.Ptr("krf"),
-	// 			},
-	// 		},
-	// 		SystemData: &armnewrelicobservability.SystemData{
-	// 			CreatedAt: to.Ptr(time.Date(2022, time.December, 5, 14, 11, 37, 787000000, time.UTC)),
-	// 			CreatedBy: to.Ptr("pcdjzdldbwsdlfi"),
-	// 			CreatedByType: to.Ptr(armnewrelicobservability.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2022, time.December, 5, 14, 11, 37, 787000000, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("xbsjrxmwwlmpnpvcica"),
-	// 			LastModifiedByType: to.Ptr(armnewrelicobservability.CreatedByTypeUser),
-	// 		},
-	// 		Tags: map[string]*string{
-	// 			"key6976": to.Ptr("oaxfhf"),
-	// 		},
 	// 	},
 	// }
 }
@@ -1054,101 +1286,6 @@ func ExampleMonitorsClient_RefreshIngestionKey() {
 	}
 }
 
-// Generated from example definition: 2026-06-01/Monitors_Resubscribe.json
-func ExampleMonitorsClient_BeginResubscribe() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnewrelicobservability.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewMonitorsClient().BeginResubscribe(ctx, "myResourceGroup", "myMonitor", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armnewrelicobservability.MonitorsClientResubscribeResponse{
-	// 	NewRelicMonitorResource: armnewrelicobservability.NewRelicMonitorResource{
-	// 		Name: to.Ptr("fteaqmtwspcfgyopqzrepiqu"),
-	// 		Type: to.Ptr("hdj"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/NewRelic.Observability/monitors/myMonitor"),
-	// 		Identity: &armnewrelicobservability.ManagedServiceIdentity{
-	// 			Type: to.Ptr(armnewrelicobservability.ManagedServiceIdentityTypeNone),
-	// 			PrincipalID: to.Ptr("cac47a92-2856-11ed-a261-0242ac120002"),
-	// 			TenantID: to.Ptr("cac47a92-2856-11ed-a261-0242ac120002"),
-	// 			UserAssignedIdentities: map[string]*armnewrelicobservability.UserAssignedIdentity{
-	// 				"key8903": &armnewrelicobservability.UserAssignedIdentity{
-	// 					ClientID: to.Ptr("cac47a92-2856-11ed-a261-0242ac120002"),
-	// 					PrincipalID: to.Ptr("cac47a92-2856-11ed-a261-0242ac120002"),
-	// 				},
-	// 			},
-	// 		},
-	// 		Location: to.Ptr("k"),
-	// 		Properties: &armnewrelicobservability.MonitorProperties{
-	// 			AccountCreationSource: to.Ptr(armnewrelicobservability.AccountCreationSourceLIFTR),
-	// 			LiftrResourceCategory: to.Ptr(armnewrelicobservability.LiftrResourceCategoriesUnknown),
-	// 			LiftrResourcePreference: to.Ptr[int32](12),
-	// 			MarketplaceSubscriptionID: to.Ptr("jizcsbgrdjhrfqqvvruhgftqhra"),
-	// 			MarketplaceSubscriptionStatus: to.Ptr(armnewrelicobservability.MarketplaceSubscriptionStatusActive),
-	// 			MonitoringStatus: to.Ptr(armnewrelicobservability.MonitoringStatusEnabled),
-	// 			NewRelicAccountProperties: &armnewrelicobservability.AccountPropertiesForNewRelic{
-	// 				AccountInfo: &armnewrelicobservability.AccountInfo{
-	// 					AccountID: to.Ptr("xhqmg"),
-	// 					Region: to.Ptr("ljcf"),
-	// 				},
-	// 				OrganizationInfo: &armnewrelicobservability.OrganizationInfo{
-	// 					OrganizationID: to.Ptr("k"),
-	// 				},
-	// 				SingleSignOnProperties: &armnewrelicobservability.NewRelicSingleSignOnProperties{
-	// 					EnterpriseAppID: to.Ptr("kwiwfz"),
-	// 					ProvisioningState: to.Ptr(armnewrelicobservability.ProvisioningStateAccepted),
-	// 					SingleSignOnState: to.Ptr(armnewrelicobservability.SingleSignOnStatesInitial),
-	// 					SingleSignOnURL: to.Ptr("kvseueuljsxmfwpqctz"),
-	// 				},
-	// 				UserID: to.Ptr("vcscxlncofcuduadesd"),
-	// 			},
-	// 			OrgCreationSource: to.Ptr(armnewrelicobservability.OrgCreationSourceLIFTR),
-	// 			PlanData: &armnewrelicobservability.PlanData{
-	// 				BillingCycle: to.Ptr("YEARLY"),
-	// 				EffectiveDate: to.Ptr(time.Date(2022, time.December, 5, 14, 11, 37, 786000000, time.UTC)),
-	// 				PlanDetails: to.Ptr("tbbiaga"),
-	// 				UsageType: to.Ptr(armnewrelicobservability.UsageTypePAYG),
-	// 			},
-	// 			ProvisioningState: to.Ptr(armnewrelicobservability.ProvisioningStateAccepted),
-	// 			SaaSAzureSubscriptionStatus: to.Ptr("Subscribed"),
-	// 			SubscriptionState: to.Ptr("Suspended"),
-	// 			UserInfo: &armnewrelicobservability.UserInfo{
-	// 				Country: to.Ptr("hslqnwdanrconqyekwbnttaetv"),
-	// 				EmailAddress: to.Ptr("%6%@4-g.N1.3F-kI1.Ue-.lJso"),
-	// 				FirstName: to.Ptr("vdftzcggirefejajwahhwhyibutramdaotvnuf"),
-	// 				LastName: to.Ptr("bcsztgqovdlmzfkjdrngidwzqsevagexzzilnlc"),
-	// 				PhoneNumber: to.Ptr("krf"),
-	// 			},
-	// 		},
-	// 		SystemData: &armnewrelicobservability.SystemData{
-	// 			CreatedAt: to.Ptr(time.Date(2022, time.December, 5, 14, 11, 37, 787000000, time.UTC)),
-	// 			CreatedBy: to.Ptr("pcdjzdldbwsdlfi"),
-	// 			CreatedByType: to.Ptr(armnewrelicobservability.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2022, time.December, 5, 14, 11, 37, 787000000, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("xbsjrxmwwlmpnpvcica"),
-	// 			LastModifiedByType: to.Ptr(armnewrelicobservability.CreatedByTypeUser),
-	// 		},
-	// 		Tags: map[string]*string{
-	// 			"key6976": to.Ptr("oaxfhf"),
-	// 		},
-	// 	},
-	// }
-}
-
 // Generated from example definition: 2026-06-01/Monitors_SwitchBilling_MaximumSet_Gen.json
 func ExampleMonitorsClient_SwitchBilling_monitorsSwitchBillingMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -1269,143 +1406,6 @@ func ExampleMonitorsClient_SwitchBilling_monitorsSwitchBillingMinimumSetGen() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnewrelicobservability.MonitorsClientSwitchBillingResponse{
-	// 	NewRelicMonitorResource: armnewrelicobservability.NewRelicMonitorResource{
-	// 		Name: to.Ptr("fteaqmtwspcfgyopqzrepiqu"),
-	// 		Type: to.Ptr("hdj"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/NewRelic.Observability/monitors/myMonitor"),
-	// 		Identity: &armnewrelicobservability.ManagedServiceIdentity{
-	// 			Type: to.Ptr(armnewrelicobservability.ManagedServiceIdentityTypeNone),
-	// 			PrincipalID: to.Ptr("cac47a92-2856-11ed-a261-0242ac120002"),
-	// 			TenantID: to.Ptr("cac47a92-2856-11ed-a261-0242ac120002"),
-	// 			UserAssignedIdentities: map[string]*armnewrelicobservability.UserAssignedIdentity{
-	// 				"key8903": &armnewrelicobservability.UserAssignedIdentity{
-	// 					ClientID: to.Ptr("cac47a92-2856-11ed-a261-0242ac120002"),
-	// 					PrincipalID: to.Ptr("cac47a92-2856-11ed-a261-0242ac120002"),
-	// 				},
-	// 			},
-	// 		},
-	// 		Location: to.Ptr("k"),
-	// 		Properties: &armnewrelicobservability.MonitorProperties{
-	// 			AccountCreationSource: to.Ptr(armnewrelicobservability.AccountCreationSourceLIFTR),
-	// 			LiftrResourceCategory: to.Ptr(armnewrelicobservability.LiftrResourceCategoriesUnknown),
-	// 			LiftrResourcePreference: to.Ptr[int32](12),
-	// 			MarketplaceSubscriptionID: to.Ptr("jizcsbgrdjhrfqqvvruhgftqhra"),
-	// 			MarketplaceSubscriptionStatus: to.Ptr(armnewrelicobservability.MarketplaceSubscriptionStatusActive),
-	// 			MonitoringStatus: to.Ptr(armnewrelicobservability.MonitoringStatusEnabled),
-	// 			NewRelicAccountProperties: &armnewrelicobservability.AccountPropertiesForNewRelic{
-	// 				AccountInfo: &armnewrelicobservability.AccountInfo{
-	// 					AccountID: to.Ptr("xhqmg"),
-	// 					Region: to.Ptr("ljcf"),
-	// 				},
-	// 				OrganizationInfo: &armnewrelicobservability.OrganizationInfo{
-	// 					OrganizationID: to.Ptr("k"),
-	// 				},
-	// 				SingleSignOnProperties: &armnewrelicobservability.NewRelicSingleSignOnProperties{
-	// 					EnterpriseAppID: to.Ptr("kwiwfz"),
-	// 					ProvisioningState: to.Ptr(armnewrelicobservability.ProvisioningStateAccepted),
-	// 					SingleSignOnState: to.Ptr(armnewrelicobservability.SingleSignOnStatesInitial),
-	// 					SingleSignOnURL: to.Ptr("kvseueuljsxmfwpqctz"),
-	// 				},
-	// 				UserID: to.Ptr("vcscxlncofcuduadesd"),
-	// 			},
-	// 			OrgCreationSource: to.Ptr(armnewrelicobservability.OrgCreationSourceLIFTR),
-	// 			PlanData: &armnewrelicobservability.PlanData{
-	// 				BillingCycle: to.Ptr("Yearly"),
-	// 				EffectiveDate: to.Ptr(time.Date(2022, time.December, 5, 14, 11, 37, 786000000, time.UTC)),
-	// 				PlanDetails: to.Ptr("tbbiaga"),
-	// 				UsageType: to.Ptr(armnewrelicobservability.UsageTypePAYG),
-	// 			},
-	// 			ProvisioningState: to.Ptr(armnewrelicobservability.ProvisioningStateAccepted),
-	// 			UserInfo: &armnewrelicobservability.UserInfo{
-	// 				Country: to.Ptr("hslqnwdanrconqyekwbnttaetv"),
-	// 				EmailAddress: to.Ptr("%6%@4-g.N1.3F-kI1.Ue-.lJso"),
-	// 				FirstName: to.Ptr("vdftzcggirefejajwahhwhyibutramdaotvnuf"),
-	// 				LastName: to.Ptr("bcsztgqovdlmzfkjdrngidwzqsevagexzzilnlc"),
-	// 				PhoneNumber: to.Ptr("krf"),
-	// 			},
-	// 		},
-	// 		SystemData: &armnewrelicobservability.SystemData{
-	// 			CreatedAt: to.Ptr(time.Date(2022, time.December, 5, 14, 11, 37, 787000000, time.UTC)),
-	// 			CreatedBy: to.Ptr("pcdjzdldbwsdlfi"),
-	// 			CreatedByType: to.Ptr(armnewrelicobservability.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2022, time.December, 5, 14, 11, 37, 787000000, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("xbsjrxmwwlmpnpvcica"),
-	// 			LastModifiedByType: to.Ptr(armnewrelicobservability.CreatedByTypeUser),
-	// 		},
-	// 		Tags: map[string]*string{
-	// 			"key6976": to.Ptr("oaxfhf"),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-06-01/Monitors_Update_MaximumSet_Gen.json
-func ExampleMonitorsClient_BeginUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnewrelicobservability.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewMonitorsClient().BeginUpdate(ctx, "rgNewRelic", "cdlymktqw", armnewrelicobservability.NewRelicMonitorResourceUpdate{
-		Identity: &armnewrelicobservability.ManagedServiceIdentity{
-			Type: to.Ptr(armnewrelicobservability.ManagedServiceIdentityTypeNone),
-			UserAssignedIdentities: map[string]*armnewrelicobservability.UserAssignedIdentity{
-				"key8903": {},
-			},
-		},
-		Properties: &armnewrelicobservability.NewRelicMonitorResourceUpdateProperties{
-			AccountCreationSource: to.Ptr(armnewrelicobservability.AccountCreationSourceLIFTR),
-			NewRelicAccountProperties: &armnewrelicobservability.AccountPropertiesForNewRelic{
-				AccountInfo: &armnewrelicobservability.AccountInfo{
-					AccountID:    to.Ptr("xhqmg"),
-					IngestionKey: to.Ptr("wltnimmhqt"),
-					Region:       to.Ptr("ljcf"),
-				},
-				OrganizationInfo: &armnewrelicobservability.OrganizationInfo{
-					OrganizationID: to.Ptr("k"),
-				},
-				SingleSignOnProperties: &armnewrelicobservability.NewRelicSingleSignOnProperties{
-					EnterpriseAppID:   to.Ptr("kwiwfz"),
-					ProvisioningState: to.Ptr(armnewrelicobservability.ProvisioningStateAccepted),
-					SingleSignOnState: to.Ptr(armnewrelicobservability.SingleSignOnStatesInitial),
-					SingleSignOnURL:   to.Ptr("kvseueuljsxmfwpqctz"),
-				},
-				UserID: to.Ptr("vcscxlncofcuduadesd"),
-			},
-			OrgCreationSource: to.Ptr(armnewrelicobservability.OrgCreationSourceLIFTR),
-			PlanData: &armnewrelicobservability.PlanData{
-				BillingCycle:  to.Ptr("Yearly"),
-				EffectiveDate: to.Ptr(time.Date(2022, time.December, 5, 14, 11, 37, 786000000, time.UTC)),
-				PlanDetails:   to.Ptr("tbbiaga"),
-				UsageType:     to.Ptr(armnewrelicobservability.UsageTypePAYG),
-			},
-			UserInfo: &armnewrelicobservability.UserInfo{
-				Country:      to.Ptr("hslqnwdanrconqyekwbnttaetv"),
-				EmailAddress: to.Ptr("%6%@4-g.N1.3F-kI1.Ue-.lJso"),
-				FirstName:    to.Ptr("vdftzcggirefejajwahhwhyibutramdaotvnuf"),
-				LastName:     to.Ptr("bcsztgqovdlmzfkjdrngidwzqsevagexzzilnlc"),
-				PhoneNumber:  to.Ptr("krf"),
-			},
-		},
-		Tags: map[string]*string{
-			"key164": to.Ptr("jqakdrrmmyzytqu"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armnewrelicobservability.MonitorsClientUpdateResponse{
 	// 	NewRelicMonitorResource: armnewrelicobservability.NewRelicMonitorResource{
 	// 		Name: to.Ptr("fteaqmtwspcfgyopqzrepiqu"),
 	// 		Type: to.Ptr("hdj"),

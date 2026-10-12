@@ -68,7 +68,7 @@ func (client *OrganizationsClient) BeginCreateOrUpdate(ctx context.Context, reso
 	}
 }
 
-// CreateOrUpdate - Create a OrganizationResource
+// createOrUpdate - Create a OrganizationResource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *OrganizationsClient) createOrUpdate(ctx context.Context, resourceGroupName string, organizationname string, resource OrganizationResource, options *OrganizationsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -90,7 +90,7 @@ func (client *OrganizationsClient) createOrUpdate(ctx context.Context, resourceG
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *OrganizationsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, organizationname string, resource OrganizationResource, _ *OrganizationsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/LambdaTest.HyperExecute/organizations/{organizationname}"
 	if client.subscriptionID == "" {
@@ -143,7 +143,7 @@ func (client *OrganizationsClient) BeginDelete(ctx context.Context, resourceGrou
 	}
 }
 
-// Delete - Delete a OrganizationResource
+// deleteOperation - Delete a OrganizationResource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *OrganizationsClient) deleteOperation(ctx context.Context, resourceGroupName string, organizationname string, options *OrganizationsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -165,7 +165,7 @@ func (client *OrganizationsClient) deleteOperation(ctx context.Context, resource
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *OrganizationsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, organizationname string, _ *OrganizationsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/LambdaTest.HyperExecute/organizations/{organizationname}"
 	if client.subscriptionID == "" {

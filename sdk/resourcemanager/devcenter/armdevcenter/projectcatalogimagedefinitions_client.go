@@ -70,7 +70,7 @@ func (client *ProjectCatalogImageDefinitionsClient) BeginBuildImage(ctx context.
 	}
 }
 
-// BuildImage - Builds an image for the specified Image Definition.
+// buildImage - Builds an image for the specified Image Definition.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ProjectCatalogImageDefinitionsClient) buildImage(ctx context.Context, resourceGroupName string, projectName string, catalogName string, imageDefinitionName string, options *ProjectCatalogImageDefinitionsClientBeginBuildImageOptions) (*http.Response, error) {
 	var err error
@@ -92,7 +92,7 @@ func (client *ProjectCatalogImageDefinitionsClient) buildImage(ctx context.Conte
 	return httpResp, nil
 }
 
-// buildImageCreateRequest creates the BuildImage request.
+// buildImageCreateRequest creates the buildImage request.
 func (client *ProjectCatalogImageDefinitionsClient) buildImageCreateRequest(ctx context.Context, resourceGroupName string, projectName string, catalogName string, imageDefinitionName string, _ *ProjectCatalogImageDefinitionsClientBeginBuildImageOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/projects/{projectName}/catalogs/{catalogName}/imageDefinitions/{imageDefinitionName}/buildImage"
 	if client.subscriptionID == "" {

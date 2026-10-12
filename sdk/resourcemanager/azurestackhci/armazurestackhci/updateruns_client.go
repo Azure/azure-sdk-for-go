@@ -68,7 +68,7 @@ func (client *UpdateRunsClient) BeginDelete(ctx context.Context, resourceGroupNa
 	}
 }
 
-// Delete - Delete specified Update Run
+// deleteOperation - Delete specified Update Run
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *UpdateRunsClient) deleteOperation(ctx context.Context, resourceGroupName string, clusterName string, updateName string, updateRunName string, options *UpdateRunsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -90,7 +90,7 @@ func (client *UpdateRunsClient) deleteOperation(ctx context.Context, resourceGro
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *UpdateRunsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, updateName string, updateRunName string, _ *UpdateRunsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/clusters/{clusterName}/updates/{updateName}/updateRuns/{updateRunName}"
 	if client.subscriptionID == "" {

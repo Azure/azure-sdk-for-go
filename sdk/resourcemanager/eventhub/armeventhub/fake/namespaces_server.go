@@ -21,13 +21,21 @@ import (
 
 // NamespacesServer is a fake server for instances of the armeventhub.NamespacesClient type.
 type NamespacesServer struct {
-	// CheckNameAvailability is the fake for method NamespacesClient.CheckNameAvailability
-	// HTTP status codes to indicate success: http.StatusOK
-	CheckNameAvailability func(ctx context.Context, parameters armeventhub.CheckNameAvailabilityParameter, options *armeventhub.NamespacesClientCheckNameAvailabilityOptions) (resp azfake.Responder[armeventhub.NamespacesClientCheckNameAvailabilityResponse], errResp azfake.ErrorResponder)
-
 	// BeginCreateOrUpdate is the fake for method NamespacesClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated, http.StatusAccepted
 	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, namespaceName string, parameters armeventhub.EHNamespace, options *armeventhub.NamespacesClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armeventhub.NamespacesClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
+
+	// BeginDelete is the fake for method NamespacesClient.BeginDelete
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	BeginDelete func(ctx context.Context, resourceGroupName string, namespaceName string, options *armeventhub.NamespacesClientBeginDeleteOptions) (resp azfake.PollerResponder[armeventhub.NamespacesClientDeleteResponse], errResp azfake.ErrorResponder)
+
+	// BeginFailover is the fake for method NamespacesClient.BeginFailover
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginFailover func(ctx context.Context, resourceGroupName string, namespaceName string, parameters armeventhub.FailOver, options *armeventhub.NamespacesClientBeginFailoverOptions) (resp azfake.PollerResponder[armeventhub.NamespacesClientFailoverResponse], errResp azfake.ErrorResponder)
+
+	// CheckNameAvailability is the fake for method NamespacesClient.CheckNameAvailability
+	// HTTP status codes to indicate success: http.StatusOK
+	CheckNameAvailability func(ctx context.Context, parameters armeventhub.CheckNameAvailabilityParameter, options *armeventhub.NamespacesClientCheckNameAvailabilityOptions) (resp azfake.Responder[armeventhub.NamespacesClientCheckNameAvailabilityResponse], errResp azfake.ErrorResponder)
 
 	// CreateOrUpdateAuthorizationRule is the fake for method NamespacesClient.CreateOrUpdateAuthorizationRule
 	// HTTP status codes to indicate success: http.StatusOK
@@ -37,17 +45,9 @@ type NamespacesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	CreateOrUpdateNetworkRuleSet func(ctx context.Context, resourceGroupName string, namespaceName string, parameters armeventhub.NetworkRuleSet, options *armeventhub.NamespacesClientCreateOrUpdateNetworkRuleSetOptions) (resp azfake.Responder[armeventhub.NamespacesClientCreateOrUpdateNetworkRuleSetResponse], errResp azfake.ErrorResponder)
 
-	// BeginDelete is the fake for method NamespacesClient.BeginDelete
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginDelete func(ctx context.Context, resourceGroupName string, namespaceName string, options *armeventhub.NamespacesClientBeginDeleteOptions) (resp azfake.PollerResponder[armeventhub.NamespacesClientDeleteResponse], errResp azfake.ErrorResponder)
-
 	// DeleteAuthorizationRule is the fake for method NamespacesClient.DeleteAuthorizationRule
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusNoContent
 	DeleteAuthorizationRule func(ctx context.Context, resourceGroupName string, namespaceName string, authorizationRuleName string, options *armeventhub.NamespacesClientDeleteAuthorizationRuleOptions) (resp azfake.Responder[armeventhub.NamespacesClientDeleteAuthorizationRuleResponse], errResp azfake.ErrorResponder)
-
-	// BeginFailover is the fake for method NamespacesClient.BeginFailover
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginFailover func(ctx context.Context, resourceGroupName string, namespaceName string, parameters armeventhub.FailOver, options *armeventhub.NamespacesClientBeginFailoverOptions) (resp azfake.PollerResponder[armeventhub.NamespacesClientFailoverResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method NamespacesClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
@@ -61,9 +61,13 @@ type NamespacesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	GetNetworkRuleSet func(ctx context.Context, resourceGroupName string, namespaceName string, options *armeventhub.NamespacesClientGetNetworkRuleSetOptions) (resp azfake.Responder[armeventhub.NamespacesClientGetNetworkRuleSetResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method NamespacesClient.NewListPager
+	// ListKeys is the fake for method NamespacesClient.ListKeys
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(options *armeventhub.NamespacesClientListOptions) (resp azfake.PagerResponder[armeventhub.NamespacesClientListResponse])
+	ListKeys func(ctx context.Context, resourceGroupName string, namespaceName string, authorizationRuleName string, options *armeventhub.NamespacesClientListKeysOptions) (resp azfake.Responder[armeventhub.NamespacesClientListKeysResponse], errResp azfake.ErrorResponder)
+
+	// ListNetworkRuleSet is the fake for method NamespacesClient.ListNetworkRuleSet
+	// HTTP status codes to indicate success: http.StatusOK
+	ListNetworkRuleSet func(ctx context.Context, resourceGroupName string, namespaceName string, options *armeventhub.NamespacesClientListNetworkRuleSetOptions) (resp azfake.Responder[armeventhub.NamespacesClientListNetworkRuleSetResponse], errResp azfake.ErrorResponder)
 
 	// NewListAuthorizationRulesPager is the fake for method NamespacesClient.NewListAuthorizationRulesPager
 	// HTTP status codes to indicate success: http.StatusOK
@@ -73,13 +77,9 @@ type NamespacesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByResourceGroupPager func(resourceGroupName string, options *armeventhub.NamespacesClientListByResourceGroupOptions) (resp azfake.PagerResponder[armeventhub.NamespacesClientListByResourceGroupResponse])
 
-	// ListKeys is the fake for method NamespacesClient.ListKeys
+	// NewListPager is the fake for method NamespacesClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
-	ListKeys func(ctx context.Context, resourceGroupName string, namespaceName string, authorizationRuleName string, options *armeventhub.NamespacesClientListKeysOptions) (resp azfake.Responder[armeventhub.NamespacesClientListKeysResponse], errResp azfake.ErrorResponder)
-
-	// ListNetworkRuleSet is the fake for method NamespacesClient.ListNetworkRuleSet
-	// HTTP status codes to indicate success: http.StatusOK
-	ListNetworkRuleSet func(ctx context.Context, resourceGroupName string, namespaceName string, options *armeventhub.NamespacesClientListNetworkRuleSetOptions) (resp azfake.Responder[armeventhub.NamespacesClientListNetworkRuleSetResponse], errResp azfake.ErrorResponder)
+	NewListPager func(options *armeventhub.NamespacesClientListOptions) (resp azfake.PagerResponder[armeventhub.NamespacesClientListResponse])
 
 	// RegenerateKeys is the fake for method NamespacesClient.RegenerateKeys
 	// HTTP status codes to indicate success: http.StatusOK
@@ -99,9 +99,9 @@ func NewNamespacesServerTransport(srv *NamespacesServer) *NamespacesServerTransp
 		beginCreateOrUpdate:            newTracker[azfake.PollerResponder[armeventhub.NamespacesClientCreateOrUpdateResponse]](),
 		beginDelete:                    newTracker[azfake.PollerResponder[armeventhub.NamespacesClientDeleteResponse]](),
 		beginFailover:                  newTracker[azfake.PollerResponder[armeventhub.NamespacesClientFailoverResponse]](),
-		newListPager:                   newTracker[azfake.PagerResponder[armeventhub.NamespacesClientListResponse]](),
 		newListAuthorizationRulesPager: newTracker[azfake.PagerResponder[armeventhub.NamespacesClientListAuthorizationRulesResponse]](),
 		newListByResourceGroupPager:    newTracker[azfake.PagerResponder[armeventhub.NamespacesClientListByResourceGroupResponse]](),
+		newListPager:                   newTracker[azfake.PagerResponder[armeventhub.NamespacesClientListResponse]](),
 	}
 }
 
@@ -112,9 +112,9 @@ type NamespacesServerTransport struct {
 	beginCreateOrUpdate            *tracker[azfake.PollerResponder[armeventhub.NamespacesClientCreateOrUpdateResponse]]
 	beginDelete                    *tracker[azfake.PollerResponder[armeventhub.NamespacesClientDeleteResponse]]
 	beginFailover                  *tracker[azfake.PollerResponder[armeventhub.NamespacesClientFailoverResponse]]
-	newListPager                   *tracker[azfake.PagerResponder[armeventhub.NamespacesClientListResponse]]
 	newListAuthorizationRulesPager *tracker[azfake.PagerResponder[armeventhub.NamespacesClientListAuthorizationRulesResponse]]
 	newListByResourceGroupPager    *tracker[azfake.PagerResponder[armeventhub.NamespacesClientListByResourceGroupResponse]]
+	newListPager                   *tracker[azfake.PagerResponder[armeventhub.NamespacesClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for NamespacesServerTransport.
@@ -138,36 +138,36 @@ func (n *NamespacesServerTransport) dispatchToMethodFake(req *http.Request, meth
 		}
 		if !intercepted {
 			switch method {
-			case "NamespacesClient.CheckNameAvailability":
-				res.resp, res.err = n.dispatchCheckNameAvailability(req)
 			case "NamespacesClient.BeginCreateOrUpdate":
 				res.resp, res.err = n.dispatchBeginCreateOrUpdate(req)
+			case "NamespacesClient.BeginDelete":
+				res.resp, res.err = n.dispatchBeginDelete(req)
+			case "NamespacesClient.BeginFailover":
+				res.resp, res.err = n.dispatchBeginFailover(req)
+			case "NamespacesClient.CheckNameAvailability":
+				res.resp, res.err = n.dispatchCheckNameAvailability(req)
 			case "NamespacesClient.CreateOrUpdateAuthorizationRule":
 				res.resp, res.err = n.dispatchCreateOrUpdateAuthorizationRule(req)
 			case "NamespacesClient.CreateOrUpdateNetworkRuleSet":
 				res.resp, res.err = n.dispatchCreateOrUpdateNetworkRuleSet(req)
-			case "NamespacesClient.BeginDelete":
-				res.resp, res.err = n.dispatchBeginDelete(req)
 			case "NamespacesClient.DeleteAuthorizationRule":
 				res.resp, res.err = n.dispatchDeleteAuthorizationRule(req)
-			case "NamespacesClient.BeginFailover":
-				res.resp, res.err = n.dispatchBeginFailover(req)
 			case "NamespacesClient.Get":
 				res.resp, res.err = n.dispatchGet(req)
 			case "NamespacesClient.GetAuthorizationRule":
 				res.resp, res.err = n.dispatchGetAuthorizationRule(req)
 			case "NamespacesClient.GetNetworkRuleSet":
 				res.resp, res.err = n.dispatchGetNetworkRuleSet(req)
-			case "NamespacesClient.NewListPager":
-				res.resp, res.err = n.dispatchNewListPager(req)
-			case "NamespacesClient.NewListAuthorizationRulesPager":
-				res.resp, res.err = n.dispatchNewListAuthorizationRulesPager(req)
-			case "NamespacesClient.NewListByResourceGroupPager":
-				res.resp, res.err = n.dispatchNewListByResourceGroupPager(req)
 			case "NamespacesClient.ListKeys":
 				res.resp, res.err = n.dispatchListKeys(req)
 			case "NamespacesClient.ListNetworkRuleSet":
 				res.resp, res.err = n.dispatchListNetworkRuleSet(req)
+			case "NamespacesClient.NewListAuthorizationRulesPager":
+				res.resp, res.err = n.dispatchNewListAuthorizationRulesPager(req)
+			case "NamespacesClient.NewListByResourceGroupPager":
+				res.resp, res.err = n.dispatchNewListByResourceGroupPager(req)
+			case "NamespacesClient.NewListPager":
+				res.resp, res.err = n.dispatchNewListPager(req)
 			case "NamespacesClient.RegenerateKeys":
 				res.resp, res.err = n.dispatchRegenerateKeys(req)
 			case "NamespacesClient.Update":
@@ -186,35 +186,6 @@ func (n *NamespacesServerTransport) dispatchToMethodFake(req *http.Request, meth
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
-}
-
-func (n *NamespacesServerTransport) dispatchCheckNameAvailability(req *http.Request) (*http.Response, error) {
-	if n.srv.CheckNameAvailability == nil {
-		return nil, &nonRetriableError{errors.New("fake for method CheckNameAvailability not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.EventHub/checkNameAvailability`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 2 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armeventhub.CheckNameAvailabilityParameter](req)
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := n.srv.CheckNameAvailability(req.Context(), body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CheckNameAvailabilityResult, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
 }
 
 func (n *NamespacesServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (*http.Response, error) {
@@ -262,6 +233,127 @@ func (n *NamespacesServerTransport) dispatchBeginCreateOrUpdate(req *http.Reques
 		n.beginCreateOrUpdate.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (n *NamespacesServerTransport) dispatchBeginDelete(req *http.Request) (*http.Response, error) {
+	if n.srv.BeginDelete == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
+	}
+	beginDelete := n.beginDelete.get(req)
+	if beginDelete == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.EventHub/namespaces/(?P<namespaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		namespaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("namespaceName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := n.srv.BeginDelete(req.Context(), resourceGroupNameParam, namespaceNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginDelete = &respr
+		n.beginDelete.add(req, beginDelete)
+	}
+
+	resp, err := server.PollerResponderNext(beginDelete, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		n.beginDelete.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginDelete) {
+		n.beginDelete.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (n *NamespacesServerTransport) dispatchBeginFailover(req *http.Request) (*http.Response, error) {
+	if n.srv.BeginFailover == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginFailover not implemented")}
+	}
+	beginFailover := n.beginFailover.get(req)
+	if beginFailover == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.EventHub/namespaces/(?P<namespaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/failover`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armeventhub.FailOver](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		namespaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("namespaceName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := n.srv.BeginFailover(req.Context(), resourceGroupNameParam, namespaceNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginFailover = &respr
+		n.beginFailover.add(req, beginFailover)
+	}
+
+	resp, err := server.PollerResponderNext(beginFailover, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		n.beginFailover.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginFailover) {
+		n.beginFailover.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (n *NamespacesServerTransport) dispatchCheckNameAvailability(req *http.Request) (*http.Response, error) {
+	if n.srv.CheckNameAvailability == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CheckNameAvailability not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.EventHub/checkNameAvailability`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 2 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armeventhub.CheckNameAvailabilityParameter](req)
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := n.srv.CheckNameAvailability(req.Context(), body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CheckNameAvailabilityResult, req)
+	if err != nil {
+		return nil, err
+	}
 	return resp, nil
 }
 
@@ -343,50 +435,6 @@ func (n *NamespacesServerTransport) dispatchCreateOrUpdateNetworkRuleSet(req *ht
 	return resp, nil
 }
 
-func (n *NamespacesServerTransport) dispatchBeginDelete(req *http.Request) (*http.Response, error) {
-	if n.srv.BeginDelete == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
-	}
-	beginDelete := n.beginDelete.get(req)
-	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.EventHub/namespaces/(?P<namespaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		namespaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("namespaceName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := n.srv.BeginDelete(req.Context(), resourceGroupNameParam, namespaceNameParam, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginDelete = &respr
-		n.beginDelete.add(req, beginDelete)
-	}
-
-	resp, err := server.PollerResponderNext(beginDelete, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
-		n.beginDelete.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginDelete) {
-		n.beginDelete.remove(req)
-	}
-
-	return resp, nil
-}
-
 func (n *NamespacesServerTransport) dispatchDeleteAuthorizationRule(req *http.Request) (*http.Response, error) {
 	if n.srv.DeleteAuthorizationRule == nil {
 		return nil, &nonRetriableError{errors.New("fake for method DeleteAuthorizationRule not implemented")}
@@ -421,54 +469,6 @@ func (n *NamespacesServerTransport) dispatchDeleteAuthorizationRule(req *http.Re
 	if err != nil {
 		return nil, err
 	}
-	return resp, nil
-}
-
-func (n *NamespacesServerTransport) dispatchBeginFailover(req *http.Request) (*http.Response, error) {
-	if n.srv.BeginFailover == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginFailover not implemented")}
-	}
-	beginFailover := n.beginFailover.get(req)
-	if beginFailover == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.EventHub/namespaces/(?P<namespaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/failover`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armeventhub.FailOver](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		namespaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("namespaceName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := n.srv.BeginFailover(req.Context(), resourceGroupNameParam, namespaceNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginFailover = &respr
-		n.beginFailover.add(req, beginFailover)
-	}
-
-	resp, err := server.PollerResponderNext(beginFailover, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		n.beginFailover.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginFailover) {
-		n.beginFailover.remove(req)
-	}
-
 	return resp, nil
 }
 
@@ -575,35 +575,72 @@ func (n *NamespacesServerTransport) dispatchGetNetworkRuleSet(req *http.Request)
 	return resp, nil
 }
 
-func (n *NamespacesServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if n.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+func (n *NamespacesServerTransport) dispatchListKeys(req *http.Request) (*http.Response, error) {
+	if n.srv.ListKeys == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListKeys not implemented")}
 	}
-	newListPager := n.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.EventHub/namespaces`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := n.srv.NewListPager(nil)
-		newListPager = &resp
-		n.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armeventhub.NamespacesClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.EventHub/namespaces/(?P<namespaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/authorizationRules/(?P<authorizationRuleName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listKeys`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	resp, err := server.PagerResponderNext(newListPager, req)
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 	if err != nil {
 		return nil, err
 	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		n.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	namespaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("namespaceName")])
+	if err != nil {
+		return nil, err
 	}
-	if !server.PagerResponderMore(newListPager) {
-		n.newListPager.remove(req)
+	authorizationRuleNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("authorizationRuleName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := n.srv.ListKeys(req.Context(), resourceGroupNameParam, namespaceNameParam, authorizationRuleNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).AccessKeys, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (n *NamespacesServerTransport) dispatchListNetworkRuleSet(req *http.Request) (*http.Response, error) {
+	if n.srv.ListNetworkRuleSet == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListNetworkRuleSet not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.EventHub/namespaces/(?P<namespaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/networkRuleSets`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	namespaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("namespaceName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := n.srv.ListNetworkRuleSet(req.Context(), resourceGroupNameParam, namespaceNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).NetworkRuleSetListResult, req)
+	if err != nil {
+		return nil, err
 	}
 	return resp, nil
 }
@@ -686,72 +723,35 @@ func (n *NamespacesServerTransport) dispatchNewListByResourceGroupPager(req *htt
 	return resp, nil
 }
 
-func (n *NamespacesServerTransport) dispatchListKeys(req *http.Request) (*http.Response, error) {
-	if n.srv.ListKeys == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ListKeys not implemented")}
+func (n *NamespacesServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if n.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.EventHub/namespaces/(?P<namespaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/authorizationRules/(?P<authorizationRuleName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listKeys`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	newListPager := n.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.EventHub/namespaces`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resp := n.srv.NewListPager(nil)
+		newListPager = &resp
+		n.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armeventhub.NamespacesClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
 	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	resp, err := server.PagerResponderNext(newListPager, req)
 	if err != nil {
 		return nil, err
 	}
-	namespaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("namespaceName")])
-	if err != nil {
-		return nil, err
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		n.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	authorizationRuleNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("authorizationRuleName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := n.srv.ListKeys(req.Context(), resourceGroupNameParam, namespaceNameParam, authorizationRuleNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).AccessKeys, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (n *NamespacesServerTransport) dispatchListNetworkRuleSet(req *http.Request) (*http.Response, error) {
-	if n.srv.ListNetworkRuleSet == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ListNetworkRuleSet not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.EventHub/namespaces/(?P<namespaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/networkRuleSets`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	namespaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("namespaceName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := n.srv.ListNetworkRuleSet(req.Context(), resourceGroupNameParam, namespaceNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).NetworkRuleSetListResult, req)
-	if err != nil {
-		return nil, err
+	if !server.PagerResponderMore(newListPager) {
+		n.newListPager.remove(req)
 	}
 	return resp, nil
 }

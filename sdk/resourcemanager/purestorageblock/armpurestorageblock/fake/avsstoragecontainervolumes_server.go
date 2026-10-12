@@ -25,6 +25,10 @@ type AvsStorageContainerVolumesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, storagePoolName string, storageContainerName string, volumeID string, options *armpurestorageblock.AvsStorageContainerVolumesClientBeginDeleteOptions) (resp azfake.PollerResponder[armpurestorageblock.AvsStorageContainerVolumesClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method AvsStorageContainerVolumesClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, storagePoolName string, storageContainerName string, volumeID string, properties armpurestorageblock.AvsStorageContainerVolumeUpdate, options *armpurestorageblock.AvsStorageContainerVolumesClientBeginUpdateOptions) (resp azfake.PollerResponder[armpurestorageblock.AvsStorageContainerVolumesClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method AvsStorageContainerVolumesClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, storagePoolName string, storageContainerName string, volumeID string, options *armpurestorageblock.AvsStorageContainerVolumesClientGetOptions) (resp azfake.Responder[armpurestorageblock.AvsStorageContainerVolumesClientGetResponse], errResp azfake.ErrorResponder)
@@ -32,10 +36,6 @@ type AvsStorageContainerVolumesServer struct {
 	// NewListByAvsStorageContainerPager is the fake for method AvsStorageContainerVolumesClient.NewListByAvsStorageContainerPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByAvsStorageContainerPager func(resourceGroupName string, storagePoolName string, storageContainerName string, options *armpurestorageblock.AvsStorageContainerVolumesClientListByAvsStorageContainerOptions) (resp azfake.PagerResponder[armpurestorageblock.AvsStorageContainerVolumesClientListByAvsStorageContainerResponse])
-
-	// BeginUpdate is the fake for method AvsStorageContainerVolumesClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, storagePoolName string, storageContainerName string, volumeID string, properties armpurestorageblock.AvsStorageContainerVolumeUpdate, options *armpurestorageblock.AvsStorageContainerVolumesClientBeginUpdateOptions) (resp azfake.PollerResponder[armpurestorageblock.AvsStorageContainerVolumesClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewAvsStorageContainerVolumesServerTransport creates a new instance of AvsStorageContainerVolumesServerTransport with the provided implementation.
@@ -45,8 +45,8 @@ func NewAvsStorageContainerVolumesServerTransport(srv *AvsStorageContainerVolume
 	return &AvsStorageContainerVolumesServerTransport{
 		srv:                               srv,
 		beginDelete:                       newTracker[azfake.PollerResponder[armpurestorageblock.AvsStorageContainerVolumesClientDeleteResponse]](),
-		newListByAvsStorageContainerPager: newTracker[azfake.PagerResponder[armpurestorageblock.AvsStorageContainerVolumesClientListByAvsStorageContainerResponse]](),
 		beginUpdate:                       newTracker[azfake.PollerResponder[armpurestorageblock.AvsStorageContainerVolumesClientUpdateResponse]](),
+		newListByAvsStorageContainerPager: newTracker[azfake.PagerResponder[armpurestorageblock.AvsStorageContainerVolumesClientListByAvsStorageContainerResponse]](),
 	}
 }
 
@@ -55,8 +55,8 @@ func NewAvsStorageContainerVolumesServerTransport(srv *AvsStorageContainerVolume
 type AvsStorageContainerVolumesServerTransport struct {
 	srv                               *AvsStorageContainerVolumesServer
 	beginDelete                       *tracker[azfake.PollerResponder[armpurestorageblock.AvsStorageContainerVolumesClientDeleteResponse]]
-	newListByAvsStorageContainerPager *tracker[azfake.PagerResponder[armpurestorageblock.AvsStorageContainerVolumesClientListByAvsStorageContainerResponse]]
 	beginUpdate                       *tracker[azfake.PollerResponder[armpurestorageblock.AvsStorageContainerVolumesClientUpdateResponse]]
+	newListByAvsStorageContainerPager *tracker[azfake.PagerResponder[armpurestorageblock.AvsStorageContainerVolumesClientListByAvsStorageContainerResponse]]
 }
 
 // Do implements the policy.Transporter interface for AvsStorageContainerVolumesServerTransport.
@@ -82,12 +82,12 @@ func (a *AvsStorageContainerVolumesServerTransport) dispatchToMethodFake(req *ht
 			switch method {
 			case "AvsStorageContainerVolumesClient.BeginDelete":
 				res.resp, res.err = a.dispatchBeginDelete(req)
+			case "AvsStorageContainerVolumesClient.BeginUpdate":
+				res.resp, res.err = a.dispatchBeginUpdate(req)
 			case "AvsStorageContainerVolumesClient.Get":
 				res.resp, res.err = a.dispatchGet(req)
 			case "AvsStorageContainerVolumesClient.NewListByAvsStorageContainerPager":
 				res.resp, res.err = a.dispatchNewListByAvsStorageContainerPager(req)
-			case "AvsStorageContainerVolumesClient.BeginUpdate":
-				res.resp, res.err = a.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -151,6 +151,62 @@ func (a *AvsStorageContainerVolumesServerTransport) dispatchBeginDelete(req *htt
 	}
 	if !server.PollerResponderMore(beginDelete) {
 		a.beginDelete.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (a *AvsStorageContainerVolumesServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if a.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := a.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/PureStorage\.Block/storagePools/(?P<storagePoolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/avsStorageContainers/(?P<storageContainerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/volumes/(?P<volumeId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 6 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armpurestorageblock.AvsStorageContainerVolumeUpdate](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		storagePoolNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("storagePoolName")])
+		if err != nil {
+			return nil, err
+		}
+		storageContainerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("storageContainerName")])
+		if err != nil {
+			return nil, err
+		}
+		volumeIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("volumeId")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := a.srv.BeginUpdate(req.Context(), resourceGroupNameParam, storagePoolNameParam, storageContainerNameParam, volumeIDParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		a.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		a.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		a.beginUpdate.remove(req)
 	}
 
 	return resp, nil
@@ -239,62 +295,6 @@ func (a *AvsStorageContainerVolumesServerTransport) dispatchNewListByAvsStorageC
 	if !server.PagerResponderMore(newListByAvsStorageContainerPager) {
 		a.newListByAvsStorageContainerPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (a *AvsStorageContainerVolumesServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if a.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := a.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/PureStorage\.Block/storagePools/(?P<storagePoolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/avsStorageContainers/(?P<storageContainerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/volumes/(?P<volumeId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 6 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armpurestorageblock.AvsStorageContainerVolumeUpdate](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		storagePoolNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("storagePoolName")])
-		if err != nil {
-			return nil, err
-		}
-		storageContainerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("storageContainerName")])
-		if err != nil {
-			return nil, err
-		}
-		volumeIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("volumeId")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := a.srv.BeginUpdate(req.Context(), resourceGroupNameParam, storagePoolNameParam, storageContainerNameParam, volumeIDParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		a.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		a.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		a.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

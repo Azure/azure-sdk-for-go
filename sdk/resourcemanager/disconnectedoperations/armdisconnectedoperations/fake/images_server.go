@@ -26,13 +26,13 @@ type ImagesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, name string, imageName string, options *armdisconnectedoperations.ImagesClientGetOptions) (resp azfake.Responder[armdisconnectedoperations.ImagesClientGetResponse], errResp azfake.ErrorResponder)
 
-	// NewListByDisconnectedOperationPager is the fake for method ImagesClient.NewListByDisconnectedOperationPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListByDisconnectedOperationPager func(resourceGroupName string, name string, options *armdisconnectedoperations.ImagesClientListByDisconnectedOperationOptions) (resp azfake.PagerResponder[armdisconnectedoperations.ImagesClientListByDisconnectedOperationResponse])
-
 	// ListDownloadURI is the fake for method ImagesClient.ListDownloadURI
 	// HTTP status codes to indicate success: http.StatusOK
 	ListDownloadURI func(ctx context.Context, resourceGroupName string, name string, imageName string, options *armdisconnectedoperations.ImagesClientListDownloadURIOptions) (resp azfake.Responder[armdisconnectedoperations.ImagesClientListDownloadURIResponse], errResp azfake.ErrorResponder)
+
+	// NewListByDisconnectedOperationPager is the fake for method ImagesClient.NewListByDisconnectedOperationPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListByDisconnectedOperationPager func(resourceGroupName string, name string, options *armdisconnectedoperations.ImagesClientListByDisconnectedOperationOptions) (resp azfake.PagerResponder[armdisconnectedoperations.ImagesClientListByDisconnectedOperationResponse])
 }
 
 // NewImagesServerTransport creates a new instance of ImagesServerTransport with the provided implementation.
@@ -75,10 +75,10 @@ func (i *ImagesServerTransport) dispatchToMethodFake(req *http.Request, method s
 			switch method {
 			case "ImagesClient.Get":
 				res.resp, res.err = i.dispatchGet(req)
-			case "ImagesClient.NewListByDisconnectedOperationPager":
-				res.resp, res.err = i.dispatchNewListByDisconnectedOperationPager(req)
 			case "ImagesClient.ListDownloadURI":
 				res.resp, res.err = i.dispatchListDownloadURI(req)
+			case "ImagesClient.NewListByDisconnectedOperationPager":
+				res.resp, res.err = i.dispatchNewListByDisconnectedOperationPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -126,6 +126,43 @@ func (i *ImagesServerTransport) dispatchGet(req *http.Request) (*http.Response, 
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Image, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (i *ImagesServerTransport) dispatchListDownloadURI(req *http.Request) (*http.Response, error) {
+	if i.srv.ListDownloadURI == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListDownloadURI not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Edge/disconnectedOperations/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/images/(?P<imageName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listDownloadUri`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+	if err != nil {
+		return nil, err
+	}
+	imageNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("imageName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := i.srv.ListDownloadURI(req.Context(), resourceGroupNameParam, nameParam, imageNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ImageDownloadResult, req)
 	if err != nil {
 		return nil, err
 	}
@@ -199,43 +236,6 @@ func (i *ImagesServerTransport) dispatchNewListByDisconnectedOperationPager(req 
 	}
 	if !server.PagerResponderMore(newListByDisconnectedOperationPager) {
 		i.newListByDisconnectedOperationPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (i *ImagesServerTransport) dispatchListDownloadURI(req *http.Request) (*http.Response, error) {
-	if i.srv.ListDownloadURI == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ListDownloadURI not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Edge/disconnectedOperations/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/images/(?P<imageName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listDownloadUri`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-	if err != nil {
-		return nil, err
-	}
-	imageNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("imageName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := i.srv.ListDownloadURI(req.Context(), resourceGroupNameParam, nameParam, imageNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ImageDownloadResult, req)
-	if err != nil {
-		return nil, err
 	}
 	return resp, nil
 }

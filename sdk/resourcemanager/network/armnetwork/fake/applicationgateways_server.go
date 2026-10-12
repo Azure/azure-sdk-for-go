@@ -37,6 +37,14 @@ type ApplicationGatewaysServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, applicationGatewayName string, options *armnetwork.ApplicationGatewaysClientBeginDeleteOptions) (resp azfake.PollerResponder[armnetwork.ApplicationGatewaysClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginStart is the fake for method ApplicationGatewaysClient.BeginStart
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	BeginStart func(ctx context.Context, resourceGroupName string, applicationGatewayName string, options *armnetwork.ApplicationGatewaysClientBeginStartOptions) (resp azfake.PollerResponder[armnetwork.ApplicationGatewaysClientStartResponse], errResp azfake.ErrorResponder)
+
+	// BeginStop is the fake for method ApplicationGatewaysClient.BeginStop
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	BeginStop func(ctx context.Context, resourceGroupName string, applicationGatewayName string, options *armnetwork.ApplicationGatewaysClientBeginStopOptions) (resp azfake.PollerResponder[armnetwork.ApplicationGatewaysClientStopResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method ApplicationGatewaysClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, applicationGatewayName string, options *armnetwork.ApplicationGatewaysClientGetOptions) (resp azfake.Responder[armnetwork.ApplicationGatewaysClientGetResponse], errResp azfake.ErrorResponder)
@@ -44,14 +52,6 @@ type ApplicationGatewaysServer struct {
 	// GetSSLPredefinedPolicy is the fake for method ApplicationGatewaysClient.GetSSLPredefinedPolicy
 	// HTTP status codes to indicate success: http.StatusOK
 	GetSSLPredefinedPolicy func(ctx context.Context, predefinedPolicyName string, options *armnetwork.ApplicationGatewaysClientGetSSLPredefinedPolicyOptions) (resp azfake.Responder[armnetwork.ApplicationGatewaysClientGetSSLPredefinedPolicyResponse], errResp azfake.ErrorResponder)
-
-	// NewListPager is the fake for method ApplicationGatewaysClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(resourceGroupName string, options *armnetwork.ApplicationGatewaysClientListOptions) (resp azfake.PagerResponder[armnetwork.ApplicationGatewaysClientListResponse])
-
-	// NewListAllPager is the fake for method ApplicationGatewaysClient.NewListAllPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListAllPager func(options *armnetwork.ApplicationGatewaysClientListAllOptions) (resp azfake.PagerResponder[armnetwork.ApplicationGatewaysClientListAllResponse])
 
 	// ListAvailableRequestHeaders is the fake for method ApplicationGatewaysClient.ListAvailableRequestHeaders
 	// HTTP status codes to indicate success: http.StatusOK
@@ -65,10 +65,6 @@ type ApplicationGatewaysServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	ListAvailableSSLOptions func(ctx context.Context, options *armnetwork.ApplicationGatewaysClientListAvailableSSLOptionsOptions) (resp azfake.Responder[armnetwork.ApplicationGatewaysClientListAvailableSSLOptionsResponse], errResp azfake.ErrorResponder)
 
-	// NewListAvailableSSLPredefinedPoliciesPager is the fake for method ApplicationGatewaysClient.NewListAvailableSSLPredefinedPoliciesPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListAvailableSSLPredefinedPoliciesPager func(options *armnetwork.ApplicationGatewaysClientListAvailableSSLPredefinedPoliciesOptions) (resp azfake.PagerResponder[armnetwork.ApplicationGatewaysClientListAvailableSSLPredefinedPoliciesResponse])
-
 	// ListAvailableServerVariables is the fake for method ApplicationGatewaysClient.ListAvailableServerVariables
 	// HTTP status codes to indicate success: http.StatusOK
 	ListAvailableServerVariables func(ctx context.Context, options *armnetwork.ApplicationGatewaysClientListAvailableServerVariablesOptions) (resp azfake.Responder[armnetwork.ApplicationGatewaysClientListAvailableServerVariablesResponse], errResp azfake.ErrorResponder)
@@ -77,13 +73,17 @@ type ApplicationGatewaysServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	ListAvailableWafRuleSets func(ctx context.Context, options *armnetwork.ApplicationGatewaysClientListAvailableWafRuleSetsOptions) (resp azfake.Responder[armnetwork.ApplicationGatewaysClientListAvailableWafRuleSetsResponse], errResp azfake.ErrorResponder)
 
-	// BeginStart is the fake for method ApplicationGatewaysClient.BeginStart
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginStart func(ctx context.Context, resourceGroupName string, applicationGatewayName string, options *armnetwork.ApplicationGatewaysClientBeginStartOptions) (resp azfake.PollerResponder[armnetwork.ApplicationGatewaysClientStartResponse], errResp azfake.ErrorResponder)
+	// NewListAllPager is the fake for method ApplicationGatewaysClient.NewListAllPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListAllPager func(options *armnetwork.ApplicationGatewaysClientListAllOptions) (resp azfake.PagerResponder[armnetwork.ApplicationGatewaysClientListAllResponse])
 
-	// BeginStop is the fake for method ApplicationGatewaysClient.BeginStop
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginStop func(ctx context.Context, resourceGroupName string, applicationGatewayName string, options *armnetwork.ApplicationGatewaysClientBeginStopOptions) (resp azfake.PollerResponder[armnetwork.ApplicationGatewaysClientStopResponse], errResp azfake.ErrorResponder)
+	// NewListAvailableSSLPredefinedPoliciesPager is the fake for method ApplicationGatewaysClient.NewListAvailableSSLPredefinedPoliciesPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListAvailableSSLPredefinedPoliciesPager func(options *armnetwork.ApplicationGatewaysClientListAvailableSSLPredefinedPoliciesOptions) (resp azfake.PagerResponder[armnetwork.ApplicationGatewaysClientListAvailableSSLPredefinedPoliciesResponse])
+
+	// NewListPager is the fake for method ApplicationGatewaysClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(resourceGroupName string, options *armnetwork.ApplicationGatewaysClientListOptions) (resp azfake.PagerResponder[armnetwork.ApplicationGatewaysClientListResponse])
 
 	// UpdateTags is the fake for method ApplicationGatewaysClient.UpdateTags
 	// HTTP status codes to indicate success: http.StatusOK
@@ -100,11 +100,11 @@ func NewApplicationGatewaysServerTransport(srv *ApplicationGatewaysServer) *Appl
 		beginBackendHealthOnDemand: newTracker[azfake.PollerResponder[armnetwork.ApplicationGatewaysClientBackendHealthOnDemandResponse]](),
 		beginCreateOrUpdate:        newTracker[azfake.PollerResponder[armnetwork.ApplicationGatewaysClientCreateOrUpdateResponse]](),
 		beginDelete:                newTracker[azfake.PollerResponder[armnetwork.ApplicationGatewaysClientDeleteResponse]](),
-		newListPager:               newTracker[azfake.PagerResponder[armnetwork.ApplicationGatewaysClientListResponse]](),
+		beginStart:                 newTracker[azfake.PollerResponder[armnetwork.ApplicationGatewaysClientStartResponse]](),
+		beginStop:                  newTracker[azfake.PollerResponder[armnetwork.ApplicationGatewaysClientStopResponse]](),
 		newListAllPager:            newTracker[azfake.PagerResponder[armnetwork.ApplicationGatewaysClientListAllResponse]](),
 		newListAvailableSSLPredefinedPoliciesPager: newTracker[azfake.PagerResponder[armnetwork.ApplicationGatewaysClientListAvailableSSLPredefinedPoliciesResponse]](),
-		beginStart: newTracker[azfake.PollerResponder[armnetwork.ApplicationGatewaysClientStartResponse]](),
-		beginStop:  newTracker[azfake.PollerResponder[armnetwork.ApplicationGatewaysClientStopResponse]](),
+		newListPager: newTracker[azfake.PagerResponder[armnetwork.ApplicationGatewaysClientListResponse]](),
 	}
 }
 
@@ -116,11 +116,11 @@ type ApplicationGatewaysServerTransport struct {
 	beginBackendHealthOnDemand                 *tracker[azfake.PollerResponder[armnetwork.ApplicationGatewaysClientBackendHealthOnDemandResponse]]
 	beginCreateOrUpdate                        *tracker[azfake.PollerResponder[armnetwork.ApplicationGatewaysClientCreateOrUpdateResponse]]
 	beginDelete                                *tracker[azfake.PollerResponder[armnetwork.ApplicationGatewaysClientDeleteResponse]]
-	newListPager                               *tracker[azfake.PagerResponder[armnetwork.ApplicationGatewaysClientListResponse]]
-	newListAllPager                            *tracker[azfake.PagerResponder[armnetwork.ApplicationGatewaysClientListAllResponse]]
-	newListAvailableSSLPredefinedPoliciesPager *tracker[azfake.PagerResponder[armnetwork.ApplicationGatewaysClientListAvailableSSLPredefinedPoliciesResponse]]
 	beginStart                                 *tracker[azfake.PollerResponder[armnetwork.ApplicationGatewaysClientStartResponse]]
 	beginStop                                  *tracker[azfake.PollerResponder[armnetwork.ApplicationGatewaysClientStopResponse]]
+	newListAllPager                            *tracker[azfake.PagerResponder[armnetwork.ApplicationGatewaysClientListAllResponse]]
+	newListAvailableSSLPredefinedPoliciesPager *tracker[azfake.PagerResponder[armnetwork.ApplicationGatewaysClientListAvailableSSLPredefinedPoliciesResponse]]
+	newListPager                               *tracker[azfake.PagerResponder[armnetwork.ApplicationGatewaysClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for ApplicationGatewaysServerTransport.
@@ -152,30 +152,30 @@ func (a *ApplicationGatewaysServerTransport) dispatchToMethodFake(req *http.Requ
 				res.resp, res.err = a.dispatchBeginCreateOrUpdate(req)
 			case "ApplicationGatewaysClient.BeginDelete":
 				res.resp, res.err = a.dispatchBeginDelete(req)
+			case "ApplicationGatewaysClient.BeginStart":
+				res.resp, res.err = a.dispatchBeginStart(req)
+			case "ApplicationGatewaysClient.BeginStop":
+				res.resp, res.err = a.dispatchBeginStop(req)
 			case "ApplicationGatewaysClient.Get":
 				res.resp, res.err = a.dispatchGet(req)
 			case "ApplicationGatewaysClient.GetSSLPredefinedPolicy":
 				res.resp, res.err = a.dispatchGetSSLPredefinedPolicy(req)
-			case "ApplicationGatewaysClient.NewListPager":
-				res.resp, res.err = a.dispatchNewListPager(req)
-			case "ApplicationGatewaysClient.NewListAllPager":
-				res.resp, res.err = a.dispatchNewListAllPager(req)
 			case "ApplicationGatewaysClient.ListAvailableRequestHeaders":
 				res.resp, res.err = a.dispatchListAvailableRequestHeaders(req)
 			case "ApplicationGatewaysClient.ListAvailableResponseHeaders":
 				res.resp, res.err = a.dispatchListAvailableResponseHeaders(req)
 			case "ApplicationGatewaysClient.ListAvailableSSLOptions":
 				res.resp, res.err = a.dispatchListAvailableSSLOptions(req)
-			case "ApplicationGatewaysClient.NewListAvailableSSLPredefinedPoliciesPager":
-				res.resp, res.err = a.dispatchNewListAvailableSSLPredefinedPoliciesPager(req)
 			case "ApplicationGatewaysClient.ListAvailableServerVariables":
 				res.resp, res.err = a.dispatchListAvailableServerVariables(req)
 			case "ApplicationGatewaysClient.ListAvailableWafRuleSets":
 				res.resp, res.err = a.dispatchListAvailableWafRuleSets(req)
-			case "ApplicationGatewaysClient.BeginStart":
-				res.resp, res.err = a.dispatchBeginStart(req)
-			case "ApplicationGatewaysClient.BeginStop":
-				res.resp, res.err = a.dispatchBeginStop(req)
+			case "ApplicationGatewaysClient.NewListAllPager":
+				res.resp, res.err = a.dispatchNewListAllPager(req)
+			case "ApplicationGatewaysClient.NewListAvailableSSLPredefinedPoliciesPager":
+				res.resp, res.err = a.dispatchNewListAvailableSSLPredefinedPoliciesPager(req)
+			case "ApplicationGatewaysClient.NewListPager":
+				res.resp, res.err = a.dispatchNewListPager(req)
 			case "ApplicationGatewaysClient.UpdateTags":
 				res.resp, res.err = a.dispatchUpdateTags(req)
 			default:
@@ -394,296 +394,6 @@ func (a *ApplicationGatewaysServerTransport) dispatchBeginDelete(req *http.Reque
 	return resp, nil
 }
 
-func (a *ApplicationGatewaysServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if a.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/applicationGateways/(?P<applicationGatewayName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	applicationGatewayNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("applicationGatewayName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := a.srv.Get(req.Context(), resourceGroupNameParam, applicationGatewayNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ApplicationGateway, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (a *ApplicationGatewaysServerTransport) dispatchGetSSLPredefinedPolicy(req *http.Request) (*http.Response, error) {
-	if a.srv.GetSSLPredefinedPolicy == nil {
-		return nil, &nonRetriableError{errors.New("fake for method GetSSLPredefinedPolicy not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/applicationGatewayAvailableSslOptions/default/predefinedPolicies/(?P<predefinedPolicyName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 3 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	predefinedPolicyNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("predefinedPolicyName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := a.srv.GetSSLPredefinedPolicy(req.Context(), predefinedPolicyNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ApplicationGatewaySSLPredefinedPolicy, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (a *ApplicationGatewaysServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if a.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := a.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/applicationGateways`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := a.srv.NewListPager(resourceGroupNameParam, nil)
-		newListPager = &resp
-		a.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armnetwork.ApplicationGatewaysClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		a.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		a.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (a *ApplicationGatewaysServerTransport) dispatchNewListAllPager(req *http.Request) (*http.Response, error) {
-	if a.srv.NewListAllPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListAllPager not implemented")}
-	}
-	newListAllPager := a.newListAllPager.get(req)
-	if newListAllPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/applicationGateways`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := a.srv.NewListAllPager(nil)
-		newListAllPager = &resp
-		a.newListAllPager.add(req, newListAllPager)
-		server.PagerResponderInjectNextLinks(newListAllPager, req, func(page *armnetwork.ApplicationGatewaysClientListAllResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListAllPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		a.newListAllPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListAllPager) {
-		a.newListAllPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (a *ApplicationGatewaysServerTransport) dispatchListAvailableRequestHeaders(req *http.Request) (*http.Response, error) {
-	if a.srv.ListAvailableRequestHeaders == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ListAvailableRequestHeaders not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/applicationGatewayAvailableRequestHeaders`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 2 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	respr, errRespr := a.srv.ListAvailableRequestHeaders(req.Context(), nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).StringArray, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (a *ApplicationGatewaysServerTransport) dispatchListAvailableResponseHeaders(req *http.Request) (*http.Response, error) {
-	if a.srv.ListAvailableResponseHeaders == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ListAvailableResponseHeaders not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/applicationGatewayAvailableResponseHeaders`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 2 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	respr, errRespr := a.srv.ListAvailableResponseHeaders(req.Context(), nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).StringArray, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (a *ApplicationGatewaysServerTransport) dispatchListAvailableSSLOptions(req *http.Request) (*http.Response, error) {
-	if a.srv.ListAvailableSSLOptions == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ListAvailableSSLOptions not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/applicationGatewayAvailableSslOptions/default`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 2 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	respr, errRespr := a.srv.ListAvailableSSLOptions(req.Context(), nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ApplicationGatewayAvailableSSLOptions, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (a *ApplicationGatewaysServerTransport) dispatchNewListAvailableSSLPredefinedPoliciesPager(req *http.Request) (*http.Response, error) {
-	if a.srv.NewListAvailableSSLPredefinedPoliciesPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListAvailableSSLPredefinedPoliciesPager not implemented")}
-	}
-	newListAvailableSSLPredefinedPoliciesPager := a.newListAvailableSSLPredefinedPoliciesPager.get(req)
-	if newListAvailableSSLPredefinedPoliciesPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/applicationGatewayAvailableSslOptions/default/predefinedPolicies`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := a.srv.NewListAvailableSSLPredefinedPoliciesPager(nil)
-		newListAvailableSSLPredefinedPoliciesPager = &resp
-		a.newListAvailableSSLPredefinedPoliciesPager.add(req, newListAvailableSSLPredefinedPoliciesPager)
-		server.PagerResponderInjectNextLinks(newListAvailableSSLPredefinedPoliciesPager, req, func(page *armnetwork.ApplicationGatewaysClientListAvailableSSLPredefinedPoliciesResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListAvailableSSLPredefinedPoliciesPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		a.newListAvailableSSLPredefinedPoliciesPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListAvailableSSLPredefinedPoliciesPager) {
-		a.newListAvailableSSLPredefinedPoliciesPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (a *ApplicationGatewaysServerTransport) dispatchListAvailableServerVariables(req *http.Request) (*http.Response, error) {
-	if a.srv.ListAvailableServerVariables == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ListAvailableServerVariables not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/applicationGatewayAvailableServerVariables`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 2 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	respr, errRespr := a.srv.ListAvailableServerVariables(req.Context(), nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).StringArray, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (a *ApplicationGatewaysServerTransport) dispatchListAvailableWafRuleSets(req *http.Request) (*http.Response, error) {
-	if a.srv.ListAvailableWafRuleSets == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ListAvailableWafRuleSets not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/applicationGatewayAvailableWafRuleSets`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 2 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	respr, errRespr := a.srv.ListAvailableWafRuleSets(req.Context(), nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ApplicationGatewayAvailableWafRuleSetsResult, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
 func (a *ApplicationGatewaysServerTransport) dispatchBeginStart(req *http.Request) (*http.Response, error) {
 	if a.srv.BeginStart == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginStart not implemented")}
@@ -769,6 +479,296 @@ func (a *ApplicationGatewaysServerTransport) dispatchBeginStop(req *http.Request
 		a.beginStop.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (a *ApplicationGatewaysServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if a.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/applicationGateways/(?P<applicationGatewayName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	applicationGatewayNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("applicationGatewayName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := a.srv.Get(req.Context(), resourceGroupNameParam, applicationGatewayNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ApplicationGateway, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (a *ApplicationGatewaysServerTransport) dispatchGetSSLPredefinedPolicy(req *http.Request) (*http.Response, error) {
+	if a.srv.GetSSLPredefinedPolicy == nil {
+		return nil, &nonRetriableError{errors.New("fake for method GetSSLPredefinedPolicy not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/applicationGatewayAvailableSslOptions/default/predefinedPolicies/(?P<predefinedPolicyName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	predefinedPolicyNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("predefinedPolicyName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := a.srv.GetSSLPredefinedPolicy(req.Context(), predefinedPolicyNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ApplicationGatewaySSLPredefinedPolicy, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (a *ApplicationGatewaysServerTransport) dispatchListAvailableRequestHeaders(req *http.Request) (*http.Response, error) {
+	if a.srv.ListAvailableRequestHeaders == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListAvailableRequestHeaders not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/applicationGatewayAvailableRequestHeaders`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 2 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	respr, errRespr := a.srv.ListAvailableRequestHeaders(req.Context(), nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).StringArray, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (a *ApplicationGatewaysServerTransport) dispatchListAvailableResponseHeaders(req *http.Request) (*http.Response, error) {
+	if a.srv.ListAvailableResponseHeaders == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListAvailableResponseHeaders not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/applicationGatewayAvailableResponseHeaders`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 2 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	respr, errRespr := a.srv.ListAvailableResponseHeaders(req.Context(), nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).StringArray, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (a *ApplicationGatewaysServerTransport) dispatchListAvailableSSLOptions(req *http.Request) (*http.Response, error) {
+	if a.srv.ListAvailableSSLOptions == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListAvailableSSLOptions not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/applicationGatewayAvailableSslOptions/default`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 2 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	respr, errRespr := a.srv.ListAvailableSSLOptions(req.Context(), nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ApplicationGatewayAvailableSSLOptions, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (a *ApplicationGatewaysServerTransport) dispatchListAvailableServerVariables(req *http.Request) (*http.Response, error) {
+	if a.srv.ListAvailableServerVariables == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListAvailableServerVariables not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/applicationGatewayAvailableServerVariables`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 2 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	respr, errRespr := a.srv.ListAvailableServerVariables(req.Context(), nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).StringArray, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (a *ApplicationGatewaysServerTransport) dispatchListAvailableWafRuleSets(req *http.Request) (*http.Response, error) {
+	if a.srv.ListAvailableWafRuleSets == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListAvailableWafRuleSets not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/applicationGatewayAvailableWafRuleSets`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 2 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	respr, errRespr := a.srv.ListAvailableWafRuleSets(req.Context(), nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ApplicationGatewayAvailableWafRuleSetsResult, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (a *ApplicationGatewaysServerTransport) dispatchNewListAllPager(req *http.Request) (*http.Response, error) {
+	if a.srv.NewListAllPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListAllPager not implemented")}
+	}
+	newListAllPager := a.newListAllPager.get(req)
+	if newListAllPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/applicationGateways`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resp := a.srv.NewListAllPager(nil)
+		newListAllPager = &resp
+		a.newListAllPager.add(req, newListAllPager)
+		server.PagerResponderInjectNextLinks(newListAllPager, req, func(page *armnetwork.ApplicationGatewaysClientListAllResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListAllPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		a.newListAllPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListAllPager) {
+		a.newListAllPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (a *ApplicationGatewaysServerTransport) dispatchNewListAvailableSSLPredefinedPoliciesPager(req *http.Request) (*http.Response, error) {
+	if a.srv.NewListAvailableSSLPredefinedPoliciesPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListAvailableSSLPredefinedPoliciesPager not implemented")}
+	}
+	newListAvailableSSLPredefinedPoliciesPager := a.newListAvailableSSLPredefinedPoliciesPager.get(req)
+	if newListAvailableSSLPredefinedPoliciesPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/applicationGatewayAvailableSslOptions/default/predefinedPolicies`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resp := a.srv.NewListAvailableSSLPredefinedPoliciesPager(nil)
+		newListAvailableSSLPredefinedPoliciesPager = &resp
+		a.newListAvailableSSLPredefinedPoliciesPager.add(req, newListAvailableSSLPredefinedPoliciesPager)
+		server.PagerResponderInjectNextLinks(newListAvailableSSLPredefinedPoliciesPager, req, func(page *armnetwork.ApplicationGatewaysClientListAvailableSSLPredefinedPoliciesResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListAvailableSSLPredefinedPoliciesPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		a.newListAvailableSSLPredefinedPoliciesPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListAvailableSSLPredefinedPoliciesPager) {
+		a.newListAvailableSSLPredefinedPoliciesPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (a *ApplicationGatewaysServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if a.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := a.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/applicationGateways`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := a.srv.NewListPager(resourceGroupNameParam, nil)
+		newListPager = &resp
+		a.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armnetwork.ApplicationGatewaysClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		a.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPager) {
+		a.newListPager.remove(req)
+	}
 	return resp, nil
 }
 

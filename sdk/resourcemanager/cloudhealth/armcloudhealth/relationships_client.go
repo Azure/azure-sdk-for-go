@@ -71,7 +71,7 @@ func (client *RelationshipsClient) BeginCreateOrUpdate(ctx context.Context, reso
 	}
 }
 
-// CreateOrUpdate - Create a Relationship
+// createOrUpdate - Create a Relationship
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *RelationshipsClient) createOrUpdate(ctx context.Context, resourceGroupName string, healthModelName string, relationshipName string, resource Relationship, options *RelationshipsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -93,7 +93,7 @@ func (client *RelationshipsClient) createOrUpdate(ctx context.Context, resourceG
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *RelationshipsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, healthModelName string, relationshipName string, resource Relationship, _ *RelationshipsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/relationships/{relationshipName}"
 	if client.subscriptionID == "" {
@@ -152,7 +152,7 @@ func (client *RelationshipsClient) BeginDelete(ctx context.Context, resourceGrou
 	}
 }
 
-// Delete - Delete a Relationship
+// deleteOperation - Delete a Relationship
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *RelationshipsClient) deleteOperation(ctx context.Context, resourceGroupName string, healthModelName string, relationshipName string, options *RelationshipsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -174,7 +174,7 @@ func (client *RelationshipsClient) deleteOperation(ctx context.Context, resource
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *RelationshipsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, healthModelName string, relationshipName string, _ *RelationshipsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/relationships/{relationshipName}"
 	if client.subscriptionID == "" {

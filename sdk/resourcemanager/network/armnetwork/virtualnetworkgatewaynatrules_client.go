@@ -70,7 +70,7 @@ func (client *VirtualNetworkGatewayNatRulesClient) BeginCreateOrUpdate(ctx conte
 	}
 }
 
-// CreateOrUpdate - Creates a nat rule to a scalable virtual network gateway if it doesn't exist else updates the existing
+// createOrUpdate - Creates a nat rule to a scalable virtual network gateway if it doesn't exist else updates the existing
 // nat rules.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *VirtualNetworkGatewayNatRulesClient) createOrUpdate(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, natRuleName string, natRuleParameters VirtualNetworkGatewayNatRule, options *VirtualNetworkGatewayNatRulesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
@@ -93,7 +93,7 @@ func (client *VirtualNetworkGatewayNatRulesClient) createOrUpdate(ctx context.Co
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *VirtualNetworkGatewayNatRulesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, natRuleName string, natRuleParameters VirtualNetworkGatewayNatRule, _ *VirtualNetworkGatewayNatRulesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworkGateways/{virtualNetworkGatewayName}/natRules/{natRuleName}"
 	if client.subscriptionID == "" {
@@ -151,7 +151,7 @@ func (client *VirtualNetworkGatewayNatRulesClient) BeginDelete(ctx context.Conte
 	}
 }
 
-// Delete - Deletes a nat rule.
+// deleteOperation - Deletes a nat rule.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *VirtualNetworkGatewayNatRulesClient) deleteOperation(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, natRuleName string, options *VirtualNetworkGatewayNatRulesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -173,7 +173,7 @@ func (client *VirtualNetworkGatewayNatRulesClient) deleteOperation(ctx context.C
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *VirtualNetworkGatewayNatRulesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, natRuleName string, _ *VirtualNetworkGatewayNatRulesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworkGateways/{virtualNetworkGatewayName}/natRules/{natRuleName}"
 	if client.subscriptionID == "" {

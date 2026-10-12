@@ -177,8 +177,8 @@ func ExampleMaintenanceWindowsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-07-02-preview/MaintenanceWindowsList.json
-func ExampleMaintenanceWindowsClient_NewListPager() {
+// Generated from example definition: 2026-07-02-preview/MaintenanceWindowsListBySubscription.json
+func ExampleMaintenanceWindowsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -188,7 +188,7 @@ func ExampleMaintenanceWindowsClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewMaintenanceWindowsClient().NewListPager("rg-maintenance", nil)
+	pager := clientFactory.NewMaintenanceWindowsClient().NewListBySubscriptionPager(nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -199,7 +199,7 @@ func ExampleMaintenanceWindowsClient_NewListPager() {
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armcontainerservice.MaintenanceWindowsClientListResponse{
+		// page = armcontainerservice.MaintenanceWindowsClientListBySubscriptionResponse{
 		// 	MaintenanceWindowResourceListResult: armcontainerservice.MaintenanceWindowResourceListResult{
 		// 		Value: []*armcontainerservice.MaintenanceWindowResource{
 		// 			{
@@ -270,8 +270,8 @@ func ExampleMaintenanceWindowsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-07-02-preview/MaintenanceWindowsListBySubscription.json
-func ExampleMaintenanceWindowsClient_NewListBySubscriptionPager() {
+// Generated from example definition: 2026-07-02-preview/MaintenanceWindowsList.json
+func ExampleMaintenanceWindowsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -281,7 +281,7 @@ func ExampleMaintenanceWindowsClient_NewListBySubscriptionPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewMaintenanceWindowsClient().NewListBySubscriptionPager(nil)
+	pager := clientFactory.NewMaintenanceWindowsClient().NewListPager("rg-maintenance", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -292,7 +292,7 @@ func ExampleMaintenanceWindowsClient_NewListBySubscriptionPager() {
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armcontainerservice.MaintenanceWindowsClientListBySubscriptionResponse{
+		// page = armcontainerservice.MaintenanceWindowsClientListResponse{
 		// 	MaintenanceWindowResourceListResult: armcontainerservice.MaintenanceWindowResourceListResult{
 		// 		Value: []*armcontainerservice.MaintenanceWindowResource{
 		// 			{

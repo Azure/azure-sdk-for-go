@@ -25,10 +25,6 @@ type AccountsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	AddRootCollectionAdmin func(ctx context.Context, resourceGroupName string, accountName string, collectionAdminUpdate armpurview.CollectionAdminUpdate, options *armpurview.AccountsClientAddRootCollectionAdminOptions) (resp azfake.Responder[armpurview.AccountsClientAddRootCollectionAdminResponse], errResp azfake.ErrorResponder)
 
-	// CheckNameAvailability is the fake for method AccountsClient.CheckNameAvailability
-	// HTTP status codes to indicate success: http.StatusOK
-	CheckNameAvailability func(ctx context.Context, checkNameAvailabilityRequest armpurview.CheckNameAvailabilityRequest, options *armpurview.AccountsClientCheckNameAvailabilityOptions) (resp azfake.Responder[armpurview.AccountsClientCheckNameAvailabilityResponse], errResp azfake.ErrorResponder)
-
 	// BeginCreateOrUpdate is the fake for method AccountsClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
 	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, accountName string, account armpurview.Account, options *armpurview.AccountsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armpurview.AccountsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
@@ -37,9 +33,21 @@ type AccountsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, accountName string, options *armpurview.AccountsClientBeginDeleteOptions) (resp azfake.PollerResponder[armpurview.AccountsClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method AccountsClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, accountName string, accountUpdateParameters armpurview.AccountUpdateParameters, options *armpurview.AccountsClientBeginUpdateOptions) (resp azfake.PollerResponder[armpurview.AccountsClientUpdateResponse], errResp azfake.ErrorResponder)
+
+	// CheckNameAvailability is the fake for method AccountsClient.CheckNameAvailability
+	// HTTP status codes to indicate success: http.StatusOK
+	CheckNameAvailability func(ctx context.Context, checkNameAvailabilityRequest armpurview.CheckNameAvailabilityRequest, options *armpurview.AccountsClientCheckNameAvailabilityOptions) (resp azfake.Responder[armpurview.AccountsClientCheckNameAvailabilityResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method AccountsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, accountName string, options *armpurview.AccountsClientGetOptions) (resp azfake.Responder[armpurview.AccountsClientGetResponse], errResp azfake.ErrorResponder)
+
+	// ListKeys is the fake for method AccountsClient.ListKeys
+	// HTTP status codes to indicate success: http.StatusOK
+	ListKeys func(ctx context.Context, resourceGroupName string, accountName string, options *armpurview.AccountsClientListKeysOptions) (resp azfake.Responder[armpurview.AccountsClientListKeysResponse], errResp azfake.ErrorResponder)
 
 	// NewListByResourceGroupPager is the fake for method AccountsClient.NewListByResourceGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
@@ -48,14 +56,6 @@ type AccountsServer struct {
 	// NewListBySubscriptionPager is the fake for method AccountsClient.NewListBySubscriptionPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListBySubscriptionPager func(options *armpurview.AccountsClientListBySubscriptionOptions) (resp azfake.PagerResponder[armpurview.AccountsClientListBySubscriptionResponse])
-
-	// ListKeys is the fake for method AccountsClient.ListKeys
-	// HTTP status codes to indicate success: http.StatusOK
-	ListKeys func(ctx context.Context, resourceGroupName string, accountName string, options *armpurview.AccountsClientListKeysOptions) (resp azfake.Responder[armpurview.AccountsClientListKeysResponse], errResp azfake.ErrorResponder)
-
-	// BeginUpdate is the fake for method AccountsClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, accountName string, accountUpdateParameters armpurview.AccountUpdateParameters, options *armpurview.AccountsClientBeginUpdateOptions) (resp azfake.PollerResponder[armpurview.AccountsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewAccountsServerTransport creates a new instance of AccountsServerTransport with the provided implementation.
@@ -66,9 +66,9 @@ func NewAccountsServerTransport(srv *AccountsServer) *AccountsServerTransport {
 		srv:                         srv,
 		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armpurview.AccountsClientCreateOrUpdateResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armpurview.AccountsClientDeleteResponse]](),
+		beginUpdate:                 newTracker[azfake.PollerResponder[armpurview.AccountsClientUpdateResponse]](),
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armpurview.AccountsClientListByResourceGroupResponse]](),
 		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armpurview.AccountsClientListBySubscriptionResponse]](),
-		beginUpdate:                 newTracker[azfake.PollerResponder[armpurview.AccountsClientUpdateResponse]](),
 	}
 }
 
@@ -78,9 +78,9 @@ type AccountsServerTransport struct {
 	srv                         *AccountsServer
 	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armpurview.AccountsClientCreateOrUpdateResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armpurview.AccountsClientDeleteResponse]]
+	beginUpdate                 *tracker[azfake.PollerResponder[armpurview.AccountsClientUpdateResponse]]
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armpurview.AccountsClientListByResourceGroupResponse]]
 	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armpurview.AccountsClientListBySubscriptionResponse]]
-	beginUpdate                 *tracker[azfake.PollerResponder[armpurview.AccountsClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for AccountsServerTransport.
@@ -106,22 +106,22 @@ func (a *AccountsServerTransport) dispatchToMethodFake(req *http.Request, method
 			switch method {
 			case "AccountsClient.AddRootCollectionAdmin":
 				res.resp, res.err = a.dispatchAddRootCollectionAdmin(req)
-			case "AccountsClient.CheckNameAvailability":
-				res.resp, res.err = a.dispatchCheckNameAvailability(req)
 			case "AccountsClient.BeginCreateOrUpdate":
 				res.resp, res.err = a.dispatchBeginCreateOrUpdate(req)
 			case "AccountsClient.BeginDelete":
 				res.resp, res.err = a.dispatchBeginDelete(req)
+			case "AccountsClient.BeginUpdate":
+				res.resp, res.err = a.dispatchBeginUpdate(req)
+			case "AccountsClient.CheckNameAvailability":
+				res.resp, res.err = a.dispatchCheckNameAvailability(req)
 			case "AccountsClient.Get":
 				res.resp, res.err = a.dispatchGet(req)
+			case "AccountsClient.ListKeys":
+				res.resp, res.err = a.dispatchListKeys(req)
 			case "AccountsClient.NewListByResourceGroupPager":
 				res.resp, res.err = a.dispatchNewListByResourceGroupPager(req)
 			case "AccountsClient.NewListBySubscriptionPager":
 				res.resp, res.err = a.dispatchNewListBySubscriptionPager(req)
-			case "AccountsClient.ListKeys":
-				res.resp, res.err = a.dispatchListKeys(req)
-			case "AccountsClient.BeginUpdate":
-				res.resp, res.err = a.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -169,35 +169,6 @@ func (a *AccountsServerTransport) dispatchAddRootCollectionAdmin(req *http.Reque
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.NewResponse(respContent, req, nil)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (a *AccountsServerTransport) dispatchCheckNameAvailability(req *http.Request) (*http.Response, error) {
-	if a.srv.CheckNameAvailability == nil {
-		return nil, &nonRetriableError{errors.New("fake for method CheckNameAvailability not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Purview/checkNameAvailability`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 2 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armpurview.CheckNameAvailabilityRequest](req)
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := a.srv.CheckNameAvailability(req.Context(), body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CheckNameAvailabilityResult, req)
 	if err != nil {
 		return nil, err
 	}
@@ -296,6 +267,83 @@ func (a *AccountsServerTransport) dispatchBeginDelete(req *http.Request) (*http.
 	return resp, nil
 }
 
+func (a *AccountsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if a.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := a.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Purview/accounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armpurview.AccountUpdateParameters](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := a.srv.BeginUpdate(req.Context(), resourceGroupNameParam, accountNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		a.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		a.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		a.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (a *AccountsServerTransport) dispatchCheckNameAvailability(req *http.Request) (*http.Response, error) {
+	if a.srv.CheckNameAvailability == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CheckNameAvailability not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Purview/checkNameAvailability`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 2 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armpurview.CheckNameAvailabilityRequest](req)
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := a.srv.CheckNameAvailability(req.Context(), body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CheckNameAvailabilityResult, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
 func (a *AccountsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if a.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -323,6 +371,39 @@ func (a *AccountsServerTransport) dispatchGet(req *http.Request) (*http.Response
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Account, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (a *AccountsServerTransport) dispatchListKeys(req *http.Request) (*http.Response, error) {
+	if a.srv.ListKeys == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListKeys not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Purview/accounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listkeys`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := a.srv.ListKeys(req.Context(), resourceGroupNameParam, accountNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).AccessKeys, req)
 	if err != nil {
 		return nil, err
 	}
@@ -412,87 +493,6 @@ func (a *AccountsServerTransport) dispatchNewListBySubscriptionPager(req *http.R
 	if !server.PagerResponderMore(newListBySubscriptionPager) {
 		a.newListBySubscriptionPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (a *AccountsServerTransport) dispatchListKeys(req *http.Request) (*http.Response, error) {
-	if a.srv.ListKeys == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ListKeys not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Purview/accounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listkeys`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := a.srv.ListKeys(req.Context(), resourceGroupNameParam, accountNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).AccessKeys, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (a *AccountsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if a.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := a.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Purview/accounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armpurview.AccountUpdateParameters](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := a.srv.BeginUpdate(req.Context(), resourceGroupNameParam, accountNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		a.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		a.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		a.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

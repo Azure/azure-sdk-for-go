@@ -69,7 +69,7 @@ func (client *SecurityPerimeterLinkReferencesClient) BeginDelete(ctx context.Con
 	}
 }
 
-// Delete - Deletes an NSP LinkReference resource.
+// deleteOperation - Deletes an NSP LinkReference resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *SecurityPerimeterLinkReferencesClient) deleteOperation(ctx context.Context, resourceGroupName string, networkSecurityPerimeterName string, linkReferenceName string, options *SecurityPerimeterLinkReferencesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -91,7 +91,7 @@ func (client *SecurityPerimeterLinkReferencesClient) deleteOperation(ctx context
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *SecurityPerimeterLinkReferencesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, networkSecurityPerimeterName string, linkReferenceName string, _ *SecurityPerimeterLinkReferencesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkSecurityPerimeters/{networkSecurityPerimeterName}/linkReferences/{linkReferenceName}"
 	if client.subscriptionID == "" {

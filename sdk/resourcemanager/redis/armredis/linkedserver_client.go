@@ -69,7 +69,7 @@ func (client *LinkedServerClient) BeginCreate(ctx context.Context, resourceGroup
 	}
 }
 
-// Create - Adds a linked server to the Redis cache (requires Premium SKU).
+// create - Adds a linked server to the Redis cache (requires Premium SKU).
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *LinkedServerClient) create(ctx context.Context, resourceGroupName string, name string, linkedServerName string, parameters LinkedServerCreateParameters, options *LinkedServerClientBeginCreateOptions) (*http.Response, error) {
 	var err error
@@ -91,7 +91,7 @@ func (client *LinkedServerClient) create(ctx context.Context, resourceGroupName 
 	return httpResp, nil
 }
 
-// createCreateRequest creates the Create request.
+// createCreateRequest creates the create request.
 func (client *LinkedServerClient) createCreateRequest(ctx context.Context, resourceGroupName string, name string, linkedServerName string, parameters LinkedServerCreateParameters, _ *LinkedServerClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis/{name}/linkedServers/{linkedServerName}"
 	if client.subscriptionID == "" {
@@ -149,7 +149,7 @@ func (client *LinkedServerClient) BeginDelete(ctx context.Context, resourceGroup
 	}
 }
 
-// Delete - Deletes the linked server from a redis cache (requires Premium SKU).
+// deleteOperation - Deletes the linked server from a redis cache (requires Premium SKU).
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *LinkedServerClient) deleteOperation(ctx context.Context, resourceGroupName string, name string, linkedServerName string, options *LinkedServerClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -171,7 +171,7 @@ func (client *LinkedServerClient) deleteOperation(ctx context.Context, resourceG
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *LinkedServerClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, name string, linkedServerName string, _ *LinkedServerClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis/{name}/linkedServers/{linkedServerName}"
 	if client.subscriptionID == "" {

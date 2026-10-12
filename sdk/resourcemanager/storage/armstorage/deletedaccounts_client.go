@@ -30,6 +30,9 @@ type DeletedAccountsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewDeletedAccountsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DeletedAccountsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -65,7 +68,7 @@ func (client *DeletedAccountsClient) Get(ctx context.Context, deletedAccountName
 func (client *DeletedAccountsClient) getCreateRequest(ctx context.Context, deletedAccountName string, location string, _ *DeletedAccountsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Storage/locations/{location}/deletedAccounts/{deletedAccountName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if deletedAccountName == "" {
@@ -135,7 +138,7 @@ func (client *DeletedAccountsClient) listCreateRequest(ctx context.Context, next
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Storage/deletedAccounts"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))

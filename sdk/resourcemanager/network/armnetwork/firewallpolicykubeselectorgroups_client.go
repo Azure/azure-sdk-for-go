@@ -70,7 +70,7 @@ func (client *FirewallPolicyKubeSelectorGroupsClient) BeginCreateOrUpdate(ctx co
 	}
 }
 
-// CreateOrUpdate - Creates or updates the specified FirewallPolicyKubeSelectorGroup.
+// createOrUpdate - Creates or updates the specified FirewallPolicyKubeSelectorGroup.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *FirewallPolicyKubeSelectorGroupsClient) createOrUpdate(ctx context.Context, resourceGroupName string, firewallPolicyName string, kubeSelectorGroupName string, resource FirewallPolicyKubeSelectorGroup, options *FirewallPolicyKubeSelectorGroupsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -92,7 +92,7 @@ func (client *FirewallPolicyKubeSelectorGroupsClient) createOrUpdate(ctx context
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *FirewallPolicyKubeSelectorGroupsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, firewallPolicyName string, kubeSelectorGroupName string, resource FirewallPolicyKubeSelectorGroup, _ *FirewallPolicyKubeSelectorGroupsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/firewallPolicies/{firewallPolicyName}/kubeSelectorGroups/{kubeSelectorGroupName}"
 	if client.subscriptionID == "" {
@@ -151,7 +151,7 @@ func (client *FirewallPolicyKubeSelectorGroupsClient) BeginDelete(ctx context.Co
 	}
 }
 
-// Delete - Deletes the specified FirewallPolicyKubeSelectorGroup.
+// deleteOperation - Deletes the specified FirewallPolicyKubeSelectorGroup.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *FirewallPolicyKubeSelectorGroupsClient) deleteOperation(ctx context.Context, resourceGroupName string, firewallPolicyName string, kubeSelectorGroupName string, options *FirewallPolicyKubeSelectorGroupsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -173,7 +173,7 @@ func (client *FirewallPolicyKubeSelectorGroupsClient) deleteOperation(ctx contex
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *FirewallPolicyKubeSelectorGroupsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, firewallPolicyName string, kubeSelectorGroupName string, _ *FirewallPolicyKubeSelectorGroupsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/firewallPolicies/{firewallPolicyName}/kubeSelectorGroups/{kubeSelectorGroupName}"
 	if client.subscriptionID == "" {

@@ -21,13 +21,13 @@ import (
 
 // OccurrencesServer is a fake server for instances of the armcomputeschedule.OccurrencesClient type.
 type OccurrencesServer struct {
-	// Cancel is the fake for method OccurrencesClient.Cancel
-	// HTTP status codes to indicate success: http.StatusOK
-	Cancel func(ctx context.Context, resourceGroupName string, scheduledActionName string, occurrenceID string, body armcomputeschedule.CancelOccurrenceRequest, options *armcomputeschedule.OccurrencesClientCancelOptions) (resp azfake.Responder[armcomputeschedule.OccurrencesClientCancelResponse], errResp azfake.ErrorResponder)
-
 	// BeginDelay is the fake for method OccurrencesClient.BeginDelay
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginDelay func(ctx context.Context, resourceGroupName string, scheduledActionName string, occurrenceID string, body armcomputeschedule.DelayRequest, options *armcomputeschedule.OccurrencesClientBeginDelayOptions) (resp azfake.PollerResponder[armcomputeschedule.OccurrencesClientDelayResponse], errResp azfake.ErrorResponder)
+
+	// Cancel is the fake for method OccurrencesClient.Cancel
+	// HTTP status codes to indicate success: http.StatusOK
+	Cancel func(ctx context.Context, resourceGroupName string, scheduledActionName string, occurrenceID string, body armcomputeschedule.CancelOccurrenceRequest, options *armcomputeschedule.OccurrencesClientCancelOptions) (resp azfake.Responder[armcomputeschedule.OccurrencesClientCancelResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method OccurrencesClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
@@ -84,10 +84,10 @@ func (o *OccurrencesServerTransport) dispatchToMethodFake(req *http.Request, met
 		}
 		if !intercepted {
 			switch method {
-			case "OccurrencesClient.Cancel":
-				res.resp, res.err = o.dispatchCancel(req)
 			case "OccurrencesClient.BeginDelay":
 				res.resp, res.err = o.dispatchBeginDelay(req)
+			case "OccurrencesClient.Cancel":
+				res.resp, res.err = o.dispatchCancel(req)
 			case "OccurrencesClient.Get":
 				res.resp, res.err = o.dispatchGet(req)
 			case "OccurrencesClient.NewListByScheduledActionPager":
@@ -108,47 +108,6 @@ func (o *OccurrencesServerTransport) dispatchToMethodFake(req *http.Request, met
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
-}
-
-func (o *OccurrencesServerTransport) dispatchCancel(req *http.Request) (*http.Response, error) {
-	if o.srv.Cancel == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Cancel not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ComputeSchedule/scheduledActions/(?P<scheduledActionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/occurrences/(?P<occurrenceId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/cancel`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armcomputeschedule.CancelOccurrenceRequest](req)
-	if err != nil {
-		return nil, err
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	scheduledActionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("scheduledActionName")])
-	if err != nil {
-		return nil, err
-	}
-	occurrenceIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("occurrenceId")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := o.srv.Cancel(req.Context(), resourceGroupNameParam, scheduledActionNameParam, occurrenceIDParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).RecurringActionsResourceOperationResult, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
 }
 
 func (o *OccurrencesServerTransport) dispatchBeginDelay(req *http.Request) (*http.Response, error) {
@@ -200,6 +159,47 @@ func (o *OccurrencesServerTransport) dispatchBeginDelay(req *http.Request) (*htt
 		o.beginDelay.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (o *OccurrencesServerTransport) dispatchCancel(req *http.Request) (*http.Response, error) {
+	if o.srv.Cancel == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Cancel not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ComputeSchedule/scheduledActions/(?P<scheduledActionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/occurrences/(?P<occurrenceId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/cancel`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armcomputeschedule.CancelOccurrenceRequest](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	scheduledActionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("scheduledActionName")])
+	if err != nil {
+		return nil, err
+	}
+	occurrenceIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("occurrenceId")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := o.srv.Cancel(req.Context(), resourceGroupNameParam, scheduledActionNameParam, occurrenceIDParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).RecurringActionsResourceOperationResult, req)
+	if err != nil {
+		return nil, err
+	}
 	return resp, nil
 }
 

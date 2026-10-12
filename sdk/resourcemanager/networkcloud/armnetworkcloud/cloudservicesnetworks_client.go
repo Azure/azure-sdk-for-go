@@ -69,7 +69,7 @@ func (client *CloudServicesNetworksClient) BeginCreateOrUpdate(ctx context.Conte
 	}
 }
 
-// CreateOrUpdate - Create a new cloud services network or update the properties of the existing cloud services network.
+// createOrUpdate - Create a new cloud services network or update the properties of the existing cloud services network.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *CloudServicesNetworksClient) createOrUpdate(ctx context.Context, resourceGroupName string, cloudServicesNetworkName string, cloudServicesNetworkParameters CloudServicesNetwork, options *CloudServicesNetworksClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -91,7 +91,7 @@ func (client *CloudServicesNetworksClient) createOrUpdate(ctx context.Context, r
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *CloudServicesNetworksClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, cloudServicesNetworkName string, cloudServicesNetworkParameters CloudServicesNetwork, options *CloudServicesNetworksClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/cloudServicesNetworks/{cloudServicesNetworkName}"
 	if client.subscriptionID == "" {
@@ -150,7 +150,7 @@ func (client *CloudServicesNetworksClient) BeginDelete(ctx context.Context, reso
 	}
 }
 
-// Delete - Delete the provided cloud services network.
+// deleteOperation - Delete the provided cloud services network.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *CloudServicesNetworksClient) deleteOperation(ctx context.Context, resourceGroupName string, cloudServicesNetworkName string, options *CloudServicesNetworksClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -172,7 +172,7 @@ func (client *CloudServicesNetworksClient) deleteOperation(ctx context.Context, 
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *CloudServicesNetworksClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, cloudServicesNetworkName string, options *CloudServicesNetworksClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/cloudServicesNetworks/{cloudServicesNetworkName}"
 	if client.subscriptionID == "" {
@@ -199,6 +199,90 @@ func (client *CloudServicesNetworksClient) deleteCreateRequest(ctx context.Conte
 	}
 	if options != nil && options.IfNoneMatch != nil {
 		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
+	}
+	return req, nil
+}
+
+// BeginUpdate - Update properties of the provided cloud services network, or update the tags associated with it. Properties
+// and tag updates can be done independently.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - cloudServicesNetworkName - The name of the cloud services network.
+//   - cloudServicesNetworkUpdateParameters - The request body.
+//   - options - CloudServicesNetworksClientBeginUpdateOptions contains the optional parameters for the CloudServicesNetworksClient.BeginUpdate
+//     method.
+func (client *CloudServicesNetworksClient) BeginUpdate(ctx context.Context, resourceGroupName string, cloudServicesNetworkName string, cloudServicesNetworkUpdateParameters CloudServicesNetworkPatchParameters, options *CloudServicesNetworksClientBeginUpdateOptions) (*runtime.Poller[CloudServicesNetworksClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, cloudServicesNetworkName, cloudServicesNetworkUpdateParameters, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[CloudServicesNetworksClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[CloudServicesNetworksClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Update properties of the provided cloud services network, or update the tags associated with it. Properties and
+// tag updates can be done independently.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *CloudServicesNetworksClient) update(ctx context.Context, resourceGroupName string, cloudServicesNetworkName string, cloudServicesNetworkUpdateParameters CloudServicesNetworkPatchParameters, options *CloudServicesNetworksClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "CloudServicesNetworksClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, cloudServicesNetworkName, cloudServicesNetworkUpdateParameters, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *CloudServicesNetworksClient) updateCreateRequest(ctx context.Context, resourceGroupName string, cloudServicesNetworkName string, cloudServicesNetworkUpdateParameters CloudServicesNetworkPatchParameters, options *CloudServicesNetworksClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/cloudServicesNetworks/{cloudServicesNetworkName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if cloudServicesNetworkName == "" {
+		return nil, errors.New("parameter cloudServicesNetworkName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{cloudServicesNetworkName}", url.PathEscape(cloudServicesNetworkName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260701)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	if options != nil && options.IfMatch != nil {
+		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
+	}
+	if options != nil && options.IfNoneMatch != nil {
+		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
+	}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, cloudServicesNetworkUpdateParameters); err != nil {
+		return nil, err
 	}
 	return req, nil
 }
@@ -413,88 +497,4 @@ func (client *CloudServicesNetworksClient) listBySubscriptionHandleResponse(resp
 		return CloudServicesNetworksClientListBySubscriptionResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginUpdate - Update properties of the provided cloud services network, or update the tags associated with it. Properties
-// and tag updates can be done independently.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - cloudServicesNetworkName - The name of the cloud services network.
-//   - cloudServicesNetworkUpdateParameters - The request body.
-//   - options - CloudServicesNetworksClientBeginUpdateOptions contains the optional parameters for the CloudServicesNetworksClient.BeginUpdate
-//     method.
-func (client *CloudServicesNetworksClient) BeginUpdate(ctx context.Context, resourceGroupName string, cloudServicesNetworkName string, cloudServicesNetworkUpdateParameters CloudServicesNetworkPatchParameters, options *CloudServicesNetworksClientBeginUpdateOptions) (*runtime.Poller[CloudServicesNetworksClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, cloudServicesNetworkName, cloudServicesNetworkUpdateParameters, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[CloudServicesNetworksClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[CloudServicesNetworksClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Update properties of the provided cloud services network, or update the tags associated with it. Properties and
-// tag updates can be done independently.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *CloudServicesNetworksClient) update(ctx context.Context, resourceGroupName string, cloudServicesNetworkName string, cloudServicesNetworkUpdateParameters CloudServicesNetworkPatchParameters, options *CloudServicesNetworksClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "CloudServicesNetworksClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, cloudServicesNetworkName, cloudServicesNetworkUpdateParameters, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *CloudServicesNetworksClient) updateCreateRequest(ctx context.Context, resourceGroupName string, cloudServicesNetworkName string, cloudServicesNetworkUpdateParameters CloudServicesNetworkPatchParameters, options *CloudServicesNetworksClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/cloudServicesNetworks/{cloudServicesNetworkName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if cloudServicesNetworkName == "" {
-		return nil, errors.New("parameter cloudServicesNetworkName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{cloudServicesNetworkName}", url.PathEscape(cloudServicesNetworkName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260701)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	if options != nil && options.IfMatch != nil {
-		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
-	}
-	if options != nil && options.IfNoneMatch != nil {
-		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
-	}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, cloudServicesNetworkUpdateParameters); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

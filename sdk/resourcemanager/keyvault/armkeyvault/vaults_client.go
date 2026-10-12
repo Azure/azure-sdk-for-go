@@ -45,6 +45,150 @@ func NewVaultsClient(subscriptionID string, credential azcore.TokenCredential, o
 	return client, nil
 }
 
+// BeginCreateOrUpdate - Create or update a key vault in the specified subscription.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - vaultName - The name of the vault.
+//   - parameters - Parameters to create or update the vault
+//   - options - VaultsClientBeginCreateOrUpdateOptions contains the optional parameters for the VaultsClient.BeginCreateOrUpdate
+//     method.
+func (client *VaultsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, vaultName string, parameters VaultCreateOrUpdateParameters, options *VaultsClientBeginCreateOrUpdateOptions) (*runtime.Poller[VaultsClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, vaultName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VaultsClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[VaultsClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// createOrUpdate - Create or update a key vault in the specified subscription.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *VaultsClient) createOrUpdate(ctx context.Context, resourceGroupName string, vaultName string, parameters VaultCreateOrUpdateParameters, options *VaultsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "VaultsClient.BeginCreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, vaultName, parameters, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// createOrUpdateCreateRequest creates the createOrUpdate request.
+func (client *VaultsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, parameters VaultCreateOrUpdateParameters, _ *VaultsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{vaultName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if vaultName == "" {
+		return nil, errors.New("parameter vaultName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{vaultName}", url.PathEscape(vaultName))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260515)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginPurgeDeleted - Permanently deletes the specified vault. aka Purges the deleted Azure key vault.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - options - VaultsClientBeginPurgeDeletedOptions contains the optional parameters for the VaultsClient.BeginPurgeDeleted
+//     method.
+func (client *VaultsClient) BeginPurgeDeleted(ctx context.Context, vaultName string, location string, options *VaultsClientBeginPurgeDeletedOptions) (*runtime.Poller[VaultsClientPurgeDeletedResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.purgeDeleted(ctx, vaultName, location, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VaultsClientPurgeDeletedResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[VaultsClientPurgeDeletedResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// purgeDeleted - Permanently deletes the specified vault. aka Purges the deleted Azure key vault.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *VaultsClient) purgeDeleted(ctx context.Context, vaultName string, location string, options *VaultsClientBeginPurgeDeletedOptions) (*http.Response, error) {
+	var err error
+	const operationName = "VaultsClient.BeginPurgeDeleted"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.purgeDeletedCreateRequest(ctx, vaultName, location, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// purgeDeletedCreateRequest creates the purgeDeleted request.
+func (client *VaultsClient) purgeDeletedCreateRequest(ctx context.Context, vaultName string, location string, _ *VaultsClientBeginPurgeDeletedOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.KeyVault/locations/{location}/deletedVaults/{vaultName}/purge"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if vaultName == "" {
+		return nil, errors.New("parameter vaultName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{vaultName}", url.PathEscape(vaultName))
+	if location == "" {
+		return nil, errors.New("parameter location cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260515)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
 // CheckNameAvailability - Checks that the vault name is valid and is not already in use.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - vaultName - The name of the vault.
@@ -99,82 +243,6 @@ func (client *VaultsClient) checkNameAvailabilityHandleResponse(resp *http.Respo
 		return VaultsClientCheckNameAvailabilityResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginCreateOrUpdate - Create or update a key vault in the specified subscription.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - vaultName - The name of the vault.
-//   - parameters - Parameters to create or update the vault
-//   - options - VaultsClientBeginCreateOrUpdateOptions contains the optional parameters for the VaultsClient.BeginCreateOrUpdate
-//     method.
-func (client *VaultsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, vaultName string, parameters VaultCreateOrUpdateParameters, options *VaultsClientBeginCreateOrUpdateOptions) (*runtime.Poller[VaultsClientCreateOrUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.createOrUpdate(ctx, resourceGroupName, vaultName, parameters, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VaultsClientCreateOrUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[VaultsClientCreateOrUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// CreateOrUpdate - Create or update a key vault in the specified subscription.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *VaultsClient) createOrUpdate(ctx context.Context, resourceGroupName string, vaultName string, parameters VaultCreateOrUpdateParameters, options *VaultsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "VaultsClient.BeginCreateOrUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, vaultName, parameters, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *VaultsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, parameters VaultCreateOrUpdateParameters, _ *VaultsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{vaultName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if vaultName == "" {
-		return nil, errors.New("parameter vaultName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{vaultName}", url.PathEscape(vaultName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260515)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
-	return req, nil
 }
 
 // Delete - Deletes the specified Azure key vault.
@@ -341,76 +409,6 @@ func (client *VaultsClient) getDeletedHandleResponse(resp *http.Response, succes
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeletedVault); err != nil {
 		return VaultsClientGetDeletedResponse{}, err
-	}
-	return result, nil
-}
-
-// NewListPager - The List operation gets information about the vaults associated with the subscription.
-//   - options - VaultsClientListOptions contains the optional parameters for the VaultsClient.NewListPager method.
-func (client *VaultsClient) NewListPager(options *VaultsClientListOptions) *runtime.Pager[VaultsClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[VaultsClientListResponse]{
-		More: func(page VaultsClientListResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *VaultsClientListResponse) (VaultsClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "VaultsClient.NewListPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			req, err := client.listCreateRequest(ctx, nextLink, options)
-			if err != nil {
-				return VaultsClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return VaultsClientListResponse{}, err
-			}
-			return client.listHandleResponse(resp, http.StatusOK)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listCreateRequest creates the List request.
-func (client *VaultsClient) listCreateRequest(ctx context.Context, nextLink string, options *VaultsClientListOptions) (*policy.Request, error) {
-	firstPage := nextLink == ""
-	var req *policy.Request
-	var err error
-	if firstPage {
-		urlPath := "/subscriptions/{subscriptionId}/resources"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter subscriptionID cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	} else {
-		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
-	}
-	if err != nil {
-		return nil, err
-	}
-	if firstPage {
-		reqQP := req.Raw().URL.Query()
-		reqQP.Set("$filter", "resourceType eq 'Microsoft.KeyVault/vaults'")
-		if options != nil && options.Top != nil {
-			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
-		}
-		reqQP.Set("api-version", "2015-11-01")
-		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-		req.Raw().Header["Accept"] = []string{"application/json"}
-	}
-	return req, nil
-}
-
-// listHandleResponse handles the List response.
-func (client *VaultsClient) listHandleResponse(resp *http.Response, successCodes ...int) (VaultsClientListResponse, error) {
-	result := VaultsClientListResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ResourceListResult); err != nil {
-		return VaultsClientListResponse{}, err
 	}
 	return result, nil
 }
@@ -627,72 +625,74 @@ func (client *VaultsClient) listDeletedHandleResponse(resp *http.Response, succe
 	return result, nil
 }
 
-// BeginPurgeDeleted - Permanently deletes the specified vault. aka Purges the deleted Azure key vault.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - options - VaultsClientBeginPurgeDeletedOptions contains the optional parameters for the VaultsClient.BeginPurgeDeleted
-//     method.
-func (client *VaultsClient) BeginPurgeDeleted(ctx context.Context, vaultName string, location string, options *VaultsClientBeginPurgeDeletedOptions) (*runtime.Poller[VaultsClientPurgeDeletedResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.purgeDeleted(ctx, vaultName, location, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VaultsClientPurgeDeletedResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[VaultsClientPurgeDeletedResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
+// NewListPager - The List operation gets information about the vaults associated with the subscription.
+//   - options - VaultsClientListOptions contains the optional parameters for the VaultsClient.NewListPager method.
+func (client *VaultsClient) NewListPager(options *VaultsClientListOptions) *runtime.Pager[VaultsClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[VaultsClientListResponse]{
+		More: func(page VaultsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *VaultsClientListResponse) (VaultsClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "VaultsClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listCreateRequest(ctx, nextLink, options)
+			if err != nil {
+				return VaultsClientListResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return VaultsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
 }
 
-// PurgeDeleted - Permanently deletes the specified vault. aka Purges the deleted Azure key vault.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *VaultsClient) purgeDeleted(ctx context.Context, vaultName string, location string, options *VaultsClientBeginPurgeDeletedOptions) (*http.Response, error) {
+// listCreateRequest creates the List request.
+func (client *VaultsClient) listCreateRequest(ctx context.Context, nextLink string, options *VaultsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
 	var err error
-	const operationName = "VaultsClient.BeginPurgeDeleted"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.purgeDeletedCreateRequest(ctx, vaultName, location, options)
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resources"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
 	if err != nil {
 		return nil, err
 	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("$filter", "resourceType eq 'Microsoft.KeyVault/vaults'")
+		if options != nil && options.Top != nil {
+			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+		}
+		reqQP.Set("api-version", "2015-11-01")
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
+	return req, nil
 }
 
-// purgeDeletedCreateRequest creates the PurgeDeleted request.
-func (client *VaultsClient) purgeDeletedCreateRequest(ctx context.Context, vaultName string, location string, _ *VaultsClientBeginPurgeDeletedOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.KeyVault/locations/{location}/deletedVaults/{vaultName}/purge"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
+// listHandleResponse handles the List response.
+func (client *VaultsClient) listHandleResponse(resp *http.Response, successCodes ...int) (VaultsClientListResponse, error) {
+	result := VaultsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if vaultName == "" {
-		return nil, errors.New("parameter vaultName cannot be empty")
+	if err := runtime.UnmarshalAsJSON(resp, &result.ResourceListResult); err != nil {
+		return VaultsClientListResponse{}, err
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{vaultName}", url.PathEscape(vaultName))
-	if location == "" {
-		return nil, errors.New("parameter location cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260515)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	return req, nil
+	return result, nil
 }
 
 // Update - Update a key vault in the specified subscription.

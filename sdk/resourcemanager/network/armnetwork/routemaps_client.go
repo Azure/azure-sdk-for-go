@@ -69,7 +69,7 @@ func (client *RouteMapsClient) BeginCreateOrUpdate(ctx context.Context, resource
 	}
 }
 
-// CreateOrUpdate - Creates a RouteMap if it doesn't exist else updates the existing one.
+// createOrUpdate - Creates a RouteMap if it doesn't exist else updates the existing one.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *RouteMapsClient) createOrUpdate(ctx context.Context, resourceGroupName string, virtualHubName string, routeMapName string, routeMapParameters RouteMap, options *RouteMapsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -91,7 +91,7 @@ func (client *RouteMapsClient) createOrUpdate(ctx context.Context, resourceGroup
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *RouteMapsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, virtualHubName string, routeMapName string, routeMapParameters RouteMap, _ *RouteMapsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs/{virtualHubName}/routeMaps/{routeMapName}"
 	if client.subscriptionID == "" {
@@ -148,7 +148,7 @@ func (client *RouteMapsClient) BeginDelete(ctx context.Context, resourceGroupNam
 	}
 }
 
-// Delete - Deletes a RouteMap.
+// deleteOperation - Deletes a RouteMap.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *RouteMapsClient) deleteOperation(ctx context.Context, resourceGroupName string, virtualHubName string, routeMapName string, options *RouteMapsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -170,7 +170,7 @@ func (client *RouteMapsClient) deleteOperation(ctx context.Context, resourceGrou
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *RouteMapsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, virtualHubName string, routeMapName string, _ *RouteMapsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs/{virtualHubName}/routeMaps/{routeMapName}"
 	if client.subscriptionID == "" {

@@ -68,7 +68,7 @@ func (client *ManagerCommitsClient) BeginPost(ctx context.Context, resourceGroup
 	}
 }
 
-// Post - Post a Network Manager Commit.
+// post - Post a Network Manager Commit.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ManagerCommitsClient) post(ctx context.Context, resourceGroupName string, networkManagerName string, parameters ManagerCommit, options *ManagerCommitsClientBeginPostOptions) (*http.Response, error) {
 	var err error
@@ -90,7 +90,7 @@ func (client *ManagerCommitsClient) post(ctx context.Context, resourceGroupName 
 	return httpResp, nil
 }
 
-// postCreateRequest creates the Post request.
+// postCreateRequest creates the post request.
 func (client *ManagerCommitsClient) postCreateRequest(ctx context.Context, resourceGroupName string, networkManagerName string, parameters ManagerCommit, _ *ManagerCommitsClientBeginPostOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkManagers/{networkManagerName}/commit"
 	if client.subscriptionID == "" {

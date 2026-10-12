@@ -68,7 +68,7 @@ func (client *ExtendedServerBlobAuditingPoliciesClient) BeginCreateOrUpdate(ctx 
 	}
 }
 
-// CreateOrUpdate - Creates or updates an extended server's blob auditing policy.
+// createOrUpdate - Creates or updates an extended server's blob auditing policy.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ExtendedServerBlobAuditingPoliciesClient) createOrUpdate(ctx context.Context, resourceGroupName string, serverName string, parameters ExtendedServerBlobAuditingPolicy, options *ExtendedServerBlobAuditingPoliciesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -90,7 +90,7 @@ func (client *ExtendedServerBlobAuditingPoliciesClient) createOrUpdate(ctx conte
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *ExtendedServerBlobAuditingPoliciesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, parameters ExtendedServerBlobAuditingPolicy, _ *ExtendedServerBlobAuditingPoliciesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/extendedAuditingSettings/{blobAuditingPolicyName}"
 	if client.subscriptionID == "" {

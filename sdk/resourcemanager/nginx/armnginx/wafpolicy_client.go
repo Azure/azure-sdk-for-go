@@ -69,7 +69,7 @@ func (client *WafPolicyClient) BeginCreate(ctx context.Context, resourceGroupNam
 	}
 }
 
-// Create - Create or update the Nginx Waf Policy for given Nginx deployment
+// create - Create or update the Nginx Waf Policy for given Nginx deployment
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *WafPolicyClient) create(ctx context.Context, resourceGroupName string, deploymentName string, wafPolicyName string, body DeploymentWafPolicy, options *WafPolicyClientBeginCreateOptions) (*http.Response, error) {
 	var err error
@@ -91,7 +91,7 @@ func (client *WafPolicyClient) create(ctx context.Context, resourceGroupName str
 	return httpResp, nil
 }
 
-// createCreateRequest creates the Create request.
+// createCreateRequest creates the create request.
 func (client *WafPolicyClient) createCreateRequest(ctx context.Context, resourceGroupName string, deploymentName string, wafPolicyName string, body DeploymentWafPolicy, _ *WafPolicyClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Nginx.NginxPlus/nginxDeployments/{deploymentName}/wafPolicies/{wafPolicyName}"
 	if client.subscriptionID == "" {
@@ -148,7 +148,7 @@ func (client *WafPolicyClient) BeginDelete(ctx context.Context, resourceGroupNam
 	}
 }
 
-// Delete - Reset the Nginx Waf Policy of given Nginx deployment to default
+// deleteOperation - Reset the Nginx Waf Policy of given Nginx deployment to default
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *WafPolicyClient) deleteOperation(ctx context.Context, resourceGroupName string, deploymentName string, wafPolicyName string, options *WafPolicyClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -170,7 +170,7 @@ func (client *WafPolicyClient) deleteOperation(ctx context.Context, resourceGrou
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *WafPolicyClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, deploymentName string, wafPolicyName string, _ *WafPolicyClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Nginx.NginxPlus/nginxDeployments/{deploymentName}/wafPolicies/{wafPolicyName}"
 	if client.subscriptionID == "" {

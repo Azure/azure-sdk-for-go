@@ -68,7 +68,7 @@ func (client *CloudAccountsClient) BeginCreateOrUpdate(ctx context.Context, reso
 	}
 }
 
-// CreateOrUpdate - Create a CloudAccount
+// createOrUpdate - Create a CloudAccount
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *CloudAccountsClient) createOrUpdate(ctx context.Context, resourceGroupName string, cloudAccountName string, resource CloudAccount, options *CloudAccountsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -90,7 +90,7 @@ func (client *CloudAccountsClient) createOrUpdate(ctx context.Context, resourceG
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *CloudAccountsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, cloudAccountName string, resource CloudAccount, _ *CloudAccountsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Commvault.ContentStore/cloudAccounts/{cloudAccountName}"
 	if client.subscriptionID == "" {
@@ -143,7 +143,7 @@ func (client *CloudAccountsClient) BeginDelete(ctx context.Context, resourceGrou
 	}
 }
 
-// Delete - Delete a CloudAccount
+// deleteOperation - Delete a CloudAccount
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *CloudAccountsClient) deleteOperation(ctx context.Context, resourceGroupName string, cloudAccountName string, options *CloudAccountsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -165,7 +165,7 @@ func (client *CloudAccountsClient) deleteOperation(ctx context.Context, resource
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *CloudAccountsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, cloudAccountName string, _ *CloudAccountsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Commvault.ContentStore/cloudAccounts/{cloudAccountName}"
 	if client.subscriptionID == "" {
@@ -187,6 +187,163 @@ func (client *CloudAccountsClient) deleteCreateRequest(ctx context.Context, reso
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", version20260703Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginLinkSaaS - Links a new SaaS to the cloud account.
+//
+// Links a new SaaS to the cloud account.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - cloudAccountName - Name of the Cloud Account resource
+//   - body - The content of the action request
+//   - options - CloudAccountsClientBeginLinkSaaSOptions contains the optional parameters for the CloudAccountsClient.BeginLinkSaaS
+//     method.
+func (client *CloudAccountsClient) BeginLinkSaaS(ctx context.Context, resourceGroupName string, cloudAccountName string, body SaaSData, options *CloudAccountsClientBeginLinkSaaSOptions) (*runtime.Poller[CloudAccountsClientLinkSaaSResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.linkSaaS(ctx, resourceGroupName, cloudAccountName, body, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[CloudAccountsClientLinkSaaSResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[CloudAccountsClientLinkSaaSResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// linkSaaS - Links a new SaaS to the cloud account.
+//
+// Links a new SaaS to the cloud account.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *CloudAccountsClient) linkSaaS(ctx context.Context, resourceGroupName string, cloudAccountName string, body SaaSData, options *CloudAccountsClientBeginLinkSaaSOptions) (*http.Response, error) {
+	var err error
+	const operationName = "CloudAccountsClient.BeginLinkSaaS"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.linkSaaSCreateRequest(ctx, resourceGroupName, cloudAccountName, body, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// linkSaaSCreateRequest creates the linkSaaS request.
+func (client *CloudAccountsClient) linkSaaSCreateRequest(ctx context.Context, resourceGroupName string, cloudAccountName string, body SaaSData, _ *CloudAccountsClientBeginLinkSaaSOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Commvault.ContentStore/cloudAccounts/{cloudAccountName}/linkSaaS"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if cloudAccountName == "" {
+		return nil, errors.New("parameter cloudAccountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{cloudAccountName}", url.PathEscape(cloudAccountName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260703Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginUpdate - Update a CloudAccount
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - cloudAccountName - Name of the Cloud Account resource
+//   - properties - The resource properties to be updated.
+//   - options - CloudAccountsClientBeginUpdateOptions contains the optional parameters for the CloudAccountsClient.BeginUpdate
+//     method.
+func (client *CloudAccountsClient) BeginUpdate(ctx context.Context, resourceGroupName string, cloudAccountName string, properties CloudAccountUpdate, options *CloudAccountsClientBeginUpdateOptions) (*runtime.Poller[CloudAccountsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, cloudAccountName, properties, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[CloudAccountsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[CloudAccountsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Update a CloudAccount
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *CloudAccountsClient) update(ctx context.Context, resourceGroupName string, cloudAccountName string, properties CloudAccountUpdate, options *CloudAccountsClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "CloudAccountsClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, cloudAccountName, properties, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *CloudAccountsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, cloudAccountName string, properties CloudAccountUpdate, _ *CloudAccountsClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Commvault.ContentStore/cloudAccounts/{cloudAccountName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if cloudAccountName == "" {
+		return nil, errors.New("parameter cloudAccountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{cloudAccountName}", url.PathEscape(cloudAccountName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260703Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, properties); err != nil {
+		return nil, err
+	}
 	return req, nil
 }
 
@@ -309,87 +466,6 @@ func (client *CloudAccountsClient) latestLinkedSaaSHandleResponse(resp *http.Res
 		return CloudAccountsClientLatestLinkedSaaSResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginLinkSaaS - Links a new SaaS to the cloud account.
-//
-// Links a new SaaS to the cloud account.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - cloudAccountName - Name of the Cloud Account resource
-//   - body - The content of the action request
-//   - options - CloudAccountsClientBeginLinkSaaSOptions contains the optional parameters for the CloudAccountsClient.BeginLinkSaaS
-//     method.
-func (client *CloudAccountsClient) BeginLinkSaaS(ctx context.Context, resourceGroupName string, cloudAccountName string, body SaaSData, options *CloudAccountsClientBeginLinkSaaSOptions) (*runtime.Poller[CloudAccountsClientLinkSaaSResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.linkSaaS(ctx, resourceGroupName, cloudAccountName, body, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[CloudAccountsClientLinkSaaSResponse]{
-			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
-			Tracer:        client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[CloudAccountsClientLinkSaaSResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// LinkSaaS - Links a new SaaS to the cloud account.
-//
-// Links a new SaaS to the cloud account.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *CloudAccountsClient) linkSaaS(ctx context.Context, resourceGroupName string, cloudAccountName string, body SaaSData, options *CloudAccountsClientBeginLinkSaaSOptions) (*http.Response, error) {
-	var err error
-	const operationName = "CloudAccountsClient.BeginLinkSaaS"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.linkSaaSCreateRequest(ctx, resourceGroupName, cloudAccountName, body, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// linkSaaSCreateRequest creates the LinkSaaS request.
-func (client *CloudAccountsClient) linkSaaSCreateRequest(ctx context.Context, resourceGroupName string, cloudAccountName string, body SaaSData, _ *CloudAccountsClientBeginLinkSaaSOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Commvault.ContentStore/cloudAccounts/{cloudAccountName}/linkSaaS"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if cloudAccountName == "" {
-		return nil, errors.New("parameter cloudAccountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{cloudAccountName}", url.PathEscape(cloudAccountName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260703Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, body); err != nil {
-		return nil, err
-	}
-	return req, nil
 }
 
 // NewListByResourceGroupPager - List CloudAccount resources by resource group
@@ -529,80 +605,4 @@ func (client *CloudAccountsClient) listBySubscriptionHandleResponse(resp *http.R
 		return CloudAccountsClientListBySubscriptionResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginUpdate - Update a CloudAccount
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - cloudAccountName - Name of the Cloud Account resource
-//   - properties - The resource properties to be updated.
-//   - options - CloudAccountsClientBeginUpdateOptions contains the optional parameters for the CloudAccountsClient.BeginUpdate
-//     method.
-func (client *CloudAccountsClient) BeginUpdate(ctx context.Context, resourceGroupName string, cloudAccountName string, properties CloudAccountUpdate, options *CloudAccountsClientBeginUpdateOptions) (*runtime.Poller[CloudAccountsClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, cloudAccountName, properties, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[CloudAccountsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[CloudAccountsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Update a CloudAccount
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *CloudAccountsClient) update(ctx context.Context, resourceGroupName string, cloudAccountName string, properties CloudAccountUpdate, options *CloudAccountsClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "CloudAccountsClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, cloudAccountName, properties, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *CloudAccountsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, cloudAccountName string, properties CloudAccountUpdate, _ *CloudAccountsClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Commvault.ContentStore/cloudAccounts/{cloudAccountName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if cloudAccountName == "" {
-		return nil, errors.New("parameter cloudAccountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{cloudAccountName}", url.PathEscape(cloudAccountName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260703Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, properties); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

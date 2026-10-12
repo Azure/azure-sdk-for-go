@@ -69,7 +69,7 @@ func (client *InboundNatRulesClient) BeginCreateOrUpdate(ctx context.Context, re
 	}
 }
 
-// CreateOrUpdate - Creates or updates a load balancer inbound NAT rule.
+// createOrUpdate - Creates or updates a load balancer inbound NAT rule.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *InboundNatRulesClient) createOrUpdate(ctx context.Context, resourceGroupName string, loadBalancerName string, inboundNatRuleName string, inboundNatRuleParameters InboundNatRule, options *InboundNatRulesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -91,7 +91,7 @@ func (client *InboundNatRulesClient) createOrUpdate(ctx context.Context, resourc
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *InboundNatRulesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, loadBalancerName string, inboundNatRuleName string, inboundNatRuleParameters InboundNatRule, _ *InboundNatRulesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/loadBalancers/{loadBalancerName}/inboundNatRules/{inboundNatRuleName}"
 	if client.subscriptionID == "" {
@@ -149,7 +149,7 @@ func (client *InboundNatRulesClient) BeginDelete(ctx context.Context, resourceGr
 	}
 }
 
-// Delete - Deletes the specified load balancer inbound NAT rule.
+// deleteOperation - Deletes the specified load balancer inbound NAT rule.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *InboundNatRulesClient) deleteOperation(ctx context.Context, resourceGroupName string, loadBalancerName string, inboundNatRuleName string, options *InboundNatRulesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -171,7 +171,7 @@ func (client *InboundNatRulesClient) deleteOperation(ctx context.Context, resour
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *InboundNatRulesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, loadBalancerName string, inboundNatRuleName string, _ *InboundNatRulesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/loadBalancers/{loadBalancerName}/inboundNatRules/{inboundNatRuleName}"
 	if client.subscriptionID == "" {

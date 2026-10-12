@@ -69,10 +69,6 @@ type SKUsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	GetNestedResourceTypeThird func(ctx context.Context, providerNamespace string, resourceType string, nestedResourceTypeFirst string, nestedResourceTypeSecond string, nestedResourceTypeThird string, sku string, options *armproviderhub.SKUsClientGetNestedResourceTypeThirdOptions) (resp azfake.Responder[armproviderhub.SKUsClientGetNestedResourceTypeThirdResponse], errResp azfake.ErrorResponder)
 
-	// NewListByResourceTypeRegistrationsPager is the fake for method SKUsClient.NewListByResourceTypeRegistrationsPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListByResourceTypeRegistrationsPager func(providerNamespace string, resourceType string, options *armproviderhub.SKUsClientListByResourceTypeRegistrationsOptions) (resp azfake.PagerResponder[armproviderhub.SKUsClientListByResourceTypeRegistrationsResponse])
-
 	// NewListByResourceTypeRegistrationsNestedResourceTypeFirstPager is the fake for method SKUsClient.NewListByResourceTypeRegistrationsNestedResourceTypeFirstPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByResourceTypeRegistrationsNestedResourceTypeFirstPager func(providerNamespace string, resourceType string, nestedResourceTypeFirst string, options *armproviderhub.SKUsClientListByResourceTypeRegistrationsNestedResourceTypeFirstOptions) (resp azfake.PagerResponder[armproviderhub.SKUsClientListByResourceTypeRegistrationsNestedResourceTypeFirstResponse])
@@ -84,6 +80,10 @@ type SKUsServer struct {
 	// NewListByResourceTypeRegistrationsNestedResourceTypeThirdPager is the fake for method SKUsClient.NewListByResourceTypeRegistrationsNestedResourceTypeThirdPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByResourceTypeRegistrationsNestedResourceTypeThirdPager func(providerNamespace string, resourceType string, nestedResourceTypeFirst string, nestedResourceTypeSecond string, nestedResourceTypeThird string, options *armproviderhub.SKUsClientListByResourceTypeRegistrationsNestedResourceTypeThirdOptions) (resp azfake.PagerResponder[armproviderhub.SKUsClientListByResourceTypeRegistrationsNestedResourceTypeThirdResponse])
+
+	// NewListByResourceTypeRegistrationsPager is the fake for method SKUsClient.NewListByResourceTypeRegistrationsPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListByResourceTypeRegistrationsPager func(providerNamespace string, resourceType string, options *armproviderhub.SKUsClientListByResourceTypeRegistrationsOptions) (resp azfake.PagerResponder[armproviderhub.SKUsClientListByResourceTypeRegistrationsResponse])
 }
 
 // NewSKUsServerTransport creates a new instance of SKUsServerTransport with the provided implementation.
@@ -91,11 +91,11 @@ type SKUsServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewSKUsServerTransport(srv *SKUsServer) *SKUsServerTransport {
 	return &SKUsServerTransport{
-		srv:                                     srv,
-		newListByResourceTypeRegistrationsPager: newTracker[azfake.PagerResponder[armproviderhub.SKUsClientListByResourceTypeRegistrationsResponse]](),
+		srv: srv,
 		newListByResourceTypeRegistrationsNestedResourceTypeFirstPager:  newTracker[azfake.PagerResponder[armproviderhub.SKUsClientListByResourceTypeRegistrationsNestedResourceTypeFirstResponse]](),
 		newListByResourceTypeRegistrationsNestedResourceTypeSecondPager: newTracker[azfake.PagerResponder[armproviderhub.SKUsClientListByResourceTypeRegistrationsNestedResourceTypeSecondResponse]](),
 		newListByResourceTypeRegistrationsNestedResourceTypeThirdPager:  newTracker[azfake.PagerResponder[armproviderhub.SKUsClientListByResourceTypeRegistrationsNestedResourceTypeThirdResponse]](),
+		newListByResourceTypeRegistrationsPager:                         newTracker[azfake.PagerResponder[armproviderhub.SKUsClientListByResourceTypeRegistrationsResponse]](),
 	}
 }
 
@@ -103,10 +103,10 @@ func NewSKUsServerTransport(srv *SKUsServer) *SKUsServerTransport {
 // Don't use this type directly, use NewSKUsServerTransport instead.
 type SKUsServerTransport struct {
 	srv                                                             *SKUsServer
-	newListByResourceTypeRegistrationsPager                         *tracker[azfake.PagerResponder[armproviderhub.SKUsClientListByResourceTypeRegistrationsResponse]]
 	newListByResourceTypeRegistrationsNestedResourceTypeFirstPager  *tracker[azfake.PagerResponder[armproviderhub.SKUsClientListByResourceTypeRegistrationsNestedResourceTypeFirstResponse]]
 	newListByResourceTypeRegistrationsNestedResourceTypeSecondPager *tracker[azfake.PagerResponder[armproviderhub.SKUsClientListByResourceTypeRegistrationsNestedResourceTypeSecondResponse]]
 	newListByResourceTypeRegistrationsNestedResourceTypeThirdPager  *tracker[azfake.PagerResponder[armproviderhub.SKUsClientListByResourceTypeRegistrationsNestedResourceTypeThirdResponse]]
+	newListByResourceTypeRegistrationsPager                         *tracker[azfake.PagerResponder[armproviderhub.SKUsClientListByResourceTypeRegistrationsResponse]]
 }
 
 // Do implements the policy.Transporter interface for SKUsServerTransport.
@@ -154,14 +154,14 @@ func (s *SKUsServerTransport) dispatchToMethodFake(req *http.Request, method str
 				res.resp, res.err = s.dispatchGetNestedResourceTypeSecond(req)
 			case "SKUsClient.GetNestedResourceTypeThird":
 				res.resp, res.err = s.dispatchGetNestedResourceTypeThird(req)
-			case "SKUsClient.NewListByResourceTypeRegistrationsPager":
-				res.resp, res.err = s.dispatchNewListByResourceTypeRegistrationsPager(req)
 			case "SKUsClient.NewListByResourceTypeRegistrationsNestedResourceTypeFirstPager":
 				res.resp, res.err = s.dispatchNewListByResourceTypeRegistrationsNestedResourceTypeFirstPager(req)
 			case "SKUsClient.NewListByResourceTypeRegistrationsNestedResourceTypeSecondPager":
 				res.resp, res.err = s.dispatchNewListByResourceTypeRegistrationsNestedResourceTypeSecondPager(req)
 			case "SKUsClient.NewListByResourceTypeRegistrationsNestedResourceTypeThirdPager":
 				res.resp, res.err = s.dispatchNewListByResourceTypeRegistrationsNestedResourceTypeThirdPager(req)
+			case "SKUsClient.NewListByResourceTypeRegistrationsPager":
+				res.resp, res.err = s.dispatchNewListByResourceTypeRegistrationsPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -710,47 +710,6 @@ func (s *SKUsServerTransport) dispatchGetNestedResourceTypeThird(req *http.Reque
 	return resp, nil
 }
 
-func (s *SKUsServerTransport) dispatchNewListByResourceTypeRegistrationsPager(req *http.Request) (*http.Response, error) {
-	if s.srv.NewListByResourceTypeRegistrationsPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceTypeRegistrationsPager not implemented")}
-	}
-	newListByResourceTypeRegistrationsPager := s.newListByResourceTypeRegistrationsPager.get(req)
-	if newListByResourceTypeRegistrationsPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ProviderHub/providerRegistrations/(?P<providerNamespace>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourcetypeRegistrations/(?P<resourceType>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/skus`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		providerNamespaceParam, err := url.PathUnescape(matches[regex.SubexpIndex("providerNamespace")])
-		if err != nil {
-			return nil, err
-		}
-		resourceTypeParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceType")])
-		if err != nil {
-			return nil, err
-		}
-		resp := s.srv.NewListByResourceTypeRegistrationsPager(providerNamespaceParam, resourceTypeParam, nil)
-		newListByResourceTypeRegistrationsPager = &resp
-		s.newListByResourceTypeRegistrationsPager.add(req, newListByResourceTypeRegistrationsPager)
-		server.PagerResponderInjectNextLinks(newListByResourceTypeRegistrationsPager, req, func(page *armproviderhub.SKUsClientListByResourceTypeRegistrationsResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListByResourceTypeRegistrationsPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		s.newListByResourceTypeRegistrationsPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListByResourceTypeRegistrationsPager) {
-		s.newListByResourceTypeRegistrationsPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (s *SKUsServerTransport) dispatchNewListByResourceTypeRegistrationsNestedResourceTypeFirstPager(req *http.Request) (*http.Response, error) {
 	if s.srv.NewListByResourceTypeRegistrationsNestedResourceTypeFirstPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceTypeRegistrationsNestedResourceTypeFirstPager not implemented")}
@@ -894,6 +853,47 @@ func (s *SKUsServerTransport) dispatchNewListByResourceTypeRegistrationsNestedRe
 	}
 	if !server.PagerResponderMore(newListByResourceTypeRegistrationsNestedResourceTypeThirdPager) {
 		s.newListByResourceTypeRegistrationsNestedResourceTypeThirdPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (s *SKUsServerTransport) dispatchNewListByResourceTypeRegistrationsPager(req *http.Request) (*http.Response, error) {
+	if s.srv.NewListByResourceTypeRegistrationsPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceTypeRegistrationsPager not implemented")}
+	}
+	newListByResourceTypeRegistrationsPager := s.newListByResourceTypeRegistrationsPager.get(req)
+	if newListByResourceTypeRegistrationsPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ProviderHub/providerRegistrations/(?P<providerNamespace>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourcetypeRegistrations/(?P<resourceType>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/skus`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		providerNamespaceParam, err := url.PathUnescape(matches[regex.SubexpIndex("providerNamespace")])
+		if err != nil {
+			return nil, err
+		}
+		resourceTypeParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceType")])
+		if err != nil {
+			return nil, err
+		}
+		resp := s.srv.NewListByResourceTypeRegistrationsPager(providerNamespaceParam, resourceTypeParam, nil)
+		newListByResourceTypeRegistrationsPager = &resp
+		s.newListByResourceTypeRegistrationsPager.add(req, newListByResourceTypeRegistrationsPager)
+		server.PagerResponderInjectNextLinks(newListByResourceTypeRegistrationsPager, req, func(page *armproviderhub.SKUsClientListByResourceTypeRegistrationsResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListByResourceTypeRegistrationsPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		s.newListByResourceTypeRegistrationsPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListByResourceTypeRegistrationsPager) {
+		s.newListByResourceTypeRegistrationsPager.remove(req)
 	}
 	return resp, nil
 }

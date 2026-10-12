@@ -20,13 +20,13 @@ import (
 
 // Server is a fake server for instances of the armsubscription.Client type.
 type Server struct {
-	// BeginAcceptOwnership is the fake for method Client.BeginAcceptOwnership
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginAcceptOwnership func(ctx context.Context, subscriptionID string, body armsubscription.AcceptOwnershipRequest, options *armsubscription.ClientBeginAcceptOwnershipOptions) (resp azfake.PollerResponder[armsubscription.ClientAcceptOwnershipResponse], errResp azfake.ErrorResponder)
-
 	// AcceptOwnershipStatus is the fake for method Client.AcceptOwnershipStatus
 	// HTTP status codes to indicate success: http.StatusOK
 	AcceptOwnershipStatus func(ctx context.Context, subscriptionID string, options *armsubscription.ClientAcceptOwnershipStatusOptions) (resp azfake.Responder[armsubscription.ClientAcceptOwnershipStatusResponse], errResp azfake.ErrorResponder)
+
+	// BeginAcceptOwnership is the fake for method Client.BeginAcceptOwnership
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	BeginAcceptOwnership func(ctx context.Context, subscriptionID string, body armsubscription.AcceptOwnershipRequest, options *armsubscription.ClientBeginAcceptOwnershipOptions) (resp azfake.PollerResponder[armsubscription.ClientAcceptOwnershipResponse], errResp azfake.ErrorResponder)
 
 	// Cancel is the fake for method Client.Cancel
 	// HTTP status codes to indicate success: http.StatusOK
@@ -79,10 +79,10 @@ func (s *ServerTransport) dispatchToMethodFake(req *http.Request, method string)
 		}
 		if !intercepted {
 			switch method {
-			case "Client.BeginAcceptOwnership":
-				res.resp, res.err = s.dispatchBeginAcceptOwnership(req)
 			case "Client.AcceptOwnershipStatus":
 				res.resp, res.err = s.dispatchAcceptOwnershipStatus(req)
+			case "Client.BeginAcceptOwnership":
+				res.resp, res.err = s.dispatchBeginAcceptOwnership(req)
 			case "Client.Cancel":
 				res.resp, res.err = s.dispatchCancel(req)
 			case "Client.Enable":
@@ -103,6 +103,35 @@ func (s *ServerTransport) dispatchToMethodFake(req *http.Request, method string)
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
+}
+
+func (s *ServerTransport) dispatchAcceptOwnershipStatus(req *http.Request) (*http.Response, error) {
+	if s.srv.AcceptOwnershipStatus == nil {
+		return nil, &nonRetriableError{errors.New("fake for method AcceptOwnershipStatus not implemented")}
+	}
+	const regexStr = `/providers/Microsoft\.Subscription/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/acceptOwnershipStatus`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 2 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	subscriptionIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("subscriptionId")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := s.srv.AcceptOwnershipStatus(req.Context(), subscriptionIDParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).AcceptOwnershipStatusResponse, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
 }
 
 func (s *ServerTransport) dispatchBeginAcceptOwnership(req *http.Request) (*http.Response, error) {
@@ -146,35 +175,6 @@ func (s *ServerTransport) dispatchBeginAcceptOwnership(req *http.Request) (*http
 		s.beginAcceptOwnership.remove(req)
 	}
 
-	return resp, nil
-}
-
-func (s *ServerTransport) dispatchAcceptOwnershipStatus(req *http.Request) (*http.Response, error) {
-	if s.srv.AcceptOwnershipStatus == nil {
-		return nil, &nonRetriableError{errors.New("fake for method AcceptOwnershipStatus not implemented")}
-	}
-	const regexStr = `/providers/Microsoft\.Subscription/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/acceptOwnershipStatus`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 2 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	subscriptionIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("subscriptionId")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := s.srv.AcceptOwnershipStatus(req.Context(), subscriptionIDParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).AcceptOwnershipStatusResponse, req)
-	if err != nil {
-		return nil, err
-	}
 	return resp, nil
 }
 

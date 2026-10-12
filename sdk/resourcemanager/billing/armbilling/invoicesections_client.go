@@ -65,7 +65,7 @@ func (client *InvoiceSectionsClient) BeginCreateOrUpdate(ctx context.Context, bi
 	}
 }
 
-// CreateOrUpdate - Creates or updates an invoice section. The operation is supported only for billing accounts with agreement
+// createOrUpdate - Creates or updates an invoice section. The operation is supported only for billing accounts with agreement
 // type Microsoft Customer Agreement.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *InvoiceSectionsClient) createOrUpdate(ctx context.Context, billingAccountName string, billingProfileName string, invoiceSectionName string, parameters InvoiceSection, options *InvoiceSectionsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
@@ -88,7 +88,7 @@ func (client *InvoiceSectionsClient) createOrUpdate(ctx context.Context, billing
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *InvoiceSectionsClient) createOrUpdateCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, invoiceSectionName string, parameters InvoiceSection, _ *InvoiceSectionsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/invoiceSections/{invoiceSectionName}"
 	if billingAccountName == "" {
@@ -143,8 +143,8 @@ func (client *InvoiceSectionsClient) BeginDelete(ctx context.Context, billingAcc
 	}
 }
 
-// Delete - Deletes an invoice section. The operation is supported for billing accounts with agreement type Microsoft Customer
-// Agreement.
+// deleteOperation - Deletes an invoice section. The operation is supported for billing accounts with agreement type Microsoft
+// Customer Agreement.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *InvoiceSectionsClient) deleteOperation(ctx context.Context, billingAccountName string, billingProfileName string, invoiceSectionName string, options *InvoiceSectionsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -166,7 +166,7 @@ func (client *InvoiceSectionsClient) deleteOperation(ctx context.Context, billin
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *InvoiceSectionsClient) deleteCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, invoiceSectionName string, _ *InvoiceSectionsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/invoiceSections/{invoiceSectionName}"
 	if billingAccountName == "" {

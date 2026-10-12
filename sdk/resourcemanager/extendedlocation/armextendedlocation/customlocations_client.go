@@ -70,7 +70,7 @@ func (client *CustomLocationsClient) BeginCreateOrUpdate(ctx context.Context, re
 	}
 }
 
-// CreateOrUpdate - Creates or updates a Custom Location.
+// createOrUpdate - Creates or updates a Custom Location.
 //
 // Creates or updates a Custom Location in the specified Subscription and Resource Group
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -94,7 +94,7 @@ func (client *CustomLocationsClient) createOrUpdate(ctx context.Context, resourc
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *CustomLocationsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, parameters CustomLocation, _ *CustomLocationsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ExtendedLocation/customLocations/{resourceName}"
 	if client.subscriptionID == "" {
@@ -149,7 +149,7 @@ func (client *CustomLocationsClient) BeginDelete(ctx context.Context, resourceGr
 	}
 }
 
-// Delete - Deletes a Custom Location.
+// deleteOperation - Deletes a Custom Location.
 //
 // Deletes the Custom Location with the specified Resource Name, Resource Group, and Subscription Id.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -173,7 +173,7 @@ func (client *CustomLocationsClient) deleteOperation(ctx context.Context, resour
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *CustomLocationsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, _ *CustomLocationsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ExtendedLocation/customLocations/{resourceName}"
 	if client.subscriptionID == "" {

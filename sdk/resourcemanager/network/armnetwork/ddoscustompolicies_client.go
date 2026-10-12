@@ -68,7 +68,7 @@ func (client *DdosCustomPoliciesClient) BeginCreateOrUpdate(ctx context.Context,
 	}
 }
 
-// CreateOrUpdate - Creates or updates a DDoS custom policy.
+// createOrUpdate - Creates or updates a DDoS custom policy.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *DdosCustomPoliciesClient) createOrUpdate(ctx context.Context, resourceGroupName string, ddosCustomPolicyName string, parameters DdosCustomPolicy, options *DdosCustomPoliciesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -90,7 +90,7 @@ func (client *DdosCustomPoliciesClient) createOrUpdate(ctx context.Context, reso
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *DdosCustomPoliciesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, ddosCustomPolicyName string, parameters DdosCustomPolicy, _ *DdosCustomPoliciesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/ddosCustomPolicies/{ddosCustomPolicyName}"
 	if client.subscriptionID == "" {
@@ -143,7 +143,7 @@ func (client *DdosCustomPoliciesClient) BeginDelete(ctx context.Context, resourc
 	}
 }
 
-// Delete - Deletes the specified DDoS custom policy.
+// deleteOperation - Deletes the specified DDoS custom policy.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *DdosCustomPoliciesClient) deleteOperation(ctx context.Context, resourceGroupName string, ddosCustomPolicyName string, options *DdosCustomPoliciesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -165,7 +165,7 @@ func (client *DdosCustomPoliciesClient) deleteOperation(ctx context.Context, res
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *DdosCustomPoliciesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, ddosCustomPolicyName string, _ *DdosCustomPoliciesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/ddosCustomPolicies/{ddosCustomPolicyName}"
 	if client.subscriptionID == "" {
@@ -250,6 +250,73 @@ func (client *DdosCustomPoliciesClient) getHandleResponse(resp *http.Response, s
 	return result, nil
 }
 
+// NewListAllPager - Gets all the DDoS custom policies in a subscription.
+//   - options - DdosCustomPoliciesClientListAllOptions contains the optional parameters for the DdosCustomPoliciesClient.NewListAllPager
+//     method.
+func (client *DdosCustomPoliciesClient) NewListAllPager(options *DdosCustomPoliciesClientListAllOptions) *runtime.Pager[DdosCustomPoliciesClientListAllResponse] {
+	return runtime.NewPager(runtime.PagingHandler[DdosCustomPoliciesClientListAllResponse]{
+		More: func(page DdosCustomPoliciesClientListAllResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *DdosCustomPoliciesClientListAllResponse) (DdosCustomPoliciesClientListAllResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "DdosCustomPoliciesClient.NewListAllPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listAllCreateRequest(ctx, nextLink, options)
+			if err != nil {
+				return DdosCustomPoliciesClientListAllResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return DdosCustomPoliciesClientListAllResponse{}, err
+			}
+			return client.listAllHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listAllCreateRequest creates the ListAll request.
+func (client *DdosCustomPoliciesClient) listAllCreateRequest(ctx context.Context, nextLink string, _ *DdosCustomPoliciesClientListAllOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Network/ddosCustomPolicies"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260101)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// listAllHandleResponse handles the ListAll response.
+func (client *DdosCustomPoliciesClient) listAllHandleResponse(resp *http.Response, successCodes ...int) (DdosCustomPoliciesClientListAllResponse, error) {
+	result := DdosCustomPoliciesClientListAllResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.DdosCustomPolicyListResult); err != nil {
+		return DdosCustomPoliciesClientListAllResponse{}, err
+	}
+	return result, nil
+}
+
 // NewListPager - Gets all the DDoS custom policies in a resource group.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - DdosCustomPoliciesClientListOptions contains the optional parameters for the DdosCustomPoliciesClient.NewListPager
@@ -318,73 +385,6 @@ func (client *DdosCustomPoliciesClient) listHandleResponse(resp *http.Response, 
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DdosCustomPolicyListResult); err != nil {
 		return DdosCustomPoliciesClientListResponse{}, err
-	}
-	return result, nil
-}
-
-// NewListAllPager - Gets all the DDoS custom policies in a subscription.
-//   - options - DdosCustomPoliciesClientListAllOptions contains the optional parameters for the DdosCustomPoliciesClient.NewListAllPager
-//     method.
-func (client *DdosCustomPoliciesClient) NewListAllPager(options *DdosCustomPoliciesClientListAllOptions) *runtime.Pager[DdosCustomPoliciesClientListAllResponse] {
-	return runtime.NewPager(runtime.PagingHandler[DdosCustomPoliciesClientListAllResponse]{
-		More: func(page DdosCustomPoliciesClientListAllResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *DdosCustomPoliciesClientListAllResponse) (DdosCustomPoliciesClientListAllResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "DdosCustomPoliciesClient.NewListAllPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			req, err := client.listAllCreateRequest(ctx, nextLink, options)
-			if err != nil {
-				return DdosCustomPoliciesClientListAllResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return DdosCustomPoliciesClientListAllResponse{}, err
-			}
-			return client.listAllHandleResponse(resp, http.StatusOK)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listAllCreateRequest creates the ListAll request.
-func (client *DdosCustomPoliciesClient) listAllCreateRequest(ctx context.Context, nextLink string, _ *DdosCustomPoliciesClientListAllOptions) (*policy.Request, error) {
-	firstPage := nextLink == ""
-	var req *policy.Request
-	var err error
-	if firstPage {
-		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Network/ddosCustomPolicies"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter subscriptionID cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	} else {
-		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
-	}
-	if err != nil {
-		return nil, err
-	}
-	if firstPage {
-		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260101)
-		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-		req.Raw().Header["Accept"] = []string{"application/json"}
-	}
-	return req, nil
-}
-
-// listAllHandleResponse handles the ListAll response.
-func (client *DdosCustomPoliciesClient) listAllHandleResponse(resp *http.Response, successCodes ...int) (DdosCustomPoliciesClientListAllResponse, error) {
-	result := DdosCustomPoliciesClientListAllResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.DdosCustomPolicyListResult); err != nil {
-		return DdosCustomPoliciesClientListAllResponse{}, err
 	}
 	return result, nil
 }

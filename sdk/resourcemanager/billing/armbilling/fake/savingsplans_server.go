@@ -22,6 +22,10 @@ import (
 
 // SavingsPlansServer is a fake server for instances of the armbilling.SavingsPlansClient type.
 type SavingsPlansServer struct {
+	// BeginUpdateByBillingAccount is the fake for method SavingsPlansClient.BeginUpdateByBillingAccount
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdateByBillingAccount func(ctx context.Context, billingAccountName string, savingsPlanOrderID string, savingsPlanID string, body armbilling.SavingsPlanUpdateRequest, options *armbilling.SavingsPlansClientBeginUpdateByBillingAccountOptions) (resp azfake.PollerResponder[armbilling.SavingsPlansClientUpdateByBillingAccountResponse], errResp azfake.ErrorResponder)
+
 	// GetByBillingAccount is the fake for method SavingsPlansClient.GetByBillingAccount
 	// HTTP status codes to indicate success: http.StatusOK
 	GetByBillingAccount func(ctx context.Context, billingAccountName string, savingsPlanOrderID string, savingsPlanID string, options *armbilling.SavingsPlansClientGetByBillingAccountOptions) (resp azfake.Responder[armbilling.SavingsPlansClientGetByBillingAccountResponse], errResp azfake.ErrorResponder)
@@ -34,10 +38,6 @@ type SavingsPlansServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListBySavingsPlanOrderPager func(billingAccountName string, savingsPlanOrderID string, options *armbilling.SavingsPlansClientListBySavingsPlanOrderOptions) (resp azfake.PagerResponder[armbilling.SavingsPlansClientListBySavingsPlanOrderResponse])
 
-	// BeginUpdateByBillingAccount is the fake for method SavingsPlansClient.BeginUpdateByBillingAccount
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdateByBillingAccount func(ctx context.Context, billingAccountName string, savingsPlanOrderID string, savingsPlanID string, body armbilling.SavingsPlanUpdateRequest, options *armbilling.SavingsPlansClientBeginUpdateByBillingAccountOptions) (resp azfake.PollerResponder[armbilling.SavingsPlansClientUpdateByBillingAccountResponse], errResp azfake.ErrorResponder)
-
 	// ValidateUpdateByBillingAccount is the fake for method SavingsPlansClient.ValidateUpdateByBillingAccount
 	// HTTP status codes to indicate success: http.StatusOK
 	ValidateUpdateByBillingAccount func(ctx context.Context, billingAccountName string, savingsPlanOrderID string, savingsPlanID string, body armbilling.SavingsPlanUpdateValidateRequest, options *armbilling.SavingsPlansClientValidateUpdateByBillingAccountOptions) (resp azfake.Responder[armbilling.SavingsPlansClientValidateUpdateByBillingAccountResponse], errResp azfake.ErrorResponder)
@@ -49,9 +49,9 @@ type SavingsPlansServer struct {
 func NewSavingsPlansServerTransport(srv *SavingsPlansServer) *SavingsPlansServerTransport {
 	return &SavingsPlansServerTransport{
 		srv:                            srv,
+		beginUpdateByBillingAccount:    newTracker[azfake.PollerResponder[armbilling.SavingsPlansClientUpdateByBillingAccountResponse]](),
 		newListByBillingAccountPager:   newTracker[azfake.PagerResponder[armbilling.SavingsPlansClientListByBillingAccountResponse]](),
 		newListBySavingsPlanOrderPager: newTracker[azfake.PagerResponder[armbilling.SavingsPlansClientListBySavingsPlanOrderResponse]](),
-		beginUpdateByBillingAccount:    newTracker[azfake.PollerResponder[armbilling.SavingsPlansClientUpdateByBillingAccountResponse]](),
 	}
 }
 
@@ -59,9 +59,9 @@ func NewSavingsPlansServerTransport(srv *SavingsPlansServer) *SavingsPlansServer
 // Don't use this type directly, use NewSavingsPlansServerTransport instead.
 type SavingsPlansServerTransport struct {
 	srv                            *SavingsPlansServer
+	beginUpdateByBillingAccount    *tracker[azfake.PollerResponder[armbilling.SavingsPlansClientUpdateByBillingAccountResponse]]
 	newListByBillingAccountPager   *tracker[azfake.PagerResponder[armbilling.SavingsPlansClientListByBillingAccountResponse]]
 	newListBySavingsPlanOrderPager *tracker[azfake.PagerResponder[armbilling.SavingsPlansClientListBySavingsPlanOrderResponse]]
-	beginUpdateByBillingAccount    *tracker[azfake.PollerResponder[armbilling.SavingsPlansClientUpdateByBillingAccountResponse]]
 }
 
 // Do implements the policy.Transporter interface for SavingsPlansServerTransport.
@@ -85,14 +85,14 @@ func (s *SavingsPlansServerTransport) dispatchToMethodFake(req *http.Request, me
 		}
 		if !intercepted {
 			switch method {
+			case "SavingsPlansClient.BeginUpdateByBillingAccount":
+				res.resp, res.err = s.dispatchBeginUpdateByBillingAccount(req)
 			case "SavingsPlansClient.GetByBillingAccount":
 				res.resp, res.err = s.dispatchGetByBillingAccount(req)
 			case "SavingsPlansClient.NewListByBillingAccountPager":
 				res.resp, res.err = s.dispatchNewListByBillingAccountPager(req)
 			case "SavingsPlansClient.NewListBySavingsPlanOrderPager":
 				res.resp, res.err = s.dispatchNewListBySavingsPlanOrderPager(req)
-			case "SavingsPlansClient.BeginUpdateByBillingAccount":
-				res.resp, res.err = s.dispatchBeginUpdateByBillingAccount(req)
 			case "SavingsPlansClient.ValidateUpdateByBillingAccount":
 				res.resp, res.err = s.dispatchValidateUpdateByBillingAccount(req)
 			default:
@@ -109,6 +109,58 @@ func (s *SavingsPlansServerTransport) dispatchToMethodFake(req *http.Request, me
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
+}
+
+func (s *SavingsPlansServerTransport) dispatchBeginUpdateByBillingAccount(req *http.Request) (*http.Response, error) {
+	if s.srv.BeginUpdateByBillingAccount == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdateByBillingAccount not implemented")}
+	}
+	beginUpdateByBillingAccount := s.beginUpdateByBillingAccount.get(req)
+	if beginUpdateByBillingAccount == nil {
+		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/savingsPlanOrders/(?P<savingsPlanOrderId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/savingsPlans/(?P<savingsPlanId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armbilling.SavingsPlanUpdateRequest](req)
+		if err != nil {
+			return nil, err
+		}
+		billingAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingAccountName")])
+		if err != nil {
+			return nil, err
+		}
+		savingsPlanOrderIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("savingsPlanOrderId")])
+		if err != nil {
+			return nil, err
+		}
+		savingsPlanIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("savingsPlanId")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := s.srv.BeginUpdateByBillingAccount(req.Context(), billingAccountNameParam, savingsPlanOrderIDParam, savingsPlanIDParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdateByBillingAccount = &respr
+		s.beginUpdateByBillingAccount.add(req, beginUpdateByBillingAccount)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdateByBillingAccount, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		s.beginUpdateByBillingAccount.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdateByBillingAccount) {
+		s.beginUpdateByBillingAccount.remove(req)
+	}
+
+	return resp, nil
 }
 
 func (s *SavingsPlansServerTransport) dispatchGetByBillingAccount(req *http.Request) (*http.Response, error) {
@@ -267,58 +319,6 @@ func (s *SavingsPlansServerTransport) dispatchNewListBySavingsPlanOrderPager(req
 	if !server.PagerResponderMore(newListBySavingsPlanOrderPager) {
 		s.newListBySavingsPlanOrderPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (s *SavingsPlansServerTransport) dispatchBeginUpdateByBillingAccount(req *http.Request) (*http.Response, error) {
-	if s.srv.BeginUpdateByBillingAccount == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdateByBillingAccount not implemented")}
-	}
-	beginUpdateByBillingAccount := s.beginUpdateByBillingAccount.get(req)
-	if beginUpdateByBillingAccount == nil {
-		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/savingsPlanOrders/(?P<savingsPlanOrderId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/savingsPlans/(?P<savingsPlanId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armbilling.SavingsPlanUpdateRequest](req)
-		if err != nil {
-			return nil, err
-		}
-		billingAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingAccountName")])
-		if err != nil {
-			return nil, err
-		}
-		savingsPlanOrderIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("savingsPlanOrderId")])
-		if err != nil {
-			return nil, err
-		}
-		savingsPlanIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("savingsPlanId")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := s.srv.BeginUpdateByBillingAccount(req.Context(), billingAccountNameParam, savingsPlanOrderIDParam, savingsPlanIDParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdateByBillingAccount = &respr
-		s.beginUpdateByBillingAccount.add(req, beginUpdateByBillingAccount)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdateByBillingAccount, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		s.beginUpdateByBillingAccount.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdateByBillingAccount) {
-		s.beginUpdateByBillingAccount.remove(req)
-	}
-
 	return resp, nil
 }
 

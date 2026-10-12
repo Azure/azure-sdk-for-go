@@ -70,7 +70,7 @@ func (client *DiscoveryRulesClient) BeginCreateOrUpdate(ctx context.Context, res
 	}
 }
 
-// CreateOrUpdate - Create a DiscoveryRule
+// createOrUpdate - Create a DiscoveryRule
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *DiscoveryRulesClient) createOrUpdate(ctx context.Context, resourceGroupName string, healthModelName string, discoveryRuleName string, resource DiscoveryRule, options *DiscoveryRulesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -92,7 +92,7 @@ func (client *DiscoveryRulesClient) createOrUpdate(ctx context.Context, resource
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *DiscoveryRulesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, healthModelName string, discoveryRuleName string, resource DiscoveryRule, _ *DiscoveryRulesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/discoveryrules/{discoveryRuleName}"
 	if client.subscriptionID == "" {
@@ -150,7 +150,7 @@ func (client *DiscoveryRulesClient) BeginDelete(ctx context.Context, resourceGro
 	}
 }
 
-// Delete - Delete a DiscoveryRule
+// deleteOperation - Delete a DiscoveryRule
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *DiscoveryRulesClient) deleteOperation(ctx context.Context, resourceGroupName string, healthModelName string, discoveryRuleName string, options *DiscoveryRulesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -172,7 +172,7 @@ func (client *DiscoveryRulesClient) deleteOperation(ctx context.Context, resourc
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *DiscoveryRulesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, healthModelName string, discoveryRuleName string, _ *DiscoveryRulesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/discoveryrules/{discoveryRuleName}"
 	if client.subscriptionID == "" {

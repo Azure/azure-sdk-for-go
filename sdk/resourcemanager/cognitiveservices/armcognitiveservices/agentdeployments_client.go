@@ -74,7 +74,7 @@ func (client *AgentDeploymentsClient) BeginCreateOrUpdate(ctx context.Context, r
 	}
 }
 
-// CreateOrUpdate - Creates or updates an Agent Deployment (asynchronous).
+// createOrUpdate - Creates or updates an Agent Deployment (asynchronous).
 //
 // Creates or updates an Agent Deployment (asynchronous).
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -98,7 +98,7 @@ func (client *AgentDeploymentsClient) createOrUpdate(ctx context.Context, resour
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *AgentDeploymentsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, projectName string, appName string, deploymentName string, body AgentDeployment, _ *AgentDeploymentsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/projects/{projectName}/applications/{appName}/agentDeployments/{deploymentName}"
 	if client.subscriptionID == "" {
@@ -168,7 +168,7 @@ func (client *AgentDeploymentsClient) BeginDelete(ctx context.Context, resourceG
 	}
 }
 
-// Delete - Delete Agent Deployment.
+// deleteOperation - Delete Agent Deployment.
 //
 // Delete Agent Deployment.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -192,7 +192,7 @@ func (client *AgentDeploymentsClient) deleteOperation(ctx context.Context, resou
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *AgentDeploymentsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, projectName string, appName string, deploymentName string, _ *AgentDeploymentsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/projects/{projectName}/applications/{appName}/agentDeployments/{deploymentName}"
 	if client.subscriptionID == "" {

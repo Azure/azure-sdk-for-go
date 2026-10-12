@@ -69,7 +69,7 @@ func (client *RoutesClient) BeginCreateOrUpdate(ctx context.Context, resourceGro
 	}
 }
 
-// CreateOrUpdate - Creates or updates a route in the specified route table.
+// createOrUpdate - Creates or updates a route in the specified route table.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *RoutesClient) createOrUpdate(ctx context.Context, resourceGroupName string, routeTableName string, routeName string, routeParameters Route, options *RoutesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -91,7 +91,7 @@ func (client *RoutesClient) createOrUpdate(ctx context.Context, resourceGroupNam
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *RoutesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, routeTableName string, routeName string, routeParameters Route, _ *RoutesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/routeTables/{routeTableName}/routes/{routeName}"
 	if client.subscriptionID == "" {
@@ -148,7 +148,7 @@ func (client *RoutesClient) BeginDelete(ctx context.Context, resourceGroupName s
 	}
 }
 
-// Delete - Deletes the specified route from a route table.
+// deleteOperation - Deletes the specified route from a route table.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *RoutesClient) deleteOperation(ctx context.Context, resourceGroupName string, routeTableName string, routeName string, options *RoutesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -170,7 +170,7 @@ func (client *RoutesClient) deleteOperation(ctx context.Context, resourceGroupNa
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *RoutesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, routeTableName string, routeName string, _ *RoutesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/routeTables/{routeTableName}/routes/{routeName}"
 	if client.subscriptionID == "" {

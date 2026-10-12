@@ -23,13 +23,13 @@ type ProductsAndConfigurationsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListConfigurationsPager func(configurationsRequest armedgeorder.ConfigurationsRequest, options *armedgeorder.ProductsAndConfigurationsClientListConfigurationsOptions) (resp azfake.PagerResponder[armedgeorder.ProductsAndConfigurationsClientListConfigurationsResponse])
 
-	// NewListProductFamiliesPager is the fake for method ProductsAndConfigurationsClient.NewListProductFamiliesPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListProductFamiliesPager func(productFamiliesRequest armedgeorder.ProductFamiliesRequest, options *armedgeorder.ProductsAndConfigurationsClientListProductFamiliesOptions) (resp azfake.PagerResponder[armedgeorder.ProductsAndConfigurationsClientListProductFamiliesResponse])
-
 	// NewListProductFamiliesMetadataPager is the fake for method ProductsAndConfigurationsClient.NewListProductFamiliesMetadataPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListProductFamiliesMetadataPager func(options *armedgeorder.ProductsAndConfigurationsClientListProductFamiliesMetadataOptions) (resp azfake.PagerResponder[armedgeorder.ProductsAndConfigurationsClientListProductFamiliesMetadataResponse])
+
+	// NewListProductFamiliesPager is the fake for method ProductsAndConfigurationsClient.NewListProductFamiliesPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListProductFamiliesPager func(productFamiliesRequest armedgeorder.ProductFamiliesRequest, options *armedgeorder.ProductsAndConfigurationsClientListProductFamiliesOptions) (resp azfake.PagerResponder[armedgeorder.ProductsAndConfigurationsClientListProductFamiliesResponse])
 }
 
 // NewProductsAndConfigurationsServerTransport creates a new instance of ProductsAndConfigurationsServerTransport with the provided implementation.
@@ -39,8 +39,8 @@ func NewProductsAndConfigurationsServerTransport(srv *ProductsAndConfigurationsS
 	return &ProductsAndConfigurationsServerTransport{
 		srv:                                 srv,
 		newListConfigurationsPager:          newTracker[azfake.PagerResponder[armedgeorder.ProductsAndConfigurationsClientListConfigurationsResponse]](),
-		newListProductFamiliesPager:         newTracker[azfake.PagerResponder[armedgeorder.ProductsAndConfigurationsClientListProductFamiliesResponse]](),
 		newListProductFamiliesMetadataPager: newTracker[azfake.PagerResponder[armedgeorder.ProductsAndConfigurationsClientListProductFamiliesMetadataResponse]](),
+		newListProductFamiliesPager:         newTracker[azfake.PagerResponder[armedgeorder.ProductsAndConfigurationsClientListProductFamiliesResponse]](),
 	}
 }
 
@@ -49,8 +49,8 @@ func NewProductsAndConfigurationsServerTransport(srv *ProductsAndConfigurationsS
 type ProductsAndConfigurationsServerTransport struct {
 	srv                                 *ProductsAndConfigurationsServer
 	newListConfigurationsPager          *tracker[azfake.PagerResponder[armedgeorder.ProductsAndConfigurationsClientListConfigurationsResponse]]
-	newListProductFamiliesPager         *tracker[azfake.PagerResponder[armedgeorder.ProductsAndConfigurationsClientListProductFamiliesResponse]]
 	newListProductFamiliesMetadataPager *tracker[azfake.PagerResponder[armedgeorder.ProductsAndConfigurationsClientListProductFamiliesMetadataResponse]]
+	newListProductFamiliesPager         *tracker[azfake.PagerResponder[armedgeorder.ProductsAndConfigurationsClientListProductFamiliesResponse]]
 }
 
 // Do implements the policy.Transporter interface for ProductsAndConfigurationsServerTransport.
@@ -76,10 +76,10 @@ func (p *ProductsAndConfigurationsServerTransport) dispatchToMethodFake(req *htt
 			switch method {
 			case "ProductsAndConfigurationsClient.NewListConfigurationsPager":
 				res.resp, res.err = p.dispatchNewListConfigurationsPager(req)
-			case "ProductsAndConfigurationsClient.NewListProductFamiliesPager":
-				res.resp, res.err = p.dispatchNewListProductFamiliesPager(req)
 			case "ProductsAndConfigurationsClient.NewListProductFamiliesMetadataPager":
 				res.resp, res.err = p.dispatchNewListProductFamiliesMetadataPager(req)
+			case "ProductsAndConfigurationsClient.NewListProductFamiliesPager":
+				res.resp, res.err = p.dispatchNewListProductFamiliesPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -141,6 +141,47 @@ func (p *ProductsAndConfigurationsServerTransport) dispatchNewListConfigurations
 	return resp, nil
 }
 
+func (p *ProductsAndConfigurationsServerTransport) dispatchNewListProductFamiliesMetadataPager(req *http.Request) (*http.Response, error) {
+	if p.srv.NewListProductFamiliesMetadataPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListProductFamiliesMetadataPager not implemented")}
+	}
+	newListProductFamiliesMetadataPager := p.newListProductFamiliesMetadataPager.get(req)
+	if newListProductFamiliesMetadataPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.EdgeOrder/productFamiliesMetadata`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		qp := req.URL.Query()
+		skipTokenParam := getOptional(qp.Get("$skipToken"))
+		var options *armedgeorder.ProductsAndConfigurationsClientListProductFamiliesMetadataOptions
+		if skipTokenParam != nil {
+			options = &armedgeorder.ProductsAndConfigurationsClientListProductFamiliesMetadataOptions{
+				SkipToken: skipTokenParam,
+			}
+		}
+		resp := p.srv.NewListProductFamiliesMetadataPager(options)
+		newListProductFamiliesMetadataPager = &resp
+		p.newListProductFamiliesMetadataPager.add(req, newListProductFamiliesMetadataPager)
+		server.PagerResponderInjectNextLinks(newListProductFamiliesMetadataPager, req, func(page *armedgeorder.ProductsAndConfigurationsClientListProductFamiliesMetadataResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListProductFamiliesMetadataPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		p.newListProductFamiliesMetadataPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListProductFamiliesMetadataPager) {
+		p.newListProductFamiliesMetadataPager.remove(req)
+	}
+	return resp, nil
+}
+
 func (p *ProductsAndConfigurationsServerTransport) dispatchNewListProductFamiliesPager(req *http.Request) (*http.Response, error) {
 	if p.srv.NewListProductFamiliesPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListProductFamiliesPager not implemented")}
@@ -184,47 +225,6 @@ func (p *ProductsAndConfigurationsServerTransport) dispatchNewListProductFamilie
 	}
 	if !server.PagerResponderMore(newListProductFamiliesPager) {
 		p.newListProductFamiliesPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (p *ProductsAndConfigurationsServerTransport) dispatchNewListProductFamiliesMetadataPager(req *http.Request) (*http.Response, error) {
-	if p.srv.NewListProductFamiliesMetadataPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListProductFamiliesMetadataPager not implemented")}
-	}
-	newListProductFamiliesMetadataPager := p.newListProductFamiliesMetadataPager.get(req)
-	if newListProductFamiliesMetadataPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.EdgeOrder/productFamiliesMetadata`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		qp := req.URL.Query()
-		skipTokenParam := getOptional(qp.Get("$skipToken"))
-		var options *armedgeorder.ProductsAndConfigurationsClientListProductFamiliesMetadataOptions
-		if skipTokenParam != nil {
-			options = &armedgeorder.ProductsAndConfigurationsClientListProductFamiliesMetadataOptions{
-				SkipToken: skipTokenParam,
-			}
-		}
-		resp := p.srv.NewListProductFamiliesMetadataPager(options)
-		newListProductFamiliesMetadataPager = &resp
-		p.newListProductFamiliesMetadataPager.add(req, newListProductFamiliesMetadataPager)
-		server.PagerResponderInjectNextLinks(newListProductFamiliesMetadataPager, req, func(page *armedgeorder.ProductsAndConfigurationsClientListProductFamiliesMetadataResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListProductFamiliesMetadataPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		p.newListProductFamiliesMetadataPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListProductFamiliesMetadataPager) {
-		p.newListProductFamiliesMetadataPager.remove(req)
 	}
 	return resp, nil
 }

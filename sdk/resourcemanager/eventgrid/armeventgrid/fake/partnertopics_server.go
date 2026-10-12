@@ -26,6 +26,10 @@ type PartnerTopicsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	Activate func(ctx context.Context, resourceGroupName string, partnerTopicName string, options *armeventgrid.PartnerTopicsClientActivateOptions) (resp azfake.Responder[armeventgrid.PartnerTopicsClientActivateResponse], errResp azfake.ErrorResponder)
 
+	// BeginDelete is the fake for method PartnerTopicsClient.BeginDelete
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	BeginDelete func(ctx context.Context, resourceGroupName string, partnerTopicName string, options *armeventgrid.PartnerTopicsClientBeginDeleteOptions) (resp azfake.PollerResponder[armeventgrid.PartnerTopicsClientDeleteResponse], errResp azfake.ErrorResponder)
+
 	// CreateOrUpdate is the fake for method PartnerTopicsClient.CreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
 	CreateOrUpdate func(ctx context.Context, resourceGroupName string, partnerTopicName string, partnerTopicInfo armeventgrid.PartnerTopic, options *armeventgrid.PartnerTopicsClientCreateOrUpdateOptions) (resp azfake.Responder[armeventgrid.PartnerTopicsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
@@ -33,10 +37,6 @@ type PartnerTopicsServer struct {
 	// Deactivate is the fake for method PartnerTopicsClient.Deactivate
 	// HTTP status codes to indicate success: http.StatusOK
 	Deactivate func(ctx context.Context, resourceGroupName string, partnerTopicName string, options *armeventgrid.PartnerTopicsClientDeactivateOptions) (resp azfake.Responder[armeventgrid.PartnerTopicsClientDeactivateResponse], errResp azfake.ErrorResponder)
-
-	// BeginDelete is the fake for method PartnerTopicsClient.BeginDelete
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginDelete func(ctx context.Context, resourceGroupName string, partnerTopicName string, options *armeventgrid.PartnerTopicsClientBeginDeleteOptions) (resp azfake.PollerResponder[armeventgrid.PartnerTopicsClientDeleteResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method PartnerTopicsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
@@ -99,12 +99,12 @@ func (p *PartnerTopicsServerTransport) dispatchToMethodFake(req *http.Request, m
 			switch method {
 			case "PartnerTopicsClient.Activate":
 				res.resp, res.err = p.dispatchActivate(req)
+			case "PartnerTopicsClient.BeginDelete":
+				res.resp, res.err = p.dispatchBeginDelete(req)
 			case "PartnerTopicsClient.CreateOrUpdate":
 				res.resp, res.err = p.dispatchCreateOrUpdate(req)
 			case "PartnerTopicsClient.Deactivate":
 				res.resp, res.err = p.dispatchDeactivate(req)
-			case "PartnerTopicsClient.BeginDelete":
-				res.resp, res.err = p.dispatchBeginDelete(req)
 			case "PartnerTopicsClient.Get":
 				res.resp, res.err = p.dispatchGet(req)
 			case "PartnerTopicsClient.NewListByResourceGroupPager":
@@ -159,6 +159,50 @@ func (p *PartnerTopicsServerTransport) dispatchActivate(req *http.Request) (*htt
 	if err != nil {
 		return nil, err
 	}
+	return resp, nil
+}
+
+func (p *PartnerTopicsServerTransport) dispatchBeginDelete(req *http.Request) (*http.Response, error) {
+	if p.srv.BeginDelete == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
+	}
+	beginDelete := p.beginDelete.get(req)
+	if beginDelete == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.EventGrid/partnerTopics/(?P<partnerTopicName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		partnerTopicNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("partnerTopicName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := p.srv.BeginDelete(req.Context(), resourceGroupNameParam, partnerTopicNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginDelete = &respr
+		p.beginDelete.add(req, beginDelete)
+	}
+
+	resp, err := server.PollerResponderNext(beginDelete, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		p.beginDelete.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginDelete) {
+		p.beginDelete.remove(req)
+	}
+
 	return resp, nil
 }
 
@@ -229,50 +273,6 @@ func (p *PartnerTopicsServerTransport) dispatchDeactivate(req *http.Request) (*h
 	if err != nil {
 		return nil, err
 	}
-	return resp, nil
-}
-
-func (p *PartnerTopicsServerTransport) dispatchBeginDelete(req *http.Request) (*http.Response, error) {
-	if p.srv.BeginDelete == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
-	}
-	beginDelete := p.beginDelete.get(req)
-	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.EventGrid/partnerTopics/(?P<partnerTopicName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		partnerTopicNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("partnerTopicName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := p.srv.BeginDelete(req.Context(), resourceGroupNameParam, partnerTopicNameParam, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginDelete = &respr
-		p.beginDelete.add(req, beginDelete)
-	}
-
-	resp, err := server.PollerResponderNext(beginDelete, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
-		p.beginDelete.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginDelete) {
-		p.beginDelete.remove(req)
-	}
-
 	return resp, nil
 }
 

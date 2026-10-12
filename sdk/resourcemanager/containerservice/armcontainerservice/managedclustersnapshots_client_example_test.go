@@ -159,8 +159,8 @@ func ExampleManagedClusterSnapshotsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-07-02-preview/ManagedClusterSnapshotsList.json
-func ExampleManagedClusterSnapshotsClient_NewListPager() {
+// Generated from example definition: 2026-07-02-preview/ManagedClusterSnapshotsListByResourceGroup.json
+func ExampleManagedClusterSnapshotsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -170,7 +170,7 @@ func ExampleManagedClusterSnapshotsClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewManagedClusterSnapshotsClient().NewListPager(nil)
+	pager := clientFactory.NewManagedClusterSnapshotsClient().NewListByResourceGroupPager("rg1", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -181,7 +181,7 @@ func ExampleManagedClusterSnapshotsClient_NewListPager() {
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armcontainerservice.ManagedClusterSnapshotsClientListResponse{
+		// page = armcontainerservice.ManagedClusterSnapshotsClientListByResourceGroupResponse{
 		// 	ManagedClusterSnapshotListResult: armcontainerservice.ManagedClusterSnapshotListResult{
 		// 		Value: []*armcontainerservice.ManagedClusterSnapshot{
 		// 			{
@@ -225,8 +225,8 @@ func ExampleManagedClusterSnapshotsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-07-02-preview/ManagedClusterSnapshotsListByResourceGroup.json
-func ExampleManagedClusterSnapshotsClient_NewListByResourceGroupPager() {
+// Generated from example definition: 2026-07-02-preview/ManagedClusterSnapshotsList.json
+func ExampleManagedClusterSnapshotsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -236,7 +236,7 @@ func ExampleManagedClusterSnapshotsClient_NewListByResourceGroupPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewManagedClusterSnapshotsClient().NewListByResourceGroupPager("rg1", nil)
+	pager := clientFactory.NewManagedClusterSnapshotsClient().NewListPager(nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -247,7 +247,7 @@ func ExampleManagedClusterSnapshotsClient_NewListByResourceGroupPager() {
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armcontainerservice.ManagedClusterSnapshotsClientListByResourceGroupResponse{
+		// page = armcontainerservice.ManagedClusterSnapshotsClientListResponse{
 		// 	ManagedClusterSnapshotListResult: armcontainerservice.ManagedClusterSnapshotListResult{
 		// 		Value: []*armcontainerservice.ManagedClusterSnapshot{
 		// 			{

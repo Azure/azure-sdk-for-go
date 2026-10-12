@@ -138,6 +138,165 @@ func ExampleReplicationJobsClient_BeginExport() {
 	// }
 }
 
+// Generated from example definition: 2025-08-01/ReplicationJobs_Restart.json
+func ExampleReplicationJobsClient_BeginRestart() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armrecoveryservicessiterecovery.NewClientFactory("c183865e-6077-46f2-a3b1-deb0f4f4650a", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewReplicationJobsClient().BeginRestart(ctx, "resourceGroupPS1", "vault1", "0664564c-353e-401a-ab0c-722257c10e25", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armrecoveryservicessiterecovery.ReplicationJobsClientRestartResponse{
+	// 	Job: armrecoveryservicessiterecovery.Job{
+	// 		Name: to.Ptr("42c7d13b-790c-4609-8e0b-0936f1c5e5fb"),
+	// 		ID: to.Ptr("/Subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationJobs/42c7d13b-790c-4609-8e0b-0936f1c5e5fb"),
+	// 		Properties: &armrecoveryservicessiterecovery.JobProperties{
+	// 			ActivityID: to.Ptr("2443a5b4-e675-499f-8983-4126ea0e232c ActivityId: 2a776896-5e56-470b-af55-3c981283c4bc"),
+	// 			AllowedActions: []*string{
+	// 			},
+	// 			CustomDetails: &armrecoveryservicessiterecovery.AsrJobDetails{
+	// 				AffectedObjectDetails: map[string]*string{
+	// 				},
+	// 				InstanceType: to.Ptr("AsrJobDetails"),
+	// 			},
+	// 			EndTime: to.Ptr(time.Date(2017, time.May, 3, 10, 45, 14, 0, time.UTC)),
+	// 			Errors: []*armrecoveryservicessiterecovery.JobErrorDetails{
+	// 			},
+	// 			FriendlyName: to.Ptr("Restart job"),
+	// 			ScenarioName: to.Ptr("RestartJob"),
+	// 			StartTime: to.Ptr(time.Date(2017, time.May, 3, 10, 45, 12, 132075700, time.UTC)),
+	// 			State: to.Ptr("Succeeded"),
+	// 			StateDescription: to.Ptr("Completed"),
+	// 			TargetInstanceType: to.Ptr("ProtectionEntity"),
+	// 			TargetObjectID: to.Ptr("f8491e4f-817a-40dd-a90c-af773978c75b"),
+	// 			TargetObjectName: to.Ptr("vm1"),
+	// 			Tasks: []*armrecoveryservicessiterecovery.ASRTask{
+	// 				{
+	// 					Name: to.Ptr("RemediateTask"),
+	// 					AllowedActions: []*string{
+	// 					},
+	// 					CustomDetails: &armrecoveryservicessiterecovery.ManualActionTaskDetails{
+	// 						InstanceType: to.Ptr("ManualActionTaskDetails"),
+	// 					},
+	// 					EndTime: to.Ptr(time.Date(2017, time.May, 3, 10, 45, 13, 645846700, time.UTC)),
+	// 					Errors: []*armrecoveryservicessiterecovery.JobErrorDetails{
+	// 					},
+	// 					FriendlyName: to.Ptr("Restarting job"),
+	// 					StartTime: to.Ptr(time.Date(2017, time.May, 3, 10, 45, 13, 567723700, time.UTC)),
+	// 					State: to.Ptr("Succeeded"),
+	// 					StateDescription: to.Ptr("Completed"),
+	// 					TaskID: to.Ptr("RemediateWfTask"),
+	// 					TaskType: to.Ptr("TaskDetails"),
+	// 				},
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-08-01/ReplicationJobs_Resume.json
+func ExampleReplicationJobsClient_BeginResume() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armrecoveryservicessiterecovery.NewClientFactory("c183865e-6077-46f2-a3b1-deb0f4f4650a", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewReplicationJobsClient().BeginResume(ctx, "resourceGroupPS1", "vault1", "58776d0b-3141-48b2-a377-9ad863eb160d", armrecoveryservicessiterecovery.ResumeJobParams{
+		Properties: &armrecoveryservicessiterecovery.ResumeJobParamsProperties{
+			Comments: to.Ptr(" "),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armrecoveryservicessiterecovery.ReplicationJobsClientResumeResponse{
+	// 	Job: armrecoveryservicessiterecovery.Job{
+	// 		Name: to.Ptr("58776d0b-3141-48b2-a377-9ad863eb160d"),
+	// 		ID: to.Ptr("/Subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationJobs/58776d0b-3141-48b2-a377-9ad863eb160d"),
+	// 		Properties: &armrecoveryservicessiterecovery.JobProperties{
+	// 			ActivityID: to.Ptr("1b808dfe-0451-44ac-894c-c7270711cd8c ActivityId: 9f6f849e-922a-43ec-a7a6-0be45fc85c56"),
+	// 			AllowedActions: []*string{
+	// 				to.Ptr("Cancel"),
+	// 				to.Ptr("Resume"),
+	// 			},
+	// 			CustomDetails: &armrecoveryservicessiterecovery.TestFailoverJobDetails{
+	// 				AffectedObjectDetails: map[string]*string{
+	// 					"PrimaryCloudId": to.Ptr("cloud_6d224fc6-f326-5d35-96de-fbf51efb3179"),
+	// 					"PrimaryCloudName": to.Ptr("cloud1"),
+	// 					"PrimaryFabricProviderId": to.Ptr("HyperVSite"),
+	// 					"PrimaryVmId": to.Ptr("f8491e4f-817a-40dd-a90c-af773978c75b"),
+	// 					"PrimaryVmName": to.Ptr("vm1"),
+	// 					"PrimaryVmmId": to.Ptr("6d224fc6-f326-5d35-96de-fbf51efb3179"),
+	// 					"PrimaryVmmName": to.Ptr("cloud1"),
+	// 					"ProtectionProfileId": to.Ptr("af095a1e-1f1b-5365-87c9-99162ebcfaf0"),
+	// 					"RecoveryCloudId": to.Ptr("d38048d4-b460-4791-8ece-108395ee8478"),
+	// 					"RecoveryCloudName": to.Ptr("Microsoft Azure"),
+	// 					"RecoveryFabricProviderId": to.Ptr("Azure"),
+	// 					"RecoveryVmId": to.Ptr(""),
+	// 					"RecoveryVmName": to.Ptr("vm1"),
+	// 					"RecoveryVmmId": to.Ptr("21a9403c-6ec1-44f2-b744-b4e50b792387"),
+	// 					"RecoveryVmmName": to.Ptr("Microsoft Azure"),
+	// 				},
+	// 				Comments: to.Ptr(" "),
+	// 				InstanceType: to.Ptr("TestFailoverJobDetails"),
+	// 				NetworkFriendlyName: to.Ptr("vnetavrai"),
+	// 				NetworkName: to.Ptr("vnetavrai"),
+	// 				NetworkType: to.Ptr("VmNetworkAsInput"),
+	// 				ProtectedItemDetails: []*armrecoveryservicessiterecovery.FailoverReplicationProtectedItemDetails{
+	// 					{
+	// 						Name: to.Ptr("f8491e4f-817a-40dd-a90c-af773978c75b"),
+	// 						FriendlyName: to.Ptr("vm1"),
+	// 						NetworkConnectionStatus: to.Ptr("Connected"),
+	// 						NetworkFriendlyName: to.Ptr("vnetavrai"),
+	// 						Subnet: to.Ptr("Subnet1"),
+	// 						TestVMFriendlyName: to.Ptr("vm1-test"),
+	// 						TestVMName: to.Ptr("vm1-test"),
+	// 					},
+	// 				},
+	// 				TestFailoverStatus: to.Ptr("Completed"),
+	// 			},
+	// 			Errors: []*armrecoveryservicessiterecovery.JobErrorDetails{
+	// 			},
+	// 			FriendlyName: to.Ptr("Test failover"),
+	// 			ScenarioName: to.Ptr("TestFailover"),
+	// 			StartTime: to.Ptr(time.Date(2017, time.April, 25, 9, 57, 57, 35782900, time.UTC)),
+	// 			State: to.Ptr("Suspended"),
+	// 			StateDescription: to.Ptr("WaitingForStopTestFailover"),
+	// 			TargetInstanceType: to.Ptr("ProtectionEntity"),
+	// 			TargetObjectID: to.Ptr("f8491e4f-817a-40dd-a90c-af773978c75b"),
+	// 			TargetObjectName: to.Ptr("vm1"),
+	// 			Tasks: []*armrecoveryservicessiterecovery.ASRTask{
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
 // Generated from example definition: 2025-08-01/ReplicationJobs_Get.json
 func ExampleReplicationJobsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -301,163 +460,4 @@ func ExampleReplicationJobsClient_NewListPager() {
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2025-08-01/ReplicationJobs_Restart.json
-func ExampleReplicationJobsClient_BeginRestart() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armrecoveryservicessiterecovery.NewClientFactory("c183865e-6077-46f2-a3b1-deb0f4f4650a", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewReplicationJobsClient().BeginRestart(ctx, "resourceGroupPS1", "vault1", "0664564c-353e-401a-ab0c-722257c10e25", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armrecoveryservicessiterecovery.ReplicationJobsClientRestartResponse{
-	// 	Job: armrecoveryservicessiterecovery.Job{
-	// 		Name: to.Ptr("42c7d13b-790c-4609-8e0b-0936f1c5e5fb"),
-	// 		ID: to.Ptr("/Subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationJobs/42c7d13b-790c-4609-8e0b-0936f1c5e5fb"),
-	// 		Properties: &armrecoveryservicessiterecovery.JobProperties{
-	// 			ActivityID: to.Ptr("2443a5b4-e675-499f-8983-4126ea0e232c ActivityId: 2a776896-5e56-470b-af55-3c981283c4bc"),
-	// 			AllowedActions: []*string{
-	// 			},
-	// 			CustomDetails: &armrecoveryservicessiterecovery.AsrJobDetails{
-	// 				AffectedObjectDetails: map[string]*string{
-	// 				},
-	// 				InstanceType: to.Ptr("AsrJobDetails"),
-	// 			},
-	// 			EndTime: to.Ptr(time.Date(2017, time.May, 3, 10, 45, 14, 0, time.UTC)),
-	// 			Errors: []*armrecoveryservicessiterecovery.JobErrorDetails{
-	// 			},
-	// 			FriendlyName: to.Ptr("Restart job"),
-	// 			ScenarioName: to.Ptr("RestartJob"),
-	// 			StartTime: to.Ptr(time.Date(2017, time.May, 3, 10, 45, 12, 132075700, time.UTC)),
-	// 			State: to.Ptr("Succeeded"),
-	// 			StateDescription: to.Ptr("Completed"),
-	// 			TargetInstanceType: to.Ptr("ProtectionEntity"),
-	// 			TargetObjectID: to.Ptr("f8491e4f-817a-40dd-a90c-af773978c75b"),
-	// 			TargetObjectName: to.Ptr("vm1"),
-	// 			Tasks: []*armrecoveryservicessiterecovery.ASRTask{
-	// 				{
-	// 					Name: to.Ptr("RemediateTask"),
-	// 					AllowedActions: []*string{
-	// 					},
-	// 					CustomDetails: &armrecoveryservicessiterecovery.ManualActionTaskDetails{
-	// 						InstanceType: to.Ptr("ManualActionTaskDetails"),
-	// 					},
-	// 					EndTime: to.Ptr(time.Date(2017, time.May, 3, 10, 45, 13, 645846700, time.UTC)),
-	// 					Errors: []*armrecoveryservicessiterecovery.JobErrorDetails{
-	// 					},
-	// 					FriendlyName: to.Ptr("Restarting job"),
-	// 					StartTime: to.Ptr(time.Date(2017, time.May, 3, 10, 45, 13, 567723700, time.UTC)),
-	// 					State: to.Ptr("Succeeded"),
-	// 					StateDescription: to.Ptr("Completed"),
-	// 					TaskID: to.Ptr("RemediateWfTask"),
-	// 					TaskType: to.Ptr("TaskDetails"),
-	// 				},
-	// 			},
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-08-01/ReplicationJobs_Resume.json
-func ExampleReplicationJobsClient_BeginResume() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armrecoveryservicessiterecovery.NewClientFactory("c183865e-6077-46f2-a3b1-deb0f4f4650a", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewReplicationJobsClient().BeginResume(ctx, "resourceGroupPS1", "vault1", "58776d0b-3141-48b2-a377-9ad863eb160d", armrecoveryservicessiterecovery.ResumeJobParams{
-		Properties: &armrecoveryservicessiterecovery.ResumeJobParamsProperties{
-			Comments: to.Ptr(" "),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armrecoveryservicessiterecovery.ReplicationJobsClientResumeResponse{
-	// 	Job: armrecoveryservicessiterecovery.Job{
-	// 		Name: to.Ptr("58776d0b-3141-48b2-a377-9ad863eb160d"),
-	// 		ID: to.Ptr("/Subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationJobs/58776d0b-3141-48b2-a377-9ad863eb160d"),
-	// 		Properties: &armrecoveryservicessiterecovery.JobProperties{
-	// 			ActivityID: to.Ptr("1b808dfe-0451-44ac-894c-c7270711cd8c ActivityId: 9f6f849e-922a-43ec-a7a6-0be45fc85c56"),
-	// 			AllowedActions: []*string{
-	// 				to.Ptr("Cancel"),
-	// 				to.Ptr("Resume"),
-	// 			},
-	// 			CustomDetails: &armrecoveryservicessiterecovery.TestFailoverJobDetails{
-	// 				AffectedObjectDetails: map[string]*string{
-	// 					"PrimaryCloudId": to.Ptr("cloud_6d224fc6-f326-5d35-96de-fbf51efb3179"),
-	// 					"PrimaryCloudName": to.Ptr("cloud1"),
-	// 					"PrimaryFabricProviderId": to.Ptr("HyperVSite"),
-	// 					"PrimaryVmId": to.Ptr("f8491e4f-817a-40dd-a90c-af773978c75b"),
-	// 					"PrimaryVmName": to.Ptr("vm1"),
-	// 					"PrimaryVmmId": to.Ptr("6d224fc6-f326-5d35-96de-fbf51efb3179"),
-	// 					"PrimaryVmmName": to.Ptr("cloud1"),
-	// 					"ProtectionProfileId": to.Ptr("af095a1e-1f1b-5365-87c9-99162ebcfaf0"),
-	// 					"RecoveryCloudId": to.Ptr("d38048d4-b460-4791-8ece-108395ee8478"),
-	// 					"RecoveryCloudName": to.Ptr("Microsoft Azure"),
-	// 					"RecoveryFabricProviderId": to.Ptr("Azure"),
-	// 					"RecoveryVmId": to.Ptr(""),
-	// 					"RecoveryVmName": to.Ptr("vm1"),
-	// 					"RecoveryVmmId": to.Ptr("21a9403c-6ec1-44f2-b744-b4e50b792387"),
-	// 					"RecoveryVmmName": to.Ptr("Microsoft Azure"),
-	// 				},
-	// 				Comments: to.Ptr(" "),
-	// 				InstanceType: to.Ptr("TestFailoverJobDetails"),
-	// 				NetworkFriendlyName: to.Ptr("vnetavrai"),
-	// 				NetworkName: to.Ptr("vnetavrai"),
-	// 				NetworkType: to.Ptr("VmNetworkAsInput"),
-	// 				ProtectedItemDetails: []*armrecoveryservicessiterecovery.FailoverReplicationProtectedItemDetails{
-	// 					{
-	// 						Name: to.Ptr("f8491e4f-817a-40dd-a90c-af773978c75b"),
-	// 						FriendlyName: to.Ptr("vm1"),
-	// 						NetworkConnectionStatus: to.Ptr("Connected"),
-	// 						NetworkFriendlyName: to.Ptr("vnetavrai"),
-	// 						Subnet: to.Ptr("Subnet1"),
-	// 						TestVMFriendlyName: to.Ptr("vm1-test"),
-	// 						TestVMName: to.Ptr("vm1-test"),
-	// 					},
-	// 				},
-	// 				TestFailoverStatus: to.Ptr("Completed"),
-	// 			},
-	// 			Errors: []*armrecoveryservicessiterecovery.JobErrorDetails{
-	// 			},
-	// 			FriendlyName: to.Ptr("Test failover"),
-	// 			ScenarioName: to.Ptr("TestFailover"),
-	// 			StartTime: to.Ptr(time.Date(2017, time.April, 25, 9, 57, 57, 35782900, time.UTC)),
-	// 			State: to.Ptr("Suspended"),
-	// 			StateDescription: to.Ptr("WaitingForStopTestFailover"),
-	// 			TargetInstanceType: to.Ptr("ProtectionEntity"),
-	// 			TargetObjectID: to.Ptr("f8491e4f-817a-40dd-a90c-af773978c75b"),
-	// 			TargetObjectName: to.Ptr("vm1"),
-	// 			Tasks: []*armrecoveryservicessiterecovery.ASRTask{
-	// 			},
-	// 		},
-	// 	},
-	// }
 }

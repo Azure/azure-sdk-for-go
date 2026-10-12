@@ -33,17 +33,17 @@ type VPNServerConfigurationsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, vpnServerConfigurationName string, options *armnetwork.VPNServerConfigurationsClientGetOptions) (resp azfake.Responder[armnetwork.VPNServerConfigurationsClientGetResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method VPNServerConfigurationsClient.NewListPager
+	// ListRadiusSecrets is the fake for method VPNServerConfigurationsClient.ListRadiusSecrets
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(options *armnetwork.VPNServerConfigurationsClientListOptions) (resp azfake.PagerResponder[armnetwork.VPNServerConfigurationsClientListResponse])
+	ListRadiusSecrets func(ctx context.Context, resourceGroupName string, vpnServerConfigurationName string, options *armnetwork.VPNServerConfigurationsClientListRadiusSecretsOptions) (resp azfake.Responder[armnetwork.VPNServerConfigurationsClientListRadiusSecretsResponse], errResp azfake.ErrorResponder)
 
 	// NewListByResourceGroupPager is the fake for method VPNServerConfigurationsClient.NewListByResourceGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByResourceGroupPager func(resourceGroupName string, options *armnetwork.VPNServerConfigurationsClientListByResourceGroupOptions) (resp azfake.PagerResponder[armnetwork.VPNServerConfigurationsClientListByResourceGroupResponse])
 
-	// ListRadiusSecrets is the fake for method VPNServerConfigurationsClient.ListRadiusSecrets
+	// NewListPager is the fake for method VPNServerConfigurationsClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
-	ListRadiusSecrets func(ctx context.Context, resourceGroupName string, vpnServerConfigurationName string, options *armnetwork.VPNServerConfigurationsClientListRadiusSecretsOptions) (resp azfake.Responder[armnetwork.VPNServerConfigurationsClientListRadiusSecretsResponse], errResp azfake.ErrorResponder)
+	NewListPager func(options *armnetwork.VPNServerConfigurationsClientListOptions) (resp azfake.PagerResponder[armnetwork.VPNServerConfigurationsClientListResponse])
 
 	// UpdateTags is the fake for method VPNServerConfigurationsClient.UpdateTags
 	// HTTP status codes to indicate success: http.StatusOK
@@ -58,8 +58,8 @@ func NewVPNServerConfigurationsServerTransport(srv *VPNServerConfigurationsServe
 		srv:                         srv,
 		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armnetwork.VPNServerConfigurationsClientCreateOrUpdateResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armnetwork.VPNServerConfigurationsClientDeleteResponse]](),
-		newListPager:                newTracker[azfake.PagerResponder[armnetwork.VPNServerConfigurationsClientListResponse]](),
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armnetwork.VPNServerConfigurationsClientListByResourceGroupResponse]](),
+		newListPager:                newTracker[azfake.PagerResponder[armnetwork.VPNServerConfigurationsClientListResponse]](),
 	}
 }
 
@@ -69,8 +69,8 @@ type VPNServerConfigurationsServerTransport struct {
 	srv                         *VPNServerConfigurationsServer
 	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armnetwork.VPNServerConfigurationsClientCreateOrUpdateResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armnetwork.VPNServerConfigurationsClientDeleteResponse]]
-	newListPager                *tracker[azfake.PagerResponder[armnetwork.VPNServerConfigurationsClientListResponse]]
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armnetwork.VPNServerConfigurationsClientListByResourceGroupResponse]]
+	newListPager                *tracker[azfake.PagerResponder[armnetwork.VPNServerConfigurationsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for VPNServerConfigurationsServerTransport.
@@ -100,12 +100,12 @@ func (v *VPNServerConfigurationsServerTransport) dispatchToMethodFake(req *http.
 				res.resp, res.err = v.dispatchBeginDelete(req)
 			case "VPNServerConfigurationsClient.Get":
 				res.resp, res.err = v.dispatchGet(req)
-			case "VPNServerConfigurationsClient.NewListPager":
-				res.resp, res.err = v.dispatchNewListPager(req)
-			case "VPNServerConfigurationsClient.NewListByResourceGroupPager":
-				res.resp, res.err = v.dispatchNewListByResourceGroupPager(req)
 			case "VPNServerConfigurationsClient.ListRadiusSecrets":
 				res.resp, res.err = v.dispatchListRadiusSecrets(req)
+			case "VPNServerConfigurationsClient.NewListByResourceGroupPager":
+				res.resp, res.err = v.dispatchNewListByResourceGroupPager(req)
+			case "VPNServerConfigurationsClient.NewListPager":
+				res.resp, res.err = v.dispatchNewListPager(req)
 			case "VPNServerConfigurationsClient.UpdateTags":
 				res.resp, res.err = v.dispatchUpdateTags(req)
 			default:
@@ -249,35 +249,35 @@ func (v *VPNServerConfigurationsServerTransport) dispatchGet(req *http.Request) 
 	return resp, nil
 }
 
-func (v *VPNServerConfigurationsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if v.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+func (v *VPNServerConfigurationsServerTransport) dispatchListRadiusSecrets(req *http.Request) (*http.Response, error) {
+	if v.srv.ListRadiusSecrets == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListRadiusSecrets not implemented")}
 	}
-	newListPager := v.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/vpnServerConfigurations`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := v.srv.NewListPager(nil)
-		newListPager = &resp
-		v.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armnetwork.VPNServerConfigurationsClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/vpnServerConfigurations/(?P<vpnServerConfigurationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listRadiusSecrets`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	resp, err := server.PagerResponderNext(newListPager, req)
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 	if err != nil {
 		return nil, err
 	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		v.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	vpnServerConfigurationNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("vpnServerConfigurationName")])
+	if err != nil {
+		return nil, err
 	}
-	if !server.PagerResponderMore(newListPager) {
-		v.newListPager.remove(req)
+	respr, errRespr := v.srv.ListRadiusSecrets(req.Context(), resourceGroupNameParam, vpnServerConfigurationNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).RadiusAuthServerListResult, req)
+	if err != nil {
+		return nil, err
 	}
 	return resp, nil
 }
@@ -319,35 +319,35 @@ func (v *VPNServerConfigurationsServerTransport) dispatchNewListByResourceGroupP
 	return resp, nil
 }
 
-func (v *VPNServerConfigurationsServerTransport) dispatchListRadiusSecrets(req *http.Request) (*http.Response, error) {
-	if v.srv.ListRadiusSecrets == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ListRadiusSecrets not implemented")}
+func (v *VPNServerConfigurationsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if v.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/vpnServerConfigurations/(?P<vpnServerConfigurationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listRadiusSecrets`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	newListPager := v.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/vpnServerConfigurations`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resp := v.srv.NewListPager(nil)
+		newListPager = &resp
+		v.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armnetwork.VPNServerConfigurationsClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
 	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	resp, err := server.PagerResponderNext(newListPager, req)
 	if err != nil {
 		return nil, err
 	}
-	vpnServerConfigurationNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("vpnServerConfigurationName")])
-	if err != nil {
-		return nil, err
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		v.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	respr, errRespr := v.srv.ListRadiusSecrets(req.Context(), resourceGroupNameParam, vpnServerConfigurationNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).RadiusAuthServerListResult, req)
-	if err != nil {
-		return nil, err
+	if !server.PagerResponderMore(newListPager) {
+		v.newListPager.remove(req)
 	}
 	return resp, nil
 }

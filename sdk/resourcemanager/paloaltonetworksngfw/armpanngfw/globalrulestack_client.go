@@ -61,7 +61,7 @@ func (client *GlobalRulestackClient) BeginCommit(ctx context.Context, globalRule
 	}
 }
 
-// Commit - Commit rulestack configuration
+// commit - Commit rulestack configuration
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *GlobalRulestackClient) commit(ctx context.Context, globalRulestackName string, options *GlobalRulestackClientBeginCommitOptions) (*http.Response, error) {
 	var err error
@@ -83,7 +83,7 @@ func (client *GlobalRulestackClient) commit(ctx context.Context, globalRulestack
 	return httpResp, nil
 }
 
-// commitCreateRequest creates the Commit request.
+// commitCreateRequest creates the commit request.
 func (client *GlobalRulestackClient) commitCreateRequest(ctx context.Context, globalRulestackName string, _ *GlobalRulestackClientBeginCommitOptions) (*policy.Request, error) {
 	urlPath := "/providers/PaloAltoNetworks.Cloudngfw/globalRulestacks/{globalRulestackName}/commit"
 	if globalRulestackName == "" {
@@ -123,7 +123,7 @@ func (client *GlobalRulestackClient) BeginCreateOrUpdate(ctx context.Context, gl
 	}
 }
 
-// CreateOrUpdate - Create a GlobalRulestackResource
+// createOrUpdate - Create a GlobalRulestackResource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *GlobalRulestackClient) createOrUpdate(ctx context.Context, globalRulestackName string, resource GlobalRulestackResource, options *GlobalRulestackClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -145,7 +145,7 @@ func (client *GlobalRulestackClient) createOrUpdate(ctx context.Context, globalR
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *GlobalRulestackClient) createOrUpdateCreateRequest(ctx context.Context, globalRulestackName string, resource GlobalRulestackResource, _ *GlobalRulestackClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/providers/PaloAltoNetworks.Cloudngfw/globalRulestacks/{globalRulestackName}"
 	if globalRulestackName == "" {
@@ -189,7 +189,7 @@ func (client *GlobalRulestackClient) BeginDelete(ctx context.Context, globalRule
 	}
 }
 
-// Delete - Delete a GlobalRulestackResource
+// deleteOperation - Delete a GlobalRulestackResource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *GlobalRulestackClient) deleteOperation(ctx context.Context, globalRulestackName string, options *GlobalRulestackClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -211,7 +211,7 @@ func (client *GlobalRulestackClient) deleteOperation(ctx context.Context, global
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *GlobalRulestackClient) deleteCreateRequest(ctx context.Context, globalRulestackName string, _ *GlobalRulestackClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/providers/PaloAltoNetworks.Cloudngfw/globalRulestacks/{globalRulestackName}"
 	if globalRulestackName == "" {
@@ -327,69 +327,6 @@ func (client *GlobalRulestackClient) getChangeLogHandleResponse(resp *http.Respo
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Changelog); err != nil {
 		return GlobalRulestackClientGetChangeLogResponse{}, err
-	}
-	return result, nil
-}
-
-// NewListPager - List GlobalRulestackResource resources by Tenant
-//   - options - GlobalRulestackClientListOptions contains the optional parameters for the GlobalRulestackClient.NewListPager
-//     method.
-func (client *GlobalRulestackClient) NewListPager(options *GlobalRulestackClientListOptions) *runtime.Pager[GlobalRulestackClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[GlobalRulestackClientListResponse]{
-		More: func(page GlobalRulestackClientListResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *GlobalRulestackClientListResponse) (GlobalRulestackClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "GlobalRulestackClient.NewListPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			req, err := client.listCreateRequest(ctx, nextLink, options)
-			if err != nil {
-				return GlobalRulestackClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return GlobalRulestackClientListResponse{}, err
-			}
-			return client.listHandleResponse(resp, http.StatusOK)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listCreateRequest creates the List request.
-func (client *GlobalRulestackClient) listCreateRequest(ctx context.Context, nextLink string, _ *GlobalRulestackClientListOptions) (*policy.Request, error) {
-	firstPage := nextLink == ""
-	var req *policy.Request
-	var err error
-	if firstPage {
-		urlPath := "/providers/PaloAltoNetworks.Cloudngfw/globalRulestacks"
-		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	} else {
-		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
-	}
-	if err != nil {
-		return nil, err
-	}
-	if firstPage {
-		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20251008)
-		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-		req.Raw().Header["Accept"] = []string{"application/json"}
-	}
-	return req, nil
-}
-
-// listHandleResponse handles the List response.
-func (client *GlobalRulestackClient) listHandleResponse(resp *http.Response, successCodes ...int) (GlobalRulestackClientListResponse, error) {
-	result := GlobalRulestackClientListResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.GlobalRulestackResourceListResult); err != nil {
-		return GlobalRulestackClientListResponse{}, err
 	}
 	return result, nil
 }
@@ -740,6 +677,69 @@ func (client *GlobalRulestackClient) listSecurityServicesHandleResponse(resp *ht
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SecurityServicesResponse); err != nil {
 		return GlobalRulestackClientListSecurityServicesResponse{}, err
+	}
+	return result, nil
+}
+
+// NewListPager - List GlobalRulestackResource resources by Tenant
+//   - options - GlobalRulestackClientListOptions contains the optional parameters for the GlobalRulestackClient.NewListPager
+//     method.
+func (client *GlobalRulestackClient) NewListPager(options *GlobalRulestackClientListOptions) *runtime.Pager[GlobalRulestackClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[GlobalRulestackClientListResponse]{
+		More: func(page GlobalRulestackClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *GlobalRulestackClientListResponse) (GlobalRulestackClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "GlobalRulestackClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listCreateRequest(ctx, nextLink, options)
+			if err != nil {
+				return GlobalRulestackClientListResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return GlobalRulestackClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listCreateRequest creates the List request.
+func (client *GlobalRulestackClient) listCreateRequest(ctx context.Context, nextLink string, _ *GlobalRulestackClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/providers/PaloAltoNetworks.Cloudngfw/globalRulestacks"
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20251008)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// listHandleResponse handles the List response.
+func (client *GlobalRulestackClient) listHandleResponse(resp *http.Response, successCodes ...int) (GlobalRulestackClientListResponse, error) {
+	result := GlobalRulestackClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.GlobalRulestackResourceListResult); err != nil {
+		return GlobalRulestackClientListResponse{}, err
 	}
 	return result, nil
 }

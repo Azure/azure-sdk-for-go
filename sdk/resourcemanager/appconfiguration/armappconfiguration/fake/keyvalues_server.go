@@ -20,13 +20,13 @@ import (
 
 // KeyValuesServer is a fake server for instances of the armappconfiguration.KeyValuesClient type.
 type KeyValuesServer struct {
-	// CreateOrUpdate is the fake for method KeyValuesClient.CreateOrUpdate
-	// HTTP status codes to indicate success: http.StatusOK
-	CreateOrUpdate func(ctx context.Context, resourceGroupName string, configStoreName string, keyValueName string, keyValueParameters armappconfiguration.KeyValue, options *armappconfiguration.KeyValuesClientCreateOrUpdateOptions) (resp azfake.Responder[armappconfiguration.KeyValuesClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
-
 	// BeginDelete is the fake for method KeyValuesClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, configStoreName string, keyValueName string, options *armappconfiguration.KeyValuesClientBeginDeleteOptions) (resp azfake.PollerResponder[armappconfiguration.KeyValuesClientDeleteResponse], errResp azfake.ErrorResponder)
+
+	// CreateOrUpdate is the fake for method KeyValuesClient.CreateOrUpdate
+	// HTTP status codes to indicate success: http.StatusOK
+	CreateOrUpdate func(ctx context.Context, resourceGroupName string, configStoreName string, keyValueName string, keyValueParameters armappconfiguration.KeyValue, options *armappconfiguration.KeyValuesClientCreateOrUpdateOptions) (resp azfake.Responder[armappconfiguration.KeyValuesClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method KeyValuesClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
@@ -71,10 +71,10 @@ func (k *KeyValuesServerTransport) dispatchToMethodFake(req *http.Request, metho
 		}
 		if !intercepted {
 			switch method {
-			case "KeyValuesClient.CreateOrUpdate":
-				res.resp, res.err = k.dispatchCreateOrUpdate(req)
 			case "KeyValuesClient.BeginDelete":
 				res.resp, res.err = k.dispatchBeginDelete(req)
+			case "KeyValuesClient.CreateOrUpdate":
+				res.resp, res.err = k.dispatchCreateOrUpdate(req)
 			case "KeyValuesClient.Get":
 				res.resp, res.err = k.dispatchGet(req)
 			default:
@@ -91,47 +91,6 @@ func (k *KeyValuesServerTransport) dispatchToMethodFake(req *http.Request, metho
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
-}
-
-func (k *KeyValuesServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Response, error) {
-	if k.srv.CreateOrUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AppConfiguration/configurationStores/(?P<configStoreName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/keyValues/(?P<keyValueName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armappconfiguration.KeyValue](req)
-	if err != nil {
-		return nil, err
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	configStoreNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("configStoreName")])
-	if err != nil {
-		return nil, err
-	}
-	keyValueNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("keyValueName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := k.srv.CreateOrUpdate(req.Context(), resourceGroupNameParam, configStoreNameParam, keyValueNameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).KeyValue, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
 }
 
 func (k *KeyValuesServerTransport) dispatchBeginDelete(req *http.Request) (*http.Response, error) {
@@ -179,6 +138,47 @@ func (k *KeyValuesServerTransport) dispatchBeginDelete(req *http.Request) (*http
 		k.beginDelete.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (k *KeyValuesServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Response, error) {
+	if k.srv.CreateOrUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AppConfiguration/configurationStores/(?P<configStoreName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/keyValues/(?P<keyValueName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armappconfiguration.KeyValue](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	configStoreNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("configStoreName")])
+	if err != nil {
+		return nil, err
+	}
+	keyValueNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("keyValueName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := k.srv.CreateOrUpdate(req.Context(), resourceGroupNameParam, configStoreNameParam, keyValueNameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).KeyValue, req)
+	if err != nil {
+		return nil, err
+	}
 	return resp, nil
 }
 

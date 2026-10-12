@@ -29,6 +29,10 @@ type AzureKeyVaultSecretProviderClassesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, azureKeyVaultSecretProviderClassName string, options *armsecretsstoreextension.AzureKeyVaultSecretProviderClassesClientBeginDeleteOptions) (resp azfake.PollerResponder[armsecretsstoreextension.AzureKeyVaultSecretProviderClassesClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method AzureKeyVaultSecretProviderClassesClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, azureKeyVaultSecretProviderClassName string, properties armsecretsstoreextension.AzureKeyVaultSecretProviderClassUpdate, options *armsecretsstoreextension.AzureKeyVaultSecretProviderClassesClientBeginUpdateOptions) (resp azfake.PollerResponder[armsecretsstoreextension.AzureKeyVaultSecretProviderClassesClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method AzureKeyVaultSecretProviderClassesClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, azureKeyVaultSecretProviderClassName string, options *armsecretsstoreextension.AzureKeyVaultSecretProviderClassesClientGetOptions) (resp azfake.Responder[armsecretsstoreextension.AzureKeyVaultSecretProviderClassesClientGetResponse], errResp azfake.ErrorResponder)
@@ -40,10 +44,6 @@ type AzureKeyVaultSecretProviderClassesServer struct {
 	// NewListBySubscriptionPager is the fake for method AzureKeyVaultSecretProviderClassesClient.NewListBySubscriptionPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListBySubscriptionPager func(options *armsecretsstoreextension.AzureKeyVaultSecretProviderClassesClientListBySubscriptionOptions) (resp azfake.PagerResponder[armsecretsstoreextension.AzureKeyVaultSecretProviderClassesClientListBySubscriptionResponse])
-
-	// BeginUpdate is the fake for method AzureKeyVaultSecretProviderClassesClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, azureKeyVaultSecretProviderClassName string, properties armsecretsstoreextension.AzureKeyVaultSecretProviderClassUpdate, options *armsecretsstoreextension.AzureKeyVaultSecretProviderClassesClientBeginUpdateOptions) (resp azfake.PollerResponder[armsecretsstoreextension.AzureKeyVaultSecretProviderClassesClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewAzureKeyVaultSecretProviderClassesServerTransport creates a new instance of AzureKeyVaultSecretProviderClassesServerTransport with the provided implementation.
@@ -54,9 +54,9 @@ func NewAzureKeyVaultSecretProviderClassesServerTransport(srv *AzureKeyVaultSecr
 		srv:                         srv,
 		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armsecretsstoreextension.AzureKeyVaultSecretProviderClassesClientCreateOrUpdateResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armsecretsstoreextension.AzureKeyVaultSecretProviderClassesClientDeleteResponse]](),
+		beginUpdate:                 newTracker[azfake.PollerResponder[armsecretsstoreextension.AzureKeyVaultSecretProviderClassesClientUpdateResponse]](),
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armsecretsstoreextension.AzureKeyVaultSecretProviderClassesClientListByResourceGroupResponse]](),
 		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armsecretsstoreextension.AzureKeyVaultSecretProviderClassesClientListBySubscriptionResponse]](),
-		beginUpdate:                 newTracker[azfake.PollerResponder[armsecretsstoreextension.AzureKeyVaultSecretProviderClassesClientUpdateResponse]](),
 	}
 }
 
@@ -66,9 +66,9 @@ type AzureKeyVaultSecretProviderClassesServerTransport struct {
 	srv                         *AzureKeyVaultSecretProviderClassesServer
 	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armsecretsstoreextension.AzureKeyVaultSecretProviderClassesClientCreateOrUpdateResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armsecretsstoreextension.AzureKeyVaultSecretProviderClassesClientDeleteResponse]]
+	beginUpdate                 *tracker[azfake.PollerResponder[armsecretsstoreextension.AzureKeyVaultSecretProviderClassesClientUpdateResponse]]
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armsecretsstoreextension.AzureKeyVaultSecretProviderClassesClientListByResourceGroupResponse]]
 	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armsecretsstoreextension.AzureKeyVaultSecretProviderClassesClientListBySubscriptionResponse]]
-	beginUpdate                 *tracker[azfake.PollerResponder[armsecretsstoreextension.AzureKeyVaultSecretProviderClassesClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for AzureKeyVaultSecretProviderClassesServerTransport.
@@ -96,14 +96,14 @@ func (a *AzureKeyVaultSecretProviderClassesServerTransport) dispatchToMethodFake
 				res.resp, res.err = a.dispatchBeginCreateOrUpdate(req)
 			case "AzureKeyVaultSecretProviderClassesClient.BeginDelete":
 				res.resp, res.err = a.dispatchBeginDelete(req)
+			case "AzureKeyVaultSecretProviderClassesClient.BeginUpdate":
+				res.resp, res.err = a.dispatchBeginUpdate(req)
 			case "AzureKeyVaultSecretProviderClassesClient.Get":
 				res.resp, res.err = a.dispatchGet(req)
 			case "AzureKeyVaultSecretProviderClassesClient.NewListByResourceGroupPager":
 				res.resp, res.err = a.dispatchNewListByResourceGroupPager(req)
 			case "AzureKeyVaultSecretProviderClassesClient.NewListBySubscriptionPager":
 				res.resp, res.err = a.dispatchNewListBySubscriptionPager(req)
-			case "AzureKeyVaultSecretProviderClassesClient.BeginUpdate":
-				res.resp, res.err = a.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -212,6 +212,54 @@ func (a *AzureKeyVaultSecretProviderClassesServerTransport) dispatchBeginDelete(
 	return resp, nil
 }
 
+func (a *AzureKeyVaultSecretProviderClassesServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if a.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := a.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.SecretSyncController/azureKeyVaultSecretProviderClasses/(?P<azureKeyVaultSecretProviderClassName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armsecretsstoreextension.AzureKeyVaultSecretProviderClassUpdate](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		azureKeyVaultSecretProviderClassNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("azureKeyVaultSecretProviderClassName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := a.srv.BeginUpdate(req.Context(), resourceGroupNameParam, azureKeyVaultSecretProviderClassNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		a.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		a.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		a.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (a *AzureKeyVaultSecretProviderClassesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if a.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -312,54 +360,6 @@ func (a *AzureKeyVaultSecretProviderClassesServerTransport) dispatchNewListBySub
 	if !server.PagerResponderMore(newListBySubscriptionPager) {
 		a.newListBySubscriptionPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (a *AzureKeyVaultSecretProviderClassesServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if a.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := a.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.SecretSyncController/azureKeyVaultSecretProviderClasses/(?P<azureKeyVaultSecretProviderClassName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armsecretsstoreextension.AzureKeyVaultSecretProviderClassUpdate](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		azureKeyVaultSecretProviderClassNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("azureKeyVaultSecretProviderClassName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := a.srv.BeginUpdate(req.Context(), resourceGroupNameParam, azureKeyVaultSecretProviderClassNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		a.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		a.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		a.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

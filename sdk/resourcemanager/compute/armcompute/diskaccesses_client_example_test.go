@@ -102,6 +102,96 @@ func ExampleDiskAccessesClient_BeginDeleteAPrivateEndpointConnection() {
 	// }
 }
 
+// Generated from example definition: 2026-03-02/diskAccessExamples/DiskAccess_Update.json
+func ExampleDiskAccessesClient_BeginUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcompute.NewClientFactory("{subscription-id}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewDiskAccessesClient().BeginUpdate(ctx, "myResourceGroup", "myDiskAccess", armcompute.DiskAccessUpdate{
+		Tags: map[string]*string{
+			"department": to.Ptr("Development"),
+			"project":    to.Ptr("PrivateEndpoints"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcompute.DiskAccessesClientUpdateResponse{
+	// 	DiskAccess: armcompute.DiskAccess{
+	// 		Name: to.Ptr("myDiskAccess"),
+	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourcegroup/providers/Microsoft.Compute/diskAccesses/myDiskAccess"),
+	// 		Type: to.Ptr("Microsoft.Compute/diskAccesses"),
+	// 		Location: to.Ptr("West US"),
+	// 		Tags: map[string]*string{
+	// 			"department": to.Ptr("Development"),
+	// 			"project": to.Ptr("PrivateEndpoints"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-03-02/diskAccessExamples/DiskAccessPrivateEndpointConnection_Approve.json
+func ExampleDiskAccessesClient_BeginUpdateAPrivateEndpointConnection() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcompute.NewClientFactory("{subscription-id}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewDiskAccessesClient().BeginUpdateAPrivateEndpointConnection(ctx, "myResourceGroup", "myDiskAccess", "myPrivateEndpointConnection", armcompute.PrivateEndpointConnection{
+		Properties: &armcompute.PrivateEndpointConnectionProperties{
+			PrivateLinkServiceConnectionState: &armcompute.PrivateLinkServiceConnectionState{
+				Status:      to.Ptr(armcompute.PrivateEndpointServiceConnectionStatusApproved),
+				Description: to.Ptr("Approving myPrivateEndpointConnection"),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcompute.DiskAccessesClientUpdateAPrivateEndpointConnectionResponse{
+	// 	PrivateEndpointConnection: armcompute.PrivateEndpointConnection{
+	// 		Name: to.Ptr("myPrivateEndpointConnectionName"),
+	// 		Type: to.Ptr("Microsoft.Compute/diskAccesses/PrivateEndpointConnections"),
+	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskAccesses/myDiskAccess/privateEndpoinConnections/myPrivateEndpointConnectionName"),
+	// 		Properties: &armcompute.PrivateEndpointConnectionProperties{
+	// 			ProvisioningState: to.Ptr(armcompute.PrivateEndpointConnectionProvisioningStateSucceeded),
+	// 			PrivateEndpoint: &armcompute.PrivateEndpoint{
+	// 				ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/privateEndpoints/myPrivateEndpoint"),
+	// 			},
+	// 			PrivateLinkServiceConnectionState: &armcompute.PrivateLinkServiceConnectionState{
+	// 				ActionsRequired: to.Ptr("None"),
+	// 				Description: to.Ptr("Approving myPrivateEndpointConnection"),
+	// 				Status: to.Ptr(armcompute.PrivateEndpointServiceConnectionStatusApproved),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
 // Generated from example definition: 2026-03-02/diskAccessExamples/DiskAccess_Get.json
 func ExampleDiskAccessesClient_Get_getInformationAboutADiskAccessResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -270,84 +360,6 @@ func ExampleDiskAccessesClient_GetPrivateLinkResources() {
 	// }
 }
 
-// Generated from example definition: 2026-03-02/diskAccessExamples/DiskAccess_ListBySubscription.json
-func ExampleDiskAccessesClient_NewListPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcompute.NewClientFactory("{subscription-id}", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewDiskAccessesClient().NewListPager(nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armcompute.DiskAccessesClientListResponse{
-		// 	DiskAccessList: armcompute.DiskAccessList{
-		// 		Value: []*armcompute.DiskAccess{
-		// 			{
-		// 				Properties: &armcompute.DiskAccessProperties{
-		// 					ProvisioningState: to.Ptr("Succeeded"),
-		// 					TimeCreated: to.Ptr(time.Date(2020, time.May, 1, 4, 41, 35, 79872000, time.UTC)),
-		// 				},
-		// 				Type: to.Ptr("Microsoft.Compute/diskAccesses"),
-		// 				Location: to.Ptr("westus"),
-		// 				Tags: map[string]*string{
-		// 					"department": to.Ptr("Development"),
-		// 					"project": to.Ptr("PrivateEndpoints"),
-		// 				},
-		// 				ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskAccesses/myDiskAccess"),
-		// 				Name: to.Ptr("myDiskAccess"),
-		// 			},
-		// 			{
-		// 				Properties: &armcompute.DiskAccessProperties{
-		// 					ProvisioningState: to.Ptr("Succeeded"),
-		// 					TimeCreated: to.Ptr(time.Date(2020, time.May, 1, 4, 41, 35, 79872000, time.UTC)),
-		// 					PrivateEndpointConnections: []*armcompute.PrivateEndpointConnection{
-		// 						{
-		// 							Name: to.Ptr("myDiskAccess.d4914cfa-6bc2-4049-a57c-3d1f622d8eef"),
-		// 							Type: to.Ptr("Microsoft.Compute/diskAccesses/PrivateEndpointConnections"),
-		// 							ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/mySecondResourceGroup/providers/Microsoft.Compute/diskAccesses/myDiskAccess2/privateEndpoinConnections/myDiskAccess2.d4914cfa-6bc2-4049-a57c-3d1f622d8eef"),
-		// 							Properties: &armcompute.PrivateEndpointConnectionProperties{
-		// 								ProvisioningState: to.Ptr(armcompute.PrivateEndpointConnectionProvisioningStateSucceeded),
-		// 								PrivateEndpoint: &armcompute.PrivateEndpoint{
-		// 									ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/mySecondResourceGroup/providers/Microsoft.Network/privateEndpoints/myPrivateEndpoint2"),
-		// 								},
-		// 								PrivateLinkServiceConnectionState: &armcompute.PrivateLinkServiceConnectionState{
-		// 									ActionsRequired: to.Ptr("None"),
-		// 									Description: to.Ptr("Auto-Approved"),
-		// 									Status: to.Ptr(armcompute.PrivateEndpointServiceConnectionStatusApproved),
-		// 								},
-		// 							},
-		// 						},
-		// 					},
-		// 				},
-		// 				Type: to.Ptr("Microsoft.Compute/diskAccesses"),
-		// 				Location: to.Ptr("westus"),
-		// 				Tags: map[string]*string{
-		// 					"department": to.Ptr("Development"),
-		// 					"project": to.Ptr("PrivateEndpoints"),
-		// 				},
-		// 				ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/mySecondResourceGroup/providers/Microsoft.Compute/diskAccesses/myDiskAccess2"),
-		// 				Name: to.Ptr("myDiskAccess2"),
-		// 			},
-		// 		},
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/subscriptionId/providers/Microsoft.Compute/diskAccesses?$skiptoken=token"),
-		// 	},
-		// }
-	}
-}
-
 // Generated from example definition: 2026-03-02/diskAccessExamples/DiskAccess_ListByResourceGroup.json
 func ExampleDiskAccessesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -426,6 +438,84 @@ func ExampleDiskAccessesClient_NewListByResourceGroupPager() {
 	}
 }
 
+// Generated from example definition: 2026-03-02/diskAccessExamples/DiskAccess_ListBySubscription.json
+func ExampleDiskAccessesClient_NewListPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcompute.NewClientFactory("{subscription-id}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewDiskAccessesClient().NewListPager(nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armcompute.DiskAccessesClientListResponse{
+		// 	DiskAccessList: armcompute.DiskAccessList{
+		// 		Value: []*armcompute.DiskAccess{
+		// 			{
+		// 				Properties: &armcompute.DiskAccessProperties{
+		// 					ProvisioningState: to.Ptr("Succeeded"),
+		// 					TimeCreated: to.Ptr(time.Date(2020, time.May, 1, 4, 41, 35, 79872000, time.UTC)),
+		// 				},
+		// 				Type: to.Ptr("Microsoft.Compute/diskAccesses"),
+		// 				Location: to.Ptr("westus"),
+		// 				Tags: map[string]*string{
+		// 					"department": to.Ptr("Development"),
+		// 					"project": to.Ptr("PrivateEndpoints"),
+		// 				},
+		// 				ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskAccesses/myDiskAccess"),
+		// 				Name: to.Ptr("myDiskAccess"),
+		// 			},
+		// 			{
+		// 				Properties: &armcompute.DiskAccessProperties{
+		// 					ProvisioningState: to.Ptr("Succeeded"),
+		// 					TimeCreated: to.Ptr(time.Date(2020, time.May, 1, 4, 41, 35, 79872000, time.UTC)),
+		// 					PrivateEndpointConnections: []*armcompute.PrivateEndpointConnection{
+		// 						{
+		// 							Name: to.Ptr("myDiskAccess.d4914cfa-6bc2-4049-a57c-3d1f622d8eef"),
+		// 							Type: to.Ptr("Microsoft.Compute/diskAccesses/PrivateEndpointConnections"),
+		// 							ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/mySecondResourceGroup/providers/Microsoft.Compute/diskAccesses/myDiskAccess2/privateEndpoinConnections/myDiskAccess2.d4914cfa-6bc2-4049-a57c-3d1f622d8eef"),
+		// 							Properties: &armcompute.PrivateEndpointConnectionProperties{
+		// 								ProvisioningState: to.Ptr(armcompute.PrivateEndpointConnectionProvisioningStateSucceeded),
+		// 								PrivateEndpoint: &armcompute.PrivateEndpoint{
+		// 									ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/mySecondResourceGroup/providers/Microsoft.Network/privateEndpoints/myPrivateEndpoint2"),
+		// 								},
+		// 								PrivateLinkServiceConnectionState: &armcompute.PrivateLinkServiceConnectionState{
+		// 									ActionsRequired: to.Ptr("None"),
+		// 									Description: to.Ptr("Auto-Approved"),
+		// 									Status: to.Ptr(armcompute.PrivateEndpointServiceConnectionStatusApproved),
+		// 								},
+		// 							},
+		// 						},
+		// 					},
+		// 				},
+		// 				Type: to.Ptr("Microsoft.Compute/diskAccesses"),
+		// 				Location: to.Ptr("westus"),
+		// 				Tags: map[string]*string{
+		// 					"department": to.Ptr("Development"),
+		// 					"project": to.Ptr("PrivateEndpoints"),
+		// 				},
+		// 				ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/mySecondResourceGroup/providers/Microsoft.Compute/diskAccesses/myDiskAccess2"),
+		// 				Name: to.Ptr("myDiskAccess2"),
+		// 			},
+		// 		},
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/subscriptionId/providers/Microsoft.Compute/diskAccesses?$skiptoken=token"),
+		// 	},
+		// }
+	}
+}
+
 // Generated from example definition: 2026-03-02/diskAccessExamples/DiskAccessPrivateEndpointConnection_ListByDiskAccess.json
 func ExampleDiskAccessesClient_NewListPrivateEndpointConnectionsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -471,94 +561,4 @@ func ExampleDiskAccessesClient_NewListPrivateEndpointConnectionsPager() {
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2026-03-02/diskAccessExamples/DiskAccess_Update.json
-func ExampleDiskAccessesClient_BeginUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcompute.NewClientFactory("{subscription-id}", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewDiskAccessesClient().BeginUpdate(ctx, "myResourceGroup", "myDiskAccess", armcompute.DiskAccessUpdate{
-		Tags: map[string]*string{
-			"department": to.Ptr("Development"),
-			"project":    to.Ptr("PrivateEndpoints"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcompute.DiskAccessesClientUpdateResponse{
-	// 	DiskAccess: armcompute.DiskAccess{
-	// 		Name: to.Ptr("myDiskAccess"),
-	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourcegroup/providers/Microsoft.Compute/diskAccesses/myDiskAccess"),
-	// 		Type: to.Ptr("Microsoft.Compute/diskAccesses"),
-	// 		Location: to.Ptr("West US"),
-	// 		Tags: map[string]*string{
-	// 			"department": to.Ptr("Development"),
-	// 			"project": to.Ptr("PrivateEndpoints"),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-03-02/diskAccessExamples/DiskAccessPrivateEndpointConnection_Approve.json
-func ExampleDiskAccessesClient_BeginUpdateAPrivateEndpointConnection() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcompute.NewClientFactory("{subscription-id}", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewDiskAccessesClient().BeginUpdateAPrivateEndpointConnection(ctx, "myResourceGroup", "myDiskAccess", "myPrivateEndpointConnection", armcompute.PrivateEndpointConnection{
-		Properties: &armcompute.PrivateEndpointConnectionProperties{
-			PrivateLinkServiceConnectionState: &armcompute.PrivateLinkServiceConnectionState{
-				Status:      to.Ptr(armcompute.PrivateEndpointServiceConnectionStatusApproved),
-				Description: to.Ptr("Approving myPrivateEndpointConnection"),
-			},
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcompute.DiskAccessesClientUpdateAPrivateEndpointConnectionResponse{
-	// 	PrivateEndpointConnection: armcompute.PrivateEndpointConnection{
-	// 		Name: to.Ptr("myPrivateEndpointConnectionName"),
-	// 		Type: to.Ptr("Microsoft.Compute/diskAccesses/PrivateEndpointConnections"),
-	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskAccesses/myDiskAccess/privateEndpoinConnections/myPrivateEndpointConnectionName"),
-	// 		Properties: &armcompute.PrivateEndpointConnectionProperties{
-	// 			ProvisioningState: to.Ptr(armcompute.PrivateEndpointConnectionProvisioningStateSucceeded),
-	// 			PrivateEndpoint: &armcompute.PrivateEndpoint{
-	// 				ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/privateEndpoints/myPrivateEndpoint"),
-	// 			},
-	// 			PrivateLinkServiceConnectionState: &armcompute.PrivateLinkServiceConnectionState{
-	// 				ActionsRequired: to.Ptr("None"),
-	// 				Description: to.Ptr("Approving myPrivateEndpointConnection"),
-	// 				Status: to.Ptr(armcompute.PrivateEndpointServiceConnectionStatusApproved),
-	// 			},
-	// 		},
-	// 	},
-	// }
 }

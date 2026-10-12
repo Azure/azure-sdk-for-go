@@ -71,7 +71,7 @@ func (client *ReplicationRecoveryPlansClient) BeginCreate(ctx context.Context, r
 	}
 }
 
-// Create - Creates a recovery plan with the given details.
+// create - Creates a recovery plan with the given details.
 //
 // The operation to create a recovery plan.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -95,7 +95,7 @@ func (client *ReplicationRecoveryPlansClient) create(ctx context.Context, resour
 	return httpResp, nil
 }
 
-// createCreateRequest creates the Create request.
+// createCreateRequest creates the create request.
 func (client *ReplicationRecoveryPlansClient) createCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, recoveryPlanName string, input CreateRecoveryPlanInput, _ *ReplicationRecoveryPlansClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationRecoveryPlans/{recoveryPlanName}"
 	if client.subscriptionID == "" {
@@ -155,7 +155,7 @@ func (client *ReplicationRecoveryPlansClient) BeginDelete(ctx context.Context, r
 	}
 }
 
-// Delete - Deletes the specified recovery plan.
+// deleteOperation - Deletes the specified recovery plan.
 //
 // Delete a recovery plan.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -179,7 +179,7 @@ func (client *ReplicationRecoveryPlansClient) deleteOperation(ctx context.Contex
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *ReplicationRecoveryPlansClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, recoveryPlanName string, _ *ReplicationRecoveryPlansClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationRecoveryPlans/{recoveryPlanName}"
 	if client.subscriptionID == "" {
@@ -234,7 +234,7 @@ func (client *ReplicationRecoveryPlansClient) BeginFailoverCancel(ctx context.Co
 	}
 }
 
-// FailoverCancel - Execute cancel failover of the recovery plan.
+// failoverCancel - Execute cancel failover of the recovery plan.
 //
 // The operation to cancel the failover of a recovery plan.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -258,7 +258,7 @@ func (client *ReplicationRecoveryPlansClient) failoverCancel(ctx context.Context
 	return httpResp, nil
 }
 
-// failoverCancelCreateRequest creates the FailoverCancel request.
+// failoverCancelCreateRequest creates the failoverCancel request.
 func (client *ReplicationRecoveryPlansClient) failoverCancelCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, recoveryPlanName string, _ *ReplicationRecoveryPlansClientBeginFailoverCancelOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationRecoveryPlans/{recoveryPlanName}/failoverCancel"
 	if client.subscriptionID == "" {
@@ -314,7 +314,7 @@ func (client *ReplicationRecoveryPlansClient) BeginFailoverCommit(ctx context.Co
 	}
 }
 
-// FailoverCommit - Execute commit failover of the recovery plan.
+// failoverCommit - Execute commit failover of the recovery plan.
 //
 // The operation to commit the failover of a recovery plan.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -338,7 +338,7 @@ func (client *ReplicationRecoveryPlansClient) failoverCommit(ctx context.Context
 	return httpResp, nil
 }
 
-// failoverCommitCreateRequest creates the FailoverCommit request.
+// failoverCommitCreateRequest creates the failoverCommit request.
 func (client *ReplicationRecoveryPlansClient) failoverCommitCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, recoveryPlanName string, _ *ReplicationRecoveryPlansClientBeginFailoverCommitOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationRecoveryPlans/{recoveryPlanName}/failoverCommit"
 	if client.subscriptionID == "" {
@@ -365,6 +365,511 @@ func (client *ReplicationRecoveryPlansClient) failoverCommitCreateRequest(ctx co
 	reqQP.Set("api-version", version20250801)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// BeginPlannedFailover - Execute planned failover of the recovery plan.
+//
+// The operation to start the planned failover of a recovery plan.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - resourceName - The name of the Vault
+//   - recoveryPlanName - Name of the recovery plan.
+//   - input - Failover input.
+//   - options - ReplicationRecoveryPlansClientBeginPlannedFailoverOptions contains the optional parameters for the ReplicationRecoveryPlansClient.BeginPlannedFailover
+//     method.
+func (client *ReplicationRecoveryPlansClient) BeginPlannedFailover(ctx context.Context, resourceGroupName string, resourceName string, recoveryPlanName string, input RecoveryPlanPlannedFailoverInput, options *ReplicationRecoveryPlansClientBeginPlannedFailoverOptions) (*runtime.Poller[ReplicationRecoveryPlansClientPlannedFailoverResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.plannedFailover(ctx, resourceGroupName, resourceName, recoveryPlanName, input, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ReplicationRecoveryPlansClientPlannedFailoverResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ReplicationRecoveryPlansClientPlannedFailoverResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// plannedFailover - Execute planned failover of the recovery plan.
+//
+// The operation to start the planned failover of a recovery plan.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ReplicationRecoveryPlansClient) plannedFailover(ctx context.Context, resourceGroupName string, resourceName string, recoveryPlanName string, input RecoveryPlanPlannedFailoverInput, options *ReplicationRecoveryPlansClientBeginPlannedFailoverOptions) (*http.Response, error) {
+	var err error
+	const operationName = "ReplicationRecoveryPlansClient.BeginPlannedFailover"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.plannedFailoverCreateRequest(ctx, resourceGroupName, resourceName, recoveryPlanName, input, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// plannedFailoverCreateRequest creates the plannedFailover request.
+func (client *ReplicationRecoveryPlansClient) plannedFailoverCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, recoveryPlanName string, input RecoveryPlanPlannedFailoverInput, _ *ReplicationRecoveryPlansClientBeginPlannedFailoverOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationRecoveryPlans/{recoveryPlanName}/plannedFailover"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if resourceName == "" {
+		return nil, errors.New("parameter resourceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
+	if recoveryPlanName == "" {
+		return nil, errors.New("parameter recoveryPlanName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{recoveryPlanName}", url.PathEscape(recoveryPlanName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20250801)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, input); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginReprotect - Execute reprotect of the recovery plan.
+//
+// The operation to reprotect(reverse replicate) a recovery plan. This api is for deprecated scenarios and no longer works.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - resourceName - The name of the Vault
+//   - recoveryPlanName - Name of the recovery plan.
+//   - options - ReplicationRecoveryPlansClientBeginReprotectOptions contains the optional parameters for the ReplicationRecoveryPlansClient.BeginReprotect
+//     method.
+func (client *ReplicationRecoveryPlansClient) BeginReprotect(ctx context.Context, resourceGroupName string, resourceName string, recoveryPlanName string, options *ReplicationRecoveryPlansClientBeginReprotectOptions) (*runtime.Poller[ReplicationRecoveryPlansClientReprotectResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.reprotect(ctx, resourceGroupName, resourceName, recoveryPlanName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ReplicationRecoveryPlansClientReprotectResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ReplicationRecoveryPlansClientReprotectResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// reprotect - Execute reprotect of the recovery plan.
+//
+// The operation to reprotect(reverse replicate) a recovery plan. This api is for deprecated scenarios and no longer works.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ReplicationRecoveryPlansClient) reprotect(ctx context.Context, resourceGroupName string, resourceName string, recoveryPlanName string, options *ReplicationRecoveryPlansClientBeginReprotectOptions) (*http.Response, error) {
+	var err error
+	const operationName = "ReplicationRecoveryPlansClient.BeginReprotect"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.reprotectCreateRequest(ctx, resourceGroupName, resourceName, recoveryPlanName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// reprotectCreateRequest creates the reprotect request.
+func (client *ReplicationRecoveryPlansClient) reprotectCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, recoveryPlanName string, _ *ReplicationRecoveryPlansClientBeginReprotectOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationRecoveryPlans/{recoveryPlanName}/reProtect"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if resourceName == "" {
+		return nil, errors.New("parameter resourceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
+	if recoveryPlanName == "" {
+		return nil, errors.New("parameter recoveryPlanName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{recoveryPlanName}", url.PathEscape(recoveryPlanName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20250801)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// BeginTestFailover - Execute test failover of the recovery plan.
+//
+// The operation to start the test failover of a recovery plan.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - resourceName - The name of the Vault
+//   - recoveryPlanName - Name of the recovery plan.
+//   - input - Recovery plan test failover input.
+//   - options - ReplicationRecoveryPlansClientBeginTestFailoverOptions contains the optional parameters for the ReplicationRecoveryPlansClient.BeginTestFailover
+//     method.
+func (client *ReplicationRecoveryPlansClient) BeginTestFailover(ctx context.Context, resourceGroupName string, resourceName string, recoveryPlanName string, input RecoveryPlanTestFailoverInput, options *ReplicationRecoveryPlansClientBeginTestFailoverOptions) (*runtime.Poller[ReplicationRecoveryPlansClientTestFailoverResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.testFailover(ctx, resourceGroupName, resourceName, recoveryPlanName, input, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ReplicationRecoveryPlansClientTestFailoverResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ReplicationRecoveryPlansClientTestFailoverResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// testFailover - Execute test failover of the recovery plan.
+//
+// The operation to start the test failover of a recovery plan.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ReplicationRecoveryPlansClient) testFailover(ctx context.Context, resourceGroupName string, resourceName string, recoveryPlanName string, input RecoveryPlanTestFailoverInput, options *ReplicationRecoveryPlansClientBeginTestFailoverOptions) (*http.Response, error) {
+	var err error
+	const operationName = "ReplicationRecoveryPlansClient.BeginTestFailover"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.testFailoverCreateRequest(ctx, resourceGroupName, resourceName, recoveryPlanName, input, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// testFailoverCreateRequest creates the testFailover request.
+func (client *ReplicationRecoveryPlansClient) testFailoverCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, recoveryPlanName string, input RecoveryPlanTestFailoverInput, _ *ReplicationRecoveryPlansClientBeginTestFailoverOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationRecoveryPlans/{recoveryPlanName}/testFailover"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if resourceName == "" {
+		return nil, errors.New("parameter resourceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
+	if recoveryPlanName == "" {
+		return nil, errors.New("parameter recoveryPlanName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{recoveryPlanName}", url.PathEscape(recoveryPlanName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20250801)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, input); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginTestFailoverCleanup - Execute test failover cleanup of the recovery plan.
+//
+// The operation to cleanup test failover of a recovery plan.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - resourceName - The name of the Vault
+//   - recoveryPlanName - Name of the recovery plan.
+//   - input - Recovery plan test failover cleanup input.
+//   - options - ReplicationRecoveryPlansClientBeginTestFailoverCleanupOptions contains the optional parameters for the ReplicationRecoveryPlansClient.BeginTestFailoverCleanup
+//     method.
+func (client *ReplicationRecoveryPlansClient) BeginTestFailoverCleanup(ctx context.Context, resourceGroupName string, resourceName string, recoveryPlanName string, input RecoveryPlanTestFailoverCleanupInput, options *ReplicationRecoveryPlansClientBeginTestFailoverCleanupOptions) (*runtime.Poller[ReplicationRecoveryPlansClientTestFailoverCleanupResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.testFailoverCleanup(ctx, resourceGroupName, resourceName, recoveryPlanName, input, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ReplicationRecoveryPlansClientTestFailoverCleanupResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ReplicationRecoveryPlansClientTestFailoverCleanupResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// testFailoverCleanup - Execute test failover cleanup of the recovery plan.
+//
+// The operation to cleanup test failover of a recovery plan.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ReplicationRecoveryPlansClient) testFailoverCleanup(ctx context.Context, resourceGroupName string, resourceName string, recoveryPlanName string, input RecoveryPlanTestFailoverCleanupInput, options *ReplicationRecoveryPlansClientBeginTestFailoverCleanupOptions) (*http.Response, error) {
+	var err error
+	const operationName = "ReplicationRecoveryPlansClient.BeginTestFailoverCleanup"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.testFailoverCleanupCreateRequest(ctx, resourceGroupName, resourceName, recoveryPlanName, input, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// testFailoverCleanupCreateRequest creates the testFailoverCleanup request.
+func (client *ReplicationRecoveryPlansClient) testFailoverCleanupCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, recoveryPlanName string, input RecoveryPlanTestFailoverCleanupInput, _ *ReplicationRecoveryPlansClientBeginTestFailoverCleanupOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationRecoveryPlans/{recoveryPlanName}/testFailoverCleanup"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if resourceName == "" {
+		return nil, errors.New("parameter resourceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
+	if recoveryPlanName == "" {
+		return nil, errors.New("parameter recoveryPlanName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{recoveryPlanName}", url.PathEscape(recoveryPlanName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20250801)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, input); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginUnplannedFailover - Execute unplanned failover of the recovery plan.
+//
+// The operation to start the unplanned failover of a recovery plan.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - resourceName - The name of the Vault
+//   - recoveryPlanName - Name of the recovery plan.
+//   - input - Recovery plan unplanned failover input.
+//   - options - ReplicationRecoveryPlansClientBeginUnplannedFailoverOptions contains the optional parameters for the ReplicationRecoveryPlansClient.BeginUnplannedFailover
+//     method.
+func (client *ReplicationRecoveryPlansClient) BeginUnplannedFailover(ctx context.Context, resourceGroupName string, resourceName string, recoveryPlanName string, input RecoveryPlanUnplannedFailoverInput, options *ReplicationRecoveryPlansClientBeginUnplannedFailoverOptions) (*runtime.Poller[ReplicationRecoveryPlansClientUnplannedFailoverResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.unplannedFailover(ctx, resourceGroupName, resourceName, recoveryPlanName, input, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ReplicationRecoveryPlansClientUnplannedFailoverResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ReplicationRecoveryPlansClientUnplannedFailoverResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// unplannedFailover - Execute unplanned failover of the recovery plan.
+//
+// The operation to start the unplanned failover of a recovery plan.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ReplicationRecoveryPlansClient) unplannedFailover(ctx context.Context, resourceGroupName string, resourceName string, recoveryPlanName string, input RecoveryPlanUnplannedFailoverInput, options *ReplicationRecoveryPlansClientBeginUnplannedFailoverOptions) (*http.Response, error) {
+	var err error
+	const operationName = "ReplicationRecoveryPlansClient.BeginUnplannedFailover"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.unplannedFailoverCreateRequest(ctx, resourceGroupName, resourceName, recoveryPlanName, input, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// unplannedFailoverCreateRequest creates the unplannedFailover request.
+func (client *ReplicationRecoveryPlansClient) unplannedFailoverCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, recoveryPlanName string, input RecoveryPlanUnplannedFailoverInput, _ *ReplicationRecoveryPlansClientBeginUnplannedFailoverOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationRecoveryPlans/{recoveryPlanName}/unplannedFailover"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if resourceName == "" {
+		return nil, errors.New("parameter resourceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
+	if recoveryPlanName == "" {
+		return nil, errors.New("parameter recoveryPlanName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{recoveryPlanName}", url.PathEscape(recoveryPlanName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20250801)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, input); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginUpdate - Updates the given recovery plan.
+//
+// The operation to update a recovery plan.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - resourceName - The name of the Vault
+//   - recoveryPlanName - Name of the recovery plan.
+//   - input - Update recovery plan input.
+//   - options - ReplicationRecoveryPlansClientBeginUpdateOptions contains the optional parameters for the ReplicationRecoveryPlansClient.BeginUpdate
+//     method.
+func (client *ReplicationRecoveryPlansClient) BeginUpdate(ctx context.Context, resourceGroupName string, resourceName string, recoveryPlanName string, input UpdateRecoveryPlanInput, options *ReplicationRecoveryPlansClientBeginUpdateOptions) (*runtime.Poller[ReplicationRecoveryPlansClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, resourceName, recoveryPlanName, input, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ReplicationRecoveryPlansClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ReplicationRecoveryPlansClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Updates the given recovery plan.
+//
+// The operation to update a recovery plan.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ReplicationRecoveryPlansClient) update(ctx context.Context, resourceGroupName string, resourceName string, recoveryPlanName string, input UpdateRecoveryPlanInput, options *ReplicationRecoveryPlansClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "ReplicationRecoveryPlansClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, resourceName, recoveryPlanName, input, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *ReplicationRecoveryPlansClient) updateCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, recoveryPlanName string, input UpdateRecoveryPlanInput, _ *ReplicationRecoveryPlansClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationRecoveryPlans/{recoveryPlanName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if resourceName == "" {
+		return nil, errors.New("parameter resourceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
+	if recoveryPlanName == "" {
+		return nil, errors.New("parameter recoveryPlanName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{recoveryPlanName}", url.PathEscape(recoveryPlanName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20250801)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, input); err != nil {
+		return nil, err
+	}
 	return req, nil
 }
 
@@ -513,509 +1018,4 @@ func (client *ReplicationRecoveryPlansClient) listHandleResponse(resp *http.Resp
 		return ReplicationRecoveryPlansClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginPlannedFailover - Execute planned failover of the recovery plan.
-//
-// The operation to start the planned failover of a recovery plan.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - resourceName - The name of the Vault
-//   - recoveryPlanName - Name of the recovery plan.
-//   - input - Failover input.
-//   - options - ReplicationRecoveryPlansClientBeginPlannedFailoverOptions contains the optional parameters for the ReplicationRecoveryPlansClient.BeginPlannedFailover
-//     method.
-func (client *ReplicationRecoveryPlansClient) BeginPlannedFailover(ctx context.Context, resourceGroupName string, resourceName string, recoveryPlanName string, input RecoveryPlanPlannedFailoverInput, options *ReplicationRecoveryPlansClientBeginPlannedFailoverOptions) (*runtime.Poller[ReplicationRecoveryPlansClientPlannedFailoverResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.plannedFailover(ctx, resourceGroupName, resourceName, recoveryPlanName, input, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ReplicationRecoveryPlansClientPlannedFailoverResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ReplicationRecoveryPlansClientPlannedFailoverResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// PlannedFailover - Execute planned failover of the recovery plan.
-//
-// The operation to start the planned failover of a recovery plan.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *ReplicationRecoveryPlansClient) plannedFailover(ctx context.Context, resourceGroupName string, resourceName string, recoveryPlanName string, input RecoveryPlanPlannedFailoverInput, options *ReplicationRecoveryPlansClientBeginPlannedFailoverOptions) (*http.Response, error) {
-	var err error
-	const operationName = "ReplicationRecoveryPlansClient.BeginPlannedFailover"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.plannedFailoverCreateRequest(ctx, resourceGroupName, resourceName, recoveryPlanName, input, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// plannedFailoverCreateRequest creates the PlannedFailover request.
-func (client *ReplicationRecoveryPlansClient) plannedFailoverCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, recoveryPlanName string, input RecoveryPlanPlannedFailoverInput, _ *ReplicationRecoveryPlansClientBeginPlannedFailoverOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationRecoveryPlans/{recoveryPlanName}/plannedFailover"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if resourceName == "" {
-		return nil, errors.New("parameter resourceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	if recoveryPlanName == "" {
-		return nil, errors.New("parameter recoveryPlanName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{recoveryPlanName}", url.PathEscape(recoveryPlanName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250801)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, input); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// BeginReprotect - Execute reprotect of the recovery plan.
-//
-// The operation to reprotect(reverse replicate) a recovery plan. This api is for deprecated scenarios and no longer works.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - resourceName - The name of the Vault
-//   - recoveryPlanName - Name of the recovery plan.
-//   - options - ReplicationRecoveryPlansClientBeginReprotectOptions contains the optional parameters for the ReplicationRecoveryPlansClient.BeginReprotect
-//     method.
-func (client *ReplicationRecoveryPlansClient) BeginReprotect(ctx context.Context, resourceGroupName string, resourceName string, recoveryPlanName string, options *ReplicationRecoveryPlansClientBeginReprotectOptions) (*runtime.Poller[ReplicationRecoveryPlansClientReprotectResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.reprotect(ctx, resourceGroupName, resourceName, recoveryPlanName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ReplicationRecoveryPlansClientReprotectResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ReplicationRecoveryPlansClientReprotectResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Reprotect - Execute reprotect of the recovery plan.
-//
-// The operation to reprotect(reverse replicate) a recovery plan. This api is for deprecated scenarios and no longer works.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *ReplicationRecoveryPlansClient) reprotect(ctx context.Context, resourceGroupName string, resourceName string, recoveryPlanName string, options *ReplicationRecoveryPlansClientBeginReprotectOptions) (*http.Response, error) {
-	var err error
-	const operationName = "ReplicationRecoveryPlansClient.BeginReprotect"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.reprotectCreateRequest(ctx, resourceGroupName, resourceName, recoveryPlanName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// reprotectCreateRequest creates the Reprotect request.
-func (client *ReplicationRecoveryPlansClient) reprotectCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, recoveryPlanName string, _ *ReplicationRecoveryPlansClientBeginReprotectOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationRecoveryPlans/{recoveryPlanName}/reProtect"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if resourceName == "" {
-		return nil, errors.New("parameter resourceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	if recoveryPlanName == "" {
-		return nil, errors.New("parameter recoveryPlanName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{recoveryPlanName}", url.PathEscape(recoveryPlanName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250801)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// BeginTestFailover - Execute test failover of the recovery plan.
-//
-// The operation to start the test failover of a recovery plan.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - resourceName - The name of the Vault
-//   - recoveryPlanName - Name of the recovery plan.
-//   - input - Recovery plan test failover input.
-//   - options - ReplicationRecoveryPlansClientBeginTestFailoverOptions contains the optional parameters for the ReplicationRecoveryPlansClient.BeginTestFailover
-//     method.
-func (client *ReplicationRecoveryPlansClient) BeginTestFailover(ctx context.Context, resourceGroupName string, resourceName string, recoveryPlanName string, input RecoveryPlanTestFailoverInput, options *ReplicationRecoveryPlansClientBeginTestFailoverOptions) (*runtime.Poller[ReplicationRecoveryPlansClientTestFailoverResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.testFailover(ctx, resourceGroupName, resourceName, recoveryPlanName, input, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ReplicationRecoveryPlansClientTestFailoverResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ReplicationRecoveryPlansClientTestFailoverResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// TestFailover - Execute test failover of the recovery plan.
-//
-// The operation to start the test failover of a recovery plan.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *ReplicationRecoveryPlansClient) testFailover(ctx context.Context, resourceGroupName string, resourceName string, recoveryPlanName string, input RecoveryPlanTestFailoverInput, options *ReplicationRecoveryPlansClientBeginTestFailoverOptions) (*http.Response, error) {
-	var err error
-	const operationName = "ReplicationRecoveryPlansClient.BeginTestFailover"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.testFailoverCreateRequest(ctx, resourceGroupName, resourceName, recoveryPlanName, input, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// testFailoverCreateRequest creates the TestFailover request.
-func (client *ReplicationRecoveryPlansClient) testFailoverCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, recoveryPlanName string, input RecoveryPlanTestFailoverInput, _ *ReplicationRecoveryPlansClientBeginTestFailoverOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationRecoveryPlans/{recoveryPlanName}/testFailover"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if resourceName == "" {
-		return nil, errors.New("parameter resourceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	if recoveryPlanName == "" {
-		return nil, errors.New("parameter recoveryPlanName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{recoveryPlanName}", url.PathEscape(recoveryPlanName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250801)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, input); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// BeginTestFailoverCleanup - Execute test failover cleanup of the recovery plan.
-//
-// The operation to cleanup test failover of a recovery plan.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - resourceName - The name of the Vault
-//   - recoveryPlanName - Name of the recovery plan.
-//   - input - Recovery plan test failover cleanup input.
-//   - options - ReplicationRecoveryPlansClientBeginTestFailoverCleanupOptions contains the optional parameters for the ReplicationRecoveryPlansClient.BeginTestFailoverCleanup
-//     method.
-func (client *ReplicationRecoveryPlansClient) BeginTestFailoverCleanup(ctx context.Context, resourceGroupName string, resourceName string, recoveryPlanName string, input RecoveryPlanTestFailoverCleanupInput, options *ReplicationRecoveryPlansClientBeginTestFailoverCleanupOptions) (*runtime.Poller[ReplicationRecoveryPlansClientTestFailoverCleanupResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.testFailoverCleanup(ctx, resourceGroupName, resourceName, recoveryPlanName, input, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ReplicationRecoveryPlansClientTestFailoverCleanupResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ReplicationRecoveryPlansClientTestFailoverCleanupResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// TestFailoverCleanup - Execute test failover cleanup of the recovery plan.
-//
-// The operation to cleanup test failover of a recovery plan.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *ReplicationRecoveryPlansClient) testFailoverCleanup(ctx context.Context, resourceGroupName string, resourceName string, recoveryPlanName string, input RecoveryPlanTestFailoverCleanupInput, options *ReplicationRecoveryPlansClientBeginTestFailoverCleanupOptions) (*http.Response, error) {
-	var err error
-	const operationName = "ReplicationRecoveryPlansClient.BeginTestFailoverCleanup"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.testFailoverCleanupCreateRequest(ctx, resourceGroupName, resourceName, recoveryPlanName, input, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// testFailoverCleanupCreateRequest creates the TestFailoverCleanup request.
-func (client *ReplicationRecoveryPlansClient) testFailoverCleanupCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, recoveryPlanName string, input RecoveryPlanTestFailoverCleanupInput, _ *ReplicationRecoveryPlansClientBeginTestFailoverCleanupOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationRecoveryPlans/{recoveryPlanName}/testFailoverCleanup"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if resourceName == "" {
-		return nil, errors.New("parameter resourceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	if recoveryPlanName == "" {
-		return nil, errors.New("parameter recoveryPlanName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{recoveryPlanName}", url.PathEscape(recoveryPlanName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250801)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, input); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// BeginUnplannedFailover - Execute unplanned failover of the recovery plan.
-//
-// The operation to start the unplanned failover of a recovery plan.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - resourceName - The name of the Vault
-//   - recoveryPlanName - Name of the recovery plan.
-//   - input - Recovery plan unplanned failover input.
-//   - options - ReplicationRecoveryPlansClientBeginUnplannedFailoverOptions contains the optional parameters for the ReplicationRecoveryPlansClient.BeginUnplannedFailover
-//     method.
-func (client *ReplicationRecoveryPlansClient) BeginUnplannedFailover(ctx context.Context, resourceGroupName string, resourceName string, recoveryPlanName string, input RecoveryPlanUnplannedFailoverInput, options *ReplicationRecoveryPlansClientBeginUnplannedFailoverOptions) (*runtime.Poller[ReplicationRecoveryPlansClientUnplannedFailoverResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.unplannedFailover(ctx, resourceGroupName, resourceName, recoveryPlanName, input, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ReplicationRecoveryPlansClientUnplannedFailoverResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ReplicationRecoveryPlansClientUnplannedFailoverResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// UnplannedFailover - Execute unplanned failover of the recovery plan.
-//
-// The operation to start the unplanned failover of a recovery plan.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *ReplicationRecoveryPlansClient) unplannedFailover(ctx context.Context, resourceGroupName string, resourceName string, recoveryPlanName string, input RecoveryPlanUnplannedFailoverInput, options *ReplicationRecoveryPlansClientBeginUnplannedFailoverOptions) (*http.Response, error) {
-	var err error
-	const operationName = "ReplicationRecoveryPlansClient.BeginUnplannedFailover"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.unplannedFailoverCreateRequest(ctx, resourceGroupName, resourceName, recoveryPlanName, input, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// unplannedFailoverCreateRequest creates the UnplannedFailover request.
-func (client *ReplicationRecoveryPlansClient) unplannedFailoverCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, recoveryPlanName string, input RecoveryPlanUnplannedFailoverInput, _ *ReplicationRecoveryPlansClientBeginUnplannedFailoverOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationRecoveryPlans/{recoveryPlanName}/unplannedFailover"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if resourceName == "" {
-		return nil, errors.New("parameter resourceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	if recoveryPlanName == "" {
-		return nil, errors.New("parameter recoveryPlanName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{recoveryPlanName}", url.PathEscape(recoveryPlanName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250801)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, input); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// BeginUpdate - Updates the given recovery plan.
-//
-// The operation to update a recovery plan.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - resourceName - The name of the Vault
-//   - recoveryPlanName - Name of the recovery plan.
-//   - input - Update recovery plan input.
-//   - options - ReplicationRecoveryPlansClientBeginUpdateOptions contains the optional parameters for the ReplicationRecoveryPlansClient.BeginUpdate
-//     method.
-func (client *ReplicationRecoveryPlansClient) BeginUpdate(ctx context.Context, resourceGroupName string, resourceName string, recoveryPlanName string, input UpdateRecoveryPlanInput, options *ReplicationRecoveryPlansClientBeginUpdateOptions) (*runtime.Poller[ReplicationRecoveryPlansClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, resourceName, recoveryPlanName, input, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ReplicationRecoveryPlansClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ReplicationRecoveryPlansClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Updates the given recovery plan.
-//
-// The operation to update a recovery plan.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *ReplicationRecoveryPlansClient) update(ctx context.Context, resourceGroupName string, resourceName string, recoveryPlanName string, input UpdateRecoveryPlanInput, options *ReplicationRecoveryPlansClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "ReplicationRecoveryPlansClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, resourceName, recoveryPlanName, input, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *ReplicationRecoveryPlansClient) updateCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, recoveryPlanName string, input UpdateRecoveryPlanInput, _ *ReplicationRecoveryPlansClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationRecoveryPlans/{recoveryPlanName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if resourceName == "" {
-		return nil, errors.New("parameter resourceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	if recoveryPlanName == "" {
-		return nil, errors.New("parameter recoveryPlanName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{recoveryPlanName}", url.PathEscape(recoveryPlanName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250801)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, input); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

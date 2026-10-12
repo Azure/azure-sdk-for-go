@@ -39,6 +39,53 @@ func ExampleUpdatesClient_BeginDelete() {
 	// }
 }
 
+// Generated from example definition: 2026-04-30/PostUpdates.json
+func ExampleUpdatesClient_BeginPost() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armazurestackhci.NewClientFactory("b8d594e5-51f3-4c11-9c54-a7771b81c712", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewUpdatesClient().BeginPost(ctx, "testrg", "testcluster", "Microsoft4.2203.2.32", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armazurestackhci.UpdatesClientPostResponse{
+	// }
+}
+
+// Generated from example definition: 2026-04-30/Updates_Prepare.json
+func ExampleUpdatesClient_BeginPrepare() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armazurestackhci.NewClientFactory("b8d594e5-51f3-4c11-9c54-a7771b81c712", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewUpdatesClient().BeginPrepare(ctx, "testrg", "testcluster", "Microsoft4.2203.2.32", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+}
+
 // Generated from example definition: 2026-04-30/GetUpdates.json
 func ExampleUpdatesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -151,53 +198,6 @@ func ExampleUpdatesClient_NewListPager() {
 		// 		},
 		// 	},
 		// }
-	}
-}
-
-// Generated from example definition: 2026-04-30/PostUpdates.json
-func ExampleUpdatesClient_BeginPost() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armazurestackhci.NewClientFactory("b8d594e5-51f3-4c11-9c54-a7771b81c712", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewUpdatesClient().BeginPost(ctx, "testrg", "testcluster", "Microsoft4.2203.2.32", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armazurestackhci.UpdatesClientPostResponse{
-	// }
-}
-
-// Generated from example definition: 2026-04-30/Updates_Prepare.json
-func ExampleUpdatesClient_BeginPrepare() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armazurestackhci.NewClientFactory("b8d594e5-51f3-4c11-9c54-a7771b81c712", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewUpdatesClient().BeginPrepare(ctx, "testrg", "testcluster", "Microsoft4.2203.2.32", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 

@@ -90,7 +90,7 @@ func (client *OutboundRulesClient) BeginPost(ctx context.Context, resourceGroupN
 	}
 }
 
-// Post - The POST API for updating the outbound rules of the managed network associated with the cognitive services account.
+// post - The POST API for updating the outbound rules of the managed network associated with the cognitive services account.
 //
 // The POST API for updating the outbound rules of the managed network associated with the cognitive services account.
 func (client *OutboundRulesClient) post(ctx context.Context, resourceGroupName string, accountName string, managedNetworkName string, body ManagedNetworkSettingsBasicResource, options *OutboundRulesClientBeginPostOptions) (*http.Response, error) {
@@ -113,7 +113,7 @@ func (client *OutboundRulesClient) post(ctx context.Context, resourceGroupName s
 	return httpResp, nil
 }
 
-// postCreateRequest creates the Post request.
+// postCreateRequest creates the post request.
 func (client *OutboundRulesClient) postCreateRequest(ctx context.Context, resourceGroupName string, accountName string, managedNetworkName string, body ManagedNetworkSettingsBasicResource, nextLink string, _ *OutboundRulesClientBeginPostOptions) (*policy.Request, error) {
 	firstPage := nextLink == ""
 	var req *policy.Request
@@ -156,7 +156,7 @@ func (client *OutboundRulesClient) postCreateRequest(ctx context.Context, resour
 	return req, nil
 }
 
-// postHandleResponse handles the Post response.
+// postHandleResponse handles the post response.
 func (client *OutboundRulesClient) postHandleResponse(resp *http.Response, successCodes ...int) (OutboundRulesClientPostResponse, error) {
 	result := OutboundRulesClientPostResponse{}
 	if !runtime.HasStatusCode(resp, successCodes...) {

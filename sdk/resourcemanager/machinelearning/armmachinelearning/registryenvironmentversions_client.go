@@ -74,7 +74,7 @@ func (client *RegistryEnvironmentVersionsClient) BeginCreateOrUpdate(ctx context
 	}
 }
 
-// CreateOrUpdate - Create or update version.
+// createOrUpdate - Create or update version.
 //
 // Create or update version.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -98,7 +98,7 @@ func (client *RegistryEnvironmentVersionsClient) createOrUpdate(ctx context.Cont
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *RegistryEnvironmentVersionsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, registryName string, environmentName string, version string, body EnvironmentVersion, _ *RegistryEnvironmentVersionsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/registries/{registryName}/environments/{environmentName}/versions/{version}"
 	if client.subscriptionID == "" {
@@ -163,7 +163,7 @@ func (client *RegistryEnvironmentVersionsClient) BeginDelete(ctx context.Context
 	}
 }
 
-// Delete - Delete version.
+// deleteOperation - Delete version.
 //
 // Delete version.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -187,7 +187,7 @@ func (client *RegistryEnvironmentVersionsClient) deleteOperation(ctx context.Con
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *RegistryEnvironmentVersionsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, registryName string, environmentName string, version string, _ *RegistryEnvironmentVersionsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/registries/{registryName}/environments/{environmentName}/versions/{version}"
 	if client.subscriptionID == "" {

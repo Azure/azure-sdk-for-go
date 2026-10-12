@@ -132,8 +132,8 @@ func ExampleSecurityPartnerProvidersClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/SecurityPartnerProviderListBySubscription.json
-func ExampleSecurityPartnerProvidersClient_NewListPager() {
+// Generated from example definition: 2026-01-01/SecurityPartnerProviderListByResourceGroup.json
+func ExampleSecurityPartnerProvidersClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -143,7 +143,7 @@ func ExampleSecurityPartnerProvidersClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewSecurityPartnerProvidersClient().NewListPager(nil)
+	pager := clientFactory.NewSecurityPartnerProvidersClient().NewListByResourceGroupPager("rg1", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -154,7 +154,7 @@ func ExampleSecurityPartnerProvidersClient_NewListPager() {
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armnetwork.SecurityPartnerProvidersClientListResponse{
+		// page = armnetwork.SecurityPartnerProvidersClientListByResourceGroupResponse{
 		// 	SecurityPartnerProviderListResult: armnetwork.SecurityPartnerProviderListResult{
 		// 		Value: []*armnetwork.SecurityPartnerProvider{
 		// 			{
@@ -181,8 +181,8 @@ func ExampleSecurityPartnerProvidersClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-01-01/SecurityPartnerProviderListByResourceGroup.json
-func ExampleSecurityPartnerProvidersClient_NewListByResourceGroupPager() {
+// Generated from example definition: 2026-01-01/SecurityPartnerProviderListBySubscription.json
+func ExampleSecurityPartnerProvidersClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -192,7 +192,7 @@ func ExampleSecurityPartnerProvidersClient_NewListByResourceGroupPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewSecurityPartnerProvidersClient().NewListByResourceGroupPager("rg1", nil)
+	pager := clientFactory.NewSecurityPartnerProvidersClient().NewListPager(nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -203,7 +203,7 @@ func ExampleSecurityPartnerProvidersClient_NewListByResourceGroupPager() {
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armnetwork.SecurityPartnerProvidersClientListByResourceGroupResponse{
+		// page = armnetwork.SecurityPartnerProvidersClientListResponse{
 		// 	SecurityPartnerProviderListResult: armnetwork.SecurityPartnerProviderListResult{
 		// 		Value: []*armnetwork.SecurityPartnerProvider{
 		// 			{

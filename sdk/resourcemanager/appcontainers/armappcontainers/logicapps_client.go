@@ -309,6 +309,74 @@ func (client *LogicAppsClient) getWorkflowHandleResponse(resp *http.Response, su
 	return result, nil
 }
 
+// ListWorkflowsConnections - Gets logic app's connections.
+//
+// Gets logic app's connections.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - containerAppName - Name of the Container App.
+//   - logicAppName - Name of the Logic App, the extension resource.
+//   - options - LogicAppsClientListWorkflowsConnectionsOptions contains the optional parameters for the LogicAppsClient.ListWorkflowsConnections
+//     method.
+func (client *LogicAppsClient) ListWorkflowsConnections(ctx context.Context, resourceGroupName string, containerAppName string, logicAppName string, options *LogicAppsClientListWorkflowsConnectionsOptions) (LogicAppsClientListWorkflowsConnectionsResponse, error) {
+	var err error
+	const operationName = "LogicAppsClient.ListWorkflowsConnections"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.listWorkflowsConnectionsCreateRequest(ctx, resourceGroupName, containerAppName, logicAppName, options)
+	if err != nil {
+		return LogicAppsClientListWorkflowsConnectionsResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return LogicAppsClientListWorkflowsConnectionsResponse{}, err
+	}
+	return client.listWorkflowsConnectionsHandleResponse(httpResp, http.StatusOK)
+}
+
+// listWorkflowsConnectionsCreateRequest creates the ListWorkflowsConnections request.
+func (client *LogicAppsClient) listWorkflowsConnectionsCreateRequest(ctx context.Context, resourceGroupName string, containerAppName string, logicAppName string, _ *LogicAppsClientListWorkflowsConnectionsOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}/providers/Microsoft.App/logicApps/{logicAppName}/listWorkflowsConnections"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if containerAppName == "" {
+		return nil, errors.New("parameter containerAppName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{containerAppName}", url.PathEscape(containerAppName))
+	if logicAppName == "" {
+		return nil, errors.New("parameter logicAppName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{logicAppName}", url.PathEscape(logicAppName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260701)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// listWorkflowsConnectionsHandleResponse handles the ListWorkflowsConnections response.
+func (client *LogicAppsClient) listWorkflowsConnectionsHandleResponse(resp *http.Response, successCodes ...int) (LogicAppsClientListWorkflowsConnectionsResponse, error) {
+	result := LogicAppsClientListWorkflowsConnectionsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.WorkflowEnvelope); err != nil {
+		return LogicAppsClientListWorkflowsConnectionsResponse{}, err
+	}
+	return result, nil
+}
+
 // NewListWorkflowsPager - List the workflows for a logic app.
 //
 // List the workflows for a logic app.
@@ -389,74 +457,6 @@ func (client *LogicAppsClient) listWorkflowsHandleResponse(resp *http.Response, 
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkflowEnvelopeCollection); err != nil {
 		return LogicAppsClientListWorkflowsResponse{}, err
-	}
-	return result, nil
-}
-
-// ListWorkflowsConnections - Gets logic app's connections.
-//
-// Gets logic app's connections.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - containerAppName - Name of the Container App.
-//   - logicAppName - Name of the Logic App, the extension resource.
-//   - options - LogicAppsClientListWorkflowsConnectionsOptions contains the optional parameters for the LogicAppsClient.ListWorkflowsConnections
-//     method.
-func (client *LogicAppsClient) ListWorkflowsConnections(ctx context.Context, resourceGroupName string, containerAppName string, logicAppName string, options *LogicAppsClientListWorkflowsConnectionsOptions) (LogicAppsClientListWorkflowsConnectionsResponse, error) {
-	var err error
-	const operationName = "LogicAppsClient.ListWorkflowsConnections"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.listWorkflowsConnectionsCreateRequest(ctx, resourceGroupName, containerAppName, logicAppName, options)
-	if err != nil {
-		return LogicAppsClientListWorkflowsConnectionsResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return LogicAppsClientListWorkflowsConnectionsResponse{}, err
-	}
-	return client.listWorkflowsConnectionsHandleResponse(httpResp, http.StatusOK)
-}
-
-// listWorkflowsConnectionsCreateRequest creates the ListWorkflowsConnections request.
-func (client *LogicAppsClient) listWorkflowsConnectionsCreateRequest(ctx context.Context, resourceGroupName string, containerAppName string, logicAppName string, _ *LogicAppsClientListWorkflowsConnectionsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}/providers/Microsoft.App/logicApps/{logicAppName}/listWorkflowsConnections"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if containerAppName == "" {
-		return nil, errors.New("parameter containerAppName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{containerAppName}", url.PathEscape(containerAppName))
-	if logicAppName == "" {
-		return nil, errors.New("parameter logicAppName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{logicAppName}", url.PathEscape(logicAppName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260701)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// listWorkflowsConnectionsHandleResponse handles the ListWorkflowsConnections response.
-func (client *LogicAppsClient) listWorkflowsConnectionsHandleResponse(resp *http.Response, successCodes ...int) (LogicAppsClientListWorkflowsConnectionsResponse, error) {
-	result := LogicAppsClientListWorkflowsConnectionsResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.WorkflowEnvelope); err != nil {
-		return LogicAppsClientListWorkflowsConnectionsResponse{}, err
 	}
 	return result, nil
 }

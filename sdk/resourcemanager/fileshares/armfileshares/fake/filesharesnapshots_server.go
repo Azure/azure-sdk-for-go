@@ -29,6 +29,10 @@ type FileShareSnapshotsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDeleteFileShareSnapshot func(ctx context.Context, resourceGroupName string, resourceName string, name string, options *armfileshares.FileShareSnapshotsClientBeginDeleteFileShareSnapshotOptions) (resp azfake.PollerResponder[armfileshares.FileShareSnapshotsClientDeleteFileShareSnapshotResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdateFileShareSnapshot is the fake for method FileShareSnapshotsClient.BeginUpdateFileShareSnapshot
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdateFileShareSnapshot func(ctx context.Context, resourceGroupName string, resourceName string, name string, properties armfileshares.FileShareSnapshotUpdate, options *armfileshares.FileShareSnapshotsClientBeginUpdateFileShareSnapshotOptions) (resp azfake.PollerResponder[armfileshares.FileShareSnapshotsClientUpdateFileShareSnapshotResponse], errResp azfake.ErrorResponder)
+
 	// GetFileShareSnapshot is the fake for method FileShareSnapshotsClient.GetFileShareSnapshot
 	// HTTP status codes to indicate success: http.StatusOK
 	GetFileShareSnapshot func(ctx context.Context, resourceGroupName string, resourceName string, name string, options *armfileshares.FileShareSnapshotsClientGetFileShareSnapshotOptions) (resp azfake.Responder[armfileshares.FileShareSnapshotsClientGetFileShareSnapshotResponse], errResp azfake.ErrorResponder)
@@ -36,10 +40,6 @@ type FileShareSnapshotsServer struct {
 	// NewListByFileSharePager is the fake for method FileShareSnapshotsClient.NewListByFileSharePager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByFileSharePager func(resourceGroupName string, resourceName string, options *armfileshares.FileShareSnapshotsClientListByFileShareOptions) (resp azfake.PagerResponder[armfileshares.FileShareSnapshotsClientListByFileShareResponse])
-
-	// BeginUpdateFileShareSnapshot is the fake for method FileShareSnapshotsClient.BeginUpdateFileShareSnapshot
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdateFileShareSnapshot func(ctx context.Context, resourceGroupName string, resourceName string, name string, properties armfileshares.FileShareSnapshotUpdate, options *armfileshares.FileShareSnapshotsClientBeginUpdateFileShareSnapshotOptions) (resp azfake.PollerResponder[armfileshares.FileShareSnapshotsClientUpdateFileShareSnapshotResponse], errResp azfake.ErrorResponder)
 }
 
 // NewFileShareSnapshotsServerTransport creates a new instance of FileShareSnapshotsServerTransport with the provided implementation.
@@ -50,8 +50,8 @@ func NewFileShareSnapshotsServerTransport(srv *FileShareSnapshotsServer) *FileSh
 		srv:                                  srv,
 		beginCreateOrUpdateFileShareSnapshot: newTracker[azfake.PollerResponder[armfileshares.FileShareSnapshotsClientCreateOrUpdateFileShareSnapshotResponse]](),
 		beginDeleteFileShareSnapshot:         newTracker[azfake.PollerResponder[armfileshares.FileShareSnapshotsClientDeleteFileShareSnapshotResponse]](),
-		newListByFileSharePager:              newTracker[azfake.PagerResponder[armfileshares.FileShareSnapshotsClientListByFileShareResponse]](),
 		beginUpdateFileShareSnapshot:         newTracker[azfake.PollerResponder[armfileshares.FileShareSnapshotsClientUpdateFileShareSnapshotResponse]](),
+		newListByFileSharePager:              newTracker[azfake.PagerResponder[armfileshares.FileShareSnapshotsClientListByFileShareResponse]](),
 	}
 }
 
@@ -61,8 +61,8 @@ type FileShareSnapshotsServerTransport struct {
 	srv                                  *FileShareSnapshotsServer
 	beginCreateOrUpdateFileShareSnapshot *tracker[azfake.PollerResponder[armfileshares.FileShareSnapshotsClientCreateOrUpdateFileShareSnapshotResponse]]
 	beginDeleteFileShareSnapshot         *tracker[azfake.PollerResponder[armfileshares.FileShareSnapshotsClientDeleteFileShareSnapshotResponse]]
-	newListByFileSharePager              *tracker[azfake.PagerResponder[armfileshares.FileShareSnapshotsClientListByFileShareResponse]]
 	beginUpdateFileShareSnapshot         *tracker[azfake.PollerResponder[armfileshares.FileShareSnapshotsClientUpdateFileShareSnapshotResponse]]
+	newListByFileSharePager              *tracker[azfake.PagerResponder[armfileshares.FileShareSnapshotsClientListByFileShareResponse]]
 }
 
 // Do implements the policy.Transporter interface for FileShareSnapshotsServerTransport.
@@ -90,12 +90,12 @@ func (f *FileShareSnapshotsServerTransport) dispatchToMethodFake(req *http.Reque
 				res.resp, res.err = f.dispatchBeginCreateOrUpdateFileShareSnapshot(req)
 			case "FileShareSnapshotsClient.BeginDeleteFileShareSnapshot":
 				res.resp, res.err = f.dispatchBeginDeleteFileShareSnapshot(req)
+			case "FileShareSnapshotsClient.BeginUpdateFileShareSnapshot":
+				res.resp, res.err = f.dispatchBeginUpdateFileShareSnapshot(req)
 			case "FileShareSnapshotsClient.GetFileShareSnapshot":
 				res.resp, res.err = f.dispatchGetFileShareSnapshot(req)
 			case "FileShareSnapshotsClient.NewListByFileSharePager":
 				res.resp, res.err = f.dispatchNewListByFileSharePager(req)
-			case "FileShareSnapshotsClient.BeginUpdateFileShareSnapshot":
-				res.resp, res.err = f.dispatchBeginUpdateFileShareSnapshot(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -212,6 +212,58 @@ func (f *FileShareSnapshotsServerTransport) dispatchBeginDeleteFileShareSnapshot
 	return resp, nil
 }
 
+func (f *FileShareSnapshotsServerTransport) dispatchBeginUpdateFileShareSnapshot(req *http.Request) (*http.Response, error) {
+	if f.srv.BeginUpdateFileShareSnapshot == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdateFileShareSnapshot not implemented")}
+	}
+	beginUpdateFileShareSnapshot := f.beginUpdateFileShareSnapshot.get(req)
+	if beginUpdateFileShareSnapshot == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.FileShares/fileShares/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/fileShareSnapshots/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armfileshares.FileShareSnapshotUpdate](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		resourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
+		if err != nil {
+			return nil, err
+		}
+		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := f.srv.BeginUpdateFileShareSnapshot(req.Context(), resourceGroupNameParam, resourceNameParam, nameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdateFileShareSnapshot = &respr
+		f.beginUpdateFileShareSnapshot.add(req, beginUpdateFileShareSnapshot)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdateFileShareSnapshot, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		f.beginUpdateFileShareSnapshot.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdateFileShareSnapshot) {
+		f.beginUpdateFileShareSnapshot.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (f *FileShareSnapshotsServerTransport) dispatchGetFileShareSnapshot(req *http.Request) (*http.Response, error) {
 	if f.srv.GetFileShareSnapshot == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetFileShareSnapshot not implemented")}
@@ -287,58 +339,6 @@ func (f *FileShareSnapshotsServerTransport) dispatchNewListByFileSharePager(req 
 	if !server.PagerResponderMore(newListByFileSharePager) {
 		f.newListByFileSharePager.remove(req)
 	}
-	return resp, nil
-}
-
-func (f *FileShareSnapshotsServerTransport) dispatchBeginUpdateFileShareSnapshot(req *http.Request) (*http.Response, error) {
-	if f.srv.BeginUpdateFileShareSnapshot == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdateFileShareSnapshot not implemented")}
-	}
-	beginUpdateFileShareSnapshot := f.beginUpdateFileShareSnapshot.get(req)
-	if beginUpdateFileShareSnapshot == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.FileShares/fileShares/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/fileShareSnapshots/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armfileshares.FileShareSnapshotUpdate](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		resourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
-		if err != nil {
-			return nil, err
-		}
-		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := f.srv.BeginUpdateFileShareSnapshot(req.Context(), resourceGroupNameParam, resourceNameParam, nameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdateFileShareSnapshot = &respr
-		f.beginUpdateFileShareSnapshot.add(req, beginUpdateFileShareSnapshot)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdateFileShareSnapshot, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		f.beginUpdateFileShareSnapshot.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdateFileShareSnapshot) {
-		f.beginUpdateFileShareSnapshot.remove(req)
-	}
-
 	return resp, nil
 }
 

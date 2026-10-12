@@ -198,295 +198,6 @@ func ExampleProfilesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/Profiles_GenerateSsoUri.json
-func ExampleProfilesClient_GenerateSsoURI() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcdn.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewProfilesClient().GenerateSsoURI(ctx, "RG", "profile1", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcdn.ProfilesClientGenerateSsoURIResponse{
-	// 	SsoURI: armcdn.SsoURI{
-	// 		SsoURIValue: to.Ptr("https://someuri.com"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-06-01/Profiles_Get.json
-func ExampleProfilesClient_Get() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcdn.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewProfilesClient().Get(ctx, "RG", "profile1", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcdn.ProfilesClientGetResponse{
-	// 	Profile: armcdn.Profile{
-	// 		Name: to.Ptr("profile1"),
-	// 		Type: to.Ptr("Microsoft.Cdn/profiles"),
-	// 		ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1"),
-	// 		Kind: to.Ptr("frontdoor"),
-	// 		Location: to.Ptr("global"),
-	// 		Properties: &armcdn.ProfileProperties{
-	// 			FrontDoorID: to.Ptr("3b4682da-b3e2-47a1-96ca-08ab3cb7294e"),
-	// 			LogScrubbing: &armcdn.ProfileLogScrubbing{
-	// 				ScrubbingRules: []*armcdn.ProfileScrubbingRules{
-	// 				},
-	// 				State: to.Ptr(armcdn.ProfileScrubbingStateEnabled),
-	// 			},
-	// 			OriginResponseTimeoutSeconds: to.Ptr[int32](30),
-	// 			ProvisioningState: to.Ptr(armcdn.ProfileProvisioningStateSucceeded),
-	// 			ResourceState: to.Ptr(armcdn.ProfileResourceStateActive),
-	// 		},
-	// 		SKU: &armcdn.SKU{
-	// 			Name: to.Ptr(armcdn.SKUNamePremiumAzureFrontDoor),
-	// 		},
-	// 		Tags: map[string]*string{
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-06-01/Profiles_List.json
-func ExampleProfilesClient_NewListPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcdn.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewProfilesClient().NewListPager(nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armcdn.ProfilesClientListResponse{
-		// 	ProfileListResult: armcdn.ProfileListResult{
-		// 		Value: []*armcdn.Profile{
-		// 			{
-		// 				Name: to.Ptr("profile1"),
-		// 				Type: to.Ptr("Microsoft.Cdn/profiles"),
-		// 				ID: to.Ptr("/subscriptions/subid/resourcegroups/RG1/providers/Microsoft.Cdn/profiles/profile1"),
-		// 				Kind: to.Ptr("frontdoor"),
-		// 				Location: to.Ptr("global"),
-		// 				Properties: &armcdn.ProfileProperties{
-		// 					FrontDoorID: to.Ptr("3b4682da-b3e2-47a1-96ca-08ab3cb7294e"),
-		// 					LogScrubbing: &armcdn.ProfileLogScrubbing{
-		// 						ScrubbingRules: []*armcdn.ProfileScrubbingRules{
-		// 						},
-		// 						State: to.Ptr(armcdn.ProfileScrubbingStateEnabled),
-		// 					},
-		// 					OriginResponseTimeoutSeconds: to.Ptr[int32](30),
-		// 					ProvisioningState: to.Ptr(armcdn.ProfileProvisioningStateSucceeded),
-		// 					ResourceState: to.Ptr(armcdn.ProfileResourceStateActive),
-		// 				},
-		// 				SKU: &armcdn.SKU{
-		// 					Name: to.Ptr(armcdn.SKUNamePremiumAzureFrontDoor),
-		// 				},
-		// 				Tags: map[string]*string{
-		// 				},
-		// 			},
-		// 			{
-		// 				Name: to.Ptr("profile2"),
-		// 				Type: to.Ptr("Microsoft.Cdn/profiles"),
-		// 				ID: to.Ptr("/subscriptions/subid/resourcegroups/RG1/providers/Microsoft.Cdn/profiles/profile2"),
-		// 				Kind: to.Ptr("frontdoor"),
-		// 				Location: to.Ptr("global"),
-		// 				Properties: &armcdn.ProfileProperties{
-		// 					FrontDoorID: to.Ptr("3b4682da-b3e2-47a1-96ca-08ab3cb7294e"),
-		// 					LogScrubbing: &armcdn.ProfileLogScrubbing{
-		// 						ScrubbingRules: []*armcdn.ProfileScrubbingRules{
-		// 						},
-		// 						State: to.Ptr(armcdn.ProfileScrubbingStateEnabled),
-		// 					},
-		// 					OriginResponseTimeoutSeconds: to.Ptr[int32](30),
-		// 					ProvisioningState: to.Ptr(armcdn.ProfileProvisioningStateSucceeded),
-		// 					ResourceState: to.Ptr(armcdn.ProfileResourceStateActive),
-		// 				},
-		// 				SKU: &armcdn.SKU{
-		// 					Name: to.Ptr(armcdn.SKUNamePremiumAzureFrontDoor),
-		// 				},
-		// 				Tags: map[string]*string{
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2025-06-01/Profiles_ListByResourceGroup.json
-func ExampleProfilesClient_NewListByResourceGroupPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcdn.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewProfilesClient().NewListByResourceGroupPager("RG", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armcdn.ProfilesClientListByResourceGroupResponse{
-		// 	ProfileListResult: armcdn.ProfileListResult{
-		// 		Value: []*armcdn.Profile{
-		// 			{
-		// 				Name: to.Ptr("profile1"),
-		// 				Type: to.Ptr("Microsoft.Cdn/profiles"),
-		// 				ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1"),
-		// 				Kind: to.Ptr("frontdoor"),
-		// 				Location: to.Ptr("global"),
-		// 				Properties: &armcdn.ProfileProperties{
-		// 					FrontDoorID: to.Ptr("3b4682da-b3e2-47a1-96ca-08ab3cb7294e"),
-		// 					LogScrubbing: &armcdn.ProfileLogScrubbing{
-		// 						ScrubbingRules: []*armcdn.ProfileScrubbingRules{
-		// 						},
-		// 						State: to.Ptr(armcdn.ProfileScrubbingStateEnabled),
-		// 					},
-		// 					OriginResponseTimeoutSeconds: to.Ptr[int32](30),
-		// 					ProvisioningState: to.Ptr(armcdn.ProfileProvisioningStateSucceeded),
-		// 					ResourceState: to.Ptr(armcdn.ProfileResourceStateActive),
-		// 				},
-		// 				SKU: &armcdn.SKU{
-		// 					Name: to.Ptr(armcdn.SKUNamePremiumAzureFrontDoor),
-		// 				},
-		// 				Tags: map[string]*string{
-		// 				},
-		// 			},
-		// 			{
-		// 				Name: to.Ptr("profile2"),
-		// 				Type: to.Ptr("Microsoft.Cdn/profiles"),
-		// 				ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile2"),
-		// 				Kind: to.Ptr("frontdoor"),
-		// 				Location: to.Ptr("global"),
-		// 				Properties: &armcdn.ProfileProperties{
-		// 					FrontDoorID: to.Ptr("3b4682da-b3e2-47a1-96ca-08ab3cb7294e"),
-		// 					LogScrubbing: &armcdn.ProfileLogScrubbing{
-		// 						ScrubbingRules: []*armcdn.ProfileScrubbingRules{
-		// 						},
-		// 						State: to.Ptr(armcdn.ProfileScrubbingStateEnabled),
-		// 					},
-		// 					OriginResponseTimeoutSeconds: to.Ptr[int32](30),
-		// 					ProvisioningState: to.Ptr(armcdn.ProfileProvisioningStateSucceeded),
-		// 					ResourceState: to.Ptr(armcdn.ProfileResourceStateActive),
-		// 				},
-		// 				SKU: &armcdn.SKU{
-		// 					Name: to.Ptr(armcdn.SKUNamePremiumAzureFrontDoor),
-		// 				},
-		// 				Tags: map[string]*string{
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2025-06-01/Profiles_ListResourceUsage.json
-func ExampleProfilesClient_NewListResourceUsagePager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcdn.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewProfilesClient().NewListResourceUsagePager("RG", "profile1", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armcdn.ProfilesClientListResourceUsageResponse{
-		// 	ResourceUsageListResult: armcdn.ResourceUsageListResult{
-		// 		Value: []*armcdn.ResourceUsage{
-		// 			{
-		// 				CurrentValue: to.Ptr[int32](0),
-		// 				Limit: to.Ptr[int32](25),
-		// 				ResourceType: to.Ptr("endpoint"),
-		// 				Unit: to.Ptr(armcdn.ResourceUsageUnitCount),
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2025-06-01/Profiles_ListSupportedOptimizationTypes.json
-func ExampleProfilesClient_ListSupportedOptimizationTypes() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcdn.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewProfilesClient().ListSupportedOptimizationTypes(ctx, "RG", "profile1", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcdn.ProfilesClientListSupportedOptimizationTypesResponse{
-	// 	SupportedOptimizationTypesListResult: armcdn.SupportedOptimizationTypesListResult{
-	// 		SupportedOptimizationTypes: []*armcdn.OptimizationType{
-	// 			to.Ptr(armcdn.OptimizationTypeGeneralWebDelivery),
-	// 			to.Ptr(armcdn.OptimizationTypeDynamicSiteAcceleration),
-	// 		},
-	// 	},
-	// }
-}
-
 // Generated from example definition: 2025-06-01/Profiles_Migrate.json
 func ExampleProfilesClient_BeginMigrate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -629,4 +340,293 @@ func ExampleProfilesClient_BeginUpdate() {
 	// 		},
 	// 	},
 	// }
+}
+
+// Generated from example definition: 2025-06-01/Profiles_GenerateSsoUri.json
+func ExampleProfilesClient_GenerateSsoURI() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcdn.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewProfilesClient().GenerateSsoURI(ctx, "RG", "profile1", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcdn.ProfilesClientGenerateSsoURIResponse{
+	// 	SsoURI: armcdn.SsoURI{
+	// 		SsoURIValue: to.Ptr("https://someuri.com"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-06-01/Profiles_Get.json
+func ExampleProfilesClient_Get() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcdn.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewProfilesClient().Get(ctx, "RG", "profile1", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcdn.ProfilesClientGetResponse{
+	// 	Profile: armcdn.Profile{
+	// 		Name: to.Ptr("profile1"),
+	// 		Type: to.Ptr("Microsoft.Cdn/profiles"),
+	// 		ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1"),
+	// 		Kind: to.Ptr("frontdoor"),
+	// 		Location: to.Ptr("global"),
+	// 		Properties: &armcdn.ProfileProperties{
+	// 			FrontDoorID: to.Ptr("3b4682da-b3e2-47a1-96ca-08ab3cb7294e"),
+	// 			LogScrubbing: &armcdn.ProfileLogScrubbing{
+	// 				ScrubbingRules: []*armcdn.ProfileScrubbingRules{
+	// 				},
+	// 				State: to.Ptr(armcdn.ProfileScrubbingStateEnabled),
+	// 			},
+	// 			OriginResponseTimeoutSeconds: to.Ptr[int32](30),
+	// 			ProvisioningState: to.Ptr(armcdn.ProfileProvisioningStateSucceeded),
+	// 			ResourceState: to.Ptr(armcdn.ProfileResourceStateActive),
+	// 		},
+	// 		SKU: &armcdn.SKU{
+	// 			Name: to.Ptr(armcdn.SKUNamePremiumAzureFrontDoor),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-06-01/Profiles_ListSupportedOptimizationTypes.json
+func ExampleProfilesClient_ListSupportedOptimizationTypes() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcdn.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewProfilesClient().ListSupportedOptimizationTypes(ctx, "RG", "profile1", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcdn.ProfilesClientListSupportedOptimizationTypesResponse{
+	// 	SupportedOptimizationTypesListResult: armcdn.SupportedOptimizationTypesListResult{
+	// 		SupportedOptimizationTypes: []*armcdn.OptimizationType{
+	// 			to.Ptr(armcdn.OptimizationTypeGeneralWebDelivery),
+	// 			to.Ptr(armcdn.OptimizationTypeDynamicSiteAcceleration),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-06-01/Profiles_ListByResourceGroup.json
+func ExampleProfilesClient_NewListByResourceGroupPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcdn.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewProfilesClient().NewListByResourceGroupPager("RG", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armcdn.ProfilesClientListByResourceGroupResponse{
+		// 	ProfileListResult: armcdn.ProfileListResult{
+		// 		Value: []*armcdn.Profile{
+		// 			{
+		// 				Name: to.Ptr("profile1"),
+		// 				Type: to.Ptr("Microsoft.Cdn/profiles"),
+		// 				ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1"),
+		// 				Kind: to.Ptr("frontdoor"),
+		// 				Location: to.Ptr("global"),
+		// 				Properties: &armcdn.ProfileProperties{
+		// 					FrontDoorID: to.Ptr("3b4682da-b3e2-47a1-96ca-08ab3cb7294e"),
+		// 					LogScrubbing: &armcdn.ProfileLogScrubbing{
+		// 						ScrubbingRules: []*armcdn.ProfileScrubbingRules{
+		// 						},
+		// 						State: to.Ptr(armcdn.ProfileScrubbingStateEnabled),
+		// 					},
+		// 					OriginResponseTimeoutSeconds: to.Ptr[int32](30),
+		// 					ProvisioningState: to.Ptr(armcdn.ProfileProvisioningStateSucceeded),
+		// 					ResourceState: to.Ptr(armcdn.ProfileResourceStateActive),
+		// 				},
+		// 				SKU: &armcdn.SKU{
+		// 					Name: to.Ptr(armcdn.SKUNamePremiumAzureFrontDoor),
+		// 				},
+		// 				Tags: map[string]*string{
+		// 				},
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("profile2"),
+		// 				Type: to.Ptr("Microsoft.Cdn/profiles"),
+		// 				ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile2"),
+		// 				Kind: to.Ptr("frontdoor"),
+		// 				Location: to.Ptr("global"),
+		// 				Properties: &armcdn.ProfileProperties{
+		// 					FrontDoorID: to.Ptr("3b4682da-b3e2-47a1-96ca-08ab3cb7294e"),
+		// 					LogScrubbing: &armcdn.ProfileLogScrubbing{
+		// 						ScrubbingRules: []*armcdn.ProfileScrubbingRules{
+		// 						},
+		// 						State: to.Ptr(armcdn.ProfileScrubbingStateEnabled),
+		// 					},
+		// 					OriginResponseTimeoutSeconds: to.Ptr[int32](30),
+		// 					ProvisioningState: to.Ptr(armcdn.ProfileProvisioningStateSucceeded),
+		// 					ResourceState: to.Ptr(armcdn.ProfileResourceStateActive),
+		// 				},
+		// 				SKU: &armcdn.SKU{
+		// 					Name: to.Ptr(armcdn.SKUNamePremiumAzureFrontDoor),
+		// 				},
+		// 				Tags: map[string]*string{
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2025-06-01/Profiles_List.json
+func ExampleProfilesClient_NewListPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcdn.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewProfilesClient().NewListPager(nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armcdn.ProfilesClientListResponse{
+		// 	ProfileListResult: armcdn.ProfileListResult{
+		// 		Value: []*armcdn.Profile{
+		// 			{
+		// 				Name: to.Ptr("profile1"),
+		// 				Type: to.Ptr("Microsoft.Cdn/profiles"),
+		// 				ID: to.Ptr("/subscriptions/subid/resourcegroups/RG1/providers/Microsoft.Cdn/profiles/profile1"),
+		// 				Kind: to.Ptr("frontdoor"),
+		// 				Location: to.Ptr("global"),
+		// 				Properties: &armcdn.ProfileProperties{
+		// 					FrontDoorID: to.Ptr("3b4682da-b3e2-47a1-96ca-08ab3cb7294e"),
+		// 					LogScrubbing: &armcdn.ProfileLogScrubbing{
+		// 						ScrubbingRules: []*armcdn.ProfileScrubbingRules{
+		// 						},
+		// 						State: to.Ptr(armcdn.ProfileScrubbingStateEnabled),
+		// 					},
+		// 					OriginResponseTimeoutSeconds: to.Ptr[int32](30),
+		// 					ProvisioningState: to.Ptr(armcdn.ProfileProvisioningStateSucceeded),
+		// 					ResourceState: to.Ptr(armcdn.ProfileResourceStateActive),
+		// 				},
+		// 				SKU: &armcdn.SKU{
+		// 					Name: to.Ptr(armcdn.SKUNamePremiumAzureFrontDoor),
+		// 				},
+		// 				Tags: map[string]*string{
+		// 				},
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("profile2"),
+		// 				Type: to.Ptr("Microsoft.Cdn/profiles"),
+		// 				ID: to.Ptr("/subscriptions/subid/resourcegroups/RG1/providers/Microsoft.Cdn/profiles/profile2"),
+		// 				Kind: to.Ptr("frontdoor"),
+		// 				Location: to.Ptr("global"),
+		// 				Properties: &armcdn.ProfileProperties{
+		// 					FrontDoorID: to.Ptr("3b4682da-b3e2-47a1-96ca-08ab3cb7294e"),
+		// 					LogScrubbing: &armcdn.ProfileLogScrubbing{
+		// 						ScrubbingRules: []*armcdn.ProfileScrubbingRules{
+		// 						},
+		// 						State: to.Ptr(armcdn.ProfileScrubbingStateEnabled),
+		// 					},
+		// 					OriginResponseTimeoutSeconds: to.Ptr[int32](30),
+		// 					ProvisioningState: to.Ptr(armcdn.ProfileProvisioningStateSucceeded),
+		// 					ResourceState: to.Ptr(armcdn.ProfileResourceStateActive),
+		// 				},
+		// 				SKU: &armcdn.SKU{
+		// 					Name: to.Ptr(armcdn.SKUNamePremiumAzureFrontDoor),
+		// 				},
+		// 				Tags: map[string]*string{
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2025-06-01/Profiles_ListResourceUsage.json
+func ExampleProfilesClient_NewListResourceUsagePager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcdn.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewProfilesClient().NewListResourceUsagePager("RG", "profile1", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armcdn.ProfilesClientListResourceUsageResponse{
+		// 	ResourceUsageListResult: armcdn.ResourceUsageListResult{
+		// 		Value: []*armcdn.ResourceUsage{
+		// 			{
+		// 				CurrentValue: to.Ptr[int32](0),
+		// 				Limit: to.Ptr[int32](25),
+		// 				ResourceType: to.Ptr("endpoint"),
+		// 				Unit: to.Ptr(armcdn.ResourceUsageUnitCount),
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
 }

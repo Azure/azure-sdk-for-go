@@ -68,7 +68,7 @@ func (client *AccountsClient) BeginCreate(ctx context.Context, resourceGroupName
 	}
 }
 
-// Create - Create Cognitive Services Account. Accounts is a resource group wide resource type. It holds the keys for developer
+// create - Create Cognitive Services Account. Accounts is a resource group wide resource type. It holds the keys for developer
 // to access intelligent APIs. It's also the resource type for billing.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *AccountsClient) create(ctx context.Context, resourceGroupName string, accountName string, account Account, options *AccountsClientBeginCreateOptions) (*http.Response, error) {
@@ -91,7 +91,7 @@ func (client *AccountsClient) create(ctx context.Context, resourceGroupName stri
 	return httpResp, nil
 }
 
-// createCreateRequest creates the Create request.
+// createCreateRequest creates the create request.
 func (client *AccountsClient) createCreateRequest(ctx context.Context, resourceGroupName string, accountName string, account Account, _ *AccountsClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}"
 	if client.subscriptionID == "" {
@@ -143,7 +143,7 @@ func (client *AccountsClient) BeginDelete(ctx context.Context, resourceGroupName
 	}
 }
 
-// Delete - Deletes a Cognitive Services account from the resource group.
+// deleteOperation - Deletes a Cognitive Services account from the resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *AccountsClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, options *AccountsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -165,7 +165,7 @@ func (client *AccountsClient) deleteOperation(ctx context.Context, resourceGroup
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *AccountsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, _ *AccountsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}"
 	if client.subscriptionID == "" {
@@ -187,6 +187,81 @@ func (client *AccountsClient) deleteCreateRequest(ctx context.Context, resourceG
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", version20260715Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginUpdate - Updates a Cognitive Services account
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accountName - The name of Cognitive Services account.
+//   - account - The parameters to provide for the created account.
+//   - options - AccountsClientBeginUpdateOptions contains the optional parameters for the AccountsClient.BeginUpdate method.
+func (client *AccountsClient) BeginUpdate(ctx context.Context, resourceGroupName string, accountName string, account Account, options *AccountsClientBeginUpdateOptions) (*runtime.Poller[AccountsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, accountName, account, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AccountsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[AccountsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Updates a Cognitive Services account
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *AccountsClient) update(ctx context.Context, resourceGroupName string, accountName string, account Account, options *AccountsClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "AccountsClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, accountName, account, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *AccountsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, account Account, _ *AccountsClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if accountName == "" {
+		return nil, errors.New("parameter accountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260715Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, account); err != nil {
+		return nil, err
+	}
 	return req, nil
 }
 
@@ -316,144 +391,6 @@ func (client *AccountsClient) getHandleResponse(resp *http.Response, successCode
 	return result, nil
 }
 
-// NewListPager - Returns all the resources of a particular type belonging to a subscription.
-//   - options - AccountsClientListOptions contains the optional parameters for the AccountsClient.NewListPager method.
-func (client *AccountsClient) NewListPager(options *AccountsClientListOptions) *runtime.Pager[AccountsClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[AccountsClientListResponse]{
-		More: func(page AccountsClientListResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *AccountsClientListResponse) (AccountsClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AccountsClient.NewListPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			req, err := client.listCreateRequest(ctx, nextLink, options)
-			if err != nil {
-				return AccountsClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return AccountsClientListResponse{}, err
-			}
-			return client.listHandleResponse(resp, http.StatusOK)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listCreateRequest creates the List request.
-func (client *AccountsClient) listCreateRequest(ctx context.Context, nextLink string, _ *AccountsClientListOptions) (*policy.Request, error) {
-	firstPage := nextLink == ""
-	var req *policy.Request
-	var err error
-	if firstPage {
-		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.CognitiveServices/accounts"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter subscriptionID cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	} else {
-		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
-	}
-	if err != nil {
-		return nil, err
-	}
-	if firstPage {
-		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260715Preview)
-		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-		req.Raw().Header["Accept"] = []string{"application/json"}
-	}
-	return req, nil
-}
-
-// listHandleResponse handles the List response.
-func (client *AccountsClient) listHandleResponse(resp *http.Response, successCodes ...int) (AccountsClientListResponse, error) {
-	result := AccountsClientListResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.AccountListResult); err != nil {
-		return AccountsClientListResponse{}, err
-	}
-	return result, nil
-}
-
-// NewListByResourceGroupPager - Returns all the resources of a particular type belonging to a resource group
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - options - AccountsClientListByResourceGroupOptions contains the optional parameters for the AccountsClient.NewListByResourceGroupPager
-//     method.
-func (client *AccountsClient) NewListByResourceGroupPager(resourceGroupName string, options *AccountsClientListByResourceGroupOptions) *runtime.Pager[AccountsClientListByResourceGroupResponse] {
-	return runtime.NewPager(runtime.PagingHandler[AccountsClientListByResourceGroupResponse]{
-		More: func(page AccountsClientListByResourceGroupResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *AccountsClientListByResourceGroupResponse) (AccountsClientListByResourceGroupResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AccountsClient.NewListByResourceGroupPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			req, err := client.listByResourceGroupCreateRequest(ctx, resourceGroupName, nextLink, options)
-			if err != nil {
-				return AccountsClientListByResourceGroupResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return AccountsClientListByResourceGroupResponse{}, err
-			}
-			return client.listByResourceGroupHandleResponse(resp, http.StatusOK)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *AccountsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, nextLink string, _ *AccountsClientListByResourceGroupOptions) (*policy.Request, error) {
-	firstPage := nextLink == ""
-	var req *policy.Request
-	var err error
-	if firstPage {
-		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter subscriptionID cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-		if resourceGroupName == "" {
-			return nil, errors.New("parameter resourceGroupName cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	} else {
-		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
-	}
-	if err != nil {
-		return nil, err
-	}
-	if firstPage {
-		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260715Preview)
-		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-		req.Raw().Header["Accept"] = []string{"application/json"}
-	}
-	return req, nil
-}
-
-// listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *AccountsClient) listByResourceGroupHandleResponse(resp *http.Response, successCodes ...int) (AccountsClientListByResourceGroupResponse, error) {
-	result := AccountsClientListByResourceGroupResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.AccountListResult); err != nil {
-		return AccountsClientListByResourceGroupResponse{}, err
-	}
-	return result, nil
-}
-
 // ListKeys - Lists the account keys for the specified Cognitive Services account.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
@@ -510,82 +447,6 @@ func (client *AccountsClient) listKeysHandleResponse(resp *http.Response, succes
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.APIKeys); err != nil {
 		return AccountsClientListKeysResponse{}, err
-	}
-	return result, nil
-}
-
-// NewListModelsPager - List available Models for the requested Cognitive Services account
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - accountName - The name of Cognitive Services account.
-//   - options - AccountsClientListModelsOptions contains the optional parameters for the AccountsClient.NewListModelsPager method.
-func (client *AccountsClient) NewListModelsPager(resourceGroupName string, accountName string, options *AccountsClientListModelsOptions) *runtime.Pager[AccountsClientListModelsResponse] {
-	return runtime.NewPager(runtime.PagingHandler[AccountsClientListModelsResponse]{
-		More: func(page AccountsClientListModelsResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *AccountsClientListModelsResponse) (AccountsClientListModelsResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AccountsClient.NewListModelsPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			req, err := client.listModelsCreateRequest(ctx, resourceGroupName, accountName, nextLink, options)
-			if err != nil {
-				return AccountsClientListModelsResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return AccountsClientListModelsResponse{}, err
-			}
-			return client.listModelsHandleResponse(resp, http.StatusOK)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listModelsCreateRequest creates the ListModels request.
-func (client *AccountsClient) listModelsCreateRequest(ctx context.Context, resourceGroupName string, accountName string, nextLink string, _ *AccountsClientListModelsOptions) (*policy.Request, error) {
-	firstPage := nextLink == ""
-	var req *policy.Request
-	var err error
-	if firstPage {
-		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/models"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter subscriptionID cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-		if resourceGroupName == "" {
-			return nil, errors.New("parameter resourceGroupName cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-		if accountName == "" {
-			return nil, errors.New("parameter accountName cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	} else {
-		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
-	}
-	if err != nil {
-		return nil, err
-	}
-	if firstPage {
-		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260715Preview)
-		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-		req.Raw().Header["Accept"] = []string{"application/json"}
-	}
-	return req, nil
-}
-
-// listModelsHandleResponse handles the ListModels response.
-func (client *AccountsClient) listModelsHandleResponse(resp *http.Response, successCodes ...int) (AccountsClientListModelsResponse, error) {
-	result := AccountsClientListModelsResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.AccountModelListResult); err != nil {
-		return AccountsClientListModelsResponse{}, err
 	}
 	return result, nil
 }
@@ -713,6 +574,220 @@ func (client *AccountsClient) listUsagesHandleResponse(resp *http.Response, succ
 	return result, nil
 }
 
+// NewListByResourceGroupPager - Returns all the resources of a particular type belonging to a resource group
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - options - AccountsClientListByResourceGroupOptions contains the optional parameters for the AccountsClient.NewListByResourceGroupPager
+//     method.
+func (client *AccountsClient) NewListByResourceGroupPager(resourceGroupName string, options *AccountsClientListByResourceGroupOptions) *runtime.Pager[AccountsClientListByResourceGroupResponse] {
+	return runtime.NewPager(runtime.PagingHandler[AccountsClientListByResourceGroupResponse]{
+		More: func(page AccountsClientListByResourceGroupResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *AccountsClientListByResourceGroupResponse) (AccountsClientListByResourceGroupResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AccountsClient.NewListByResourceGroupPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listByResourceGroupCreateRequest(ctx, resourceGroupName, nextLink, options)
+			if err != nil {
+				return AccountsClientListByResourceGroupResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return AccountsClientListByResourceGroupResponse{}, err
+			}
+			return client.listByResourceGroupHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listByResourceGroupCreateRequest creates the ListByResourceGroup request.
+func (client *AccountsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, nextLink string, _ *AccountsClientListByResourceGroupOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260715Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// listByResourceGroupHandleResponse handles the ListByResourceGroup response.
+func (client *AccountsClient) listByResourceGroupHandleResponse(resp *http.Response, successCodes ...int) (AccountsClientListByResourceGroupResponse, error) {
+	result := AccountsClientListByResourceGroupResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.AccountListResult); err != nil {
+		return AccountsClientListByResourceGroupResponse{}, err
+	}
+	return result, nil
+}
+
+// NewListModelsPager - List available Models for the requested Cognitive Services account
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accountName - The name of Cognitive Services account.
+//   - options - AccountsClientListModelsOptions contains the optional parameters for the AccountsClient.NewListModelsPager method.
+func (client *AccountsClient) NewListModelsPager(resourceGroupName string, accountName string, options *AccountsClientListModelsOptions) *runtime.Pager[AccountsClientListModelsResponse] {
+	return runtime.NewPager(runtime.PagingHandler[AccountsClientListModelsResponse]{
+		More: func(page AccountsClientListModelsResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *AccountsClientListModelsResponse) (AccountsClientListModelsResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AccountsClient.NewListModelsPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listModelsCreateRequest(ctx, resourceGroupName, accountName, nextLink, options)
+			if err != nil {
+				return AccountsClientListModelsResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return AccountsClientListModelsResponse{}, err
+			}
+			return client.listModelsHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listModelsCreateRequest creates the ListModels request.
+func (client *AccountsClient) listModelsCreateRequest(ctx context.Context, resourceGroupName string, accountName string, nextLink string, _ *AccountsClientListModelsOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/models"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if accountName == "" {
+			return nil, errors.New("parameter accountName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260715Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// listModelsHandleResponse handles the ListModels response.
+func (client *AccountsClient) listModelsHandleResponse(resp *http.Response, successCodes ...int) (AccountsClientListModelsResponse, error) {
+	result := AccountsClientListModelsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.AccountModelListResult); err != nil {
+		return AccountsClientListModelsResponse{}, err
+	}
+	return result, nil
+}
+
+// NewListPager - Returns all the resources of a particular type belonging to a subscription.
+//   - options - AccountsClientListOptions contains the optional parameters for the AccountsClient.NewListPager method.
+func (client *AccountsClient) NewListPager(options *AccountsClientListOptions) *runtime.Pager[AccountsClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[AccountsClientListResponse]{
+		More: func(page AccountsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *AccountsClientListResponse) (AccountsClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AccountsClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listCreateRequest(ctx, nextLink, options)
+			if err != nil {
+				return AccountsClientListResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return AccountsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listCreateRequest creates the List request.
+func (client *AccountsClient) listCreateRequest(ctx context.Context, nextLink string, _ *AccountsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.CognitiveServices/accounts"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260715Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// listHandleResponse handles the List response.
+func (client *AccountsClient) listHandleResponse(resp *http.Response, successCodes ...int) (AccountsClientListResponse, error) {
+	result := AccountsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.AccountListResult); err != nil {
+		return AccountsClientListResponse{}, err
+	}
+	return result, nil
+}
+
 // RegenerateKey - Regenerates the specified account key for the specified Cognitive Services account.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
@@ -776,79 +851,4 @@ func (client *AccountsClient) regenerateKeyHandleResponse(resp *http.Response, s
 		return AccountsClientRegenerateKeyResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginUpdate - Updates a Cognitive Services account
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - accountName - The name of Cognitive Services account.
-//   - account - The parameters to provide for the created account.
-//   - options - AccountsClientBeginUpdateOptions contains the optional parameters for the AccountsClient.BeginUpdate method.
-func (client *AccountsClient) BeginUpdate(ctx context.Context, resourceGroupName string, accountName string, account Account, options *AccountsClientBeginUpdateOptions) (*runtime.Poller[AccountsClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, accountName, account, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AccountsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[AccountsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Updates a Cognitive Services account
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *AccountsClient) update(ctx context.Context, resourceGroupName string, accountName string, account Account, options *AccountsClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "AccountsClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, accountName, account, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *AccountsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, account Account, _ *AccountsClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if accountName == "" {
-		return nil, errors.New("parameter accountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260715Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, account); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

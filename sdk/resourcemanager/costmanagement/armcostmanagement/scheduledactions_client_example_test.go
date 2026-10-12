@@ -509,219 +509,6 @@ func ExampleScheduledActionsClient_GetByScope() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/scheduledActions/scheduledActions-list-private.json
-func ExampleScheduledActionsClient_NewListPager_privateScheduledActionsList() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcostmanagement.NewClientFactory(cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewScheduledActionsClient().NewListPager(nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armcostmanagement.ScheduledActionsClientListResponse{
-		// 	ScheduledActionListResult: armcostmanagement.ScheduledActionListResult{
-		// 		Value: []*armcostmanagement.ScheduledAction{
-		// 			{
-		// 				Name: to.Ptr("monthlyCostByResource"),
-		// 				Type: to.Ptr("Microsoft.CostManagement/ScheduledActions"),
-		// 				ETag: to.Ptr(azcore.ETag("\"1d4ff9fe66f1d10\"")),
-		// 				ID: to.Ptr("/providers/Microsoft.CostManagement/scheduledActions/monthlyCostByResource"),
-		// 				Kind: to.Ptr(armcostmanagement.ScheduledActionKindEmail),
-		// 				Properties: &armcostmanagement.ScheduledActionProperties{
-		// 					DisplayName: to.Ptr("Monthly Cost By Resource"),
-		// 					Notification: &armcostmanagement.NotificationProperties{
-		// 						Subject: to.Ptr("Cost by resource this month"),
-		// 						To: []*string{
-		// 							to.Ptr("user@gmail.com"),
-		// 							to.Ptr("team@gmail.com"),
-		// 						},
-		// 					},
-		// 					Schedule: &armcostmanagement.ScheduleProperties{
-		// 						DaysOfWeek: []*armcostmanagement.DaysOfWeek{
-		// 							to.Ptr(armcostmanagement.DaysOfWeekMonday),
-		// 						},
-		// 						EndDate: to.Ptr(time.Date(2021, time.June, 19, 22, 21, 51, 128714400, time.UTC)),
-		// 						Frequency: to.Ptr(armcostmanagement.ScheduleFrequencyMonthly),
-		// 						HourOfDay: to.Ptr[int32](10),
-		// 						StartDate: to.Ptr(time.Date(2020, time.June, 19, 22, 21, 51, 128714400, time.UTC)),
-		// 						WeeksOfMonth: []*armcostmanagement.WeeksOfMonth{
-		// 							to.Ptr(armcostmanagement.WeeksOfMonthFirst),
-		// 							to.Ptr(armcostmanagement.WeeksOfMonthThird),
-		// 						},
-		// 					},
-		// 					Scope: to.Ptr(""),
-		// 					Status: to.Ptr(armcostmanagement.ScheduledActionStatusEnabled),
-		// 					ViewID: to.Ptr("/providers/Microsoft.CostManagement/views/swaggerExample"),
-		// 				},
-		// 				SystemData: &armcostmanagement.SystemData{
-		// 					CreatedAt: to.Ptr(time.Date(2020, time.June, 18, 22, 21, 51, 128714400, time.UTC)),
-		// 					CreatedBy: to.Ptr("testuser"),
-		// 					CreatedByType: to.Ptr(armcostmanagement.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(time.Date(2020, time.June, 18, 22, 21, 51, 128714400, time.UTC)),
-		// 					LastModifiedBy: to.Ptr("testuser"),
-		// 					LastModifiedByType: to.Ptr(armcostmanagement.CreatedByTypeUser),
-		// 				},
-		// 			},
-		// 			{
-		// 				Name: to.Ptr("dailyCostByResource"),
-		// 				Type: to.Ptr("Microsoft.CostManagement/ScheduledActions"),
-		// 				ETag: to.Ptr(azcore.ETag("\"1d4ff9fe66f1d15\"")),
-		// 				ID: to.Ptr("/providers/Microsoft.CostManagement/scheduledActions/dailyCostByResource"),
-		// 				Kind: to.Ptr(armcostmanagement.ScheduledActionKindEmail),
-		// 				Properties: &armcostmanagement.ScheduledActionProperties{
-		// 					DisplayName: to.Ptr("Daily Cost By Resource"),
-		// 					Notification: &armcostmanagement.NotificationProperties{
-		// 						Subject: to.Ptr("Daily Cost By Resource"),
-		// 						To: []*string{
-		// 							to.Ptr("user@gmail.com"),
-		// 							to.Ptr("team@gmail.com"),
-		// 						},
-		// 					},
-		// 					Schedule: &armcostmanagement.ScheduleProperties{
-		// 						EndDate: to.Ptr(time.Date(2021, time.June, 19, 22, 21, 51, 128714400, time.UTC)),
-		// 						Frequency: to.Ptr(armcostmanagement.ScheduleFrequencyDaily),
-		// 						HourOfDay: to.Ptr[int32](12),
-		// 						StartDate: to.Ptr(time.Date(2020, time.June, 19, 22, 21, 51, 128714400, time.UTC)),
-		// 					},
-		// 					Scope: to.Ptr(""),
-		// 					Status: to.Ptr(armcostmanagement.ScheduledActionStatusDisabled),
-		// 					ViewID: to.Ptr("/providers/Microsoft.CostManagement/views/swaggerExample"),
-		// 				},
-		// 				SystemData: &armcostmanagement.SystemData{
-		// 					CreatedAt: to.Ptr(time.Date(2020, time.June, 18, 22, 21, 51, 128714400, time.UTC)),
-		// 					CreatedBy: to.Ptr("testuser"),
-		// 					CreatedByType: to.Ptr(armcostmanagement.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(time.Date(2020, time.June, 18, 22, 21, 51, 128714400, time.UTC)),
-		// 					LastModifiedBy: to.Ptr("testuser"),
-		// 					LastModifiedByType: to.Ptr(armcostmanagement.CreatedByTypeUser),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2025-03-01/scheduledActions/scheduledActions-listWithFilter-private.json
-func ExampleScheduledActionsClient_NewListPager_privateScheduledActionsListFilterByViewId() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcostmanagement.NewClientFactory(cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewScheduledActionsClient().NewListPager(&armcostmanagement.ScheduledActionsClientListOptions{
-		Filter: to.Ptr("properties/viewId eq '/providers/Microsoft.CostManagement/views/swaggerExample'")})
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armcostmanagement.ScheduledActionsClientListResponse{
-		// 	ScheduledActionListResult: armcostmanagement.ScheduledActionListResult{
-		// 		Value: []*armcostmanagement.ScheduledAction{
-		// 			{
-		// 				Name: to.Ptr("monthlyCostByResource"),
-		// 				Type: to.Ptr("Microsoft.CostManagement/ScheduledActions"),
-		// 				ETag: to.Ptr(azcore.ETag("\"1d4ff9fe66f1d10\"")),
-		// 				ID: to.Ptr("/providers/Microsoft.CostManagement/scheduledActions/monthlyCostByResource"),
-		// 				Kind: to.Ptr(armcostmanagement.ScheduledActionKindEmail),
-		// 				Properties: &armcostmanagement.ScheduledActionProperties{
-		// 					DisplayName: to.Ptr("Monthly Cost By Resource"),
-		// 					Notification: &armcostmanagement.NotificationProperties{
-		// 						Subject: to.Ptr("Cost by resource this month"),
-		// 						To: []*string{
-		// 							to.Ptr("user@gmail.com"),
-		// 							to.Ptr("team@gmail.com"),
-		// 						},
-		// 					},
-		// 					Schedule: &armcostmanagement.ScheduleProperties{
-		// 						DaysOfWeek: []*armcostmanagement.DaysOfWeek{
-		// 							to.Ptr(armcostmanagement.DaysOfWeekMonday),
-		// 						},
-		// 						EndDate: to.Ptr(time.Date(2021, time.June, 19, 22, 21, 51, 128714400, time.UTC)),
-		// 						Frequency: to.Ptr(armcostmanagement.ScheduleFrequencyMonthly),
-		// 						HourOfDay: to.Ptr[int32](10),
-		// 						StartDate: to.Ptr(time.Date(2020, time.June, 19, 22, 21, 51, 128714400, time.UTC)),
-		// 						WeeksOfMonth: []*armcostmanagement.WeeksOfMonth{
-		// 							to.Ptr(armcostmanagement.WeeksOfMonthFirst),
-		// 							to.Ptr(armcostmanagement.WeeksOfMonthThird),
-		// 						},
-		// 					},
-		// 					Scope: to.Ptr(""),
-		// 					Status: to.Ptr(armcostmanagement.ScheduledActionStatusEnabled),
-		// 					ViewID: to.Ptr("/providers/Microsoft.CostManagement/views/swaggerExample"),
-		// 				},
-		// 				SystemData: &armcostmanagement.SystemData{
-		// 					CreatedAt: to.Ptr(time.Date(2020, time.June, 18, 22, 21, 51, 128714400, time.UTC)),
-		// 					CreatedBy: to.Ptr("testuser"),
-		// 					CreatedByType: to.Ptr(armcostmanagement.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(time.Date(2020, time.June, 18, 22, 21, 51, 128714400, time.UTC)),
-		// 					LastModifiedBy: to.Ptr("testuser"),
-		// 					LastModifiedByType: to.Ptr(armcostmanagement.CreatedByTypeUser),
-		// 				},
-		// 			},
-		// 			{
-		// 				Name: to.Ptr("dailyCostByResource"),
-		// 				Type: to.Ptr("Microsoft.CostManagement/ScheduledActions"),
-		// 				ETag: to.Ptr(azcore.ETag("\"1d4ff9fe66f1d15\"")),
-		// 				ID: to.Ptr("/providers/Microsoft.CostManagement/scheduledActions/dailyCostByResource"),
-		// 				Kind: to.Ptr(armcostmanagement.ScheduledActionKindEmail),
-		// 				Properties: &armcostmanagement.ScheduledActionProperties{
-		// 					DisplayName: to.Ptr("Daily Cost By Resource"),
-		// 					Notification: &armcostmanagement.NotificationProperties{
-		// 						Subject: to.Ptr("Daily Cost By Resource"),
-		// 						To: []*string{
-		// 							to.Ptr("user@gmail.com"),
-		// 							to.Ptr("team@gmail.com"),
-		// 						},
-		// 					},
-		// 					Schedule: &armcostmanagement.ScheduleProperties{
-		// 						EndDate: to.Ptr(time.Date(2021, time.June, 19, 22, 21, 51, 128714400, time.UTC)),
-		// 						Frequency: to.Ptr(armcostmanagement.ScheduleFrequencyDaily),
-		// 						HourOfDay: to.Ptr[int32](12),
-		// 						StartDate: to.Ptr(time.Date(2020, time.June, 19, 22, 21, 51, 128714400, time.UTC)),
-		// 					},
-		// 					Scope: to.Ptr(""),
-		// 					Status: to.Ptr(armcostmanagement.ScheduledActionStatusDisabled),
-		// 					ViewID: to.Ptr("/providers/Microsoft.CostManagement/views/swaggerExample"),
-		// 				},
-		// 				SystemData: &armcostmanagement.SystemData{
-		// 					CreatedAt: to.Ptr(time.Date(2020, time.June, 18, 22, 21, 51, 128714400, time.UTC)),
-		// 					CreatedBy: to.Ptr("testuser"),
-		// 					CreatedByType: to.Ptr(armcostmanagement.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(time.Date(2020, time.June, 18, 22, 21, 51, 128714400, time.UTC)),
-		// 					LastModifiedBy: to.Ptr("testuser"),
-		// 					LastModifiedByType: to.Ptr(armcostmanagement.CreatedByTypeUser),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
 // Generated from example definition: 2025-03-01/scheduledActions/scheduledActions-list-shared.json
 func ExampleScheduledActionsClient_NewListByScopePager_scheduledActionsListByScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -927,6 +714,219 @@ func ExampleScheduledActionsClient_NewListByScopePager_scheduledActionsListBySco
 		// 						},
 		// 						Subject: to.Ptr("Daily Cost By Resource"),
 		// 					},
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2025-03-01/scheduledActions/scheduledActions-list-private.json
+func ExampleScheduledActionsClient_NewListPager_privateScheduledActionsList() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcostmanagement.NewClientFactory(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewScheduledActionsClient().NewListPager(nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armcostmanagement.ScheduledActionsClientListResponse{
+		// 	ScheduledActionListResult: armcostmanagement.ScheduledActionListResult{
+		// 		Value: []*armcostmanagement.ScheduledAction{
+		// 			{
+		// 				Name: to.Ptr("monthlyCostByResource"),
+		// 				Type: to.Ptr("Microsoft.CostManagement/ScheduledActions"),
+		// 				ETag: to.Ptr(azcore.ETag("\"1d4ff9fe66f1d10\"")),
+		// 				ID: to.Ptr("/providers/Microsoft.CostManagement/scheduledActions/monthlyCostByResource"),
+		// 				Kind: to.Ptr(armcostmanagement.ScheduledActionKindEmail),
+		// 				Properties: &armcostmanagement.ScheduledActionProperties{
+		// 					DisplayName: to.Ptr("Monthly Cost By Resource"),
+		// 					Notification: &armcostmanagement.NotificationProperties{
+		// 						Subject: to.Ptr("Cost by resource this month"),
+		// 						To: []*string{
+		// 							to.Ptr("user@gmail.com"),
+		// 							to.Ptr("team@gmail.com"),
+		// 						},
+		// 					},
+		// 					Schedule: &armcostmanagement.ScheduleProperties{
+		// 						DaysOfWeek: []*armcostmanagement.DaysOfWeek{
+		// 							to.Ptr(armcostmanagement.DaysOfWeekMonday),
+		// 						},
+		// 						EndDate: to.Ptr(time.Date(2021, time.June, 19, 22, 21, 51, 128714400, time.UTC)),
+		// 						Frequency: to.Ptr(armcostmanagement.ScheduleFrequencyMonthly),
+		// 						HourOfDay: to.Ptr[int32](10),
+		// 						StartDate: to.Ptr(time.Date(2020, time.June, 19, 22, 21, 51, 128714400, time.UTC)),
+		// 						WeeksOfMonth: []*armcostmanagement.WeeksOfMonth{
+		// 							to.Ptr(armcostmanagement.WeeksOfMonthFirst),
+		// 							to.Ptr(armcostmanagement.WeeksOfMonthThird),
+		// 						},
+		// 					},
+		// 					Scope: to.Ptr(""),
+		// 					Status: to.Ptr(armcostmanagement.ScheduledActionStatusEnabled),
+		// 					ViewID: to.Ptr("/providers/Microsoft.CostManagement/views/swaggerExample"),
+		// 				},
+		// 				SystemData: &armcostmanagement.SystemData{
+		// 					CreatedAt: to.Ptr(time.Date(2020, time.June, 18, 22, 21, 51, 128714400, time.UTC)),
+		// 					CreatedBy: to.Ptr("testuser"),
+		// 					CreatedByType: to.Ptr(armcostmanagement.CreatedByTypeUser),
+		// 					LastModifiedAt: to.Ptr(time.Date(2020, time.June, 18, 22, 21, 51, 128714400, time.UTC)),
+		// 					LastModifiedBy: to.Ptr("testuser"),
+		// 					LastModifiedByType: to.Ptr(armcostmanagement.CreatedByTypeUser),
+		// 				},
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("dailyCostByResource"),
+		// 				Type: to.Ptr("Microsoft.CostManagement/ScheduledActions"),
+		// 				ETag: to.Ptr(azcore.ETag("\"1d4ff9fe66f1d15\"")),
+		// 				ID: to.Ptr("/providers/Microsoft.CostManagement/scheduledActions/dailyCostByResource"),
+		// 				Kind: to.Ptr(armcostmanagement.ScheduledActionKindEmail),
+		// 				Properties: &armcostmanagement.ScheduledActionProperties{
+		// 					DisplayName: to.Ptr("Daily Cost By Resource"),
+		// 					Notification: &armcostmanagement.NotificationProperties{
+		// 						Subject: to.Ptr("Daily Cost By Resource"),
+		// 						To: []*string{
+		// 							to.Ptr("user@gmail.com"),
+		// 							to.Ptr("team@gmail.com"),
+		// 						},
+		// 					},
+		// 					Schedule: &armcostmanagement.ScheduleProperties{
+		// 						EndDate: to.Ptr(time.Date(2021, time.June, 19, 22, 21, 51, 128714400, time.UTC)),
+		// 						Frequency: to.Ptr(armcostmanagement.ScheduleFrequencyDaily),
+		// 						HourOfDay: to.Ptr[int32](12),
+		// 						StartDate: to.Ptr(time.Date(2020, time.June, 19, 22, 21, 51, 128714400, time.UTC)),
+		// 					},
+		// 					Scope: to.Ptr(""),
+		// 					Status: to.Ptr(armcostmanagement.ScheduledActionStatusDisabled),
+		// 					ViewID: to.Ptr("/providers/Microsoft.CostManagement/views/swaggerExample"),
+		// 				},
+		// 				SystemData: &armcostmanagement.SystemData{
+		// 					CreatedAt: to.Ptr(time.Date(2020, time.June, 18, 22, 21, 51, 128714400, time.UTC)),
+		// 					CreatedBy: to.Ptr("testuser"),
+		// 					CreatedByType: to.Ptr(armcostmanagement.CreatedByTypeUser),
+		// 					LastModifiedAt: to.Ptr(time.Date(2020, time.June, 18, 22, 21, 51, 128714400, time.UTC)),
+		// 					LastModifiedBy: to.Ptr("testuser"),
+		// 					LastModifiedByType: to.Ptr(armcostmanagement.CreatedByTypeUser),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2025-03-01/scheduledActions/scheduledActions-listWithFilter-private.json
+func ExampleScheduledActionsClient_NewListPager_privateScheduledActionsListFilterByViewId() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcostmanagement.NewClientFactory(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewScheduledActionsClient().NewListPager(&armcostmanagement.ScheduledActionsClientListOptions{
+		Filter: to.Ptr("properties/viewId eq '/providers/Microsoft.CostManagement/views/swaggerExample'")})
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armcostmanagement.ScheduledActionsClientListResponse{
+		// 	ScheduledActionListResult: armcostmanagement.ScheduledActionListResult{
+		// 		Value: []*armcostmanagement.ScheduledAction{
+		// 			{
+		// 				Name: to.Ptr("monthlyCostByResource"),
+		// 				Type: to.Ptr("Microsoft.CostManagement/ScheduledActions"),
+		// 				ETag: to.Ptr(azcore.ETag("\"1d4ff9fe66f1d10\"")),
+		// 				ID: to.Ptr("/providers/Microsoft.CostManagement/scheduledActions/monthlyCostByResource"),
+		// 				Kind: to.Ptr(armcostmanagement.ScheduledActionKindEmail),
+		// 				Properties: &armcostmanagement.ScheduledActionProperties{
+		// 					DisplayName: to.Ptr("Monthly Cost By Resource"),
+		// 					Notification: &armcostmanagement.NotificationProperties{
+		// 						Subject: to.Ptr("Cost by resource this month"),
+		// 						To: []*string{
+		// 							to.Ptr("user@gmail.com"),
+		// 							to.Ptr("team@gmail.com"),
+		// 						},
+		// 					},
+		// 					Schedule: &armcostmanagement.ScheduleProperties{
+		// 						DaysOfWeek: []*armcostmanagement.DaysOfWeek{
+		// 							to.Ptr(armcostmanagement.DaysOfWeekMonday),
+		// 						},
+		// 						EndDate: to.Ptr(time.Date(2021, time.June, 19, 22, 21, 51, 128714400, time.UTC)),
+		// 						Frequency: to.Ptr(armcostmanagement.ScheduleFrequencyMonthly),
+		// 						HourOfDay: to.Ptr[int32](10),
+		// 						StartDate: to.Ptr(time.Date(2020, time.June, 19, 22, 21, 51, 128714400, time.UTC)),
+		// 						WeeksOfMonth: []*armcostmanagement.WeeksOfMonth{
+		// 							to.Ptr(armcostmanagement.WeeksOfMonthFirst),
+		// 							to.Ptr(armcostmanagement.WeeksOfMonthThird),
+		// 						},
+		// 					},
+		// 					Scope: to.Ptr(""),
+		// 					Status: to.Ptr(armcostmanagement.ScheduledActionStatusEnabled),
+		// 					ViewID: to.Ptr("/providers/Microsoft.CostManagement/views/swaggerExample"),
+		// 				},
+		// 				SystemData: &armcostmanagement.SystemData{
+		// 					CreatedAt: to.Ptr(time.Date(2020, time.June, 18, 22, 21, 51, 128714400, time.UTC)),
+		// 					CreatedBy: to.Ptr("testuser"),
+		// 					CreatedByType: to.Ptr(armcostmanagement.CreatedByTypeUser),
+		// 					LastModifiedAt: to.Ptr(time.Date(2020, time.June, 18, 22, 21, 51, 128714400, time.UTC)),
+		// 					LastModifiedBy: to.Ptr("testuser"),
+		// 					LastModifiedByType: to.Ptr(armcostmanagement.CreatedByTypeUser),
+		// 				},
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("dailyCostByResource"),
+		// 				Type: to.Ptr("Microsoft.CostManagement/ScheduledActions"),
+		// 				ETag: to.Ptr(azcore.ETag("\"1d4ff9fe66f1d15\"")),
+		// 				ID: to.Ptr("/providers/Microsoft.CostManagement/scheduledActions/dailyCostByResource"),
+		// 				Kind: to.Ptr(armcostmanagement.ScheduledActionKindEmail),
+		// 				Properties: &armcostmanagement.ScheduledActionProperties{
+		// 					DisplayName: to.Ptr("Daily Cost By Resource"),
+		// 					Notification: &armcostmanagement.NotificationProperties{
+		// 						Subject: to.Ptr("Daily Cost By Resource"),
+		// 						To: []*string{
+		// 							to.Ptr("user@gmail.com"),
+		// 							to.Ptr("team@gmail.com"),
+		// 						},
+		// 					},
+		// 					Schedule: &armcostmanagement.ScheduleProperties{
+		// 						EndDate: to.Ptr(time.Date(2021, time.June, 19, 22, 21, 51, 128714400, time.UTC)),
+		// 						Frequency: to.Ptr(armcostmanagement.ScheduleFrequencyDaily),
+		// 						HourOfDay: to.Ptr[int32](12),
+		// 						StartDate: to.Ptr(time.Date(2020, time.June, 19, 22, 21, 51, 128714400, time.UTC)),
+		// 					},
+		// 					Scope: to.Ptr(""),
+		// 					Status: to.Ptr(armcostmanagement.ScheduledActionStatusDisabled),
+		// 					ViewID: to.Ptr("/providers/Microsoft.CostManagement/views/swaggerExample"),
+		// 				},
+		// 				SystemData: &armcostmanagement.SystemData{
+		// 					CreatedAt: to.Ptr(time.Date(2020, time.June, 18, 22, 21, 51, 128714400, time.UTC)),
+		// 					CreatedBy: to.Ptr("testuser"),
+		// 					CreatedByType: to.Ptr(armcostmanagement.CreatedByTypeUser),
+		// 					LastModifiedAt: to.Ptr(time.Date(2020, time.June, 18, 22, 21, 51, 128714400, time.UTC)),
+		// 					LastModifiedBy: to.Ptr("testuser"),
+		// 					LastModifiedByType: to.Ptr(armcostmanagement.CreatedByTypeUser),
 		// 				},
 		// 			},
 		// 		},

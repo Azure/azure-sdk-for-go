@@ -13,28 +13,6 @@ import (
 	"time"
 )
 
-// Generated from example definition: 2026-04-01-preview/CosmosDBDatabaseAccountCheckNameExists.json
-func ExampleDatabaseAccountsClient_CheckNameExists() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcosmos.NewClientFactory("<subscriptionID>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewDatabaseAccountsClient().CheckNameExists(ctx, "ddb1", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcosmos.DatabaseAccountsClientCheckNameExistsResponse{
-	// }
-}
-
 // Generated from example definition: 2026-04-01-preview/CosmosDBDatabaseAccountCreateMax.json
 func ExampleDatabaseAccountsClient_BeginCreateOrUpdate_cosmosDbDatabaseAccountCreateMax() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -122,9 +100,9 @@ func ExampleDatabaseAccountsClient_BeginCreateOrUpdate_cosmosDbDatabaseAccountCr
 			Capacity: &armcosmos.Capacity{
 				TotalThroughputLimit: to.Ptr[int32](2000),
 			},
-			CapacityMode:                               to.Ptr(armcosmos.CapacityModeProvisioned),
-			EnableMaterializedViews:                    to.Ptr(false),
-			EnableBurstCapacity:                        to.Ptr(true),
+			CapacityMode:            to.Ptr(armcosmos.CapacityModeProvisioned),
+			EnableMaterializedViews: to.Ptr(false),
+			EnableBurstCapacity:     to.Ptr(true),
 			EnforceHierarchicalPartitionKeyIDLastLevel: to.Ptr(false),
 			MinimalTLSVersion:                          to.Ptr(armcosmos.MinimalTLSVersionTls12),
 			EnablePriorityBasedExecution:               to.Ptr(true),
@@ -680,811 +658,6 @@ func ExampleDatabaseAccountsClient_BeginFailoverPriorityChange() {
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/CosmosDBDatabaseAccountGet.json
-func ExampleDatabaseAccountsClient_Get() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcosmos.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewDatabaseAccountsClient().Get(ctx, "rg1", "ddb1", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcosmos.DatabaseAccountsClientGetResponse{
-	// 	DatabaseAccountGetResults: armcosmos.DatabaseAccountGetResults{
-	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1"),
-	// 		Name: to.Ptr("ddb1"),
-	// 		Location: to.Ptr("West US"),
-	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts"),
-	// 		Kind: to.Ptr(armcosmos.DatabaseAccountKindGlobalDocumentDB),
-	// 		Tags: map[string]*string{
-	// 		},
-	// 		Properties: &armcosmos.DatabaseAccountGetProperties{
-	// 			ProvisioningState: to.Ptr("Succeeded"),
-	// 			DocumentEndpoint: to.Ptr("https://ddb1.documents.azure.com:443/"),
-	// 			IPRules: []*armcosmos.IPAddressOrRange{
-	// 			},
-	// 			IsVirtualNetworkFilterEnabled: to.Ptr(false),
-	// 			VirtualNetworkRules: []*armcosmos.VirtualNetworkRule{
-	// 			},
-	// 			DatabaseAccountOfferType: to.Ptr("Standard"),
-	// 			DisableKeyBasedMetadataWriteAccess: to.Ptr(false),
-	// 			DefaultIdentity: to.Ptr("FirstPartyIdentity"),
-	// 			ConsistencyPolicy: &armcosmos.ConsistencyPolicy{
-	// 				DefaultConsistencyLevel: to.Ptr(armcosmos.DefaultConsistencyLevelSession),
-	// 				MaxIntervalInSeconds: to.Ptr[int32](5),
-	// 				MaxStalenessPrefix: to.Ptr[int64](100),
-	// 			},
-	// 			WriteLocations: []*armcosmos.Location{
-	// 				{
-	// 					ID: to.Ptr("ddb1-eastus"),
-	// 					LocationName: to.Ptr("East US"),
-	// 					DocumentEndpoint: to.Ptr("https://ddb1-eastus.documents.azure.com:443/"),
-	// 					ProvisioningState: to.Ptr("Succeeded"),
-	// 					FailoverPriority: to.Ptr[int32](0),
-	// 				},
-	// 			},
-	// 			ReadLocations: []*armcosmos.Location{
-	// 				{
-	// 					ID: to.Ptr("ddb1-eastus"),
-	// 					LocationName: to.Ptr("East US"),
-	// 					DocumentEndpoint: to.Ptr("https://ddb1-eastus.documents.azure.com:443/"),
-	// 					ProvisioningState: to.Ptr("Succeeded"),
-	// 					FailoverPriority: to.Ptr[int32](0),
-	// 				},
-	// 			},
-	// 			Locations: []*armcosmos.Location{
-	// 				{
-	// 					ID: to.Ptr("ddb1-eastus"),
-	// 					LocationName: to.Ptr("East US"),
-	// 					DocumentEndpoint: to.Ptr("https://ddb1-eastus.documents.azure.com:443/"),
-	// 					ProvisioningState: to.Ptr("Succeeded"),
-	// 					FailoverPriority: to.Ptr[int32](0),
-	// 				},
-	// 			},
-	// 			FailoverPolicies: []*armcosmos.FailoverPolicy{
-	// 				{
-	// 					ID: to.Ptr("ddb1-eastus"),
-	// 					LocationName: to.Ptr("East US"),
-	// 					FailoverPriority: to.Ptr[int32](0),
-	// 				},
-	// 			},
-	// 			PrivateEndpointConnections: []*armcosmos.PrivateEndpointConnection{
-	// 				{
-	// 					ID: to.Ptr("/subscriptions/subId/resourceGroups/rg/providers/Microsoft.DocumentDB/databaseAccounts/account1/privateEndpointConnections/pe1"),
-	// 					Properties: &armcosmos.PrivateEndpointConnectionProperties{
-	// 						PrivateEndpoint: &armcosmos.PrivateEndpointProperty{
-	// 							ID: to.Ptr("/subscriptions/subId/resourceGroups/rg/providers/Microsoft.Network/privateEndpoints/pe1"),
-	// 						},
-	// 						PrivateLinkServiceConnectionState: &armcosmos.PrivateLinkServiceConnectionStateProperty{
-	// 							Status: to.Ptr("Approved"),
-	// 							ActionsRequired: to.Ptr("None"),
-	// 						},
-	// 					},
-	// 				},
-	// 			},
-	// 			Cors: []*armcosmos.CorsPolicy{
-	// 			},
-	// 			EnableFreeTier: to.Ptr(false),
-	// 			APIProperties: &armcosmos.APIProperties{
-	// 			},
-	// 			EnableAnalyticalStorage: to.Ptr(true),
-	// 			AnalyticalStorageConfiguration: &armcosmos.AnalyticalStorageConfiguration{
-	// 				SchemaType: to.Ptr(armcosmos.AnalyticalStorageSchemaTypeWellDefined),
-	// 			},
-	// 			InstanceID: to.Ptr("d9b26648-2f53-4541-b3d8-3044f4f9810d"),
-	// 			CreateMode: to.Ptr(armcosmos.CreateModeDefault),
-	// 			BackupPolicy: &armcosmos.PeriodicModeBackupPolicy{
-	// 				Type: to.Ptr(armcosmos.BackupPolicyTypePeriodic),
-	// 				PeriodicModeProperties: &armcosmos.PeriodicModeProperties{
-	// 					BackupIntervalInMinutes: to.Ptr[int32](240),
-	// 					BackupRetentionIntervalInHours: to.Ptr[int32](8),
-	// 					BackupStorageRedundancy: to.Ptr(armcosmos.BackupStorageRedundancyGeo),
-	// 				},
-	// 				MigrationState: &armcosmos.BackupPolicyMigrationState{
-	// 					Status: to.Ptr(armcosmos.BackupPolicyMigrationStatusInProgress),
-	// 					TargetType: to.Ptr(armcosmos.BackupPolicyTypeContinuous),
-	// 					StartTime: to.Ptr(time.Date(2021, time.June, 9, 21, 7, 16, 0, time.UTC)),
-	// 				},
-	// 			},
-	// 			NetworkACLBypass: to.Ptr(armcosmos.NetworkACLBypassNone),
-	// 			NetworkACLBypassResourceIDs: []*string{
-	// 			},
-	// 			EnablePartitionMerge: to.Ptr(true),
-	// 			EnableBurstCapacity: to.Ptr(true),
-	// 			EnforceHierarchicalPartitionKeyIDLastLevel: to.Ptr(false),
-	// 			MinimalTLSVersion: to.Ptr(armcosmos.MinimalTLSVersionTLS),
-	// 			DiagnosticLogSettings: &armcosmos.DiagnosticLogSettings{
-	// 				EnableFullTextQuery: to.Ptr(armcosmos.EnableFullTextQueryFalse),
-	// 			},
-	// 			CapacityMode: to.Ptr(armcosmos.CapacityModeProvisioned),
-	// 			CapacityModeChangeTransitionState: &armcosmos.CapacityModeChangeTransitionState{
-	// 				CapacityModeTransitionBeginTimestamp: to.Ptr(time.Date(2024, time.March, 24, 3, 2, 16, 274725300, time.UTC)),
-	// 				CapacityModeTransitionStatus: to.Ptr(armcosmos.CapacityModeTransitionStatusCompleted),
-	// 				CapacityModeLastSuccessfulTransitionEndTimestamp: to.Ptr(time.Date(2024, time.March, 24, 3, 2, 18, 875832900, time.UTC)),
-	// 				CapacityModeTransitionEndTimestamp: to.Ptr(time.Date(2024, time.March, 24, 3, 2, 18, 875832900, time.UTC)),
-	// 				CurrentCapacityMode: to.Ptr(armcosmos.CapacityModeProvisioned),
-	// 				PreviousCapacityMode: to.Ptr(armcosmos.CapacityModeServerless),
-	// 			},
-	// 			EnableMaterializedViews: to.Ptr(false),
-	// 			KeysMetadata: &armcosmos.DatabaseAccountKeysMetadata{
-	// 				PrimaryMasterKey: &armcosmos.AccountKeyMetadata{
-	// 					GenerationTime: to.Ptr(time.Date(2022, time.February, 25, 20, 30, 11, 0, time.UTC)),
-	// 					ApproximateLastUsageTime: to.Ptr(time.Date(2024, time.October, 9, 11, 45, 33, 0, time.UTC)),
-	// 				},
-	// 				SecondaryMasterKey: &armcosmos.AccountKeyMetadata{
-	// 					GenerationTime: to.Ptr(time.Date(2022, time.February, 25, 20, 30, 11, 0, time.UTC)),
-	// 					ApproximateLastUsageTime: to.Ptr(time.Date(2024, time.October, 9, 11, 45, 33, 0, time.UTC)),
-	// 				},
-	// 				PrimaryReadonlyMasterKey: &armcosmos.AccountKeyMetadata{
-	// 					GenerationTime: to.Ptr(time.Date(2022, time.February, 25, 20, 30, 11, 0, time.UTC)),
-	// 					ApproximateLastUsageTime: to.Ptr(time.Date(2024, time.October, 9, 11, 45, 33, 0, time.UTC)),
-	// 				},
-	// 				SecondaryReadonlyMasterKey: &armcosmos.AccountKeyMetadata{
-	// 					GenerationTime: to.Ptr(time.Date(2022, time.February, 25, 20, 30, 11, 0, time.UTC)),
-	// 					ApproximateLastUsageTime: to.Ptr(time.Date(2024, time.October, 9, 11, 45, 33, 0, time.UTC)),
-	// 				},
-	// 			},
-	// 			EnablePriorityBasedExecution: to.Ptr(true),
-	// 			DefaultPriorityLevel: to.Ptr(armcosmos.DefaultPriorityLevelLow),
-	// 			EnablePerRegionPerPartitionAutoscale: to.Ptr(true),
-	// 			EnableAllVersionsAndDeletesChangeFeed: to.Ptr(true),
-	// 			ThroughputPoolDedicatedRUs: to.Ptr[int64](300000),
-	// 			ThroughputPoolMaxConsumableRUs: to.Ptr[int64](700000),
-	// 		},
-	// 		Identity: &armcosmos.ManagedServiceIdentity{
-	// 			Type: to.Ptr(armcosmos.ResourceIdentityTypeSystemAssignedUserAssigned),
-	// 			PrincipalID: to.Ptr("52f4fef3-3c3f-4ff3-b52e-b5c9eeb68656"),
-	// 			TenantID: to.Ptr("33e01921-4d64-4f8c-a055-5bdaffd5e33d"),
-	// 			UserAssignedIdentities: map[string]*armcosmos.ManagedServiceIdentityUserAssignedIdentities{
-	// 				"/subscriptions/fa5fc227-a624-475e-b696-cdd604c735bc/resourceGroups/eu2cgroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id1": &armcosmos.ManagedServiceIdentityUserAssignedIdentities{
-	// 					ClientID: to.Ptr("fbe75b66-01c5-4f87-a220-233af3270436"),
-	// 					PrincipalID: to.Ptr("33e01921-4d64-4f8c-a055-5bdaffd5e33d"),
-	// 				},
-	// 			},
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-04-01-preview/CosmosDBDatabaseAccountListReadOnlyKeys_GetReadOnlyKeys.json
-func ExampleDatabaseAccountsClient_GetReadOnlyKeys() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcosmos.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewDatabaseAccountsClient().GetReadOnlyKeys(ctx, "rg1", "ddb1", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcosmos.DatabaseAccountsClientGetReadOnlyKeysResponse{
-	// 	DatabaseAccountListReadOnlyKeysResult: armcosmos.DatabaseAccountListReadOnlyKeysResult{
-	// 		PrimaryReadonlyMasterKey: to.Ptr("primaryReadonlyMasterKey"),
-	// 		SecondaryReadonlyMasterKey: to.Ptr("secondaryReadonlyMasterKey"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-04-01-preview/CosmosDBDatabaseAccountList.json
-func ExampleDatabaseAccountsClient_NewListPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcosmos.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewDatabaseAccountsClient().NewListPager(nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armcosmos.DatabaseAccountsClientListResponse{
-		// 	DatabaseAccountsListResult: armcosmos.DatabaseAccountsListResult{
-		// 		Value: []*armcosmos.DatabaseAccountGetResults{
-		// 			{
-		// 				ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1"),
-		// 				Name: to.Ptr("ddb1"),
-		// 				Location: to.Ptr("West US"),
-		// 				Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts"),
-		// 				Kind: to.Ptr(armcosmos.DatabaseAccountKindGlobalDocumentDB),
-		// 				Tags: map[string]*string{
-		// 				},
-		// 				Properties: &armcosmos.DatabaseAccountGetProperties{
-		// 					ProvisioningState: to.Ptr("Succeeded"),
-		// 					DocumentEndpoint: to.Ptr("https://ddb1.documents.azure.com:443/"),
-		// 					IPRules: []*armcosmos.IPAddressOrRange{
-		// 					},
-		// 					DatabaseAccountOfferType: to.Ptr("Standard"),
-		// 					DisableKeyBasedMetadataWriteAccess: to.Ptr(false),
-		// 					ConsistencyPolicy: &armcosmos.ConsistencyPolicy{
-		// 						DefaultConsistencyLevel: to.Ptr(armcosmos.DefaultConsistencyLevelSession),
-		// 						MaxIntervalInSeconds: to.Ptr[int32](5),
-		// 						MaxStalenessPrefix: to.Ptr[int64](100),
-		// 					},
-		// 					WriteLocations: []*armcosmos.Location{
-		// 						{
-		// 							ID: to.Ptr("ddb1-eastus"),
-		// 							LocationName: to.Ptr("East US"),
-		// 							DocumentEndpoint: to.Ptr("https://ddb1-eastus.documents.azure.com:443/"),
-		// 							ProvisioningState: to.Ptr("Succeeded"),
-		// 							FailoverPriority: to.Ptr[int32](0),
-		// 						},
-		// 					},
-		// 					ReadLocations: []*armcosmos.Location{
-		// 						{
-		// 							ID: to.Ptr("ddb1-eastus"),
-		// 							LocationName: to.Ptr("East US"),
-		// 							DocumentEndpoint: to.Ptr("https://ddb1-eastus.documents.azure.com:443/"),
-		// 							ProvisioningState: to.Ptr("Succeeded"),
-		// 							FailoverPriority: to.Ptr[int32](0),
-		// 						},
-		// 					},
-		// 					Locations: []*armcosmos.Location{
-		// 						{
-		// 							ID: to.Ptr("ddb1-eastus"),
-		// 							LocationName: to.Ptr("East US"),
-		// 							DocumentEndpoint: to.Ptr("https://ddb1-eastus.documents.azure.com:443/"),
-		// 							ProvisioningState: to.Ptr("Succeeded"),
-		// 							FailoverPriority: to.Ptr[int32](0),
-		// 						},
-		// 					},
-		// 					FailoverPolicies: []*armcosmos.FailoverPolicy{
-		// 						{
-		// 							ID: to.Ptr("ddb1-eastus"),
-		// 							LocationName: to.Ptr("East US"),
-		// 							FailoverPriority: to.Ptr[int32](0),
-		// 						},
-		// 					},
-		// 					PrivateEndpointConnections: []*armcosmos.PrivateEndpointConnection{
-		// 						{
-		// 							ID: to.Ptr("/subscriptions/subId/resourceGroups/rg/providers/Microsoft.DocumentDB/databaseAccounts/account1/privateEndpointConnections/pe1"),
-		// 							Properties: &armcosmos.PrivateEndpointConnectionProperties{
-		// 								PrivateEndpoint: &armcosmos.PrivateEndpointProperty{
-		// 									ID: to.Ptr("/subscriptions/subId/resourceGroups/rg/providers/Microsoft.Network/privateEndpoints/pe1"),
-		// 								},
-		// 								PrivateLinkServiceConnectionState: &armcosmos.PrivateLinkServiceConnectionStateProperty{
-		// 									Status: to.Ptr("Approved"),
-		// 									ActionsRequired: to.Ptr("None"),
-		// 								},
-		// 							},
-		// 						},
-		// 					},
-		// 					Cors: []*armcosmos.CorsPolicy{
-		// 					},
-		// 					DefaultIdentity: to.Ptr("FirstPartyIdentity"),
-		// 					EnableFreeTier: to.Ptr(false),
-		// 					APIProperties: &armcosmos.APIProperties{
-		// 					},
-		// 					EnableAnalyticalStorage: to.Ptr(true),
-		// 					AnalyticalStorageConfiguration: &armcosmos.AnalyticalStorageConfiguration{
-		// 						SchemaType: to.Ptr(armcosmos.AnalyticalStorageSchemaTypeWellDefined),
-		// 					},
-		// 					InstanceID: to.Ptr("d9b26648-2f53-4541-b3d8-3044f4f9810d"),
-		// 					CreateMode: to.Ptr(armcosmos.CreateModeDefault),
-		// 					BackupPolicy: &armcosmos.PeriodicModeBackupPolicy{
-		// 						Type: to.Ptr(armcosmos.BackupPolicyTypePeriodic),
-		// 						PeriodicModeProperties: &armcosmos.PeriodicModeProperties{
-		// 							BackupIntervalInMinutes: to.Ptr[int32](240),
-		// 							BackupRetentionIntervalInHours: to.Ptr[int32](720),
-		// 							BackupStorageRedundancy: to.Ptr(armcosmos.BackupStorageRedundancyGeo),
-		// 						},
-		// 					},
-		// 					NetworkACLBypass: to.Ptr(armcosmos.NetworkACLBypassNone),
-		// 					NetworkACLBypassResourceIDs: []*string{
-		// 					},
-		// 					EnablePartitionMerge: to.Ptr(true),
-		// 					EnableBurstCapacity: to.Ptr(true),
-		// 					EnforceHierarchicalPartitionKeyIDLastLevel: to.Ptr(false),
-		// 					MinimalTLSVersion: to.Ptr(armcosmos.MinimalTLSVersionTLS),
-		// 					CapacityMode: to.Ptr(armcosmos.CapacityModeProvisioned),
-		// 					CapacityModeChangeTransitionState: &armcosmos.CapacityModeChangeTransitionState{
-		// 						CapacityModeTransitionBeginTimestamp: to.Ptr(time.Date(2024, time.March, 24, 3, 2, 16, 274725300, time.UTC)),
-		// 						CapacityModeTransitionStatus: to.Ptr(armcosmos.CapacityModeTransitionStatusCompleted),
-		// 						CapacityModeLastSuccessfulTransitionEndTimestamp: to.Ptr(time.Date(2024, time.March, 24, 3, 2, 18, 875832900, time.UTC)),
-		// 						CapacityModeTransitionEndTimestamp: to.Ptr(time.Date(2024, time.March, 24, 3, 2, 18, 875832900, time.UTC)),
-		// 						CurrentCapacityMode: to.Ptr(armcosmos.CapacityModeProvisioned),
-		// 						PreviousCapacityMode: to.Ptr(armcosmos.CapacityModeServerless),
-		// 					},
-		// 					EnableMaterializedViews: to.Ptr(false),
-		// 					KeysMetadata: &armcosmos.DatabaseAccountKeysMetadata{
-		// 						PrimaryMasterKey: &armcosmos.AccountKeyMetadata{
-		// 							GenerationTime: to.Ptr(time.Date(2022, time.February, 25, 20, 30, 11, 0, time.UTC)),
-		// 							ApproximateLastUsageTime: to.Ptr(time.Date(2024, time.October, 9, 11, 45, 33, 0, time.UTC)),
-		// 						},
-		// 						SecondaryMasterKey: &armcosmos.AccountKeyMetadata{
-		// 							GenerationTime: to.Ptr(time.Date(2022, time.February, 25, 20, 30, 11, 0, time.UTC)),
-		// 							ApproximateLastUsageTime: to.Ptr(time.Date(2024, time.October, 9, 11, 45, 33, 0, time.UTC)),
-		// 						},
-		// 						PrimaryReadonlyMasterKey: &armcosmos.AccountKeyMetadata{
-		// 							GenerationTime: to.Ptr(time.Date(2022, time.February, 25, 20, 30, 11, 0, time.UTC)),
-		// 							ApproximateLastUsageTime: to.Ptr(time.Date(2024, time.October, 9, 11, 45, 33, 0, time.UTC)),
-		// 						},
-		// 						SecondaryReadonlyMasterKey: &armcosmos.AccountKeyMetadata{
-		// 							GenerationTime: to.Ptr(time.Date(2022, time.February, 25, 20, 30, 11, 0, time.UTC)),
-		// 							ApproximateLastUsageTime: to.Ptr(time.Date(2024, time.October, 9, 11, 45, 33, 0, time.UTC)),
-		// 						},
-		// 					},
-		// 					EnablePriorityBasedExecution: to.Ptr(true),
-		// 					DefaultPriorityLevel: to.Ptr(armcosmos.DefaultPriorityLevelLow),
-		// 					EnablePerRegionPerPartitionAutoscale: to.Ptr(true),
-		// 					ThroughputPoolDedicatedRUs: to.Ptr[int64](300000),
-		// 					ThroughputPoolMaxConsumableRUs: to.Ptr[int64](700000),
-		// 				},
-		// 				SystemData: &armcosmos.SystemData{
-		// 					CreatedAt: to.Ptr(time.Date(2021, time.March, 12, 22, 5, 9, 0, time.UTC)),
-		// 				},
-		// 				Identity: &armcosmos.ManagedServiceIdentity{
-		// 					Type: to.Ptr(armcosmos.ResourceIdentityTypeSystemAssignedUserAssigned),
-		// 					PrincipalID: to.Ptr("52f4fef3-3c3f-4ff3-b52e-b5c9eeb68656"),
-		// 					TenantID: to.Ptr("33e01921-4d64-4f8c-a055-5bdaffd5e33d"),
-		// 					UserAssignedIdentities: map[string]*armcosmos.ManagedServiceIdentityUserAssignedIdentities{
-		// 						"/subscriptions/fa5fc227-a624-475e-b696-cdd604c735bc/resourceGroups/eu2cgroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id1": &armcosmos.ManagedServiceIdentityUserAssignedIdentities{
-		// 							ClientID: to.Ptr("fbe75b66-01c5-4f87-a220-233af3270436"),
-		// 							PrincipalID: to.Ptr("33e01921-4d64-4f8c-a055-5bdaffd5e33d"),
-		// 						},
-		// 					},
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2026-04-01-preview/CosmosDBDatabaseAccountListByResourceGroup.json
-func ExampleDatabaseAccountsClient_NewListByResourceGroupPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcosmos.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewDatabaseAccountsClient().NewListByResourceGroupPager("rg1", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armcosmos.DatabaseAccountsClientListByResourceGroupResponse{
-		// 	DatabaseAccountsListResult: armcosmos.DatabaseAccountsListResult{
-		// 		Value: []*armcosmos.DatabaseAccountGetResults{
-		// 			{
-		// 				ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1"),
-		// 				Name: to.Ptr("ddb1"),
-		// 				Location: to.Ptr("West US"),
-		// 				Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts"),
-		// 				Kind: to.Ptr(armcosmos.DatabaseAccountKindGlobalDocumentDB),
-		// 				Tags: map[string]*string{
-		// 				},
-		// 				Properties: &armcosmos.DatabaseAccountGetProperties{
-		// 					ProvisioningState: to.Ptr("Succeeded"),
-		// 					DocumentEndpoint: to.Ptr("https://ddb1.documents.azure.com:443/"),
-		// 					IPRules: []*armcosmos.IPAddressOrRange{
-		// 					},
-		// 					DatabaseAccountOfferType: to.Ptr("Standard"),
-		// 					DisableKeyBasedMetadataWriteAccess: to.Ptr(false),
-		// 					ConsistencyPolicy: &armcosmos.ConsistencyPolicy{
-		// 						DefaultConsistencyLevel: to.Ptr(armcosmos.DefaultConsistencyLevelSession),
-		// 						MaxIntervalInSeconds: to.Ptr[int32](5),
-		// 						MaxStalenessPrefix: to.Ptr[int64](100),
-		// 					},
-		// 					WriteLocations: []*armcosmos.Location{
-		// 						{
-		// 							ID: to.Ptr("ddb1-eastus"),
-		// 							LocationName: to.Ptr("East US"),
-		// 							DocumentEndpoint: to.Ptr("https://ddb1-eastus.documents.azure.com:443/"),
-		// 							ProvisioningState: to.Ptr("Succeeded"),
-		// 							FailoverPriority: to.Ptr[int32](0),
-		// 						},
-		// 					},
-		// 					ReadLocations: []*armcosmos.Location{
-		// 						{
-		// 							ID: to.Ptr("ddb1-eastus"),
-		// 							LocationName: to.Ptr("East US"),
-		// 							DocumentEndpoint: to.Ptr("https://ddb1-eastus.documents.azure.com:443/"),
-		// 							ProvisioningState: to.Ptr("Succeeded"),
-		// 							FailoverPriority: to.Ptr[int32](0),
-		// 						},
-		// 					},
-		// 					Locations: []*armcosmos.Location{
-		// 						{
-		// 							ID: to.Ptr("ddb1-eastus"),
-		// 							LocationName: to.Ptr("East US"),
-		// 							DocumentEndpoint: to.Ptr("https://ddb1-eastus.documents.azure.com:443/"),
-		// 							ProvisioningState: to.Ptr("Succeeded"),
-		// 							FailoverPriority: to.Ptr[int32](0),
-		// 						},
-		// 					},
-		// 					FailoverPolicies: []*armcosmos.FailoverPolicy{
-		// 						{
-		// 							ID: to.Ptr("ddb1-eastus"),
-		// 							LocationName: to.Ptr("East US"),
-		// 							FailoverPriority: to.Ptr[int32](0),
-		// 						},
-		// 					},
-		// 					Cors: []*armcosmos.CorsPolicy{
-		// 					},
-		// 					EnableFreeTier: to.Ptr(false),
-		// 					InstanceID: to.Ptr("d9b26648-2f53-4541-b3d8-3044f4f9810d"),
-		// 					CreateMode: to.Ptr(armcosmos.CreateModeDefault),
-		// 					DefaultIdentity: to.Ptr("FirstPartyIdentity"),
-		// 					BackupPolicy: &armcosmos.PeriodicModeBackupPolicy{
-		// 						Type: to.Ptr(armcosmos.BackupPolicyTypePeriodic),
-		// 						PeriodicModeProperties: &armcosmos.PeriodicModeProperties{
-		// 							BackupIntervalInMinutes: to.Ptr[int32](240),
-		// 							BackupRetentionIntervalInHours: to.Ptr[int32](720),
-		// 							BackupStorageRedundancy: to.Ptr(armcosmos.BackupStorageRedundancyGeo),
-		// 						},
-		// 					},
-		// 					NetworkACLBypass: to.Ptr(armcosmos.NetworkACLBypassNone),
-		// 					NetworkACLBypassResourceIDs: []*string{
-		// 					},
-		// 					CapacityMode: to.Ptr(armcosmos.CapacityModeProvisioned),
-		// 					CapacityModeChangeTransitionState: &armcosmos.CapacityModeChangeTransitionState{
-		// 						CapacityModeTransitionBeginTimestamp: to.Ptr(time.Date(2024, time.March, 24, 3, 2, 16, 274725300, time.UTC)),
-		// 						CapacityModeTransitionStatus: to.Ptr(armcosmos.CapacityModeTransitionStatusCompleted),
-		// 						CapacityModeLastSuccessfulTransitionEndTimestamp: to.Ptr(time.Date(2024, time.March, 24, 3, 2, 18, 875832900, time.UTC)),
-		// 						CapacityModeTransitionEndTimestamp: to.Ptr(time.Date(2024, time.March, 24, 3, 2, 18, 875832900, time.UTC)),
-		// 						CurrentCapacityMode: to.Ptr(armcosmos.CapacityModeProvisioned),
-		// 						PreviousCapacityMode: to.Ptr(armcosmos.CapacityModeServerless),
-		// 					},
-		// 					EnableMaterializedViews: to.Ptr(false),
-		// 					EnforceHierarchicalPartitionKeyIDLastLevel: to.Ptr(false),
-		// 					MinimalTLSVersion: to.Ptr(armcosmos.MinimalTLSVersionTLS),
-		// 					KeysMetadata: &armcosmos.DatabaseAccountKeysMetadata{
-		// 						PrimaryMasterKey: &armcosmos.AccountKeyMetadata{
-		// 							GenerationTime: to.Ptr(time.Date(2022, time.February, 25, 20, 30, 11, 0, time.UTC)),
-		// 							ApproximateLastUsageTime: to.Ptr(time.Date(2024, time.October, 9, 11, 45, 33, 0, time.UTC)),
-		// 						},
-		// 						SecondaryMasterKey: &armcosmos.AccountKeyMetadata{
-		// 							GenerationTime: to.Ptr(time.Date(2022, time.February, 25, 20, 30, 11, 0, time.UTC)),
-		// 							ApproximateLastUsageTime: to.Ptr(time.Date(2024, time.October, 9, 11, 45, 33, 0, time.UTC)),
-		// 						},
-		// 						PrimaryReadonlyMasterKey: &armcosmos.AccountKeyMetadata{
-		// 							GenerationTime: to.Ptr(time.Date(2022, time.February, 25, 20, 30, 11, 0, time.UTC)),
-		// 							ApproximateLastUsageTime: to.Ptr(time.Date(2024, time.October, 9, 11, 45, 33, 0, time.UTC)),
-		// 						},
-		// 						SecondaryReadonlyMasterKey: &armcosmos.AccountKeyMetadata{
-		// 							GenerationTime: to.Ptr(time.Date(2022, time.February, 25, 20, 30, 11, 0, time.UTC)),
-		// 							ApproximateLastUsageTime: to.Ptr(time.Date(2024, time.October, 9, 11, 45, 33, 0, time.UTC)),
-		// 						},
-		// 					},
-		// 					ThroughputPoolDedicatedRUs: to.Ptr[int64](300000),
-		// 					ThroughputPoolMaxConsumableRUs: to.Ptr[int64](700000),
-		// 				},
-		// 				SystemData: &armcosmos.SystemData{
-		// 					CreatedAt: to.Ptr(time.Date(2021, time.March, 12, 22, 5, 9, 0, time.UTC)),
-		// 				},
-		// 				Identity: &armcosmos.ManagedServiceIdentity{
-		// 					Type: to.Ptr(armcosmos.ResourceIdentityTypeSystemAssignedUserAssigned),
-		// 					PrincipalID: to.Ptr("52f4fef3-3c3f-4ff3-b52e-b5c9eeb68656"),
-		// 					TenantID: to.Ptr("33e01921-4d64-4f8c-a055-5bdaffd5e33d"),
-		// 					UserAssignedIdentities: map[string]*armcosmos.ManagedServiceIdentityUserAssignedIdentities{
-		// 						"/subscriptions/fa5fc227-a624-475e-b696-cdd604c735bc/resourceGroups/eu2cgroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id1": &armcosmos.ManagedServiceIdentityUserAssignedIdentities{
-		// 							ClientID: to.Ptr("fbe75b66-01c5-4f87-a220-233af3270436"),
-		// 							PrincipalID: to.Ptr("33e01921-4d64-4f8c-a055-5bdaffd5e33d"),
-		// 						},
-		// 					},
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2026-04-01-preview/CosmosDBDatabaseAccountListConnectionStrings.json
-func ExampleDatabaseAccountsClient_ListConnectionStrings_cosmosDbDatabaseAccountListConnectionStrings() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcosmos.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewDatabaseAccountsClient().ListConnectionStrings(ctx, "rg1", "ddb1", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcosmos.DatabaseAccountsClientListConnectionStringsResponse{
-	// 	DatabaseAccountListConnectionStringsResult: armcosmos.DatabaseAccountListConnectionStringsResult{
-	// 		ConnectionStrings: []*armcosmos.DatabaseAccountConnectionString{
-	// 			{
-	// 				Type: to.Ptr(armcosmos.TypeSQL),
-	// 				Description: to.Ptr("Primary SQL Connection String"),
-	// 				ConnectionString: to.Ptr("connection-string"),
-	// 				KeyKind: to.Ptr(armcosmos.KindPrimary),
-	// 			},
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-04-01-preview/CosmosDBDatabaseAccountListConnectionStringsMongo.json
-func ExampleDatabaseAccountsClient_ListConnectionStrings_cosmosDbDatabaseAccountListConnectionStringsMongo() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcosmos.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewDatabaseAccountsClient().ListConnectionStrings(ctx, "rg1", "mongo-ddb1", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcosmos.DatabaseAccountsClientListConnectionStringsResponse{
-	// 	DatabaseAccountListConnectionStringsResult: armcosmos.DatabaseAccountListConnectionStringsResult{
-	// 		ConnectionStrings: []*armcosmos.DatabaseAccountConnectionString{
-	// 			{
-	// 				Description: to.Ptr("Name of the connection string"),
-	// 				ConnectionString: to.Ptr("connection-string"),
-	// 			},
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-04-01-preview/CosmosDBDatabaseAccountListKeys.json
-func ExampleDatabaseAccountsClient_ListKeys() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcosmos.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewDatabaseAccountsClient().ListKeys(ctx, "rg1", "ddb1", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcosmos.DatabaseAccountsClientListKeysResponse{
-	// 	DatabaseAccountListKeysResult: armcosmos.DatabaseAccountListKeysResult{
-	// 		PrimaryMasterKey: to.Ptr("primaryMasterKey"),
-	// 		PrimaryReadonlyMasterKey: to.Ptr("primaryReadonlyMasterKey"),
-	// 		SecondaryMasterKey: to.Ptr("secondaryMasterKey"),
-	// 		SecondaryReadonlyMasterKey: to.Ptr("secondaryReadonlyMasterKey"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-04-01-preview/CosmosDBDatabaseAccountGetMetricDefinitions.json
-func ExampleDatabaseAccountsClient_NewListMetricDefinitionsPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcosmos.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewDatabaseAccountsClient().NewListMetricDefinitionsPager("rg1", "ddb1", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armcosmos.DatabaseAccountsClientListMetricDefinitionsResponse{
-		// 	MetricDefinitionsListResult: armcosmos.MetricDefinitionsListResult{
-		// 		Value: []*armcosmos.MetricDefinition{
-		// 			{
-		// 				Name: &armcosmos.MetricName{
-		// 					LocalizedValue: to.Ptr("Total Requests"),
-		// 					Value: to.Ptr("Total Requests"),
-		// 				},
-		// 				MetricAvailabilities: []*armcosmos.MetricAvailability{
-		// 					{
-		// 						Retention: to.Ptr("P2D"),
-		// 						TimeGrain: to.Ptr("PT5M"),
-		// 					},
-		// 					{
-		// 						Retention: to.Ptr("P14D"),
-		// 						TimeGrain: to.Ptr("PT1H"),
-		// 					},
-		// 					{
-		// 						Retention: to.Ptr("P60D"),
-		// 						TimeGrain: to.Ptr("P1D"),
-		// 					},
-		// 				},
-		// 				PrimaryAggregationType: to.Ptr(armcosmos.PrimaryAggregationTypeTotal),
-		// 				ResourceURI: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1"),
-		// 				Unit: to.Ptr(armcosmos.UnitTypeCount),
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2026-04-01-preview/CosmosDBDatabaseAccountGetMetrics.json
-func ExampleDatabaseAccountsClient_NewListMetricsPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcosmos.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewDatabaseAccountsClient().NewListMetricsPager("rg1", "ddb1", "(name.value eq 'Total Requests') and timeGrain eq duration'PT5M' and startTime eq '2017-11-19T23:53:55.2780000Z' and endTime eq '2017-11-20T00:13:55.2780000Z", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armcosmos.DatabaseAccountsClientListMetricsResponse{
-		// 	MetricListResult: armcosmos.MetricListResult{
-		// 		Value: []*armcosmos.Metric{
-		// 			{
-		// 				Name: &armcosmos.MetricName{
-		// 					LocalizedValue: to.Ptr("Total Requests"),
-		// 					Value: to.Ptr("Total Requests"),
-		// 				},
-		// 				EndTime: to.Ptr(time.Date(2017, time.November, 20, 0, 13, 55, 278000000, time.UTC)),
-		// 				MetricValues: []*armcosmos.MetricValue{
-		// 					{
-		// 						Count: to.Ptr[int32](0),
-		// 						Average: to.Ptr[float64](0),
-		// 						Timestamp: to.Ptr(time.Date(2017, time.November, 19, 23, 53, 55, 278000000, time.UTC)),
-		// 						Total: to.Ptr[float64](0),
-		// 					},
-		// 					{
-		// 						Count: to.Ptr[int32](0),
-		// 						Average: to.Ptr[float64](0),
-		// 						Timestamp: to.Ptr(time.Date(2017, time.November, 19, 23, 58, 55, 278000000, time.UTC)),
-		// 						Total: to.Ptr[float64](0),
-		// 					},
-		// 					{
-		// 						Count: to.Ptr[int32](0),
-		// 						Average: to.Ptr[float64](0),
-		// 						Timestamp: to.Ptr(time.Date(2017, time.November, 20, 0, 3, 55, 278000000, time.UTC)),
-		// 						Total: to.Ptr[float64](0),
-		// 					},
-		// 					{
-		// 						Count: to.Ptr[int32](0),
-		// 						Average: to.Ptr[float64](0),
-		// 						Timestamp: to.Ptr(time.Date(2017, time.November, 20, 0, 8, 55, 278000000, time.UTC)),
-		// 						Total: to.Ptr[float64](0),
-		// 					},
-		// 				},
-		// 				StartTime: to.Ptr(time.Date(2017, time.November, 19, 23, 53, 55, 278000000, time.UTC)),
-		// 				TimeGrain: to.Ptr("PT5M"),
-		// 				Unit: to.Ptr(armcosmos.UnitTypeCount),
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2026-04-01-preview/CosmosDBDatabaseAccountListReadOnlyKeys.json
-func ExampleDatabaseAccountsClient_ListReadOnlyKeys() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcosmos.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewDatabaseAccountsClient().ListReadOnlyKeys(ctx, "rg1", "ddb1", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcosmos.DatabaseAccountsClientListReadOnlyKeysResponse{
-	// 	DatabaseAccountListReadOnlyKeysResult: armcosmos.DatabaseAccountListReadOnlyKeysResult{
-	// 		PrimaryReadonlyMasterKey: to.Ptr("primaryReadonlyMasterKey"),
-	// 		SecondaryReadonlyMasterKey: to.Ptr("secondaryReadonlyMasterKey"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-04-01-preview/CosmosDBDatabaseAccountGetUsages.json
-func ExampleDatabaseAccountsClient_NewListUsagesPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcosmos.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewDatabaseAccountsClient().NewListUsagesPager("rg1", "ddb1", &armcosmos.DatabaseAccountsClientListUsagesOptions{
-		Filter: to.Ptr("name.value eq 'Storage'")})
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armcosmos.DatabaseAccountsClientListUsagesResponse{
-		// 	UsagesResult: armcosmos.UsagesResult{
-		// 		Value: []*armcosmos.Usage{
-		// 			{
-		// 				Name: &armcosmos.MetricName{
-		// 					LocalizedValue: to.Ptr("Storage"),
-		// 					Value: to.Ptr("Storage"),
-		// 				},
-		// 				CurrentValue: to.Ptr[int64](0),
-		// 				Limit: to.Ptr[int64](10737418240),
-		// 				QuotaPeriod: to.Ptr("P1D"),
-		// 				Unit: to.Ptr(armcosmos.UnitTypeBytes),
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
 // Generated from example definition: 2026-04-01-preview/CosmosDBDatabaseAccountOfflineRegion.json
 func ExampleDatabaseAccountsClient_BeginOfflineRegion() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -1823,4 +996,831 @@ func ExampleDatabaseAccountsClient_BeginUpdate() {
 	// 		},
 	// 	},
 	// }
+}
+
+// Generated from example definition: 2026-04-01-preview/CosmosDBDatabaseAccountCheckNameExists.json
+func ExampleDatabaseAccountsClient_CheckNameExists() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcosmos.NewClientFactory("<subscriptionID>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewDatabaseAccountsClient().CheckNameExists(ctx, "ddb1", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcosmos.DatabaseAccountsClientCheckNameExistsResponse{
+	// }
+}
+
+// Generated from example definition: 2026-04-01-preview/CosmosDBDatabaseAccountGet.json
+func ExampleDatabaseAccountsClient_Get() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcosmos.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewDatabaseAccountsClient().Get(ctx, "rg1", "ddb1", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcosmos.DatabaseAccountsClientGetResponse{
+	// 	DatabaseAccountGetResults: armcosmos.DatabaseAccountGetResults{
+	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1"),
+	// 		Name: to.Ptr("ddb1"),
+	// 		Location: to.Ptr("West US"),
+	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts"),
+	// 		Kind: to.Ptr(armcosmos.DatabaseAccountKindGlobalDocumentDB),
+	// 		Tags: map[string]*string{
+	// 		},
+	// 		Properties: &armcosmos.DatabaseAccountGetProperties{
+	// 			ProvisioningState: to.Ptr("Succeeded"),
+	// 			DocumentEndpoint: to.Ptr("https://ddb1.documents.azure.com:443/"),
+	// 			IPRules: []*armcosmos.IPAddressOrRange{
+	// 			},
+	// 			IsVirtualNetworkFilterEnabled: to.Ptr(false),
+	// 			VirtualNetworkRules: []*armcosmos.VirtualNetworkRule{
+	// 			},
+	// 			DatabaseAccountOfferType: to.Ptr("Standard"),
+	// 			DisableKeyBasedMetadataWriteAccess: to.Ptr(false),
+	// 			DefaultIdentity: to.Ptr("FirstPartyIdentity"),
+	// 			ConsistencyPolicy: &armcosmos.ConsistencyPolicy{
+	// 				DefaultConsistencyLevel: to.Ptr(armcosmos.DefaultConsistencyLevelSession),
+	// 				MaxIntervalInSeconds: to.Ptr[int32](5),
+	// 				MaxStalenessPrefix: to.Ptr[int64](100),
+	// 			},
+	// 			WriteLocations: []*armcosmos.Location{
+	// 				{
+	// 					ID: to.Ptr("ddb1-eastus"),
+	// 					LocationName: to.Ptr("East US"),
+	// 					DocumentEndpoint: to.Ptr("https://ddb1-eastus.documents.azure.com:443/"),
+	// 					ProvisioningState: to.Ptr("Succeeded"),
+	// 					FailoverPriority: to.Ptr[int32](0),
+	// 				},
+	// 			},
+	// 			ReadLocations: []*armcosmos.Location{
+	// 				{
+	// 					ID: to.Ptr("ddb1-eastus"),
+	// 					LocationName: to.Ptr("East US"),
+	// 					DocumentEndpoint: to.Ptr("https://ddb1-eastus.documents.azure.com:443/"),
+	// 					ProvisioningState: to.Ptr("Succeeded"),
+	// 					FailoverPriority: to.Ptr[int32](0),
+	// 				},
+	// 			},
+	// 			Locations: []*armcosmos.Location{
+	// 				{
+	// 					ID: to.Ptr("ddb1-eastus"),
+	// 					LocationName: to.Ptr("East US"),
+	// 					DocumentEndpoint: to.Ptr("https://ddb1-eastus.documents.azure.com:443/"),
+	// 					ProvisioningState: to.Ptr("Succeeded"),
+	// 					FailoverPriority: to.Ptr[int32](0),
+	// 				},
+	// 			},
+	// 			FailoverPolicies: []*armcosmos.FailoverPolicy{
+	// 				{
+	// 					ID: to.Ptr("ddb1-eastus"),
+	// 					LocationName: to.Ptr("East US"),
+	// 					FailoverPriority: to.Ptr[int32](0),
+	// 				},
+	// 			},
+	// 			PrivateEndpointConnections: []*armcosmos.PrivateEndpointConnection{
+	// 				{
+	// 					ID: to.Ptr("/subscriptions/subId/resourceGroups/rg/providers/Microsoft.DocumentDB/databaseAccounts/account1/privateEndpointConnections/pe1"),
+	// 					Properties: &armcosmos.PrivateEndpointConnectionProperties{
+	// 						PrivateEndpoint: &armcosmos.PrivateEndpointProperty{
+	// 							ID: to.Ptr("/subscriptions/subId/resourceGroups/rg/providers/Microsoft.Network/privateEndpoints/pe1"),
+	// 						},
+	// 						PrivateLinkServiceConnectionState: &armcosmos.PrivateLinkServiceConnectionStateProperty{
+	// 							Status: to.Ptr("Approved"),
+	// 							ActionsRequired: to.Ptr("None"),
+	// 						},
+	// 					},
+	// 				},
+	// 			},
+	// 			Cors: []*armcosmos.CorsPolicy{
+	// 			},
+	// 			EnableFreeTier: to.Ptr(false),
+	// 			APIProperties: &armcosmos.APIProperties{
+	// 			},
+	// 			EnableAnalyticalStorage: to.Ptr(true),
+	// 			AnalyticalStorageConfiguration: &armcosmos.AnalyticalStorageConfiguration{
+	// 				SchemaType: to.Ptr(armcosmos.AnalyticalStorageSchemaTypeWellDefined),
+	// 			},
+	// 			InstanceID: to.Ptr("d9b26648-2f53-4541-b3d8-3044f4f9810d"),
+	// 			CreateMode: to.Ptr(armcosmos.CreateModeDefault),
+	// 			BackupPolicy: &armcosmos.PeriodicModeBackupPolicy{
+	// 				Type: to.Ptr(armcosmos.BackupPolicyTypePeriodic),
+	// 				PeriodicModeProperties: &armcosmos.PeriodicModeProperties{
+	// 					BackupIntervalInMinutes: to.Ptr[int32](240),
+	// 					BackupRetentionIntervalInHours: to.Ptr[int32](8),
+	// 					BackupStorageRedundancy: to.Ptr(armcosmos.BackupStorageRedundancyGeo),
+	// 				},
+	// 				MigrationState: &armcosmos.BackupPolicyMigrationState{
+	// 					Status: to.Ptr(armcosmos.BackupPolicyMigrationStatusInProgress),
+	// 					TargetType: to.Ptr(armcosmos.BackupPolicyTypeContinuous),
+	// 					StartTime: to.Ptr(time.Date(2021, time.June, 9, 21, 7, 16, 0, time.UTC)),
+	// 				},
+	// 			},
+	// 			NetworkACLBypass: to.Ptr(armcosmos.NetworkACLBypassNone),
+	// 			NetworkACLBypassResourceIDs: []*string{
+	// 			},
+	// 			EnablePartitionMerge: to.Ptr(true),
+	// 			EnableBurstCapacity: to.Ptr(true),
+	// 			EnforceHierarchicalPartitionKeyIDLastLevel: to.Ptr(false),
+	// 			MinimalTLSVersion: to.Ptr(armcosmos.MinimalTLSVersionTLS),
+	// 			DiagnosticLogSettings: &armcosmos.DiagnosticLogSettings{
+	// 				EnableFullTextQuery: to.Ptr(armcosmos.EnableFullTextQueryFalse),
+	// 			},
+	// 			CapacityMode: to.Ptr(armcosmos.CapacityModeProvisioned),
+	// 			CapacityModeChangeTransitionState: &armcosmos.CapacityModeChangeTransitionState{
+	// 				CapacityModeTransitionBeginTimestamp: to.Ptr(time.Date(2024, time.March, 24, 3, 2, 16, 274725300, time.UTC)),
+	// 				CapacityModeTransitionStatus: to.Ptr(armcosmos.CapacityModeTransitionStatusCompleted),
+	// 				CapacityModeLastSuccessfulTransitionEndTimestamp: to.Ptr(time.Date(2024, time.March, 24, 3, 2, 18, 875832900, time.UTC)),
+	// 				CapacityModeTransitionEndTimestamp: to.Ptr(time.Date(2024, time.March, 24, 3, 2, 18, 875832900, time.UTC)),
+	// 				CurrentCapacityMode: to.Ptr(armcosmos.CapacityModeProvisioned),
+	// 				PreviousCapacityMode: to.Ptr(armcosmos.CapacityModeServerless),
+	// 			},
+	// 			EnableMaterializedViews: to.Ptr(false),
+	// 			KeysMetadata: &armcosmos.DatabaseAccountKeysMetadata{
+	// 				PrimaryMasterKey: &armcosmos.AccountKeyMetadata{
+	// 					GenerationTime: to.Ptr(time.Date(2022, time.February, 25, 20, 30, 11, 0, time.UTC)),
+	// 					ApproximateLastUsageTime: to.Ptr(time.Date(2024, time.October, 9, 11, 45, 33, 0, time.UTC)),
+	// 				},
+	// 				SecondaryMasterKey: &armcosmos.AccountKeyMetadata{
+	// 					GenerationTime: to.Ptr(time.Date(2022, time.February, 25, 20, 30, 11, 0, time.UTC)),
+	// 					ApproximateLastUsageTime: to.Ptr(time.Date(2024, time.October, 9, 11, 45, 33, 0, time.UTC)),
+	// 				},
+	// 				PrimaryReadonlyMasterKey: &armcosmos.AccountKeyMetadata{
+	// 					GenerationTime: to.Ptr(time.Date(2022, time.February, 25, 20, 30, 11, 0, time.UTC)),
+	// 					ApproximateLastUsageTime: to.Ptr(time.Date(2024, time.October, 9, 11, 45, 33, 0, time.UTC)),
+	// 				},
+	// 				SecondaryReadonlyMasterKey: &armcosmos.AccountKeyMetadata{
+	// 					GenerationTime: to.Ptr(time.Date(2022, time.February, 25, 20, 30, 11, 0, time.UTC)),
+	// 					ApproximateLastUsageTime: to.Ptr(time.Date(2024, time.October, 9, 11, 45, 33, 0, time.UTC)),
+	// 				},
+	// 			},
+	// 			EnablePriorityBasedExecution: to.Ptr(true),
+	// 			DefaultPriorityLevel: to.Ptr(armcosmos.DefaultPriorityLevelLow),
+	// 			EnablePerRegionPerPartitionAutoscale: to.Ptr(true),
+	// 			EnableAllVersionsAndDeletesChangeFeed: to.Ptr(true),
+	// 			ThroughputPoolDedicatedRUs: to.Ptr[int64](300000),
+	// 			ThroughputPoolMaxConsumableRUs: to.Ptr[int64](700000),
+	// 		},
+	// 		Identity: &armcosmos.ManagedServiceIdentity{
+	// 			Type: to.Ptr(armcosmos.ResourceIdentityTypeSystemAssignedUserAssigned),
+	// 			PrincipalID: to.Ptr("52f4fef3-3c3f-4ff3-b52e-b5c9eeb68656"),
+	// 			TenantID: to.Ptr("33e01921-4d64-4f8c-a055-5bdaffd5e33d"),
+	// 			UserAssignedIdentities: map[string]*armcosmos.ManagedServiceIdentityUserAssignedIdentities{
+	// 				"/subscriptions/fa5fc227-a624-475e-b696-cdd604c735bc/resourceGroups/eu2cgroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id1": &armcosmos.ManagedServiceIdentityUserAssignedIdentities{
+	// 					ClientID: to.Ptr("fbe75b66-01c5-4f87-a220-233af3270436"),
+	// 					PrincipalID: to.Ptr("33e01921-4d64-4f8c-a055-5bdaffd5e33d"),
+	// 				},
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-04-01-preview/CosmosDBDatabaseAccountListReadOnlyKeys_GetReadOnlyKeys.json
+func ExampleDatabaseAccountsClient_GetReadOnlyKeys() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcosmos.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewDatabaseAccountsClient().GetReadOnlyKeys(ctx, "rg1", "ddb1", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcosmos.DatabaseAccountsClientGetReadOnlyKeysResponse{
+	// 	DatabaseAccountListReadOnlyKeysResult: armcosmos.DatabaseAccountListReadOnlyKeysResult{
+	// 		PrimaryReadonlyMasterKey: to.Ptr("primaryReadonlyMasterKey"),
+	// 		SecondaryReadonlyMasterKey: to.Ptr("secondaryReadonlyMasterKey"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-04-01-preview/CosmosDBDatabaseAccountListConnectionStrings.json
+func ExampleDatabaseAccountsClient_ListConnectionStrings_cosmosDbDatabaseAccountListConnectionStrings() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcosmos.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewDatabaseAccountsClient().ListConnectionStrings(ctx, "rg1", "ddb1", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcosmos.DatabaseAccountsClientListConnectionStringsResponse{
+	// 	DatabaseAccountListConnectionStringsResult: armcosmos.DatabaseAccountListConnectionStringsResult{
+	// 		ConnectionStrings: []*armcosmos.DatabaseAccountConnectionString{
+	// 			{
+	// 				Type: to.Ptr(armcosmos.TypeSQL),
+	// 				Description: to.Ptr("Primary SQL Connection String"),
+	// 				ConnectionString: to.Ptr("connection-string"),
+	// 				KeyKind: to.Ptr(armcosmos.KindPrimary),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-04-01-preview/CosmosDBDatabaseAccountListConnectionStringsMongo.json
+func ExampleDatabaseAccountsClient_ListConnectionStrings_cosmosDbDatabaseAccountListConnectionStringsMongo() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcosmos.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewDatabaseAccountsClient().ListConnectionStrings(ctx, "rg1", "mongo-ddb1", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcosmos.DatabaseAccountsClientListConnectionStringsResponse{
+	// 	DatabaseAccountListConnectionStringsResult: armcosmos.DatabaseAccountListConnectionStringsResult{
+	// 		ConnectionStrings: []*armcosmos.DatabaseAccountConnectionString{
+	// 			{
+	// 				Description: to.Ptr("Name of the connection string"),
+	// 				ConnectionString: to.Ptr("connection-string"),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-04-01-preview/CosmosDBDatabaseAccountListKeys.json
+func ExampleDatabaseAccountsClient_ListKeys() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcosmos.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewDatabaseAccountsClient().ListKeys(ctx, "rg1", "ddb1", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcosmos.DatabaseAccountsClientListKeysResponse{
+	// 	DatabaseAccountListKeysResult: armcosmos.DatabaseAccountListKeysResult{
+	// 		PrimaryMasterKey: to.Ptr("primaryMasterKey"),
+	// 		PrimaryReadonlyMasterKey: to.Ptr("primaryReadonlyMasterKey"),
+	// 		SecondaryMasterKey: to.Ptr("secondaryMasterKey"),
+	// 		SecondaryReadonlyMasterKey: to.Ptr("secondaryReadonlyMasterKey"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-04-01-preview/CosmosDBDatabaseAccountListReadOnlyKeys.json
+func ExampleDatabaseAccountsClient_ListReadOnlyKeys() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcosmos.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewDatabaseAccountsClient().ListReadOnlyKeys(ctx, "rg1", "ddb1", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcosmos.DatabaseAccountsClientListReadOnlyKeysResponse{
+	// 	DatabaseAccountListReadOnlyKeysResult: armcosmos.DatabaseAccountListReadOnlyKeysResult{
+	// 		PrimaryReadonlyMasterKey: to.Ptr("primaryReadonlyMasterKey"),
+	// 		SecondaryReadonlyMasterKey: to.Ptr("secondaryReadonlyMasterKey"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-04-01-preview/CosmosDBDatabaseAccountListByResourceGroup.json
+func ExampleDatabaseAccountsClient_NewListByResourceGroupPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcosmos.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewDatabaseAccountsClient().NewListByResourceGroupPager("rg1", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armcosmos.DatabaseAccountsClientListByResourceGroupResponse{
+		// 	DatabaseAccountsListResult: armcosmos.DatabaseAccountsListResult{
+		// 		Value: []*armcosmos.DatabaseAccountGetResults{
+		// 			{
+		// 				ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1"),
+		// 				Name: to.Ptr("ddb1"),
+		// 				Location: to.Ptr("West US"),
+		// 				Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts"),
+		// 				Kind: to.Ptr(armcosmos.DatabaseAccountKindGlobalDocumentDB),
+		// 				Tags: map[string]*string{
+		// 				},
+		// 				Properties: &armcosmos.DatabaseAccountGetProperties{
+		// 					ProvisioningState: to.Ptr("Succeeded"),
+		// 					DocumentEndpoint: to.Ptr("https://ddb1.documents.azure.com:443/"),
+		// 					IPRules: []*armcosmos.IPAddressOrRange{
+		// 					},
+		// 					DatabaseAccountOfferType: to.Ptr("Standard"),
+		// 					DisableKeyBasedMetadataWriteAccess: to.Ptr(false),
+		// 					ConsistencyPolicy: &armcosmos.ConsistencyPolicy{
+		// 						DefaultConsistencyLevel: to.Ptr(armcosmos.DefaultConsistencyLevelSession),
+		// 						MaxIntervalInSeconds: to.Ptr[int32](5),
+		// 						MaxStalenessPrefix: to.Ptr[int64](100),
+		// 					},
+		// 					WriteLocations: []*armcosmos.Location{
+		// 						{
+		// 							ID: to.Ptr("ddb1-eastus"),
+		// 							LocationName: to.Ptr("East US"),
+		// 							DocumentEndpoint: to.Ptr("https://ddb1-eastus.documents.azure.com:443/"),
+		// 							ProvisioningState: to.Ptr("Succeeded"),
+		// 							FailoverPriority: to.Ptr[int32](0),
+		// 						},
+		// 					},
+		// 					ReadLocations: []*armcosmos.Location{
+		// 						{
+		// 							ID: to.Ptr("ddb1-eastus"),
+		// 							LocationName: to.Ptr("East US"),
+		// 							DocumentEndpoint: to.Ptr("https://ddb1-eastus.documents.azure.com:443/"),
+		// 							ProvisioningState: to.Ptr("Succeeded"),
+		// 							FailoverPriority: to.Ptr[int32](0),
+		// 						},
+		// 					},
+		// 					Locations: []*armcosmos.Location{
+		// 						{
+		// 							ID: to.Ptr("ddb1-eastus"),
+		// 							LocationName: to.Ptr("East US"),
+		// 							DocumentEndpoint: to.Ptr("https://ddb1-eastus.documents.azure.com:443/"),
+		// 							ProvisioningState: to.Ptr("Succeeded"),
+		// 							FailoverPriority: to.Ptr[int32](0),
+		// 						},
+		// 					},
+		// 					FailoverPolicies: []*armcosmos.FailoverPolicy{
+		// 						{
+		// 							ID: to.Ptr("ddb1-eastus"),
+		// 							LocationName: to.Ptr("East US"),
+		// 							FailoverPriority: to.Ptr[int32](0),
+		// 						},
+		// 					},
+		// 					Cors: []*armcosmos.CorsPolicy{
+		// 					},
+		// 					EnableFreeTier: to.Ptr(false),
+		// 					InstanceID: to.Ptr("d9b26648-2f53-4541-b3d8-3044f4f9810d"),
+		// 					CreateMode: to.Ptr(armcosmos.CreateModeDefault),
+		// 					DefaultIdentity: to.Ptr("FirstPartyIdentity"),
+		// 					BackupPolicy: &armcosmos.PeriodicModeBackupPolicy{
+		// 						Type: to.Ptr(armcosmos.BackupPolicyTypePeriodic),
+		// 						PeriodicModeProperties: &armcosmos.PeriodicModeProperties{
+		// 							BackupIntervalInMinutes: to.Ptr[int32](240),
+		// 							BackupRetentionIntervalInHours: to.Ptr[int32](720),
+		// 							BackupStorageRedundancy: to.Ptr(armcosmos.BackupStorageRedundancyGeo),
+		// 						},
+		// 					},
+		// 					NetworkACLBypass: to.Ptr(armcosmos.NetworkACLBypassNone),
+		// 					NetworkACLBypassResourceIDs: []*string{
+		// 					},
+		// 					CapacityMode: to.Ptr(armcosmos.CapacityModeProvisioned),
+		// 					CapacityModeChangeTransitionState: &armcosmos.CapacityModeChangeTransitionState{
+		// 						CapacityModeTransitionBeginTimestamp: to.Ptr(time.Date(2024, time.March, 24, 3, 2, 16, 274725300, time.UTC)),
+		// 						CapacityModeTransitionStatus: to.Ptr(armcosmos.CapacityModeTransitionStatusCompleted),
+		// 						CapacityModeLastSuccessfulTransitionEndTimestamp: to.Ptr(time.Date(2024, time.March, 24, 3, 2, 18, 875832900, time.UTC)),
+		// 						CapacityModeTransitionEndTimestamp: to.Ptr(time.Date(2024, time.March, 24, 3, 2, 18, 875832900, time.UTC)),
+		// 						CurrentCapacityMode: to.Ptr(armcosmos.CapacityModeProvisioned),
+		// 						PreviousCapacityMode: to.Ptr(armcosmos.CapacityModeServerless),
+		// 					},
+		// 					EnableMaterializedViews: to.Ptr(false),
+		// 					EnforceHierarchicalPartitionKeyIDLastLevel: to.Ptr(false),
+		// 					MinimalTLSVersion: to.Ptr(armcosmos.MinimalTLSVersionTLS),
+		// 					KeysMetadata: &armcosmos.DatabaseAccountKeysMetadata{
+		// 						PrimaryMasterKey: &armcosmos.AccountKeyMetadata{
+		// 							GenerationTime: to.Ptr(time.Date(2022, time.February, 25, 20, 30, 11, 0, time.UTC)),
+		// 							ApproximateLastUsageTime: to.Ptr(time.Date(2024, time.October, 9, 11, 45, 33, 0, time.UTC)),
+		// 						},
+		// 						SecondaryMasterKey: &armcosmos.AccountKeyMetadata{
+		// 							GenerationTime: to.Ptr(time.Date(2022, time.February, 25, 20, 30, 11, 0, time.UTC)),
+		// 							ApproximateLastUsageTime: to.Ptr(time.Date(2024, time.October, 9, 11, 45, 33, 0, time.UTC)),
+		// 						},
+		// 						PrimaryReadonlyMasterKey: &armcosmos.AccountKeyMetadata{
+		// 							GenerationTime: to.Ptr(time.Date(2022, time.February, 25, 20, 30, 11, 0, time.UTC)),
+		// 							ApproximateLastUsageTime: to.Ptr(time.Date(2024, time.October, 9, 11, 45, 33, 0, time.UTC)),
+		// 						},
+		// 						SecondaryReadonlyMasterKey: &armcosmos.AccountKeyMetadata{
+		// 							GenerationTime: to.Ptr(time.Date(2022, time.February, 25, 20, 30, 11, 0, time.UTC)),
+		// 							ApproximateLastUsageTime: to.Ptr(time.Date(2024, time.October, 9, 11, 45, 33, 0, time.UTC)),
+		// 						},
+		// 					},
+		// 					ThroughputPoolDedicatedRUs: to.Ptr[int64](300000),
+		// 					ThroughputPoolMaxConsumableRUs: to.Ptr[int64](700000),
+		// 				},
+		// 				SystemData: &armcosmos.SystemData{
+		// 					CreatedAt: to.Ptr(time.Date(2021, time.March, 12, 22, 5, 9, 0, time.UTC)),
+		// 				},
+		// 				Identity: &armcosmos.ManagedServiceIdentity{
+		// 					Type: to.Ptr(armcosmos.ResourceIdentityTypeSystemAssignedUserAssigned),
+		// 					PrincipalID: to.Ptr("52f4fef3-3c3f-4ff3-b52e-b5c9eeb68656"),
+		// 					TenantID: to.Ptr("33e01921-4d64-4f8c-a055-5bdaffd5e33d"),
+		// 					UserAssignedIdentities: map[string]*armcosmos.ManagedServiceIdentityUserAssignedIdentities{
+		// 						"/subscriptions/fa5fc227-a624-475e-b696-cdd604c735bc/resourceGroups/eu2cgroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id1": &armcosmos.ManagedServiceIdentityUserAssignedIdentities{
+		// 							ClientID: to.Ptr("fbe75b66-01c5-4f87-a220-233af3270436"),
+		// 							PrincipalID: to.Ptr("33e01921-4d64-4f8c-a055-5bdaffd5e33d"),
+		// 						},
+		// 					},
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2026-04-01-preview/CosmosDBDatabaseAccountGetMetricDefinitions.json
+func ExampleDatabaseAccountsClient_NewListMetricDefinitionsPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcosmos.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewDatabaseAccountsClient().NewListMetricDefinitionsPager("rg1", "ddb1", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armcosmos.DatabaseAccountsClientListMetricDefinitionsResponse{
+		// 	MetricDefinitionsListResult: armcosmos.MetricDefinitionsListResult{
+		// 		Value: []*armcosmos.MetricDefinition{
+		// 			{
+		// 				Name: &armcosmos.MetricName{
+		// 					LocalizedValue: to.Ptr("Total Requests"),
+		// 					Value: to.Ptr("Total Requests"),
+		// 				},
+		// 				MetricAvailabilities: []*armcosmos.MetricAvailability{
+		// 					{
+		// 						Retention: to.Ptr("P2D"),
+		// 						TimeGrain: to.Ptr("PT5M"),
+		// 					},
+		// 					{
+		// 						Retention: to.Ptr("P14D"),
+		// 						TimeGrain: to.Ptr("PT1H"),
+		// 					},
+		// 					{
+		// 						Retention: to.Ptr("P60D"),
+		// 						TimeGrain: to.Ptr("P1D"),
+		// 					},
+		// 				},
+		// 				PrimaryAggregationType: to.Ptr(armcosmos.PrimaryAggregationTypeTotal),
+		// 				ResourceURI: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1"),
+		// 				Unit: to.Ptr(armcosmos.UnitTypeCount),
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2026-04-01-preview/CosmosDBDatabaseAccountGetMetrics.json
+func ExampleDatabaseAccountsClient_NewListMetricsPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcosmos.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewDatabaseAccountsClient().NewListMetricsPager("rg1", "ddb1", "(name.value eq 'Total Requests') and timeGrain eq duration'PT5M' and startTime eq '2017-11-19T23:53:55.2780000Z' and endTime eq '2017-11-20T00:13:55.2780000Z", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armcosmos.DatabaseAccountsClientListMetricsResponse{
+		// 	MetricListResult: armcosmos.MetricListResult{
+		// 		Value: []*armcosmos.Metric{
+		// 			{
+		// 				Name: &armcosmos.MetricName{
+		// 					LocalizedValue: to.Ptr("Total Requests"),
+		// 					Value: to.Ptr("Total Requests"),
+		// 				},
+		// 				EndTime: to.Ptr(time.Date(2017, time.November, 20, 0, 13, 55, 278000000, time.UTC)),
+		// 				MetricValues: []*armcosmos.MetricValue{
+		// 					{
+		// 						Count: to.Ptr[int32](0),
+		// 						Average: to.Ptr[float64](0),
+		// 						Timestamp: to.Ptr(time.Date(2017, time.November, 19, 23, 53, 55, 278000000, time.UTC)),
+		// 						Total: to.Ptr[float64](0),
+		// 					},
+		// 					{
+		// 						Count: to.Ptr[int32](0),
+		// 						Average: to.Ptr[float64](0),
+		// 						Timestamp: to.Ptr(time.Date(2017, time.November, 19, 23, 58, 55, 278000000, time.UTC)),
+		// 						Total: to.Ptr[float64](0),
+		// 					},
+		// 					{
+		// 						Count: to.Ptr[int32](0),
+		// 						Average: to.Ptr[float64](0),
+		// 						Timestamp: to.Ptr(time.Date(2017, time.November, 20, 0, 3, 55, 278000000, time.UTC)),
+		// 						Total: to.Ptr[float64](0),
+		// 					},
+		// 					{
+		// 						Count: to.Ptr[int32](0),
+		// 						Average: to.Ptr[float64](0),
+		// 						Timestamp: to.Ptr(time.Date(2017, time.November, 20, 0, 8, 55, 278000000, time.UTC)),
+		// 						Total: to.Ptr[float64](0),
+		// 					},
+		// 				},
+		// 				StartTime: to.Ptr(time.Date(2017, time.November, 19, 23, 53, 55, 278000000, time.UTC)),
+		// 				TimeGrain: to.Ptr("PT5M"),
+		// 				Unit: to.Ptr(armcosmos.UnitTypeCount),
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2026-04-01-preview/CosmosDBDatabaseAccountList.json
+func ExampleDatabaseAccountsClient_NewListPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcosmos.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewDatabaseAccountsClient().NewListPager(nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armcosmos.DatabaseAccountsClientListResponse{
+		// 	DatabaseAccountsListResult: armcosmos.DatabaseAccountsListResult{
+		// 		Value: []*armcosmos.DatabaseAccountGetResults{
+		// 			{
+		// 				ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1"),
+		// 				Name: to.Ptr("ddb1"),
+		// 				Location: to.Ptr("West US"),
+		// 				Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts"),
+		// 				Kind: to.Ptr(armcosmos.DatabaseAccountKindGlobalDocumentDB),
+		// 				Tags: map[string]*string{
+		// 				},
+		// 				Properties: &armcosmos.DatabaseAccountGetProperties{
+		// 					ProvisioningState: to.Ptr("Succeeded"),
+		// 					DocumentEndpoint: to.Ptr("https://ddb1.documents.azure.com:443/"),
+		// 					IPRules: []*armcosmos.IPAddressOrRange{
+		// 					},
+		// 					DatabaseAccountOfferType: to.Ptr("Standard"),
+		// 					DisableKeyBasedMetadataWriteAccess: to.Ptr(false),
+		// 					ConsistencyPolicy: &armcosmos.ConsistencyPolicy{
+		// 						DefaultConsistencyLevel: to.Ptr(armcosmos.DefaultConsistencyLevelSession),
+		// 						MaxIntervalInSeconds: to.Ptr[int32](5),
+		// 						MaxStalenessPrefix: to.Ptr[int64](100),
+		// 					},
+		// 					WriteLocations: []*armcosmos.Location{
+		// 						{
+		// 							ID: to.Ptr("ddb1-eastus"),
+		// 							LocationName: to.Ptr("East US"),
+		// 							DocumentEndpoint: to.Ptr("https://ddb1-eastus.documents.azure.com:443/"),
+		// 							ProvisioningState: to.Ptr("Succeeded"),
+		// 							FailoverPriority: to.Ptr[int32](0),
+		// 						},
+		// 					},
+		// 					ReadLocations: []*armcosmos.Location{
+		// 						{
+		// 							ID: to.Ptr("ddb1-eastus"),
+		// 							LocationName: to.Ptr("East US"),
+		// 							DocumentEndpoint: to.Ptr("https://ddb1-eastus.documents.azure.com:443/"),
+		// 							ProvisioningState: to.Ptr("Succeeded"),
+		// 							FailoverPriority: to.Ptr[int32](0),
+		// 						},
+		// 					},
+		// 					Locations: []*armcosmos.Location{
+		// 						{
+		// 							ID: to.Ptr("ddb1-eastus"),
+		// 							LocationName: to.Ptr("East US"),
+		// 							DocumentEndpoint: to.Ptr("https://ddb1-eastus.documents.azure.com:443/"),
+		// 							ProvisioningState: to.Ptr("Succeeded"),
+		// 							FailoverPriority: to.Ptr[int32](0),
+		// 						},
+		// 					},
+		// 					FailoverPolicies: []*armcosmos.FailoverPolicy{
+		// 						{
+		// 							ID: to.Ptr("ddb1-eastus"),
+		// 							LocationName: to.Ptr("East US"),
+		// 							FailoverPriority: to.Ptr[int32](0),
+		// 						},
+		// 					},
+		// 					PrivateEndpointConnections: []*armcosmos.PrivateEndpointConnection{
+		// 						{
+		// 							ID: to.Ptr("/subscriptions/subId/resourceGroups/rg/providers/Microsoft.DocumentDB/databaseAccounts/account1/privateEndpointConnections/pe1"),
+		// 							Properties: &armcosmos.PrivateEndpointConnectionProperties{
+		// 								PrivateEndpoint: &armcosmos.PrivateEndpointProperty{
+		// 									ID: to.Ptr("/subscriptions/subId/resourceGroups/rg/providers/Microsoft.Network/privateEndpoints/pe1"),
+		// 								},
+		// 								PrivateLinkServiceConnectionState: &armcosmos.PrivateLinkServiceConnectionStateProperty{
+		// 									Status: to.Ptr("Approved"),
+		// 									ActionsRequired: to.Ptr("None"),
+		// 								},
+		// 							},
+		// 						},
+		// 					},
+		// 					Cors: []*armcosmos.CorsPolicy{
+		// 					},
+		// 					DefaultIdentity: to.Ptr("FirstPartyIdentity"),
+		// 					EnableFreeTier: to.Ptr(false),
+		// 					APIProperties: &armcosmos.APIProperties{
+		// 					},
+		// 					EnableAnalyticalStorage: to.Ptr(true),
+		// 					AnalyticalStorageConfiguration: &armcosmos.AnalyticalStorageConfiguration{
+		// 						SchemaType: to.Ptr(armcosmos.AnalyticalStorageSchemaTypeWellDefined),
+		// 					},
+		// 					InstanceID: to.Ptr("d9b26648-2f53-4541-b3d8-3044f4f9810d"),
+		// 					CreateMode: to.Ptr(armcosmos.CreateModeDefault),
+		// 					BackupPolicy: &armcosmos.PeriodicModeBackupPolicy{
+		// 						Type: to.Ptr(armcosmos.BackupPolicyTypePeriodic),
+		// 						PeriodicModeProperties: &armcosmos.PeriodicModeProperties{
+		// 							BackupIntervalInMinutes: to.Ptr[int32](240),
+		// 							BackupRetentionIntervalInHours: to.Ptr[int32](720),
+		// 							BackupStorageRedundancy: to.Ptr(armcosmos.BackupStorageRedundancyGeo),
+		// 						},
+		// 					},
+		// 					NetworkACLBypass: to.Ptr(armcosmos.NetworkACLBypassNone),
+		// 					NetworkACLBypassResourceIDs: []*string{
+		// 					},
+		// 					EnablePartitionMerge: to.Ptr(true),
+		// 					EnableBurstCapacity: to.Ptr(true),
+		// 					EnforceHierarchicalPartitionKeyIDLastLevel: to.Ptr(false),
+		// 					MinimalTLSVersion: to.Ptr(armcosmos.MinimalTLSVersionTLS),
+		// 					CapacityMode: to.Ptr(armcosmos.CapacityModeProvisioned),
+		// 					CapacityModeChangeTransitionState: &armcosmos.CapacityModeChangeTransitionState{
+		// 						CapacityModeTransitionBeginTimestamp: to.Ptr(time.Date(2024, time.March, 24, 3, 2, 16, 274725300, time.UTC)),
+		// 						CapacityModeTransitionStatus: to.Ptr(armcosmos.CapacityModeTransitionStatusCompleted),
+		// 						CapacityModeLastSuccessfulTransitionEndTimestamp: to.Ptr(time.Date(2024, time.March, 24, 3, 2, 18, 875832900, time.UTC)),
+		// 						CapacityModeTransitionEndTimestamp: to.Ptr(time.Date(2024, time.March, 24, 3, 2, 18, 875832900, time.UTC)),
+		// 						CurrentCapacityMode: to.Ptr(armcosmos.CapacityModeProvisioned),
+		// 						PreviousCapacityMode: to.Ptr(armcosmos.CapacityModeServerless),
+		// 					},
+		// 					EnableMaterializedViews: to.Ptr(false),
+		// 					KeysMetadata: &armcosmos.DatabaseAccountKeysMetadata{
+		// 						PrimaryMasterKey: &armcosmos.AccountKeyMetadata{
+		// 							GenerationTime: to.Ptr(time.Date(2022, time.February, 25, 20, 30, 11, 0, time.UTC)),
+		// 							ApproximateLastUsageTime: to.Ptr(time.Date(2024, time.October, 9, 11, 45, 33, 0, time.UTC)),
+		// 						},
+		// 						SecondaryMasterKey: &armcosmos.AccountKeyMetadata{
+		// 							GenerationTime: to.Ptr(time.Date(2022, time.February, 25, 20, 30, 11, 0, time.UTC)),
+		// 							ApproximateLastUsageTime: to.Ptr(time.Date(2024, time.October, 9, 11, 45, 33, 0, time.UTC)),
+		// 						},
+		// 						PrimaryReadonlyMasterKey: &armcosmos.AccountKeyMetadata{
+		// 							GenerationTime: to.Ptr(time.Date(2022, time.February, 25, 20, 30, 11, 0, time.UTC)),
+		// 							ApproximateLastUsageTime: to.Ptr(time.Date(2024, time.October, 9, 11, 45, 33, 0, time.UTC)),
+		// 						},
+		// 						SecondaryReadonlyMasterKey: &armcosmos.AccountKeyMetadata{
+		// 							GenerationTime: to.Ptr(time.Date(2022, time.February, 25, 20, 30, 11, 0, time.UTC)),
+		// 							ApproximateLastUsageTime: to.Ptr(time.Date(2024, time.October, 9, 11, 45, 33, 0, time.UTC)),
+		// 						},
+		// 					},
+		// 					EnablePriorityBasedExecution: to.Ptr(true),
+		// 					DefaultPriorityLevel: to.Ptr(armcosmos.DefaultPriorityLevelLow),
+		// 					EnablePerRegionPerPartitionAutoscale: to.Ptr(true),
+		// 					ThroughputPoolDedicatedRUs: to.Ptr[int64](300000),
+		// 					ThroughputPoolMaxConsumableRUs: to.Ptr[int64](700000),
+		// 				},
+		// 				SystemData: &armcosmos.SystemData{
+		// 					CreatedAt: to.Ptr(time.Date(2021, time.March, 12, 22, 5, 9, 0, time.UTC)),
+		// 				},
+		// 				Identity: &armcosmos.ManagedServiceIdentity{
+		// 					Type: to.Ptr(armcosmos.ResourceIdentityTypeSystemAssignedUserAssigned),
+		// 					PrincipalID: to.Ptr("52f4fef3-3c3f-4ff3-b52e-b5c9eeb68656"),
+		// 					TenantID: to.Ptr("33e01921-4d64-4f8c-a055-5bdaffd5e33d"),
+		// 					UserAssignedIdentities: map[string]*armcosmos.ManagedServiceIdentityUserAssignedIdentities{
+		// 						"/subscriptions/fa5fc227-a624-475e-b696-cdd604c735bc/resourceGroups/eu2cgroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id1": &armcosmos.ManagedServiceIdentityUserAssignedIdentities{
+		// 							ClientID: to.Ptr("fbe75b66-01c5-4f87-a220-233af3270436"),
+		// 							PrincipalID: to.Ptr("33e01921-4d64-4f8c-a055-5bdaffd5e33d"),
+		// 						},
+		// 					},
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2026-04-01-preview/CosmosDBDatabaseAccountGetUsages.json
+func ExampleDatabaseAccountsClient_NewListUsagesPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcosmos.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewDatabaseAccountsClient().NewListUsagesPager("rg1", "ddb1", &armcosmos.DatabaseAccountsClientListUsagesOptions{
+		Filter: to.Ptr("name.value eq 'Storage'")})
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armcosmos.DatabaseAccountsClientListUsagesResponse{
+		// 	UsagesResult: armcosmos.UsagesResult{
+		// 		Value: []*armcosmos.Usage{
+		// 			{
+		// 				Name: &armcosmos.MetricName{
+		// 					LocalizedValue: to.Ptr("Storage"),
+		// 					Value: to.Ptr("Storage"),
+		// 				},
+		// 				CurrentValue: to.Ptr[int64](0),
+		// 				Limit: to.Ptr[int64](10737418240),
+		// 				QuotaPeriod: to.Ptr("P1D"),
+		// 				Unit: to.Ptr(armcosmos.UnitTypeBytes),
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
 }

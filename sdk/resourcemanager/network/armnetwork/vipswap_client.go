@@ -66,7 +66,7 @@ func (client *VipSwapClient) BeginCreate(ctx context.Context, groupName string, 
 	}
 }
 
-// Create - Performs vip swap operation on swappable cloud services.
+// create - Performs vip swap operation on swappable cloud services.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *VipSwapClient) create(ctx context.Context, groupName string, resourceName string, parameters SwapResource, options *VipSwapClientBeginCreateOptions) (*http.Response, error) {
 	var err error
@@ -88,7 +88,7 @@ func (client *VipSwapClient) create(ctx context.Context, groupName string, resou
 	return httpResp, nil
 }
 
-// createCreateRequest creates the Create request.
+// createCreateRequest creates the create request.
 func (client *VipSwapClient) createCreateRequest(ctx context.Context, groupName string, resourceName string, parameters SwapResource, _ *VipSwapClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{groupName}/providers/microsoft.Compute/cloudServices/{resourceName}/providers/Microsoft.Network/cloudServiceSlots/{singletonResource}"
 	if client.subscriptionID == "" {

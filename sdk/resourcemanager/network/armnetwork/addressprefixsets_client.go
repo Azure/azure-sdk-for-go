@@ -69,7 +69,7 @@ func (client *AddressPrefixSetsClient) BeginCreateOrUpdate(ctx context.Context, 
 	}
 }
 
-// CreateOrUpdate - Creates or updates an address prefix set.
+// createOrUpdate - Creates or updates an address prefix set.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *AddressPrefixSetsClient) createOrUpdate(ctx context.Context, resourceGroupName string, applicationSecurityGroupName string, addressPrefixSetName string, resource AddressPrefixSet, options *AddressPrefixSetsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -91,7 +91,7 @@ func (client *AddressPrefixSetsClient) createOrUpdate(ctx context.Context, resou
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *AddressPrefixSetsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, applicationSecurityGroupName string, addressPrefixSetName string, resource AddressPrefixSet, _ *AddressPrefixSetsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationSecurityGroups/{applicationSecurityGroupName}/addressPrefixSets/{addressPrefixSetName}"
 	if client.subscriptionID == "" {
@@ -149,7 +149,7 @@ func (client *AddressPrefixSetsClient) BeginDelete(ctx context.Context, resource
 	}
 }
 
-// Delete - Deletes the specified address prefix set.
+// deleteOperation - Deletes the specified address prefix set.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *AddressPrefixSetsClient) deleteOperation(ctx context.Context, resourceGroupName string, applicationSecurityGroupName string, addressPrefixSetName string, options *AddressPrefixSetsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -171,7 +171,7 @@ func (client *AddressPrefixSetsClient) deleteOperation(ctx context.Context, reso
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *AddressPrefixSetsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, applicationSecurityGroupName string, addressPrefixSetName string, _ *AddressPrefixSetsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationSecurityGroups/{applicationSecurityGroupName}/addressPrefixSets/{addressPrefixSetName}"
 	if client.subscriptionID == "" {

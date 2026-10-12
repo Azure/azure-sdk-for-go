@@ -31,6 +31,9 @@ type LocalUsersClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewLocalUsersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*LocalUsersClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -74,7 +77,7 @@ func (client *LocalUsersClient) CreateOrUpdate(ctx context.Context, resourceGrou
 func (client *LocalUsersClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, username string, properties LocalUser, _ *LocalUsersClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/localUsers/{username}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -148,7 +151,7 @@ func (client *LocalUsersClient) Delete(ctx context.Context, resourceGroupName st
 func (client *LocalUsersClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, username string, _ *LocalUsersClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/localUsers/{username}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -202,7 +205,7 @@ func (client *LocalUsersClient) Get(ctx context.Context, resourceGroupName strin
 func (client *LocalUsersClient) getCreateRequest(ctx context.Context, resourceGroupName string, accountName string, username string, _ *LocalUsersClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/localUsers/{username}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -236,6 +239,73 @@ func (client *LocalUsersClient) getHandleResponse(resp *http.Response, successCo
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LocalUser); err != nil {
 		return LocalUsersClientGetResponse{}, err
+	}
+	return result, nil
+}
+
+// ListKeys - List SSH authorized keys and shared key of the local user.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
+//     3 and 24 characters in length and use numbers and lower-case letters only.
+//   - username - The name of local user. The username must contain lowercase letters and numbers only. It must be unique only
+//     within the storage account.
+//   - options - LocalUsersClientListKeysOptions contains the optional parameters for the LocalUsersClient.ListKeys method.
+func (client *LocalUsersClient) ListKeys(ctx context.Context, resourceGroupName string, accountName string, username string, options *LocalUsersClientListKeysOptions) (LocalUsersClientListKeysResponse, error) {
+	var err error
+	const operationName = "LocalUsersClient.ListKeys"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.listKeysCreateRequest(ctx, resourceGroupName, accountName, username, options)
+	if err != nil {
+		return LocalUsersClientListKeysResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return LocalUsersClientListKeysResponse{}, err
+	}
+	return client.listKeysHandleResponse(httpResp, http.StatusOK)
+}
+
+// listKeysCreateRequest creates the ListKeys request.
+func (client *LocalUsersClient) listKeysCreateRequest(ctx context.Context, resourceGroupName string, accountName string, username string, _ *LocalUsersClientListKeysOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/localUsers/{username}/listKeys"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if accountName == "" {
+		return nil, errors.New("parameter accountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+	if username == "" {
+		return nil, errors.New("parameter username cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{username}", url.PathEscape(username))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// listKeysHandleResponse handles the ListKeys response.
+func (client *LocalUsersClient) listKeysHandleResponse(resp *http.Response, successCodes ...int) (LocalUsersClientListKeysResponse, error) {
+	result := LocalUsersClientListKeysResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.LocalUserKeys); err != nil {
+		return LocalUsersClientListKeysResponse{}, err
 	}
 	return result, nil
 }
@@ -278,7 +348,7 @@ func (client *LocalUsersClient) listCreateRequest(ctx context.Context, resourceG
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/localUsers"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -326,73 +396,6 @@ func (client *LocalUsersClient) listHandleResponse(resp *http.Response, successC
 	return result, nil
 }
 
-// ListKeys - List SSH authorized keys and shared key of the local user.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
-//     3 and 24 characters in length and use numbers and lower-case letters only.
-//   - username - The name of local user. The username must contain lowercase letters and numbers only. It must be unique only
-//     within the storage account.
-//   - options - LocalUsersClientListKeysOptions contains the optional parameters for the LocalUsersClient.ListKeys method.
-func (client *LocalUsersClient) ListKeys(ctx context.Context, resourceGroupName string, accountName string, username string, options *LocalUsersClientListKeysOptions) (LocalUsersClientListKeysResponse, error) {
-	var err error
-	const operationName = "LocalUsersClient.ListKeys"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.listKeysCreateRequest(ctx, resourceGroupName, accountName, username, options)
-	if err != nil {
-		return LocalUsersClientListKeysResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return LocalUsersClientListKeysResponse{}, err
-	}
-	return client.listKeysHandleResponse(httpResp, http.StatusOK)
-}
-
-// listKeysCreateRequest creates the ListKeys request.
-func (client *LocalUsersClient) listKeysCreateRequest(ctx context.Context, resourceGroupName string, accountName string, username string, _ *LocalUsersClientListKeysOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/localUsers/{username}/listKeys"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if accountName == "" {
-		return nil, errors.New("parameter accountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	if username == "" {
-		return nil, errors.New("parameter username cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{username}", url.PathEscape(username))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// listKeysHandleResponse handles the ListKeys response.
-func (client *LocalUsersClient) listKeysHandleResponse(resp *http.Response, successCodes ...int) (LocalUsersClientListKeysResponse, error) {
-	result := LocalUsersClientListKeysResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.LocalUserKeys); err != nil {
-		return LocalUsersClientListKeysResponse{}, err
-	}
-	return result, nil
-}
-
 // RegeneratePassword - Regenerate the local user SSH password.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
@@ -423,7 +426,7 @@ func (client *LocalUsersClient) RegeneratePassword(ctx context.Context, resource
 func (client *LocalUsersClient) regeneratePasswordCreateRequest(ctx context.Context, resourceGroupName string, accountName string, username string, _ *LocalUsersClientRegeneratePasswordOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/localUsers/{username}/regeneratePassword"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {

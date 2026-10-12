@@ -68,7 +68,7 @@ func (client *BulkActionsClient) BeginCancel(ctx context.Context, resourceGroupN
 	}
 }
 
-// Cancel - Cancels LaunchBulkInstancesOperation instances that have not yet launched.
+// cancel - Cancels LaunchBulkInstancesOperation instances that have not yet launched.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *BulkActionsClient) cancel(ctx context.Context, resourceGroupName string, location string, name string, options *BulkActionsClientBeginCancelOptions) (*http.Response, error) {
 	var err error
@@ -90,7 +90,7 @@ func (client *BulkActionsClient) cancel(ctx context.Context, resourceGroupName s
 	return httpResp, nil
 }
 
-// cancelCreateRequest creates the Cancel request.
+// cancelCreateRequest creates the cancel request.
 func (client *BulkActionsClient) cancelCreateRequest(ctx context.Context, resourceGroupName string, location string, name string, _ *BulkActionsClientBeginCancelOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ComputeBulkActions/locations/{location}/launchBulkInstancesOperations/{name}/cancel"
 	if client.subscriptionID == "" {
@@ -144,7 +144,7 @@ func (client *BulkActionsClient) BeginCreateOrUpdate(ctx context.Context, resour
 	}
 }
 
-// CreateOrUpdate - Creates or updates LaunchBulkInstancesOperations.
+// createOrUpdate - Creates or updates LaunchBulkInstancesOperations.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *BulkActionsClient) createOrUpdate(ctx context.Context, resourceGroupName string, location string, name string, resource LocationBasedLaunchBulkInstancesOperation, options *BulkActionsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -166,7 +166,7 @@ func (client *BulkActionsClient) createOrUpdate(ctx context.Context, resourceGro
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *BulkActionsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, location string, name string, resource LocationBasedLaunchBulkInstancesOperation, _ *BulkActionsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ComputeBulkActions/locations/{location}/launchBulkInstancesOperations/{name}"
 	if client.subscriptionID == "" {
@@ -223,7 +223,7 @@ func (client *BulkActionsClient) BeginDelete(ctx context.Context, resourceGroupN
 	}
 }
 
-// Delete - Deletes LaunchBulkInstancesOperations.
+// deleteOperation - Deletes LaunchBulkInstancesOperations.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *BulkActionsClient) deleteOperation(ctx context.Context, resourceGroupName string, location string, name string, options *BulkActionsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -245,7 +245,7 @@ func (client *BulkActionsClient) deleteOperation(ctx context.Context, resourceGr
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *BulkActionsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, location string, name string, options *BulkActionsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ComputeBulkActions/locations/{location}/launchBulkInstancesOperations/{name}"
 	if client.subscriptionID == "" {

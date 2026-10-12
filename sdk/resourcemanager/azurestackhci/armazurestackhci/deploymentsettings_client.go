@@ -69,7 +69,7 @@ func (client *DeploymentSettingsClient) BeginCreateOrUpdate(ctx context.Context,
 	}
 }
 
-// CreateOrUpdate - Create a DeploymentSetting
+// createOrUpdate - Create a DeploymentSetting
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *DeploymentSettingsClient) createOrUpdate(ctx context.Context, resourceGroupName string, clusterName string, deploymentSettingsName string, resource DeploymentSetting, options *DeploymentSettingsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -91,7 +91,7 @@ func (client *DeploymentSettingsClient) createOrUpdate(ctx context.Context, reso
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *DeploymentSettingsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, deploymentSettingsName string, resource DeploymentSetting, _ *DeploymentSettingsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/clusters/{clusterName}/deploymentSettings/{deploymentSettingsName}"
 	if client.subscriptionID == "" {
@@ -149,7 +149,7 @@ func (client *DeploymentSettingsClient) BeginDelete(ctx context.Context, resourc
 	}
 }
 
-// Delete - Delete a DeploymentSetting
+// deleteOperation - Delete a DeploymentSetting
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *DeploymentSettingsClient) deleteOperation(ctx context.Context, resourceGroupName string, clusterName string, deploymentSettingsName string, options *DeploymentSettingsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -171,7 +171,7 @@ func (client *DeploymentSettingsClient) deleteOperation(ctx context.Context, res
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *DeploymentSettingsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, deploymentSettingsName string, _ *DeploymentSettingsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/clusters/{clusterName}/deploymentSettings/{deploymentSettingsName}"
 	if client.subscriptionID == "" {

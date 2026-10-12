@@ -69,7 +69,7 @@ func (client *VirtualHubIPConfigurationClient) BeginCreateOrUpdate(ctx context.C
 	}
 }
 
-// CreateOrUpdate - Creates a VirtualHubIpConfiguration resource if it doesn't exist else updates the existing VirtualHubIpConfiguration.
+// createOrUpdate - Creates a VirtualHubIpConfiguration resource if it doesn't exist else updates the existing VirtualHubIpConfiguration.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *VirtualHubIPConfigurationClient) createOrUpdate(ctx context.Context, resourceGroupName string, virtualHubName string, ipConfigName string, parameters HubIPConfiguration, options *VirtualHubIPConfigurationClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -91,7 +91,7 @@ func (client *VirtualHubIPConfigurationClient) createOrUpdate(ctx context.Contex
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *VirtualHubIPConfigurationClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, virtualHubName string, ipConfigName string, parameters HubIPConfiguration, _ *VirtualHubIPConfigurationClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs/{virtualHubName}/ipConfigurations/{ipConfigName}"
 	if client.subscriptionID == "" {
@@ -149,7 +149,7 @@ func (client *VirtualHubIPConfigurationClient) BeginDelete(ctx context.Context, 
 	}
 }
 
-// Delete - Deletes a VirtualHubIpConfiguration.
+// deleteOperation - Deletes a VirtualHubIpConfiguration.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *VirtualHubIPConfigurationClient) deleteOperation(ctx context.Context, resourceGroupName string, virtualHubName string, ipConfigName string, options *VirtualHubIPConfigurationClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -171,7 +171,7 @@ func (client *VirtualHubIPConfigurationClient) deleteOperation(ctx context.Conte
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *VirtualHubIPConfigurationClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, virtualHubName string, ipConfigName string, _ *VirtualHubIPConfigurationClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs/{virtualHubName}/ipConfigurations/{ipConfigName}"
 	if client.subscriptionID == "" {

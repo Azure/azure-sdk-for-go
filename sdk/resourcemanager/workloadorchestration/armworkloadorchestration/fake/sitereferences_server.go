@@ -29,6 +29,10 @@ type SiteReferencesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, contextName string, siteReferenceName string, options *armworkloadorchestration.SiteReferencesClientBeginDeleteOptions) (resp azfake.PollerResponder[armworkloadorchestration.SiteReferencesClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method SiteReferencesClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, contextName string, siteReferenceName string, properties armworkloadorchestration.SiteReference, options *armworkloadorchestration.SiteReferencesClientBeginUpdateOptions) (resp azfake.PollerResponder[armworkloadorchestration.SiteReferencesClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method SiteReferencesClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, contextName string, siteReferenceName string, options *armworkloadorchestration.SiteReferencesClientGetOptions) (resp azfake.Responder[armworkloadorchestration.SiteReferencesClientGetResponse], errResp azfake.ErrorResponder)
@@ -36,10 +40,6 @@ type SiteReferencesServer struct {
 	// NewListByContextPager is the fake for method SiteReferencesClient.NewListByContextPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByContextPager func(resourceGroupName string, contextName string, options *armworkloadorchestration.SiteReferencesClientListByContextOptions) (resp azfake.PagerResponder[armworkloadorchestration.SiteReferencesClientListByContextResponse])
-
-	// BeginUpdate is the fake for method SiteReferencesClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, contextName string, siteReferenceName string, properties armworkloadorchestration.SiteReference, options *armworkloadorchestration.SiteReferencesClientBeginUpdateOptions) (resp azfake.PollerResponder[armworkloadorchestration.SiteReferencesClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewSiteReferencesServerTransport creates a new instance of SiteReferencesServerTransport with the provided implementation.
@@ -50,8 +50,8 @@ func NewSiteReferencesServerTransport(srv *SiteReferencesServer) *SiteReferences
 		srv:                   srv,
 		beginCreateOrUpdate:   newTracker[azfake.PollerResponder[armworkloadorchestration.SiteReferencesClientCreateOrUpdateResponse]](),
 		beginDelete:           newTracker[azfake.PollerResponder[armworkloadorchestration.SiteReferencesClientDeleteResponse]](),
-		newListByContextPager: newTracker[azfake.PagerResponder[armworkloadorchestration.SiteReferencesClientListByContextResponse]](),
 		beginUpdate:           newTracker[azfake.PollerResponder[armworkloadorchestration.SiteReferencesClientUpdateResponse]](),
+		newListByContextPager: newTracker[azfake.PagerResponder[armworkloadorchestration.SiteReferencesClientListByContextResponse]](),
 	}
 }
 
@@ -61,8 +61,8 @@ type SiteReferencesServerTransport struct {
 	srv                   *SiteReferencesServer
 	beginCreateOrUpdate   *tracker[azfake.PollerResponder[armworkloadorchestration.SiteReferencesClientCreateOrUpdateResponse]]
 	beginDelete           *tracker[azfake.PollerResponder[armworkloadorchestration.SiteReferencesClientDeleteResponse]]
-	newListByContextPager *tracker[azfake.PagerResponder[armworkloadorchestration.SiteReferencesClientListByContextResponse]]
 	beginUpdate           *tracker[azfake.PollerResponder[armworkloadorchestration.SiteReferencesClientUpdateResponse]]
+	newListByContextPager *tracker[azfake.PagerResponder[armworkloadorchestration.SiteReferencesClientListByContextResponse]]
 }
 
 // Do implements the policy.Transporter interface for SiteReferencesServerTransport.
@@ -90,12 +90,12 @@ func (s *SiteReferencesServerTransport) dispatchToMethodFake(req *http.Request, 
 				res.resp, res.err = s.dispatchBeginCreateOrUpdate(req)
 			case "SiteReferencesClient.BeginDelete":
 				res.resp, res.err = s.dispatchBeginDelete(req)
+			case "SiteReferencesClient.BeginUpdate":
+				res.resp, res.err = s.dispatchBeginUpdate(req)
 			case "SiteReferencesClient.Get":
 				res.resp, res.err = s.dispatchGet(req)
 			case "SiteReferencesClient.NewListByContextPager":
 				res.resp, res.err = s.dispatchNewListByContextPager(req)
-			case "SiteReferencesClient.BeginUpdate":
-				res.resp, res.err = s.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -212,6 +212,58 @@ func (s *SiteReferencesServerTransport) dispatchBeginDelete(req *http.Request) (
 	return resp, nil
 }
 
+func (s *SiteReferencesServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if s.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := s.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Edge/contexts/(?P<contextName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/siteReferences/(?P<siteReferenceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armworkloadorchestration.SiteReference](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		contextNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("contextName")])
+		if err != nil {
+			return nil, err
+		}
+		siteReferenceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("siteReferenceName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := s.srv.BeginUpdate(req.Context(), resourceGroupNameParam, contextNameParam, siteReferenceNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		s.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		s.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		s.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (s *SiteReferencesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if s.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -287,58 +339,6 @@ func (s *SiteReferencesServerTransport) dispatchNewListByContextPager(req *http.
 	if !server.PagerResponderMore(newListByContextPager) {
 		s.newListByContextPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (s *SiteReferencesServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if s.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := s.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Edge/contexts/(?P<contextName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/siteReferences/(?P<siteReferenceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armworkloadorchestration.SiteReference](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		contextNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("contextName")])
-		if err != nil {
-			return nil, err
-		}
-		siteReferenceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("siteReferenceName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := s.srv.BeginUpdate(req.Context(), resourceGroupNameParam, contextNameParam, siteReferenceNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		s.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		s.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		s.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

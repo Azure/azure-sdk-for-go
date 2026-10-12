@@ -33,13 +33,13 @@ type PublicIPPrefixesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, publicIPPrefixName string, options *armnetwork.PublicIPPrefixesClientGetOptions) (resp azfake.Responder[armnetwork.PublicIPPrefixesClientGetResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method PublicIPPrefixesClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(resourceGroupName string, options *armnetwork.PublicIPPrefixesClientListOptions) (resp azfake.PagerResponder[armnetwork.PublicIPPrefixesClientListResponse])
-
 	// NewListAllPager is the fake for method PublicIPPrefixesClient.NewListAllPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListAllPager func(options *armnetwork.PublicIPPrefixesClientListAllOptions) (resp azfake.PagerResponder[armnetwork.PublicIPPrefixesClientListAllResponse])
+
+	// NewListPager is the fake for method PublicIPPrefixesClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(resourceGroupName string, options *armnetwork.PublicIPPrefixesClientListOptions) (resp azfake.PagerResponder[armnetwork.PublicIPPrefixesClientListResponse])
 
 	// UpdateTags is the fake for method PublicIPPrefixesClient.UpdateTags
 	// HTTP status codes to indicate success: http.StatusOK
@@ -54,8 +54,8 @@ func NewPublicIPPrefixesServerTransport(srv *PublicIPPrefixesServer) *PublicIPPr
 		srv:                 srv,
 		beginCreateOrUpdate: newTracker[azfake.PollerResponder[armnetwork.PublicIPPrefixesClientCreateOrUpdateResponse]](),
 		beginDelete:         newTracker[azfake.PollerResponder[armnetwork.PublicIPPrefixesClientDeleteResponse]](),
-		newListPager:        newTracker[azfake.PagerResponder[armnetwork.PublicIPPrefixesClientListResponse]](),
 		newListAllPager:     newTracker[azfake.PagerResponder[armnetwork.PublicIPPrefixesClientListAllResponse]](),
+		newListPager:        newTracker[azfake.PagerResponder[armnetwork.PublicIPPrefixesClientListResponse]](),
 	}
 }
 
@@ -65,8 +65,8 @@ type PublicIPPrefixesServerTransport struct {
 	srv                 *PublicIPPrefixesServer
 	beginCreateOrUpdate *tracker[azfake.PollerResponder[armnetwork.PublicIPPrefixesClientCreateOrUpdateResponse]]
 	beginDelete         *tracker[azfake.PollerResponder[armnetwork.PublicIPPrefixesClientDeleteResponse]]
-	newListPager        *tracker[azfake.PagerResponder[armnetwork.PublicIPPrefixesClientListResponse]]
 	newListAllPager     *tracker[azfake.PagerResponder[armnetwork.PublicIPPrefixesClientListAllResponse]]
+	newListPager        *tracker[azfake.PagerResponder[armnetwork.PublicIPPrefixesClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for PublicIPPrefixesServerTransport.
@@ -96,10 +96,10 @@ func (p *PublicIPPrefixesServerTransport) dispatchToMethodFake(req *http.Request
 				res.resp, res.err = p.dispatchBeginDelete(req)
 			case "PublicIPPrefixesClient.Get":
 				res.resp, res.err = p.dispatchGet(req)
-			case "PublicIPPrefixesClient.NewListPager":
-				res.resp, res.err = p.dispatchNewListPager(req)
 			case "PublicIPPrefixesClient.NewListAllPager":
 				res.resp, res.err = p.dispatchNewListAllPager(req)
+			case "PublicIPPrefixesClient.NewListPager":
+				res.resp, res.err = p.dispatchNewListPager(req)
 			case "PublicIPPrefixesClient.UpdateTags":
 				res.resp, res.err = p.dispatchUpdateTags(req)
 			default:
@@ -251,6 +251,39 @@ func (p *PublicIPPrefixesServerTransport) dispatchGet(req *http.Request) (*http.
 	return resp, nil
 }
 
+func (p *PublicIPPrefixesServerTransport) dispatchNewListAllPager(req *http.Request) (*http.Response, error) {
+	if p.srv.NewListAllPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListAllPager not implemented")}
+	}
+	newListAllPager := p.newListAllPager.get(req)
+	if newListAllPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/publicIPPrefixes`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resp := p.srv.NewListAllPager(nil)
+		newListAllPager = &resp
+		p.newListAllPager.add(req, newListAllPager)
+		server.PagerResponderInjectNextLinks(newListAllPager, req, func(page *armnetwork.PublicIPPrefixesClientListAllResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListAllPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		p.newListAllPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListAllPager) {
+		p.newListAllPager.remove(req)
+	}
+	return resp, nil
+}
+
 func (p *PublicIPPrefixesServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
 	if p.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
@@ -284,39 +317,6 @@ func (p *PublicIPPrefixesServerTransport) dispatchNewListPager(req *http.Request
 	}
 	if !server.PagerResponderMore(newListPager) {
 		p.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (p *PublicIPPrefixesServerTransport) dispatchNewListAllPager(req *http.Request) (*http.Response, error) {
-	if p.srv.NewListAllPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListAllPager not implemented")}
-	}
-	newListAllPager := p.newListAllPager.get(req)
-	if newListAllPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/publicIPPrefixes`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := p.srv.NewListAllPager(nil)
-		newListAllPager = &resp
-		p.newListAllPager.add(req, newListAllPager)
-		server.PagerResponderInjectNextLinks(newListAllPager, req, func(page *armnetwork.PublicIPPrefixesClientListAllResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListAllPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		p.newListAllPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListAllPager) {
-		p.newListAllPager.remove(req)
 	}
 	return resp, nil
 }

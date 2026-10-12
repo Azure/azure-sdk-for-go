@@ -70,7 +70,7 @@ func (client *JWTAuthenticatorsClient) BeginCreateOrUpdate(ctx context.Context, 
 	}
 }
 
-// CreateOrUpdate - Creates or updates JWT authenticator in the managed cluster and updates the managed cluster to apply the
+// createOrUpdate - Creates or updates JWT authenticator in the managed cluster and updates the managed cluster to apply the
 // settings.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *JWTAuthenticatorsClient) createOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, jwtAuthenticatorName string, parameters JWTAuthenticator, options *JWTAuthenticatorsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
@@ -93,7 +93,7 @@ func (client *JWTAuthenticatorsClient) createOrUpdate(ctx context.Context, resou
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *JWTAuthenticatorsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, jwtAuthenticatorName string, parameters JWTAuthenticator, _ *JWTAuthenticatorsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/jwtAuthenticators/{jwtAuthenticatorName}"
 	if client.subscriptionID == "" {
@@ -151,7 +151,7 @@ func (client *JWTAuthenticatorsClient) BeginDelete(ctx context.Context, resource
 	}
 }
 
-// Delete - Deletes a JWT authenticator and updates the managed cluster to apply the settings.
+// deleteOperation - Deletes a JWT authenticator and updates the managed cluster to apply the settings.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *JWTAuthenticatorsClient) deleteOperation(ctx context.Context, resourceGroupName string, resourceName string, jwtAuthenticatorName string, options *JWTAuthenticatorsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -173,7 +173,7 @@ func (client *JWTAuthenticatorsClient) deleteOperation(ctx context.Context, reso
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *JWTAuthenticatorsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, jwtAuthenticatorName string, _ *JWTAuthenticatorsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/jwtAuthenticators/{jwtAuthenticatorName}"
 	if client.subscriptionID == "" {

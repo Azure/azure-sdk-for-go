@@ -31,6 +31,10 @@ type ClusterManagersServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, clusterManagerName string, options *armnetworkcloud.ClusterManagersClientBeginDeleteOptions) (resp azfake.PollerResponder[armnetworkcloud.ClusterManagersClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdateRelayPrivateEndpointConnection is the fake for method ClusterManagersClient.BeginUpdateRelayPrivateEndpointConnection
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdateRelayPrivateEndpointConnection func(ctx context.Context, resourceGroupName string, clusterManagerName string, options *armnetworkcloud.ClusterManagersClientBeginUpdateRelayPrivateEndpointConnectionOptions) (resp azfake.PollerResponder[armnetworkcloud.ClusterManagersClientUpdateRelayPrivateEndpointConnectionResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method ClusterManagersClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, clusterManagerName string, options *armnetworkcloud.ClusterManagersClientGetOptions) (resp azfake.Responder[armnetworkcloud.ClusterManagersClientGetResponse], errResp azfake.ErrorResponder)
@@ -46,10 +50,6 @@ type ClusterManagersServer struct {
 	// Update is the fake for method ClusterManagersClient.Update
 	// HTTP status codes to indicate success: http.StatusOK
 	Update func(ctx context.Context, resourceGroupName string, clusterManagerName string, clusterManagerUpdateParameters armnetworkcloud.ClusterManagerPatchParameters, options *armnetworkcloud.ClusterManagersClientUpdateOptions) (resp azfake.Responder[armnetworkcloud.ClusterManagersClientUpdateResponse], errResp azfake.ErrorResponder)
-
-	// BeginUpdateRelayPrivateEndpointConnection is the fake for method ClusterManagersClient.BeginUpdateRelayPrivateEndpointConnection
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdateRelayPrivateEndpointConnection func(ctx context.Context, resourceGroupName string, clusterManagerName string, options *armnetworkcloud.ClusterManagersClientBeginUpdateRelayPrivateEndpointConnectionOptions) (resp azfake.PollerResponder[armnetworkcloud.ClusterManagersClientUpdateRelayPrivateEndpointConnectionResponse], errResp azfake.ErrorResponder)
 }
 
 // NewClusterManagersServerTransport creates a new instance of ClusterManagersServerTransport with the provided implementation.
@@ -57,12 +57,12 @@ type ClusterManagersServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewClusterManagersServerTransport(srv *ClusterManagersServer) *ClusterManagersServerTransport {
 	return &ClusterManagersServerTransport{
-		srv:                         srv,
-		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armnetworkcloud.ClusterManagersClientCreateOrUpdateResponse]](),
-		beginDelete:                 newTracker[azfake.PollerResponder[armnetworkcloud.ClusterManagersClientDeleteResponse]](),
-		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armnetworkcloud.ClusterManagersClientListByResourceGroupResponse]](),
-		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armnetworkcloud.ClusterManagersClientListBySubscriptionResponse]](),
+		srv:                 srv,
+		beginCreateOrUpdate: newTracker[azfake.PollerResponder[armnetworkcloud.ClusterManagersClientCreateOrUpdateResponse]](),
+		beginDelete:         newTracker[azfake.PollerResponder[armnetworkcloud.ClusterManagersClientDeleteResponse]](),
 		beginUpdateRelayPrivateEndpointConnection: newTracker[azfake.PollerResponder[armnetworkcloud.ClusterManagersClientUpdateRelayPrivateEndpointConnectionResponse]](),
+		newListByResourceGroupPager:               newTracker[azfake.PagerResponder[armnetworkcloud.ClusterManagersClientListByResourceGroupResponse]](),
+		newListBySubscriptionPager:                newTracker[azfake.PagerResponder[armnetworkcloud.ClusterManagersClientListBySubscriptionResponse]](),
 	}
 }
 
@@ -72,9 +72,9 @@ type ClusterManagersServerTransport struct {
 	srv                                       *ClusterManagersServer
 	beginCreateOrUpdate                       *tracker[azfake.PollerResponder[armnetworkcloud.ClusterManagersClientCreateOrUpdateResponse]]
 	beginDelete                               *tracker[azfake.PollerResponder[armnetworkcloud.ClusterManagersClientDeleteResponse]]
+	beginUpdateRelayPrivateEndpointConnection *tracker[azfake.PollerResponder[armnetworkcloud.ClusterManagersClientUpdateRelayPrivateEndpointConnectionResponse]]
 	newListByResourceGroupPager               *tracker[azfake.PagerResponder[armnetworkcloud.ClusterManagersClientListByResourceGroupResponse]]
 	newListBySubscriptionPager                *tracker[azfake.PagerResponder[armnetworkcloud.ClusterManagersClientListBySubscriptionResponse]]
-	beginUpdateRelayPrivateEndpointConnection *tracker[azfake.PollerResponder[armnetworkcloud.ClusterManagersClientUpdateRelayPrivateEndpointConnectionResponse]]
 }
 
 // Do implements the policy.Transporter interface for ClusterManagersServerTransport.
@@ -102,6 +102,8 @@ func (c *ClusterManagersServerTransport) dispatchToMethodFake(req *http.Request,
 				res.resp, res.err = c.dispatchBeginCreateOrUpdate(req)
 			case "ClusterManagersClient.BeginDelete":
 				res.resp, res.err = c.dispatchBeginDelete(req)
+			case "ClusterManagersClient.BeginUpdateRelayPrivateEndpointConnection":
+				res.resp, res.err = c.dispatchBeginUpdateRelayPrivateEndpointConnection(req)
 			case "ClusterManagersClient.Get":
 				res.resp, res.err = c.dispatchGet(req)
 			case "ClusterManagersClient.NewListByResourceGroupPager":
@@ -110,8 +112,6 @@ func (c *ClusterManagersServerTransport) dispatchToMethodFake(req *http.Request,
 				res.resp, res.err = c.dispatchNewListBySubscriptionPager(req)
 			case "ClusterManagersClient.Update":
 				res.resp, res.err = c.dispatchUpdate(req)
-			case "ClusterManagersClient.BeginUpdateRelayPrivateEndpointConnection":
-				res.resp, res.err = c.dispatchBeginUpdateRelayPrivateEndpointConnection(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -233,6 +233,60 @@ func (c *ClusterManagersServerTransport) dispatchBeginDelete(req *http.Request) 
 	}
 	if !server.PollerResponderMore(beginDelete) {
 		c.beginDelete.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (c *ClusterManagersServerTransport) dispatchBeginUpdateRelayPrivateEndpointConnection(req *http.Request) (*http.Response, error) {
+	if c.srv.BeginUpdateRelayPrivateEndpointConnection == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdateRelayPrivateEndpointConnection not implemented")}
+	}
+	beginUpdateRelayPrivateEndpointConnection := c.beginUpdateRelayPrivateEndpointConnection.get(req)
+	if beginUpdateRelayPrivateEndpointConnection == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetworkCloud/clusterManagers/(?P<clusterManagerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/updateRelayPrivateEndpointConnection`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armnetworkcloud.ClusterManagerUpdateRelayPrivateEndpointConnectionParameters](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		clusterManagerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterManagerName")])
+		if err != nil {
+			return nil, err
+		}
+		var options *armnetworkcloud.ClusterManagersClientBeginUpdateRelayPrivateEndpointConnectionOptions
+		if !reflect.ValueOf(body).IsZero() {
+			options = &armnetworkcloud.ClusterManagersClientBeginUpdateRelayPrivateEndpointConnectionOptions{
+				ClusterManagerUpdateRelayPrivateEndpointConnectionParameters: &body,
+			}
+		}
+		respr, errRespr := c.srv.BeginUpdateRelayPrivateEndpointConnection(req.Context(), resourceGroupNameParam, clusterManagerNameParam, options)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdateRelayPrivateEndpointConnection = &respr
+		c.beginUpdateRelayPrivateEndpointConnection.add(req, beginUpdateRelayPrivateEndpointConnection)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdateRelayPrivateEndpointConnection, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		c.beginUpdateRelayPrivateEndpointConnection.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdateRelayPrivateEndpointConnection) {
+		c.beginUpdateRelayPrivateEndpointConnection.remove(req)
 	}
 
 	return resp, nil
@@ -422,60 +476,6 @@ func (c *ClusterManagersServerTransport) dispatchUpdate(req *http.Request) (*htt
 	if err != nil {
 		return nil, err
 	}
-	return resp, nil
-}
-
-func (c *ClusterManagersServerTransport) dispatchBeginUpdateRelayPrivateEndpointConnection(req *http.Request) (*http.Response, error) {
-	if c.srv.BeginUpdateRelayPrivateEndpointConnection == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdateRelayPrivateEndpointConnection not implemented")}
-	}
-	beginUpdateRelayPrivateEndpointConnection := c.beginUpdateRelayPrivateEndpointConnection.get(req)
-	if beginUpdateRelayPrivateEndpointConnection == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetworkCloud/clusterManagers/(?P<clusterManagerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/updateRelayPrivateEndpointConnection`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armnetworkcloud.ClusterManagerUpdateRelayPrivateEndpointConnectionParameters](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		clusterManagerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterManagerName")])
-		if err != nil {
-			return nil, err
-		}
-		var options *armnetworkcloud.ClusterManagersClientBeginUpdateRelayPrivateEndpointConnectionOptions
-		if !reflect.ValueOf(body).IsZero() {
-			options = &armnetworkcloud.ClusterManagersClientBeginUpdateRelayPrivateEndpointConnectionOptions{
-				ClusterManagerUpdateRelayPrivateEndpointConnectionParameters: &body,
-			}
-		}
-		respr, errRespr := c.srv.BeginUpdateRelayPrivateEndpointConnection(req.Context(), resourceGroupNameParam, clusterManagerNameParam, options)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdateRelayPrivateEndpointConnection = &respr
-		c.beginUpdateRelayPrivateEndpointConnection.add(req, beginUpdateRelayPrivateEndpointConnection)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdateRelayPrivateEndpointConnection, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		c.beginUpdateRelayPrivateEndpointConnection.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdateRelayPrivateEndpointConnection) {
-		c.beginUpdateRelayPrivateEndpointConnection.remove(req)
-	}
-
 	return resp, nil
 }
 

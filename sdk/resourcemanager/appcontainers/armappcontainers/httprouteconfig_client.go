@@ -44,6 +44,85 @@ func NewHTTPRouteConfigClient(subscriptionID string, credential azcore.TokenCred
 	return client, nil
 }
 
+// BeginDelete - Deletes the specified Http Route Config.
+//
+// Deletes the specified Managed Http Route.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - environmentName - Name of the Environment.
+//   - httpRouteName - Name of the Http Route Config Resource.
+//   - options - HTTPRouteConfigClientBeginDeleteOptions contains the optional parameters for the HTTPRouteConfigClient.BeginDelete
+//     method.
+func (client *HTTPRouteConfigClient) BeginDelete(ctx context.Context, resourceGroupName string, environmentName string, httpRouteName string, options *HTTPRouteConfigClientBeginDeleteOptions) (*runtime.Poller[HTTPRouteConfigClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, environmentName, httpRouteName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[HTTPRouteConfigClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[HTTPRouteConfigClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// deleteOperation - Deletes the specified Http Route Config.
+//
+// Deletes the specified Managed Http Route.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *HTTPRouteConfigClient) deleteOperation(ctx context.Context, resourceGroupName string, environmentName string, httpRouteName string, options *HTTPRouteConfigClientBeginDeleteOptions) (*http.Response, error) {
+	var err error
+	const operationName = "HTTPRouteConfigClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.deleteCreateRequest(ctx, resourceGroupName, environmentName, httpRouteName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// deleteCreateRequest creates the delete request.
+func (client *HTTPRouteConfigClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, environmentName string, httpRouteName string, _ *HTTPRouteConfigClientBeginDeleteOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/httpRouteConfigs/{httpRouteName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if environmentName == "" {
+		return nil, errors.New("parameter environmentName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{environmentName}", url.PathEscape(environmentName))
+	if httpRouteName == "" {
+		return nil, errors.New("parameter httpRouteName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{httpRouteName}", url.PathEscape(httpRouteName))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260701)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
 // CreateOrUpdate - Create or Update a Http Route Config.
 //
 // Create or Update a Http Route Config.
@@ -115,85 +194,6 @@ func (client *HTTPRouteConfigClient) createOrUpdateHandleResponse(resp *http.Res
 		return HTTPRouteConfigClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginDelete - Deletes the specified Http Route Config.
-//
-// Deletes the specified Managed Http Route.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - environmentName - Name of the Environment.
-//   - httpRouteName - Name of the Http Route Config Resource.
-//   - options - HTTPRouteConfigClientBeginDeleteOptions contains the optional parameters for the HTTPRouteConfigClient.BeginDelete
-//     method.
-func (client *HTTPRouteConfigClient) BeginDelete(ctx context.Context, resourceGroupName string, environmentName string, httpRouteName string, options *HTTPRouteConfigClientBeginDeleteOptions) (*runtime.Poller[HTTPRouteConfigClientDeleteResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.deleteOperation(ctx, resourceGroupName, environmentName, httpRouteName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[HTTPRouteConfigClientDeleteResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[HTTPRouteConfigClientDeleteResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Delete - Deletes the specified Http Route Config.
-//
-// Deletes the specified Managed Http Route.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *HTTPRouteConfigClient) deleteOperation(ctx context.Context, resourceGroupName string, environmentName string, httpRouteName string, options *HTTPRouteConfigClientBeginDeleteOptions) (*http.Response, error) {
-	var err error
-	const operationName = "HTTPRouteConfigClient.BeginDelete"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.deleteCreateRequest(ctx, resourceGroupName, environmentName, httpRouteName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// deleteCreateRequest creates the Delete request.
-func (client *HTTPRouteConfigClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, environmentName string, httpRouteName string, _ *HTTPRouteConfigClientBeginDeleteOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/httpRouteConfigs/{httpRouteName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if environmentName == "" {
-		return nil, errors.New("parameter environmentName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{environmentName}", url.PathEscape(environmentName))
-	if httpRouteName == "" {
-		return nil, errors.New("parameter httpRouteName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{httpRouteName}", url.PathEscape(httpRouteName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260701)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	return req, nil
 }
 
 // Get - Get the specified Http Route Config.

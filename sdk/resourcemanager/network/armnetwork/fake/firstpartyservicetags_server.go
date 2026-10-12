@@ -29,21 +29,21 @@ type FirstPartyServiceTagsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, firstPartyServiceTagName string, options *armnetwork.FirstPartyServiceTagsClientBeginDeleteOptions) (resp azfake.PollerResponder[armnetwork.FirstPartyServiceTagsClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdateTags is the fake for method FirstPartyServiceTagsClient.BeginUpdateTags
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdateTags func(ctx context.Context, resourceGroupName string, firstPartyServiceTagName string, parameters armnetwork.TagsObject, options *armnetwork.FirstPartyServiceTagsClientBeginUpdateTagsOptions) (resp azfake.PollerResponder[armnetwork.FirstPartyServiceTagsClientUpdateTagsResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method FirstPartyServiceTagsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, firstPartyServiceTagName string, options *armnetwork.FirstPartyServiceTagsClientGetOptions) (resp azfake.Responder[armnetwork.FirstPartyServiceTagsClientGetResponse], errResp azfake.ErrorResponder)
-
-	// NewListPager is the fake for method FirstPartyServiceTagsClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(resourceGroupName string, options *armnetwork.FirstPartyServiceTagsClientListOptions) (resp azfake.PagerResponder[armnetwork.FirstPartyServiceTagsClientListResponse])
 
 	// NewListAllPager is the fake for method FirstPartyServiceTagsClient.NewListAllPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListAllPager func(options *armnetwork.FirstPartyServiceTagsClientListAllOptions) (resp azfake.PagerResponder[armnetwork.FirstPartyServiceTagsClientListAllResponse])
 
-	// BeginUpdateTags is the fake for method FirstPartyServiceTagsClient.BeginUpdateTags
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdateTags func(ctx context.Context, resourceGroupName string, firstPartyServiceTagName string, parameters armnetwork.TagsObject, options *armnetwork.FirstPartyServiceTagsClientBeginUpdateTagsOptions) (resp azfake.PollerResponder[armnetwork.FirstPartyServiceTagsClientUpdateTagsResponse], errResp azfake.ErrorResponder)
+	// NewListPager is the fake for method FirstPartyServiceTagsClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(resourceGroupName string, options *armnetwork.FirstPartyServiceTagsClientListOptions) (resp azfake.PagerResponder[armnetwork.FirstPartyServiceTagsClientListResponse])
 }
 
 // NewFirstPartyServiceTagsServerTransport creates a new instance of FirstPartyServiceTagsServerTransport with the provided implementation.
@@ -54,9 +54,9 @@ func NewFirstPartyServiceTagsServerTransport(srv *FirstPartyServiceTagsServer) *
 		srv:                 srv,
 		beginCreateOrUpdate: newTracker[azfake.PollerResponder[armnetwork.FirstPartyServiceTagsClientCreateOrUpdateResponse]](),
 		beginDelete:         newTracker[azfake.PollerResponder[armnetwork.FirstPartyServiceTagsClientDeleteResponse]](),
-		newListPager:        newTracker[azfake.PagerResponder[armnetwork.FirstPartyServiceTagsClientListResponse]](),
-		newListAllPager:     newTracker[azfake.PagerResponder[armnetwork.FirstPartyServiceTagsClientListAllResponse]](),
 		beginUpdateTags:     newTracker[azfake.PollerResponder[armnetwork.FirstPartyServiceTagsClientUpdateTagsResponse]](),
+		newListAllPager:     newTracker[azfake.PagerResponder[armnetwork.FirstPartyServiceTagsClientListAllResponse]](),
+		newListPager:        newTracker[azfake.PagerResponder[armnetwork.FirstPartyServiceTagsClientListResponse]](),
 	}
 }
 
@@ -66,9 +66,9 @@ type FirstPartyServiceTagsServerTransport struct {
 	srv                 *FirstPartyServiceTagsServer
 	beginCreateOrUpdate *tracker[azfake.PollerResponder[armnetwork.FirstPartyServiceTagsClientCreateOrUpdateResponse]]
 	beginDelete         *tracker[azfake.PollerResponder[armnetwork.FirstPartyServiceTagsClientDeleteResponse]]
-	newListPager        *tracker[azfake.PagerResponder[armnetwork.FirstPartyServiceTagsClientListResponse]]
-	newListAllPager     *tracker[azfake.PagerResponder[armnetwork.FirstPartyServiceTagsClientListAllResponse]]
 	beginUpdateTags     *tracker[azfake.PollerResponder[armnetwork.FirstPartyServiceTagsClientUpdateTagsResponse]]
+	newListAllPager     *tracker[azfake.PagerResponder[armnetwork.FirstPartyServiceTagsClientListAllResponse]]
+	newListPager        *tracker[azfake.PagerResponder[armnetwork.FirstPartyServiceTagsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for FirstPartyServiceTagsServerTransport.
@@ -96,14 +96,14 @@ func (f *FirstPartyServiceTagsServerTransport) dispatchToMethodFake(req *http.Re
 				res.resp, res.err = f.dispatchBeginCreateOrUpdate(req)
 			case "FirstPartyServiceTagsClient.BeginDelete":
 				res.resp, res.err = f.dispatchBeginDelete(req)
-			case "FirstPartyServiceTagsClient.Get":
-				res.resp, res.err = f.dispatchGet(req)
-			case "FirstPartyServiceTagsClient.NewListPager":
-				res.resp, res.err = f.dispatchNewListPager(req)
-			case "FirstPartyServiceTagsClient.NewListAllPager":
-				res.resp, res.err = f.dispatchNewListAllPager(req)
 			case "FirstPartyServiceTagsClient.BeginUpdateTags":
 				res.resp, res.err = f.dispatchBeginUpdateTags(req)
+			case "FirstPartyServiceTagsClient.Get":
+				res.resp, res.err = f.dispatchGet(req)
+			case "FirstPartyServiceTagsClient.NewListAllPager":
+				res.resp, res.err = f.dispatchNewListAllPager(req)
+			case "FirstPartyServiceTagsClient.NewListPager":
+				res.resp, res.err = f.dispatchNewListPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -212,109 +212,6 @@ func (f *FirstPartyServiceTagsServerTransport) dispatchBeginDelete(req *http.Req
 	return resp, nil
 }
 
-func (f *FirstPartyServiceTagsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if f.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/firstPartyServiceTags/(?P<firstPartyServiceTagName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	firstPartyServiceTagNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("firstPartyServiceTagName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := f.srv.Get(req.Context(), resourceGroupNameParam, firstPartyServiceTagNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).FirstPartyServiceTag, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (f *FirstPartyServiceTagsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if f.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := f.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/firstPartyServiceTags`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := f.srv.NewListPager(resourceGroupNameParam, nil)
-		newListPager = &resp
-		f.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armnetwork.FirstPartyServiceTagsClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		f.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		f.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (f *FirstPartyServiceTagsServerTransport) dispatchNewListAllPager(req *http.Request) (*http.Response, error) {
-	if f.srv.NewListAllPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListAllPager not implemented")}
-	}
-	newListAllPager := f.newListAllPager.get(req)
-	if newListAllPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/firstPartyServiceTags`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := f.srv.NewListAllPager(nil)
-		newListAllPager = &resp
-		f.newListAllPager.add(req, newListAllPager)
-		server.PagerResponderInjectNextLinks(newListAllPager, req, func(page *armnetwork.FirstPartyServiceTagsClientListAllResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListAllPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		f.newListAllPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListAllPager) {
-		f.newListAllPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (f *FirstPartyServiceTagsServerTransport) dispatchBeginUpdateTags(req *http.Request) (*http.Response, error) {
 	if f.srv.BeginUpdateTags == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginUpdateTags not implemented")}
@@ -360,6 +257,109 @@ func (f *FirstPartyServiceTagsServerTransport) dispatchBeginUpdateTags(req *http
 		f.beginUpdateTags.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (f *FirstPartyServiceTagsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if f.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/firstPartyServiceTags/(?P<firstPartyServiceTagName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	firstPartyServiceTagNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("firstPartyServiceTagName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := f.srv.Get(req.Context(), resourceGroupNameParam, firstPartyServiceTagNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).FirstPartyServiceTag, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (f *FirstPartyServiceTagsServerTransport) dispatchNewListAllPager(req *http.Request) (*http.Response, error) {
+	if f.srv.NewListAllPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListAllPager not implemented")}
+	}
+	newListAllPager := f.newListAllPager.get(req)
+	if newListAllPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/firstPartyServiceTags`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resp := f.srv.NewListAllPager(nil)
+		newListAllPager = &resp
+		f.newListAllPager.add(req, newListAllPager)
+		server.PagerResponderInjectNextLinks(newListAllPager, req, func(page *armnetwork.FirstPartyServiceTagsClientListAllResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListAllPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		f.newListAllPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListAllPager) {
+		f.newListAllPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (f *FirstPartyServiceTagsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if f.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := f.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/firstPartyServiceTags`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := f.srv.NewListPager(resourceGroupNameParam, nil)
+		newListPager = &resp
+		f.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armnetwork.FirstPartyServiceTagsClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		f.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPager) {
+		f.newListPager.remove(req)
+	}
 	return resp, nil
 }
 

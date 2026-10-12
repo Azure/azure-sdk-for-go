@@ -70,7 +70,7 @@ func (client *SecurityPerimeterAssociationsClient) BeginCreateOrUpdate(ctx conte
 	}
 }
 
-// CreateOrUpdate - Creates or updates a NSP resource association.
+// createOrUpdate - Creates or updates a NSP resource association.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *SecurityPerimeterAssociationsClient) createOrUpdate(ctx context.Context, resourceGroupName string, networkSecurityPerimeterName string, associationName string, parameters NspAssociation, options *SecurityPerimeterAssociationsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -92,7 +92,7 @@ func (client *SecurityPerimeterAssociationsClient) createOrUpdate(ctx context.Co
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *SecurityPerimeterAssociationsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, networkSecurityPerimeterName string, associationName string, parameters NspAssociation, _ *SecurityPerimeterAssociationsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkSecurityPerimeters/{networkSecurityPerimeterName}/resourceAssociations/{associationName}"
 	if client.subscriptionID == "" {
@@ -150,7 +150,7 @@ func (client *SecurityPerimeterAssociationsClient) BeginDelete(ctx context.Conte
 	}
 }
 
-// Delete - Deletes an NSP association resource.
+// deleteOperation - Deletes an NSP association resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *SecurityPerimeterAssociationsClient) deleteOperation(ctx context.Context, resourceGroupName string, networkSecurityPerimeterName string, associationName string, options *SecurityPerimeterAssociationsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -172,7 +172,7 @@ func (client *SecurityPerimeterAssociationsClient) deleteOperation(ctx context.C
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *SecurityPerimeterAssociationsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, networkSecurityPerimeterName string, associationName string, _ *SecurityPerimeterAssociationsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkSecurityPerimeters/{networkSecurityPerimeterName}/resourceAssociations/{associationName}"
 	if client.subscriptionID == "" {

@@ -22,13 +22,13 @@ import (
 
 // SecurityAdminConfigurationsServer is a fake server for instances of the armnetwork.SecurityAdminConfigurationsClient type.
 type SecurityAdminConfigurationsServer struct {
-	// CreateOrUpdate is the fake for method SecurityAdminConfigurationsClient.CreateOrUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	CreateOrUpdate func(ctx context.Context, resourceGroupName string, networkManagerName string, configurationName string, securityAdminConfiguration armnetwork.SecurityAdminConfiguration, options *armnetwork.SecurityAdminConfigurationsClientCreateOrUpdateOptions) (resp azfake.Responder[armnetwork.SecurityAdminConfigurationsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
-
 	// BeginDelete is the fake for method SecurityAdminConfigurationsClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, networkManagerName string, configurationName string, options *armnetwork.SecurityAdminConfigurationsClientBeginDeleteOptions) (resp azfake.PollerResponder[armnetwork.SecurityAdminConfigurationsClientDeleteResponse], errResp azfake.ErrorResponder)
+
+	// CreateOrUpdate is the fake for method SecurityAdminConfigurationsClient.CreateOrUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
+	CreateOrUpdate func(ctx context.Context, resourceGroupName string, networkManagerName string, configurationName string, securityAdminConfiguration armnetwork.SecurityAdminConfiguration, options *armnetwork.SecurityAdminConfigurationsClientCreateOrUpdateOptions) (resp azfake.Responder[armnetwork.SecurityAdminConfigurationsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method SecurityAdminConfigurationsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
@@ -79,10 +79,10 @@ func (s *SecurityAdminConfigurationsServerTransport) dispatchToMethodFake(req *h
 		}
 		if !intercepted {
 			switch method {
-			case "SecurityAdminConfigurationsClient.CreateOrUpdate":
-				res.resp, res.err = s.dispatchCreateOrUpdate(req)
 			case "SecurityAdminConfigurationsClient.BeginDelete":
 				res.resp, res.err = s.dispatchBeginDelete(req)
+			case "SecurityAdminConfigurationsClient.CreateOrUpdate":
+				res.resp, res.err = s.dispatchCreateOrUpdate(req)
 			case "SecurityAdminConfigurationsClient.Get":
 				res.resp, res.err = s.dispatchGet(req)
 			case "SecurityAdminConfigurationsClient.NewListPager":
@@ -101,47 +101,6 @@ func (s *SecurityAdminConfigurationsServerTransport) dispatchToMethodFake(req *h
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
-}
-
-func (s *SecurityAdminConfigurationsServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Response, error) {
-	if s.srv.CreateOrUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/networkManagers/(?P<networkManagerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/securityAdminConfigurations/(?P<configurationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armnetwork.SecurityAdminConfiguration](req)
-	if err != nil {
-		return nil, err
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	networkManagerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("networkManagerName")])
-	if err != nil {
-		return nil, err
-	}
-	configurationNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("configurationName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := s.srv.CreateOrUpdate(req.Context(), resourceGroupNameParam, networkManagerNameParam, configurationNameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).SecurityAdminConfiguration, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
 }
 
 func (s *SecurityAdminConfigurationsServerTransport) dispatchBeginDelete(req *http.Request) (*http.Response, error) {
@@ -200,6 +159,47 @@ func (s *SecurityAdminConfigurationsServerTransport) dispatchBeginDelete(req *ht
 		s.beginDelete.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (s *SecurityAdminConfigurationsServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Response, error) {
+	if s.srv.CreateOrUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/networkManagers/(?P<networkManagerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/securityAdminConfigurations/(?P<configurationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armnetwork.SecurityAdminConfiguration](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	networkManagerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("networkManagerName")])
+	if err != nil {
+		return nil, err
+	}
+	configurationNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("configurationName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := s.srv.CreateOrUpdate(req.Context(), resourceGroupNameParam, networkManagerNameParam, configurationNameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).SecurityAdminConfiguration, req)
+	if err != nil {
+		return nil, err
+	}
 	return resp, nil
 }
 

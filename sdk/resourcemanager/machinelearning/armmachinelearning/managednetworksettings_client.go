@@ -44,6 +44,176 @@ func NewManagedNetworkSettingsClient(subscriptionID string, credential azcore.To
 	return client, nil
 }
 
+// BeginPatch - Patch API for managed network settings of a machine learning workspace.
+//
+// Patch API for managed network settings of a machine learning workspace.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - Azure Machine Learning Workspace Name
+//   - managedNetworkName - Name of the managedNetwork associated with the workspace. Only 'default' is supported.
+//   - body - The Managed Network Settings object of the workspace.
+//   - options - ManagedNetworkSettingsClientBeginPatchOptions contains the optional parameters for the ManagedNetworkSettingsClient.BeginPatch
+//     method.
+func (client *ManagedNetworkSettingsClient) BeginPatch(ctx context.Context, resourceGroupName string, workspaceName string, managedNetworkName string, body ManagedNetworkSettingsPropertiesBasicResource, options *ManagedNetworkSettingsClientBeginPatchOptions) (*runtime.Poller[ManagedNetworkSettingsClientPatchResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.patch(ctx, resourceGroupName, workspaceName, managedNetworkName, body, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ManagedNetworkSettingsClientPatchResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ManagedNetworkSettingsClientPatchResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// patch - Patch API for managed network settings of a machine learning workspace.
+//
+// Patch API for managed network settings of a machine learning workspace.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ManagedNetworkSettingsClient) patch(ctx context.Context, resourceGroupName string, workspaceName string, managedNetworkName string, body ManagedNetworkSettingsPropertiesBasicResource, options *ManagedNetworkSettingsClientBeginPatchOptions) (*http.Response, error) {
+	var err error
+	const operationName = "ManagedNetworkSettingsClient.BeginPatch"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.patchCreateRequest(ctx, resourceGroupName, workspaceName, managedNetworkName, body, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// patchCreateRequest creates the patch request.
+func (client *ManagedNetworkSettingsClient) patchCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, managedNetworkName string, body ManagedNetworkSettingsPropertiesBasicResource, _ *ManagedNetworkSettingsClientBeginPatchOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/managedNetworks/{managedNetworkName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if workspaceName == "" {
+		return nil, errors.New("parameter workspaceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
+	if managedNetworkName == "" {
+		return nil, errors.New("parameter managedNetworkName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{managedNetworkName}", url.PathEscape(managedNetworkName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260315Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginPut - PUT API for managed network settings of a machine learning workspace.
+//
+// PUT API for managed network settings of a machine learning workspace.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - Azure Machine Learning Workspace Name
+//   - managedNetworkName - Name of the managedNetwork associated with the workspace. Only 'default' is supported.
+//   - body - The Managed Network Settings object of the workspace.
+//   - options - ManagedNetworkSettingsClientBeginPutOptions contains the optional parameters for the ManagedNetworkSettingsClient.BeginPut
+//     method.
+func (client *ManagedNetworkSettingsClient) BeginPut(ctx context.Context, resourceGroupName string, workspaceName string, managedNetworkName string, body ManagedNetworkSettingsPropertiesBasicResource, options *ManagedNetworkSettingsClientBeginPutOptions) (*runtime.Poller[ManagedNetworkSettingsClientPutResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.put(ctx, resourceGroupName, workspaceName, managedNetworkName, body, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ManagedNetworkSettingsClientPutResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ManagedNetworkSettingsClientPutResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// put - PUT API for managed network settings of a machine learning workspace.
+//
+// PUT API for managed network settings of a machine learning workspace.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ManagedNetworkSettingsClient) put(ctx context.Context, resourceGroupName string, workspaceName string, managedNetworkName string, body ManagedNetworkSettingsPropertiesBasicResource, options *ManagedNetworkSettingsClientBeginPutOptions) (*http.Response, error) {
+	var err error
+	const operationName = "ManagedNetworkSettingsClient.BeginPut"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.putCreateRequest(ctx, resourceGroupName, workspaceName, managedNetworkName, body, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// putCreateRequest creates the put request.
+func (client *ManagedNetworkSettingsClient) putCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, managedNetworkName string, body ManagedNetworkSettingsPropertiesBasicResource, _ *ManagedNetworkSettingsClientBeginPutOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/managedNetworks/{managedNetworkName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if workspaceName == "" {
+		return nil, errors.New("parameter workspaceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
+	if managedNetworkName == "" {
+		return nil, errors.New("parameter managedNetworkName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{managedNetworkName}", url.PathEscape(managedNetworkName))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260315Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
 // Get - Get the managed network settings for a machine learning workspace.
 //
 // Get API for managed network settings of a machine learning workspace.
@@ -189,174 +359,4 @@ func (client *ManagedNetworkSettingsClient) listHandleResponse(resp *http.Respon
 		return ManagedNetworkSettingsClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginPatch - Patch API for managed network settings of a machine learning workspace.
-//
-// Patch API for managed network settings of a machine learning workspace.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - Azure Machine Learning Workspace Name
-//   - managedNetworkName - Name of the managedNetwork associated with the workspace. Only 'default' is supported.
-//   - body - The Managed Network Settings object of the workspace.
-//   - options - ManagedNetworkSettingsClientBeginPatchOptions contains the optional parameters for the ManagedNetworkSettingsClient.BeginPatch
-//     method.
-func (client *ManagedNetworkSettingsClient) BeginPatch(ctx context.Context, resourceGroupName string, workspaceName string, managedNetworkName string, body ManagedNetworkSettingsPropertiesBasicResource, options *ManagedNetworkSettingsClientBeginPatchOptions) (*runtime.Poller[ManagedNetworkSettingsClientPatchResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.patch(ctx, resourceGroupName, workspaceName, managedNetworkName, body, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ManagedNetworkSettingsClientPatchResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ManagedNetworkSettingsClientPatchResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Patch - Patch API for managed network settings of a machine learning workspace.
-//
-// Patch API for managed network settings of a machine learning workspace.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *ManagedNetworkSettingsClient) patch(ctx context.Context, resourceGroupName string, workspaceName string, managedNetworkName string, body ManagedNetworkSettingsPropertiesBasicResource, options *ManagedNetworkSettingsClientBeginPatchOptions) (*http.Response, error) {
-	var err error
-	const operationName = "ManagedNetworkSettingsClient.BeginPatch"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.patchCreateRequest(ctx, resourceGroupName, workspaceName, managedNetworkName, body, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// patchCreateRequest creates the Patch request.
-func (client *ManagedNetworkSettingsClient) patchCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, managedNetworkName string, body ManagedNetworkSettingsPropertiesBasicResource, _ *ManagedNetworkSettingsClientBeginPatchOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/managedNetworks/{managedNetworkName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if workspaceName == "" {
-		return nil, errors.New("parameter workspaceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	if managedNetworkName == "" {
-		return nil, errors.New("parameter managedNetworkName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{managedNetworkName}", url.PathEscape(managedNetworkName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, body); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// BeginPut - PUT API for managed network settings of a machine learning workspace.
-//
-// PUT API for managed network settings of a machine learning workspace.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - Azure Machine Learning Workspace Name
-//   - managedNetworkName - Name of the managedNetwork associated with the workspace. Only 'default' is supported.
-//   - body - The Managed Network Settings object of the workspace.
-//   - options - ManagedNetworkSettingsClientBeginPutOptions contains the optional parameters for the ManagedNetworkSettingsClient.BeginPut
-//     method.
-func (client *ManagedNetworkSettingsClient) BeginPut(ctx context.Context, resourceGroupName string, workspaceName string, managedNetworkName string, body ManagedNetworkSettingsPropertiesBasicResource, options *ManagedNetworkSettingsClientBeginPutOptions) (*runtime.Poller[ManagedNetworkSettingsClientPutResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.put(ctx, resourceGroupName, workspaceName, managedNetworkName, body, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ManagedNetworkSettingsClientPutResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ManagedNetworkSettingsClientPutResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Put - PUT API for managed network settings of a machine learning workspace.
-//
-// PUT API for managed network settings of a machine learning workspace.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *ManagedNetworkSettingsClient) put(ctx context.Context, resourceGroupName string, workspaceName string, managedNetworkName string, body ManagedNetworkSettingsPropertiesBasicResource, options *ManagedNetworkSettingsClientBeginPutOptions) (*http.Response, error) {
-	var err error
-	const operationName = "ManagedNetworkSettingsClient.BeginPut"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.putCreateRequest(ctx, resourceGroupName, workspaceName, managedNetworkName, body, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// putCreateRequest creates the Put request.
-func (client *ManagedNetworkSettingsClient) putCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, managedNetworkName string, body ManagedNetworkSettingsPropertiesBasicResource, _ *ManagedNetworkSettingsClientBeginPutOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/managedNetworks/{managedNetworkName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if workspaceName == "" {
-		return nil, errors.New("parameter workspaceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	if managedNetworkName == "" {
-		return nil, errors.New("parameter managedNetworkName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{managedNetworkName}", url.PathEscape(managedNetworkName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, body); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

@@ -168,8 +168,8 @@ func ExampleRouteFiltersClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/RouteFilterList.json
-func ExampleRouteFiltersClient_NewListPager() {
+// Generated from example definition: 2026-01-01/RouteFilterListByResourceGroup.json
+func ExampleRouteFiltersClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -179,7 +179,7 @@ func ExampleRouteFiltersClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewRouteFiltersClient().NewListPager(nil)
+	pager := clientFactory.NewRouteFiltersClient().NewListByResourceGroupPager("rg1", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -190,7 +190,7 @@ func ExampleRouteFiltersClient_NewListPager() {
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armnetwork.RouteFiltersClientListResponse{
+		// page = armnetwork.RouteFiltersClientListByResourceGroupResponse{
 		// 	RouteFilterListResult: armnetwork.RouteFilterListResult{
 		// 		Value: []*armnetwork.RouteFilter{
 		// 			{
@@ -230,8 +230,8 @@ func ExampleRouteFiltersClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-01-01/RouteFilterListByResourceGroup.json
-func ExampleRouteFiltersClient_NewListByResourceGroupPager() {
+// Generated from example definition: 2026-01-01/RouteFilterList.json
+func ExampleRouteFiltersClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -241,7 +241,7 @@ func ExampleRouteFiltersClient_NewListByResourceGroupPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewRouteFiltersClient().NewListByResourceGroupPager("rg1", nil)
+	pager := clientFactory.NewRouteFiltersClient().NewListPager(nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -252,7 +252,7 @@ func ExampleRouteFiltersClient_NewListByResourceGroupPager() {
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armnetwork.RouteFiltersClientListByResourceGroupResponse{
+		// page = armnetwork.RouteFiltersClientListResponse{
 		// 	RouteFilterListResult: armnetwork.RouteFilterListResult{
 		// 		Value: []*armnetwork.RouteFilter{
 		// 			{

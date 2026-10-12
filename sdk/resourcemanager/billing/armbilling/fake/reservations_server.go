@@ -22,6 +22,10 @@ import (
 
 // ReservationsServer is a fake server for instances of the armbilling.ReservationsClient type.
 type ReservationsServer struct {
+	// BeginUpdateByBillingAccount is the fake for method ReservationsClient.BeginUpdateByBillingAccount
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdateByBillingAccount func(ctx context.Context, billingAccountName string, reservationOrderID string, reservationID string, body armbilling.Patch, options *armbilling.ReservationsClientBeginUpdateByBillingAccountOptions) (resp azfake.PollerResponder[armbilling.ReservationsClientUpdateByBillingAccountResponse], errResp azfake.ErrorResponder)
+
 	// GetByReservationOrder is the fake for method ReservationsClient.GetByReservationOrder
 	// HTTP status codes to indicate success: http.StatusOK
 	GetByReservationOrder func(ctx context.Context, billingAccountName string, reservationOrderID string, reservationID string, options *armbilling.ReservationsClientGetByReservationOrderOptions) (resp azfake.Responder[armbilling.ReservationsClientGetByReservationOrderResponse], errResp azfake.ErrorResponder)
@@ -37,10 +41,6 @@ type ReservationsServer struct {
 	// NewListByReservationOrderPager is the fake for method ReservationsClient.NewListByReservationOrderPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByReservationOrderPager func(billingAccountName string, reservationOrderID string, options *armbilling.ReservationsClientListByReservationOrderOptions) (resp azfake.PagerResponder[armbilling.ReservationsClientListByReservationOrderResponse])
-
-	// BeginUpdateByBillingAccount is the fake for method ReservationsClient.BeginUpdateByBillingAccount
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdateByBillingAccount func(ctx context.Context, billingAccountName string, reservationOrderID string, reservationID string, body armbilling.Patch, options *armbilling.ReservationsClientBeginUpdateByBillingAccountOptions) (resp azfake.PollerResponder[armbilling.ReservationsClientUpdateByBillingAccountResponse], errResp azfake.ErrorResponder)
 }
 
 // NewReservationsServerTransport creates a new instance of ReservationsServerTransport with the provided implementation.
@@ -49,10 +49,10 @@ type ReservationsServer struct {
 func NewReservationsServerTransport(srv *ReservationsServer) *ReservationsServerTransport {
 	return &ReservationsServerTransport{
 		srv:                            srv,
+		beginUpdateByBillingAccount:    newTracker[azfake.PollerResponder[armbilling.ReservationsClientUpdateByBillingAccountResponse]](),
 		newListByBillingAccountPager:   newTracker[azfake.PagerResponder[armbilling.ReservationsClientListByBillingAccountResponse]](),
 		newListByBillingProfilePager:   newTracker[azfake.PagerResponder[armbilling.ReservationsClientListByBillingProfileResponse]](),
 		newListByReservationOrderPager: newTracker[azfake.PagerResponder[armbilling.ReservationsClientListByReservationOrderResponse]](),
-		beginUpdateByBillingAccount:    newTracker[azfake.PollerResponder[armbilling.ReservationsClientUpdateByBillingAccountResponse]](),
 	}
 }
 
@@ -60,10 +60,10 @@ func NewReservationsServerTransport(srv *ReservationsServer) *ReservationsServer
 // Don't use this type directly, use NewReservationsServerTransport instead.
 type ReservationsServerTransport struct {
 	srv                            *ReservationsServer
+	beginUpdateByBillingAccount    *tracker[azfake.PollerResponder[armbilling.ReservationsClientUpdateByBillingAccountResponse]]
 	newListByBillingAccountPager   *tracker[azfake.PagerResponder[armbilling.ReservationsClientListByBillingAccountResponse]]
 	newListByBillingProfilePager   *tracker[azfake.PagerResponder[armbilling.ReservationsClientListByBillingProfileResponse]]
 	newListByReservationOrderPager *tracker[azfake.PagerResponder[armbilling.ReservationsClientListByReservationOrderResponse]]
-	beginUpdateByBillingAccount    *tracker[azfake.PollerResponder[armbilling.ReservationsClientUpdateByBillingAccountResponse]]
 }
 
 // Do implements the policy.Transporter interface for ReservationsServerTransport.
@@ -87,6 +87,8 @@ func (r *ReservationsServerTransport) dispatchToMethodFake(req *http.Request, me
 		}
 		if !intercepted {
 			switch method {
+			case "ReservationsClient.BeginUpdateByBillingAccount":
+				res.resp, res.err = r.dispatchBeginUpdateByBillingAccount(req)
 			case "ReservationsClient.GetByReservationOrder":
 				res.resp, res.err = r.dispatchGetByReservationOrder(req)
 			case "ReservationsClient.NewListByBillingAccountPager":
@@ -95,8 +97,6 @@ func (r *ReservationsServerTransport) dispatchToMethodFake(req *http.Request, me
 				res.resp, res.err = r.dispatchNewListByBillingProfilePager(req)
 			case "ReservationsClient.NewListByReservationOrderPager":
 				res.resp, res.err = r.dispatchNewListByReservationOrderPager(req)
-			case "ReservationsClient.BeginUpdateByBillingAccount":
-				res.resp, res.err = r.dispatchBeginUpdateByBillingAccount(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -111,6 +111,58 @@ func (r *ReservationsServerTransport) dispatchToMethodFake(req *http.Request, me
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
+}
+
+func (r *ReservationsServerTransport) dispatchBeginUpdateByBillingAccount(req *http.Request) (*http.Response, error) {
+	if r.srv.BeginUpdateByBillingAccount == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdateByBillingAccount not implemented")}
+	}
+	beginUpdateByBillingAccount := r.beginUpdateByBillingAccount.get(req)
+	if beginUpdateByBillingAccount == nil {
+		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/reservationOrders/(?P<reservationOrderId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/reservations/(?P<reservationId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armbilling.Patch](req)
+		if err != nil {
+			return nil, err
+		}
+		billingAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingAccountName")])
+		if err != nil {
+			return nil, err
+		}
+		reservationOrderIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("reservationOrderId")])
+		if err != nil {
+			return nil, err
+		}
+		reservationIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("reservationId")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := r.srv.BeginUpdateByBillingAccount(req.Context(), billingAccountNameParam, reservationOrderIDParam, reservationIDParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdateByBillingAccount = &respr
+		r.beginUpdateByBillingAccount.add(req, beginUpdateByBillingAccount)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdateByBillingAccount, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		r.beginUpdateByBillingAccount.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdateByBillingAccount) {
+		r.beginUpdateByBillingAccount.remove(req)
+	}
+
+	return resp, nil
 }
 
 func (r *ReservationsServerTransport) dispatchGetByReservationOrder(req *http.Request) (*http.Response, error) {
@@ -346,58 +398,6 @@ func (r *ReservationsServerTransport) dispatchNewListByReservationOrderPager(req
 	if !server.PagerResponderMore(newListByReservationOrderPager) {
 		r.newListByReservationOrderPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (r *ReservationsServerTransport) dispatchBeginUpdateByBillingAccount(req *http.Request) (*http.Response, error) {
-	if r.srv.BeginUpdateByBillingAccount == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdateByBillingAccount not implemented")}
-	}
-	beginUpdateByBillingAccount := r.beginUpdateByBillingAccount.get(req)
-	if beginUpdateByBillingAccount == nil {
-		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/reservationOrders/(?P<reservationOrderId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/reservations/(?P<reservationId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armbilling.Patch](req)
-		if err != nil {
-			return nil, err
-		}
-		billingAccountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("billingAccountName")])
-		if err != nil {
-			return nil, err
-		}
-		reservationOrderIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("reservationOrderId")])
-		if err != nil {
-			return nil, err
-		}
-		reservationIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("reservationId")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := r.srv.BeginUpdateByBillingAccount(req.Context(), billingAccountNameParam, reservationOrderIDParam, reservationIDParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdateByBillingAccount = &respr
-		r.beginUpdateByBillingAccount.add(req, beginUpdateByBillingAccount)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdateByBillingAccount, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		r.beginUpdateByBillingAccount.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdateByBillingAccount) {
-		r.beginUpdateByBillingAccount.remove(req)
-	}
-
 	return resp, nil
 }
 

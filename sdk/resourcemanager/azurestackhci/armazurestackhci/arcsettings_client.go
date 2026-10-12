@@ -44,6 +44,315 @@ func NewArcSettingsClient(subscriptionID string, credential azcore.TokenCredenti
 	return client, nil
 }
 
+// BeginCreateIdentity - Create Aad identity for arc settings.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - clusterName - The name of the cluster.
+//   - arcSettingName - The name of the proxy resource holding details of HCI ArcSetting information.
+//   - options - ArcSettingsClientBeginCreateIdentityOptions contains the optional parameters for the ArcSettingsClient.BeginCreateIdentity
+//     method.
+func (client *ArcSettingsClient) BeginCreateIdentity(ctx context.Context, resourceGroupName string, clusterName string, arcSettingName string, options *ArcSettingsClientBeginCreateIdentityOptions) (*runtime.Poller[ArcSettingsClientCreateIdentityResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createIdentity(ctx, resourceGroupName, clusterName, arcSettingName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ArcSettingsClientCreateIdentityResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ArcSettingsClientCreateIdentityResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// createIdentity - Create Aad identity for arc settings.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ArcSettingsClient) createIdentity(ctx context.Context, resourceGroupName string, clusterName string, arcSettingName string, options *ArcSettingsClientBeginCreateIdentityOptions) (*http.Response, error) {
+	var err error
+	const operationName = "ArcSettingsClient.BeginCreateIdentity"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.createIdentityCreateRequest(ctx, resourceGroupName, clusterName, arcSettingName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// createIdentityCreateRequest creates the createIdentity request.
+func (client *ArcSettingsClient) createIdentityCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, arcSettingName string, _ *ArcSettingsClientBeginCreateIdentityOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/clusters/{clusterName}/arcSettings/{arcSettingName}/createArcIdentity"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if clusterName == "" {
+		return nil, errors.New("parameter clusterName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
+	if arcSettingName == "" {
+		return nil, errors.New("parameter arcSettingName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{arcSettingName}", url.PathEscape(arcSettingName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260430)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// BeginDelete - Delete ArcSetting resource details of HCI Cluster.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - clusterName - The name of the cluster.
+//   - arcSettingName - The name of the proxy resource holding details of HCI ArcSetting information.
+//   - options - ArcSettingsClientBeginDeleteOptions contains the optional parameters for the ArcSettingsClient.BeginDelete method.
+func (client *ArcSettingsClient) BeginDelete(ctx context.Context, resourceGroupName string, clusterName string, arcSettingName string, options *ArcSettingsClientBeginDeleteOptions) (*runtime.Poller[ArcSettingsClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, clusterName, arcSettingName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ArcSettingsClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ArcSettingsClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// deleteOperation - Delete ArcSetting resource details of HCI Cluster.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ArcSettingsClient) deleteOperation(ctx context.Context, resourceGroupName string, clusterName string, arcSettingName string, options *ArcSettingsClientBeginDeleteOptions) (*http.Response, error) {
+	var err error
+	const operationName = "ArcSettingsClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.deleteCreateRequest(ctx, resourceGroupName, clusterName, arcSettingName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// deleteCreateRequest creates the delete request.
+func (client *ArcSettingsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, arcSettingName string, _ *ArcSettingsClientBeginDeleteOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/clusters/{clusterName}/arcSettings/{arcSettingName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if clusterName == "" {
+		return nil, errors.New("parameter clusterName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
+	if arcSettingName == "" {
+		return nil, errors.New("parameter arcSettingName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{arcSettingName}", url.PathEscape(arcSettingName))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260430)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginInitializeDisableProcess - Initializes ARC Disable process on the cluster
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - clusterName - The name of the cluster.
+//   - arcSettingName - The name of the proxy resource holding details of HCI ArcSetting information.
+//   - options - ArcSettingsClientBeginInitializeDisableProcessOptions contains the optional parameters for the ArcSettingsClient.BeginInitializeDisableProcess
+//     method.
+func (client *ArcSettingsClient) BeginInitializeDisableProcess(ctx context.Context, resourceGroupName string, clusterName string, arcSettingName string, options *ArcSettingsClientBeginInitializeDisableProcessOptions) (*runtime.Poller[ArcSettingsClientInitializeDisableProcessResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.initializeDisableProcess(ctx, resourceGroupName, clusterName, arcSettingName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ArcSettingsClientInitializeDisableProcessResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ArcSettingsClientInitializeDisableProcessResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// initializeDisableProcess - Initializes ARC Disable process on the cluster
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ArcSettingsClient) initializeDisableProcess(ctx context.Context, resourceGroupName string, clusterName string, arcSettingName string, options *ArcSettingsClientBeginInitializeDisableProcessOptions) (*http.Response, error) {
+	var err error
+	const operationName = "ArcSettingsClient.BeginInitializeDisableProcess"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.initializeDisableProcessCreateRequest(ctx, resourceGroupName, clusterName, arcSettingName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// initializeDisableProcessCreateRequest creates the initializeDisableProcess request.
+func (client *ArcSettingsClient) initializeDisableProcessCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, arcSettingName string, _ *ArcSettingsClientBeginInitializeDisableProcessOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/clusters/{clusterName}/arcSettings/{arcSettingName}/initializeDisableProcess"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if clusterName == "" {
+		return nil, errors.New("parameter clusterName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
+	if arcSettingName == "" {
+		return nil, errors.New("parameter arcSettingName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{arcSettingName}", url.PathEscape(arcSettingName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260430)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginReconcile - Reconcile Arc Settings with information related to all nodes.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - clusterName - The name of the cluster.
+//   - arcSettingName - The name of the proxy resource holding details of HCI ArcSetting information.
+//   - reconcileArcSettingsRequest - Request for reconciling Arc Settings.
+//   - options - ArcSettingsClientBeginReconcileOptions contains the optional parameters for the ArcSettingsClient.BeginReconcile
+//     method.
+func (client *ArcSettingsClient) BeginReconcile(ctx context.Context, resourceGroupName string, clusterName string, arcSettingName string, reconcileArcSettingsRequest ReconcileArcSettingsRequest, options *ArcSettingsClientBeginReconcileOptions) (*runtime.Poller[ArcSettingsClientReconcileResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.reconcile(ctx, resourceGroupName, clusterName, arcSettingName, reconcileArcSettingsRequest, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ArcSettingsClientReconcileResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ArcSettingsClientReconcileResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// reconcile - Reconcile Arc Settings with information related to all nodes.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ArcSettingsClient) reconcile(ctx context.Context, resourceGroupName string, clusterName string, arcSettingName string, reconcileArcSettingsRequest ReconcileArcSettingsRequest, options *ArcSettingsClientBeginReconcileOptions) (*http.Response, error) {
+	var err error
+	const operationName = "ArcSettingsClient.BeginReconcile"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.reconcileCreateRequest(ctx, resourceGroupName, clusterName, arcSettingName, reconcileArcSettingsRequest, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// reconcileCreateRequest creates the reconcile request.
+func (client *ArcSettingsClient) reconcileCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, arcSettingName string, reconcileArcSettingsRequest ReconcileArcSettingsRequest, _ *ArcSettingsClientBeginReconcileOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/clusters/{clusterName}/arcSettings/{arcSettingName}/reconcile"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if clusterName == "" {
+		return nil, errors.New("parameter clusterName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
+	if arcSettingName == "" {
+		return nil, errors.New("parameter arcSettingName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{arcSettingName}", url.PathEscape(arcSettingName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260430)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, reconcileArcSettingsRequest); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
 // ConsentAndInstallDefaultExtensions - Add consent time for default extensions and initiate extensions installation
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
@@ -180,157 +489,6 @@ func (client *ArcSettingsClient) createHandleResponse(resp *http.Response, succe
 	return result, nil
 }
 
-// BeginCreateIdentity - Create Aad identity for arc settings.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - clusterName - The name of the cluster.
-//   - arcSettingName - The name of the proxy resource holding details of HCI ArcSetting information.
-//   - options - ArcSettingsClientBeginCreateIdentityOptions contains the optional parameters for the ArcSettingsClient.BeginCreateIdentity
-//     method.
-func (client *ArcSettingsClient) BeginCreateIdentity(ctx context.Context, resourceGroupName string, clusterName string, arcSettingName string, options *ArcSettingsClientBeginCreateIdentityOptions) (*runtime.Poller[ArcSettingsClientCreateIdentityResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.createIdentity(ctx, resourceGroupName, clusterName, arcSettingName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ArcSettingsClientCreateIdentityResponse]{
-			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
-			Tracer:        client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ArcSettingsClientCreateIdentityResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// CreateIdentity - Create Aad identity for arc settings.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *ArcSettingsClient) createIdentity(ctx context.Context, resourceGroupName string, clusterName string, arcSettingName string, options *ArcSettingsClientBeginCreateIdentityOptions) (*http.Response, error) {
-	var err error
-	const operationName = "ArcSettingsClient.BeginCreateIdentity"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.createIdentityCreateRequest(ctx, resourceGroupName, clusterName, arcSettingName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// createIdentityCreateRequest creates the CreateIdentity request.
-func (client *ArcSettingsClient) createIdentityCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, arcSettingName string, _ *ArcSettingsClientBeginCreateIdentityOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/clusters/{clusterName}/arcSettings/{arcSettingName}/createArcIdentity"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if clusterName == "" {
-		return nil, errors.New("parameter clusterName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
-	if arcSettingName == "" {
-		return nil, errors.New("parameter arcSettingName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{arcSettingName}", url.PathEscape(arcSettingName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260430)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// BeginDelete - Delete ArcSetting resource details of HCI Cluster.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - clusterName - The name of the cluster.
-//   - arcSettingName - The name of the proxy resource holding details of HCI ArcSetting information.
-//   - options - ArcSettingsClientBeginDeleteOptions contains the optional parameters for the ArcSettingsClient.BeginDelete method.
-func (client *ArcSettingsClient) BeginDelete(ctx context.Context, resourceGroupName string, clusterName string, arcSettingName string, options *ArcSettingsClientBeginDeleteOptions) (*runtime.Poller[ArcSettingsClientDeleteResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.deleteOperation(ctx, resourceGroupName, clusterName, arcSettingName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ArcSettingsClientDeleteResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ArcSettingsClientDeleteResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Delete - Delete ArcSetting resource details of HCI Cluster.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *ArcSettingsClient) deleteOperation(ctx context.Context, resourceGroupName string, clusterName string, arcSettingName string, options *ArcSettingsClientBeginDeleteOptions) (*http.Response, error) {
-	var err error
-	const operationName = "ArcSettingsClient.BeginDelete"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.deleteCreateRequest(ctx, resourceGroupName, clusterName, arcSettingName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// deleteCreateRequest creates the Delete request.
-func (client *ArcSettingsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, arcSettingName string, _ *ArcSettingsClientBeginDeleteOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/clusters/{clusterName}/arcSettings/{arcSettingName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if clusterName == "" {
-		return nil, errors.New("parameter clusterName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
-	if arcSettingName == "" {
-		return nil, errors.New("parameter arcSettingName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{arcSettingName}", url.PathEscape(arcSettingName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260430)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	return req, nil
-}
-
 // GeneratePassword - Generate password for arc settings.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
@@ -462,82 +620,6 @@ func (client *ArcSettingsClient) getHandleResponse(resp *http.Response, successC
 	return result, nil
 }
 
-// BeginInitializeDisableProcess - Initializes ARC Disable process on the cluster
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - clusterName - The name of the cluster.
-//   - arcSettingName - The name of the proxy resource holding details of HCI ArcSetting information.
-//   - options - ArcSettingsClientBeginInitializeDisableProcessOptions contains the optional parameters for the ArcSettingsClient.BeginInitializeDisableProcess
-//     method.
-func (client *ArcSettingsClient) BeginInitializeDisableProcess(ctx context.Context, resourceGroupName string, clusterName string, arcSettingName string, options *ArcSettingsClientBeginInitializeDisableProcessOptions) (*runtime.Poller[ArcSettingsClientInitializeDisableProcessResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.initializeDisableProcess(ctx, resourceGroupName, clusterName, arcSettingName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ArcSettingsClientInitializeDisableProcessResponse]{
-			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
-			Tracer:        client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ArcSettingsClientInitializeDisableProcessResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// InitializeDisableProcess - Initializes ARC Disable process on the cluster
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *ArcSettingsClient) initializeDisableProcess(ctx context.Context, resourceGroupName string, clusterName string, arcSettingName string, options *ArcSettingsClientBeginInitializeDisableProcessOptions) (*http.Response, error) {
-	var err error
-	const operationName = "ArcSettingsClient.BeginInitializeDisableProcess"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.initializeDisableProcessCreateRequest(ctx, resourceGroupName, clusterName, arcSettingName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// initializeDisableProcessCreateRequest creates the InitializeDisableProcess request.
-func (client *ArcSettingsClient) initializeDisableProcessCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, arcSettingName string, _ *ArcSettingsClientBeginInitializeDisableProcessOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/clusters/{clusterName}/arcSettings/{arcSettingName}/initializeDisableProcess"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if clusterName == "" {
-		return nil, errors.New("parameter clusterName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
-	if arcSettingName == "" {
-		return nil, errors.New("parameter arcSettingName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{arcSettingName}", url.PathEscape(arcSettingName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260430)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	return req, nil
-}
-
 // NewListByClusterPager - Get ArcSetting resources of HCI Cluster.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
@@ -613,88 +695,6 @@ func (client *ArcSettingsClient) listByClusterHandleResponse(resp *http.Response
 		return ArcSettingsClientListByClusterResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginReconcile - Reconcile Arc Settings with information related to all nodes.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - clusterName - The name of the cluster.
-//   - arcSettingName - The name of the proxy resource holding details of HCI ArcSetting information.
-//   - reconcileArcSettingsRequest - Request for reconciling Arc Settings.
-//   - options - ArcSettingsClientBeginReconcileOptions contains the optional parameters for the ArcSettingsClient.BeginReconcile
-//     method.
-func (client *ArcSettingsClient) BeginReconcile(ctx context.Context, resourceGroupName string, clusterName string, arcSettingName string, reconcileArcSettingsRequest ReconcileArcSettingsRequest, options *ArcSettingsClientBeginReconcileOptions) (*runtime.Poller[ArcSettingsClientReconcileResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.reconcile(ctx, resourceGroupName, clusterName, arcSettingName, reconcileArcSettingsRequest, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ArcSettingsClientReconcileResponse]{
-			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
-			Tracer:        client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ArcSettingsClientReconcileResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Reconcile - Reconcile Arc Settings with information related to all nodes.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *ArcSettingsClient) reconcile(ctx context.Context, resourceGroupName string, clusterName string, arcSettingName string, reconcileArcSettingsRequest ReconcileArcSettingsRequest, options *ArcSettingsClientBeginReconcileOptions) (*http.Response, error) {
-	var err error
-	const operationName = "ArcSettingsClient.BeginReconcile"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.reconcileCreateRequest(ctx, resourceGroupName, clusterName, arcSettingName, reconcileArcSettingsRequest, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// reconcileCreateRequest creates the Reconcile request.
-func (client *ArcSettingsClient) reconcileCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, arcSettingName string, reconcileArcSettingsRequest ReconcileArcSettingsRequest, _ *ArcSettingsClientBeginReconcileOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/clusters/{clusterName}/arcSettings/{arcSettingName}/reconcile"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if clusterName == "" {
-		return nil, errors.New("parameter clusterName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
-	if arcSettingName == "" {
-		return nil, errors.New("parameter arcSettingName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{arcSettingName}", url.PathEscape(arcSettingName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260430)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, reconcileArcSettingsRequest); err != nil {
-		return nil, err
-	}
-	return req, nil
 }
 
 // Update - Update ArcSettings for HCI cluster.

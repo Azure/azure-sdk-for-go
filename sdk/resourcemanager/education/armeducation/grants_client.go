@@ -98,6 +98,71 @@ func (client *GrantsClient) getHandleResponse(resp *http.Response, successCodes 
 	return result, nil
 }
 
+// NewListAllPager - Get a list of grants that Microsoft has provided.
+//   - options - GrantsClientListAllOptions contains the optional parameters for the GrantsClient.NewListAllPager method.
+func (client *GrantsClient) NewListAllPager(options *GrantsClientListAllOptions) *runtime.Pager[GrantsClientListAllResponse] {
+	return runtime.NewPager(runtime.PagingHandler[GrantsClientListAllResponse]{
+		More: func(page GrantsClientListAllResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *GrantsClientListAllResponse) (GrantsClientListAllResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "GrantsClient.NewListAllPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listAllCreateRequest(ctx, nextLink, options)
+			if err != nil {
+				return GrantsClientListAllResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return GrantsClientListAllResponse{}, err
+			}
+			return client.listAllHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listAllCreateRequest creates the ListAll request.
+func (client *GrantsClient) listAllCreateRequest(ctx context.Context, nextLink string, options *GrantsClientListAllOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/providers/Microsoft.Education/grants"
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20211201Preview)
+		if options != nil && options.IncludeAllocatedBudget != nil {
+			reqQP.Set("includeAllocatedBudget", strconv.FormatBool(*options.IncludeAllocatedBudget))
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// listAllHandleResponse handles the ListAll response.
+func (client *GrantsClient) listAllHandleResponse(resp *http.Response, successCodes ...int) (GrantsClientListAllResponse, error) {
+	result := GrantsClientListAllResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.GrantListResponse); err != nil {
+		return GrantsClientListAllResponse{}, err
+	}
+	return result, nil
+}
+
 // NewListPager - Get details for a specific grant linked to the provided billing account and billing profile.
 //   - billingAccountName - The name of the billing account.
 //   - billingProfileName - The name of the billing profile.
@@ -169,71 +234,6 @@ func (client *GrantsClient) listHandleResponse(resp *http.Response, successCodes
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GrantListResponse); err != nil {
 		return GrantsClientListResponse{}, err
-	}
-	return result, nil
-}
-
-// NewListAllPager - Get a list of grants that Microsoft has provided.
-//   - options - GrantsClientListAllOptions contains the optional parameters for the GrantsClient.NewListAllPager method.
-func (client *GrantsClient) NewListAllPager(options *GrantsClientListAllOptions) *runtime.Pager[GrantsClientListAllResponse] {
-	return runtime.NewPager(runtime.PagingHandler[GrantsClientListAllResponse]{
-		More: func(page GrantsClientListAllResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *GrantsClientListAllResponse) (GrantsClientListAllResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "GrantsClient.NewListAllPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			req, err := client.listAllCreateRequest(ctx, nextLink, options)
-			if err != nil {
-				return GrantsClientListAllResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return GrantsClientListAllResponse{}, err
-			}
-			return client.listAllHandleResponse(resp, http.StatusOK)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listAllCreateRequest creates the ListAll request.
-func (client *GrantsClient) listAllCreateRequest(ctx context.Context, nextLink string, options *GrantsClientListAllOptions) (*policy.Request, error) {
-	firstPage := nextLink == ""
-	var req *policy.Request
-	var err error
-	if firstPage {
-		urlPath := "/providers/Microsoft.Education/grants"
-		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	} else {
-		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
-	}
-	if err != nil {
-		return nil, err
-	}
-	if firstPage {
-		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20211201Preview)
-		if options != nil && options.IncludeAllocatedBudget != nil {
-			reqQP.Set("includeAllocatedBudget", strconv.FormatBool(*options.IncludeAllocatedBudget))
-		}
-		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-		req.Raw().Header["Accept"] = []string{"application/json"}
-	}
-	return req, nil
-}
-
-// listAllHandleResponse handles the ListAll response.
-func (client *GrantsClient) listAllHandleResponse(resp *http.Response, successCodes ...int) (GrantsClientListAllResponse, error) {
-	result := GrantsClientListAllResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.GrantListResponse); err != nil {
-		return GrantsClientListAllResponse{}, err
 	}
 	return result, nil
 }

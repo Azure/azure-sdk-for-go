@@ -68,7 +68,7 @@ func (client *ServiceGatewaysClient) BeginCreateOrUpdate(ctx context.Context, re
 	}
 }
 
-// CreateOrUpdate - Creates or updates a service gateway.
+// createOrUpdate - Creates or updates a service gateway.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ServiceGatewaysClient) createOrUpdate(ctx context.Context, resourceGroupName string, serviceGatewayName string, parameters ServiceGateway, options *ServiceGatewaysClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -90,7 +90,7 @@ func (client *ServiceGatewaysClient) createOrUpdate(ctx context.Context, resourc
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *ServiceGatewaysClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serviceGatewayName string, parameters ServiceGateway, _ *ServiceGatewaysClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/serviceGateways/{serviceGatewayName}"
 	if client.subscriptionID == "" {
@@ -143,7 +143,7 @@ func (client *ServiceGatewaysClient) BeginDelete(ctx context.Context, resourceGr
 	}
 }
 
-// Delete - Deletes the specified service gateway.
+// deleteOperation - Deletes the specified service gateway.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ServiceGatewaysClient) deleteOperation(ctx context.Context, resourceGroupName string, serviceGatewayName string, options *ServiceGatewaysClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -165,7 +165,7 @@ func (client *ServiceGatewaysClient) deleteOperation(ctx context.Context, resour
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *ServiceGatewaysClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serviceGatewayName string, _ *ServiceGatewaysClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/serviceGateways/{serviceGatewayName}"
 	if client.subscriptionID == "" {
@@ -404,6 +404,73 @@ func (client *ServiceGatewaysClient) getServicesHandleResponse(resp *http.Respon
 	return result, nil
 }
 
+// NewListAllPager - Gets all the service gateways in a subscription.
+//   - options - ServiceGatewaysClientListAllOptions contains the optional parameters for the ServiceGatewaysClient.NewListAllPager
+//     method.
+func (client *ServiceGatewaysClient) NewListAllPager(options *ServiceGatewaysClientListAllOptions) *runtime.Pager[ServiceGatewaysClientListAllResponse] {
+	return runtime.NewPager(runtime.PagingHandler[ServiceGatewaysClientListAllResponse]{
+		More: func(page ServiceGatewaysClientListAllResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *ServiceGatewaysClientListAllResponse) (ServiceGatewaysClientListAllResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ServiceGatewaysClient.NewListAllPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listAllCreateRequest(ctx, nextLink, options)
+			if err != nil {
+				return ServiceGatewaysClientListAllResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ServiceGatewaysClientListAllResponse{}, err
+			}
+			return client.listAllHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listAllCreateRequest creates the ListAll request.
+func (client *ServiceGatewaysClient) listAllCreateRequest(ctx context.Context, nextLink string, _ *ServiceGatewaysClientListAllOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Network/serviceGateways"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260101)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// listAllHandleResponse handles the ListAll response.
+func (client *ServiceGatewaysClient) listAllHandleResponse(resp *http.Response, successCodes ...int) (ServiceGatewaysClientListAllResponse, error) {
+	result := ServiceGatewaysClientListAllResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ServiceGatewayListResult); err != nil {
+		return ServiceGatewaysClientListAllResponse{}, err
+	}
+	return result, nil
+}
+
 // NewListPager - Gets all the service gateways in a resource group.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - ServiceGatewaysClientListOptions contains the optional parameters for the ServiceGatewaysClient.NewListPager
@@ -472,73 +539,6 @@ func (client *ServiceGatewaysClient) listHandleResponse(resp *http.Response, suc
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServiceGatewayListResult); err != nil {
 		return ServiceGatewaysClientListResponse{}, err
-	}
-	return result, nil
-}
-
-// NewListAllPager - Gets all the service gateways in a subscription.
-//   - options - ServiceGatewaysClientListAllOptions contains the optional parameters for the ServiceGatewaysClient.NewListAllPager
-//     method.
-func (client *ServiceGatewaysClient) NewListAllPager(options *ServiceGatewaysClientListAllOptions) *runtime.Pager[ServiceGatewaysClientListAllResponse] {
-	return runtime.NewPager(runtime.PagingHandler[ServiceGatewaysClientListAllResponse]{
-		More: func(page ServiceGatewaysClientListAllResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *ServiceGatewaysClientListAllResponse) (ServiceGatewaysClientListAllResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ServiceGatewaysClient.NewListAllPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			req, err := client.listAllCreateRequest(ctx, nextLink, options)
-			if err != nil {
-				return ServiceGatewaysClientListAllResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ServiceGatewaysClientListAllResponse{}, err
-			}
-			return client.listAllHandleResponse(resp, http.StatusOK)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listAllCreateRequest creates the ListAll request.
-func (client *ServiceGatewaysClient) listAllCreateRequest(ctx context.Context, nextLink string, _ *ServiceGatewaysClientListAllOptions) (*policy.Request, error) {
-	firstPage := nextLink == ""
-	var req *policy.Request
-	var err error
-	if firstPage {
-		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Network/serviceGateways"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter subscriptionID cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	} else {
-		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
-	}
-	if err != nil {
-		return nil, err
-	}
-	if firstPage {
-		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260101)
-		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-		req.Raw().Header["Accept"] = []string{"application/json"}
-	}
-	return req, nil
-}
-
-// listAllHandleResponse handles the ListAll response.
-func (client *ServiceGatewaysClient) listAllHandleResponse(resp *http.Response, successCodes ...int) (ServiceGatewaysClientListAllResponse, error) {
-	result := ServiceGatewaysClientListAllResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ServiceGatewayListResult); err != nil {
-		return ServiceGatewaysClientListAllResponse{}, err
 	}
 	return result, nil
 }

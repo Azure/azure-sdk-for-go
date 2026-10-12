@@ -68,7 +68,7 @@ func (client *ManagedDashboardsClient) BeginCreate(ctx context.Context, resource
 	}
 }
 
-// Create - Create or update a dashboard for grafana resource. This API is idempotent, so user can either create a new dashboard
+// create - Create or update a dashboard for grafana resource. This API is idempotent, so user can either create a new dashboard
 // or update an existing dashboard.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ManagedDashboardsClient) create(ctx context.Context, resourceGroupName string, dashboardName string, requestBodyParameters ManagedDashboard, options *ManagedDashboardsClientBeginCreateOptions) (*http.Response, error) {
@@ -91,7 +91,7 @@ func (client *ManagedDashboardsClient) create(ctx context.Context, resourceGroup
 	return httpResp, nil
 }
 
-// createCreateRequest creates the Create request.
+// createCreateRequest creates the create request.
 func (client *ManagedDashboardsClient) createCreateRequest(ctx context.Context, resourceGroupName string, dashboardName string, requestBodyParameters ManagedDashboard, _ *ManagedDashboardsClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Dashboard/dashboards/{dashboardName}"
 	if client.subscriptionID == "" {
@@ -232,6 +232,73 @@ func (client *ManagedDashboardsClient) getHandleResponse(resp *http.Response, su
 	return result, nil
 }
 
+// NewListBySubscriptionPager - List all resources of dashboards under the specified subscription.
+//   - options - ManagedDashboardsClientListBySubscriptionOptions contains the optional parameters for the ManagedDashboardsClient.NewListBySubscriptionPager
+//     method.
+func (client *ManagedDashboardsClient) NewListBySubscriptionPager(options *ManagedDashboardsClientListBySubscriptionOptions) *runtime.Pager[ManagedDashboardsClientListBySubscriptionResponse] {
+	return runtime.NewPager(runtime.PagingHandler[ManagedDashboardsClientListBySubscriptionResponse]{
+		More: func(page ManagedDashboardsClientListBySubscriptionResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *ManagedDashboardsClientListBySubscriptionResponse) (ManagedDashboardsClientListBySubscriptionResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ManagedDashboardsClient.NewListBySubscriptionPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listBySubscriptionCreateRequest(ctx, nextLink, options)
+			if err != nil {
+				return ManagedDashboardsClientListBySubscriptionResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ManagedDashboardsClientListBySubscriptionResponse{}, err
+			}
+			return client.listBySubscriptionHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listBySubscriptionCreateRequest creates the ListBySubscription request.
+func (client *ManagedDashboardsClient) listBySubscriptionCreateRequest(ctx context.Context, nextLink string, _ *ManagedDashboardsClientListBySubscriptionOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Dashboard/dashboards"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250801)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// listBySubscriptionHandleResponse handles the ListBySubscription response.
+func (client *ManagedDashboardsClient) listBySubscriptionHandleResponse(resp *http.Response, successCodes ...int) (ManagedDashboardsClientListBySubscriptionResponse, error) {
+	result := ManagedDashboardsClientListBySubscriptionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedDashboardListResponse); err != nil {
+		return ManagedDashboardsClientListBySubscriptionResponse{}, err
+	}
+	return result, nil
+}
+
 // NewListPager - List all resources of dashboards under the specified resource group.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - ManagedDashboardsClientListOptions contains the optional parameters for the ManagedDashboardsClient.NewListPager
@@ -300,73 +367,6 @@ func (client *ManagedDashboardsClient) listHandleResponse(resp *http.Response, s
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedDashboardListResponse); err != nil {
 		return ManagedDashboardsClientListResponse{}, err
-	}
-	return result, nil
-}
-
-// NewListBySubscriptionPager - List all resources of dashboards under the specified subscription.
-//   - options - ManagedDashboardsClientListBySubscriptionOptions contains the optional parameters for the ManagedDashboardsClient.NewListBySubscriptionPager
-//     method.
-func (client *ManagedDashboardsClient) NewListBySubscriptionPager(options *ManagedDashboardsClientListBySubscriptionOptions) *runtime.Pager[ManagedDashboardsClientListBySubscriptionResponse] {
-	return runtime.NewPager(runtime.PagingHandler[ManagedDashboardsClientListBySubscriptionResponse]{
-		More: func(page ManagedDashboardsClientListBySubscriptionResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *ManagedDashboardsClientListBySubscriptionResponse) (ManagedDashboardsClientListBySubscriptionResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ManagedDashboardsClient.NewListBySubscriptionPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			req, err := client.listBySubscriptionCreateRequest(ctx, nextLink, options)
-			if err != nil {
-				return ManagedDashboardsClientListBySubscriptionResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ManagedDashboardsClientListBySubscriptionResponse{}, err
-			}
-			return client.listBySubscriptionHandleResponse(resp, http.StatusOK)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *ManagedDashboardsClient) listBySubscriptionCreateRequest(ctx context.Context, nextLink string, _ *ManagedDashboardsClientListBySubscriptionOptions) (*policy.Request, error) {
-	firstPage := nextLink == ""
-	var req *policy.Request
-	var err error
-	if firstPage {
-		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Dashboard/dashboards"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter subscriptionID cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	} else {
-		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
-	}
-	if err != nil {
-		return nil, err
-	}
-	if firstPage {
-		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250801)
-		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-		req.Raw().Header["Accept"] = []string{"application/json"}
-	}
-	return req, nil
-}
-
-// listBySubscriptionHandleResponse handles the ListBySubscription response.
-func (client *ManagedDashboardsClient) listBySubscriptionHandleResponse(resp *http.Response, successCodes ...int) (ManagedDashboardsClientListBySubscriptionResponse, error) {
-	result := ManagedDashboardsClientListBySubscriptionResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedDashboardListResponse); err != nil {
-		return ManagedDashboardsClientListBySubscriptionResponse{}, err
 	}
 	return result, nil
 }

@@ -445,6 +445,76 @@ func (client *EventHubsClient) getAuthorizationRuleHandleResponse(resp *http.Res
 	return result, nil
 }
 
+// ListKeys - Gets the ACS and SAS connection strings for the Event Hub.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - namespaceName - The Namespace name
+//   - eventHubName - The Event Hub name
+//   - authorizationRuleName - The authorization rule name.
+//   - options - EventHubsClientListKeysOptions contains the optional parameters for the EventHubsClient.ListKeys method.
+func (client *EventHubsClient) ListKeys(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, authorizationRuleName string, options *EventHubsClientListKeysOptions) (EventHubsClientListKeysResponse, error) {
+	var err error
+	const operationName = "EventHubsClient.ListKeys"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.listKeysCreateRequest(ctx, resourceGroupName, namespaceName, eventHubName, authorizationRuleName, options)
+	if err != nil {
+		return EventHubsClientListKeysResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return EventHubsClientListKeysResponse{}, err
+	}
+	return client.listKeysHandleResponse(httpResp, http.StatusOK)
+}
+
+// listKeysCreateRequest creates the ListKeys request.
+func (client *EventHubsClient) listKeysCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, authorizationRuleName string, _ *EventHubsClientListKeysOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/eventhubs/{eventHubName}/authorizationRules/{authorizationRuleName}/listKeys"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if namespaceName == "" {
+		return nil, errors.New("parameter namespaceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{namespaceName}", url.PathEscape(namespaceName))
+	if eventHubName == "" {
+		return nil, errors.New("parameter eventHubName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{eventHubName}", url.PathEscape(eventHubName))
+	if authorizationRuleName == "" {
+		return nil, errors.New("parameter authorizationRuleName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{authorizationRuleName}", url.PathEscape(authorizationRuleName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20250501Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// listKeysHandleResponse handles the ListKeys response.
+func (client *EventHubsClient) listKeysHandleResponse(resp *http.Response, successCodes ...int) (EventHubsClientListKeysResponse, error) {
+	result := EventHubsClientListKeysResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.AccessKeys); err != nil {
+		return EventHubsClientListKeysResponse{}, err
+	}
+	return result, nil
+}
+
 // NewListAuthorizationRulesPager - Gets the authorization rules for an Event Hub.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - namespaceName - The Namespace name
@@ -606,76 +676,6 @@ func (client *EventHubsClient) listByNamespaceHandleResponse(resp *http.Response
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ListResult); err != nil {
 		return EventHubsClientListByNamespaceResponse{}, err
-	}
-	return result, nil
-}
-
-// ListKeys - Gets the ACS and SAS connection strings for the Event Hub.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - namespaceName - The Namespace name
-//   - eventHubName - The Event Hub name
-//   - authorizationRuleName - The authorization rule name.
-//   - options - EventHubsClientListKeysOptions contains the optional parameters for the EventHubsClient.ListKeys method.
-func (client *EventHubsClient) ListKeys(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, authorizationRuleName string, options *EventHubsClientListKeysOptions) (EventHubsClientListKeysResponse, error) {
-	var err error
-	const operationName = "EventHubsClient.ListKeys"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.listKeysCreateRequest(ctx, resourceGroupName, namespaceName, eventHubName, authorizationRuleName, options)
-	if err != nil {
-		return EventHubsClientListKeysResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return EventHubsClientListKeysResponse{}, err
-	}
-	return client.listKeysHandleResponse(httpResp, http.StatusOK)
-}
-
-// listKeysCreateRequest creates the ListKeys request.
-func (client *EventHubsClient) listKeysCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, authorizationRuleName string, _ *EventHubsClientListKeysOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/eventhubs/{eventHubName}/authorizationRules/{authorizationRuleName}/listKeys"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if namespaceName == "" {
-		return nil, errors.New("parameter namespaceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{namespaceName}", url.PathEscape(namespaceName))
-	if eventHubName == "" {
-		return nil, errors.New("parameter eventHubName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{eventHubName}", url.PathEscape(eventHubName))
-	if authorizationRuleName == "" {
-		return nil, errors.New("parameter authorizationRuleName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{authorizationRuleName}", url.PathEscape(authorizationRuleName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// listKeysHandleResponse handles the ListKeys response.
-func (client *EventHubsClient) listKeysHandleResponse(resp *http.Response, successCodes ...int) (EventHubsClientListKeysResponse, error) {
-	result := EventHubsClientListKeysResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.AccessKeys); err != nil {
-		return EventHubsClientListKeysResponse{}, err
 	}
 	return result, nil
 }

@@ -71,7 +71,7 @@ func (client *DatabaseMigrationsMongoToCosmosDbvCoreMongoClient) BeginCreate(ctx
 	}
 }
 
-// Create - Create or Update Database Migration resource.
+// create - Create or Update Database Migration resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *DatabaseMigrationsMongoToCosmosDbvCoreMongoClient) create(ctx context.Context, resourceGroupName string, targetResourceName string, migrationName string, parameters DatabaseMigrationCosmosDbMongo, options *DatabaseMigrationsMongoToCosmosDbvCoreMongoClientBeginCreateOptions) (*http.Response, error) {
 	var err error
@@ -93,7 +93,7 @@ func (client *DatabaseMigrationsMongoToCosmosDbvCoreMongoClient) create(ctx cont
 	return httpResp, nil
 }
 
-// createCreateRequest creates the Create request.
+// createCreateRequest creates the create request.
 func (client *DatabaseMigrationsMongoToCosmosDbvCoreMongoClient) createCreateRequest(ctx context.Context, resourceGroupName string, targetResourceName string, migrationName string, parameters DatabaseMigrationCosmosDbMongo, _ *DatabaseMigrationsMongoToCosmosDbvCoreMongoClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/mongoClusters/{targetResourceName}/providers/Microsoft.DataMigration/databaseMigrations/{migrationName}"
 	if client.subscriptionID == "" {
@@ -151,7 +151,7 @@ func (client *DatabaseMigrationsMongoToCosmosDbvCoreMongoClient) BeginDelete(ctx
 	}
 }
 
-// Delete - Delete Database Migration resource.
+// deleteOperation - Delete Database Migration resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *DatabaseMigrationsMongoToCosmosDbvCoreMongoClient) deleteOperation(ctx context.Context, resourceGroupName string, targetResourceName string, migrationName string, options *DatabaseMigrationsMongoToCosmosDbvCoreMongoClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -173,7 +173,7 @@ func (client *DatabaseMigrationsMongoToCosmosDbvCoreMongoClient) deleteOperation
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *DatabaseMigrationsMongoToCosmosDbvCoreMongoClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, targetResourceName string, migrationName string, options *DatabaseMigrationsMongoToCosmosDbvCoreMongoClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/mongoClusters/{targetResourceName}/providers/Microsoft.DataMigration/databaseMigrations/{migrationName}"
 	if client.subscriptionID == "" {

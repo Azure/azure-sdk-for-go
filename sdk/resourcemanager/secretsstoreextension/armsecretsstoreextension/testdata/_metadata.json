@@ -2,5 +2,5 @@
   "apiVersions": {
     "Microsoft.SecretSyncController": "2026-09-25-preview"
   },
-  "emitterVersion": "0.17.4"
+  "emitterVersion": "0.17.6"
 }

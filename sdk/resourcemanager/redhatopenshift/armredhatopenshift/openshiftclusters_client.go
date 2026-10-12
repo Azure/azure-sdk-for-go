@@ -71,7 +71,7 @@ func (client *OpenShiftClustersClient) BeginCreateOrUpdate(ctx context.Context, 
 	}
 }
 
-// CreateOrUpdate - Creates or updates a OpenShift cluster with the specified subscription, resource group and resource name.
+// createOrUpdate - Creates or updates a OpenShift cluster with the specified subscription, resource group and resource name.
 //
 // The operation returns properties of a OpenShift cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -95,7 +95,7 @@ func (client *OpenShiftClustersClient) createOrUpdate(ctx context.Context, resou
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *OpenShiftClustersClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, parameters OpenShiftCluster, _ *OpenShiftClustersClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RedHatOpenShift/openShiftClusters/{resourceName}"
 	if client.subscriptionID == "" {
@@ -150,7 +150,7 @@ func (client *OpenShiftClustersClient) BeginDelete(ctx context.Context, resource
 	}
 }
 
-// Delete - Deletes a OpenShift cluster with the specified subscription, resource group and resource name.
+// deleteOperation - Deletes a OpenShift cluster with the specified subscription, resource group and resource name.
 //
 // The operation returns nothing.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -174,7 +174,7 @@ func (client *OpenShiftClustersClient) deleteOperation(ctx context.Context, reso
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *OpenShiftClustersClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, _ *OpenShiftClustersClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RedHatOpenShift/openShiftClusters/{resourceName}"
 	if client.subscriptionID == "" {
@@ -196,6 +196,86 @@ func (client *OpenShiftClustersClient) deleteCreateRequest(ctx context.Context, 
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", version20250725)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginUpdate - Creates or updates a OpenShift cluster with the specified subscription, resource group and resource name.
+//
+// The operation returns properties of a OpenShift cluster.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - resourceName - The name of the OpenShift cluster resource.
+//   - parameters - The OpenShift cluster resource.
+//   - options - OpenShiftClustersClientBeginUpdateOptions contains the optional parameters for the OpenShiftClustersClient.BeginUpdate
+//     method.
+func (client *OpenShiftClustersClient) BeginUpdate(ctx context.Context, resourceGroupName string, resourceName string, parameters OpenShiftClusterUpdate, options *OpenShiftClustersClientBeginUpdateOptions) (*runtime.Poller[OpenShiftClustersClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, resourceName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[OpenShiftClustersClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[OpenShiftClustersClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Creates or updates a OpenShift cluster with the specified subscription, resource group and resource name.
+//
+// The operation returns properties of a OpenShift cluster.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *OpenShiftClustersClient) update(ctx context.Context, resourceGroupName string, resourceName string, parameters OpenShiftClusterUpdate, options *OpenShiftClustersClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "OpenShiftClustersClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, resourceName, parameters, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *OpenShiftClustersClient) updateCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, parameters OpenShiftClusterUpdate, _ *OpenShiftClustersClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RedHatOpenShift/openShiftClusters/{resourceName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if resourceName == "" {
+		return nil, errors.New("parameter resourceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20250725)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
+		return nil, err
+	}
 	return req, nil
 }
 
@@ -261,75 +341,6 @@ func (client *OpenShiftClustersClient) getHandleResponse(resp *http.Response, su
 	return result, nil
 }
 
-// NewListPager - Lists OpenShift clusters in the specified subscription.
-//
-// The operation returns properties of each OpenShift cluster.
-//   - options - OpenShiftClustersClientListOptions contains the optional parameters for the OpenShiftClustersClient.NewListPager
-//     method.
-func (client *OpenShiftClustersClient) NewListPager(options *OpenShiftClustersClientListOptions) *runtime.Pager[OpenShiftClustersClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[OpenShiftClustersClientListResponse]{
-		More: func(page OpenShiftClustersClientListResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *OpenShiftClustersClientListResponse) (OpenShiftClustersClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "OpenShiftClustersClient.NewListPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			req, err := client.listCreateRequest(ctx, nextLink, options)
-			if err != nil {
-				return OpenShiftClustersClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return OpenShiftClustersClientListResponse{}, err
-			}
-			return client.listHandleResponse(resp, http.StatusOK)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listCreateRequest creates the List request.
-func (client *OpenShiftClustersClient) listCreateRequest(ctx context.Context, nextLink string, _ *OpenShiftClustersClientListOptions) (*policy.Request, error) {
-	firstPage := nextLink == ""
-	var req *policy.Request
-	var err error
-	if firstPage {
-		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.RedHatOpenShift/openShiftClusters"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter subscriptionID cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	} else {
-		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
-	}
-	if err != nil {
-		return nil, err
-	}
-	if firstPage {
-		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250725)
-		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-		req.Raw().Header["Accept"] = []string{"application/json"}
-	}
-	return req, nil
-}
-
-// listHandleResponse handles the List response.
-func (client *OpenShiftClustersClient) listHandleResponse(resp *http.Response, successCodes ...int) (OpenShiftClustersClientListResponse, error) {
-	result := OpenShiftClustersClientListResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.OpenShiftClusterList); err != nil {
-		return OpenShiftClustersClientListResponse{}, err
-	}
-	return result, nil
-}
-
 // ListAdminCredentials - Lists admin kubeconfig of an OpenShift cluster with the specified subscription, resource group and
 // resource name.
 //
@@ -390,6 +401,70 @@ func (client *OpenShiftClustersClient) listAdminCredentialsHandleResponse(resp *
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OpenShiftClusterAdminKubeconfig); err != nil {
 		return OpenShiftClustersClientListAdminCredentialsResponse{}, err
+	}
+	return result, nil
+}
+
+// ListCredentials - Lists credentials of an OpenShift cluster with the specified subscription, resource group and resource
+// name.
+//
+// The operation returns the credentials.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - resourceName - The name of the OpenShift cluster resource.
+//   - options - OpenShiftClustersClientListCredentialsOptions contains the optional parameters for the OpenShiftClustersClient.ListCredentials
+//     method.
+func (client *OpenShiftClustersClient) ListCredentials(ctx context.Context, resourceGroupName string, resourceName string, options *OpenShiftClustersClientListCredentialsOptions) (OpenShiftClustersClientListCredentialsResponse, error) {
+	var err error
+	const operationName = "OpenShiftClustersClient.ListCredentials"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.listCredentialsCreateRequest(ctx, resourceGroupName, resourceName, options)
+	if err != nil {
+		return OpenShiftClustersClientListCredentialsResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return OpenShiftClustersClientListCredentialsResponse{}, err
+	}
+	return client.listCredentialsHandleResponse(httpResp, http.StatusOK)
+}
+
+// listCredentialsCreateRequest creates the ListCredentials request.
+func (client *OpenShiftClustersClient) listCredentialsCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, _ *OpenShiftClustersClientListCredentialsOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RedHatOpenShift/openShiftClusters/{resourceName}/listCredentials"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if resourceName == "" {
+		return nil, errors.New("parameter resourceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20250725)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// listCredentialsHandleResponse handles the ListCredentials response.
+func (client *OpenShiftClustersClient) listCredentialsHandleResponse(resp *http.Response, successCodes ...int) (OpenShiftClustersClientListCredentialsResponse, error) {
+	result := OpenShiftClustersClientListCredentialsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.OpenShiftClusterCredentials); err != nil {
+		return OpenShiftClustersClientListCredentialsResponse{}, err
 	}
 	return result, nil
 }
@@ -468,146 +543,71 @@ func (client *OpenShiftClustersClient) listByResourceGroupHandleResponse(resp *h
 	return result, nil
 }
 
-// ListCredentials - Lists credentials of an OpenShift cluster with the specified subscription, resource group and resource
-// name.
+// NewListPager - Lists OpenShift clusters in the specified subscription.
 //
-// The operation returns the credentials.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - resourceName - The name of the OpenShift cluster resource.
-//   - options - OpenShiftClustersClientListCredentialsOptions contains the optional parameters for the OpenShiftClustersClient.ListCredentials
+// The operation returns properties of each OpenShift cluster.
+//   - options - OpenShiftClustersClientListOptions contains the optional parameters for the OpenShiftClustersClient.NewListPager
 //     method.
-func (client *OpenShiftClustersClient) ListCredentials(ctx context.Context, resourceGroupName string, resourceName string, options *OpenShiftClustersClientListCredentialsOptions) (OpenShiftClustersClientListCredentialsResponse, error) {
-	var err error
-	const operationName = "OpenShiftClustersClient.ListCredentials"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.listCredentialsCreateRequest(ctx, resourceGroupName, resourceName, options)
-	if err != nil {
-		return OpenShiftClustersClientListCredentialsResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return OpenShiftClustersClientListCredentialsResponse{}, err
-	}
-	return client.listCredentialsHandleResponse(httpResp, http.StatusOK)
+func (client *OpenShiftClustersClient) NewListPager(options *OpenShiftClustersClientListOptions) *runtime.Pager[OpenShiftClustersClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[OpenShiftClustersClientListResponse]{
+		More: func(page OpenShiftClustersClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *OpenShiftClustersClientListResponse) (OpenShiftClustersClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "OpenShiftClustersClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listCreateRequest(ctx, nextLink, options)
+			if err != nil {
+				return OpenShiftClustersClientListResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return OpenShiftClustersClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
 }
 
-// listCredentialsCreateRequest creates the ListCredentials request.
-func (client *OpenShiftClustersClient) listCredentialsCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, _ *OpenShiftClustersClientListCredentialsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RedHatOpenShift/openShiftClusters/{resourceName}/listCredentials"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
+// listCreateRequest creates the List request.
+func (client *OpenShiftClustersClient) listCreateRequest(ctx context.Context, nextLink string, _ *OpenShiftClustersClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.RedHatOpenShift/openShiftClusters"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if resourceName == "" {
-		return nil, errors.New("parameter resourceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250725)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250725)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
-// listCredentialsHandleResponse handles the ListCredentials response.
-func (client *OpenShiftClustersClient) listCredentialsHandleResponse(resp *http.Response, successCodes ...int) (OpenShiftClustersClientListCredentialsResponse, error) {
-	result := OpenShiftClustersClientListCredentialsResponse{}
+// listHandleResponse handles the List response.
+func (client *OpenShiftClustersClient) listHandleResponse(resp *http.Response, successCodes ...int) (OpenShiftClustersClientListResponse, error) {
+	result := OpenShiftClustersClientListResponse{}
 	if !runtime.HasStatusCode(resp, successCodes...) {
 		return result, runtime.NewResponseError(resp)
 	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.OpenShiftClusterCredentials); err != nil {
-		return OpenShiftClustersClientListCredentialsResponse{}, err
+	if err := runtime.UnmarshalAsJSON(resp, &result.OpenShiftClusterList); err != nil {
+		return OpenShiftClustersClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginUpdate - Creates or updates a OpenShift cluster with the specified subscription, resource group and resource name.
-//
-// The operation returns properties of a OpenShift cluster.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - resourceName - The name of the OpenShift cluster resource.
-//   - parameters - The OpenShift cluster resource.
-//   - options - OpenShiftClustersClientBeginUpdateOptions contains the optional parameters for the OpenShiftClustersClient.BeginUpdate
-//     method.
-func (client *OpenShiftClustersClient) BeginUpdate(ctx context.Context, resourceGroupName string, resourceName string, parameters OpenShiftClusterUpdate, options *OpenShiftClustersClientBeginUpdateOptions) (*runtime.Poller[OpenShiftClustersClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, resourceName, parameters, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[OpenShiftClustersClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[OpenShiftClustersClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Creates or updates a OpenShift cluster with the specified subscription, resource group and resource name.
-//
-// The operation returns properties of a OpenShift cluster.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *OpenShiftClustersClient) update(ctx context.Context, resourceGroupName string, resourceName string, parameters OpenShiftClusterUpdate, options *OpenShiftClustersClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "OpenShiftClustersClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, resourceName, parameters, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *OpenShiftClustersClient) updateCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, parameters OpenShiftClusterUpdate, _ *OpenShiftClustersClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RedHatOpenShift/openShiftClusters/{resourceName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if resourceName == "" {
-		return nil, errors.New("parameter resourceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250725)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

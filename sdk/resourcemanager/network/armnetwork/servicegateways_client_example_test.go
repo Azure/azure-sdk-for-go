@@ -247,8 +247,8 @@ func ExampleServiceGatewaysClient_NewGetServicesPager() {
 	}
 }
 
-// Generated from example definition: 2026-01-01/ServiceGatewayList.json
-func ExampleServiceGatewaysClient_NewListPager() {
+// Generated from example definition: 2026-01-01/ServiceGatewayListAll.json
+func ExampleServiceGatewaysClient_NewListAllPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -258,7 +258,7 @@ func ExampleServiceGatewaysClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewServiceGatewaysClient().NewListPager("rg1", nil)
+	pager := clientFactory.NewServiceGatewaysClient().NewListAllPager(nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -269,7 +269,7 @@ func ExampleServiceGatewaysClient_NewListPager() {
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armnetwork.ServiceGatewaysClientListResponse{
+		// page = armnetwork.ServiceGatewaysClientListAllResponse{
 		// 	ServiceGatewayListResult: armnetwork.ServiceGatewayListResult{
 		// 		Value: []*armnetwork.ServiceGateway{
 		// 			{
@@ -320,8 +320,8 @@ func ExampleServiceGatewaysClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-01-01/ServiceGatewayListAll.json
-func ExampleServiceGatewaysClient_NewListAllPager() {
+// Generated from example definition: 2026-01-01/ServiceGatewayList.json
+func ExampleServiceGatewaysClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -331,7 +331,7 @@ func ExampleServiceGatewaysClient_NewListAllPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewServiceGatewaysClient().NewListAllPager(nil)
+	pager := clientFactory.NewServiceGatewaysClient().NewListPager("rg1", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -342,7 +342,7 @@ func ExampleServiceGatewaysClient_NewListAllPager() {
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armnetwork.ServiceGatewaysClientListAllResponse{
+		// page = armnetwork.ServiceGatewaysClientListResponse{
 		// 	ServiceGatewayListResult: armnetwork.ServiceGatewayListResult{
 		// 		Value: []*armnetwork.ServiceGateway{
 		// 			{

@@ -73,7 +73,7 @@ func (client *OutboundRuleClient) BeginCreateOrUpdate(ctx context.Context, resou
 	}
 }
 
-// CreateOrUpdate - The PUT API for creating or updating a single outbound rule of the managed network associated with the
+// createOrUpdate - The PUT API for creating or updating a single outbound rule of the managed network associated with the
 // cognitive services account.
 //
 // The PUT API for creating or updating a single outbound rule of the managed network associated with the cognitive services
@@ -99,7 +99,7 @@ func (client *OutboundRuleClient) createOrUpdate(ctx context.Context, resourceGr
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *OutboundRuleClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, managedNetworkName string, ruleName string, body OutboundRuleBasicResource, _ *OutboundRuleClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/managedNetworks/{managedNetworkName}/outboundRules/{ruleName}"
 	if client.subscriptionID == "" {
@@ -165,8 +165,8 @@ func (client *OutboundRuleClient) BeginDelete(ctx context.Context, resourceGroup
 	}
 }
 
-// Delete - The DELETE API for deleting a single outbound rule of the managed network associated with the cognitive services
-// account.
+// deleteOperation - The DELETE API for deleting a single outbound rule of the managed network associated with the cognitive
+// services account.
 //
 // The DELETE API for deleting a single outbound rule of the managed network associated with the cognitive services account.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -190,7 +190,7 @@ func (client *OutboundRuleClient) deleteOperation(ctx context.Context, resourceG
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *OutboundRuleClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, managedNetworkName string, ruleName string, _ *OutboundRuleClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/managedNetworks/{managedNetworkName}/outboundRules/{ruleName}"
 	if client.subscriptionID == "" {

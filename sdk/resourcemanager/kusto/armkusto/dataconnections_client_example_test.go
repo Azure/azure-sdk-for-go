@@ -13,37 +13,6 @@ import (
 	"time"
 )
 
-// Generated from example definition: 2025-02-14/KustoDataConnectionsCheckNameAvailability.json
-func ExampleDataConnectionsClient_CheckNameAvailability() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armkusto.NewClientFactory("12345678-1234-1234-1234-123456789098", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewDataConnectionsClient().CheckNameAvailability(ctx, "kustorptest", "kustoCluster", "KustoDatabase8", armkusto.DataConnectionCheckNameRequest{
-		Name: to.Ptr("DataConnections8"),
-		Type: to.Ptr("Microsoft.Kusto/clusters/databases/dataConnections"),
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armkusto.DataConnectionsClientCheckNameAvailabilityResponse{
-	// 	CheckNameResult: armkusto.CheckNameResult{
-	// 		Name: to.Ptr("DataConnections8"),
-	// 		Message: to.Ptr("Name 'DataConnections8' is already taken. Please specify a different name."),
-	// 		NameAvailable: to.Ptr(false),
-	// 		Reason: to.Ptr(armkusto.ReasonAlreadyExists),
-	// 	},
-	// }
-}
-
 // Generated from example definition: 2025-02-14/KustoDataConnectionsCosmosDbCreateOrUpdate.json
 func ExampleDataConnectionsClient_BeginCreateOrUpdate_kustoDataConnectionsCosmosDbCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -547,6 +516,312 @@ func ExampleDataConnectionsClient_BeginDelete() {
 	// }
 }
 
+// Generated from example definition: 2025-02-14/KustoDataConnectionsCosmosDbUpdate.json
+func ExampleDataConnectionsClient_BeginUpdate_kustoDataConnectionsCosmosDbUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armkusto.NewClientFactory("12345678-1234-1234-1234-123456789098", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewDataConnectionsClient().BeginUpdate(ctx, "kustorptest", "kustoCluster", "KustoDatabase1", "dataConnectionTest", &armkusto.CosmosDbDataConnection{
+		Kind:     to.Ptr(armkusto.DataConnectionKindCosmosDb),
+		Location: to.Ptr("westus"),
+		Properties: &armkusto.CosmosDbDataConnectionProperties{
+			CosmosDbAccountResourceID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.DocumentDb/databaseAccounts/cosmosDbAccountTest1"),
+			CosmosDbContainer:         to.Ptr("cosmosDbContainerTest"),
+			CosmosDbDatabase:          to.Ptr("cosmosDbDatabaseTest"),
+			ManagedIdentityResourceID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.ManagedIdentity/userAssignedIdentities/managedidentityTest1"),
+			MappingRuleName:           to.Ptr("TestMapping"),
+			RetrievalStartDate:        to.Ptr(time.Date(2022, time.July, 29, 12, 0, 0, 655461600, time.UTC)),
+			TableName:                 to.Ptr("TestTable"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armkusto.DataConnectionsClientUpdateResponse{
+	// 	DataConnectionClassification: &armkusto.CosmosDbDataConnection{
+	// 		Name: to.Ptr("kustoCluster/KustoDatabase1/dataConnectionTest"),
+	// 		Type: to.Ptr("Microsoft.Kusto/Clusters/Databases/DataConnections"),
+	// 		ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.Kusto/Clusters/kustoCluster/Databases/KustoDatabase1/DataConnections/dataConnectionTest"),
+	// 		Kind: to.Ptr(armkusto.DataConnectionKindCosmosDb),
+	// 		Location: to.Ptr("westus"),
+	// 		Properties: &armkusto.CosmosDbDataConnectionProperties{
+	// 			CosmosDbAccountResourceID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.DocumentDb/databaseAccounts/cosmosDbAccountTest1"),
+	// 			CosmosDbContainer: to.Ptr("cosmosDbContainerTest"),
+	// 			CosmosDbDatabase: to.Ptr("cosmosDbDatabaseTest"),
+	// 			ManagedIdentityObjectID: to.Ptr("87654321-1234-1234-1234-123456789123"),
+	// 			ManagedIdentityResourceID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.ManagedIdentity/userAssignedIdentities/managedidentityTest1"),
+	// 			MappingRuleName: to.Ptr("TestMapping"),
+	// 			RetrievalStartDate: to.Ptr(time.Date(2022, time.July, 29, 12, 0, 0, 655461600, time.UTC)),
+	// 			TableName: to.Ptr("TestTable"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-02-14/KustoDataConnectionsEventGridUpdate.json
+func ExampleDataConnectionsClient_BeginUpdate_kustoDataConnectionsEventGridUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armkusto.NewClientFactory("12345678-1234-1234-1234-123456789098", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewDataConnectionsClient().BeginUpdate(ctx, "kustorptest", "kustoCluster", "KustoDatabase8", "dataConnectionTest", &armkusto.EventGridDataConnection{
+		Kind:     to.Ptr(armkusto.DataConnectionKindEventGrid),
+		Location: to.Ptr("westus"),
+		Properties: &armkusto.EventGridConnectionProperties{
+			BlobStorageEventType:      to.Ptr(armkusto.BlobStorageEventTypeMicrosoftStorageBlobCreated),
+			ConsumerGroup:             to.Ptr("$Default"),
+			DataFormat:                to.Ptr(armkusto.EventGridDataFormatMULTIJSON),
+			DatabaseRouting:           to.Ptr(armkusto.DatabaseRoutingSingle),
+			EventGridResourceID:       to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.Storage/storageAccounts/teststorageaccount/providers/Microsoft.EventGrid/eventSubscriptions/eventSubscriptionTest"),
+			EventHubResourceID:        to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.EventHub/namespaces/eventhubTestns1/eventhubs/eventhubTest2"),
+			IgnoreFirstRecord:         to.Ptr(false),
+			ManagedIdentityResourceID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.ManagedIdentity/userAssignedIdentities/managedidentityTest1"),
+			MappingRuleName:           to.Ptr("TestMapping"),
+			StorageAccountResourceID:  to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.Storage/storageAccounts/teststorageaccount"),
+			TableName:                 to.Ptr("TestTable"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armkusto.DataConnectionsClientUpdateResponse{
+	// 	DataConnectionClassification: &armkusto.EventGridDataConnection{
+	// 		Name: to.Ptr("kustoCluster/KustoDatabase8/dataConnectionTest"),
+	// 		Type: to.Ptr("Microsoft.Kusto/Clusters/Databases/DataConnections"),
+	// 		ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.Kusto/Clusters/kustoCluster/Databases/KustoDatabase8/DataConnections/KustoDataConnection9"),
+	// 		Kind: to.Ptr(armkusto.DataConnectionKindEventGrid),
+	// 		Location: to.Ptr("westus"),
+	// 		Properties: &armkusto.EventGridConnectionProperties{
+	// 			BlobStorageEventType: to.Ptr(armkusto.BlobStorageEventTypeMicrosoftStorageBlobCreated),
+	// 			ConsumerGroup: to.Ptr("$Default"),
+	// 			DataFormat: to.Ptr(armkusto.EventGridDataFormatMULTIJSON),
+	// 			DatabaseRouting: to.Ptr(armkusto.DatabaseRoutingSingle),
+	// 			EventGridResourceID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.Storage/storageAccounts/teststorageaccount/providers/Microsoft.EventGrid/eventSubscriptions/eventSubscriptionTest"),
+	// 			EventHubResourceID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.EventHub/namespaces/eventhubTestns1/eventhubs/eventhubTest2"),
+	// 			IgnoreFirstRecord: to.Ptr(false),
+	// 			ManagedIdentityObjectID: to.Ptr("87654321-1234-1234-1234-123456789123"),
+	// 			ManagedIdentityResourceID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.ManagedIdentity/userAssignedIdentities/managedidentityTest1"),
+	// 			MappingRuleName: to.Ptr("TestMapping"),
+	// 			StorageAccountResourceID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.Storage/storageAccounts/teststorageaccount"),
+	// 			TableName: to.Ptr("TestTable"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-02-14/KustoDataConnectionsEventGridWithManagedIdentityUpdate.json
+func ExampleDataConnectionsClient_BeginUpdate_kustoDataConnectionsEventGridWithManagedIdentityUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armkusto.NewClientFactory("12345678-1234-1234-1234-123456789098", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewDataConnectionsClient().BeginUpdate(ctx, "kustorptest", "kustoCluster", "KustoDatabase8", "dataConnectionTest", &armkusto.EventGridDataConnectionWithManagedIdentity{
+		Location: to.Ptr("westus"),
+		Kind:     to.Ptr(armkusto.DataConnectionKindEventGridWithManagedIdentity),
+		Properties: &armkusto.EventGridConnectionWithManagedIdentityProperties{
+			IgnoreFirstRecord:                          to.Ptr(false),
+			StorageAccountResourceIDForManagedIdentity: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.Storage/storageAccounts/teststorageaccount"),
+			EventGridResourceID:                        to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.Storage/storageAccounts/teststorageaccount/providers/Microsoft.EventGrid/eventSubscriptions/eventSubscriptionTest"),
+			EventHubResourceIDForManagedIdentity:       to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.EventHub/namespaces/eventhubTestns1/eventhubs/eventhubTest2"),
+			ConsumerGroup:                              to.Ptr("$Default"),
+			TableName:                                  to.Ptr("TestTable"),
+			MappingRuleName:                            to.Ptr("TestMapping"),
+			DataFormat:                                 to.Ptr(armkusto.EventGridDataFormatMULTIJSON),
+			BlobStorageEventType:                       to.Ptr(armkusto.BlobStorageEventTypeMicrosoftStorageBlobCreated),
+			ManagedIdentityResourceID:                  to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.ManagedIdentity/userAssignedIdentities/managedidentityTest1"),
+			DatabaseRouting:                            to.Ptr(armkusto.DatabaseRoutingSingle),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armkusto.DataConnectionsClientUpdateResponse{
+	// 	DataConnectionClassification: &armkusto.EventGridDataConnectionWithManagedIdentity{
+	// 		ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.Kusto/Clusters/kustoCluster/Databases/KustoDatabase8/DataConnections/KustoDataConnection9"),
+	// 		Name: to.Ptr("kustoCluster/KustoDatabase8/dataConnectionTest"),
+	// 		Type: to.Ptr("Microsoft.Kusto/Clusters/Databases/DataConnections"),
+	// 		Location: to.Ptr("westus"),
+	// 		Kind: to.Ptr(armkusto.DataConnectionKindEventGridWithManagedIdentity),
+	// 		Properties: &armkusto.EventGridConnectionWithManagedIdentityProperties{
+	// 			IgnoreFirstRecord: to.Ptr(false),
+	// 			StorageAccountResourceIDForManagedIdentity: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.Storage/storageAccounts/teststorageaccount"),
+	// 			EventGridResourceID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.Storage/storageAccounts/teststorageaccount/providers/Microsoft.EventGrid/eventSubscriptions/eventSubscriptionTest"),
+	// 			EventHubResourceIDForManagedIdentity: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.EventHub/namespaces/eventhubTestns1/eventhubs/eventhubTest2"),
+	// 			ConsumerGroup: to.Ptr("$Default"),
+	// 			TableName: to.Ptr("TestTable"),
+	// 			MappingRuleName: to.Ptr("TestMapping"),
+	// 			DataFormat: to.Ptr(armkusto.EventGridDataFormatMULTIJSON),
+	// 			BlobStorageEventType: to.Ptr(armkusto.BlobStorageEventTypeMicrosoftStorageBlobCreated),
+	// 			ManagedIdentityResourceID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.ManagedIdentity/userAssignedIdentities/managedidentityTest1"),
+	// 			ManagedIdentityObjectID: to.Ptr("87654321-1234-1234-1234-123456789123"),
+	// 			DatabaseRouting: to.Ptr(armkusto.DatabaseRoutingSingle),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-02-14/KustoDataConnectionsEventHubWithManagedIdentityUpdate.json
+func ExampleDataConnectionsClient_BeginUpdate_kustoDataConnectionsEventHubWithManagedIdentityUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armkusto.NewClientFactory("12345678-1234-1234-1234-123456789098", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewDataConnectionsClient().BeginUpdate(ctx, "kustorptest", "kustoCluster", "KustoDatabase8", "dataConnectionTest", &armkusto.EventHubDataConnectionWithManagedIdentity{
+		Location: to.Ptr("westus"),
+		Kind:     to.Ptr(armkusto.DataConnectionKindEventHubWithManagedIdentity),
+		Properties: &armkusto.EventHubConnectionWithManagedIdentityProperties{
+			EventHubResourceIDForManagedIdentity: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.EventHub/namespaces/eventhubTestns1/eventhubs/eventhubTest1"),
+			ManagedIdentityResourceID:            to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.ManagedIdentity/userAssignedIdentities/managedidentityTest1"),
+			ConsumerGroup:                        to.Ptr("testConsumerGroup1"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armkusto.DataConnectionsClientUpdateResponse{
+	// 	DataConnectionClassification: &armkusto.EventHubDataConnectionWithManagedIdentity{
+	// 		ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.Kusto/Clusters/kustoCluster/Databases/KustoDatabase8/DataConnections/dataConnectionTest"),
+	// 		Name: to.Ptr("kustoCluster/KustoDatabase8/dataConnectionTest"),
+	// 		Type: to.Ptr("Microsoft.Kusto/Clusters/Databases/DataConnections"),
+	// 		Location: to.Ptr("westus"),
+	// 		Kind: to.Ptr(armkusto.DataConnectionKindEventHubWithManagedIdentity),
+	// 		Properties: &armkusto.EventHubConnectionWithManagedIdentityProperties{
+	// 			EventHubResourceIDForManagedIdentity: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.EventHub/namespaces/eventhubTestns1/eventhubs/eventhubTest1"),
+	// 			ManagedIdentityResourceID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.ManagedIdentity/userAssignedIdentities/managedidentityTest1"),
+	// 			ConsumerGroup: to.Ptr("testConsumerGroup1"),
+	// 			Compression: to.Ptr(armkusto.CompressionNone),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-02-14/KustoDataConnectionsUpdate.json
+func ExampleDataConnectionsClient_BeginUpdate_kustoDataConnectionsUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armkusto.NewClientFactory("12345678-1234-1234-1234-123456789098", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewDataConnectionsClient().BeginUpdate(ctx, "kustorptest", "kustoCluster", "KustoDatabase8", "dataConnectionTest", &armkusto.EventHubDataConnection{
+		Kind:     to.Ptr(armkusto.DataConnectionKindEventHub),
+		Location: to.Ptr("westus"),
+		Properties: &armkusto.EventHubConnectionProperties{
+			ConsumerGroup:             to.Ptr("testConsumerGroup1"),
+			EventHubResourceID:        to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.EventHub/namespaces/eventhubTestns1/eventhubs/eventhubTest1"),
+			ManagedIdentityResourceID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.ManagedIdentity/userAssignedIdentities/managedidentityTest1"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armkusto.DataConnectionsClientUpdateResponse{
+	// 	DataConnectionClassification: &armkusto.EventHubDataConnection{
+	// 		Name: to.Ptr("kustoCluster/KustoDatabase8/dataConnectionTest"),
+	// 		Type: to.Ptr("Microsoft.Kusto/Clusters/Databases/DataConnections"),
+	// 		ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.Kusto/Clusters/kustoCluster/Databases/KustoDatabase8/DataConnections/dataConnectionTest"),
+	// 		Kind: to.Ptr(armkusto.DataConnectionKindEventHub),
+	// 		Location: to.Ptr("westus"),
+	// 		Properties: &armkusto.EventHubConnectionProperties{
+	// 			Compression: to.Ptr(armkusto.CompressionNone),
+	// 			ConsumerGroup: to.Ptr("testConsumerGroup1"),
+	// 			EventHubResourceID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.EventHub/namespaces/eventhubTestns1/eventhubs/eventhubTest1"),
+	// 			ManagedIdentityResourceID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.ManagedIdentity/userAssignedIdentities/managedidentityTest1"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-02-14/KustoDataConnectionsCheckNameAvailability.json
+func ExampleDataConnectionsClient_CheckNameAvailability() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armkusto.NewClientFactory("12345678-1234-1234-1234-123456789098", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewDataConnectionsClient().CheckNameAvailability(ctx, "kustorptest", "kustoCluster", "KustoDatabase8", armkusto.DataConnectionCheckNameRequest{
+		Name: to.Ptr("DataConnections8"),
+		Type: to.Ptr("Microsoft.Kusto/clusters/databases/dataConnections"),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armkusto.DataConnectionsClientCheckNameAvailabilityResponse{
+	// 	CheckNameResult: armkusto.CheckNameResult{
+	// 		Name: to.Ptr("DataConnections8"),
+	// 		Message: to.Ptr("Name 'DataConnections8' is already taken. Please specify a different name."),
+	// 		NameAvailable: to.Ptr(false),
+	// 		Reason: to.Ptr(armkusto.ReasonAlreadyExists),
+	// 	},
+	// }
+}
+
 // Generated from example definition: 2025-02-14/KustoDataConnectionsCosmosDbGet.json
 func ExampleDataConnectionsClient_Get_kustoDataConnectionsCosmosDbGet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -854,279 +1129,4 @@ func ExampleDataConnectionsClient_NewListByDatabasePager() {
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2025-02-14/KustoDataConnectionsCosmosDbUpdate.json
-func ExampleDataConnectionsClient_BeginUpdate_kustoDataConnectionsCosmosDbUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armkusto.NewClientFactory("12345678-1234-1234-1234-123456789098", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewDataConnectionsClient().BeginUpdate(ctx, "kustorptest", "kustoCluster", "KustoDatabase1", "dataConnectionTest", &armkusto.CosmosDbDataConnection{
-		Kind:     to.Ptr(armkusto.DataConnectionKindCosmosDb),
-		Location: to.Ptr("westus"),
-		Properties: &armkusto.CosmosDbDataConnectionProperties{
-			CosmosDbAccountResourceID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.DocumentDb/databaseAccounts/cosmosDbAccountTest1"),
-			CosmosDbContainer:         to.Ptr("cosmosDbContainerTest"),
-			CosmosDbDatabase:          to.Ptr("cosmosDbDatabaseTest"),
-			ManagedIdentityResourceID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.ManagedIdentity/userAssignedIdentities/managedidentityTest1"),
-			MappingRuleName:           to.Ptr("TestMapping"),
-			RetrievalStartDate:        to.Ptr(time.Date(2022, time.July, 29, 12, 0, 0, 655461600, time.UTC)),
-			TableName:                 to.Ptr("TestTable"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armkusto.DataConnectionsClientUpdateResponse{
-	// 	DataConnectionClassification: &armkusto.CosmosDbDataConnection{
-	// 		Name: to.Ptr("kustoCluster/KustoDatabase1/dataConnectionTest"),
-	// 		Type: to.Ptr("Microsoft.Kusto/Clusters/Databases/DataConnections"),
-	// 		ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.Kusto/Clusters/kustoCluster/Databases/KustoDatabase1/DataConnections/dataConnectionTest"),
-	// 		Kind: to.Ptr(armkusto.DataConnectionKindCosmosDb),
-	// 		Location: to.Ptr("westus"),
-	// 		Properties: &armkusto.CosmosDbDataConnectionProperties{
-	// 			CosmosDbAccountResourceID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.DocumentDb/databaseAccounts/cosmosDbAccountTest1"),
-	// 			CosmosDbContainer: to.Ptr("cosmosDbContainerTest"),
-	// 			CosmosDbDatabase: to.Ptr("cosmosDbDatabaseTest"),
-	// 			ManagedIdentityObjectID: to.Ptr("87654321-1234-1234-1234-123456789123"),
-	// 			ManagedIdentityResourceID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.ManagedIdentity/userAssignedIdentities/managedidentityTest1"),
-	// 			MappingRuleName: to.Ptr("TestMapping"),
-	// 			RetrievalStartDate: to.Ptr(time.Date(2022, time.July, 29, 12, 0, 0, 655461600, time.UTC)),
-	// 			TableName: to.Ptr("TestTable"),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-02-14/KustoDataConnectionsEventGridUpdate.json
-func ExampleDataConnectionsClient_BeginUpdate_kustoDataConnectionsEventGridUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armkusto.NewClientFactory("12345678-1234-1234-1234-123456789098", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewDataConnectionsClient().BeginUpdate(ctx, "kustorptest", "kustoCluster", "KustoDatabase8", "dataConnectionTest", &armkusto.EventGridDataConnection{
-		Kind:     to.Ptr(armkusto.DataConnectionKindEventGrid),
-		Location: to.Ptr("westus"),
-		Properties: &armkusto.EventGridConnectionProperties{
-			BlobStorageEventType:      to.Ptr(armkusto.BlobStorageEventTypeMicrosoftStorageBlobCreated),
-			ConsumerGroup:             to.Ptr("$Default"),
-			DataFormat:                to.Ptr(armkusto.EventGridDataFormatMULTIJSON),
-			DatabaseRouting:           to.Ptr(armkusto.DatabaseRoutingSingle),
-			EventGridResourceID:       to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.Storage/storageAccounts/teststorageaccount/providers/Microsoft.EventGrid/eventSubscriptions/eventSubscriptionTest"),
-			EventHubResourceID:        to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.EventHub/namespaces/eventhubTestns1/eventhubs/eventhubTest2"),
-			IgnoreFirstRecord:         to.Ptr(false),
-			ManagedIdentityResourceID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.ManagedIdentity/userAssignedIdentities/managedidentityTest1"),
-			MappingRuleName:           to.Ptr("TestMapping"),
-			StorageAccountResourceID:  to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.Storage/storageAccounts/teststorageaccount"),
-			TableName:                 to.Ptr("TestTable"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armkusto.DataConnectionsClientUpdateResponse{
-	// 	DataConnectionClassification: &armkusto.EventGridDataConnection{
-	// 		Name: to.Ptr("kustoCluster/KustoDatabase8/dataConnectionTest"),
-	// 		Type: to.Ptr("Microsoft.Kusto/Clusters/Databases/DataConnections"),
-	// 		ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.Kusto/Clusters/kustoCluster/Databases/KustoDatabase8/DataConnections/KustoDataConnection9"),
-	// 		Kind: to.Ptr(armkusto.DataConnectionKindEventGrid),
-	// 		Location: to.Ptr("westus"),
-	// 		Properties: &armkusto.EventGridConnectionProperties{
-	// 			BlobStorageEventType: to.Ptr(armkusto.BlobStorageEventTypeMicrosoftStorageBlobCreated),
-	// 			ConsumerGroup: to.Ptr("$Default"),
-	// 			DataFormat: to.Ptr(armkusto.EventGridDataFormatMULTIJSON),
-	// 			DatabaseRouting: to.Ptr(armkusto.DatabaseRoutingSingle),
-	// 			EventGridResourceID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.Storage/storageAccounts/teststorageaccount/providers/Microsoft.EventGrid/eventSubscriptions/eventSubscriptionTest"),
-	// 			EventHubResourceID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.EventHub/namespaces/eventhubTestns1/eventhubs/eventhubTest2"),
-	// 			IgnoreFirstRecord: to.Ptr(false),
-	// 			ManagedIdentityObjectID: to.Ptr("87654321-1234-1234-1234-123456789123"),
-	// 			ManagedIdentityResourceID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.ManagedIdentity/userAssignedIdentities/managedidentityTest1"),
-	// 			MappingRuleName: to.Ptr("TestMapping"),
-	// 			StorageAccountResourceID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.Storage/storageAccounts/teststorageaccount"),
-	// 			TableName: to.Ptr("TestTable"),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-02-14/KustoDataConnectionsEventGridWithManagedIdentityUpdate.json
-func ExampleDataConnectionsClient_BeginUpdate_kustoDataConnectionsEventGridWithManagedIdentityUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armkusto.NewClientFactory("12345678-1234-1234-1234-123456789098", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewDataConnectionsClient().BeginUpdate(ctx, "kustorptest", "kustoCluster", "KustoDatabase8", "dataConnectionTest", &armkusto.EventGridDataConnectionWithManagedIdentity{
-		Location: to.Ptr("westus"),
-		Kind:     to.Ptr(armkusto.DataConnectionKindEventGridWithManagedIdentity),
-		Properties: &armkusto.EventGridConnectionWithManagedIdentityProperties{
-			IgnoreFirstRecord:                          to.Ptr(false),
-			StorageAccountResourceIDForManagedIdentity: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.Storage/storageAccounts/teststorageaccount"),
-			EventGridResourceID:                        to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.Storage/storageAccounts/teststorageaccount/providers/Microsoft.EventGrid/eventSubscriptions/eventSubscriptionTest"),
-			EventHubResourceIDForManagedIdentity:       to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.EventHub/namespaces/eventhubTestns1/eventhubs/eventhubTest2"),
-			ConsumerGroup:                              to.Ptr("$Default"),
-			TableName:                                  to.Ptr("TestTable"),
-			MappingRuleName:                            to.Ptr("TestMapping"),
-			DataFormat:                                 to.Ptr(armkusto.EventGridDataFormatMULTIJSON),
-			BlobStorageEventType:                       to.Ptr(armkusto.BlobStorageEventTypeMicrosoftStorageBlobCreated),
-			ManagedIdentityResourceID:                  to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.ManagedIdentity/userAssignedIdentities/managedidentityTest1"),
-			DatabaseRouting:                            to.Ptr(armkusto.DatabaseRoutingSingle),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armkusto.DataConnectionsClientUpdateResponse{
-	// 	DataConnectionClassification: &armkusto.EventGridDataConnectionWithManagedIdentity{
-	// 		ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.Kusto/Clusters/kustoCluster/Databases/KustoDatabase8/DataConnections/KustoDataConnection9"),
-	// 		Name: to.Ptr("kustoCluster/KustoDatabase8/dataConnectionTest"),
-	// 		Type: to.Ptr("Microsoft.Kusto/Clusters/Databases/DataConnections"),
-	// 		Location: to.Ptr("westus"),
-	// 		Kind: to.Ptr(armkusto.DataConnectionKindEventGridWithManagedIdentity),
-	// 		Properties: &armkusto.EventGridConnectionWithManagedIdentityProperties{
-	// 			IgnoreFirstRecord: to.Ptr(false),
-	// 			StorageAccountResourceIDForManagedIdentity: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.Storage/storageAccounts/teststorageaccount"),
-	// 			EventGridResourceID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.Storage/storageAccounts/teststorageaccount/providers/Microsoft.EventGrid/eventSubscriptions/eventSubscriptionTest"),
-	// 			EventHubResourceIDForManagedIdentity: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.EventHub/namespaces/eventhubTestns1/eventhubs/eventhubTest2"),
-	// 			ConsumerGroup: to.Ptr("$Default"),
-	// 			TableName: to.Ptr("TestTable"),
-	// 			MappingRuleName: to.Ptr("TestMapping"),
-	// 			DataFormat: to.Ptr(armkusto.EventGridDataFormatMULTIJSON),
-	// 			BlobStorageEventType: to.Ptr(armkusto.BlobStorageEventTypeMicrosoftStorageBlobCreated),
-	// 			ManagedIdentityResourceID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.ManagedIdentity/userAssignedIdentities/managedidentityTest1"),
-	// 			ManagedIdentityObjectID: to.Ptr("87654321-1234-1234-1234-123456789123"),
-	// 			DatabaseRouting: to.Ptr(armkusto.DatabaseRoutingSingle),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-02-14/KustoDataConnectionsEventHubWithManagedIdentityUpdate.json
-func ExampleDataConnectionsClient_BeginUpdate_kustoDataConnectionsEventHubWithManagedIdentityUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armkusto.NewClientFactory("12345678-1234-1234-1234-123456789098", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewDataConnectionsClient().BeginUpdate(ctx, "kustorptest", "kustoCluster", "KustoDatabase8", "dataConnectionTest", &armkusto.EventHubDataConnectionWithManagedIdentity{
-		Location: to.Ptr("westus"),
-		Kind:     to.Ptr(armkusto.DataConnectionKindEventHubWithManagedIdentity),
-		Properties: &armkusto.EventHubConnectionWithManagedIdentityProperties{
-			EventHubResourceIDForManagedIdentity: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.EventHub/namespaces/eventhubTestns1/eventhubs/eventhubTest1"),
-			ManagedIdentityResourceID:            to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.ManagedIdentity/userAssignedIdentities/managedidentityTest1"),
-			ConsumerGroup:                        to.Ptr("testConsumerGroup1"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armkusto.DataConnectionsClientUpdateResponse{
-	// 	DataConnectionClassification: &armkusto.EventHubDataConnectionWithManagedIdentity{
-	// 		ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.Kusto/Clusters/kustoCluster/Databases/KustoDatabase8/DataConnections/dataConnectionTest"),
-	// 		Name: to.Ptr("kustoCluster/KustoDatabase8/dataConnectionTest"),
-	// 		Type: to.Ptr("Microsoft.Kusto/Clusters/Databases/DataConnections"),
-	// 		Location: to.Ptr("westus"),
-	// 		Kind: to.Ptr(armkusto.DataConnectionKindEventHubWithManagedIdentity),
-	// 		Properties: &armkusto.EventHubConnectionWithManagedIdentityProperties{
-	// 			EventHubResourceIDForManagedIdentity: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.EventHub/namespaces/eventhubTestns1/eventhubs/eventhubTest1"),
-	// 			ManagedIdentityResourceID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.ManagedIdentity/userAssignedIdentities/managedidentityTest1"),
-	// 			ConsumerGroup: to.Ptr("testConsumerGroup1"),
-	// 			Compression: to.Ptr(armkusto.CompressionNone),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-02-14/KustoDataConnectionsUpdate.json
-func ExampleDataConnectionsClient_BeginUpdate_kustoDataConnectionsUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armkusto.NewClientFactory("12345678-1234-1234-1234-123456789098", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewDataConnectionsClient().BeginUpdate(ctx, "kustorptest", "kustoCluster", "KustoDatabase8", "dataConnectionTest", &armkusto.EventHubDataConnection{
-		Kind:     to.Ptr(armkusto.DataConnectionKindEventHub),
-		Location: to.Ptr("westus"),
-		Properties: &armkusto.EventHubConnectionProperties{
-			ConsumerGroup:             to.Ptr("testConsumerGroup1"),
-			EventHubResourceID:        to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.EventHub/namespaces/eventhubTestns1/eventhubs/eventhubTest1"),
-			ManagedIdentityResourceID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.ManagedIdentity/userAssignedIdentities/managedidentityTest1"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armkusto.DataConnectionsClientUpdateResponse{
-	// 	DataConnectionClassification: &armkusto.EventHubDataConnection{
-	// 		Name: to.Ptr("kustoCluster/KustoDatabase8/dataConnectionTest"),
-	// 		Type: to.Ptr("Microsoft.Kusto/Clusters/Databases/DataConnections"),
-	// 		ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.Kusto/Clusters/kustoCluster/Databases/KustoDatabase8/DataConnections/dataConnectionTest"),
-	// 		Kind: to.Ptr(armkusto.DataConnectionKindEventHub),
-	// 		Location: to.Ptr("westus"),
-	// 		Properties: &armkusto.EventHubConnectionProperties{
-	// 			Compression: to.Ptr(armkusto.CompressionNone),
-	// 			ConsumerGroup: to.Ptr("testConsumerGroup1"),
-	// 			EventHubResourceID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.EventHub/namespaces/eventhubTestns1/eventhubs/eventhubTest1"),
-	// 			ManagedIdentityResourceID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.ManagedIdentity/userAssignedIdentities/managedidentityTest1"),
-	// 		},
-	// 	},
-	// }
 }

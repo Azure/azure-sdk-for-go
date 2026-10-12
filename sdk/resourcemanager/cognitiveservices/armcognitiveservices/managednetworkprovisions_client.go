@@ -70,7 +70,7 @@ func (client *ManagedNetworkProvisionsClient) BeginProvisionManagedNetwork(ctx c
 	}
 }
 
-// ProvisionManagedNetwork - Provisions the managed network of a cognitive services account.
+// provisionManagedNetwork - Provisions the managed network of a cognitive services account.
 //
 // Provisions the managed network of a cognitive services account.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -94,7 +94,7 @@ func (client *ManagedNetworkProvisionsClient) provisionManagedNetwork(ctx contex
 	return httpResp, nil
 }
 
-// provisionManagedNetworkCreateRequest creates the ProvisionManagedNetwork request.
+// provisionManagedNetworkCreateRequest creates the provisionManagedNetwork request.
 func (client *ManagedNetworkProvisionsClient) provisionManagedNetworkCreateRequest(ctx context.Context, resourceGroupName string, accountName string, managedNetworkName string, options *ManagedNetworkProvisionsClientBeginProvisionManagedNetworkOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/managedNetworks/{managedNetworkName}/provision"
 	if client.subscriptionID == "" {

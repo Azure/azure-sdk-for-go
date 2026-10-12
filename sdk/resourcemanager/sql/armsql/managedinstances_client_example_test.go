@@ -257,6 +257,459 @@ func ExampleManagedInstancesClient_BeginFailover() {
 	// }
 }
 
+// Generated from example definition: 2026-08-01-preview/ManagedInstanceReevaluateInaccessibleDatabaseState.json
+func ExampleManagedInstancesClient_BeginReevaluateInaccessibleDatabaseState() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsql.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewManagedInstancesClient().BeginReevaluateInaccessibleDatabaseState(ctx, "testrg", "testinstance", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armsql.ManagedInstancesClientReevaluateInaccessibleDatabaseStateResponse{
+	// }
+}
+
+// Generated from example definition: 2026-08-01-preview/ManagedInstanceRefreshExternalGovernanceStatus.json
+func ExampleManagedInstancesClient_BeginRefreshStatus() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsql.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewManagedInstancesClient().BeginRefreshStatus(ctx, "sqlcrudtest-7398", "sqlcrudtest-4645", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armsql.ManagedInstancesClientRefreshStatusResponse{
+	// 	RefreshExternalGovernanceStatusOperationResultMI: armsql.RefreshExternalGovernanceStatusOperationResultMI{
+	// 		Name: to.Ptr("9d9a794a-5cec-4f23-af70-d29511b522a4"),
+	// 		Type: to.Ptr("Microsoft.Sql/locations/refreshExternalGovernanceStatusMIOperationResults"),
+	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myResourceGroup/providers/Microsoft.Sql/locations/japaneast/refreshExternalGovernanceStatusMIOperationResults/9d9a794a-5cec-4f23-af70-d29511b522a4"),
+	// 		Properties: &armsql.RefreshExternalGovernanceStatusOperationResultPropertiesMI{
+	// 			ManagedInstanceName: to.Ptr("testsvr.database.windows.net"),
+	// 			QueuedTime: to.Ptr("2/12/2022 8:33:27 PM"),
+	// 			RequestID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 			RequestType: to.Ptr("UpdatePurviewMetadata"),
+	// 			Status: to.Ptr("Completed"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-08-01-preview/StartManagedInstance.json
+func ExampleManagedInstancesClient_BeginStart() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsql.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewManagedInstancesClient().BeginStart(ctx, "startrg", "mitostart", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armsql.ManagedInstancesClientStartResponse{
+	// 	ManagedInstance: armsql.ManagedInstance{
+	// 		Name: to.Ptr("mitostart"),
+	// 		Type: to.Ptr("Microsoft.Sql/managedInstances"),
+	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/startrg/providers/Microsoft.Sql/managedInstances/mitostart"),
+	// 		Location: to.Ptr("japaneast"),
+	// 		Properties: &armsql.ManagedInstanceProperties{
+	// 			AdministratorLogin: to.Ptr("dummylogin"),
+	// 			AuthenticationMetadata: to.Ptr(armsql.AuthMetadataLookupModesWindows),
+	// 			Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
+	// 			CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
+	// 			DatabaseFormat: to.Ptr(armsql.ManagedInstanceDatabaseFormatSQLServer2022),
+	// 			DNSZone: to.Ptr("1234567891234"),
+	// 			ExternalGovernanceStatus: to.Ptr(armsql.ExternalGovernanceStatusEnabled),
+	// 			FullyQualifiedDomainName: to.Ptr("mitostart.1234567891234.database.windows.net"),
+	// 			HybridSecondaryUsage: to.Ptr(armsql.HybridSecondaryUsagePassive),
+	// 			InstancePoolID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/startrg/providers/Microsoft.Sql/instancePools/instancePool1"),
+	// 			LicenseType: to.Ptr(armsql.ManagedInstanceLicenseTypeLicenseIncluded),
+	// 			MaintenanceConfigurationID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_JapanEast_MI_1"),
+	// 			MinimalTLSVersion: to.Ptr("1.2"),
+	// 			ProvisioningState: to.Ptr(armsql.ProvisioningStateSucceeded),
+	// 			ProxyOverride: to.Ptr(armsql.ManagedInstanceProxyOverrideDefault),
+	// 			PublicDataEndpointEnabled: to.Ptr(false),
+	// 			RequestedBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
+	// 			RequestedLogicalAvailabilityZone: to.Ptr(armsql.AvailabilityZoneTypeOne),
+	// 			ServicePrincipal: &armsql.ServicePrincipal{
+	// 				Type: to.Ptr(armsql.ServicePrincipalTypeSystemAssigned),
+	// 				ClientID: to.Ptr("00000011-1111-2222-2222-123456789111"),
+	// 				PrincipalID: to.Ptr("00000011-1111-2222-2222-123456789111"),
+	// 				TenantID: to.Ptr("00000011-1111-2222-2222-123456789111"),
+	// 			},
+	// 			State: to.Ptr("Ready"),
+	// 			StorageSizeInGB: to.Ptr[int32](1024),
+	// 			SubnetID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/startrg/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet1"),
+	// 			VCores: to.Ptr[int32](8),
+	// 		},
+	// 		SKU: &armsql.SKU{
+	// 			Name: to.Ptr("GP_Gen5"),
+	// 			Capacity: to.Ptr[int32](8),
+	// 			Family: to.Ptr("Gen5"),
+	// 			Tier: to.Ptr("GeneralPurpose"),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"key": to.Ptr("value"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-08-01-preview/StopManagedInstance.json
+func ExampleManagedInstancesClient_BeginStop() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsql.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewManagedInstancesClient().BeginStop(ctx, "stoprg", "mitostop", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armsql.ManagedInstancesClientStopResponse{
+	// 	ManagedInstance: armsql.ManagedInstance{
+	// 		Name: to.Ptr("mitostop"),
+	// 		Type: to.Ptr("Microsoft.Sql/managedInstances"),
+	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/stoprg/providers/Microsoft.Sql/managedInstances/mitostop"),
+	// 		Location: to.Ptr("japaneast"),
+	// 		Properties: &armsql.ManagedInstanceProperties{
+	// 			AdministratorLogin: to.Ptr("dummylogin"),
+	// 			AuthenticationMetadata: to.Ptr(armsql.AuthMetadataLookupModesWindows),
+	// 			Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
+	// 			CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
+	// 			DatabaseFormat: to.Ptr(armsql.ManagedInstanceDatabaseFormatSQLServer2022),
+	// 			DNSZone: to.Ptr("1234567891234"),
+	// 			ExternalGovernanceStatus: to.Ptr(armsql.ExternalGovernanceStatusEnabled),
+	// 			FullyQualifiedDomainName: to.Ptr("mitostop.1234567891234.database.windows.net"),
+	// 			HybridSecondaryUsage: to.Ptr(armsql.HybridSecondaryUsagePassive),
+	// 			InstancePoolID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/stoprg/providers/Microsoft.Sql/instancePools/instancePool1"),
+	// 			LicenseType: to.Ptr(armsql.ManagedInstanceLicenseTypeLicenseIncluded),
+	// 			MaintenanceConfigurationID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_JapanEast_MI_1"),
+	// 			MinimalTLSVersion: to.Ptr("1.2"),
+	// 			ProvisioningState: to.Ptr(armsql.ProvisioningStateSucceeded),
+	// 			ProxyOverride: to.Ptr(armsql.ManagedInstanceProxyOverrideDefault),
+	// 			PublicDataEndpointEnabled: to.Ptr(false),
+	// 			RequestedBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
+	// 			RequestedLogicalAvailabilityZone: to.Ptr(armsql.AvailabilityZoneTypeOne),
+	// 			ServicePrincipal: &armsql.ServicePrincipal{
+	// 				Type: to.Ptr(armsql.ServicePrincipalTypeSystemAssigned),
+	// 				ClientID: to.Ptr("00000011-1111-2222-2222-123456789111"),
+	// 				PrincipalID: to.Ptr("00000011-1111-2222-2222-123456789111"),
+	// 				TenantID: to.Ptr("00000011-1111-2222-2222-123456789111"),
+	// 			},
+	// 			State: to.Ptr("Stopped"),
+	// 			StorageSizeInGB: to.Ptr[int32](1024),
+	// 			SubnetID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/stoprg/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet1"),
+	// 			VCores: to.Ptr[int32](8),
+	// 		},
+	// 		SKU: &armsql.SKU{
+	// 			Name: to.Ptr("GP_Gen5"),
+	// 			Capacity: to.Ptr[int32](8),
+	// 			Family: to.Ptr("Gen5"),
+	// 			Tier: to.Ptr("GeneralPurpose"),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"key": to.Ptr("value"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-08-01-preview/ManagedInstanceRemoveMaintenanceConfiguration.json
+func ExampleManagedInstancesClient_BeginUpdate_removeMaintenancePolicyFromManagedInstanceSelectDefaultMaintenancePolicy() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsql.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewManagedInstancesClient().BeginUpdate(ctx, "testrg", "testinstance", armsql.ManagedInstanceUpdate{
+		Properties: &armsql.ManagedInstanceProperties{
+			MaintenanceConfigurationID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_Default"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armsql.ManagedInstancesClientUpdateResponse{
+	// 	ManagedInstance: armsql.ManagedInstance{
+	// 		Name: to.Ptr("testinstance"),
+	// 		Type: to.Ptr("Microsoft.Sql/managedInstances"),
+	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.Sql/managedInstances/testinstance"),
+	// 		Location: to.Ptr("japaneast"),
+	// 		Properties: &armsql.ManagedInstanceProperties{
+	// 			AdministratorLogin: to.Ptr("dummylogin"),
+	// 			AuthenticationMetadata: to.Ptr(armsql.AuthMetadataLookupModesWindows),
+	// 			Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
+	// 			DatabaseFormat: to.Ptr(armsql.ManagedInstanceDatabaseFormatSQLServer2022),
+	// 			DNSZone: to.Ptr("1b4e2caff2530"),
+	// 			ExternalGovernanceStatus: to.Ptr(armsql.ExternalGovernanceStatusEnabled),
+	// 			FullyQualifiedDomainName: to.Ptr("testinstance.1b4e2caff2530.database.windows.net"),
+	// 			HybridSecondaryUsage: to.Ptr(armsql.HybridSecondaryUsagePassive),
+	// 			InstancePoolID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.Sql/instancePools/instancePool1"),
+	// 			LicenseType: to.Ptr(armsql.ManagedInstanceLicenseTypeLicenseIncluded),
+	// 			MaintenanceConfigurationID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_Default"),
+	// 			ProxyOverride: to.Ptr(armsql.ManagedInstanceProxyOverrideDefault),
+	// 			PublicDataEndpointEnabled: to.Ptr(false),
+	// 			RequestedLogicalAvailabilityZone: to.Ptr(armsql.AvailabilityZoneTypeOne),
+	// 			State: to.Ptr("Ready"),
+	// 			StorageSizeInGB: to.Ptr[int32](1024),
+	// 			SubnetID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet1"),
+	// 			VCores: to.Ptr[int32](8),
+	// 		},
+	// 		SKU: &armsql.SKU{
+	// 			Name: to.Ptr("GP_Gen5"),
+	// 			Capacity: to.Ptr[int32](8),
+	// 			Family: to.Ptr("Gen4"),
+	// 			Tier: to.Ptr("GeneralPurpose"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-08-01-preview/ManagedInstanceUpdateMax.json
+func ExampleManagedInstancesClient_BeginUpdate_updateManagedInstanceWithAllProperties() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsql.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewManagedInstancesClient().BeginUpdate(ctx, "testrg", "testinstance", armsql.ManagedInstanceUpdate{
+		Properties: &armsql.ManagedInstanceProperties{
+			AdministratorLogin:               to.Ptr("dummylogin"),
+			AdministratorLoginPassword:       to.Ptr("PLACEHOLDER"),
+			AuthenticationMetadata:           to.Ptr(armsql.AuthMetadataLookupModesWindows),
+			Collation:                        to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
+			DatabaseFormat:                   to.Ptr(armsql.ManagedInstanceDatabaseFormatAlwaysUpToDate),
+			HybridSecondaryUsage:             to.Ptr(armsql.HybridSecondaryUsagePassive),
+			LicenseType:                      to.Ptr(armsql.ManagedInstanceLicenseTypeBasePrice),
+			MaintenanceConfigurationID:       to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_JapanEast_MI_1"),
+			MinimalTLSVersion:                to.Ptr("1.2"),
+			ProxyOverride:                    to.Ptr(armsql.ManagedInstanceProxyOverrideRedirect),
+			PublicDataEndpointEnabled:        to.Ptr(false),
+			RequestedBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
+			RequestedLogicalAvailabilityZone: to.Ptr(armsql.AvailabilityZoneTypeOne),
+			StorageSizeInGB:                  to.Ptr[int32](448),
+			VCores:                           to.Ptr[int32](8),
+		},
+		SKU: &armsql.SKU{
+			Name:     to.Ptr("GP_Gen5"),
+			Capacity: to.Ptr[int32](8),
+			Tier:     to.Ptr("GeneralPurpose"),
+		},
+		Tags: map[string]*string{
+			"tagKey1": to.Ptr("TagValue1"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armsql.ManagedInstancesClientUpdateResponse{
+	// 	ManagedInstance: armsql.ManagedInstance{
+	// 		Name: to.Ptr("testinstance"),
+	// 		Type: to.Ptr("Microsoft.Sql/managedInstances"),
+	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.Sql/managedInstances/testinstance"),
+	// 		Location: to.Ptr("japaneast"),
+	// 		Properties: &armsql.ManagedInstanceProperties{
+	// 			AdministratorLogin: to.Ptr("dummylogin"),
+	// 			AuthenticationMetadata: to.Ptr(armsql.AuthMetadataLookupModesWindows),
+	// 			Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
+	// 			CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
+	// 			DatabaseFormat: to.Ptr(armsql.ManagedInstanceDatabaseFormatAlwaysUpToDate),
+	// 			DNSZone: to.Ptr("1b4e2caff2530"),
+	// 			ExternalGovernanceStatus: to.Ptr(armsql.ExternalGovernanceStatusEnabled),
+	// 			FullyQualifiedDomainName: to.Ptr("testinstance.1b4e2caff2530.database.windows.net"),
+	// 			HybridSecondaryUsage: to.Ptr(armsql.HybridSecondaryUsagePassive),
+	// 			InstancePoolID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.Sql/instancePools/instancePool1"),
+	// 			LicenseType: to.Ptr(armsql.ManagedInstanceLicenseTypeBasePrice),
+	// 			MaintenanceConfigurationID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_JapanEast_MI_1"),
+	// 			MinimalTLSVersion: to.Ptr("1.2"),
+	// 			ProxyOverride: to.Ptr(armsql.ManagedInstanceProxyOverrideRedirect),
+	// 			PublicDataEndpointEnabled: to.Ptr(false),
+	// 			RequestedBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
+	// 			RequestedLogicalAvailabilityZone: to.Ptr(armsql.AvailabilityZoneTypeOne),
+	// 			State: to.Ptr("Ready"),
+	// 			StorageSizeInGB: to.Ptr[int32](448),
+	// 			SubnetID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet1"),
+	// 			VCores: to.Ptr[int32](8),
+	// 		},
+	// 		SKU: &armsql.SKU{
+	// 			Name: to.Ptr("GP_Gen5"),
+	// 			Capacity: to.Ptr[int32](8),
+	// 			Family: to.Ptr("Gen4"),
+	// 			Tier: to.Ptr("GeneralPurpose"),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"tagKey1": to.Ptr("TagValue1"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-08-01-preview/ManagedInstanceUpdateMin.json
+func ExampleManagedInstancesClient_BeginUpdate_updateManagedInstanceWithMinimalProperties() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsql.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewManagedInstancesClient().BeginUpdate(ctx, "testrg", "testinstance", armsql.ManagedInstanceUpdate{
+		Tags: map[string]*string{
+			"tagKey1": to.Ptr("TagValue1"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armsql.ManagedInstancesClientUpdateResponse{
+	// 	ManagedInstance: armsql.ManagedInstance{
+	// 		Name: to.Ptr("testinstance"),
+	// 		Type: to.Ptr("Microsoft.Sql/managedInstances"),
+	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.Sql/managedInstances/testinstance"),
+	// 		Location: to.Ptr("japaneast"),
+	// 		Properties: &armsql.ManagedInstanceProperties{
+	// 			AdministratorLogin: to.Ptr("PLACEHOLDER"),
+	// 			AuthenticationMetadata: to.Ptr(armsql.AuthMetadataLookupModesWindows),
+	// 			Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
+	// 			CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
+	// 			DatabaseFormat: to.Ptr(armsql.ManagedInstanceDatabaseFormatSQLServer2022),
+	// 			DNSZone: to.Ptr("1b4e2caff2530"),
+	// 			ExternalGovernanceStatus: to.Ptr(armsql.ExternalGovernanceStatusEnabled),
+	// 			FullyQualifiedDomainName: to.Ptr("testinstance.1b4e2caff2530.database.windows.net"),
+	// 			HybridSecondaryUsage: to.Ptr(armsql.HybridSecondaryUsagePassive),
+	// 			InstancePoolID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.Sql/instancePools/instancePool1"),
+	// 			LicenseType: to.Ptr(armsql.ManagedInstanceLicenseTypeLicenseIncluded),
+	// 			MaintenanceConfigurationID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_Default"),
+	// 			ProxyOverride: to.Ptr(armsql.ManagedInstanceProxyOverrideDefault),
+	// 			PublicDataEndpointEnabled: to.Ptr(false),
+	// 			RequestedBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
+	// 			RequestedLogicalAvailabilityZone: to.Ptr(armsql.AvailabilityZoneTypeOne),
+	// 			State: to.Ptr("Ready"),
+	// 			StorageSizeInGB: to.Ptr[int32](1024),
+	// 			SubnetID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet1"),
+	// 			VCores: to.Ptr[int32](8),
+	// 		},
+	// 		SKU: &armsql.SKU{
+	// 			Name: to.Ptr("GP_Gen5"),
+	// 			Capacity: to.Ptr[int32](8),
+	// 			Family: to.Ptr("Gen4"),
+	// 			Tier: to.Ptr("GeneralPurpose"),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"tagKey1": to.Ptr("TagValue1"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-08-01-preview/ManagedInstancValidateAzureKeyVaultEncryptionKey.json
+func ExampleManagedInstancesClient_BeginValidateAzureKeyVaultEncryptionKey() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsql.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewManagedInstancesClient().BeginValidateAzureKeyVaultEncryptionKey(ctx, "testrg", "testinstance", armsql.ManagedInstanceValidateAzureKeyVaultEncryptionKeyRequest{
+		TdeKeyURI: to.Ptr("https://someVault.vault.azure.net/keys/someKey/01234567890123456789012345678901"),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armsql.ManagedInstancesClientValidateAzureKeyVaultEncryptionKeyResponse{
+	// }
+}
+
 // Generated from example definition: 2026-08-01-preview/ManagedInstanceGet.json
 func ExampleManagedInstancesClient_Get_getManagedInstance() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -457,234 +910,6 @@ func ExampleManagedInstancesClient_Get_getManagedInstanceWithExpandAdministrator
 	// 		},
 	// 	},
 	// }
-}
-
-// Generated from example definition: 2026-08-01-preview/ManagedInstanceList.json
-func ExampleManagedInstancesClient_NewListPager_listManagedInstances() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armsql.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewManagedInstancesClient().NewListPager(nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armsql.ManagedInstancesClientListResponse{
-		// 	ManagedInstanceListResult: armsql.ManagedInstanceListResult{
-		// 		Value: []*armsql.ManagedInstance{
-		// 			{
-		// 				Name: to.Ptr("testinstance1"),
-		// 				Type: to.Ptr("Microsoft.Sql/managedInstances"),
-		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Test1/providers/Microsoft.Sql/managedInstances/testinstance1"),
-		// 				Location: to.Ptr("japaneast"),
-		// 				Properties: &armsql.ManagedInstanceProperties{
-		// 					AdministratorLogin: to.Ptr("dummylogin"),
-		// 					AuthenticationMetadata: to.Ptr(armsql.AuthMetadataLookupModesWindows),
-		// 					Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-		// 					CreateTime: to.Ptr(time.Date(2022, time.November, 1, 1, 1, 1, 11000000, time.UTC)),
-		// 					CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
-		// 					DatabaseFormat: to.Ptr(armsql.ManagedInstanceDatabaseFormatSQLServer2022),
-		// 					DNSZone: to.Ptr("1b4e2caff2530"),
-		// 					ExternalGovernanceStatus: to.Ptr(armsql.ExternalGovernanceStatusEnabled),
-		// 					FullyQualifiedDomainName: to.Ptr("testinstance1.1b4e2caff2530.database.windows.net"),
-		// 					HybridSecondaryUsage: to.Ptr(armsql.HybridSecondaryUsagePassive),
-		// 					LicenseType: to.Ptr(armsql.ManagedInstanceLicenseTypeLicenseIncluded),
-		// 					MaintenanceConfigurationID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_JapanEast_MI_1"),
-		// 					MinimalTLSVersion: to.Ptr("1.2"),
-		// 					PricingModel: to.Ptr(armsql.PricingModelRegular),
-		// 					ProvisioningState: to.Ptr(armsql.ProvisioningStateSucceeded),
-		// 					ProxyOverride: to.Ptr(armsql.ManagedInstanceProxyOverrideDefault),
-		// 					PublicDataEndpointEnabled: to.Ptr(false),
-		// 					RequestedBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
-		// 					RequestedLogicalAvailabilityZone: to.Ptr(armsql.AvailabilityZoneTypeOne),
-		// 					State: to.Ptr("Ready"),
-		// 					StorageSizeInGB: to.Ptr[int32](1024),
-		// 					SubnetID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet1"),
-		// 					VCores: to.Ptr[int32](8),
-		// 					VirtualClusterID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.Sql/virtualClusters/vc-5555555-6666-7777-8888-999999999999"),
-		// 				},
-		// 				SKU: &armsql.SKU{
-		// 					Name: to.Ptr("GP_Gen5"),
-		// 					Capacity: to.Ptr[int32](8),
-		// 					Family: to.Ptr("Gen5"),
-		// 					Tier: to.Ptr("GeneralPurpose"),
-		// 				},
-		// 			},
-		// 			{
-		// 				Name: to.Ptr("testinstance2"),
-		// 				Type: to.Ptr("Microsoft.Sql/managedInstances"),
-		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Test1/providers/Microsoft.Sql/managedInstances/testinstance2"),
-		// 				Location: to.Ptr("japaneast"),
-		// 				Properties: &armsql.ManagedInstanceProperties{
-		// 					AdministratorLogin: to.Ptr("dummylogin"),
-		// 					AuthenticationMetadata: to.Ptr(armsql.AuthMetadataLookupModesWindows),
-		// 					Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-		// 					CreateTime: to.Ptr(time.Date(2022, time.November, 1, 1, 1, 1, 11000000, time.UTC)),
-		// 					CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
-		// 					DatabaseFormat: to.Ptr(armsql.ManagedInstanceDatabaseFormatSQLServer2022),
-		// 					DNSZone: to.Ptr("2c3d1bdae3412"),
-		// 					ExternalGovernanceStatus: to.Ptr(armsql.ExternalGovernanceStatusEnabled),
-		// 					FullyQualifiedDomainName: to.Ptr("testinstance2.2c3d1bdae3412.database.windows.net"),
-		// 					HybridSecondaryUsage: to.Ptr(armsql.HybridSecondaryUsagePassive),
-		// 					LicenseType: to.Ptr(armsql.ManagedInstanceLicenseType("Full")),
-		// 					MaintenanceConfigurationID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_JapanEast_MI_1"),
-		// 					MinimalTLSVersion: to.Ptr("1.2"),
-		// 					PricingModel: to.Ptr(armsql.PricingModelRegular),
-		// 					ProvisioningState: to.Ptr(armsql.ProvisioningStateSucceeded),
-		// 					ProxyOverride: to.Ptr(armsql.ManagedInstanceProxyOverrideDefault),
-		// 					PublicDataEndpointEnabled: to.Ptr(false),
-		// 					RequestedBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
-		// 					RequestedLogicalAvailabilityZone: to.Ptr(armsql.AvailabilityZoneTypeOne),
-		// 					State: to.Ptr("Ready"),
-		// 					StorageSizeInGB: to.Ptr[int32](1024),
-		// 					SubnetID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.Network/virtualNetworks/vnet2/subnets/subnet2"),
-		// 					VCores: to.Ptr[int32](16),
-		// 					VirtualClusterID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.Sql/virtualClusters/vc-5555555-6666-7777-8888-444444444444"),
-		// 				},
-		// 				SKU: &armsql.SKU{
-		// 					Name: to.Ptr("BC_Gen5"),
-		// 					Capacity: to.Ptr[int32](16),
-		// 					Family: to.Ptr("Gen5"),
-		// 					Tier: to.Ptr("BusinessCritical"),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2026-08-01-preview/ManagedInstanceListWithExpandEqualsAdministrators.json
-func ExampleManagedInstancesClient_NewListPager_listManagedInstancesWithExpandAdministratorsActivedirectory() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armsql.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewManagedInstancesClient().NewListPager(nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armsql.ManagedInstancesClientListResponse{
-		// 	ManagedInstanceListResult: armsql.ManagedInstanceListResult{
-		// 		Value: []*armsql.ManagedInstance{
-		// 			{
-		// 				Name: to.Ptr("testinstance1"),
-		// 				Type: to.Ptr("Microsoft.Sql/managedInstances"),
-		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Test1/providers/Microsoft.Sql/managedInstances/testinstance1"),
-		// 				Location: to.Ptr("japaneast"),
-		// 				Properties: &armsql.ManagedInstanceProperties{
-		// 					AdministratorLogin: to.Ptr("dummylogin"),
-		// 					Administrators: &armsql.ManagedInstanceExternalAdministrator{
-		// 						AzureADOnlyAuthentication: to.Ptr(true),
-		// 						Login: to.Ptr("bob@contoso.com"),
-		// 						PrincipalType: to.Ptr(armsql.PrincipalTypeUser),
-		// 						Sid: to.Ptr("00000011-1111-2222-2222-123456789111"),
-		// 						TenantID: to.Ptr("00000011-1111-2222-2222-123456789111"),
-		// 					},
-		// 					AuthenticationMetadata: to.Ptr(armsql.AuthMetadataLookupModesWindows),
-		// 					Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-		// 					CreateTime: to.Ptr(time.Date(2022, time.November, 1, 1, 1, 1, 11000000, time.UTC)),
-		// 					CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
-		// 					DatabaseFormat: to.Ptr(armsql.ManagedInstanceDatabaseFormatSQLServer2022),
-		// 					DNSZone: to.Ptr("1b4e2caff2530"),
-		// 					ExternalGovernanceStatus: to.Ptr(armsql.ExternalGovernanceStatusEnabled),
-		// 					FullyQualifiedDomainName: to.Ptr("testinstance1.1b4e2caff2530.database.windows.net"),
-		// 					HybridSecondaryUsage: to.Ptr(armsql.HybridSecondaryUsagePassive),
-		// 					LicenseType: to.Ptr(armsql.ManagedInstanceLicenseTypeLicenseIncluded),
-		// 					MaintenanceConfigurationID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_JapanEast_MI_1"),
-		// 					MinimalTLSVersion: to.Ptr("1.2"),
-		// 					PricingModel: to.Ptr(armsql.PricingModelRegular),
-		// 					ProvisioningState: to.Ptr(armsql.ProvisioningStateSucceeded),
-		// 					ProxyOverride: to.Ptr(armsql.ManagedInstanceProxyOverrideDefault),
-		// 					PublicDataEndpointEnabled: to.Ptr(false),
-		// 					RequestedBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
-		// 					RequestedLogicalAvailabilityZone: to.Ptr(armsql.AvailabilityZoneTypeOne),
-		// 					State: to.Ptr("Ready"),
-		// 					StorageSizeInGB: to.Ptr[int32](1024),
-		// 					SubnetID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet1"),
-		// 					VCores: to.Ptr[int32](8),
-		// 					VirtualClusterID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.Sql/virtualClusters/vc-5555555-6666-7777-8888-999999999999"),
-		// 				},
-		// 				SKU: &armsql.SKU{
-		// 					Name: to.Ptr("GP_Gen5"),
-		// 					Capacity: to.Ptr[int32](8),
-		// 					Family: to.Ptr("Gen4"),
-		// 					Tier: to.Ptr("GeneralPurpose"),
-		// 				},
-		// 			},
-		// 			{
-		// 				Name: to.Ptr("testinstance2"),
-		// 				Type: to.Ptr("Microsoft.Sql/managedInstances"),
-		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Test1/providers/Microsoft.Sql/managedInstances/testinstance2"),
-		// 				Location: to.Ptr("japaneast"),
-		// 				Properties: &armsql.ManagedInstanceProperties{
-		// 					AdministratorLogin: to.Ptr("dummylogin"),
-		// 					Administrators: &armsql.ManagedInstanceExternalAdministrator{
-		// 						AzureADOnlyAuthentication: to.Ptr(true),
-		// 						Login: to.Ptr("bob@contoso.com"),
-		// 						PrincipalType: to.Ptr(armsql.PrincipalTypeUser),
-		// 						Sid: to.Ptr("00000011-1111-2222-2222-123456789111"),
-		// 						TenantID: to.Ptr("00000011-1111-2222-2222-123456789111"),
-		// 					},
-		// 					AuthenticationMetadata: to.Ptr(armsql.AuthMetadataLookupModesWindows),
-		// 					Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-		// 					CreateTime: to.Ptr(time.Date(2022, time.November, 1, 1, 1, 1, 11000000, time.UTC)),
-		// 					CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
-		// 					DatabaseFormat: to.Ptr(armsql.ManagedInstanceDatabaseFormatSQLServer2022),
-		// 					DNSZone: to.Ptr("2c3d1bdae3412"),
-		// 					ExternalGovernanceStatus: to.Ptr(armsql.ExternalGovernanceStatusEnabled),
-		// 					FullyQualifiedDomainName: to.Ptr("testinstance2.2c3d1bdae3412.database.windows.net"),
-		// 					HybridSecondaryUsage: to.Ptr(armsql.HybridSecondaryUsagePassive),
-		// 					LicenseType: to.Ptr(armsql.ManagedInstanceLicenseType("Full")),
-		// 					MaintenanceConfigurationID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_JapanEast_MI_2"),
-		// 					MinimalTLSVersion: to.Ptr("1.2"),
-		// 					PricingModel: to.Ptr(armsql.PricingModelRegular),
-		// 					ProvisioningState: to.Ptr(armsql.ProvisioningStateSucceeded),
-		// 					ProxyOverride: to.Ptr(armsql.ManagedInstanceProxyOverrideDefault),
-		// 					PublicDataEndpointEnabled: to.Ptr(false),
-		// 					RequestedBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
-		// 					RequestedLogicalAvailabilityZone: to.Ptr(armsql.AvailabilityZoneTypeOne),
-		// 					State: to.Ptr("Ready"),
-		// 					StorageSizeInGB: to.Ptr[int32](1024),
-		// 					SubnetID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.Network/virtualNetworks/vnet2/subnets/subnet2"),
-		// 					VCores: to.Ptr[int32](16),
-		// 					VirtualClusterID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.Sql/virtualClusters/vc-5555555-6666-7777-8888-444444444444"),
-		// 				},
-		// 				SKU: &armsql.SKU{
-		// 					Name: to.Ptr("BC_Gen5"),
-		// 					Capacity: to.Ptr[int32](16),
-		// 					Family: to.Ptr("Gen4"),
-		// 					Tier: to.Ptr("BusinessCritical"),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
 }
 
 // Generated from example definition: 2026-08-01-preview/ManagedInstanceListByInstancePool.json
@@ -1837,8 +2062,8 @@ func ExampleManagedInstancesClient_NewListOutboundNetworkDependenciesByManagedIn
 	}
 }
 
-// Generated from example definition: 2026-08-01-preview/ManagedInstanceReevaluateInaccessibleDatabaseState.json
-func ExampleManagedInstancesClient_BeginReevaluateInaccessibleDatabaseState() {
+// Generated from example definition: 2026-08-01-preview/ManagedInstanceList.json
+func ExampleManagedInstancesClient_NewListPager_listManagedInstances() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -1848,23 +2073,104 @@ func ExampleManagedInstancesClient_BeginReevaluateInaccessibleDatabaseState() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewManagedInstancesClient().BeginReevaluateInaccessibleDatabaseState(ctx, "testrg", "testinstance", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
+	pager := clientFactory.NewManagedInstancesClient().NewListPager(nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armsql.ManagedInstancesClientListResponse{
+		// 	ManagedInstanceListResult: armsql.ManagedInstanceListResult{
+		// 		Value: []*armsql.ManagedInstance{
+		// 			{
+		// 				Name: to.Ptr("testinstance1"),
+		// 				Type: to.Ptr("Microsoft.Sql/managedInstances"),
+		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Test1/providers/Microsoft.Sql/managedInstances/testinstance1"),
+		// 				Location: to.Ptr("japaneast"),
+		// 				Properties: &armsql.ManagedInstanceProperties{
+		// 					AdministratorLogin: to.Ptr("dummylogin"),
+		// 					AuthenticationMetadata: to.Ptr(armsql.AuthMetadataLookupModesWindows),
+		// 					Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
+		// 					CreateTime: to.Ptr(time.Date(2022, time.November, 1, 1, 1, 1, 11000000, time.UTC)),
+		// 					CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
+		// 					DatabaseFormat: to.Ptr(armsql.ManagedInstanceDatabaseFormatSQLServer2022),
+		// 					DNSZone: to.Ptr("1b4e2caff2530"),
+		// 					ExternalGovernanceStatus: to.Ptr(armsql.ExternalGovernanceStatusEnabled),
+		// 					FullyQualifiedDomainName: to.Ptr("testinstance1.1b4e2caff2530.database.windows.net"),
+		// 					HybridSecondaryUsage: to.Ptr(armsql.HybridSecondaryUsagePassive),
+		// 					LicenseType: to.Ptr(armsql.ManagedInstanceLicenseTypeLicenseIncluded),
+		// 					MaintenanceConfigurationID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_JapanEast_MI_1"),
+		// 					MinimalTLSVersion: to.Ptr("1.2"),
+		// 					PricingModel: to.Ptr(armsql.PricingModelRegular),
+		// 					ProvisioningState: to.Ptr(armsql.ProvisioningStateSucceeded),
+		// 					ProxyOverride: to.Ptr(armsql.ManagedInstanceProxyOverrideDefault),
+		// 					PublicDataEndpointEnabled: to.Ptr(false),
+		// 					RequestedBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
+		// 					RequestedLogicalAvailabilityZone: to.Ptr(armsql.AvailabilityZoneTypeOne),
+		// 					State: to.Ptr("Ready"),
+		// 					StorageSizeInGB: to.Ptr[int32](1024),
+		// 					SubnetID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet1"),
+		// 					VCores: to.Ptr[int32](8),
+		// 					VirtualClusterID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.Sql/virtualClusters/vc-5555555-6666-7777-8888-999999999999"),
+		// 				},
+		// 				SKU: &armsql.SKU{
+		// 					Name: to.Ptr("GP_Gen5"),
+		// 					Capacity: to.Ptr[int32](8),
+		// 					Family: to.Ptr("Gen5"),
+		// 					Tier: to.Ptr("GeneralPurpose"),
+		// 				},
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("testinstance2"),
+		// 				Type: to.Ptr("Microsoft.Sql/managedInstances"),
+		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Test1/providers/Microsoft.Sql/managedInstances/testinstance2"),
+		// 				Location: to.Ptr("japaneast"),
+		// 				Properties: &armsql.ManagedInstanceProperties{
+		// 					AdministratorLogin: to.Ptr("dummylogin"),
+		// 					AuthenticationMetadata: to.Ptr(armsql.AuthMetadataLookupModesWindows),
+		// 					Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
+		// 					CreateTime: to.Ptr(time.Date(2022, time.November, 1, 1, 1, 1, 11000000, time.UTC)),
+		// 					CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
+		// 					DatabaseFormat: to.Ptr(armsql.ManagedInstanceDatabaseFormatSQLServer2022),
+		// 					DNSZone: to.Ptr("2c3d1bdae3412"),
+		// 					ExternalGovernanceStatus: to.Ptr(armsql.ExternalGovernanceStatusEnabled),
+		// 					FullyQualifiedDomainName: to.Ptr("testinstance2.2c3d1bdae3412.database.windows.net"),
+		// 					HybridSecondaryUsage: to.Ptr(armsql.HybridSecondaryUsagePassive),
+		// 					LicenseType: to.Ptr(armsql.ManagedInstanceLicenseType("Full")),
+		// 					MaintenanceConfigurationID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_JapanEast_MI_1"),
+		// 					MinimalTLSVersion: to.Ptr("1.2"),
+		// 					PricingModel: to.Ptr(armsql.PricingModelRegular),
+		// 					ProvisioningState: to.Ptr(armsql.ProvisioningStateSucceeded),
+		// 					ProxyOverride: to.Ptr(armsql.ManagedInstanceProxyOverrideDefault),
+		// 					PublicDataEndpointEnabled: to.Ptr(false),
+		// 					RequestedBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
+		// 					RequestedLogicalAvailabilityZone: to.Ptr(armsql.AvailabilityZoneTypeOne),
+		// 					State: to.Ptr("Ready"),
+		// 					StorageSizeInGB: to.Ptr[int32](1024),
+		// 					SubnetID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.Network/virtualNetworks/vnet2/subnets/subnet2"),
+		// 					VCores: to.Ptr[int32](16),
+		// 					VirtualClusterID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.Sql/virtualClusters/vc-5555555-6666-7777-8888-444444444444"),
+		// 				},
+		// 				SKU: &armsql.SKU{
+		// 					Name: to.Ptr("BC_Gen5"),
+		// 					Capacity: to.Ptr[int32](16),
+		// 					Family: to.Ptr("Gen5"),
+		// 					Tier: to.Ptr("BusinessCritical"),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
 	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armsql.ManagedInstancesClientReevaluateInaccessibleDatabaseStateResponse{
-	// }
 }
 
-// Generated from example definition: 2026-08-01-preview/ManagedInstanceRefreshExternalGovernanceStatus.json
-func ExampleManagedInstancesClient_BeginRefreshStatus() {
+// Generated from example definition: 2026-08-01-preview/ManagedInstanceListWithExpandEqualsAdministrators.json
+func ExampleManagedInstancesClient_NewListPager_listManagedInstancesWithExpandAdministratorsActivedirectory() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -1874,418 +2180,112 @@ func ExampleManagedInstancesClient_BeginRefreshStatus() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewManagedInstancesClient().BeginRefreshStatus(ctx, "sqlcrudtest-7398", "sqlcrudtest-4645", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
+	pager := clientFactory.NewManagedInstancesClient().NewListPager(nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armsql.ManagedInstancesClientListResponse{
+		// 	ManagedInstanceListResult: armsql.ManagedInstanceListResult{
+		// 		Value: []*armsql.ManagedInstance{
+		// 			{
+		// 				Name: to.Ptr("testinstance1"),
+		// 				Type: to.Ptr("Microsoft.Sql/managedInstances"),
+		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Test1/providers/Microsoft.Sql/managedInstances/testinstance1"),
+		// 				Location: to.Ptr("japaneast"),
+		// 				Properties: &armsql.ManagedInstanceProperties{
+		// 					AdministratorLogin: to.Ptr("dummylogin"),
+		// 					Administrators: &armsql.ManagedInstanceExternalAdministrator{
+		// 						AzureADOnlyAuthentication: to.Ptr(true),
+		// 						Login: to.Ptr("bob@contoso.com"),
+		// 						PrincipalType: to.Ptr(armsql.PrincipalTypeUser),
+		// 						Sid: to.Ptr("00000011-1111-2222-2222-123456789111"),
+		// 						TenantID: to.Ptr("00000011-1111-2222-2222-123456789111"),
+		// 					},
+		// 					AuthenticationMetadata: to.Ptr(armsql.AuthMetadataLookupModesWindows),
+		// 					Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
+		// 					CreateTime: to.Ptr(time.Date(2022, time.November, 1, 1, 1, 1, 11000000, time.UTC)),
+		// 					CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
+		// 					DatabaseFormat: to.Ptr(armsql.ManagedInstanceDatabaseFormatSQLServer2022),
+		// 					DNSZone: to.Ptr("1b4e2caff2530"),
+		// 					ExternalGovernanceStatus: to.Ptr(armsql.ExternalGovernanceStatusEnabled),
+		// 					FullyQualifiedDomainName: to.Ptr("testinstance1.1b4e2caff2530.database.windows.net"),
+		// 					HybridSecondaryUsage: to.Ptr(armsql.HybridSecondaryUsagePassive),
+		// 					LicenseType: to.Ptr(armsql.ManagedInstanceLicenseTypeLicenseIncluded),
+		// 					MaintenanceConfigurationID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_JapanEast_MI_1"),
+		// 					MinimalTLSVersion: to.Ptr("1.2"),
+		// 					PricingModel: to.Ptr(armsql.PricingModelRegular),
+		// 					ProvisioningState: to.Ptr(armsql.ProvisioningStateSucceeded),
+		// 					ProxyOverride: to.Ptr(armsql.ManagedInstanceProxyOverrideDefault),
+		// 					PublicDataEndpointEnabled: to.Ptr(false),
+		// 					RequestedBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
+		// 					RequestedLogicalAvailabilityZone: to.Ptr(armsql.AvailabilityZoneTypeOne),
+		// 					State: to.Ptr("Ready"),
+		// 					StorageSizeInGB: to.Ptr[int32](1024),
+		// 					SubnetID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet1"),
+		// 					VCores: to.Ptr[int32](8),
+		// 					VirtualClusterID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.Sql/virtualClusters/vc-5555555-6666-7777-8888-999999999999"),
+		// 				},
+		// 				SKU: &armsql.SKU{
+		// 					Name: to.Ptr("GP_Gen5"),
+		// 					Capacity: to.Ptr[int32](8),
+		// 					Family: to.Ptr("Gen4"),
+		// 					Tier: to.Ptr("GeneralPurpose"),
+		// 				},
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("testinstance2"),
+		// 				Type: to.Ptr("Microsoft.Sql/managedInstances"),
+		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Test1/providers/Microsoft.Sql/managedInstances/testinstance2"),
+		// 				Location: to.Ptr("japaneast"),
+		// 				Properties: &armsql.ManagedInstanceProperties{
+		// 					AdministratorLogin: to.Ptr("dummylogin"),
+		// 					Administrators: &armsql.ManagedInstanceExternalAdministrator{
+		// 						AzureADOnlyAuthentication: to.Ptr(true),
+		// 						Login: to.Ptr("bob@contoso.com"),
+		// 						PrincipalType: to.Ptr(armsql.PrincipalTypeUser),
+		// 						Sid: to.Ptr("00000011-1111-2222-2222-123456789111"),
+		// 						TenantID: to.Ptr("00000011-1111-2222-2222-123456789111"),
+		// 					},
+		// 					AuthenticationMetadata: to.Ptr(armsql.AuthMetadataLookupModesWindows),
+		// 					Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
+		// 					CreateTime: to.Ptr(time.Date(2022, time.November, 1, 1, 1, 1, 11000000, time.UTC)),
+		// 					CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
+		// 					DatabaseFormat: to.Ptr(armsql.ManagedInstanceDatabaseFormatSQLServer2022),
+		// 					DNSZone: to.Ptr("2c3d1bdae3412"),
+		// 					ExternalGovernanceStatus: to.Ptr(armsql.ExternalGovernanceStatusEnabled),
+		// 					FullyQualifiedDomainName: to.Ptr("testinstance2.2c3d1bdae3412.database.windows.net"),
+		// 					HybridSecondaryUsage: to.Ptr(armsql.HybridSecondaryUsagePassive),
+		// 					LicenseType: to.Ptr(armsql.ManagedInstanceLicenseType("Full")),
+		// 					MaintenanceConfigurationID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_JapanEast_MI_2"),
+		// 					MinimalTLSVersion: to.Ptr("1.2"),
+		// 					PricingModel: to.Ptr(armsql.PricingModelRegular),
+		// 					ProvisioningState: to.Ptr(armsql.ProvisioningStateSucceeded),
+		// 					ProxyOverride: to.Ptr(armsql.ManagedInstanceProxyOverrideDefault),
+		// 					PublicDataEndpointEnabled: to.Ptr(false),
+		// 					RequestedBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
+		// 					RequestedLogicalAvailabilityZone: to.Ptr(armsql.AvailabilityZoneTypeOne),
+		// 					State: to.Ptr("Ready"),
+		// 					StorageSizeInGB: to.Ptr[int32](1024),
+		// 					SubnetID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.Network/virtualNetworks/vnet2/subnets/subnet2"),
+		// 					VCores: to.Ptr[int32](16),
+		// 					VirtualClusterID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.Sql/virtualClusters/vc-5555555-6666-7777-8888-444444444444"),
+		// 				},
+		// 				SKU: &armsql.SKU{
+		// 					Name: to.Ptr("BC_Gen5"),
+		// 					Capacity: to.Ptr[int32](16),
+		// 					Family: to.Ptr("Gen4"),
+		// 					Tier: to.Ptr("BusinessCritical"),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
 	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armsql.ManagedInstancesClientRefreshStatusResponse{
-	// 	RefreshExternalGovernanceStatusOperationResultMI: armsql.RefreshExternalGovernanceStatusOperationResultMI{
-	// 		Name: to.Ptr("9d9a794a-5cec-4f23-af70-d29511b522a4"),
-	// 		Type: to.Ptr("Microsoft.Sql/locations/refreshExternalGovernanceStatusMIOperationResults"),
-	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myResourceGroup/providers/Microsoft.Sql/locations/japaneast/refreshExternalGovernanceStatusMIOperationResults/9d9a794a-5cec-4f23-af70-d29511b522a4"),
-	// 		Properties: &armsql.RefreshExternalGovernanceStatusOperationResultPropertiesMI{
-	// 			ManagedInstanceName: to.Ptr("testsvr.database.windows.net"),
-	// 			QueuedTime: to.Ptr("2/12/2022 8:33:27 PM"),
-	// 			RequestID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-	// 			RequestType: to.Ptr("UpdatePurviewMetadata"),
-	// 			Status: to.Ptr("Completed"),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-08-01-preview/StartManagedInstance.json
-func ExampleManagedInstancesClient_BeginStart() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armsql.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewManagedInstancesClient().BeginStart(ctx, "startrg", "mitostart", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armsql.ManagedInstancesClientStartResponse{
-	// 	ManagedInstance: armsql.ManagedInstance{
-	// 		Name: to.Ptr("mitostart"),
-	// 		Type: to.Ptr("Microsoft.Sql/managedInstances"),
-	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/startrg/providers/Microsoft.Sql/managedInstances/mitostart"),
-	// 		Location: to.Ptr("japaneast"),
-	// 		Properties: &armsql.ManagedInstanceProperties{
-	// 			AdministratorLogin: to.Ptr("dummylogin"),
-	// 			AuthenticationMetadata: to.Ptr(armsql.AuthMetadataLookupModesWindows),
-	// 			Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-	// 			CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
-	// 			DatabaseFormat: to.Ptr(armsql.ManagedInstanceDatabaseFormatSQLServer2022),
-	// 			DNSZone: to.Ptr("1234567891234"),
-	// 			ExternalGovernanceStatus: to.Ptr(armsql.ExternalGovernanceStatusEnabled),
-	// 			FullyQualifiedDomainName: to.Ptr("mitostart.1234567891234.database.windows.net"),
-	// 			HybridSecondaryUsage: to.Ptr(armsql.HybridSecondaryUsagePassive),
-	// 			InstancePoolID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/startrg/providers/Microsoft.Sql/instancePools/instancePool1"),
-	// 			LicenseType: to.Ptr(armsql.ManagedInstanceLicenseTypeLicenseIncluded),
-	// 			MaintenanceConfigurationID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_JapanEast_MI_1"),
-	// 			MinimalTLSVersion: to.Ptr("1.2"),
-	// 			ProvisioningState: to.Ptr(armsql.ProvisioningStateSucceeded),
-	// 			ProxyOverride: to.Ptr(armsql.ManagedInstanceProxyOverrideDefault),
-	// 			PublicDataEndpointEnabled: to.Ptr(false),
-	// 			RequestedBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
-	// 			RequestedLogicalAvailabilityZone: to.Ptr(armsql.AvailabilityZoneTypeOne),
-	// 			ServicePrincipal: &armsql.ServicePrincipal{
-	// 				Type: to.Ptr(armsql.ServicePrincipalTypeSystemAssigned),
-	// 				ClientID: to.Ptr("00000011-1111-2222-2222-123456789111"),
-	// 				PrincipalID: to.Ptr("00000011-1111-2222-2222-123456789111"),
-	// 				TenantID: to.Ptr("00000011-1111-2222-2222-123456789111"),
-	// 			},
-	// 			State: to.Ptr("Ready"),
-	// 			StorageSizeInGB: to.Ptr[int32](1024),
-	// 			SubnetID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/startrg/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet1"),
-	// 			VCores: to.Ptr[int32](8),
-	// 		},
-	// 		SKU: &armsql.SKU{
-	// 			Name: to.Ptr("GP_Gen5"),
-	// 			Capacity: to.Ptr[int32](8),
-	// 			Family: to.Ptr("Gen5"),
-	// 			Tier: to.Ptr("GeneralPurpose"),
-	// 		},
-	// 		Tags: map[string]*string{
-	// 			"key": to.Ptr("value"),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-08-01-preview/StopManagedInstance.json
-func ExampleManagedInstancesClient_BeginStop() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armsql.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewManagedInstancesClient().BeginStop(ctx, "stoprg", "mitostop", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armsql.ManagedInstancesClientStopResponse{
-	// 	ManagedInstance: armsql.ManagedInstance{
-	// 		Name: to.Ptr("mitostop"),
-	// 		Type: to.Ptr("Microsoft.Sql/managedInstances"),
-	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/stoprg/providers/Microsoft.Sql/managedInstances/mitostop"),
-	// 		Location: to.Ptr("japaneast"),
-	// 		Properties: &armsql.ManagedInstanceProperties{
-	// 			AdministratorLogin: to.Ptr("dummylogin"),
-	// 			AuthenticationMetadata: to.Ptr(armsql.AuthMetadataLookupModesWindows),
-	// 			Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-	// 			CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
-	// 			DatabaseFormat: to.Ptr(armsql.ManagedInstanceDatabaseFormatSQLServer2022),
-	// 			DNSZone: to.Ptr("1234567891234"),
-	// 			ExternalGovernanceStatus: to.Ptr(armsql.ExternalGovernanceStatusEnabled),
-	// 			FullyQualifiedDomainName: to.Ptr("mitostop.1234567891234.database.windows.net"),
-	// 			HybridSecondaryUsage: to.Ptr(armsql.HybridSecondaryUsagePassive),
-	// 			InstancePoolID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/stoprg/providers/Microsoft.Sql/instancePools/instancePool1"),
-	// 			LicenseType: to.Ptr(armsql.ManagedInstanceLicenseTypeLicenseIncluded),
-	// 			MaintenanceConfigurationID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_JapanEast_MI_1"),
-	// 			MinimalTLSVersion: to.Ptr("1.2"),
-	// 			ProvisioningState: to.Ptr(armsql.ProvisioningStateSucceeded),
-	// 			ProxyOverride: to.Ptr(armsql.ManagedInstanceProxyOverrideDefault),
-	// 			PublicDataEndpointEnabled: to.Ptr(false),
-	// 			RequestedBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
-	// 			RequestedLogicalAvailabilityZone: to.Ptr(armsql.AvailabilityZoneTypeOne),
-	// 			ServicePrincipal: &armsql.ServicePrincipal{
-	// 				Type: to.Ptr(armsql.ServicePrincipalTypeSystemAssigned),
-	// 				ClientID: to.Ptr("00000011-1111-2222-2222-123456789111"),
-	// 				PrincipalID: to.Ptr("00000011-1111-2222-2222-123456789111"),
-	// 				TenantID: to.Ptr("00000011-1111-2222-2222-123456789111"),
-	// 			},
-	// 			State: to.Ptr("Stopped"),
-	// 			StorageSizeInGB: to.Ptr[int32](1024),
-	// 			SubnetID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/stoprg/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet1"),
-	// 			VCores: to.Ptr[int32](8),
-	// 		},
-	// 		SKU: &armsql.SKU{
-	// 			Name: to.Ptr("GP_Gen5"),
-	// 			Capacity: to.Ptr[int32](8),
-	// 			Family: to.Ptr("Gen5"),
-	// 			Tier: to.Ptr("GeneralPurpose"),
-	// 		},
-	// 		Tags: map[string]*string{
-	// 			"key": to.Ptr("value"),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-08-01-preview/ManagedInstanceRemoveMaintenanceConfiguration.json
-func ExampleManagedInstancesClient_BeginUpdate_removeMaintenancePolicyFromManagedInstanceSelectDefaultMaintenancePolicy() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armsql.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewManagedInstancesClient().BeginUpdate(ctx, "testrg", "testinstance", armsql.ManagedInstanceUpdate{
-		Properties: &armsql.ManagedInstanceProperties{
-			MaintenanceConfigurationID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_Default"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armsql.ManagedInstancesClientUpdateResponse{
-	// 	ManagedInstance: armsql.ManagedInstance{
-	// 		Name: to.Ptr("testinstance"),
-	// 		Type: to.Ptr("Microsoft.Sql/managedInstances"),
-	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.Sql/managedInstances/testinstance"),
-	// 		Location: to.Ptr("japaneast"),
-	// 		Properties: &armsql.ManagedInstanceProperties{
-	// 			AdministratorLogin: to.Ptr("dummylogin"),
-	// 			AuthenticationMetadata: to.Ptr(armsql.AuthMetadataLookupModesWindows),
-	// 			Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-	// 			DatabaseFormat: to.Ptr(armsql.ManagedInstanceDatabaseFormatSQLServer2022),
-	// 			DNSZone: to.Ptr("1b4e2caff2530"),
-	// 			ExternalGovernanceStatus: to.Ptr(armsql.ExternalGovernanceStatusEnabled),
-	// 			FullyQualifiedDomainName: to.Ptr("testinstance.1b4e2caff2530.database.windows.net"),
-	// 			HybridSecondaryUsage: to.Ptr(armsql.HybridSecondaryUsagePassive),
-	// 			InstancePoolID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.Sql/instancePools/instancePool1"),
-	// 			LicenseType: to.Ptr(armsql.ManagedInstanceLicenseTypeLicenseIncluded),
-	// 			MaintenanceConfigurationID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_Default"),
-	// 			ProxyOverride: to.Ptr(armsql.ManagedInstanceProxyOverrideDefault),
-	// 			PublicDataEndpointEnabled: to.Ptr(false),
-	// 			RequestedLogicalAvailabilityZone: to.Ptr(armsql.AvailabilityZoneTypeOne),
-	// 			State: to.Ptr("Ready"),
-	// 			StorageSizeInGB: to.Ptr[int32](1024),
-	// 			SubnetID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet1"),
-	// 			VCores: to.Ptr[int32](8),
-	// 		},
-	// 		SKU: &armsql.SKU{
-	// 			Name: to.Ptr("GP_Gen5"),
-	// 			Capacity: to.Ptr[int32](8),
-	// 			Family: to.Ptr("Gen4"),
-	// 			Tier: to.Ptr("GeneralPurpose"),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-08-01-preview/ManagedInstanceUpdateMax.json
-func ExampleManagedInstancesClient_BeginUpdate_updateManagedInstanceWithAllProperties() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armsql.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewManagedInstancesClient().BeginUpdate(ctx, "testrg", "testinstance", armsql.ManagedInstanceUpdate{
-		Properties: &armsql.ManagedInstanceProperties{
-			AdministratorLogin:               to.Ptr("dummylogin"),
-			AdministratorLoginPassword:       to.Ptr("PLACEHOLDER"),
-			AuthenticationMetadata:           to.Ptr(armsql.AuthMetadataLookupModesWindows),
-			Collation:                        to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-			DatabaseFormat:                   to.Ptr(armsql.ManagedInstanceDatabaseFormatAlwaysUpToDate),
-			HybridSecondaryUsage:             to.Ptr(armsql.HybridSecondaryUsagePassive),
-			LicenseType:                      to.Ptr(armsql.ManagedInstanceLicenseTypeBasePrice),
-			MaintenanceConfigurationID:       to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_JapanEast_MI_1"),
-			MinimalTLSVersion:                to.Ptr("1.2"),
-			ProxyOverride:                    to.Ptr(armsql.ManagedInstanceProxyOverrideRedirect),
-			PublicDataEndpointEnabled:        to.Ptr(false),
-			RequestedBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
-			RequestedLogicalAvailabilityZone: to.Ptr(armsql.AvailabilityZoneTypeOne),
-			StorageSizeInGB:                  to.Ptr[int32](448),
-			VCores:                           to.Ptr[int32](8),
-		},
-		SKU: &armsql.SKU{
-			Name:     to.Ptr("GP_Gen5"),
-			Capacity: to.Ptr[int32](8),
-			Tier:     to.Ptr("GeneralPurpose"),
-		},
-		Tags: map[string]*string{
-			"tagKey1": to.Ptr("TagValue1"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armsql.ManagedInstancesClientUpdateResponse{
-	// 	ManagedInstance: armsql.ManagedInstance{
-	// 		Name: to.Ptr("testinstance"),
-	// 		Type: to.Ptr("Microsoft.Sql/managedInstances"),
-	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.Sql/managedInstances/testinstance"),
-	// 		Location: to.Ptr("japaneast"),
-	// 		Properties: &armsql.ManagedInstanceProperties{
-	// 			AdministratorLogin: to.Ptr("dummylogin"),
-	// 			AuthenticationMetadata: to.Ptr(armsql.AuthMetadataLookupModesWindows),
-	// 			Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-	// 			CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
-	// 			DatabaseFormat: to.Ptr(armsql.ManagedInstanceDatabaseFormatAlwaysUpToDate),
-	// 			DNSZone: to.Ptr("1b4e2caff2530"),
-	// 			ExternalGovernanceStatus: to.Ptr(armsql.ExternalGovernanceStatusEnabled),
-	// 			FullyQualifiedDomainName: to.Ptr("testinstance.1b4e2caff2530.database.windows.net"),
-	// 			HybridSecondaryUsage: to.Ptr(armsql.HybridSecondaryUsagePassive),
-	// 			InstancePoolID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.Sql/instancePools/instancePool1"),
-	// 			LicenseType: to.Ptr(armsql.ManagedInstanceLicenseTypeBasePrice),
-	// 			MaintenanceConfigurationID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_JapanEast_MI_1"),
-	// 			MinimalTLSVersion: to.Ptr("1.2"),
-	// 			ProxyOverride: to.Ptr(armsql.ManagedInstanceProxyOverrideRedirect),
-	// 			PublicDataEndpointEnabled: to.Ptr(false),
-	// 			RequestedBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
-	// 			RequestedLogicalAvailabilityZone: to.Ptr(armsql.AvailabilityZoneTypeOne),
-	// 			State: to.Ptr("Ready"),
-	// 			StorageSizeInGB: to.Ptr[int32](448),
-	// 			SubnetID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet1"),
-	// 			VCores: to.Ptr[int32](8),
-	// 		},
-	// 		SKU: &armsql.SKU{
-	// 			Name: to.Ptr("GP_Gen5"),
-	// 			Capacity: to.Ptr[int32](8),
-	// 			Family: to.Ptr("Gen4"),
-	// 			Tier: to.Ptr("GeneralPurpose"),
-	// 		},
-	// 		Tags: map[string]*string{
-	// 			"tagKey1": to.Ptr("TagValue1"),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-08-01-preview/ManagedInstanceUpdateMin.json
-func ExampleManagedInstancesClient_BeginUpdate_updateManagedInstanceWithMinimalProperties() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armsql.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewManagedInstancesClient().BeginUpdate(ctx, "testrg", "testinstance", armsql.ManagedInstanceUpdate{
-		Tags: map[string]*string{
-			"tagKey1": to.Ptr("TagValue1"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armsql.ManagedInstancesClientUpdateResponse{
-	// 	ManagedInstance: armsql.ManagedInstance{
-	// 		Name: to.Ptr("testinstance"),
-	// 		Type: to.Ptr("Microsoft.Sql/managedInstances"),
-	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.Sql/managedInstances/testinstance"),
-	// 		Location: to.Ptr("japaneast"),
-	// 		Properties: &armsql.ManagedInstanceProperties{
-	// 			AdministratorLogin: to.Ptr("PLACEHOLDER"),
-	// 			AuthenticationMetadata: to.Ptr(armsql.AuthMetadataLookupModesWindows),
-	// 			Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-	// 			CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
-	// 			DatabaseFormat: to.Ptr(armsql.ManagedInstanceDatabaseFormatSQLServer2022),
-	// 			DNSZone: to.Ptr("1b4e2caff2530"),
-	// 			ExternalGovernanceStatus: to.Ptr(armsql.ExternalGovernanceStatusEnabled),
-	// 			FullyQualifiedDomainName: to.Ptr("testinstance.1b4e2caff2530.database.windows.net"),
-	// 			HybridSecondaryUsage: to.Ptr(armsql.HybridSecondaryUsagePassive),
-	// 			InstancePoolID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.Sql/instancePools/instancePool1"),
-	// 			LicenseType: to.Ptr(armsql.ManagedInstanceLicenseTypeLicenseIncluded),
-	// 			MaintenanceConfigurationID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_Default"),
-	// 			ProxyOverride: to.Ptr(armsql.ManagedInstanceProxyOverrideDefault),
-	// 			PublicDataEndpointEnabled: to.Ptr(false),
-	// 			RequestedBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
-	// 			RequestedLogicalAvailabilityZone: to.Ptr(armsql.AvailabilityZoneTypeOne),
-	// 			State: to.Ptr("Ready"),
-	// 			StorageSizeInGB: to.Ptr[int32](1024),
-	// 			SubnetID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet1"),
-	// 			VCores: to.Ptr[int32](8),
-	// 		},
-	// 		SKU: &armsql.SKU{
-	// 			Name: to.Ptr("GP_Gen5"),
-	// 			Capacity: to.Ptr[int32](8),
-	// 			Family: to.Ptr("Gen4"),
-	// 			Tier: to.Ptr("GeneralPurpose"),
-	// 		},
-	// 		Tags: map[string]*string{
-	// 			"tagKey1": to.Ptr("TagValue1"),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-08-01-preview/ManagedInstancValidateAzureKeyVaultEncryptionKey.json
-func ExampleManagedInstancesClient_BeginValidateAzureKeyVaultEncryptionKey() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armsql.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewManagedInstancesClient().BeginValidateAzureKeyVaultEncryptionKey(ctx, "testrg", "testinstance", armsql.ManagedInstanceValidateAzureKeyVaultEncryptionKeyRequest{
-		TdeKeyURI: to.Ptr("https://someVault.vault.azure.net/keys/someKey/01234567890123456789012345678901"),
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armsql.ManagedInstancesClientValidateAzureKeyVaultEncryptionKeyResponse{
-	// }
 }

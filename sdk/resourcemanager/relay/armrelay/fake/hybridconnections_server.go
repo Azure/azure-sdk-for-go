@@ -45,6 +45,10 @@ type HybridConnectionsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	GetAuthorizationRule func(ctx context.Context, resourceGroupName string, namespaceName string, hybridConnectionName string, authorizationRuleName string, options *armrelay.HybridConnectionsClientGetAuthorizationRuleOptions) (resp azfake.Responder[armrelay.HybridConnectionsClientGetAuthorizationRuleResponse], errResp azfake.ErrorResponder)
 
+	// ListKeys is the fake for method HybridConnectionsClient.ListKeys
+	// HTTP status codes to indicate success: http.StatusOK
+	ListKeys func(ctx context.Context, resourceGroupName string, namespaceName string, hybridConnectionName string, authorizationRuleName string, options *armrelay.HybridConnectionsClientListKeysOptions) (resp azfake.Responder[armrelay.HybridConnectionsClientListKeysResponse], errResp azfake.ErrorResponder)
+
 	// NewListAuthorizationRulesPager is the fake for method HybridConnectionsClient.NewListAuthorizationRulesPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListAuthorizationRulesPager func(resourceGroupName string, namespaceName string, hybridConnectionName string, options *armrelay.HybridConnectionsClientListAuthorizationRulesOptions) (resp azfake.PagerResponder[armrelay.HybridConnectionsClientListAuthorizationRulesResponse])
@@ -52,10 +56,6 @@ type HybridConnectionsServer struct {
 	// NewListByNamespacePager is the fake for method HybridConnectionsClient.NewListByNamespacePager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByNamespacePager func(resourceGroupName string, namespaceName string, options *armrelay.HybridConnectionsClientListByNamespaceOptions) (resp azfake.PagerResponder[armrelay.HybridConnectionsClientListByNamespaceResponse])
-
-	// ListKeys is the fake for method HybridConnectionsClient.ListKeys
-	// HTTP status codes to indicate success: http.StatusOK
-	ListKeys func(ctx context.Context, resourceGroupName string, namespaceName string, hybridConnectionName string, authorizationRuleName string, options *armrelay.HybridConnectionsClientListKeysOptions) (resp azfake.Responder[armrelay.HybridConnectionsClientListKeysResponse], errResp azfake.ErrorResponder)
 
 	// RegenerateKeys is the fake for method HybridConnectionsClient.RegenerateKeys
 	// HTTP status codes to indicate success: http.StatusOK
@@ -114,12 +114,12 @@ func (h *HybridConnectionsServerTransport) dispatchToMethodFake(req *http.Reques
 				res.resp, res.err = h.dispatchGet(req)
 			case "HybridConnectionsClient.GetAuthorizationRule":
 				res.resp, res.err = h.dispatchGetAuthorizationRule(req)
+			case "HybridConnectionsClient.ListKeys":
+				res.resp, res.err = h.dispatchListKeys(req)
 			case "HybridConnectionsClient.NewListAuthorizationRulesPager":
 				res.resp, res.err = h.dispatchNewListAuthorizationRulesPager(req)
 			case "HybridConnectionsClient.NewListByNamespacePager":
 				res.resp, res.err = h.dispatchNewListByNamespacePager(req)
-			case "HybridConnectionsClient.ListKeys":
-				res.resp, res.err = h.dispatchListKeys(req)
 			case "HybridConnectionsClient.RegenerateKeys":
 				res.resp, res.err = h.dispatchRegenerateKeys(req)
 			default:
@@ -380,6 +380,47 @@ func (h *HybridConnectionsServerTransport) dispatchGetAuthorizationRule(req *htt
 	return resp, nil
 }
 
+func (h *HybridConnectionsServerTransport) dispatchListKeys(req *http.Request) (*http.Response, error) {
+	if h.srv.ListKeys == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListKeys not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Relay/namespaces/(?P<namespaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/hybridConnections/(?P<hybridConnectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/authorizationRules/(?P<authorizationRuleName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listKeys`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 6 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	namespaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("namespaceName")])
+	if err != nil {
+		return nil, err
+	}
+	hybridConnectionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("hybridConnectionName")])
+	if err != nil {
+		return nil, err
+	}
+	authorizationRuleNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("authorizationRuleName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := h.srv.ListKeys(req.Context(), resourceGroupNameParam, namespaceNameParam, hybridConnectionNameParam, authorizationRuleNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).AccessKeys, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
 func (h *HybridConnectionsServerTransport) dispatchNewListAuthorizationRulesPager(req *http.Request) (*http.Response, error) {
 	if h.srv.NewListAuthorizationRulesPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListAuthorizationRulesPager not implemented")}
@@ -462,47 +503,6 @@ func (h *HybridConnectionsServerTransport) dispatchNewListByNamespacePager(req *
 	}
 	if !server.PagerResponderMore(newListByNamespacePager) {
 		h.newListByNamespacePager.remove(req)
-	}
-	return resp, nil
-}
-
-func (h *HybridConnectionsServerTransport) dispatchListKeys(req *http.Request) (*http.Response, error) {
-	if h.srv.ListKeys == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ListKeys not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Relay/namespaces/(?P<namespaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/hybridConnections/(?P<hybridConnectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/authorizationRules/(?P<authorizationRuleName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listKeys`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 6 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	namespaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("namespaceName")])
-	if err != nil {
-		return nil, err
-	}
-	hybridConnectionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("hybridConnectionName")])
-	if err != nil {
-		return nil, err
-	}
-	authorizationRuleNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("authorizationRuleName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := h.srv.ListKeys(req.Context(), resourceGroupNameParam, namespaceNameParam, hybridConnectionNameParam, authorizationRuleNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).AccessKeys, req)
-	if err != nil {
-		return nil, err
 	}
 	return resp, nil
 }

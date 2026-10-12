@@ -29,6 +29,10 @@ type DbSystemsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, dbSystemName string, options *armoracledatabase.DbSystemsClientBeginDeleteOptions) (resp azfake.PollerResponder[armoracledatabase.DbSystemsClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method DbSystemsClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, dbSystemName string, properties armoracledatabase.DbSystemUpdate, options *armoracledatabase.DbSystemsClientBeginUpdateOptions) (resp azfake.PollerResponder[armoracledatabase.DbSystemsClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method DbSystemsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, dbSystemName string, options *armoracledatabase.DbSystemsClientGetOptions) (resp azfake.Responder[armoracledatabase.DbSystemsClientGetResponse], errResp azfake.ErrorResponder)
@@ -40,10 +44,6 @@ type DbSystemsServer struct {
 	// NewListBySubscriptionPager is the fake for method DbSystemsClient.NewListBySubscriptionPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListBySubscriptionPager func(options *armoracledatabase.DbSystemsClientListBySubscriptionOptions) (resp azfake.PagerResponder[armoracledatabase.DbSystemsClientListBySubscriptionResponse])
-
-	// BeginUpdate is the fake for method DbSystemsClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, dbSystemName string, properties armoracledatabase.DbSystemUpdate, options *armoracledatabase.DbSystemsClientBeginUpdateOptions) (resp azfake.PollerResponder[armoracledatabase.DbSystemsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewDbSystemsServerTransport creates a new instance of DbSystemsServerTransport with the provided implementation.
@@ -54,9 +54,9 @@ func NewDbSystemsServerTransport(srv *DbSystemsServer) *DbSystemsServerTransport
 		srv:                         srv,
 		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armoracledatabase.DbSystemsClientCreateOrUpdateResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armoracledatabase.DbSystemsClientDeleteResponse]](),
+		beginUpdate:                 newTracker[azfake.PollerResponder[armoracledatabase.DbSystemsClientUpdateResponse]](),
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armoracledatabase.DbSystemsClientListByResourceGroupResponse]](),
 		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armoracledatabase.DbSystemsClientListBySubscriptionResponse]](),
-		beginUpdate:                 newTracker[azfake.PollerResponder[armoracledatabase.DbSystemsClientUpdateResponse]](),
 	}
 }
 
@@ -66,9 +66,9 @@ type DbSystemsServerTransport struct {
 	srv                         *DbSystemsServer
 	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armoracledatabase.DbSystemsClientCreateOrUpdateResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armoracledatabase.DbSystemsClientDeleteResponse]]
+	beginUpdate                 *tracker[azfake.PollerResponder[armoracledatabase.DbSystemsClientUpdateResponse]]
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armoracledatabase.DbSystemsClientListByResourceGroupResponse]]
 	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armoracledatabase.DbSystemsClientListBySubscriptionResponse]]
-	beginUpdate                 *tracker[azfake.PollerResponder[armoracledatabase.DbSystemsClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for DbSystemsServerTransport.
@@ -96,14 +96,14 @@ func (d *DbSystemsServerTransport) dispatchToMethodFake(req *http.Request, metho
 				res.resp, res.err = d.dispatchBeginCreateOrUpdate(req)
 			case "DbSystemsClient.BeginDelete":
 				res.resp, res.err = d.dispatchBeginDelete(req)
+			case "DbSystemsClient.BeginUpdate":
+				res.resp, res.err = d.dispatchBeginUpdate(req)
 			case "DbSystemsClient.Get":
 				res.resp, res.err = d.dispatchGet(req)
 			case "DbSystemsClient.NewListByResourceGroupPager":
 				res.resp, res.err = d.dispatchNewListByResourceGroupPager(req)
 			case "DbSystemsClient.NewListBySubscriptionPager":
 				res.resp, res.err = d.dispatchNewListBySubscriptionPager(req)
-			case "DbSystemsClient.BeginUpdate":
-				res.resp, res.err = d.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -212,6 +212,54 @@ func (d *DbSystemsServerTransport) dispatchBeginDelete(req *http.Request) (*http
 	return resp, nil
 }
 
+func (d *DbSystemsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if d.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := d.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Oracle\.Database/dbSystems/(?P<dbSystemName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armoracledatabase.DbSystemUpdate](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		dbSystemNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("dbSystemName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := d.srv.BeginUpdate(req.Context(), resourceGroupNameParam, dbSystemNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		d.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		d.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		d.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (d *DbSystemsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if d.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -312,54 +360,6 @@ func (d *DbSystemsServerTransport) dispatchNewListBySubscriptionPager(req *http.
 	if !server.PagerResponderMore(newListBySubscriptionPager) {
 		d.newListBySubscriptionPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (d *DbSystemsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if d.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := d.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Oracle\.Database/dbSystems/(?P<dbSystemName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armoracledatabase.DbSystemUpdate](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		dbSystemNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("dbSystemName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := d.srv.BeginUpdate(req.Context(), resourceGroupNameParam, dbSystemNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		d.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		d.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		d.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

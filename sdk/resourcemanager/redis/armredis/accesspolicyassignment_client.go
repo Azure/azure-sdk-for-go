@@ -69,7 +69,7 @@ func (client *AccessPolicyAssignmentClient) BeginCreateUpdate(ctx context.Contex
 	}
 }
 
-// CreateUpdate - Adds the access policy assignment to the specified users
+// createUpdate - Adds the access policy assignment to the specified users
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *AccessPolicyAssignmentClient) createUpdate(ctx context.Context, resourceGroupName string, cacheName string, accessPolicyAssignmentName string, parameters CacheAccessPolicyAssignment, options *AccessPolicyAssignmentClientBeginCreateUpdateOptions) (*http.Response, error) {
 	var err error
@@ -91,7 +91,7 @@ func (client *AccessPolicyAssignmentClient) createUpdate(ctx context.Context, re
 	return httpResp, nil
 }
 
-// createUpdateCreateRequest creates the CreateUpdate request.
+// createUpdateCreateRequest creates the createUpdate request.
 func (client *AccessPolicyAssignmentClient) createUpdateCreateRequest(ctx context.Context, resourceGroupName string, cacheName string, accessPolicyAssignmentName string, parameters CacheAccessPolicyAssignment, _ *AccessPolicyAssignmentClientBeginCreateUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis/{cacheName}/accessPolicyAssignments/{accessPolicyAssignmentName}"
 	if client.subscriptionID == "" {
@@ -149,7 +149,7 @@ func (client *AccessPolicyAssignmentClient) BeginDelete(ctx context.Context, res
 	}
 }
 
-// Delete - Deletes the access policy assignment from a redis cache
+// deleteOperation - Deletes the access policy assignment from a redis cache
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *AccessPolicyAssignmentClient) deleteOperation(ctx context.Context, resourceGroupName string, cacheName string, accessPolicyAssignmentName string, options *AccessPolicyAssignmentClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -171,7 +171,7 @@ func (client *AccessPolicyAssignmentClient) deleteOperation(ctx context.Context,
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *AccessPolicyAssignmentClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, cacheName string, accessPolicyAssignmentName string, _ *AccessPolicyAssignmentClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis/{cacheName}/accessPolicyAssignments/{accessPolicyAssignmentName}"
 	if client.subscriptionID == "" {

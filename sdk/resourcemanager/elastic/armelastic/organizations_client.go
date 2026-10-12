@@ -44,6 +44,84 @@ func NewOrganizationsClient(subscriptionID string, credential azcore.TokenCreden
 	return client, nil
 }
 
+// BeginResubscribe - Resubscribe the Elasticsearch Organization.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - monitorName - Monitor resource name
+//   - options - OrganizationsClientBeginResubscribeOptions contains the optional parameters for the OrganizationsClient.BeginResubscribe
+//     method.
+func (client *OrganizationsClient) BeginResubscribe(ctx context.Context, resourceGroupName string, monitorName string, options *OrganizationsClientBeginResubscribeOptions) (*runtime.Poller[OrganizationsClientResubscribeResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.resubscribe(ctx, resourceGroupName, monitorName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[OrganizationsClientResubscribeResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[OrganizationsClientResubscribeResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// resubscribe - Resubscribe the Elasticsearch Organization.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *OrganizationsClient) resubscribe(ctx context.Context, resourceGroupName string, monitorName string, options *OrganizationsClientBeginResubscribeOptions) (*http.Response, error) {
+	var err error
+	const operationName = "OrganizationsClient.BeginResubscribe"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.resubscribeCreateRequest(ctx, resourceGroupName, monitorName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// resubscribeCreateRequest creates the resubscribe request.
+func (client *OrganizationsClient) resubscribeCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, options *OrganizationsClientBeginResubscribeOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Elastic/monitors/{monitorName}/resubscribe"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if monitorName == "" {
+		return nil, errors.New("parameter monitorName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{monitorName}", url.PathEscape(monitorName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20250601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	if options != nil && options.Body != nil {
+		req.Raw().Header["Content-Type"] = []string{"application/json"}
+		if err := runtime.MarshalAsJSON(req, *options.Body); err != nil {
+			return nil, err
+		}
+		return req, nil
+	}
+	return req, nil
+}
+
 // GetAPIKey - Fetch the User API Key from the internal database, if it was generated and stored during the creation of the
 // Elasticsearch Organization.
 //
@@ -159,82 +237,4 @@ func (client *OrganizationsClient) getElasticToAzureSubscriptionMappingHandleRes
 		return OrganizationsClientGetElasticToAzureSubscriptionMappingResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginResubscribe - Resubscribe the Elasticsearch Organization.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - monitorName - Monitor resource name
-//   - options - OrganizationsClientBeginResubscribeOptions contains the optional parameters for the OrganizationsClient.BeginResubscribe
-//     method.
-func (client *OrganizationsClient) BeginResubscribe(ctx context.Context, resourceGroupName string, monitorName string, options *OrganizationsClientBeginResubscribeOptions) (*runtime.Poller[OrganizationsClientResubscribeResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.resubscribe(ctx, resourceGroupName, monitorName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[OrganizationsClientResubscribeResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[OrganizationsClientResubscribeResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Resubscribe - Resubscribe the Elasticsearch Organization.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *OrganizationsClient) resubscribe(ctx context.Context, resourceGroupName string, monitorName string, options *OrganizationsClientBeginResubscribeOptions) (*http.Response, error) {
-	var err error
-	const operationName = "OrganizationsClient.BeginResubscribe"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.resubscribeCreateRequest(ctx, resourceGroupName, monitorName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// resubscribeCreateRequest creates the Resubscribe request.
-func (client *OrganizationsClient) resubscribeCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, options *OrganizationsClientBeginResubscribeOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Elastic/monitors/{monitorName}/resubscribe"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if monitorName == "" {
-		return nil, errors.New("parameter monitorName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{monitorName}", url.PathEscape(monitorName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	if options != nil && options.Body != nil {
-		req.Raw().Header["Content-Type"] = []string{"application/json"}
-		if err := runtime.MarshalAsJSON(req, *options.Body); err != nil {
-			return nil, err
-		}
-		return req, nil
-	}
-	return req, nil
 }

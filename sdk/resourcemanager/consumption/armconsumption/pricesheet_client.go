@@ -69,7 +69,7 @@ func (client *PriceSheetClient) BeginDownloadByBillingAccountPeriod(ctx context.
 	}
 }
 
-// DownloadByBillingAccountPeriod - Generates the pricesheet for the provided billing period asynchronously based on the enrollment
+// downloadByBillingAccountPeriod - Generates the pricesheet for the provided billing period asynchronously based on the enrollment
 // id
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *PriceSheetClient) downloadByBillingAccountPeriod(ctx context.Context, billingAccountID string, billingPeriodName string, options *PriceSheetClientBeginDownloadByBillingAccountPeriodOptions) (*http.Response, error) {
@@ -92,7 +92,7 @@ func (client *PriceSheetClient) downloadByBillingAccountPeriod(ctx context.Conte
 	return httpResp, nil
 }
 
-// downloadByBillingAccountPeriodCreateRequest creates the DownloadByBillingAccountPeriod request.
+// downloadByBillingAccountPeriodCreateRequest creates the downloadByBillingAccountPeriod request.
 func (client *PriceSheetClient) downloadByBillingAccountPeriodCreateRequest(ctx context.Context, billingAccountID string, billingPeriodName string, _ *PriceSheetClientBeginDownloadByBillingAccountPeriodOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingPeriods/{billingPeriodName}/providers/Microsoft.Consumption/pricesheets/download"
 	if billingAccountID == "" {

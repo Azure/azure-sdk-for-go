@@ -20,13 +20,13 @@ import (
 
 // AvailablePrivateEndpointTypesServer is a fake server for instances of the armnetwork.AvailablePrivateEndpointTypesClient type.
 type AvailablePrivateEndpointTypesServer struct {
-	// NewListPager is the fake for method AvailablePrivateEndpointTypesClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(location string, options *armnetwork.AvailablePrivateEndpointTypesClientListOptions) (resp azfake.PagerResponder[armnetwork.AvailablePrivateEndpointTypesClientListResponse])
-
 	// NewListByResourceGroupPager is the fake for method AvailablePrivateEndpointTypesClient.NewListByResourceGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByResourceGroupPager func(location string, resourceGroupName string, options *armnetwork.AvailablePrivateEndpointTypesClientListByResourceGroupOptions) (resp azfake.PagerResponder[armnetwork.AvailablePrivateEndpointTypesClientListByResourceGroupResponse])
+
+	// NewListPager is the fake for method AvailablePrivateEndpointTypesClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(location string, options *armnetwork.AvailablePrivateEndpointTypesClientListOptions) (resp azfake.PagerResponder[armnetwork.AvailablePrivateEndpointTypesClientListResponse])
 }
 
 // NewAvailablePrivateEndpointTypesServerTransport creates a new instance of AvailablePrivateEndpointTypesServerTransport with the provided implementation.
@@ -35,8 +35,8 @@ type AvailablePrivateEndpointTypesServer struct {
 func NewAvailablePrivateEndpointTypesServerTransport(srv *AvailablePrivateEndpointTypesServer) *AvailablePrivateEndpointTypesServerTransport {
 	return &AvailablePrivateEndpointTypesServerTransport{
 		srv:                         srv,
-		newListPager:                newTracker[azfake.PagerResponder[armnetwork.AvailablePrivateEndpointTypesClientListResponse]](),
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armnetwork.AvailablePrivateEndpointTypesClientListByResourceGroupResponse]](),
+		newListPager:                newTracker[azfake.PagerResponder[armnetwork.AvailablePrivateEndpointTypesClientListResponse]](),
 	}
 }
 
@@ -44,8 +44,8 @@ func NewAvailablePrivateEndpointTypesServerTransport(srv *AvailablePrivateEndpoi
 // Don't use this type directly, use NewAvailablePrivateEndpointTypesServerTransport instead.
 type AvailablePrivateEndpointTypesServerTransport struct {
 	srv                         *AvailablePrivateEndpointTypesServer
-	newListPager                *tracker[azfake.PagerResponder[armnetwork.AvailablePrivateEndpointTypesClientListResponse]]
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armnetwork.AvailablePrivateEndpointTypesClientListByResourceGroupResponse]]
+	newListPager                *tracker[azfake.PagerResponder[armnetwork.AvailablePrivateEndpointTypesClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for AvailablePrivateEndpointTypesServerTransport.
@@ -69,10 +69,10 @@ func (a *AvailablePrivateEndpointTypesServerTransport) dispatchToMethodFake(req 
 		}
 		if !intercepted {
 			switch method {
-			case "AvailablePrivateEndpointTypesClient.NewListPager":
-				res.resp, res.err = a.dispatchNewListPager(req)
 			case "AvailablePrivateEndpointTypesClient.NewListByResourceGroupPager":
 				res.resp, res.err = a.dispatchNewListByResourceGroupPager(req)
+			case "AvailablePrivateEndpointTypesClient.NewListPager":
+				res.resp, res.err = a.dispatchNewListPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -87,43 +87,6 @@ func (a *AvailablePrivateEndpointTypesServerTransport) dispatchToMethodFake(req 
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
-}
-
-func (a *AvailablePrivateEndpointTypesServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if a.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := a.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/availablePrivateEndpointTypes`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		locationParam, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
-		if err != nil {
-			return nil, err
-		}
-		resp := a.srv.NewListPager(locationParam, nil)
-		newListPager = &resp
-		a.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armnetwork.AvailablePrivateEndpointTypesClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		a.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		a.newListPager.remove(req)
-	}
-	return resp, nil
 }
 
 func (a *AvailablePrivateEndpointTypesServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
@@ -163,6 +126,43 @@ func (a *AvailablePrivateEndpointTypesServerTransport) dispatchNewListByResource
 	}
 	if !server.PagerResponderMore(newListByResourceGroupPager) {
 		a.newListByResourceGroupPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (a *AvailablePrivateEndpointTypesServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if a.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := a.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/availablePrivateEndpointTypes`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		locationParam, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
+		if err != nil {
+			return nil, err
+		}
+		resp := a.srv.NewListPager(locationParam, nil)
+		newListPager = &resp
+		a.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armnetwork.AvailablePrivateEndpointTypesClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		a.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPager) {
+		a.newListPager.remove(req)
 	}
 	return resp, nil
 }

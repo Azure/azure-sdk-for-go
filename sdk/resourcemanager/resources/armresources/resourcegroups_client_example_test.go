@@ -12,38 +12,6 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-04-01/CreateResourceGroup.json
-func ExampleResourceGroupsClient_CreateOrUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armresources.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewResourceGroupsClient().CreateOrUpdate(ctx, "my-resource-group", armresources.ResourceGroup{
-		Location: to.Ptr("eastus"),
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armresources.ResourceGroupsClientCreateOrUpdateResponse{
-	// 	ResourceGroup: armresources.ResourceGroup{
-	// 		Name: to.Ptr("my-resource-group"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/my-resource-group"),
-	// 		Location: to.Ptr("eastus"),
-	// 		Properties: &armresources.ResourceGroupProperties{
-	// 			ProvisioningState: to.Ptr("Succeeded"),
-	// 		},
-	// 	},
-	// }
-}
-
 // Generated from example definition: 2025-04-01/ForceDeleteVMsAndVMSSInResourceGroup.json
 func ExampleResourceGroupsClient_BeginDelete_forceDeleteAllTheVirtualMachinesAndVirtualMachineScaleSetsInAResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -269,6 +237,38 @@ func ExampleResourceGroupsClient_BeginExportTemplate_exportAResourceGroupWithFil
 	// 			},
 	// 			"variables": map[string]any{
 	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-04-01/CreateResourceGroup.json
+func ExampleResourceGroupsClient_CreateOrUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armresources.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewResourceGroupsClient().CreateOrUpdate(ctx, "my-resource-group", armresources.ResourceGroup{
+		Location: to.Ptr("eastus"),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armresources.ResourceGroupsClientCreateOrUpdateResponse{
+	// 	ResourceGroup: armresources.ResourceGroup{
+	// 		Name: to.Ptr("my-resource-group"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/my-resource-group"),
+	// 		Location: to.Ptr("eastus"),
+	// 		Properties: &armresources.ResourceGroupProperties{
+	// 			ProvisioningState: to.Ptr("Succeeded"),
 	// 		},
 	// 	},
 	// }

@@ -69,7 +69,7 @@ func (client *DatabaseEncryptionProtectorsClient) BeginRevalidate(ctx context.Co
 	}
 }
 
-// Revalidate - Revalidates an existing encryption protector for a particular database.
+// revalidate - Revalidates an existing encryption protector for a particular database.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *DatabaseEncryptionProtectorsClient) revalidate(ctx context.Context, resourceGroupName string, serverName string, databaseName string, encryptionProtectorName EncryptionProtectorName, options *DatabaseEncryptionProtectorsClientBeginRevalidateOptions) (*http.Response, error) {
 	var err error
@@ -91,7 +91,7 @@ func (client *DatabaseEncryptionProtectorsClient) revalidate(ctx context.Context
 	return httpResp, nil
 }
 
-// revalidateCreateRequest creates the Revalidate request.
+// revalidateCreateRequest creates the revalidate request.
 func (client *DatabaseEncryptionProtectorsClient) revalidateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, encryptionProtectorName EncryptionProtectorName, _ *DatabaseEncryptionProtectorsClientBeginRevalidateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/encryptionProtector/{encryptionProtectorName}/revalidate"
 	if client.subscriptionID == "" {
@@ -149,7 +149,7 @@ func (client *DatabaseEncryptionProtectorsClient) BeginRevert(ctx context.Contex
 	}
 }
 
-// Revert - Reverts an existing encryption protector for a particular database.
+// revert - Reverts an existing encryption protector for a particular database.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *DatabaseEncryptionProtectorsClient) revert(ctx context.Context, resourceGroupName string, serverName string, databaseName string, encryptionProtectorName EncryptionProtectorName, options *DatabaseEncryptionProtectorsClientBeginRevertOptions) (*http.Response, error) {
 	var err error
@@ -171,7 +171,7 @@ func (client *DatabaseEncryptionProtectorsClient) revert(ctx context.Context, re
 	return httpResp, nil
 }
 
-// revertCreateRequest creates the Revert request.
+// revertCreateRequest creates the revert request.
 func (client *DatabaseEncryptionProtectorsClient) revertCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, encryptionProtectorName EncryptionProtectorName, _ *DatabaseEncryptionProtectorsClientBeginRevertOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/encryptionProtector/{encryptionProtectorName}/revert"
 	if client.subscriptionID == "" {

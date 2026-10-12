@@ -70,7 +70,7 @@ func (client *FirewallPolicyRuleCollectionGroupsClient) BeginCreateOrUpdate(ctx 
 	}
 }
 
-// CreateOrUpdate - Creates or updates the specified FirewallPolicyRuleCollectionGroup.
+// createOrUpdate - Creates or updates the specified FirewallPolicyRuleCollectionGroup.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *FirewallPolicyRuleCollectionGroupsClient) createOrUpdate(ctx context.Context, resourceGroupName string, firewallPolicyName string, ruleCollectionGroupName string, parameters FirewallPolicyRuleCollectionGroup, options *FirewallPolicyRuleCollectionGroupsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -92,7 +92,7 @@ func (client *FirewallPolicyRuleCollectionGroupsClient) createOrUpdate(ctx conte
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *FirewallPolicyRuleCollectionGroupsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, firewallPolicyName string, ruleCollectionGroupName string, parameters FirewallPolicyRuleCollectionGroup, _ *FirewallPolicyRuleCollectionGroupsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/firewallPolicies/{firewallPolicyName}/ruleCollectionGroups/{ruleCollectionGroupName}"
 	if client.subscriptionID == "" {
@@ -151,7 +151,7 @@ func (client *FirewallPolicyRuleCollectionGroupsClient) BeginDelete(ctx context.
 	}
 }
 
-// Delete - Deletes the specified FirewallPolicyRuleCollectionGroup.
+// deleteOperation - Deletes the specified FirewallPolicyRuleCollectionGroup.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *FirewallPolicyRuleCollectionGroupsClient) deleteOperation(ctx context.Context, resourceGroupName string, firewallPolicyName string, ruleCollectionGroupName string, options *FirewallPolicyRuleCollectionGroupsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -173,7 +173,7 @@ func (client *FirewallPolicyRuleCollectionGroupsClient) deleteOperation(ctx cont
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *FirewallPolicyRuleCollectionGroupsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, firewallPolicyName string, ruleCollectionGroupName string, _ *FirewallPolicyRuleCollectionGroupsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/firewallPolicies/{firewallPolicyName}/ruleCollectionGroups/{ruleCollectionGroupName}"
 	if client.subscriptionID == "" {

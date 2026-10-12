@@ -70,7 +70,7 @@ func (client *AccountClient) BeginCreate(ctx context.Context, resourceGroupName 
 	}
 }
 
-// Create - Creates a new Batch account with the specified parameters. Existing accounts cannot be updated with this API and
+// create - Creates a new Batch account with the specified parameters. Existing accounts cannot be updated with this API and
 // should instead be updated with the Update Batch Account API.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *AccountClient) create(ctx context.Context, resourceGroupName string, accountName string, parameters AccountCreateParameters, options *AccountClientBeginCreateOptions) (*http.Response, error) {
@@ -93,7 +93,7 @@ func (client *AccountClient) create(ctx context.Context, resourceGroupName strin
 	return httpResp, nil
 }
 
-// createCreateRequest creates the Create request.
+// createCreateRequest creates the create request.
 func (client *AccountClient) createCreateRequest(ctx context.Context, resourceGroupName string, accountName string, parameters AccountCreateParameters, _ *AccountClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}"
 	if client.subscriptionID == "" {
@@ -147,7 +147,7 @@ func (client *AccountClient) BeginDelete(ctx context.Context, resourceGroupName 
 	}
 }
 
-// Delete - Deletes the specified Batch account.
+// deleteOperation - Deletes the specified Batch account.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *AccountClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, options *AccountClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -169,7 +169,7 @@ func (client *AccountClient) deleteOperation(ctx context.Context, resourceGroupN
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *AccountClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, _ *AccountClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}"
 	if client.subscriptionID == "" {
@@ -385,72 +385,6 @@ func (client *AccountClient) getKeysHandleResponse(resp *http.Response, successC
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccountKeys); err != nil {
 		return AccountClientGetKeysResponse{}, err
-	}
-	return result, nil
-}
-
-// NewListPager - Gets information about the Batch accounts associated with the subscription.
-//   - options - AccountClientListOptions contains the optional parameters for the AccountClient.NewListPager method.
-func (client *AccountClient) NewListPager(options *AccountClientListOptions) *runtime.Pager[AccountClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[AccountClientListResponse]{
-		More: func(page AccountClientListResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *AccountClientListResponse) (AccountClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AccountClient.NewListPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			req, err := client.listCreateRequest(ctx, nextLink, options)
-			if err != nil {
-				return AccountClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return AccountClientListResponse{}, err
-			}
-			return client.listHandleResponse(resp, http.StatusOK)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listCreateRequest creates the List request.
-func (client *AccountClient) listCreateRequest(ctx context.Context, nextLink string, _ *AccountClientListOptions) (*policy.Request, error) {
-	firstPage := nextLink == ""
-	var req *policy.Request
-	var err error
-	if firstPage {
-		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Batch/batchAccounts"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter subscriptionID cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	} else {
-		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
-	}
-	if err != nil {
-		return nil, err
-	}
-	if firstPage {
-		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250601)
-		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-		req.Raw().Header["Accept"] = []string{"application/json"}
-	}
-	return req, nil
-}
-
-// listHandleResponse handles the List response.
-func (client *AccountClient) listHandleResponse(resp *http.Response, successCodes ...int) (AccountClientListResponse, error) {
-	result := AccountClientListResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.AccountListResult); err != nil {
-		return AccountClientListResponse{}, err
 	}
 	return result, nil
 }
@@ -685,6 +619,72 @@ func (client *AccountClient) listOutboundNetworkDependenciesEndpointsHandleRespo
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OutboundEnvironmentEndpointCollection); err != nil {
 		return AccountClientListOutboundNetworkDependenciesEndpointsResponse{}, err
+	}
+	return result, nil
+}
+
+// NewListPager - Gets information about the Batch accounts associated with the subscription.
+//   - options - AccountClientListOptions contains the optional parameters for the AccountClient.NewListPager method.
+func (client *AccountClient) NewListPager(options *AccountClientListOptions) *runtime.Pager[AccountClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[AccountClientListResponse]{
+		More: func(page AccountClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *AccountClientListResponse) (AccountClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AccountClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listCreateRequest(ctx, nextLink, options)
+			if err != nil {
+				return AccountClientListResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return AccountClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listCreateRequest creates the List request.
+func (client *AccountClient) listCreateRequest(ctx context.Context, nextLink string, _ *AccountClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Batch/batchAccounts"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250601)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// listHandleResponse handles the List response.
+func (client *AccountClient) listHandleResponse(resp *http.Response, successCodes ...int) (AccountClientListResponse, error) {
+	result := AccountClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.AccountListResult); err != nil {
+		return AccountClientListResponse{}, err
 	}
 	return result, nil
 }

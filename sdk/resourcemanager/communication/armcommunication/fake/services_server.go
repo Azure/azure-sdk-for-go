@@ -22,10 +22,6 @@ import (
 
 // ServicesServer is a fake server for instances of the armcommunication.ServicesClient type.
 type ServicesServer struct {
-	// CheckNameAvailability is the fake for method ServicesClient.CheckNameAvailability
-	// HTTP status codes to indicate success: http.StatusOK
-	CheckNameAvailability func(ctx context.Context, nameAvailabilityParameters armcommunication.NameAvailabilityParameters, options *armcommunication.ServicesClientCheckNameAvailabilityOptions) (resp azfake.Responder[armcommunication.ServicesClientCheckNameAvailabilityResponse], errResp azfake.ErrorResponder)
-
 	// BeginCreateOrUpdate is the fake for method ServicesClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
 	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, communicationServiceName string, parameters armcommunication.ServiceResource, options *armcommunication.ServicesClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armcommunication.ServicesClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
@@ -33,6 +29,10 @@ type ServicesServer struct {
 	// BeginDelete is the fake for method ServicesClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, communicationServiceName string, options *armcommunication.ServicesClientBeginDeleteOptions) (resp azfake.PollerResponder[armcommunication.ServicesClientDeleteResponse], errResp azfake.ErrorResponder)
+
+	// CheckNameAvailability is the fake for method ServicesClient.CheckNameAvailability
+	// HTTP status codes to indicate success: http.StatusOK
+	CheckNameAvailability func(ctx context.Context, nameAvailabilityParameters armcommunication.NameAvailabilityParameters, options *armcommunication.ServicesClientCheckNameAvailabilityOptions) (resp azfake.Responder[armcommunication.ServicesClientCheckNameAvailabilityResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method ServicesClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
@@ -42,6 +42,10 @@ type ServicesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	LinkNotificationHub func(ctx context.Context, resourceGroupName string, communicationServiceName string, options *armcommunication.ServicesClientLinkNotificationHubOptions) (resp azfake.Responder[armcommunication.ServicesClientLinkNotificationHubResponse], errResp azfake.ErrorResponder)
 
+	// ListKeys is the fake for method ServicesClient.ListKeys
+	// HTTP status codes to indicate success: http.StatusOK
+	ListKeys func(ctx context.Context, resourceGroupName string, communicationServiceName string, options *armcommunication.ServicesClientListKeysOptions) (resp azfake.Responder[armcommunication.ServicesClientListKeysResponse], errResp azfake.ErrorResponder)
+
 	// NewListByResourceGroupPager is the fake for method ServicesClient.NewListByResourceGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByResourceGroupPager func(resourceGroupName string, options *armcommunication.ServicesClientListByResourceGroupOptions) (resp azfake.PagerResponder[armcommunication.ServicesClientListByResourceGroupResponse])
@@ -49,10 +53,6 @@ type ServicesServer struct {
 	// NewListBySubscriptionPager is the fake for method ServicesClient.NewListBySubscriptionPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListBySubscriptionPager func(options *armcommunication.ServicesClientListBySubscriptionOptions) (resp azfake.PagerResponder[armcommunication.ServicesClientListBySubscriptionResponse])
-
-	// ListKeys is the fake for method ServicesClient.ListKeys
-	// HTTP status codes to indicate success: http.StatusOK
-	ListKeys func(ctx context.Context, resourceGroupName string, communicationServiceName string, options *armcommunication.ServicesClientListKeysOptions) (resp azfake.Responder[armcommunication.ServicesClientListKeysResponse], errResp azfake.ErrorResponder)
 
 	// RegenerateKey is the fake for method ServicesClient.RegenerateKey
 	// HTTP status codes to indicate success: http.StatusOK
@@ -107,22 +107,22 @@ func (s *ServicesServerTransport) dispatchToMethodFake(req *http.Request, method
 		}
 		if !intercepted {
 			switch method {
-			case "ServicesClient.CheckNameAvailability":
-				res.resp, res.err = s.dispatchCheckNameAvailability(req)
 			case "ServicesClient.BeginCreateOrUpdate":
 				res.resp, res.err = s.dispatchBeginCreateOrUpdate(req)
 			case "ServicesClient.BeginDelete":
 				res.resp, res.err = s.dispatchBeginDelete(req)
+			case "ServicesClient.CheckNameAvailability":
+				res.resp, res.err = s.dispatchCheckNameAvailability(req)
 			case "ServicesClient.Get":
 				res.resp, res.err = s.dispatchGet(req)
 			case "ServicesClient.LinkNotificationHub":
 				res.resp, res.err = s.dispatchLinkNotificationHub(req)
+			case "ServicesClient.ListKeys":
+				res.resp, res.err = s.dispatchListKeys(req)
 			case "ServicesClient.NewListByResourceGroupPager":
 				res.resp, res.err = s.dispatchNewListByResourceGroupPager(req)
 			case "ServicesClient.NewListBySubscriptionPager":
 				res.resp, res.err = s.dispatchNewListBySubscriptionPager(req)
-			case "ServicesClient.ListKeys":
-				res.resp, res.err = s.dispatchListKeys(req)
 			case "ServicesClient.RegenerateKey":
 				res.resp, res.err = s.dispatchRegenerateKey(req)
 			case "ServicesClient.Update":
@@ -141,35 +141,6 @@ func (s *ServicesServerTransport) dispatchToMethodFake(req *http.Request, method
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
-}
-
-func (s *ServicesServerTransport) dispatchCheckNameAvailability(req *http.Request) (*http.Response, error) {
-	if s.srv.CheckNameAvailability == nil {
-		return nil, &nonRetriableError{errors.New("fake for method CheckNameAvailability not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Communication/checkNameAvailability`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 2 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armcommunication.NameAvailabilityParameters](req)
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := s.srv.CheckNameAvailability(req.Context(), body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CheckNameAvailabilityResponse, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
 }
 
 func (s *ServicesServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (*http.Response, error) {
@@ -264,6 +235,35 @@ func (s *ServicesServerTransport) dispatchBeginDelete(req *http.Request) (*http.
 	return resp, nil
 }
 
+func (s *ServicesServerTransport) dispatchCheckNameAvailability(req *http.Request) (*http.Response, error) {
+	if s.srv.CheckNameAvailability == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CheckNameAvailability not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Communication/checkNameAvailability`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 2 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armcommunication.NameAvailabilityParameters](req)
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := s.srv.CheckNameAvailability(req.Context(), body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CheckNameAvailabilityResponse, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
 func (s *ServicesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if s.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -340,6 +340,39 @@ func (s *ServicesServerTransport) dispatchLinkNotificationHub(req *http.Request)
 	return resp, nil
 }
 
+func (s *ServicesServerTransport) dispatchListKeys(req *http.Request) (*http.Response, error) {
+	if s.srv.ListKeys == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListKeys not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Communication/communicationServices/(?P<communicationServiceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listKeys`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	communicationServiceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("communicationServiceName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := s.srv.ListKeys(req.Context(), resourceGroupNameParam, communicationServiceNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ServiceKeys, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
 func (s *ServicesServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
 	if s.srv.NewListByResourceGroupPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
@@ -406,39 +439,6 @@ func (s *ServicesServerTransport) dispatchNewListBySubscriptionPager(req *http.R
 	}
 	if !server.PagerResponderMore(newListBySubscriptionPager) {
 		s.newListBySubscriptionPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (s *ServicesServerTransport) dispatchListKeys(req *http.Request) (*http.Response, error) {
-	if s.srv.ListKeys == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ListKeys not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Communication/communicationServices/(?P<communicationServiceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listKeys`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	communicationServiceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("communicationServiceName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := s.srv.ListKeys(req.Context(), resourceGroupNameParam, communicationServiceNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ServiceKeys, req)
-	if err != nil {
-		return nil, err
 	}
 	return resp, nil
 }

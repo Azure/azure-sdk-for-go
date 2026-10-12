@@ -1850,382 +1850,6 @@ func ExampleDatabasesClient_BeginFailover() {
 	// }
 }
 
-// Generated from example definition: 2026-08-01-preview/GetDatabaseWithAvailabilityZone.json
-func ExampleDatabasesClient_Get_getsADatabaseWithAvailabilityZoneSpecified() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armsql.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewDatabasesClient().Get(ctx, "Default-SQL-SouthEastAsia", "testsvr", "testdb", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armsql.DatabasesClientGetResponse{
-	// 	Database: armsql.Database{
-	// 		Name: to.Ptr("testdb"),
-	// 		Type: to.Ptr("Microsoft.Sql/servers/databases"),
-	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default-SQL-SouthEastAsia/providers/Microsoft.Sql/servers/testsvr/databases/testdb"),
-	// 		Kind: to.Ptr("v12.0,user"),
-	// 		Location: to.Ptr("southeastasia"),
-	// 		Properties: &armsql.DatabaseProperties{
-	// 			AvailabilityZone: to.Ptr(armsql.AvailabilityZoneTypeOne),
-	// 			CatalogCollation: to.Ptr(armsql.CatalogCollationTypeSQLLatin1GeneralCP1CIAS),
-	// 			Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-	// 			CreationDate: to.Ptr(time.Date(2017, time.June, 7, 4, 41, 33, 937000000, time.UTC)),
-	// 			CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
-	// 			CurrentServiceObjectiveName: to.Ptr("S0"),
-	// 			CurrentSKU: &armsql.SKU{
-	// 				Name: to.Ptr("Standard"),
-	// 				Capacity: to.Ptr[int32](10),
-	// 				Tier: to.Ptr("Standard"),
-	// 			},
-	// 			DatabaseID: to.Ptr("6c764297-577b-470f-9af4-96d3d41e2ba3"),
-	// 			DefaultSecondaryLocation: to.Ptr("North Europe"),
-	// 			EarliestRestoreDate: to.Ptr(time.Date(2017, time.June, 7, 4, 51, 33, 937000000, time.UTC)),
-	// 			IsInfraEncryptionEnabled: to.Ptr(false),
-	// 			IsLedgerOn: to.Ptr(false),
-	// 			MaxSizeBytes: to.Ptr[int64](1073741824),
-	// 			ReadScale: to.Ptr(armsql.DatabaseReadScaleDisabled),
-	// 			RequestedBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
-	// 			RequestedServiceObjectiveName: to.Ptr("S0"),
-	// 			Status: to.Ptr(armsql.DatabaseStatusOnline),
-	// 			ZoneRedundant: to.Ptr(false),
-	// 		},
-	// 		SKU: &armsql.SKU{
-	// 			Name: to.Ptr("S0"),
-	// 			Capacity: to.Ptr[int32](10),
-	// 			Tier: to.Ptr("Standard"),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-08-01-preview/GetVCoreDatabase.json
-func ExampleDatabasesClient_Get_getsADatabase() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armsql.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewDatabasesClient().Get(ctx, "Default-SQL-SouthEastAsia", "testsvr", "testdb", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armsql.DatabasesClientGetResponse{
-	// 	Database: armsql.Database{
-	// 		Name: to.Ptr("testdb"),
-	// 		Type: to.Ptr("Microsoft.Sql/servers/databases"),
-	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default-SQL-SouthEastAsia/providers/Microsoft.Sql/servers/testsvr/databases/testdb"),
-	// 		Kind: to.Ptr("v12.0,user,vcore"),
-	// 		Location: to.Ptr("southeastasia"),
-	// 		Properties: &armsql.DatabaseProperties{
-	// 			CatalogCollation: to.Ptr(armsql.CatalogCollationTypeSQLLatin1GeneralCP1CIAS),
-	// 			Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-	// 			CreationDate: to.Ptr(time.Date(2017, time.June, 7, 4, 41, 33, 937000000, time.UTC)),
-	// 			CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
-	// 			CurrentServiceObjectiveName: to.Ptr("BC_Gen5_2"),
-	// 			CurrentSKU: &armsql.SKU{
-	// 				Name: to.Ptr("BC_Gen5"),
-	// 				Capacity: to.Ptr[int32](2),
-	// 				Tier: to.Ptr("BusinessCritical"),
-	// 			},
-	// 			DatabaseID: to.Ptr("6c764297-577b-470f-9af4-96d3d41e2ba3"),
-	// 			DefaultSecondaryLocation: to.Ptr("North Europe"),
-	// 			EarliestRestoreDate: to.Ptr(time.Date(2017, time.June, 7, 4, 51, 33, 937000000, time.UTC)),
-	// 			IsInfraEncryptionEnabled: to.Ptr(false),
-	// 			IsLedgerOn: to.Ptr(false),
-	// 			LicenseType: to.Ptr(armsql.DatabaseLicenseTypeLicenseIncluded),
-	// 			MaintenanceConfigurationID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_SouthEastAsia_1"),
-	// 			MaxLogSizeBytes: to.Ptr[int64](104857600),
-	// 			MaxSizeBytes: to.Ptr[int64](268435456000),
-	// 			ReadScale: to.Ptr(armsql.DatabaseReadScaleEnabled),
-	// 			RequestedBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
-	// 			RequestedServiceObjectiveName: to.Ptr("BC_Gen5_2"),
-	// 			Status: to.Ptr(armsql.DatabaseStatusOnline),
-	// 			ZoneRedundant: to.Ptr(false),
-	// 		},
-	// 		SKU: &armsql.SKU{
-	// 			Name: to.Ptr("BC_Gen5"),
-	// 			Capacity: to.Ptr[int32](2),
-	// 			Tier: to.Ptr("BusinessCritical"),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-08-01-preview/GetVCoreDatabaseDefaultEnclave.json
-func ExampleDatabasesClient_Get_getsADatabaseConfiguredWithDefaultEnclaveType() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armsql.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewDatabasesClient().Get(ctx, "Default-SQL-SouthEastAsia", "testsvr", "testdb", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armsql.DatabasesClientGetResponse{
-	// 	Database: armsql.Database{
-	// 		Name: to.Ptr("testdb"),
-	// 		Type: to.Ptr("Microsoft.Sql/servers/databases"),
-	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default-SQL-SouthEastAsia/providers/Microsoft.Sql/servers/testsvr/databases/testdb"),
-	// 		Kind: to.Ptr("v12.0,user,vcore"),
-	// 		Location: to.Ptr("southeastasia"),
-	// 		Properties: &armsql.DatabaseProperties{
-	// 			CatalogCollation: to.Ptr(armsql.CatalogCollationTypeSQLLatin1GeneralCP1CIAS),
-	// 			Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-	// 			CreationDate: to.Ptr(time.Date(2017, time.June, 7, 4, 41, 33, 937000000, time.UTC)),
-	// 			CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
-	// 			CurrentServiceObjectiveName: to.Ptr("BC_Gen5_2"),
-	// 			CurrentSKU: &armsql.SKU{
-	// 				Name: to.Ptr("BC_Gen5"),
-	// 				Capacity: to.Ptr[int32](2),
-	// 				Tier: to.Ptr("BusinessCritical"),
-	// 			},
-	// 			DatabaseID: to.Ptr("6c764297-577b-470f-9af4-96d3d41e2ba3"),
-	// 			DefaultSecondaryLocation: to.Ptr("North Europe"),
-	// 			EarliestRestoreDate: to.Ptr(time.Date(2017, time.June, 7, 4, 51, 33, 937000000, time.UTC)),
-	// 			IsInfraEncryptionEnabled: to.Ptr(false),
-	// 			IsLedgerOn: to.Ptr(false),
-	// 			LicenseType: to.Ptr(armsql.DatabaseLicenseTypeLicenseIncluded),
-	// 			MaintenanceConfigurationID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_SouthEastAsia_1"),
-	// 			MaxLogSizeBytes: to.Ptr[int64](104857600),
-	// 			MaxSizeBytes: to.Ptr[int64](268435456000),
-	// 			PreferredEnclaveType: to.Ptr(armsql.AlwaysEncryptedEnclaveTypeDefault),
-	// 			ReadScale: to.Ptr(armsql.DatabaseReadScaleEnabled),
-	// 			RequestedBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
-	// 			RequestedServiceObjectiveName: to.Ptr("BC_Gen5_2"),
-	// 			Status: to.Ptr(armsql.DatabaseStatusOnline),
-	// 			ZoneRedundant: to.Ptr(false),
-	// 		},
-	// 		SKU: &armsql.SKU{
-	// 			Name: to.Ptr("BC_Gen5"),
-	// 			Capacity: to.Ptr[int32](2),
-	// 			Tier: to.Ptr("BusinessCritical"),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-08-01-preview/GetVCoreDatabaseVBSEnclave.json
-func ExampleDatabasesClient_Get_getsADatabaseConfiguredWithVbsEnclaveType() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armsql.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewDatabasesClient().Get(ctx, "Default-SQL-SouthEastAsia", "testsvr", "testdb", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armsql.DatabasesClientGetResponse{
-	// 	Database: armsql.Database{
-	// 		Name: to.Ptr("testdb"),
-	// 		Type: to.Ptr("Microsoft.Sql/servers/databases"),
-	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default-SQL-SouthEastAsia/providers/Microsoft.Sql/servers/testsvr/databases/testdb"),
-	// 		Kind: to.Ptr("v12.0,user,vcore"),
-	// 		Location: to.Ptr("southeastasia"),
-	// 		Properties: &armsql.DatabaseProperties{
-	// 			CatalogCollation: to.Ptr(armsql.CatalogCollationTypeSQLLatin1GeneralCP1CIAS),
-	// 			Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-	// 			CreationDate: to.Ptr(time.Date(2017, time.June, 7, 4, 41, 33, 937000000, time.UTC)),
-	// 			CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
-	// 			CurrentServiceObjectiveName: to.Ptr("BC_Gen5_2"),
-	// 			CurrentSKU: &armsql.SKU{
-	// 				Name: to.Ptr("BC_Gen5"),
-	// 				Capacity: to.Ptr[int32](2),
-	// 				Tier: to.Ptr("BusinessCritical"),
-	// 			},
-	// 			DatabaseID: to.Ptr("6c764297-577b-470f-9af4-96d3d41e2ba3"),
-	// 			DefaultSecondaryLocation: to.Ptr("North Europe"),
-	// 			EarliestRestoreDate: to.Ptr(time.Date(2017, time.June, 7, 4, 51, 33, 937000000, time.UTC)),
-	// 			IsInfraEncryptionEnabled: to.Ptr(false),
-	// 			IsLedgerOn: to.Ptr(false),
-	// 			LicenseType: to.Ptr(armsql.DatabaseLicenseTypeLicenseIncluded),
-	// 			MaintenanceConfigurationID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_SouthEastAsia_1"),
-	// 			MaxLogSizeBytes: to.Ptr[int64](104857600),
-	// 			MaxSizeBytes: to.Ptr[int64](268435456000),
-	// 			PreferredEnclaveType: to.Ptr(armsql.AlwaysEncryptedEnclaveTypeVBS),
-	// 			ReadScale: to.Ptr(armsql.DatabaseReadScaleEnabled),
-	// 			RequestedBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
-	// 			RequestedServiceObjectiveName: to.Ptr("BC_Gen5_2"),
-	// 			Status: to.Ptr(armsql.DatabaseStatusOnline),
-	// 			ZoneRedundant: to.Ptr(false),
-	// 		},
-	// 		SKU: &armsql.SKU{
-	// 			Name: to.Ptr("BC_Gen5"),
-	// 			Capacity: to.Ptr[int32](2),
-	// 			Tier: to.Ptr("BusinessCritical"),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-08-01-preview/GetVCoreDatabaseWithExpandEqualsKeys.json
-func ExampleDatabasesClient_Get_getsADatabaseWithDatabaseLevelKeysExpanded() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armsql.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewDatabasesClient().Get(ctx, "Default-SQL-SouthEastAsia", "testsvr", "testdb", &armsql.DatabasesClientGetOptions{
-		Expand: to.Ptr("keys")})
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armsql.DatabasesClientGetResponse{
-	// 	Database: armsql.Database{
-	// 		Name: to.Ptr("testdb"),
-	// 		Type: to.Ptr("Microsoft.Sql/servers/databases"),
-	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default-SQL-SouthEastAsia/providers/Microsoft.Sql/servers/testsvr/databases/testdb"),
-	// 		Kind: to.Ptr("v12.0,user,vcore"),
-	// 		Location: to.Ptr("southeastasia"),
-	// 		Properties: &armsql.DatabaseProperties{
-	// 			CatalogCollation: to.Ptr(armsql.CatalogCollationTypeSQLLatin1GeneralCP1CIAS),
-	// 			Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-	// 			CreationDate: to.Ptr(time.Date(2017, time.June, 7, 4, 41, 33, 937000000, time.UTC)),
-	// 			CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
-	// 			CurrentServiceObjectiveName: to.Ptr("BC_Gen5_2"),
-	// 			CurrentSKU: &armsql.SKU{
-	// 				Name: to.Ptr("BC_Gen5"),
-	// 				Capacity: to.Ptr[int32](2),
-	// 				Tier: to.Ptr("BusinessCritical"),
-	// 			},
-	// 			DatabaseID: to.Ptr("6c764297-577b-470f-9af4-96d3d41e2ba3"),
-	// 			DefaultSecondaryLocation: to.Ptr("North Europe"),
-	// 			EarliestRestoreDate: to.Ptr(time.Date(2017, time.June, 7, 4, 51, 33, 937000000, time.UTC)),
-	// 			EncryptionProtector: to.Ptr("https://your-key-vault-name.vault.azure.net/yourKey/yourKeyVersion"),
-	// 			IsInfraEncryptionEnabled: to.Ptr(false),
-	// 			IsLedgerOn: to.Ptr(false),
-	// 			Keys: map[string]*armsql.DatabaseKey{
-	// 				"https://your-key-vault-name.vault.azure.net/yourKey/yourKeyVersion": &armsql.DatabaseKey{
-	// 				},
-	// 				"https://your-key-vault-name.vault.azure.net/yourKey2/yourKey2Version": &armsql.DatabaseKey{
-	// 				},
-	// 			},
-	// 			LicenseType: to.Ptr(armsql.DatabaseLicenseTypeLicenseIncluded),
-	// 			MaintenanceConfigurationID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_SouthEastAsia_1"),
-	// 			MaxLogSizeBytes: to.Ptr[int64](104857600),
-	// 			MaxSizeBytes: to.Ptr[int64](268435456000),
-	// 			ReadScale: to.Ptr(armsql.DatabaseReadScaleEnabled),
-	// 			RequestedBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
-	// 			RequestedServiceObjectiveName: to.Ptr("BC_Gen5_2"),
-	// 			Status: to.Ptr(armsql.DatabaseStatusOnline),
-	// 			ZoneRedundant: to.Ptr(false),
-	// 		},
-	// 		SKU: &armsql.SKU{
-	// 			Name: to.Ptr("BC_Gen5"),
-	// 			Capacity: to.Ptr[int32](2),
-	// 			Tier: to.Ptr("BusinessCritical"),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-08-01-preview/GetVCoreDatabaseWithExpandEqualsKeysWithVersionlessKeys.json
-func ExampleDatabasesClient_Get_getsADatabaseWithDatabaseLevelKeysExpandedUsingVersionlessKeys() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armsql.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewDatabasesClient().Get(ctx, "Default-SQL-SouthEastAsia", "testsvr", "testdb", &armsql.DatabasesClientGetOptions{
-		Expand: to.Ptr("keys")})
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armsql.DatabasesClientGetResponse{
-	// 	Database: armsql.Database{
-	// 		Name: to.Ptr("testdb"),
-	// 		Type: to.Ptr("Microsoft.Sql/servers/databases"),
-	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default-SQL-SouthEastAsia/providers/Microsoft.Sql/servers/testsvr/databases/testdb"),
-	// 		Kind: to.Ptr("v12.0,user,vcore"),
-	// 		Location: to.Ptr("southeastasia"),
-	// 		Properties: &armsql.DatabaseProperties{
-	// 			CatalogCollation: to.Ptr(armsql.CatalogCollationTypeSQLLatin1GeneralCP1CIAS),
-	// 			Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-	// 			CreationDate: to.Ptr(time.Date(2017, time.June, 7, 4, 41, 33, 937000000, time.UTC)),
-	// 			CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
-	// 			CurrentServiceObjectiveName: to.Ptr("BC_Gen5_2"),
-	// 			CurrentSKU: &armsql.SKU{
-	// 				Name: to.Ptr("BC_Gen5"),
-	// 				Capacity: to.Ptr[int32](2),
-	// 				Tier: to.Ptr("BusinessCritical"),
-	// 			},
-	// 			DatabaseID: to.Ptr("6c764297-577b-470f-9af4-96d3d41e2ba3"),
-	// 			DefaultSecondaryLocation: to.Ptr("North Europe"),
-	// 			EarliestRestoreDate: to.Ptr(time.Date(2017, time.June, 7, 4, 51, 33, 937000000, time.UTC)),
-	// 			EncryptionProtector: to.Ptr("https://your-key-vault-name.vault.azure.net/yourKey"),
-	// 			IsInfraEncryptionEnabled: to.Ptr(false),
-	// 			IsLedgerOn: to.Ptr(false),
-	// 			Keys: map[string]*armsql.DatabaseKey{
-	// 				"https://your-key-vault-name.vault.azure.net/yourKey": &armsql.DatabaseKey{
-	// 				},
-	// 				"https://your-key-vault-name.vault.azure.net/yourKey2": &armsql.DatabaseKey{
-	// 				},
-	// 			},
-	// 			LicenseType: to.Ptr(armsql.DatabaseLicenseTypeLicenseIncluded),
-	// 			MaintenanceConfigurationID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_SouthEastAsia_1"),
-	// 			MaxLogSizeBytes: to.Ptr[int64](104857600),
-	// 			MaxSizeBytes: to.Ptr[int64](268435456000),
-	// 			ReadScale: to.Ptr(armsql.DatabaseReadScaleEnabled),
-	// 			RequestedBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
-	// 			RequestedServiceObjectiveName: to.Ptr("BC_Gen5_2"),
-	// 			Status: to.Ptr(armsql.DatabaseStatusOnline),
-	// 			ZoneRedundant: to.Ptr(false),
-	// 		},
-	// 		SKU: &armsql.SKU{
-	// 			Name: to.Ptr("BC_Gen5"),
-	// 			Capacity: to.Ptr[int32](2),
-	// 			Tier: to.Ptr("BusinessCritical"),
-	// 		},
-	// 	},
-	// }
-}
-
 // Generated from example definition: 2026-08-01-preview/ImportDatabase.json
 func ExampleDatabasesClient_BeginImport_importsToAnExistingEmptyDatabase() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -2373,450 +1997,6 @@ func ExampleDatabasesClient_BeginImport_importsToAnExistingEmptyDatabaseUsingPri
 	// }
 }
 
-// Generated from example definition: 2026-08-01-preview/ListDatabasesByElasticPool.json
-func ExampleDatabasesClient_NewListByElasticPoolPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armsql.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewDatabasesClient().NewListByElasticPoolPager("Default-SQL-SouthEastAsia", "testsvr", "pool1", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armsql.DatabasesClientListByElasticPoolResponse{
-		// 	DatabaseListResult: armsql.DatabaseListResult{
-		// 		Value: []*armsql.Database{
-		// 			{
-		// 				Name: to.Ptr("DB001"),
-		// 				Type: to.Ptr("Microsoft.Sql/servers/databases"),
-		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default-SQL-SouthEastAsia/providers/Microsoft.Sql/servers/testsvr/databases/DB001"),
-		// 				Kind: to.Ptr("v12.0,user"),
-		// 				Location: to.Ptr("southeastasia"),
-		// 				Properties: &armsql.DatabaseProperties{
-		// 					CatalogCollation: to.Ptr(armsql.CatalogCollationTypeSQLLatin1GeneralCP1CIAS),
-		// 					Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-		// 					CreationDate: to.Ptr(time.Date(2017, time.July, 12, 22, 8, 39, 163000000, time.UTC)),
-		// 					CurrentServiceObjectiveName: to.Ptr("ElasticPool"),
-		// 					DatabaseID: to.Ptr("bfe0735f-bc87-447f-b2c2-481f4b100614"),
-		// 					DefaultSecondaryLocation: to.Ptr("North Europe"),
-		// 					ElasticPoolID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default-SQL-SouthEastAsia/providers/Microsoft.Sql/servers/testsvr/elasticPools/Pool1"),
-		// 					MaxSizeBytes: to.Ptr[int64](268435456000),
-		// 					Status: to.Ptr(armsql.DatabaseStatusOnline),
-		// 				},
-		// 				SKU: &armsql.SKU{
-		// 					Name: to.Ptr("ElasticPool"),
-		// 					Tier: to.Ptr("Standard"),
-		// 				},
-		// 			},
-		// 			{
-		// 				Name: to.Ptr("DB002"),
-		// 				Type: to.Ptr("Microsoft.Sql/servers/databases"),
-		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default-SQL-SouthEastAsia/providers/Microsoft.Sql/servers/testsvr/databases/DB002"),
-		// 				Kind: to.Ptr("v12.0,user"),
-		// 				Location: to.Ptr("southeastasia"),
-		// 				Properties: &armsql.DatabaseProperties{
-		// 					CatalogCollation: to.Ptr(armsql.CatalogCollationTypeSQLLatin1GeneralCP1CIAS),
-		// 					Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-		// 					CreationDate: to.Ptr(time.Date(2017, time.July, 12, 22, 10, 10, 773000000, time.UTC)),
-		// 					CurrentServiceObjectiveName: to.Ptr("ElasticPool"),
-		// 					DatabaseID: to.Ptr("82246152-3177-4357-b81c-a16d87ce3593"),
-		// 					DefaultSecondaryLocation: to.Ptr("North Europe"),
-		// 					ElasticPoolID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default-SQL-SouthEastAsia/providers/Microsoft.Sql/servers/testsvr/elasticPools/Pool1"),
-		// 					MaxSizeBytes: to.Ptr[int64](268435456000),
-		// 					Status: to.Ptr(armsql.DatabaseStatusOnline),
-		// 				},
-		// 				SKU: &armsql.SKU{
-		// 					Name: to.Ptr("ElasticPool"),
-		// 					Tier: to.Ptr("Standard"),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2026-08-01-preview/ListVCoreDatabasesByServer.json
-func ExampleDatabasesClient_NewListByServerPager_getsAListOfDatabases() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armsql.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewDatabasesClient().NewListByServerPager("Default-SQL-SouthEastAsia", "testsvr", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armsql.DatabasesClientListByServerResponse{
-		// 	DatabaseListResult: armsql.DatabaseListResult{
-		// 		Value: []*armsql.Database{
-		// 			{
-		// 				Name: to.Ptr("testdb"),
-		// 				Type: to.Ptr("Microsoft.Sql/servers/databases"),
-		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default-SQL-SouthEastAsia/providers/Microsoft.Sql/servers/testsvr/databases/testdb"),
-		// 				Kind: to.Ptr("v12.0,user,vcore"),
-		// 				Location: to.Ptr("southeastasia"),
-		// 				Properties: &armsql.DatabaseProperties{
-		// 					CatalogCollation: to.Ptr(armsql.CatalogCollationTypeSQLLatin1GeneralCP1CIAS),
-		// 					Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-		// 					CreationDate: to.Ptr(time.Date(2017, time.June, 7, 4, 41, 33, 937000000, time.UTC)),
-		// 					CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyZone),
-		// 					CurrentServiceObjectiveName: to.Ptr("BC_Gen4_2"),
-		// 					CurrentSKU: &armsql.SKU{
-		// 						Name: to.Ptr("BC_Gen4"),
-		// 						Capacity: to.Ptr[int32](2),
-		// 						Tier: to.Ptr("BusinessCritical"),
-		// 					},
-		// 					DatabaseID: to.Ptr("6c764297-577b-470f-9af4-96d3d41e2ba3"),
-		// 					DefaultSecondaryLocation: to.Ptr("North Europe"),
-		// 					EarliestRestoreDate: to.Ptr(time.Date(2017, time.June, 7, 4, 51, 33, 937000000, time.UTC)),
-		// 					IsInfraEncryptionEnabled: to.Ptr(false),
-		// 					IsLedgerOn: to.Ptr(false),
-		// 					LicenseType: to.Ptr(armsql.DatabaseLicenseTypeLicenseIncluded),
-		// 					MaxLogSizeBytes: to.Ptr[int64](104857600),
-		// 					MaxSizeBytes: to.Ptr[int64](268435456000),
-		// 					ReadScale: to.Ptr(armsql.DatabaseReadScaleEnabled),
-		// 					RequestedBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyZone),
-		// 					RequestedServiceObjectiveName: to.Ptr("BC_Gen4_2"),
-		// 					Status: to.Ptr(armsql.DatabaseStatusOnline),
-		// 					ZoneRedundant: to.Ptr(false),
-		// 				},
-		// 				SKU: &armsql.SKU{
-		// 					Name: to.Ptr("BC_Gen4"),
-		// 					Capacity: to.Ptr[int32](2),
-		// 					Tier: to.Ptr("BusinessCritical"),
-		// 				},
-		// 			},
-		// 			{
-		// 				Name: to.Ptr("master"),
-		// 				Type: to.Ptr("Microsoft.Sql/servers/databases"),
-		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default-SQL-SouthEastAsia/providers/Microsoft.Sql/servers/testsvr/databases/master"),
-		// 				Kind: to.Ptr("v12.0,system"),
-		// 				Location: to.Ptr("southeastasia"),
-		// 				Properties: &armsql.DatabaseProperties{
-		// 					CatalogCollation: to.Ptr(armsql.CatalogCollationTypeSQLLatin1GeneralCP1CIAS),
-		// 					Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-		// 					CreationDate: to.Ptr(time.Date(2017, time.June, 7, 4, 23, 42, 537000000, time.UTC)),
-		// 					CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyLocal),
-		// 					CurrentServiceObjectiveName: to.Ptr("System0"),
-		// 					CurrentSKU: &armsql.SKU{
-		// 						Name: to.Ptr("System0"),
-		// 						Capacity: to.Ptr[int32](0),
-		// 						Tier: to.Ptr("System"),
-		// 					},
-		// 					DatabaseID: to.Ptr("e6be351f-2cc9-4604-9e52-b0b28b2710b0"),
-		// 					DefaultSecondaryLocation: to.Ptr("North Europe"),
-		// 					IsInfraEncryptionEnabled: to.Ptr(false),
-		// 					IsLedgerOn: to.Ptr(false),
-		// 					MaxSizeBytes: to.Ptr[int64](32212254720),
-		// 					ReadScale: to.Ptr(armsql.DatabaseReadScaleDisabled),
-		// 					RequestedBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyLocal),
-		// 					RequestedServiceObjectiveName: to.Ptr("System0"),
-		// 					Status: to.Ptr(armsql.DatabaseStatusOnline),
-		// 					ZoneRedundant: to.Ptr(false),
-		// 				},
-		// 				SKU: &armsql.SKU{
-		// 					Name: to.Ptr("System0"),
-		// 					Capacity: to.Ptr[int32](0),
-		// 					Tier: to.Ptr("System"),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2026-08-01-preview/ListVCoreDatabasesByServerWithOdata.json
-func ExampleDatabasesClient_NewListByServerPager_getsAListOfDatabasesWithODataFiltering() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armsql.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewDatabasesClient().NewListByServerPager("Default-SQL-SouthEastAsia", "testsvr", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armsql.DatabasesClientListByServerResponse{
-		// 	DatabaseListResult: armsql.DatabaseListResult{
-		// 		Value: []*armsql.Database{
-		// 			{
-		// 				SKU: &armsql.SKU{
-		// 					Name: to.Ptr("BC_Gen5"),
-		// 					Tier: to.Ptr("BusinessCritical"),
-		// 					Capacity: to.Ptr[int32](2),
-		// 				},
-		// 				Kind: to.Ptr("v12.0,user,vcore"),
-		// 				Properties: &armsql.DatabaseProperties{
-		// 					Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-		// 					MaxSizeBytes: to.Ptr[int64](268435456000),
-		// 					Status: to.Ptr(armsql.DatabaseStatusOnline),
-		// 					DatabaseID: to.Ptr("6c764297-577b-470f-9af4-96d3d41e2ba3"),
-		// 					CreationDate: to.Ptr(time.Date(2017, time.June, 7, 4, 41, 33, 937000000, time.UTC)),
-		// 					CurrentServiceObjectiveName: to.Ptr("BC_Gen5_2"),
-		// 					RequestedServiceObjectiveName: to.Ptr("BC_Gen5_2"),
-		// 					DefaultSecondaryLocation: to.Ptr("North Europe"),
-		// 					CatalogCollation: to.Ptr(armsql.CatalogCollationTypeSQLLatin1GeneralCP1CIAS),
-		// 					LicenseType: to.Ptr(armsql.DatabaseLicenseTypeLicenseIncluded),
-		// 					MaxLogSizeBytes: to.Ptr[int64](104857600),
-		// 					IsInfraEncryptionEnabled: to.Ptr(false),
-		// 					ZoneRedundant: to.Ptr(false),
-		// 					ReadScale: to.Ptr(armsql.DatabaseReadScaleEnabled),
-		// 					EarliestRestoreDate: to.Ptr(time.Date(2017, time.June, 7, 4, 51, 33, 937000000, time.UTC)),
-		// 					MaintenanceConfigurationID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_SouthEastAsia_1"),
-		// 					CurrentSKU: &armsql.SKU{
-		// 						Name: to.Ptr("BC_Gen5"),
-		// 						Tier: to.Ptr("BusinessCritical"),
-		// 						Capacity: to.Ptr[int32](2),
-		// 					},
-		// 					CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
-		// 					RequestedBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
-		// 					IsLedgerOn: to.Ptr(false),
-		// 				},
-		// 				Location: to.Ptr("southeastasia"),
-		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default-SQL-SouthEastAsia/providers/Microsoft.Sql/servers/testsvr/databases/db2"),
-		// 				Name: to.Ptr("db2"),
-		// 				Type: to.Ptr("Microsoft.Sql/servers/databases"),
-		// 			},
-		// 			{
-		// 				SKU: &armsql.SKU{
-		// 					Name: to.Ptr("BC_Gen5"),
-		// 					Tier: to.Ptr("BusinessCritical"),
-		// 					Capacity: to.Ptr[int32](2),
-		// 				},
-		// 				Kind: to.Ptr("v12.0,user,vcore"),
-		// 				Properties: &armsql.DatabaseProperties{
-		// 					Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-		// 					MaxSizeBytes: to.Ptr[int64](268435456000),
-		// 					Status: to.Ptr(armsql.DatabaseStatusOnline),
-		// 					DatabaseID: to.Ptr("6c764297-577b-470f-9af4-96d3d41e2ba3"),
-		// 					CreationDate: to.Ptr(time.Date(2017, time.June, 7, 4, 41, 33, 937000000, time.UTC)),
-		// 					CurrentServiceObjectiveName: to.Ptr("BC_Gen5_2"),
-		// 					RequestedServiceObjectiveName: to.Ptr("BC_Gen5_2"),
-		// 					DefaultSecondaryLocation: to.Ptr("North Europe"),
-		// 					CatalogCollation: to.Ptr(armsql.CatalogCollationTypeSQLLatin1GeneralCP1CIAS),
-		// 					LicenseType: to.Ptr(armsql.DatabaseLicenseTypeLicenseIncluded),
-		// 					MaxLogSizeBytes: to.Ptr[int64](104857600),
-		// 					IsInfraEncryptionEnabled: to.Ptr(false),
-		// 					ZoneRedundant: to.Ptr(false),
-		// 					ReadScale: to.Ptr(armsql.DatabaseReadScaleEnabled),
-		// 					EarliestRestoreDate: to.Ptr(time.Date(2017, time.June, 7, 4, 51, 33, 937000000, time.UTC)),
-		// 					MaintenanceConfigurationID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_SouthEastAsia_1"),
-		// 					CurrentSKU: &armsql.SKU{
-		// 						Name: to.Ptr("BC_Gen5"),
-		// 						Tier: to.Ptr("BusinessCritical"),
-		// 						Capacity: to.Ptr[int32](2),
-		// 					},
-		// 					CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
-		// 					RequestedBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
-		// 					IsLedgerOn: to.Ptr(false),
-		// 				},
-		// 				Location: to.Ptr("southeastasia"),
-		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default-SQL-SouthEastAsia/providers/Microsoft.Sql/servers/testsvr/databases/db1"),
-		// 				Name: to.Ptr("db1"),
-		// 				Type: to.Ptr("Microsoft.Sql/servers/databases"),
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2026-08-01-preview/ListVCoreDatabasesEnclaveTypeByServer.json
-func ExampleDatabasesClient_NewListByServerPager_getsAListOfDatabasesConfiguredWithEnclaveType() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armsql.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewDatabasesClient().NewListByServerPager("Default-SQL-SouthEastAsia", "testsvr", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armsql.DatabasesClientListByServerResponse{
-		// 	DatabaseListResult: armsql.DatabaseListResult{
-		// 		Value: []*armsql.Database{
-		// 			{
-		// 				Name: to.Ptr("testdb"),
-		// 				Type: to.Ptr("Microsoft.Sql/servers/databases"),
-		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default-SQL-SouthEastAsia/providers/Microsoft.Sql/servers/testsvr/databases/testdb"),
-		// 				Kind: to.Ptr("v12.0,user,vcore"),
-		// 				Location: to.Ptr("southeastasia"),
-		// 				Properties: &armsql.DatabaseProperties{
-		// 					CatalogCollation: to.Ptr(armsql.CatalogCollationTypeSQLLatin1GeneralCP1CIAS),
-		// 					Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-		// 					CreationDate: to.Ptr(time.Date(2017, time.June, 7, 4, 41, 33, 937000000, time.UTC)),
-		// 					CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyZone),
-		// 					CurrentServiceObjectiveName: to.Ptr("BC_Gen4_2"),
-		// 					CurrentSKU: &armsql.SKU{
-		// 						Name: to.Ptr("BC_Gen4"),
-		// 						Capacity: to.Ptr[int32](2),
-		// 						Tier: to.Ptr("BusinessCritical"),
-		// 					},
-		// 					DatabaseID: to.Ptr("6c764297-577b-470f-9af4-96d3d41e2ba3"),
-		// 					DefaultSecondaryLocation: to.Ptr("North Europe"),
-		// 					EarliestRestoreDate: to.Ptr(time.Date(2017, time.June, 7, 4, 51, 33, 937000000, time.UTC)),
-		// 					IsInfraEncryptionEnabled: to.Ptr(false),
-		// 					IsLedgerOn: to.Ptr(false),
-		// 					LicenseType: to.Ptr(armsql.DatabaseLicenseTypeLicenseIncluded),
-		// 					MaxLogSizeBytes: to.Ptr[int64](104857600),
-		// 					MaxSizeBytes: to.Ptr[int64](268435456000),
-		// 					PreferredEnclaveType: to.Ptr(armsql.AlwaysEncryptedEnclaveTypeDefault),
-		// 					ReadScale: to.Ptr(armsql.DatabaseReadScaleEnabled),
-		// 					RequestedBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyZone),
-		// 					RequestedServiceObjectiveName: to.Ptr("BC_Gen4_2"),
-		// 					Status: to.Ptr(armsql.DatabaseStatusOnline),
-		// 					ZoneRedundant: to.Ptr(false),
-		// 				},
-		// 				SKU: &armsql.SKU{
-		// 					Name: to.Ptr("BC_Gen4"),
-		// 					Capacity: to.Ptr[int32](2),
-		// 					Tier: to.Ptr("BusinessCritical"),
-		// 				},
-		// 			},
-		// 			{
-		// 				Name: to.Ptr("master"),
-		// 				Type: to.Ptr("Microsoft.Sql/servers/databases"),
-		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default-SQL-SouthEastAsia/providers/Microsoft.Sql/servers/testsvr/databases/master"),
-		// 				Kind: to.Ptr("v12.0,system"),
-		// 				Location: to.Ptr("southeastasia"),
-		// 				Properties: &armsql.DatabaseProperties{
-		// 					CatalogCollation: to.Ptr(armsql.CatalogCollationTypeSQLLatin1GeneralCP1CIAS),
-		// 					Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-		// 					CreationDate: to.Ptr(time.Date(2017, time.June, 7, 4, 23, 42, 537000000, time.UTC)),
-		// 					CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyLocal),
-		// 					CurrentServiceObjectiveName: to.Ptr("System0"),
-		// 					CurrentSKU: &armsql.SKU{
-		// 						Name: to.Ptr("System0"),
-		// 						Capacity: to.Ptr[int32](0),
-		// 						Tier: to.Ptr("System"),
-		// 					},
-		// 					DatabaseID: to.Ptr("e6be351f-2cc9-4604-9e52-b0b28b2710b0"),
-		// 					DefaultSecondaryLocation: to.Ptr("North Europe"),
-		// 					IsInfraEncryptionEnabled: to.Ptr(false),
-		// 					IsLedgerOn: to.Ptr(false),
-		// 					MaxSizeBytes: to.Ptr[int64](32212254720),
-		// 					PreferredEnclaveType: to.Ptr(armsql.AlwaysEncryptedEnclaveTypeVBS),
-		// 					ReadScale: to.Ptr(armsql.DatabaseReadScaleDisabled),
-		// 					RequestedBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyLocal),
-		// 					RequestedServiceObjectiveName: to.Ptr("System0"),
-		// 					Status: to.Ptr(armsql.DatabaseStatusOnline),
-		// 					ZoneRedundant: to.Ptr(false),
-		// 				},
-		// 				SKU: &armsql.SKU{
-		// 					Name: to.Ptr("System0"),
-		// 					Capacity: to.Ptr[int32](0),
-		// 					Tier: to.Ptr("System"),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2026-08-01-preview/ListVCoreInaccessibleDatabasesByServer.json
-func ExampleDatabasesClient_NewListInaccessibleByServerPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armsql.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewDatabasesClient().NewListInaccessibleByServerPager("Default-SQL-SouthEastAsia", "testsvr", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armsql.DatabasesClientListInaccessibleByServerResponse{
-		// 	DatabaseListResult: armsql.DatabaseListResult{
-		// 		Value: []*armsql.Database{
-		// 			{
-		// 				Name: to.Ptr("testdb"),
-		// 				Type: to.Ptr("Microsoft.Sql/servers/databases"),
-		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default-SQL-SouthEastAsia/providers/Microsoft.Sql/servers/testsvr/databases/testdb"),
-		// 				Kind: to.Ptr("v12.0,user,vcore"),
-		// 				Location: to.Ptr("southeastasia"),
-		// 				Properties: &armsql.DatabaseProperties{
-		// 					CatalogCollation: to.Ptr(armsql.CatalogCollationTypeSQLLatin1GeneralCP1CIAS),
-		// 					Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-		// 					CreationDate: to.Ptr(time.Date(2017, time.June, 7, 4, 41, 33, 937000000, time.UTC)),
-		// 					CurrentServiceObjectiveName: to.Ptr("BC_Gen4_2"),
-		// 					DatabaseID: to.Ptr("6c764297-577b-470f-9af4-96d3d41e2ba3"),
-		// 					DefaultSecondaryLocation: to.Ptr("North Europe"),
-		// 					LicenseType: to.Ptr(armsql.DatabaseLicenseTypeLicenseIncluded),
-		// 					MaxLogSizeBytes: to.Ptr[int64](104857600),
-		// 					MaxSizeBytes: to.Ptr[int64](268435456000),
-		// 					ReadScale: to.Ptr(armsql.DatabaseReadScaleEnabled),
-		// 					Status: to.Ptr(armsql.DatabaseStatusInaccessible),
-		// 				},
-		// 				SKU: &armsql.SKU{
-		// 					Name: to.Ptr("BC_Gen4"),
-		// 					Capacity: to.Ptr[int32](2),
-		// 					Tier: to.Ptr("BusinessCritical"),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
 // Generated from example definition: 2026-08-01-preview/PauseDatabase.json
 func ExampleDatabasesClient_BeginPause() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -2860,30 +2040,6 @@ func ExampleDatabasesClient_BeginPause() {
 	// 			Name: to.Ptr("DataWarehouse"),
 	// 		},
 	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-08-01-preview/RenameDatabase.json
-func ExampleDatabasesClient_Rename() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armsql.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewDatabasesClient().Rename(ctx, "Default-SQL-SouthEastAsia", "testsvr", "testdb", armsql.ResourceMoveDefinition{
-		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default-SQL-SouthEastAsia/providers/Microsoft.Sql/servers/testsvr/databases/newtestdb"),
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armsql.DatabasesClientRenameResponse{
 	// }
 }
 
@@ -3376,5 +2532,849 @@ func ExampleDatabasesClient_BeginUpgradeDataWarehouse() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsql.DatabasesClientUpgradeDataWarehouseResponse{
+	// }
+}
+
+// Generated from example definition: 2026-08-01-preview/GetDatabaseWithAvailabilityZone.json
+func ExampleDatabasesClient_Get_getsADatabaseWithAvailabilityZoneSpecified() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsql.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewDatabasesClient().Get(ctx, "Default-SQL-SouthEastAsia", "testsvr", "testdb", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armsql.DatabasesClientGetResponse{
+	// 	Database: armsql.Database{
+	// 		Name: to.Ptr("testdb"),
+	// 		Type: to.Ptr("Microsoft.Sql/servers/databases"),
+	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default-SQL-SouthEastAsia/providers/Microsoft.Sql/servers/testsvr/databases/testdb"),
+	// 		Kind: to.Ptr("v12.0,user"),
+	// 		Location: to.Ptr("southeastasia"),
+	// 		Properties: &armsql.DatabaseProperties{
+	// 			AvailabilityZone: to.Ptr(armsql.AvailabilityZoneTypeOne),
+	// 			CatalogCollation: to.Ptr(armsql.CatalogCollationTypeSQLLatin1GeneralCP1CIAS),
+	// 			Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
+	// 			CreationDate: to.Ptr(time.Date(2017, time.June, 7, 4, 41, 33, 937000000, time.UTC)),
+	// 			CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
+	// 			CurrentServiceObjectiveName: to.Ptr("S0"),
+	// 			CurrentSKU: &armsql.SKU{
+	// 				Name: to.Ptr("Standard"),
+	// 				Capacity: to.Ptr[int32](10),
+	// 				Tier: to.Ptr("Standard"),
+	// 			},
+	// 			DatabaseID: to.Ptr("6c764297-577b-470f-9af4-96d3d41e2ba3"),
+	// 			DefaultSecondaryLocation: to.Ptr("North Europe"),
+	// 			EarliestRestoreDate: to.Ptr(time.Date(2017, time.June, 7, 4, 51, 33, 937000000, time.UTC)),
+	// 			IsInfraEncryptionEnabled: to.Ptr(false),
+	// 			IsLedgerOn: to.Ptr(false),
+	// 			MaxSizeBytes: to.Ptr[int64](1073741824),
+	// 			ReadScale: to.Ptr(armsql.DatabaseReadScaleDisabled),
+	// 			RequestedBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
+	// 			RequestedServiceObjectiveName: to.Ptr("S0"),
+	// 			Status: to.Ptr(armsql.DatabaseStatusOnline),
+	// 			ZoneRedundant: to.Ptr(false),
+	// 		},
+	// 		SKU: &armsql.SKU{
+	// 			Name: to.Ptr("S0"),
+	// 			Capacity: to.Ptr[int32](10),
+	// 			Tier: to.Ptr("Standard"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-08-01-preview/GetVCoreDatabase.json
+func ExampleDatabasesClient_Get_getsADatabase() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsql.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewDatabasesClient().Get(ctx, "Default-SQL-SouthEastAsia", "testsvr", "testdb", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armsql.DatabasesClientGetResponse{
+	// 	Database: armsql.Database{
+	// 		Name: to.Ptr("testdb"),
+	// 		Type: to.Ptr("Microsoft.Sql/servers/databases"),
+	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default-SQL-SouthEastAsia/providers/Microsoft.Sql/servers/testsvr/databases/testdb"),
+	// 		Kind: to.Ptr("v12.0,user,vcore"),
+	// 		Location: to.Ptr("southeastasia"),
+	// 		Properties: &armsql.DatabaseProperties{
+	// 			CatalogCollation: to.Ptr(armsql.CatalogCollationTypeSQLLatin1GeneralCP1CIAS),
+	// 			Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
+	// 			CreationDate: to.Ptr(time.Date(2017, time.June, 7, 4, 41, 33, 937000000, time.UTC)),
+	// 			CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
+	// 			CurrentServiceObjectiveName: to.Ptr("BC_Gen5_2"),
+	// 			CurrentSKU: &armsql.SKU{
+	// 				Name: to.Ptr("BC_Gen5"),
+	// 				Capacity: to.Ptr[int32](2),
+	// 				Tier: to.Ptr("BusinessCritical"),
+	// 			},
+	// 			DatabaseID: to.Ptr("6c764297-577b-470f-9af4-96d3d41e2ba3"),
+	// 			DefaultSecondaryLocation: to.Ptr("North Europe"),
+	// 			EarliestRestoreDate: to.Ptr(time.Date(2017, time.June, 7, 4, 51, 33, 937000000, time.UTC)),
+	// 			IsInfraEncryptionEnabled: to.Ptr(false),
+	// 			IsLedgerOn: to.Ptr(false),
+	// 			LicenseType: to.Ptr(armsql.DatabaseLicenseTypeLicenseIncluded),
+	// 			MaintenanceConfigurationID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_SouthEastAsia_1"),
+	// 			MaxLogSizeBytes: to.Ptr[int64](104857600),
+	// 			MaxSizeBytes: to.Ptr[int64](268435456000),
+	// 			ReadScale: to.Ptr(armsql.DatabaseReadScaleEnabled),
+	// 			RequestedBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
+	// 			RequestedServiceObjectiveName: to.Ptr("BC_Gen5_2"),
+	// 			Status: to.Ptr(armsql.DatabaseStatusOnline),
+	// 			ZoneRedundant: to.Ptr(false),
+	// 		},
+	// 		SKU: &armsql.SKU{
+	// 			Name: to.Ptr("BC_Gen5"),
+	// 			Capacity: to.Ptr[int32](2),
+	// 			Tier: to.Ptr("BusinessCritical"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-08-01-preview/GetVCoreDatabaseDefaultEnclave.json
+func ExampleDatabasesClient_Get_getsADatabaseConfiguredWithDefaultEnclaveType() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsql.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewDatabasesClient().Get(ctx, "Default-SQL-SouthEastAsia", "testsvr", "testdb", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armsql.DatabasesClientGetResponse{
+	// 	Database: armsql.Database{
+	// 		Name: to.Ptr("testdb"),
+	// 		Type: to.Ptr("Microsoft.Sql/servers/databases"),
+	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default-SQL-SouthEastAsia/providers/Microsoft.Sql/servers/testsvr/databases/testdb"),
+	// 		Kind: to.Ptr("v12.0,user,vcore"),
+	// 		Location: to.Ptr("southeastasia"),
+	// 		Properties: &armsql.DatabaseProperties{
+	// 			CatalogCollation: to.Ptr(armsql.CatalogCollationTypeSQLLatin1GeneralCP1CIAS),
+	// 			Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
+	// 			CreationDate: to.Ptr(time.Date(2017, time.June, 7, 4, 41, 33, 937000000, time.UTC)),
+	// 			CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
+	// 			CurrentServiceObjectiveName: to.Ptr("BC_Gen5_2"),
+	// 			CurrentSKU: &armsql.SKU{
+	// 				Name: to.Ptr("BC_Gen5"),
+	// 				Capacity: to.Ptr[int32](2),
+	// 				Tier: to.Ptr("BusinessCritical"),
+	// 			},
+	// 			DatabaseID: to.Ptr("6c764297-577b-470f-9af4-96d3d41e2ba3"),
+	// 			DefaultSecondaryLocation: to.Ptr("North Europe"),
+	// 			EarliestRestoreDate: to.Ptr(time.Date(2017, time.June, 7, 4, 51, 33, 937000000, time.UTC)),
+	// 			IsInfraEncryptionEnabled: to.Ptr(false),
+	// 			IsLedgerOn: to.Ptr(false),
+	// 			LicenseType: to.Ptr(armsql.DatabaseLicenseTypeLicenseIncluded),
+	// 			MaintenanceConfigurationID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_SouthEastAsia_1"),
+	// 			MaxLogSizeBytes: to.Ptr[int64](104857600),
+	// 			MaxSizeBytes: to.Ptr[int64](268435456000),
+	// 			PreferredEnclaveType: to.Ptr(armsql.AlwaysEncryptedEnclaveTypeDefault),
+	// 			ReadScale: to.Ptr(armsql.DatabaseReadScaleEnabled),
+	// 			RequestedBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
+	// 			RequestedServiceObjectiveName: to.Ptr("BC_Gen5_2"),
+	// 			Status: to.Ptr(armsql.DatabaseStatusOnline),
+	// 			ZoneRedundant: to.Ptr(false),
+	// 		},
+	// 		SKU: &armsql.SKU{
+	// 			Name: to.Ptr("BC_Gen5"),
+	// 			Capacity: to.Ptr[int32](2),
+	// 			Tier: to.Ptr("BusinessCritical"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-08-01-preview/GetVCoreDatabaseVBSEnclave.json
+func ExampleDatabasesClient_Get_getsADatabaseConfiguredWithVbsEnclaveType() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsql.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewDatabasesClient().Get(ctx, "Default-SQL-SouthEastAsia", "testsvr", "testdb", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armsql.DatabasesClientGetResponse{
+	// 	Database: armsql.Database{
+	// 		Name: to.Ptr("testdb"),
+	// 		Type: to.Ptr("Microsoft.Sql/servers/databases"),
+	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default-SQL-SouthEastAsia/providers/Microsoft.Sql/servers/testsvr/databases/testdb"),
+	// 		Kind: to.Ptr("v12.0,user,vcore"),
+	// 		Location: to.Ptr("southeastasia"),
+	// 		Properties: &armsql.DatabaseProperties{
+	// 			CatalogCollation: to.Ptr(armsql.CatalogCollationTypeSQLLatin1GeneralCP1CIAS),
+	// 			Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
+	// 			CreationDate: to.Ptr(time.Date(2017, time.June, 7, 4, 41, 33, 937000000, time.UTC)),
+	// 			CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
+	// 			CurrentServiceObjectiveName: to.Ptr("BC_Gen5_2"),
+	// 			CurrentSKU: &armsql.SKU{
+	// 				Name: to.Ptr("BC_Gen5"),
+	// 				Capacity: to.Ptr[int32](2),
+	// 				Tier: to.Ptr("BusinessCritical"),
+	// 			},
+	// 			DatabaseID: to.Ptr("6c764297-577b-470f-9af4-96d3d41e2ba3"),
+	// 			DefaultSecondaryLocation: to.Ptr("North Europe"),
+	// 			EarliestRestoreDate: to.Ptr(time.Date(2017, time.June, 7, 4, 51, 33, 937000000, time.UTC)),
+	// 			IsInfraEncryptionEnabled: to.Ptr(false),
+	// 			IsLedgerOn: to.Ptr(false),
+	// 			LicenseType: to.Ptr(armsql.DatabaseLicenseTypeLicenseIncluded),
+	// 			MaintenanceConfigurationID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_SouthEastAsia_1"),
+	// 			MaxLogSizeBytes: to.Ptr[int64](104857600),
+	// 			MaxSizeBytes: to.Ptr[int64](268435456000),
+	// 			PreferredEnclaveType: to.Ptr(armsql.AlwaysEncryptedEnclaveTypeVBS),
+	// 			ReadScale: to.Ptr(armsql.DatabaseReadScaleEnabled),
+	// 			RequestedBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
+	// 			RequestedServiceObjectiveName: to.Ptr("BC_Gen5_2"),
+	// 			Status: to.Ptr(armsql.DatabaseStatusOnline),
+	// 			ZoneRedundant: to.Ptr(false),
+	// 		},
+	// 		SKU: &armsql.SKU{
+	// 			Name: to.Ptr("BC_Gen5"),
+	// 			Capacity: to.Ptr[int32](2),
+	// 			Tier: to.Ptr("BusinessCritical"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-08-01-preview/GetVCoreDatabaseWithExpandEqualsKeys.json
+func ExampleDatabasesClient_Get_getsADatabaseWithDatabaseLevelKeysExpanded() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsql.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewDatabasesClient().Get(ctx, "Default-SQL-SouthEastAsia", "testsvr", "testdb", &armsql.DatabasesClientGetOptions{
+		Expand: to.Ptr("keys")})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armsql.DatabasesClientGetResponse{
+	// 	Database: armsql.Database{
+	// 		Name: to.Ptr("testdb"),
+	// 		Type: to.Ptr("Microsoft.Sql/servers/databases"),
+	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default-SQL-SouthEastAsia/providers/Microsoft.Sql/servers/testsvr/databases/testdb"),
+	// 		Kind: to.Ptr("v12.0,user,vcore"),
+	// 		Location: to.Ptr("southeastasia"),
+	// 		Properties: &armsql.DatabaseProperties{
+	// 			CatalogCollation: to.Ptr(armsql.CatalogCollationTypeSQLLatin1GeneralCP1CIAS),
+	// 			Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
+	// 			CreationDate: to.Ptr(time.Date(2017, time.June, 7, 4, 41, 33, 937000000, time.UTC)),
+	// 			CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
+	// 			CurrentServiceObjectiveName: to.Ptr("BC_Gen5_2"),
+	// 			CurrentSKU: &armsql.SKU{
+	// 				Name: to.Ptr("BC_Gen5"),
+	// 				Capacity: to.Ptr[int32](2),
+	// 				Tier: to.Ptr("BusinessCritical"),
+	// 			},
+	// 			DatabaseID: to.Ptr("6c764297-577b-470f-9af4-96d3d41e2ba3"),
+	// 			DefaultSecondaryLocation: to.Ptr("North Europe"),
+	// 			EarliestRestoreDate: to.Ptr(time.Date(2017, time.June, 7, 4, 51, 33, 937000000, time.UTC)),
+	// 			EncryptionProtector: to.Ptr("https://your-key-vault-name.vault.azure.net/yourKey/yourKeyVersion"),
+	// 			IsInfraEncryptionEnabled: to.Ptr(false),
+	// 			IsLedgerOn: to.Ptr(false),
+	// 			Keys: map[string]*armsql.DatabaseKey{
+	// 				"https://your-key-vault-name.vault.azure.net/yourKey/yourKeyVersion": &armsql.DatabaseKey{
+	// 				},
+	// 				"https://your-key-vault-name.vault.azure.net/yourKey2/yourKey2Version": &armsql.DatabaseKey{
+	// 				},
+	// 			},
+	// 			LicenseType: to.Ptr(armsql.DatabaseLicenseTypeLicenseIncluded),
+	// 			MaintenanceConfigurationID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_SouthEastAsia_1"),
+	// 			MaxLogSizeBytes: to.Ptr[int64](104857600),
+	// 			MaxSizeBytes: to.Ptr[int64](268435456000),
+	// 			ReadScale: to.Ptr(armsql.DatabaseReadScaleEnabled),
+	// 			RequestedBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
+	// 			RequestedServiceObjectiveName: to.Ptr("BC_Gen5_2"),
+	// 			Status: to.Ptr(armsql.DatabaseStatusOnline),
+	// 			ZoneRedundant: to.Ptr(false),
+	// 		},
+	// 		SKU: &armsql.SKU{
+	// 			Name: to.Ptr("BC_Gen5"),
+	// 			Capacity: to.Ptr[int32](2),
+	// 			Tier: to.Ptr("BusinessCritical"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-08-01-preview/GetVCoreDatabaseWithExpandEqualsKeysWithVersionlessKeys.json
+func ExampleDatabasesClient_Get_getsADatabaseWithDatabaseLevelKeysExpandedUsingVersionlessKeys() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsql.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewDatabasesClient().Get(ctx, "Default-SQL-SouthEastAsia", "testsvr", "testdb", &armsql.DatabasesClientGetOptions{
+		Expand: to.Ptr("keys")})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armsql.DatabasesClientGetResponse{
+	// 	Database: armsql.Database{
+	// 		Name: to.Ptr("testdb"),
+	// 		Type: to.Ptr("Microsoft.Sql/servers/databases"),
+	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default-SQL-SouthEastAsia/providers/Microsoft.Sql/servers/testsvr/databases/testdb"),
+	// 		Kind: to.Ptr("v12.0,user,vcore"),
+	// 		Location: to.Ptr("southeastasia"),
+	// 		Properties: &armsql.DatabaseProperties{
+	// 			CatalogCollation: to.Ptr(armsql.CatalogCollationTypeSQLLatin1GeneralCP1CIAS),
+	// 			Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
+	// 			CreationDate: to.Ptr(time.Date(2017, time.June, 7, 4, 41, 33, 937000000, time.UTC)),
+	// 			CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
+	// 			CurrentServiceObjectiveName: to.Ptr("BC_Gen5_2"),
+	// 			CurrentSKU: &armsql.SKU{
+	// 				Name: to.Ptr("BC_Gen5"),
+	// 				Capacity: to.Ptr[int32](2),
+	// 				Tier: to.Ptr("BusinessCritical"),
+	// 			},
+	// 			DatabaseID: to.Ptr("6c764297-577b-470f-9af4-96d3d41e2ba3"),
+	// 			DefaultSecondaryLocation: to.Ptr("North Europe"),
+	// 			EarliestRestoreDate: to.Ptr(time.Date(2017, time.June, 7, 4, 51, 33, 937000000, time.UTC)),
+	// 			EncryptionProtector: to.Ptr("https://your-key-vault-name.vault.azure.net/yourKey"),
+	// 			IsInfraEncryptionEnabled: to.Ptr(false),
+	// 			IsLedgerOn: to.Ptr(false),
+	// 			Keys: map[string]*armsql.DatabaseKey{
+	// 				"https://your-key-vault-name.vault.azure.net/yourKey": &armsql.DatabaseKey{
+	// 				},
+	// 				"https://your-key-vault-name.vault.azure.net/yourKey2": &armsql.DatabaseKey{
+	// 				},
+	// 			},
+	// 			LicenseType: to.Ptr(armsql.DatabaseLicenseTypeLicenseIncluded),
+	// 			MaintenanceConfigurationID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_SouthEastAsia_1"),
+	// 			MaxLogSizeBytes: to.Ptr[int64](104857600),
+	// 			MaxSizeBytes: to.Ptr[int64](268435456000),
+	// 			ReadScale: to.Ptr(armsql.DatabaseReadScaleEnabled),
+	// 			RequestedBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
+	// 			RequestedServiceObjectiveName: to.Ptr("BC_Gen5_2"),
+	// 			Status: to.Ptr(armsql.DatabaseStatusOnline),
+	// 			ZoneRedundant: to.Ptr(false),
+	// 		},
+	// 		SKU: &armsql.SKU{
+	// 			Name: to.Ptr("BC_Gen5"),
+	// 			Capacity: to.Ptr[int32](2),
+	// 			Tier: to.Ptr("BusinessCritical"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-08-01-preview/ListDatabasesByElasticPool.json
+func ExampleDatabasesClient_NewListByElasticPoolPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsql.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewDatabasesClient().NewListByElasticPoolPager("Default-SQL-SouthEastAsia", "testsvr", "pool1", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armsql.DatabasesClientListByElasticPoolResponse{
+		// 	DatabaseListResult: armsql.DatabaseListResult{
+		// 		Value: []*armsql.Database{
+		// 			{
+		// 				Name: to.Ptr("DB001"),
+		// 				Type: to.Ptr("Microsoft.Sql/servers/databases"),
+		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default-SQL-SouthEastAsia/providers/Microsoft.Sql/servers/testsvr/databases/DB001"),
+		// 				Kind: to.Ptr("v12.0,user"),
+		// 				Location: to.Ptr("southeastasia"),
+		// 				Properties: &armsql.DatabaseProperties{
+		// 					CatalogCollation: to.Ptr(armsql.CatalogCollationTypeSQLLatin1GeneralCP1CIAS),
+		// 					Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
+		// 					CreationDate: to.Ptr(time.Date(2017, time.July, 12, 22, 8, 39, 163000000, time.UTC)),
+		// 					CurrentServiceObjectiveName: to.Ptr("ElasticPool"),
+		// 					DatabaseID: to.Ptr("bfe0735f-bc87-447f-b2c2-481f4b100614"),
+		// 					DefaultSecondaryLocation: to.Ptr("North Europe"),
+		// 					ElasticPoolID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default-SQL-SouthEastAsia/providers/Microsoft.Sql/servers/testsvr/elasticPools/Pool1"),
+		// 					MaxSizeBytes: to.Ptr[int64](268435456000),
+		// 					Status: to.Ptr(armsql.DatabaseStatusOnline),
+		// 				},
+		// 				SKU: &armsql.SKU{
+		// 					Name: to.Ptr("ElasticPool"),
+		// 					Tier: to.Ptr("Standard"),
+		// 				},
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("DB002"),
+		// 				Type: to.Ptr("Microsoft.Sql/servers/databases"),
+		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default-SQL-SouthEastAsia/providers/Microsoft.Sql/servers/testsvr/databases/DB002"),
+		// 				Kind: to.Ptr("v12.0,user"),
+		// 				Location: to.Ptr("southeastasia"),
+		// 				Properties: &armsql.DatabaseProperties{
+		// 					CatalogCollation: to.Ptr(armsql.CatalogCollationTypeSQLLatin1GeneralCP1CIAS),
+		// 					Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
+		// 					CreationDate: to.Ptr(time.Date(2017, time.July, 12, 22, 10, 10, 773000000, time.UTC)),
+		// 					CurrentServiceObjectiveName: to.Ptr("ElasticPool"),
+		// 					DatabaseID: to.Ptr("82246152-3177-4357-b81c-a16d87ce3593"),
+		// 					DefaultSecondaryLocation: to.Ptr("North Europe"),
+		// 					ElasticPoolID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default-SQL-SouthEastAsia/providers/Microsoft.Sql/servers/testsvr/elasticPools/Pool1"),
+		// 					MaxSizeBytes: to.Ptr[int64](268435456000),
+		// 					Status: to.Ptr(armsql.DatabaseStatusOnline),
+		// 				},
+		// 				SKU: &armsql.SKU{
+		// 					Name: to.Ptr("ElasticPool"),
+		// 					Tier: to.Ptr("Standard"),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2026-08-01-preview/ListVCoreDatabasesByServer.json
+func ExampleDatabasesClient_NewListByServerPager_getsAListOfDatabases() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsql.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewDatabasesClient().NewListByServerPager("Default-SQL-SouthEastAsia", "testsvr", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armsql.DatabasesClientListByServerResponse{
+		// 	DatabaseListResult: armsql.DatabaseListResult{
+		// 		Value: []*armsql.Database{
+		// 			{
+		// 				Name: to.Ptr("testdb"),
+		// 				Type: to.Ptr("Microsoft.Sql/servers/databases"),
+		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default-SQL-SouthEastAsia/providers/Microsoft.Sql/servers/testsvr/databases/testdb"),
+		// 				Kind: to.Ptr("v12.0,user,vcore"),
+		// 				Location: to.Ptr("southeastasia"),
+		// 				Properties: &armsql.DatabaseProperties{
+		// 					CatalogCollation: to.Ptr(armsql.CatalogCollationTypeSQLLatin1GeneralCP1CIAS),
+		// 					Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
+		// 					CreationDate: to.Ptr(time.Date(2017, time.June, 7, 4, 41, 33, 937000000, time.UTC)),
+		// 					CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyZone),
+		// 					CurrentServiceObjectiveName: to.Ptr("BC_Gen4_2"),
+		// 					CurrentSKU: &armsql.SKU{
+		// 						Name: to.Ptr("BC_Gen4"),
+		// 						Capacity: to.Ptr[int32](2),
+		// 						Tier: to.Ptr("BusinessCritical"),
+		// 					},
+		// 					DatabaseID: to.Ptr("6c764297-577b-470f-9af4-96d3d41e2ba3"),
+		// 					DefaultSecondaryLocation: to.Ptr("North Europe"),
+		// 					EarliestRestoreDate: to.Ptr(time.Date(2017, time.June, 7, 4, 51, 33, 937000000, time.UTC)),
+		// 					IsInfraEncryptionEnabled: to.Ptr(false),
+		// 					IsLedgerOn: to.Ptr(false),
+		// 					LicenseType: to.Ptr(armsql.DatabaseLicenseTypeLicenseIncluded),
+		// 					MaxLogSizeBytes: to.Ptr[int64](104857600),
+		// 					MaxSizeBytes: to.Ptr[int64](268435456000),
+		// 					ReadScale: to.Ptr(armsql.DatabaseReadScaleEnabled),
+		// 					RequestedBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyZone),
+		// 					RequestedServiceObjectiveName: to.Ptr("BC_Gen4_2"),
+		// 					Status: to.Ptr(armsql.DatabaseStatusOnline),
+		// 					ZoneRedundant: to.Ptr(false),
+		// 				},
+		// 				SKU: &armsql.SKU{
+		// 					Name: to.Ptr("BC_Gen4"),
+		// 					Capacity: to.Ptr[int32](2),
+		// 					Tier: to.Ptr("BusinessCritical"),
+		// 				},
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("master"),
+		// 				Type: to.Ptr("Microsoft.Sql/servers/databases"),
+		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default-SQL-SouthEastAsia/providers/Microsoft.Sql/servers/testsvr/databases/master"),
+		// 				Kind: to.Ptr("v12.0,system"),
+		// 				Location: to.Ptr("southeastasia"),
+		// 				Properties: &armsql.DatabaseProperties{
+		// 					CatalogCollation: to.Ptr(armsql.CatalogCollationTypeSQLLatin1GeneralCP1CIAS),
+		// 					Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
+		// 					CreationDate: to.Ptr(time.Date(2017, time.June, 7, 4, 23, 42, 537000000, time.UTC)),
+		// 					CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyLocal),
+		// 					CurrentServiceObjectiveName: to.Ptr("System0"),
+		// 					CurrentSKU: &armsql.SKU{
+		// 						Name: to.Ptr("System0"),
+		// 						Capacity: to.Ptr[int32](0),
+		// 						Tier: to.Ptr("System"),
+		// 					},
+		// 					DatabaseID: to.Ptr("e6be351f-2cc9-4604-9e52-b0b28b2710b0"),
+		// 					DefaultSecondaryLocation: to.Ptr("North Europe"),
+		// 					IsInfraEncryptionEnabled: to.Ptr(false),
+		// 					IsLedgerOn: to.Ptr(false),
+		// 					MaxSizeBytes: to.Ptr[int64](32212254720),
+		// 					ReadScale: to.Ptr(armsql.DatabaseReadScaleDisabled),
+		// 					RequestedBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyLocal),
+		// 					RequestedServiceObjectiveName: to.Ptr("System0"),
+		// 					Status: to.Ptr(armsql.DatabaseStatusOnline),
+		// 					ZoneRedundant: to.Ptr(false),
+		// 				},
+		// 				SKU: &armsql.SKU{
+		// 					Name: to.Ptr("System0"),
+		// 					Capacity: to.Ptr[int32](0),
+		// 					Tier: to.Ptr("System"),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2026-08-01-preview/ListVCoreDatabasesByServerWithOdata.json
+func ExampleDatabasesClient_NewListByServerPager_getsAListOfDatabasesWithODataFiltering() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsql.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewDatabasesClient().NewListByServerPager("Default-SQL-SouthEastAsia", "testsvr", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armsql.DatabasesClientListByServerResponse{
+		// 	DatabaseListResult: armsql.DatabaseListResult{
+		// 		Value: []*armsql.Database{
+		// 			{
+		// 				SKU: &armsql.SKU{
+		// 					Name: to.Ptr("BC_Gen5"),
+		// 					Tier: to.Ptr("BusinessCritical"),
+		// 					Capacity: to.Ptr[int32](2),
+		// 				},
+		// 				Kind: to.Ptr("v12.0,user,vcore"),
+		// 				Properties: &armsql.DatabaseProperties{
+		// 					Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
+		// 					MaxSizeBytes: to.Ptr[int64](268435456000),
+		// 					Status: to.Ptr(armsql.DatabaseStatusOnline),
+		// 					DatabaseID: to.Ptr("6c764297-577b-470f-9af4-96d3d41e2ba3"),
+		// 					CreationDate: to.Ptr(time.Date(2017, time.June, 7, 4, 41, 33, 937000000, time.UTC)),
+		// 					CurrentServiceObjectiveName: to.Ptr("BC_Gen5_2"),
+		// 					RequestedServiceObjectiveName: to.Ptr("BC_Gen5_2"),
+		// 					DefaultSecondaryLocation: to.Ptr("North Europe"),
+		// 					CatalogCollation: to.Ptr(armsql.CatalogCollationTypeSQLLatin1GeneralCP1CIAS),
+		// 					LicenseType: to.Ptr(armsql.DatabaseLicenseTypeLicenseIncluded),
+		// 					MaxLogSizeBytes: to.Ptr[int64](104857600),
+		// 					IsInfraEncryptionEnabled: to.Ptr(false),
+		// 					ZoneRedundant: to.Ptr(false),
+		// 					ReadScale: to.Ptr(armsql.DatabaseReadScaleEnabled),
+		// 					EarliestRestoreDate: to.Ptr(time.Date(2017, time.June, 7, 4, 51, 33, 937000000, time.UTC)),
+		// 					MaintenanceConfigurationID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_SouthEastAsia_1"),
+		// 					CurrentSKU: &armsql.SKU{
+		// 						Name: to.Ptr("BC_Gen5"),
+		// 						Tier: to.Ptr("BusinessCritical"),
+		// 						Capacity: to.Ptr[int32](2),
+		// 					},
+		// 					CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
+		// 					RequestedBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
+		// 					IsLedgerOn: to.Ptr(false),
+		// 				},
+		// 				Location: to.Ptr("southeastasia"),
+		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default-SQL-SouthEastAsia/providers/Microsoft.Sql/servers/testsvr/databases/db2"),
+		// 				Name: to.Ptr("db2"),
+		// 				Type: to.Ptr("Microsoft.Sql/servers/databases"),
+		// 			},
+		// 			{
+		// 				SKU: &armsql.SKU{
+		// 					Name: to.Ptr("BC_Gen5"),
+		// 					Tier: to.Ptr("BusinessCritical"),
+		// 					Capacity: to.Ptr[int32](2),
+		// 				},
+		// 				Kind: to.Ptr("v12.0,user,vcore"),
+		// 				Properties: &armsql.DatabaseProperties{
+		// 					Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
+		// 					MaxSizeBytes: to.Ptr[int64](268435456000),
+		// 					Status: to.Ptr(armsql.DatabaseStatusOnline),
+		// 					DatabaseID: to.Ptr("6c764297-577b-470f-9af4-96d3d41e2ba3"),
+		// 					CreationDate: to.Ptr(time.Date(2017, time.June, 7, 4, 41, 33, 937000000, time.UTC)),
+		// 					CurrentServiceObjectiveName: to.Ptr("BC_Gen5_2"),
+		// 					RequestedServiceObjectiveName: to.Ptr("BC_Gen5_2"),
+		// 					DefaultSecondaryLocation: to.Ptr("North Europe"),
+		// 					CatalogCollation: to.Ptr(armsql.CatalogCollationTypeSQLLatin1GeneralCP1CIAS),
+		// 					LicenseType: to.Ptr(armsql.DatabaseLicenseTypeLicenseIncluded),
+		// 					MaxLogSizeBytes: to.Ptr[int64](104857600),
+		// 					IsInfraEncryptionEnabled: to.Ptr(false),
+		// 					ZoneRedundant: to.Ptr(false),
+		// 					ReadScale: to.Ptr(armsql.DatabaseReadScaleEnabled),
+		// 					EarliestRestoreDate: to.Ptr(time.Date(2017, time.June, 7, 4, 51, 33, 937000000, time.UTC)),
+		// 					MaintenanceConfigurationID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_SouthEastAsia_1"),
+		// 					CurrentSKU: &armsql.SKU{
+		// 						Name: to.Ptr("BC_Gen5"),
+		// 						Tier: to.Ptr("BusinessCritical"),
+		// 						Capacity: to.Ptr[int32](2),
+		// 					},
+		// 					CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
+		// 					RequestedBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
+		// 					IsLedgerOn: to.Ptr(false),
+		// 				},
+		// 				Location: to.Ptr("southeastasia"),
+		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default-SQL-SouthEastAsia/providers/Microsoft.Sql/servers/testsvr/databases/db1"),
+		// 				Name: to.Ptr("db1"),
+		// 				Type: to.Ptr("Microsoft.Sql/servers/databases"),
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2026-08-01-preview/ListVCoreDatabasesEnclaveTypeByServer.json
+func ExampleDatabasesClient_NewListByServerPager_getsAListOfDatabasesConfiguredWithEnclaveType() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsql.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewDatabasesClient().NewListByServerPager("Default-SQL-SouthEastAsia", "testsvr", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armsql.DatabasesClientListByServerResponse{
+		// 	DatabaseListResult: armsql.DatabaseListResult{
+		// 		Value: []*armsql.Database{
+		// 			{
+		// 				Name: to.Ptr("testdb"),
+		// 				Type: to.Ptr("Microsoft.Sql/servers/databases"),
+		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default-SQL-SouthEastAsia/providers/Microsoft.Sql/servers/testsvr/databases/testdb"),
+		// 				Kind: to.Ptr("v12.0,user,vcore"),
+		// 				Location: to.Ptr("southeastasia"),
+		// 				Properties: &armsql.DatabaseProperties{
+		// 					CatalogCollation: to.Ptr(armsql.CatalogCollationTypeSQLLatin1GeneralCP1CIAS),
+		// 					Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
+		// 					CreationDate: to.Ptr(time.Date(2017, time.June, 7, 4, 41, 33, 937000000, time.UTC)),
+		// 					CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyZone),
+		// 					CurrentServiceObjectiveName: to.Ptr("BC_Gen4_2"),
+		// 					CurrentSKU: &armsql.SKU{
+		// 						Name: to.Ptr("BC_Gen4"),
+		// 						Capacity: to.Ptr[int32](2),
+		// 						Tier: to.Ptr("BusinessCritical"),
+		// 					},
+		// 					DatabaseID: to.Ptr("6c764297-577b-470f-9af4-96d3d41e2ba3"),
+		// 					DefaultSecondaryLocation: to.Ptr("North Europe"),
+		// 					EarliestRestoreDate: to.Ptr(time.Date(2017, time.June, 7, 4, 51, 33, 937000000, time.UTC)),
+		// 					IsInfraEncryptionEnabled: to.Ptr(false),
+		// 					IsLedgerOn: to.Ptr(false),
+		// 					LicenseType: to.Ptr(armsql.DatabaseLicenseTypeLicenseIncluded),
+		// 					MaxLogSizeBytes: to.Ptr[int64](104857600),
+		// 					MaxSizeBytes: to.Ptr[int64](268435456000),
+		// 					PreferredEnclaveType: to.Ptr(armsql.AlwaysEncryptedEnclaveTypeDefault),
+		// 					ReadScale: to.Ptr(armsql.DatabaseReadScaleEnabled),
+		// 					RequestedBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyZone),
+		// 					RequestedServiceObjectiveName: to.Ptr("BC_Gen4_2"),
+		// 					Status: to.Ptr(armsql.DatabaseStatusOnline),
+		// 					ZoneRedundant: to.Ptr(false),
+		// 				},
+		// 				SKU: &armsql.SKU{
+		// 					Name: to.Ptr("BC_Gen4"),
+		// 					Capacity: to.Ptr[int32](2),
+		// 					Tier: to.Ptr("BusinessCritical"),
+		// 				},
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("master"),
+		// 				Type: to.Ptr("Microsoft.Sql/servers/databases"),
+		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default-SQL-SouthEastAsia/providers/Microsoft.Sql/servers/testsvr/databases/master"),
+		// 				Kind: to.Ptr("v12.0,system"),
+		// 				Location: to.Ptr("southeastasia"),
+		// 				Properties: &armsql.DatabaseProperties{
+		// 					CatalogCollation: to.Ptr(armsql.CatalogCollationTypeSQLLatin1GeneralCP1CIAS),
+		// 					Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
+		// 					CreationDate: to.Ptr(time.Date(2017, time.June, 7, 4, 23, 42, 537000000, time.UTC)),
+		// 					CurrentBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyLocal),
+		// 					CurrentServiceObjectiveName: to.Ptr("System0"),
+		// 					CurrentSKU: &armsql.SKU{
+		// 						Name: to.Ptr("System0"),
+		// 						Capacity: to.Ptr[int32](0),
+		// 						Tier: to.Ptr("System"),
+		// 					},
+		// 					DatabaseID: to.Ptr("e6be351f-2cc9-4604-9e52-b0b28b2710b0"),
+		// 					DefaultSecondaryLocation: to.Ptr("North Europe"),
+		// 					IsInfraEncryptionEnabled: to.Ptr(false),
+		// 					IsLedgerOn: to.Ptr(false),
+		// 					MaxSizeBytes: to.Ptr[int64](32212254720),
+		// 					PreferredEnclaveType: to.Ptr(armsql.AlwaysEncryptedEnclaveTypeVBS),
+		// 					ReadScale: to.Ptr(armsql.DatabaseReadScaleDisabled),
+		// 					RequestedBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyLocal),
+		// 					RequestedServiceObjectiveName: to.Ptr("System0"),
+		// 					Status: to.Ptr(armsql.DatabaseStatusOnline),
+		// 					ZoneRedundant: to.Ptr(false),
+		// 				},
+		// 				SKU: &armsql.SKU{
+		// 					Name: to.Ptr("System0"),
+		// 					Capacity: to.Ptr[int32](0),
+		// 					Tier: to.Ptr("System"),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2026-08-01-preview/ListVCoreInaccessibleDatabasesByServer.json
+func ExampleDatabasesClient_NewListInaccessibleByServerPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsql.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewDatabasesClient().NewListInaccessibleByServerPager("Default-SQL-SouthEastAsia", "testsvr", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armsql.DatabasesClientListInaccessibleByServerResponse{
+		// 	DatabaseListResult: armsql.DatabaseListResult{
+		// 		Value: []*armsql.Database{
+		// 			{
+		// 				Name: to.Ptr("testdb"),
+		// 				Type: to.Ptr("Microsoft.Sql/servers/databases"),
+		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default-SQL-SouthEastAsia/providers/Microsoft.Sql/servers/testsvr/databases/testdb"),
+		// 				Kind: to.Ptr("v12.0,user,vcore"),
+		// 				Location: to.Ptr("southeastasia"),
+		// 				Properties: &armsql.DatabaseProperties{
+		// 					CatalogCollation: to.Ptr(armsql.CatalogCollationTypeSQLLatin1GeneralCP1CIAS),
+		// 					Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
+		// 					CreationDate: to.Ptr(time.Date(2017, time.June, 7, 4, 41, 33, 937000000, time.UTC)),
+		// 					CurrentServiceObjectiveName: to.Ptr("BC_Gen4_2"),
+		// 					DatabaseID: to.Ptr("6c764297-577b-470f-9af4-96d3d41e2ba3"),
+		// 					DefaultSecondaryLocation: to.Ptr("North Europe"),
+		// 					LicenseType: to.Ptr(armsql.DatabaseLicenseTypeLicenseIncluded),
+		// 					MaxLogSizeBytes: to.Ptr[int64](104857600),
+		// 					MaxSizeBytes: to.Ptr[int64](268435456000),
+		// 					ReadScale: to.Ptr(armsql.DatabaseReadScaleEnabled),
+		// 					Status: to.Ptr(armsql.DatabaseStatusInaccessible),
+		// 				},
+		// 				SKU: &armsql.SKU{
+		// 					Name: to.Ptr("BC_Gen4"),
+		// 					Capacity: to.Ptr[int32](2),
+		// 					Tier: to.Ptr("BusinessCritical"),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2026-08-01-preview/RenameDatabase.json
+func ExampleDatabasesClient_Rename() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsql.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewDatabasesClient().Rename(ctx, "Default-SQL-SouthEastAsia", "testsvr", "testdb", armsql.ResourceMoveDefinition{
+		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default-SQL-SouthEastAsia/providers/Microsoft.Sql/servers/testsvr/databases/newtestdb"),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armsql.DatabasesClientRenameResponse{
 	// }
 }

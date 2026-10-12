@@ -29,14 +29,6 @@ type ApprovalServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceURI string, approvalName string, options *armenclave.ApprovalClientBeginDeleteOptions) (resp azfake.PollerResponder[armenclave.ApprovalClientDeleteResponse], errResp azfake.ErrorResponder)
 
-	// Get is the fake for method ApprovalClient.Get
-	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceURI string, approvalName string, options *armenclave.ApprovalClientGetOptions) (resp azfake.Responder[armenclave.ApprovalClientGetResponse], errResp azfake.ErrorResponder)
-
-	// NewListByParentPager is the fake for method ApprovalClient.NewListByParentPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListByParentPager func(resourceURI string, options *armenclave.ApprovalClientListByParentOptions) (resp azfake.PagerResponder[armenclave.ApprovalClientListByParentResponse])
-
 	// BeginNotifyInitiator is the fake for method ApprovalClient.BeginNotifyInitiator
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginNotifyInitiator func(ctx context.Context, resourceURI string, approvalName string, body armenclave.ApprovalActionRequest, options *armenclave.ApprovalClientBeginNotifyInitiatorOptions) (resp azfake.PollerResponder[armenclave.ApprovalClientNotifyInitiatorResponse], errResp azfake.ErrorResponder)
@@ -44,6 +36,14 @@ type ApprovalServer struct {
 	// BeginUpdate is the fake for method ApprovalClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginUpdate func(ctx context.Context, resourceURI string, approvalName string, properties armenclave.ApprovalPatchModel, options *armenclave.ApprovalClientBeginUpdateOptions) (resp azfake.PollerResponder[armenclave.ApprovalClientUpdateResponse], errResp azfake.ErrorResponder)
+
+	// Get is the fake for method ApprovalClient.Get
+	// HTTP status codes to indicate success: http.StatusOK
+	Get func(ctx context.Context, resourceURI string, approvalName string, options *armenclave.ApprovalClientGetOptions) (resp azfake.Responder[armenclave.ApprovalClientGetResponse], errResp azfake.ErrorResponder)
+
+	// NewListByParentPager is the fake for method ApprovalClient.NewListByParentPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListByParentPager func(resourceURI string, options *armenclave.ApprovalClientListByParentOptions) (resp azfake.PagerResponder[armenclave.ApprovalClientListByParentResponse])
 }
 
 // NewApprovalServerTransport creates a new instance of ApprovalServerTransport with the provided implementation.
@@ -54,9 +54,9 @@ func NewApprovalServerTransport(srv *ApprovalServer) *ApprovalServerTransport {
 		srv:                  srv,
 		beginCreateOrUpdate:  newTracker[azfake.PollerResponder[armenclave.ApprovalClientCreateOrUpdateResponse]](),
 		beginDelete:          newTracker[azfake.PollerResponder[armenclave.ApprovalClientDeleteResponse]](),
-		newListByParentPager: newTracker[azfake.PagerResponder[armenclave.ApprovalClientListByParentResponse]](),
 		beginNotifyInitiator: newTracker[azfake.PollerResponder[armenclave.ApprovalClientNotifyInitiatorResponse]](),
 		beginUpdate:          newTracker[azfake.PollerResponder[armenclave.ApprovalClientUpdateResponse]](),
+		newListByParentPager: newTracker[azfake.PagerResponder[armenclave.ApprovalClientListByParentResponse]](),
 	}
 }
 
@@ -66,9 +66,9 @@ type ApprovalServerTransport struct {
 	srv                  *ApprovalServer
 	beginCreateOrUpdate  *tracker[azfake.PollerResponder[armenclave.ApprovalClientCreateOrUpdateResponse]]
 	beginDelete          *tracker[azfake.PollerResponder[armenclave.ApprovalClientDeleteResponse]]
-	newListByParentPager *tracker[azfake.PagerResponder[armenclave.ApprovalClientListByParentResponse]]
 	beginNotifyInitiator *tracker[azfake.PollerResponder[armenclave.ApprovalClientNotifyInitiatorResponse]]
 	beginUpdate          *tracker[azfake.PollerResponder[armenclave.ApprovalClientUpdateResponse]]
+	newListByParentPager *tracker[azfake.PagerResponder[armenclave.ApprovalClientListByParentResponse]]
 }
 
 // Do implements the policy.Transporter interface for ApprovalServerTransport.
@@ -96,14 +96,14 @@ func (a *ApprovalServerTransport) dispatchToMethodFake(req *http.Request, method
 				res.resp, res.err = a.dispatchBeginCreateOrUpdate(req)
 			case "ApprovalClient.BeginDelete":
 				res.resp, res.err = a.dispatchBeginDelete(req)
-			case "ApprovalClient.Get":
-				res.resp, res.err = a.dispatchGet(req)
-			case "ApprovalClient.NewListByParentPager":
-				res.resp, res.err = a.dispatchNewListByParentPager(req)
 			case "ApprovalClient.BeginNotifyInitiator":
 				res.resp, res.err = a.dispatchBeginNotifyInitiator(req)
 			case "ApprovalClient.BeginUpdate":
 				res.resp, res.err = a.dispatchBeginUpdate(req)
+			case "ApprovalClient.Get":
+				res.resp, res.err = a.dispatchGet(req)
+			case "ApprovalClient.NewListByParentPager":
+				res.resp, res.err = a.dispatchNewListByParentPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -206,70 +206,6 @@ func (a *ApprovalServerTransport) dispatchBeginDelete(req *http.Request) (*http.
 	return resp, nil
 }
 
-func (a *ApprovalServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if a.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/(?P<resourceUri>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/providers/Microsoft\.Mission/approvals/(?P<approvalName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 3 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceURIParam := matches[regex.SubexpIndex("resourceUri")]
-	approvalNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("approvalName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := a.srv.Get(req.Context(), resourceURIParam, approvalNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ApprovalResource, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (a *ApprovalServerTransport) dispatchNewListByParentPager(req *http.Request) (*http.Response, error) {
-	if a.srv.NewListByParentPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListByParentPager not implemented")}
-	}
-	newListByParentPager := a.newListByParentPager.get(req)
-	if newListByParentPager == nil {
-		const regexStr = `/(?P<resourceUri>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/providers/Microsoft\.Mission/approvals`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceURIParam := matches[regex.SubexpIndex("resourceUri")]
-		resp := a.srv.NewListByParentPager(resourceURIParam, nil)
-		newListByParentPager = &resp
-		a.newListByParentPager.add(req, newListByParentPager)
-		server.PagerResponderInjectNextLinks(newListByParentPager, req, func(page *armenclave.ApprovalClientListByParentResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListByParentPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		a.newListByParentPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListByParentPager) {
-		a.newListByParentPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (a *ApprovalServerTransport) dispatchBeginNotifyInitiator(req *http.Request) (*http.Response, error) {
 	if a.srv.BeginNotifyInitiator == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginNotifyInitiator not implemented")}
@@ -357,6 +293,70 @@ func (a *ApprovalServerTransport) dispatchBeginUpdate(req *http.Request) (*http.
 		a.beginUpdate.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (a *ApprovalServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if a.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/(?P<resourceUri>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/providers/Microsoft\.Mission/approvals/(?P<approvalName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceURIParam := matches[regex.SubexpIndex("resourceUri")]
+	approvalNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("approvalName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := a.srv.Get(req.Context(), resourceURIParam, approvalNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ApprovalResource, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (a *ApprovalServerTransport) dispatchNewListByParentPager(req *http.Request) (*http.Response, error) {
+	if a.srv.NewListByParentPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListByParentPager not implemented")}
+	}
+	newListByParentPager := a.newListByParentPager.get(req)
+	if newListByParentPager == nil {
+		const regexStr = `/(?P<resourceUri>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/providers/Microsoft\.Mission/approvals`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceURIParam := matches[regex.SubexpIndex("resourceUri")]
+		resp := a.srv.NewListByParentPager(resourceURIParam, nil)
+		newListByParentPager = &resp
+		a.newListByParentPager.add(req, newListByParentPager)
+		server.PagerResponderInjectNextLinks(newListByParentPager, req, func(page *armenclave.ApprovalClientListByParentResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListByParentPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		a.newListByParentPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListByParentPager) {
+		a.newListByParentPager.remove(req)
+	}
 	return resp, nil
 }
 

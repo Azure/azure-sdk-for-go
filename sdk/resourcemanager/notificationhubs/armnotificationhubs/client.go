@@ -638,84 +638,72 @@ func (client *Client) getPnsCredentialsHandleResponse(resp *http.Response, succe
 	return result, nil
 }
 
-// NewListPager - Lists the notification hubs associated with a namespace.
+// ListKeys - Gets the Primary and Secondary ConnectionStrings to the NotificationHub
+// If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - namespaceName - Namespace name
-//   - options - ClientListOptions contains the optional parameters for the Client.NewListPager method.
-func (client *Client) NewListPager(resourceGroupName string, namespaceName string, options *ClientListOptions) *runtime.Pager[ClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[ClientListResponse]{
-		More: func(page ClientListResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *ClientListResponse) (ClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "Client.NewListPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			req, err := client.listCreateRequest(ctx, resourceGroupName, namespaceName, nextLink, options)
-			if err != nil {
-				return ClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ClientListResponse{}, err
-			}
-			return client.listHandleResponse(resp, http.StatusOK)
-		},
-		Tracer: client.internal.Tracer(),
-	})
+//   - notificationHubName - Notification Hub name
+//   - authorizationRuleName - Authorization Rule Name
+//   - options - ClientListKeysOptions contains the optional parameters for the Client.ListKeys method.
+func (client *Client) ListKeys(ctx context.Context, resourceGroupName string, namespaceName string, notificationHubName string, authorizationRuleName string, options *ClientListKeysOptions) (ClientListKeysResponse, error) {
+	var err error
+	const operationName = "Client.ListKeys"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.listKeysCreateRequest(ctx, resourceGroupName, namespaceName, notificationHubName, authorizationRuleName, options)
+	if err != nil {
+		return ClientListKeysResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return ClientListKeysResponse{}, err
+	}
+	return client.listKeysHandleResponse(httpResp, http.StatusOK)
 }
 
-// listCreateRequest creates the List request.
-func (client *Client) listCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, nextLink string, options *ClientListOptions) (*policy.Request, error) {
-	firstPage := nextLink == ""
-	var req *policy.Request
-	var err error
-	if firstPage {
-		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NotificationHubs/namespaces/{namespaceName}/notificationHubs"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter subscriptionID cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-		if resourceGroupName == "" {
-			return nil, errors.New("parameter resourceGroupName cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-		if namespaceName == "" {
-			return nil, errors.New("parameter namespaceName cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{namespaceName}", url.PathEscape(namespaceName))
-		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	} else {
-		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+// listKeysCreateRequest creates the ListKeys request.
+func (client *Client) listKeysCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, notificationHubName string, authorizationRuleName string, _ *ClientListKeysOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NotificationHubs/namespaces/{namespaceName}/notificationHubs/{notificationHubName}/authorizationRules/{authorizationRuleName}/listKeys"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if namespaceName == "" {
+		return nil, errors.New("parameter namespaceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{namespaceName}", url.PathEscape(namespaceName))
+	if notificationHubName == "" {
+		return nil, errors.New("parameter notificationHubName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{notificationHubName}", url.PathEscape(notificationHubName))
+	if authorizationRuleName == "" {
+		return nil, errors.New("parameter authorizationRuleName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{authorizationRuleName}", url.PathEscape(authorizationRuleName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	if firstPage {
-		reqQP := req.Raw().URL.Query()
-		if options != nil && options.SkipToken != nil {
-			reqQP.Set("$skipToken", *options.SkipToken)
-		}
-		if options != nil && options.Top != nil {
-			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
-		}
-		reqQP.Set("api-version", version20231001Preview)
-		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-		req.Raw().Header["Accept"] = []string{"application/json"}
-	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20231001Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
-// listHandleResponse handles the List response.
-func (client *Client) listHandleResponse(resp *http.Response, successCodes ...int) (ClientListResponse, error) {
-	result := ClientListResponse{}
+// listKeysHandleResponse handles the ListKeys response.
+func (client *Client) listKeysHandleResponse(resp *http.Response, successCodes ...int) (ClientListKeysResponse, error) {
+	result := ClientListKeysResponse{}
 	if !runtime.HasStatusCode(resp, successCodes...) {
 		return result, runtime.NewResponseError(resp)
 	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.NotificationHubListResult); err != nil {
-		return ClientListResponse{}, err
+	if err := runtime.UnmarshalAsJSON(resp, &result.ResourceListKeys); err != nil {
+		return ClientListKeysResponse{}, err
 	}
 	return result, nil
 }
@@ -802,72 +790,84 @@ func (client *Client) listAuthorizationRulesHandleResponse(resp *http.Response, 
 	return result, nil
 }
 
-// ListKeys - Gets the Primary and Secondary ConnectionStrings to the NotificationHub
-// If the operation fails it returns an *azcore.ResponseError type.
+// NewListPager - Lists the notification hubs associated with a namespace.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - namespaceName - Namespace name
-//   - notificationHubName - Notification Hub name
-//   - authorizationRuleName - Authorization Rule Name
-//   - options - ClientListKeysOptions contains the optional parameters for the Client.ListKeys method.
-func (client *Client) ListKeys(ctx context.Context, resourceGroupName string, namespaceName string, notificationHubName string, authorizationRuleName string, options *ClientListKeysOptions) (ClientListKeysResponse, error) {
-	var err error
-	const operationName = "Client.ListKeys"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.listKeysCreateRequest(ctx, resourceGroupName, namespaceName, notificationHubName, authorizationRuleName, options)
-	if err != nil {
-		return ClientListKeysResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return ClientListKeysResponse{}, err
-	}
-	return client.listKeysHandleResponse(httpResp, http.StatusOK)
+//   - options - ClientListOptions contains the optional parameters for the Client.NewListPager method.
+func (client *Client) NewListPager(resourceGroupName string, namespaceName string, options *ClientListOptions) *runtime.Pager[ClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[ClientListResponse]{
+		More: func(page ClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *ClientListResponse) (ClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "Client.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listCreateRequest(ctx, resourceGroupName, namespaceName, nextLink, options)
+			if err != nil {
+				return ClientListResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
 }
 
-// listKeysCreateRequest creates the ListKeys request.
-func (client *Client) listKeysCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, notificationHubName string, authorizationRuleName string, _ *ClientListKeysOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NotificationHubs/namespaces/{namespaceName}/notificationHubs/{notificationHubName}/authorizationRules/{authorizationRuleName}/listKeys"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
+// listCreateRequest creates the List request.
+func (client *Client) listCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, nextLink string, options *ClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NotificationHubs/namespaces/{namespaceName}/notificationHubs"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if namespaceName == "" {
+			return nil, errors.New("parameter namespaceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{namespaceName}", url.PathEscape(namespaceName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if namespaceName == "" {
-		return nil, errors.New("parameter namespaceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{namespaceName}", url.PathEscape(namespaceName))
-	if notificationHubName == "" {
-		return nil, errors.New("parameter notificationHubName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{notificationHubName}", url.PathEscape(notificationHubName))
-	if authorizationRuleName == "" {
-		return nil, errors.New("parameter authorizationRuleName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{authorizationRuleName}", url.PathEscape(authorizationRuleName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20231001Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.SkipToken != nil {
+			reqQP.Set("$skipToken", *options.SkipToken)
+		}
+		if options != nil && options.Top != nil {
+			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+		}
+		reqQP.Set("api-version", version20231001Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
-// listKeysHandleResponse handles the ListKeys response.
-func (client *Client) listKeysHandleResponse(resp *http.Response, successCodes ...int) (ClientListKeysResponse, error) {
-	result := ClientListKeysResponse{}
+// listHandleResponse handles the List response.
+func (client *Client) listHandleResponse(resp *http.Response, successCodes ...int) (ClientListResponse, error) {
+	result := ClientListResponse{}
 	if !runtime.HasStatusCode(resp, successCodes...) {
 		return result, runtime.NewResponseError(resp)
 	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ResourceListKeys); err != nil {
-		return ClientListKeysResponse{}, err
+	if err := runtime.UnmarshalAsJSON(resp, &result.NotificationHubListResult); err != nil {
+		return ClientListResponse{}, err
 	}
 	return result, nil
 }

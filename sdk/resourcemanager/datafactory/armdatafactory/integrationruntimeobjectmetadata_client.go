@@ -44,6 +44,82 @@ func NewIntegrationRuntimeObjectMetadataClient(subscriptionID string, credential
 	return client, nil
 }
 
+// BeginRefresh - Refresh a SSIS integration runtime object metadata.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - factoryName - The factory name.
+//   - integrationRuntimeName - The integration runtime name.
+//   - options - IntegrationRuntimeObjectMetadataClientBeginRefreshOptions contains the optional parameters for the IntegrationRuntimeObjectMetadataClient.BeginRefresh
+//     method.
+func (client *IntegrationRuntimeObjectMetadataClient) BeginRefresh(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, options *IntegrationRuntimeObjectMetadataClientBeginRefreshOptions) (*runtime.Poller[IntegrationRuntimeObjectMetadataClientRefreshResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.refresh(ctx, resourceGroupName, factoryName, integrationRuntimeName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[IntegrationRuntimeObjectMetadataClientRefreshResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[IntegrationRuntimeObjectMetadataClientRefreshResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// refresh - Refresh a SSIS integration runtime object metadata.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *IntegrationRuntimeObjectMetadataClient) refresh(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, options *IntegrationRuntimeObjectMetadataClientBeginRefreshOptions) (*http.Response, error) {
+	var err error
+	const operationName = "IntegrationRuntimeObjectMetadataClient.BeginRefresh"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.refreshCreateRequest(ctx, resourceGroupName, factoryName, integrationRuntimeName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// refreshCreateRequest creates the refresh request.
+func (client *IntegrationRuntimeObjectMetadataClient) refreshCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, _ *IntegrationRuntimeObjectMetadataClientBeginRefreshOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/integrationRuntimes/{integrationRuntimeName}/refreshObjectMetadata"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if factoryName == "" {
+		return nil, errors.New("parameter factoryName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{factoryName}", url.PathEscape(factoryName))
+	if integrationRuntimeName == "" {
+		return nil, errors.New("parameter integrationRuntimeName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{integrationRuntimeName}", url.PathEscape(integrationRuntimeName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20180601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
 // Get - Get a SSIS integration runtime object metadata by specified path. The return is pageable metadata list.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
@@ -115,80 +191,4 @@ func (client *IntegrationRuntimeObjectMetadataClient) getHandleResponse(resp *ht
 		return IntegrationRuntimeObjectMetadataClientGetResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginRefresh - Refresh a SSIS integration runtime object metadata.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - factoryName - The factory name.
-//   - integrationRuntimeName - The integration runtime name.
-//   - options - IntegrationRuntimeObjectMetadataClientBeginRefreshOptions contains the optional parameters for the IntegrationRuntimeObjectMetadataClient.BeginRefresh
-//     method.
-func (client *IntegrationRuntimeObjectMetadataClient) BeginRefresh(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, options *IntegrationRuntimeObjectMetadataClientBeginRefreshOptions) (*runtime.Poller[IntegrationRuntimeObjectMetadataClientRefreshResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.refresh(ctx, resourceGroupName, factoryName, integrationRuntimeName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[IntegrationRuntimeObjectMetadataClientRefreshResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[IntegrationRuntimeObjectMetadataClientRefreshResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Refresh - Refresh a SSIS integration runtime object metadata.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *IntegrationRuntimeObjectMetadataClient) refresh(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, options *IntegrationRuntimeObjectMetadataClientBeginRefreshOptions) (*http.Response, error) {
-	var err error
-	const operationName = "IntegrationRuntimeObjectMetadataClient.BeginRefresh"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.refreshCreateRequest(ctx, resourceGroupName, factoryName, integrationRuntimeName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// refreshCreateRequest creates the Refresh request.
-func (client *IntegrationRuntimeObjectMetadataClient) refreshCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, _ *IntegrationRuntimeObjectMetadataClientBeginRefreshOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/integrationRuntimes/{integrationRuntimeName}/refreshObjectMetadata"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if factoryName == "" {
-		return nil, errors.New("parameter factoryName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{factoryName}", url.PathEscape(factoryName))
-	if integrationRuntimeName == "" {
-		return nil, errors.New("parameter integrationRuntimeName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{integrationRuntimeName}", url.PathEscape(integrationRuntimeName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20180601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
 }

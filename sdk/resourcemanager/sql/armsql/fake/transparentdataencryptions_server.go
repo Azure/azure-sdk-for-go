@@ -25,14 +25,6 @@ type TransparentDataEncryptionsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated, http.StatusAccepted
 	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, serverName string, databaseName string, tdeName armsql.TransparentDataEncryptionName, parameters armsql.LogicalDatabaseTransparentDataEncryption, options *armsql.TransparentDataEncryptionsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armsql.TransparentDataEncryptionsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
-	// Get is the fake for method TransparentDataEncryptionsClient.Get
-	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, serverName string, databaseName string, tdeName armsql.TransparentDataEncryptionName, options *armsql.TransparentDataEncryptionsClientGetOptions) (resp azfake.Responder[armsql.TransparentDataEncryptionsClientGetResponse], errResp azfake.ErrorResponder)
-
-	// NewListByDatabasePager is the fake for method TransparentDataEncryptionsClient.NewListByDatabasePager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListByDatabasePager func(resourceGroupName string, serverName string, databaseName string, options *armsql.TransparentDataEncryptionsClientListByDatabaseOptions) (resp azfake.PagerResponder[armsql.TransparentDataEncryptionsClientListByDatabaseResponse])
-
 	// BeginResume is the fake for method TransparentDataEncryptionsClient.BeginResume
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginResume func(ctx context.Context, resourceGroupName string, serverName string, databaseName string, tdeName armsql.TransparentDataEncryptionName, options *armsql.TransparentDataEncryptionsClientBeginResumeOptions) (resp azfake.PollerResponder[armsql.TransparentDataEncryptionsClientResumeResponse], errResp azfake.ErrorResponder)
@@ -40,6 +32,14 @@ type TransparentDataEncryptionsServer struct {
 	// BeginSuspend is the fake for method TransparentDataEncryptionsClient.BeginSuspend
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginSuspend func(ctx context.Context, resourceGroupName string, serverName string, databaseName string, tdeName armsql.TransparentDataEncryptionName, options *armsql.TransparentDataEncryptionsClientBeginSuspendOptions) (resp azfake.PollerResponder[armsql.TransparentDataEncryptionsClientSuspendResponse], errResp azfake.ErrorResponder)
+
+	// Get is the fake for method TransparentDataEncryptionsClient.Get
+	// HTTP status codes to indicate success: http.StatusOK
+	Get func(ctx context.Context, resourceGroupName string, serverName string, databaseName string, tdeName armsql.TransparentDataEncryptionName, options *armsql.TransparentDataEncryptionsClientGetOptions) (resp azfake.Responder[armsql.TransparentDataEncryptionsClientGetResponse], errResp azfake.ErrorResponder)
+
+	// NewListByDatabasePager is the fake for method TransparentDataEncryptionsClient.NewListByDatabasePager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListByDatabasePager func(resourceGroupName string, serverName string, databaseName string, options *armsql.TransparentDataEncryptionsClientListByDatabaseOptions) (resp azfake.PagerResponder[armsql.TransparentDataEncryptionsClientListByDatabaseResponse])
 }
 
 // NewTransparentDataEncryptionsServerTransport creates a new instance of TransparentDataEncryptionsServerTransport with the provided implementation.
@@ -49,9 +49,9 @@ func NewTransparentDataEncryptionsServerTransport(srv *TransparentDataEncryption
 	return &TransparentDataEncryptionsServerTransport{
 		srv:                    srv,
 		beginCreateOrUpdate:    newTracker[azfake.PollerResponder[armsql.TransparentDataEncryptionsClientCreateOrUpdateResponse]](),
-		newListByDatabasePager: newTracker[azfake.PagerResponder[armsql.TransparentDataEncryptionsClientListByDatabaseResponse]](),
 		beginResume:            newTracker[azfake.PollerResponder[armsql.TransparentDataEncryptionsClientResumeResponse]](),
 		beginSuspend:           newTracker[azfake.PollerResponder[armsql.TransparentDataEncryptionsClientSuspendResponse]](),
+		newListByDatabasePager: newTracker[azfake.PagerResponder[armsql.TransparentDataEncryptionsClientListByDatabaseResponse]](),
 	}
 }
 
@@ -60,9 +60,9 @@ func NewTransparentDataEncryptionsServerTransport(srv *TransparentDataEncryption
 type TransparentDataEncryptionsServerTransport struct {
 	srv                    *TransparentDataEncryptionsServer
 	beginCreateOrUpdate    *tracker[azfake.PollerResponder[armsql.TransparentDataEncryptionsClientCreateOrUpdateResponse]]
-	newListByDatabasePager *tracker[azfake.PagerResponder[armsql.TransparentDataEncryptionsClientListByDatabaseResponse]]
 	beginResume            *tracker[azfake.PollerResponder[armsql.TransparentDataEncryptionsClientResumeResponse]]
 	beginSuspend           *tracker[azfake.PollerResponder[armsql.TransparentDataEncryptionsClientSuspendResponse]]
+	newListByDatabasePager *tracker[azfake.PagerResponder[armsql.TransparentDataEncryptionsClientListByDatabaseResponse]]
 }
 
 // Do implements the policy.Transporter interface for TransparentDataEncryptionsServerTransport.
@@ -88,14 +88,14 @@ func (t *TransparentDataEncryptionsServerTransport) dispatchToMethodFake(req *ht
 			switch method {
 			case "TransparentDataEncryptionsClient.BeginCreateOrUpdate":
 				res.resp, res.err = t.dispatchBeginCreateOrUpdate(req)
-			case "TransparentDataEncryptionsClient.Get":
-				res.resp, res.err = t.dispatchGet(req)
-			case "TransparentDataEncryptionsClient.NewListByDatabasePager":
-				res.resp, res.err = t.dispatchNewListByDatabasePager(req)
 			case "TransparentDataEncryptionsClient.BeginResume":
 				res.resp, res.err = t.dispatchBeginResume(req)
 			case "TransparentDataEncryptionsClient.BeginSuspend":
 				res.resp, res.err = t.dispatchBeginSuspend(req)
+			case "TransparentDataEncryptionsClient.Get":
+				res.resp, res.err = t.dispatchGet(req)
+			case "TransparentDataEncryptionsClient.NewListByDatabasePager":
+				res.resp, res.err = t.dispatchNewListByDatabasePager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -171,98 +171,6 @@ func (t *TransparentDataEncryptionsServerTransport) dispatchBeginCreateOrUpdate(
 		t.beginCreateOrUpdate.remove(req)
 	}
 
-	return resp, nil
-}
-
-func (t *TransparentDataEncryptionsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if t.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/servers/(?P<serverName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/databases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/transparentDataEncryption/(?P<tdeName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 6 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	serverNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serverName")])
-	if err != nil {
-		return nil, err
-	}
-	databaseNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("databaseName")])
-	if err != nil {
-		return nil, err
-	}
-	tdeNameParam, err := parseWithCast(matches[regex.SubexpIndex("tdeName")], func(v string) (armsql.TransparentDataEncryptionName, error) {
-		p, unescapeErr := url.PathUnescape(v)
-		if unescapeErr != nil {
-			return "", unescapeErr
-		}
-		return armsql.TransparentDataEncryptionName(p), nil
-	})
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := t.srv.Get(req.Context(), resourceGroupNameParam, serverNameParam, databaseNameParam, tdeNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).LogicalDatabaseTransparentDataEncryption, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (t *TransparentDataEncryptionsServerTransport) dispatchNewListByDatabasePager(req *http.Request) (*http.Response, error) {
-	if t.srv.NewListByDatabasePager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListByDatabasePager not implemented")}
-	}
-	newListByDatabasePager := t.newListByDatabasePager.get(req)
-	if newListByDatabasePager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/servers/(?P<serverName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/databases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/transparentDataEncryption`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		serverNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serverName")])
-		if err != nil {
-			return nil, err
-		}
-		databaseNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("databaseName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := t.srv.NewListByDatabasePager(resourceGroupNameParam, serverNameParam, databaseNameParam, nil)
-		newListByDatabasePager = &resp
-		t.newListByDatabasePager.add(req, newListByDatabasePager)
-		server.PagerResponderInjectNextLinks(newListByDatabasePager, req, func(page *armsql.TransparentDataEncryptionsClientListByDatabaseResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListByDatabasePager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		t.newListByDatabasePager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListByDatabasePager) {
-		t.newListByDatabasePager.remove(req)
-	}
 	return resp, nil
 }
 
@@ -379,6 +287,98 @@ func (t *TransparentDataEncryptionsServerTransport) dispatchBeginSuspend(req *ht
 		t.beginSuspend.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (t *TransparentDataEncryptionsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if t.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/servers/(?P<serverName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/databases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/transparentDataEncryption/(?P<tdeName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 6 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	serverNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serverName")])
+	if err != nil {
+		return nil, err
+	}
+	databaseNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("databaseName")])
+	if err != nil {
+		return nil, err
+	}
+	tdeNameParam, err := parseWithCast(matches[regex.SubexpIndex("tdeName")], func(v string) (armsql.TransparentDataEncryptionName, error) {
+		p, unescapeErr := url.PathUnescape(v)
+		if unescapeErr != nil {
+			return "", unescapeErr
+		}
+		return armsql.TransparentDataEncryptionName(p), nil
+	})
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := t.srv.Get(req.Context(), resourceGroupNameParam, serverNameParam, databaseNameParam, tdeNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).LogicalDatabaseTransparentDataEncryption, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (t *TransparentDataEncryptionsServerTransport) dispatchNewListByDatabasePager(req *http.Request) (*http.Response, error) {
+	if t.srv.NewListByDatabasePager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListByDatabasePager not implemented")}
+	}
+	newListByDatabasePager := t.newListByDatabasePager.get(req)
+	if newListByDatabasePager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/servers/(?P<serverName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/databases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/transparentDataEncryption`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		serverNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serverName")])
+		if err != nil {
+			return nil, err
+		}
+		databaseNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("databaseName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := t.srv.NewListByDatabasePager(resourceGroupNameParam, serverNameParam, databaseNameParam, nil)
+		newListByDatabasePager = &resp
+		t.newListByDatabasePager.add(req, newListByDatabasePager)
+		server.PagerResponderInjectNextLinks(newListByDatabasePager, req, func(page *armsql.TransparentDataEncryptionsClientListByDatabaseResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListByDatabasePager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		t.newListByDatabasePager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListByDatabasePager) {
+		t.newListByDatabasePager.remove(req)
+	}
 	return resp, nil
 }
 

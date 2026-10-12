@@ -39,34 +39,6 @@ func ExampleAccountsClient_BeginAbortHierarchicalNamespaceMigration() {
 	// }
 }
 
-// Generated from example definition: 2026-06-01/StorageAccountCheckNameAvailability.json
-func ExampleAccountsClient_CheckNameAvailability() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armstorage.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewAccountsClient().CheckNameAvailability(ctx, armstorage.AccountCheckNameAvailabilityParameters{
-		Name: to.Ptr("sto3363"),
-		Type: to.Ptr("Microsoft.Storage/storageAccounts"),
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armstorage.AccountsClientCheckNameAvailabilityResponse{
-	// 	CheckNameAvailabilityResult: armstorage.CheckNameAvailabilityResult{
-	// 		NameAvailable: to.Ptr(true),
-	// 	},
-	// }
-}
-
 // Generated from example definition: 2026-06-01/NfsV3AccountCreate.json
 func ExampleAccountsClient_BeginCreate_nfsV3AccountCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -2358,28 +2330,6 @@ func ExampleAccountsClient_BeginCustomerInitiatedMigration() {
 	// }
 }
 
-// Generated from example definition: 2026-06-01/StorageAccountDelete.json
-func ExampleAccountsClient_Delete() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armstorage.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewAccountsClient().Delete(ctx, "res4228", "sto2434", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armstorage.AccountsClientDeleteResponse{
-	// }
-}
-
 // Generated from example definition: 2026-06-01/StorageAccountFailover.json
 func ExampleAccountsClient_BeginFailover_storageAccountFailover() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -2429,6 +2379,137 @@ func ExampleAccountsClient_BeginFailover_storageAccountFailoverPlanned() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstorage.AccountsClientFailoverResponse{
+	// }
+}
+
+// Generated from example definition: 2026-06-01/StorageAccountHierarchicalNamespaceMigration.json
+func ExampleAccountsClient_BeginHierarchicalNamespaceMigration() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armstorage.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewAccountsClient().BeginHierarchicalNamespaceMigration(ctx, "res4228", "sto2434", "HnsOnValidationRequest", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armstorage.AccountsClientHierarchicalNamespaceMigrationResponse{
+	// }
+}
+
+// Generated from example definition: 2026-06-01/BlobRangesRestore.json
+func ExampleAccountsClient_BeginRestoreBlobRanges() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armstorage.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewAccountsClient().BeginRestoreBlobRanges(ctx, "res9101", "sto4445", armstorage.BlobRestoreParameters{
+		BlobRanges: []*armstorage.BlobRestoreRange{
+			{
+				EndRange:   to.Ptr("container/blobpath2"),
+				StartRange: to.Ptr("container/blobpath1"),
+			},
+			{
+				EndRange:   to.Ptr(""),
+				StartRange: to.Ptr("container2/blobpath3"),
+			},
+		},
+		TimeToRestore: to.Ptr(time.Date(2019, time.April, 20, 15, 30, 0, 0, time.UTC)),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armstorage.AccountsClientRestoreBlobRangesResponse{
+	// 	BlobRestoreStatus: armstorage.BlobRestoreStatus{
+	// 		Parameters: &armstorage.BlobRestoreParameters{
+	// 			BlobRanges: []*armstorage.BlobRestoreRange{
+	// 				{
+	// 					EndRange: to.Ptr("container/blobpath2"),
+	// 					StartRange: to.Ptr("container/blobpath1"),
+	// 				},
+	// 				{
+	// 					EndRange: to.Ptr(""),
+	// 					StartRange: to.Ptr("container2/blobpath3"),
+	// 				},
+	// 			},
+	// 			TimeToRestore: to.Ptr(time.Date(2019, time.April, 20, 15, 30, 0, 0, time.UTC)),
+	// 		},
+	// 		RestoreID: to.Ptr("{restore_id}"),
+	// 		Status: to.Ptr(armstorage.BlobRestoreProgressStatus("Succeeded")),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-06-01/StorageAccountCheckNameAvailability.json
+func ExampleAccountsClient_CheckNameAvailability() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armstorage.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewAccountsClient().CheckNameAvailability(ctx, armstorage.AccountCheckNameAvailabilityParameters{
+		Name: to.Ptr("sto3363"),
+		Type: to.Ptr("Microsoft.Storage/storageAccounts"),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armstorage.AccountsClientCheckNameAvailabilityResponse{
+	// 	CheckNameAvailabilityResult: armstorage.CheckNameAvailabilityResult{
+	// 		NameAvailable: to.Ptr(true),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-06-01/StorageAccountDelete.json
+func ExampleAccountsClient_Delete() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armstorage.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewAccountsClient().Delete(ctx, "res4228", "sto2434", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armstorage.AccountsClientDeleteResponse{
 	// }
 }
 
@@ -3132,8 +3213,8 @@ func ExampleAccountsClient_GetProperties_storageAccountGetPropertiesGeoReplicati
 	// }
 }
 
-// Generated from example definition: 2026-06-01/StorageAccountHierarchicalNamespaceMigration.json
-func ExampleAccountsClient_BeginHierarchicalNamespaceMigration() {
+// Generated from example definition: 2026-06-01/StorageAccountListAccountSAS.json
+func ExampleAccountsClient_ListAccountSAS() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -3143,19 +3224,186 @@ func ExampleAccountsClient_BeginHierarchicalNamespaceMigration() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewAccountsClient().BeginHierarchicalNamespaceMigration(ctx, "res4228", "sto2434", "HnsOnValidationRequest", nil)
+	res, err := clientFactory.NewAccountsClient().ListAccountSAS(ctx, "res7985", "sto8588", armstorage.AccountSasParameters{
+		KeyToSign:              to.Ptr("key1"),
+		SharedAccessExpiryTime: to.Ptr(time.Date(2017, time.May, 24, 11, 42, 3, 156737300, time.UTC)),
+		Permissions:            to.Ptr(armstorage.PermissionsR),
+		Protocols:              to.Ptr(armstorage.HTTPProtocolHTTPSHTTP),
+		ResourceTypes:          to.Ptr(armstorage.SignedResourceTypesS),
+		Services:               to.Ptr(armstorage.ServicesB),
+		SharedAccessStartTime:  to.Ptr(time.Date(2017, time.May, 24, 10, 42, 3, 156737300, time.UTC)),
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armstorage.AccountsClientHierarchicalNamespaceMigrationResponse{
+	// res = armstorage.AccountsClientListAccountSASResponse{
+	// 	ListAccountSasResponse: armstorage.ListAccountSasResponse{
+	// 		AccountSasToken: to.Ptr("sv=2015-04-05&ss=b&srt=s&sp=r&st=2017-05-24T10%3A42%3A03Z&se=2017-05-24T11%3A42%3A03Z&spr=https,http&sig=Z0I%2BEpM%2BPPlTC8ApfUf%2BcffO2aahMgZim3U0iArqsS0%3D"),
+	// 	},
 	// }
+}
+
+// Generated from example definition: 2026-06-01/StorageAccountListKeys.json
+func ExampleAccountsClient_ListKeys() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armstorage.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewAccountsClient().ListKeys(ctx, "res418", "sto2220", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armstorage.AccountsClientListKeysResponse{
+	// 	AccountListKeysResult: armstorage.AccountListKeysResult{
+	// 		Keys: []*armstorage.AccountKey{
+	// 			{
+	// 				KeyName: to.Ptr("key1"),
+	// 				Permissions: to.Ptr(armstorage.KeyPermissionFull),
+	// 				Value: to.Ptr("<value>"),
+	// 			},
+	// 			{
+	// 				KeyName: to.Ptr("key2"),
+	// 				Permissions: to.Ptr(armstorage.KeyPermissionFull),
+	// 				Value: to.Ptr("<value>"),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-06-01/StorageAccountListServiceSAS.json
+func ExampleAccountsClient_ListServiceSAS() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armstorage.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewAccountsClient().ListServiceSAS(ctx, "res7439", "sto1299", armstorage.ServiceSasParameters{
+		CanonicalizedResource:  to.Ptr("/blob/sto1299/music"),
+		SharedAccessExpiryTime: to.Ptr(time.Date(2017, time.May, 24, 11, 32, 48, 845719700, time.UTC)),
+		Permissions:            to.Ptr(armstorage.PermissionsL),
+		Resource:               to.Ptr(armstorage.SignedResourceC),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armstorage.AccountsClientListServiceSASResponse{
+	// 	ListServiceSasResponse: armstorage.ListServiceSasResponse{
+	// 		ServiceSasToken: to.Ptr("sv=2015-04-05&sr=c&se=2017-05-24T11%3A32%3A48Z&sp=l&sig=PoF8yBUGixsjzwroLmw7vG3VbGz4KB2woZC2D4C2oio%3D"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-06-01/StorageAccountListByResourceGroup.json
+func ExampleAccountsClient_NewListByResourceGroupPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armstorage.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewAccountsClient().NewListByResourceGroupPager("res6117", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armstorage.AccountsClientListByResourceGroupResponse{
+		// 	AccountListResult: armstorage.AccountListResult{
+		// 		Value: []*armstorage.Account{
+		// 			{
+		// 				Name: to.Ptr("sto4036"),
+		// 				Type: to.Ptr("Microsoft.Storage/storageAccounts"),
+		// 				ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res6117/providers/Microsoft.Storage/storageAccounts/sto4036"),
+		// 				Kind: to.Ptr(armstorage.KindStorage),
+		// 				Location: to.Ptr("eastus"),
+		// 				Properties: &armstorage.AccountProperties{
+		// 					CreationTime: to.Ptr(time.Date(2017, time.May, 24, 13, 24, 47, 818801000, time.UTC)),
+		// 					IsHnsEnabled: to.Ptr(true),
+		// 					PrimaryEndpoints: &armstorage.Endpoints{
+		// 						Blob: to.Ptr("https://sto4036.blob.core.windows.net/"),
+		// 						Dfs: to.Ptr("https://sto4036.dfs.core.windows.net/"),
+		// 						File: to.Ptr("https://sto4036.file.core.windows.net/"),
+		// 						Queue: to.Ptr("https://sto4036.queue.core.windows.net/"),
+		// 						Table: to.Ptr("https://sto4036.table.core.windows.net/"),
+		// 						Web: to.Ptr("https://sto4036.web.core.windows.net/"),
+		// 					},
+		// 					PrimaryLocation: to.Ptr("eastus"),
+		// 					ProvisioningState: to.Ptr(armstorage.ProvisioningStateSucceeded),
+		// 					SecondaryLocation: to.Ptr("centraluseuap"),
+		// 					StatusOfPrimary: to.Ptr(armstorage.AccountStatusAvailable),
+		// 					StatusOfSecondary: to.Ptr(armstorage.AccountStatusAvailable),
+		// 					EnableHTTPSTrafficOnly: to.Ptr(false),
+		// 				},
+		// 				SKU: &armstorage.SKU{
+		// 					Name: to.Ptr(armstorage.SKUNameStandardGRS),
+		// 					Tier: to.Ptr(armstorage.SKUTierStandard),
+		// 				},
+		// 				Tags: map[string]*string{
+		// 					"key1": to.Ptr("value1"),
+		// 					"key2": to.Ptr("value2"),
+		// 				},
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("sto4452"),
+		// 				Type: to.Ptr("Microsoft.Storage/storageAccounts"),
+		// 				ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res6117/providers/Microsoft.Storage/storageAccounts/sto4452"),
+		// 				Kind: to.Ptr(armstorage.KindStorage),
+		// 				Location: to.Ptr("eastus"),
+		// 				Properties: &armstorage.AccountProperties{
+		// 					CreationTime: to.Ptr(time.Date(2017, time.May, 24, 13, 24, 15, 706836600, time.UTC)),
+		// 					PrimaryEndpoints: &armstorage.Endpoints{
+		// 						Blob: to.Ptr("https://sto4452.blob.core.windows.net/"),
+		// 						File: to.Ptr("https://sto4452.file.core.windows.net/"),
+		// 						Queue: to.Ptr("https://sto4452.queue.core.windows.net/"),
+		// 						Table: to.Ptr("https://sto4452.table.core.windows.net/"),
+		// 					},
+		// 					PrimaryLocation: to.Ptr("eastus"),
+		// 					ProvisioningState: to.Ptr(armstorage.ProvisioningStateSucceeded),
+		// 					SecondaryLocation: to.Ptr("centraluseuap"),
+		// 					StatusOfPrimary: to.Ptr(armstorage.AccountStatusAvailable),
+		// 					StatusOfSecondary: to.Ptr(armstorage.AccountStatusAvailable),
+		// 					EnableHTTPSTrafficOnly: to.Ptr(false),
+		// 				},
+		// 				SKU: &armstorage.SKU{
+		// 					Name: to.Ptr(armstorage.SKUNameStandardGRS),
+		// 					Tier: to.Ptr(armstorage.SKUTierStandard),
+		// 				},
+		// 				Tags: map[string]*string{
+		// 					"key1": to.Ptr("value1"),
+		// 					"key2": to.Ptr("value2"),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
 }
 
 // Generated from example definition: 2026-06-01/StorageAccountList.json
@@ -3489,199 +3737,6 @@ func ExampleAccountsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-06-01/StorageAccountListAccountSAS.json
-func ExampleAccountsClient_ListAccountSAS() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armstorage.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewAccountsClient().ListAccountSAS(ctx, "res7985", "sto8588", armstorage.AccountSasParameters{
-		KeyToSign:              to.Ptr("key1"),
-		SharedAccessExpiryTime: to.Ptr(time.Date(2017, time.May, 24, 11, 42, 3, 156737300, time.UTC)),
-		Permissions:            to.Ptr(armstorage.PermissionsR),
-		Protocols:              to.Ptr(armstorage.HTTPProtocolHTTPSHTTP),
-		ResourceTypes:          to.Ptr(armstorage.SignedResourceTypesS),
-		Services:               to.Ptr(armstorage.ServicesB),
-		SharedAccessStartTime:  to.Ptr(time.Date(2017, time.May, 24, 10, 42, 3, 156737300, time.UTC)),
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armstorage.AccountsClientListAccountSASResponse{
-	// 	ListAccountSasResponse: armstorage.ListAccountSasResponse{
-	// 		AccountSasToken: to.Ptr("sv=2015-04-05&ss=b&srt=s&sp=r&st=2017-05-24T10%3A42%3A03Z&se=2017-05-24T11%3A42%3A03Z&spr=https,http&sig=Z0I%2BEpM%2BPPlTC8ApfUf%2BcffO2aahMgZim3U0iArqsS0%3D"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-06-01/StorageAccountListByResourceGroup.json
-func ExampleAccountsClient_NewListByResourceGroupPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armstorage.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewAccountsClient().NewListByResourceGroupPager("res6117", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armstorage.AccountsClientListByResourceGroupResponse{
-		// 	AccountListResult: armstorage.AccountListResult{
-		// 		Value: []*armstorage.Account{
-		// 			{
-		// 				Name: to.Ptr("sto4036"),
-		// 				Type: to.Ptr("Microsoft.Storage/storageAccounts"),
-		// 				ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res6117/providers/Microsoft.Storage/storageAccounts/sto4036"),
-		// 				Kind: to.Ptr(armstorage.KindStorage),
-		// 				Location: to.Ptr("eastus"),
-		// 				Properties: &armstorage.AccountProperties{
-		// 					CreationTime: to.Ptr(time.Date(2017, time.May, 24, 13, 24, 47, 818801000, time.UTC)),
-		// 					IsHnsEnabled: to.Ptr(true),
-		// 					PrimaryEndpoints: &armstorage.Endpoints{
-		// 						Blob: to.Ptr("https://sto4036.blob.core.windows.net/"),
-		// 						Dfs: to.Ptr("https://sto4036.dfs.core.windows.net/"),
-		// 						File: to.Ptr("https://sto4036.file.core.windows.net/"),
-		// 						Queue: to.Ptr("https://sto4036.queue.core.windows.net/"),
-		// 						Table: to.Ptr("https://sto4036.table.core.windows.net/"),
-		// 						Web: to.Ptr("https://sto4036.web.core.windows.net/"),
-		// 					},
-		// 					PrimaryLocation: to.Ptr("eastus"),
-		// 					ProvisioningState: to.Ptr(armstorage.ProvisioningStateSucceeded),
-		// 					SecondaryLocation: to.Ptr("centraluseuap"),
-		// 					StatusOfPrimary: to.Ptr(armstorage.AccountStatusAvailable),
-		// 					StatusOfSecondary: to.Ptr(armstorage.AccountStatusAvailable),
-		// 					EnableHTTPSTrafficOnly: to.Ptr(false),
-		// 				},
-		// 				SKU: &armstorage.SKU{
-		// 					Name: to.Ptr(armstorage.SKUNameStandardGRS),
-		// 					Tier: to.Ptr(armstorage.SKUTierStandard),
-		// 				},
-		// 				Tags: map[string]*string{
-		// 					"key1": to.Ptr("value1"),
-		// 					"key2": to.Ptr("value2"),
-		// 				},
-		// 			},
-		// 			{
-		// 				Name: to.Ptr("sto4452"),
-		// 				Type: to.Ptr("Microsoft.Storage/storageAccounts"),
-		// 				ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res6117/providers/Microsoft.Storage/storageAccounts/sto4452"),
-		// 				Kind: to.Ptr(armstorage.KindStorage),
-		// 				Location: to.Ptr("eastus"),
-		// 				Properties: &armstorage.AccountProperties{
-		// 					CreationTime: to.Ptr(time.Date(2017, time.May, 24, 13, 24, 15, 706836600, time.UTC)),
-		// 					PrimaryEndpoints: &armstorage.Endpoints{
-		// 						Blob: to.Ptr("https://sto4452.blob.core.windows.net/"),
-		// 						File: to.Ptr("https://sto4452.file.core.windows.net/"),
-		// 						Queue: to.Ptr("https://sto4452.queue.core.windows.net/"),
-		// 						Table: to.Ptr("https://sto4452.table.core.windows.net/"),
-		// 					},
-		// 					PrimaryLocation: to.Ptr("eastus"),
-		// 					ProvisioningState: to.Ptr(armstorage.ProvisioningStateSucceeded),
-		// 					SecondaryLocation: to.Ptr("centraluseuap"),
-		// 					StatusOfPrimary: to.Ptr(armstorage.AccountStatusAvailable),
-		// 					StatusOfSecondary: to.Ptr(armstorage.AccountStatusAvailable),
-		// 					EnableHTTPSTrafficOnly: to.Ptr(false),
-		// 				},
-		// 				SKU: &armstorage.SKU{
-		// 					Name: to.Ptr(armstorage.SKUNameStandardGRS),
-		// 					Tier: to.Ptr(armstorage.SKUTierStandard),
-		// 				},
-		// 				Tags: map[string]*string{
-		// 					"key1": to.Ptr("value1"),
-		// 					"key2": to.Ptr("value2"),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2026-06-01/StorageAccountListKeys.json
-func ExampleAccountsClient_ListKeys() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armstorage.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewAccountsClient().ListKeys(ctx, "res418", "sto2220", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armstorage.AccountsClientListKeysResponse{
-	// 	AccountListKeysResult: armstorage.AccountListKeysResult{
-	// 		Keys: []*armstorage.AccountKey{
-	// 			{
-	// 				KeyName: to.Ptr("key1"),
-	// 				Permissions: to.Ptr(armstorage.KeyPermissionFull),
-	// 				Value: to.Ptr("<value>"),
-	// 			},
-	// 			{
-	// 				KeyName: to.Ptr("key2"),
-	// 				Permissions: to.Ptr(armstorage.KeyPermissionFull),
-	// 				Value: to.Ptr("<value>"),
-	// 			},
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-06-01/StorageAccountListServiceSAS.json
-func ExampleAccountsClient_ListServiceSAS() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armstorage.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewAccountsClient().ListServiceSAS(ctx, "res7439", "sto1299", armstorage.ServiceSasParameters{
-		CanonicalizedResource:  to.Ptr("/blob/sto1299/music"),
-		SharedAccessExpiryTime: to.Ptr(time.Date(2017, time.May, 24, 11, 32, 48, 845719700, time.UTC)),
-		Permissions:            to.Ptr(armstorage.PermissionsL),
-		Resource:               to.Ptr(armstorage.SignedResourceC),
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armstorage.AccountsClientListServiceSASResponse{
-	// 	ListServiceSasResponse: armstorage.ListServiceSasResponse{
-	// 		ServiceSasToken: to.Ptr("sv=2015-04-05&sr=c&se=2017-05-24T11%3A32%3A48Z&sp=l&sig=PoF8yBUGixsjzwroLmw7vG3VbGz4KB2woZC2D4C2oio%3D"),
-	// 	},
-	// }
-}
-
 // Generated from example definition: 2026-06-01/StorageAccountRegenerateKerbKey.json
 func ExampleAccountsClient_RegenerateKey_storageAccountRegenerateKerbKey() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -3759,61 +3814,6 @@ func ExampleAccountsClient_RegenerateKey_storageAccountRegenerateKey() {
 	// 				Value: to.Ptr("<value>"),
 	// 			},
 	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-06-01/BlobRangesRestore.json
-func ExampleAccountsClient_BeginRestoreBlobRanges() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armstorage.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewAccountsClient().BeginRestoreBlobRanges(ctx, "res9101", "sto4445", armstorage.BlobRestoreParameters{
-		BlobRanges: []*armstorage.BlobRestoreRange{
-			{
-				EndRange:   to.Ptr("container/blobpath2"),
-				StartRange: to.Ptr("container/blobpath1"),
-			},
-			{
-				EndRange:   to.Ptr(""),
-				StartRange: to.Ptr("container2/blobpath3"),
-			},
-		},
-		TimeToRestore: to.Ptr(time.Date(2019, time.April, 20, 15, 30, 0, 0, time.UTC)),
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armstorage.AccountsClientRestoreBlobRangesResponse{
-	// 	BlobRestoreStatus: armstorage.BlobRestoreStatus{
-	// 		Parameters: &armstorage.BlobRestoreParameters{
-	// 			BlobRanges: []*armstorage.BlobRestoreRange{
-	// 				{
-	// 					EndRange: to.Ptr("container/blobpath2"),
-	// 					StartRange: to.Ptr("container/blobpath1"),
-	// 				},
-	// 				{
-	// 					EndRange: to.Ptr(""),
-	// 					StartRange: to.Ptr("container2/blobpath3"),
-	// 				},
-	// 			},
-	// 			TimeToRestore: to.Ptr(time.Date(2019, time.April, 20, 15, 30, 0, 0, time.UTC)),
-	// 		},
-	// 		RestoreID: to.Ptr("{restore_id}"),
-	// 		Status: to.Ptr(armstorage.BlobRestoreProgressStatus("Succeeded")),
 	// 	},
 	// }
 }

@@ -20,14 +20,6 @@ import (
 
 // DiagnosticSettingsServer is a fake server for instances of the armdataboxedge.DiagnosticSettingsClient type.
 type DiagnosticSettingsServer struct {
-	// GetDiagnosticProactiveLogCollectionSettings is the fake for method DiagnosticSettingsClient.GetDiagnosticProactiveLogCollectionSettings
-	// HTTP status codes to indicate success: http.StatusOK
-	GetDiagnosticProactiveLogCollectionSettings func(ctx context.Context, deviceName string, resourceGroupName string, options *armdataboxedge.DiagnosticSettingsClientGetDiagnosticProactiveLogCollectionSettingsOptions) (resp azfake.Responder[armdataboxedge.DiagnosticSettingsClientGetDiagnosticProactiveLogCollectionSettingsResponse], errResp azfake.ErrorResponder)
-
-	// GetDiagnosticRemoteSupportSettings is the fake for method DiagnosticSettingsClient.GetDiagnosticRemoteSupportSettings
-	// HTTP status codes to indicate success: http.StatusOK
-	GetDiagnosticRemoteSupportSettings func(ctx context.Context, deviceName string, resourceGroupName string, options *armdataboxedge.DiagnosticSettingsClientGetDiagnosticRemoteSupportSettingsOptions) (resp azfake.Responder[armdataboxedge.DiagnosticSettingsClientGetDiagnosticRemoteSupportSettingsResponse], errResp azfake.ErrorResponder)
-
 	// BeginUpdateDiagnosticProactiveLogCollectionSettings is the fake for method DiagnosticSettingsClient.BeginUpdateDiagnosticProactiveLogCollectionSettings
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginUpdateDiagnosticProactiveLogCollectionSettings func(ctx context.Context, deviceName string, resourceGroupName string, proactiveLogCollectionSettings armdataboxedge.DiagnosticProactiveLogCollectionSettings, options *armdataboxedge.DiagnosticSettingsClientBeginUpdateDiagnosticProactiveLogCollectionSettingsOptions) (resp azfake.PollerResponder[armdataboxedge.DiagnosticSettingsClientUpdateDiagnosticProactiveLogCollectionSettingsResponse], errResp azfake.ErrorResponder)
@@ -35,6 +27,14 @@ type DiagnosticSettingsServer struct {
 	// BeginUpdateDiagnosticRemoteSupportSettings is the fake for method DiagnosticSettingsClient.BeginUpdateDiagnosticRemoteSupportSettings
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginUpdateDiagnosticRemoteSupportSettings func(ctx context.Context, deviceName string, resourceGroupName string, diagnosticRemoteSupportSettings armdataboxedge.DiagnosticRemoteSupportSettings, options *armdataboxedge.DiagnosticSettingsClientBeginUpdateDiagnosticRemoteSupportSettingsOptions) (resp azfake.PollerResponder[armdataboxedge.DiagnosticSettingsClientUpdateDiagnosticRemoteSupportSettingsResponse], errResp azfake.ErrorResponder)
+
+	// GetDiagnosticProactiveLogCollectionSettings is the fake for method DiagnosticSettingsClient.GetDiagnosticProactiveLogCollectionSettings
+	// HTTP status codes to indicate success: http.StatusOK
+	GetDiagnosticProactiveLogCollectionSettings func(ctx context.Context, deviceName string, resourceGroupName string, options *armdataboxedge.DiagnosticSettingsClientGetDiagnosticProactiveLogCollectionSettingsOptions) (resp azfake.Responder[armdataboxedge.DiagnosticSettingsClientGetDiagnosticProactiveLogCollectionSettingsResponse], errResp azfake.ErrorResponder)
+
+	// GetDiagnosticRemoteSupportSettings is the fake for method DiagnosticSettingsClient.GetDiagnosticRemoteSupportSettings
+	// HTTP status codes to indicate success: http.StatusOK
+	GetDiagnosticRemoteSupportSettings func(ctx context.Context, deviceName string, resourceGroupName string, options *armdataboxedge.DiagnosticSettingsClientGetDiagnosticRemoteSupportSettingsOptions) (resp azfake.Responder[armdataboxedge.DiagnosticSettingsClientGetDiagnosticRemoteSupportSettingsResponse], errResp azfake.ErrorResponder)
 }
 
 // NewDiagnosticSettingsServerTransport creates a new instance of DiagnosticSettingsServerTransport with the provided implementation.
@@ -77,14 +77,14 @@ func (d *DiagnosticSettingsServerTransport) dispatchToMethodFake(req *http.Reque
 		}
 		if !intercepted {
 			switch method {
-			case "DiagnosticSettingsClient.GetDiagnosticProactiveLogCollectionSettings":
-				res.resp, res.err = d.dispatchGetDiagnosticProactiveLogCollectionSettings(req)
-			case "DiagnosticSettingsClient.GetDiagnosticRemoteSupportSettings":
-				res.resp, res.err = d.dispatchGetDiagnosticRemoteSupportSettings(req)
 			case "DiagnosticSettingsClient.BeginUpdateDiagnosticProactiveLogCollectionSettings":
 				res.resp, res.err = d.dispatchBeginUpdateDiagnosticProactiveLogCollectionSettings(req)
 			case "DiagnosticSettingsClient.BeginUpdateDiagnosticRemoteSupportSettings":
 				res.resp, res.err = d.dispatchBeginUpdateDiagnosticRemoteSupportSettings(req)
+			case "DiagnosticSettingsClient.GetDiagnosticProactiveLogCollectionSettings":
+				res.resp, res.err = d.dispatchGetDiagnosticProactiveLogCollectionSettings(req)
+			case "DiagnosticSettingsClient.GetDiagnosticRemoteSupportSettings":
+				res.resp, res.err = d.dispatchGetDiagnosticRemoteSupportSettings(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -99,72 +99,6 @@ func (d *DiagnosticSettingsServerTransport) dispatchToMethodFake(req *http.Reque
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
-}
-
-func (d *DiagnosticSettingsServerTransport) dispatchGetDiagnosticProactiveLogCollectionSettings(req *http.Request) (*http.Response, error) {
-	if d.srv.GetDiagnosticProactiveLogCollectionSettings == nil {
-		return nil, &nonRetriableError{errors.New("fake for method GetDiagnosticProactiveLogCollectionSettings not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DataBoxEdge/dataBoxEdgeDevices/(?P<deviceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/diagnosticProactiveLogCollectionSettings/default`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	deviceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deviceName")])
-	if err != nil {
-		return nil, err
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := d.srv.GetDiagnosticProactiveLogCollectionSettings(req.Context(), deviceNameParam, resourceGroupNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DiagnosticProactiveLogCollectionSettings, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (d *DiagnosticSettingsServerTransport) dispatchGetDiagnosticRemoteSupportSettings(req *http.Request) (*http.Response, error) {
-	if d.srv.GetDiagnosticRemoteSupportSettings == nil {
-		return nil, &nonRetriableError{errors.New("fake for method GetDiagnosticRemoteSupportSettings not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DataBoxEdge/dataBoxEdgeDevices/(?P<deviceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/diagnosticRemoteSupportSettings/default`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	deviceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deviceName")])
-	if err != nil {
-		return nil, err
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := d.srv.GetDiagnosticRemoteSupportSettings(req.Context(), deviceNameParam, resourceGroupNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DiagnosticRemoteSupportSettings, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
 }
 
 func (d *DiagnosticSettingsServerTransport) dispatchBeginUpdateDiagnosticProactiveLogCollectionSettings(req *http.Request) (*http.Response, error) {
@@ -260,6 +194,72 @@ func (d *DiagnosticSettingsServerTransport) dispatchBeginUpdateDiagnosticRemoteS
 		d.beginUpdateDiagnosticRemoteSupportSettings.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (d *DiagnosticSettingsServerTransport) dispatchGetDiagnosticProactiveLogCollectionSettings(req *http.Request) (*http.Response, error) {
+	if d.srv.GetDiagnosticProactiveLogCollectionSettings == nil {
+		return nil, &nonRetriableError{errors.New("fake for method GetDiagnosticProactiveLogCollectionSettings not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DataBoxEdge/dataBoxEdgeDevices/(?P<deviceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/diagnosticProactiveLogCollectionSettings/default`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	deviceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deviceName")])
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := d.srv.GetDiagnosticProactiveLogCollectionSettings(req.Context(), deviceNameParam, resourceGroupNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DiagnosticProactiveLogCollectionSettings, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (d *DiagnosticSettingsServerTransport) dispatchGetDiagnosticRemoteSupportSettings(req *http.Request) (*http.Response, error) {
+	if d.srv.GetDiagnosticRemoteSupportSettings == nil {
+		return nil, &nonRetriableError{errors.New("fake for method GetDiagnosticRemoteSupportSettings not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DataBoxEdge/dataBoxEdgeDevices/(?P<deviceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/diagnosticRemoteSupportSettings/default`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	deviceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deviceName")])
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := d.srv.GetDiagnosticRemoteSupportSettings(req.Context(), deviceNameParam, resourceGroupNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DiagnosticRemoteSupportSettings, req)
+	if err != nil {
+		return nil, err
+	}
 	return resp, nil
 }
 

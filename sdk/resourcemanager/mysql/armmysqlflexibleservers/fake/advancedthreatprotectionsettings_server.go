@@ -21,14 +21,6 @@ import (
 
 // AdvancedThreatProtectionSettingsServer is a fake server for instances of the armmysqlflexibleservers.AdvancedThreatProtectionSettingsClient type.
 type AdvancedThreatProtectionSettingsServer struct {
-	// Get is the fake for method AdvancedThreatProtectionSettingsClient.Get
-	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, serverName string, advancedThreatProtectionName armmysqlflexibleservers.AdvancedThreatProtectionName, options *armmysqlflexibleservers.AdvancedThreatProtectionSettingsClientGetOptions) (resp azfake.Responder[armmysqlflexibleservers.AdvancedThreatProtectionSettingsClientGetResponse], errResp azfake.ErrorResponder)
-
-	// NewListPager is the fake for method AdvancedThreatProtectionSettingsClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(resourceGroupName string, serverName string, options *armmysqlflexibleservers.AdvancedThreatProtectionSettingsClientListOptions) (resp azfake.PagerResponder[armmysqlflexibleservers.AdvancedThreatProtectionSettingsClientListResponse])
-
 	// BeginUpdate is the fake for method AdvancedThreatProtectionSettingsClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginUpdate func(ctx context.Context, resourceGroupName string, serverName string, advancedThreatProtectionName armmysqlflexibleservers.AdvancedThreatProtectionName, parameters armmysqlflexibleservers.AdvancedThreatProtectionForUpdate, options *armmysqlflexibleservers.AdvancedThreatProtectionSettingsClientBeginUpdateOptions) (resp azfake.PollerResponder[armmysqlflexibleservers.AdvancedThreatProtectionSettingsClientUpdateResponse], errResp azfake.ErrorResponder)
@@ -36,6 +28,14 @@ type AdvancedThreatProtectionSettingsServer struct {
 	// BeginUpdatePut is the fake for method AdvancedThreatProtectionSettingsClient.BeginUpdatePut
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated, http.StatusAccepted
 	BeginUpdatePut func(ctx context.Context, resourceGroupName string, serverName string, advancedThreatProtectionName armmysqlflexibleservers.AdvancedThreatProtectionName, parameters armmysqlflexibleservers.AdvancedThreatProtection, options *armmysqlflexibleservers.AdvancedThreatProtectionSettingsClientBeginUpdatePutOptions) (resp azfake.PollerResponder[armmysqlflexibleservers.AdvancedThreatProtectionSettingsClientUpdatePutResponse], errResp azfake.ErrorResponder)
+
+	// Get is the fake for method AdvancedThreatProtectionSettingsClient.Get
+	// HTTP status codes to indicate success: http.StatusOK
+	Get func(ctx context.Context, resourceGroupName string, serverName string, advancedThreatProtectionName armmysqlflexibleservers.AdvancedThreatProtectionName, options *armmysqlflexibleservers.AdvancedThreatProtectionSettingsClientGetOptions) (resp azfake.Responder[armmysqlflexibleservers.AdvancedThreatProtectionSettingsClientGetResponse], errResp azfake.ErrorResponder)
+
+	// NewListPager is the fake for method AdvancedThreatProtectionSettingsClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(resourceGroupName string, serverName string, options *armmysqlflexibleservers.AdvancedThreatProtectionSettingsClientListOptions) (resp azfake.PagerResponder[armmysqlflexibleservers.AdvancedThreatProtectionSettingsClientListResponse])
 }
 
 // NewAdvancedThreatProtectionSettingsServerTransport creates a new instance of AdvancedThreatProtectionSettingsServerTransport with the provided implementation.
@@ -44,9 +44,9 @@ type AdvancedThreatProtectionSettingsServer struct {
 func NewAdvancedThreatProtectionSettingsServerTransport(srv *AdvancedThreatProtectionSettingsServer) *AdvancedThreatProtectionSettingsServerTransport {
 	return &AdvancedThreatProtectionSettingsServerTransport{
 		srv:            srv,
-		newListPager:   newTracker[azfake.PagerResponder[armmysqlflexibleservers.AdvancedThreatProtectionSettingsClientListResponse]](),
 		beginUpdate:    newTracker[azfake.PollerResponder[armmysqlflexibleservers.AdvancedThreatProtectionSettingsClientUpdateResponse]](),
 		beginUpdatePut: newTracker[azfake.PollerResponder[armmysqlflexibleservers.AdvancedThreatProtectionSettingsClientUpdatePutResponse]](),
+		newListPager:   newTracker[azfake.PagerResponder[armmysqlflexibleservers.AdvancedThreatProtectionSettingsClientListResponse]](),
 	}
 }
 
@@ -54,9 +54,9 @@ func NewAdvancedThreatProtectionSettingsServerTransport(srv *AdvancedThreatProte
 // Don't use this type directly, use NewAdvancedThreatProtectionSettingsServerTransport instead.
 type AdvancedThreatProtectionSettingsServerTransport struct {
 	srv            *AdvancedThreatProtectionSettingsServer
-	newListPager   *tracker[azfake.PagerResponder[armmysqlflexibleservers.AdvancedThreatProtectionSettingsClientListResponse]]
 	beginUpdate    *tracker[azfake.PollerResponder[armmysqlflexibleservers.AdvancedThreatProtectionSettingsClientUpdateResponse]]
 	beginUpdatePut *tracker[azfake.PollerResponder[armmysqlflexibleservers.AdvancedThreatProtectionSettingsClientUpdatePutResponse]]
+	newListPager   *tracker[azfake.PagerResponder[armmysqlflexibleservers.AdvancedThreatProtectionSettingsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for AdvancedThreatProtectionSettingsServerTransport.
@@ -80,14 +80,14 @@ func (a *AdvancedThreatProtectionSettingsServerTransport) dispatchToMethodFake(r
 		}
 		if !intercepted {
 			switch method {
-			case "AdvancedThreatProtectionSettingsClient.Get":
-				res.resp, res.err = a.dispatchGet(req)
-			case "AdvancedThreatProtectionSettingsClient.NewListPager":
-				res.resp, res.err = a.dispatchNewListPager(req)
 			case "AdvancedThreatProtectionSettingsClient.BeginUpdate":
 				res.resp, res.err = a.dispatchBeginUpdate(req)
 			case "AdvancedThreatProtectionSettingsClient.BeginUpdatePut":
 				res.resp, res.err = a.dispatchBeginUpdatePut(req)
+			case "AdvancedThreatProtectionSettingsClient.Get":
+				res.resp, res.err = a.dispatchGet(req)
+			case "AdvancedThreatProtectionSettingsClient.NewListPager":
+				res.resp, res.err = a.dispatchNewListPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -102,90 +102,6 @@ func (a *AdvancedThreatProtectionSettingsServerTransport) dispatchToMethodFake(r
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
-}
-
-func (a *AdvancedThreatProtectionSettingsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if a.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DBforMySQL/flexibleServers/(?P<serverName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/advancedThreatProtectionSettings/(?P<advancedThreatProtectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	serverNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serverName")])
-	if err != nil {
-		return nil, err
-	}
-	advancedThreatProtectionNameParam, err := parseWithCast(matches[regex.SubexpIndex("advancedThreatProtectionName")], func(v string) (armmysqlflexibleservers.AdvancedThreatProtectionName, error) {
-		p, unescapeErr := url.PathUnescape(v)
-		if unescapeErr != nil {
-			return "", unescapeErr
-		}
-		return armmysqlflexibleservers.AdvancedThreatProtectionName(p), nil
-	})
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := a.srv.Get(req.Context(), resourceGroupNameParam, serverNameParam, advancedThreatProtectionNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).AdvancedThreatProtection, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (a *AdvancedThreatProtectionSettingsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if a.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := a.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DBforMySQL/flexibleServers/(?P<serverName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/advancedThreatProtectionSettings`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		serverNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serverName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := a.srv.NewListPager(resourceGroupNameParam, serverNameParam, nil)
-		newListPager = &resp
-		a.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armmysqlflexibleservers.AdvancedThreatProtectionSettingsClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		a.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		a.newListPager.remove(req)
-	}
-	return resp, nil
 }
 
 func (a *AdvancedThreatProtectionSettingsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
@@ -301,6 +217,90 @@ func (a *AdvancedThreatProtectionSettingsServerTransport) dispatchBeginUpdatePut
 		a.beginUpdatePut.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (a *AdvancedThreatProtectionSettingsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if a.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DBforMySQL/flexibleServers/(?P<serverName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/advancedThreatProtectionSettings/(?P<advancedThreatProtectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	serverNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serverName")])
+	if err != nil {
+		return nil, err
+	}
+	advancedThreatProtectionNameParam, err := parseWithCast(matches[regex.SubexpIndex("advancedThreatProtectionName")], func(v string) (armmysqlflexibleservers.AdvancedThreatProtectionName, error) {
+		p, unescapeErr := url.PathUnescape(v)
+		if unescapeErr != nil {
+			return "", unescapeErr
+		}
+		return armmysqlflexibleservers.AdvancedThreatProtectionName(p), nil
+	})
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := a.srv.Get(req.Context(), resourceGroupNameParam, serverNameParam, advancedThreatProtectionNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).AdvancedThreatProtection, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (a *AdvancedThreatProtectionSettingsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if a.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := a.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DBforMySQL/flexibleServers/(?P<serverName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/advancedThreatProtectionSettings`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		serverNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serverName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := a.srv.NewListPager(resourceGroupNameParam, serverNameParam, nil)
+		newListPager = &resp
+		a.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armmysqlflexibleservers.AdvancedThreatProtectionSettingsClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		a.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPager) {
+		a.newListPager.remove(req)
+	}
 	return resp, nil
 }
 

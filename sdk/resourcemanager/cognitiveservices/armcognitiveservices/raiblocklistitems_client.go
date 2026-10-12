@@ -176,6 +176,86 @@ func (client *RaiBlocklistItemsClient) batchDeleteCreateRequest(ctx context.Cont
 	return req, nil
 }
 
+// BeginDelete - Deletes the specified blocklist Item associated with the custom blocklist.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accountName - The name of Cognitive Services account.
+//   - raiBlocklistName - The name of the RaiBlocklist associated with the Cognitive Services Account
+//   - raiBlocklistItemName - The name of the RaiBlocklist Item associated with the custom blocklist
+//   - options - RaiBlocklistItemsClientBeginDeleteOptions contains the optional parameters for the RaiBlocklistItemsClient.BeginDelete
+//     method.
+func (client *RaiBlocklistItemsClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, raiBlocklistName string, raiBlocklistItemName string, options *RaiBlocklistItemsClientBeginDeleteOptions) (*runtime.Poller[RaiBlocklistItemsClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, accountName, raiBlocklistName, raiBlocklistItemName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[RaiBlocklistItemsClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[RaiBlocklistItemsClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// deleteOperation - Deletes the specified blocklist Item associated with the custom blocklist.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *RaiBlocklistItemsClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, raiBlocklistName string, raiBlocklistItemName string, options *RaiBlocklistItemsClientBeginDeleteOptions) (*http.Response, error) {
+	var err error
+	const operationName = "RaiBlocklistItemsClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.deleteCreateRequest(ctx, resourceGroupName, accountName, raiBlocklistName, raiBlocklistItemName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// deleteCreateRequest creates the delete request.
+func (client *RaiBlocklistItemsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, raiBlocklistName string, raiBlocklistItemName string, _ *RaiBlocklistItemsClientBeginDeleteOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/raiBlocklists/{raiBlocklistName}/raiBlocklistItems/{raiBlocklistItemName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if accountName == "" {
+		return nil, errors.New("parameter accountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+	if raiBlocklistName == "" {
+		return nil, errors.New("parameter raiBlocklistName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{raiBlocklistName}", url.PathEscape(raiBlocklistName))
+	if raiBlocklistItemName == "" {
+		return nil, errors.New("parameter raiBlocklistItemName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{raiBlocklistItemName}", url.PathEscape(raiBlocklistItemName))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260715Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
 // CreateOrUpdate - Update the state of specified blocklist item associated with the Azure OpenAI account.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
@@ -250,86 +330,6 @@ func (client *RaiBlocklistItemsClient) createOrUpdateHandleResponse(resp *http.R
 		return RaiBlocklistItemsClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginDelete - Deletes the specified blocklist Item associated with the custom blocklist.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - accountName - The name of Cognitive Services account.
-//   - raiBlocklistName - The name of the RaiBlocklist associated with the Cognitive Services Account
-//   - raiBlocklistItemName - The name of the RaiBlocklist Item associated with the custom blocklist
-//   - options - RaiBlocklistItemsClientBeginDeleteOptions contains the optional parameters for the RaiBlocklistItemsClient.BeginDelete
-//     method.
-func (client *RaiBlocklistItemsClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, raiBlocklistName string, raiBlocklistItemName string, options *RaiBlocklistItemsClientBeginDeleteOptions) (*runtime.Poller[RaiBlocklistItemsClientDeleteResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.deleteOperation(ctx, resourceGroupName, accountName, raiBlocklistName, raiBlocklistItemName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[RaiBlocklistItemsClientDeleteResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[RaiBlocklistItemsClientDeleteResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Delete - Deletes the specified blocklist Item associated with the custom blocklist.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *RaiBlocklistItemsClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, raiBlocklistName string, raiBlocklistItemName string, options *RaiBlocklistItemsClientBeginDeleteOptions) (*http.Response, error) {
-	var err error
-	const operationName = "RaiBlocklistItemsClient.BeginDelete"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.deleteCreateRequest(ctx, resourceGroupName, accountName, raiBlocklistName, raiBlocklistItemName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// deleteCreateRequest creates the Delete request.
-func (client *RaiBlocklistItemsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, raiBlocklistName string, raiBlocklistItemName string, _ *RaiBlocklistItemsClientBeginDeleteOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/raiBlocklists/{raiBlocklistName}/raiBlocklistItems/{raiBlocklistItemName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if accountName == "" {
-		return nil, errors.New("parameter accountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	if raiBlocklistName == "" {
-		return nil, errors.New("parameter raiBlocklistName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{raiBlocklistName}", url.PathEscape(raiBlocklistName))
-	if raiBlocklistItemName == "" {
-		return nil, errors.New("parameter raiBlocklistItemName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{raiBlocklistItemName}", url.PathEscape(raiBlocklistItemName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260715Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	return req, nil
 }
 
 // Get - Gets the specified custom blocklist Item associated with the custom blocklist.

@@ -145,58 +145,6 @@ func ExampleBotConnectionClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2023-09-15-preview/ListConnectionsByBotService.json
-func ExampleBotConnectionClient_NewListByBotServicePager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armbotservice.NewClientFactory("subscription-id", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewBotConnectionClient().NewListByBotServicePager("OneResourceGroupName", "samplebotname", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armbotservice.BotConnectionClientListByBotServiceResponse{
-		// 	ConnectionSettingResponseList: armbotservice.ConnectionSettingResponseList{
-		// 		Value: []*armbotservice.ConnectionSetting{
-		// 			{
-		// 				Name: to.Ptr("sampleConnection"),
-		// 				ID: to.Ptr("/subscriptions/subscription-id/providers/Microsoft.BotService/botServices"),
-		// 				Properties: &armbotservice.ConnectionSettingProperties{
-		// 					Name: to.Ptr("sampleConnection"),
-		// 					ClientID: to.Ptr("sampleclientid"),
-		// 					ID: to.Ptr("/subscriptions/subscription-id/providers/Microsoft.BotService/botServices"),
-		// 					Parameters: []*armbotservice.ConnectionSettingParameter{
-		// 						{
-		// 							Key: to.Ptr("key1"),
-		// 							Value: to.Ptr("value1"),
-		// 						},
-		// 						{
-		// 							Key: to.Ptr("key2"),
-		// 							Value: to.Ptr("value2"),
-		// 						},
-		// 					},
-		// 					Scopes: to.Ptr("samplescope"),
-		// 					ServiceProviderID: to.Ptr("serviceproviderid"),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
 // Generated from example definition: 2023-09-15-preview/ListServiceProviders.json
 func ExampleBotConnectionClient_ListServiceProviders() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -286,6 +234,58 @@ func ExampleBotConnectionClient_ListWithSecrets() {
 	// 		},
 	// 	},
 	// }
+}
+
+// Generated from example definition: 2023-09-15-preview/ListConnectionsByBotService.json
+func ExampleBotConnectionClient_NewListByBotServicePager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armbotservice.NewClientFactory("subscription-id", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewBotConnectionClient().NewListByBotServicePager("OneResourceGroupName", "samplebotname", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armbotservice.BotConnectionClientListByBotServiceResponse{
+		// 	ConnectionSettingResponseList: armbotservice.ConnectionSettingResponseList{
+		// 		Value: []*armbotservice.ConnectionSetting{
+		// 			{
+		// 				Name: to.Ptr("sampleConnection"),
+		// 				ID: to.Ptr("/subscriptions/subscription-id/providers/Microsoft.BotService/botServices"),
+		// 				Properties: &armbotservice.ConnectionSettingProperties{
+		// 					Name: to.Ptr("sampleConnection"),
+		// 					ClientID: to.Ptr("sampleclientid"),
+		// 					ID: to.Ptr("/subscriptions/subscription-id/providers/Microsoft.BotService/botServices"),
+		// 					Parameters: []*armbotservice.ConnectionSettingParameter{
+		// 						{
+		// 							Key: to.Ptr("key1"),
+		// 							Value: to.Ptr("value1"),
+		// 						},
+		// 						{
+		// 							Key: to.Ptr("key2"),
+		// 							Value: to.Ptr("value2"),
+		// 						},
+		// 					},
+		// 					Scopes: to.Ptr("samplescope"),
+		// 					ServiceProviderID: to.Ptr("serviceproviderid"),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
 }
 
 // Generated from example definition: 2023-09-15-preview/UpdateConnection.json

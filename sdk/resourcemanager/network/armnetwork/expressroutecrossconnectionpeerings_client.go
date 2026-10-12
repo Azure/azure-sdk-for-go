@@ -70,7 +70,7 @@ func (client *ExpressRouteCrossConnectionPeeringsClient) BeginCreateOrUpdate(ctx
 	}
 }
 
-// CreateOrUpdate - Creates or updates a peering in the specified ExpressRouteCrossConnection.
+// createOrUpdate - Creates or updates a peering in the specified ExpressRouteCrossConnection.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ExpressRouteCrossConnectionPeeringsClient) createOrUpdate(ctx context.Context, resourceGroupName string, crossConnectionName string, peeringName string, peeringParameters ExpressRouteCrossConnectionPeering, options *ExpressRouteCrossConnectionPeeringsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -92,7 +92,7 @@ func (client *ExpressRouteCrossConnectionPeeringsClient) createOrUpdate(ctx cont
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *ExpressRouteCrossConnectionPeeringsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, crossConnectionName string, peeringName string, peeringParameters ExpressRouteCrossConnectionPeering, _ *ExpressRouteCrossConnectionPeeringsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/expressRouteCrossConnections/{crossConnectionName}/peerings/{peeringName}"
 	if client.subscriptionID == "" {
@@ -150,7 +150,7 @@ func (client *ExpressRouteCrossConnectionPeeringsClient) BeginDelete(ctx context
 	}
 }
 
-// Delete - Deletes the specified peering from the ExpressRouteCrossConnection.
+// deleteOperation - Deletes the specified peering from the ExpressRouteCrossConnection.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ExpressRouteCrossConnectionPeeringsClient) deleteOperation(ctx context.Context, resourceGroupName string, crossConnectionName string, peeringName string, options *ExpressRouteCrossConnectionPeeringsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -172,7 +172,7 @@ func (client *ExpressRouteCrossConnectionPeeringsClient) deleteOperation(ctx con
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *ExpressRouteCrossConnectionPeeringsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, crossConnectionName string, peeringName string, _ *ExpressRouteCrossConnectionPeeringsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/expressRouteCrossConnections/{crossConnectionName}/peerings/{peeringName}"
 	if client.subscriptionID == "" {

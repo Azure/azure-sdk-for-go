@@ -141,8 +141,8 @@ func ExampleVirtualNetworkAppliancesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/VirtualNetworkAppliances_List.json
-func ExampleVirtualNetworkAppliancesClient_NewListPager() {
+// Generated from example definition: 2026-01-01/VirtualNetworkAppliances_ListBySubscription.json
+func ExampleVirtualNetworkAppliancesClient_NewListAllPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -152,7 +152,7 @@ func ExampleVirtualNetworkAppliancesClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewVirtualNetworkAppliancesClient().NewListPager("rg1", nil)
+	pager := clientFactory.NewVirtualNetworkAppliancesClient().NewListAllPager(nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -163,7 +163,7 @@ func ExampleVirtualNetworkAppliancesClient_NewListPager() {
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armnetwork.VirtualNetworkAppliancesClientListResponse{
+		// page = armnetwork.VirtualNetworkAppliancesClientListAllResponse{
 		// 	VirtualNetworkApplianceListResult: armnetwork.VirtualNetworkApplianceListResult{
 		// 		Value: []*armnetwork.VirtualNetworkAppliance{
 		// 			{
@@ -224,8 +224,8 @@ func ExampleVirtualNetworkAppliancesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-01-01/VirtualNetworkAppliances_ListBySubscription.json
-func ExampleVirtualNetworkAppliancesClient_NewListAllPager() {
+// Generated from example definition: 2026-01-01/VirtualNetworkAppliances_List.json
+func ExampleVirtualNetworkAppliancesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -235,7 +235,7 @@ func ExampleVirtualNetworkAppliancesClient_NewListAllPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewVirtualNetworkAppliancesClient().NewListAllPager(nil)
+	pager := clientFactory.NewVirtualNetworkAppliancesClient().NewListPager("rg1", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -246,7 +246,7 @@ func ExampleVirtualNetworkAppliancesClient_NewListAllPager() {
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armnetwork.VirtualNetworkAppliancesClientListAllResponse{
+		// page = armnetwork.VirtualNetworkAppliancesClientListResponse{
 		// 	VirtualNetworkApplianceListResult: armnetwork.VirtualNetworkApplianceListResult{
 		// 		Value: []*armnetwork.VirtualNetworkAppliance{
 		// 			{

@@ -63,7 +63,7 @@ func (client *EdgeDeviceJobsClient) BeginCreateOrUpdate(ctx context.Context, res
 	}
 }
 
-// CreateOrUpdate - Create a EdgeDeviceJob
+// createOrUpdate - Create a EdgeDeviceJob
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *EdgeDeviceJobsClient) createOrUpdate(ctx context.Context, resourceURI string, edgeDeviceName string, jobsName string, resource EdgeDeviceJobClassification, options *EdgeDeviceJobsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -85,7 +85,7 @@ func (client *EdgeDeviceJobsClient) createOrUpdate(ctx context.Context, resource
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *EdgeDeviceJobsClient) createOrUpdateCreateRequest(ctx context.Context, resourceURI string, edgeDeviceName string, jobsName string, resource EdgeDeviceJobClassification, _ *EdgeDeviceJobsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.AzureStackHCI/edgeDevices/{edgeDeviceName}/jobs/{jobsName}"
 	if resourceURI == "" {
@@ -139,7 +139,7 @@ func (client *EdgeDeviceJobsClient) BeginDelete(ctx context.Context, resourceURI
 	}
 }
 
-// Delete - Delete a EdgeDeviceJob
+// deleteOperation - Delete a EdgeDeviceJob
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *EdgeDeviceJobsClient) deleteOperation(ctx context.Context, resourceURI string, edgeDeviceName string, jobsName string, options *EdgeDeviceJobsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -161,7 +161,7 @@ func (client *EdgeDeviceJobsClient) deleteOperation(ctx context.Context, resourc
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *EdgeDeviceJobsClient) deleteCreateRequest(ctx context.Context, resourceURI string, edgeDeviceName string, jobsName string, _ *EdgeDeviceJobsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.AzureStackHCI/edgeDevices/{edgeDeviceName}/jobs/{jobsName}"
 	if resourceURI == "" {

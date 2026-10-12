@@ -69,7 +69,7 @@ func (client *SnapshotsClient) BeginCreate(ctx context.Context, resourceGroupNam
 	}
 }
 
-// Create - Creates a snapshot. NOTE: This operation is intended for use in ARM Template deployments. For all other scenarios
+// create - Creates a snapshot. NOTE: This operation is intended for use in ARM Template deployments. For all other scenarios
 // involving App Configuration snapshots the data plane API should be used instead.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *SnapshotsClient) create(ctx context.Context, resourceGroupName string, configStoreName string, snapshotName string, body Snapshot, options *SnapshotsClientBeginCreateOptions) (*http.Response, error) {
@@ -92,7 +92,7 @@ func (client *SnapshotsClient) create(ctx context.Context, resourceGroupName str
 	return httpResp, nil
 }
 
-// createCreateRequest creates the Create request.
+// createCreateRequest creates the create request.
 func (client *SnapshotsClient) createCreateRequest(ctx context.Context, resourceGroupName string, configStoreName string, snapshotName string, body Snapshot, _ *SnapshotsClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration/configurationStores/{configStoreName}/snapshots/{snapshotName}"
 	if client.subscriptionID == "" {

@@ -67,7 +67,7 @@ func (client *UpdateSummariesClient) BeginDelete(ctx context.Context, resourceGr
 	}
 }
 
-// Delete - Delete Update Summaries
+// deleteOperation - Delete Update Summaries
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *UpdateSummariesClient) deleteOperation(ctx context.Context, resourceGroupName string, clusterName string, options *UpdateSummariesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -89,7 +89,7 @@ func (client *UpdateSummariesClient) deleteOperation(ctx context.Context, resour
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *UpdateSummariesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, _ *UpdateSummariesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/clusters/{clusterName}/updateSummaries/default"
 	if client.subscriptionID == "" {

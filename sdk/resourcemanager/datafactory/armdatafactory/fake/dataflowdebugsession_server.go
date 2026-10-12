@@ -29,13 +29,13 @@ type DataFlowDebugSessionServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginCreate func(ctx context.Context, resourceGroupName string, factoryName string, request armdatafactory.CreateDataFlowDebugSessionRequest, options *armdatafactory.DataFlowDebugSessionClientBeginCreateOptions) (resp azfake.PollerResponder[armdatafactory.DataFlowDebugSessionClientCreateResponse], errResp azfake.ErrorResponder)
 
-	// Delete is the fake for method DataFlowDebugSessionClient.Delete
-	// HTTP status codes to indicate success: http.StatusOK
-	Delete func(ctx context.Context, resourceGroupName string, factoryName string, request armdatafactory.DeleteDataFlowDebugSessionRequest, options *armdatafactory.DataFlowDebugSessionClientDeleteOptions) (resp azfake.Responder[armdatafactory.DataFlowDebugSessionClientDeleteResponse], errResp azfake.ErrorResponder)
-
 	// BeginExecuteCommand is the fake for method DataFlowDebugSessionClient.BeginExecuteCommand
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginExecuteCommand func(ctx context.Context, resourceGroupName string, factoryName string, request armdatafactory.DataFlowDebugCommandRequest, options *armdatafactory.DataFlowDebugSessionClientBeginExecuteCommandOptions) (resp azfake.PollerResponder[armdatafactory.DataFlowDebugSessionClientExecuteCommandResponse], errResp azfake.ErrorResponder)
+
+	// Delete is the fake for method DataFlowDebugSessionClient.Delete
+	// HTTP status codes to indicate success: http.StatusOK
+	Delete func(ctx context.Context, resourceGroupName string, factoryName string, request armdatafactory.DeleteDataFlowDebugSessionRequest, options *armdatafactory.DataFlowDebugSessionClientDeleteOptions) (resp azfake.Responder[armdatafactory.DataFlowDebugSessionClientDeleteResponse], errResp azfake.ErrorResponder)
 
 	// NewQueryByFactoryPager is the fake for method DataFlowDebugSessionClient.NewQueryByFactoryPager
 	// HTTP status codes to indicate success: http.StatusOK
@@ -88,10 +88,10 @@ func (d *DataFlowDebugSessionServerTransport) dispatchToMethodFake(req *http.Req
 				res.resp, res.err = d.dispatchAddDataFlow(req)
 			case "DataFlowDebugSessionClient.BeginCreate":
 				res.resp, res.err = d.dispatchBeginCreate(req)
-			case "DataFlowDebugSessionClient.Delete":
-				res.resp, res.err = d.dispatchDelete(req)
 			case "DataFlowDebugSessionClient.BeginExecuteCommand":
 				res.resp, res.err = d.dispatchBeginExecuteCommand(req)
+			case "DataFlowDebugSessionClient.Delete":
+				res.resp, res.err = d.dispatchDelete(req)
 			case "DataFlowDebugSessionClient.NewQueryByFactoryPager":
 				res.resp, res.err = d.dispatchNewQueryByFactoryPager(req)
 			default:
@@ -195,43 +195,6 @@ func (d *DataFlowDebugSessionServerTransport) dispatchBeginCreate(req *http.Requ
 	return resp, nil
 }
 
-func (d *DataFlowDebugSessionServerTransport) dispatchDelete(req *http.Request) (*http.Response, error) {
-	if d.srv.Delete == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Delete not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DataFactory/factories/(?P<factoryName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/deleteDataFlowDebugSession`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armdatafactory.DeleteDataFlowDebugSessionRequest](req)
-	if err != nil {
-		return nil, err
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	factoryNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("factoryName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := d.srv.Delete(req.Context(), resourceGroupNameParam, factoryNameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.NewResponse(respContent, req, nil)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
 func (d *DataFlowDebugSessionServerTransport) dispatchBeginExecuteCommand(req *http.Request) (*http.Response, error) {
 	if d.srv.BeginExecuteCommand == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginExecuteCommand not implemented")}
@@ -277,6 +240,43 @@ func (d *DataFlowDebugSessionServerTransport) dispatchBeginExecuteCommand(req *h
 		d.beginExecuteCommand.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (d *DataFlowDebugSessionServerTransport) dispatchDelete(req *http.Request) (*http.Response, error) {
+	if d.srv.Delete == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Delete not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DataFactory/factories/(?P<factoryName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/deleteDataFlowDebugSession`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armdatafactory.DeleteDataFlowDebugSessionRequest](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	factoryNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("factoryName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := d.srv.Delete(req.Context(), resourceGroupNameParam, factoryNameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.NewResponse(respContent, req, nil)
+	if err != nil {
+		return nil, err
+	}
 	return resp, nil
 }
 

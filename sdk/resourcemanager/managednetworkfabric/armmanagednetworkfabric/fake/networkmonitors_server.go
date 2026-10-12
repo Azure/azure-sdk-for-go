@@ -29,6 +29,14 @@ type NetworkMonitorsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, networkMonitorName string, options *armmanagednetworkfabric.NetworkMonitorsClientBeginDeleteOptions) (resp azfake.PollerResponder[armmanagednetworkfabric.NetworkMonitorsClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method NetworkMonitorsClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, networkMonitorName string, body armmanagednetworkfabric.NetworkMonitorPatch, options *armmanagednetworkfabric.NetworkMonitorsClientBeginUpdateOptions) (resp azfake.PollerResponder[armmanagednetworkfabric.NetworkMonitorsClientUpdateResponse], errResp azfake.ErrorResponder)
+
+	// BeginUpdateAdministrativeState is the fake for method NetworkMonitorsClient.BeginUpdateAdministrativeState
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdateAdministrativeState func(ctx context.Context, resourceGroupName string, networkMonitorName string, body armmanagednetworkfabric.UpdateAdministrativeState, options *armmanagednetworkfabric.NetworkMonitorsClientBeginUpdateAdministrativeStateOptions) (resp azfake.PollerResponder[armmanagednetworkfabric.NetworkMonitorsClientUpdateAdministrativeStateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method NetworkMonitorsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, networkMonitorName string, options *armmanagednetworkfabric.NetworkMonitorsClientGetOptions) (resp azfake.Responder[armmanagednetworkfabric.NetworkMonitorsClientGetResponse], errResp azfake.ErrorResponder)
@@ -40,14 +48,6 @@ type NetworkMonitorsServer struct {
 	// NewListBySubscriptionPager is the fake for method NetworkMonitorsClient.NewListBySubscriptionPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListBySubscriptionPager func(options *armmanagednetworkfabric.NetworkMonitorsClientListBySubscriptionOptions) (resp azfake.PagerResponder[armmanagednetworkfabric.NetworkMonitorsClientListBySubscriptionResponse])
-
-	// BeginUpdate is the fake for method NetworkMonitorsClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, networkMonitorName string, body armmanagednetworkfabric.NetworkMonitorPatch, options *armmanagednetworkfabric.NetworkMonitorsClientBeginUpdateOptions) (resp azfake.PollerResponder[armmanagednetworkfabric.NetworkMonitorsClientUpdateResponse], errResp azfake.ErrorResponder)
-
-	// BeginUpdateAdministrativeState is the fake for method NetworkMonitorsClient.BeginUpdateAdministrativeState
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdateAdministrativeState func(ctx context.Context, resourceGroupName string, networkMonitorName string, body armmanagednetworkfabric.UpdateAdministrativeState, options *armmanagednetworkfabric.NetworkMonitorsClientBeginUpdateAdministrativeStateOptions) (resp azfake.PollerResponder[armmanagednetworkfabric.NetworkMonitorsClientUpdateAdministrativeStateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewNetworkMonitorsServerTransport creates a new instance of NetworkMonitorsServerTransport with the provided implementation.
@@ -58,10 +58,10 @@ func NewNetworkMonitorsServerTransport(srv *NetworkMonitorsServer) *NetworkMonit
 		srv:                            srv,
 		beginCreate:                    newTracker[azfake.PollerResponder[armmanagednetworkfabric.NetworkMonitorsClientCreateResponse]](),
 		beginDelete:                    newTracker[azfake.PollerResponder[armmanagednetworkfabric.NetworkMonitorsClientDeleteResponse]](),
-		newListByResourceGroupPager:    newTracker[azfake.PagerResponder[armmanagednetworkfabric.NetworkMonitorsClientListByResourceGroupResponse]](),
-		newListBySubscriptionPager:     newTracker[azfake.PagerResponder[armmanagednetworkfabric.NetworkMonitorsClientListBySubscriptionResponse]](),
 		beginUpdate:                    newTracker[azfake.PollerResponder[armmanagednetworkfabric.NetworkMonitorsClientUpdateResponse]](),
 		beginUpdateAdministrativeState: newTracker[azfake.PollerResponder[armmanagednetworkfabric.NetworkMonitorsClientUpdateAdministrativeStateResponse]](),
+		newListByResourceGroupPager:    newTracker[azfake.PagerResponder[armmanagednetworkfabric.NetworkMonitorsClientListByResourceGroupResponse]](),
+		newListBySubscriptionPager:     newTracker[azfake.PagerResponder[armmanagednetworkfabric.NetworkMonitorsClientListBySubscriptionResponse]](),
 	}
 }
 
@@ -71,10 +71,10 @@ type NetworkMonitorsServerTransport struct {
 	srv                            *NetworkMonitorsServer
 	beginCreate                    *tracker[azfake.PollerResponder[armmanagednetworkfabric.NetworkMonitorsClientCreateResponse]]
 	beginDelete                    *tracker[azfake.PollerResponder[armmanagednetworkfabric.NetworkMonitorsClientDeleteResponse]]
-	newListByResourceGroupPager    *tracker[azfake.PagerResponder[armmanagednetworkfabric.NetworkMonitorsClientListByResourceGroupResponse]]
-	newListBySubscriptionPager     *tracker[azfake.PagerResponder[armmanagednetworkfabric.NetworkMonitorsClientListBySubscriptionResponse]]
 	beginUpdate                    *tracker[azfake.PollerResponder[armmanagednetworkfabric.NetworkMonitorsClientUpdateResponse]]
 	beginUpdateAdministrativeState *tracker[azfake.PollerResponder[armmanagednetworkfabric.NetworkMonitorsClientUpdateAdministrativeStateResponse]]
+	newListByResourceGroupPager    *tracker[azfake.PagerResponder[armmanagednetworkfabric.NetworkMonitorsClientListByResourceGroupResponse]]
+	newListBySubscriptionPager     *tracker[azfake.PagerResponder[armmanagednetworkfabric.NetworkMonitorsClientListBySubscriptionResponse]]
 }
 
 // Do implements the policy.Transporter interface for NetworkMonitorsServerTransport.
@@ -102,16 +102,16 @@ func (n *NetworkMonitorsServerTransport) dispatchToMethodFake(req *http.Request,
 				res.resp, res.err = n.dispatchBeginCreate(req)
 			case "NetworkMonitorsClient.BeginDelete":
 				res.resp, res.err = n.dispatchBeginDelete(req)
+			case "NetworkMonitorsClient.BeginUpdate":
+				res.resp, res.err = n.dispatchBeginUpdate(req)
+			case "NetworkMonitorsClient.BeginUpdateAdministrativeState":
+				res.resp, res.err = n.dispatchBeginUpdateAdministrativeState(req)
 			case "NetworkMonitorsClient.Get":
 				res.resp, res.err = n.dispatchGet(req)
 			case "NetworkMonitorsClient.NewListByResourceGroupPager":
 				res.resp, res.err = n.dispatchNewListByResourceGroupPager(req)
 			case "NetworkMonitorsClient.NewListBySubscriptionPager":
 				res.resp, res.err = n.dispatchNewListBySubscriptionPager(req)
-			case "NetworkMonitorsClient.BeginUpdate":
-				res.resp, res.err = n.dispatchBeginUpdate(req)
-			case "NetworkMonitorsClient.BeginUpdateAdministrativeState":
-				res.resp, res.err = n.dispatchBeginUpdateAdministrativeState(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -220,6 +220,102 @@ func (n *NetworkMonitorsServerTransport) dispatchBeginDelete(req *http.Request) 
 	return resp, nil
 }
 
+func (n *NetworkMonitorsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if n.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := n.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ManagedNetworkFabric/networkMonitors/(?P<networkMonitorName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armmanagednetworkfabric.NetworkMonitorPatch](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		networkMonitorNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("networkMonitorName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := n.srv.BeginUpdate(req.Context(), resourceGroupNameParam, networkMonitorNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		n.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		n.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		n.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (n *NetworkMonitorsServerTransport) dispatchBeginUpdateAdministrativeState(req *http.Request) (*http.Response, error) {
+	if n.srv.BeginUpdateAdministrativeState == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdateAdministrativeState not implemented")}
+	}
+	beginUpdateAdministrativeState := n.beginUpdateAdministrativeState.get(req)
+	if beginUpdateAdministrativeState == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ManagedNetworkFabric/networkMonitors/(?P<networkMonitorName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/updateAdministrativeState`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armmanagednetworkfabric.UpdateAdministrativeState](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		networkMonitorNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("networkMonitorName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := n.srv.BeginUpdateAdministrativeState(req.Context(), resourceGroupNameParam, networkMonitorNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdateAdministrativeState = &respr
+		n.beginUpdateAdministrativeState.add(req, beginUpdateAdministrativeState)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdateAdministrativeState, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		n.beginUpdateAdministrativeState.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdateAdministrativeState) {
+		n.beginUpdateAdministrativeState.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (n *NetworkMonitorsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if n.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -320,102 +416,6 @@ func (n *NetworkMonitorsServerTransport) dispatchNewListBySubscriptionPager(req 
 	if !server.PagerResponderMore(newListBySubscriptionPager) {
 		n.newListBySubscriptionPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (n *NetworkMonitorsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if n.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := n.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ManagedNetworkFabric/networkMonitors/(?P<networkMonitorName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armmanagednetworkfabric.NetworkMonitorPatch](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		networkMonitorNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("networkMonitorName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := n.srv.BeginUpdate(req.Context(), resourceGroupNameParam, networkMonitorNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		n.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		n.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		n.beginUpdate.remove(req)
-	}
-
-	return resp, nil
-}
-
-func (n *NetworkMonitorsServerTransport) dispatchBeginUpdateAdministrativeState(req *http.Request) (*http.Response, error) {
-	if n.srv.BeginUpdateAdministrativeState == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdateAdministrativeState not implemented")}
-	}
-	beginUpdateAdministrativeState := n.beginUpdateAdministrativeState.get(req)
-	if beginUpdateAdministrativeState == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ManagedNetworkFabric/networkMonitors/(?P<networkMonitorName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/updateAdministrativeState`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armmanagednetworkfabric.UpdateAdministrativeState](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		networkMonitorNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("networkMonitorName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := n.srv.BeginUpdateAdministrativeState(req.Context(), resourceGroupNameParam, networkMonitorNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdateAdministrativeState = &respr
-		n.beginUpdateAdministrativeState.add(req, beginUpdateAdministrativeState)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdateAdministrativeState, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		n.beginUpdateAdministrativeState.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdateAdministrativeState) {
-		n.beginUpdateAdministrativeState.remove(req)
-	}
-
 	return resp, nil
 }
 

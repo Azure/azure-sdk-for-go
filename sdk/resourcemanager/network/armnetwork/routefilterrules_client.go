@@ -70,7 +70,7 @@ func (client *RouteFilterRulesClient) BeginCreateOrUpdate(ctx context.Context, r
 	}
 }
 
-// CreateOrUpdate - Creates or updates a route in the specified route filter.
+// createOrUpdate - Creates or updates a route in the specified route filter.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *RouteFilterRulesClient) createOrUpdate(ctx context.Context, resourceGroupName string, routeFilterName string, ruleName string, routeFilterRuleParameters RouteFilterRule, options *RouteFilterRulesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -92,7 +92,7 @@ func (client *RouteFilterRulesClient) createOrUpdate(ctx context.Context, resour
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *RouteFilterRulesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, routeFilterName string, ruleName string, routeFilterRuleParameters RouteFilterRule, _ *RouteFilterRulesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/routeFilters/{routeFilterName}/routeFilterRules/{ruleName}"
 	if client.subscriptionID == "" {
@@ -151,7 +151,7 @@ func (client *RouteFilterRulesClient) BeginDelete(ctx context.Context, resourceG
 	}
 }
 
-// Delete - Deletes the specified rule from a route filter.
+// deleteOperation - Deletes the specified rule from a route filter.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *RouteFilterRulesClient) deleteOperation(ctx context.Context, resourceGroupName string, routeFilterName string, ruleName string, options *RouteFilterRulesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -173,7 +173,7 @@ func (client *RouteFilterRulesClient) deleteOperation(ctx context.Context, resou
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *RouteFilterRulesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, routeFilterName string, ruleName string, _ *RouteFilterRulesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/routeFilters/{routeFilterName}/routeFilterRules/{ruleName}"
 	if client.subscriptionID == "" {

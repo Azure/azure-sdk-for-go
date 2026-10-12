@@ -21,6 +21,10 @@ import (
 
 // HealthValidationsServer is a fake server for instances of the armdatabasewatcher.HealthValidationsClient type.
 type HealthValidationsServer struct {
+	// BeginStartValidation is the fake for method HealthValidationsClient.BeginStartValidation
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginStartValidation func(ctx context.Context, resourceGroupName string, watcherName string, healthValidationName string, options *armdatabasewatcher.HealthValidationsClientBeginStartValidationOptions) (resp azfake.PollerResponder[armdatabasewatcher.HealthValidationsClientStartValidationResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method HealthValidationsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, watcherName string, healthValidationName string, options *armdatabasewatcher.HealthValidationsClientGetOptions) (resp azfake.Responder[armdatabasewatcher.HealthValidationsClientGetResponse], errResp azfake.ErrorResponder)
@@ -28,10 +32,6 @@ type HealthValidationsServer struct {
 	// NewListByParentPager is the fake for method HealthValidationsClient.NewListByParentPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByParentPager func(resourceGroupName string, watcherName string, options *armdatabasewatcher.HealthValidationsClientListByParentOptions) (resp azfake.PagerResponder[armdatabasewatcher.HealthValidationsClientListByParentResponse])
-
-	// BeginStartValidation is the fake for method HealthValidationsClient.BeginStartValidation
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginStartValidation func(ctx context.Context, resourceGroupName string, watcherName string, healthValidationName string, options *armdatabasewatcher.HealthValidationsClientBeginStartValidationOptions) (resp azfake.PollerResponder[armdatabasewatcher.HealthValidationsClientStartValidationResponse], errResp azfake.ErrorResponder)
 }
 
 // NewHealthValidationsServerTransport creates a new instance of HealthValidationsServerTransport with the provided implementation.
@@ -40,8 +40,8 @@ type HealthValidationsServer struct {
 func NewHealthValidationsServerTransport(srv *HealthValidationsServer) *HealthValidationsServerTransport {
 	return &HealthValidationsServerTransport{
 		srv:                  srv,
-		newListByParentPager: newTracker[azfake.PagerResponder[armdatabasewatcher.HealthValidationsClientListByParentResponse]](),
 		beginStartValidation: newTracker[azfake.PollerResponder[armdatabasewatcher.HealthValidationsClientStartValidationResponse]](),
+		newListByParentPager: newTracker[azfake.PagerResponder[armdatabasewatcher.HealthValidationsClientListByParentResponse]](),
 	}
 }
 
@@ -49,8 +49,8 @@ func NewHealthValidationsServerTransport(srv *HealthValidationsServer) *HealthVa
 // Don't use this type directly, use NewHealthValidationsServerTransport instead.
 type HealthValidationsServerTransport struct {
 	srv                  *HealthValidationsServer
-	newListByParentPager *tracker[azfake.PagerResponder[armdatabasewatcher.HealthValidationsClientListByParentResponse]]
 	beginStartValidation *tracker[azfake.PollerResponder[armdatabasewatcher.HealthValidationsClientStartValidationResponse]]
+	newListByParentPager *tracker[azfake.PagerResponder[armdatabasewatcher.HealthValidationsClientListByParentResponse]]
 }
 
 // Do implements the policy.Transporter interface for HealthValidationsServerTransport.
@@ -74,12 +74,12 @@ func (h *HealthValidationsServerTransport) dispatchToMethodFake(req *http.Reques
 		}
 		if !intercepted {
 			switch method {
+			case "HealthValidationsClient.BeginStartValidation":
+				res.resp, res.err = h.dispatchBeginStartValidation(req)
 			case "HealthValidationsClient.Get":
 				res.resp, res.err = h.dispatchGet(req)
 			case "HealthValidationsClient.NewListByParentPager":
 				res.resp, res.err = h.dispatchNewListByParentPager(req)
-			case "HealthValidationsClient.BeginStartValidation":
-				res.resp, res.err = h.dispatchBeginStartValidation(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -94,6 +94,54 @@ func (h *HealthValidationsServerTransport) dispatchToMethodFake(req *http.Reques
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
+}
+
+func (h *HealthValidationsServerTransport) dispatchBeginStartValidation(req *http.Request) (*http.Response, error) {
+	if h.srv.BeginStartValidation == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginStartValidation not implemented")}
+	}
+	beginStartValidation := h.beginStartValidation.get(req)
+	if beginStartValidation == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DatabaseWatcher/watchers/(?P<watcherName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/healthValidations/(?P<healthValidationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/startValidation`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		watcherNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("watcherName")])
+		if err != nil {
+			return nil, err
+		}
+		healthValidationNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("healthValidationName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := h.srv.BeginStartValidation(req.Context(), resourceGroupNameParam, watcherNameParam, healthValidationNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginStartValidation = &respr
+		h.beginStartValidation.add(req, beginStartValidation)
+	}
+
+	resp, err := server.PollerResponderNext(beginStartValidation, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		h.beginStartValidation.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginStartValidation) {
+		h.beginStartValidation.remove(req)
+	}
+
+	return resp, nil
 }
 
 func (h *HealthValidationsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
@@ -171,54 +219,6 @@ func (h *HealthValidationsServerTransport) dispatchNewListByParentPager(req *htt
 	if !server.PagerResponderMore(newListByParentPager) {
 		h.newListByParentPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (h *HealthValidationsServerTransport) dispatchBeginStartValidation(req *http.Request) (*http.Response, error) {
-	if h.srv.BeginStartValidation == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginStartValidation not implemented")}
-	}
-	beginStartValidation := h.beginStartValidation.get(req)
-	if beginStartValidation == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DatabaseWatcher/watchers/(?P<watcherName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/healthValidations/(?P<healthValidationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/startValidation`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		watcherNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("watcherName")])
-		if err != nil {
-			return nil, err
-		}
-		healthValidationNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("healthValidationName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := h.srv.BeginStartValidation(req.Context(), resourceGroupNameParam, watcherNameParam, healthValidationNameParam, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginStartValidation = &respr
-		h.beginStartValidation.add(req, beginStartValidation)
-	}
-
-	resp, err := server.PollerResponderNext(beginStartValidation, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		h.beginStartValidation.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginStartValidation) {
-		h.beginStartValidation.remove(req)
-	}
-
 	return resp, nil
 }
 

@@ -71,7 +71,7 @@ func (client *VPNConnectionsClient) BeginCreateOrUpdate(ctx context.Context, res
 	}
 }
 
-// CreateOrUpdate - Creates a vpn connection to a scalable vpn gateway if it doesn't exist else updates the existing connection.
+// createOrUpdate - Creates a vpn connection to a scalable vpn gateway if it doesn't exist else updates the existing connection.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *VPNConnectionsClient) createOrUpdate(ctx context.Context, resourceGroupName string, gatewayName string, connectionName string, vpnConnectionParameters VPNConnection, options *VPNConnectionsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -93,7 +93,7 @@ func (client *VPNConnectionsClient) createOrUpdate(ctx context.Context, resource
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *VPNConnectionsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, gatewayName string, connectionName string, vpnConnectionParameters VPNConnection, _ *VPNConnectionsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/vpnGateways/{gatewayName}/vpnConnections/{connectionName}"
 	if client.subscriptionID == "" {
@@ -151,7 +151,7 @@ func (client *VPNConnectionsClient) BeginDelete(ctx context.Context, resourceGro
 	}
 }
 
-// Delete - Deletes a vpn connection.
+// deleteOperation - Deletes a vpn connection.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *VPNConnectionsClient) deleteOperation(ctx context.Context, resourceGroupName string, gatewayName string, connectionName string, options *VPNConnectionsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -173,7 +173,7 @@ func (client *VPNConnectionsClient) deleteOperation(ctx context.Context, resourc
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *VPNConnectionsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, gatewayName string, connectionName string, _ *VPNConnectionsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/vpnGateways/{gatewayName}/vpnConnections/{connectionName}"
 	if client.subscriptionID == "" {
@@ -199,6 +199,172 @@ func (client *VPNConnectionsClient) deleteCreateRequest(ctx context.Context, res
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", version20260101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginStartPacketCapture - Starts packet capture on Vpn connection in the specified resource group.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - gatewayName - The name of the vpn gateway.
+//   - vpnConnectionName - The name of the vpn connection.
+//   - options - VPNConnectionsClientBeginStartPacketCaptureOptions contains the optional parameters for the VPNConnectionsClient.BeginStartPacketCapture
+//     method.
+func (client *VPNConnectionsClient) BeginStartPacketCapture(ctx context.Context, resourceGroupName string, gatewayName string, vpnConnectionName string, options *VPNConnectionsClientBeginStartPacketCaptureOptions) (*runtime.Poller[VPNConnectionsClientStartPacketCaptureResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.startPacketCapture(ctx, resourceGroupName, gatewayName, vpnConnectionName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VPNConnectionsClientStartPacketCaptureResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[VPNConnectionsClientStartPacketCaptureResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// startPacketCapture - Starts packet capture on Vpn connection in the specified resource group.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *VPNConnectionsClient) startPacketCapture(ctx context.Context, resourceGroupName string, gatewayName string, vpnConnectionName string, options *VPNConnectionsClientBeginStartPacketCaptureOptions) (*http.Response, error) {
+	var err error
+	const operationName = "VPNConnectionsClient.BeginStartPacketCapture"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.startPacketCaptureCreateRequest(ctx, resourceGroupName, gatewayName, vpnConnectionName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// startPacketCaptureCreateRequest creates the startPacketCapture request.
+func (client *VPNConnectionsClient) startPacketCaptureCreateRequest(ctx context.Context, resourceGroupName string, gatewayName string, vpnConnectionName string, options *VPNConnectionsClientBeginStartPacketCaptureOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/vpnGateways/{gatewayName}/vpnConnections/{vpnConnectionName}/startpacketcapture"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if gatewayName == "" {
+		return nil, errors.New("parameter gatewayName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{gatewayName}", url.PathEscape(gatewayName))
+	if vpnConnectionName == "" {
+		return nil, errors.New("parameter vpnConnectionName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{vpnConnectionName}", url.PathEscape(vpnConnectionName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	if options != nil && options.Parameters != nil {
+		req.Raw().Header["Content-Type"] = []string{"application/json"}
+		if err := runtime.MarshalAsJSON(req, *options.Parameters); err != nil {
+			return nil, err
+		}
+		return req, nil
+	}
+	return req, nil
+}
+
+// BeginStopPacketCapture - Stops packet capture on Vpn connection in the specified resource group.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - gatewayName - The name of the vpn gateway.
+//   - vpnConnectionName - The name of the vpn connection.
+//   - options - VPNConnectionsClientBeginStopPacketCaptureOptions contains the optional parameters for the VPNConnectionsClient.BeginStopPacketCapture
+//     method.
+func (client *VPNConnectionsClient) BeginStopPacketCapture(ctx context.Context, resourceGroupName string, gatewayName string, vpnConnectionName string, options *VPNConnectionsClientBeginStopPacketCaptureOptions) (*runtime.Poller[VPNConnectionsClientStopPacketCaptureResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.stopPacketCapture(ctx, resourceGroupName, gatewayName, vpnConnectionName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VPNConnectionsClientStopPacketCaptureResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[VPNConnectionsClientStopPacketCaptureResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// stopPacketCapture - Stops packet capture on Vpn connection in the specified resource group.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *VPNConnectionsClient) stopPacketCapture(ctx context.Context, resourceGroupName string, gatewayName string, vpnConnectionName string, options *VPNConnectionsClientBeginStopPacketCaptureOptions) (*http.Response, error) {
+	var err error
+	const operationName = "VPNConnectionsClient.BeginStopPacketCapture"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.stopPacketCaptureCreateRequest(ctx, resourceGroupName, gatewayName, vpnConnectionName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// stopPacketCaptureCreateRequest creates the stopPacketCapture request.
+func (client *VPNConnectionsClient) stopPacketCaptureCreateRequest(ctx context.Context, resourceGroupName string, gatewayName string, vpnConnectionName string, options *VPNConnectionsClientBeginStopPacketCaptureOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/vpnGateways/{gatewayName}/vpnConnections/{vpnConnectionName}/stoppacketcapture"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if gatewayName == "" {
+		return nil, errors.New("parameter gatewayName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{gatewayName}", url.PathEscape(gatewayName))
+	if vpnConnectionName == "" {
+		return nil, errors.New("parameter vpnConnectionName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{vpnConnectionName}", url.PathEscape(vpnConnectionName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	if options != nil && options.Parameters != nil {
+		req.Raw().Header["Content-Type"] = []string{"application/json"}
+		if err := runtime.MarshalAsJSON(req, *options.Parameters); err != nil {
+			return nil, err
+		}
+		return req, nil
+	}
 	return req, nil
 }
 
@@ -342,170 +508,4 @@ func (client *VPNConnectionsClient) listByVPNGatewayHandleResponse(resp *http.Re
 		return VPNConnectionsClientListByVPNGatewayResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginStartPacketCapture - Starts packet capture on Vpn connection in the specified resource group.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - gatewayName - The name of the vpn gateway.
-//   - vpnConnectionName - The name of the vpn connection.
-//   - options - VPNConnectionsClientBeginStartPacketCaptureOptions contains the optional parameters for the VPNConnectionsClient.BeginStartPacketCapture
-//     method.
-func (client *VPNConnectionsClient) BeginStartPacketCapture(ctx context.Context, resourceGroupName string, gatewayName string, vpnConnectionName string, options *VPNConnectionsClientBeginStartPacketCaptureOptions) (*runtime.Poller[VPNConnectionsClientStartPacketCaptureResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.startPacketCapture(ctx, resourceGroupName, gatewayName, vpnConnectionName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VPNConnectionsClientStartPacketCaptureResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[VPNConnectionsClientStartPacketCaptureResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// StartPacketCapture - Starts packet capture on Vpn connection in the specified resource group.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *VPNConnectionsClient) startPacketCapture(ctx context.Context, resourceGroupName string, gatewayName string, vpnConnectionName string, options *VPNConnectionsClientBeginStartPacketCaptureOptions) (*http.Response, error) {
-	var err error
-	const operationName = "VPNConnectionsClient.BeginStartPacketCapture"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.startPacketCaptureCreateRequest(ctx, resourceGroupName, gatewayName, vpnConnectionName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// startPacketCaptureCreateRequest creates the StartPacketCapture request.
-func (client *VPNConnectionsClient) startPacketCaptureCreateRequest(ctx context.Context, resourceGroupName string, gatewayName string, vpnConnectionName string, options *VPNConnectionsClientBeginStartPacketCaptureOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/vpnGateways/{gatewayName}/vpnConnections/{vpnConnectionName}/startpacketcapture"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if gatewayName == "" {
-		return nil, errors.New("parameter gatewayName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{gatewayName}", url.PathEscape(gatewayName))
-	if vpnConnectionName == "" {
-		return nil, errors.New("parameter vpnConnectionName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{vpnConnectionName}", url.PathEscape(vpnConnectionName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	if options != nil && options.Parameters != nil {
-		req.Raw().Header["Content-Type"] = []string{"application/json"}
-		if err := runtime.MarshalAsJSON(req, *options.Parameters); err != nil {
-			return nil, err
-		}
-		return req, nil
-	}
-	return req, nil
-}
-
-// BeginStopPacketCapture - Stops packet capture on Vpn connection in the specified resource group.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - gatewayName - The name of the vpn gateway.
-//   - vpnConnectionName - The name of the vpn connection.
-//   - options - VPNConnectionsClientBeginStopPacketCaptureOptions contains the optional parameters for the VPNConnectionsClient.BeginStopPacketCapture
-//     method.
-func (client *VPNConnectionsClient) BeginStopPacketCapture(ctx context.Context, resourceGroupName string, gatewayName string, vpnConnectionName string, options *VPNConnectionsClientBeginStopPacketCaptureOptions) (*runtime.Poller[VPNConnectionsClientStopPacketCaptureResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.stopPacketCapture(ctx, resourceGroupName, gatewayName, vpnConnectionName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VPNConnectionsClientStopPacketCaptureResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[VPNConnectionsClientStopPacketCaptureResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// StopPacketCapture - Stops packet capture on Vpn connection in the specified resource group.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *VPNConnectionsClient) stopPacketCapture(ctx context.Context, resourceGroupName string, gatewayName string, vpnConnectionName string, options *VPNConnectionsClientBeginStopPacketCaptureOptions) (*http.Response, error) {
-	var err error
-	const operationName = "VPNConnectionsClient.BeginStopPacketCapture"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.stopPacketCaptureCreateRequest(ctx, resourceGroupName, gatewayName, vpnConnectionName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// stopPacketCaptureCreateRequest creates the StopPacketCapture request.
-func (client *VPNConnectionsClient) stopPacketCaptureCreateRequest(ctx context.Context, resourceGroupName string, gatewayName string, vpnConnectionName string, options *VPNConnectionsClientBeginStopPacketCaptureOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/vpnGateways/{gatewayName}/vpnConnections/{vpnConnectionName}/stoppacketcapture"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if gatewayName == "" {
-		return nil, errors.New("parameter gatewayName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{gatewayName}", url.PathEscape(gatewayName))
-	if vpnConnectionName == "" {
-		return nil, errors.New("parameter vpnConnectionName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{vpnConnectionName}", url.PathEscape(vpnConnectionName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	if options != nil && options.Parameters != nil {
-		req.Raw().Header["Content-Type"] = []string{"application/json"}
-		if err := runtime.MarshalAsJSON(req, *options.Parameters); err != nil {
-			return nil, err
-		}
-		return req, nil
-	}
-	return req, nil
 }

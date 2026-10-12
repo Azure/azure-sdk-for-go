@@ -21,6 +21,10 @@ import (
 
 // InterconnectGroupsServer is a fake server for instances of the armnetwork.InterconnectGroupsClient type.
 type InterconnectGroupsServer struct {
+	// BeginGetNodeAvailability is the fake for method InterconnectGroupsClient.BeginGetNodeAvailability
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginGetNodeAvailability func(ctx context.Context, resourceGroupName string, interconnectGroupName string, options *armnetwork.InterconnectGroupsClientBeginGetNodeAvailabilityOptions) (resp azfake.PollerResponder[armnetwork.InterconnectGroupsClientGetNodeAvailabilityResponse], errResp azfake.ErrorResponder)
+
 	// CreateOrUpdate is the fake for method InterconnectGroupsClient.CreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
 	CreateOrUpdate func(ctx context.Context, resourceGroupName string, interconnectGroupName string, parameters armnetwork.InterconnectGroup, options *armnetwork.InterconnectGroupsClientCreateOrUpdateOptions) (resp azfake.Responder[armnetwork.InterconnectGroupsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
@@ -33,17 +37,13 @@ type InterconnectGroupsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, interconnectGroupName string, options *armnetwork.InterconnectGroupsClientGetOptions) (resp azfake.Responder[armnetwork.InterconnectGroupsClientGetResponse], errResp azfake.ErrorResponder)
 
-	// BeginGetNodeAvailability is the fake for method InterconnectGroupsClient.BeginGetNodeAvailability
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginGetNodeAvailability func(ctx context.Context, resourceGroupName string, interconnectGroupName string, options *armnetwork.InterconnectGroupsClientBeginGetNodeAvailabilityOptions) (resp azfake.PollerResponder[armnetwork.InterconnectGroupsClientGetNodeAvailabilityResponse], errResp azfake.ErrorResponder)
+	// NewListAllPager is the fake for method InterconnectGroupsClient.NewListAllPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListAllPager func(options *armnetwork.InterconnectGroupsClientListAllOptions) (resp azfake.PagerResponder[armnetwork.InterconnectGroupsClientListAllResponse])
 
 	// NewListPager is the fake for method InterconnectGroupsClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListPager func(resourceGroupName string, options *armnetwork.InterconnectGroupsClientListOptions) (resp azfake.PagerResponder[armnetwork.InterconnectGroupsClientListResponse])
-
-	// NewListAllPager is the fake for method InterconnectGroupsClient.NewListAllPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListAllPager func(options *armnetwork.InterconnectGroupsClientListAllOptions) (resp azfake.PagerResponder[armnetwork.InterconnectGroupsClientListAllResponse])
 
 	// UpdateTags is the fake for method InterconnectGroupsClient.UpdateTags
 	// HTTP status codes to indicate success: http.StatusOK
@@ -57,8 +57,8 @@ func NewInterconnectGroupsServerTransport(srv *InterconnectGroupsServer) *Interc
 	return &InterconnectGroupsServerTransport{
 		srv:                      srv,
 		beginGetNodeAvailability: newTracker[azfake.PollerResponder[armnetwork.InterconnectGroupsClientGetNodeAvailabilityResponse]](),
-		newListPager:             newTracker[azfake.PagerResponder[armnetwork.InterconnectGroupsClientListResponse]](),
 		newListAllPager:          newTracker[azfake.PagerResponder[armnetwork.InterconnectGroupsClientListAllResponse]](),
+		newListPager:             newTracker[azfake.PagerResponder[armnetwork.InterconnectGroupsClientListResponse]](),
 	}
 }
 
@@ -67,8 +67,8 @@ func NewInterconnectGroupsServerTransport(srv *InterconnectGroupsServer) *Interc
 type InterconnectGroupsServerTransport struct {
 	srv                      *InterconnectGroupsServer
 	beginGetNodeAvailability *tracker[azfake.PollerResponder[armnetwork.InterconnectGroupsClientGetNodeAvailabilityResponse]]
-	newListPager             *tracker[azfake.PagerResponder[armnetwork.InterconnectGroupsClientListResponse]]
 	newListAllPager          *tracker[azfake.PagerResponder[armnetwork.InterconnectGroupsClientListAllResponse]]
+	newListPager             *tracker[azfake.PagerResponder[armnetwork.InterconnectGroupsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for InterconnectGroupsServerTransport.
@@ -92,18 +92,18 @@ func (i *InterconnectGroupsServerTransport) dispatchToMethodFake(req *http.Reque
 		}
 		if !intercepted {
 			switch method {
+			case "InterconnectGroupsClient.BeginGetNodeAvailability":
+				res.resp, res.err = i.dispatchBeginGetNodeAvailability(req)
 			case "InterconnectGroupsClient.CreateOrUpdate":
 				res.resp, res.err = i.dispatchCreateOrUpdate(req)
 			case "InterconnectGroupsClient.Delete":
 				res.resp, res.err = i.dispatchDelete(req)
 			case "InterconnectGroupsClient.Get":
 				res.resp, res.err = i.dispatchGet(req)
-			case "InterconnectGroupsClient.BeginGetNodeAvailability":
-				res.resp, res.err = i.dispatchBeginGetNodeAvailability(req)
-			case "InterconnectGroupsClient.NewListPager":
-				res.resp, res.err = i.dispatchNewListPager(req)
 			case "InterconnectGroupsClient.NewListAllPager":
 				res.resp, res.err = i.dispatchNewListAllPager(req)
+			case "InterconnectGroupsClient.NewListPager":
+				res.resp, res.err = i.dispatchNewListPager(req)
 			case "InterconnectGroupsClient.UpdateTags":
 				res.resp, res.err = i.dispatchUpdateTags(req)
 			default:
@@ -120,6 +120,50 @@ func (i *InterconnectGroupsServerTransport) dispatchToMethodFake(req *http.Reque
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
+}
+
+func (i *InterconnectGroupsServerTransport) dispatchBeginGetNodeAvailability(req *http.Request) (*http.Response, error) {
+	if i.srv.BeginGetNodeAvailability == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginGetNodeAvailability not implemented")}
+	}
+	beginGetNodeAvailability := i.beginGetNodeAvailability.get(req)
+	if beginGetNodeAvailability == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/interconnectGroups/(?P<interconnectGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/nodeAvailability`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		interconnectGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("interconnectGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := i.srv.BeginGetNodeAvailability(req.Context(), resourceGroupNameParam, interconnectGroupNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginGetNodeAvailability = &respr
+		i.beginGetNodeAvailability.add(req, beginGetNodeAvailability)
+	}
+
+	resp, err := server.PollerResponderNext(beginGetNodeAvailability, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		i.beginGetNodeAvailability.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginGetNodeAvailability) {
+		i.beginGetNodeAvailability.remove(req)
+	}
+
+	return resp, nil
 }
 
 func (i *InterconnectGroupsServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Response, error) {
@@ -225,47 +269,36 @@ func (i *InterconnectGroupsServerTransport) dispatchGet(req *http.Request) (*htt
 	return resp, nil
 }
 
-func (i *InterconnectGroupsServerTransport) dispatchBeginGetNodeAvailability(req *http.Request) (*http.Response, error) {
-	if i.srv.BeginGetNodeAvailability == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginGetNodeAvailability not implemented")}
+func (i *InterconnectGroupsServerTransport) dispatchNewListAllPager(req *http.Request) (*http.Response, error) {
+	if i.srv.NewListAllPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListAllPager not implemented")}
 	}
-	beginGetNodeAvailability := i.beginGetNodeAvailability.get(req)
-	if beginGetNodeAvailability == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/interconnectGroups/(?P<interconnectGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/nodeAvailability`
+	newListAllPager := i.newListAllPager.get(req)
+	if newListAllPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/interconnectGroups`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
+		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		interconnectGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("interconnectGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := i.srv.BeginGetNodeAvailability(req.Context(), resourceGroupNameParam, interconnectGroupNameParam, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginGetNodeAvailability = &respr
-		i.beginGetNodeAvailability.add(req, beginGetNodeAvailability)
+		resp := i.srv.NewListAllPager(nil)
+		newListAllPager = &resp
+		i.newListAllPager.add(req, newListAllPager)
+		server.PagerResponderInjectNextLinks(newListAllPager, req, func(page *armnetwork.InterconnectGroupsClientListAllResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
 	}
-
-	resp, err := server.PollerResponderNext(beginGetNodeAvailability, req)
+	resp, err := server.PagerResponderNext(newListAllPager, req)
 	if err != nil {
 		return nil, err
 	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		i.beginGetNodeAvailability.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		i.newListAllPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(beginGetNodeAvailability) {
-		i.beginGetNodeAvailability.remove(req)
+	if !server.PagerResponderMore(newListAllPager) {
+		i.newListAllPager.remove(req)
 	}
-
 	return resp, nil
 }
 
@@ -302,39 +335,6 @@ func (i *InterconnectGroupsServerTransport) dispatchNewListPager(req *http.Reque
 	}
 	if !server.PagerResponderMore(newListPager) {
 		i.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (i *InterconnectGroupsServerTransport) dispatchNewListAllPager(req *http.Request) (*http.Response, error) {
-	if i.srv.NewListAllPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListAllPager not implemented")}
-	}
-	newListAllPager := i.newListAllPager.get(req)
-	if newListAllPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/interconnectGroups`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := i.srv.NewListAllPager(nil)
-		newListAllPager = &resp
-		i.newListAllPager.add(req, newListAllPager)
-		server.PagerResponderInjectNextLinks(newListAllPager, req, func(page *armnetwork.InterconnectGroupsClientListAllResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListAllPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		i.newListAllPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListAllPager) {
-		i.newListAllPager.remove(req)
 	}
 	return resp, nil
 }

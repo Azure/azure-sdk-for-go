@@ -69,7 +69,7 @@ func (client *KubernetesClustersClient) BeginCreateOrUpdate(ctx context.Context,
 	}
 }
 
-// CreateOrUpdate - Create a new Kubernetes cluster or update the properties of the existing one.
+// createOrUpdate - Create a new Kubernetes cluster or update the properties of the existing one.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *KubernetesClustersClient) createOrUpdate(ctx context.Context, resourceGroupName string, kubernetesClusterName string, kubernetesClusterParameters KubernetesCluster, options *KubernetesClustersClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -91,7 +91,7 @@ func (client *KubernetesClustersClient) createOrUpdate(ctx context.Context, reso
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *KubernetesClustersClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, kubernetesClusterName string, kubernetesClusterParameters KubernetesCluster, options *KubernetesClustersClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/kubernetesClusters/{kubernetesClusterName}"
 	if client.subscriptionID == "" {
@@ -150,7 +150,7 @@ func (client *KubernetesClustersClient) BeginDelete(ctx context.Context, resourc
 	}
 }
 
-// Delete - Delete the provided Kubernetes cluster.
+// deleteOperation - Delete the provided Kubernetes cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *KubernetesClustersClient) deleteOperation(ctx context.Context, resourceGroupName string, kubernetesClusterName string, options *KubernetesClustersClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -172,7 +172,7 @@ func (client *KubernetesClustersClient) deleteOperation(ctx context.Context, res
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *KubernetesClustersClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, kubernetesClusterName string, options *KubernetesClustersClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/kubernetesClusters/{kubernetesClusterName}"
 	if client.subscriptionID == "" {
@@ -199,6 +199,165 @@ func (client *KubernetesClustersClient) deleteCreateRequest(ctx context.Context,
 	}
 	if options != nil && options.IfNoneMatch != nil {
 		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
+	}
+	return req, nil
+}
+
+// BeginRestartNode - Restart a targeted node of a Kubernetes cluster.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - kubernetesClusterName - The name of the Kubernetes cluster.
+//   - kubernetesClusterRestartNodeParameters - The request body.
+//   - options - KubernetesClustersClientBeginRestartNodeOptions contains the optional parameters for the KubernetesClustersClient.BeginRestartNode
+//     method.
+func (client *KubernetesClustersClient) BeginRestartNode(ctx context.Context, resourceGroupName string, kubernetesClusterName string, kubernetesClusterRestartNodeParameters KubernetesClusterRestartNodeParameters, options *KubernetesClustersClientBeginRestartNodeOptions) (*runtime.Poller[KubernetesClustersClientRestartNodeResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.restartNode(ctx, resourceGroupName, kubernetesClusterName, kubernetesClusterRestartNodeParameters, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[KubernetesClustersClientRestartNodeResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[KubernetesClustersClientRestartNodeResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// restartNode - Restart a targeted node of a Kubernetes cluster.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *KubernetesClustersClient) restartNode(ctx context.Context, resourceGroupName string, kubernetesClusterName string, kubernetesClusterRestartNodeParameters KubernetesClusterRestartNodeParameters, options *KubernetesClustersClientBeginRestartNodeOptions) (*http.Response, error) {
+	var err error
+	const operationName = "KubernetesClustersClient.BeginRestartNode"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.restartNodeCreateRequest(ctx, resourceGroupName, kubernetesClusterName, kubernetesClusterRestartNodeParameters, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// restartNodeCreateRequest creates the restartNode request.
+func (client *KubernetesClustersClient) restartNodeCreateRequest(ctx context.Context, resourceGroupName string, kubernetesClusterName string, kubernetesClusterRestartNodeParameters KubernetesClusterRestartNodeParameters, _ *KubernetesClustersClientBeginRestartNodeOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/kubernetesClusters/{kubernetesClusterName}/restartNode"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if kubernetesClusterName == "" {
+		return nil, errors.New("parameter kubernetesClusterName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{kubernetesClusterName}", url.PathEscape(kubernetesClusterName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260701)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, kubernetesClusterRestartNodeParameters); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginUpdate - Patch the properties of the provided Kubernetes cluster, or update the tags associated with the Kubernetes
+// cluster. Properties and tag updates can be done independently.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - kubernetesClusterName - The name of the Kubernetes cluster.
+//   - kubernetesClusterUpdateParameters - The request body.
+//   - options - KubernetesClustersClientBeginUpdateOptions contains the optional parameters for the KubernetesClustersClient.BeginUpdate
+//     method.
+func (client *KubernetesClustersClient) BeginUpdate(ctx context.Context, resourceGroupName string, kubernetesClusterName string, kubernetesClusterUpdateParameters KubernetesClusterPatchParameters, options *KubernetesClustersClientBeginUpdateOptions) (*runtime.Poller[KubernetesClustersClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, kubernetesClusterName, kubernetesClusterUpdateParameters, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[KubernetesClustersClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[KubernetesClustersClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Patch the properties of the provided Kubernetes cluster, or update the tags associated with the Kubernetes cluster.
+// Properties and tag updates can be done independently.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *KubernetesClustersClient) update(ctx context.Context, resourceGroupName string, kubernetesClusterName string, kubernetesClusterUpdateParameters KubernetesClusterPatchParameters, options *KubernetesClustersClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "KubernetesClustersClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, kubernetesClusterName, kubernetesClusterUpdateParameters, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *KubernetesClustersClient) updateCreateRequest(ctx context.Context, resourceGroupName string, kubernetesClusterName string, kubernetesClusterUpdateParameters KubernetesClusterPatchParameters, options *KubernetesClustersClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/kubernetesClusters/{kubernetesClusterName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if kubernetesClusterName == "" {
+		return nil, errors.New("parameter kubernetesClusterName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{kubernetesClusterName}", url.PathEscape(kubernetesClusterName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260701)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	if options != nil && options.IfMatch != nil {
+		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
+	}
+	if options != nil && options.IfNoneMatch != nil {
+		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
+	}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, kubernetesClusterUpdateParameters); err != nil {
+		return nil, err
 	}
 	return req, nil
 }
@@ -412,163 +571,4 @@ func (client *KubernetesClustersClient) listBySubscriptionHandleResponse(resp *h
 		return KubernetesClustersClientListBySubscriptionResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginRestartNode - Restart a targeted node of a Kubernetes cluster.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - kubernetesClusterName - The name of the Kubernetes cluster.
-//   - kubernetesClusterRestartNodeParameters - The request body.
-//   - options - KubernetesClustersClientBeginRestartNodeOptions contains the optional parameters for the KubernetesClustersClient.BeginRestartNode
-//     method.
-func (client *KubernetesClustersClient) BeginRestartNode(ctx context.Context, resourceGroupName string, kubernetesClusterName string, kubernetesClusterRestartNodeParameters KubernetesClusterRestartNodeParameters, options *KubernetesClustersClientBeginRestartNodeOptions) (*runtime.Poller[KubernetesClustersClientRestartNodeResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.restartNode(ctx, resourceGroupName, kubernetesClusterName, kubernetesClusterRestartNodeParameters, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[KubernetesClustersClientRestartNodeResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[KubernetesClustersClientRestartNodeResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// RestartNode - Restart a targeted node of a Kubernetes cluster.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *KubernetesClustersClient) restartNode(ctx context.Context, resourceGroupName string, kubernetesClusterName string, kubernetesClusterRestartNodeParameters KubernetesClusterRestartNodeParameters, options *KubernetesClustersClientBeginRestartNodeOptions) (*http.Response, error) {
-	var err error
-	const operationName = "KubernetesClustersClient.BeginRestartNode"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.restartNodeCreateRequest(ctx, resourceGroupName, kubernetesClusterName, kubernetesClusterRestartNodeParameters, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// restartNodeCreateRequest creates the RestartNode request.
-func (client *KubernetesClustersClient) restartNodeCreateRequest(ctx context.Context, resourceGroupName string, kubernetesClusterName string, kubernetesClusterRestartNodeParameters KubernetesClusterRestartNodeParameters, _ *KubernetesClustersClientBeginRestartNodeOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/kubernetesClusters/{kubernetesClusterName}/restartNode"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if kubernetesClusterName == "" {
-		return nil, errors.New("parameter kubernetesClusterName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{kubernetesClusterName}", url.PathEscape(kubernetesClusterName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260701)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, kubernetesClusterRestartNodeParameters); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// BeginUpdate - Patch the properties of the provided Kubernetes cluster, or update the tags associated with the Kubernetes
-// cluster. Properties and tag updates can be done independently.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - kubernetesClusterName - The name of the Kubernetes cluster.
-//   - kubernetesClusterUpdateParameters - The request body.
-//   - options - KubernetesClustersClientBeginUpdateOptions contains the optional parameters for the KubernetesClustersClient.BeginUpdate
-//     method.
-func (client *KubernetesClustersClient) BeginUpdate(ctx context.Context, resourceGroupName string, kubernetesClusterName string, kubernetesClusterUpdateParameters KubernetesClusterPatchParameters, options *KubernetesClustersClientBeginUpdateOptions) (*runtime.Poller[KubernetesClustersClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, kubernetesClusterName, kubernetesClusterUpdateParameters, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[KubernetesClustersClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[KubernetesClustersClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Patch the properties of the provided Kubernetes cluster, or update the tags associated with the Kubernetes cluster.
-// Properties and tag updates can be done independently.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *KubernetesClustersClient) update(ctx context.Context, resourceGroupName string, kubernetesClusterName string, kubernetesClusterUpdateParameters KubernetesClusterPatchParameters, options *KubernetesClustersClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "KubernetesClustersClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, kubernetesClusterName, kubernetesClusterUpdateParameters, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *KubernetesClustersClient) updateCreateRequest(ctx context.Context, resourceGroupName string, kubernetesClusterName string, kubernetesClusterUpdateParameters KubernetesClusterPatchParameters, options *KubernetesClustersClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/kubernetesClusters/{kubernetesClusterName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if kubernetesClusterName == "" {
-		return nil, errors.New("parameter kubernetesClusterName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{kubernetesClusterName}", url.PathEscape(kubernetesClusterName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260701)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	if options != nil && options.IfMatch != nil {
-		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
-	}
-	if options != nil && options.IfNoneMatch != nil {
-		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
-	}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, kubernetesClusterUpdateParameters); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

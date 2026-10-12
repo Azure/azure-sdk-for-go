@@ -33,6 +33,10 @@ type ConnectedClusterServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, clusterName string, options *armhybridkubernetes.ConnectedClusterClientGetOptions) (resp azfake.Responder[armhybridkubernetes.ConnectedClusterClientGetResponse], errResp azfake.ErrorResponder)
 
+	// ListClusterUserCredential is the fake for method ConnectedClusterClient.ListClusterUserCredential
+	// HTTP status codes to indicate success: http.StatusOK
+	ListClusterUserCredential func(ctx context.Context, resourceGroupName string, clusterName string, properties armhybridkubernetes.ListClusterUserCredentialProperties, options *armhybridkubernetes.ConnectedClusterClientListClusterUserCredentialOptions) (resp azfake.Responder[armhybridkubernetes.ConnectedClusterClientListClusterUserCredentialResponse], errResp azfake.ErrorResponder)
+
 	// NewListByResourceGroupPager is the fake for method ConnectedClusterClient.NewListByResourceGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByResourceGroupPager func(resourceGroupName string, options *armhybridkubernetes.ConnectedClusterClientListByResourceGroupOptions) (resp azfake.PagerResponder[armhybridkubernetes.ConnectedClusterClientListByResourceGroupResponse])
@@ -40,10 +44,6 @@ type ConnectedClusterServer struct {
 	// NewListBySubscriptionPager is the fake for method ConnectedClusterClient.NewListBySubscriptionPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListBySubscriptionPager func(options *armhybridkubernetes.ConnectedClusterClientListBySubscriptionOptions) (resp azfake.PagerResponder[armhybridkubernetes.ConnectedClusterClientListBySubscriptionResponse])
-
-	// ListClusterUserCredential is the fake for method ConnectedClusterClient.ListClusterUserCredential
-	// HTTP status codes to indicate success: http.StatusOK
-	ListClusterUserCredential func(ctx context.Context, resourceGroupName string, clusterName string, properties armhybridkubernetes.ListClusterUserCredentialProperties, options *armhybridkubernetes.ConnectedClusterClientListClusterUserCredentialOptions) (resp azfake.Responder[armhybridkubernetes.ConnectedClusterClientListClusterUserCredentialResponse], errResp azfake.ErrorResponder)
 
 	// Update is the fake for method ConnectedClusterClient.Update
 	// HTTP status codes to indicate success: http.StatusOK
@@ -100,12 +100,12 @@ func (c *ConnectedClusterServerTransport) dispatchToMethodFake(req *http.Request
 				res.resp, res.err = c.dispatchBeginDelete(req)
 			case "ConnectedClusterClient.Get":
 				res.resp, res.err = c.dispatchGet(req)
+			case "ConnectedClusterClient.ListClusterUserCredential":
+				res.resp, res.err = c.dispatchListClusterUserCredential(req)
 			case "ConnectedClusterClient.NewListByResourceGroupPager":
 				res.resp, res.err = c.dispatchNewListByResourceGroupPager(req)
 			case "ConnectedClusterClient.NewListBySubscriptionPager":
 				res.resp, res.err = c.dispatchNewListBySubscriptionPager(req)
-			case "ConnectedClusterClient.ListClusterUserCredential":
-				res.resp, res.err = c.dispatchListClusterUserCredential(req)
 			case "ConnectedClusterClient.Update":
 				res.resp, res.err = c.dispatchUpdate(req)
 			default:
@@ -249,6 +249,43 @@ func (c *ConnectedClusterServerTransport) dispatchGet(req *http.Request) (*http.
 	return resp, nil
 }
 
+func (c *ConnectedClusterServerTransport) dispatchListClusterUserCredential(req *http.Request) (*http.Response, error) {
+	if c.srv.ListClusterUserCredential == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListClusterUserCredential not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Kubernetes/connectedClusters/(?P<clusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listClusterUserCredential`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armhybridkubernetes.ListClusterUserCredentialProperties](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := c.srv.ListClusterUserCredential(req.Context(), resourceGroupNameParam, clusterNameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CredentialResults, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
 func (c *ConnectedClusterServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
 	if c.srv.NewListByResourceGroupPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
@@ -315,43 +352,6 @@ func (c *ConnectedClusterServerTransport) dispatchNewListBySubscriptionPager(req
 	}
 	if !server.PagerResponderMore(newListBySubscriptionPager) {
 		c.newListBySubscriptionPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (c *ConnectedClusterServerTransport) dispatchListClusterUserCredential(req *http.Request) (*http.Response, error) {
-	if c.srv.ListClusterUserCredential == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ListClusterUserCredential not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Kubernetes/connectedClusters/(?P<clusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listClusterUserCredential`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armhybridkubernetes.ListClusterUserCredentialProperties](req)
-	if err != nil {
-		return nil, err
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := c.srv.ListClusterUserCredential(req.Context(), resourceGroupNameParam, clusterNameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CredentialResults, req)
-	if err != nil {
-		return nil, err
 	}
 	return resp, nil
 }

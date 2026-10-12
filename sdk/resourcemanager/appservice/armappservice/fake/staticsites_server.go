@@ -26,45 +26,13 @@ type StaticSitesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginApproveOrRejectPrivateEndpointConnection func(ctx context.Context, resourceGroupName string, name string, privateEndpointConnectionName string, privateEndpointWrapper armappservice.RemotePrivateEndpointConnectionARMResource, options *armappservice.StaticSitesClientBeginApproveOrRejectPrivateEndpointConnectionOptions) (resp azfake.PollerResponder[armappservice.StaticSitesClientApproveOrRejectPrivateEndpointConnectionResponse], errResp azfake.ErrorResponder)
 
-	// CreateOrUpdateBasicAuth is the fake for method StaticSitesClient.CreateOrUpdateBasicAuth
-	// HTTP status codes to indicate success: http.StatusOK
-	CreateOrUpdateBasicAuth func(ctx context.Context, resourceGroupName string, name string, basicAuthName armappservice.BasicAuthName, basicAuthEnvelope armappservice.StaticSiteBasicAuthPropertiesARMResource, options *armappservice.StaticSitesClientCreateOrUpdateBasicAuthOptions) (resp azfake.Responder[armappservice.StaticSitesClientCreateOrUpdateBasicAuthResponse], errResp azfake.ErrorResponder)
-
-	// CreateOrUpdateBuildDatabaseConnection is the fake for method StaticSitesClient.CreateOrUpdateBuildDatabaseConnection
-	// HTTP status codes to indicate success: http.StatusOK
-	CreateOrUpdateBuildDatabaseConnection func(ctx context.Context, resourceGroupName string, name string, environmentName string, databaseConnectionName string, databaseConnectionRequestEnvelope armappservice.DatabaseConnection, options *armappservice.StaticSitesClientCreateOrUpdateBuildDatabaseConnectionOptions) (resp azfake.Responder[armappservice.StaticSitesClientCreateOrUpdateBuildDatabaseConnectionResponse], errResp azfake.ErrorResponder)
-
-	// CreateOrUpdateDatabaseConnection is the fake for method StaticSitesClient.CreateOrUpdateDatabaseConnection
-	// HTTP status codes to indicate success: http.StatusOK
-	CreateOrUpdateDatabaseConnection func(ctx context.Context, resourceGroupName string, name string, databaseConnectionName string, databaseConnectionRequestEnvelope armappservice.DatabaseConnection, options *armappservice.StaticSitesClientCreateOrUpdateDatabaseConnectionOptions) (resp azfake.Responder[armappservice.StaticSitesClientCreateOrUpdateDatabaseConnectionResponse], errResp azfake.ErrorResponder)
-
 	// BeginCreateOrUpdateStaticSite is the fake for method StaticSitesClient.BeginCreateOrUpdateStaticSite
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginCreateOrUpdateStaticSite func(ctx context.Context, resourceGroupName string, name string, staticSiteEnvelope armappservice.StaticSiteARMResource, options *armappservice.StaticSitesClientBeginCreateOrUpdateStaticSiteOptions) (resp azfake.PollerResponder[armappservice.StaticSitesClientCreateOrUpdateStaticSiteResponse], errResp azfake.ErrorResponder)
 
-	// CreateOrUpdateStaticSiteAppSettings is the fake for method StaticSitesClient.CreateOrUpdateStaticSiteAppSettings
-	// HTTP status codes to indicate success: http.StatusOK
-	CreateOrUpdateStaticSiteAppSettings func(ctx context.Context, resourceGroupName string, name string, appSettings armappservice.StringDictionary, options *armappservice.StaticSitesClientCreateOrUpdateStaticSiteAppSettingsOptions) (resp azfake.Responder[armappservice.StaticSitesClientCreateOrUpdateStaticSiteAppSettingsResponse], errResp azfake.ErrorResponder)
-
-	// CreateOrUpdateStaticSiteBuildAppSettings is the fake for method StaticSitesClient.CreateOrUpdateStaticSiteBuildAppSettings
-	// HTTP status codes to indicate success: http.StatusOK
-	CreateOrUpdateStaticSiteBuildAppSettings func(ctx context.Context, resourceGroupName string, name string, environmentName string, appSettings armappservice.StringDictionary, options *armappservice.StaticSitesClientCreateOrUpdateStaticSiteBuildAppSettingsOptions) (resp azfake.Responder[armappservice.StaticSitesClientCreateOrUpdateStaticSiteBuildAppSettingsResponse], errResp azfake.ErrorResponder)
-
-	// CreateOrUpdateStaticSiteBuildFunctionAppSettings is the fake for method StaticSitesClient.CreateOrUpdateStaticSiteBuildFunctionAppSettings
-	// HTTP status codes to indicate success: http.StatusOK
-	CreateOrUpdateStaticSiteBuildFunctionAppSettings func(ctx context.Context, resourceGroupName string, name string, environmentName string, appSettings armappservice.StringDictionary, options *armappservice.StaticSitesClientCreateOrUpdateStaticSiteBuildFunctionAppSettingsOptions) (resp azfake.Responder[armappservice.StaticSitesClientCreateOrUpdateStaticSiteBuildFunctionAppSettingsResponse], errResp azfake.ErrorResponder)
-
 	// BeginCreateOrUpdateStaticSiteCustomDomain is the fake for method StaticSitesClient.BeginCreateOrUpdateStaticSiteCustomDomain
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginCreateOrUpdateStaticSiteCustomDomain func(ctx context.Context, resourceGroupName string, name string, domainName string, staticSiteCustomDomainRequestPropertiesEnvelope armappservice.StaticSiteCustomDomainRequestPropertiesARMResource, options *armappservice.StaticSitesClientBeginCreateOrUpdateStaticSiteCustomDomainOptions) (resp azfake.PollerResponder[armappservice.StaticSitesClientCreateOrUpdateStaticSiteCustomDomainResponse], errResp azfake.ErrorResponder)
-
-	// CreateOrUpdateStaticSiteFunctionAppSettings is the fake for method StaticSitesClient.CreateOrUpdateStaticSiteFunctionAppSettings
-	// HTTP status codes to indicate success: http.StatusOK
-	CreateOrUpdateStaticSiteFunctionAppSettings func(ctx context.Context, resourceGroupName string, name string, appSettings armappservice.StringDictionary, options *armappservice.StaticSitesClientCreateOrUpdateStaticSiteFunctionAppSettingsOptions) (resp azfake.Responder[armappservice.StaticSitesClientCreateOrUpdateStaticSiteFunctionAppSettingsResponse], errResp azfake.ErrorResponder)
-
-	// CreateUserRolesInvitationLink is the fake for method StaticSitesClient.CreateUserRolesInvitationLink
-	// HTTP status codes to indicate success: http.StatusOK
-	CreateUserRolesInvitationLink func(ctx context.Context, resourceGroupName string, name string, staticSiteUserRolesInvitationEnvelope armappservice.StaticSiteUserInvitationRequestResource, options *armappservice.StaticSitesClientCreateUserRolesInvitationLinkOptions) (resp azfake.Responder[armappservice.StaticSitesClientCreateUserRolesInvitationLinkResponse], errResp azfake.ErrorResponder)
 
 	// BeginCreateZipDeploymentForStaticSite is the fake for method StaticSitesClient.BeginCreateZipDeploymentForStaticSite
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
@@ -73,14 +41,6 @@ type StaticSitesServer struct {
 	// BeginCreateZipDeploymentForStaticSiteBuild is the fake for method StaticSitesClient.BeginCreateZipDeploymentForStaticSiteBuild
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginCreateZipDeploymentForStaticSiteBuild func(ctx context.Context, resourceGroupName string, name string, environmentName string, staticSiteZipDeploymentEnvelope armappservice.StaticSiteZipDeploymentARMResource, options *armappservice.StaticSitesClientBeginCreateZipDeploymentForStaticSiteBuildOptions) (resp azfake.PollerResponder[armappservice.StaticSitesClientCreateZipDeploymentForStaticSiteBuildResponse], errResp azfake.ErrorResponder)
-
-	// DeleteBuildDatabaseConnection is the fake for method StaticSitesClient.DeleteBuildDatabaseConnection
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusNoContent
-	DeleteBuildDatabaseConnection func(ctx context.Context, resourceGroupName string, name string, environmentName string, databaseConnectionName string, options *armappservice.StaticSitesClientDeleteBuildDatabaseConnectionOptions) (resp azfake.Responder[armappservice.StaticSitesClientDeleteBuildDatabaseConnectionResponse], errResp azfake.ErrorResponder)
-
-	// DeleteDatabaseConnection is the fake for method StaticSitesClient.DeleteDatabaseConnection
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusNoContent
-	DeleteDatabaseConnection func(ctx context.Context, resourceGroupName string, name string, databaseConnectionName string, options *armappservice.StaticSitesClientDeleteDatabaseConnectionOptions) (resp azfake.Responder[armappservice.StaticSitesClientDeleteDatabaseConnectionResponse], errResp azfake.ErrorResponder)
 
 	// BeginDeletePrivateEndpointConnection is the fake for method StaticSitesClient.BeginDeletePrivateEndpointConnection
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
@@ -98,13 +58,81 @@ type StaticSitesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDeleteStaticSiteCustomDomain func(ctx context.Context, resourceGroupName string, name string, domainName string, options *armappservice.StaticSitesClientBeginDeleteStaticSiteCustomDomainOptions) (resp azfake.PollerResponder[armappservice.StaticSitesClientDeleteStaticSiteCustomDomainResponse], errResp azfake.ErrorResponder)
 
-	// DeleteStaticSiteUser is the fake for method StaticSitesClient.DeleteStaticSiteUser
-	// HTTP status codes to indicate success: http.StatusOK
-	DeleteStaticSiteUser func(ctx context.Context, resourceGroupName string, name string, authprovider string, userid string, options *armappservice.StaticSitesClientDeleteStaticSiteUserOptions) (resp azfake.Responder[armappservice.StaticSitesClientDeleteStaticSiteUserResponse], errResp azfake.ErrorResponder)
-
 	// BeginDetachStaticSite is the fake for method StaticSitesClient.BeginDetachStaticSite
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDetachStaticSite func(ctx context.Context, resourceGroupName string, name string, options *armappservice.StaticSitesClientBeginDetachStaticSiteOptions) (resp azfake.PollerResponder[armappservice.StaticSitesClientDetachStaticSiteResponse], errResp azfake.ErrorResponder)
+
+	// BeginLinkBackend is the fake for method StaticSitesClient.BeginLinkBackend
+	// HTTP status codes to indicate success: http.StatusOK
+	BeginLinkBackend func(ctx context.Context, resourceGroupName string, name string, linkedBackendName string, staticSiteLinkedBackendEnvelope armappservice.StaticSiteLinkedBackendARMResource, options *armappservice.StaticSitesClientBeginLinkBackendOptions) (resp azfake.PollerResponder[armappservice.StaticSitesClientLinkBackendResponse], errResp azfake.ErrorResponder)
+
+	// BeginLinkBackendToBuild is the fake for method StaticSitesClient.BeginLinkBackendToBuild
+	// HTTP status codes to indicate success: http.StatusOK
+	BeginLinkBackendToBuild func(ctx context.Context, resourceGroupName string, name string, environmentName string, linkedBackendName string, staticSiteLinkedBackendEnvelope armappservice.StaticSiteLinkedBackendARMResource, options *armappservice.StaticSitesClientBeginLinkBackendToBuildOptions) (resp azfake.PollerResponder[armappservice.StaticSitesClientLinkBackendToBuildResponse], errResp azfake.ErrorResponder)
+
+	// BeginRegisterUserProvidedFunctionAppWithStaticSite is the fake for method StaticSitesClient.BeginRegisterUserProvidedFunctionAppWithStaticSite
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginRegisterUserProvidedFunctionAppWithStaticSite func(ctx context.Context, resourceGroupName string, name string, functionAppName string, staticSiteUserProvidedFunctionEnvelope armappservice.StaticSiteUserProvidedFunctionAppARMResource, options *armappservice.StaticSitesClientBeginRegisterUserProvidedFunctionAppWithStaticSiteOptions) (resp azfake.PollerResponder[armappservice.StaticSitesClientRegisterUserProvidedFunctionAppWithStaticSiteResponse], errResp azfake.ErrorResponder)
+
+	// BeginRegisterUserProvidedFunctionAppWithStaticSiteBuild is the fake for method StaticSitesClient.BeginRegisterUserProvidedFunctionAppWithStaticSiteBuild
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginRegisterUserProvidedFunctionAppWithStaticSiteBuild func(ctx context.Context, resourceGroupName string, name string, environmentName string, functionAppName string, staticSiteUserProvidedFunctionEnvelope armappservice.StaticSiteUserProvidedFunctionAppARMResource, options *armappservice.StaticSitesClientBeginRegisterUserProvidedFunctionAppWithStaticSiteBuildOptions) (resp azfake.PollerResponder[armappservice.StaticSitesClientRegisterUserProvidedFunctionAppWithStaticSiteBuildResponse], errResp azfake.ErrorResponder)
+
+	// BeginValidateBackend is the fake for method StaticSitesClient.BeginValidateBackend
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	BeginValidateBackend func(ctx context.Context, resourceGroupName string, name string, linkedBackendName string, staticSiteLinkedBackendEnvelope armappservice.StaticSiteLinkedBackendARMResource, options *armappservice.StaticSitesClientBeginValidateBackendOptions) (resp azfake.PollerResponder[armappservice.StaticSitesClientValidateBackendResponse], errResp azfake.ErrorResponder)
+
+	// BeginValidateBackendForBuild is the fake for method StaticSitesClient.BeginValidateBackendForBuild
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	BeginValidateBackendForBuild func(ctx context.Context, resourceGroupName string, name string, environmentName string, linkedBackendName string, staticSiteLinkedBackendEnvelope armappservice.StaticSiteLinkedBackendARMResource, options *armappservice.StaticSitesClientBeginValidateBackendForBuildOptions) (resp azfake.PollerResponder[armappservice.StaticSitesClientValidateBackendForBuildResponse], errResp azfake.ErrorResponder)
+
+	// BeginValidateCustomDomainCanBeAddedToStaticSite is the fake for method StaticSitesClient.BeginValidateCustomDomainCanBeAddedToStaticSite
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	BeginValidateCustomDomainCanBeAddedToStaticSite func(ctx context.Context, resourceGroupName string, name string, domainName string, staticSiteCustomDomainRequestPropertiesEnvelope armappservice.StaticSiteCustomDomainRequestPropertiesARMResource, options *armappservice.StaticSitesClientBeginValidateCustomDomainCanBeAddedToStaticSiteOptions) (resp azfake.PollerResponder[armappservice.StaticSitesClientValidateCustomDomainCanBeAddedToStaticSiteResponse], errResp azfake.ErrorResponder)
+
+	// CreateOrUpdateBasicAuth is the fake for method StaticSitesClient.CreateOrUpdateBasicAuth
+	// HTTP status codes to indicate success: http.StatusOK
+	CreateOrUpdateBasicAuth func(ctx context.Context, resourceGroupName string, name string, basicAuthName armappservice.BasicAuthName, basicAuthEnvelope armappservice.StaticSiteBasicAuthPropertiesARMResource, options *armappservice.StaticSitesClientCreateOrUpdateBasicAuthOptions) (resp azfake.Responder[armappservice.StaticSitesClientCreateOrUpdateBasicAuthResponse], errResp azfake.ErrorResponder)
+
+	// CreateOrUpdateBuildDatabaseConnection is the fake for method StaticSitesClient.CreateOrUpdateBuildDatabaseConnection
+	// HTTP status codes to indicate success: http.StatusOK
+	CreateOrUpdateBuildDatabaseConnection func(ctx context.Context, resourceGroupName string, name string, environmentName string, databaseConnectionName string, databaseConnectionRequestEnvelope armappservice.DatabaseConnection, options *armappservice.StaticSitesClientCreateOrUpdateBuildDatabaseConnectionOptions) (resp azfake.Responder[armappservice.StaticSitesClientCreateOrUpdateBuildDatabaseConnectionResponse], errResp azfake.ErrorResponder)
+
+	// CreateOrUpdateDatabaseConnection is the fake for method StaticSitesClient.CreateOrUpdateDatabaseConnection
+	// HTTP status codes to indicate success: http.StatusOK
+	CreateOrUpdateDatabaseConnection func(ctx context.Context, resourceGroupName string, name string, databaseConnectionName string, databaseConnectionRequestEnvelope armappservice.DatabaseConnection, options *armappservice.StaticSitesClientCreateOrUpdateDatabaseConnectionOptions) (resp azfake.Responder[armappservice.StaticSitesClientCreateOrUpdateDatabaseConnectionResponse], errResp azfake.ErrorResponder)
+
+	// CreateOrUpdateStaticSiteAppSettings is the fake for method StaticSitesClient.CreateOrUpdateStaticSiteAppSettings
+	// HTTP status codes to indicate success: http.StatusOK
+	CreateOrUpdateStaticSiteAppSettings func(ctx context.Context, resourceGroupName string, name string, appSettings armappservice.StringDictionary, options *armappservice.StaticSitesClientCreateOrUpdateStaticSiteAppSettingsOptions) (resp azfake.Responder[armappservice.StaticSitesClientCreateOrUpdateStaticSiteAppSettingsResponse], errResp azfake.ErrorResponder)
+
+	// CreateOrUpdateStaticSiteBuildAppSettings is the fake for method StaticSitesClient.CreateOrUpdateStaticSiteBuildAppSettings
+	// HTTP status codes to indicate success: http.StatusOK
+	CreateOrUpdateStaticSiteBuildAppSettings func(ctx context.Context, resourceGroupName string, name string, environmentName string, appSettings armappservice.StringDictionary, options *armappservice.StaticSitesClientCreateOrUpdateStaticSiteBuildAppSettingsOptions) (resp azfake.Responder[armappservice.StaticSitesClientCreateOrUpdateStaticSiteBuildAppSettingsResponse], errResp azfake.ErrorResponder)
+
+	// CreateOrUpdateStaticSiteBuildFunctionAppSettings is the fake for method StaticSitesClient.CreateOrUpdateStaticSiteBuildFunctionAppSettings
+	// HTTP status codes to indicate success: http.StatusOK
+	CreateOrUpdateStaticSiteBuildFunctionAppSettings func(ctx context.Context, resourceGroupName string, name string, environmentName string, appSettings armappservice.StringDictionary, options *armappservice.StaticSitesClientCreateOrUpdateStaticSiteBuildFunctionAppSettingsOptions) (resp azfake.Responder[armappservice.StaticSitesClientCreateOrUpdateStaticSiteBuildFunctionAppSettingsResponse], errResp azfake.ErrorResponder)
+
+	// CreateOrUpdateStaticSiteFunctionAppSettings is the fake for method StaticSitesClient.CreateOrUpdateStaticSiteFunctionAppSettings
+	// HTTP status codes to indicate success: http.StatusOK
+	CreateOrUpdateStaticSiteFunctionAppSettings func(ctx context.Context, resourceGroupName string, name string, appSettings armappservice.StringDictionary, options *armappservice.StaticSitesClientCreateOrUpdateStaticSiteFunctionAppSettingsOptions) (resp azfake.Responder[armappservice.StaticSitesClientCreateOrUpdateStaticSiteFunctionAppSettingsResponse], errResp azfake.ErrorResponder)
+
+	// CreateUserRolesInvitationLink is the fake for method StaticSitesClient.CreateUserRolesInvitationLink
+	// HTTP status codes to indicate success: http.StatusOK
+	CreateUserRolesInvitationLink func(ctx context.Context, resourceGroupName string, name string, staticSiteUserRolesInvitationEnvelope armappservice.StaticSiteUserInvitationRequestResource, options *armappservice.StaticSitesClientCreateUserRolesInvitationLinkOptions) (resp azfake.Responder[armappservice.StaticSitesClientCreateUserRolesInvitationLinkResponse], errResp azfake.ErrorResponder)
+
+	// DeleteBuildDatabaseConnection is the fake for method StaticSitesClient.DeleteBuildDatabaseConnection
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusNoContent
+	DeleteBuildDatabaseConnection func(ctx context.Context, resourceGroupName string, name string, environmentName string, databaseConnectionName string, options *armappservice.StaticSitesClientDeleteBuildDatabaseConnectionOptions) (resp azfake.Responder[armappservice.StaticSitesClientDeleteBuildDatabaseConnectionResponse], errResp azfake.ErrorResponder)
+
+	// DeleteDatabaseConnection is the fake for method StaticSitesClient.DeleteDatabaseConnection
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusNoContent
+	DeleteDatabaseConnection func(ctx context.Context, resourceGroupName string, name string, databaseConnectionName string, options *armappservice.StaticSitesClientDeleteDatabaseConnectionOptions) (resp azfake.Responder[armappservice.StaticSitesClientDeleteDatabaseConnectionResponse], errResp azfake.ErrorResponder)
+
+	// DeleteStaticSiteUser is the fake for method StaticSitesClient.DeleteStaticSiteUser
+	// HTTP status codes to indicate success: http.StatusOK
+	DeleteStaticSiteUser func(ctx context.Context, resourceGroupName string, name string, authprovider string, userid string, options *armappservice.StaticSitesClientDeleteStaticSiteUserOptions) (resp azfake.Responder[armappservice.StaticSitesClientDeleteStaticSiteUserResponse], errResp azfake.ErrorResponder)
 
 	// DetachUserProvidedFunctionAppFromStaticSite is the fake for method StaticSitesClient.DetachUserProvidedFunctionAppFromStaticSite
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusNoContent
@@ -126,14 +154,6 @@ type StaticSitesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	GetBuildDatabaseConnectionWithDetails func(ctx context.Context, resourceGroupName string, name string, environmentName string, databaseConnectionName string, options *armappservice.StaticSitesClientGetBuildDatabaseConnectionWithDetailsOptions) (resp azfake.Responder[armappservice.StaticSitesClientGetBuildDatabaseConnectionWithDetailsResponse], errResp azfake.ErrorResponder)
 
-	// NewGetBuildDatabaseConnectionsPager is the fake for method StaticSitesClient.NewGetBuildDatabaseConnectionsPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewGetBuildDatabaseConnectionsPager func(resourceGroupName string, name string, environmentName string, options *armappservice.StaticSitesClientGetBuildDatabaseConnectionsOptions) (resp azfake.PagerResponder[armappservice.StaticSitesClientGetBuildDatabaseConnectionsResponse])
-
-	// NewGetBuildDatabaseConnectionsWithDetailsPager is the fake for method StaticSitesClient.NewGetBuildDatabaseConnectionsWithDetailsPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewGetBuildDatabaseConnectionsWithDetailsPager func(resourceGroupName string, name string, environmentName string, options *armappservice.StaticSitesClientGetBuildDatabaseConnectionsWithDetailsOptions) (resp azfake.PagerResponder[armappservice.StaticSitesClientGetBuildDatabaseConnectionsWithDetailsResponse])
-
 	// GetDatabaseConnection is the fake for method StaticSitesClient.GetDatabaseConnection
 	// HTTP status codes to indicate success: http.StatusOK
 	GetDatabaseConnection func(ctx context.Context, resourceGroupName string, name string, databaseConnectionName string, options *armappservice.StaticSitesClientGetDatabaseConnectionOptions) (resp azfake.Responder[armappservice.StaticSitesClientGetDatabaseConnectionResponse], errResp azfake.ErrorResponder)
@@ -141,14 +161,6 @@ type StaticSitesServer struct {
 	// GetDatabaseConnectionWithDetails is the fake for method StaticSitesClient.GetDatabaseConnectionWithDetails
 	// HTTP status codes to indicate success: http.StatusOK
 	GetDatabaseConnectionWithDetails func(ctx context.Context, resourceGroupName string, name string, databaseConnectionName string, options *armappservice.StaticSitesClientGetDatabaseConnectionWithDetailsOptions) (resp azfake.Responder[armappservice.StaticSitesClientGetDatabaseConnectionWithDetailsResponse], errResp azfake.ErrorResponder)
-
-	// NewGetDatabaseConnectionsPager is the fake for method StaticSitesClient.NewGetDatabaseConnectionsPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewGetDatabaseConnectionsPager func(resourceGroupName string, name string, options *armappservice.StaticSitesClientGetDatabaseConnectionsOptions) (resp azfake.PagerResponder[armappservice.StaticSitesClientGetDatabaseConnectionsResponse])
-
-	// NewGetDatabaseConnectionsWithDetailsPager is the fake for method StaticSitesClient.NewGetDatabaseConnectionsWithDetailsPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewGetDatabaseConnectionsWithDetailsPager func(resourceGroupName string, name string, options *armappservice.StaticSitesClientGetDatabaseConnectionsWithDetailsOptions) (resp azfake.PagerResponder[armappservice.StaticSitesClientGetDatabaseConnectionsWithDetailsResponse])
 
 	// GetLinkedBackend is the fake for method StaticSitesClient.GetLinkedBackend
 	// HTTP status codes to indicate success: http.StatusOK
@@ -158,21 +170,9 @@ type StaticSitesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	GetLinkedBackendForBuild func(ctx context.Context, resourceGroupName string, name string, environmentName string, linkedBackendName string, options *armappservice.StaticSitesClientGetLinkedBackendForBuildOptions) (resp azfake.Responder[armappservice.StaticSitesClientGetLinkedBackendForBuildResponse], errResp azfake.ErrorResponder)
 
-	// NewGetLinkedBackendsPager is the fake for method StaticSitesClient.NewGetLinkedBackendsPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewGetLinkedBackendsPager func(resourceGroupName string, name string, options *armappservice.StaticSitesClientGetLinkedBackendsOptions) (resp azfake.PagerResponder[armappservice.StaticSitesClientGetLinkedBackendsResponse])
-
-	// NewGetLinkedBackendsForBuildPager is the fake for method StaticSitesClient.NewGetLinkedBackendsForBuildPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewGetLinkedBackendsForBuildPager func(resourceGroupName string, name string, environmentName string, options *armappservice.StaticSitesClientGetLinkedBackendsForBuildOptions) (resp azfake.PagerResponder[armappservice.StaticSitesClientGetLinkedBackendsForBuildResponse])
-
 	// GetPrivateEndpointConnection is the fake for method StaticSitesClient.GetPrivateEndpointConnection
 	// HTTP status codes to indicate success: http.StatusOK
 	GetPrivateEndpointConnection func(ctx context.Context, resourceGroupName string, name string, privateEndpointConnectionName string, options *armappservice.StaticSitesClientGetPrivateEndpointConnectionOptions) (resp azfake.Responder[armappservice.StaticSitesClientGetPrivateEndpointConnectionResponse], errResp azfake.ErrorResponder)
-
-	// NewGetPrivateEndpointConnectionListPager is the fake for method StaticSitesClient.NewGetPrivateEndpointConnectionListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewGetPrivateEndpointConnectionListPager func(resourceGroupName string, name string, options *armappservice.StaticSitesClientGetPrivateEndpointConnectionListOptions) (resp azfake.PagerResponder[armappservice.StaticSitesClientGetPrivateEndpointConnectionListResponse])
 
 	// GetPrivateLinkResources is the fake for method StaticSitesClient.GetPrivateLinkResources
 	// HTTP status codes to indicate success: http.StatusOK
@@ -186,17 +186,9 @@ type StaticSitesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	GetStaticSiteBuild func(ctx context.Context, resourceGroupName string, name string, environmentName string, options *armappservice.StaticSitesClientGetStaticSiteBuildOptions) (resp azfake.Responder[armappservice.StaticSitesClientGetStaticSiteBuildResponse], errResp azfake.ErrorResponder)
 
-	// NewGetStaticSiteBuildsPager is the fake for method StaticSitesClient.NewGetStaticSiteBuildsPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewGetStaticSiteBuildsPager func(resourceGroupName string, name string, options *armappservice.StaticSitesClientGetStaticSiteBuildsOptions) (resp azfake.PagerResponder[armappservice.StaticSitesClientGetStaticSiteBuildsResponse])
-
 	// GetStaticSiteCustomDomain is the fake for method StaticSitesClient.GetStaticSiteCustomDomain
 	// HTTP status codes to indicate success: http.StatusOK
 	GetStaticSiteCustomDomain func(ctx context.Context, resourceGroupName string, name string, domainName string, options *armappservice.StaticSitesClientGetStaticSiteCustomDomainOptions) (resp azfake.Responder[armappservice.StaticSitesClientGetStaticSiteCustomDomainResponse], errResp azfake.ErrorResponder)
-
-	// NewGetStaticSitesByResourceGroupPager is the fake for method StaticSitesClient.NewGetStaticSitesByResourceGroupPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewGetStaticSitesByResourceGroupPager func(resourceGroupName string, options *armappservice.StaticSitesClientGetStaticSitesByResourceGroupOptions) (resp azfake.PagerResponder[armappservice.StaticSitesClientGetStaticSitesByResourceGroupResponse])
 
 	// GetUserProvidedFunctionAppForStaticSite is the fake for method StaticSitesClient.GetUserProvidedFunctionAppForStaticSite
 	// HTTP status codes to indicate success: http.StatusOK
@@ -205,30 +197,6 @@ type StaticSitesServer struct {
 	// GetUserProvidedFunctionAppForStaticSiteBuild is the fake for method StaticSitesClient.GetUserProvidedFunctionAppForStaticSiteBuild
 	// HTTP status codes to indicate success: http.StatusOK
 	GetUserProvidedFunctionAppForStaticSiteBuild func(ctx context.Context, resourceGroupName string, name string, environmentName string, functionAppName string, options *armappservice.StaticSitesClientGetUserProvidedFunctionAppForStaticSiteBuildOptions) (resp azfake.Responder[armappservice.StaticSitesClientGetUserProvidedFunctionAppForStaticSiteBuildResponse], errResp azfake.ErrorResponder)
-
-	// NewGetUserProvidedFunctionAppsForStaticSitePager is the fake for method StaticSitesClient.NewGetUserProvidedFunctionAppsForStaticSitePager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewGetUserProvidedFunctionAppsForStaticSitePager func(resourceGroupName string, name string, options *armappservice.StaticSitesClientGetUserProvidedFunctionAppsForStaticSiteOptions) (resp azfake.PagerResponder[armappservice.StaticSitesClientGetUserProvidedFunctionAppsForStaticSiteResponse])
-
-	// NewGetUserProvidedFunctionAppsForStaticSiteBuildPager is the fake for method StaticSitesClient.NewGetUserProvidedFunctionAppsForStaticSiteBuildPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewGetUserProvidedFunctionAppsForStaticSiteBuildPager func(resourceGroupName string, name string, environmentName string, options *armappservice.StaticSitesClientGetUserProvidedFunctionAppsForStaticSiteBuildOptions) (resp azfake.PagerResponder[armappservice.StaticSitesClientGetUserProvidedFunctionAppsForStaticSiteBuildResponse])
-
-	// BeginLinkBackend is the fake for method StaticSitesClient.BeginLinkBackend
-	// HTTP status codes to indicate success: http.StatusOK
-	BeginLinkBackend func(ctx context.Context, resourceGroupName string, name string, linkedBackendName string, staticSiteLinkedBackendEnvelope armappservice.StaticSiteLinkedBackendARMResource, options *armappservice.StaticSitesClientBeginLinkBackendOptions) (resp azfake.PollerResponder[armappservice.StaticSitesClientLinkBackendResponse], errResp azfake.ErrorResponder)
-
-	// BeginLinkBackendToBuild is the fake for method StaticSitesClient.BeginLinkBackendToBuild
-	// HTTP status codes to indicate success: http.StatusOK
-	BeginLinkBackendToBuild func(ctx context.Context, resourceGroupName string, name string, environmentName string, linkedBackendName string, staticSiteLinkedBackendEnvelope armappservice.StaticSiteLinkedBackendARMResource, options *armappservice.StaticSitesClientBeginLinkBackendToBuildOptions) (resp azfake.PollerResponder[armappservice.StaticSitesClientLinkBackendToBuildResponse], errResp azfake.ErrorResponder)
-
-	// NewListPager is the fake for method StaticSitesClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(options *armappservice.StaticSitesClientListOptions) (resp azfake.PagerResponder[armappservice.StaticSitesClientListResponse])
-
-	// NewListBasicAuthPager is the fake for method StaticSitesClient.NewListBasicAuthPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListBasicAuthPager func(resourceGroupName string, name string, options *armappservice.StaticSitesClientListBasicAuthOptions) (resp azfake.PagerResponder[armappservice.StaticSitesClientListBasicAuthResponse])
 
 	// ListStaticSiteAppSettings is the fake for method StaticSitesClient.ListStaticSiteAppSettings
 	// HTTP status codes to indicate success: http.StatusOK
@@ -242,29 +210,81 @@ type StaticSitesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	ListStaticSiteBuildFunctionAppSettings func(ctx context.Context, resourceGroupName string, name string, environmentName string, options *armappservice.StaticSitesClientListStaticSiteBuildFunctionAppSettingsOptions) (resp azfake.Responder[armappservice.StaticSitesClientListStaticSiteBuildFunctionAppSettingsResponse], errResp azfake.ErrorResponder)
 
-	// NewListStaticSiteBuildFunctionsPager is the fake for method StaticSitesClient.NewListStaticSiteBuildFunctionsPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListStaticSiteBuildFunctionsPager func(resourceGroupName string, name string, environmentName string, options *armappservice.StaticSitesClientListStaticSiteBuildFunctionsOptions) (resp azfake.PagerResponder[armappservice.StaticSitesClientListStaticSiteBuildFunctionsResponse])
-
 	// ListStaticSiteConfiguredRoles is the fake for method StaticSitesClient.ListStaticSiteConfiguredRoles
 	// HTTP status codes to indicate success: http.StatusOK
 	ListStaticSiteConfiguredRoles func(ctx context.Context, resourceGroupName string, name string, options *armappservice.StaticSitesClientListStaticSiteConfiguredRolesOptions) (resp azfake.Responder[armappservice.StaticSitesClientListStaticSiteConfiguredRolesResponse], errResp azfake.ErrorResponder)
-
-	// NewListStaticSiteCustomDomainsPager is the fake for method StaticSitesClient.NewListStaticSiteCustomDomainsPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListStaticSiteCustomDomainsPager func(resourceGroupName string, name string, options *armappservice.StaticSitesClientListStaticSiteCustomDomainsOptions) (resp azfake.PagerResponder[armappservice.StaticSitesClientListStaticSiteCustomDomainsResponse])
 
 	// ListStaticSiteFunctionAppSettings is the fake for method StaticSitesClient.ListStaticSiteFunctionAppSettings
 	// HTTP status codes to indicate success: http.StatusOK
 	ListStaticSiteFunctionAppSettings func(ctx context.Context, resourceGroupName string, name string, options *armappservice.StaticSitesClientListStaticSiteFunctionAppSettingsOptions) (resp azfake.Responder[armappservice.StaticSitesClientListStaticSiteFunctionAppSettingsResponse], errResp azfake.ErrorResponder)
 
-	// NewListStaticSiteFunctionsPager is the fake for method StaticSitesClient.NewListStaticSiteFunctionsPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListStaticSiteFunctionsPager func(resourceGroupName string, name string, options *armappservice.StaticSitesClientListStaticSiteFunctionsOptions) (resp azfake.PagerResponder[armappservice.StaticSitesClientListStaticSiteFunctionsResponse])
-
 	// ListStaticSiteSecrets is the fake for method StaticSitesClient.ListStaticSiteSecrets
 	// HTTP status codes to indicate success: http.StatusOK
 	ListStaticSiteSecrets func(ctx context.Context, resourceGroupName string, name string, options *armappservice.StaticSitesClientListStaticSiteSecretsOptions) (resp azfake.Responder[armappservice.StaticSitesClientListStaticSiteSecretsResponse], errResp azfake.ErrorResponder)
+
+	// NewGetBuildDatabaseConnectionsPager is the fake for method StaticSitesClient.NewGetBuildDatabaseConnectionsPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewGetBuildDatabaseConnectionsPager func(resourceGroupName string, name string, environmentName string, options *armappservice.StaticSitesClientGetBuildDatabaseConnectionsOptions) (resp azfake.PagerResponder[armappservice.StaticSitesClientGetBuildDatabaseConnectionsResponse])
+
+	// NewGetBuildDatabaseConnectionsWithDetailsPager is the fake for method StaticSitesClient.NewGetBuildDatabaseConnectionsWithDetailsPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewGetBuildDatabaseConnectionsWithDetailsPager func(resourceGroupName string, name string, environmentName string, options *armappservice.StaticSitesClientGetBuildDatabaseConnectionsWithDetailsOptions) (resp azfake.PagerResponder[armappservice.StaticSitesClientGetBuildDatabaseConnectionsWithDetailsResponse])
+
+	// NewGetDatabaseConnectionsPager is the fake for method StaticSitesClient.NewGetDatabaseConnectionsPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewGetDatabaseConnectionsPager func(resourceGroupName string, name string, options *armappservice.StaticSitesClientGetDatabaseConnectionsOptions) (resp azfake.PagerResponder[armappservice.StaticSitesClientGetDatabaseConnectionsResponse])
+
+	// NewGetDatabaseConnectionsWithDetailsPager is the fake for method StaticSitesClient.NewGetDatabaseConnectionsWithDetailsPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewGetDatabaseConnectionsWithDetailsPager func(resourceGroupName string, name string, options *armappservice.StaticSitesClientGetDatabaseConnectionsWithDetailsOptions) (resp azfake.PagerResponder[armappservice.StaticSitesClientGetDatabaseConnectionsWithDetailsResponse])
+
+	// NewGetLinkedBackendsForBuildPager is the fake for method StaticSitesClient.NewGetLinkedBackendsForBuildPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewGetLinkedBackendsForBuildPager func(resourceGroupName string, name string, environmentName string, options *armappservice.StaticSitesClientGetLinkedBackendsForBuildOptions) (resp azfake.PagerResponder[armappservice.StaticSitesClientGetLinkedBackendsForBuildResponse])
+
+	// NewGetLinkedBackendsPager is the fake for method StaticSitesClient.NewGetLinkedBackendsPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewGetLinkedBackendsPager func(resourceGroupName string, name string, options *armappservice.StaticSitesClientGetLinkedBackendsOptions) (resp azfake.PagerResponder[armappservice.StaticSitesClientGetLinkedBackendsResponse])
+
+	// NewGetPrivateEndpointConnectionListPager is the fake for method StaticSitesClient.NewGetPrivateEndpointConnectionListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewGetPrivateEndpointConnectionListPager func(resourceGroupName string, name string, options *armappservice.StaticSitesClientGetPrivateEndpointConnectionListOptions) (resp azfake.PagerResponder[armappservice.StaticSitesClientGetPrivateEndpointConnectionListResponse])
+
+	// NewGetStaticSiteBuildsPager is the fake for method StaticSitesClient.NewGetStaticSiteBuildsPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewGetStaticSiteBuildsPager func(resourceGroupName string, name string, options *armappservice.StaticSitesClientGetStaticSiteBuildsOptions) (resp azfake.PagerResponder[armappservice.StaticSitesClientGetStaticSiteBuildsResponse])
+
+	// NewGetStaticSitesByResourceGroupPager is the fake for method StaticSitesClient.NewGetStaticSitesByResourceGroupPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewGetStaticSitesByResourceGroupPager func(resourceGroupName string, options *armappservice.StaticSitesClientGetStaticSitesByResourceGroupOptions) (resp azfake.PagerResponder[armappservice.StaticSitesClientGetStaticSitesByResourceGroupResponse])
+
+	// NewGetUserProvidedFunctionAppsForStaticSiteBuildPager is the fake for method StaticSitesClient.NewGetUserProvidedFunctionAppsForStaticSiteBuildPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewGetUserProvidedFunctionAppsForStaticSiteBuildPager func(resourceGroupName string, name string, environmentName string, options *armappservice.StaticSitesClientGetUserProvidedFunctionAppsForStaticSiteBuildOptions) (resp azfake.PagerResponder[armappservice.StaticSitesClientGetUserProvidedFunctionAppsForStaticSiteBuildResponse])
+
+	// NewGetUserProvidedFunctionAppsForStaticSitePager is the fake for method StaticSitesClient.NewGetUserProvidedFunctionAppsForStaticSitePager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewGetUserProvidedFunctionAppsForStaticSitePager func(resourceGroupName string, name string, options *armappservice.StaticSitesClientGetUserProvidedFunctionAppsForStaticSiteOptions) (resp azfake.PagerResponder[armappservice.StaticSitesClientGetUserProvidedFunctionAppsForStaticSiteResponse])
+
+	// NewListBasicAuthPager is the fake for method StaticSitesClient.NewListBasicAuthPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListBasicAuthPager func(resourceGroupName string, name string, options *armappservice.StaticSitesClientListBasicAuthOptions) (resp azfake.PagerResponder[armappservice.StaticSitesClientListBasicAuthResponse])
+
+	// NewListPager is the fake for method StaticSitesClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(options *armappservice.StaticSitesClientListOptions) (resp azfake.PagerResponder[armappservice.StaticSitesClientListResponse])
+
+	// NewListStaticSiteBuildFunctionsPager is the fake for method StaticSitesClient.NewListStaticSiteBuildFunctionsPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListStaticSiteBuildFunctionsPager func(resourceGroupName string, name string, environmentName string, options *armappservice.StaticSitesClientListStaticSiteBuildFunctionsOptions) (resp azfake.PagerResponder[armappservice.StaticSitesClientListStaticSiteBuildFunctionsResponse])
+
+	// NewListStaticSiteCustomDomainsPager is the fake for method StaticSitesClient.NewListStaticSiteCustomDomainsPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListStaticSiteCustomDomainsPager func(resourceGroupName string, name string, options *armappservice.StaticSitesClientListStaticSiteCustomDomainsOptions) (resp azfake.PagerResponder[armappservice.StaticSitesClientListStaticSiteCustomDomainsResponse])
+
+	// NewListStaticSiteFunctionsPager is the fake for method StaticSitesClient.NewListStaticSiteFunctionsPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListStaticSiteFunctionsPager func(resourceGroupName string, name string, options *armappservice.StaticSitesClientListStaticSiteFunctionsOptions) (resp azfake.PagerResponder[armappservice.StaticSitesClientListStaticSiteFunctionsResponse])
 
 	// NewListStaticSiteUsersPager is the fake for method StaticSitesClient.NewListStaticSiteUsersPager
 	// HTTP status codes to indicate success: http.StatusOK
@@ -273,14 +293,6 @@ type StaticSitesServer struct {
 	// PreviewWorkflow is the fake for method StaticSitesClient.PreviewWorkflow
 	// HTTP status codes to indicate success: http.StatusOK
 	PreviewWorkflow func(ctx context.Context, location string, staticSitesWorkflowPreviewRequest armappservice.StaticSitesWorkflowPreviewRequest, options *armappservice.StaticSitesClientPreviewWorkflowOptions) (resp azfake.Responder[armappservice.StaticSitesClientPreviewWorkflowResponse], errResp azfake.ErrorResponder)
-
-	// BeginRegisterUserProvidedFunctionAppWithStaticSite is the fake for method StaticSitesClient.BeginRegisterUserProvidedFunctionAppWithStaticSite
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginRegisterUserProvidedFunctionAppWithStaticSite func(ctx context.Context, resourceGroupName string, name string, functionAppName string, staticSiteUserProvidedFunctionEnvelope armappservice.StaticSiteUserProvidedFunctionAppARMResource, options *armappservice.StaticSitesClientBeginRegisterUserProvidedFunctionAppWithStaticSiteOptions) (resp azfake.PollerResponder[armappservice.StaticSitesClientRegisterUserProvidedFunctionAppWithStaticSiteResponse], errResp azfake.ErrorResponder)
-
-	// BeginRegisterUserProvidedFunctionAppWithStaticSiteBuild is the fake for method StaticSitesClient.BeginRegisterUserProvidedFunctionAppWithStaticSiteBuild
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginRegisterUserProvidedFunctionAppWithStaticSiteBuild func(ctx context.Context, resourceGroupName string, name string, environmentName string, functionAppName string, staticSiteUserProvidedFunctionEnvelope armappservice.StaticSiteUserProvidedFunctionAppARMResource, options *armappservice.StaticSitesClientBeginRegisterUserProvidedFunctionAppWithStaticSiteBuildOptions) (resp azfake.PollerResponder[armappservice.StaticSitesClientRegisterUserProvidedFunctionAppWithStaticSiteBuildResponse], errResp azfake.ErrorResponder)
 
 	// ResetStaticSiteAPIKey is the fake for method StaticSitesClient.ResetStaticSiteAPIKey
 	// HTTP status codes to indicate success: http.StatusOK
@@ -309,18 +321,6 @@ type StaticSitesServer struct {
 	// UpdateStaticSiteUser is the fake for method StaticSitesClient.UpdateStaticSiteUser
 	// HTTP status codes to indicate success: http.StatusOK
 	UpdateStaticSiteUser func(ctx context.Context, resourceGroupName string, name string, authprovider string, userid string, staticSiteUserEnvelope armappservice.StaticSiteUserARMResource, options *armappservice.StaticSitesClientUpdateStaticSiteUserOptions) (resp azfake.Responder[armappservice.StaticSitesClientUpdateStaticSiteUserResponse], errResp azfake.ErrorResponder)
-
-	// BeginValidateBackend is the fake for method StaticSitesClient.BeginValidateBackend
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginValidateBackend func(ctx context.Context, resourceGroupName string, name string, linkedBackendName string, staticSiteLinkedBackendEnvelope armappservice.StaticSiteLinkedBackendARMResource, options *armappservice.StaticSitesClientBeginValidateBackendOptions) (resp azfake.PollerResponder[armappservice.StaticSitesClientValidateBackendResponse], errResp azfake.ErrorResponder)
-
-	// BeginValidateBackendForBuild is the fake for method StaticSitesClient.BeginValidateBackendForBuild
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginValidateBackendForBuild func(ctx context.Context, resourceGroupName string, name string, environmentName string, linkedBackendName string, staticSiteLinkedBackendEnvelope armappservice.StaticSiteLinkedBackendARMResource, options *armappservice.StaticSitesClientBeginValidateBackendForBuildOptions) (resp azfake.PollerResponder[armappservice.StaticSitesClientValidateBackendForBuildResponse], errResp azfake.ErrorResponder)
-
-	// BeginValidateCustomDomainCanBeAddedToStaticSite is the fake for method StaticSitesClient.BeginValidateCustomDomainCanBeAddedToStaticSite
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginValidateCustomDomainCanBeAddedToStaticSite func(ctx context.Context, resourceGroupName string, name string, domainName string, staticSiteCustomDomainRequestPropertiesEnvelope armappservice.StaticSiteCustomDomainRequestPropertiesARMResource, options *armappservice.StaticSitesClientBeginValidateCustomDomainCanBeAddedToStaticSiteOptions) (resp azfake.PollerResponder[armappservice.StaticSitesClientValidateCustomDomainCanBeAddedToStaticSiteResponse], errResp azfake.ErrorResponder)
 }
 
 // NewStaticSitesServerTransport creates a new instance of StaticSitesServerTransport with the provided implementation.
@@ -339,30 +339,30 @@ func NewStaticSitesServerTransport(srv *StaticSitesServer) *StaticSitesServerTra
 		beginDeleteStaticSiteBuild:                              newTracker[azfake.PollerResponder[armappservice.StaticSitesClientDeleteStaticSiteBuildResponse]](),
 		beginDeleteStaticSiteCustomDomain:                       newTracker[azfake.PollerResponder[armappservice.StaticSitesClientDeleteStaticSiteCustomDomainResponse]](),
 		beginDetachStaticSite:                                   newTracker[azfake.PollerResponder[armappservice.StaticSitesClientDetachStaticSiteResponse]](),
-		newGetBuildDatabaseConnectionsPager:                     newTracker[azfake.PagerResponder[armappservice.StaticSitesClientGetBuildDatabaseConnectionsResponse]](),
-		newGetBuildDatabaseConnectionsWithDetailsPager:          newTracker[azfake.PagerResponder[armappservice.StaticSitesClientGetBuildDatabaseConnectionsWithDetailsResponse]](),
-		newGetDatabaseConnectionsPager:                          newTracker[azfake.PagerResponder[armappservice.StaticSitesClientGetDatabaseConnectionsResponse]](),
-		newGetDatabaseConnectionsWithDetailsPager:               newTracker[azfake.PagerResponder[armappservice.StaticSitesClientGetDatabaseConnectionsWithDetailsResponse]](),
-		newGetLinkedBackendsPager:                               newTracker[azfake.PagerResponder[armappservice.StaticSitesClientGetLinkedBackendsResponse]](),
-		newGetLinkedBackendsForBuildPager:                       newTracker[azfake.PagerResponder[armappservice.StaticSitesClientGetLinkedBackendsForBuildResponse]](),
-		newGetPrivateEndpointConnectionListPager:                newTracker[azfake.PagerResponder[armappservice.StaticSitesClientGetPrivateEndpointConnectionListResponse]](),
-		newGetStaticSiteBuildsPager:                             newTracker[azfake.PagerResponder[armappservice.StaticSitesClientGetStaticSiteBuildsResponse]](),
-		newGetStaticSitesByResourceGroupPager:                   newTracker[azfake.PagerResponder[armappservice.StaticSitesClientGetStaticSitesByResourceGroupResponse]](),
-		newGetUserProvidedFunctionAppsForStaticSitePager:        newTracker[azfake.PagerResponder[armappservice.StaticSitesClientGetUserProvidedFunctionAppsForStaticSiteResponse]](),
-		newGetUserProvidedFunctionAppsForStaticSiteBuildPager:   newTracker[azfake.PagerResponder[armappservice.StaticSitesClientGetUserProvidedFunctionAppsForStaticSiteBuildResponse]](),
 		beginLinkBackend:                                        newTracker[azfake.PollerResponder[armappservice.StaticSitesClientLinkBackendResponse]](),
 		beginLinkBackendToBuild:                                 newTracker[azfake.PollerResponder[armappservice.StaticSitesClientLinkBackendToBuildResponse]](),
-		newListPager:                                            newTracker[azfake.PagerResponder[armappservice.StaticSitesClientListResponse]](),
-		newListBasicAuthPager:                                   newTracker[azfake.PagerResponder[armappservice.StaticSitesClientListBasicAuthResponse]](),
-		newListStaticSiteBuildFunctionsPager:                    newTracker[azfake.PagerResponder[armappservice.StaticSitesClientListStaticSiteBuildFunctionsResponse]](),
-		newListStaticSiteCustomDomainsPager:                     newTracker[azfake.PagerResponder[armappservice.StaticSitesClientListStaticSiteCustomDomainsResponse]](),
-		newListStaticSiteFunctionsPager:                         newTracker[azfake.PagerResponder[armappservice.StaticSitesClientListStaticSiteFunctionsResponse]](),
-		newListStaticSiteUsersPager:                             newTracker[azfake.PagerResponder[armappservice.StaticSitesClientListStaticSiteUsersResponse]](),
 		beginRegisterUserProvidedFunctionAppWithStaticSite:      newTracker[azfake.PollerResponder[armappservice.StaticSitesClientRegisterUserProvidedFunctionAppWithStaticSiteResponse]](),
 		beginRegisterUserProvidedFunctionAppWithStaticSiteBuild: newTracker[azfake.PollerResponder[armappservice.StaticSitesClientRegisterUserProvidedFunctionAppWithStaticSiteBuildResponse]](),
 		beginValidateBackend:                                    newTracker[azfake.PollerResponder[armappservice.StaticSitesClientValidateBackendResponse]](),
 		beginValidateBackendForBuild:                            newTracker[azfake.PollerResponder[armappservice.StaticSitesClientValidateBackendForBuildResponse]](),
 		beginValidateCustomDomainCanBeAddedToStaticSite:         newTracker[azfake.PollerResponder[armappservice.StaticSitesClientValidateCustomDomainCanBeAddedToStaticSiteResponse]](),
+		newGetBuildDatabaseConnectionsPager:                     newTracker[azfake.PagerResponder[armappservice.StaticSitesClientGetBuildDatabaseConnectionsResponse]](),
+		newGetBuildDatabaseConnectionsWithDetailsPager:          newTracker[azfake.PagerResponder[armappservice.StaticSitesClientGetBuildDatabaseConnectionsWithDetailsResponse]](),
+		newGetDatabaseConnectionsPager:                          newTracker[azfake.PagerResponder[armappservice.StaticSitesClientGetDatabaseConnectionsResponse]](),
+		newGetDatabaseConnectionsWithDetailsPager:               newTracker[azfake.PagerResponder[armappservice.StaticSitesClientGetDatabaseConnectionsWithDetailsResponse]](),
+		newGetLinkedBackendsForBuildPager:                       newTracker[azfake.PagerResponder[armappservice.StaticSitesClientGetLinkedBackendsForBuildResponse]](),
+		newGetLinkedBackendsPager:                               newTracker[azfake.PagerResponder[armappservice.StaticSitesClientGetLinkedBackendsResponse]](),
+		newGetPrivateEndpointConnectionListPager:                newTracker[azfake.PagerResponder[armappservice.StaticSitesClientGetPrivateEndpointConnectionListResponse]](),
+		newGetStaticSiteBuildsPager:                             newTracker[azfake.PagerResponder[armappservice.StaticSitesClientGetStaticSiteBuildsResponse]](),
+		newGetStaticSitesByResourceGroupPager:                   newTracker[azfake.PagerResponder[armappservice.StaticSitesClientGetStaticSitesByResourceGroupResponse]](),
+		newGetUserProvidedFunctionAppsForStaticSiteBuildPager:   newTracker[azfake.PagerResponder[armappservice.StaticSitesClientGetUserProvidedFunctionAppsForStaticSiteBuildResponse]](),
+		newGetUserProvidedFunctionAppsForStaticSitePager:        newTracker[azfake.PagerResponder[armappservice.StaticSitesClientGetUserProvidedFunctionAppsForStaticSiteResponse]](),
+		newListBasicAuthPager:                                   newTracker[azfake.PagerResponder[armappservice.StaticSitesClientListBasicAuthResponse]](),
+		newListPager:                                            newTracker[azfake.PagerResponder[armappservice.StaticSitesClientListResponse]](),
+		newListStaticSiteBuildFunctionsPager:                    newTracker[azfake.PagerResponder[armappservice.StaticSitesClientListStaticSiteBuildFunctionsResponse]](),
+		newListStaticSiteCustomDomainsPager:                     newTracker[azfake.PagerResponder[armappservice.StaticSitesClientListStaticSiteCustomDomainsResponse]](),
+		newListStaticSiteFunctionsPager:                         newTracker[azfake.PagerResponder[armappservice.StaticSitesClientListStaticSiteFunctionsResponse]](),
+		newListStaticSiteUsersPager:                             newTracker[azfake.PagerResponder[armappservice.StaticSitesClientListStaticSiteUsersResponse]](),
 	}
 }
 
@@ -380,30 +380,30 @@ type StaticSitesServerTransport struct {
 	beginDeleteStaticSiteBuild                              *tracker[azfake.PollerResponder[armappservice.StaticSitesClientDeleteStaticSiteBuildResponse]]
 	beginDeleteStaticSiteCustomDomain                       *tracker[azfake.PollerResponder[armappservice.StaticSitesClientDeleteStaticSiteCustomDomainResponse]]
 	beginDetachStaticSite                                   *tracker[azfake.PollerResponder[armappservice.StaticSitesClientDetachStaticSiteResponse]]
-	newGetBuildDatabaseConnectionsPager                     *tracker[azfake.PagerResponder[armappservice.StaticSitesClientGetBuildDatabaseConnectionsResponse]]
-	newGetBuildDatabaseConnectionsWithDetailsPager          *tracker[azfake.PagerResponder[armappservice.StaticSitesClientGetBuildDatabaseConnectionsWithDetailsResponse]]
-	newGetDatabaseConnectionsPager                          *tracker[azfake.PagerResponder[armappservice.StaticSitesClientGetDatabaseConnectionsResponse]]
-	newGetDatabaseConnectionsWithDetailsPager               *tracker[azfake.PagerResponder[armappservice.StaticSitesClientGetDatabaseConnectionsWithDetailsResponse]]
-	newGetLinkedBackendsPager                               *tracker[azfake.PagerResponder[armappservice.StaticSitesClientGetLinkedBackendsResponse]]
-	newGetLinkedBackendsForBuildPager                       *tracker[azfake.PagerResponder[armappservice.StaticSitesClientGetLinkedBackendsForBuildResponse]]
-	newGetPrivateEndpointConnectionListPager                *tracker[azfake.PagerResponder[armappservice.StaticSitesClientGetPrivateEndpointConnectionListResponse]]
-	newGetStaticSiteBuildsPager                             *tracker[azfake.PagerResponder[armappservice.StaticSitesClientGetStaticSiteBuildsResponse]]
-	newGetStaticSitesByResourceGroupPager                   *tracker[azfake.PagerResponder[armappservice.StaticSitesClientGetStaticSitesByResourceGroupResponse]]
-	newGetUserProvidedFunctionAppsForStaticSitePager        *tracker[azfake.PagerResponder[armappservice.StaticSitesClientGetUserProvidedFunctionAppsForStaticSiteResponse]]
-	newGetUserProvidedFunctionAppsForStaticSiteBuildPager   *tracker[azfake.PagerResponder[armappservice.StaticSitesClientGetUserProvidedFunctionAppsForStaticSiteBuildResponse]]
 	beginLinkBackend                                        *tracker[azfake.PollerResponder[armappservice.StaticSitesClientLinkBackendResponse]]
 	beginLinkBackendToBuild                                 *tracker[azfake.PollerResponder[armappservice.StaticSitesClientLinkBackendToBuildResponse]]
-	newListPager                                            *tracker[azfake.PagerResponder[armappservice.StaticSitesClientListResponse]]
-	newListBasicAuthPager                                   *tracker[azfake.PagerResponder[armappservice.StaticSitesClientListBasicAuthResponse]]
-	newListStaticSiteBuildFunctionsPager                    *tracker[azfake.PagerResponder[armappservice.StaticSitesClientListStaticSiteBuildFunctionsResponse]]
-	newListStaticSiteCustomDomainsPager                     *tracker[azfake.PagerResponder[armappservice.StaticSitesClientListStaticSiteCustomDomainsResponse]]
-	newListStaticSiteFunctionsPager                         *tracker[azfake.PagerResponder[armappservice.StaticSitesClientListStaticSiteFunctionsResponse]]
-	newListStaticSiteUsersPager                             *tracker[azfake.PagerResponder[armappservice.StaticSitesClientListStaticSiteUsersResponse]]
 	beginRegisterUserProvidedFunctionAppWithStaticSite      *tracker[azfake.PollerResponder[armappservice.StaticSitesClientRegisterUserProvidedFunctionAppWithStaticSiteResponse]]
 	beginRegisterUserProvidedFunctionAppWithStaticSiteBuild *tracker[azfake.PollerResponder[armappservice.StaticSitesClientRegisterUserProvidedFunctionAppWithStaticSiteBuildResponse]]
 	beginValidateBackend                                    *tracker[azfake.PollerResponder[armappservice.StaticSitesClientValidateBackendResponse]]
 	beginValidateBackendForBuild                            *tracker[azfake.PollerResponder[armappservice.StaticSitesClientValidateBackendForBuildResponse]]
 	beginValidateCustomDomainCanBeAddedToStaticSite         *tracker[azfake.PollerResponder[armappservice.StaticSitesClientValidateCustomDomainCanBeAddedToStaticSiteResponse]]
+	newGetBuildDatabaseConnectionsPager                     *tracker[azfake.PagerResponder[armappservice.StaticSitesClientGetBuildDatabaseConnectionsResponse]]
+	newGetBuildDatabaseConnectionsWithDetailsPager          *tracker[azfake.PagerResponder[armappservice.StaticSitesClientGetBuildDatabaseConnectionsWithDetailsResponse]]
+	newGetDatabaseConnectionsPager                          *tracker[azfake.PagerResponder[armappservice.StaticSitesClientGetDatabaseConnectionsResponse]]
+	newGetDatabaseConnectionsWithDetailsPager               *tracker[azfake.PagerResponder[armappservice.StaticSitesClientGetDatabaseConnectionsWithDetailsResponse]]
+	newGetLinkedBackendsForBuildPager                       *tracker[azfake.PagerResponder[armappservice.StaticSitesClientGetLinkedBackendsForBuildResponse]]
+	newGetLinkedBackendsPager                               *tracker[azfake.PagerResponder[armappservice.StaticSitesClientGetLinkedBackendsResponse]]
+	newGetPrivateEndpointConnectionListPager                *tracker[azfake.PagerResponder[armappservice.StaticSitesClientGetPrivateEndpointConnectionListResponse]]
+	newGetStaticSiteBuildsPager                             *tracker[azfake.PagerResponder[armappservice.StaticSitesClientGetStaticSiteBuildsResponse]]
+	newGetStaticSitesByResourceGroupPager                   *tracker[azfake.PagerResponder[armappservice.StaticSitesClientGetStaticSitesByResourceGroupResponse]]
+	newGetUserProvidedFunctionAppsForStaticSiteBuildPager   *tracker[azfake.PagerResponder[armappservice.StaticSitesClientGetUserProvidedFunctionAppsForStaticSiteBuildResponse]]
+	newGetUserProvidedFunctionAppsForStaticSitePager        *tracker[azfake.PagerResponder[armappservice.StaticSitesClientGetUserProvidedFunctionAppsForStaticSiteResponse]]
+	newListBasicAuthPager                                   *tracker[azfake.PagerResponder[armappservice.StaticSitesClientListBasicAuthResponse]]
+	newListPager                                            *tracker[azfake.PagerResponder[armappservice.StaticSitesClientListResponse]]
+	newListStaticSiteBuildFunctionsPager                    *tracker[azfake.PagerResponder[armappservice.StaticSitesClientListStaticSiteBuildFunctionsResponse]]
+	newListStaticSiteCustomDomainsPager                     *tracker[azfake.PagerResponder[armappservice.StaticSitesClientListStaticSiteCustomDomainsResponse]]
+	newListStaticSiteFunctionsPager                         *tracker[azfake.PagerResponder[armappservice.StaticSitesClientListStaticSiteFunctionsResponse]]
+	newListStaticSiteUsersPager                             *tracker[azfake.PagerResponder[armappservice.StaticSitesClientListStaticSiteUsersResponse]]
 }
 
 // Do implements the policy.Transporter interface for StaticSitesServerTransport.
@@ -429,34 +429,14 @@ func (s *StaticSitesServerTransport) dispatchToMethodFake(req *http.Request, met
 			switch method {
 			case "StaticSitesClient.BeginApproveOrRejectPrivateEndpointConnection":
 				res.resp, res.err = s.dispatchBeginApproveOrRejectPrivateEndpointConnection(req)
-			case "StaticSitesClient.CreateOrUpdateBasicAuth":
-				res.resp, res.err = s.dispatchCreateOrUpdateBasicAuth(req)
-			case "StaticSitesClient.CreateOrUpdateBuildDatabaseConnection":
-				res.resp, res.err = s.dispatchCreateOrUpdateBuildDatabaseConnection(req)
-			case "StaticSitesClient.CreateOrUpdateDatabaseConnection":
-				res.resp, res.err = s.dispatchCreateOrUpdateDatabaseConnection(req)
 			case "StaticSitesClient.BeginCreateOrUpdateStaticSite":
 				res.resp, res.err = s.dispatchBeginCreateOrUpdateStaticSite(req)
-			case "StaticSitesClient.CreateOrUpdateStaticSiteAppSettings":
-				res.resp, res.err = s.dispatchCreateOrUpdateStaticSiteAppSettings(req)
-			case "StaticSitesClient.CreateOrUpdateStaticSiteBuildAppSettings":
-				res.resp, res.err = s.dispatchCreateOrUpdateStaticSiteBuildAppSettings(req)
-			case "StaticSitesClient.CreateOrUpdateStaticSiteBuildFunctionAppSettings":
-				res.resp, res.err = s.dispatchCreateOrUpdateStaticSiteBuildFunctionAppSettings(req)
 			case "StaticSitesClient.BeginCreateOrUpdateStaticSiteCustomDomain":
 				res.resp, res.err = s.dispatchBeginCreateOrUpdateStaticSiteCustomDomain(req)
-			case "StaticSitesClient.CreateOrUpdateStaticSiteFunctionAppSettings":
-				res.resp, res.err = s.dispatchCreateOrUpdateStaticSiteFunctionAppSettings(req)
-			case "StaticSitesClient.CreateUserRolesInvitationLink":
-				res.resp, res.err = s.dispatchCreateUserRolesInvitationLink(req)
 			case "StaticSitesClient.BeginCreateZipDeploymentForStaticSite":
 				res.resp, res.err = s.dispatchBeginCreateZipDeploymentForStaticSite(req)
 			case "StaticSitesClient.BeginCreateZipDeploymentForStaticSiteBuild":
 				res.resp, res.err = s.dispatchBeginCreateZipDeploymentForStaticSiteBuild(req)
-			case "StaticSitesClient.DeleteBuildDatabaseConnection":
-				res.resp, res.err = s.dispatchDeleteBuildDatabaseConnection(req)
-			case "StaticSitesClient.DeleteDatabaseConnection":
-				res.resp, res.err = s.dispatchDeleteDatabaseConnection(req)
 			case "StaticSitesClient.BeginDeletePrivateEndpointConnection":
 				res.resp, res.err = s.dispatchBeginDeletePrivateEndpointConnection(req)
 			case "StaticSitesClient.BeginDeleteStaticSite":
@@ -465,10 +445,44 @@ func (s *StaticSitesServerTransport) dispatchToMethodFake(req *http.Request, met
 				res.resp, res.err = s.dispatchBeginDeleteStaticSiteBuild(req)
 			case "StaticSitesClient.BeginDeleteStaticSiteCustomDomain":
 				res.resp, res.err = s.dispatchBeginDeleteStaticSiteCustomDomain(req)
-			case "StaticSitesClient.DeleteStaticSiteUser":
-				res.resp, res.err = s.dispatchDeleteStaticSiteUser(req)
 			case "StaticSitesClient.BeginDetachStaticSite":
 				res.resp, res.err = s.dispatchBeginDetachStaticSite(req)
+			case "StaticSitesClient.BeginLinkBackend":
+				res.resp, res.err = s.dispatchBeginLinkBackend(req)
+			case "StaticSitesClient.BeginLinkBackendToBuild":
+				res.resp, res.err = s.dispatchBeginLinkBackendToBuild(req)
+			case "StaticSitesClient.BeginRegisterUserProvidedFunctionAppWithStaticSite":
+				res.resp, res.err = s.dispatchBeginRegisterUserProvidedFunctionAppWithStaticSite(req)
+			case "StaticSitesClient.BeginRegisterUserProvidedFunctionAppWithStaticSiteBuild":
+				res.resp, res.err = s.dispatchBeginRegisterUserProvidedFunctionAppWithStaticSiteBuild(req)
+			case "StaticSitesClient.BeginValidateBackend":
+				res.resp, res.err = s.dispatchBeginValidateBackend(req)
+			case "StaticSitesClient.BeginValidateBackendForBuild":
+				res.resp, res.err = s.dispatchBeginValidateBackendForBuild(req)
+			case "StaticSitesClient.BeginValidateCustomDomainCanBeAddedToStaticSite":
+				res.resp, res.err = s.dispatchBeginValidateCustomDomainCanBeAddedToStaticSite(req)
+			case "StaticSitesClient.CreateOrUpdateBasicAuth":
+				res.resp, res.err = s.dispatchCreateOrUpdateBasicAuth(req)
+			case "StaticSitesClient.CreateOrUpdateBuildDatabaseConnection":
+				res.resp, res.err = s.dispatchCreateOrUpdateBuildDatabaseConnection(req)
+			case "StaticSitesClient.CreateOrUpdateDatabaseConnection":
+				res.resp, res.err = s.dispatchCreateOrUpdateDatabaseConnection(req)
+			case "StaticSitesClient.CreateOrUpdateStaticSiteAppSettings":
+				res.resp, res.err = s.dispatchCreateOrUpdateStaticSiteAppSettings(req)
+			case "StaticSitesClient.CreateOrUpdateStaticSiteBuildAppSettings":
+				res.resp, res.err = s.dispatchCreateOrUpdateStaticSiteBuildAppSettings(req)
+			case "StaticSitesClient.CreateOrUpdateStaticSiteBuildFunctionAppSettings":
+				res.resp, res.err = s.dispatchCreateOrUpdateStaticSiteBuildFunctionAppSettings(req)
+			case "StaticSitesClient.CreateOrUpdateStaticSiteFunctionAppSettings":
+				res.resp, res.err = s.dispatchCreateOrUpdateStaticSiteFunctionAppSettings(req)
+			case "StaticSitesClient.CreateUserRolesInvitationLink":
+				res.resp, res.err = s.dispatchCreateUserRolesInvitationLink(req)
+			case "StaticSitesClient.DeleteBuildDatabaseConnection":
+				res.resp, res.err = s.dispatchDeleteBuildDatabaseConnection(req)
+			case "StaticSitesClient.DeleteDatabaseConnection":
+				res.resp, res.err = s.dispatchDeleteDatabaseConnection(req)
+			case "StaticSitesClient.DeleteStaticSiteUser":
+				res.resp, res.err = s.dispatchDeleteStaticSiteUser(req)
 			case "StaticSitesClient.DetachUserProvidedFunctionAppFromStaticSite":
 				res.resp, res.err = s.dispatchDetachUserProvidedFunctionAppFromStaticSite(req)
 			case "StaticSitesClient.DetachUserProvidedFunctionAppFromStaticSiteBuild":
@@ -479,84 +493,76 @@ func (s *StaticSitesServerTransport) dispatchToMethodFake(req *http.Request, met
 				res.resp, res.err = s.dispatchGetBuildDatabaseConnection(req)
 			case "StaticSitesClient.GetBuildDatabaseConnectionWithDetails":
 				res.resp, res.err = s.dispatchGetBuildDatabaseConnectionWithDetails(req)
-			case "StaticSitesClient.NewGetBuildDatabaseConnectionsPager":
-				res.resp, res.err = s.dispatchNewGetBuildDatabaseConnectionsPager(req)
-			case "StaticSitesClient.NewGetBuildDatabaseConnectionsWithDetailsPager":
-				res.resp, res.err = s.dispatchNewGetBuildDatabaseConnectionsWithDetailsPager(req)
 			case "StaticSitesClient.GetDatabaseConnection":
 				res.resp, res.err = s.dispatchGetDatabaseConnection(req)
 			case "StaticSitesClient.GetDatabaseConnectionWithDetails":
 				res.resp, res.err = s.dispatchGetDatabaseConnectionWithDetails(req)
-			case "StaticSitesClient.NewGetDatabaseConnectionsPager":
-				res.resp, res.err = s.dispatchNewGetDatabaseConnectionsPager(req)
-			case "StaticSitesClient.NewGetDatabaseConnectionsWithDetailsPager":
-				res.resp, res.err = s.dispatchNewGetDatabaseConnectionsWithDetailsPager(req)
 			case "StaticSitesClient.GetLinkedBackend":
 				res.resp, res.err = s.dispatchGetLinkedBackend(req)
 			case "StaticSitesClient.GetLinkedBackendForBuild":
 				res.resp, res.err = s.dispatchGetLinkedBackendForBuild(req)
-			case "StaticSitesClient.NewGetLinkedBackendsPager":
-				res.resp, res.err = s.dispatchNewGetLinkedBackendsPager(req)
-			case "StaticSitesClient.NewGetLinkedBackendsForBuildPager":
-				res.resp, res.err = s.dispatchNewGetLinkedBackendsForBuildPager(req)
 			case "StaticSitesClient.GetPrivateEndpointConnection":
 				res.resp, res.err = s.dispatchGetPrivateEndpointConnection(req)
-			case "StaticSitesClient.NewGetPrivateEndpointConnectionListPager":
-				res.resp, res.err = s.dispatchNewGetPrivateEndpointConnectionListPager(req)
 			case "StaticSitesClient.GetPrivateLinkResources":
 				res.resp, res.err = s.dispatchGetPrivateLinkResources(req)
 			case "StaticSitesClient.GetStaticSite":
 				res.resp, res.err = s.dispatchGetStaticSite(req)
 			case "StaticSitesClient.GetStaticSiteBuild":
 				res.resp, res.err = s.dispatchGetStaticSiteBuild(req)
-			case "StaticSitesClient.NewGetStaticSiteBuildsPager":
-				res.resp, res.err = s.dispatchNewGetStaticSiteBuildsPager(req)
 			case "StaticSitesClient.GetStaticSiteCustomDomain":
 				res.resp, res.err = s.dispatchGetStaticSiteCustomDomain(req)
-			case "StaticSitesClient.NewGetStaticSitesByResourceGroupPager":
-				res.resp, res.err = s.dispatchNewGetStaticSitesByResourceGroupPager(req)
 			case "StaticSitesClient.GetUserProvidedFunctionAppForStaticSite":
 				res.resp, res.err = s.dispatchGetUserProvidedFunctionAppForStaticSite(req)
 			case "StaticSitesClient.GetUserProvidedFunctionAppForStaticSiteBuild":
 				res.resp, res.err = s.dispatchGetUserProvidedFunctionAppForStaticSiteBuild(req)
-			case "StaticSitesClient.NewGetUserProvidedFunctionAppsForStaticSitePager":
-				res.resp, res.err = s.dispatchNewGetUserProvidedFunctionAppsForStaticSitePager(req)
-			case "StaticSitesClient.NewGetUserProvidedFunctionAppsForStaticSiteBuildPager":
-				res.resp, res.err = s.dispatchNewGetUserProvidedFunctionAppsForStaticSiteBuildPager(req)
-			case "StaticSitesClient.BeginLinkBackend":
-				res.resp, res.err = s.dispatchBeginLinkBackend(req)
-			case "StaticSitesClient.BeginLinkBackendToBuild":
-				res.resp, res.err = s.dispatchBeginLinkBackendToBuild(req)
-			case "StaticSitesClient.NewListPager":
-				res.resp, res.err = s.dispatchNewListPager(req)
-			case "StaticSitesClient.NewListBasicAuthPager":
-				res.resp, res.err = s.dispatchNewListBasicAuthPager(req)
 			case "StaticSitesClient.ListStaticSiteAppSettings":
 				res.resp, res.err = s.dispatchListStaticSiteAppSettings(req)
 			case "StaticSitesClient.ListStaticSiteBuildAppSettings":
 				res.resp, res.err = s.dispatchListStaticSiteBuildAppSettings(req)
 			case "StaticSitesClient.ListStaticSiteBuildFunctionAppSettings":
 				res.resp, res.err = s.dispatchListStaticSiteBuildFunctionAppSettings(req)
-			case "StaticSitesClient.NewListStaticSiteBuildFunctionsPager":
-				res.resp, res.err = s.dispatchNewListStaticSiteBuildFunctionsPager(req)
 			case "StaticSitesClient.ListStaticSiteConfiguredRoles":
 				res.resp, res.err = s.dispatchListStaticSiteConfiguredRoles(req)
-			case "StaticSitesClient.NewListStaticSiteCustomDomainsPager":
-				res.resp, res.err = s.dispatchNewListStaticSiteCustomDomainsPager(req)
 			case "StaticSitesClient.ListStaticSiteFunctionAppSettings":
 				res.resp, res.err = s.dispatchListStaticSiteFunctionAppSettings(req)
-			case "StaticSitesClient.NewListStaticSiteFunctionsPager":
-				res.resp, res.err = s.dispatchNewListStaticSiteFunctionsPager(req)
 			case "StaticSitesClient.ListStaticSiteSecrets":
 				res.resp, res.err = s.dispatchListStaticSiteSecrets(req)
+			case "StaticSitesClient.NewGetBuildDatabaseConnectionsPager":
+				res.resp, res.err = s.dispatchNewGetBuildDatabaseConnectionsPager(req)
+			case "StaticSitesClient.NewGetBuildDatabaseConnectionsWithDetailsPager":
+				res.resp, res.err = s.dispatchNewGetBuildDatabaseConnectionsWithDetailsPager(req)
+			case "StaticSitesClient.NewGetDatabaseConnectionsPager":
+				res.resp, res.err = s.dispatchNewGetDatabaseConnectionsPager(req)
+			case "StaticSitesClient.NewGetDatabaseConnectionsWithDetailsPager":
+				res.resp, res.err = s.dispatchNewGetDatabaseConnectionsWithDetailsPager(req)
+			case "StaticSitesClient.NewGetLinkedBackendsForBuildPager":
+				res.resp, res.err = s.dispatchNewGetLinkedBackendsForBuildPager(req)
+			case "StaticSitesClient.NewGetLinkedBackendsPager":
+				res.resp, res.err = s.dispatchNewGetLinkedBackendsPager(req)
+			case "StaticSitesClient.NewGetPrivateEndpointConnectionListPager":
+				res.resp, res.err = s.dispatchNewGetPrivateEndpointConnectionListPager(req)
+			case "StaticSitesClient.NewGetStaticSiteBuildsPager":
+				res.resp, res.err = s.dispatchNewGetStaticSiteBuildsPager(req)
+			case "StaticSitesClient.NewGetStaticSitesByResourceGroupPager":
+				res.resp, res.err = s.dispatchNewGetStaticSitesByResourceGroupPager(req)
+			case "StaticSitesClient.NewGetUserProvidedFunctionAppsForStaticSiteBuildPager":
+				res.resp, res.err = s.dispatchNewGetUserProvidedFunctionAppsForStaticSiteBuildPager(req)
+			case "StaticSitesClient.NewGetUserProvidedFunctionAppsForStaticSitePager":
+				res.resp, res.err = s.dispatchNewGetUserProvidedFunctionAppsForStaticSitePager(req)
+			case "StaticSitesClient.NewListBasicAuthPager":
+				res.resp, res.err = s.dispatchNewListBasicAuthPager(req)
+			case "StaticSitesClient.NewListPager":
+				res.resp, res.err = s.dispatchNewListPager(req)
+			case "StaticSitesClient.NewListStaticSiteBuildFunctionsPager":
+				res.resp, res.err = s.dispatchNewListStaticSiteBuildFunctionsPager(req)
+			case "StaticSitesClient.NewListStaticSiteCustomDomainsPager":
+				res.resp, res.err = s.dispatchNewListStaticSiteCustomDomainsPager(req)
+			case "StaticSitesClient.NewListStaticSiteFunctionsPager":
+				res.resp, res.err = s.dispatchNewListStaticSiteFunctionsPager(req)
 			case "StaticSitesClient.NewListStaticSiteUsersPager":
 				res.resp, res.err = s.dispatchNewListStaticSiteUsersPager(req)
 			case "StaticSitesClient.PreviewWorkflow":
 				res.resp, res.err = s.dispatchPreviewWorkflow(req)
-			case "StaticSitesClient.BeginRegisterUserProvidedFunctionAppWithStaticSite":
-				res.resp, res.err = s.dispatchBeginRegisterUserProvidedFunctionAppWithStaticSite(req)
-			case "StaticSitesClient.BeginRegisterUserProvidedFunctionAppWithStaticSiteBuild":
-				res.resp, res.err = s.dispatchBeginRegisterUserProvidedFunctionAppWithStaticSiteBuild(req)
 			case "StaticSitesClient.ResetStaticSiteAPIKey":
 				res.resp, res.err = s.dispatchResetStaticSiteAPIKey(req)
 			case "StaticSitesClient.UnlinkBackend":
@@ -571,12 +577,6 @@ func (s *StaticSitesServerTransport) dispatchToMethodFake(req *http.Request, met
 				res.resp, res.err = s.dispatchUpdateStaticSite(req)
 			case "StaticSitesClient.UpdateStaticSiteUser":
 				res.resp, res.err = s.dispatchUpdateStaticSiteUser(req)
-			case "StaticSitesClient.BeginValidateBackend":
-				res.resp, res.err = s.dispatchBeginValidateBackend(req)
-			case "StaticSitesClient.BeginValidateBackendForBuild":
-				res.resp, res.err = s.dispatchBeginValidateBackendForBuild(req)
-			case "StaticSitesClient.BeginValidateCustomDomainCanBeAddedToStaticSite":
-				res.resp, res.err = s.dispatchBeginValidateCustomDomainCanBeAddedToStaticSite(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -645,139 +645,6 @@ func (s *StaticSitesServerTransport) dispatchBeginApproveOrRejectPrivateEndpoint
 	return resp, nil
 }
 
-func (s *StaticSitesServerTransport) dispatchCreateOrUpdateBasicAuth(req *http.Request) (*http.Response, error) {
-	if s.srv.CreateOrUpdateBasicAuth == nil {
-		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdateBasicAuth not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/basicAuth/(?P<basicAuthName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armappservice.StaticSiteBasicAuthPropertiesARMResource](req)
-	if err != nil {
-		return nil, err
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-	if err != nil {
-		return nil, err
-	}
-	basicAuthNameParam, err := parseWithCast(matches[regex.SubexpIndex("basicAuthName")], func(v string) (armappservice.BasicAuthName, error) {
-		p, unescapeErr := url.PathUnescape(v)
-		if unescapeErr != nil {
-			return "", unescapeErr
-		}
-		return armappservice.BasicAuthName(p), nil
-	})
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := s.srv.CreateOrUpdateBasicAuth(req.Context(), resourceGroupNameParam, nameParam, basicAuthNameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).StaticSiteBasicAuthPropertiesARMResource, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (s *StaticSitesServerTransport) dispatchCreateOrUpdateBuildDatabaseConnection(req *http.Request) (*http.Response, error) {
-	if s.srv.CreateOrUpdateBuildDatabaseConnection == nil {
-		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdateBuildDatabaseConnection not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/builds/(?P<environmentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/databaseConnections/(?P<databaseConnectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 6 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armappservice.DatabaseConnection](req)
-	if err != nil {
-		return nil, err
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-	if err != nil {
-		return nil, err
-	}
-	environmentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("environmentName")])
-	if err != nil {
-		return nil, err
-	}
-	databaseConnectionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("databaseConnectionName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := s.srv.CreateOrUpdateBuildDatabaseConnection(req.Context(), resourceGroupNameParam, nameParam, environmentNameParam, databaseConnectionNameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DatabaseConnection, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (s *StaticSitesServerTransport) dispatchCreateOrUpdateDatabaseConnection(req *http.Request) (*http.Response, error) {
-	if s.srv.CreateOrUpdateDatabaseConnection == nil {
-		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdateDatabaseConnection not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/databaseConnections/(?P<databaseConnectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armappservice.DatabaseConnection](req)
-	if err != nil {
-		return nil, err
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-	if err != nil {
-		return nil, err
-	}
-	databaseConnectionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("databaseConnectionName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := s.srv.CreateOrUpdateDatabaseConnection(req.Context(), resourceGroupNameParam, nameParam, databaseConnectionNameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DatabaseConnection, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
 func (s *StaticSitesServerTransport) dispatchBeginCreateOrUpdateStaticSite(req *http.Request) (*http.Response, error) {
 	if s.srv.BeginCreateOrUpdateStaticSite == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginCreateOrUpdateStaticSite not implemented")}
@@ -823,125 +690,6 @@ func (s *StaticSitesServerTransport) dispatchBeginCreateOrUpdateStaticSite(req *
 		s.beginCreateOrUpdateStaticSite.remove(req)
 	}
 
-	return resp, nil
-}
-
-func (s *StaticSitesServerTransport) dispatchCreateOrUpdateStaticSiteAppSettings(req *http.Request) (*http.Response, error) {
-	if s.srv.CreateOrUpdateStaticSiteAppSettings == nil {
-		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdateStaticSiteAppSettings not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/config/appsettings`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armappservice.StringDictionary](req)
-	if err != nil {
-		return nil, err
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := s.srv.CreateOrUpdateStaticSiteAppSettings(req.Context(), resourceGroupNameParam, nameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).StringDictionary, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (s *StaticSitesServerTransport) dispatchCreateOrUpdateStaticSiteBuildAppSettings(req *http.Request) (*http.Response, error) {
-	if s.srv.CreateOrUpdateStaticSiteBuildAppSettings == nil {
-		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdateStaticSiteBuildAppSettings not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/builds/(?P<environmentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/config/appsettings`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armappservice.StringDictionary](req)
-	if err != nil {
-		return nil, err
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-	if err != nil {
-		return nil, err
-	}
-	environmentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("environmentName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := s.srv.CreateOrUpdateStaticSiteBuildAppSettings(req.Context(), resourceGroupNameParam, nameParam, environmentNameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).StringDictionary, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (s *StaticSitesServerTransport) dispatchCreateOrUpdateStaticSiteBuildFunctionAppSettings(req *http.Request) (*http.Response, error) {
-	if s.srv.CreateOrUpdateStaticSiteBuildFunctionAppSettings == nil {
-		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdateStaticSiteBuildFunctionAppSettings not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/builds/(?P<environmentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/config/functionappsettings`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armappservice.StringDictionary](req)
-	if err != nil {
-		return nil, err
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-	if err != nil {
-		return nil, err
-	}
-	environmentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("environmentName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := s.srv.CreateOrUpdateStaticSiteBuildFunctionAppSettings(req.Context(), resourceGroupNameParam, nameParam, environmentNameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).StringDictionary, req)
-	if err != nil {
-		return nil, err
-	}
 	return resp, nil
 }
 
@@ -994,80 +742,6 @@ func (s *StaticSitesServerTransport) dispatchBeginCreateOrUpdateStaticSiteCustom
 		s.beginCreateOrUpdateStaticSiteCustomDomain.remove(req)
 	}
 
-	return resp, nil
-}
-
-func (s *StaticSitesServerTransport) dispatchCreateOrUpdateStaticSiteFunctionAppSettings(req *http.Request) (*http.Response, error) {
-	if s.srv.CreateOrUpdateStaticSiteFunctionAppSettings == nil {
-		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdateStaticSiteFunctionAppSettings not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/config/functionappsettings`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armappservice.StringDictionary](req)
-	if err != nil {
-		return nil, err
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := s.srv.CreateOrUpdateStaticSiteFunctionAppSettings(req.Context(), resourceGroupNameParam, nameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).StringDictionary, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (s *StaticSitesServerTransport) dispatchCreateUserRolesInvitationLink(req *http.Request) (*http.Response, error) {
-	if s.srv.CreateUserRolesInvitationLink == nil {
-		return nil, &nonRetriableError{errors.New("fake for method CreateUserRolesInvitationLink not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/createUserInvitation`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armappservice.StaticSiteUserInvitationRequestResource](req)
-	if err != nil {
-		return nil, err
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := s.srv.CreateUserRolesInvitationLink(req.Context(), resourceGroupNameParam, nameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).StaticSiteUserInvitationResponseResource, req)
-	if err != nil {
-		return nil, err
-	}
 	return resp, nil
 }
 
@@ -1168,84 +842,6 @@ func (s *StaticSitesServerTransport) dispatchBeginCreateZipDeploymentForStaticSi
 		s.beginCreateZipDeploymentForStaticSiteBuild.remove(req)
 	}
 
-	return resp, nil
-}
-
-func (s *StaticSitesServerTransport) dispatchDeleteBuildDatabaseConnection(req *http.Request) (*http.Response, error) {
-	if s.srv.DeleteBuildDatabaseConnection == nil {
-		return nil, &nonRetriableError{errors.New("fake for method DeleteBuildDatabaseConnection not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/builds/(?P<environmentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/databaseConnections/(?P<databaseConnectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 6 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-	if err != nil {
-		return nil, err
-	}
-	environmentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("environmentName")])
-	if err != nil {
-		return nil, err
-	}
-	databaseConnectionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("databaseConnectionName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := s.srv.DeleteBuildDatabaseConnection(req.Context(), resourceGroupNameParam, nameParam, environmentNameParam, databaseConnectionNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK, http.StatusNoContent}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusNoContent", respContent.HTTPStatus)}
-	}
-	resp, err := server.NewResponse(respContent, req, nil)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (s *StaticSitesServerTransport) dispatchDeleteDatabaseConnection(req *http.Request) (*http.Response, error) {
-	if s.srv.DeleteDatabaseConnection == nil {
-		return nil, &nonRetriableError{errors.New("fake for method DeleteDatabaseConnection not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/databaseConnections/(?P<databaseConnectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-	if err != nil {
-		return nil, err
-	}
-	databaseConnectionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("databaseConnectionName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := s.srv.DeleteDatabaseConnection(req.Context(), resourceGroupNameParam, nameParam, databaseConnectionNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK, http.StatusNoContent}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusNoContent", respContent.HTTPStatus)}
-	}
-	resp, err := server.NewResponse(respContent, req, nil)
-	if err != nil {
-		return nil, err
-	}
 	return resp, nil
 }
 
@@ -1437,47 +1033,6 @@ func (s *StaticSitesServerTransport) dispatchBeginDeleteStaticSiteCustomDomain(r
 	return resp, nil
 }
 
-func (s *StaticSitesServerTransport) dispatchDeleteStaticSiteUser(req *http.Request) (*http.Response, error) {
-	if s.srv.DeleteStaticSiteUser == nil {
-		return nil, &nonRetriableError{errors.New("fake for method DeleteStaticSiteUser not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/authproviders/(?P<authprovider>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/users/(?P<userid>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 6 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-	if err != nil {
-		return nil, err
-	}
-	authproviderParam, err := url.PathUnescape(matches[regex.SubexpIndex("authprovider")])
-	if err != nil {
-		return nil, err
-	}
-	useridParam, err := url.PathUnescape(matches[regex.SubexpIndex("userid")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := s.srv.DeleteStaticSiteUser(req.Context(), resourceGroupNameParam, nameParam, authproviderParam, useridParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.NewResponse(respContent, req, nil)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
 func (s *StaticSitesServerTransport) dispatchBeginDetachStaticSite(req *http.Request) (*http.Response, error) {
 	if s.srv.BeginDetachStaticSite == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginDetachStaticSite not implemented")}
@@ -1519,6 +1074,849 @@ func (s *StaticSitesServerTransport) dispatchBeginDetachStaticSite(req *http.Req
 		s.beginDetachStaticSite.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (s *StaticSitesServerTransport) dispatchBeginLinkBackend(req *http.Request) (*http.Response, error) {
+	if s.srv.BeginLinkBackend == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginLinkBackend not implemented")}
+	}
+	beginLinkBackend := s.beginLinkBackend.get(req)
+	if beginLinkBackend == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/linkedBackends/(?P<linkedBackendName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armappservice.StaticSiteLinkedBackendARMResource](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+		if err != nil {
+			return nil, err
+		}
+		linkedBackendNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("linkedBackendName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := s.srv.BeginLinkBackend(req.Context(), resourceGroupNameParam, nameParam, linkedBackendNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginLinkBackend = &respr
+		s.beginLinkBackend.add(req, beginLinkBackend)
+	}
+
+	resp, err := server.PollerResponderNext(beginLinkBackend, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		s.beginLinkBackend.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginLinkBackend) {
+		s.beginLinkBackend.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (s *StaticSitesServerTransport) dispatchBeginLinkBackendToBuild(req *http.Request) (*http.Response, error) {
+	if s.srv.BeginLinkBackendToBuild == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginLinkBackendToBuild not implemented")}
+	}
+	beginLinkBackendToBuild := s.beginLinkBackendToBuild.get(req)
+	if beginLinkBackendToBuild == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/builds/(?P<environmentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/linkedBackends/(?P<linkedBackendName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 6 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armappservice.StaticSiteLinkedBackendARMResource](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+		if err != nil {
+			return nil, err
+		}
+		environmentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("environmentName")])
+		if err != nil {
+			return nil, err
+		}
+		linkedBackendNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("linkedBackendName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := s.srv.BeginLinkBackendToBuild(req.Context(), resourceGroupNameParam, nameParam, environmentNameParam, linkedBackendNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginLinkBackendToBuild = &respr
+		s.beginLinkBackendToBuild.add(req, beginLinkBackendToBuild)
+	}
+
+	resp, err := server.PollerResponderNext(beginLinkBackendToBuild, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		s.beginLinkBackendToBuild.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginLinkBackendToBuild) {
+		s.beginLinkBackendToBuild.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (s *StaticSitesServerTransport) dispatchBeginRegisterUserProvidedFunctionAppWithStaticSite(req *http.Request) (*http.Response, error) {
+	if s.srv.BeginRegisterUserProvidedFunctionAppWithStaticSite == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginRegisterUserProvidedFunctionAppWithStaticSite not implemented")}
+	}
+	beginRegisterUserProvidedFunctionAppWithStaticSite := s.beginRegisterUserProvidedFunctionAppWithStaticSite.get(req)
+	if beginRegisterUserProvidedFunctionAppWithStaticSite == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/userProvidedFunctionApps/(?P<functionAppName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		qp := req.URL.Query()
+		body, err := server.UnmarshalRequestAsJSON[armappservice.StaticSiteUserProvidedFunctionAppARMResource](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+		if err != nil {
+			return nil, err
+		}
+		functionAppNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("functionAppName")])
+		if err != nil {
+			return nil, err
+		}
+		isForcedParam, err := parseOptional(qp.Get("isForced"), strconv.ParseBool)
+		if err != nil {
+			return nil, err
+		}
+		var options *armappservice.StaticSitesClientBeginRegisterUserProvidedFunctionAppWithStaticSiteOptions
+		if isForcedParam != nil {
+			options = &armappservice.StaticSitesClientBeginRegisterUserProvidedFunctionAppWithStaticSiteOptions{
+				IsForced: isForcedParam,
+			}
+		}
+		respr, errRespr := s.srv.BeginRegisterUserProvidedFunctionAppWithStaticSite(req.Context(), resourceGroupNameParam, nameParam, functionAppNameParam, body, options)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginRegisterUserProvidedFunctionAppWithStaticSite = &respr
+		s.beginRegisterUserProvidedFunctionAppWithStaticSite.add(req, beginRegisterUserProvidedFunctionAppWithStaticSite)
+	}
+
+	resp, err := server.PollerResponderNext(beginRegisterUserProvidedFunctionAppWithStaticSite, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		s.beginRegisterUserProvidedFunctionAppWithStaticSite.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginRegisterUserProvidedFunctionAppWithStaticSite) {
+		s.beginRegisterUserProvidedFunctionAppWithStaticSite.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (s *StaticSitesServerTransport) dispatchBeginRegisterUserProvidedFunctionAppWithStaticSiteBuild(req *http.Request) (*http.Response, error) {
+	if s.srv.BeginRegisterUserProvidedFunctionAppWithStaticSiteBuild == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginRegisterUserProvidedFunctionAppWithStaticSiteBuild not implemented")}
+	}
+	beginRegisterUserProvidedFunctionAppWithStaticSiteBuild := s.beginRegisterUserProvidedFunctionAppWithStaticSiteBuild.get(req)
+	if beginRegisterUserProvidedFunctionAppWithStaticSiteBuild == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/builds/(?P<environmentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/userProvidedFunctionApps/(?P<functionAppName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 6 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		qp := req.URL.Query()
+		body, err := server.UnmarshalRequestAsJSON[armappservice.StaticSiteUserProvidedFunctionAppARMResource](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+		if err != nil {
+			return nil, err
+		}
+		environmentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("environmentName")])
+		if err != nil {
+			return nil, err
+		}
+		functionAppNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("functionAppName")])
+		if err != nil {
+			return nil, err
+		}
+		isForcedParam, err := parseOptional(qp.Get("isForced"), strconv.ParseBool)
+		if err != nil {
+			return nil, err
+		}
+		var options *armappservice.StaticSitesClientBeginRegisterUserProvidedFunctionAppWithStaticSiteBuildOptions
+		if isForcedParam != nil {
+			options = &armappservice.StaticSitesClientBeginRegisterUserProvidedFunctionAppWithStaticSiteBuildOptions{
+				IsForced: isForcedParam,
+			}
+		}
+		respr, errRespr := s.srv.BeginRegisterUserProvidedFunctionAppWithStaticSiteBuild(req.Context(), resourceGroupNameParam, nameParam, environmentNameParam, functionAppNameParam, body, options)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginRegisterUserProvidedFunctionAppWithStaticSiteBuild = &respr
+		s.beginRegisterUserProvidedFunctionAppWithStaticSiteBuild.add(req, beginRegisterUserProvidedFunctionAppWithStaticSiteBuild)
+	}
+
+	resp, err := server.PollerResponderNext(beginRegisterUserProvidedFunctionAppWithStaticSiteBuild, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		s.beginRegisterUserProvidedFunctionAppWithStaticSiteBuild.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginRegisterUserProvidedFunctionAppWithStaticSiteBuild) {
+		s.beginRegisterUserProvidedFunctionAppWithStaticSiteBuild.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (s *StaticSitesServerTransport) dispatchBeginValidateBackend(req *http.Request) (*http.Response, error) {
+	if s.srv.BeginValidateBackend == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginValidateBackend not implemented")}
+	}
+	beginValidateBackend := s.beginValidateBackend.get(req)
+	if beginValidateBackend == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/linkedBackends/(?P<linkedBackendName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/validate`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armappservice.StaticSiteLinkedBackendARMResource](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+		if err != nil {
+			return nil, err
+		}
+		linkedBackendNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("linkedBackendName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := s.srv.BeginValidateBackend(req.Context(), resourceGroupNameParam, nameParam, linkedBackendNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginValidateBackend = &respr
+		s.beginValidateBackend.add(req, beginValidateBackend)
+	}
+
+	resp, err := server.PollerResponderNext(beginValidateBackend, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		s.beginValidateBackend.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginValidateBackend) {
+		s.beginValidateBackend.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (s *StaticSitesServerTransport) dispatchBeginValidateBackendForBuild(req *http.Request) (*http.Response, error) {
+	if s.srv.BeginValidateBackendForBuild == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginValidateBackendForBuild not implemented")}
+	}
+	beginValidateBackendForBuild := s.beginValidateBackendForBuild.get(req)
+	if beginValidateBackendForBuild == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/builds/(?P<environmentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/linkedBackends/(?P<linkedBackendName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/validate`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 6 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armappservice.StaticSiteLinkedBackendARMResource](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+		if err != nil {
+			return nil, err
+		}
+		environmentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("environmentName")])
+		if err != nil {
+			return nil, err
+		}
+		linkedBackendNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("linkedBackendName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := s.srv.BeginValidateBackendForBuild(req.Context(), resourceGroupNameParam, nameParam, environmentNameParam, linkedBackendNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginValidateBackendForBuild = &respr
+		s.beginValidateBackendForBuild.add(req, beginValidateBackendForBuild)
+	}
+
+	resp, err := server.PollerResponderNext(beginValidateBackendForBuild, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		s.beginValidateBackendForBuild.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginValidateBackendForBuild) {
+		s.beginValidateBackendForBuild.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (s *StaticSitesServerTransport) dispatchBeginValidateCustomDomainCanBeAddedToStaticSite(req *http.Request) (*http.Response, error) {
+	if s.srv.BeginValidateCustomDomainCanBeAddedToStaticSite == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginValidateCustomDomainCanBeAddedToStaticSite not implemented")}
+	}
+	beginValidateCustomDomainCanBeAddedToStaticSite := s.beginValidateCustomDomainCanBeAddedToStaticSite.get(req)
+	if beginValidateCustomDomainCanBeAddedToStaticSite == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/customDomains/(?P<domainName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/validate`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armappservice.StaticSiteCustomDomainRequestPropertiesARMResource](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+		if err != nil {
+			return nil, err
+		}
+		domainNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("domainName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := s.srv.BeginValidateCustomDomainCanBeAddedToStaticSite(req.Context(), resourceGroupNameParam, nameParam, domainNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginValidateCustomDomainCanBeAddedToStaticSite = &respr
+		s.beginValidateCustomDomainCanBeAddedToStaticSite.add(req, beginValidateCustomDomainCanBeAddedToStaticSite)
+	}
+
+	resp, err := server.PollerResponderNext(beginValidateCustomDomainCanBeAddedToStaticSite, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		s.beginValidateCustomDomainCanBeAddedToStaticSite.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginValidateCustomDomainCanBeAddedToStaticSite) {
+		s.beginValidateCustomDomainCanBeAddedToStaticSite.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (s *StaticSitesServerTransport) dispatchCreateOrUpdateBasicAuth(req *http.Request) (*http.Response, error) {
+	if s.srv.CreateOrUpdateBasicAuth == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdateBasicAuth not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/basicAuth/(?P<basicAuthName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armappservice.StaticSiteBasicAuthPropertiesARMResource](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+	if err != nil {
+		return nil, err
+	}
+	basicAuthNameParam, err := parseWithCast(matches[regex.SubexpIndex("basicAuthName")], func(v string) (armappservice.BasicAuthName, error) {
+		p, unescapeErr := url.PathUnescape(v)
+		if unescapeErr != nil {
+			return "", unescapeErr
+		}
+		return armappservice.BasicAuthName(p), nil
+	})
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := s.srv.CreateOrUpdateBasicAuth(req.Context(), resourceGroupNameParam, nameParam, basicAuthNameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).StaticSiteBasicAuthPropertiesARMResource, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (s *StaticSitesServerTransport) dispatchCreateOrUpdateBuildDatabaseConnection(req *http.Request) (*http.Response, error) {
+	if s.srv.CreateOrUpdateBuildDatabaseConnection == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdateBuildDatabaseConnection not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/builds/(?P<environmentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/databaseConnections/(?P<databaseConnectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 6 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armappservice.DatabaseConnection](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+	if err != nil {
+		return nil, err
+	}
+	environmentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("environmentName")])
+	if err != nil {
+		return nil, err
+	}
+	databaseConnectionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("databaseConnectionName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := s.srv.CreateOrUpdateBuildDatabaseConnection(req.Context(), resourceGroupNameParam, nameParam, environmentNameParam, databaseConnectionNameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DatabaseConnection, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (s *StaticSitesServerTransport) dispatchCreateOrUpdateDatabaseConnection(req *http.Request) (*http.Response, error) {
+	if s.srv.CreateOrUpdateDatabaseConnection == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdateDatabaseConnection not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/databaseConnections/(?P<databaseConnectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armappservice.DatabaseConnection](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+	if err != nil {
+		return nil, err
+	}
+	databaseConnectionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("databaseConnectionName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := s.srv.CreateOrUpdateDatabaseConnection(req.Context(), resourceGroupNameParam, nameParam, databaseConnectionNameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DatabaseConnection, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (s *StaticSitesServerTransport) dispatchCreateOrUpdateStaticSiteAppSettings(req *http.Request) (*http.Response, error) {
+	if s.srv.CreateOrUpdateStaticSiteAppSettings == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdateStaticSiteAppSettings not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/config/appsettings`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armappservice.StringDictionary](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := s.srv.CreateOrUpdateStaticSiteAppSettings(req.Context(), resourceGroupNameParam, nameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).StringDictionary, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (s *StaticSitesServerTransport) dispatchCreateOrUpdateStaticSiteBuildAppSettings(req *http.Request) (*http.Response, error) {
+	if s.srv.CreateOrUpdateStaticSiteBuildAppSettings == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdateStaticSiteBuildAppSettings not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/builds/(?P<environmentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/config/appsettings`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armappservice.StringDictionary](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+	if err != nil {
+		return nil, err
+	}
+	environmentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("environmentName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := s.srv.CreateOrUpdateStaticSiteBuildAppSettings(req.Context(), resourceGroupNameParam, nameParam, environmentNameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).StringDictionary, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (s *StaticSitesServerTransport) dispatchCreateOrUpdateStaticSiteBuildFunctionAppSettings(req *http.Request) (*http.Response, error) {
+	if s.srv.CreateOrUpdateStaticSiteBuildFunctionAppSettings == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdateStaticSiteBuildFunctionAppSettings not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/builds/(?P<environmentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/config/functionappsettings`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armappservice.StringDictionary](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+	if err != nil {
+		return nil, err
+	}
+	environmentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("environmentName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := s.srv.CreateOrUpdateStaticSiteBuildFunctionAppSettings(req.Context(), resourceGroupNameParam, nameParam, environmentNameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).StringDictionary, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (s *StaticSitesServerTransport) dispatchCreateOrUpdateStaticSiteFunctionAppSettings(req *http.Request) (*http.Response, error) {
+	if s.srv.CreateOrUpdateStaticSiteFunctionAppSettings == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdateStaticSiteFunctionAppSettings not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/config/functionappsettings`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armappservice.StringDictionary](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := s.srv.CreateOrUpdateStaticSiteFunctionAppSettings(req.Context(), resourceGroupNameParam, nameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).StringDictionary, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (s *StaticSitesServerTransport) dispatchCreateUserRolesInvitationLink(req *http.Request) (*http.Response, error) {
+	if s.srv.CreateUserRolesInvitationLink == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CreateUserRolesInvitationLink not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/createUserInvitation`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armappservice.StaticSiteUserInvitationRequestResource](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := s.srv.CreateUserRolesInvitationLink(req.Context(), resourceGroupNameParam, nameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).StaticSiteUserInvitationResponseResource, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (s *StaticSitesServerTransport) dispatchDeleteBuildDatabaseConnection(req *http.Request) (*http.Response, error) {
+	if s.srv.DeleteBuildDatabaseConnection == nil {
+		return nil, &nonRetriableError{errors.New("fake for method DeleteBuildDatabaseConnection not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/builds/(?P<environmentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/databaseConnections/(?P<databaseConnectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 6 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+	if err != nil {
+		return nil, err
+	}
+	environmentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("environmentName")])
+	if err != nil {
+		return nil, err
+	}
+	databaseConnectionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("databaseConnectionName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := s.srv.DeleteBuildDatabaseConnection(req.Context(), resourceGroupNameParam, nameParam, environmentNameParam, databaseConnectionNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK, http.StatusNoContent}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusNoContent", respContent.HTTPStatus)}
+	}
+	resp, err := server.NewResponse(respContent, req, nil)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (s *StaticSitesServerTransport) dispatchDeleteDatabaseConnection(req *http.Request) (*http.Response, error) {
+	if s.srv.DeleteDatabaseConnection == nil {
+		return nil, &nonRetriableError{errors.New("fake for method DeleteDatabaseConnection not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/databaseConnections/(?P<databaseConnectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+	if err != nil {
+		return nil, err
+	}
+	databaseConnectionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("databaseConnectionName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := s.srv.DeleteDatabaseConnection(req.Context(), resourceGroupNameParam, nameParam, databaseConnectionNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK, http.StatusNoContent}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusNoContent", respContent.HTTPStatus)}
+	}
+	resp, err := server.NewResponse(respContent, req, nil)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (s *StaticSitesServerTransport) dispatchDeleteStaticSiteUser(req *http.Request) (*http.Response, error) {
+	if s.srv.DeleteStaticSiteUser == nil {
+		return nil, &nonRetriableError{errors.New("fake for method DeleteStaticSiteUser not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/authproviders/(?P<authprovider>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/users/(?P<userid>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 6 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+	if err != nil {
+		return nil, err
+	}
+	authproviderParam, err := url.PathUnescape(matches[regex.SubexpIndex("authprovider")])
+	if err != nil {
+		return nil, err
+	}
+	useridParam, err := url.PathUnescape(matches[regex.SubexpIndex("userid")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := s.srv.DeleteStaticSiteUser(req.Context(), resourceGroupNameParam, nameParam, authproviderParam, useridParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.NewResponse(respContent, req, nil)
+	if err != nil {
+		return nil, err
+	}
 	return resp, nil
 }
 
@@ -1725,96 +2123,6 @@ func (s *StaticSitesServerTransport) dispatchGetBuildDatabaseConnectionWithDetai
 	return resp, nil
 }
 
-func (s *StaticSitesServerTransport) dispatchNewGetBuildDatabaseConnectionsPager(req *http.Request) (*http.Response, error) {
-	if s.srv.NewGetBuildDatabaseConnectionsPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewGetBuildDatabaseConnectionsPager not implemented")}
-	}
-	newGetBuildDatabaseConnectionsPager := s.newGetBuildDatabaseConnectionsPager.get(req)
-	if newGetBuildDatabaseConnectionsPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/builds/(?P<environmentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/databaseConnections`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-		if err != nil {
-			return nil, err
-		}
-		environmentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("environmentName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := s.srv.NewGetBuildDatabaseConnectionsPager(resourceGroupNameParam, nameParam, environmentNameParam, nil)
-		newGetBuildDatabaseConnectionsPager = &resp
-		s.newGetBuildDatabaseConnectionsPager.add(req, newGetBuildDatabaseConnectionsPager)
-		server.PagerResponderInjectNextLinks(newGetBuildDatabaseConnectionsPager, req, func(page *armappservice.StaticSitesClientGetBuildDatabaseConnectionsResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newGetBuildDatabaseConnectionsPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		s.newGetBuildDatabaseConnectionsPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newGetBuildDatabaseConnectionsPager) {
-		s.newGetBuildDatabaseConnectionsPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (s *StaticSitesServerTransport) dispatchNewGetBuildDatabaseConnectionsWithDetailsPager(req *http.Request) (*http.Response, error) {
-	if s.srv.NewGetBuildDatabaseConnectionsWithDetailsPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewGetBuildDatabaseConnectionsWithDetailsPager not implemented")}
-	}
-	newGetBuildDatabaseConnectionsWithDetailsPager := s.newGetBuildDatabaseConnectionsWithDetailsPager.get(req)
-	if newGetBuildDatabaseConnectionsWithDetailsPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/builds/(?P<environmentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/showDatabaseConnections`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-		if err != nil {
-			return nil, err
-		}
-		environmentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("environmentName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := s.srv.NewGetBuildDatabaseConnectionsWithDetailsPager(resourceGroupNameParam, nameParam, environmentNameParam, nil)
-		newGetBuildDatabaseConnectionsWithDetailsPager = &resp
-		s.newGetBuildDatabaseConnectionsWithDetailsPager.add(req, newGetBuildDatabaseConnectionsWithDetailsPager)
-		server.PagerResponderInjectNextLinks(newGetBuildDatabaseConnectionsWithDetailsPager, req, func(page *armappservice.StaticSitesClientGetBuildDatabaseConnectionsWithDetailsResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newGetBuildDatabaseConnectionsWithDetailsPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		s.newGetBuildDatabaseConnectionsWithDetailsPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newGetBuildDatabaseConnectionsWithDetailsPager) {
-		s.newGetBuildDatabaseConnectionsWithDetailsPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (s *StaticSitesServerTransport) dispatchGetDatabaseConnection(req *http.Request) (*http.Response, error) {
 	if s.srv.GetDatabaseConnection == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetDatabaseConnection not implemented")}
@@ -1885,88 +2193,6 @@ func (s *StaticSitesServerTransport) dispatchGetDatabaseConnectionWithDetails(re
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DatabaseConnection, req)
 	if err != nil {
 		return nil, err
-	}
-	return resp, nil
-}
-
-func (s *StaticSitesServerTransport) dispatchNewGetDatabaseConnectionsPager(req *http.Request) (*http.Response, error) {
-	if s.srv.NewGetDatabaseConnectionsPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewGetDatabaseConnectionsPager not implemented")}
-	}
-	newGetDatabaseConnectionsPager := s.newGetDatabaseConnectionsPager.get(req)
-	if newGetDatabaseConnectionsPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/databaseConnections`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-		if err != nil {
-			return nil, err
-		}
-		resp := s.srv.NewGetDatabaseConnectionsPager(resourceGroupNameParam, nameParam, nil)
-		newGetDatabaseConnectionsPager = &resp
-		s.newGetDatabaseConnectionsPager.add(req, newGetDatabaseConnectionsPager)
-		server.PagerResponderInjectNextLinks(newGetDatabaseConnectionsPager, req, func(page *armappservice.StaticSitesClientGetDatabaseConnectionsResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newGetDatabaseConnectionsPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		s.newGetDatabaseConnectionsPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newGetDatabaseConnectionsPager) {
-		s.newGetDatabaseConnectionsPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (s *StaticSitesServerTransport) dispatchNewGetDatabaseConnectionsWithDetailsPager(req *http.Request) (*http.Response, error) {
-	if s.srv.NewGetDatabaseConnectionsWithDetailsPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewGetDatabaseConnectionsWithDetailsPager not implemented")}
-	}
-	newGetDatabaseConnectionsWithDetailsPager := s.newGetDatabaseConnectionsWithDetailsPager.get(req)
-	if newGetDatabaseConnectionsWithDetailsPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/showDatabaseConnections`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-		if err != nil {
-			return nil, err
-		}
-		resp := s.srv.NewGetDatabaseConnectionsWithDetailsPager(resourceGroupNameParam, nameParam, nil)
-		newGetDatabaseConnectionsWithDetailsPager = &resp
-		s.newGetDatabaseConnectionsWithDetailsPager.add(req, newGetDatabaseConnectionsWithDetailsPager)
-		server.PagerResponderInjectNextLinks(newGetDatabaseConnectionsWithDetailsPager, req, func(page *armappservice.StaticSitesClientGetDatabaseConnectionsWithDetailsResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newGetDatabaseConnectionsWithDetailsPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		s.newGetDatabaseConnectionsWithDetailsPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newGetDatabaseConnectionsWithDetailsPager) {
-		s.newGetDatabaseConnectionsWithDetailsPager.remove(req)
 	}
 	return resp, nil
 }
@@ -2049,92 +2275,6 @@ func (s *StaticSitesServerTransport) dispatchGetLinkedBackendForBuild(req *http.
 	return resp, nil
 }
 
-func (s *StaticSitesServerTransport) dispatchNewGetLinkedBackendsPager(req *http.Request) (*http.Response, error) {
-	if s.srv.NewGetLinkedBackendsPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewGetLinkedBackendsPager not implemented")}
-	}
-	newGetLinkedBackendsPager := s.newGetLinkedBackendsPager.get(req)
-	if newGetLinkedBackendsPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/linkedBackends`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-		if err != nil {
-			return nil, err
-		}
-		resp := s.srv.NewGetLinkedBackendsPager(resourceGroupNameParam, nameParam, nil)
-		newGetLinkedBackendsPager = &resp
-		s.newGetLinkedBackendsPager.add(req, newGetLinkedBackendsPager)
-		server.PagerResponderInjectNextLinks(newGetLinkedBackendsPager, req, func(page *armappservice.StaticSitesClientGetLinkedBackendsResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newGetLinkedBackendsPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		s.newGetLinkedBackendsPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newGetLinkedBackendsPager) {
-		s.newGetLinkedBackendsPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (s *StaticSitesServerTransport) dispatchNewGetLinkedBackendsForBuildPager(req *http.Request) (*http.Response, error) {
-	if s.srv.NewGetLinkedBackendsForBuildPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewGetLinkedBackendsForBuildPager not implemented")}
-	}
-	newGetLinkedBackendsForBuildPager := s.newGetLinkedBackendsForBuildPager.get(req)
-	if newGetLinkedBackendsForBuildPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/builds/(?P<environmentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/linkedBackends`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-		if err != nil {
-			return nil, err
-		}
-		environmentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("environmentName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := s.srv.NewGetLinkedBackendsForBuildPager(resourceGroupNameParam, nameParam, environmentNameParam, nil)
-		newGetLinkedBackendsForBuildPager = &resp
-		s.newGetLinkedBackendsForBuildPager.add(req, newGetLinkedBackendsForBuildPager)
-		server.PagerResponderInjectNextLinks(newGetLinkedBackendsForBuildPager, req, func(page *armappservice.StaticSitesClientGetLinkedBackendsForBuildResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newGetLinkedBackendsForBuildPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		s.newGetLinkedBackendsForBuildPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newGetLinkedBackendsForBuildPager) {
-		s.newGetLinkedBackendsForBuildPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (s *StaticSitesServerTransport) dispatchGetPrivateEndpointConnection(req *http.Request) (*http.Response, error) {
 	if s.srv.GetPrivateEndpointConnection == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetPrivateEndpointConnection not implemented")}
@@ -2168,47 +2308,6 @@ func (s *StaticSitesServerTransport) dispatchGetPrivateEndpointConnection(req *h
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).RemotePrivateEndpointConnectionARMResource, req)
 	if err != nil {
 		return nil, err
-	}
-	return resp, nil
-}
-
-func (s *StaticSitesServerTransport) dispatchNewGetPrivateEndpointConnectionListPager(req *http.Request) (*http.Response, error) {
-	if s.srv.NewGetPrivateEndpointConnectionListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewGetPrivateEndpointConnectionListPager not implemented")}
-	}
-	newGetPrivateEndpointConnectionListPager := s.newGetPrivateEndpointConnectionListPager.get(req)
-	if newGetPrivateEndpointConnectionListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/privateEndpointConnections`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-		if err != nil {
-			return nil, err
-		}
-		resp := s.srv.NewGetPrivateEndpointConnectionListPager(resourceGroupNameParam, nameParam, nil)
-		newGetPrivateEndpointConnectionListPager = &resp
-		s.newGetPrivateEndpointConnectionListPager.add(req, newGetPrivateEndpointConnectionListPager)
-		server.PagerResponderInjectNextLinks(newGetPrivateEndpointConnectionListPager, req, func(page *armappservice.StaticSitesClientGetPrivateEndpointConnectionListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newGetPrivateEndpointConnectionListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		s.newGetPrivateEndpointConnectionListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newGetPrivateEndpointConnectionListPager) {
-		s.newGetPrivateEndpointConnectionListPager.remove(req)
 	}
 	return resp, nil
 }
@@ -2316,47 +2415,6 @@ func (s *StaticSitesServerTransport) dispatchGetStaticSiteBuild(req *http.Reques
 	return resp, nil
 }
 
-func (s *StaticSitesServerTransport) dispatchNewGetStaticSiteBuildsPager(req *http.Request) (*http.Response, error) {
-	if s.srv.NewGetStaticSiteBuildsPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewGetStaticSiteBuildsPager not implemented")}
-	}
-	newGetStaticSiteBuildsPager := s.newGetStaticSiteBuildsPager.get(req)
-	if newGetStaticSiteBuildsPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/builds`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-		if err != nil {
-			return nil, err
-		}
-		resp := s.srv.NewGetStaticSiteBuildsPager(resourceGroupNameParam, nameParam, nil)
-		newGetStaticSiteBuildsPager = &resp
-		s.newGetStaticSiteBuildsPager.add(req, newGetStaticSiteBuildsPager)
-		server.PagerResponderInjectNextLinks(newGetStaticSiteBuildsPager, req, func(page *armappservice.StaticSitesClientGetStaticSiteBuildsResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newGetStaticSiteBuildsPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		s.newGetStaticSiteBuildsPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newGetStaticSiteBuildsPager) {
-		s.newGetStaticSiteBuildsPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (s *StaticSitesServerTransport) dispatchGetStaticSiteCustomDomain(req *http.Request) (*http.Response, error) {
 	if s.srv.GetStaticSiteCustomDomain == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetStaticSiteCustomDomain not implemented")}
@@ -2390,43 +2448,6 @@ func (s *StaticSitesServerTransport) dispatchGetStaticSiteCustomDomain(req *http
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).StaticSiteCustomDomainOverviewARMResource, req)
 	if err != nil {
 		return nil, err
-	}
-	return resp, nil
-}
-
-func (s *StaticSitesServerTransport) dispatchNewGetStaticSitesByResourceGroupPager(req *http.Request) (*http.Response, error) {
-	if s.srv.NewGetStaticSitesByResourceGroupPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewGetStaticSitesByResourceGroupPager not implemented")}
-	}
-	newGetStaticSitesByResourceGroupPager := s.newGetStaticSitesByResourceGroupPager.get(req)
-	if newGetStaticSitesByResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := s.srv.NewGetStaticSitesByResourceGroupPager(resourceGroupNameParam, nil)
-		newGetStaticSitesByResourceGroupPager = &resp
-		s.newGetStaticSitesByResourceGroupPager.add(req, newGetStaticSitesByResourceGroupPager)
-		server.PagerResponderInjectNextLinks(newGetStaticSitesByResourceGroupPager, req, func(page *armappservice.StaticSitesClientGetStaticSitesByResourceGroupResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newGetStaticSitesByResourceGroupPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		s.newGetStaticSitesByResourceGroupPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newGetStaticSitesByResourceGroupPager) {
-		s.newGetStaticSitesByResourceGroupPager.remove(req)
 	}
 	return resp, nil
 }
@@ -2505,274 +2526,6 @@ func (s *StaticSitesServerTransport) dispatchGetUserProvidedFunctionAppForStatic
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).StaticSiteUserProvidedFunctionAppARMResource, req)
 	if err != nil {
 		return nil, err
-	}
-	return resp, nil
-}
-
-func (s *StaticSitesServerTransport) dispatchNewGetUserProvidedFunctionAppsForStaticSitePager(req *http.Request) (*http.Response, error) {
-	if s.srv.NewGetUserProvidedFunctionAppsForStaticSitePager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewGetUserProvidedFunctionAppsForStaticSitePager not implemented")}
-	}
-	newGetUserProvidedFunctionAppsForStaticSitePager := s.newGetUserProvidedFunctionAppsForStaticSitePager.get(req)
-	if newGetUserProvidedFunctionAppsForStaticSitePager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/userProvidedFunctionApps`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-		if err != nil {
-			return nil, err
-		}
-		resp := s.srv.NewGetUserProvidedFunctionAppsForStaticSitePager(resourceGroupNameParam, nameParam, nil)
-		newGetUserProvidedFunctionAppsForStaticSitePager = &resp
-		s.newGetUserProvidedFunctionAppsForStaticSitePager.add(req, newGetUserProvidedFunctionAppsForStaticSitePager)
-		server.PagerResponderInjectNextLinks(newGetUserProvidedFunctionAppsForStaticSitePager, req, func(page *armappservice.StaticSitesClientGetUserProvidedFunctionAppsForStaticSiteResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newGetUserProvidedFunctionAppsForStaticSitePager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		s.newGetUserProvidedFunctionAppsForStaticSitePager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newGetUserProvidedFunctionAppsForStaticSitePager) {
-		s.newGetUserProvidedFunctionAppsForStaticSitePager.remove(req)
-	}
-	return resp, nil
-}
-
-func (s *StaticSitesServerTransport) dispatchNewGetUserProvidedFunctionAppsForStaticSiteBuildPager(req *http.Request) (*http.Response, error) {
-	if s.srv.NewGetUserProvidedFunctionAppsForStaticSiteBuildPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewGetUserProvidedFunctionAppsForStaticSiteBuildPager not implemented")}
-	}
-	newGetUserProvidedFunctionAppsForStaticSiteBuildPager := s.newGetUserProvidedFunctionAppsForStaticSiteBuildPager.get(req)
-	if newGetUserProvidedFunctionAppsForStaticSiteBuildPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/builds/(?P<environmentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/userProvidedFunctionApps`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-		if err != nil {
-			return nil, err
-		}
-		environmentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("environmentName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := s.srv.NewGetUserProvidedFunctionAppsForStaticSiteBuildPager(resourceGroupNameParam, nameParam, environmentNameParam, nil)
-		newGetUserProvidedFunctionAppsForStaticSiteBuildPager = &resp
-		s.newGetUserProvidedFunctionAppsForStaticSiteBuildPager.add(req, newGetUserProvidedFunctionAppsForStaticSiteBuildPager)
-		server.PagerResponderInjectNextLinks(newGetUserProvidedFunctionAppsForStaticSiteBuildPager, req, func(page *armappservice.StaticSitesClientGetUserProvidedFunctionAppsForStaticSiteBuildResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newGetUserProvidedFunctionAppsForStaticSiteBuildPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		s.newGetUserProvidedFunctionAppsForStaticSiteBuildPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newGetUserProvidedFunctionAppsForStaticSiteBuildPager) {
-		s.newGetUserProvidedFunctionAppsForStaticSiteBuildPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (s *StaticSitesServerTransport) dispatchBeginLinkBackend(req *http.Request) (*http.Response, error) {
-	if s.srv.BeginLinkBackend == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginLinkBackend not implemented")}
-	}
-	beginLinkBackend := s.beginLinkBackend.get(req)
-	if beginLinkBackend == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/linkedBackends/(?P<linkedBackendName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armappservice.StaticSiteLinkedBackendARMResource](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-		if err != nil {
-			return nil, err
-		}
-		linkedBackendNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("linkedBackendName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := s.srv.BeginLinkBackend(req.Context(), resourceGroupNameParam, nameParam, linkedBackendNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginLinkBackend = &respr
-		s.beginLinkBackend.add(req, beginLinkBackend)
-	}
-
-	resp, err := server.PollerResponderNext(beginLinkBackend, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		s.beginLinkBackend.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginLinkBackend) {
-		s.beginLinkBackend.remove(req)
-	}
-
-	return resp, nil
-}
-
-func (s *StaticSitesServerTransport) dispatchBeginLinkBackendToBuild(req *http.Request) (*http.Response, error) {
-	if s.srv.BeginLinkBackendToBuild == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginLinkBackendToBuild not implemented")}
-	}
-	beginLinkBackendToBuild := s.beginLinkBackendToBuild.get(req)
-	if beginLinkBackendToBuild == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/builds/(?P<environmentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/linkedBackends/(?P<linkedBackendName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 6 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armappservice.StaticSiteLinkedBackendARMResource](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-		if err != nil {
-			return nil, err
-		}
-		environmentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("environmentName")])
-		if err != nil {
-			return nil, err
-		}
-		linkedBackendNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("linkedBackendName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := s.srv.BeginLinkBackendToBuild(req.Context(), resourceGroupNameParam, nameParam, environmentNameParam, linkedBackendNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginLinkBackendToBuild = &respr
-		s.beginLinkBackendToBuild.add(req, beginLinkBackendToBuild)
-	}
-
-	resp, err := server.PollerResponderNext(beginLinkBackendToBuild, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		s.beginLinkBackendToBuild.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginLinkBackendToBuild) {
-		s.beginLinkBackendToBuild.remove(req)
-	}
-
-	return resp, nil
-}
-
-func (s *StaticSitesServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if s.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := s.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := s.srv.NewListPager(nil)
-		newListPager = &resp
-		s.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armappservice.StaticSitesClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		s.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		s.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (s *StaticSitesServerTransport) dispatchNewListBasicAuthPager(req *http.Request) (*http.Response, error) {
-	if s.srv.NewListBasicAuthPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListBasicAuthPager not implemented")}
-	}
-	newListBasicAuthPager := s.newListBasicAuthPager.get(req)
-	if newListBasicAuthPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/basicAuth`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-		if err != nil {
-			return nil, err
-		}
-		resp := s.srv.NewListBasicAuthPager(resourceGroupNameParam, nameParam, nil)
-		newListBasicAuthPager = &resp
-		s.newListBasicAuthPager.add(req, newListBasicAuthPager)
-		server.PagerResponderInjectNextLinks(newListBasicAuthPager, req, func(page *armappservice.StaticSitesClientListBasicAuthResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListBasicAuthPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		s.newListBasicAuthPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListBasicAuthPager) {
-		s.newListBasicAuthPager.remove(req)
 	}
 	return resp, nil
 }
@@ -2884,6 +2637,642 @@ func (s *StaticSitesServerTransport) dispatchListStaticSiteBuildFunctionAppSetti
 	return resp, nil
 }
 
+func (s *StaticSitesServerTransport) dispatchListStaticSiteConfiguredRoles(req *http.Request) (*http.Response, error) {
+	if s.srv.ListStaticSiteConfiguredRoles == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListStaticSiteConfiguredRoles not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listConfiguredRoles`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := s.srv.ListStaticSiteConfiguredRoles(req.Context(), resourceGroupNameParam, nameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).StringList, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (s *StaticSitesServerTransport) dispatchListStaticSiteFunctionAppSettings(req *http.Request) (*http.Response, error) {
+	if s.srv.ListStaticSiteFunctionAppSettings == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListStaticSiteFunctionAppSettings not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listFunctionAppSettings`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := s.srv.ListStaticSiteFunctionAppSettings(req.Context(), resourceGroupNameParam, nameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).StringDictionary, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (s *StaticSitesServerTransport) dispatchListStaticSiteSecrets(req *http.Request) (*http.Response, error) {
+	if s.srv.ListStaticSiteSecrets == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListStaticSiteSecrets not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listSecrets`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := s.srv.ListStaticSiteSecrets(req.Context(), resourceGroupNameParam, nameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).StringDictionary, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (s *StaticSitesServerTransport) dispatchNewGetBuildDatabaseConnectionsPager(req *http.Request) (*http.Response, error) {
+	if s.srv.NewGetBuildDatabaseConnectionsPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewGetBuildDatabaseConnectionsPager not implemented")}
+	}
+	newGetBuildDatabaseConnectionsPager := s.newGetBuildDatabaseConnectionsPager.get(req)
+	if newGetBuildDatabaseConnectionsPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/builds/(?P<environmentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/databaseConnections`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+		if err != nil {
+			return nil, err
+		}
+		environmentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("environmentName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := s.srv.NewGetBuildDatabaseConnectionsPager(resourceGroupNameParam, nameParam, environmentNameParam, nil)
+		newGetBuildDatabaseConnectionsPager = &resp
+		s.newGetBuildDatabaseConnectionsPager.add(req, newGetBuildDatabaseConnectionsPager)
+		server.PagerResponderInjectNextLinks(newGetBuildDatabaseConnectionsPager, req, func(page *armappservice.StaticSitesClientGetBuildDatabaseConnectionsResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newGetBuildDatabaseConnectionsPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		s.newGetBuildDatabaseConnectionsPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newGetBuildDatabaseConnectionsPager) {
+		s.newGetBuildDatabaseConnectionsPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (s *StaticSitesServerTransport) dispatchNewGetBuildDatabaseConnectionsWithDetailsPager(req *http.Request) (*http.Response, error) {
+	if s.srv.NewGetBuildDatabaseConnectionsWithDetailsPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewGetBuildDatabaseConnectionsWithDetailsPager not implemented")}
+	}
+	newGetBuildDatabaseConnectionsWithDetailsPager := s.newGetBuildDatabaseConnectionsWithDetailsPager.get(req)
+	if newGetBuildDatabaseConnectionsWithDetailsPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/builds/(?P<environmentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/showDatabaseConnections`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+		if err != nil {
+			return nil, err
+		}
+		environmentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("environmentName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := s.srv.NewGetBuildDatabaseConnectionsWithDetailsPager(resourceGroupNameParam, nameParam, environmentNameParam, nil)
+		newGetBuildDatabaseConnectionsWithDetailsPager = &resp
+		s.newGetBuildDatabaseConnectionsWithDetailsPager.add(req, newGetBuildDatabaseConnectionsWithDetailsPager)
+		server.PagerResponderInjectNextLinks(newGetBuildDatabaseConnectionsWithDetailsPager, req, func(page *armappservice.StaticSitesClientGetBuildDatabaseConnectionsWithDetailsResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newGetBuildDatabaseConnectionsWithDetailsPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		s.newGetBuildDatabaseConnectionsWithDetailsPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newGetBuildDatabaseConnectionsWithDetailsPager) {
+		s.newGetBuildDatabaseConnectionsWithDetailsPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (s *StaticSitesServerTransport) dispatchNewGetDatabaseConnectionsPager(req *http.Request) (*http.Response, error) {
+	if s.srv.NewGetDatabaseConnectionsPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewGetDatabaseConnectionsPager not implemented")}
+	}
+	newGetDatabaseConnectionsPager := s.newGetDatabaseConnectionsPager.get(req)
+	if newGetDatabaseConnectionsPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/databaseConnections`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+		if err != nil {
+			return nil, err
+		}
+		resp := s.srv.NewGetDatabaseConnectionsPager(resourceGroupNameParam, nameParam, nil)
+		newGetDatabaseConnectionsPager = &resp
+		s.newGetDatabaseConnectionsPager.add(req, newGetDatabaseConnectionsPager)
+		server.PagerResponderInjectNextLinks(newGetDatabaseConnectionsPager, req, func(page *armappservice.StaticSitesClientGetDatabaseConnectionsResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newGetDatabaseConnectionsPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		s.newGetDatabaseConnectionsPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newGetDatabaseConnectionsPager) {
+		s.newGetDatabaseConnectionsPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (s *StaticSitesServerTransport) dispatchNewGetDatabaseConnectionsWithDetailsPager(req *http.Request) (*http.Response, error) {
+	if s.srv.NewGetDatabaseConnectionsWithDetailsPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewGetDatabaseConnectionsWithDetailsPager not implemented")}
+	}
+	newGetDatabaseConnectionsWithDetailsPager := s.newGetDatabaseConnectionsWithDetailsPager.get(req)
+	if newGetDatabaseConnectionsWithDetailsPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/showDatabaseConnections`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+		if err != nil {
+			return nil, err
+		}
+		resp := s.srv.NewGetDatabaseConnectionsWithDetailsPager(resourceGroupNameParam, nameParam, nil)
+		newGetDatabaseConnectionsWithDetailsPager = &resp
+		s.newGetDatabaseConnectionsWithDetailsPager.add(req, newGetDatabaseConnectionsWithDetailsPager)
+		server.PagerResponderInjectNextLinks(newGetDatabaseConnectionsWithDetailsPager, req, func(page *armappservice.StaticSitesClientGetDatabaseConnectionsWithDetailsResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newGetDatabaseConnectionsWithDetailsPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		s.newGetDatabaseConnectionsWithDetailsPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newGetDatabaseConnectionsWithDetailsPager) {
+		s.newGetDatabaseConnectionsWithDetailsPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (s *StaticSitesServerTransport) dispatchNewGetLinkedBackendsForBuildPager(req *http.Request) (*http.Response, error) {
+	if s.srv.NewGetLinkedBackendsForBuildPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewGetLinkedBackendsForBuildPager not implemented")}
+	}
+	newGetLinkedBackendsForBuildPager := s.newGetLinkedBackendsForBuildPager.get(req)
+	if newGetLinkedBackendsForBuildPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/builds/(?P<environmentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/linkedBackends`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+		if err != nil {
+			return nil, err
+		}
+		environmentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("environmentName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := s.srv.NewGetLinkedBackendsForBuildPager(resourceGroupNameParam, nameParam, environmentNameParam, nil)
+		newGetLinkedBackendsForBuildPager = &resp
+		s.newGetLinkedBackendsForBuildPager.add(req, newGetLinkedBackendsForBuildPager)
+		server.PagerResponderInjectNextLinks(newGetLinkedBackendsForBuildPager, req, func(page *armappservice.StaticSitesClientGetLinkedBackendsForBuildResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newGetLinkedBackendsForBuildPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		s.newGetLinkedBackendsForBuildPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newGetLinkedBackendsForBuildPager) {
+		s.newGetLinkedBackendsForBuildPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (s *StaticSitesServerTransport) dispatchNewGetLinkedBackendsPager(req *http.Request) (*http.Response, error) {
+	if s.srv.NewGetLinkedBackendsPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewGetLinkedBackendsPager not implemented")}
+	}
+	newGetLinkedBackendsPager := s.newGetLinkedBackendsPager.get(req)
+	if newGetLinkedBackendsPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/linkedBackends`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+		if err != nil {
+			return nil, err
+		}
+		resp := s.srv.NewGetLinkedBackendsPager(resourceGroupNameParam, nameParam, nil)
+		newGetLinkedBackendsPager = &resp
+		s.newGetLinkedBackendsPager.add(req, newGetLinkedBackendsPager)
+		server.PagerResponderInjectNextLinks(newGetLinkedBackendsPager, req, func(page *armappservice.StaticSitesClientGetLinkedBackendsResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newGetLinkedBackendsPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		s.newGetLinkedBackendsPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newGetLinkedBackendsPager) {
+		s.newGetLinkedBackendsPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (s *StaticSitesServerTransport) dispatchNewGetPrivateEndpointConnectionListPager(req *http.Request) (*http.Response, error) {
+	if s.srv.NewGetPrivateEndpointConnectionListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewGetPrivateEndpointConnectionListPager not implemented")}
+	}
+	newGetPrivateEndpointConnectionListPager := s.newGetPrivateEndpointConnectionListPager.get(req)
+	if newGetPrivateEndpointConnectionListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/privateEndpointConnections`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+		if err != nil {
+			return nil, err
+		}
+		resp := s.srv.NewGetPrivateEndpointConnectionListPager(resourceGroupNameParam, nameParam, nil)
+		newGetPrivateEndpointConnectionListPager = &resp
+		s.newGetPrivateEndpointConnectionListPager.add(req, newGetPrivateEndpointConnectionListPager)
+		server.PagerResponderInjectNextLinks(newGetPrivateEndpointConnectionListPager, req, func(page *armappservice.StaticSitesClientGetPrivateEndpointConnectionListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newGetPrivateEndpointConnectionListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		s.newGetPrivateEndpointConnectionListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newGetPrivateEndpointConnectionListPager) {
+		s.newGetPrivateEndpointConnectionListPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (s *StaticSitesServerTransport) dispatchNewGetStaticSiteBuildsPager(req *http.Request) (*http.Response, error) {
+	if s.srv.NewGetStaticSiteBuildsPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewGetStaticSiteBuildsPager not implemented")}
+	}
+	newGetStaticSiteBuildsPager := s.newGetStaticSiteBuildsPager.get(req)
+	if newGetStaticSiteBuildsPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/builds`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+		if err != nil {
+			return nil, err
+		}
+		resp := s.srv.NewGetStaticSiteBuildsPager(resourceGroupNameParam, nameParam, nil)
+		newGetStaticSiteBuildsPager = &resp
+		s.newGetStaticSiteBuildsPager.add(req, newGetStaticSiteBuildsPager)
+		server.PagerResponderInjectNextLinks(newGetStaticSiteBuildsPager, req, func(page *armappservice.StaticSitesClientGetStaticSiteBuildsResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newGetStaticSiteBuildsPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		s.newGetStaticSiteBuildsPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newGetStaticSiteBuildsPager) {
+		s.newGetStaticSiteBuildsPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (s *StaticSitesServerTransport) dispatchNewGetStaticSitesByResourceGroupPager(req *http.Request) (*http.Response, error) {
+	if s.srv.NewGetStaticSitesByResourceGroupPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewGetStaticSitesByResourceGroupPager not implemented")}
+	}
+	newGetStaticSitesByResourceGroupPager := s.newGetStaticSitesByResourceGroupPager.get(req)
+	if newGetStaticSitesByResourceGroupPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := s.srv.NewGetStaticSitesByResourceGroupPager(resourceGroupNameParam, nil)
+		newGetStaticSitesByResourceGroupPager = &resp
+		s.newGetStaticSitesByResourceGroupPager.add(req, newGetStaticSitesByResourceGroupPager)
+		server.PagerResponderInjectNextLinks(newGetStaticSitesByResourceGroupPager, req, func(page *armappservice.StaticSitesClientGetStaticSitesByResourceGroupResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newGetStaticSitesByResourceGroupPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		s.newGetStaticSitesByResourceGroupPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newGetStaticSitesByResourceGroupPager) {
+		s.newGetStaticSitesByResourceGroupPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (s *StaticSitesServerTransport) dispatchNewGetUserProvidedFunctionAppsForStaticSiteBuildPager(req *http.Request) (*http.Response, error) {
+	if s.srv.NewGetUserProvidedFunctionAppsForStaticSiteBuildPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewGetUserProvidedFunctionAppsForStaticSiteBuildPager not implemented")}
+	}
+	newGetUserProvidedFunctionAppsForStaticSiteBuildPager := s.newGetUserProvidedFunctionAppsForStaticSiteBuildPager.get(req)
+	if newGetUserProvidedFunctionAppsForStaticSiteBuildPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/builds/(?P<environmentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/userProvidedFunctionApps`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+		if err != nil {
+			return nil, err
+		}
+		environmentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("environmentName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := s.srv.NewGetUserProvidedFunctionAppsForStaticSiteBuildPager(resourceGroupNameParam, nameParam, environmentNameParam, nil)
+		newGetUserProvidedFunctionAppsForStaticSiteBuildPager = &resp
+		s.newGetUserProvidedFunctionAppsForStaticSiteBuildPager.add(req, newGetUserProvidedFunctionAppsForStaticSiteBuildPager)
+		server.PagerResponderInjectNextLinks(newGetUserProvidedFunctionAppsForStaticSiteBuildPager, req, func(page *armappservice.StaticSitesClientGetUserProvidedFunctionAppsForStaticSiteBuildResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newGetUserProvidedFunctionAppsForStaticSiteBuildPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		s.newGetUserProvidedFunctionAppsForStaticSiteBuildPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newGetUserProvidedFunctionAppsForStaticSiteBuildPager) {
+		s.newGetUserProvidedFunctionAppsForStaticSiteBuildPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (s *StaticSitesServerTransport) dispatchNewGetUserProvidedFunctionAppsForStaticSitePager(req *http.Request) (*http.Response, error) {
+	if s.srv.NewGetUserProvidedFunctionAppsForStaticSitePager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewGetUserProvidedFunctionAppsForStaticSitePager not implemented")}
+	}
+	newGetUserProvidedFunctionAppsForStaticSitePager := s.newGetUserProvidedFunctionAppsForStaticSitePager.get(req)
+	if newGetUserProvidedFunctionAppsForStaticSitePager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/userProvidedFunctionApps`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+		if err != nil {
+			return nil, err
+		}
+		resp := s.srv.NewGetUserProvidedFunctionAppsForStaticSitePager(resourceGroupNameParam, nameParam, nil)
+		newGetUserProvidedFunctionAppsForStaticSitePager = &resp
+		s.newGetUserProvidedFunctionAppsForStaticSitePager.add(req, newGetUserProvidedFunctionAppsForStaticSitePager)
+		server.PagerResponderInjectNextLinks(newGetUserProvidedFunctionAppsForStaticSitePager, req, func(page *armappservice.StaticSitesClientGetUserProvidedFunctionAppsForStaticSiteResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newGetUserProvidedFunctionAppsForStaticSitePager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		s.newGetUserProvidedFunctionAppsForStaticSitePager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newGetUserProvidedFunctionAppsForStaticSitePager) {
+		s.newGetUserProvidedFunctionAppsForStaticSitePager.remove(req)
+	}
+	return resp, nil
+}
+
+func (s *StaticSitesServerTransport) dispatchNewListBasicAuthPager(req *http.Request) (*http.Response, error) {
+	if s.srv.NewListBasicAuthPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListBasicAuthPager not implemented")}
+	}
+	newListBasicAuthPager := s.newListBasicAuthPager.get(req)
+	if newListBasicAuthPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/basicAuth`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+		if err != nil {
+			return nil, err
+		}
+		resp := s.srv.NewListBasicAuthPager(resourceGroupNameParam, nameParam, nil)
+		newListBasicAuthPager = &resp
+		s.newListBasicAuthPager.add(req, newListBasicAuthPager)
+		server.PagerResponderInjectNextLinks(newListBasicAuthPager, req, func(page *armappservice.StaticSitesClientListBasicAuthResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListBasicAuthPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		s.newListBasicAuthPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListBasicAuthPager) {
+		s.newListBasicAuthPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (s *StaticSitesServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if s.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := s.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resp := s.srv.NewListPager(nil)
+		newListPager = &resp
+		s.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armappservice.StaticSitesClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		s.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPager) {
+		s.newListPager.remove(req)
+	}
+	return resp, nil
+}
+
 func (s *StaticSitesServerTransport) dispatchNewListStaticSiteBuildFunctionsPager(req *http.Request) (*http.Response, error) {
 	if s.srv.NewListStaticSiteBuildFunctionsPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListStaticSiteBuildFunctionsPager not implemented")}
@@ -2929,39 +3318,6 @@ func (s *StaticSitesServerTransport) dispatchNewListStaticSiteBuildFunctionsPage
 	return resp, nil
 }
 
-func (s *StaticSitesServerTransport) dispatchListStaticSiteConfiguredRoles(req *http.Request) (*http.Response, error) {
-	if s.srv.ListStaticSiteConfiguredRoles == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ListStaticSiteConfiguredRoles not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listConfiguredRoles`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := s.srv.ListStaticSiteConfiguredRoles(req.Context(), resourceGroupNameParam, nameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).StringList, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
 func (s *StaticSitesServerTransport) dispatchNewListStaticSiteCustomDomainsPager(req *http.Request) (*http.Response, error) {
 	if s.srv.NewListStaticSiteCustomDomainsPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListStaticSiteCustomDomainsPager not implemented")}
@@ -3003,39 +3359,6 @@ func (s *StaticSitesServerTransport) dispatchNewListStaticSiteCustomDomainsPager
 	return resp, nil
 }
 
-func (s *StaticSitesServerTransport) dispatchListStaticSiteFunctionAppSettings(req *http.Request) (*http.Response, error) {
-	if s.srv.ListStaticSiteFunctionAppSettings == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ListStaticSiteFunctionAppSettings not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listFunctionAppSettings`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := s.srv.ListStaticSiteFunctionAppSettings(req.Context(), resourceGroupNameParam, nameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).StringDictionary, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
 func (s *StaticSitesServerTransport) dispatchNewListStaticSiteFunctionsPager(req *http.Request) (*http.Response, error) {
 	if s.srv.NewListStaticSiteFunctionsPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListStaticSiteFunctionsPager not implemented")}
@@ -3073,39 +3396,6 @@ func (s *StaticSitesServerTransport) dispatchNewListStaticSiteFunctionsPager(req
 	}
 	if !server.PagerResponderMore(newListStaticSiteFunctionsPager) {
 		s.newListStaticSiteFunctionsPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (s *StaticSitesServerTransport) dispatchListStaticSiteSecrets(req *http.Request) (*http.Response, error) {
-	if s.srv.ListStaticSiteSecrets == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ListStaticSiteSecrets not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listSecrets`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := s.srv.ListStaticSiteSecrets(req.Context(), resourceGroupNameParam, nameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).StringDictionary, req)
-	if err != nil {
-		return nil, err
 	}
 	return resp, nil
 }
@@ -3185,136 +3475,6 @@ func (s *StaticSitesServerTransport) dispatchPreviewWorkflow(req *http.Request) 
 	if err != nil {
 		return nil, err
 	}
-	return resp, nil
-}
-
-func (s *StaticSitesServerTransport) dispatchBeginRegisterUserProvidedFunctionAppWithStaticSite(req *http.Request) (*http.Response, error) {
-	if s.srv.BeginRegisterUserProvidedFunctionAppWithStaticSite == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginRegisterUserProvidedFunctionAppWithStaticSite not implemented")}
-	}
-	beginRegisterUserProvidedFunctionAppWithStaticSite := s.beginRegisterUserProvidedFunctionAppWithStaticSite.get(req)
-	if beginRegisterUserProvidedFunctionAppWithStaticSite == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/userProvidedFunctionApps/(?P<functionAppName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		qp := req.URL.Query()
-		body, err := server.UnmarshalRequestAsJSON[armappservice.StaticSiteUserProvidedFunctionAppARMResource](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-		if err != nil {
-			return nil, err
-		}
-		functionAppNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("functionAppName")])
-		if err != nil {
-			return nil, err
-		}
-		isForcedParam, err := parseOptional(qp.Get("isForced"), strconv.ParseBool)
-		if err != nil {
-			return nil, err
-		}
-		var options *armappservice.StaticSitesClientBeginRegisterUserProvidedFunctionAppWithStaticSiteOptions
-		if isForcedParam != nil {
-			options = &armappservice.StaticSitesClientBeginRegisterUserProvidedFunctionAppWithStaticSiteOptions{
-				IsForced: isForcedParam,
-			}
-		}
-		respr, errRespr := s.srv.BeginRegisterUserProvidedFunctionAppWithStaticSite(req.Context(), resourceGroupNameParam, nameParam, functionAppNameParam, body, options)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginRegisterUserProvidedFunctionAppWithStaticSite = &respr
-		s.beginRegisterUserProvidedFunctionAppWithStaticSite.add(req, beginRegisterUserProvidedFunctionAppWithStaticSite)
-	}
-
-	resp, err := server.PollerResponderNext(beginRegisterUserProvidedFunctionAppWithStaticSite, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		s.beginRegisterUserProvidedFunctionAppWithStaticSite.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginRegisterUserProvidedFunctionAppWithStaticSite) {
-		s.beginRegisterUserProvidedFunctionAppWithStaticSite.remove(req)
-	}
-
-	return resp, nil
-}
-
-func (s *StaticSitesServerTransport) dispatchBeginRegisterUserProvidedFunctionAppWithStaticSiteBuild(req *http.Request) (*http.Response, error) {
-	if s.srv.BeginRegisterUserProvidedFunctionAppWithStaticSiteBuild == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginRegisterUserProvidedFunctionAppWithStaticSiteBuild not implemented")}
-	}
-	beginRegisterUserProvidedFunctionAppWithStaticSiteBuild := s.beginRegisterUserProvidedFunctionAppWithStaticSiteBuild.get(req)
-	if beginRegisterUserProvidedFunctionAppWithStaticSiteBuild == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/builds/(?P<environmentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/userProvidedFunctionApps/(?P<functionAppName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 6 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		qp := req.URL.Query()
-		body, err := server.UnmarshalRequestAsJSON[armappservice.StaticSiteUserProvidedFunctionAppARMResource](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-		if err != nil {
-			return nil, err
-		}
-		environmentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("environmentName")])
-		if err != nil {
-			return nil, err
-		}
-		functionAppNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("functionAppName")])
-		if err != nil {
-			return nil, err
-		}
-		isForcedParam, err := parseOptional(qp.Get("isForced"), strconv.ParseBool)
-		if err != nil {
-			return nil, err
-		}
-		var options *armappservice.StaticSitesClientBeginRegisterUserProvidedFunctionAppWithStaticSiteBuildOptions
-		if isForcedParam != nil {
-			options = &armappservice.StaticSitesClientBeginRegisterUserProvidedFunctionAppWithStaticSiteBuildOptions{
-				IsForced: isForcedParam,
-			}
-		}
-		respr, errRespr := s.srv.BeginRegisterUserProvidedFunctionAppWithStaticSiteBuild(req.Context(), resourceGroupNameParam, nameParam, environmentNameParam, functionAppNameParam, body, options)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginRegisterUserProvidedFunctionAppWithStaticSiteBuild = &respr
-		s.beginRegisterUserProvidedFunctionAppWithStaticSiteBuild.add(req, beginRegisterUserProvidedFunctionAppWithStaticSiteBuild)
-	}
-
-	resp, err := server.PollerResponderNext(beginRegisterUserProvidedFunctionAppWithStaticSiteBuild, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		s.beginRegisterUserProvidedFunctionAppWithStaticSiteBuild.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginRegisterUserProvidedFunctionAppWithStaticSiteBuild) {
-		s.beginRegisterUserProvidedFunctionAppWithStaticSiteBuild.remove(req)
-	}
-
 	return resp, nil
 }
 
@@ -3620,166 +3780,6 @@ func (s *StaticSitesServerTransport) dispatchUpdateStaticSiteUser(req *http.Requ
 	if err != nil {
 		return nil, err
 	}
-	return resp, nil
-}
-
-func (s *StaticSitesServerTransport) dispatchBeginValidateBackend(req *http.Request) (*http.Response, error) {
-	if s.srv.BeginValidateBackend == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginValidateBackend not implemented")}
-	}
-	beginValidateBackend := s.beginValidateBackend.get(req)
-	if beginValidateBackend == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/linkedBackends/(?P<linkedBackendName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/validate`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armappservice.StaticSiteLinkedBackendARMResource](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-		if err != nil {
-			return nil, err
-		}
-		linkedBackendNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("linkedBackendName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := s.srv.BeginValidateBackend(req.Context(), resourceGroupNameParam, nameParam, linkedBackendNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginValidateBackend = &respr
-		s.beginValidateBackend.add(req, beginValidateBackend)
-	}
-
-	resp, err := server.PollerResponderNext(beginValidateBackend, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
-		s.beginValidateBackend.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginValidateBackend) {
-		s.beginValidateBackend.remove(req)
-	}
-
-	return resp, nil
-}
-
-func (s *StaticSitesServerTransport) dispatchBeginValidateBackendForBuild(req *http.Request) (*http.Response, error) {
-	if s.srv.BeginValidateBackendForBuild == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginValidateBackendForBuild not implemented")}
-	}
-	beginValidateBackendForBuild := s.beginValidateBackendForBuild.get(req)
-	if beginValidateBackendForBuild == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/builds/(?P<environmentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/linkedBackends/(?P<linkedBackendName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/validate`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 6 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armappservice.StaticSiteLinkedBackendARMResource](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-		if err != nil {
-			return nil, err
-		}
-		environmentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("environmentName")])
-		if err != nil {
-			return nil, err
-		}
-		linkedBackendNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("linkedBackendName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := s.srv.BeginValidateBackendForBuild(req.Context(), resourceGroupNameParam, nameParam, environmentNameParam, linkedBackendNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginValidateBackendForBuild = &respr
-		s.beginValidateBackendForBuild.add(req, beginValidateBackendForBuild)
-	}
-
-	resp, err := server.PollerResponderNext(beginValidateBackendForBuild, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
-		s.beginValidateBackendForBuild.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginValidateBackendForBuild) {
-		s.beginValidateBackendForBuild.remove(req)
-	}
-
-	return resp, nil
-}
-
-func (s *StaticSitesServerTransport) dispatchBeginValidateCustomDomainCanBeAddedToStaticSite(req *http.Request) (*http.Response, error) {
-	if s.srv.BeginValidateCustomDomainCanBeAddedToStaticSite == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginValidateCustomDomainCanBeAddedToStaticSite not implemented")}
-	}
-	beginValidateCustomDomainCanBeAddedToStaticSite := s.beginValidateCustomDomainCanBeAddedToStaticSite.get(req)
-	if beginValidateCustomDomainCanBeAddedToStaticSite == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/staticSites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/customDomains/(?P<domainName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/validate`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armappservice.StaticSiteCustomDomainRequestPropertiesARMResource](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-		if err != nil {
-			return nil, err
-		}
-		domainNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("domainName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := s.srv.BeginValidateCustomDomainCanBeAddedToStaticSite(req.Context(), resourceGroupNameParam, nameParam, domainNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginValidateCustomDomainCanBeAddedToStaticSite = &respr
-		s.beginValidateCustomDomainCanBeAddedToStaticSite.add(req, beginValidateCustomDomainCanBeAddedToStaticSite)
-	}
-
-	resp, err := server.PollerResponderNext(beginValidateCustomDomainCanBeAddedToStaticSite, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
-		s.beginValidateCustomDomainCanBeAddedToStaticSite.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginValidateCustomDomainCanBeAddedToStaticSite) {
-		s.beginValidateCustomDomainCanBeAddedToStaticSite.remove(req)
-	}
-
 	return resp, nil
 }
 

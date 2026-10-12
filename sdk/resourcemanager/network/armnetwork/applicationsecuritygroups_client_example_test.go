@@ -109,8 +109,8 @@ func ExampleApplicationSecurityGroupsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/ApplicationSecurityGroupList.json
-func ExampleApplicationSecurityGroupsClient_NewListPager() {
+// Generated from example definition: 2026-01-01/ApplicationSecurityGroupListAll.json
+func ExampleApplicationSecurityGroupsClient_NewListAllPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -120,7 +120,7 @@ func ExampleApplicationSecurityGroupsClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewApplicationSecurityGroupsClient().NewListPager("rg1", nil)
+	pager := clientFactory.NewApplicationSecurityGroupsClient().NewListAllPager(nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -131,7 +131,7 @@ func ExampleApplicationSecurityGroupsClient_NewListPager() {
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armnetwork.ApplicationSecurityGroupsClientListResponse{
+		// page = armnetwork.ApplicationSecurityGroupsClientListAllResponse{
 		// 	ApplicationSecurityGroupListResult: armnetwork.ApplicationSecurityGroupListResult{
 		// 		Value: []*armnetwork.ApplicationSecurityGroup{
 		// 			{
@@ -160,8 +160,8 @@ func ExampleApplicationSecurityGroupsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-01-01/ApplicationSecurityGroupListAll.json
-func ExampleApplicationSecurityGroupsClient_NewListAllPager() {
+// Generated from example definition: 2026-01-01/ApplicationSecurityGroupList.json
+func ExampleApplicationSecurityGroupsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -171,7 +171,7 @@ func ExampleApplicationSecurityGroupsClient_NewListAllPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewApplicationSecurityGroupsClient().NewListAllPager(nil)
+	pager := clientFactory.NewApplicationSecurityGroupsClient().NewListPager("rg1", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -182,7 +182,7 @@ func ExampleApplicationSecurityGroupsClient_NewListAllPager() {
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armnetwork.ApplicationSecurityGroupsClientListAllResponse{
+		// page = armnetwork.ApplicationSecurityGroupsClientListResponse{
 		// 	ApplicationSecurityGroupListResult: armnetwork.ApplicationSecurityGroupListResult{
 		// 		Value: []*armnetwork.ApplicationSecurityGroup{
 		// 			{

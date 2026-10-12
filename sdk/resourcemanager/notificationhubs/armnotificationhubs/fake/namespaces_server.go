@@ -22,13 +22,13 @@ import (
 
 // NamespacesServer is a fake server for instances of the armnotificationhubs.NamespacesClient type.
 type NamespacesServer struct {
-	// CheckAvailability is the fake for method NamespacesClient.CheckAvailability
-	// HTTP status codes to indicate success: http.StatusOK
-	CheckAvailability func(ctx context.Context, parameters armnotificationhubs.CheckAvailabilityParameters, options *armnotificationhubs.NamespacesClientCheckAvailabilityOptions) (resp azfake.Responder[armnotificationhubs.NamespacesClientCheckAvailabilityResponse], errResp azfake.ErrorResponder)
-
 	// BeginCreateOrUpdate is the fake for method NamespacesClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
 	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, namespaceName string, parameters armnotificationhubs.NamespaceResource, options *armnotificationhubs.NamespacesClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armnotificationhubs.NamespacesClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
+
+	// CheckAvailability is the fake for method NamespacesClient.CheckAvailability
+	// HTTP status codes to indicate success: http.StatusOK
+	CheckAvailability func(ctx context.Context, parameters armnotificationhubs.CheckAvailabilityParameters, options *armnotificationhubs.NamespacesClientCheckAvailabilityOptions) (resp azfake.Responder[armnotificationhubs.NamespacesClientCheckAvailabilityResponse], errResp azfake.ErrorResponder)
 
 	// CreateOrUpdateAuthorizationRule is the fake for method NamespacesClient.CreateOrUpdateAuthorizationRule
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
@@ -54,9 +54,9 @@ type NamespacesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	GetPnsCredentials func(ctx context.Context, resourceGroupName string, namespaceName string, options *armnotificationhubs.NamespacesClientGetPnsCredentialsOptions) (resp azfake.Responder[armnotificationhubs.NamespacesClientGetPnsCredentialsResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method NamespacesClient.NewListPager
+	// ListKeys is the fake for method NamespacesClient.ListKeys
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(resourceGroupName string, options *armnotificationhubs.NamespacesClientListOptions) (resp azfake.PagerResponder[armnotificationhubs.NamespacesClientListResponse])
+	ListKeys func(ctx context.Context, resourceGroupName string, namespaceName string, authorizationRuleName string, options *armnotificationhubs.NamespacesClientListKeysOptions) (resp azfake.Responder[armnotificationhubs.NamespacesClientListKeysResponse], errResp azfake.ErrorResponder)
 
 	// NewListAllPager is the fake for method NamespacesClient.NewListAllPager
 	// HTTP status codes to indicate success: http.StatusOK
@@ -66,9 +66,9 @@ type NamespacesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListAuthorizationRulesPager func(resourceGroupName string, namespaceName string, options *armnotificationhubs.NamespacesClientListAuthorizationRulesOptions) (resp azfake.PagerResponder[armnotificationhubs.NamespacesClientListAuthorizationRulesResponse])
 
-	// ListKeys is the fake for method NamespacesClient.ListKeys
+	// NewListPager is the fake for method NamespacesClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
-	ListKeys func(ctx context.Context, resourceGroupName string, namespaceName string, authorizationRuleName string, options *armnotificationhubs.NamespacesClientListKeysOptions) (resp azfake.Responder[armnotificationhubs.NamespacesClientListKeysResponse], errResp azfake.ErrorResponder)
+	NewListPager func(resourceGroupName string, options *armnotificationhubs.NamespacesClientListOptions) (resp azfake.PagerResponder[armnotificationhubs.NamespacesClientListResponse])
 
 	// RegenerateKeys is the fake for method NamespacesClient.RegenerateKeys
 	// HTTP status codes to indicate success: http.StatusOK
@@ -86,9 +86,9 @@ func NewNamespacesServerTransport(srv *NamespacesServer) *NamespacesServerTransp
 	return &NamespacesServerTransport{
 		srv:                            srv,
 		beginCreateOrUpdate:            newTracker[azfake.PollerResponder[armnotificationhubs.NamespacesClientCreateOrUpdateResponse]](),
-		newListPager:                   newTracker[azfake.PagerResponder[armnotificationhubs.NamespacesClientListResponse]](),
 		newListAllPager:                newTracker[azfake.PagerResponder[armnotificationhubs.NamespacesClientListAllResponse]](),
 		newListAuthorizationRulesPager: newTracker[azfake.PagerResponder[armnotificationhubs.NamespacesClientListAuthorizationRulesResponse]](),
+		newListPager:                   newTracker[azfake.PagerResponder[armnotificationhubs.NamespacesClientListResponse]](),
 	}
 }
 
@@ -97,9 +97,9 @@ func NewNamespacesServerTransport(srv *NamespacesServer) *NamespacesServerTransp
 type NamespacesServerTransport struct {
 	srv                            *NamespacesServer
 	beginCreateOrUpdate            *tracker[azfake.PollerResponder[armnotificationhubs.NamespacesClientCreateOrUpdateResponse]]
-	newListPager                   *tracker[azfake.PagerResponder[armnotificationhubs.NamespacesClientListResponse]]
 	newListAllPager                *tracker[azfake.PagerResponder[armnotificationhubs.NamespacesClientListAllResponse]]
 	newListAuthorizationRulesPager *tracker[azfake.PagerResponder[armnotificationhubs.NamespacesClientListAuthorizationRulesResponse]]
+	newListPager                   *tracker[azfake.PagerResponder[armnotificationhubs.NamespacesClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for NamespacesServerTransport.
@@ -123,10 +123,10 @@ func (n *NamespacesServerTransport) dispatchToMethodFake(req *http.Request, meth
 		}
 		if !intercepted {
 			switch method {
-			case "NamespacesClient.CheckAvailability":
-				res.resp, res.err = n.dispatchCheckAvailability(req)
 			case "NamespacesClient.BeginCreateOrUpdate":
 				res.resp, res.err = n.dispatchBeginCreateOrUpdate(req)
+			case "NamespacesClient.CheckAvailability":
+				res.resp, res.err = n.dispatchCheckAvailability(req)
 			case "NamespacesClient.CreateOrUpdateAuthorizationRule":
 				res.resp, res.err = n.dispatchCreateOrUpdateAuthorizationRule(req)
 			case "NamespacesClient.Delete":
@@ -139,14 +139,14 @@ func (n *NamespacesServerTransport) dispatchToMethodFake(req *http.Request, meth
 				res.resp, res.err = n.dispatchGetAuthorizationRule(req)
 			case "NamespacesClient.GetPnsCredentials":
 				res.resp, res.err = n.dispatchGetPnsCredentials(req)
-			case "NamespacesClient.NewListPager":
-				res.resp, res.err = n.dispatchNewListPager(req)
+			case "NamespacesClient.ListKeys":
+				res.resp, res.err = n.dispatchListKeys(req)
 			case "NamespacesClient.NewListAllPager":
 				res.resp, res.err = n.dispatchNewListAllPager(req)
 			case "NamespacesClient.NewListAuthorizationRulesPager":
 				res.resp, res.err = n.dispatchNewListAuthorizationRulesPager(req)
-			case "NamespacesClient.ListKeys":
-				res.resp, res.err = n.dispatchListKeys(req)
+			case "NamespacesClient.NewListPager":
+				res.resp, res.err = n.dispatchNewListPager(req)
 			case "NamespacesClient.RegenerateKeys":
 				res.resp, res.err = n.dispatchRegenerateKeys(req)
 			case "NamespacesClient.Update":
@@ -165,35 +165,6 @@ func (n *NamespacesServerTransport) dispatchToMethodFake(req *http.Request, meth
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
-}
-
-func (n *NamespacesServerTransport) dispatchCheckAvailability(req *http.Request) (*http.Response, error) {
-	if n.srv.CheckAvailability == nil {
-		return nil, &nonRetriableError{errors.New("fake for method CheckAvailability not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NotificationHubs/checkNamespaceAvailability`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 2 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armnotificationhubs.CheckAvailabilityParameters](req)
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := n.srv.CheckAvailability(req.Context(), body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CheckAvailabilityResult, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
 }
 
 func (n *NamespacesServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (*http.Response, error) {
@@ -241,6 +212,35 @@ func (n *NamespacesServerTransport) dispatchBeginCreateOrUpdate(req *http.Reques
 		n.beginCreateOrUpdate.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (n *NamespacesServerTransport) dispatchCheckAvailability(req *http.Request) (*http.Response, error) {
+	if n.srv.CheckAvailability == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CheckAvailability not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NotificationHubs/checkNamespaceAvailability`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 2 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armnotificationhubs.CheckAvailabilityParameters](req)
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := n.srv.CheckAvailability(req.Context(), body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CheckAvailabilityResult, req)
+	if err != nil {
+		return nil, err
+	}
 	return resp, nil
 }
 
@@ -458,58 +458,39 @@ func (n *NamespacesServerTransport) dispatchGetPnsCredentials(req *http.Request)
 	return resp, nil
 }
 
-func (n *NamespacesServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if n.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+func (n *NamespacesServerTransport) dispatchListKeys(req *http.Request) (*http.Response, error) {
+	if n.srv.ListKeys == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListKeys not implemented")}
 	}
-	newListPager := n.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NotificationHubs/namespaces`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		qp := req.URL.Query()
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		skipTokenParam := getOptional(qp.Get("$skipToken"))
-		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 32)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return int32(p), nil
-		})
-		if err != nil {
-			return nil, err
-		}
-		var options *armnotificationhubs.NamespacesClientListOptions
-		if skipTokenParam != nil || topParam != nil {
-			options = &armnotificationhubs.NamespacesClientListOptions{
-				SkipToken: skipTokenParam,
-				Top:       topParam,
-			}
-		}
-		resp := n.srv.NewListPager(resourceGroupNameParam, options)
-		newListPager = &resp
-		n.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armnotificationhubs.NamespacesClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NotificationHubs/namespaces/(?P<namespaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/authorizationRules/(?P<authorizationRuleName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listKeys`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	resp, err := server.PagerResponderNext(newListPager, req)
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 	if err != nil {
 		return nil, err
 	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		n.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	namespaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("namespaceName")])
+	if err != nil {
+		return nil, err
 	}
-	if !server.PagerResponderMore(newListPager) {
-		n.newListPager.remove(req)
+	authorizationRuleNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("authorizationRuleName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := n.srv.ListKeys(req.Context(), resourceGroupNameParam, namespaceNameParam, authorizationRuleNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ResourceListKeys, req)
+	if err != nil {
+		return nil, err
 	}
 	return resp, nil
 }
@@ -607,39 +588,58 @@ func (n *NamespacesServerTransport) dispatchNewListAuthorizationRulesPager(req *
 	return resp, nil
 }
 
-func (n *NamespacesServerTransport) dispatchListKeys(req *http.Request) (*http.Response, error) {
-	if n.srv.ListKeys == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ListKeys not implemented")}
+func (n *NamespacesServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if n.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NotificationHubs/namespaces/(?P<namespaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/authorizationRules/(?P<authorizationRuleName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listKeys`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	newListPager := n.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NotificationHubs/namespaces`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		qp := req.URL.Query()
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		skipTokenParam := getOptional(qp.Get("$skipToken"))
+		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 32)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return int32(p), nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		var options *armnotificationhubs.NamespacesClientListOptions
+		if skipTokenParam != nil || topParam != nil {
+			options = &armnotificationhubs.NamespacesClientListOptions{
+				SkipToken: skipTokenParam,
+				Top:       topParam,
+			}
+		}
+		resp := n.srv.NewListPager(resourceGroupNameParam, options)
+		newListPager = &resp
+		n.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armnotificationhubs.NamespacesClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
 	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	resp, err := server.PagerResponderNext(newListPager, req)
 	if err != nil {
 		return nil, err
 	}
-	namespaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("namespaceName")])
-	if err != nil {
-		return nil, err
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		n.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
-	authorizationRuleNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("authorizationRuleName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := n.srv.ListKeys(req.Context(), resourceGroupNameParam, namespaceNameParam, authorizationRuleNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ResourceListKeys, req)
-	if err != nil {
-		return nil, err
+	if !server.PagerResponderMore(newListPager) {
+		n.newListPager.remove(req)
 	}
 	return resp, nil
 }

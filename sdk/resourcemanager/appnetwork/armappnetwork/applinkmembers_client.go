@@ -69,7 +69,7 @@ func (client *AppLinkMembersClient) BeginCreateOrUpdate(ctx context.Context, res
 	}
 }
 
-// CreateOrUpdate - Create a member of an Azure Kubernetes Application Network resource.
+// createOrUpdate - Create a member of an Azure Kubernetes Application Network resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *AppLinkMembersClient) createOrUpdate(ctx context.Context, resourceGroupName string, appLinkName string, appLinkMemberName string, resource AppLinkMember, options *AppLinkMembersClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -91,7 +91,7 @@ func (client *AppLinkMembersClient) createOrUpdate(ctx context.Context, resource
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *AppLinkMembersClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, appLinkName string, appLinkMemberName string, resource AppLinkMember, _ *AppLinkMembersClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppLink/appLinks/{appLinkName}/appLinkMembers/{appLinkMemberName}"
 	if client.subscriptionID == "" {
@@ -149,7 +149,7 @@ func (client *AppLinkMembersClient) BeginDelete(ctx context.Context, resourceGro
 	}
 }
 
-// Delete - Remove a member from an Azure Kubernetes Application Network resource.
+// deleteOperation - Remove a member from an Azure Kubernetes Application Network resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *AppLinkMembersClient) deleteOperation(ctx context.Context, resourceGroupName string, appLinkName string, appLinkMemberName string, options *AppLinkMembersClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -171,7 +171,7 @@ func (client *AppLinkMembersClient) deleteOperation(ctx context.Context, resourc
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *AppLinkMembersClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, appLinkName string, appLinkMemberName string, _ *AppLinkMembersClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppLink/appLinks/{appLinkName}/appLinkMembers/{appLinkMemberName}"
 	if client.subscriptionID == "" {
@@ -197,6 +197,88 @@ func (client *AppLinkMembersClient) deleteCreateRequest(ctx context.Context, res
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", version20260801Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginUpdate - Update a member of an Azure Kubernetes Application Network resource.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - appLinkName - The name of the AppLink
+//   - appLinkMemberName - The name of the AppLinkMember
+//   - properties - The resource properties to be updated.
+//   - options - AppLinkMembersClientBeginUpdateOptions contains the optional parameters for the AppLinkMembersClient.BeginUpdate
+//     method.
+func (client *AppLinkMembersClient) BeginUpdate(ctx context.Context, resourceGroupName string, appLinkName string, appLinkMemberName string, properties AppLinkMemberUpdate, options *AppLinkMembersClientBeginUpdateOptions) (*runtime.Poller[AppLinkMembersClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, appLinkName, appLinkMemberName, properties, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AppLinkMembersClientUpdateResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[AppLinkMembersClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Update a member of an Azure Kubernetes Application Network resource.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *AppLinkMembersClient) update(ctx context.Context, resourceGroupName string, appLinkName string, appLinkMemberName string, properties AppLinkMemberUpdate, options *AppLinkMembersClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "AppLinkMembersClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, appLinkName, appLinkMemberName, properties, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *AppLinkMembersClient) updateCreateRequest(ctx context.Context, resourceGroupName string, appLinkName string, appLinkMemberName string, properties AppLinkMemberUpdate, _ *AppLinkMembersClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppLink/appLinks/{appLinkName}/appLinkMembers/{appLinkMemberName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if appLinkName == "" {
+		return nil, errors.New("parameter appLinkName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{appLinkName}", url.PathEscape(appLinkName))
+	if appLinkMemberName == "" {
+		return nil, errors.New("parameter appLinkMemberName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{appLinkMemberName}", url.PathEscape(appLinkMemberName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260801Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, properties); err != nil {
+		return nil, err
+	}
 	return req, nil
 }
 
@@ -340,86 +422,4 @@ func (client *AppLinkMembersClient) listByAppLinkHandleResponse(resp *http.Respo
 		return AppLinkMembersClientListByAppLinkResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginUpdate - Update a member of an Azure Kubernetes Application Network resource.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - appLinkName - The name of the AppLink
-//   - appLinkMemberName - The name of the AppLinkMember
-//   - properties - The resource properties to be updated.
-//   - options - AppLinkMembersClientBeginUpdateOptions contains the optional parameters for the AppLinkMembersClient.BeginUpdate
-//     method.
-func (client *AppLinkMembersClient) BeginUpdate(ctx context.Context, resourceGroupName string, appLinkName string, appLinkMemberName string, properties AppLinkMemberUpdate, options *AppLinkMembersClientBeginUpdateOptions) (*runtime.Poller[AppLinkMembersClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, appLinkName, appLinkMemberName, properties, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AppLinkMembersClientUpdateResponse]{
-			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
-			Tracer:        client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[AppLinkMembersClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Update a member of an Azure Kubernetes Application Network resource.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *AppLinkMembersClient) update(ctx context.Context, resourceGroupName string, appLinkName string, appLinkMemberName string, properties AppLinkMemberUpdate, options *AppLinkMembersClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "AppLinkMembersClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, appLinkName, appLinkMemberName, properties, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *AppLinkMembersClient) updateCreateRequest(ctx context.Context, resourceGroupName string, appLinkName string, appLinkMemberName string, properties AppLinkMemberUpdate, _ *AppLinkMembersClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppLink/appLinks/{appLinkName}/appLinkMembers/{appLinkMemberName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if appLinkName == "" {
-		return nil, errors.New("parameter appLinkName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{appLinkName}", url.PathEscape(appLinkName))
-	if appLinkMemberName == "" {
-		return nil, errors.New("parameter appLinkMemberName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{appLinkMemberName}", url.PathEscape(appLinkMemberName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260801Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, properties); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

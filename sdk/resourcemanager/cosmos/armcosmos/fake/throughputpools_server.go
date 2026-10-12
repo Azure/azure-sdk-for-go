@@ -20,13 +20,13 @@ import (
 
 // ThroughputPoolsServer is a fake server for instances of the armcosmos.ThroughputPoolsClient type.
 type ThroughputPoolsServer struct {
-	// NewListPager is the fake for method ThroughputPoolsClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(options *armcosmos.ThroughputPoolsClientListOptions) (resp azfake.PagerResponder[armcosmos.ThroughputPoolsClientListResponse])
-
 	// NewListByResourceGroupPager is the fake for method ThroughputPoolsClient.NewListByResourceGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByResourceGroupPager func(resourceGroupName string, options *armcosmos.ThroughputPoolsClientListByResourceGroupOptions) (resp azfake.PagerResponder[armcosmos.ThroughputPoolsClientListByResourceGroupResponse])
+
+	// NewListPager is the fake for method ThroughputPoolsClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(options *armcosmos.ThroughputPoolsClientListOptions) (resp azfake.PagerResponder[armcosmos.ThroughputPoolsClientListResponse])
 }
 
 // NewThroughputPoolsServerTransport creates a new instance of ThroughputPoolsServerTransport with the provided implementation.
@@ -35,8 +35,8 @@ type ThroughputPoolsServer struct {
 func NewThroughputPoolsServerTransport(srv *ThroughputPoolsServer) *ThroughputPoolsServerTransport {
 	return &ThroughputPoolsServerTransport{
 		srv:                         srv,
-		newListPager:                newTracker[azfake.PagerResponder[armcosmos.ThroughputPoolsClientListResponse]](),
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armcosmos.ThroughputPoolsClientListByResourceGroupResponse]](),
+		newListPager:                newTracker[azfake.PagerResponder[armcosmos.ThroughputPoolsClientListResponse]](),
 	}
 }
 
@@ -44,8 +44,8 @@ func NewThroughputPoolsServerTransport(srv *ThroughputPoolsServer) *ThroughputPo
 // Don't use this type directly, use NewThroughputPoolsServerTransport instead.
 type ThroughputPoolsServerTransport struct {
 	srv                         *ThroughputPoolsServer
-	newListPager                *tracker[azfake.PagerResponder[armcosmos.ThroughputPoolsClientListResponse]]
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armcosmos.ThroughputPoolsClientListByResourceGroupResponse]]
+	newListPager                *tracker[azfake.PagerResponder[armcosmos.ThroughputPoolsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for ThroughputPoolsServerTransport.
@@ -69,10 +69,10 @@ func (t *ThroughputPoolsServerTransport) dispatchToMethodFake(req *http.Request,
 		}
 		if !intercepted {
 			switch method {
-			case "ThroughputPoolsClient.NewListPager":
-				res.resp, res.err = t.dispatchNewListPager(req)
 			case "ThroughputPoolsClient.NewListByResourceGroupPager":
 				res.resp, res.err = t.dispatchNewListByResourceGroupPager(req)
+			case "ThroughputPoolsClient.NewListPager":
+				res.resp, res.err = t.dispatchNewListPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -89,46 +89,13 @@ func (t *ThroughputPoolsServerTransport) dispatchToMethodFake(req *http.Request,
 	}
 }
 
-func (t *ThroughputPoolsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if t.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := t.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/throughputPools`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := t.srv.NewListPager(nil)
-		newListPager = &resp
-		t.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armcosmos.ThroughputPoolsClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		t.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		t.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (t *ThroughputPoolsServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
 	if t.srv.NewListByResourceGroupPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
 	}
 	newListByResourceGroupPager := t.newListByResourceGroupPager.get(req)
 	if newListByResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/throughputPools`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/throughputPools`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
@@ -155,6 +122,39 @@ func (t *ThroughputPoolsServerTransport) dispatchNewListByResourceGroupPager(req
 	}
 	if !server.PagerResponderMore(newListByResourceGroupPager) {
 		t.newListByResourceGroupPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (t *ThroughputPoolsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if t.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := t.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/throughputPools`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resp := t.srv.NewListPager(nil)
+		newListPager = &resp
+		t.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armcosmos.ThroughputPoolsClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		t.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPager) {
+		t.newListPager.remove(req)
 	}
 	return resp, nil
 }

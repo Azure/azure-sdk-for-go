@@ -33,10 +33,6 @@ type AccountServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, automationAccountName string, options *armautomation.AccountClientGetOptions) (resp azfake.Responder[armautomation.AccountClientGetResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method AccountClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(options *armautomation.AccountClientListOptions) (resp azfake.PagerResponder[armautomation.AccountClientListResponse])
-
 	// NewListByResourceGroupPager is the fake for method AccountClient.NewListByResourceGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByResourceGroupPager func(resourceGroupName string, options *armautomation.AccountClientListByResourceGroupOptions) (resp azfake.PagerResponder[armautomation.AccountClientListByResourceGroupResponse])
@@ -44,6 +40,10 @@ type AccountServer struct {
 	// NewListDeletedRunbooksPager is the fake for method AccountClient.NewListDeletedRunbooksPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListDeletedRunbooksPager func(resourceGroupName string, automationAccountName string, options *armautomation.AccountClientListDeletedRunbooksOptions) (resp azfake.PagerResponder[armautomation.AccountClientListDeletedRunbooksResponse])
+
+	// NewListPager is the fake for method AccountClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(options *armautomation.AccountClientListOptions) (resp azfake.PagerResponder[armautomation.AccountClientListResponse])
 
 	// Update is the fake for method AccountClient.Update
 	// HTTP status codes to indicate success: http.StatusOK
@@ -56,9 +56,9 @@ type AccountServer struct {
 func NewAccountServerTransport(srv *AccountServer) *AccountServerTransport {
 	return &AccountServerTransport{
 		srv:                         srv,
-		newListPager:                newTracker[azfake.PagerResponder[armautomation.AccountClientListResponse]](),
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armautomation.AccountClientListByResourceGroupResponse]](),
 		newListDeletedRunbooksPager: newTracker[azfake.PagerResponder[armautomation.AccountClientListDeletedRunbooksResponse]](),
+		newListPager:                newTracker[azfake.PagerResponder[armautomation.AccountClientListResponse]](),
 	}
 }
 
@@ -66,9 +66,9 @@ func NewAccountServerTransport(srv *AccountServer) *AccountServerTransport {
 // Don't use this type directly, use NewAccountServerTransport instead.
 type AccountServerTransport struct {
 	srv                         *AccountServer
-	newListPager                *tracker[azfake.PagerResponder[armautomation.AccountClientListResponse]]
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armautomation.AccountClientListByResourceGroupResponse]]
 	newListDeletedRunbooksPager *tracker[azfake.PagerResponder[armautomation.AccountClientListDeletedRunbooksResponse]]
+	newListPager                *tracker[azfake.PagerResponder[armautomation.AccountClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for AccountServerTransport.
@@ -98,12 +98,12 @@ func (a *AccountServerTransport) dispatchToMethodFake(req *http.Request, method 
 				res.resp, res.err = a.dispatchDelete(req)
 			case "AccountClient.Get":
 				res.resp, res.err = a.dispatchGet(req)
-			case "AccountClient.NewListPager":
-				res.resp, res.err = a.dispatchNewListPager(req)
 			case "AccountClient.NewListByResourceGroupPager":
 				res.resp, res.err = a.dispatchNewListByResourceGroupPager(req)
 			case "AccountClient.NewListDeletedRunbooksPager":
 				res.resp, res.err = a.dispatchNewListDeletedRunbooksPager(req)
+			case "AccountClient.NewListPager":
+				res.resp, res.err = a.dispatchNewListPager(req)
 			case "AccountClient.Update":
 				res.resp, res.err = a.dispatchUpdate(req)
 			default:
@@ -225,39 +225,6 @@ func (a *AccountServerTransport) dispatchGet(req *http.Request) (*http.Response,
 	return resp, nil
 }
 
-func (a *AccountServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if a.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := a.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Automation/automationAccounts`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := a.srv.NewListPager(nil)
-		newListPager = &resp
-		a.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armautomation.AccountClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		a.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		a.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (a *AccountServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
 	if a.srv.NewListByResourceGroupPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
@@ -332,6 +299,39 @@ func (a *AccountServerTransport) dispatchNewListDeletedRunbooksPager(req *http.R
 	}
 	if !server.PagerResponderMore(newListDeletedRunbooksPager) {
 		a.newListDeletedRunbooksPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (a *AccountServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if a.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := a.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Automation/automationAccounts`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resp := a.srv.NewListPager(nil)
+		newListPager = &resp
+		a.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armautomation.AccountClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		a.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPager) {
+		a.newListPager.remove(req)
 	}
 	return resp, nil
 }

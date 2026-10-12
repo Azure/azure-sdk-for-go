@@ -22,6 +22,10 @@ import (
 
 // GatesServer is a fake server for instances of the armcontainerservicefleet.GatesClient type.
 type GatesServer struct {
+	// BeginUpdate is the fake for method GatesClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, fleetName string, gateName string, properties armcontainerservicefleet.GatePatch, options *armcontainerservicefleet.GatesClientBeginUpdateOptions) (resp azfake.PollerResponder[armcontainerservicefleet.GatesClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method GatesClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, fleetName string, gateName string, options *armcontainerservicefleet.GatesClientGetOptions) (resp azfake.Responder[armcontainerservicefleet.GatesClientGetResponse], errResp azfake.ErrorResponder)
@@ -29,10 +33,6 @@ type GatesServer struct {
 	// NewListByFleetPager is the fake for method GatesClient.NewListByFleetPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByFleetPager func(resourceGroupName string, fleetName string, options *armcontainerservicefleet.GatesClientListByFleetOptions) (resp azfake.PagerResponder[armcontainerservicefleet.GatesClientListByFleetResponse])
-
-	// BeginUpdate is the fake for method GatesClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, fleetName string, gateName string, properties armcontainerservicefleet.GatePatch, options *armcontainerservicefleet.GatesClientBeginUpdateOptions) (resp azfake.PollerResponder[armcontainerservicefleet.GatesClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewGatesServerTransport creates a new instance of GatesServerTransport with the provided implementation.
@@ -41,8 +41,8 @@ type GatesServer struct {
 func NewGatesServerTransport(srv *GatesServer) *GatesServerTransport {
 	return &GatesServerTransport{
 		srv:                 srv,
-		newListByFleetPager: newTracker[azfake.PagerResponder[armcontainerservicefleet.GatesClientListByFleetResponse]](),
 		beginUpdate:         newTracker[azfake.PollerResponder[armcontainerservicefleet.GatesClientUpdateResponse]](),
+		newListByFleetPager: newTracker[azfake.PagerResponder[armcontainerservicefleet.GatesClientListByFleetResponse]](),
 	}
 }
 
@@ -50,8 +50,8 @@ func NewGatesServerTransport(srv *GatesServer) *GatesServerTransport {
 // Don't use this type directly, use NewGatesServerTransport instead.
 type GatesServerTransport struct {
 	srv                 *GatesServer
-	newListByFleetPager *tracker[azfake.PagerResponder[armcontainerservicefleet.GatesClientListByFleetResponse]]
 	beginUpdate         *tracker[azfake.PollerResponder[armcontainerservicefleet.GatesClientUpdateResponse]]
+	newListByFleetPager *tracker[azfake.PagerResponder[armcontainerservicefleet.GatesClientListByFleetResponse]]
 }
 
 // Do implements the policy.Transporter interface for GatesServerTransport.
@@ -75,12 +75,12 @@ func (g *GatesServerTransport) dispatchToMethodFake(req *http.Request, method st
 		}
 		if !intercepted {
 			switch method {
+			case "GatesClient.BeginUpdate":
+				res.resp, res.err = g.dispatchBeginUpdate(req)
 			case "GatesClient.Get":
 				res.resp, res.err = g.dispatchGet(req)
 			case "GatesClient.NewListByFleetPager":
 				res.resp, res.err = g.dispatchNewListByFleetPager(req)
-			case "GatesClient.BeginUpdate":
-				res.resp, res.err = g.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -95,6 +95,67 @@ func (g *GatesServerTransport) dispatchToMethodFake(req *http.Request, method st
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
+}
+
+func (g *GatesServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if g.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := g.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerService/fleets/(?P<fleetName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/gates/(?P<gateName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armcontainerservicefleet.GatePatch](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		ifMatchParam := getOptional(getHeaderValue(req.Header, "If-Match"))
+		ifNoneMatchParam := getOptional(getHeaderValue(req.Header, "If-None-Match"))
+		fleetNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("fleetName")])
+		if err != nil {
+			return nil, err
+		}
+		gateNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("gateName")])
+		if err != nil {
+			return nil, err
+		}
+		var options *armcontainerservicefleet.GatesClientBeginUpdateOptions
+		if ifMatchParam != nil || ifNoneMatchParam != nil {
+			options = &armcontainerservicefleet.GatesClientBeginUpdateOptions{
+				IfMatch:     ifMatchParam,
+				IfNoneMatch: ifNoneMatchParam,
+			}
+		}
+		respr, errRespr := g.srv.BeginUpdate(req.Context(), resourceGroupNameParam, fleetNameParam, gateNameParam, body, options)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		g.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		g.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		g.beginUpdate.remove(req)
+	}
+
+	return resp, nil
 }
 
 func (g *GatesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
@@ -193,67 +254,6 @@ func (g *GatesServerTransport) dispatchNewListByFleetPager(req *http.Request) (*
 	if !server.PagerResponderMore(newListByFleetPager) {
 		g.newListByFleetPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (g *GatesServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if g.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := g.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerService/fleets/(?P<fleetName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/gates/(?P<gateName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armcontainerservicefleet.GatePatch](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		ifMatchParam := getOptional(getHeaderValue(req.Header, "If-Match"))
-		ifNoneMatchParam := getOptional(getHeaderValue(req.Header, "If-None-Match"))
-		fleetNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("fleetName")])
-		if err != nil {
-			return nil, err
-		}
-		gateNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("gateName")])
-		if err != nil {
-			return nil, err
-		}
-		var options *armcontainerservicefleet.GatesClientBeginUpdateOptions
-		if ifMatchParam != nil || ifNoneMatchParam != nil {
-			options = &armcontainerservicefleet.GatesClientBeginUpdateOptions{
-				IfMatch:     ifMatchParam,
-				IfNoneMatch: ifNoneMatchParam,
-			}
-		}
-		respr, errRespr := g.srv.BeginUpdate(req.Context(), resourceGroupNameParam, fleetNameParam, gateNameParam, body, options)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		g.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		g.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		g.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

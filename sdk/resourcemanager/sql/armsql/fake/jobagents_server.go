@@ -29,6 +29,10 @@ type JobAgentsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, options *armsql.JobAgentsClientBeginDeleteOptions) (resp azfake.PollerResponder[armsql.JobAgentsClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method JobAgentsClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, parameters armsql.JobAgentUpdate, options *armsql.JobAgentsClientBeginUpdateOptions) (resp azfake.PollerResponder[armsql.JobAgentsClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method JobAgentsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, options *armsql.JobAgentsClientGetOptions) (resp azfake.Responder[armsql.JobAgentsClientGetResponse], errResp azfake.ErrorResponder)
@@ -36,10 +40,6 @@ type JobAgentsServer struct {
 	// NewListByServerPager is the fake for method JobAgentsClient.NewListByServerPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByServerPager func(resourceGroupName string, serverName string, options *armsql.JobAgentsClientListByServerOptions) (resp azfake.PagerResponder[armsql.JobAgentsClientListByServerResponse])
-
-	// BeginUpdate is the fake for method JobAgentsClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, parameters armsql.JobAgentUpdate, options *armsql.JobAgentsClientBeginUpdateOptions) (resp azfake.PollerResponder[armsql.JobAgentsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewJobAgentsServerTransport creates a new instance of JobAgentsServerTransport with the provided implementation.
@@ -50,8 +50,8 @@ func NewJobAgentsServerTransport(srv *JobAgentsServer) *JobAgentsServerTransport
 		srv:                  srv,
 		beginCreateOrUpdate:  newTracker[azfake.PollerResponder[armsql.JobAgentsClientCreateOrUpdateResponse]](),
 		beginDelete:          newTracker[azfake.PollerResponder[armsql.JobAgentsClientDeleteResponse]](),
-		newListByServerPager: newTracker[azfake.PagerResponder[armsql.JobAgentsClientListByServerResponse]](),
 		beginUpdate:          newTracker[azfake.PollerResponder[armsql.JobAgentsClientUpdateResponse]](),
+		newListByServerPager: newTracker[azfake.PagerResponder[armsql.JobAgentsClientListByServerResponse]](),
 	}
 }
 
@@ -61,8 +61,8 @@ type JobAgentsServerTransport struct {
 	srv                  *JobAgentsServer
 	beginCreateOrUpdate  *tracker[azfake.PollerResponder[armsql.JobAgentsClientCreateOrUpdateResponse]]
 	beginDelete          *tracker[azfake.PollerResponder[armsql.JobAgentsClientDeleteResponse]]
-	newListByServerPager *tracker[azfake.PagerResponder[armsql.JobAgentsClientListByServerResponse]]
 	beginUpdate          *tracker[azfake.PollerResponder[armsql.JobAgentsClientUpdateResponse]]
+	newListByServerPager *tracker[azfake.PagerResponder[armsql.JobAgentsClientListByServerResponse]]
 }
 
 // Do implements the policy.Transporter interface for JobAgentsServerTransport.
@@ -90,12 +90,12 @@ func (j *JobAgentsServerTransport) dispatchToMethodFake(req *http.Request, metho
 				res.resp, res.err = j.dispatchBeginCreateOrUpdate(req)
 			case "JobAgentsClient.BeginDelete":
 				res.resp, res.err = j.dispatchBeginDelete(req)
+			case "JobAgentsClient.BeginUpdate":
+				res.resp, res.err = j.dispatchBeginUpdate(req)
 			case "JobAgentsClient.Get":
 				res.resp, res.err = j.dispatchGet(req)
 			case "JobAgentsClient.NewListByServerPager":
 				res.resp, res.err = j.dispatchNewListByServerPager(req)
-			case "JobAgentsClient.BeginUpdate":
-				res.resp, res.err = j.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -212,6 +212,58 @@ func (j *JobAgentsServerTransport) dispatchBeginDelete(req *http.Request) (*http
 	return resp, nil
 }
 
+func (j *JobAgentsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if j.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := j.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/servers/(?P<serverName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/jobAgents/(?P<jobAgentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armsql.JobAgentUpdate](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		serverNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serverName")])
+		if err != nil {
+			return nil, err
+		}
+		jobAgentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("jobAgentName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := j.srv.BeginUpdate(req.Context(), resourceGroupNameParam, serverNameParam, jobAgentNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		j.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		j.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		j.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (j *JobAgentsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if j.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -287,58 +339,6 @@ func (j *JobAgentsServerTransport) dispatchNewListByServerPager(req *http.Reques
 	if !server.PagerResponderMore(newListByServerPager) {
 		j.newListByServerPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (j *JobAgentsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if j.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := j.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/servers/(?P<serverName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/jobAgents/(?P<jobAgentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armsql.JobAgentUpdate](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		serverNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serverName")])
-		if err != nil {
-			return nil, err
-		}
-		jobAgentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("jobAgentName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := j.srv.BeginUpdate(req.Context(), resourceGroupNameParam, serverNameParam, jobAgentNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		j.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		j.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		j.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

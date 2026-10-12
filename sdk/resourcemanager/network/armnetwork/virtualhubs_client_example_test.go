@@ -111,62 +111,6 @@ func ExampleVirtualHubsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/VirtualHubGet.json
-func ExampleVirtualHubsClient_Get() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewVirtualHubsClient().Get(ctx, "rg1", "virtualHub1", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armnetwork.VirtualHubsClientGetResponse{
-	// 	VirtualHub: armnetwork.VirtualHub{
-	// 		Name: to.Ptr("virtualHub1"),
-	// 		Type: to.Ptr("Microsoft.Network/virtualHubs"),
-	// 		Etag: to.Ptr("w/\\00000000-0000-0000-0000-000000000000\\"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualHubs/virtualHub1"),
-	// 		Location: to.Ptr("West US"),
-	// 		Properties: &armnetwork.VirtualHubProperties{
-	// 			AddressPrefix: to.Ptr("10.10.1.0/24"),
-	// 			AddressPrefixV6: to.Ptr("2001:db8::/56"),
-	// 			AllowBranchToBranchTraffic: to.Ptr(false),
-	// 			HubRoutingPreference: to.Ptr(armnetwork.HubRoutingPreferenceExpressRoute),
-	// 			PreferredRoutingGateway: to.Ptr(armnetwork.PreferredRoutingGatewayExpressRoute),
-	// 			ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
-	// 			RoutingState: to.Ptr(armnetwork.RoutingStateProvisioned),
-	// 			SKU: to.Ptr("Basic"),
-	// 			VirtualHubRouteTableV2S: []*armnetwork.VirtualHubRouteTableV2{
-	// 			},
-	// 			VirtualRouterAsn: to.Ptr[int64](65515),
-	// 			VirtualRouterAutoScaleConfiguration: &armnetwork.VirtualRouterAutoScaleConfiguration{
-	// 				MinCapacity: to.Ptr[int32](2),
-	// 			},
-	// 			VirtualRouterIPs: []*string{
-	// 				to.Ptr("10.10.1.12"),
-	// 				to.Ptr("10.10.1.13"),
-	// 			},
-	// 			VirtualRouterIPsV6: []*string{
-	// 				to.Ptr("2001:db8:0:1::5"),
-	// 				to.Ptr("2001:db8:0:1::4"),
-	// 			},
-	// 			VirtualWan: &armnetwork.SubResource{
-	// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualWans/virtualWan1"),
-	// 			},
-	// 		},
-	// 	},
-	// }
-}
-
 // Generated from example definition: 2026-01-01/EffectiveRoutesListForConnection.json
 func ExampleVirtualHubsClient_BeginGetEffectiveVirtualHubRoutes_effectiveRoutesForAConnectionResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -417,8 +361,8 @@ func ExampleVirtualHubsClient_BeginGetOutboundRoutes() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/VirtualHubList.json
-func ExampleVirtualHubsClient_NewListPager() {
+// Generated from example definition: 2026-01-01/VirtualHubGet.json
+func ExampleVirtualHubsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -428,7 +372,63 @@ func ExampleVirtualHubsClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewVirtualHubsClient().NewListPager(nil)
+	res, err := clientFactory.NewVirtualHubsClient().Get(ctx, "rg1", "virtualHub1", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armnetwork.VirtualHubsClientGetResponse{
+	// 	VirtualHub: armnetwork.VirtualHub{
+	// 		Name: to.Ptr("virtualHub1"),
+	// 		Type: to.Ptr("Microsoft.Network/virtualHubs"),
+	// 		Etag: to.Ptr("w/\\00000000-0000-0000-0000-000000000000\\"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualHubs/virtualHub1"),
+	// 		Location: to.Ptr("West US"),
+	// 		Properties: &armnetwork.VirtualHubProperties{
+	// 			AddressPrefix: to.Ptr("10.10.1.0/24"),
+	// 			AddressPrefixV6: to.Ptr("2001:db8::/56"),
+	// 			AllowBranchToBranchTraffic: to.Ptr(false),
+	// 			HubRoutingPreference: to.Ptr(armnetwork.HubRoutingPreferenceExpressRoute),
+	// 			PreferredRoutingGateway: to.Ptr(armnetwork.PreferredRoutingGatewayExpressRoute),
+	// 			ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+	// 			RoutingState: to.Ptr(armnetwork.RoutingStateProvisioned),
+	// 			SKU: to.Ptr("Basic"),
+	// 			VirtualHubRouteTableV2S: []*armnetwork.VirtualHubRouteTableV2{
+	// 			},
+	// 			VirtualRouterAsn: to.Ptr[int64](65515),
+	// 			VirtualRouterAutoScaleConfiguration: &armnetwork.VirtualRouterAutoScaleConfiguration{
+	// 				MinCapacity: to.Ptr[int32](2),
+	// 			},
+	// 			VirtualRouterIPs: []*string{
+	// 				to.Ptr("10.10.1.12"),
+	// 				to.Ptr("10.10.1.13"),
+	// 			},
+	// 			VirtualRouterIPsV6: []*string{
+	// 				to.Ptr("2001:db8:0:1::5"),
+	// 				to.Ptr("2001:db8:0:1::4"),
+	// 			},
+	// 			VirtualWan: &armnetwork.SubResource{
+	// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualWans/virtualWan1"),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-01-01/VirtualHubListByResourceGroup.json
+func ExampleVirtualHubsClient_NewListByResourceGroupPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewVirtualHubsClient().NewListByResourceGroupPager("rg1", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -439,7 +439,7 @@ func ExampleVirtualHubsClient_NewListPager() {
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armnetwork.VirtualHubsClientListResponse{
+		// page = armnetwork.VirtualHubsClientListByResourceGroupResponse{
 		// 	ListVirtualHubsResult: armnetwork.ListVirtualHubsResult{
 		// 		Value: []*armnetwork.VirtualHub{
 		// 			{
@@ -461,7 +461,7 @@ func ExampleVirtualHubsClient_NewListPager() {
 		// 						{
 		// 							Name: to.Ptr("rt2a"),
 		// 							Etag: to.Ptr("w/\\00000000-0000-0000-0000-000000000000\\"),
-		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualHubs/virtualHub1/routeTables/virtualHubRouteTable1"),
+		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualHubs/virtualHub2/routeTables/virtualHubRouteTable2"),
 		// 							Properties: &armnetwork.VirtualHubRouteTableV2Properties{
 		// 								AttachedConnections: []*string{
 		// 									to.Ptr("All_Vnets"),
@@ -584,8 +584,8 @@ func ExampleVirtualHubsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-01-01/VirtualHubListByResourceGroup.json
-func ExampleVirtualHubsClient_NewListByResourceGroupPager() {
+// Generated from example definition: 2026-01-01/VirtualHubList.json
+func ExampleVirtualHubsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -595,7 +595,7 @@ func ExampleVirtualHubsClient_NewListByResourceGroupPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewVirtualHubsClient().NewListByResourceGroupPager("rg1", nil)
+	pager := clientFactory.NewVirtualHubsClient().NewListPager(nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -606,7 +606,7 @@ func ExampleVirtualHubsClient_NewListByResourceGroupPager() {
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armnetwork.VirtualHubsClientListByResourceGroupResponse{
+		// page = armnetwork.VirtualHubsClientListResponse{
 		// 	ListVirtualHubsResult: armnetwork.ListVirtualHubsResult{
 		// 		Value: []*armnetwork.VirtualHub{
 		// 			{
@@ -628,7 +628,7 @@ func ExampleVirtualHubsClient_NewListByResourceGroupPager() {
 		// 						{
 		// 							Name: to.Ptr("rt2a"),
 		// 							Etag: to.Ptr("w/\\00000000-0000-0000-0000-000000000000\\"),
-		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualHubs/virtualHub2/routeTables/virtualHubRouteTable2"),
+		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualHubs/virtualHub1/routeTables/virtualHubRouteTable1"),
 		// 							Properties: &armnetwork.VirtualHubRouteTableV2Properties{
 		// 								AttachedConnections: []*string{
 		// 									to.Ptr("All_Vnets"),

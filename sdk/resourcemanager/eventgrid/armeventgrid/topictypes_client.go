@@ -91,70 +91,6 @@ func (client *TopicTypesClient) getHandleResponse(resp *http.Response, successCo
 	return result, nil
 }
 
-// NewListPager - List topic types.
-//
-// List all registered topic types.
-//   - options - TopicTypesClientListOptions contains the optional parameters for the TopicTypesClient.NewListPager method.
-func (client *TopicTypesClient) NewListPager(options *TopicTypesClientListOptions) *runtime.Pager[TopicTypesClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[TopicTypesClientListResponse]{
-		More: func(page TopicTypesClientListResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *TopicTypesClientListResponse) (TopicTypesClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "TopicTypesClient.NewListPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			req, err := client.listCreateRequest(ctx, nextLink, options)
-			if err != nil {
-				return TopicTypesClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return TopicTypesClientListResponse{}, err
-			}
-			return client.listHandleResponse(resp, http.StatusOK)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listCreateRequest creates the List request.
-func (client *TopicTypesClient) listCreateRequest(ctx context.Context, nextLink string, _ *TopicTypesClientListOptions) (*policy.Request, error) {
-	firstPage := nextLink == ""
-	var req *policy.Request
-	var err error
-	if firstPage {
-		urlPath := "/providers/Microsoft.EventGrid/topicTypes"
-		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	} else {
-		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
-	}
-	if err != nil {
-		return nil, err
-	}
-	if firstPage {
-		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250715Preview)
-		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-		req.Raw().Header["Accept"] = []string{"application/json"}
-	}
-	return req, nil
-}
-
-// listHandleResponse handles the List response.
-func (client *TopicTypesClient) listHandleResponse(resp *http.Response, successCodes ...int) (TopicTypesClientListResponse, error) {
-	result := TopicTypesClientListResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.TopicTypesListResult); err != nil {
-		return TopicTypesClientListResponse{}, err
-	}
-	return result, nil
-}
-
 // NewListEventTypesPager - List event types.
 //
 // List event types for a topic type.
@@ -221,6 +157,70 @@ func (client *TopicTypesClient) listEventTypesHandleResponse(resp *http.Response
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EventTypesListResult); err != nil {
 		return TopicTypesClientListEventTypesResponse{}, err
+	}
+	return result, nil
+}
+
+// NewListPager - List topic types.
+//
+// List all registered topic types.
+//   - options - TopicTypesClientListOptions contains the optional parameters for the TopicTypesClient.NewListPager method.
+func (client *TopicTypesClient) NewListPager(options *TopicTypesClientListOptions) *runtime.Pager[TopicTypesClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[TopicTypesClientListResponse]{
+		More: func(page TopicTypesClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *TopicTypesClientListResponse) (TopicTypesClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "TopicTypesClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listCreateRequest(ctx, nextLink, options)
+			if err != nil {
+				return TopicTypesClientListResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return TopicTypesClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listCreateRequest creates the List request.
+func (client *TopicTypesClient) listCreateRequest(ctx context.Context, nextLink string, _ *TopicTypesClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/providers/Microsoft.EventGrid/topicTypes"
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250715Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// listHandleResponse handles the List response.
+func (client *TopicTypesClient) listHandleResponse(resp *http.Response, successCodes ...int) (TopicTypesClientListResponse, error) {
+	result := TopicTypesClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.TopicTypesListResult); err != nil {
+		return TopicTypesClientListResponse{}, err
 	}
 	return result, nil
 }

@@ -49,21 +49,21 @@ type PrivateLinkServicesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	GetPrivateEndpointConnection func(ctx context.Context, resourceGroupName string, serviceName string, peConnectionName string, options *armnetwork.PrivateLinkServicesClientGetPrivateEndpointConnectionOptions) (resp azfake.Responder[armnetwork.PrivateLinkServicesClientGetPrivateEndpointConnectionResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method PrivateLinkServicesClient.NewListPager
+	// NewListAutoApprovedPrivateLinkServicesByResourceGroupPager is the fake for method PrivateLinkServicesClient.NewListAutoApprovedPrivateLinkServicesByResourceGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(resourceGroupName string, options *armnetwork.PrivateLinkServicesClientListOptions) (resp azfake.PagerResponder[armnetwork.PrivateLinkServicesClientListResponse])
+	NewListAutoApprovedPrivateLinkServicesByResourceGroupPager func(location string, resourceGroupName string, options *armnetwork.PrivateLinkServicesClientListAutoApprovedPrivateLinkServicesByResourceGroupOptions) (resp azfake.PagerResponder[armnetwork.PrivateLinkServicesClientListAutoApprovedPrivateLinkServicesByResourceGroupResponse])
 
 	// NewListAutoApprovedPrivateLinkServicesPager is the fake for method PrivateLinkServicesClient.NewListAutoApprovedPrivateLinkServicesPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListAutoApprovedPrivateLinkServicesPager func(location string, options *armnetwork.PrivateLinkServicesClientListAutoApprovedPrivateLinkServicesOptions) (resp azfake.PagerResponder[armnetwork.PrivateLinkServicesClientListAutoApprovedPrivateLinkServicesResponse])
 
-	// NewListAutoApprovedPrivateLinkServicesByResourceGroupPager is the fake for method PrivateLinkServicesClient.NewListAutoApprovedPrivateLinkServicesByResourceGroupPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListAutoApprovedPrivateLinkServicesByResourceGroupPager func(location string, resourceGroupName string, options *armnetwork.PrivateLinkServicesClientListAutoApprovedPrivateLinkServicesByResourceGroupOptions) (resp azfake.PagerResponder[armnetwork.PrivateLinkServicesClientListAutoApprovedPrivateLinkServicesByResourceGroupResponse])
-
 	// NewListBySubscriptionPager is the fake for method PrivateLinkServicesClient.NewListBySubscriptionPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListBySubscriptionPager func(options *armnetwork.PrivateLinkServicesClientListBySubscriptionOptions) (resp azfake.PagerResponder[armnetwork.PrivateLinkServicesClientListBySubscriptionResponse])
+
+	// NewListPager is the fake for method PrivateLinkServicesClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(resourceGroupName string, options *armnetwork.PrivateLinkServicesClientListOptions) (resp azfake.PagerResponder[armnetwork.PrivateLinkServicesClientListResponse])
 
 	// NewListPrivateEndpointConnectionsPager is the fake for method PrivateLinkServicesClient.NewListPrivateEndpointConnectionsPager
 	// HTTP status codes to indicate success: http.StatusOK
@@ -82,13 +82,13 @@ func NewPrivateLinkServicesServerTransport(srv *PrivateLinkServicesServer) *Priv
 		srv:                                    srv,
 		beginCheckPrivateLinkServiceVisibility: newTracker[azfake.PollerResponder[armnetwork.PrivateLinkServicesClientCheckPrivateLinkServiceVisibilityResponse]](),
 		beginCheckPrivateLinkServiceVisibilityByResourceGroup: newTracker[azfake.PollerResponder[armnetwork.PrivateLinkServicesClientCheckPrivateLinkServiceVisibilityByResourceGroupResponse]](),
-		beginCreateOrUpdate:                         newTracker[azfake.PollerResponder[armnetwork.PrivateLinkServicesClientCreateOrUpdateResponse]](),
-		beginDelete:                                 newTracker[azfake.PollerResponder[armnetwork.PrivateLinkServicesClientDeleteResponse]](),
-		beginDeletePrivateEndpointConnection:        newTracker[azfake.PollerResponder[armnetwork.PrivateLinkServicesClientDeletePrivateEndpointConnectionResponse]](),
-		newListPager:                                newTracker[azfake.PagerResponder[armnetwork.PrivateLinkServicesClientListResponse]](),
-		newListAutoApprovedPrivateLinkServicesPager: newTracker[azfake.PagerResponder[armnetwork.PrivateLinkServicesClientListAutoApprovedPrivateLinkServicesResponse]](),
+		beginCreateOrUpdate:                  newTracker[azfake.PollerResponder[armnetwork.PrivateLinkServicesClientCreateOrUpdateResponse]](),
+		beginDelete:                          newTracker[azfake.PollerResponder[armnetwork.PrivateLinkServicesClientDeleteResponse]](),
+		beginDeletePrivateEndpointConnection: newTracker[azfake.PollerResponder[armnetwork.PrivateLinkServicesClientDeletePrivateEndpointConnectionResponse]](),
 		newListAutoApprovedPrivateLinkServicesByResourceGroupPager: newTracker[azfake.PagerResponder[armnetwork.PrivateLinkServicesClientListAutoApprovedPrivateLinkServicesByResourceGroupResponse]](),
+		newListAutoApprovedPrivateLinkServicesPager:                newTracker[azfake.PagerResponder[armnetwork.PrivateLinkServicesClientListAutoApprovedPrivateLinkServicesResponse]](),
 		newListBySubscriptionPager:                                 newTracker[azfake.PagerResponder[armnetwork.PrivateLinkServicesClientListBySubscriptionResponse]](),
+		newListPager:                                               newTracker[azfake.PagerResponder[armnetwork.PrivateLinkServicesClientListResponse]](),
 		newListPrivateEndpointConnectionsPager:                     newTracker[azfake.PagerResponder[armnetwork.PrivateLinkServicesClientListPrivateEndpointConnectionsResponse]](),
 	}
 }
@@ -102,10 +102,10 @@ type PrivateLinkServicesServerTransport struct {
 	beginCreateOrUpdate                                        *tracker[azfake.PollerResponder[armnetwork.PrivateLinkServicesClientCreateOrUpdateResponse]]
 	beginDelete                                                *tracker[azfake.PollerResponder[armnetwork.PrivateLinkServicesClientDeleteResponse]]
 	beginDeletePrivateEndpointConnection                       *tracker[azfake.PollerResponder[armnetwork.PrivateLinkServicesClientDeletePrivateEndpointConnectionResponse]]
-	newListPager                                               *tracker[azfake.PagerResponder[armnetwork.PrivateLinkServicesClientListResponse]]
-	newListAutoApprovedPrivateLinkServicesPager                *tracker[azfake.PagerResponder[armnetwork.PrivateLinkServicesClientListAutoApprovedPrivateLinkServicesResponse]]
 	newListAutoApprovedPrivateLinkServicesByResourceGroupPager *tracker[azfake.PagerResponder[armnetwork.PrivateLinkServicesClientListAutoApprovedPrivateLinkServicesByResourceGroupResponse]]
+	newListAutoApprovedPrivateLinkServicesPager                *tracker[azfake.PagerResponder[armnetwork.PrivateLinkServicesClientListAutoApprovedPrivateLinkServicesResponse]]
 	newListBySubscriptionPager                                 *tracker[azfake.PagerResponder[armnetwork.PrivateLinkServicesClientListBySubscriptionResponse]]
+	newListPager                                               *tracker[azfake.PagerResponder[armnetwork.PrivateLinkServicesClientListResponse]]
 	newListPrivateEndpointConnectionsPager                     *tracker[azfake.PagerResponder[armnetwork.PrivateLinkServicesClientListPrivateEndpointConnectionsResponse]]
 }
 
@@ -144,14 +144,14 @@ func (p *PrivateLinkServicesServerTransport) dispatchToMethodFake(req *http.Requ
 				res.resp, res.err = p.dispatchGet(req)
 			case "PrivateLinkServicesClient.GetPrivateEndpointConnection":
 				res.resp, res.err = p.dispatchGetPrivateEndpointConnection(req)
-			case "PrivateLinkServicesClient.NewListPager":
-				res.resp, res.err = p.dispatchNewListPager(req)
-			case "PrivateLinkServicesClient.NewListAutoApprovedPrivateLinkServicesPager":
-				res.resp, res.err = p.dispatchNewListAutoApprovedPrivateLinkServicesPager(req)
 			case "PrivateLinkServicesClient.NewListAutoApprovedPrivateLinkServicesByResourceGroupPager":
 				res.resp, res.err = p.dispatchNewListAutoApprovedPrivateLinkServicesByResourceGroupPager(req)
+			case "PrivateLinkServicesClient.NewListAutoApprovedPrivateLinkServicesPager":
+				res.resp, res.err = p.dispatchNewListAutoApprovedPrivateLinkServicesPager(req)
 			case "PrivateLinkServicesClient.NewListBySubscriptionPager":
 				res.resp, res.err = p.dispatchNewListBySubscriptionPager(req)
+			case "PrivateLinkServicesClient.NewListPager":
+				res.resp, res.err = p.dispatchNewListPager(req)
 			case "PrivateLinkServicesClient.NewListPrivateEndpointConnectionsPager":
 				res.resp, res.err = p.dispatchNewListPrivateEndpointConnectionsPager(req)
 			case "PrivateLinkServicesClient.UpdatePrivateEndpointConnection":
@@ -490,80 +490,6 @@ func (p *PrivateLinkServicesServerTransport) dispatchGetPrivateEndpointConnectio
 	return resp, nil
 }
 
-func (p *PrivateLinkServicesServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if p.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := p.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/privateLinkServices`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := p.srv.NewListPager(resourceGroupNameParam, nil)
-		newListPager = &resp
-		p.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armnetwork.PrivateLinkServicesClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		p.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		p.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (p *PrivateLinkServicesServerTransport) dispatchNewListAutoApprovedPrivateLinkServicesPager(req *http.Request) (*http.Response, error) {
-	if p.srv.NewListAutoApprovedPrivateLinkServicesPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListAutoApprovedPrivateLinkServicesPager not implemented")}
-	}
-	newListAutoApprovedPrivateLinkServicesPager := p.newListAutoApprovedPrivateLinkServicesPager.get(req)
-	if newListAutoApprovedPrivateLinkServicesPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/autoApprovedPrivateLinkServices`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		locationParam, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
-		if err != nil {
-			return nil, err
-		}
-		resp := p.srv.NewListAutoApprovedPrivateLinkServicesPager(locationParam, nil)
-		newListAutoApprovedPrivateLinkServicesPager = &resp
-		p.newListAutoApprovedPrivateLinkServicesPager.add(req, newListAutoApprovedPrivateLinkServicesPager)
-		server.PagerResponderInjectNextLinks(newListAutoApprovedPrivateLinkServicesPager, req, func(page *armnetwork.PrivateLinkServicesClientListAutoApprovedPrivateLinkServicesResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListAutoApprovedPrivateLinkServicesPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		p.newListAutoApprovedPrivateLinkServicesPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListAutoApprovedPrivateLinkServicesPager) {
-		p.newListAutoApprovedPrivateLinkServicesPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (p *PrivateLinkServicesServerTransport) dispatchNewListAutoApprovedPrivateLinkServicesByResourceGroupPager(req *http.Request) (*http.Response, error) {
 	if p.srv.NewListAutoApprovedPrivateLinkServicesByResourceGroupPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListAutoApprovedPrivateLinkServicesByResourceGroupPager not implemented")}
@@ -605,6 +531,43 @@ func (p *PrivateLinkServicesServerTransport) dispatchNewListAutoApprovedPrivateL
 	return resp, nil
 }
 
+func (p *PrivateLinkServicesServerTransport) dispatchNewListAutoApprovedPrivateLinkServicesPager(req *http.Request) (*http.Response, error) {
+	if p.srv.NewListAutoApprovedPrivateLinkServicesPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListAutoApprovedPrivateLinkServicesPager not implemented")}
+	}
+	newListAutoApprovedPrivateLinkServicesPager := p.newListAutoApprovedPrivateLinkServicesPager.get(req)
+	if newListAutoApprovedPrivateLinkServicesPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/autoApprovedPrivateLinkServices`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		locationParam, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
+		if err != nil {
+			return nil, err
+		}
+		resp := p.srv.NewListAutoApprovedPrivateLinkServicesPager(locationParam, nil)
+		newListAutoApprovedPrivateLinkServicesPager = &resp
+		p.newListAutoApprovedPrivateLinkServicesPager.add(req, newListAutoApprovedPrivateLinkServicesPager)
+		server.PagerResponderInjectNextLinks(newListAutoApprovedPrivateLinkServicesPager, req, func(page *armnetwork.PrivateLinkServicesClientListAutoApprovedPrivateLinkServicesResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListAutoApprovedPrivateLinkServicesPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		p.newListAutoApprovedPrivateLinkServicesPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListAutoApprovedPrivateLinkServicesPager) {
+		p.newListAutoApprovedPrivateLinkServicesPager.remove(req)
+	}
+	return resp, nil
+}
+
 func (p *PrivateLinkServicesServerTransport) dispatchNewListBySubscriptionPager(req *http.Request) (*http.Response, error) {
 	if p.srv.NewListBySubscriptionPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListBySubscriptionPager not implemented")}
@@ -634,6 +597,43 @@ func (p *PrivateLinkServicesServerTransport) dispatchNewListBySubscriptionPager(
 	}
 	if !server.PagerResponderMore(newListBySubscriptionPager) {
 		p.newListBySubscriptionPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (p *PrivateLinkServicesServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if p.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := p.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/privateLinkServices`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := p.srv.NewListPager(resourceGroupNameParam, nil)
+		newListPager = &resp
+		p.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armnetwork.PrivateLinkServicesClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		p.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPager) {
+		p.newListPager.remove(req)
 	}
 	return resp, nil
 }

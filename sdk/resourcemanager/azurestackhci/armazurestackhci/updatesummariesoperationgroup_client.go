@@ -67,7 +67,7 @@ func (client *UpdateSummariesOperationGroupClient) BeginCheckHealth(ctx context.
 	}
 }
 
-// CheckHealth - Check health of UpdateSummaries
+// checkHealth - Check health of UpdateSummaries
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *UpdateSummariesOperationGroupClient) checkHealth(ctx context.Context, resourceGroupName string, clusterName string, options *UpdateSummariesOperationGroupClientBeginCheckHealthOptions) (*http.Response, error) {
 	var err error
@@ -89,7 +89,7 @@ func (client *UpdateSummariesOperationGroupClient) checkHealth(ctx context.Conte
 	return httpResp, nil
 }
 
-// checkHealthCreateRequest creates the CheckHealth request.
+// checkHealthCreateRequest creates the checkHealth request.
 func (client *UpdateSummariesOperationGroupClient) checkHealthCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, _ *UpdateSummariesOperationGroupClientBeginCheckHealthOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/clusters/{clusterName}/updateSummaries/default/checkHealth"
 	if client.subscriptionID == "" {
@@ -138,7 +138,7 @@ func (client *UpdateSummariesOperationGroupClient) BeginCheckUpdates(ctx context
 	}
 }
 
-// CheckUpdates - Check for updates
+// checkUpdates - Check for updates
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *UpdateSummariesOperationGroupClient) checkUpdates(ctx context.Context, resourceGroupName string, clusterName string, body CheckUpdatesRequest, options *UpdateSummariesOperationGroupClientBeginCheckUpdatesOptions) (*http.Response, error) {
 	var err error
@@ -160,7 +160,7 @@ func (client *UpdateSummariesOperationGroupClient) checkUpdates(ctx context.Cont
 	return httpResp, nil
 }
 
-// checkUpdatesCreateRequest creates the CheckUpdates request.
+// checkUpdatesCreateRequest creates the checkUpdates request.
 func (client *UpdateSummariesOperationGroupClient) checkUpdatesCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, body CheckUpdatesRequest, _ *UpdateSummariesOperationGroupClientBeginCheckUpdatesOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/clusters/{clusterName}/updateSummaries/default/checkUpdates"
 	if client.subscriptionID == "" {

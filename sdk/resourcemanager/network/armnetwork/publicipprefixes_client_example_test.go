@@ -364,79 +364,6 @@ func ExamplePublicIPPrefixesClient_Get_getPublicIPPrefixWithStandardV2Sku() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/PublicIpPrefixList.json
-func ExamplePublicIPPrefixesClient_NewListPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewPublicIPPrefixesClient().NewListPager("rg1", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armnetwork.PublicIPPrefixesClientListResponse{
-		// 	PublicIPPrefixListResult: armnetwork.PublicIPPrefixListResult{
-		// 		Value: []*armnetwork.PublicIPPrefix{
-		// 			{
-		// 				Name: to.Ptr("test-ipprefix"),
-		// 				Type: to.Ptr("Microsoft.Network/publicIPPrefixes"),
-		// 				Etag: to.Ptr("W/\"00000000-0000-0000-0000-00000000\""),
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/publicIPPrefixes/test-ipprefix"),
-		// 				Location: to.Ptr("westus"),
-		// 				Properties: &armnetwork.PublicIPPrefixPropertiesFormat{
-		// 					IPPrefix: to.Ptr("40.85.154.2/30"),
-		// 					IPTags: []*armnetwork.IPTag{
-		// 						{
-		// 							IPTagType: to.Ptr("FirstPartyUsage"),
-		// 							Tag: to.Ptr("SQL"),
-		// 						},
-		// 					},
-		// 					PrefixLength: to.Ptr[int32](30),
-		// 					ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
-		// 					PublicIPAddressVersion: to.Ptr(armnetwork.IPVersionIPv4),
-		// 					ResourceGUID: to.Ptr("00000000-0000-0000-0000-00000000"),
-		// 				},
-		// 				SKU: &armnetwork.PublicIPPrefixSKU{
-		// 					Name: to.Ptr(armnetwork.PublicIPPrefixSKUNameStandard),
-		// 				},
-		// 			},
-		// 			{
-		// 				Name: to.Ptr("ipprefix03"),
-		// 				Type: to.Ptr("Microsoft.Network/publicIPPrefixes"),
-		// 				Etag: to.Ptr("W/\"00000000-0000-0000-0000-00000000\""),
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/publicIPPrefixes/ipprefix03"),
-		// 				Location: to.Ptr("westus"),
-		// 				Properties: &armnetwork.PublicIPPrefixPropertiesFormat{
-		// 					IPPrefix: to.Ptr("40.85.153.2/31"),
-		// 					IPTags: []*armnetwork.IPTag{
-		// 					},
-		// 					PrefixLength: to.Ptr[int32](31),
-		// 					ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
-		// 					PublicIPAddressVersion: to.Ptr(armnetwork.IPVersionIPv4),
-		// 					ResourceGUID: to.Ptr("00000000-0000-0000-0000-00000000"),
-		// 				},
-		// 				SKU: &armnetwork.PublicIPPrefixSKU{
-		// 					Name: to.Ptr(armnetwork.PublicIPPrefixSKUNameStandard),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
 // Generated from example definition: 2026-01-01/PublicIpPrefixListAll.json
 func ExamplePublicIPPrefixesClient_NewListAllPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -519,6 +446,79 @@ func ExamplePublicIPPrefixesClient_NewListAllPager() {
 		// 						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg3/providers/Microsoft.Network/loadBalancers/lb-pfx/frontendIPConfigurations/ipconfig1"),
 		// 					},
 		// 					PrefixLength: to.Ptr[int32](30),
+		// 					ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+		// 					PublicIPAddressVersion: to.Ptr(armnetwork.IPVersionIPv4),
+		// 					ResourceGUID: to.Ptr("00000000-0000-0000-0000-00000000"),
+		// 				},
+		// 				SKU: &armnetwork.PublicIPPrefixSKU{
+		// 					Name: to.Ptr(armnetwork.PublicIPPrefixSKUNameStandard),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2026-01-01/PublicIpPrefixList.json
+func ExamplePublicIPPrefixesClient_NewListPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewPublicIPPrefixesClient().NewListPager("rg1", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armnetwork.PublicIPPrefixesClientListResponse{
+		// 	PublicIPPrefixListResult: armnetwork.PublicIPPrefixListResult{
+		// 		Value: []*armnetwork.PublicIPPrefix{
+		// 			{
+		// 				Name: to.Ptr("test-ipprefix"),
+		// 				Type: to.Ptr("Microsoft.Network/publicIPPrefixes"),
+		// 				Etag: to.Ptr("W/\"00000000-0000-0000-0000-00000000\""),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/publicIPPrefixes/test-ipprefix"),
+		// 				Location: to.Ptr("westus"),
+		// 				Properties: &armnetwork.PublicIPPrefixPropertiesFormat{
+		// 					IPPrefix: to.Ptr("40.85.154.2/30"),
+		// 					IPTags: []*armnetwork.IPTag{
+		// 						{
+		// 							IPTagType: to.Ptr("FirstPartyUsage"),
+		// 							Tag: to.Ptr("SQL"),
+		// 						},
+		// 					},
+		// 					PrefixLength: to.Ptr[int32](30),
+		// 					ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+		// 					PublicIPAddressVersion: to.Ptr(armnetwork.IPVersionIPv4),
+		// 					ResourceGUID: to.Ptr("00000000-0000-0000-0000-00000000"),
+		// 				},
+		// 				SKU: &armnetwork.PublicIPPrefixSKU{
+		// 					Name: to.Ptr(armnetwork.PublicIPPrefixSKUNameStandard),
+		// 				},
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("ipprefix03"),
+		// 				Type: to.Ptr("Microsoft.Network/publicIPPrefixes"),
+		// 				Etag: to.Ptr("W/\"00000000-0000-0000-0000-00000000\""),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/publicIPPrefixes/ipprefix03"),
+		// 				Location: to.Ptr("westus"),
+		// 				Properties: &armnetwork.PublicIPPrefixPropertiesFormat{
+		// 					IPPrefix: to.Ptr("40.85.153.2/31"),
+		// 					IPTags: []*armnetwork.IPTag{
+		// 					},
+		// 					PrefixLength: to.Ptr[int32](31),
 		// 					ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
 		// 					PublicIPAddressVersion: to.Ptr(armnetwork.IPVersionIPv4),
 		// 					ResourceGUID: to.Ptr("00000000-0000-0000-0000-00000000"),

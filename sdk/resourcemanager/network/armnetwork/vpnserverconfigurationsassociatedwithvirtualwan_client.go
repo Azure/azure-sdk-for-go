@@ -68,7 +68,7 @@ func (client *VPNServerConfigurationsAssociatedWithVirtualWanClient) BeginList(c
 	}
 }
 
-// List - Gives the list of VpnServerConfigurations associated with Virtual Wan in a resource group.
+// listOperation - Gives the list of VpnServerConfigurations associated with Virtual Wan in a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *VPNServerConfigurationsAssociatedWithVirtualWanClient) listOperation(ctx context.Context, resourceGroupName string, virtualWANName string, options *VPNServerConfigurationsAssociatedWithVirtualWanClientBeginListOptions) (*http.Response, error) {
 	var err error
@@ -90,7 +90,7 @@ func (client *VPNServerConfigurationsAssociatedWithVirtualWanClient) listOperati
 	return httpResp, nil
 }
 
-// listCreateRequest creates the List request.
+// listCreateRequest creates the list request.
 func (client *VPNServerConfigurationsAssociatedWithVirtualWanClient) listCreateRequest(ctx context.Context, resourceGroupName string, virtualWANName string, _ *VPNServerConfigurationsAssociatedWithVirtualWanClientBeginListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualWans/{virtualWANName}/vpnServerConfigurations"
 	if client.subscriptionID == "" {

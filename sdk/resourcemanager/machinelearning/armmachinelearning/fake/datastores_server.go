@@ -35,13 +35,13 @@ type DatastoresServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, workspaceName string, name string, options *armmachinelearning.DatastoresClientGetOptions) (resp azfake.Responder[armmachinelearning.DatastoresClientGetResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method DatastoresClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(resourceGroupName string, workspaceName string, options *armmachinelearning.DatastoresClientListOptions) (resp azfake.PagerResponder[armmachinelearning.DatastoresClientListResponse])
-
 	// ListSecrets is the fake for method DatastoresClient.ListSecrets
 	// HTTP status codes to indicate success: http.StatusOK
 	ListSecrets func(ctx context.Context, resourceGroupName string, workspaceName string, name string, options *armmachinelearning.DatastoresClientListSecretsOptions) (resp azfake.Responder[armmachinelearning.DatastoresClientListSecretsResponse], errResp azfake.ErrorResponder)
+
+	// NewListPager is the fake for method DatastoresClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(resourceGroupName string, workspaceName string, options *armmachinelearning.DatastoresClientListOptions) (resp azfake.PagerResponder[armmachinelearning.DatastoresClientListResponse])
 }
 
 // NewDatastoresServerTransport creates a new instance of DatastoresServerTransport with the provided implementation.
@@ -88,10 +88,10 @@ func (d *DatastoresServerTransport) dispatchToMethodFake(req *http.Request, meth
 				res.resp, res.err = d.dispatchDelete(req)
 			case "DatastoresClient.Get":
 				res.resp, res.err = d.dispatchGet(req)
-			case "DatastoresClient.NewListPager":
-				res.resp, res.err = d.dispatchNewListPager(req)
 			case "DatastoresClient.ListSecrets":
 				res.resp, res.err = d.dispatchListSecrets(req)
+			case "DatastoresClient.NewListPager":
+				res.resp, res.err = d.dispatchNewListPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -234,6 +234,53 @@ func (d *DatastoresServerTransport) dispatchGet(req *http.Request) (*http.Respon
 	return resp, nil
 }
 
+func (d *DatastoresServerTransport) dispatchListSecrets(req *http.Request) (*http.Response, error) {
+	if d.srv.ListSecrets == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListSecrets not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.MachineLearningServices/workspaces/(?P<workspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/datastores/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listSecrets`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armmachinelearning.SecretExpiry](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	workspaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("workspaceName")])
+	if err != nil {
+		return nil, err
+	}
+	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+	if err != nil {
+		return nil, err
+	}
+	var options *armmachinelearning.DatastoresClientListSecretsOptions
+	if !reflect.ValueOf(body).IsZero() {
+		options = &armmachinelearning.DatastoresClientListSecretsOptions{
+			Body: &body,
+		}
+	}
+	respr, errRespr := d.srv.ListSecrets(req.Context(), resourceGroupNameParam, workspaceNameParam, nameParam, options)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DatastoreSecretsClassification, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
 func (d *DatastoresServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
 	if d.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
@@ -306,53 +353,6 @@ func (d *DatastoresServerTransport) dispatchNewListPager(req *http.Request) (*ht
 	}
 	if !server.PagerResponderMore(newListPager) {
 		d.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (d *DatastoresServerTransport) dispatchListSecrets(req *http.Request) (*http.Response, error) {
-	if d.srv.ListSecrets == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ListSecrets not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.MachineLearningServices/workspaces/(?P<workspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/datastores/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listSecrets`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armmachinelearning.SecretExpiry](req)
-	if err != nil {
-		return nil, err
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	workspaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("workspaceName")])
-	if err != nil {
-		return nil, err
-	}
-	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-	if err != nil {
-		return nil, err
-	}
-	var options *armmachinelearning.DatastoresClientListSecretsOptions
-	if !reflect.ValueOf(body).IsZero() {
-		options = &armmachinelearning.DatastoresClientListSecretsOptions{
-			Body: &body,
-		}
-	}
-	respr, errRespr := d.srv.ListSecrets(req.Context(), resourceGroupNameParam, workspaceNameParam, nameParam, options)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DatastoreSecretsClassification, req)
-	if err != nil {
-		return nil, err
 	}
 	return resp, nil
 }

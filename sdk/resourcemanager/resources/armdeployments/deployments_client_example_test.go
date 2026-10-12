@@ -12,64 +12,6 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-06-01/CalculateTemplateHash.json
-func ExampleDeploymentsClient_CalculateTemplateHash() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armdeployments.NewClientFactory("<subscriptionID>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewDeploymentsClient().CalculateTemplateHash(ctx, map[string]any{
-		"$schema":        "http://schemas.management.azure.com/deploymentTemplate?api-version=2014-04-01-preview",
-		"contentVersion": "1.0.0.0",
-		"outputs": map[string]any{
-			"string": map[string]any{
-				"type":  "string",
-				"value": "myvalue",
-			},
-		},
-		"parameters": map[string]any{
-			"string": map[string]any{
-				"type": "string",
-			},
-		},
-		"resources": []any{},
-		"variables": map[string]any{
-			"array": []any{
-				1,
-				2,
-				3,
-				4,
-			},
-			"bool": true,
-			"int":  42,
-			"object": map[string]any{
-				"object": map[string]any{
-					"location": "West US",
-					"vmSize":   "Large",
-				},
-			},
-			"string": "string",
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armdeployments.DeploymentsClientCalculateTemplateHashResponse{
-	// 	TemplateHashResult: armdeployments.TemplateHashResult{
-	// 		MinifiedTemplate: to.Ptr("{\"$SCHEMA\":\"HTTP://SCHEMAS.MANAGEMENT.AZURE.COM/DEPLOYMENTTEMPLATE?API-VERSION=2014-04-01-PREVIEW\",\"CONTENTVERSION\":\"1.0.0.0\",\"PARAMETERS\":{\"STRING\":{\"TYPE\":\"STRING\"}},\"VARIABLES\":{\"STRING\":\"STRING\",\"INT\":42,\"BOOL\":TRUE,\"ARRAY\":[1,2,3,4],\"OBJECT\":{\"OBJECT\":{\"VMSIZE\":\"LARGE\",\"LOCATION\":\"WEST US\"}}},\"RESOURCES\":[],\"OUTPUTS\":{\"STRING\":{\"TYPE\":\"STRING\",\"VALUE\":\"MYVALUE\"}}}"),
-	// 		TemplateHash: to.Ptr("695440707931307747"),
-	// 	},
-	// }
-}
-
 // Generated from example definition: 2026-06-01/PutDeploymentResourceGroup.json
 func ExampleDeploymentsClient_BeginCreateOrUpdate_createADeploymentThatWillDeployATemplateWithAUriAndQueryString() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -1662,6 +1604,64 @@ func ExampleDeploymentsClient_BeginWhatIfAtTenantScope() {
 	// 			},
 	// 		},
 	// 		Status: to.Ptr("Succeeded"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-06-01/CalculateTemplateHash.json
+func ExampleDeploymentsClient_CalculateTemplateHash() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdeployments.NewClientFactory("<subscriptionID>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewDeploymentsClient().CalculateTemplateHash(ctx, map[string]any{
+		"$schema":        "http://schemas.management.azure.com/deploymentTemplate?api-version=2014-04-01-preview",
+		"contentVersion": "1.0.0.0",
+		"outputs": map[string]any{
+			"string": map[string]any{
+				"type":  "string",
+				"value": "myvalue",
+			},
+		},
+		"parameters": map[string]any{
+			"string": map[string]any{
+				"type": "string",
+			},
+		},
+		"resources": []any{},
+		"variables": map[string]any{
+			"array": []any{
+				1,
+				2,
+				3,
+				4,
+			},
+			"bool": true,
+			"int":  42,
+			"object": map[string]any{
+				"object": map[string]any{
+					"location": "West US",
+					"vmSize":   "Large",
+				},
+			},
+			"string": "string",
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armdeployments.DeploymentsClientCalculateTemplateHashResponse{
+	// 	TemplateHashResult: armdeployments.TemplateHashResult{
+	// 		MinifiedTemplate: to.Ptr("{\"$SCHEMA\":\"HTTP://SCHEMAS.MANAGEMENT.AZURE.COM/DEPLOYMENTTEMPLATE?API-VERSION=2014-04-01-PREVIEW\",\"CONTENTVERSION\":\"1.0.0.0\",\"PARAMETERS\":{\"STRING\":{\"TYPE\":\"STRING\"}},\"VARIABLES\":{\"STRING\":\"STRING\",\"INT\":42,\"BOOL\":TRUE,\"ARRAY\":[1,2,3,4],\"OBJECT\":{\"OBJECT\":{\"VMSIZE\":\"LARGE\",\"LOCATION\":\"WEST US\"}}},\"RESOURCES\":[],\"OUTPUTS\":{\"STRING\":{\"TYPE\":\"STRING\",\"VALUE\":\"MYVALUE\"}}}"),
+	// 		TemplateHash: to.Ptr("695440707931307747"),
 	// 	},
 	// }
 }

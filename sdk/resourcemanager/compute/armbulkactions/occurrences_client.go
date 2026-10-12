@@ -69,7 +69,7 @@ func (client *OccurrencesClient) BeginCancel(ctx context.Context, resourceGroupN
 	}
 }
 
-// Cancel - Cancels the specified occurrence for the specified resource IDs.
+// cancel - Cancels the specified occurrence for the specified resource IDs.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *OccurrencesClient) cancel(ctx context.Context, resourceGroupName string, scheduledActionName string, occurrenceID string, body CancelOccurrenceRequest, options *OccurrencesClientBeginCancelOptions) (*http.Response, error) {
 	var err error
@@ -91,7 +91,7 @@ func (client *OccurrencesClient) cancel(ctx context.Context, resourceGroupName s
 	return httpResp, nil
 }
 
-// cancelCreateRequest creates the Cancel request.
+// cancelCreateRequest creates the cancel request.
 func (client *OccurrencesClient) cancelCreateRequest(ctx context.Context, resourceGroupName string, scheduledActionName string, occurrenceID string, body CancelOccurrenceRequest, _ *OccurrencesClientBeginCancelOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/scheduledActions/{scheduledActionName}/occurrences/{occurrenceId}/cancel"
 	if client.subscriptionID == "" {
@@ -151,7 +151,7 @@ func (client *OccurrencesClient) BeginDelay(ctx context.Context, resourceGroupNa
 	}
 }
 
-// Delay - Delays the specified occurrence for the specified resource IDs.
+// delay - Delays the specified occurrence for the specified resource IDs.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *OccurrencesClient) delay(ctx context.Context, resourceGroupName string, scheduledActionName string, occurrenceID string, body DelayRequest, options *OccurrencesClientBeginDelayOptions) (*http.Response, error) {
 	var err error
@@ -173,7 +173,7 @@ func (client *OccurrencesClient) delay(ctx context.Context, resourceGroupName st
 	return httpResp, nil
 }
 
-// delayCreateRequest creates the Delay request.
+// delayCreateRequest creates the delay request.
 func (client *OccurrencesClient) delayCreateRequest(ctx context.Context, resourceGroupName string, scheduledActionName string, occurrenceID string, body DelayRequest, _ *OccurrencesClientBeginDelayOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/scheduledActions/{scheduledActionName}/occurrences/{occurrenceId}/delay"
 	if client.subscriptionID == "" {

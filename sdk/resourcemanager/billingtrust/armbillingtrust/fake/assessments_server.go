@@ -32,13 +32,13 @@ type AssessmentsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceURI string, options *armbillingtrust.AssessmentsClientGetOptions) (resp azfake.Responder[armbillingtrust.AssessmentsClientGetResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method AssessmentsClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(resourceURI string, options *armbillingtrust.AssessmentsClientListOptions) (resp azfake.PagerResponder[armbillingtrust.AssessmentsClientListResponse])
-
 	// ListUploadToken is the fake for method AssessmentsClient.ListUploadToken
 	// HTTP status codes to indicate success: http.StatusOK
 	ListUploadToken func(ctx context.Context, resourceURI string, options *armbillingtrust.AssessmentsClientListUploadTokenOptions) (resp azfake.Responder[armbillingtrust.AssessmentsClientListUploadTokenResponse], errResp azfake.ErrorResponder)
+
+	// NewListPager is the fake for method AssessmentsClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(resourceURI string, options *armbillingtrust.AssessmentsClientListOptions) (resp azfake.PagerResponder[armbillingtrust.AssessmentsClientListResponse])
 }
 
 // NewAssessmentsServerTransport creates a new instance of AssessmentsServerTransport with the provided implementation.
@@ -89,10 +89,10 @@ func (a *AssessmentsServerTransport) dispatchToMethodFake(req *http.Request, met
 				res.resp, res.err = a.dispatchBeginDelete(req)
 			case "AssessmentsClient.Get":
 				res.resp, res.err = a.dispatchGet(req)
-			case "AssessmentsClient.NewListPager":
-				res.resp, res.err = a.dispatchNewListPager(req)
 			case "AssessmentsClient.ListUploadToken":
 				res.resp, res.err = a.dispatchListUploadToken(req)
+			case "AssessmentsClient.NewListPager":
+				res.resp, res.err = a.dispatchNewListPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -213,6 +213,32 @@ func (a *AssessmentsServerTransport) dispatchGet(req *http.Request) (*http.Respo
 	return resp, nil
 }
 
+func (a *AssessmentsServerTransport) dispatchListUploadToken(req *http.Request) (*http.Response, error) {
+	if a.srv.ListUploadToken == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListUploadToken not implemented")}
+	}
+	const regexStr = `/(?P<resourceUri>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/providers/Microsoft\.BillingTrust/assessments/default/listUploadToken`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 2 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceURIParam := matches[regex.SubexpIndex("resourceUri")]
+	respr, errRespr := a.srv.ListUploadToken(req.Context(), resourceURIParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).GenerateUploadTokenResponse, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
 func (a *AssessmentsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
 	if a.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
@@ -243,32 +269,6 @@ func (a *AssessmentsServerTransport) dispatchNewListPager(req *http.Request) (*h
 	}
 	if !server.PagerResponderMore(newListPager) {
 		a.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (a *AssessmentsServerTransport) dispatchListUploadToken(req *http.Request) (*http.Response, error) {
-	if a.srv.ListUploadToken == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ListUploadToken not implemented")}
-	}
-	const regexStr = `/(?P<resourceUri>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/providers/Microsoft\.BillingTrust/assessments/default/listUploadToken`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 2 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceURIParam := matches[regex.SubexpIndex("resourceUri")]
-	respr, errRespr := a.srv.ListUploadToken(req.Context(), resourceURIParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).GenerateUploadTokenResponse, req)
-	if err != nil {
-		return nil, err
 	}
 	return resp, nil
 }

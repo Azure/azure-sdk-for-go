@@ -44,6 +44,82 @@ func NewHealthValidationsClient(subscriptionID string, credential azcore.TokenCr
 	return client, nil
 }
 
+// BeginStartValidation - Starts health validation for a watcher.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - watcherName - The database watcher name.
+//   - healthValidationName - The health validation resource name.
+//   - options - HealthValidationsClientBeginStartValidationOptions contains the optional parameters for the HealthValidationsClient.BeginStartValidation
+//     method.
+func (client *HealthValidationsClient) BeginStartValidation(ctx context.Context, resourceGroupName string, watcherName string, healthValidationName string, options *HealthValidationsClientBeginStartValidationOptions) (*runtime.Poller[HealthValidationsClientStartValidationResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.startValidation(ctx, resourceGroupName, watcherName, healthValidationName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[HealthValidationsClientStartValidationResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[HealthValidationsClientStartValidationResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// startValidation - Starts health validation for a watcher.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *HealthValidationsClient) startValidation(ctx context.Context, resourceGroupName string, watcherName string, healthValidationName string, options *HealthValidationsClientBeginStartValidationOptions) (*http.Response, error) {
+	var err error
+	const operationName = "HealthValidationsClient.BeginStartValidation"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.startValidationCreateRequest(ctx, resourceGroupName, watcherName, healthValidationName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// startValidationCreateRequest creates the startValidation request.
+func (client *HealthValidationsClient) startValidationCreateRequest(ctx context.Context, resourceGroupName string, watcherName string, healthValidationName string, _ *HealthValidationsClientBeginStartValidationOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DatabaseWatcher/watchers/{watcherName}/healthValidations/{healthValidationName}/startValidation"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if watcherName == "" {
+		return nil, errors.New("parameter watcherName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{watcherName}", url.PathEscape(watcherName))
+	if healthValidationName == "" {
+		return nil, errors.New("parameter healthValidationName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{healthValidationName}", url.PathEscape(healthValidationName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20250102)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
 // Get - Get a HealthValidation
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
@@ -184,80 +260,4 @@ func (client *HealthValidationsClient) listByParentHandleResponse(resp *http.Res
 		return HealthValidationsClientListByParentResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginStartValidation - Starts health validation for a watcher.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - watcherName - The database watcher name.
-//   - healthValidationName - The health validation resource name.
-//   - options - HealthValidationsClientBeginStartValidationOptions contains the optional parameters for the HealthValidationsClient.BeginStartValidation
-//     method.
-func (client *HealthValidationsClient) BeginStartValidation(ctx context.Context, resourceGroupName string, watcherName string, healthValidationName string, options *HealthValidationsClientBeginStartValidationOptions) (*runtime.Poller[HealthValidationsClientStartValidationResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.startValidation(ctx, resourceGroupName, watcherName, healthValidationName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[HealthValidationsClientStartValidationResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[HealthValidationsClientStartValidationResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// StartValidation - Starts health validation for a watcher.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *HealthValidationsClient) startValidation(ctx context.Context, resourceGroupName string, watcherName string, healthValidationName string, options *HealthValidationsClientBeginStartValidationOptions) (*http.Response, error) {
-	var err error
-	const operationName = "HealthValidationsClient.BeginStartValidation"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.startValidationCreateRequest(ctx, resourceGroupName, watcherName, healthValidationName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// startValidationCreateRequest creates the StartValidation request.
-func (client *HealthValidationsClient) startValidationCreateRequest(ctx context.Context, resourceGroupName string, watcherName string, healthValidationName string, _ *HealthValidationsClientBeginStartValidationOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DatabaseWatcher/watchers/{watcherName}/healthValidations/{healthValidationName}/startValidation"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if watcherName == "" {
-		return nil, errors.New("parameter watcherName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{watcherName}", url.PathEscape(watcherName))
-	if healthValidationName == "" {
-		return nil, errors.New("parameter healthValidationName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{healthValidationName}", url.PathEscape(healthValidationName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250102)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
 }

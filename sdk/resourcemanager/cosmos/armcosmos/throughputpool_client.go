@@ -30,6 +30,9 @@ type ThroughputPoolClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewThroughputPoolClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ThroughputPoolClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -66,7 +69,7 @@ func (client *ThroughputPoolClient) BeginCreateOrUpdate(ctx context.Context, res
 	}
 }
 
-// CreateOrUpdate - Creates or updates an Azure Cosmos DB ThroughputPool account. The "Update" method is preferred when performing
+// createOrUpdate - Creates or updates an Azure Cosmos DB ThroughputPool account. The "Update" method is preferred when performing
 // updates on an account.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ThroughputPoolClient) createOrUpdate(ctx context.Context, resourceGroupName string, throughputPoolName string, body ThroughputPoolResource, options *ThroughputPoolClientBeginCreateOrUpdateOptions) (*http.Response, error) {
@@ -89,11 +92,11 @@ func (client *ThroughputPoolClient) createOrUpdate(ctx context.Context, resource
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *ThroughputPoolClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, throughputPoolName string, body ThroughputPoolResource, _ *ThroughputPoolClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/throughputPools/{throughputPoolName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -142,7 +145,7 @@ func (client *ThroughputPoolClient) BeginDelete(ctx context.Context, resourceGro
 	}
 }
 
-// Delete - Deletes an existing Azure Cosmos DB Throughput Pool.
+// deleteOperation - Deletes an existing Azure Cosmos DB Throughput Pool.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ThroughputPoolClient) deleteOperation(ctx context.Context, resourceGroupName string, throughputPoolName string, options *ThroughputPoolClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -164,11 +167,11 @@ func (client *ThroughputPoolClient) deleteOperation(ctx context.Context, resourc
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *ThroughputPoolClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, throughputPoolName string, _ *ThroughputPoolClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/throughputPools/{throughputPoolName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -186,6 +189,83 @@ func (client *ThroughputPoolClient) deleteCreateRequest(ctx context.Context, res
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", version20260401Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginUpdate - Updates the properties of an existing Azure Cosmos DB Throughput Pool.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - throughputPoolName - Cosmos DB Throughput Pool name.
+//   - body - The parameters to provide for the current Throughput Pool.
+//   - options - ThroughputPoolClientBeginUpdateOptions contains the optional parameters for the ThroughputPoolClient.BeginUpdate
+//     method.
+func (client *ThroughputPoolClient) BeginUpdate(ctx context.Context, resourceGroupName string, throughputPoolName string, body ThroughputPoolUpdate, options *ThroughputPoolClientBeginUpdateOptions) (*runtime.Poller[ThroughputPoolClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, throughputPoolName, body, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ThroughputPoolClientUpdateResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ThroughputPoolClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Updates the properties of an existing Azure Cosmos DB Throughput Pool.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ThroughputPoolClient) update(ctx context.Context, resourceGroupName string, throughputPoolName string, body ThroughputPoolUpdate, options *ThroughputPoolClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "ThroughputPoolClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, throughputPoolName, body, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *ThroughputPoolClient) updateCreateRequest(ctx context.Context, resourceGroupName string, throughputPoolName string, body ThroughputPoolUpdate, _ *ThroughputPoolClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/throughputPools/{throughputPoolName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if throughputPoolName == "" {
+		return nil, errors.New("parameter throughputPoolName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{throughputPoolName}", url.PathEscape(throughputPoolName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260401Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
 	return req, nil
 }
 
@@ -215,7 +295,7 @@ func (client *ThroughputPoolClient) Get(ctx context.Context, resourceGroupName s
 func (client *ThroughputPoolClient) getCreateRequest(ctx context.Context, resourceGroupName string, throughputPoolName string, _ *ThroughputPoolClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/throughputPools/{throughputPoolName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -247,81 +327,4 @@ func (client *ThroughputPoolClient) getHandleResponse(resp *http.Response, succe
 		return ThroughputPoolClientGetResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginUpdate - Updates the properties of an existing Azure Cosmos DB Throughput Pool.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - throughputPoolName - Cosmos DB Throughput Pool name.
-//   - body - The parameters to provide for the current Throughput Pool.
-//   - options - ThroughputPoolClientBeginUpdateOptions contains the optional parameters for the ThroughputPoolClient.BeginUpdate
-//     method.
-func (client *ThroughputPoolClient) BeginUpdate(ctx context.Context, resourceGroupName string, throughputPoolName string, body ThroughputPoolUpdate, options *ThroughputPoolClientBeginUpdateOptions) (*runtime.Poller[ThroughputPoolClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, throughputPoolName, body, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ThroughputPoolClientUpdateResponse]{
-			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
-			Tracer:        client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ThroughputPoolClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Updates the properties of an existing Azure Cosmos DB Throughput Pool.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *ThroughputPoolClient) update(ctx context.Context, resourceGroupName string, throughputPoolName string, body ThroughputPoolUpdate, options *ThroughputPoolClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "ThroughputPoolClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, throughputPoolName, body, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *ThroughputPoolClient) updateCreateRequest(ctx context.Context, resourceGroupName string, throughputPoolName string, body ThroughputPoolUpdate, _ *ThroughputPoolClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/throughputPools/{throughputPoolName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if throughputPoolName == "" {
-		return nil, errors.New("parameter throughputPoolName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{throughputPoolName}", url.PathEscape(throughputPoolName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, body); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

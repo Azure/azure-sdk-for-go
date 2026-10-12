@@ -217,6 +217,213 @@ func ExampleVolumesClient_BeginDelete_volumesDeleteMinimumSetGen() {
 	// }
 }
 
+// Generated from example definition: 2026-05-01-preview/Volumes_PreBackup_MaximumSet_Gen.json
+func ExampleVolumesClient_BeginPreBackup() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armelasticsan.NewClientFactory("subscriptionid", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewVolumesClient().BeginPreBackup(ctx, "resourcegroupname", "elasticsanname", "volumegroupname", armelasticsan.VolumeNameList{
+		VolumeNames: []*string{
+			to.Ptr("volumename"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armelasticsan.VolumesClientPreBackupResponse{
+	// 	PreValidationResponse: armelasticsan.PreValidationResponse{
+	// 		ValidationStatus: to.Ptr("success"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-05-01-preview/Volumes_PreRestore_MaximumSet_Gen.json
+func ExampleVolumesClient_BeginPreRestore() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armelasticsan.NewClientFactory("subscriptionid", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewVolumesClient().BeginPreRestore(ctx, "resourcegroupname", "elasticsanname", "volumegroupname", armelasticsan.DiskSnapshotList{
+		DiskSnapshotIDs: []*string{
+			to.Ptr("/subscriptions/{subscriptionid}/resourceGroups/{resourcegroupname}/providers/Microsoft.Compute/snapshots/disksnapshot1"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armelasticsan.VolumesClientPreRestoreResponse{
+	// 	PreValidationResponse: armelasticsan.PreValidationResponse{
+	// 		ValidationStatus: to.Ptr("success"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-05-01-preview/Volumes_Update_MaximumSet_Gen.json
+func ExampleVolumesClient_BeginUpdate_volumesUpdateMaximumSetGen() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armelasticsan.NewClientFactory("subscriptionid", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewVolumesClient().BeginUpdate(ctx, "resourcegroupname", "elasticsanname", "volumegroupname", "volumename", armelasticsan.VolumeUpdate{
+		Properties: &armelasticsan.VolumeUpdateProperties{
+			ManagedBy: []*armelasticsan.ManagedByResources{
+				{
+					ClientID: to.Ptr("pclpkrpkpmvcsegcubrakcoodrubo"),
+					Version:  to.Ptr[int32](1),
+					ResourceIDs: []*string{
+						to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.SomeProvider/someResource/myResource"),
+					},
+				},
+			},
+			SizeGiB: to.Ptr[int64](7),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armelasticsan.VolumesClientUpdateResponse{
+	// 	Volume: armelasticsan.Volume{
+	// 		Name: to.Ptr("hxm"),
+	// 		Type: to.Ptr("sxsbsdhngvbcpxxcuvyt"),
+	// 		ID: to.Ptr("sipsx"),
+	// 		Properties: &armelasticsan.VolumeProperties{
+	// 			CreationData: &armelasticsan.SourceCreationData{
+	// 				CreateSource: to.Ptr(armelasticsan.VolumeCreateOptionNone),
+	// 				SourceID: to.Ptr("mdonegivjquite"),
+	// 			},
+	// 			ManagedBy: []*armelasticsan.ManagedByResources{
+	// 				{
+	// 					ClientID: to.Ptr("pclpkrpkpmvcsegcubrakcoodrubo"),
+	// 					Version: to.Ptr[int32](1),
+	// 					ResourceIDs: []*string{
+	// 						to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.SomeProvider/someResource/myResource"),
+	// 					},
+	// 				},
+	// 			},
+	// 			ProvisioningState: to.Ptr(armelasticsan.ProvisioningStatesInvalid),
+	// 			SizeGiB: to.Ptr[int64](23),
+	// 			StorageTarget: &armelasticsan.IscsiTargetInfo{
+	// 				ProvisioningState: to.Ptr(armelasticsan.ProvisioningStatesInvalid),
+	// 				Status: to.Ptr(armelasticsan.OperationalStatusInvalid),
+	// 				TargetIqn: to.Ptr("us"),
+	// 				TargetPortalHostname: to.Ptr("oqtcavqpjaonaudz"),
+	// 				TargetPortalPort: to.Ptr[int32](1),
+	// 			},
+	// 			VolumeID: to.Ptr("tbwshhvrbqyseonkeztlbzhrckd"),
+	// 		},
+	// 		SystemData: &armelasticsan.SystemData{
+	// 			CreatedAt: to.Ptr(time.Date(2024, time.April, 29, 14, 22, 13, 546000000, time.UTC)),
+	// 			CreatedBy: to.Ptr("bpuxtfzqwdhifevjtucoc"),
+	// 			CreatedByType: to.Ptr(armelasticsan.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.April, 29, 14, 22, 13, 547000000, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("ourjjlolgugpxnkbiegumkicksibep"),
+	// 			LastModifiedByType: to.Ptr(armelasticsan.CreatedByTypeUser),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-05-01-preview/Volumes_Update_MinimumSet_Gen.json
+func ExampleVolumesClient_BeginUpdate_volumesUpdateMinimumSetGen() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armelasticsan.NewClientFactory("subscriptionid", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewVolumesClient().BeginUpdate(ctx, "resourcegroupname", "elasticsanname", "volumegroupname", "volumename", armelasticsan.VolumeUpdate{}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armelasticsan.VolumesClientUpdateResponse{
+	// 	Volume: armelasticsan.Volume{
+	// 		Name: to.Ptr("o"),
+	// 		Type: to.Ptr("Microsoft.ElasticSan/elasticSans/volumeGroups/volumes"),
+	// 		ID: to.Ptr("swkcmwglncgtsnejzvldnbpsifxez"),
+	// 		Properties: &armelasticsan.VolumeProperties{
+	// 			CreationData: &armelasticsan.SourceCreationData{
+	// 				CreateSource: to.Ptr(armelasticsan.VolumeCreateOptionNone),
+	// 				SourceID: to.Ptr("ARM Id of Resource"),
+	// 			},
+	// 			ManagedBy: []*armelasticsan.ManagedByResources{
+	// 				{
+	// 					ClientID: to.Ptr("pclpkrpkpmvcsegcubrakcoodrubo"),
+	// 					Version: to.Ptr[int32](1),
+	// 					ResourceIDs: []*string{
+	// 						to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.SomeProvider/someResource/myResource"),
+	// 					},
+	// 				},
+	// 			},
+	// 			ProvisioningState: to.Ptr(armelasticsan.ProvisioningStatesInvalid),
+	// 			SizeGiB: to.Ptr[int64](9),
+	// 			StorageTarget: &armelasticsan.IscsiTargetInfo{
+	// 				ProvisioningState: to.Ptr(armelasticsan.ProvisioningStatesSucceeded),
+	// 				Status: to.Ptr(armelasticsan.OperationalStatusInvalid),
+	// 				TargetIqn: to.Ptr("izdwogzjedsfug"),
+	// 				TargetPortalHostname: to.Ptr("wyfbjobugmad"),
+	// 				TargetPortalPort: to.Ptr[int32](21),
+	// 			},
+	// 			VolumeID: to.Ptr("umwjlxntntjejiyrywrytkzbfbluhk"),
+	// 		},
+	// 		SystemData: &armelasticsan.SystemData{
+	// 			CreatedAt: to.Ptr(time.Date(2023, time.August, 23, 12, 16, 10, 57000000, time.UTC)),
+	// 			CreatedBy: to.Ptr("kakcyehdrphqkilgkhpbdtvpupak"),
+	// 			CreatedByType: to.Ptr(armelasticsan.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.August, 23, 12, 16, 10, 57000000, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("bcclmbseed"),
+	// 			LastModifiedByType: to.Ptr(armelasticsan.CreatedByTypeUser),
+	// 		},
+	// 	},
+	// }
+}
+
 // Generated from example definition: 2026-05-01-preview/Volumes_Get_MaximumSet_Gen.json
 func ExampleVolumesClient_Get_volumesGetMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -438,211 +645,4 @@ func ExampleVolumesClient_NewListByVolumeGroupPager_volumesListByVolumeGroupMini
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2026-05-01-preview/Volumes_PreBackup_MaximumSet_Gen.json
-func ExampleVolumesClient_BeginPreBackup() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armelasticsan.NewClientFactory("subscriptionid", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewVolumesClient().BeginPreBackup(ctx, "resourcegroupname", "elasticsanname", "volumegroupname", armelasticsan.VolumeNameList{
-		VolumeNames: []*string{
-			to.Ptr("volumename"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armelasticsan.VolumesClientPreBackupResponse{
-	// 	PreValidationResponse: armelasticsan.PreValidationResponse{
-	// 		ValidationStatus: to.Ptr("success"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-05-01-preview/Volumes_PreRestore_MaximumSet_Gen.json
-func ExampleVolumesClient_BeginPreRestore() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armelasticsan.NewClientFactory("subscriptionid", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewVolumesClient().BeginPreRestore(ctx, "resourcegroupname", "elasticsanname", "volumegroupname", armelasticsan.DiskSnapshotList{
-		DiskSnapshotIDs: []*string{
-			to.Ptr("/subscriptions/{subscriptionid}/resourceGroups/{resourcegroupname}/providers/Microsoft.Compute/snapshots/disksnapshot1"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armelasticsan.VolumesClientPreRestoreResponse{
-	// 	PreValidationResponse: armelasticsan.PreValidationResponse{
-	// 		ValidationStatus: to.Ptr("success"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-05-01-preview/Volumes_Update_MaximumSet_Gen.json
-func ExampleVolumesClient_BeginUpdate_volumesUpdateMaximumSetGen() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armelasticsan.NewClientFactory("subscriptionid", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewVolumesClient().BeginUpdate(ctx, "resourcegroupname", "elasticsanname", "volumegroupname", "volumename", armelasticsan.VolumeUpdate{
-		Properties: &armelasticsan.VolumeUpdateProperties{
-			ManagedBy: []*armelasticsan.ManagedByResources{
-				{
-					ClientID: to.Ptr("pclpkrpkpmvcsegcubrakcoodrubo"),
-					Version:  to.Ptr[int32](1),
-					ResourceIDs: []*string{
-						to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.SomeProvider/someResource/myResource"),
-					},
-				},
-			},
-			SizeGiB: to.Ptr[int64](7),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armelasticsan.VolumesClientUpdateResponse{
-	// 	Volume: armelasticsan.Volume{
-	// 		Name: to.Ptr("hxm"),
-	// 		Type: to.Ptr("sxsbsdhngvbcpxxcuvyt"),
-	// 		ID: to.Ptr("sipsx"),
-	// 		Properties: &armelasticsan.VolumeProperties{
-	// 			CreationData: &armelasticsan.SourceCreationData{
-	// 				CreateSource: to.Ptr(armelasticsan.VolumeCreateOptionNone),
-	// 				SourceID: to.Ptr("mdonegivjquite"),
-	// 			},
-	// 			ManagedBy: []*armelasticsan.ManagedByResources{
-	// 				{
-	// 					ClientID: to.Ptr("pclpkrpkpmvcsegcubrakcoodrubo"),
-	// 					Version: to.Ptr[int32](1),
-	// 					ResourceIDs: []*string{
-	// 						to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.SomeProvider/someResource/myResource"),
-	// 					},
-	// 				},
-	// 			},
-	// 			ProvisioningState: to.Ptr(armelasticsan.ProvisioningStatesInvalid),
-	// 			SizeGiB: to.Ptr[int64](23),
-	// 			StorageTarget: &armelasticsan.IscsiTargetInfo{
-	// 				ProvisioningState: to.Ptr(armelasticsan.ProvisioningStatesInvalid),
-	// 				Status: to.Ptr(armelasticsan.OperationalStatusInvalid),
-	// 				TargetIqn: to.Ptr("us"),
-	// 				TargetPortalHostname: to.Ptr("oqtcavqpjaonaudz"),
-	// 				TargetPortalPort: to.Ptr[int32](1),
-	// 			},
-	// 			VolumeID: to.Ptr("tbwshhvrbqyseonkeztlbzhrckd"),
-	// 		},
-	// 		SystemData: &armelasticsan.SystemData{
-	// 			CreatedAt: to.Ptr(time.Date(2024, time.April, 29, 14, 22, 13, 546000000, time.UTC)),
-	// 			CreatedBy: to.Ptr("bpuxtfzqwdhifevjtucoc"),
-	// 			CreatedByType: to.Ptr(armelasticsan.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.April, 29, 14, 22, 13, 547000000, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("ourjjlolgugpxnkbiegumkicksibep"),
-	// 			LastModifiedByType: to.Ptr(armelasticsan.CreatedByTypeUser),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-05-01-preview/Volumes_Update_MinimumSet_Gen.json
-func ExampleVolumesClient_BeginUpdate_volumesUpdateMinimumSetGen() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armelasticsan.NewClientFactory("subscriptionid", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewVolumesClient().BeginUpdate(ctx, "resourcegroupname", "elasticsanname", "volumegroupname", "volumename", armelasticsan.VolumeUpdate{}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armelasticsan.VolumesClientUpdateResponse{
-	// 	Volume: armelasticsan.Volume{
-	// 		Name: to.Ptr("o"),
-	// 		Type: to.Ptr("Microsoft.ElasticSan/elasticSans/volumeGroups/volumes"),
-	// 		ID: to.Ptr("swkcmwglncgtsnejzvldnbpsifxez"),
-	// 		Properties: &armelasticsan.VolumeProperties{
-	// 			CreationData: &armelasticsan.SourceCreationData{
-	// 				CreateSource: to.Ptr(armelasticsan.VolumeCreateOptionNone),
-	// 				SourceID: to.Ptr("ARM Id of Resource"),
-	// 			},
-	// 			ManagedBy: []*armelasticsan.ManagedByResources{
-	// 				{
-	// 					ClientID: to.Ptr("pclpkrpkpmvcsegcubrakcoodrubo"),
-	// 					Version: to.Ptr[int32](1),
-	// 					ResourceIDs: []*string{
-	// 						to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.SomeProvider/someResource/myResource"),
-	// 					},
-	// 				},
-	// 			},
-	// 			ProvisioningState: to.Ptr(armelasticsan.ProvisioningStatesInvalid),
-	// 			SizeGiB: to.Ptr[int64](9),
-	// 			StorageTarget: &armelasticsan.IscsiTargetInfo{
-	// 				ProvisioningState: to.Ptr(armelasticsan.ProvisioningStatesSucceeded),
-	// 				Status: to.Ptr(armelasticsan.OperationalStatusInvalid),
-	// 				TargetIqn: to.Ptr("izdwogzjedsfug"),
-	// 				TargetPortalHostname: to.Ptr("wyfbjobugmad"),
-	// 				TargetPortalPort: to.Ptr[int32](21),
-	// 			},
-	// 			VolumeID: to.Ptr("umwjlxntntjejiyrywrytkzbfbluhk"),
-	// 		},
-	// 		SystemData: &armelasticsan.SystemData{
-	// 			CreatedAt: to.Ptr(time.Date(2023, time.August, 23, 12, 16, 10, 57000000, time.UTC)),
-	// 			CreatedBy: to.Ptr("kakcyehdrphqkilgkhpbdtvpupak"),
-	// 			CreatedByType: to.Ptr(armelasticsan.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.August, 23, 12, 16, 10, 57000000, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("bcclmbseed"),
-	// 			LastModifiedByType: to.Ptr(armelasticsan.CreatedByTypeUser),
-	// 		},
-	// 	},
-	// }
 }

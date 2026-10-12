@@ -70,7 +70,7 @@ func (client *RoutingIntentClient) BeginCreateOrUpdate(ctx context.Context, reso
 	}
 }
 
-// CreateOrUpdate - Creates a RoutingIntent resource if it doesn't exist else updates the existing RoutingIntent.
+// createOrUpdate - Creates a RoutingIntent resource if it doesn't exist else updates the existing RoutingIntent.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *RoutingIntentClient) createOrUpdate(ctx context.Context, resourceGroupName string, virtualHubName string, routingIntentName string, routingIntentParameters RoutingIntent, options *RoutingIntentClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -92,7 +92,7 @@ func (client *RoutingIntentClient) createOrUpdate(ctx context.Context, resourceG
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *RoutingIntentClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, virtualHubName string, routingIntentName string, routingIntentParameters RoutingIntent, _ *RoutingIntentClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs/{virtualHubName}/routingIntent/{routingIntentName}"
 	if client.subscriptionID == "" {
@@ -151,7 +151,7 @@ func (client *RoutingIntentClient) BeginDelete(ctx context.Context, resourceGrou
 	}
 }
 
-// Delete - Deletes a RoutingIntent.
+// deleteOperation - Deletes a RoutingIntent.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *RoutingIntentClient) deleteOperation(ctx context.Context, resourceGroupName string, virtualHubName string, routingIntentName string, options *RoutingIntentClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -173,7 +173,7 @@ func (client *RoutingIntentClient) deleteOperation(ctx context.Context, resource
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *RoutingIntentClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, virtualHubName string, routingIntentName string, _ *RoutingIntentClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs/{virtualHubName}/routingIntent/{routingIntentName}"
 	if client.subscriptionID == "" {

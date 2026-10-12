@@ -68,7 +68,7 @@ func (client *FirewallPolicyDeploymentsClient) BeginDeploy(ctx context.Context, 
 	}
 }
 
-// Deploy - Deploys the firewall policy draft and child rule collection group drafts.
+// deploy - Deploys the firewall policy draft and child rule collection group drafts.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *FirewallPolicyDeploymentsClient) deploy(ctx context.Context, resourceGroupName string, firewallPolicyName string, options *FirewallPolicyDeploymentsClientBeginDeployOptions) (*http.Response, error) {
 	var err error
@@ -90,7 +90,7 @@ func (client *FirewallPolicyDeploymentsClient) deploy(ctx context.Context, resou
 	return httpResp, nil
 }
 
-// deployCreateRequest creates the Deploy request.
+// deployCreateRequest creates the deploy request.
 func (client *FirewallPolicyDeploymentsClient) deployCreateRequest(ctx context.Context, resourceGroupName string, firewallPolicyName string, _ *FirewallPolicyDeploymentsClientBeginDeployOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/firewallPolicies/{firewallPolicyName}/deploy"
 	if client.subscriptionID == "" {

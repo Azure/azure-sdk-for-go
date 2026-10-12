@@ -71,7 +71,7 @@ func (client *FleetUpdateStrategiesClient) BeginCreateOrUpdate(ctx context.Conte
 	}
 }
 
-// CreateOrUpdate - Create a FleetUpdateStrategy
+// createOrUpdate - Create a FleetUpdateStrategy
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *FleetUpdateStrategiesClient) createOrUpdate(ctx context.Context, resourceGroupName string, fleetName string, updateStrategyName string, resource FleetUpdateStrategy, options *FleetUpdateStrategiesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -93,7 +93,7 @@ func (client *FleetUpdateStrategiesClient) createOrUpdate(ctx context.Context, r
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *FleetUpdateStrategiesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, fleetName string, updateStrategyName string, resource FleetUpdateStrategy, options *FleetUpdateStrategiesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}/updateStrategies/{updateStrategyName}"
 	if client.subscriptionID == "" {
@@ -157,7 +157,7 @@ func (client *FleetUpdateStrategiesClient) BeginDelete(ctx context.Context, reso
 	}
 }
 
-// Delete - Delete a FleetUpdateStrategy
+// deleteOperation - Delete a FleetUpdateStrategy
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *FleetUpdateStrategiesClient) deleteOperation(ctx context.Context, resourceGroupName string, fleetName string, updateStrategyName string, options *FleetUpdateStrategiesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -179,7 +179,7 @@ func (client *FleetUpdateStrategiesClient) deleteOperation(ctx context.Context, 
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *FleetUpdateStrategiesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, fleetName string, updateStrategyName string, options *FleetUpdateStrategiesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}/updateStrategies/{updateStrategyName}"
 	if client.subscriptionID == "" {

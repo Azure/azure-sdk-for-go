@@ -33,13 +33,13 @@ type CertificatesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, name string, options *armappservice.CertificatesClientGetOptions) (resp azfake.Responder[armappservice.CertificatesClientGetResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method CertificatesClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(options *armappservice.CertificatesClientListOptions) (resp azfake.PagerResponder[armappservice.CertificatesClientListResponse])
-
 	// NewListByResourceGroupPager is the fake for method CertificatesClient.NewListByResourceGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByResourceGroupPager func(resourceGroupName string, options *armappservice.CertificatesClientListByResourceGroupOptions) (resp azfake.PagerResponder[armappservice.CertificatesClientListByResourceGroupResponse])
+
+	// NewListPager is the fake for method CertificatesClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(options *armappservice.CertificatesClientListOptions) (resp azfake.PagerResponder[armappservice.CertificatesClientListResponse])
 
 	// Update is the fake for method CertificatesClient.Update
 	// HTTP status codes to indicate success: http.StatusOK
@@ -52,8 +52,8 @@ type CertificatesServer struct {
 func NewCertificatesServerTransport(srv *CertificatesServer) *CertificatesServerTransport {
 	return &CertificatesServerTransport{
 		srv:                         srv,
-		newListPager:                newTracker[azfake.PagerResponder[armappservice.CertificatesClientListResponse]](),
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armappservice.CertificatesClientListByResourceGroupResponse]](),
+		newListPager:                newTracker[azfake.PagerResponder[armappservice.CertificatesClientListResponse]](),
 	}
 }
 
@@ -61,8 +61,8 @@ func NewCertificatesServerTransport(srv *CertificatesServer) *CertificatesServer
 // Don't use this type directly, use NewCertificatesServerTransport instead.
 type CertificatesServerTransport struct {
 	srv                         *CertificatesServer
-	newListPager                *tracker[azfake.PagerResponder[armappservice.CertificatesClientListResponse]]
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armappservice.CertificatesClientListByResourceGroupResponse]]
+	newListPager                *tracker[azfake.PagerResponder[armappservice.CertificatesClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for CertificatesServerTransport.
@@ -92,10 +92,10 @@ func (c *CertificatesServerTransport) dispatchToMethodFake(req *http.Request, me
 				res.resp, res.err = c.dispatchDelete(req)
 			case "CertificatesClient.Get":
 				res.resp, res.err = c.dispatchGet(req)
-			case "CertificatesClient.NewListPager":
-				res.resp, res.err = c.dispatchNewListPager(req)
 			case "CertificatesClient.NewListByResourceGroupPager":
 				res.resp, res.err = c.dispatchNewListByResourceGroupPager(req)
+			case "CertificatesClient.NewListPager":
+				res.resp, res.err = c.dispatchNewListPager(req)
 			case "CertificatesClient.Update":
 				res.resp, res.err = c.dispatchUpdate(req)
 			default:
@@ -217,6 +217,43 @@ func (c *CertificatesServerTransport) dispatchGet(req *http.Request) (*http.Resp
 	return resp, nil
 }
 
+func (c *CertificatesServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
+	if c.srv.NewListByResourceGroupPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
+	}
+	newListByResourceGroupPager := c.newListByResourceGroupPager.get(req)
+	if newListByResourceGroupPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/certificates`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := c.srv.NewListByResourceGroupPager(resourceGroupNameParam, nil)
+		newListByResourceGroupPager = &resp
+		c.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
+		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armappservice.CertificatesClientListByResourceGroupResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		c.newListByResourceGroupPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListByResourceGroupPager) {
+		c.newListByResourceGroupPager.remove(req)
+	}
+	return resp, nil
+}
+
 func (c *CertificatesServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
 	if c.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
@@ -254,43 +291,6 @@ func (c *CertificatesServerTransport) dispatchNewListPager(req *http.Request) (*
 	}
 	if !server.PagerResponderMore(newListPager) {
 		c.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (c *CertificatesServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
-	if c.srv.NewListByResourceGroupPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
-	}
-	newListByResourceGroupPager := c.newListByResourceGroupPager.get(req)
-	if newListByResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/certificates`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := c.srv.NewListByResourceGroupPager(resourceGroupNameParam, nil)
-		newListByResourceGroupPager = &resp
-		c.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
-		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armappservice.CertificatesClientListByResourceGroupResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		c.newListByResourceGroupPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListByResourceGroupPager) {
-		c.newListByResourceGroupPager.remove(req)
 	}
 	return resp, nil
 }

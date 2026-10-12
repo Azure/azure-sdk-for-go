@@ -69,7 +69,7 @@ func (client *AuthenticationSettingsClient) BeginCreateOrUpdate(ctx context.Cont
 	}
 }
 
-// CreateOrUpdate - Create a AuthenticationSetting
+// createOrUpdate - Create a AuthenticationSetting
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *AuthenticationSettingsClient) createOrUpdate(ctx context.Context, resourceGroupName string, healthModelName string, authenticationSettingName string, resource AuthenticationSetting, options *AuthenticationSettingsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -91,7 +91,7 @@ func (client *AuthenticationSettingsClient) createOrUpdate(ctx context.Context, 
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *AuthenticationSettingsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, healthModelName string, authenticationSettingName string, resource AuthenticationSetting, _ *AuthenticationSettingsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/authenticationsettings/{authenticationSettingName}"
 	if client.subscriptionID == "" {
@@ -149,7 +149,7 @@ func (client *AuthenticationSettingsClient) BeginDelete(ctx context.Context, res
 	}
 }
 
-// Delete - Delete a AuthenticationSetting
+// deleteOperation - Delete a AuthenticationSetting
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *AuthenticationSettingsClient) deleteOperation(ctx context.Context, resourceGroupName string, healthModelName string, authenticationSettingName string, options *AuthenticationSettingsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -171,7 +171,7 @@ func (client *AuthenticationSettingsClient) deleteOperation(ctx context.Context,
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *AuthenticationSettingsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, healthModelName string, authenticationSettingName string, _ *AuthenticationSettingsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/authenticationsettings/{authenticationSettingName}"
 	if client.subscriptionID == "" {

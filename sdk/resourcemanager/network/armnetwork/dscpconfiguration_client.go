@@ -68,7 +68,7 @@ func (client *DscpConfigurationClient) BeginCreateOrUpdate(ctx context.Context, 
 	}
 }
 
-// CreateOrUpdate - Creates or updates a DSCP Configuration.
+// createOrUpdate - Creates or updates a DSCP Configuration.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *DscpConfigurationClient) createOrUpdate(ctx context.Context, resourceGroupName string, dscpConfigurationName string, parameters DscpConfiguration, options *DscpConfigurationClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -90,7 +90,7 @@ func (client *DscpConfigurationClient) createOrUpdate(ctx context.Context, resou
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *DscpConfigurationClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, dscpConfigurationName string, parameters DscpConfiguration, _ *DscpConfigurationClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dscpConfigurations/{dscpConfigurationName}"
 	if client.subscriptionID == "" {
@@ -143,7 +143,7 @@ func (client *DscpConfigurationClient) BeginDelete(ctx context.Context, resource
 	}
 }
 
-// Delete - Deletes a DSCP Configuration.
+// deleteOperation - Deletes a DSCP Configuration.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *DscpConfigurationClient) deleteOperation(ctx context.Context, resourceGroupName string, dscpConfigurationName string, options *DscpConfigurationClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -165,7 +165,7 @@ func (client *DscpConfigurationClient) deleteOperation(ctx context.Context, reso
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *DscpConfigurationClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, dscpConfigurationName string, _ *DscpConfigurationClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dscpConfigurations/{dscpConfigurationName}"
 	if client.subscriptionID == "" {
@@ -250,6 +250,73 @@ func (client *DscpConfigurationClient) getHandleResponse(resp *http.Response, su
 	return result, nil
 }
 
+// NewListAllPager - Gets all dscp configurations in a subscription.
+//   - options - DscpConfigurationClientListAllOptions contains the optional parameters for the DscpConfigurationClient.NewListAllPager
+//     method.
+func (client *DscpConfigurationClient) NewListAllPager(options *DscpConfigurationClientListAllOptions) *runtime.Pager[DscpConfigurationClientListAllResponse] {
+	return runtime.NewPager(runtime.PagingHandler[DscpConfigurationClientListAllResponse]{
+		More: func(page DscpConfigurationClientListAllResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *DscpConfigurationClientListAllResponse) (DscpConfigurationClientListAllResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "DscpConfigurationClient.NewListAllPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listAllCreateRequest(ctx, nextLink, options)
+			if err != nil {
+				return DscpConfigurationClientListAllResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return DscpConfigurationClientListAllResponse{}, err
+			}
+			return client.listAllHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listAllCreateRequest creates the ListAll request.
+func (client *DscpConfigurationClient) listAllCreateRequest(ctx context.Context, nextLink string, _ *DscpConfigurationClientListAllOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Network/dscpConfigurations"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260101)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// listAllHandleResponse handles the ListAll response.
+func (client *DscpConfigurationClient) listAllHandleResponse(resp *http.Response, successCodes ...int) (DscpConfigurationClientListAllResponse, error) {
+	result := DscpConfigurationClientListAllResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.DscpConfigurationListResult); err != nil {
+		return DscpConfigurationClientListAllResponse{}, err
+	}
+	return result, nil
+}
+
 // NewListPager - Gets a DSCP Configuration.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - DscpConfigurationClientListOptions contains the optional parameters for the DscpConfigurationClient.NewListPager
@@ -318,73 +385,6 @@ func (client *DscpConfigurationClient) listHandleResponse(resp *http.Response, s
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DscpConfigurationListResult); err != nil {
 		return DscpConfigurationClientListResponse{}, err
-	}
-	return result, nil
-}
-
-// NewListAllPager - Gets all dscp configurations in a subscription.
-//   - options - DscpConfigurationClientListAllOptions contains the optional parameters for the DscpConfigurationClient.NewListAllPager
-//     method.
-func (client *DscpConfigurationClient) NewListAllPager(options *DscpConfigurationClientListAllOptions) *runtime.Pager[DscpConfigurationClientListAllResponse] {
-	return runtime.NewPager(runtime.PagingHandler[DscpConfigurationClientListAllResponse]{
-		More: func(page DscpConfigurationClientListAllResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *DscpConfigurationClientListAllResponse) (DscpConfigurationClientListAllResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "DscpConfigurationClient.NewListAllPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			req, err := client.listAllCreateRequest(ctx, nextLink, options)
-			if err != nil {
-				return DscpConfigurationClientListAllResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return DscpConfigurationClientListAllResponse{}, err
-			}
-			return client.listAllHandleResponse(resp, http.StatusOK)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listAllCreateRequest creates the ListAll request.
-func (client *DscpConfigurationClient) listAllCreateRequest(ctx context.Context, nextLink string, _ *DscpConfigurationClientListAllOptions) (*policy.Request, error) {
-	firstPage := nextLink == ""
-	var req *policy.Request
-	var err error
-	if firstPage {
-		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Network/dscpConfigurations"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter subscriptionID cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	} else {
-		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
-	}
-	if err != nil {
-		return nil, err
-	}
-	if firstPage {
-		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260101)
-		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-		req.Raw().Header["Accept"] = []string{"application/json"}
-	}
-	return req, nil
-}
-
-// listAllHandleResponse handles the ListAll response.
-func (client *DscpConfigurationClient) listAllHandleResponse(resp *http.Response, successCodes ...int) (DscpConfigurationClientListAllResponse, error) {
-	result := DscpConfigurationClientListAllResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.DscpConfigurationListResult); err != nil {
-		return DscpConfigurationClientListAllResponse{}, err
 	}
 	return result, nil
 }

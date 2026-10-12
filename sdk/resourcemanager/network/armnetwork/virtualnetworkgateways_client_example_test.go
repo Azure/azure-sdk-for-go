@@ -498,238 +498,6 @@ func ExampleVirtualNetworkGatewaysClient_BeginGeneratevpnclientpackage() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/VirtualNetworkGatewayGet.json
-func ExampleVirtualNetworkGatewaysClient_Get_getVirtualNetworkGateway() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewVirtualNetworkGatewaysClient().Get(ctx, "rg1", "vpngw", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armnetwork.VirtualNetworkGatewaysClientGetResponse{
-	// 	VirtualNetworkGateway: armnetwork.VirtualNetworkGateway{
-	// 		Name: to.Ptr("vpngw"),
-	// 		Type: to.Ptr("Microsoft.Network/virtualNetworkGateways"),
-	// 		Etag: to.Ptr("W/\"00000000-0000-0000-0000-000000000000\""),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworkGateways/vpngw"),
-	// 		Identity: &armnetwork.ManagedServiceIdentity{
-	// 			Type: to.Ptr(armnetwork.ResourceIdentityTypeUserAssigned),
-	// 			UserAssignedIdentities: map[string]*armnetwork.ManagedServiceIdentityUserAssignedIdentities{
-	// 				"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identity1": &armnetwork.ManagedServiceIdentityUserAssignedIdentities{
-	// 				},
-	// 			},
-	// 		},
-	// 		Location: to.Ptr("centralus"),
-	// 		Properties: &armnetwork.VirtualNetworkGatewayPropertiesFormat{
-	// 			Active: to.Ptr(false),
-	// 			AllowRemoteVnetTraffic: to.Ptr(false),
-	// 			AllowVirtualWanTraffic: to.Ptr(false),
-	// 			BgpSettings: &armnetwork.BgpSettings{
-	// 				Asn: to.Ptr[int64](65514),
-	// 				BgpPeeringAddress: to.Ptr("10.0.1.30"),
-	// 				BgpPeeringAddresses: []*armnetwork.IPConfigurationBgpPeeringAddress{
-	// 					{
-	// 						CustomBgpIPAddresses: []*string{
-	// 							to.Ptr("169.254.21.10"),
-	// 						},
-	// 						DefaultBgpIPAddresses: []*string{
-	// 							to.Ptr("10.3.1.254"),
-	// 						},
-	// 						IPConfigurationID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworkGateways/vpngw/ipConfigurations/gwipconfig1"),
-	// 						TunnelIPAddresses: []*string{
-	// 							to.Ptr("52.161.10.135"),
-	// 						},
-	// 					},
-	// 				},
-	// 				PeerWeight: to.Ptr[int32](0),
-	// 			},
-	// 			CustomRoutes: &armnetwork.AddressSpace{
-	// 				AddressPrefixes: []*string{
-	// 					to.Ptr("101.168.0.6/32"),
-	// 				},
-	// 			},
-	// 			DisableIPSecReplayProtection: to.Ptr(false),
-	// 			EnableBgp: to.Ptr(false),
-	// 			EnableBgpRouteTranslationForNat: to.Ptr(false),
-	// 			EnableHighBandwidthVPNGateway: to.Ptr(false),
-	// 			EnablePrivateIPAddress: to.Ptr(false),
-	// 			GatewayType: to.Ptr(armnetwork.VirtualNetworkGatewayTypeVPN),
-	// 			IPConfigurations: []*armnetwork.VirtualNetworkGatewayIPConfiguration{
-	// 				{
-	// 					Name: to.Ptr("gwipconfig1"),
-	// 					Etag: to.Ptr("W/\"00000000-0000-0000-0000-000000000000\""),
-	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworkGateways/vpngw/ipConfigurations/gwipconfig1"),
-	// 					Properties: &armnetwork.VirtualNetworkGatewayIPConfigurationPropertiesFormat{
-	// 						PrivateIPAllocationMethod: to.Ptr(armnetwork.IPAllocationMethodDynamic),
-	// 						ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
-	// 						PublicIPAddress: &armnetwork.SubResource{
-	// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/publicIPAddresses/gwpip"),
-	// 						},
-	// 						Subnet: &armnetwork.SubResource{
-	// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/GatewaySubnet"),
-	// 						},
-	// 					},
-	// 				},
-	// 			},
-	// 			NatRules: []*armnetwork.VirtualNetworkGatewayNatRule{
-	// 				{
-	// 					Name: to.Ptr("natRule1"),
-	// 					Etag: to.Ptr("W/\"00ae2b69-88e7-4b3a-b66a-cfa2244e0801\""),
-	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworkGateways/vpngw/natRules/natRule1"),
-	// 					Properties: &armnetwork.VirtualNetworkGatewayNatRuleProperties{
-	// 						Type: to.Ptr(armnetwork.VPNNatRuleTypeStatic),
-	// 						ExternalMappings: []*armnetwork.VPNNatRuleMapping{
-	// 							{
-	// 								AddressSpace: to.Ptr("50.0.0.0/24"),
-	// 							},
-	// 						},
-	// 						InternalMappings: []*armnetwork.VPNNatRuleMapping{
-	// 							{
-	// 								AddressSpace: to.Ptr("10.10.0.0/24"),
-	// 							},
-	// 						},
-	// 						Mode: to.Ptr(armnetwork.VPNNatRuleModeEgressSnat),
-	// 						ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
-	// 					},
-	// 				},
-	// 				{
-	// 					Name: to.Ptr("natRule2"),
-	// 					Etag: to.Ptr("W/\"00ae2b69-88e7-4b3a-b66a-cfa2244e0801\""),
-	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworkGateways/vpngw/natRules/natRule2"),
-	// 					Properties: &armnetwork.VirtualNetworkGatewayNatRuleProperties{
-	// 						Type: to.Ptr(armnetwork.VPNNatRuleTypeStatic),
-	// 						ExternalMappings: []*armnetwork.VPNNatRuleMapping{
-	// 							{
-	// 								AddressSpace: to.Ptr("30.0.0.0/24"),
-	// 							},
-	// 						},
-	// 						InternalMappings: []*armnetwork.VPNNatRuleMapping{
-	// 							{
-	// 								AddressSpace: to.Ptr("20.10.0.0/24"),
-	// 							},
-	// 						},
-	// 						Mode: to.Ptr(armnetwork.VPNNatRuleModeIngressSnat),
-	// 						ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
-	// 					},
-	// 				},
-	// 			},
-	// 			ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
-	// 			ResourceGUID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-	// 			SKU: &armnetwork.VirtualNetworkGatewaySKU{
-	// 				Name: to.Ptr(armnetwork.VirtualNetworkGatewaySKUNameVPNGw1),
-	// 				Capacity: to.Ptr[int32](0),
-	// 				Tier: to.Ptr(armnetwork.VirtualNetworkGatewaySKUTierVPNGw1),
-	// 			},
-	// 			VirtualNetworkGatewayMigrationStatus: &armnetwork.VirtualNetworkGatewayMigrationStatus{
-	// 				ErrorMessage: to.Ptr(""),
-	// 				Phase: to.Ptr(armnetwork.VirtualNetworkGatewayMigrationPhase("")),
-	// 				State: to.Ptr(armnetwork.VirtualNetworkGatewayMigrationState("")),
-	// 			},
-	// 			VPNClientConfiguration: &armnetwork.VPNClientConfiguration{
-	// 				RadiusServers: []*armnetwork.RadiusServer{
-	// 					{
-	// 						RadiusServerAddress: to.Ptr("10.1.0.0"),
-	// 						RadiusServerScore: to.Ptr[int64](20),
-	// 					},
-	// 				},
-	// 				VPNClientProtocols: []*armnetwork.VPNClientProtocol{
-	// 					to.Ptr(armnetwork.VPNClientProtocolOpenVPN),
-	// 				},
-	// 				VPNClientRevokedCertificates: []*armnetwork.VPNClientRevokedCertificate{
-	// 				},
-	// 				VPNClientRootCertificates: []*armnetwork.VPNClientRootCertificate{
-	// 				},
-	// 			},
-	// 			VPNGatewayGeneration: to.Ptr(armnetwork.VPNGatewayGenerationNone),
-	// 			VPNType: to.Ptr(armnetwork.VPNTypeRouteBased),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-01-01/VirtualNetworkScalableGatewayGet.json
-func ExampleVirtualNetworkGatewaysClient_Get_getVirtualNetworkScalableGateway() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewVirtualNetworkGatewaysClient().Get(ctx, "rg1", "ergw", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armnetwork.VirtualNetworkGatewaysClientGetResponse{
-	// 	VirtualNetworkGateway: armnetwork.VirtualNetworkGateway{
-	// 		Name: to.Ptr("ergw"),
-	// 		Type: to.Ptr("Microsoft.Network/virtualNetworkGateways"),
-	// 		Etag: to.Ptr("W/\"00000000-0000-0000-0000-000000000000\""),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworkGateways/ergw"),
-	// 		Location: to.Ptr("centralus"),
-	// 		Properties: &armnetwork.VirtualNetworkGatewayPropertiesFormat{
-	// 			Active: to.Ptr(false),
-	// 			AdminState: to.Ptr(armnetwork.AdminStateEnabled),
-	// 			AllowRemoteVnetTraffic: to.Ptr(false),
-	// 			AllowVirtualWanTraffic: to.Ptr(false),
-	// 			AutoScaleConfiguration: &armnetwork.VirtualNetworkGatewayAutoScaleConfiguration{
-	// 				Bounds: &armnetwork.VirtualNetworkGatewayAutoScaleBounds{
-	// 					Max: to.Ptr[int32](3),
-	// 					Min: to.Ptr[int32](2),
-	// 				},
-	// 			},
-	// 			DisableIPSecReplayProtection: to.Ptr(false),
-	// 			EnableBgp: to.Ptr(false),
-	// 			EnableBgpRouteTranslationForNat: to.Ptr(false),
-	// 			GatewayType: to.Ptr(armnetwork.VirtualNetworkGatewayTypeExpressRoute),
-	// 			IPConfigurations: []*armnetwork.VirtualNetworkGatewayIPConfiguration{
-	// 				{
-	// 					Name: to.Ptr("gwipconfig1"),
-	// 					Etag: to.Ptr("W/\"00000000-0000-0000-0000-000000000000\""),
-	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworkGateways/ergw/ipConfigurations/default"),
-	// 					Properties: &armnetwork.VirtualNetworkGatewayIPConfigurationPropertiesFormat{
-	// 						PrivateIPAllocationMethod: to.Ptr(armnetwork.IPAllocationMethodDynamic),
-	// 						ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
-	// 						PublicIPAddress: &armnetwork.SubResource{
-	// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/publicIPAddresses/gwpip"),
-	// 						},
-	// 						Subnet: &armnetwork.SubResource{
-	// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/GatewaySubnet"),
-	// 						},
-	// 					},
-	// 				},
-	// 			},
-	// 			NatRules: []*armnetwork.VirtualNetworkGatewayNatRule{
-	// 			},
-	// 			ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
-	// 			ResourceGUID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-	// 			SKU: &armnetwork.VirtualNetworkGatewaySKU{
-	// 				Name: to.Ptr(armnetwork.VirtualNetworkGatewaySKUNameErGwScale),
-	// 				Tier: to.Ptr(armnetwork.VirtualNetworkGatewaySKUTierErGwScale),
-	// 			},
-	// 			VirtualNetworkGatewayPolicyGroups: []*armnetwork.VirtualNetworkGatewayPolicyGroup{
-	// 			},
-	// 			VPNType: to.Ptr(armnetwork.VPNTypePolicyBased),
-	// 		},
-	// 	},
-	// }
-}
-
 // Generated from example definition: 2026-01-01/VirtualNetworkGatewayGetAdvertisedRoutes.json
 func ExampleVirtualNetworkGatewaysClient_BeginGetAdvertisedRoutes() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -1174,353 +942,6 @@ func ExampleVirtualNetworkGatewaysClient_BeginInvokePrepareMigration() {
 	}
 }
 
-// Generated from example definition: 2026-01-01/VirtualNetworkGatewayList.json
-func ExampleVirtualNetworkGatewaysClient_NewListPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewVirtualNetworkGatewaysClient().NewListPager("rg1", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armnetwork.VirtualNetworkGatewaysClientListResponse{
-		// 	VirtualNetworkGatewayListResult: armnetwork.VirtualNetworkGatewayListResult{
-		// 		Value: []*armnetwork.VirtualNetworkGateway{
-		// 			{
-		// 				Name: to.Ptr("vpngw1"),
-		// 				Type: to.Ptr("Microsoft.Network/virtualNetworkGateways"),
-		// 				Etag: to.Ptr("W/\"00000000-0000-0000-0000-000000000000\""),
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworkGateways/vpngw1"),
-		// 				Location: to.Ptr("loc1"),
-		// 				Properties: &armnetwork.VirtualNetworkGatewayPropertiesFormat{
-		// 					Active: to.Ptr(false),
-		// 					AllowRemoteVnetTraffic: to.Ptr(false),
-		// 					AllowVirtualWanTraffic: to.Ptr(false),
-		// 					BgpSettings: &armnetwork.BgpSettings{
-		// 						Asn: to.Ptr[int64](65515),
-		// 						BgpPeeringAddress: to.Ptr("10.0.0.14"),
-		// 						PeerWeight: to.Ptr[int32](0),
-		// 					},
-		// 					CustomRoutes: &armnetwork.AddressSpace{
-		// 						AddressPrefixes: []*string{
-		// 							to.Ptr("101.168.0.6/32"),
-		// 						},
-		// 					},
-		// 					DisableIPSecReplayProtection: to.Ptr(false),
-		// 					EnableBgp: to.Ptr(false),
-		// 					EnableBgpRouteTranslationForNat: to.Ptr(false),
-		// 					EnablePrivateIPAddress: to.Ptr(false),
-		// 					GatewayType: to.Ptr(armnetwork.VirtualNetworkGatewayTypeVPN),
-		// 					IPConfigurations: []*armnetwork.VirtualNetworkGatewayIPConfiguration{
-		// 						{
-		// 							Name: to.Ptr("default"),
-		// 							Etag: to.Ptr("W/\"00000000-0000-0000-0000-000000000000\""),
-		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworkGateways/vpngw1/ipConfigurations/default"),
-		// 							Properties: &armnetwork.VirtualNetworkGatewayIPConfigurationPropertiesFormat{
-		// 								PrivateIPAllocationMethod: to.Ptr(armnetwork.IPAllocationMethodDynamic),
-		// 								ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
-		// 								PublicIPAddress: &armnetwork.SubResource{
-		// 									ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/publicIPAddresses/vpngw1-ip"),
-		// 								},
-		// 								Subnet: &armnetwork.SubResource{
-		// 									ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/GatewaySubnet"),
-		// 								},
-		// 							},
-		// 						},
-		// 					},
-		// 					NatRules: []*armnetwork.VirtualNetworkGatewayNatRule{
-		// 						{
-		// 							Name: to.Ptr("natRule1"),
-		// 							Etag: to.Ptr("W/\"00ae2b69-88e7-4b3a-b66a-cfa2244e0801\""),
-		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworkGateways/vpngw1/natRules/natRule1"),
-		// 							Properties: &armnetwork.VirtualNetworkGatewayNatRuleProperties{
-		// 								Type: to.Ptr(armnetwork.VPNNatRuleTypeStatic),
-		// 								ExternalMappings: []*armnetwork.VPNNatRuleMapping{
-		// 									{
-		// 										AddressSpace: to.Ptr("50.0.0.0/24"),
-		// 									},
-		// 								},
-		// 								InternalMappings: []*armnetwork.VPNNatRuleMapping{
-		// 									{
-		// 										AddressSpace: to.Ptr("10.10.0.0/24"),
-		// 									},
-		// 								},
-		// 								Mode: to.Ptr(armnetwork.VPNNatRuleModeEgressSnat),
-		// 								ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
-		// 							},
-		// 						},
-		// 						{
-		// 							Name: to.Ptr("natRule2"),
-		// 							Etag: to.Ptr("W/\"00ae2b69-88e7-4b3a-b66a-cfa2244e0801\""),
-		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworkGateways/vpngw1/natRules/natRule2"),
-		// 							Properties: &armnetwork.VirtualNetworkGatewayNatRuleProperties{
-		// 								Type: to.Ptr(armnetwork.VPNNatRuleTypeStatic),
-		// 								ExternalMappings: []*armnetwork.VPNNatRuleMapping{
-		// 									{
-		// 										AddressSpace: to.Ptr("30.0.0.0/24"),
-		// 									},
-		// 								},
-		// 								InternalMappings: []*armnetwork.VPNNatRuleMapping{
-		// 									{
-		// 										AddressSpace: to.Ptr("20.10.0.0/24"),
-		// 									},
-		// 								},
-		// 								Mode: to.Ptr(armnetwork.VPNNatRuleModeIngressSnat),
-		// 								ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
-		// 							},
-		// 						},
-		// 					},
-		// 					ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
-		// 					ResourceGUID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 					SKU: &armnetwork.VirtualNetworkGatewaySKU{
-		// 						Name: to.Ptr(armnetwork.VirtualNetworkGatewaySKUNameVPNGw1),
-		// 						Capacity: to.Ptr[int32](2),
-		// 						Tier: to.Ptr(armnetwork.VirtualNetworkGatewaySKUTierVPNGw1),
-		// 					},
-		// 					VirtualNetworkGatewayMigrationStatus: &armnetwork.VirtualNetworkGatewayMigrationStatus{
-		// 						ErrorMessage: to.Ptr(""),
-		// 						Phase: to.Ptr(armnetwork.VirtualNetworkGatewayMigrationPhase("")),
-		// 						State: to.Ptr(armnetwork.VirtualNetworkGatewayMigrationState("")),
-		// 					},
-		// 					VPNClientConfiguration: &armnetwork.VPNClientConfiguration{
-		// 						VPNClientProtocols: []*armnetwork.VPNClientProtocol{
-		// 						},
-		// 						VPNClientRevokedCertificates: []*armnetwork.VPNClientRevokedCertificate{
-		// 						},
-		// 						VPNClientRootCertificates: []*armnetwork.VPNClientRootCertificate{
-		// 						},
-		// 					},
-		// 					VPNGatewayGeneration: to.Ptr(armnetwork.VPNGatewayGenerationNone),
-		// 					VPNType: to.Ptr(armnetwork.VPNTypeRouteBased),
-		// 				},
-		// 			},
-		// 			{
-		// 				Name: to.Ptr("vpngw2"),
-		// 				Type: to.Ptr("Microsoft.Network/virtualNetworkGateways"),
-		// 				Etag: to.Ptr("W/\"00000000-0000-0000-0000-000000000000\""),
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworkGateways/vpngw2"),
-		// 				Location: to.Ptr("loc2"),
-		// 				Properties: &armnetwork.VirtualNetworkGatewayPropertiesFormat{
-		// 					Active: to.Ptr(false),
-		// 					AllowRemoteVnetTraffic: to.Ptr(false),
-		// 					AllowVirtualWanTraffic: to.Ptr(false),
-		// 					BgpSettings: &armnetwork.BgpSettings{
-		// 						Asn: to.Ptr[int64](65515),
-		// 						BgpPeeringAddress: to.Ptr("10.1.0.46"),
-		// 						PeerWeight: to.Ptr[int32](0),
-		// 					},
-		// 					CustomRoutes: &armnetwork.AddressSpace{
-		// 						AddressPrefixes: []*string{
-		// 							to.Ptr("101.168.0.6/32"),
-		// 						},
-		// 					},
-		// 					DisableIPSecReplayProtection: to.Ptr(false),
-		// 					EnableBgp: to.Ptr(false),
-		// 					EnableBgpRouteTranslationForNat: to.Ptr(false),
-		// 					EnablePrivateIPAddress: to.Ptr(true),
-		// 					GatewayType: to.Ptr(armnetwork.VirtualNetworkGatewayTypeVPN),
-		// 					IPConfigurations: []*armnetwork.VirtualNetworkGatewayIPConfiguration{
-		// 						{
-		// 							Name: to.Ptr("default"),
-		// 							Etag: to.Ptr("W/\"00000000-0000-0000-0000-000000000000\""),
-		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworkGateways/vpngw2/ipConfigurations/default"),
-		// 							Properties: &armnetwork.VirtualNetworkGatewayIPConfigurationPropertiesFormat{
-		// 								PrivateIPAddress: to.Ptr("10.1.0.7"),
-		// 								PrivateIPAllocationMethod: to.Ptr(armnetwork.IPAllocationMethodDynamic),
-		// 								ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
-		// 								PublicIPAddress: &armnetwork.SubResource{
-		// 									ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/publicIPAddresses/vpngw2-ip"),
-		// 								},
-		// 								Subnet: &armnetwork.SubResource{
-		// 									ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet2/subnets/GatewaySubnet"),
-		// 								},
-		// 							},
-		// 						},
-		// 					},
-		// 					NatRules: []*armnetwork.VirtualNetworkGatewayNatRule{
-		// 						{
-		// 							Name: to.Ptr("natRule1"),
-		// 							Etag: to.Ptr("W/\"00ae2b69-88e7-4b3a-b66a-cfa2244e0801\""),
-		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworkGateways/vpngw2/natRules/natRule1"),
-		// 							Properties: &armnetwork.VirtualNetworkGatewayNatRuleProperties{
-		// 								Type: to.Ptr(armnetwork.VPNNatRuleTypeStatic),
-		// 								ExternalMappings: []*armnetwork.VPNNatRuleMapping{
-		// 									{
-		// 										AddressSpace: to.Ptr("50.0.0.0/24"),
-		// 									},
-		// 								},
-		// 								InternalMappings: []*armnetwork.VPNNatRuleMapping{
-		// 									{
-		// 										AddressSpace: to.Ptr("10.10.0.0/24"),
-		// 									},
-		// 								},
-		// 								Mode: to.Ptr(armnetwork.VPNNatRuleModeEgressSnat),
-		// 								ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
-		// 							},
-		// 						},
-		// 						{
-		// 							Name: to.Ptr("natRule2"),
-		// 							Etag: to.Ptr("W/\"00ae2b69-88e7-4b3a-b66a-cfa2244e0801\""),
-		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworkGateways/vpngw2/natRules/natRule2"),
-		// 							Properties: &armnetwork.VirtualNetworkGatewayNatRuleProperties{
-		// 								Type: to.Ptr(armnetwork.VPNNatRuleTypeStatic),
-		// 								ExternalMappings: []*armnetwork.VPNNatRuleMapping{
-		// 									{
-		// 										AddressSpace: to.Ptr("30.0.0.0/24"),
-		// 									},
-		// 								},
-		// 								InternalMappings: []*armnetwork.VPNNatRuleMapping{
-		// 									{
-		// 										AddressSpace: to.Ptr("20.10.0.0/24"),
-		// 									},
-		// 								},
-		// 								Mode: to.Ptr(armnetwork.VPNNatRuleModeIngressSnat),
-		// 								ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
-		// 							},
-		// 						},
-		// 					},
-		// 					ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
-		// 					ResourceGUID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 					SKU: &armnetwork.VirtualNetworkGatewaySKU{
-		// 						Name: to.Ptr(armnetwork.VirtualNetworkGatewaySKUNameVPNGw1),
-		// 						Capacity: to.Ptr[int32](2),
-		// 						Tier: to.Ptr(armnetwork.VirtualNetworkGatewaySKUTierVPNGw1),
-		// 					},
-		// 					VirtualNetworkGatewayMigrationStatus: &armnetwork.VirtualNetworkGatewayMigrationStatus{
-		// 						ErrorMessage: to.Ptr(""),
-		// 						Phase: to.Ptr(armnetwork.VirtualNetworkGatewayMigrationPhase("")),
-		// 						State: to.Ptr(armnetwork.VirtualNetworkGatewayMigrationState("")),
-		// 					},
-		// 					VPNClientConfiguration: &armnetwork.VPNClientConfiguration{
-		// 						RadiusServers: []*armnetwork.RadiusServer{
-		// 							{
-		// 								RadiusServerAddress: to.Ptr("10.2.0.0"),
-		// 								RadiusServerScore: to.Ptr[int64](20),
-		// 							},
-		// 						},
-		// 						VPNClientProtocols: []*armnetwork.VPNClientProtocol{
-		// 							to.Ptr(armnetwork.VPNClientProtocolOpenVPN),
-		// 						},
-		// 						VPNClientRevokedCertificates: []*armnetwork.VPNClientRevokedCertificate{
-		// 						},
-		// 						VPNClientRootCertificates: []*armnetwork.VPNClientRootCertificate{
-		// 						},
-		// 					},
-		// 					VPNGatewayGeneration: to.Ptr(armnetwork.VPNGatewayGenerationNone),
-		// 					VPNType: to.Ptr(armnetwork.VPNTypeRouteBased),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2026-01-01/VirtualNetworkGatewaysListConnections.json
-func ExampleVirtualNetworkGatewaysClient_NewListConnectionsPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewVirtualNetworkGatewaysClient().NewListConnectionsPager("testrg", "test-vpn-gateway-1", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armnetwork.VirtualNetworkGatewaysClientListConnectionsResponse{
-		// 	VirtualNetworkGatewayListConnectionsResult: armnetwork.VirtualNetworkGatewayListConnectionsResult{
-		// 		Value: []*armnetwork.VirtualNetworkGatewayConnectionListEntity{
-		// 			{
-		// 				Name: to.Ptr("test-vpn-connection"),
-		// 				Type: to.Ptr("Microsoft.Network/connections"),
-		// 				Etag: to.Ptr("W/\\\"00000000-0000-0000-0000-000000000000\\\""),
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testrg/providers/Microsoft.Network/connections/test-vpn-connection"),
-		// 				Location: to.Ptr("eastus"),
-		// 				Properties: &armnetwork.VirtualNetworkGatewayConnectionListEntityPropertiesFormat{
-		// 					ConnectionType: to.Ptr(armnetwork.VirtualNetworkGatewayConnectionTypeVnet2Vnet),
-		// 					EgressBytesTransferred: to.Ptr[int64](0),
-		// 					EnableBgp: to.Ptr(true),
-		// 					IngressBytesTransferred: to.Ptr[int64](0),
-		// 					IPSecPolicies: []*armnetwork.IPSecPolicy{
-		// 					},
-		// 					ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
-		// 					ResourceGUID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 					RoutingWeight: to.Ptr[int32](22),
-		// 					TrafficSelectorPolicies: []*armnetwork.TrafficSelectorPolicy{
-		// 					},
-		// 					UsePolicyBasedTrafficSelectors: to.Ptr(false),
-		// 					VirtualNetworkGateway1: &armnetwork.VirtualNetworkConnectionGatewayReference{
-		// 						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testrg/providers/Microsoft.Network/virtualNetworkGateways/test-vpn-gateway-1"),
-		// 					},
-		// 					VirtualNetworkGateway2: &armnetwork.VirtualNetworkConnectionGatewayReference{
-		// 						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testrg-2/providers/Microsoft.Network/virtualNetworkGateways/test-vpn-gateway-2"),
-		// 					},
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2026-01-01/AllVirtualNetworkGatewayRadiusServerSecretsList.json
-func ExampleVirtualNetworkGatewaysClient_ListRadiusSecrets() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetwork.NewClientFactory("72f988bf-86f1-41af-91ab-2d7cd011db47", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewVirtualNetworkGatewaysClient().ListRadiusSecrets(ctx, "rg1", "vpngw", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armnetwork.VirtualNetworkGatewaysClientListRadiusSecretsResponse{
-	// 	RadiusAuthServerListResult: armnetwork.RadiusAuthServerListResult{
-	// 		Value: []*armnetwork.RadiusAuthServer{
-	// 			{
-	// 				RadiusServerAddress: to.Ptr("1.1.1.1"),
-	// 				RadiusServerSecret: to.Ptr("*****"),
-	// 			},
-	// 			{
-	// 				RadiusServerAddress: to.Ptr("2.2.2.2"),
-	// 				RadiusServerSecret: to.Ptr("*****"),
-	// 			},
-	// 		},
-	// 	},
-	// }
-}
-
 // Generated from example definition: 2026-01-01/VirtualNetworkGatewayReset.json
 func ExampleVirtualNetworkGatewaysClient_BeginReset() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -1838,29 +1259,6 @@ func ExampleVirtualNetworkGatewaysClient_BeginStopPacketCapture() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/VirtualNetworkGatewaySupportedVpnDevice.json
-func ExampleVirtualNetworkGatewaysClient_SupportedVPNDevices() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewVirtualNetworkGatewaysClient().SupportedVPNDevices(ctx, "rg1", "vpngw", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armnetwork.VirtualNetworkGatewaysClientSupportedVPNDevicesResponse{
-	// 	Value: to.Ptr("<?xml version=\"1.0\" encoding=\"utf-8\"?><RpVpnDeviceList version=\"1.0\"><Vendor name=\"Cisco\"><DeviceFamily name=\"ISR\"><FirmwareVersion name=\"IOS 15.1 (Preview)\" /></DeviceFamily><DeviceFamily name=\"ASA (Adaptive Security Appliance)\"><FirmwareVersion name=\"ASA_9.8.x_ActivePassive_NoBGP_NoCustomPolicies\"/><FirmwareVersion name=\"ASA_9.8(x)_CustomPolicies\" /></DeviceFamily></Vendor><Vendor name=\"Juniper\"><DeviceFamily name=\"Juniper_SRX_GA\"><FirmwareVersion name=\"Juniper_SRX_12.x_GA\" /></DeviceFamily><DeviceFamily name=\"Juniper_SSG_GA\"><FirmwareVersion name=\"Juniper_SSG_ScreenOS-6.2.x_GA\"/></DeviceFamily><DeviceFamily name=\"Juniper_JSeries_GA\"><FirmwareVersion name=\"Juniper_JSeries_JunOS12.x._GA\" /></DeviceFamily></Vendor><Vendor name=\"Ubiquiti\"><DeviceFamily name=\"EdgeRouter\"><FirmwareVersion name=\"Ubiquiti_EdgeOS_1.10.x-RouteBased_VTI\" /><FirmwareVersionname=\"Ubiquiti_EdgeOS_1.10.x-RouteBased_BGP\" /></DeviceFamily></Vendor></RpVpnDeviceList>"),
-	// }
-}
-
 // Generated from example definition: 2026-01-01/VirtualNetworkGatewayUpdateTags.json
 func ExampleVirtualNetworkGatewaysClient_BeginUpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -1966,6 +1364,608 @@ func ExampleVirtualNetworkGatewaysClient_BeginUpdateTags() {
 	// 			"tag2": to.Ptr("value2"),
 	// 		},
 	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-01-01/VirtualNetworkGatewayGet.json
+func ExampleVirtualNetworkGatewaysClient_Get_getVirtualNetworkGateway() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewVirtualNetworkGatewaysClient().Get(ctx, "rg1", "vpngw", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armnetwork.VirtualNetworkGatewaysClientGetResponse{
+	// 	VirtualNetworkGateway: armnetwork.VirtualNetworkGateway{
+	// 		Name: to.Ptr("vpngw"),
+	// 		Type: to.Ptr("Microsoft.Network/virtualNetworkGateways"),
+	// 		Etag: to.Ptr("W/\"00000000-0000-0000-0000-000000000000\""),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworkGateways/vpngw"),
+	// 		Identity: &armnetwork.ManagedServiceIdentity{
+	// 			Type: to.Ptr(armnetwork.ResourceIdentityTypeUserAssigned),
+	// 			UserAssignedIdentities: map[string]*armnetwork.ManagedServiceIdentityUserAssignedIdentities{
+	// 				"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identity1": &armnetwork.ManagedServiceIdentityUserAssignedIdentities{
+	// 				},
+	// 			},
+	// 		},
+	// 		Location: to.Ptr("centralus"),
+	// 		Properties: &armnetwork.VirtualNetworkGatewayPropertiesFormat{
+	// 			Active: to.Ptr(false),
+	// 			AllowRemoteVnetTraffic: to.Ptr(false),
+	// 			AllowVirtualWanTraffic: to.Ptr(false),
+	// 			BgpSettings: &armnetwork.BgpSettings{
+	// 				Asn: to.Ptr[int64](65514),
+	// 				BgpPeeringAddress: to.Ptr("10.0.1.30"),
+	// 				BgpPeeringAddresses: []*armnetwork.IPConfigurationBgpPeeringAddress{
+	// 					{
+	// 						CustomBgpIPAddresses: []*string{
+	// 							to.Ptr("169.254.21.10"),
+	// 						},
+	// 						DefaultBgpIPAddresses: []*string{
+	// 							to.Ptr("10.3.1.254"),
+	// 						},
+	// 						IPConfigurationID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworkGateways/vpngw/ipConfigurations/gwipconfig1"),
+	// 						TunnelIPAddresses: []*string{
+	// 							to.Ptr("52.161.10.135"),
+	// 						},
+	// 					},
+	// 				},
+	// 				PeerWeight: to.Ptr[int32](0),
+	// 			},
+	// 			CustomRoutes: &armnetwork.AddressSpace{
+	// 				AddressPrefixes: []*string{
+	// 					to.Ptr("101.168.0.6/32"),
+	// 				},
+	// 			},
+	// 			DisableIPSecReplayProtection: to.Ptr(false),
+	// 			EnableBgp: to.Ptr(false),
+	// 			EnableBgpRouteTranslationForNat: to.Ptr(false),
+	// 			EnableHighBandwidthVPNGateway: to.Ptr(false),
+	// 			EnablePrivateIPAddress: to.Ptr(false),
+	// 			GatewayType: to.Ptr(armnetwork.VirtualNetworkGatewayTypeVPN),
+	// 			IPConfigurations: []*armnetwork.VirtualNetworkGatewayIPConfiguration{
+	// 				{
+	// 					Name: to.Ptr("gwipconfig1"),
+	// 					Etag: to.Ptr("W/\"00000000-0000-0000-0000-000000000000\""),
+	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworkGateways/vpngw/ipConfigurations/gwipconfig1"),
+	// 					Properties: &armnetwork.VirtualNetworkGatewayIPConfigurationPropertiesFormat{
+	// 						PrivateIPAllocationMethod: to.Ptr(armnetwork.IPAllocationMethodDynamic),
+	// 						ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+	// 						PublicIPAddress: &armnetwork.SubResource{
+	// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/publicIPAddresses/gwpip"),
+	// 						},
+	// 						Subnet: &armnetwork.SubResource{
+	// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/GatewaySubnet"),
+	// 						},
+	// 					},
+	// 				},
+	// 			},
+	// 			NatRules: []*armnetwork.VirtualNetworkGatewayNatRule{
+	// 				{
+	// 					Name: to.Ptr("natRule1"),
+	// 					Etag: to.Ptr("W/\"00ae2b69-88e7-4b3a-b66a-cfa2244e0801\""),
+	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworkGateways/vpngw/natRules/natRule1"),
+	// 					Properties: &armnetwork.VirtualNetworkGatewayNatRuleProperties{
+	// 						Type: to.Ptr(armnetwork.VPNNatRuleTypeStatic),
+	// 						ExternalMappings: []*armnetwork.VPNNatRuleMapping{
+	// 							{
+	// 								AddressSpace: to.Ptr("50.0.0.0/24"),
+	// 							},
+	// 						},
+	// 						InternalMappings: []*armnetwork.VPNNatRuleMapping{
+	// 							{
+	// 								AddressSpace: to.Ptr("10.10.0.0/24"),
+	// 							},
+	// 						},
+	// 						Mode: to.Ptr(armnetwork.VPNNatRuleModeEgressSnat),
+	// 						ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+	// 					},
+	// 				},
+	// 				{
+	// 					Name: to.Ptr("natRule2"),
+	// 					Etag: to.Ptr("W/\"00ae2b69-88e7-4b3a-b66a-cfa2244e0801\""),
+	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworkGateways/vpngw/natRules/natRule2"),
+	// 					Properties: &armnetwork.VirtualNetworkGatewayNatRuleProperties{
+	// 						Type: to.Ptr(armnetwork.VPNNatRuleTypeStatic),
+	// 						ExternalMappings: []*armnetwork.VPNNatRuleMapping{
+	// 							{
+	// 								AddressSpace: to.Ptr("30.0.0.0/24"),
+	// 							},
+	// 						},
+	// 						InternalMappings: []*armnetwork.VPNNatRuleMapping{
+	// 							{
+	// 								AddressSpace: to.Ptr("20.10.0.0/24"),
+	// 							},
+	// 						},
+	// 						Mode: to.Ptr(armnetwork.VPNNatRuleModeIngressSnat),
+	// 						ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+	// 					},
+	// 				},
+	// 			},
+	// 			ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+	// 			ResourceGUID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 			SKU: &armnetwork.VirtualNetworkGatewaySKU{
+	// 				Name: to.Ptr(armnetwork.VirtualNetworkGatewaySKUNameVPNGw1),
+	// 				Capacity: to.Ptr[int32](0),
+	// 				Tier: to.Ptr(armnetwork.VirtualNetworkGatewaySKUTierVPNGw1),
+	// 			},
+	// 			VirtualNetworkGatewayMigrationStatus: &armnetwork.VirtualNetworkGatewayMigrationStatus{
+	// 				ErrorMessage: to.Ptr(""),
+	// 				Phase: to.Ptr(armnetwork.VirtualNetworkGatewayMigrationPhase("")),
+	// 				State: to.Ptr(armnetwork.VirtualNetworkGatewayMigrationState("")),
+	// 			},
+	// 			VPNClientConfiguration: &armnetwork.VPNClientConfiguration{
+	// 				RadiusServers: []*armnetwork.RadiusServer{
+	// 					{
+	// 						RadiusServerAddress: to.Ptr("10.1.0.0"),
+	// 						RadiusServerScore: to.Ptr[int64](20),
+	// 					},
+	// 				},
+	// 				VPNClientProtocols: []*armnetwork.VPNClientProtocol{
+	// 					to.Ptr(armnetwork.VPNClientProtocolOpenVPN),
+	// 				},
+	// 				VPNClientRevokedCertificates: []*armnetwork.VPNClientRevokedCertificate{
+	// 				},
+	// 				VPNClientRootCertificates: []*armnetwork.VPNClientRootCertificate{
+	// 				},
+	// 			},
+	// 			VPNGatewayGeneration: to.Ptr(armnetwork.VPNGatewayGenerationNone),
+	// 			VPNType: to.Ptr(armnetwork.VPNTypeRouteBased),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-01-01/VirtualNetworkScalableGatewayGet.json
+func ExampleVirtualNetworkGatewaysClient_Get_getVirtualNetworkScalableGateway() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewVirtualNetworkGatewaysClient().Get(ctx, "rg1", "ergw", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armnetwork.VirtualNetworkGatewaysClientGetResponse{
+	// 	VirtualNetworkGateway: armnetwork.VirtualNetworkGateway{
+	// 		Name: to.Ptr("ergw"),
+	// 		Type: to.Ptr("Microsoft.Network/virtualNetworkGateways"),
+	// 		Etag: to.Ptr("W/\"00000000-0000-0000-0000-000000000000\""),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworkGateways/ergw"),
+	// 		Location: to.Ptr("centralus"),
+	// 		Properties: &armnetwork.VirtualNetworkGatewayPropertiesFormat{
+	// 			Active: to.Ptr(false),
+	// 			AdminState: to.Ptr(armnetwork.AdminStateEnabled),
+	// 			AllowRemoteVnetTraffic: to.Ptr(false),
+	// 			AllowVirtualWanTraffic: to.Ptr(false),
+	// 			AutoScaleConfiguration: &armnetwork.VirtualNetworkGatewayAutoScaleConfiguration{
+	// 				Bounds: &armnetwork.VirtualNetworkGatewayAutoScaleBounds{
+	// 					Max: to.Ptr[int32](3),
+	// 					Min: to.Ptr[int32](2),
+	// 				},
+	// 			},
+	// 			DisableIPSecReplayProtection: to.Ptr(false),
+	// 			EnableBgp: to.Ptr(false),
+	// 			EnableBgpRouteTranslationForNat: to.Ptr(false),
+	// 			GatewayType: to.Ptr(armnetwork.VirtualNetworkGatewayTypeExpressRoute),
+	// 			IPConfigurations: []*armnetwork.VirtualNetworkGatewayIPConfiguration{
+	// 				{
+	// 					Name: to.Ptr("gwipconfig1"),
+	// 					Etag: to.Ptr("W/\"00000000-0000-0000-0000-000000000000\""),
+	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworkGateways/ergw/ipConfigurations/default"),
+	// 					Properties: &armnetwork.VirtualNetworkGatewayIPConfigurationPropertiesFormat{
+	// 						PrivateIPAllocationMethod: to.Ptr(armnetwork.IPAllocationMethodDynamic),
+	// 						ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+	// 						PublicIPAddress: &armnetwork.SubResource{
+	// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/publicIPAddresses/gwpip"),
+	// 						},
+	// 						Subnet: &armnetwork.SubResource{
+	// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/GatewaySubnet"),
+	// 						},
+	// 					},
+	// 				},
+	// 			},
+	// 			NatRules: []*armnetwork.VirtualNetworkGatewayNatRule{
+	// 			},
+	// 			ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+	// 			ResourceGUID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 			SKU: &armnetwork.VirtualNetworkGatewaySKU{
+	// 				Name: to.Ptr(armnetwork.VirtualNetworkGatewaySKUNameErGwScale),
+	// 				Tier: to.Ptr(armnetwork.VirtualNetworkGatewaySKUTierErGwScale),
+	// 			},
+	// 			VirtualNetworkGatewayPolicyGroups: []*armnetwork.VirtualNetworkGatewayPolicyGroup{
+	// 			},
+	// 			VPNType: to.Ptr(armnetwork.VPNTypePolicyBased),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-01-01/AllVirtualNetworkGatewayRadiusServerSecretsList.json
+func ExampleVirtualNetworkGatewaysClient_ListRadiusSecrets() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("72f988bf-86f1-41af-91ab-2d7cd011db47", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewVirtualNetworkGatewaysClient().ListRadiusSecrets(ctx, "rg1", "vpngw", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armnetwork.VirtualNetworkGatewaysClientListRadiusSecretsResponse{
+	// 	RadiusAuthServerListResult: armnetwork.RadiusAuthServerListResult{
+	// 		Value: []*armnetwork.RadiusAuthServer{
+	// 			{
+	// 				RadiusServerAddress: to.Ptr("1.1.1.1"),
+	// 				RadiusServerSecret: to.Ptr("*****"),
+	// 			},
+	// 			{
+	// 				RadiusServerAddress: to.Ptr("2.2.2.2"),
+	// 				RadiusServerSecret: to.Ptr("*****"),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-01-01/VirtualNetworkGatewaysListConnections.json
+func ExampleVirtualNetworkGatewaysClient_NewListConnectionsPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewVirtualNetworkGatewaysClient().NewListConnectionsPager("testrg", "test-vpn-gateway-1", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armnetwork.VirtualNetworkGatewaysClientListConnectionsResponse{
+		// 	VirtualNetworkGatewayListConnectionsResult: armnetwork.VirtualNetworkGatewayListConnectionsResult{
+		// 		Value: []*armnetwork.VirtualNetworkGatewayConnectionListEntity{
+		// 			{
+		// 				Name: to.Ptr("test-vpn-connection"),
+		// 				Type: to.Ptr("Microsoft.Network/connections"),
+		// 				Etag: to.Ptr("W/\\\"00000000-0000-0000-0000-000000000000\\\""),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testrg/providers/Microsoft.Network/connections/test-vpn-connection"),
+		// 				Location: to.Ptr("eastus"),
+		// 				Properties: &armnetwork.VirtualNetworkGatewayConnectionListEntityPropertiesFormat{
+		// 					ConnectionType: to.Ptr(armnetwork.VirtualNetworkGatewayConnectionTypeVnet2Vnet),
+		// 					EgressBytesTransferred: to.Ptr[int64](0),
+		// 					EnableBgp: to.Ptr(true),
+		// 					IngressBytesTransferred: to.Ptr[int64](0),
+		// 					IPSecPolicies: []*armnetwork.IPSecPolicy{
+		// 					},
+		// 					ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+		// 					ResourceGUID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+		// 					RoutingWeight: to.Ptr[int32](22),
+		// 					TrafficSelectorPolicies: []*armnetwork.TrafficSelectorPolicy{
+		// 					},
+		// 					UsePolicyBasedTrafficSelectors: to.Ptr(false),
+		// 					VirtualNetworkGateway1: &armnetwork.VirtualNetworkConnectionGatewayReference{
+		// 						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testrg/providers/Microsoft.Network/virtualNetworkGateways/test-vpn-gateway-1"),
+		// 					},
+		// 					VirtualNetworkGateway2: &armnetwork.VirtualNetworkConnectionGatewayReference{
+		// 						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testrg-2/providers/Microsoft.Network/virtualNetworkGateways/test-vpn-gateway-2"),
+		// 					},
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2026-01-01/VirtualNetworkGatewayList.json
+func ExampleVirtualNetworkGatewaysClient_NewListPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewVirtualNetworkGatewaysClient().NewListPager("rg1", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armnetwork.VirtualNetworkGatewaysClientListResponse{
+		// 	VirtualNetworkGatewayListResult: armnetwork.VirtualNetworkGatewayListResult{
+		// 		Value: []*armnetwork.VirtualNetworkGateway{
+		// 			{
+		// 				Name: to.Ptr("vpngw1"),
+		// 				Type: to.Ptr("Microsoft.Network/virtualNetworkGateways"),
+		// 				Etag: to.Ptr("W/\"00000000-0000-0000-0000-000000000000\""),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworkGateways/vpngw1"),
+		// 				Location: to.Ptr("loc1"),
+		// 				Properties: &armnetwork.VirtualNetworkGatewayPropertiesFormat{
+		// 					Active: to.Ptr(false),
+		// 					AllowRemoteVnetTraffic: to.Ptr(false),
+		// 					AllowVirtualWanTraffic: to.Ptr(false),
+		// 					BgpSettings: &armnetwork.BgpSettings{
+		// 						Asn: to.Ptr[int64](65515),
+		// 						BgpPeeringAddress: to.Ptr("10.0.0.14"),
+		// 						PeerWeight: to.Ptr[int32](0),
+		// 					},
+		// 					CustomRoutes: &armnetwork.AddressSpace{
+		// 						AddressPrefixes: []*string{
+		// 							to.Ptr("101.168.0.6/32"),
+		// 						},
+		// 					},
+		// 					DisableIPSecReplayProtection: to.Ptr(false),
+		// 					EnableBgp: to.Ptr(false),
+		// 					EnableBgpRouteTranslationForNat: to.Ptr(false),
+		// 					EnablePrivateIPAddress: to.Ptr(false),
+		// 					GatewayType: to.Ptr(armnetwork.VirtualNetworkGatewayTypeVPN),
+		// 					IPConfigurations: []*armnetwork.VirtualNetworkGatewayIPConfiguration{
+		// 						{
+		// 							Name: to.Ptr("default"),
+		// 							Etag: to.Ptr("W/\"00000000-0000-0000-0000-000000000000\""),
+		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworkGateways/vpngw1/ipConfigurations/default"),
+		// 							Properties: &armnetwork.VirtualNetworkGatewayIPConfigurationPropertiesFormat{
+		// 								PrivateIPAllocationMethod: to.Ptr(armnetwork.IPAllocationMethodDynamic),
+		// 								ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+		// 								PublicIPAddress: &armnetwork.SubResource{
+		// 									ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/publicIPAddresses/vpngw1-ip"),
+		// 								},
+		// 								Subnet: &armnetwork.SubResource{
+		// 									ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/GatewaySubnet"),
+		// 								},
+		// 							},
+		// 						},
+		// 					},
+		// 					NatRules: []*armnetwork.VirtualNetworkGatewayNatRule{
+		// 						{
+		// 							Name: to.Ptr("natRule1"),
+		// 							Etag: to.Ptr("W/\"00ae2b69-88e7-4b3a-b66a-cfa2244e0801\""),
+		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworkGateways/vpngw1/natRules/natRule1"),
+		// 							Properties: &armnetwork.VirtualNetworkGatewayNatRuleProperties{
+		// 								Type: to.Ptr(armnetwork.VPNNatRuleTypeStatic),
+		// 								ExternalMappings: []*armnetwork.VPNNatRuleMapping{
+		// 									{
+		// 										AddressSpace: to.Ptr("50.0.0.0/24"),
+		// 									},
+		// 								},
+		// 								InternalMappings: []*armnetwork.VPNNatRuleMapping{
+		// 									{
+		// 										AddressSpace: to.Ptr("10.10.0.0/24"),
+		// 									},
+		// 								},
+		// 								Mode: to.Ptr(armnetwork.VPNNatRuleModeEgressSnat),
+		// 								ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+		// 							},
+		// 						},
+		// 						{
+		// 							Name: to.Ptr("natRule2"),
+		// 							Etag: to.Ptr("W/\"00ae2b69-88e7-4b3a-b66a-cfa2244e0801\""),
+		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworkGateways/vpngw1/natRules/natRule2"),
+		// 							Properties: &armnetwork.VirtualNetworkGatewayNatRuleProperties{
+		// 								Type: to.Ptr(armnetwork.VPNNatRuleTypeStatic),
+		// 								ExternalMappings: []*armnetwork.VPNNatRuleMapping{
+		// 									{
+		// 										AddressSpace: to.Ptr("30.0.0.0/24"),
+		// 									},
+		// 								},
+		// 								InternalMappings: []*armnetwork.VPNNatRuleMapping{
+		// 									{
+		// 										AddressSpace: to.Ptr("20.10.0.0/24"),
+		// 									},
+		// 								},
+		// 								Mode: to.Ptr(armnetwork.VPNNatRuleModeIngressSnat),
+		// 								ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+		// 							},
+		// 						},
+		// 					},
+		// 					ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+		// 					ResourceGUID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+		// 					SKU: &armnetwork.VirtualNetworkGatewaySKU{
+		// 						Name: to.Ptr(armnetwork.VirtualNetworkGatewaySKUNameVPNGw1),
+		// 						Capacity: to.Ptr[int32](2),
+		// 						Tier: to.Ptr(armnetwork.VirtualNetworkGatewaySKUTierVPNGw1),
+		// 					},
+		// 					VirtualNetworkGatewayMigrationStatus: &armnetwork.VirtualNetworkGatewayMigrationStatus{
+		// 						ErrorMessage: to.Ptr(""),
+		// 						Phase: to.Ptr(armnetwork.VirtualNetworkGatewayMigrationPhase("")),
+		// 						State: to.Ptr(armnetwork.VirtualNetworkGatewayMigrationState("")),
+		// 					},
+		// 					VPNClientConfiguration: &armnetwork.VPNClientConfiguration{
+		// 						VPNClientProtocols: []*armnetwork.VPNClientProtocol{
+		// 						},
+		// 						VPNClientRevokedCertificates: []*armnetwork.VPNClientRevokedCertificate{
+		// 						},
+		// 						VPNClientRootCertificates: []*armnetwork.VPNClientRootCertificate{
+		// 						},
+		// 					},
+		// 					VPNGatewayGeneration: to.Ptr(armnetwork.VPNGatewayGenerationNone),
+		// 					VPNType: to.Ptr(armnetwork.VPNTypeRouteBased),
+		// 				},
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("vpngw2"),
+		// 				Type: to.Ptr("Microsoft.Network/virtualNetworkGateways"),
+		// 				Etag: to.Ptr("W/\"00000000-0000-0000-0000-000000000000\""),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworkGateways/vpngw2"),
+		// 				Location: to.Ptr("loc2"),
+		// 				Properties: &armnetwork.VirtualNetworkGatewayPropertiesFormat{
+		// 					Active: to.Ptr(false),
+		// 					AllowRemoteVnetTraffic: to.Ptr(false),
+		// 					AllowVirtualWanTraffic: to.Ptr(false),
+		// 					BgpSettings: &armnetwork.BgpSettings{
+		// 						Asn: to.Ptr[int64](65515),
+		// 						BgpPeeringAddress: to.Ptr("10.1.0.46"),
+		// 						PeerWeight: to.Ptr[int32](0),
+		// 					},
+		// 					CustomRoutes: &armnetwork.AddressSpace{
+		// 						AddressPrefixes: []*string{
+		// 							to.Ptr("101.168.0.6/32"),
+		// 						},
+		// 					},
+		// 					DisableIPSecReplayProtection: to.Ptr(false),
+		// 					EnableBgp: to.Ptr(false),
+		// 					EnableBgpRouteTranslationForNat: to.Ptr(false),
+		// 					EnablePrivateIPAddress: to.Ptr(true),
+		// 					GatewayType: to.Ptr(armnetwork.VirtualNetworkGatewayTypeVPN),
+		// 					IPConfigurations: []*armnetwork.VirtualNetworkGatewayIPConfiguration{
+		// 						{
+		// 							Name: to.Ptr("default"),
+		// 							Etag: to.Ptr("W/\"00000000-0000-0000-0000-000000000000\""),
+		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworkGateways/vpngw2/ipConfigurations/default"),
+		// 							Properties: &armnetwork.VirtualNetworkGatewayIPConfigurationPropertiesFormat{
+		// 								PrivateIPAddress: to.Ptr("10.1.0.7"),
+		// 								PrivateIPAllocationMethod: to.Ptr(armnetwork.IPAllocationMethodDynamic),
+		// 								ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+		// 								PublicIPAddress: &armnetwork.SubResource{
+		// 									ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/publicIPAddresses/vpngw2-ip"),
+		// 								},
+		// 								Subnet: &armnetwork.SubResource{
+		// 									ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet2/subnets/GatewaySubnet"),
+		// 								},
+		// 							},
+		// 						},
+		// 					},
+		// 					NatRules: []*armnetwork.VirtualNetworkGatewayNatRule{
+		// 						{
+		// 							Name: to.Ptr("natRule1"),
+		// 							Etag: to.Ptr("W/\"00ae2b69-88e7-4b3a-b66a-cfa2244e0801\""),
+		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworkGateways/vpngw2/natRules/natRule1"),
+		// 							Properties: &armnetwork.VirtualNetworkGatewayNatRuleProperties{
+		// 								Type: to.Ptr(armnetwork.VPNNatRuleTypeStatic),
+		// 								ExternalMappings: []*armnetwork.VPNNatRuleMapping{
+		// 									{
+		// 										AddressSpace: to.Ptr("50.0.0.0/24"),
+		// 									},
+		// 								},
+		// 								InternalMappings: []*armnetwork.VPNNatRuleMapping{
+		// 									{
+		// 										AddressSpace: to.Ptr("10.10.0.0/24"),
+		// 									},
+		// 								},
+		// 								Mode: to.Ptr(armnetwork.VPNNatRuleModeEgressSnat),
+		// 								ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+		// 							},
+		// 						},
+		// 						{
+		// 							Name: to.Ptr("natRule2"),
+		// 							Etag: to.Ptr("W/\"00ae2b69-88e7-4b3a-b66a-cfa2244e0801\""),
+		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworkGateways/vpngw2/natRules/natRule2"),
+		// 							Properties: &armnetwork.VirtualNetworkGatewayNatRuleProperties{
+		// 								Type: to.Ptr(armnetwork.VPNNatRuleTypeStatic),
+		// 								ExternalMappings: []*armnetwork.VPNNatRuleMapping{
+		// 									{
+		// 										AddressSpace: to.Ptr("30.0.0.0/24"),
+		// 									},
+		// 								},
+		// 								InternalMappings: []*armnetwork.VPNNatRuleMapping{
+		// 									{
+		// 										AddressSpace: to.Ptr("20.10.0.0/24"),
+		// 									},
+		// 								},
+		// 								Mode: to.Ptr(armnetwork.VPNNatRuleModeIngressSnat),
+		// 								ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+		// 							},
+		// 						},
+		// 					},
+		// 					ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+		// 					ResourceGUID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+		// 					SKU: &armnetwork.VirtualNetworkGatewaySKU{
+		// 						Name: to.Ptr(armnetwork.VirtualNetworkGatewaySKUNameVPNGw1),
+		// 						Capacity: to.Ptr[int32](2),
+		// 						Tier: to.Ptr(armnetwork.VirtualNetworkGatewaySKUTierVPNGw1),
+		// 					},
+		// 					VirtualNetworkGatewayMigrationStatus: &armnetwork.VirtualNetworkGatewayMigrationStatus{
+		// 						ErrorMessage: to.Ptr(""),
+		// 						Phase: to.Ptr(armnetwork.VirtualNetworkGatewayMigrationPhase("")),
+		// 						State: to.Ptr(armnetwork.VirtualNetworkGatewayMigrationState("")),
+		// 					},
+		// 					VPNClientConfiguration: &armnetwork.VPNClientConfiguration{
+		// 						RadiusServers: []*armnetwork.RadiusServer{
+		// 							{
+		// 								RadiusServerAddress: to.Ptr("10.2.0.0"),
+		// 								RadiusServerScore: to.Ptr[int64](20),
+		// 							},
+		// 						},
+		// 						VPNClientProtocols: []*armnetwork.VPNClientProtocol{
+		// 							to.Ptr(armnetwork.VPNClientProtocolOpenVPN),
+		// 						},
+		// 						VPNClientRevokedCertificates: []*armnetwork.VPNClientRevokedCertificate{
+		// 						},
+		// 						VPNClientRootCertificates: []*armnetwork.VPNClientRootCertificate{
+		// 						},
+		// 					},
+		// 					VPNGatewayGeneration: to.Ptr(armnetwork.VPNGatewayGenerationNone),
+		// 					VPNType: to.Ptr(armnetwork.VPNTypeRouteBased),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2026-01-01/VirtualNetworkGatewaySupportedVpnDevice.json
+func ExampleVirtualNetworkGatewaysClient_SupportedVPNDevices() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewVirtualNetworkGatewaysClient().SupportedVPNDevices(ctx, "rg1", "vpngw", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armnetwork.VirtualNetworkGatewaysClientSupportedVPNDevicesResponse{
+	// 	Value: to.Ptr("<?xml version=\"1.0\" encoding=\"utf-8\"?><RpVpnDeviceList version=\"1.0\"><Vendor name=\"Cisco\"><DeviceFamily name=\"ISR\"><FirmwareVersion name=\"IOS 15.1 (Preview)\" /></DeviceFamily><DeviceFamily name=\"ASA (Adaptive Security Appliance)\"><FirmwareVersion name=\"ASA_9.8.x_ActivePassive_NoBGP_NoCustomPolicies\"/><FirmwareVersion name=\"ASA_9.8(x)_CustomPolicies\" /></DeviceFamily></Vendor><Vendor name=\"Juniper\"><DeviceFamily name=\"Juniper_SRX_GA\"><FirmwareVersion name=\"Juniper_SRX_12.x_GA\" /></DeviceFamily><DeviceFamily name=\"Juniper_SSG_GA\"><FirmwareVersion name=\"Juniper_SSG_ScreenOS-6.2.x_GA\"/></DeviceFamily><DeviceFamily name=\"Juniper_JSeries_GA\"><FirmwareVersion name=\"Juniper_JSeries_JunOS12.x._GA\" /></DeviceFamily></Vendor><Vendor name=\"Ubiquiti\"><DeviceFamily name=\"EdgeRouter\"><FirmwareVersion name=\"Ubiquiti_EdgeOS_1.10.x-RouteBased_VTI\" /><FirmwareVersionname=\"Ubiquiti_EdgeOS_1.10.x-RouteBased_BGP\" /></DeviceFamily></Vendor></RpVpnDeviceList>"),
 	// }
 }
 

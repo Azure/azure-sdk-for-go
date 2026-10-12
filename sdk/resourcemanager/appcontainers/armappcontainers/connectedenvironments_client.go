@@ -44,6 +44,156 @@ func NewConnectedEnvironmentsClient(subscriptionID string, credential azcore.Tok
 	return client, nil
 }
 
+// BeginCreateOrUpdate - Creates or updates an connectedEnvironment.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - connectedEnvironmentName - Name of the connectedEnvironment.
+//   - environmentEnvelope - Configuration details of the connectedEnvironment.
+//   - options - ConnectedEnvironmentsClientBeginCreateOrUpdateOptions contains the optional parameters for the ConnectedEnvironmentsClient.BeginCreateOrUpdate
+//     method.
+func (client *ConnectedEnvironmentsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, connectedEnvironmentName string, environmentEnvelope ConnectedEnvironment, options *ConnectedEnvironmentsClientBeginCreateOrUpdateOptions) (*runtime.Poller[ConnectedEnvironmentsClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, connectedEnvironmentName, environmentEnvelope, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ConnectedEnvironmentsClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ConnectedEnvironmentsClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// createOrUpdate - Creates or updates an connectedEnvironment.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ConnectedEnvironmentsClient) createOrUpdate(ctx context.Context, resourceGroupName string, connectedEnvironmentName string, environmentEnvelope ConnectedEnvironment, options *ConnectedEnvironmentsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "ConnectedEnvironmentsClient.BeginCreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, connectedEnvironmentName, environmentEnvelope, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// createOrUpdateCreateRequest creates the createOrUpdate request.
+func (client *ConnectedEnvironmentsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, connectedEnvironmentName string, environmentEnvelope ConnectedEnvironment, _ *ConnectedEnvironmentsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/connectedEnvironments/{connectedEnvironmentName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if connectedEnvironmentName == "" {
+		return nil, errors.New("parameter connectedEnvironmentName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{connectedEnvironmentName}", url.PathEscape(connectedEnvironmentName))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260701)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, environmentEnvelope); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginDelete - Delete an connectedEnvironment.
+//
+// Delete an connectedEnvironment.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - connectedEnvironmentName - Name of the connectedEnvironment.
+//   - options - ConnectedEnvironmentsClientBeginDeleteOptions contains the optional parameters for the ConnectedEnvironmentsClient.BeginDelete
+//     method.
+func (client *ConnectedEnvironmentsClient) BeginDelete(ctx context.Context, resourceGroupName string, connectedEnvironmentName string, options *ConnectedEnvironmentsClientBeginDeleteOptions) (*runtime.Poller[ConnectedEnvironmentsClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, connectedEnvironmentName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ConnectedEnvironmentsClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ConnectedEnvironmentsClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// deleteOperation - Delete an connectedEnvironment.
+//
+// Delete an connectedEnvironment.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ConnectedEnvironmentsClient) deleteOperation(ctx context.Context, resourceGroupName string, connectedEnvironmentName string, options *ConnectedEnvironmentsClientBeginDeleteOptions) (*http.Response, error) {
+	var err error
+	const operationName = "ConnectedEnvironmentsClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.deleteCreateRequest(ctx, resourceGroupName, connectedEnvironmentName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// deleteCreateRequest creates the delete request.
+func (client *ConnectedEnvironmentsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, connectedEnvironmentName string, _ *ConnectedEnvironmentsClientBeginDeleteOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/connectedEnvironments/{connectedEnvironmentName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if connectedEnvironmentName == "" {
+		return nil, errors.New("parameter connectedEnvironmentName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{connectedEnvironmentName}", url.PathEscape(connectedEnvironmentName))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260701)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
 // CheckNameAvailability - Checks the resource connectedEnvironmentName availability.
 //
 // Checks if resource connectedEnvironmentName is available.
@@ -110,156 +260,6 @@ func (client *ConnectedEnvironmentsClient) checkNameAvailabilityHandleResponse(r
 		return ConnectedEnvironmentsClientCheckNameAvailabilityResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginCreateOrUpdate - Creates or updates an connectedEnvironment.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - connectedEnvironmentName - Name of the connectedEnvironment.
-//   - environmentEnvelope - Configuration details of the connectedEnvironment.
-//   - options - ConnectedEnvironmentsClientBeginCreateOrUpdateOptions contains the optional parameters for the ConnectedEnvironmentsClient.BeginCreateOrUpdate
-//     method.
-func (client *ConnectedEnvironmentsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, connectedEnvironmentName string, environmentEnvelope ConnectedEnvironment, options *ConnectedEnvironmentsClientBeginCreateOrUpdateOptions) (*runtime.Poller[ConnectedEnvironmentsClientCreateOrUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.createOrUpdate(ctx, resourceGroupName, connectedEnvironmentName, environmentEnvelope, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ConnectedEnvironmentsClientCreateOrUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ConnectedEnvironmentsClientCreateOrUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// CreateOrUpdate - Creates or updates an connectedEnvironment.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *ConnectedEnvironmentsClient) createOrUpdate(ctx context.Context, resourceGroupName string, connectedEnvironmentName string, environmentEnvelope ConnectedEnvironment, options *ConnectedEnvironmentsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "ConnectedEnvironmentsClient.BeginCreateOrUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, connectedEnvironmentName, environmentEnvelope, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *ConnectedEnvironmentsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, connectedEnvironmentName string, environmentEnvelope ConnectedEnvironment, _ *ConnectedEnvironmentsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/connectedEnvironments/{connectedEnvironmentName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if connectedEnvironmentName == "" {
-		return nil, errors.New("parameter connectedEnvironmentName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{connectedEnvironmentName}", url.PathEscape(connectedEnvironmentName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260701)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, environmentEnvelope); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// BeginDelete - Delete an connectedEnvironment.
-//
-// Delete an connectedEnvironment.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - connectedEnvironmentName - Name of the connectedEnvironment.
-//   - options - ConnectedEnvironmentsClientBeginDeleteOptions contains the optional parameters for the ConnectedEnvironmentsClient.BeginDelete
-//     method.
-func (client *ConnectedEnvironmentsClient) BeginDelete(ctx context.Context, resourceGroupName string, connectedEnvironmentName string, options *ConnectedEnvironmentsClientBeginDeleteOptions) (*runtime.Poller[ConnectedEnvironmentsClientDeleteResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.deleteOperation(ctx, resourceGroupName, connectedEnvironmentName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ConnectedEnvironmentsClientDeleteResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ConnectedEnvironmentsClientDeleteResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Delete - Delete an connectedEnvironment.
-//
-// Delete an connectedEnvironment.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *ConnectedEnvironmentsClient) deleteOperation(ctx context.Context, resourceGroupName string, connectedEnvironmentName string, options *ConnectedEnvironmentsClientBeginDeleteOptions) (*http.Response, error) {
-	var err error
-	const operationName = "ConnectedEnvironmentsClient.BeginDelete"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.deleteCreateRequest(ctx, resourceGroupName, connectedEnvironmentName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// deleteCreateRequest creates the Delete request.
-func (client *ConnectedEnvironmentsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, connectedEnvironmentName string, _ *ConnectedEnvironmentsClientBeginDeleteOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/connectedEnvironments/{connectedEnvironmentName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if connectedEnvironmentName == "" {
-		return nil, errors.New("parameter connectedEnvironmentName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{connectedEnvironmentName}", url.PathEscape(connectedEnvironmentName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260701)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	return req, nil
 }
 
 // Get - Get the properties of an connectedEnvironment.

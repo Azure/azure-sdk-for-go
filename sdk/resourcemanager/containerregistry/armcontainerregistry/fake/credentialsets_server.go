@@ -29,6 +29,10 @@ type CredentialSetsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, registryName string, credentialSetName string, options *armcontainerregistry.CredentialSetsClientBeginDeleteOptions) (resp azfake.PollerResponder[armcontainerregistry.CredentialSetsClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method CredentialSetsClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
+	BeginUpdate func(ctx context.Context, resourceGroupName string, registryName string, credentialSetName string, credentialSetUpdateParameters armcontainerregistry.CredentialSetUpdateParameters, options *armcontainerregistry.CredentialSetsClientBeginUpdateOptions) (resp azfake.PollerResponder[armcontainerregistry.CredentialSetsClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method CredentialSetsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, registryName string, credentialSetName string, options *armcontainerregistry.CredentialSetsClientGetOptions) (resp azfake.Responder[armcontainerregistry.CredentialSetsClientGetResponse], errResp azfake.ErrorResponder)
@@ -36,10 +40,6 @@ type CredentialSetsServer struct {
 	// NewListPager is the fake for method CredentialSetsClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListPager func(resourceGroupName string, registryName string, options *armcontainerregistry.CredentialSetsClientListOptions) (resp azfake.PagerResponder[armcontainerregistry.CredentialSetsClientListResponse])
-
-	// BeginUpdate is the fake for method CredentialSetsClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	BeginUpdate func(ctx context.Context, resourceGroupName string, registryName string, credentialSetName string, credentialSetUpdateParameters armcontainerregistry.CredentialSetUpdateParameters, options *armcontainerregistry.CredentialSetsClientBeginUpdateOptions) (resp azfake.PollerResponder[armcontainerregistry.CredentialSetsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewCredentialSetsServerTransport creates a new instance of CredentialSetsServerTransport with the provided implementation.
@@ -50,8 +50,8 @@ func NewCredentialSetsServerTransport(srv *CredentialSetsServer) *CredentialSets
 		srv:          srv,
 		beginCreate:  newTracker[azfake.PollerResponder[armcontainerregistry.CredentialSetsClientCreateResponse]](),
 		beginDelete:  newTracker[azfake.PollerResponder[armcontainerregistry.CredentialSetsClientDeleteResponse]](),
-		newListPager: newTracker[azfake.PagerResponder[armcontainerregistry.CredentialSetsClientListResponse]](),
 		beginUpdate:  newTracker[azfake.PollerResponder[armcontainerregistry.CredentialSetsClientUpdateResponse]](),
+		newListPager: newTracker[azfake.PagerResponder[armcontainerregistry.CredentialSetsClientListResponse]](),
 	}
 }
 
@@ -61,8 +61,8 @@ type CredentialSetsServerTransport struct {
 	srv          *CredentialSetsServer
 	beginCreate  *tracker[azfake.PollerResponder[armcontainerregistry.CredentialSetsClientCreateResponse]]
 	beginDelete  *tracker[azfake.PollerResponder[armcontainerregistry.CredentialSetsClientDeleteResponse]]
-	newListPager *tracker[azfake.PagerResponder[armcontainerregistry.CredentialSetsClientListResponse]]
 	beginUpdate  *tracker[azfake.PollerResponder[armcontainerregistry.CredentialSetsClientUpdateResponse]]
+	newListPager *tracker[azfake.PagerResponder[armcontainerregistry.CredentialSetsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for CredentialSetsServerTransport.
@@ -90,12 +90,12 @@ func (c *CredentialSetsServerTransport) dispatchToMethodFake(req *http.Request, 
 				res.resp, res.err = c.dispatchBeginCreate(req)
 			case "CredentialSetsClient.BeginDelete":
 				res.resp, res.err = c.dispatchBeginDelete(req)
+			case "CredentialSetsClient.BeginUpdate":
+				res.resp, res.err = c.dispatchBeginUpdate(req)
 			case "CredentialSetsClient.Get":
 				res.resp, res.err = c.dispatchGet(req)
 			case "CredentialSetsClient.NewListPager":
 				res.resp, res.err = c.dispatchNewListPager(req)
-			case "CredentialSetsClient.BeginUpdate":
-				res.resp, res.err = c.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -212,6 +212,58 @@ func (c *CredentialSetsServerTransport) dispatchBeginDelete(req *http.Request) (
 	return resp, nil
 }
 
+func (c *CredentialSetsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if c.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := c.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerRegistry/registries/(?P<registryName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/credentialSets/(?P<credentialSetName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armcontainerregistry.CredentialSetUpdateParameters](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		registryNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("registryName")])
+		if err != nil {
+			return nil, err
+		}
+		credentialSetNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("credentialSetName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := c.srv.BeginUpdate(req.Context(), resourceGroupNameParam, registryNameParam, credentialSetNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		c.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+		c.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		c.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (c *CredentialSetsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if c.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -287,58 +339,6 @@ func (c *CredentialSetsServerTransport) dispatchNewListPager(req *http.Request) 
 	if !server.PagerResponderMore(newListPager) {
 		c.newListPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (c *CredentialSetsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if c.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := c.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerRegistry/registries/(?P<registryName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/credentialSets/(?P<credentialSetName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armcontainerregistry.CredentialSetUpdateParameters](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		registryNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("registryName")])
-		if err != nil {
-			return nil, err
-		}
-		credentialSetNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("credentialSetName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := c.srv.BeginUpdate(req.Context(), resourceGroupNameParam, registryNameParam, credentialSetNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		c.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
-		c.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		c.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

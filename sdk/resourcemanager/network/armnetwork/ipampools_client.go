@@ -71,7 +71,7 @@ func (client *IpamPoolsClient) BeginCreate(ctx context.Context, resourceGroupNam
 	}
 }
 
-// Create - Creates/Updates the Pool resource.
+// create - Creates/Updates the Pool resource.
 //
 // Creates/Updates the Pool resource.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -95,7 +95,7 @@ func (client *IpamPoolsClient) create(ctx context.Context, resourceGroupName str
 	return httpResp, nil
 }
 
-// createCreateRequest creates the Create request.
+// createCreateRequest creates the create request.
 func (client *IpamPoolsClient) createCreateRequest(ctx context.Context, resourceGroupName string, networkManagerName string, poolName string, body IpamPool, options *IpamPoolsClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkManagers/{networkManagerName}/ipamPools/{poolName}"
 	if client.subscriptionID == "" {
@@ -157,7 +157,7 @@ func (client *IpamPoolsClient) BeginDelete(ctx context.Context, resourceGroupNam
 	}
 }
 
-// Delete - Delete the Pool resource.
+// deleteOperation - Delete the Pool resource.
 //
 // Delete the Pool resource.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -181,7 +181,7 @@ func (client *IpamPoolsClient) deleteOperation(ctx context.Context, resourceGrou
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *IpamPoolsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, networkManagerName string, poolName string, options *IpamPoolsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkManagers/{networkManagerName}/ipamPools/{poolName}"
 	if client.subscriptionID == "" {
@@ -347,6 +347,90 @@ func (client *IpamPoolsClient) getPoolUsageHandleResponse(resp *http.Response, s
 	return result, nil
 }
 
+// NewListAssociatedResourcesPager - List Associated Resource in the Pool.
+//
+// List Associated Resource in the Pool.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - networkManagerName - The name of the network manager.
+//   - poolName - Pool resource name.
+//   - options - IpamPoolsClientListAssociatedResourcesOptions contains the optional parameters for the IpamPoolsClient.NewListAssociatedResourcesPager
+//     method.
+func (client *IpamPoolsClient) NewListAssociatedResourcesPager(resourceGroupName string, networkManagerName string, poolName string, options *IpamPoolsClientListAssociatedResourcesOptions) *runtime.Pager[IpamPoolsClientListAssociatedResourcesResponse] {
+	return runtime.NewPager(runtime.PagingHandler[IpamPoolsClientListAssociatedResourcesResponse]{
+		More: func(page IpamPoolsClientListAssociatedResourcesResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *IpamPoolsClientListAssociatedResourcesResponse) (IpamPoolsClientListAssociatedResourcesResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "IpamPoolsClient.NewListAssociatedResourcesPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listAssociatedResourcesCreateRequest(ctx, resourceGroupName, networkManagerName, poolName, nextLink, options)
+			if err != nil {
+				return IpamPoolsClientListAssociatedResourcesResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return IpamPoolsClientListAssociatedResourcesResponse{}, err
+			}
+			return client.listAssociatedResourcesHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listAssociatedResourcesCreateRequest creates the ListAssociatedResources request.
+func (client *IpamPoolsClient) listAssociatedResourcesCreateRequest(ctx context.Context, resourceGroupName string, networkManagerName string, poolName string, nextLink string, _ *IpamPoolsClientListAssociatedResourcesOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkManagers/{networkManagerName}/ipamPools/{poolName}/listAssociatedResources"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if networkManagerName == "" {
+			return nil, errors.New("parameter networkManagerName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{networkManagerName}", url.PathEscape(networkManagerName))
+		if poolName == "" {
+			return nil, errors.New("parameter poolName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{poolName}", url.PathEscape(poolName))
+		req, err = runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260101)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// listAssociatedResourcesHandleResponse handles the ListAssociatedResources response.
+func (client *IpamPoolsClient) listAssociatedResourcesHandleResponse(resp *http.Response, successCodes ...int) (IpamPoolsClientListAssociatedResourcesResponse, error) {
+	result := IpamPoolsClientListAssociatedResourcesResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.PoolAssociationList); err != nil {
+		return IpamPoolsClientListAssociatedResourcesResponse{}, err
+	}
+	return result, nil
+}
+
 // NewListPager - Gets list of Pool resources at Network Manager level.
 //
 // Gets list of Pool resources at Network Manager level.
@@ -436,90 +520,6 @@ func (client *IpamPoolsClient) listHandleResponse(resp *http.Response, successCo
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IpamPoolList); err != nil {
 		return IpamPoolsClientListResponse{}, err
-	}
-	return result, nil
-}
-
-// NewListAssociatedResourcesPager - List Associated Resource in the Pool.
-//
-// List Associated Resource in the Pool.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - networkManagerName - The name of the network manager.
-//   - poolName - Pool resource name.
-//   - options - IpamPoolsClientListAssociatedResourcesOptions contains the optional parameters for the IpamPoolsClient.NewListAssociatedResourcesPager
-//     method.
-func (client *IpamPoolsClient) NewListAssociatedResourcesPager(resourceGroupName string, networkManagerName string, poolName string, options *IpamPoolsClientListAssociatedResourcesOptions) *runtime.Pager[IpamPoolsClientListAssociatedResourcesResponse] {
-	return runtime.NewPager(runtime.PagingHandler[IpamPoolsClientListAssociatedResourcesResponse]{
-		More: func(page IpamPoolsClientListAssociatedResourcesResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *IpamPoolsClientListAssociatedResourcesResponse) (IpamPoolsClientListAssociatedResourcesResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "IpamPoolsClient.NewListAssociatedResourcesPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			req, err := client.listAssociatedResourcesCreateRequest(ctx, resourceGroupName, networkManagerName, poolName, nextLink, options)
-			if err != nil {
-				return IpamPoolsClientListAssociatedResourcesResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return IpamPoolsClientListAssociatedResourcesResponse{}, err
-			}
-			return client.listAssociatedResourcesHandleResponse(resp, http.StatusOK)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listAssociatedResourcesCreateRequest creates the ListAssociatedResources request.
-func (client *IpamPoolsClient) listAssociatedResourcesCreateRequest(ctx context.Context, resourceGroupName string, networkManagerName string, poolName string, nextLink string, _ *IpamPoolsClientListAssociatedResourcesOptions) (*policy.Request, error) {
-	firstPage := nextLink == ""
-	var req *policy.Request
-	var err error
-	if firstPage {
-		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkManagers/{networkManagerName}/ipamPools/{poolName}/listAssociatedResources"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter subscriptionID cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-		if resourceGroupName == "" {
-			return nil, errors.New("parameter resourceGroupName cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-		if networkManagerName == "" {
-			return nil, errors.New("parameter networkManagerName cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{networkManagerName}", url.PathEscape(networkManagerName))
-		if poolName == "" {
-			return nil, errors.New("parameter poolName cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{poolName}", url.PathEscape(poolName))
-		req, err = runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	} else {
-		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
-	}
-	if err != nil {
-		return nil, err
-	}
-	if firstPage {
-		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260101)
-		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-		req.Raw().Header["Accept"] = []string{"application/json"}
-	}
-	return req, nil
-}
-
-// listAssociatedResourcesHandleResponse handles the ListAssociatedResources response.
-func (client *IpamPoolsClient) listAssociatedResourcesHandleResponse(resp *http.Response, successCodes ...int) (IpamPoolsClientListAssociatedResourcesResponse, error) {
-	result := IpamPoolsClientListAssociatedResourcesResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.PoolAssociationList); err != nil {
-		return IpamPoolsClientListAssociatedResourcesResponse{}, err
 	}
 	return result, nil
 }

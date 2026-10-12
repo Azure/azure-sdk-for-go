@@ -69,7 +69,7 @@ func (client *HubVirtualNetworkConnectionsClient) BeginCreateOrUpdate(ctx contex
 	}
 }
 
-// CreateOrUpdate - Creates a hub virtual network connection if it doesn't exist else updates the existing one.
+// createOrUpdate - Creates a hub virtual network connection if it doesn't exist else updates the existing one.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *HubVirtualNetworkConnectionsClient) createOrUpdate(ctx context.Context, resourceGroupName string, virtualHubName string, connectionName string, hubVirtualNetworkConnectionParameters HubVirtualNetworkConnection, options *HubVirtualNetworkConnectionsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -91,7 +91,7 @@ func (client *HubVirtualNetworkConnectionsClient) createOrUpdate(ctx context.Con
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *HubVirtualNetworkConnectionsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, virtualHubName string, connectionName string, hubVirtualNetworkConnectionParameters HubVirtualNetworkConnection, _ *HubVirtualNetworkConnectionsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs/{virtualHubName}/hubVirtualNetworkConnections/{connectionName}"
 	if client.subscriptionID == "" {
@@ -148,7 +148,7 @@ func (client *HubVirtualNetworkConnectionsClient) BeginDelete(ctx context.Contex
 	}
 }
 
-// Delete - Deletes a HubVirtualNetworkConnection.
+// deleteOperation - Deletes a HubVirtualNetworkConnection.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *HubVirtualNetworkConnectionsClient) deleteOperation(ctx context.Context, resourceGroupName string, virtualHubName string, connectionName string, options *HubVirtualNetworkConnectionsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -170,7 +170,7 @@ func (client *HubVirtualNetworkConnectionsClient) deleteOperation(ctx context.Co
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *HubVirtualNetworkConnectionsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, virtualHubName string, connectionName string, _ *HubVirtualNetworkConnectionsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs/{virtualHubName}/hubVirtualNetworkConnections/{connectionName}"
 	if client.subscriptionID == "" {

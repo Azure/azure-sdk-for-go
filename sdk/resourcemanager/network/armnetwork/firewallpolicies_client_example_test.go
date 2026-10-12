@@ -416,8 +416,8 @@ func ExampleFirewallPoliciesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/FirewallPolicyListByResourceGroup.json
-func ExampleFirewallPoliciesClient_NewListPager() {
+// Generated from example definition: 2026-01-01/FirewallPolicyListBySubscription.json
+func ExampleFirewallPoliciesClient_NewListAllPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -427,7 +427,7 @@ func ExampleFirewallPoliciesClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewFirewallPoliciesClient().NewListPager("rg1", nil)
+	pager := clientFactory.NewFirewallPoliciesClient().NewListAllPager(nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -438,7 +438,7 @@ func ExampleFirewallPoliciesClient_NewListPager() {
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armnetwork.FirewallPoliciesClientListResponse{
+		// page = armnetwork.FirewallPoliciesClientListAllResponse{
 		// 	FirewallPolicyListResult: armnetwork.FirewallPolicyListResult{
 		// 		Value: []*armnetwork.FirewallPolicy{
 		// 			{
@@ -487,8 +487,8 @@ func ExampleFirewallPoliciesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-01-01/FirewallPolicyListBySubscription.json
-func ExampleFirewallPoliciesClient_NewListAllPager() {
+// Generated from example definition: 2026-01-01/FirewallPolicyListByResourceGroup.json
+func ExampleFirewallPoliciesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -498,7 +498,7 @@ func ExampleFirewallPoliciesClient_NewListAllPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewFirewallPoliciesClient().NewListAllPager(nil)
+	pager := clientFactory.NewFirewallPoliciesClient().NewListPager("rg1", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -509,7 +509,7 @@ func ExampleFirewallPoliciesClient_NewListAllPager() {
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armnetwork.FirewallPoliciesClientListAllResponse{
+		// page = armnetwork.FirewallPoliciesClientListResponse{
 		// 	FirewallPolicyListResult: armnetwork.FirewallPolicyListResult{
 		// 		Value: []*armnetwork.FirewallPolicy{
 		// 			{

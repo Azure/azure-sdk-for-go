@@ -66,7 +66,7 @@ func (client *OracleSubscriptionsClient) BeginAddAzureSubscriptions(ctx context.
 	}
 }
 
-// AddAzureSubscriptions - Add Azure Subscriptions
+// addAzureSubscriptions - Add Azure Subscriptions
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *OracleSubscriptionsClient) addAzureSubscriptions(ctx context.Context, body AzureSubscriptions, options *OracleSubscriptionsClientBeginAddAzureSubscriptionsOptions) (*http.Response, error) {
 	var err error
@@ -88,7 +88,7 @@ func (client *OracleSubscriptionsClient) addAzureSubscriptions(ctx context.Conte
 	return httpResp, nil
 }
 
-// addAzureSubscriptionsCreateRequest creates the AddAzureSubscriptions request.
+// addAzureSubscriptionsCreateRequest creates the addAzureSubscriptions request.
 func (client *OracleSubscriptionsClient) addAzureSubscriptionsCreateRequest(ctx context.Context, body AzureSubscriptions, _ *OracleSubscriptionsClientBeginAddAzureSubscriptionsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Oracle.Database/oracleSubscriptions/default/addAzureSubscriptions"
 	if client.subscriptionID == "" {
@@ -131,7 +131,7 @@ func (client *OracleSubscriptionsClient) BeginCreateOrUpdate(ctx context.Context
 	}
 }
 
-// CreateOrUpdate - Create a OracleSubscription
+// createOrUpdate - Create a OracleSubscription
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *OracleSubscriptionsClient) createOrUpdate(ctx context.Context, resource OracleSubscription, options *OracleSubscriptionsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -153,7 +153,7 @@ func (client *OracleSubscriptionsClient) createOrUpdate(ctx context.Context, res
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *OracleSubscriptionsClient) createOrUpdateCreateRequest(ctx context.Context, resource OracleSubscription, _ *OracleSubscriptionsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Oracle.Database/oracleSubscriptions/default"
 	if client.subscriptionID == "" {
@@ -196,7 +196,7 @@ func (client *OracleSubscriptionsClient) BeginDelete(ctx context.Context, option
 	}
 }
 
-// Delete - Delete a OracleSubscription
+// deleteOperation - Delete a OracleSubscription
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *OracleSubscriptionsClient) deleteOperation(ctx context.Context, options *OracleSubscriptionsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -218,7 +218,7 @@ func (client *OracleSubscriptionsClient) deleteOperation(ctx context.Context, op
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *OracleSubscriptionsClient) deleteCreateRequest(ctx context.Context, _ *OracleSubscriptionsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Oracle.Database/oracleSubscriptions/default"
 	if client.subscriptionID == "" {
@@ -232,6 +232,255 @@ func (client *OracleSubscriptionsClient) deleteCreateRequest(ctx context.Context
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", version20260601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginListActivationLinks - List Activation Links
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - options - OracleSubscriptionsClientBeginListActivationLinksOptions contains the optional parameters for the OracleSubscriptionsClient.BeginListActivationLinks
+//     method.
+func (client *OracleSubscriptionsClient) BeginListActivationLinks(ctx context.Context, options *OracleSubscriptionsClientBeginListActivationLinksOptions) (*runtime.Poller[OracleSubscriptionsClientListActivationLinksResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.listActivationLinks(ctx, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[OracleSubscriptionsClientListActivationLinksResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[OracleSubscriptionsClientListActivationLinksResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// listActivationLinks - List Activation Links
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *OracleSubscriptionsClient) listActivationLinks(ctx context.Context, options *OracleSubscriptionsClientBeginListActivationLinksOptions) (*http.Response, error) {
+	var err error
+	const operationName = "OracleSubscriptionsClient.BeginListActivationLinks"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.listActivationLinksCreateRequest(ctx, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// listActivationLinksCreateRequest creates the listActivationLinks request.
+func (client *OracleSubscriptionsClient) listActivationLinksCreateRequest(ctx context.Context, _ *OracleSubscriptionsClientBeginListActivationLinksOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/providers/Oracle.Database/oracleSubscriptions/default/listActivationLinks"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// BeginListCloudAccountDetails - List Cloud Account Details
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - options - OracleSubscriptionsClientBeginListCloudAccountDetailsOptions contains the optional parameters for the OracleSubscriptionsClient.BeginListCloudAccountDetails
+//     method.
+func (client *OracleSubscriptionsClient) BeginListCloudAccountDetails(ctx context.Context, options *OracleSubscriptionsClientBeginListCloudAccountDetailsOptions) (*runtime.Poller[OracleSubscriptionsClientListCloudAccountDetailsResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.listCloudAccountDetails(ctx, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[OracleSubscriptionsClientListCloudAccountDetailsResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[OracleSubscriptionsClientListCloudAccountDetailsResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// listCloudAccountDetails - List Cloud Account Details
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *OracleSubscriptionsClient) listCloudAccountDetails(ctx context.Context, options *OracleSubscriptionsClientBeginListCloudAccountDetailsOptions) (*http.Response, error) {
+	var err error
+	const operationName = "OracleSubscriptionsClient.BeginListCloudAccountDetails"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.listCloudAccountDetailsCreateRequest(ctx, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// listCloudAccountDetailsCreateRequest creates the listCloudAccountDetails request.
+func (client *OracleSubscriptionsClient) listCloudAccountDetailsCreateRequest(ctx context.Context, _ *OracleSubscriptionsClientBeginListCloudAccountDetailsOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/providers/Oracle.Database/oracleSubscriptions/default/listCloudAccountDetails"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// BeginListSaasSubscriptionDetails - List Saas Subscription Details
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - options - OracleSubscriptionsClientBeginListSaasSubscriptionDetailsOptions contains the optional parameters for the OracleSubscriptionsClient.BeginListSaasSubscriptionDetails
+//     method.
+func (client *OracleSubscriptionsClient) BeginListSaasSubscriptionDetails(ctx context.Context, options *OracleSubscriptionsClientBeginListSaasSubscriptionDetailsOptions) (*runtime.Poller[OracleSubscriptionsClientListSaasSubscriptionDetailsResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.listSaasSubscriptionDetails(ctx, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[OracleSubscriptionsClientListSaasSubscriptionDetailsResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[OracleSubscriptionsClientListSaasSubscriptionDetailsResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// listSaasSubscriptionDetails - List Saas Subscription Details
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *OracleSubscriptionsClient) listSaasSubscriptionDetails(ctx context.Context, options *OracleSubscriptionsClientBeginListSaasSubscriptionDetailsOptions) (*http.Response, error) {
+	var err error
+	const operationName = "OracleSubscriptionsClient.BeginListSaasSubscriptionDetails"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.listSaasSubscriptionDetailsCreateRequest(ctx, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// listSaasSubscriptionDetailsCreateRequest creates the listSaasSubscriptionDetails request.
+func (client *OracleSubscriptionsClient) listSaasSubscriptionDetailsCreateRequest(ctx context.Context, _ *OracleSubscriptionsClientBeginListSaasSubscriptionDetailsOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/providers/Oracle.Database/oracleSubscriptions/default/listSaasSubscriptionDetails"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// BeginUpdate - Update a OracleSubscription
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - properties - The resource properties to be updated.
+//   - options - OracleSubscriptionsClientBeginUpdateOptions contains the optional parameters for the OracleSubscriptionsClient.BeginUpdate
+//     method.
+func (client *OracleSubscriptionsClient) BeginUpdate(ctx context.Context, properties OracleSubscriptionUpdate, options *OracleSubscriptionsClientBeginUpdateOptions) (*runtime.Poller[OracleSubscriptionsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, properties, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[OracleSubscriptionsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[OracleSubscriptionsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Update a OracleSubscription
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *OracleSubscriptionsClient) update(ctx context.Context, properties OracleSubscriptionUpdate, options *OracleSubscriptionsClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "OracleSubscriptionsClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, properties, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *OracleSubscriptionsClient) updateCreateRequest(ctx context.Context, properties OracleSubscriptionUpdate, _ *OracleSubscriptionsClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/providers/Oracle.Database/oracleSubscriptions/default"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, properties); err != nil {
+		return nil, err
+	}
 	return req, nil
 }
 
@@ -283,67 +532,6 @@ func (client *OracleSubscriptionsClient) getHandleResponse(resp *http.Response, 
 		return OracleSubscriptionsClientGetResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginListActivationLinks - List Activation Links
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - options - OracleSubscriptionsClientBeginListActivationLinksOptions contains the optional parameters for the OracleSubscriptionsClient.BeginListActivationLinks
-//     method.
-func (client *OracleSubscriptionsClient) BeginListActivationLinks(ctx context.Context, options *OracleSubscriptionsClientBeginListActivationLinksOptions) (*runtime.Poller[OracleSubscriptionsClientListActivationLinksResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.listActivationLinks(ctx, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[OracleSubscriptionsClientListActivationLinksResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[OracleSubscriptionsClientListActivationLinksResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// ListActivationLinks - List Activation Links
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *OracleSubscriptionsClient) listActivationLinks(ctx context.Context, options *OracleSubscriptionsClientBeginListActivationLinksOptions) (*http.Response, error) {
-	var err error
-	const operationName = "OracleSubscriptionsClient.BeginListActivationLinks"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.listActivationLinksCreateRequest(ctx, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// listActivationLinksCreateRequest creates the ListActivationLinks request.
-func (client *OracleSubscriptionsClient) listActivationLinksCreateRequest(ctx context.Context, _ *OracleSubscriptionsClientBeginListActivationLinksOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Oracle.Database/oracleSubscriptions/default/listActivationLinks"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
 }
 
 // NewListBySubscriptionPager - List OracleSubscription resources by subscription ID
@@ -411,192 +599,4 @@ func (client *OracleSubscriptionsClient) listBySubscriptionHandleResponse(resp *
 		return OracleSubscriptionsClientListBySubscriptionResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginListCloudAccountDetails - List Cloud Account Details
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - options - OracleSubscriptionsClientBeginListCloudAccountDetailsOptions contains the optional parameters for the OracleSubscriptionsClient.BeginListCloudAccountDetails
-//     method.
-func (client *OracleSubscriptionsClient) BeginListCloudAccountDetails(ctx context.Context, options *OracleSubscriptionsClientBeginListCloudAccountDetailsOptions) (*runtime.Poller[OracleSubscriptionsClientListCloudAccountDetailsResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.listCloudAccountDetails(ctx, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[OracleSubscriptionsClientListCloudAccountDetailsResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[OracleSubscriptionsClientListCloudAccountDetailsResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// ListCloudAccountDetails - List Cloud Account Details
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *OracleSubscriptionsClient) listCloudAccountDetails(ctx context.Context, options *OracleSubscriptionsClientBeginListCloudAccountDetailsOptions) (*http.Response, error) {
-	var err error
-	const operationName = "OracleSubscriptionsClient.BeginListCloudAccountDetails"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.listCloudAccountDetailsCreateRequest(ctx, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// listCloudAccountDetailsCreateRequest creates the ListCloudAccountDetails request.
-func (client *OracleSubscriptionsClient) listCloudAccountDetailsCreateRequest(ctx context.Context, _ *OracleSubscriptionsClientBeginListCloudAccountDetailsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Oracle.Database/oracleSubscriptions/default/listCloudAccountDetails"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// BeginListSaasSubscriptionDetails - List Saas Subscription Details
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - options - OracleSubscriptionsClientBeginListSaasSubscriptionDetailsOptions contains the optional parameters for the OracleSubscriptionsClient.BeginListSaasSubscriptionDetails
-//     method.
-func (client *OracleSubscriptionsClient) BeginListSaasSubscriptionDetails(ctx context.Context, options *OracleSubscriptionsClientBeginListSaasSubscriptionDetailsOptions) (*runtime.Poller[OracleSubscriptionsClientListSaasSubscriptionDetailsResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.listSaasSubscriptionDetails(ctx, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[OracleSubscriptionsClientListSaasSubscriptionDetailsResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[OracleSubscriptionsClientListSaasSubscriptionDetailsResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// ListSaasSubscriptionDetails - List Saas Subscription Details
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *OracleSubscriptionsClient) listSaasSubscriptionDetails(ctx context.Context, options *OracleSubscriptionsClientBeginListSaasSubscriptionDetailsOptions) (*http.Response, error) {
-	var err error
-	const operationName = "OracleSubscriptionsClient.BeginListSaasSubscriptionDetails"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.listSaasSubscriptionDetailsCreateRequest(ctx, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// listSaasSubscriptionDetailsCreateRequest creates the ListSaasSubscriptionDetails request.
-func (client *OracleSubscriptionsClient) listSaasSubscriptionDetailsCreateRequest(ctx context.Context, _ *OracleSubscriptionsClientBeginListSaasSubscriptionDetailsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Oracle.Database/oracleSubscriptions/default/listSaasSubscriptionDetails"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// BeginUpdate - Update a OracleSubscription
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - properties - The resource properties to be updated.
-//   - options - OracleSubscriptionsClientBeginUpdateOptions contains the optional parameters for the OracleSubscriptionsClient.BeginUpdate
-//     method.
-func (client *OracleSubscriptionsClient) BeginUpdate(ctx context.Context, properties OracleSubscriptionUpdate, options *OracleSubscriptionsClientBeginUpdateOptions) (*runtime.Poller[OracleSubscriptionsClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, properties, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[OracleSubscriptionsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[OracleSubscriptionsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Update a OracleSubscription
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *OracleSubscriptionsClient) update(ctx context.Context, properties OracleSubscriptionUpdate, options *OracleSubscriptionsClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "OracleSubscriptionsClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, properties, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *OracleSubscriptionsClient) updateCreateRequest(ctx context.Context, properties OracleSubscriptionUpdate, _ *OracleSubscriptionsClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Oracle.Database/oracleSubscriptions/default"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, properties); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

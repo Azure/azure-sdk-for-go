@@ -68,7 +68,7 @@ func (client *RouteTablesClient) BeginCreateOrUpdate(ctx context.Context, resour
 	}
 }
 
-// CreateOrUpdate - Create or updates a route table in a specified resource group.
+// createOrUpdate - Create or updates a route table in a specified resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *RouteTablesClient) createOrUpdate(ctx context.Context, resourceGroupName string, routeTableName string, parameters RouteTable, options *RouteTablesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -90,7 +90,7 @@ func (client *RouteTablesClient) createOrUpdate(ctx context.Context, resourceGro
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *RouteTablesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, routeTableName string, parameters RouteTable, _ *RouteTablesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/routeTables/{routeTableName}"
 	if client.subscriptionID == "" {
@@ -142,7 +142,7 @@ func (client *RouteTablesClient) BeginDelete(ctx context.Context, resourceGroupN
 	}
 }
 
-// Delete - Deletes the specified route table.
+// deleteOperation - Deletes the specified route table.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *RouteTablesClient) deleteOperation(ctx context.Context, resourceGroupName string, routeTableName string, options *RouteTablesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -164,7 +164,7 @@ func (client *RouteTablesClient) deleteOperation(ctx context.Context, resourceGr
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *RouteTablesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, routeTableName string, _ *RouteTablesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/routeTables/{routeTableName}"
 	if client.subscriptionID == "" {
@@ -252,6 +252,72 @@ func (client *RouteTablesClient) getHandleResponse(resp *http.Response, successC
 	return result, nil
 }
 
+// NewListAllPager - Gets all route tables in a subscription.
+//   - options - RouteTablesClientListAllOptions contains the optional parameters for the RouteTablesClient.NewListAllPager method.
+func (client *RouteTablesClient) NewListAllPager(options *RouteTablesClientListAllOptions) *runtime.Pager[RouteTablesClientListAllResponse] {
+	return runtime.NewPager(runtime.PagingHandler[RouteTablesClientListAllResponse]{
+		More: func(page RouteTablesClientListAllResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *RouteTablesClientListAllResponse) (RouteTablesClientListAllResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "RouteTablesClient.NewListAllPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listAllCreateRequest(ctx, nextLink, options)
+			if err != nil {
+				return RouteTablesClientListAllResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return RouteTablesClientListAllResponse{}, err
+			}
+			return client.listAllHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listAllCreateRequest creates the ListAll request.
+func (client *RouteTablesClient) listAllCreateRequest(ctx context.Context, nextLink string, _ *RouteTablesClientListAllOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Network/routeTables"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260101)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// listAllHandleResponse handles the ListAll response.
+func (client *RouteTablesClient) listAllHandleResponse(resp *http.Response, successCodes ...int) (RouteTablesClientListAllResponse, error) {
+	result := RouteTablesClientListAllResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.RouteTableListResult); err != nil {
+		return RouteTablesClientListAllResponse{}, err
+	}
+	return result, nil
+}
+
 // NewListPager - Gets all route tables in a resource group.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - RouteTablesClientListOptions contains the optional parameters for the RouteTablesClient.NewListPager method.
@@ -319,72 +385,6 @@ func (client *RouteTablesClient) listHandleResponse(resp *http.Response, success
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RouteTableListResult); err != nil {
 		return RouteTablesClientListResponse{}, err
-	}
-	return result, nil
-}
-
-// NewListAllPager - Gets all route tables in a subscription.
-//   - options - RouteTablesClientListAllOptions contains the optional parameters for the RouteTablesClient.NewListAllPager method.
-func (client *RouteTablesClient) NewListAllPager(options *RouteTablesClientListAllOptions) *runtime.Pager[RouteTablesClientListAllResponse] {
-	return runtime.NewPager(runtime.PagingHandler[RouteTablesClientListAllResponse]{
-		More: func(page RouteTablesClientListAllResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *RouteTablesClientListAllResponse) (RouteTablesClientListAllResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "RouteTablesClient.NewListAllPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			req, err := client.listAllCreateRequest(ctx, nextLink, options)
-			if err != nil {
-				return RouteTablesClientListAllResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return RouteTablesClientListAllResponse{}, err
-			}
-			return client.listAllHandleResponse(resp, http.StatusOK)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listAllCreateRequest creates the ListAll request.
-func (client *RouteTablesClient) listAllCreateRequest(ctx context.Context, nextLink string, _ *RouteTablesClientListAllOptions) (*policy.Request, error) {
-	firstPage := nextLink == ""
-	var req *policy.Request
-	var err error
-	if firstPage {
-		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Network/routeTables"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter subscriptionID cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	} else {
-		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
-	}
-	if err != nil {
-		return nil, err
-	}
-	if firstPage {
-		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260101)
-		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-		req.Raw().Header["Accept"] = []string{"application/json"}
-	}
-	return req, nil
-}
-
-// listAllHandleResponse handles the ListAll response.
-func (client *RouteTablesClient) listAllHandleResponse(resp *http.Response, successCodes ...int) (RouteTablesClientListAllResponse, error) {
-	result := RouteTablesClientListAllResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.RouteTableListResult); err != nil {
-		return RouteTablesClientListAllResponse{}, err
 	}
 	return result, nil
 }

@@ -70,7 +70,7 @@ func (client *InterfaceTapConfigurationsClient) BeginCreateOrUpdate(ctx context.
 	}
 }
 
-// CreateOrUpdate - Creates or updates a Tap configuration in the specified NetworkInterface.
+// createOrUpdate - Creates or updates a Tap configuration in the specified NetworkInterface.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *InterfaceTapConfigurationsClient) createOrUpdate(ctx context.Context, resourceGroupName string, networkInterfaceName string, tapConfigurationName string, tapConfigurationParameters InterfaceTapConfiguration, options *InterfaceTapConfigurationsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -92,7 +92,7 @@ func (client *InterfaceTapConfigurationsClient) createOrUpdate(ctx context.Conte
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *InterfaceTapConfigurationsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, networkInterfaceName string, tapConfigurationName string, tapConfigurationParameters InterfaceTapConfiguration, _ *InterfaceTapConfigurationsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkInterfaces/{networkInterfaceName}/tapConfigurations/{tapConfigurationName}"
 	if client.subscriptionID == "" {
@@ -151,7 +151,7 @@ func (client *InterfaceTapConfigurationsClient) BeginDelete(ctx context.Context,
 	}
 }
 
-// Delete - Deletes the specified tap configuration from the NetworkInterface.
+// deleteOperation - Deletes the specified tap configuration from the NetworkInterface.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *InterfaceTapConfigurationsClient) deleteOperation(ctx context.Context, resourceGroupName string, networkInterfaceName string, tapConfigurationName string, options *InterfaceTapConfigurationsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -173,7 +173,7 @@ func (client *InterfaceTapConfigurationsClient) deleteOperation(ctx context.Cont
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *InterfaceTapConfigurationsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, networkInterfaceName string, tapConfigurationName string, _ *InterfaceTapConfigurationsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkInterfaces/{networkInterfaceName}/tapConfigurations/{tapConfigurationName}"
 	if client.subscriptionID == "" {

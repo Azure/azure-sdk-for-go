@@ -34,13 +34,13 @@ type QueriesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListPager func(resourceGroupName string, queryPackName string, options *armoperationalinsights.QueriesClientListOptions) (resp azfake.PagerResponder[armoperationalinsights.QueriesClientListResponse])
 
-	// Put is the fake for method QueriesClient.Put
-	// HTTP status codes to indicate success: http.StatusOK
-	Put func(ctx context.Context, resourceGroupName string, queryPackName string, id string, queryPayload armoperationalinsights.LogAnalyticsQueryPackQuery, options *armoperationalinsights.QueriesClientPutOptions) (resp azfake.Responder[armoperationalinsights.QueriesClientPutResponse], errResp azfake.ErrorResponder)
-
 	// NewSearchPager is the fake for method QueriesClient.NewSearchPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewSearchPager func(resourceGroupName string, queryPackName string, querySearchProperties armoperationalinsights.LogAnalyticsQueryPackQuerySearchProperties, options *armoperationalinsights.QueriesClientSearchOptions) (resp azfake.PagerResponder[armoperationalinsights.QueriesClientSearchResponse])
+
+	// Put is the fake for method QueriesClient.Put
+	// HTTP status codes to indicate success: http.StatusOK
+	Put func(ctx context.Context, resourceGroupName string, queryPackName string, id string, queryPayload armoperationalinsights.LogAnalyticsQueryPackQuery, options *armoperationalinsights.QueriesClientPutOptions) (resp azfake.Responder[armoperationalinsights.QueriesClientPutResponse], errResp azfake.ErrorResponder)
 
 	// Update is the fake for method QueriesClient.Update
 	// HTTP status codes to indicate success: http.StatusOK
@@ -93,10 +93,10 @@ func (q *QueriesServerTransport) dispatchToMethodFake(req *http.Request, method 
 				res.resp, res.err = q.dispatchGet(req)
 			case "QueriesClient.NewListPager":
 				res.resp, res.err = q.dispatchNewListPager(req)
-			case "QueriesClient.Put":
-				res.resp, res.err = q.dispatchPut(req)
 			case "QueriesClient.NewSearchPager":
 				res.resp, res.err = q.dispatchNewSearchPager(req)
+			case "QueriesClient.Put":
+				res.resp, res.err = q.dispatchPut(req)
 			case "QueriesClient.Update":
 				res.resp, res.err = q.dispatchUpdate(req)
 			default:
@@ -254,47 +254,6 @@ func (q *QueriesServerTransport) dispatchNewListPager(req *http.Request) (*http.
 	return resp, nil
 }
 
-func (q *QueriesServerTransport) dispatchPut(req *http.Request) (*http.Response, error) {
-	if q.srv.Put == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Put not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.OperationalInsights/queryPacks/(?P<queryPackName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/queries/(?P<id>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armoperationalinsights.LogAnalyticsQueryPackQuery](req)
-	if err != nil {
-		return nil, err
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	queryPackNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("queryPackName")])
-	if err != nil {
-		return nil, err
-	}
-	idParam, err := url.PathUnescape(matches[regex.SubexpIndex("id")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := q.srv.Put(req.Context(), resourceGroupNameParam, queryPackNameParam, idParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).LogAnalyticsQueryPackQuery, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
 func (q *QueriesServerTransport) dispatchNewSearchPager(req *http.Request) (*http.Response, error) {
 	if q.srv.NewSearchPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewSearchPager not implemented")}
@@ -360,6 +319,47 @@ func (q *QueriesServerTransport) dispatchNewSearchPager(req *http.Request) (*htt
 	}
 	if !server.PagerResponderMore(newSearchPager) {
 		q.newSearchPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (q *QueriesServerTransport) dispatchPut(req *http.Request) (*http.Response, error) {
+	if q.srv.Put == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Put not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.OperationalInsights/queryPacks/(?P<queryPackName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/queries/(?P<id>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armoperationalinsights.LogAnalyticsQueryPackQuery](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	queryPackNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("queryPackName")])
+	if err != nil {
+		return nil, err
+	}
+	idParam, err := url.PathUnescape(matches[regex.SubexpIndex("id")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := q.srv.Put(req.Context(), resourceGroupNameParam, queryPackNameParam, idParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).LogAnalyticsQueryPackQuery, req)
+	if err != nil {
+		return nil, err
 	}
 	return resp, nil
 }

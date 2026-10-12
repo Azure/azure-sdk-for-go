@@ -29,14 +29,6 @@ type WorkbenchesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, accountName string, projectName string, workbenchName string, options *armcognitiveservices.WorkbenchesClientBeginDeleteOptions) (resp azfake.PollerResponder[armcognitiveservices.WorkbenchesClientDeleteResponse], errResp azfake.ErrorResponder)
 
-	// Get is the fake for method WorkbenchesClient.Get
-	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, accountName string, projectName string, workbenchName string, options *armcognitiveservices.WorkbenchesClientGetOptions) (resp azfake.Responder[armcognitiveservices.WorkbenchesClientGetResponse], errResp azfake.ErrorResponder)
-
-	// NewListPager is the fake for method WorkbenchesClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(resourceGroupName string, accountName string, projectName string, options *armcognitiveservices.WorkbenchesClientListOptions) (resp azfake.PagerResponder[armcognitiveservices.WorkbenchesClientListResponse])
-
 	// BeginRestart is the fake for method WorkbenchesClient.BeginRestart
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginRestart func(ctx context.Context, resourceGroupName string, accountName string, projectName string, workbenchName string, options *armcognitiveservices.WorkbenchesClientBeginRestartOptions) (resp azfake.PollerResponder[armcognitiveservices.WorkbenchesClientRestartResponse], errResp azfake.ErrorResponder)
@@ -52,6 +44,14 @@ type WorkbenchesServer struct {
 	// BeginUpdate is the fake for method WorkbenchesClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginUpdate func(ctx context.Context, resourceGroupName string, accountName string, projectName string, workbenchName string, properties armcognitiveservices.Workbench, options *armcognitiveservices.WorkbenchesClientBeginUpdateOptions) (resp azfake.PollerResponder[armcognitiveservices.WorkbenchesClientUpdateResponse], errResp azfake.ErrorResponder)
+
+	// Get is the fake for method WorkbenchesClient.Get
+	// HTTP status codes to indicate success: http.StatusOK
+	Get func(ctx context.Context, resourceGroupName string, accountName string, projectName string, workbenchName string, options *armcognitiveservices.WorkbenchesClientGetOptions) (resp azfake.Responder[armcognitiveservices.WorkbenchesClientGetResponse], errResp azfake.ErrorResponder)
+
+	// NewListPager is the fake for method WorkbenchesClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(resourceGroupName string, accountName string, projectName string, options *armcognitiveservices.WorkbenchesClientListOptions) (resp azfake.PagerResponder[armcognitiveservices.WorkbenchesClientListResponse])
 }
 
 // NewWorkbenchesServerTransport creates a new instance of WorkbenchesServerTransport with the provided implementation.
@@ -62,11 +62,11 @@ func NewWorkbenchesServerTransport(srv *WorkbenchesServer) *WorkbenchesServerTra
 		srv:                 srv,
 		beginCreateOrUpdate: newTracker[azfake.PollerResponder[armcognitiveservices.WorkbenchesClientCreateOrUpdateResponse]](),
 		beginDelete:         newTracker[azfake.PollerResponder[armcognitiveservices.WorkbenchesClientDeleteResponse]](),
-		newListPager:        newTracker[azfake.PagerResponder[armcognitiveservices.WorkbenchesClientListResponse]](),
 		beginRestart:        newTracker[azfake.PollerResponder[armcognitiveservices.WorkbenchesClientRestartResponse]](),
 		beginStart:          newTracker[azfake.PollerResponder[armcognitiveservices.WorkbenchesClientStartResponse]](),
 		beginStop:           newTracker[azfake.PollerResponder[armcognitiveservices.WorkbenchesClientStopResponse]](),
 		beginUpdate:         newTracker[azfake.PollerResponder[armcognitiveservices.WorkbenchesClientUpdateResponse]](),
+		newListPager:        newTracker[azfake.PagerResponder[armcognitiveservices.WorkbenchesClientListResponse]](),
 	}
 }
 
@@ -76,11 +76,11 @@ type WorkbenchesServerTransport struct {
 	srv                 *WorkbenchesServer
 	beginCreateOrUpdate *tracker[azfake.PollerResponder[armcognitiveservices.WorkbenchesClientCreateOrUpdateResponse]]
 	beginDelete         *tracker[azfake.PollerResponder[armcognitiveservices.WorkbenchesClientDeleteResponse]]
-	newListPager        *tracker[azfake.PagerResponder[armcognitiveservices.WorkbenchesClientListResponse]]
 	beginRestart        *tracker[azfake.PollerResponder[armcognitiveservices.WorkbenchesClientRestartResponse]]
 	beginStart          *tracker[azfake.PollerResponder[armcognitiveservices.WorkbenchesClientStartResponse]]
 	beginStop           *tracker[azfake.PollerResponder[armcognitiveservices.WorkbenchesClientStopResponse]]
 	beginUpdate         *tracker[azfake.PollerResponder[armcognitiveservices.WorkbenchesClientUpdateResponse]]
+	newListPager        *tracker[azfake.PagerResponder[armcognitiveservices.WorkbenchesClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for WorkbenchesServerTransport.
@@ -108,10 +108,6 @@ func (w *WorkbenchesServerTransport) dispatchToMethodFake(req *http.Request, met
 				res.resp, res.err = w.dispatchBeginCreateOrUpdate(req)
 			case "WorkbenchesClient.BeginDelete":
 				res.resp, res.err = w.dispatchBeginDelete(req)
-			case "WorkbenchesClient.Get":
-				res.resp, res.err = w.dispatchGet(req)
-			case "WorkbenchesClient.NewListPager":
-				res.resp, res.err = w.dispatchNewListPager(req)
 			case "WorkbenchesClient.BeginRestart":
 				res.resp, res.err = w.dispatchBeginRestart(req)
 			case "WorkbenchesClient.BeginStart":
@@ -120,6 +116,10 @@ func (w *WorkbenchesServerTransport) dispatchToMethodFake(req *http.Request, met
 				res.resp, res.err = w.dispatchBeginStop(req)
 			case "WorkbenchesClient.BeginUpdate":
 				res.resp, res.err = w.dispatchBeginUpdate(req)
+			case "WorkbenchesClient.Get":
+				res.resp, res.err = w.dispatchGet(req)
+			case "WorkbenchesClient.NewListPager":
+				res.resp, res.err = w.dispatchNewListPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -241,92 +241,6 @@ func (w *WorkbenchesServerTransport) dispatchBeginDelete(req *http.Request) (*ht
 		w.beginDelete.remove(req)
 	}
 
-	return resp, nil
-}
-
-func (w *WorkbenchesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if w.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.CognitiveServices/accounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/projects/(?P<projectName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/workbenches/(?P<workbenchName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 6 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
-	if err != nil {
-		return nil, err
-	}
-	projectNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("projectName")])
-	if err != nil {
-		return nil, err
-	}
-	workbenchNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("workbenchName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := w.srv.Get(req.Context(), resourceGroupNameParam, accountNameParam, projectNameParam, workbenchNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Workbench, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (w *WorkbenchesServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if w.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := w.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.CognitiveServices/accounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/projects/(?P<projectName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/workbenches`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
-		if err != nil {
-			return nil, err
-		}
-		projectNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("projectName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := w.srv.NewListPager(resourceGroupNameParam, accountNameParam, projectNameParam, nil)
-		newListPager = &resp
-		w.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armcognitiveservices.WorkbenchesClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		w.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		w.newListPager.remove(req)
-	}
 	return resp, nil
 }
 
@@ -539,6 +453,92 @@ func (w *WorkbenchesServerTransport) dispatchBeginUpdate(req *http.Request) (*ht
 		w.beginUpdate.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (w *WorkbenchesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if w.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.CognitiveServices/accounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/projects/(?P<projectName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/workbenches/(?P<workbenchName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 6 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+	if err != nil {
+		return nil, err
+	}
+	projectNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("projectName")])
+	if err != nil {
+		return nil, err
+	}
+	workbenchNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("workbenchName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := w.srv.Get(req.Context(), resourceGroupNameParam, accountNameParam, projectNameParam, workbenchNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Workbench, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (w *WorkbenchesServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if w.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := w.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.CognitiveServices/accounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/projects/(?P<projectName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/workbenches`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+		if err != nil {
+			return nil, err
+		}
+		projectNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("projectName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := w.srv.NewListPager(resourceGroupNameParam, accountNameParam, projectNameParam, nil)
+		newListPager = &resp
+		w.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armcognitiveservices.WorkbenchesClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		w.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPager) {
+		w.newListPager.remove(req)
+	}
 	return resp, nil
 }
 

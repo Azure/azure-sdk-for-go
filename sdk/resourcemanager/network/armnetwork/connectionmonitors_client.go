@@ -69,7 +69,7 @@ func (client *ConnectionMonitorsClient) BeginCreateOrUpdate(ctx context.Context,
 	}
 }
 
-// CreateOrUpdate - Create or update a connection monitor.
+// createOrUpdate - Create or update a connection monitor.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ConnectionMonitorsClient) createOrUpdate(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionMonitorName string, parameters ConnectionMonitor, options *ConnectionMonitorsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -91,7 +91,7 @@ func (client *ConnectionMonitorsClient) createOrUpdate(ctx context.Context, reso
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *ConnectionMonitorsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionMonitorName string, parameters ConnectionMonitor, options *ConnectionMonitorsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkWatchers/{networkWatcherName}/connectionMonitors/{connectionMonitorName}"
 	if client.subscriptionID == "" {
@@ -152,7 +152,7 @@ func (client *ConnectionMonitorsClient) BeginDelete(ctx context.Context, resourc
 	}
 }
 
-// Delete - Deletes the specified connection monitor.
+// deleteOperation - Deletes the specified connection monitor.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ConnectionMonitorsClient) deleteOperation(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionMonitorName string, options *ConnectionMonitorsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -174,7 +174,7 @@ func (client *ConnectionMonitorsClient) deleteOperation(ctx context.Context, res
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *ConnectionMonitorsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionMonitorName string, _ *ConnectionMonitorsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkWatchers/{networkWatcherName}/connectionMonitors/{connectionMonitorName}"
 	if client.subscriptionID == "" {
@@ -194,6 +194,81 @@ func (client *ConnectionMonitorsClient) deleteCreateRequest(ctx context.Context,
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{connectionMonitorName}", url.PathEscape(connectionMonitorName))
 	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginStop - Stops the specified connection monitor.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - networkWatcherName - The name of the network watcher.
+//   - connectionMonitorName - The name of the connection monitor.
+//   - options - ConnectionMonitorsClientBeginStopOptions contains the optional parameters for the ConnectionMonitorsClient.BeginStop
+//     method.
+func (client *ConnectionMonitorsClient) BeginStop(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionMonitorName string, options *ConnectionMonitorsClientBeginStopOptions) (*runtime.Poller[ConnectionMonitorsClientStopResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.stop(ctx, resourceGroupName, networkWatcherName, connectionMonitorName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ConnectionMonitorsClientStopResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ConnectionMonitorsClientStopResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// stop - Stops the specified connection monitor.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ConnectionMonitorsClient) stop(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionMonitorName string, options *ConnectionMonitorsClientBeginStopOptions) (*http.Response, error) {
+	var err error
+	const operationName = "ConnectionMonitorsClient.BeginStop"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.stopCreateRequest(ctx, resourceGroupName, networkWatcherName, connectionMonitorName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// stopCreateRequest creates the stop request.
+func (client *ConnectionMonitorsClient) stopCreateRequest(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionMonitorName string, _ *ConnectionMonitorsClientBeginStopOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkWatchers/{networkWatcherName}/connectionMonitors/{connectionMonitorName}/stop"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if networkWatcherName == "" {
+		return nil, errors.New("parameter networkWatcherName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{networkWatcherName}", url.PathEscape(networkWatcherName))
+	if connectionMonitorName == "" {
+		return nil, errors.New("parameter connectionMonitorName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{connectionMonitorName}", url.PathEscape(connectionMonitorName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -343,81 +418,6 @@ func (client *ConnectionMonitorsClient) listHandleResponse(resp *http.Response, 
 		return ConnectionMonitorsClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginStop - Stops the specified connection monitor.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - networkWatcherName - The name of the network watcher.
-//   - connectionMonitorName - The name of the connection monitor.
-//   - options - ConnectionMonitorsClientBeginStopOptions contains the optional parameters for the ConnectionMonitorsClient.BeginStop
-//     method.
-func (client *ConnectionMonitorsClient) BeginStop(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionMonitorName string, options *ConnectionMonitorsClientBeginStopOptions) (*runtime.Poller[ConnectionMonitorsClientStopResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.stop(ctx, resourceGroupName, networkWatcherName, connectionMonitorName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ConnectionMonitorsClientStopResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ConnectionMonitorsClientStopResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Stop - Stops the specified connection monitor.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *ConnectionMonitorsClient) stop(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionMonitorName string, options *ConnectionMonitorsClientBeginStopOptions) (*http.Response, error) {
-	var err error
-	const operationName = "ConnectionMonitorsClient.BeginStop"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.stopCreateRequest(ctx, resourceGroupName, networkWatcherName, connectionMonitorName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// stopCreateRequest creates the Stop request.
-func (client *ConnectionMonitorsClient) stopCreateRequest(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionMonitorName string, _ *ConnectionMonitorsClientBeginStopOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkWatchers/{networkWatcherName}/connectionMonitors/{connectionMonitorName}/stop"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if networkWatcherName == "" {
-		return nil, errors.New("parameter networkWatcherName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{networkWatcherName}", url.PathEscape(networkWatcherName))
-	if connectionMonitorName == "" {
-		return nil, errors.New("parameter connectionMonitorName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{connectionMonitorName}", url.PathEscape(connectionMonitorName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	return req, nil
 }
 
 // UpdateTags - Update tags of the specified connection monitor.

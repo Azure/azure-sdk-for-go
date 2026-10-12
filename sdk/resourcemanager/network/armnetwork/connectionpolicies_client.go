@@ -70,7 +70,7 @@ func (client *ConnectionPoliciesClient) BeginCreateOrUpdate(ctx context.Context,
 	}
 }
 
-// CreateOrUpdate - Creates a ConnectionPolicy if it doesn't exist else updates the existing one.
+// createOrUpdate - Creates a ConnectionPolicy if it doesn't exist else updates the existing one.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ConnectionPoliciesClient) createOrUpdate(ctx context.Context, resourceGroupName string, virtualHubName string, connectionPolicyName string, resource ConnectionPolicy, options *ConnectionPoliciesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -92,7 +92,7 @@ func (client *ConnectionPoliciesClient) createOrUpdate(ctx context.Context, reso
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *ConnectionPoliciesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, virtualHubName string, connectionPolicyName string, resource ConnectionPolicy, _ *ConnectionPoliciesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs/{virtualHubName}/connectionPolicies/{connectionPolicyName}"
 	if client.subscriptionID == "" {
@@ -151,7 +151,7 @@ func (client *ConnectionPoliciesClient) BeginDelete(ctx context.Context, resourc
 	}
 }
 
-// Delete - Deletes a ConnectionPolicy.
+// deleteOperation - Deletes a ConnectionPolicy.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ConnectionPoliciesClient) deleteOperation(ctx context.Context, resourceGroupName string, virtualHubName string, connectionPolicyName string, options *ConnectionPoliciesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -173,7 +173,7 @@ func (client *ConnectionPoliciesClient) deleteOperation(ctx context.Context, res
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *ConnectionPoliciesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, virtualHubName string, connectionPolicyName string, _ *ConnectionPoliciesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs/{virtualHubName}/connectionPolicies/{connectionPolicyName}"
 	if client.subscriptionID == "" {

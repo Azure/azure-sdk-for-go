@@ -69,7 +69,7 @@ func (client *IdentityBindingsClient) BeginCreateOrUpdate(ctx context.Context, r
 	}
 }
 
-// CreateOrUpdate - Creates or updates an identity binding in the specified managed cluster.
+// createOrUpdate - Creates or updates an identity binding in the specified managed cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *IdentityBindingsClient) createOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, identityBindingName string, parameters IdentityBinding, options *IdentityBindingsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -91,7 +91,7 @@ func (client *IdentityBindingsClient) createOrUpdate(ctx context.Context, resour
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *IdentityBindingsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, identityBindingName string, parameters IdentityBinding, _ *IdentityBindingsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/identityBindings/{identityBindingName}"
 	if client.subscriptionID == "" {
@@ -149,7 +149,7 @@ func (client *IdentityBindingsClient) BeginDelete(ctx context.Context, resourceG
 	}
 }
 
-// Delete - Deletes an identity binding in the specified managed cluster.
+// deleteOperation - Deletes an identity binding in the specified managed cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *IdentityBindingsClient) deleteOperation(ctx context.Context, resourceGroupName string, resourceName string, identityBindingName string, options *IdentityBindingsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -171,7 +171,7 @@ func (client *IdentityBindingsClient) deleteOperation(ctx context.Context, resou
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *IdentityBindingsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, identityBindingName string, _ *IdentityBindingsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/identityBindings/{identityBindingName}"
 	if client.subscriptionID == "" {

@@ -68,7 +68,7 @@ func (client *PrivateEndpointsClient) BeginCreateOrUpdate(ctx context.Context, r
 	}
 }
 
-// CreateOrUpdate - Creates or updates an private endpoint in the specified resource group.
+// createOrUpdate - Creates or updates an private endpoint in the specified resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *PrivateEndpointsClient) createOrUpdate(ctx context.Context, resourceGroupName string, privateEndpointName string, parameters PrivateEndpoint, options *PrivateEndpointsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -90,7 +90,7 @@ func (client *PrivateEndpointsClient) createOrUpdate(ctx context.Context, resour
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *PrivateEndpointsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, privateEndpointName string, parameters PrivateEndpoint, _ *PrivateEndpointsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateEndpoints/{privateEndpointName}"
 	if client.subscriptionID == "" {
@@ -143,7 +143,7 @@ func (client *PrivateEndpointsClient) BeginDelete(ctx context.Context, resourceG
 	}
 }
 
-// Delete - Deletes the specified private endpoint.
+// deleteOperation - Deletes the specified private endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *PrivateEndpointsClient) deleteOperation(ctx context.Context, resourceGroupName string, privateEndpointName string, options *PrivateEndpointsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -165,7 +165,7 @@ func (client *PrivateEndpointsClient) deleteOperation(ctx context.Context, resou
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *PrivateEndpointsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, privateEndpointName string, _ *PrivateEndpointsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateEndpoints/{privateEndpointName}"
 	if client.subscriptionID == "" {
@@ -253,6 +253,73 @@ func (client *PrivateEndpointsClient) getHandleResponse(resp *http.Response, suc
 	return result, nil
 }
 
+// NewListBySubscriptionPager - Gets all private endpoints in a subscription.
+//   - options - PrivateEndpointsClientListBySubscriptionOptions contains the optional parameters for the PrivateEndpointsClient.NewListBySubscriptionPager
+//     method.
+func (client *PrivateEndpointsClient) NewListBySubscriptionPager(options *PrivateEndpointsClientListBySubscriptionOptions) *runtime.Pager[PrivateEndpointsClientListBySubscriptionResponse] {
+	return runtime.NewPager(runtime.PagingHandler[PrivateEndpointsClientListBySubscriptionResponse]{
+		More: func(page PrivateEndpointsClientListBySubscriptionResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *PrivateEndpointsClientListBySubscriptionResponse) (PrivateEndpointsClientListBySubscriptionResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "PrivateEndpointsClient.NewListBySubscriptionPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listBySubscriptionCreateRequest(ctx, nextLink, options)
+			if err != nil {
+				return PrivateEndpointsClientListBySubscriptionResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return PrivateEndpointsClientListBySubscriptionResponse{}, err
+			}
+			return client.listBySubscriptionHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listBySubscriptionCreateRequest creates the ListBySubscription request.
+func (client *PrivateEndpointsClient) listBySubscriptionCreateRequest(ctx context.Context, nextLink string, _ *PrivateEndpointsClientListBySubscriptionOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Network/privateEndpoints"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260101)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// listBySubscriptionHandleResponse handles the ListBySubscription response.
+func (client *PrivateEndpointsClient) listBySubscriptionHandleResponse(resp *http.Response, successCodes ...int) (PrivateEndpointsClientListBySubscriptionResponse, error) {
+	result := PrivateEndpointsClientListBySubscriptionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateEndpointListResult); err != nil {
+		return PrivateEndpointsClientListBySubscriptionResponse{}, err
+	}
+	return result, nil
+}
+
 // NewListPager - Gets all private endpoints in a resource group.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - PrivateEndpointsClientListOptions contains the optional parameters for the PrivateEndpointsClient.NewListPager
@@ -321,73 +388,6 @@ func (client *PrivateEndpointsClient) listHandleResponse(resp *http.Response, su
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateEndpointListResult); err != nil {
 		return PrivateEndpointsClientListResponse{}, err
-	}
-	return result, nil
-}
-
-// NewListBySubscriptionPager - Gets all private endpoints in a subscription.
-//   - options - PrivateEndpointsClientListBySubscriptionOptions contains the optional parameters for the PrivateEndpointsClient.NewListBySubscriptionPager
-//     method.
-func (client *PrivateEndpointsClient) NewListBySubscriptionPager(options *PrivateEndpointsClientListBySubscriptionOptions) *runtime.Pager[PrivateEndpointsClientListBySubscriptionResponse] {
-	return runtime.NewPager(runtime.PagingHandler[PrivateEndpointsClientListBySubscriptionResponse]{
-		More: func(page PrivateEndpointsClientListBySubscriptionResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *PrivateEndpointsClientListBySubscriptionResponse) (PrivateEndpointsClientListBySubscriptionResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "PrivateEndpointsClient.NewListBySubscriptionPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			req, err := client.listBySubscriptionCreateRequest(ctx, nextLink, options)
-			if err != nil {
-				return PrivateEndpointsClientListBySubscriptionResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return PrivateEndpointsClientListBySubscriptionResponse{}, err
-			}
-			return client.listBySubscriptionHandleResponse(resp, http.StatusOK)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *PrivateEndpointsClient) listBySubscriptionCreateRequest(ctx context.Context, nextLink string, _ *PrivateEndpointsClientListBySubscriptionOptions) (*policy.Request, error) {
-	firstPage := nextLink == ""
-	var req *policy.Request
-	var err error
-	if firstPage {
-		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Network/privateEndpoints"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter subscriptionID cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	} else {
-		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
-	}
-	if err != nil {
-		return nil, err
-	}
-	if firstPage {
-		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260101)
-		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-		req.Raw().Header["Accept"] = []string{"application/json"}
-	}
-	return req, nil
-}
-
-// listBySubscriptionHandleResponse handles the ListBySubscription response.
-func (client *PrivateEndpointsClient) listBySubscriptionHandleResponse(resp *http.Response, successCodes ...int) (PrivateEndpointsClientListBySubscriptionResponse, error) {
-	result := PrivateEndpointsClientListBySubscriptionResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateEndpointListResult); err != nil {
-		return PrivateEndpointsClientListBySubscriptionResponse{}, err
 	}
 	return result, nil
 }

@@ -33,13 +33,13 @@ type VirtualRoutersServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, virtualRouterName string, options *armnetwork.VirtualRoutersClientGetOptions) (resp azfake.Responder[armnetwork.VirtualRoutersClientGetResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method VirtualRoutersClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(options *armnetwork.VirtualRoutersClientListOptions) (resp azfake.PagerResponder[armnetwork.VirtualRoutersClientListResponse])
-
 	// NewListByResourceGroupPager is the fake for method VirtualRoutersClient.NewListByResourceGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByResourceGroupPager func(resourceGroupName string, options *armnetwork.VirtualRoutersClientListByResourceGroupOptions) (resp azfake.PagerResponder[armnetwork.VirtualRoutersClientListByResourceGroupResponse])
+
+	// NewListPager is the fake for method VirtualRoutersClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(options *armnetwork.VirtualRoutersClientListOptions) (resp azfake.PagerResponder[armnetwork.VirtualRoutersClientListResponse])
 }
 
 // NewVirtualRoutersServerTransport creates a new instance of VirtualRoutersServerTransport with the provided implementation.
@@ -50,8 +50,8 @@ func NewVirtualRoutersServerTransport(srv *VirtualRoutersServer) *VirtualRouters
 		srv:                         srv,
 		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armnetwork.VirtualRoutersClientCreateOrUpdateResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armnetwork.VirtualRoutersClientDeleteResponse]](),
-		newListPager:                newTracker[azfake.PagerResponder[armnetwork.VirtualRoutersClientListResponse]](),
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armnetwork.VirtualRoutersClientListByResourceGroupResponse]](),
+		newListPager:                newTracker[azfake.PagerResponder[armnetwork.VirtualRoutersClientListResponse]](),
 	}
 }
 
@@ -61,8 +61,8 @@ type VirtualRoutersServerTransport struct {
 	srv                         *VirtualRoutersServer
 	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armnetwork.VirtualRoutersClientCreateOrUpdateResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armnetwork.VirtualRoutersClientDeleteResponse]]
-	newListPager                *tracker[azfake.PagerResponder[armnetwork.VirtualRoutersClientListResponse]]
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armnetwork.VirtualRoutersClientListByResourceGroupResponse]]
+	newListPager                *tracker[azfake.PagerResponder[armnetwork.VirtualRoutersClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for VirtualRoutersServerTransport.
@@ -92,10 +92,10 @@ func (v *VirtualRoutersServerTransport) dispatchToMethodFake(req *http.Request, 
 				res.resp, res.err = v.dispatchBeginDelete(req)
 			case "VirtualRoutersClient.Get":
 				res.resp, res.err = v.dispatchGet(req)
-			case "VirtualRoutersClient.NewListPager":
-				res.resp, res.err = v.dispatchNewListPager(req)
 			case "VirtualRoutersClient.NewListByResourceGroupPager":
 				res.resp, res.err = v.dispatchNewListByResourceGroupPager(req)
+			case "VirtualRoutersClient.NewListPager":
+				res.resp, res.err = v.dispatchNewListPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -245,39 +245,6 @@ func (v *VirtualRoutersServerTransport) dispatchGet(req *http.Request) (*http.Re
 	return resp, nil
 }
 
-func (v *VirtualRoutersServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if v.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := v.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/virtualRouters`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := v.srv.NewListPager(nil)
-		newListPager = &resp
-		v.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armnetwork.VirtualRoutersClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		v.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		v.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (v *VirtualRoutersServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
 	if v.srv.NewListByResourceGroupPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
@@ -311,6 +278,39 @@ func (v *VirtualRoutersServerTransport) dispatchNewListByResourceGroupPager(req 
 	}
 	if !server.PagerResponderMore(newListByResourceGroupPager) {
 		v.newListByResourceGroupPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (v *VirtualRoutersServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if v.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := v.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/virtualRouters`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resp := v.srv.NewListPager(nil)
+		newListPager = &resp
+		v.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armnetwork.VirtualRoutersClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		v.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPager) {
+		v.newListPager.remove(req)
 	}
 	return resp, nil
 }

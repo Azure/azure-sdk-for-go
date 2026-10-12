@@ -70,7 +70,7 @@ func (client *WorkbenchesClient) BeginCreateOrUpdate(ctx context.Context, resour
 	}
 }
 
-// CreateOrUpdate - Creates or updates a workbench associated with the project.
+// createOrUpdate - Creates or updates a workbench associated with the project.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *WorkbenchesClient) createOrUpdate(ctx context.Context, resourceGroupName string, accountName string, projectName string, workbenchName string, resource Workbench, options *WorkbenchesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -92,7 +92,7 @@ func (client *WorkbenchesClient) createOrUpdate(ctx context.Context, resourceGro
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *WorkbenchesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, projectName string, workbenchName string, resource Workbench, _ *WorkbenchesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/projects/{projectName}/workbenches/{workbenchName}"
 	if client.subscriptionID == "" {
@@ -154,7 +154,7 @@ func (client *WorkbenchesClient) BeginDelete(ctx context.Context, resourceGroupN
 	}
 }
 
-// Delete - Deletes the specified workbench associated with the project.
+// deleteOperation - Deletes the specified workbench associated with the project.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *WorkbenchesClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, projectName string, workbenchName string, options *WorkbenchesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -176,7 +176,7 @@ func (client *WorkbenchesClient) deleteOperation(ctx context.Context, resourceGr
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *WorkbenchesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, projectName string, workbenchName string, _ *WorkbenchesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/projects/{projectName}/workbenches/{workbenchName}"
 	if client.subscriptionID == "" {
@@ -206,6 +206,341 @@ func (client *WorkbenchesClient) deleteCreateRequest(ctx context.Context, resour
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", version20260715Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginRestart - Restarts a running workbench resource.
+// This is a long-running operation that returns 202 Accepted.
+// Returns 204 if the workbench is already in the target state.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accountName - The name of Cognitive Services account.
+//   - projectName - The name of Cognitive Services account's project.
+//   - workbenchName - The name of the workbench associated with the project.
+//   - options - WorkbenchesClientBeginRestartOptions contains the optional parameters for the WorkbenchesClient.BeginRestart
+//     method.
+func (client *WorkbenchesClient) BeginRestart(ctx context.Context, resourceGroupName string, accountName string, projectName string, workbenchName string, options *WorkbenchesClientBeginRestartOptions) (*runtime.Poller[WorkbenchesClientRestartResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.restart(ctx, resourceGroupName, accountName, projectName, workbenchName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[WorkbenchesClientRestartResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[WorkbenchesClientRestartResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// restart - Restarts a running workbench resource.
+// This is a long-running operation that returns 202 Accepted.
+// Returns 204 if the workbench is already in the target state.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *WorkbenchesClient) restart(ctx context.Context, resourceGroupName string, accountName string, projectName string, workbenchName string, options *WorkbenchesClientBeginRestartOptions) (*http.Response, error) {
+	var err error
+	const operationName = "WorkbenchesClient.BeginRestart"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.restartCreateRequest(ctx, resourceGroupName, accountName, projectName, workbenchName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// restartCreateRequest creates the restart request.
+func (client *WorkbenchesClient) restartCreateRequest(ctx context.Context, resourceGroupName string, accountName string, projectName string, workbenchName string, _ *WorkbenchesClientBeginRestartOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/projects/{projectName}/workbenches/{workbenchName}/restart"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if accountName == "" {
+		return nil, errors.New("parameter accountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+	if projectName == "" {
+		return nil, errors.New("parameter projectName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{projectName}", url.PathEscape(projectName))
+	if workbenchName == "" {
+		return nil, errors.New("parameter workbenchName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{workbenchName}", url.PathEscape(workbenchName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260715Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginStart - Starts a stopped workbench resource.
+// This is a long-running operation that returns 202 Accepted.
+// Returns 204 if the workbench is already in the target state.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accountName - The name of Cognitive Services account.
+//   - projectName - The name of Cognitive Services account's project.
+//   - workbenchName - The name of the workbench associated with the project.
+//   - options - WorkbenchesClientBeginStartOptions contains the optional parameters for the WorkbenchesClient.BeginStart method.
+func (client *WorkbenchesClient) BeginStart(ctx context.Context, resourceGroupName string, accountName string, projectName string, workbenchName string, options *WorkbenchesClientBeginStartOptions) (*runtime.Poller[WorkbenchesClientStartResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.start(ctx, resourceGroupName, accountName, projectName, workbenchName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[WorkbenchesClientStartResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[WorkbenchesClientStartResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// start - Starts a stopped workbench resource.
+// This is a long-running operation that returns 202 Accepted.
+// Returns 204 if the workbench is already in the target state.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *WorkbenchesClient) start(ctx context.Context, resourceGroupName string, accountName string, projectName string, workbenchName string, options *WorkbenchesClientBeginStartOptions) (*http.Response, error) {
+	var err error
+	const operationName = "WorkbenchesClient.BeginStart"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.startCreateRequest(ctx, resourceGroupName, accountName, projectName, workbenchName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// startCreateRequest creates the start request.
+func (client *WorkbenchesClient) startCreateRequest(ctx context.Context, resourceGroupName string, accountName string, projectName string, workbenchName string, _ *WorkbenchesClientBeginStartOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/projects/{projectName}/workbenches/{workbenchName}/start"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if accountName == "" {
+		return nil, errors.New("parameter accountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+	if projectName == "" {
+		return nil, errors.New("parameter projectName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{projectName}", url.PathEscape(projectName))
+	if workbenchName == "" {
+		return nil, errors.New("parameter workbenchName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{workbenchName}", url.PathEscape(workbenchName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260715Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginStop - Stops a running workbench resource.
+// This is a long-running operation that returns 202 Accepted.
+// Returns 204 if the workbench is already in the target state.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accountName - The name of Cognitive Services account.
+//   - projectName - The name of Cognitive Services account's project.
+//   - workbenchName - The name of the workbench associated with the project.
+//   - options - WorkbenchesClientBeginStopOptions contains the optional parameters for the WorkbenchesClient.BeginStop method.
+func (client *WorkbenchesClient) BeginStop(ctx context.Context, resourceGroupName string, accountName string, projectName string, workbenchName string, options *WorkbenchesClientBeginStopOptions) (*runtime.Poller[WorkbenchesClientStopResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.stop(ctx, resourceGroupName, accountName, projectName, workbenchName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[WorkbenchesClientStopResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[WorkbenchesClientStopResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// stop - Stops a running workbench resource.
+// This is a long-running operation that returns 202 Accepted.
+// Returns 204 if the workbench is already in the target state.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *WorkbenchesClient) stop(ctx context.Context, resourceGroupName string, accountName string, projectName string, workbenchName string, options *WorkbenchesClientBeginStopOptions) (*http.Response, error) {
+	var err error
+	const operationName = "WorkbenchesClient.BeginStop"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.stopCreateRequest(ctx, resourceGroupName, accountName, projectName, workbenchName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// stopCreateRequest creates the stop request.
+func (client *WorkbenchesClient) stopCreateRequest(ctx context.Context, resourceGroupName string, accountName string, projectName string, workbenchName string, _ *WorkbenchesClientBeginStopOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/projects/{projectName}/workbenches/{workbenchName}/stop"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if accountName == "" {
+		return nil, errors.New("parameter accountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+	if projectName == "" {
+		return nil, errors.New("parameter projectName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{projectName}", url.PathEscape(projectName))
+	if workbenchName == "" {
+		return nil, errors.New("parameter workbenchName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{workbenchName}", url.PathEscape(workbenchName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260715Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginUpdate - Updates a workbench associated with the project.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accountName - The name of Cognitive Services account.
+//   - projectName - The name of Cognitive Services account's project.
+//   - workbenchName - The name of the workbench associated with the project.
+//   - properties - The workbench properties to update.
+//   - options - WorkbenchesClientBeginUpdateOptions contains the optional parameters for the WorkbenchesClient.BeginUpdate method.
+func (client *WorkbenchesClient) BeginUpdate(ctx context.Context, resourceGroupName string, accountName string, projectName string, workbenchName string, properties Workbench, options *WorkbenchesClientBeginUpdateOptions) (*runtime.Poller[WorkbenchesClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, accountName, projectName, workbenchName, properties, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[WorkbenchesClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[WorkbenchesClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Updates a workbench associated with the project.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *WorkbenchesClient) update(ctx context.Context, resourceGroupName string, accountName string, projectName string, workbenchName string, properties Workbench, options *WorkbenchesClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "WorkbenchesClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, accountName, projectName, workbenchName, properties, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *WorkbenchesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, projectName string, workbenchName string, properties Workbench, _ *WorkbenchesClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/projects/{projectName}/workbenches/{workbenchName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if accountName == "" {
+		return nil, errors.New("parameter accountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+	if projectName == "" {
+		return nil, errors.New("parameter projectName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{projectName}", url.PathEscape(projectName))
+	if workbenchName == "" {
+		return nil, errors.New("parameter workbenchName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{workbenchName}", url.PathEscape(workbenchName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260715Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, properties); err != nil {
+		return nil, err
+	}
 	return req, nil
 }
 
@@ -358,339 +693,4 @@ func (client *WorkbenchesClient) listHandleResponse(resp *http.Response, success
 		return WorkbenchesClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginRestart - Restarts a running workbench resource.
-// This is a long-running operation that returns 202 Accepted.
-// Returns 204 if the workbench is already in the target state.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - accountName - The name of Cognitive Services account.
-//   - projectName - The name of Cognitive Services account's project.
-//   - workbenchName - The name of the workbench associated with the project.
-//   - options - WorkbenchesClientBeginRestartOptions contains the optional parameters for the WorkbenchesClient.BeginRestart
-//     method.
-func (client *WorkbenchesClient) BeginRestart(ctx context.Context, resourceGroupName string, accountName string, projectName string, workbenchName string, options *WorkbenchesClientBeginRestartOptions) (*runtime.Poller[WorkbenchesClientRestartResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.restart(ctx, resourceGroupName, accountName, projectName, workbenchName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[WorkbenchesClientRestartResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[WorkbenchesClientRestartResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Restart - Restarts a running workbench resource.
-// This is a long-running operation that returns 202 Accepted.
-// Returns 204 if the workbench is already in the target state.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *WorkbenchesClient) restart(ctx context.Context, resourceGroupName string, accountName string, projectName string, workbenchName string, options *WorkbenchesClientBeginRestartOptions) (*http.Response, error) {
-	var err error
-	const operationName = "WorkbenchesClient.BeginRestart"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.restartCreateRequest(ctx, resourceGroupName, accountName, projectName, workbenchName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// restartCreateRequest creates the Restart request.
-func (client *WorkbenchesClient) restartCreateRequest(ctx context.Context, resourceGroupName string, accountName string, projectName string, workbenchName string, _ *WorkbenchesClientBeginRestartOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/projects/{projectName}/workbenches/{workbenchName}/restart"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if accountName == "" {
-		return nil, errors.New("parameter accountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	if projectName == "" {
-		return nil, errors.New("parameter projectName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{projectName}", url.PathEscape(projectName))
-	if workbenchName == "" {
-		return nil, errors.New("parameter workbenchName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{workbenchName}", url.PathEscape(workbenchName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260715Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	return req, nil
-}
-
-// BeginStart - Starts a stopped workbench resource.
-// This is a long-running operation that returns 202 Accepted.
-// Returns 204 if the workbench is already in the target state.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - accountName - The name of Cognitive Services account.
-//   - projectName - The name of Cognitive Services account's project.
-//   - workbenchName - The name of the workbench associated with the project.
-//   - options - WorkbenchesClientBeginStartOptions contains the optional parameters for the WorkbenchesClient.BeginStart method.
-func (client *WorkbenchesClient) BeginStart(ctx context.Context, resourceGroupName string, accountName string, projectName string, workbenchName string, options *WorkbenchesClientBeginStartOptions) (*runtime.Poller[WorkbenchesClientStartResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.start(ctx, resourceGroupName, accountName, projectName, workbenchName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[WorkbenchesClientStartResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[WorkbenchesClientStartResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Start - Starts a stopped workbench resource.
-// This is a long-running operation that returns 202 Accepted.
-// Returns 204 if the workbench is already in the target state.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *WorkbenchesClient) start(ctx context.Context, resourceGroupName string, accountName string, projectName string, workbenchName string, options *WorkbenchesClientBeginStartOptions) (*http.Response, error) {
-	var err error
-	const operationName = "WorkbenchesClient.BeginStart"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.startCreateRequest(ctx, resourceGroupName, accountName, projectName, workbenchName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// startCreateRequest creates the Start request.
-func (client *WorkbenchesClient) startCreateRequest(ctx context.Context, resourceGroupName string, accountName string, projectName string, workbenchName string, _ *WorkbenchesClientBeginStartOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/projects/{projectName}/workbenches/{workbenchName}/start"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if accountName == "" {
-		return nil, errors.New("parameter accountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	if projectName == "" {
-		return nil, errors.New("parameter projectName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{projectName}", url.PathEscape(projectName))
-	if workbenchName == "" {
-		return nil, errors.New("parameter workbenchName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{workbenchName}", url.PathEscape(workbenchName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260715Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	return req, nil
-}
-
-// BeginStop - Stops a running workbench resource.
-// This is a long-running operation that returns 202 Accepted.
-// Returns 204 if the workbench is already in the target state.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - accountName - The name of Cognitive Services account.
-//   - projectName - The name of Cognitive Services account's project.
-//   - workbenchName - The name of the workbench associated with the project.
-//   - options - WorkbenchesClientBeginStopOptions contains the optional parameters for the WorkbenchesClient.BeginStop method.
-func (client *WorkbenchesClient) BeginStop(ctx context.Context, resourceGroupName string, accountName string, projectName string, workbenchName string, options *WorkbenchesClientBeginStopOptions) (*runtime.Poller[WorkbenchesClientStopResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.stop(ctx, resourceGroupName, accountName, projectName, workbenchName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[WorkbenchesClientStopResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[WorkbenchesClientStopResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Stop - Stops a running workbench resource.
-// This is a long-running operation that returns 202 Accepted.
-// Returns 204 if the workbench is already in the target state.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *WorkbenchesClient) stop(ctx context.Context, resourceGroupName string, accountName string, projectName string, workbenchName string, options *WorkbenchesClientBeginStopOptions) (*http.Response, error) {
-	var err error
-	const operationName = "WorkbenchesClient.BeginStop"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.stopCreateRequest(ctx, resourceGroupName, accountName, projectName, workbenchName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// stopCreateRequest creates the Stop request.
-func (client *WorkbenchesClient) stopCreateRequest(ctx context.Context, resourceGroupName string, accountName string, projectName string, workbenchName string, _ *WorkbenchesClientBeginStopOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/projects/{projectName}/workbenches/{workbenchName}/stop"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if accountName == "" {
-		return nil, errors.New("parameter accountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	if projectName == "" {
-		return nil, errors.New("parameter projectName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{projectName}", url.PathEscape(projectName))
-	if workbenchName == "" {
-		return nil, errors.New("parameter workbenchName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{workbenchName}", url.PathEscape(workbenchName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260715Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	return req, nil
-}
-
-// BeginUpdate - Updates a workbench associated with the project.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - accountName - The name of Cognitive Services account.
-//   - projectName - The name of Cognitive Services account's project.
-//   - workbenchName - The name of the workbench associated with the project.
-//   - properties - The workbench properties to update.
-//   - options - WorkbenchesClientBeginUpdateOptions contains the optional parameters for the WorkbenchesClient.BeginUpdate method.
-func (client *WorkbenchesClient) BeginUpdate(ctx context.Context, resourceGroupName string, accountName string, projectName string, workbenchName string, properties Workbench, options *WorkbenchesClientBeginUpdateOptions) (*runtime.Poller[WorkbenchesClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, accountName, projectName, workbenchName, properties, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[WorkbenchesClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[WorkbenchesClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Updates a workbench associated with the project.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *WorkbenchesClient) update(ctx context.Context, resourceGroupName string, accountName string, projectName string, workbenchName string, properties Workbench, options *WorkbenchesClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "WorkbenchesClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, accountName, projectName, workbenchName, properties, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *WorkbenchesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, projectName string, workbenchName string, properties Workbench, _ *WorkbenchesClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/projects/{projectName}/workbenches/{workbenchName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if accountName == "" {
-		return nil, errors.New("parameter accountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	if projectName == "" {
-		return nil, errors.New("parameter projectName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{projectName}", url.PathEscape(projectName))
-	if workbenchName == "" {
-		return nil, errors.New("parameter workbenchName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{workbenchName}", url.PathEscape(workbenchName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260715Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, properties); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

@@ -69,7 +69,7 @@ func (client *ComputesClient) BeginCreateOrUpdate(ctx context.Context, resourceG
 	}
 }
 
-// CreateOrUpdate - Creates or updates a compute associated with the Cognitive Services account.
+// createOrUpdate - Creates or updates a compute associated with the Cognitive Services account.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ComputesClient) createOrUpdate(ctx context.Context, resourceGroupName string, accountName string, computeName string, resource Compute, options *ComputesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -91,7 +91,7 @@ func (client *ComputesClient) createOrUpdate(ctx context.Context, resourceGroupN
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *ComputesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, computeName string, resource Compute, _ *ComputesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/computes/{computeName}"
 	if client.subscriptionID == "" {
@@ -147,7 +147,7 @@ func (client *ComputesClient) BeginDelete(ctx context.Context, resourceGroupName
 	}
 }
 
-// Delete - Deletes the specified compute associated with the Cognitive Services account.
+// deleteOperation - Deletes the specified compute associated with the Cognitive Services account.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ComputesClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, computeName string, options *ComputesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -169,7 +169,7 @@ func (client *ComputesClient) deleteOperation(ctx context.Context, resourceGroup
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *ComputesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, computeName string, _ *ComputesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/computes/{computeName}"
 	if client.subscriptionID == "" {
@@ -189,6 +189,240 @@ func (client *ComputesClient) deleteCreateRequest(ctx context.Context, resourceG
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{computeName}", url.PathEscape(computeName))
 	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260715Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginRestart - Restarts a running ContainerInstance compute resource.
+// This is a long-running operation that returns 202 Accepted.
+// Only applicable when computeType is ContainerInstance.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accountName - The name of Cognitive Services account.
+//   - computeName - The name of the compute associated with the Cognitive Services Account.
+//   - options - ComputesClientBeginRestartOptions contains the optional parameters for the ComputesClient.BeginRestart method.
+func (client *ComputesClient) BeginRestart(ctx context.Context, resourceGroupName string, accountName string, computeName string, options *ComputesClientBeginRestartOptions) (*runtime.Poller[ComputesClientRestartResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.restart(ctx, resourceGroupName, accountName, computeName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ComputesClientRestartResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ComputesClientRestartResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// restart - Restarts a running ContainerInstance compute resource.
+// This is a long-running operation that returns 202 Accepted.
+// Only applicable when computeType is ContainerInstance.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ComputesClient) restart(ctx context.Context, resourceGroupName string, accountName string, computeName string, options *ComputesClientBeginRestartOptions) (*http.Response, error) {
+	var err error
+	const operationName = "ComputesClient.BeginRestart"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.restartCreateRequest(ctx, resourceGroupName, accountName, computeName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// restartCreateRequest creates the restart request.
+func (client *ComputesClient) restartCreateRequest(ctx context.Context, resourceGroupName string, accountName string, computeName string, _ *ComputesClientBeginRestartOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/computes/{computeName}/restart"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if accountName == "" {
+		return nil, errors.New("parameter accountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+	if computeName == "" {
+		return nil, errors.New("parameter computeName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{computeName}", url.PathEscape(computeName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260715Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginStart - Starts a stopped ContainerInstance compute resource.
+// This is a long-running operation that returns 202 Accepted.
+// Only applicable when computeType is ContainerInstance.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accountName - The name of Cognitive Services account.
+//   - computeName - The name of the compute associated with the Cognitive Services Account.
+//   - options - ComputesClientBeginStartOptions contains the optional parameters for the ComputesClient.BeginStart method.
+func (client *ComputesClient) BeginStart(ctx context.Context, resourceGroupName string, accountName string, computeName string, options *ComputesClientBeginStartOptions) (*runtime.Poller[ComputesClientStartResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.start(ctx, resourceGroupName, accountName, computeName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ComputesClientStartResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ComputesClientStartResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// start - Starts a stopped ContainerInstance compute resource.
+// This is a long-running operation that returns 202 Accepted.
+// Only applicable when computeType is ContainerInstance.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ComputesClient) start(ctx context.Context, resourceGroupName string, accountName string, computeName string, options *ComputesClientBeginStartOptions) (*http.Response, error) {
+	var err error
+	const operationName = "ComputesClient.BeginStart"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.startCreateRequest(ctx, resourceGroupName, accountName, computeName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// startCreateRequest creates the start request.
+func (client *ComputesClient) startCreateRequest(ctx context.Context, resourceGroupName string, accountName string, computeName string, _ *ComputesClientBeginStartOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/computes/{computeName}/start"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if accountName == "" {
+		return nil, errors.New("parameter accountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+	if computeName == "" {
+		return nil, errors.New("parameter computeName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{computeName}", url.PathEscape(computeName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260715Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginStop - Stops a running ContainerInstance compute resource.
+// This is a long-running operation that returns 202 Accepted.
+// Only applicable when computeType is ContainerInstance.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accountName - The name of Cognitive Services account.
+//   - computeName - The name of the compute associated with the Cognitive Services Account.
+//   - options - ComputesClientBeginStopOptions contains the optional parameters for the ComputesClient.BeginStop method.
+func (client *ComputesClient) BeginStop(ctx context.Context, resourceGroupName string, accountName string, computeName string, options *ComputesClientBeginStopOptions) (*runtime.Poller[ComputesClientStopResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.stop(ctx, resourceGroupName, accountName, computeName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ComputesClientStopResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ComputesClientStopResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// stop - Stops a running ContainerInstance compute resource.
+// This is a long-running operation that returns 202 Accepted.
+// Only applicable when computeType is ContainerInstance.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ComputesClient) stop(ctx context.Context, resourceGroupName string, accountName string, computeName string, options *ComputesClientBeginStopOptions) (*http.Response, error) {
+	var err error
+	const operationName = "ComputesClient.BeginStop"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.stopCreateRequest(ctx, resourceGroupName, accountName, computeName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// stopCreateRequest creates the stop request.
+func (client *ComputesClient) stopCreateRequest(ctx context.Context, resourceGroupName string, accountName string, computeName string, _ *ComputesClientBeginStopOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/computes/{computeName}/stop"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if accountName == "" {
+		return nil, errors.New("parameter accountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+	if computeName == "" {
+		return nil, errors.New("parameter computeName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{computeName}", url.PathEscape(computeName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -337,238 +571,4 @@ func (client *ComputesClient) listHandleResponse(resp *http.Response, successCod
 		return ComputesClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginRestart - Restarts a running ContainerInstance compute resource.
-// This is a long-running operation that returns 202 Accepted.
-// Only applicable when computeType is ContainerInstance.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - accountName - The name of Cognitive Services account.
-//   - computeName - The name of the compute associated with the Cognitive Services Account.
-//   - options - ComputesClientBeginRestartOptions contains the optional parameters for the ComputesClient.BeginRestart method.
-func (client *ComputesClient) BeginRestart(ctx context.Context, resourceGroupName string, accountName string, computeName string, options *ComputesClientBeginRestartOptions) (*runtime.Poller[ComputesClientRestartResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.restart(ctx, resourceGroupName, accountName, computeName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ComputesClientRestartResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ComputesClientRestartResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Restart - Restarts a running ContainerInstance compute resource.
-// This is a long-running operation that returns 202 Accepted.
-// Only applicable when computeType is ContainerInstance.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *ComputesClient) restart(ctx context.Context, resourceGroupName string, accountName string, computeName string, options *ComputesClientBeginRestartOptions) (*http.Response, error) {
-	var err error
-	const operationName = "ComputesClient.BeginRestart"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.restartCreateRequest(ctx, resourceGroupName, accountName, computeName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// restartCreateRequest creates the Restart request.
-func (client *ComputesClient) restartCreateRequest(ctx context.Context, resourceGroupName string, accountName string, computeName string, _ *ComputesClientBeginRestartOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/computes/{computeName}/restart"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if accountName == "" {
-		return nil, errors.New("parameter accountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	if computeName == "" {
-		return nil, errors.New("parameter computeName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{computeName}", url.PathEscape(computeName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260715Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	return req, nil
-}
-
-// BeginStart - Starts a stopped ContainerInstance compute resource.
-// This is a long-running operation that returns 202 Accepted.
-// Only applicable when computeType is ContainerInstance.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - accountName - The name of Cognitive Services account.
-//   - computeName - The name of the compute associated with the Cognitive Services Account.
-//   - options - ComputesClientBeginStartOptions contains the optional parameters for the ComputesClient.BeginStart method.
-func (client *ComputesClient) BeginStart(ctx context.Context, resourceGroupName string, accountName string, computeName string, options *ComputesClientBeginStartOptions) (*runtime.Poller[ComputesClientStartResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.start(ctx, resourceGroupName, accountName, computeName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ComputesClientStartResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ComputesClientStartResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Start - Starts a stopped ContainerInstance compute resource.
-// This is a long-running operation that returns 202 Accepted.
-// Only applicable when computeType is ContainerInstance.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *ComputesClient) start(ctx context.Context, resourceGroupName string, accountName string, computeName string, options *ComputesClientBeginStartOptions) (*http.Response, error) {
-	var err error
-	const operationName = "ComputesClient.BeginStart"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.startCreateRequest(ctx, resourceGroupName, accountName, computeName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// startCreateRequest creates the Start request.
-func (client *ComputesClient) startCreateRequest(ctx context.Context, resourceGroupName string, accountName string, computeName string, _ *ComputesClientBeginStartOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/computes/{computeName}/start"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if accountName == "" {
-		return nil, errors.New("parameter accountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	if computeName == "" {
-		return nil, errors.New("parameter computeName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{computeName}", url.PathEscape(computeName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260715Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	return req, nil
-}
-
-// BeginStop - Stops a running ContainerInstance compute resource.
-// This is a long-running operation that returns 202 Accepted.
-// Only applicable when computeType is ContainerInstance.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - accountName - The name of Cognitive Services account.
-//   - computeName - The name of the compute associated with the Cognitive Services Account.
-//   - options - ComputesClientBeginStopOptions contains the optional parameters for the ComputesClient.BeginStop method.
-func (client *ComputesClient) BeginStop(ctx context.Context, resourceGroupName string, accountName string, computeName string, options *ComputesClientBeginStopOptions) (*runtime.Poller[ComputesClientStopResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.stop(ctx, resourceGroupName, accountName, computeName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ComputesClientStopResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ComputesClientStopResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Stop - Stops a running ContainerInstance compute resource.
-// This is a long-running operation that returns 202 Accepted.
-// Only applicable when computeType is ContainerInstance.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *ComputesClient) stop(ctx context.Context, resourceGroupName string, accountName string, computeName string, options *ComputesClientBeginStopOptions) (*http.Response, error) {
-	var err error
-	const operationName = "ComputesClient.BeginStop"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.stopCreateRequest(ctx, resourceGroupName, accountName, computeName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// stopCreateRequest creates the Stop request.
-func (client *ComputesClient) stopCreateRequest(ctx context.Context, resourceGroupName string, accountName string, computeName string, _ *ComputesClientBeginStopOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/computes/{computeName}/stop"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if accountName == "" {
-		return nil, errors.New("parameter accountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	if computeName == "" {
-		return nil, errors.New("parameter computeName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{computeName}", url.PathEscape(computeName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260715Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	return req, nil
 }

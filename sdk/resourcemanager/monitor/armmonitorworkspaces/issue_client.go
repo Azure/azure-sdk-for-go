@@ -586,82 +586,6 @@ func (client *IssueClient) getHandleResponse(resp *http.Response, successCodes .
 	return result, nil
 }
 
-// NewListPager - List all issues under the parent
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - azureMonitorWorkspaceName - The name of the Azure Monitor Workspace. The name is case insensitive
-//   - options - IssueClientListOptions contains the optional parameters for the IssueClient.NewListPager method.
-func (client *IssueClient) NewListPager(resourceGroupName string, azureMonitorWorkspaceName string, options *IssueClientListOptions) *runtime.Pager[IssueClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[IssueClientListResponse]{
-		More: func(page IssueClientListResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *IssueClientListResponse) (IssueClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "IssueClient.NewListPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			req, err := client.listCreateRequest(ctx, resourceGroupName, azureMonitorWorkspaceName, nextLink, options)
-			if err != nil {
-				return IssueClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return IssueClientListResponse{}, err
-			}
-			return client.listHandleResponse(resp, http.StatusOK)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listCreateRequest creates the List request.
-func (client *IssueClient) listCreateRequest(ctx context.Context, resourceGroupName string, azureMonitorWorkspaceName string, nextLink string, _ *IssueClientListOptions) (*policy.Request, error) {
-	firstPage := nextLink == ""
-	var req *policy.Request
-	var err error
-	if firstPage {
-		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Monitor/accounts/{azureMonitorWorkspaceName}/issues"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter subscriptionID cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-		if resourceGroupName == "" {
-			return nil, errors.New("parameter resourceGroupName cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-		if azureMonitorWorkspaceName == "" {
-			return nil, errors.New("parameter azureMonitorWorkspaceName cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{azureMonitorWorkspaceName}", url.PathEscape(azureMonitorWorkspaceName))
-		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	} else {
-		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
-	}
-	if err != nil {
-		return nil, err
-	}
-	if firstPage {
-		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20251003)
-		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-		req.Raw().Header["Accept"] = []string{"application/json"}
-	}
-	return req, nil
-}
-
-// listHandleResponse handles the List response.
-func (client *IssueClient) listHandleResponse(resp *http.Response, successCodes ...int) (IssueClientListResponse, error) {
-	result := IssueClientListResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.IssueResourceListResult); err != nil {
-		return IssueClientListResponse{}, err
-	}
-	return result, nil
-}
-
 // ListAlerts - List all alerts in the issue - this method uses pagination to return all alerts
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
@@ -798,6 +722,82 @@ func (client *IssueClient) listResourcesHandleResponse(resp *http.Response, succ
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PagedRelatedResource); err != nil {
 		return IssueClientListResourcesResponse{}, err
+	}
+	return result, nil
+}
+
+// NewListPager - List all issues under the parent
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - azureMonitorWorkspaceName - The name of the Azure Monitor Workspace. The name is case insensitive
+//   - options - IssueClientListOptions contains the optional parameters for the IssueClient.NewListPager method.
+func (client *IssueClient) NewListPager(resourceGroupName string, azureMonitorWorkspaceName string, options *IssueClientListOptions) *runtime.Pager[IssueClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[IssueClientListResponse]{
+		More: func(page IssueClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *IssueClientListResponse) (IssueClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "IssueClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listCreateRequest(ctx, resourceGroupName, azureMonitorWorkspaceName, nextLink, options)
+			if err != nil {
+				return IssueClientListResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return IssueClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listCreateRequest creates the List request.
+func (client *IssueClient) listCreateRequest(ctx context.Context, resourceGroupName string, azureMonitorWorkspaceName string, nextLink string, _ *IssueClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Monitor/accounts/{azureMonitorWorkspaceName}/issues"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if azureMonitorWorkspaceName == "" {
+			return nil, errors.New("parameter azureMonitorWorkspaceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{azureMonitorWorkspaceName}", url.PathEscape(azureMonitorWorkspaceName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20251003)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// listHandleResponse handles the List response.
+func (client *IssueClient) listHandleResponse(resp *http.Response, successCodes ...int) (IssueClientListResponse, error) {
+	result := IssueClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.IssueResourceListResult); err != nil {
+		return IssueClientListResponse{}, err
 	}
 	return result, nil
 }

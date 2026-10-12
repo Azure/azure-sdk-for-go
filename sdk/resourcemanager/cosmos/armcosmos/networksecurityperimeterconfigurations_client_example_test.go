@@ -11,6 +11,27 @@ import (
 	"log"
 )
 
+// Generated from example definition: 2026-04-01-preview/NetworkSecurityPerimeterConfigurationReconcile.json
+func ExampleNetworkSecurityPerimeterConfigurationsClient_BeginReconcile() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcosmos.NewClientFactory("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewNetworkSecurityPerimeterConfigurationsClient().BeginReconcile(ctx, "res4410", "sto8607", "dbedb4e0-40e6-4145-81f3-f1314c150774.resourceAssociation1", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+}
+
 // Generated from example definition: 2026-04-01-preview/NetworkSecurityPerimeterConfigurationGet.json
 func ExampleNetworkSecurityPerimeterConfigurationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -138,26 +159,5 @@ func ExampleNetworkSecurityPerimeterConfigurationsClient_NewListPager() {
 		// 		},
 		// 	},
 		// }
-	}
-}
-
-// Generated from example definition: 2026-04-01-preview/NetworkSecurityPerimeterConfigurationReconcile.json
-func ExampleNetworkSecurityPerimeterConfigurationsClient_BeginReconcile() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcosmos.NewClientFactory("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewNetworkSecurityPerimeterConfigurationsClient().BeginReconcile(ctx, "res4410", "sto8607", "dbedb4e0-40e6-4145-81f3-f1314c150774.resourceAssociation1", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
 	}
 }

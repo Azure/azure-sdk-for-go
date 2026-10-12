@@ -70,7 +70,7 @@ func (client *DatabaseMigrationsSQLDbClient) BeginCancel(ctx context.Context, re
 	}
 }
 
-// Cancel - Stop on going migration for the database.
+// cancel - Stop on going migration for the database.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *DatabaseMigrationsSQLDbClient) cancel(ctx context.Context, resourceGroupName string, sqlDbInstanceName string, targetDbName string, parameters MigrationOperationInput, options *DatabaseMigrationsSQLDbClientBeginCancelOptions) (*http.Response, error) {
 	var err error
@@ -92,7 +92,7 @@ func (client *DatabaseMigrationsSQLDbClient) cancel(ctx context.Context, resourc
 	return httpResp, nil
 }
 
-// cancelCreateRequest creates the Cancel request.
+// cancelCreateRequest creates the cancel request.
 func (client *DatabaseMigrationsSQLDbClient) cancelCreateRequest(ctx context.Context, resourceGroupName string, sqlDbInstanceName string, targetDbName string, parameters MigrationOperationInput, _ *DatabaseMigrationsSQLDbClientBeginCancelOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{sqlDbInstanceName}/providers/Microsoft.DataMigration/databaseMigrations/{targetDbName}/cancel"
 	if client.subscriptionID == "" {
@@ -150,7 +150,7 @@ func (client *DatabaseMigrationsSQLDbClient) BeginCreateOrUpdate(ctx context.Con
 	}
 }
 
-// CreateOrUpdate - Create or Update Database Migration resource.
+// createOrUpdate - Create or Update Database Migration resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *DatabaseMigrationsSQLDbClient) createOrUpdate(ctx context.Context, resourceGroupName string, sqlDbInstanceName string, targetDbName string, parameters DatabaseMigrationSQLDb, options *DatabaseMigrationsSQLDbClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -172,7 +172,7 @@ func (client *DatabaseMigrationsSQLDbClient) createOrUpdate(ctx context.Context,
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *DatabaseMigrationsSQLDbClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, sqlDbInstanceName string, targetDbName string, parameters DatabaseMigrationSQLDb, _ *DatabaseMigrationsSQLDbClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{sqlDbInstanceName}/providers/Microsoft.DataMigration/databaseMigrations/{targetDbName}"
 	if client.subscriptionID == "" {
@@ -230,7 +230,7 @@ func (client *DatabaseMigrationsSQLDbClient) BeginDelete(ctx context.Context, re
 	}
 }
 
-// Delete - Delete Database Migration resource.
+// deleteOperation - Delete Database Migration resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *DatabaseMigrationsSQLDbClient) deleteOperation(ctx context.Context, resourceGroupName string, sqlDbInstanceName string, targetDbName string, options *DatabaseMigrationsSQLDbClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -252,7 +252,7 @@ func (client *DatabaseMigrationsSQLDbClient) deleteOperation(ctx context.Context
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *DatabaseMigrationsSQLDbClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, sqlDbInstanceName string, targetDbName string, options *DatabaseMigrationsSQLDbClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{sqlDbInstanceName}/providers/Microsoft.DataMigration/databaseMigrations/{targetDbName}"
 	if client.subscriptionID == "" {
@@ -281,6 +281,87 @@ func (client *DatabaseMigrationsSQLDbClient) deleteCreateRequest(ctx context.Con
 		reqQP.Set("force", strconv.FormatBool(*options.Force))
 	}
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginRetry - Retry on going migration for the database.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - sqlDbInstanceName - The name of the target SQL DB instance.
+//   - targetDbName - The name of the target database.
+//   - migrationOperationInput - Required migration operation ID for which retry will be initiated.
+//   - options - DatabaseMigrationsSQLDbClientBeginRetryOptions contains the optional parameters for the DatabaseMigrationsSQLDbClient.BeginRetry
+//     method.
+func (client *DatabaseMigrationsSQLDbClient) BeginRetry(ctx context.Context, resourceGroupName string, sqlDbInstanceName string, targetDbName string, migrationOperationInput MigrationOperationInput, options *DatabaseMigrationsSQLDbClientBeginRetryOptions) (*runtime.Poller[DatabaseMigrationsSQLDbClientRetryResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.retry(ctx, resourceGroupName, sqlDbInstanceName, targetDbName, migrationOperationInput, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DatabaseMigrationsSQLDbClientRetryResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[DatabaseMigrationsSQLDbClientRetryResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// retry - Retry on going migration for the database.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *DatabaseMigrationsSQLDbClient) retry(ctx context.Context, resourceGroupName string, sqlDbInstanceName string, targetDbName string, migrationOperationInput MigrationOperationInput, options *DatabaseMigrationsSQLDbClientBeginRetryOptions) (*http.Response, error) {
+	var err error
+	const operationName = "DatabaseMigrationsSQLDbClient.BeginRetry"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.retryCreateRequest(ctx, resourceGroupName, sqlDbInstanceName, targetDbName, migrationOperationInput, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// retryCreateRequest creates the retry request.
+func (client *DatabaseMigrationsSQLDbClient) retryCreateRequest(ctx context.Context, resourceGroupName string, sqlDbInstanceName string, targetDbName string, migrationOperationInput MigrationOperationInput, _ *DatabaseMigrationsSQLDbClientBeginRetryOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{sqlDbInstanceName}/providers/Microsoft.DataMigration/databaseMigrations/{targetDbName}/retry"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if sqlDbInstanceName == "" {
+		return nil, errors.New("parameter sqlDbInstanceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{sqlDbInstanceName}", url.PathEscape(sqlDbInstanceName))
+	if targetDbName == "" {
+		return nil, errors.New("parameter targetDbName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{targetDbName}", url.PathEscape(targetDbName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20250901Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, migrationOperationInput); err != nil {
+		return nil, err
+	}
 	return req, nil
 }
 
@@ -354,85 +435,4 @@ func (client *DatabaseMigrationsSQLDbClient) getHandleResponse(resp *http.Respon
 		return DatabaseMigrationsSQLDbClientGetResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginRetry - Retry on going migration for the database.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - sqlDbInstanceName - The name of the target SQL DB instance.
-//   - targetDbName - The name of the target database.
-//   - migrationOperationInput - Required migration operation ID for which retry will be initiated.
-//   - options - DatabaseMigrationsSQLDbClientBeginRetryOptions contains the optional parameters for the DatabaseMigrationsSQLDbClient.BeginRetry
-//     method.
-func (client *DatabaseMigrationsSQLDbClient) BeginRetry(ctx context.Context, resourceGroupName string, sqlDbInstanceName string, targetDbName string, migrationOperationInput MigrationOperationInput, options *DatabaseMigrationsSQLDbClientBeginRetryOptions) (*runtime.Poller[DatabaseMigrationsSQLDbClientRetryResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.retry(ctx, resourceGroupName, sqlDbInstanceName, targetDbName, migrationOperationInput, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DatabaseMigrationsSQLDbClientRetryResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[DatabaseMigrationsSQLDbClientRetryResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Retry - Retry on going migration for the database.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *DatabaseMigrationsSQLDbClient) retry(ctx context.Context, resourceGroupName string, sqlDbInstanceName string, targetDbName string, migrationOperationInput MigrationOperationInput, options *DatabaseMigrationsSQLDbClientBeginRetryOptions) (*http.Response, error) {
-	var err error
-	const operationName = "DatabaseMigrationsSQLDbClient.BeginRetry"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.retryCreateRequest(ctx, resourceGroupName, sqlDbInstanceName, targetDbName, migrationOperationInput, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// retryCreateRequest creates the Retry request.
-func (client *DatabaseMigrationsSQLDbClient) retryCreateRequest(ctx context.Context, resourceGroupName string, sqlDbInstanceName string, targetDbName string, migrationOperationInput MigrationOperationInput, _ *DatabaseMigrationsSQLDbClientBeginRetryOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{sqlDbInstanceName}/providers/Microsoft.DataMigration/databaseMigrations/{targetDbName}/retry"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if sqlDbInstanceName == "" {
-		return nil, errors.New("parameter sqlDbInstanceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{sqlDbInstanceName}", url.PathEscape(sqlDbInstanceName))
-	if targetDbName == "" {
-		return nil, errors.New("parameter targetDbName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{targetDbName}", url.PathEscape(targetDbName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250901Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, migrationOperationInput); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

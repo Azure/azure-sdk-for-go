@@ -69,7 +69,7 @@ func (client *OrganizationsClient) BeginResubscribe(ctx context.Context, resourc
 	}
 }
 
-// Resubscribe - Reinstate integration with your Datadog organization by choosing one of the available subscription plans.
+// resubscribe - Reinstate integration with your Datadog organization by choosing one of the available subscription plans.
 //
 // Reinstate integration with your Datadog organization by choosing one of the available subscription plans.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -93,7 +93,7 @@ func (client *OrganizationsClient) resubscribe(ctx context.Context, resourceGrou
 	return httpResp, nil
 }
 
-// resubscribeCreateRequest creates the Resubscribe request.
+// resubscribeCreateRequest creates the resubscribe request.
 func (client *OrganizationsClient) resubscribeCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, options *OrganizationsClientBeginResubscribeOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Datadog/monitors/{monitorName}/resubscribe"
 	if client.subscriptionID == "" {

@@ -22,14 +22,6 @@ import (
 
 // Server is a fake server for instances of the armresources.Client type.
 type Server struct {
-	// CheckExistence is the fake for method Client.CheckExistence
-	// HTTP status codes to indicate success: http.StatusNoContent, http.StatusNotFound
-	CheckExistence func(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, apiVersion string, options *armresources.ClientCheckExistenceOptions) (resp azfake.Responder[armresources.ClientCheckExistenceResponse], errResp azfake.ErrorResponder)
-
-	// CheckExistenceByID is the fake for method Client.CheckExistenceByID
-	// HTTP status codes to indicate success: http.StatusNoContent, http.StatusNotFound
-	CheckExistenceByID func(ctx context.Context, resourceID string, apiVersion string, options *armresources.ClientCheckExistenceByIDOptions) (resp azfake.Responder[armresources.ClientCheckExistenceByIDResponse], errResp azfake.ErrorResponder)
-
 	// BeginCreateOrUpdate is the fake for method Client.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated, http.StatusAccepted
 	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, apiVersion string, parameters armresources.GenericResource, options *armresources.ClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armresources.ClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
@@ -46,22 +38,6 @@ type Server struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDeleteByID func(ctx context.Context, resourceID string, apiVersion string, options *armresources.ClientBeginDeleteByIDOptions) (resp azfake.PollerResponder[armresources.ClientDeleteByIDResponse], errResp azfake.ErrorResponder)
 
-	// Get is the fake for method Client.Get
-	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, apiVersion string, options *armresources.ClientGetOptions) (resp azfake.Responder[armresources.ClientGetResponse], errResp azfake.ErrorResponder)
-
-	// GetByID is the fake for method Client.GetByID
-	// HTTP status codes to indicate success: http.StatusOK
-	GetByID func(ctx context.Context, resourceID string, apiVersion string, options *armresources.ClientGetByIDOptions) (resp azfake.Responder[armresources.ClientGetByIDResponse], errResp azfake.ErrorResponder)
-
-	// NewListPager is the fake for method Client.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(options *armresources.ClientListOptions) (resp azfake.PagerResponder[armresources.ClientListResponse])
-
-	// NewListByResourceGroupPager is the fake for method Client.NewListByResourceGroupPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListByResourceGroupPager func(resourceGroupName string, options *armresources.ClientListByResourceGroupOptions) (resp azfake.PagerResponder[armresources.ClientListByResourceGroupResponse])
-
 	// BeginMoveResources is the fake for method Client.BeginMoveResources
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginMoveResources func(ctx context.Context, sourceResourceGroupName string, parameters armresources.MoveInfo, options *armresources.ClientBeginMoveResourcesOptions) (resp azfake.PollerResponder[armresources.ClientMoveResourcesResponse], errResp azfake.ErrorResponder)
@@ -77,6 +53,30 @@ type Server struct {
 	// BeginValidateMoveResources is the fake for method Client.BeginValidateMoveResources
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginValidateMoveResources func(ctx context.Context, sourceResourceGroupName string, parameters armresources.MoveInfo, options *armresources.ClientBeginValidateMoveResourcesOptions) (resp azfake.PollerResponder[armresources.ClientValidateMoveResourcesResponse], errResp azfake.ErrorResponder)
+
+	// CheckExistence is the fake for method Client.CheckExistence
+	// HTTP status codes to indicate success: http.StatusNoContent, http.StatusNotFound
+	CheckExistence func(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, apiVersion string, options *armresources.ClientCheckExistenceOptions) (resp azfake.Responder[armresources.ClientCheckExistenceResponse], errResp azfake.ErrorResponder)
+
+	// CheckExistenceByID is the fake for method Client.CheckExistenceByID
+	// HTTP status codes to indicate success: http.StatusNoContent, http.StatusNotFound
+	CheckExistenceByID func(ctx context.Context, resourceID string, apiVersion string, options *armresources.ClientCheckExistenceByIDOptions) (resp azfake.Responder[armresources.ClientCheckExistenceByIDResponse], errResp azfake.ErrorResponder)
+
+	// Get is the fake for method Client.Get
+	// HTTP status codes to indicate success: http.StatusOK
+	Get func(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, apiVersion string, options *armresources.ClientGetOptions) (resp azfake.Responder[armresources.ClientGetResponse], errResp azfake.ErrorResponder)
+
+	// GetByID is the fake for method Client.GetByID
+	// HTTP status codes to indicate success: http.StatusOK
+	GetByID func(ctx context.Context, resourceID string, apiVersion string, options *armresources.ClientGetByIDOptions) (resp azfake.Responder[armresources.ClientGetByIDResponse], errResp azfake.ErrorResponder)
+
+	// NewListByResourceGroupPager is the fake for method Client.NewListByResourceGroupPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListByResourceGroupPager func(resourceGroupName string, options *armresources.ClientListByResourceGroupOptions) (resp azfake.PagerResponder[armresources.ClientListByResourceGroupResponse])
+
+	// NewListPager is the fake for method Client.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(options *armresources.ClientListOptions) (resp azfake.PagerResponder[armresources.ClientListResponse])
 }
 
 // NewServerTransport creates a new instance of ServerTransport with the provided implementation.
@@ -89,12 +89,12 @@ func NewServerTransport(srv *Server) *ServerTransport {
 		beginCreateOrUpdateByID:     newTracker[azfake.PollerResponder[armresources.ClientCreateOrUpdateByIDResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armresources.ClientDeleteResponse]](),
 		beginDeleteByID:             newTracker[azfake.PollerResponder[armresources.ClientDeleteByIDResponse]](),
-		newListPager:                newTracker[azfake.PagerResponder[armresources.ClientListResponse]](),
-		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armresources.ClientListByResourceGroupResponse]](),
 		beginMoveResources:          newTracker[azfake.PollerResponder[armresources.ClientMoveResourcesResponse]](),
 		beginUpdate:                 newTracker[azfake.PollerResponder[armresources.ClientUpdateResponse]](),
 		beginUpdateByID:             newTracker[azfake.PollerResponder[armresources.ClientUpdateByIDResponse]](),
 		beginValidateMoveResources:  newTracker[azfake.PollerResponder[armresources.ClientValidateMoveResourcesResponse]](),
+		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armresources.ClientListByResourceGroupResponse]](),
+		newListPager:                newTracker[azfake.PagerResponder[armresources.ClientListResponse]](),
 	}
 }
 
@@ -106,12 +106,12 @@ type ServerTransport struct {
 	beginCreateOrUpdateByID     *tracker[azfake.PollerResponder[armresources.ClientCreateOrUpdateByIDResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armresources.ClientDeleteResponse]]
 	beginDeleteByID             *tracker[azfake.PollerResponder[armresources.ClientDeleteByIDResponse]]
-	newListPager                *tracker[azfake.PagerResponder[armresources.ClientListResponse]]
-	newListByResourceGroupPager *tracker[azfake.PagerResponder[armresources.ClientListByResourceGroupResponse]]
 	beginMoveResources          *tracker[azfake.PollerResponder[armresources.ClientMoveResourcesResponse]]
 	beginUpdate                 *tracker[azfake.PollerResponder[armresources.ClientUpdateResponse]]
 	beginUpdateByID             *tracker[azfake.PollerResponder[armresources.ClientUpdateByIDResponse]]
 	beginValidateMoveResources  *tracker[azfake.PollerResponder[armresources.ClientValidateMoveResourcesResponse]]
+	newListByResourceGroupPager *tracker[azfake.PagerResponder[armresources.ClientListByResourceGroupResponse]]
+	newListPager                *tracker[azfake.PagerResponder[armresources.ClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for ServerTransport.
@@ -135,10 +135,6 @@ func (s *ServerTransport) dispatchToMethodFake(req *http.Request, method string)
 		}
 		if !intercepted {
 			switch method {
-			case "Client.CheckExistence":
-				res.resp, res.err = s.dispatchCheckExistence(req)
-			case "Client.CheckExistenceByID":
-				res.resp, res.err = s.dispatchCheckExistenceByID(req)
 			case "Client.BeginCreateOrUpdate":
 				res.resp, res.err = s.dispatchBeginCreateOrUpdate(req)
 			case "Client.BeginCreateOrUpdateByID":
@@ -147,14 +143,6 @@ func (s *ServerTransport) dispatchToMethodFake(req *http.Request, method string)
 				res.resp, res.err = s.dispatchBeginDelete(req)
 			case "Client.BeginDeleteByID":
 				res.resp, res.err = s.dispatchBeginDeleteByID(req)
-			case "Client.Get":
-				res.resp, res.err = s.dispatchGet(req)
-			case "Client.GetByID":
-				res.resp, res.err = s.dispatchGetByID(req)
-			case "Client.NewListPager":
-				res.resp, res.err = s.dispatchNewListPager(req)
-			case "Client.NewListByResourceGroupPager":
-				res.resp, res.err = s.dispatchNewListByResourceGroupPager(req)
 			case "Client.BeginMoveResources":
 				res.resp, res.err = s.dispatchBeginMoveResources(req)
 			case "Client.BeginUpdate":
@@ -163,6 +151,18 @@ func (s *ServerTransport) dispatchToMethodFake(req *http.Request, method string)
 				res.resp, res.err = s.dispatchBeginUpdateByID(req)
 			case "Client.BeginValidateMoveResources":
 				res.resp, res.err = s.dispatchBeginValidateMoveResources(req)
+			case "Client.CheckExistence":
+				res.resp, res.err = s.dispatchCheckExistence(req)
+			case "Client.CheckExistenceByID":
+				res.resp, res.err = s.dispatchCheckExistenceByID(req)
+			case "Client.Get":
+				res.resp, res.err = s.dispatchGet(req)
+			case "Client.GetByID":
+				res.resp, res.err = s.dispatchGetByID(req)
+			case "Client.NewListByResourceGroupPager":
+				res.resp, res.err = s.dispatchNewListByResourceGroupPager(req)
+			case "Client.NewListPager":
+				res.resp, res.err = s.dispatchNewListPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -177,73 +177,6 @@ func (s *ServerTransport) dispatchToMethodFake(req *http.Request, method string)
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
-}
-
-func (s *ServerTransport) dispatchCheckExistence(req *http.Request) (*http.Response, error) {
-	if s.srv.CheckExistence == nil {
-		return nil, &nonRetriableError{errors.New("fake for method CheckExistence not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourcegroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/(?P<resourceProviderNamespace>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/(?P<parentResourcePath>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/(?P<resourceType>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 7 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	qp := req.URL.Query()
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	resourceProviderNamespaceParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceProviderNamespace")])
-	if err != nil {
-		return nil, err
-	}
-	parentResourcePathParam := matches[regex.SubexpIndex("parentResourcePath")]
-	resourceTypeParam := matches[regex.SubexpIndex("resourceType")]
-	resourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := s.srv.CheckExistence(req.Context(), resourceGroupNameParam, resourceProviderNamespaceParam, parentResourcePathParam, resourceTypeParam, resourceNameParam, qp.Get("api-version"), nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusNoContent, http.StatusNotFound}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusNoContent, http.StatusNotFound", respContent.HTTPStatus)}
-	}
-	resp, err := server.NewResponse(respContent, req, nil)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (s *ServerTransport) dispatchCheckExistenceByID(req *http.Request) (*http.Response, error) {
-	if s.srv.CheckExistenceByID == nil {
-		return nil, &nonRetriableError{errors.New("fake for method CheckExistenceByID not implemented")}
-	}
-	const regexStr = `/(?P<resourceId>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 2 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	qp := req.URL.Query()
-	resourceIDParam := matches[regex.SubexpIndex("resourceId")]
-	respr, errRespr := s.srv.CheckExistenceByID(req.Context(), resourceIDParam, qp.Get("api-version"), nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusNoContent, http.StatusNotFound}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusNoContent, http.StatusNotFound", respContent.HTTPStatus)}
-	}
-	resp, err := server.NewResponse(respContent, req, nil)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
 }
 
 func (s *ServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (*http.Response, error) {
@@ -432,185 +365,6 @@ func (s *ServerTransport) dispatchBeginDeleteByID(req *http.Request) (*http.Resp
 	return resp, nil
 }
 
-func (s *ServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if s.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourcegroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/(?P<resourceProviderNamespace>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/(?P<parentResourcePath>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/(?P<resourceType>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 7 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	qp := req.URL.Query()
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	resourceProviderNamespaceParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceProviderNamespace")])
-	if err != nil {
-		return nil, err
-	}
-	parentResourcePathParam := matches[regex.SubexpIndex("parentResourcePath")]
-	resourceTypeParam := matches[regex.SubexpIndex("resourceType")]
-	resourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := s.srv.Get(req.Context(), resourceGroupNameParam, resourceProviderNamespaceParam, parentResourcePathParam, resourceTypeParam, resourceNameParam, qp.Get("api-version"), nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).GenericResource, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (s *ServerTransport) dispatchGetByID(req *http.Request) (*http.Response, error) {
-	if s.srv.GetByID == nil {
-		return nil, &nonRetriableError{errors.New("fake for method GetByID not implemented")}
-	}
-	const regexStr = `/(?P<resourceId>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 2 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	qp := req.URL.Query()
-	resourceIDParam := matches[regex.SubexpIndex("resourceId")]
-	respr, errRespr := s.srv.GetByID(req.Context(), resourceIDParam, qp.Get("api-version"), nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).GenericResource, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (s *ServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if s.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := s.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resources`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		qp := req.URL.Query()
-		filterParam := getOptional(qp.Get("$filter"))
-		expandParam := getOptional(qp.Get("$expand"))
-		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 32)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return int32(p), nil
-		})
-		if err != nil {
-			return nil, err
-		}
-		var options *armresources.ClientListOptions
-		if filterParam != nil || expandParam != nil || topParam != nil {
-			options = &armresources.ClientListOptions{
-				Filter: filterParam,
-				Expand: expandParam,
-				Top:    topParam,
-			}
-		}
-		resp := s.srv.NewListPager(options)
-		newListPager = &resp
-		s.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armresources.ClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		s.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		s.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (s *ServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
-	if s.srv.NewListByResourceGroupPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
-	}
-	newListByResourceGroupPager := s.newListByResourceGroupPager.get(req)
-	if newListByResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourcegroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resources`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		qp := req.URL.Query()
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		filterParam := getOptional(qp.Get("$filter"))
-		expandParam := getOptional(qp.Get("$expand"))
-		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 32)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return int32(p), nil
-		})
-		if err != nil {
-			return nil, err
-		}
-		var options *armresources.ClientListByResourceGroupOptions
-		if filterParam != nil || expandParam != nil || topParam != nil {
-			options = &armresources.ClientListByResourceGroupOptions{
-				Filter: filterParam,
-				Expand: expandParam,
-				Top:    topParam,
-			}
-		}
-		resp := s.srv.NewListByResourceGroupPager(resourceGroupNameParam, options)
-		newListByResourceGroupPager = &resp
-		s.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
-		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armresources.ClientListByResourceGroupResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		s.newListByResourceGroupPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListByResourceGroupPager) {
-		s.newListByResourceGroupPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (s *ServerTransport) dispatchBeginMoveResources(req *http.Request) (*http.Response, error) {
 	if s.srv.BeginMoveResources == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginMoveResources not implemented")}
@@ -793,6 +547,252 @@ func (s *ServerTransport) dispatchBeginValidateMoveResources(req *http.Request) 
 		s.beginValidateMoveResources.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (s *ServerTransport) dispatchCheckExistence(req *http.Request) (*http.Response, error) {
+	if s.srv.CheckExistence == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CheckExistence not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourcegroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/(?P<resourceProviderNamespace>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/(?P<parentResourcePath>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/(?P<resourceType>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 7 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	qp := req.URL.Query()
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	resourceProviderNamespaceParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceProviderNamespace")])
+	if err != nil {
+		return nil, err
+	}
+	parentResourcePathParam := matches[regex.SubexpIndex("parentResourcePath")]
+	resourceTypeParam := matches[regex.SubexpIndex("resourceType")]
+	resourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := s.srv.CheckExistence(req.Context(), resourceGroupNameParam, resourceProviderNamespaceParam, parentResourcePathParam, resourceTypeParam, resourceNameParam, qp.Get("api-version"), nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusNoContent, http.StatusNotFound}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusNoContent, http.StatusNotFound", respContent.HTTPStatus)}
+	}
+	resp, err := server.NewResponse(respContent, req, nil)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (s *ServerTransport) dispatchCheckExistenceByID(req *http.Request) (*http.Response, error) {
+	if s.srv.CheckExistenceByID == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CheckExistenceByID not implemented")}
+	}
+	const regexStr = `/(?P<resourceId>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 2 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	qp := req.URL.Query()
+	resourceIDParam := matches[regex.SubexpIndex("resourceId")]
+	respr, errRespr := s.srv.CheckExistenceByID(req.Context(), resourceIDParam, qp.Get("api-version"), nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusNoContent, http.StatusNotFound}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusNoContent, http.StatusNotFound", respContent.HTTPStatus)}
+	}
+	resp, err := server.NewResponse(respContent, req, nil)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (s *ServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if s.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourcegroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/(?P<resourceProviderNamespace>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/(?P<parentResourcePath>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/(?P<resourceType>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 7 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	qp := req.URL.Query()
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	resourceProviderNamespaceParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceProviderNamespace")])
+	if err != nil {
+		return nil, err
+	}
+	parentResourcePathParam := matches[regex.SubexpIndex("parentResourcePath")]
+	resourceTypeParam := matches[regex.SubexpIndex("resourceType")]
+	resourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := s.srv.Get(req.Context(), resourceGroupNameParam, resourceProviderNamespaceParam, parentResourcePathParam, resourceTypeParam, resourceNameParam, qp.Get("api-version"), nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).GenericResource, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (s *ServerTransport) dispatchGetByID(req *http.Request) (*http.Response, error) {
+	if s.srv.GetByID == nil {
+		return nil, &nonRetriableError{errors.New("fake for method GetByID not implemented")}
+	}
+	const regexStr = `/(?P<resourceId>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 2 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	qp := req.URL.Query()
+	resourceIDParam := matches[regex.SubexpIndex("resourceId")]
+	respr, errRespr := s.srv.GetByID(req.Context(), resourceIDParam, qp.Get("api-version"), nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).GenericResource, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (s *ServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
+	if s.srv.NewListByResourceGroupPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
+	}
+	newListByResourceGroupPager := s.newListByResourceGroupPager.get(req)
+	if newListByResourceGroupPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourcegroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resources`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		qp := req.URL.Query()
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		filterParam := getOptional(qp.Get("$filter"))
+		expandParam := getOptional(qp.Get("$expand"))
+		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 32)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return int32(p), nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		var options *armresources.ClientListByResourceGroupOptions
+		if filterParam != nil || expandParam != nil || topParam != nil {
+			options = &armresources.ClientListByResourceGroupOptions{
+				Filter: filterParam,
+				Expand: expandParam,
+				Top:    topParam,
+			}
+		}
+		resp := s.srv.NewListByResourceGroupPager(resourceGroupNameParam, options)
+		newListByResourceGroupPager = &resp
+		s.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
+		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armresources.ClientListByResourceGroupResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		s.newListByResourceGroupPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListByResourceGroupPager) {
+		s.newListByResourceGroupPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (s *ServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if s.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := s.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resources`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		qp := req.URL.Query()
+		filterParam := getOptional(qp.Get("$filter"))
+		expandParam := getOptional(qp.Get("$expand"))
+		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 32)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return int32(p), nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		var options *armresources.ClientListOptions
+		if filterParam != nil || expandParam != nil || topParam != nil {
+			options = &armresources.ClientListOptions{
+				Filter: filterParam,
+				Expand: expandParam,
+				Top:    topParam,
+			}
+		}
+		resp := s.srv.NewListPager(options)
+		newListPager = &resp
+		s.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armresources.ClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		s.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPager) {
+		s.newListPager.remove(req)
+	}
 	return resp, nil
 }
 

@@ -20,13 +20,13 @@ import (
 
 // CloudHsmClusterPrivateEndpointConnectionsServer is a fake server for instances of the armhardwaresecuritymodules.CloudHsmClusterPrivateEndpointConnectionsClient type.
 type CloudHsmClusterPrivateEndpointConnectionsServer struct {
-	// Create is the fake for method CloudHsmClusterPrivateEndpointConnectionsClient.Create
-	// HTTP status codes to indicate success: http.StatusOK
-	Create func(ctx context.Context, resourceGroupName string, cloudHsmClusterName string, peConnectionName string, properties armhardwaresecuritymodules.PrivateEndpointConnection, options *armhardwaresecuritymodules.CloudHsmClusterPrivateEndpointConnectionsClientCreateOptions) (resp azfake.Responder[armhardwaresecuritymodules.CloudHsmClusterPrivateEndpointConnectionsClientCreateResponse], errResp azfake.ErrorResponder)
-
 	// BeginDelete is the fake for method CloudHsmClusterPrivateEndpointConnectionsClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, cloudHsmClusterName string, peConnectionName string, options *armhardwaresecuritymodules.CloudHsmClusterPrivateEndpointConnectionsClientBeginDeleteOptions) (resp azfake.PollerResponder[armhardwaresecuritymodules.CloudHsmClusterPrivateEndpointConnectionsClientDeleteResponse], errResp azfake.ErrorResponder)
+
+	// Create is the fake for method CloudHsmClusterPrivateEndpointConnectionsClient.Create
+	// HTTP status codes to indicate success: http.StatusOK
+	Create func(ctx context.Context, resourceGroupName string, cloudHsmClusterName string, peConnectionName string, properties armhardwaresecuritymodules.PrivateEndpointConnection, options *armhardwaresecuritymodules.CloudHsmClusterPrivateEndpointConnectionsClientCreateOptions) (resp azfake.Responder[armhardwaresecuritymodules.CloudHsmClusterPrivateEndpointConnectionsClientCreateResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method CloudHsmClusterPrivateEndpointConnectionsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
@@ -71,10 +71,10 @@ func (c *CloudHsmClusterPrivateEndpointConnectionsServerTransport) dispatchToMet
 		}
 		if !intercepted {
 			switch method {
-			case "CloudHsmClusterPrivateEndpointConnectionsClient.Create":
-				res.resp, res.err = c.dispatchCreate(req)
 			case "CloudHsmClusterPrivateEndpointConnectionsClient.BeginDelete":
 				res.resp, res.err = c.dispatchBeginDelete(req)
+			case "CloudHsmClusterPrivateEndpointConnectionsClient.Create":
+				res.resp, res.err = c.dispatchCreate(req)
 			case "CloudHsmClusterPrivateEndpointConnectionsClient.Get":
 				res.resp, res.err = c.dispatchGet(req)
 			default:
@@ -91,47 +91,6 @@ func (c *CloudHsmClusterPrivateEndpointConnectionsServerTransport) dispatchToMet
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
-}
-
-func (c *CloudHsmClusterPrivateEndpointConnectionsServerTransport) dispatchCreate(req *http.Request) (*http.Response, error) {
-	if c.srv.Create == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Create not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.HardwareSecurityModules/cloudHsmClusters/(?P<cloudHsmClusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/privateEndpointConnections/(?P<peConnectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armhardwaresecuritymodules.PrivateEndpointConnection](req)
-	if err != nil {
-		return nil, err
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	cloudHsmClusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("cloudHsmClusterName")])
-	if err != nil {
-		return nil, err
-	}
-	peConnectionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("peConnectionName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := c.srv.Create(req.Context(), resourceGroupNameParam, cloudHsmClusterNameParam, peConnectionNameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).PrivateEndpointConnection, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
 }
 
 func (c *CloudHsmClusterPrivateEndpointConnectionsServerTransport) dispatchBeginDelete(req *http.Request) (*http.Response, error) {
@@ -179,6 +138,47 @@ func (c *CloudHsmClusterPrivateEndpointConnectionsServerTransport) dispatchBegin
 		c.beginDelete.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (c *CloudHsmClusterPrivateEndpointConnectionsServerTransport) dispatchCreate(req *http.Request) (*http.Response, error) {
+	if c.srv.Create == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Create not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.HardwareSecurityModules/cloudHsmClusters/(?P<cloudHsmClusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/privateEndpointConnections/(?P<peConnectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armhardwaresecuritymodules.PrivateEndpointConnection](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	cloudHsmClusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("cloudHsmClusterName")])
+	if err != nil {
+		return nil, err
+	}
+	peConnectionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("peConnectionName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := c.srv.Create(req.Context(), resourceGroupNameParam, cloudHsmClusterNameParam, peConnectionNameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).PrivateEndpointConnection, req)
+	if err != nil {
+		return nil, err
+	}
 	return resp, nil
 }
 

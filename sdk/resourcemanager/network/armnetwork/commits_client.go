@@ -70,7 +70,7 @@ func (client *CommitsClient) BeginCreateOrUpdate(ctx context.Context, resourceGr
 	}
 }
 
-// CreateOrUpdate - Creates or updates a commit.
+// createOrUpdate - Creates or updates a commit.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *CommitsClient) createOrUpdate(ctx context.Context, resourceGroupName string, networkManagerName string, commitName string, resource Commit, options *CommitsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -92,7 +92,7 @@ func (client *CommitsClient) createOrUpdate(ctx context.Context, resourceGroupNa
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *CommitsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, networkManagerName string, commitName string, resource Commit, _ *CommitsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkManagers/{networkManagerName}/commits/{commitName}"
 	if client.subscriptionID == "" {
@@ -149,7 +149,7 @@ func (client *CommitsClient) BeginDelete(ctx context.Context, resourceGroupName 
 	}
 }
 
-// Delete - Deletes a commit.
+// deleteOperation - Deletes a commit.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *CommitsClient) deleteOperation(ctx context.Context, resourceGroupName string, networkManagerName string, commitName string, options *CommitsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -171,7 +171,7 @@ func (client *CommitsClient) deleteOperation(ctx context.Context, resourceGroupN
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *CommitsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, networkManagerName string, commitName string, _ *CommitsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkManagers/{networkManagerName}/commits/{commitName}"
 	if client.subscriptionID == "" {

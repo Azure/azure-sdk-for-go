@@ -64,7 +64,7 @@ func (client *RecoveryJobsClient) BeginCancel(ctx context.Context, serviceGroupN
 	}
 }
 
-// Cancel - This action attempts to cancel the ongoing recovery orchestration job.
+// cancel - This action attempts to cancel the ongoing recovery orchestration job.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *RecoveryJobsClient) cancel(ctx context.Context, serviceGroupName string, operationID string, recoveryPlanName string, recoveryJobName string, body RecoveryActionRequest, options *RecoveryJobsClientBeginCancelOptions) (*http.Response, error) {
 	var err error
@@ -86,7 +86,7 @@ func (client *RecoveryJobsClient) cancel(ctx context.Context, serviceGroupName s
 	return httpResp, nil
 }
 
-// cancelCreateRequest creates the Cancel request.
+// cancelCreateRequest creates the cancel request.
 func (client *RecoveryJobsClient) cancelCreateRequest(ctx context.Context, serviceGroupName string, operationID string, recoveryPlanName string, recoveryJobName string, body RecoveryActionRequest, _ *RecoveryJobsClientBeginCancelOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Management/serviceGroups/{serviceGroupName}/providers/Microsoft.AzureResilienceManagement/recoveryPlans/{recoveryPlanName}/recoveryJobs/{recoveryJobName}/cancel"
 	if serviceGroupName == "" {
@@ -113,6 +113,156 @@ func (client *RecoveryJobsClient) cancelCreateRequest(ctx context.Context, servi
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
 		return nil, err
 	}
+	return req, nil
+}
+
+// BeginResume - This action resumes the ongoing recovery orchestration job that was paused for required user intervention.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - serviceGroupName - The name of the service group.
+//   - operationID - A GUID that represents the Long Running OperationId.
+//   - recoveryPlanName - The name of the recovery orchestration plan.
+//   - recoveryJobName - The unique name (GUID) of the recovery job.
+//   - body - The content of the action request
+//   - options - RecoveryJobsClientBeginResumeOptions contains the optional parameters for the RecoveryJobsClient.BeginResume
+//     method.
+func (client *RecoveryJobsClient) BeginResume(ctx context.Context, serviceGroupName string, operationID string, recoveryPlanName string, recoveryJobName string, body RecoveryActionRequest, options *RecoveryJobsClientBeginResumeOptions) (*runtime.Poller[RecoveryJobsClientResumeResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.resume(ctx, serviceGroupName, operationID, recoveryPlanName, recoveryJobName, body, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[RecoveryJobsClientResumeResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[RecoveryJobsClientResumeResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// resume - This action resumes the ongoing recovery orchestration job that was paused for required user intervention.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *RecoveryJobsClient) resume(ctx context.Context, serviceGroupName string, operationID string, recoveryPlanName string, recoveryJobName string, body RecoveryActionRequest, options *RecoveryJobsClientBeginResumeOptions) (*http.Response, error) {
+	var err error
+	const operationName = "RecoveryJobsClient.BeginResume"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.resumeCreateRequest(ctx, serviceGroupName, operationID, recoveryPlanName, recoveryJobName, body, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// resumeCreateRequest creates the resume request.
+func (client *RecoveryJobsClient) resumeCreateRequest(ctx context.Context, serviceGroupName string, operationID string, recoveryPlanName string, recoveryJobName string, body RecoveryActionRequest, _ *RecoveryJobsClientBeginResumeOptions) (*policy.Request, error) {
+	urlPath := "/providers/Microsoft.Management/serviceGroups/{serviceGroupName}/providers/Microsoft.AzureResilienceManagement/recoveryPlans/{recoveryPlanName}/recoveryJobs/{recoveryJobName}/resume"
+	if serviceGroupName == "" {
+		return nil, errors.New("parameter serviceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{serviceGroupName}", url.PathEscape(serviceGroupName))
+	if recoveryPlanName == "" {
+		return nil, errors.New("parameter recoveryPlanName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{recoveryPlanName}", url.PathEscape(recoveryPlanName))
+	if recoveryJobName == "" {
+		return nil, errors.New("parameter recoveryJobName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{recoveryJobName}", url.PathEscape(recoveryJobName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20261001)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["operation-id"] = []string{operationID}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginRetry - This action retries the ongoing recovery orchestration job for resources that failed in previous attempts.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - serviceGroupName - The name of the service group.
+//   - operationID - A GUID that represents the Long Running OperationId.
+//   - recoveryPlanName - The name of the recovery orchestration plan.
+//   - recoveryJobName - The unique name (GUID) of the recovery job.
+//   - options - RecoveryJobsClientBeginRetryOptions contains the optional parameters for the RecoveryJobsClient.BeginRetry method.
+func (client *RecoveryJobsClient) BeginRetry(ctx context.Context, serviceGroupName string, operationID string, recoveryPlanName string, recoveryJobName string, options *RecoveryJobsClientBeginRetryOptions) (*runtime.Poller[RecoveryJobsClientRetryResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.retry(ctx, serviceGroupName, operationID, recoveryPlanName, recoveryJobName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[RecoveryJobsClientRetryResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[RecoveryJobsClientRetryResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// retry - This action retries the ongoing recovery orchestration job for resources that failed in previous attempts.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *RecoveryJobsClient) retry(ctx context.Context, serviceGroupName string, operationID string, recoveryPlanName string, recoveryJobName string, options *RecoveryJobsClientBeginRetryOptions) (*http.Response, error) {
+	var err error
+	const operationName = "RecoveryJobsClient.BeginRetry"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.retryCreateRequest(ctx, serviceGroupName, operationID, recoveryPlanName, recoveryJobName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// retryCreateRequest creates the retry request.
+func (client *RecoveryJobsClient) retryCreateRequest(ctx context.Context, serviceGroupName string, operationID string, recoveryPlanName string, recoveryJobName string, _ *RecoveryJobsClientBeginRetryOptions) (*policy.Request, error) {
+	urlPath := "/providers/Microsoft.Management/serviceGroups/{serviceGroupName}/providers/Microsoft.AzureResilienceManagement/recoveryPlans/{recoveryPlanName}/recoveryJobs/{recoveryJobName}/retry"
+	if serviceGroupName == "" {
+		return nil, errors.New("parameter serviceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{serviceGroupName}", url.PathEscape(serviceGroupName))
+	if recoveryPlanName == "" {
+		return nil, errors.New("parameter recoveryPlanName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{recoveryPlanName}", url.PathEscape(recoveryPlanName))
+	if recoveryJobName == "" {
+		return nil, errors.New("parameter recoveryJobName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{recoveryJobName}", url.PathEscape(recoveryJobName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20261001)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["operation-id"] = []string{operationID}
 	return req, nil
 }
 
@@ -247,154 +397,4 @@ func (client *RecoveryJobsClient) listHandleResponse(resp *http.Response, succes
 		return RecoveryJobsClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginResume - This action resumes the ongoing recovery orchestration job that was paused for required user intervention.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - serviceGroupName - The name of the service group.
-//   - operationID - A GUID that represents the Long Running OperationId.
-//   - recoveryPlanName - The name of the recovery orchestration plan.
-//   - recoveryJobName - The unique name (GUID) of the recovery job.
-//   - body - The content of the action request
-//   - options - RecoveryJobsClientBeginResumeOptions contains the optional parameters for the RecoveryJobsClient.BeginResume
-//     method.
-func (client *RecoveryJobsClient) BeginResume(ctx context.Context, serviceGroupName string, operationID string, recoveryPlanName string, recoveryJobName string, body RecoveryActionRequest, options *RecoveryJobsClientBeginResumeOptions) (*runtime.Poller[RecoveryJobsClientResumeResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.resume(ctx, serviceGroupName, operationID, recoveryPlanName, recoveryJobName, body, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[RecoveryJobsClientResumeResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[RecoveryJobsClientResumeResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Resume - This action resumes the ongoing recovery orchestration job that was paused for required user intervention.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *RecoveryJobsClient) resume(ctx context.Context, serviceGroupName string, operationID string, recoveryPlanName string, recoveryJobName string, body RecoveryActionRequest, options *RecoveryJobsClientBeginResumeOptions) (*http.Response, error) {
-	var err error
-	const operationName = "RecoveryJobsClient.BeginResume"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.resumeCreateRequest(ctx, serviceGroupName, operationID, recoveryPlanName, recoveryJobName, body, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// resumeCreateRequest creates the Resume request.
-func (client *RecoveryJobsClient) resumeCreateRequest(ctx context.Context, serviceGroupName string, operationID string, recoveryPlanName string, recoveryJobName string, body RecoveryActionRequest, _ *RecoveryJobsClientBeginResumeOptions) (*policy.Request, error) {
-	urlPath := "/providers/Microsoft.Management/serviceGroups/{serviceGroupName}/providers/Microsoft.AzureResilienceManagement/recoveryPlans/{recoveryPlanName}/recoveryJobs/{recoveryJobName}/resume"
-	if serviceGroupName == "" {
-		return nil, errors.New("parameter serviceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{serviceGroupName}", url.PathEscape(serviceGroupName))
-	if recoveryPlanName == "" {
-		return nil, errors.New("parameter recoveryPlanName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{recoveryPlanName}", url.PathEscape(recoveryPlanName))
-	if recoveryJobName == "" {
-		return nil, errors.New("parameter recoveryJobName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{recoveryJobName}", url.PathEscape(recoveryJobName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20261001)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["operation-id"] = []string{operationID}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, body); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// BeginRetry - This action retries the ongoing recovery orchestration job for resources that failed in previous attempts.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - serviceGroupName - The name of the service group.
-//   - operationID - A GUID that represents the Long Running OperationId.
-//   - recoveryPlanName - The name of the recovery orchestration plan.
-//   - recoveryJobName - The unique name (GUID) of the recovery job.
-//   - options - RecoveryJobsClientBeginRetryOptions contains the optional parameters for the RecoveryJobsClient.BeginRetry method.
-func (client *RecoveryJobsClient) BeginRetry(ctx context.Context, serviceGroupName string, operationID string, recoveryPlanName string, recoveryJobName string, options *RecoveryJobsClientBeginRetryOptions) (*runtime.Poller[RecoveryJobsClientRetryResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.retry(ctx, serviceGroupName, operationID, recoveryPlanName, recoveryJobName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[RecoveryJobsClientRetryResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[RecoveryJobsClientRetryResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Retry - This action retries the ongoing recovery orchestration job for resources that failed in previous attempts.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *RecoveryJobsClient) retry(ctx context.Context, serviceGroupName string, operationID string, recoveryPlanName string, recoveryJobName string, options *RecoveryJobsClientBeginRetryOptions) (*http.Response, error) {
-	var err error
-	const operationName = "RecoveryJobsClient.BeginRetry"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.retryCreateRequest(ctx, serviceGroupName, operationID, recoveryPlanName, recoveryJobName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// retryCreateRequest creates the Retry request.
-func (client *RecoveryJobsClient) retryCreateRequest(ctx context.Context, serviceGroupName string, operationID string, recoveryPlanName string, recoveryJobName string, _ *RecoveryJobsClientBeginRetryOptions) (*policy.Request, error) {
-	urlPath := "/providers/Microsoft.Management/serviceGroups/{serviceGroupName}/providers/Microsoft.AzureResilienceManagement/recoveryPlans/{recoveryPlanName}/recoveryJobs/{recoveryJobName}/retry"
-	if serviceGroupName == "" {
-		return nil, errors.New("parameter serviceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{serviceGroupName}", url.PathEscape(serviceGroupName))
-	if recoveryPlanName == "" {
-		return nil, errors.New("parameter recoveryPlanName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{recoveryPlanName}", url.PathEscape(recoveryPlanName))
-	if recoveryJobName == "" {
-		return nil, errors.New("parameter recoveryJobName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{recoveryJobName}", url.PathEscape(recoveryJobName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20261001)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["operation-id"] = []string{operationID}
-	return req, nil
 }

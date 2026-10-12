@@ -68,7 +68,7 @@ func (client *AuthenticationPoliciesClient) BeginCreateOrUpdate(ctx context.Cont
 	}
 }
 
-// CreateOrUpdate - Creates or updates an authentication policy with the specified name within a resource group.
+// createOrUpdate - Creates or updates an authentication policy with the specified name within a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *AuthenticationPoliciesClient) createOrUpdate(ctx context.Context, resourceGroupName string, authenticationPolicyName string, resource AuthenticationPolicy, options *AuthenticationPoliciesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -90,7 +90,7 @@ func (client *AuthenticationPoliciesClient) createOrUpdate(ctx context.Context, 
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *AuthenticationPoliciesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, authenticationPolicyName string, resource AuthenticationPolicy, _ *AuthenticationPoliciesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/authenticationPolicies/{authenticationPolicyName}"
 	if client.subscriptionID == "" {
@@ -232,6 +232,73 @@ func (client *AuthenticationPoliciesClient) getHandleResponse(resp *http.Respons
 	return result, nil
 }
 
+// NewListAllPager - Gets all the authentication policies in a subscription.
+//   - options - AuthenticationPoliciesClientListAllOptions contains the optional parameters for the AuthenticationPoliciesClient.NewListAllPager
+//     method.
+func (client *AuthenticationPoliciesClient) NewListAllPager(options *AuthenticationPoliciesClientListAllOptions) *runtime.Pager[AuthenticationPoliciesClientListAllResponse] {
+	return runtime.NewPager(runtime.PagingHandler[AuthenticationPoliciesClientListAllResponse]{
+		More: func(page AuthenticationPoliciesClientListAllResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *AuthenticationPoliciesClientListAllResponse) (AuthenticationPoliciesClientListAllResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AuthenticationPoliciesClient.NewListAllPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listAllCreateRequest(ctx, nextLink, options)
+			if err != nil {
+				return AuthenticationPoliciesClientListAllResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return AuthenticationPoliciesClientListAllResponse{}, err
+			}
+			return client.listAllHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listAllCreateRequest creates the ListAll request.
+func (client *AuthenticationPoliciesClient) listAllCreateRequest(ctx context.Context, nextLink string, _ *AuthenticationPoliciesClientListAllOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Network/authenticationPolicies"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260101)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// listAllHandleResponse handles the ListAll response.
+func (client *AuthenticationPoliciesClient) listAllHandleResponse(resp *http.Response, successCodes ...int) (AuthenticationPoliciesClientListAllResponse, error) {
+	result := AuthenticationPoliciesClientListAllResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.AuthenticationPolicyListResult); err != nil {
+		return AuthenticationPoliciesClientListAllResponse{}, err
+	}
+	return result, nil
+}
+
 // NewListPager - Lists all of the authentication policies within a resource group.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - AuthenticationPoliciesClientListOptions contains the optional parameters for the AuthenticationPoliciesClient.NewListPager
@@ -300,73 +367,6 @@ func (client *AuthenticationPoliciesClient) listHandleResponse(resp *http.Respon
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AuthenticationPolicyListResult); err != nil {
 		return AuthenticationPoliciesClientListResponse{}, err
-	}
-	return result, nil
-}
-
-// NewListAllPager - Gets all the authentication policies in a subscription.
-//   - options - AuthenticationPoliciesClientListAllOptions contains the optional parameters for the AuthenticationPoliciesClient.NewListAllPager
-//     method.
-func (client *AuthenticationPoliciesClient) NewListAllPager(options *AuthenticationPoliciesClientListAllOptions) *runtime.Pager[AuthenticationPoliciesClientListAllResponse] {
-	return runtime.NewPager(runtime.PagingHandler[AuthenticationPoliciesClientListAllResponse]{
-		More: func(page AuthenticationPoliciesClientListAllResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *AuthenticationPoliciesClientListAllResponse) (AuthenticationPoliciesClientListAllResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AuthenticationPoliciesClient.NewListAllPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			req, err := client.listAllCreateRequest(ctx, nextLink, options)
-			if err != nil {
-				return AuthenticationPoliciesClientListAllResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return AuthenticationPoliciesClientListAllResponse{}, err
-			}
-			return client.listAllHandleResponse(resp, http.StatusOK)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listAllCreateRequest creates the ListAll request.
-func (client *AuthenticationPoliciesClient) listAllCreateRequest(ctx context.Context, nextLink string, _ *AuthenticationPoliciesClientListAllOptions) (*policy.Request, error) {
-	firstPage := nextLink == ""
-	var req *policy.Request
-	var err error
-	if firstPage {
-		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Network/authenticationPolicies"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter subscriptionID cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	} else {
-		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
-	}
-	if err != nil {
-		return nil, err
-	}
-	if firstPage {
-		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260101)
-		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-		req.Raw().Header["Accept"] = []string{"application/json"}
-	}
-	return req, nil
-}
-
-// listAllHandleResponse handles the ListAll response.
-func (client *AuthenticationPoliciesClient) listAllHandleResponse(resp *http.Response, successCodes ...int) (AuthenticationPoliciesClientListAllResponse, error) {
-	result := AuthenticationPoliciesClientListAllResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.AuthenticationPolicyListResult); err != nil {
-		return AuthenticationPoliciesClientListAllResponse{}, err
 	}
 	return result, nil
 }

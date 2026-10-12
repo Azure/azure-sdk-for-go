@@ -26,10 +26,6 @@ type Server struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	ClusterGetVersion func(ctx context.Context, resourceGroupName string, clusterRp string, clusterResourceName string, clusterName string, extensionTypeName string, versionNumber string, options *armextensiontypes.ClientClusterGetVersionOptions) (resp azfake.Responder[armextensiontypes.ClientClusterGetVersionResponse], errResp azfake.ErrorResponder)
 
-	// NewClusterListVersionsPager is the fake for method Client.NewClusterListVersionsPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewClusterListVersionsPager func(resourceGroupName string, clusterRp string, clusterResourceName string, clusterName string, extensionTypeName string, options *armextensiontypes.ClientClusterListVersionsOptions) (resp azfake.PagerResponder[armextensiontypes.ClientClusterListVersionsResponse])
-
 	// Get is the fake for method Client.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, clusterRp string, clusterResourceName string, clusterName string, extensionTypeName string, options *armextensiontypes.ClientGetOptions) (resp azfake.Responder[armextensiontypes.ClientGetResponse], errResp azfake.ErrorResponder)
@@ -38,6 +34,14 @@ type Server struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	GetVersion func(ctx context.Context, location string, extensionTypeName string, versionNumber string, options *armextensiontypes.ClientGetVersionOptions) (resp azfake.Responder[armextensiontypes.ClientGetVersionResponse], errResp azfake.ErrorResponder)
 
+	// LocationGet is the fake for method Client.LocationGet
+	// HTTP status codes to indicate success: http.StatusOK
+	LocationGet func(ctx context.Context, location string, extensionTypeName string, options *armextensiontypes.ClientLocationGetOptions) (resp azfake.Responder[armextensiontypes.ClientLocationGetResponse], errResp azfake.ErrorResponder)
+
+	// NewClusterListVersionsPager is the fake for method Client.NewClusterListVersionsPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewClusterListVersionsPager func(resourceGroupName string, clusterRp string, clusterResourceName string, clusterName string, extensionTypeName string, options *armextensiontypes.ClientClusterListVersionsOptions) (resp azfake.PagerResponder[armextensiontypes.ClientClusterListVersionsResponse])
+
 	// NewListPager is the fake for method Client.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListPager func(resourceGroupName string, clusterRp string, clusterResourceName string, clusterName string, options *armextensiontypes.ClientListOptions) (resp azfake.PagerResponder[armextensiontypes.ClientListResponse])
@@ -45,10 +49,6 @@ type Server struct {
 	// NewListVersionsPager is the fake for method Client.NewListVersionsPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListVersionsPager func(location string, extensionTypeName string, options *armextensiontypes.ClientListVersionsOptions) (resp azfake.PagerResponder[armextensiontypes.ClientListVersionsResponse])
-
-	// LocationGet is the fake for method Client.LocationGet
-	// HTTP status codes to indicate success: http.StatusOK
-	LocationGet func(ctx context.Context, location string, extensionTypeName string, options *armextensiontypes.ClientLocationGetOptions) (resp azfake.Responder[armextensiontypes.ClientLocationGetResponse], errResp azfake.ErrorResponder)
 
 	// NewLocationListPager is the fake for method Client.NewLocationListPager
 	// HTTP status codes to indicate success: http.StatusOK
@@ -101,18 +101,18 @@ func (s *ServerTransport) dispatchToMethodFake(req *http.Request, method string)
 			switch method {
 			case "Client.ClusterGetVersion":
 				res.resp, res.err = s.dispatchClusterGetVersion(req)
-			case "Client.NewClusterListVersionsPager":
-				res.resp, res.err = s.dispatchNewClusterListVersionsPager(req)
 			case "Client.Get":
 				res.resp, res.err = s.dispatchGet(req)
 			case "Client.GetVersion":
 				res.resp, res.err = s.dispatchGetVersion(req)
+			case "Client.LocationGet":
+				res.resp, res.err = s.dispatchLocationGet(req)
+			case "Client.NewClusterListVersionsPager":
+				res.resp, res.err = s.dispatchNewClusterListVersionsPager(req)
 			case "Client.NewListPager":
 				res.resp, res.err = s.dispatchNewListPager(req)
 			case "Client.NewListVersionsPager":
 				res.resp, res.err = s.dispatchNewListVersionsPager(req)
-			case "Client.LocationGet":
-				res.resp, res.err = s.dispatchLocationGet(req)
 			case "Client.NewLocationListPager":
 				res.resp, res.err = s.dispatchNewLocationListPager(req)
 			default:
@@ -176,74 +176,6 @@ func (s *ServerTransport) dispatchClusterGetVersion(req *http.Request) (*http.Re
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ExtensionTypeVersionForReleaseTrain, req)
 	if err != nil {
 		return nil, err
-	}
-	return resp, nil
-}
-
-func (s *ServerTransport) dispatchNewClusterListVersionsPager(req *http.Request) (*http.Response, error) {
-	if s.srv.NewClusterListVersionsPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewClusterListVersionsPager not implemented")}
-	}
-	newClusterListVersionsPager := s.newClusterListVersionsPager.get(req)
-	if newClusterListVersionsPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/(?P<clusterRp>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/(?P<clusterResourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/(?P<clusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.KubernetesConfiguration/extensionTypes/(?P<extensionTypeName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/versions`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 7 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		qp := req.URL.Query()
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		clusterRpParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterRp")])
-		if err != nil {
-			return nil, err
-		}
-		clusterResourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterResourceName")])
-		if err != nil {
-			return nil, err
-		}
-		clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
-		if err != nil {
-			return nil, err
-		}
-		extensionTypeNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("extensionTypeName")])
-		if err != nil {
-			return nil, err
-		}
-		releaseTrainParam := getOptional(qp.Get("releaseTrain"))
-		majorVersionParam := getOptional(qp.Get("majorVersion"))
-		showLatestParam, err := parseOptional(qp.Get("showLatest"), strconv.ParseBool)
-		if err != nil {
-			return nil, err
-		}
-		var options *armextensiontypes.ClientClusterListVersionsOptions
-		if releaseTrainParam != nil || majorVersionParam != nil || showLatestParam != nil {
-			options = &armextensiontypes.ClientClusterListVersionsOptions{
-				ReleaseTrain: releaseTrainParam,
-				MajorVersion: majorVersionParam,
-				ShowLatest:   showLatestParam,
-			}
-		}
-		resp := s.srv.NewClusterListVersionsPager(resourceGroupNameParam, clusterRpParam, clusterResourceNameParam, clusterNameParam, extensionTypeNameParam, options)
-		newClusterListVersionsPager = &resp
-		s.newClusterListVersionsPager.add(req, newClusterListVersionsPager)
-		server.PagerResponderInjectNextLinks(newClusterListVersionsPager, req, func(page *armextensiontypes.ClientClusterListVersionsResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newClusterListVersionsPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		s.newClusterListVersionsPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newClusterListVersionsPager) {
-		s.newClusterListVersionsPager.remove(req)
 	}
 	return resp, nil
 }
@@ -326,6 +258,107 @@ func (s *ServerTransport) dispatchGetVersion(req *http.Request) (*http.Response,
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ExtensionTypeVersionForReleaseTrain, req)
 	if err != nil {
 		return nil, err
+	}
+	return resp, nil
+}
+
+func (s *ServerTransport) dispatchLocationGet(req *http.Request) (*http.Response, error) {
+	if s.srv.LocationGet == nil {
+		return nil, &nonRetriableError{errors.New("fake for method LocationGet not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.KubernetesConfiguration/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/extensionTypes/(?P<extensionTypeName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	locationParam, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
+	if err != nil {
+		return nil, err
+	}
+	extensionTypeNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("extensionTypeName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := s.srv.LocationGet(req.Context(), locationParam, extensionTypeNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ExtensionType, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (s *ServerTransport) dispatchNewClusterListVersionsPager(req *http.Request) (*http.Response, error) {
+	if s.srv.NewClusterListVersionsPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewClusterListVersionsPager not implemented")}
+	}
+	newClusterListVersionsPager := s.newClusterListVersionsPager.get(req)
+	if newClusterListVersionsPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/(?P<clusterRp>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/(?P<clusterResourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/(?P<clusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.KubernetesConfiguration/extensionTypes/(?P<extensionTypeName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/versions`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 7 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		qp := req.URL.Query()
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		clusterRpParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterRp")])
+		if err != nil {
+			return nil, err
+		}
+		clusterResourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterResourceName")])
+		if err != nil {
+			return nil, err
+		}
+		clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
+		if err != nil {
+			return nil, err
+		}
+		extensionTypeNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("extensionTypeName")])
+		if err != nil {
+			return nil, err
+		}
+		releaseTrainParam := getOptional(qp.Get("releaseTrain"))
+		majorVersionParam := getOptional(qp.Get("majorVersion"))
+		showLatestParam, err := parseOptional(qp.Get("showLatest"), strconv.ParseBool)
+		if err != nil {
+			return nil, err
+		}
+		var options *armextensiontypes.ClientClusterListVersionsOptions
+		if releaseTrainParam != nil || majorVersionParam != nil || showLatestParam != nil {
+			options = &armextensiontypes.ClientClusterListVersionsOptions{
+				ReleaseTrain: releaseTrainParam,
+				MajorVersion: majorVersionParam,
+				ShowLatest:   showLatestParam,
+			}
+		}
+		resp := s.srv.NewClusterListVersionsPager(resourceGroupNameParam, clusterRpParam, clusterResourceNameParam, clusterNameParam, extensionTypeNameParam, options)
+		newClusterListVersionsPager = &resp
+		s.newClusterListVersionsPager.add(req, newClusterListVersionsPager)
+		server.PagerResponderInjectNextLinks(newClusterListVersionsPager, req, func(page *armextensiontypes.ClientClusterListVersionsResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newClusterListVersionsPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		s.newClusterListVersionsPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newClusterListVersionsPager) {
+		s.newClusterListVersionsPager.remove(req)
 	}
 	return resp, nil
 }
@@ -447,39 +480,6 @@ func (s *ServerTransport) dispatchNewListVersionsPager(req *http.Request) (*http
 	}
 	if !server.PagerResponderMore(newListVersionsPager) {
 		s.newListVersionsPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (s *ServerTransport) dispatchLocationGet(req *http.Request) (*http.Response, error) {
-	if s.srv.LocationGet == nil {
-		return nil, &nonRetriableError{errors.New("fake for method LocationGet not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.KubernetesConfiguration/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/extensionTypes/(?P<extensionTypeName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	locationParam, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
-	if err != nil {
-		return nil, err
-	}
-	extensionTypeNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("extensionTypeName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := s.srv.LocationGet(req.Context(), locationParam, extensionTypeNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ExtensionType, req)
-	if err != nil {
-		return nil, err
 	}
 	return resp, nil
 }

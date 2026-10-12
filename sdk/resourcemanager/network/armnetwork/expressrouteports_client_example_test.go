@@ -306,8 +306,8 @@ func ExampleExpressRoutePortsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/ExpressRoutePortList.json
-func ExampleExpressRoutePortsClient_NewListPager() {
+// Generated from example definition: 2026-01-01/ExpressRoutePortListByResourceGroup.json
+func ExampleExpressRoutePortsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -317,7 +317,7 @@ func ExampleExpressRoutePortsClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewExpressRoutePortsClient().NewListPager(nil)
+	pager := clientFactory.NewExpressRoutePortsClient().NewListByResourceGroupPager("rg1", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -328,7 +328,7 @@ func ExampleExpressRoutePortsClient_NewListPager() {
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armnetwork.ExpressRoutePortsClientListResponse{
+		// page = armnetwork.ExpressRoutePortsClientListByResourceGroupResponse{
 		// 	ExpressRoutePortListResult: armnetwork.ExpressRoutePortListResult{
 		// 		Value: []*armnetwork.ExpressRoutePort{
 		// 			{
@@ -386,8 +386,8 @@ func ExampleExpressRoutePortsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-01-01/ExpressRoutePortListByResourceGroup.json
-func ExampleExpressRoutePortsClient_NewListByResourceGroupPager() {
+// Generated from example definition: 2026-01-01/ExpressRoutePortList.json
+func ExampleExpressRoutePortsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -397,7 +397,7 @@ func ExampleExpressRoutePortsClient_NewListByResourceGroupPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewExpressRoutePortsClient().NewListByResourceGroupPager("rg1", nil)
+	pager := clientFactory.NewExpressRoutePortsClient().NewListPager(nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -408,7 +408,7 @@ func ExampleExpressRoutePortsClient_NewListByResourceGroupPager() {
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armnetwork.ExpressRoutePortsClientListByResourceGroupResponse{
+		// page = armnetwork.ExpressRoutePortsClientListResponse{
 		// 	ExpressRoutePortListResult: armnetwork.ExpressRoutePortListResult{
 		// 		Value: []*armnetwork.ExpressRoutePort{
 		// 			{

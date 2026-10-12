@@ -21,13 +21,21 @@ import (
 
 // TagsServer is a fake server for instances of the armresources.TagsClient type.
 type TagsServer struct {
-	// CreateOrUpdate is the fake for method TagsClient.CreateOrUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	CreateOrUpdate func(ctx context.Context, tagName string, options *armresources.TagsClientCreateOrUpdateOptions) (resp azfake.Responder[armresources.TagsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
-
 	// BeginCreateOrUpdateAtScope is the fake for method TagsClient.BeginCreateOrUpdateAtScope
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginCreateOrUpdateAtScope func(ctx context.Context, scope string, parameters armresources.TagsResource, options *armresources.TagsClientBeginCreateOrUpdateAtScopeOptions) (resp azfake.PollerResponder[armresources.TagsClientCreateOrUpdateAtScopeResponse], errResp azfake.ErrorResponder)
+
+	// BeginDeleteAtScope is the fake for method TagsClient.BeginDeleteAtScope
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	BeginDeleteAtScope func(ctx context.Context, scope string, options *armresources.TagsClientBeginDeleteAtScopeOptions) (resp azfake.PollerResponder[armresources.TagsClientDeleteAtScopeResponse], errResp azfake.ErrorResponder)
+
+	// BeginUpdateAtScope is the fake for method TagsClient.BeginUpdateAtScope
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdateAtScope func(ctx context.Context, scope string, parameters armresources.TagsPatchResource, options *armresources.TagsClientBeginUpdateAtScopeOptions) (resp azfake.PollerResponder[armresources.TagsClientUpdateAtScopeResponse], errResp azfake.ErrorResponder)
+
+	// CreateOrUpdate is the fake for method TagsClient.CreateOrUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
+	CreateOrUpdate func(ctx context.Context, tagName string, options *armresources.TagsClientCreateOrUpdateOptions) (resp azfake.Responder[armresources.TagsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// CreateOrUpdateValue is the fake for method TagsClient.CreateOrUpdateValue
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
@@ -36,10 +44,6 @@ type TagsServer struct {
 	// Delete is the fake for method TagsClient.Delete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusNoContent
 	Delete func(ctx context.Context, tagName string, options *armresources.TagsClientDeleteOptions) (resp azfake.Responder[armresources.TagsClientDeleteResponse], errResp azfake.ErrorResponder)
-
-	// BeginDeleteAtScope is the fake for method TagsClient.BeginDeleteAtScope
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginDeleteAtScope func(ctx context.Context, scope string, options *armresources.TagsClientBeginDeleteAtScopeOptions) (resp azfake.PollerResponder[armresources.TagsClientDeleteAtScopeResponse], errResp azfake.ErrorResponder)
 
 	// DeleteValue is the fake for method TagsClient.DeleteValue
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusNoContent
@@ -52,10 +56,6 @@ type TagsServer struct {
 	// NewListPager is the fake for method TagsClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListPager func(options *armresources.TagsClientListOptions) (resp azfake.PagerResponder[armresources.TagsClientListResponse])
-
-	// BeginUpdateAtScope is the fake for method TagsClient.BeginUpdateAtScope
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdateAtScope func(ctx context.Context, scope string, parameters armresources.TagsPatchResource, options *armresources.TagsClientBeginUpdateAtScopeOptions) (resp azfake.PollerResponder[armresources.TagsClientUpdateAtScopeResponse], errResp azfake.ErrorResponder)
 }
 
 // NewTagsServerTransport creates a new instance of TagsServerTransport with the provided implementation.
@@ -66,8 +66,8 @@ func NewTagsServerTransport(srv *TagsServer) *TagsServerTransport {
 		srv:                        srv,
 		beginCreateOrUpdateAtScope: newTracker[azfake.PollerResponder[armresources.TagsClientCreateOrUpdateAtScopeResponse]](),
 		beginDeleteAtScope:         newTracker[azfake.PollerResponder[armresources.TagsClientDeleteAtScopeResponse]](),
-		newListPager:               newTracker[azfake.PagerResponder[armresources.TagsClientListResponse]](),
 		beginUpdateAtScope:         newTracker[azfake.PollerResponder[armresources.TagsClientUpdateAtScopeResponse]](),
+		newListPager:               newTracker[azfake.PagerResponder[armresources.TagsClientListResponse]](),
 	}
 }
 
@@ -77,8 +77,8 @@ type TagsServerTransport struct {
 	srv                        *TagsServer
 	beginCreateOrUpdateAtScope *tracker[azfake.PollerResponder[armresources.TagsClientCreateOrUpdateAtScopeResponse]]
 	beginDeleteAtScope         *tracker[azfake.PollerResponder[armresources.TagsClientDeleteAtScopeResponse]]
-	newListPager               *tracker[azfake.PagerResponder[armresources.TagsClientListResponse]]
 	beginUpdateAtScope         *tracker[azfake.PollerResponder[armresources.TagsClientUpdateAtScopeResponse]]
+	newListPager               *tracker[azfake.PagerResponder[armresources.TagsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for TagsServerTransport.
@@ -102,24 +102,24 @@ func (t *TagsServerTransport) dispatchToMethodFake(req *http.Request, method str
 		}
 		if !intercepted {
 			switch method {
-			case "TagsClient.CreateOrUpdate":
-				res.resp, res.err = t.dispatchCreateOrUpdate(req)
 			case "TagsClient.BeginCreateOrUpdateAtScope":
 				res.resp, res.err = t.dispatchBeginCreateOrUpdateAtScope(req)
+			case "TagsClient.BeginDeleteAtScope":
+				res.resp, res.err = t.dispatchBeginDeleteAtScope(req)
+			case "TagsClient.BeginUpdateAtScope":
+				res.resp, res.err = t.dispatchBeginUpdateAtScope(req)
+			case "TagsClient.CreateOrUpdate":
+				res.resp, res.err = t.dispatchCreateOrUpdate(req)
 			case "TagsClient.CreateOrUpdateValue":
 				res.resp, res.err = t.dispatchCreateOrUpdateValue(req)
 			case "TagsClient.Delete":
 				res.resp, res.err = t.dispatchDelete(req)
-			case "TagsClient.BeginDeleteAtScope":
-				res.resp, res.err = t.dispatchBeginDeleteAtScope(req)
 			case "TagsClient.DeleteValue":
 				res.resp, res.err = t.dispatchDeleteValue(req)
 			case "TagsClient.GetAtScope":
 				res.resp, res.err = t.dispatchGetAtScope(req)
 			case "TagsClient.NewListPager":
 				res.resp, res.err = t.dispatchNewListPager(req)
-			case "TagsClient.BeginUpdateAtScope":
-				res.resp, res.err = t.dispatchBeginUpdateAtScope(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -134,35 +134,6 @@ func (t *TagsServerTransport) dispatchToMethodFake(req *http.Request, method str
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
-}
-
-func (t *TagsServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Response, error) {
-	if t.srv.CreateOrUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/tagNames/(?P<tagName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 3 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	tagNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("tagName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := t.srv.CreateOrUpdate(req.Context(), tagNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).TagDetails, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
 }
 
 func (t *TagsServerTransport) dispatchBeginCreateOrUpdateAtScope(req *http.Request) (*http.Response, error) {
@@ -203,6 +174,113 @@ func (t *TagsServerTransport) dispatchBeginCreateOrUpdateAtScope(req *http.Reque
 		t.beginCreateOrUpdateAtScope.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (t *TagsServerTransport) dispatchBeginDeleteAtScope(req *http.Request) (*http.Response, error) {
+	if t.srv.BeginDeleteAtScope == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginDeleteAtScope not implemented")}
+	}
+	beginDeleteAtScope := t.beginDeleteAtScope.get(req)
+	if beginDeleteAtScope == nil {
+		const regexStr = `/(?P<scope>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/providers/Microsoft\.Resources/tags/default`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		scopeParam := matches[regex.SubexpIndex("scope")]
+		respr, errRespr := t.srv.BeginDeleteAtScope(req.Context(), scopeParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginDeleteAtScope = &respr
+		t.beginDeleteAtScope.add(req, beginDeleteAtScope)
+	}
+
+	resp, err := server.PollerResponderNext(beginDeleteAtScope, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		t.beginDeleteAtScope.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginDeleteAtScope) {
+		t.beginDeleteAtScope.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (t *TagsServerTransport) dispatchBeginUpdateAtScope(req *http.Request) (*http.Response, error) {
+	if t.srv.BeginUpdateAtScope == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdateAtScope not implemented")}
+	}
+	beginUpdateAtScope := t.beginUpdateAtScope.get(req)
+	if beginUpdateAtScope == nil {
+		const regexStr = `/(?P<scope>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/providers/Microsoft\.Resources/tags/default`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armresources.TagsPatchResource](req)
+		if err != nil {
+			return nil, err
+		}
+		scopeParam := matches[regex.SubexpIndex("scope")]
+		respr, errRespr := t.srv.BeginUpdateAtScope(req.Context(), scopeParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdateAtScope = &respr
+		t.beginUpdateAtScope.add(req, beginUpdateAtScope)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdateAtScope, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		t.beginUpdateAtScope.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdateAtScope) {
+		t.beginUpdateAtScope.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (t *TagsServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Response, error) {
+	if t.srv.CreateOrUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/tagNames/(?P<tagName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	tagNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("tagName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := t.srv.CreateOrUpdate(req.Context(), tagNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).TagDetails, req)
+	if err != nil {
+		return nil, err
+	}
 	return resp, nil
 }
 
@@ -265,43 +343,6 @@ func (t *TagsServerTransport) dispatchDelete(req *http.Request) (*http.Response,
 	if err != nil {
 		return nil, err
 	}
-	return resp, nil
-}
-
-func (t *TagsServerTransport) dispatchBeginDeleteAtScope(req *http.Request) (*http.Response, error) {
-	if t.srv.BeginDeleteAtScope == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginDeleteAtScope not implemented")}
-	}
-	beginDeleteAtScope := t.beginDeleteAtScope.get(req)
-	if beginDeleteAtScope == nil {
-		const regexStr = `/(?P<scope>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/providers/Microsoft\.Resources/tags/default`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		scopeParam := matches[regex.SubexpIndex("scope")]
-		respr, errRespr := t.srv.BeginDeleteAtScope(req.Context(), scopeParam, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginDeleteAtScope = &respr
-		t.beginDeleteAtScope.add(req, beginDeleteAtScope)
-	}
-
-	resp, err := server.PollerResponderNext(beginDeleteAtScope, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
-		t.beginDeleteAtScope.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginDeleteAtScope) {
-		t.beginDeleteAtScope.remove(req)
-	}
-
 	return resp, nil
 }
 
@@ -394,47 +435,6 @@ func (t *TagsServerTransport) dispatchNewListPager(req *http.Request) (*http.Res
 	if !server.PagerResponderMore(newListPager) {
 		t.newListPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (t *TagsServerTransport) dispatchBeginUpdateAtScope(req *http.Request) (*http.Response, error) {
-	if t.srv.BeginUpdateAtScope == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdateAtScope not implemented")}
-	}
-	beginUpdateAtScope := t.beginUpdateAtScope.get(req)
-	if beginUpdateAtScope == nil {
-		const regexStr = `/(?P<scope>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/providers/Microsoft\.Resources/tags/default`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armresources.TagsPatchResource](req)
-		if err != nil {
-			return nil, err
-		}
-		scopeParam := matches[regex.SubexpIndex("scope")]
-		respr, errRespr := t.srv.BeginUpdateAtScope(req.Context(), scopeParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdateAtScope = &respr
-		t.beginUpdateAtScope.add(req, beginUpdateAtScope)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdateAtScope, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		t.beginUpdateAtScope.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdateAtScope) {
-		t.beginUpdateAtScope.remove(req)
-	}
-
 	return resp, nil
 }
 

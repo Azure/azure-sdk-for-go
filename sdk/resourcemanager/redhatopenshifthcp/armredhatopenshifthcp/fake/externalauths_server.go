@@ -29,6 +29,10 @@ type ExternalAuthsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, hcpOpenShiftClusterName string, externalAuthName string, options *armredhatopenshifthcp.ExternalAuthsClientBeginDeleteOptions) (resp azfake.PollerResponder[armredhatopenshifthcp.ExternalAuthsClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method ExternalAuthsClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, hcpOpenShiftClusterName string, externalAuthName string, properties armredhatopenshifthcp.ExternalAuth, options *armredhatopenshifthcp.ExternalAuthsClientBeginUpdateOptions) (resp azfake.PollerResponder[armredhatopenshifthcp.ExternalAuthsClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method ExternalAuthsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, hcpOpenShiftClusterName string, externalAuthName string, options *armredhatopenshifthcp.ExternalAuthsClientGetOptions) (resp azfake.Responder[armredhatopenshifthcp.ExternalAuthsClientGetResponse], errResp azfake.ErrorResponder)
@@ -36,10 +40,6 @@ type ExternalAuthsServer struct {
 	// NewListByParentPager is the fake for method ExternalAuthsClient.NewListByParentPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByParentPager func(resourceGroupName string, hcpOpenShiftClusterName string, options *armredhatopenshifthcp.ExternalAuthsClientListByParentOptions) (resp azfake.PagerResponder[armredhatopenshifthcp.ExternalAuthsClientListByParentResponse])
-
-	// BeginUpdate is the fake for method ExternalAuthsClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, hcpOpenShiftClusterName string, externalAuthName string, properties armredhatopenshifthcp.ExternalAuth, options *armredhatopenshifthcp.ExternalAuthsClientBeginUpdateOptions) (resp azfake.PollerResponder[armredhatopenshifthcp.ExternalAuthsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewExternalAuthsServerTransport creates a new instance of ExternalAuthsServerTransport with the provided implementation.
@@ -50,8 +50,8 @@ func NewExternalAuthsServerTransport(srv *ExternalAuthsServer) *ExternalAuthsSer
 		srv:                  srv,
 		beginCreateOrUpdate:  newTracker[azfake.PollerResponder[armredhatopenshifthcp.ExternalAuthsClientCreateOrUpdateResponse]](),
 		beginDelete:          newTracker[azfake.PollerResponder[armredhatopenshifthcp.ExternalAuthsClientDeleteResponse]](),
-		newListByParentPager: newTracker[azfake.PagerResponder[armredhatopenshifthcp.ExternalAuthsClientListByParentResponse]](),
 		beginUpdate:          newTracker[azfake.PollerResponder[armredhatopenshifthcp.ExternalAuthsClientUpdateResponse]](),
+		newListByParentPager: newTracker[azfake.PagerResponder[armredhatopenshifthcp.ExternalAuthsClientListByParentResponse]](),
 	}
 }
 
@@ -61,8 +61,8 @@ type ExternalAuthsServerTransport struct {
 	srv                  *ExternalAuthsServer
 	beginCreateOrUpdate  *tracker[azfake.PollerResponder[armredhatopenshifthcp.ExternalAuthsClientCreateOrUpdateResponse]]
 	beginDelete          *tracker[azfake.PollerResponder[armredhatopenshifthcp.ExternalAuthsClientDeleteResponse]]
-	newListByParentPager *tracker[azfake.PagerResponder[armredhatopenshifthcp.ExternalAuthsClientListByParentResponse]]
 	beginUpdate          *tracker[azfake.PollerResponder[armredhatopenshifthcp.ExternalAuthsClientUpdateResponse]]
+	newListByParentPager *tracker[azfake.PagerResponder[armredhatopenshifthcp.ExternalAuthsClientListByParentResponse]]
 }
 
 // Do implements the policy.Transporter interface for ExternalAuthsServerTransport.
@@ -90,12 +90,12 @@ func (e *ExternalAuthsServerTransport) dispatchToMethodFake(req *http.Request, m
 				res.resp, res.err = e.dispatchBeginCreateOrUpdate(req)
 			case "ExternalAuthsClient.BeginDelete":
 				res.resp, res.err = e.dispatchBeginDelete(req)
+			case "ExternalAuthsClient.BeginUpdate":
+				res.resp, res.err = e.dispatchBeginUpdate(req)
 			case "ExternalAuthsClient.Get":
 				res.resp, res.err = e.dispatchGet(req)
 			case "ExternalAuthsClient.NewListByParentPager":
 				res.resp, res.err = e.dispatchNewListByParentPager(req)
-			case "ExternalAuthsClient.BeginUpdate":
-				res.resp, res.err = e.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -212,6 +212,58 @@ func (e *ExternalAuthsServerTransport) dispatchBeginDelete(req *http.Request) (*
 	return resp, nil
 }
 
+func (e *ExternalAuthsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if e.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := e.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.RedHatOpenShift/hcpOpenShiftClusters/(?P<hcpOpenShiftClusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/externalAuths/(?P<externalAuthName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armredhatopenshifthcp.ExternalAuth](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		hcpOpenShiftClusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("hcpOpenShiftClusterName")])
+		if err != nil {
+			return nil, err
+		}
+		externalAuthNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("externalAuthName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := e.srv.BeginUpdate(req.Context(), resourceGroupNameParam, hcpOpenShiftClusterNameParam, externalAuthNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		e.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		e.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		e.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (e *ExternalAuthsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if e.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -287,58 +339,6 @@ func (e *ExternalAuthsServerTransport) dispatchNewListByParentPager(req *http.Re
 	if !server.PagerResponderMore(newListByParentPager) {
 		e.newListByParentPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (e *ExternalAuthsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if e.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := e.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.RedHatOpenShift/hcpOpenShiftClusters/(?P<hcpOpenShiftClusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/externalAuths/(?P<externalAuthName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armredhatopenshifthcp.ExternalAuth](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		hcpOpenShiftClusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("hcpOpenShiftClusterName")])
-		if err != nil {
-			return nil, err
-		}
-		externalAuthNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("externalAuthName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := e.srv.BeginUpdate(req.Context(), resourceGroupNameParam, hcpOpenShiftClusterNameParam, externalAuthNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		e.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		e.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		e.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

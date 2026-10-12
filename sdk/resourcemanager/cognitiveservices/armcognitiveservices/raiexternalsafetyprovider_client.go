@@ -44,6 +44,71 @@ func NewRaiExternalSafetyProviderClient(subscriptionID string, credential azcore
 	return client, nil
 }
 
+// BeginDelete - Deletes the specified custom topic associated with the subscription.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - safetyProviderName - The name of the Rai External Safety Provider associated with the Cognitive Services Account
+//   - options - RaiExternalSafetyProviderClientBeginDeleteOptions contains the optional parameters for the RaiExternalSafetyProviderClient.BeginDelete
+//     method.
+func (client *RaiExternalSafetyProviderClient) BeginDelete(ctx context.Context, safetyProviderName string, options *RaiExternalSafetyProviderClientBeginDeleteOptions) (*runtime.Poller[RaiExternalSafetyProviderClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, safetyProviderName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[RaiExternalSafetyProviderClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[RaiExternalSafetyProviderClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// deleteOperation - Deletes the specified custom topic associated with the subscription.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *RaiExternalSafetyProviderClient) deleteOperation(ctx context.Context, safetyProviderName string, options *RaiExternalSafetyProviderClientBeginDeleteOptions) (*http.Response, error) {
+	var err error
+	const operationName = "RaiExternalSafetyProviderClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.deleteCreateRequest(ctx, safetyProviderName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// deleteCreateRequest creates the delete request.
+func (client *RaiExternalSafetyProviderClient) deleteCreateRequest(ctx context.Context, safetyProviderName string, _ *RaiExternalSafetyProviderClientBeginDeleteOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.CognitiveServices/raiExternalSafetyProviders/{safetyProviderName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if safetyProviderName == "" {
+		return nil, errors.New("parameter safetyProviderName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{safetyProviderName}", url.PathEscape(safetyProviderName))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260715Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
 // CreateOrUpdate - Create the rai safety provider associated with the subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - safetyProviderName - The name of the Rai External Safety Provider associated with the Cognitive Services Account
@@ -103,71 +168,6 @@ func (client *RaiExternalSafetyProviderClient) createOrUpdateHandleResponse(resp
 		return RaiExternalSafetyProviderClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginDelete - Deletes the specified custom topic associated with the subscription.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - safetyProviderName - The name of the Rai External Safety Provider associated with the Cognitive Services Account
-//   - options - RaiExternalSafetyProviderClientBeginDeleteOptions contains the optional parameters for the RaiExternalSafetyProviderClient.BeginDelete
-//     method.
-func (client *RaiExternalSafetyProviderClient) BeginDelete(ctx context.Context, safetyProviderName string, options *RaiExternalSafetyProviderClientBeginDeleteOptions) (*runtime.Poller[RaiExternalSafetyProviderClientDeleteResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.deleteOperation(ctx, safetyProviderName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[RaiExternalSafetyProviderClientDeleteResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[RaiExternalSafetyProviderClientDeleteResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Delete - Deletes the specified custom topic associated with the subscription.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *RaiExternalSafetyProviderClient) deleteOperation(ctx context.Context, safetyProviderName string, options *RaiExternalSafetyProviderClientBeginDeleteOptions) (*http.Response, error) {
-	var err error
-	const operationName = "RaiExternalSafetyProviderClient.BeginDelete"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.deleteCreateRequest(ctx, safetyProviderName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// deleteCreateRequest creates the Delete request.
-func (client *RaiExternalSafetyProviderClient) deleteCreateRequest(ctx context.Context, safetyProviderName string, _ *RaiExternalSafetyProviderClientBeginDeleteOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.CognitiveServices/raiExternalSafetyProviders/{safetyProviderName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if safetyProviderName == "" {
-		return nil, errors.New("parameter safetyProviderName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{safetyProviderName}", url.PathEscape(safetyProviderName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260715Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	return req, nil
 }
 
 // Get - Gets the specified external safety provider associated with the Subscription

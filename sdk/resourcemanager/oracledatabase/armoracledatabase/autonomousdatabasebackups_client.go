@@ -69,7 +69,7 @@ func (client *AutonomousDatabaseBackupsClient) BeginCreateOrUpdate(ctx context.C
 	}
 }
 
-// CreateOrUpdate - Create a AutonomousDatabaseBackup
+// createOrUpdate - Create a AutonomousDatabaseBackup
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *AutonomousDatabaseBackupsClient) createOrUpdate(ctx context.Context, resourceGroupName string, autonomousdatabasename string, adbbackupid string, resource AutonomousDatabaseBackup, options *AutonomousDatabaseBackupsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -91,7 +91,7 @@ func (client *AutonomousDatabaseBackupsClient) createOrUpdate(ctx context.Contex
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *AutonomousDatabaseBackupsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, autonomousdatabasename string, adbbackupid string, resource AutonomousDatabaseBackup, _ *AutonomousDatabaseBackupsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/autonomousDatabases/{autonomousdatabasename}/autonomousDatabaseBackups/{adbbackupid}"
 	if client.subscriptionID == "" {
@@ -149,7 +149,7 @@ func (client *AutonomousDatabaseBackupsClient) BeginDelete(ctx context.Context, 
 	}
 }
 
-// Delete - Delete a AutonomousDatabaseBackup
+// deleteOperation - Delete a AutonomousDatabaseBackup
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *AutonomousDatabaseBackupsClient) deleteOperation(ctx context.Context, resourceGroupName string, autonomousdatabasename string, adbbackupid string, options *AutonomousDatabaseBackupsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -171,7 +171,7 @@ func (client *AutonomousDatabaseBackupsClient) deleteOperation(ctx context.Conte
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *AutonomousDatabaseBackupsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, autonomousdatabasename string, adbbackupid string, _ *AutonomousDatabaseBackupsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/autonomousDatabases/{autonomousdatabasename}/autonomousDatabaseBackups/{adbbackupid}"
 	if client.subscriptionID == "" {
@@ -197,6 +197,87 @@ func (client *AutonomousDatabaseBackupsClient) deleteCreateRequest(ctx context.C
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", version20260601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginUpdate - Update a AutonomousDatabaseBackup
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - autonomousdatabasename - The database name.
+//   - adbbackupid - AutonomousDatabaseBackup id
+//   - properties - The resource properties to be updated.
+//   - options - AutonomousDatabaseBackupsClientBeginUpdateOptions contains the optional parameters for the AutonomousDatabaseBackupsClient.BeginUpdate
+//     method.
+func (client *AutonomousDatabaseBackupsClient) BeginUpdate(ctx context.Context, resourceGroupName string, autonomousdatabasename string, adbbackupid string, properties AutonomousDatabaseBackupUpdate, options *AutonomousDatabaseBackupsClientBeginUpdateOptions) (*runtime.Poller[AutonomousDatabaseBackupsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, autonomousdatabasename, adbbackupid, properties, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AutonomousDatabaseBackupsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[AutonomousDatabaseBackupsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Update a AutonomousDatabaseBackup
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *AutonomousDatabaseBackupsClient) update(ctx context.Context, resourceGroupName string, autonomousdatabasename string, adbbackupid string, properties AutonomousDatabaseBackupUpdate, options *AutonomousDatabaseBackupsClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "AutonomousDatabaseBackupsClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, autonomousdatabasename, adbbackupid, properties, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *AutonomousDatabaseBackupsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, autonomousdatabasename string, adbbackupid string, properties AutonomousDatabaseBackupUpdate, _ *AutonomousDatabaseBackupsClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/autonomousDatabases/{autonomousdatabasename}/autonomousDatabaseBackups/{adbbackupid}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if autonomousdatabasename == "" {
+		return nil, errors.New("parameter autonomousdatabasename cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{autonomousdatabasename}", url.PathEscape(autonomousdatabasename))
+	if adbbackupid == "" {
+		return nil, errors.New("parameter adbbackupid cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{adbbackupid}", url.PathEscape(adbbackupid))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, properties); err != nil {
+		return nil, err
+	}
 	return req, nil
 }
 
@@ -341,85 +422,4 @@ func (client *AutonomousDatabaseBackupsClient) listByAutonomousDatabaseHandleRes
 		return AutonomousDatabaseBackupsClientListByAutonomousDatabaseResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginUpdate - Update a AutonomousDatabaseBackup
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - autonomousdatabasename - The database name.
-//   - adbbackupid - AutonomousDatabaseBackup id
-//   - properties - The resource properties to be updated.
-//   - options - AutonomousDatabaseBackupsClientBeginUpdateOptions contains the optional parameters for the AutonomousDatabaseBackupsClient.BeginUpdate
-//     method.
-func (client *AutonomousDatabaseBackupsClient) BeginUpdate(ctx context.Context, resourceGroupName string, autonomousdatabasename string, adbbackupid string, properties AutonomousDatabaseBackupUpdate, options *AutonomousDatabaseBackupsClientBeginUpdateOptions) (*runtime.Poller[AutonomousDatabaseBackupsClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, autonomousdatabasename, adbbackupid, properties, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AutonomousDatabaseBackupsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[AutonomousDatabaseBackupsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Update a AutonomousDatabaseBackup
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *AutonomousDatabaseBackupsClient) update(ctx context.Context, resourceGroupName string, autonomousdatabasename string, adbbackupid string, properties AutonomousDatabaseBackupUpdate, options *AutonomousDatabaseBackupsClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "AutonomousDatabaseBackupsClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, autonomousdatabasename, adbbackupid, properties, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *AutonomousDatabaseBackupsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, autonomousdatabasename string, adbbackupid string, properties AutonomousDatabaseBackupUpdate, _ *AutonomousDatabaseBackupsClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/autonomousDatabases/{autonomousdatabasename}/autonomousDatabaseBackups/{adbbackupid}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if autonomousdatabasename == "" {
-		return nil, errors.New("parameter autonomousdatabasename cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{autonomousdatabasename}", url.PathEscape(autonomousdatabasename))
-	if adbbackupid == "" {
-		return nil, errors.New("parameter adbbackupid cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{adbbackupid}", url.PathEscape(adbbackupid))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, properties); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

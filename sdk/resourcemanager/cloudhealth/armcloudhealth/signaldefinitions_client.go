@@ -70,7 +70,7 @@ func (client *SignalDefinitionsClient) BeginCreateOrUpdate(ctx context.Context, 
 	}
 }
 
-// CreateOrUpdate - Create a SignalDefinition
+// createOrUpdate - Create a SignalDefinition
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *SignalDefinitionsClient) createOrUpdate(ctx context.Context, resourceGroupName string, healthModelName string, signalDefinitionName string, resource SignalDefinition, options *SignalDefinitionsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -92,7 +92,7 @@ func (client *SignalDefinitionsClient) createOrUpdate(ctx context.Context, resou
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *SignalDefinitionsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, healthModelName string, signalDefinitionName string, resource SignalDefinition, _ *SignalDefinitionsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/signaldefinitions/{signalDefinitionName}"
 	if client.subscriptionID == "" {
@@ -150,7 +150,7 @@ func (client *SignalDefinitionsClient) BeginDelete(ctx context.Context, resource
 	}
 }
 
-// Delete - Delete a SignalDefinition
+// deleteOperation - Delete a SignalDefinition
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *SignalDefinitionsClient) deleteOperation(ctx context.Context, resourceGroupName string, healthModelName string, signalDefinitionName string, options *SignalDefinitionsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -172,7 +172,7 @@ func (client *SignalDefinitionsClient) deleteOperation(ctx context.Context, reso
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *SignalDefinitionsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, healthModelName string, signalDefinitionName string, _ *SignalDefinitionsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/signaldefinitions/{signalDefinitionName}"
 	if client.subscriptionID == "" {

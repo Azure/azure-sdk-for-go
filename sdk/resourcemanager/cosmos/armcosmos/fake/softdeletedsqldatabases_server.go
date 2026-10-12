@@ -20,14 +20,6 @@ import (
 
 // SoftDeletedSQLDatabasesServer is a fake server for instances of the armcosmos.SoftDeletedSQLDatabasesClient type.
 type SoftDeletedSQLDatabasesServer struct {
-	// Get is the fake for method SoftDeletedSQLDatabasesClient.Get
-	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, location string, accountName string, databaseName string, options *armcosmos.SoftDeletedSQLDatabasesClientGetOptions) (resp azfake.Responder[armcosmos.SoftDeletedSQLDatabasesClientGetResponse], errResp azfake.ErrorResponder)
-
-	// List is the fake for method SoftDeletedSQLDatabasesClient.List
-	// HTTP status codes to indicate success: http.StatusOK
-	List func(ctx context.Context, resourceGroupName string, location string, accountName string, options *armcosmos.SoftDeletedSQLDatabasesClientListOptions) (resp azfake.Responder[armcosmos.SoftDeletedSQLDatabasesClientListResponse], errResp azfake.ErrorResponder)
-
 	// BeginPurge is the fake for method SoftDeletedSQLDatabasesClient.BeginPurge
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginPurge func(ctx context.Context, resourceGroupName string, location string, accountName string, databaseName string, options *armcosmos.SoftDeletedSQLDatabasesClientBeginPurgeOptions) (resp azfake.PollerResponder[armcosmos.SoftDeletedSQLDatabasesClientPurgeResponse], errResp azfake.ErrorResponder)
@@ -35,6 +27,14 @@ type SoftDeletedSQLDatabasesServer struct {
 	// BeginRestore is the fake for method SoftDeletedSQLDatabasesClient.BeginRestore
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginRestore func(ctx context.Context, resourceGroupName string, location string, accountName string, databaseName string, options *armcosmos.SoftDeletedSQLDatabasesClientBeginRestoreOptions) (resp azfake.PollerResponder[armcosmos.SoftDeletedSQLDatabasesClientRestoreResponse], errResp azfake.ErrorResponder)
+
+	// Get is the fake for method SoftDeletedSQLDatabasesClient.Get
+	// HTTP status codes to indicate success: http.StatusOK
+	Get func(ctx context.Context, resourceGroupName string, location string, accountName string, databaseName string, options *armcosmos.SoftDeletedSQLDatabasesClientGetOptions) (resp azfake.Responder[armcosmos.SoftDeletedSQLDatabasesClientGetResponse], errResp azfake.ErrorResponder)
+
+	// List is the fake for method SoftDeletedSQLDatabasesClient.List
+	// HTTP status codes to indicate success: http.StatusOK
+	List func(ctx context.Context, resourceGroupName string, location string, accountName string, options *armcosmos.SoftDeletedSQLDatabasesClientListOptions) (resp azfake.Responder[armcosmos.SoftDeletedSQLDatabasesClientListResponse], errResp azfake.ErrorResponder)
 }
 
 // NewSoftDeletedSQLDatabasesServerTransport creates a new instance of SoftDeletedSQLDatabasesServerTransport with the provided implementation.
@@ -77,14 +77,14 @@ func (s *SoftDeletedSQLDatabasesServerTransport) dispatchToMethodFake(req *http.
 		}
 		if !intercepted {
 			switch method {
-			case "SoftDeletedSQLDatabasesClient.Get":
-				res.resp, res.err = s.dispatchGet(req)
-			case "SoftDeletedSQLDatabasesClient.List":
-				res.resp, res.err = s.dispatchList(req)
 			case "SoftDeletedSQLDatabasesClient.BeginPurge":
 				res.resp, res.err = s.dispatchBeginPurge(req)
 			case "SoftDeletedSQLDatabasesClient.BeginRestore":
 				res.resp, res.err = s.dispatchBeginRestore(req)
+			case "SoftDeletedSQLDatabasesClient.Get":
+				res.resp, res.err = s.dispatchGet(req)
+			case "SoftDeletedSQLDatabasesClient.List":
+				res.resp, res.err = s.dispatchList(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -101,91 +101,13 @@ func (s *SoftDeletedSQLDatabasesServerTransport) dispatchToMethodFake(req *http.
 	}
 }
 
-func (s *SoftDeletedSQLDatabasesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if s.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/softDeletedDatabaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/softDeletedSqlDatabases/(?P<databaseName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 6 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	locationParam, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
-	if err != nil {
-		return nil, err
-	}
-	accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
-	if err != nil {
-		return nil, err
-	}
-	databaseNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("databaseName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := s.srv.Get(req.Context(), resourceGroupNameParam, locationParam, accountNameParam, databaseNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).SoftDeletedSQLDatabaseGetResult, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (s *SoftDeletedSQLDatabasesServerTransport) dispatchList(req *http.Request) (*http.Response, error) {
-	if s.srv.List == nil {
-		return nil, &nonRetriableError{errors.New("fake for method List not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/softDeletedDatabaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/softDeletedSqlDatabases`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	locationParam, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
-	if err != nil {
-		return nil, err
-	}
-	accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := s.srv.List(req.Context(), resourceGroupNameParam, locationParam, accountNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).SoftDeletedSQLDatabasesListResult, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
 func (s *SoftDeletedSQLDatabasesServerTransport) dispatchBeginPurge(req *http.Request) (*http.Response, error) {
 	if s.srv.BeginPurge == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginPurge not implemented")}
 	}
 	beginPurge := s.beginPurge.get(req)
 	if beginPurge == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/softDeletedDatabaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/softDeletedSqlDatabases/(?P<databaseName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)?softDeleteActionKind=PermanentDeleteResource`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/softDeletedDatabaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/softDeletedSqlDatabases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)?softDeleteActionKind=PermanentDeleteResource`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 6 {
@@ -245,7 +167,7 @@ func (s *SoftDeletedSQLDatabasesServerTransport) dispatchBeginRestore(req *http.
 	}
 	beginRestore := s.beginRestore.get(req)
 	if beginRestore == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/softDeletedDatabaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/softDeletedSqlDatabases/(?P<databaseName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)?softDeleteActionKind=RestoreSoftDeletedResource`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/softDeletedDatabaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/softDeletedSqlDatabases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)?softDeleteActionKind=RestoreSoftDeletedResource`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 6 {
@@ -296,6 +218,84 @@ func (s *SoftDeletedSQLDatabasesServerTransport) dispatchBeginRestore(req *http.
 		s.beginRestore.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (s *SoftDeletedSQLDatabasesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if s.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/softDeletedDatabaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/softDeletedSqlDatabases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 6 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	locationParam, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
+	if err != nil {
+		return nil, err
+	}
+	accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+	if err != nil {
+		return nil, err
+	}
+	databaseNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("databaseName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := s.srv.Get(req.Context(), resourceGroupNameParam, locationParam, accountNameParam, databaseNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).SoftDeletedSQLDatabaseGetResult, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (s *SoftDeletedSQLDatabasesServerTransport) dispatchList(req *http.Request) (*http.Response, error) {
+	if s.srv.List == nil {
+		return nil, &nonRetriableError{errors.New("fake for method List not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/softDeletedDatabaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/softDeletedSqlDatabases`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	locationParam, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
+	if err != nil {
+		return nil, err
+	}
+	accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := s.srv.List(req.Context(), resourceGroupNameParam, locationParam, accountNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).SoftDeletedSQLDatabasesListResult, req)
+	if err != nil {
+		return nil, err
+	}
 	return resp, nil
 }
 

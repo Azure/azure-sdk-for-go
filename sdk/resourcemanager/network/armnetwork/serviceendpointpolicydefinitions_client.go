@@ -70,7 +70,7 @@ func (client *ServiceEndpointPolicyDefinitionsClient) BeginCreateOrUpdate(ctx co
 	}
 }
 
-// CreateOrUpdate - Creates or updates a service endpoint policy definition in the specified service endpoint policy.
+// createOrUpdate - Creates or updates a service endpoint policy definition in the specified service endpoint policy.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ServiceEndpointPolicyDefinitionsClient) createOrUpdate(ctx context.Context, resourceGroupName string, serviceEndpointPolicyName string, serviceEndpointPolicyDefinitionName string, serviceEndpointPolicyDefinitions ServiceEndpointPolicyDefinition, options *ServiceEndpointPolicyDefinitionsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -92,7 +92,7 @@ func (client *ServiceEndpointPolicyDefinitionsClient) createOrUpdate(ctx context
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *ServiceEndpointPolicyDefinitionsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serviceEndpointPolicyName string, serviceEndpointPolicyDefinitionName string, serviceEndpointPolicyDefinitions ServiceEndpointPolicyDefinition, _ *ServiceEndpointPolicyDefinitionsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/serviceEndpointPolicies/{serviceEndpointPolicyName}/serviceEndpointPolicyDefinitions/{serviceEndpointPolicyDefinitionName}"
 	if client.subscriptionID == "" {
@@ -151,7 +151,7 @@ func (client *ServiceEndpointPolicyDefinitionsClient) BeginDelete(ctx context.Co
 	}
 }
 
-// Delete - Deletes the specified ServiceEndpoint policy definitions.
+// deleteOperation - Deletes the specified ServiceEndpoint policy definitions.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ServiceEndpointPolicyDefinitionsClient) deleteOperation(ctx context.Context, resourceGroupName string, serviceEndpointPolicyName string, serviceEndpointPolicyDefinitionName string, options *ServiceEndpointPolicyDefinitionsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -173,7 +173,7 @@ func (client *ServiceEndpointPolicyDefinitionsClient) deleteOperation(ctx contex
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *ServiceEndpointPolicyDefinitionsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serviceEndpointPolicyName string, serviceEndpointPolicyDefinitionName string, _ *ServiceEndpointPolicyDefinitionsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/serviceEndpointPolicies/{serviceEndpointPolicyName}/serviceEndpointPolicyDefinitions/{serviceEndpointPolicyDefinitionName}"
 	if client.subscriptionID == "" {

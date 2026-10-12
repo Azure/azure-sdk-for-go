@@ -71,7 +71,7 @@ func (client *ConfigurationPolicyGroupsClient) BeginCreateOrUpdate(ctx context.C
 	}
 }
 
-// CreateOrUpdate - Creates a ConfigurationPolicyGroup if it doesn't exist else updates the existing one.
+// createOrUpdate - Creates a ConfigurationPolicyGroup if it doesn't exist else updates the existing one.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ConfigurationPolicyGroupsClient) createOrUpdate(ctx context.Context, resourceGroupName string, vpnServerConfigurationName string, configurationPolicyGroupName string, vpnServerConfigurationPolicyGroupParameters VPNServerConfigurationPolicyGroup, options *ConfigurationPolicyGroupsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -93,7 +93,7 @@ func (client *ConfigurationPolicyGroupsClient) createOrUpdate(ctx context.Contex
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *ConfigurationPolicyGroupsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, vpnServerConfigurationName string, configurationPolicyGroupName string, vpnServerConfigurationPolicyGroupParameters VPNServerConfigurationPolicyGroup, _ *ConfigurationPolicyGroupsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/vpnServerConfigurations/{vpnServerConfigurationName}/configurationPolicyGroups/{configurationPolicyGroupName}"
 	if client.subscriptionID == "" {
@@ -153,7 +153,7 @@ func (client *ConfigurationPolicyGroupsClient) BeginDelete(ctx context.Context, 
 	}
 }
 
-// Delete - Deletes a ConfigurationPolicyGroup.
+// deleteOperation - Deletes a ConfigurationPolicyGroup.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ConfigurationPolicyGroupsClient) deleteOperation(ctx context.Context, resourceGroupName string, vpnServerConfigurationName string, configurationPolicyGroupName string, options *ConfigurationPolicyGroupsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -175,7 +175,7 @@ func (client *ConfigurationPolicyGroupsClient) deleteOperation(ctx context.Conte
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *ConfigurationPolicyGroupsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, vpnServerConfigurationName string, configurationPolicyGroupName string, _ *ConfigurationPolicyGroupsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/vpnServerConfigurations/{vpnServerConfigurationName}/configurationPolicyGroups/{configurationPolicyGroupName}"
 	if client.subscriptionID == "" {

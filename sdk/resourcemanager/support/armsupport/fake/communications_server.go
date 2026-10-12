@@ -22,13 +22,13 @@ import (
 
 // CommunicationsServer is a fake server for instances of the armsupport.CommunicationsClient type.
 type CommunicationsServer struct {
-	// CheckNameAvailability is the fake for method CommunicationsClient.CheckNameAvailability
-	// HTTP status codes to indicate success: http.StatusOK
-	CheckNameAvailability func(ctx context.Context, supportTicketName string, checkNameAvailabilityInput armsupport.CheckNameAvailabilityInput, options *armsupport.CommunicationsClientCheckNameAvailabilityOptions) (resp azfake.Responder[armsupport.CommunicationsClientCheckNameAvailabilityResponse], errResp azfake.ErrorResponder)
-
 	// BeginCreate is the fake for method CommunicationsClient.BeginCreate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginCreate func(ctx context.Context, supportTicketName string, communicationName string, createCommunicationParameters armsupport.CommunicationDetails, options *armsupport.CommunicationsClientBeginCreateOptions) (resp azfake.PollerResponder[armsupport.CommunicationsClientCreateResponse], errResp azfake.ErrorResponder)
+
+	// CheckNameAvailability is the fake for method CommunicationsClient.CheckNameAvailability
+	// HTTP status codes to indicate success: http.StatusOK
+	CheckNameAvailability func(ctx context.Context, supportTicketName string, checkNameAvailabilityInput armsupport.CheckNameAvailabilityInput, options *armsupport.CommunicationsClientCheckNameAvailabilityOptions) (resp azfake.Responder[armsupport.CommunicationsClientCheckNameAvailabilityResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method CommunicationsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
@@ -79,10 +79,10 @@ func (c *CommunicationsServerTransport) dispatchToMethodFake(req *http.Request, 
 		}
 		if !intercepted {
 			switch method {
-			case "CommunicationsClient.CheckNameAvailability":
-				res.resp, res.err = c.dispatchCheckNameAvailability(req)
 			case "CommunicationsClient.BeginCreate":
 				res.resp, res.err = c.dispatchBeginCreate(req)
+			case "CommunicationsClient.CheckNameAvailability":
+				res.resp, res.err = c.dispatchCheckNameAvailability(req)
 			case "CommunicationsClient.Get":
 				res.resp, res.err = c.dispatchGet(req)
 			case "CommunicationsClient.NewListPager":
@@ -101,39 +101,6 @@ func (c *CommunicationsServerTransport) dispatchToMethodFake(req *http.Request, 
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
-}
-
-func (c *CommunicationsServerTransport) dispatchCheckNameAvailability(req *http.Request) (*http.Response, error) {
-	if c.srv.CheckNameAvailability == nil {
-		return nil, &nonRetriableError{errors.New("fake for method CheckNameAvailability not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Support/supportTickets/(?P<supportTicketName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/checkNameAvailability`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 3 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armsupport.CheckNameAvailabilityInput](req)
-	if err != nil {
-		return nil, err
-	}
-	supportTicketNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("supportTicketName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := c.srv.CheckNameAvailability(req.Context(), supportTicketNameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CheckNameAvailabilityOutput, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
 }
 
 func (c *CommunicationsServerTransport) dispatchBeginCreate(req *http.Request) (*http.Response, error) {
@@ -181,6 +148,39 @@ func (c *CommunicationsServerTransport) dispatchBeginCreate(req *http.Request) (
 		c.beginCreate.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (c *CommunicationsServerTransport) dispatchCheckNameAvailability(req *http.Request) (*http.Response, error) {
+	if c.srv.CheckNameAvailability == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CheckNameAvailability not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Support/supportTickets/(?P<supportTicketName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/checkNameAvailability`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armsupport.CheckNameAvailabilityInput](req)
+	if err != nil {
+		return nil, err
+	}
+	supportTicketNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("supportTicketName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := c.srv.CheckNameAvailability(req.Context(), supportTicketNameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CheckNameAvailabilityOutput, req)
+	if err != nil {
+		return nil, err
+	}
 	return resp, nil
 }
 

@@ -147,6 +147,120 @@ func ExampleDotNetComponentsClient_BeginDelete() {
 	}
 }
 
+// Generated from example definition: 2026-07-01/DotNetComponents_Patch.json
+func ExampleDotNetComponentsClient_BeginUpdate_patchNetComponent() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armappcontainers.NewClientFactory("8efdecc5-919e-44eb-b179-915dca89ebf9", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewDotNetComponentsClient().BeginUpdate(ctx, "examplerg", "myenvironment", "mydotnetcomponent", armappcontainers.DotNetComponent{
+		Properties: &armappcontainers.DotNetComponentProperties{
+			ComponentType: to.Ptr(armappcontainers.DotNetComponentTypeAspireDashboard),
+			Configurations: []*armappcontainers.DotNetComponentConfigurationProperty{
+				{
+					PropertyName: to.Ptr("dashboard-theme"),
+					Value:        to.Ptr("dark"),
+				},
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armappcontainers.DotNetComponentsClientUpdateResponse{
+	// 	DotNetComponent: armappcontainers.DotNetComponent{
+	// 		Name: to.Ptr("mydotnetcomponent"),
+	// 		Type: to.Ptr("Microsoft.App/managedEnvironments/dotNetComponents"),
+	// 		ID: to.Ptr("/subscriptions/8efdecc5-919e-44eb-b179-915dca89ebf9/resourceGroups/examplerg/providers/Microsoft.App/managedEnvironments/myenvironment/dotNetComponents/mydotnetcomponent"),
+	// 		Properties: &armappcontainers.DotNetComponentProperties{
+	// 			ComponentType: to.Ptr(armappcontainers.DotNetComponentTypeAspireDashboard),
+	// 			Configurations: []*armappcontainers.DotNetComponentConfigurationProperty{
+	// 				{
+	// 					PropertyName: to.Ptr("dashboard-theme"),
+	// 					Value: to.Ptr("dark"),
+	// 				},
+	// 			},
+	// 			ProvisioningState: to.Ptr(armappcontainers.DotNetComponentProvisioningStateSucceeded),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-07-01/DotNetComponents_Patch_ServiceBind.json
+func ExampleDotNetComponentsClient_BeginUpdate_patchNetComponentWithServiceBinds() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armappcontainers.NewClientFactory("8efdecc5-919e-44eb-b179-915dca89ebf9", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewDotNetComponentsClient().BeginUpdate(ctx, "examplerg", "myenvironment", "mydotnetcomponent", armappcontainers.DotNetComponent{
+		Properties: &armappcontainers.DotNetComponentProperties{
+			ComponentType: to.Ptr(armappcontainers.DotNetComponentTypeAspireDashboard),
+			Configurations: []*armappcontainers.DotNetComponentConfigurationProperty{
+				{
+					PropertyName: to.Ptr("dashboard-theme"),
+					Value:        to.Ptr("dark"),
+				},
+			},
+			ServiceBinds: []*armappcontainers.DotNetComponentServiceBind{
+				{
+					Name:      to.Ptr("yellowcat"),
+					ServiceID: to.Ptr("/subscriptions/8efdecc5-919e-44eb-b179-915dca89ebf9/resourceGroups/examplerg/providers/Microsoft.App/managedEnvironments/myenvironment/dotNetComponents/yellowcat"),
+				},
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armappcontainers.DotNetComponentsClientUpdateResponse{
+	// 	DotNetComponent: armappcontainers.DotNetComponent{
+	// 		Name: to.Ptr("mydotnetcomponent"),
+	// 		Type: to.Ptr("Microsoft.App/managedEnvironments/dotNetComponents"),
+	// 		ID: to.Ptr("/subscriptions/8efdecc5-919e-44eb-b179-915dca89ebf9/resourceGroups/examplerg/providers/Microsoft.App/managedEnvironments/myenvironment/dotNetComponents/mydotnetcomponent"),
+	// 		Properties: &armappcontainers.DotNetComponentProperties{
+	// 			ComponentType: to.Ptr(armappcontainers.DotNetComponentTypeAspireDashboard),
+	// 			Configurations: []*armappcontainers.DotNetComponentConfigurationProperty{
+	// 				{
+	// 					PropertyName: to.Ptr("dashboard-theme"),
+	// 					Value: to.Ptr("dark"),
+	// 				},
+	// 			},
+	// 			ProvisioningState: to.Ptr(armappcontainers.DotNetComponentProvisioningStateSucceeded),
+	// 			ServiceBinds: []*armappcontainers.DotNetComponentServiceBind{
+	// 				{
+	// 					Name: to.Ptr("yellowcat"),
+	// 					ServiceID: to.Ptr("/subscriptions/8efdecc5-919e-44eb-b179-915dca89ebf9/resourceGroups/examplerg/providers/Microsoft.App/managedEnvironments/myenvironment/dotNetComponents/yellowcat"),
+	// 				},
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
 // Generated from example definition: 2026-07-01/DotNetComponents_Get.json
 func ExampleDotNetComponentsClient_Get_getNetComponent() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -359,118 +473,4 @@ func ExampleDotNetComponentsClient_NewListPager_listNetComponentsWithServiceBind
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2026-07-01/DotNetComponents_Patch.json
-func ExampleDotNetComponentsClient_BeginUpdate_patchNetComponent() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armappcontainers.NewClientFactory("8efdecc5-919e-44eb-b179-915dca89ebf9", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewDotNetComponentsClient().BeginUpdate(ctx, "examplerg", "myenvironment", "mydotnetcomponent", armappcontainers.DotNetComponent{
-		Properties: &armappcontainers.DotNetComponentProperties{
-			ComponentType: to.Ptr(armappcontainers.DotNetComponentTypeAspireDashboard),
-			Configurations: []*armappcontainers.DotNetComponentConfigurationProperty{
-				{
-					PropertyName: to.Ptr("dashboard-theme"),
-					Value:        to.Ptr("dark"),
-				},
-			},
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armappcontainers.DotNetComponentsClientUpdateResponse{
-	// 	DotNetComponent: armappcontainers.DotNetComponent{
-	// 		Name: to.Ptr("mydotnetcomponent"),
-	// 		Type: to.Ptr("Microsoft.App/managedEnvironments/dotNetComponents"),
-	// 		ID: to.Ptr("/subscriptions/8efdecc5-919e-44eb-b179-915dca89ebf9/resourceGroups/examplerg/providers/Microsoft.App/managedEnvironments/myenvironment/dotNetComponents/mydotnetcomponent"),
-	// 		Properties: &armappcontainers.DotNetComponentProperties{
-	// 			ComponentType: to.Ptr(armappcontainers.DotNetComponentTypeAspireDashboard),
-	// 			Configurations: []*armappcontainers.DotNetComponentConfigurationProperty{
-	// 				{
-	// 					PropertyName: to.Ptr("dashboard-theme"),
-	// 					Value: to.Ptr("dark"),
-	// 				},
-	// 			},
-	// 			ProvisioningState: to.Ptr(armappcontainers.DotNetComponentProvisioningStateSucceeded),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-07-01/DotNetComponents_Patch_ServiceBind.json
-func ExampleDotNetComponentsClient_BeginUpdate_patchNetComponentWithServiceBinds() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armappcontainers.NewClientFactory("8efdecc5-919e-44eb-b179-915dca89ebf9", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewDotNetComponentsClient().BeginUpdate(ctx, "examplerg", "myenvironment", "mydotnetcomponent", armappcontainers.DotNetComponent{
-		Properties: &armappcontainers.DotNetComponentProperties{
-			ComponentType: to.Ptr(armappcontainers.DotNetComponentTypeAspireDashboard),
-			Configurations: []*armappcontainers.DotNetComponentConfigurationProperty{
-				{
-					PropertyName: to.Ptr("dashboard-theme"),
-					Value:        to.Ptr("dark"),
-				},
-			},
-			ServiceBinds: []*armappcontainers.DotNetComponentServiceBind{
-				{
-					Name:      to.Ptr("yellowcat"),
-					ServiceID: to.Ptr("/subscriptions/8efdecc5-919e-44eb-b179-915dca89ebf9/resourceGroups/examplerg/providers/Microsoft.App/managedEnvironments/myenvironment/dotNetComponents/yellowcat"),
-				},
-			},
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armappcontainers.DotNetComponentsClientUpdateResponse{
-	// 	DotNetComponent: armappcontainers.DotNetComponent{
-	// 		Name: to.Ptr("mydotnetcomponent"),
-	// 		Type: to.Ptr("Microsoft.App/managedEnvironments/dotNetComponents"),
-	// 		ID: to.Ptr("/subscriptions/8efdecc5-919e-44eb-b179-915dca89ebf9/resourceGroups/examplerg/providers/Microsoft.App/managedEnvironments/myenvironment/dotNetComponents/mydotnetcomponent"),
-	// 		Properties: &armappcontainers.DotNetComponentProperties{
-	// 			ComponentType: to.Ptr(armappcontainers.DotNetComponentTypeAspireDashboard),
-	// 			Configurations: []*armappcontainers.DotNetComponentConfigurationProperty{
-	// 				{
-	// 					PropertyName: to.Ptr("dashboard-theme"),
-	// 					Value: to.Ptr("dark"),
-	// 				},
-	// 			},
-	// 			ProvisioningState: to.Ptr(armappcontainers.DotNetComponentProvisioningStateSucceeded),
-	// 			ServiceBinds: []*armappcontainers.DotNetComponentServiceBind{
-	// 				{
-	// 					Name: to.Ptr("yellowcat"),
-	// 					ServiceID: to.Ptr("/subscriptions/8efdecc5-919e-44eb-b179-915dca89ebf9/resourceGroups/examplerg/providers/Microsoft.App/managedEnvironments/myenvironment/dotNetComponents/yellowcat"),
-	// 				},
-	// 			},
-	// 		},
-	// 	},
-	// }
 }

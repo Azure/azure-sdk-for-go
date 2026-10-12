@@ -89,6 +89,64 @@ func ExampleWorkloadClient_BeginDelete() {
 	}
 }
 
+// Generated from example definition: 2026-04-01/Workload_Update.json
+func ExampleWorkloadClient_BeginUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armenclave.NewClientFactory("CA1CB369-DD26-4DB2-9D43-9AFEF0F22093", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewWorkloadClient().BeginUpdate(ctx, "rgopenapi", "TestMyEnclave", "TestMyWorkload", armenclave.WorkloadPatchModel{
+		Tags: map[string]*string{
+			"key9465": to.Ptr("cylmdprdhhwpcdxpynwostvzytkryj"),
+		},
+		Properties: &armenclave.WorkloadPatchProperties{
+			ResourceGroupCollection: []*string{
+				to.Ptr("g"),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armenclave.WorkloadClientUpdateResponse{
+	// 	WorkloadResource: armenclave.WorkloadResource{
+	// 		Properties: &armenclave.WorkloadProperties{
+	// 			ProvisioningState: to.Ptr(armenclave.ProvisioningStateSucceeded),
+	// 			ResourceGroupCollection: []*string{
+	// 				to.Ptr("g"),
+	// 			},
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"TestKey": to.Ptr("TestValue"),
+	// 		},
+	// 		Location: to.Ptr("westcentralus"),
+	// 		ID: to.Ptr("/subscriptions/c64f6eca-bdc5-4bc2-88d6-f8f1dc23f86c/resourceGroups/TestMyRg/providers/microsoft.mission/virtualenclaves/TestMyEnclave/workloads/kxzylwqnmxtivpmupnlho"),
+	// 		Name: to.Ptr("kxzylwqnmxtivpmupnlho"),
+	// 		Type: to.Ptr("microsoft.mission/virtualenclaves/workloads"),
+	// 		SystemData: &armenclave.SystemData{
+	// 			CreatedBy: to.Ptr("myAlias"),
+	// 			CreatedByType: to.Ptr(armenclave.CreatedByTypeUser),
+	// 			CreatedAt: to.Ptr(time.Date(2023, time.March, 17, 20, 43, 17, 760000000, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("myAlias"),
+	// 			LastModifiedByType: to.Ptr(armenclave.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.March, 17, 20, 43, 17, 760000000, time.UTC)),
+	// 		},
+	// 	},
+	// }
+}
+
 // Generated from example definition: 2026-04-01/Workload_Get.json
 func ExampleWorkloadClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -249,62 +307,4 @@ func ExampleWorkloadClient_NewListBySubscriptionPager() {
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2026-04-01/Workload_Update.json
-func ExampleWorkloadClient_BeginUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armenclave.NewClientFactory("CA1CB369-DD26-4DB2-9D43-9AFEF0F22093", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewWorkloadClient().BeginUpdate(ctx, "rgopenapi", "TestMyEnclave", "TestMyWorkload", armenclave.WorkloadPatchModel{
-		Tags: map[string]*string{
-			"key9465": to.Ptr("cylmdprdhhwpcdxpynwostvzytkryj"),
-		},
-		Properties: &armenclave.WorkloadPatchProperties{
-			ResourceGroupCollection: []*string{
-				to.Ptr("g"),
-			},
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armenclave.WorkloadClientUpdateResponse{
-	// 	WorkloadResource: armenclave.WorkloadResource{
-	// 		Properties: &armenclave.WorkloadProperties{
-	// 			ProvisioningState: to.Ptr(armenclave.ProvisioningStateSucceeded),
-	// 			ResourceGroupCollection: []*string{
-	// 				to.Ptr("g"),
-	// 			},
-	// 		},
-	// 		Tags: map[string]*string{
-	// 			"TestKey": to.Ptr("TestValue"),
-	// 		},
-	// 		Location: to.Ptr("westcentralus"),
-	// 		ID: to.Ptr("/subscriptions/c64f6eca-bdc5-4bc2-88d6-f8f1dc23f86c/resourceGroups/TestMyRg/providers/microsoft.mission/virtualenclaves/TestMyEnclave/workloads/kxzylwqnmxtivpmupnlho"),
-	// 		Name: to.Ptr("kxzylwqnmxtivpmupnlho"),
-	// 		Type: to.Ptr("microsoft.mission/virtualenclaves/workloads"),
-	// 		SystemData: &armenclave.SystemData{
-	// 			CreatedBy: to.Ptr("myAlias"),
-	// 			CreatedByType: to.Ptr(armenclave.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(time.Date(2023, time.March, 17, 20, 43, 17, 760000000, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("myAlias"),
-	// 			LastModifiedByType: to.Ptr(armenclave.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.March, 17, 20, 43, 17, 760000000, time.UTC)),
-	// 		},
-	// 	},
-	// }
 }

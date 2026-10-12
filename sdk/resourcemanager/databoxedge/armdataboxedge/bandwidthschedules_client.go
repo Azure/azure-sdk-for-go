@@ -66,7 +66,7 @@ func (client *BandwidthSchedulesClient) BeginCreateOrUpdate(ctx context.Context,
 	}
 }
 
-// CreateOrUpdate - Creates or updates a bandwidth schedule.
+// createOrUpdate - Creates or updates a bandwidth schedule.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *BandwidthSchedulesClient) createOrUpdate(ctx context.Context, deviceName string, name string, resourceGroupName string, parameters BandwidthSchedule, options *BandwidthSchedulesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -88,7 +88,7 @@ func (client *BandwidthSchedulesClient) createOrUpdate(ctx context.Context, devi
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *BandwidthSchedulesClient) createOrUpdateCreateRequest(ctx context.Context, deviceName string, name string, resourceGroupName string, parameters BandwidthSchedule, _ *BandwidthSchedulesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/bandwidthSchedules/{name}"
 	if client.subscriptionID == "" {
@@ -144,7 +144,7 @@ func (client *BandwidthSchedulesClient) BeginDelete(ctx context.Context, deviceN
 	}
 }
 
-// Delete - Deletes the specified bandwidth schedule.
+// deleteOperation - Deletes the specified bandwidth schedule.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *BandwidthSchedulesClient) deleteOperation(ctx context.Context, deviceName string, name string, resourceGroupName string, options *BandwidthSchedulesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -166,7 +166,7 @@ func (client *BandwidthSchedulesClient) deleteOperation(ctx context.Context, dev
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *BandwidthSchedulesClient) deleteCreateRequest(ctx context.Context, deviceName string, name string, resourceGroupName string, _ *BandwidthSchedulesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/bandwidthSchedules/{name}"
 	if client.subscriptionID == "" {

@@ -68,7 +68,7 @@ func (client *VPNSitesClient) BeginCreateOrUpdate(ctx context.Context, resourceG
 	}
 }
 
-// CreateOrUpdate - Creates a VpnSite resource if it doesn't exist else updates the existing VpnSite.
+// createOrUpdate - Creates a VpnSite resource if it doesn't exist else updates the existing VpnSite.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *VPNSitesClient) createOrUpdate(ctx context.Context, resourceGroupName string, vpnSiteName string, vpnSiteParameters VPNSite, options *VPNSitesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -90,7 +90,7 @@ func (client *VPNSitesClient) createOrUpdate(ctx context.Context, resourceGroupN
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *VPNSitesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, vpnSiteName string, vpnSiteParameters VPNSite, _ *VPNSitesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/vpnSites/{vpnSiteName}"
 	if client.subscriptionID == "" {
@@ -142,7 +142,7 @@ func (client *VPNSitesClient) BeginDelete(ctx context.Context, resourceGroupName
 	}
 }
 
-// Delete - Deletes a VpnSite.
+// deleteOperation - Deletes a VpnSite.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *VPNSitesClient) deleteOperation(ctx context.Context, resourceGroupName string, vpnSiteName string, options *VPNSitesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -164,7 +164,7 @@ func (client *VPNSitesClient) deleteOperation(ctx context.Context, resourceGroup
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *VPNSitesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, vpnSiteName string, _ *VPNSitesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/vpnSites/{vpnSiteName}"
 	if client.subscriptionID == "" {
@@ -249,72 +249,6 @@ func (client *VPNSitesClient) getHandleResponse(resp *http.Response, successCode
 	return result, nil
 }
 
-// NewListPager - Lists all the VpnSites in a subscription.
-//   - options - VPNSitesClientListOptions contains the optional parameters for the VPNSitesClient.NewListPager method.
-func (client *VPNSitesClient) NewListPager(options *VPNSitesClientListOptions) *runtime.Pager[VPNSitesClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[VPNSitesClientListResponse]{
-		More: func(page VPNSitesClientListResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *VPNSitesClientListResponse) (VPNSitesClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "VPNSitesClient.NewListPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			req, err := client.listCreateRequest(ctx, nextLink, options)
-			if err != nil {
-				return VPNSitesClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return VPNSitesClientListResponse{}, err
-			}
-			return client.listHandleResponse(resp, http.StatusOK)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listCreateRequest creates the List request.
-func (client *VPNSitesClient) listCreateRequest(ctx context.Context, nextLink string, _ *VPNSitesClientListOptions) (*policy.Request, error) {
-	firstPage := nextLink == ""
-	var req *policy.Request
-	var err error
-	if firstPage {
-		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Network/vpnSites"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter subscriptionID cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	} else {
-		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
-	}
-	if err != nil {
-		return nil, err
-	}
-	if firstPage {
-		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260101)
-		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-		req.Raw().Header["Accept"] = []string{"application/json"}
-	}
-	return req, nil
-}
-
-// listHandleResponse handles the List response.
-func (client *VPNSitesClient) listHandleResponse(resp *http.Response, successCodes ...int) (VPNSitesClientListResponse, error) {
-	result := VPNSitesClientListResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ListVPNSitesResult); err != nil {
-		return VPNSitesClientListResponse{}, err
-	}
-	return result, nil
-}
-
 // NewListByResourceGroupPager - Lists all the vpnSites in a resource group.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - VPNSitesClientListByResourceGroupOptions contains the optional parameters for the VPNSitesClient.NewListByResourceGroupPager
@@ -383,6 +317,72 @@ func (client *VPNSitesClient) listByResourceGroupHandleResponse(resp *http.Respo
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ListVPNSitesResult); err != nil {
 		return VPNSitesClientListByResourceGroupResponse{}, err
+	}
+	return result, nil
+}
+
+// NewListPager - Lists all the VpnSites in a subscription.
+//   - options - VPNSitesClientListOptions contains the optional parameters for the VPNSitesClient.NewListPager method.
+func (client *VPNSitesClient) NewListPager(options *VPNSitesClientListOptions) *runtime.Pager[VPNSitesClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[VPNSitesClientListResponse]{
+		More: func(page VPNSitesClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *VPNSitesClientListResponse) (VPNSitesClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "VPNSitesClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listCreateRequest(ctx, nextLink, options)
+			if err != nil {
+				return VPNSitesClientListResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return VPNSitesClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listCreateRequest creates the List request.
+func (client *VPNSitesClient) listCreateRequest(ctx context.Context, nextLink string, _ *VPNSitesClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Network/vpnSites"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260101)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// listHandleResponse handles the List response.
+func (client *VPNSitesClient) listHandleResponse(resp *http.Response, successCodes ...int) (VPNSitesClientListResponse, error) {
+	result := VPNSitesClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ListVPNSitesResult); err != nil {
+		return VPNSitesClientListResponse{}, err
 	}
 	return result, nil
 }

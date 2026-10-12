@@ -70,7 +70,7 @@ func (client *PrivateEndpointConnectionsClient) BeginCreateOrUpdate(ctx context.
 	}
 }
 
-// CreateOrUpdate - Update the state of specified private endpoint connection associated with the Cognitive Services account.
+// createOrUpdate - Update the state of specified private endpoint connection associated with the Cognitive Services account.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *PrivateEndpointConnectionsClient) createOrUpdate(ctx context.Context, resourceGroupName string, accountName string, privateEndpointConnectionName string, properties PrivateEndpointConnection, options *PrivateEndpointConnectionsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -92,7 +92,7 @@ func (client *PrivateEndpointConnectionsClient) createOrUpdate(ctx context.Conte
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *PrivateEndpointConnectionsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, privateEndpointConnectionName string, properties PrivateEndpointConnection, _ *PrivateEndpointConnectionsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/privateEndpointConnections/{privateEndpointConnectionName}"
 	if client.subscriptionID == "" {
@@ -150,7 +150,7 @@ func (client *PrivateEndpointConnectionsClient) BeginDelete(ctx context.Context,
 	}
 }
 
-// Delete - Deletes the specified private endpoint connection associated with the Cognitive Services account.
+// deleteOperation - Deletes the specified private endpoint connection associated with the Cognitive Services account.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *PrivateEndpointConnectionsClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -172,7 +172,7 @@ func (client *PrivateEndpointConnectionsClient) deleteOperation(ctx context.Cont
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *PrivateEndpointConnectionsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, privateEndpointConnectionName string, _ *PrivateEndpointConnectionsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/privateEndpointConnections/{privateEndpointConnectionName}"
 	if client.subscriptionID == "" {

@@ -69,7 +69,7 @@ func (client *TaskHubsClient) BeginCreateOrUpdate(ctx context.Context, resourceG
 	}
 }
 
-// CreateOrUpdate - Create or Update a Task Hub
+// createOrUpdate - Create or Update a Task Hub
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *TaskHubsClient) createOrUpdate(ctx context.Context, resourceGroupName string, schedulerName string, taskHubName string, resource TaskHub, options *TaskHubsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -91,7 +91,7 @@ func (client *TaskHubsClient) createOrUpdate(ctx context.Context, resourceGroupN
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *TaskHubsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, schedulerName string, taskHubName string, resource TaskHub, _ *TaskHubsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DurableTask/schedulers/{schedulerName}/taskHubs/{taskHubName}"
 	if client.subscriptionID == "" {
@@ -148,7 +148,7 @@ func (client *TaskHubsClient) BeginDelete(ctx context.Context, resourceGroupName
 	}
 }
 
-// Delete - Delete a Task Hub
+// deleteOperation - Delete a Task Hub
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *TaskHubsClient) deleteOperation(ctx context.Context, resourceGroupName string, schedulerName string, taskHubName string, options *TaskHubsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -170,7 +170,7 @@ func (client *TaskHubsClient) deleteOperation(ctx context.Context, resourceGroup
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *TaskHubsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, schedulerName string, taskHubName string, _ *TaskHubsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DurableTask/schedulers/{schedulerName}/taskHubs/{taskHubName}"
 	if client.subscriptionID == "" {

@@ -69,7 +69,7 @@ func (client *StoragesClient) BeginCreateOrUpdate(ctx context.Context, resourceG
 	}
 }
 
-// CreateOrUpdate - Create a Storage
+// createOrUpdate - Create a Storage
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *StoragesClient) createOrUpdate(ctx context.Context, resourceGroupName string, cloudAccountName string, storageName string, resource Storage, options *StoragesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -91,7 +91,7 @@ func (client *StoragesClient) createOrUpdate(ctx context.Context, resourceGroupN
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *StoragesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, cloudAccountName string, storageName string, resource Storage, _ *StoragesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Commvault.ContentStore/cloudAccounts/{cloudAccountName}/storages/{storageName}"
 	if client.subscriptionID == "" {
@@ -148,7 +148,7 @@ func (client *StoragesClient) BeginDelete(ctx context.Context, resourceGroupName
 	}
 }
 
-// Delete - Delete a Storage
+// deleteOperation - Delete a Storage
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *StoragesClient) deleteOperation(ctx context.Context, resourceGroupName string, cloudAccountName string, storageName string, options *StoragesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -170,7 +170,7 @@ func (client *StoragesClient) deleteOperation(ctx context.Context, resourceGroup
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *StoragesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, cloudAccountName string, storageName string, _ *StoragesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Commvault.ContentStore/cloudAccounts/{cloudAccountName}/storages/{storageName}"
 	if client.subscriptionID == "" {

@@ -71,7 +71,7 @@ func (client *SchedulesClient) BeginCreateOrUpdate(ctx context.Context, resource
 	}
 }
 
-// CreateOrUpdate - Creates or updates a Schedule.
+// createOrUpdate - Creates or updates a Schedule.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *SchedulesClient) createOrUpdate(ctx context.Context, resourceGroupName string, projectName string, poolName string, scheduleName string, body Schedule, options *SchedulesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -93,7 +93,7 @@ func (client *SchedulesClient) createOrUpdate(ctx context.Context, resourceGroup
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *SchedulesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, projectName string, poolName string, scheduleName string, body Schedule, options *SchedulesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/projects/{projectName}/pools/{poolName}/schedules/{scheduleName}"
 	if client.subscriptionID == "" {
@@ -158,7 +158,7 @@ func (client *SchedulesClient) BeginDelete(ctx context.Context, resourceGroupNam
 	}
 }
 
-// Delete - Deletes a Schedule.
+// deleteOperation - Deletes a Schedule.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *SchedulesClient) deleteOperation(ctx context.Context, resourceGroupName string, projectName string, poolName string, scheduleName string, options *SchedulesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -180,7 +180,7 @@ func (client *SchedulesClient) deleteOperation(ctx context.Context, resourceGrou
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *SchedulesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, projectName string, poolName string, scheduleName string, options *SchedulesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/projects/{projectName}/pools/{poolName}/schedules/{scheduleName}"
 	if client.subscriptionID == "" {
@@ -213,6 +213,94 @@ func (client *SchedulesClient) deleteCreateRequest(ctx context.Context, resource
 	}
 	reqQP.Set("api-version", version20260101Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginUpdate - Partially updates a Schedule.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - projectName - The name of the project.
+//   - poolName - Name of the pool.
+//   - scheduleName - The name of the schedule that uniquely identifies it.
+//   - body - Represents a scheduled task.
+//   - options - SchedulesClientBeginUpdateOptions contains the optional parameters for the SchedulesClient.BeginUpdate method.
+func (client *SchedulesClient) BeginUpdate(ctx context.Context, resourceGroupName string, projectName string, poolName string, scheduleName string, body ScheduleUpdate, options *SchedulesClientBeginUpdateOptions) (*runtime.Poller[SchedulesClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, projectName, poolName, scheduleName, body, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SchedulesClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[SchedulesClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Partially updates a Schedule.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *SchedulesClient) update(ctx context.Context, resourceGroupName string, projectName string, poolName string, scheduleName string, body ScheduleUpdate, options *SchedulesClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "SchedulesClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, projectName, poolName, scheduleName, body, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *SchedulesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, projectName string, poolName string, scheduleName string, body ScheduleUpdate, options *SchedulesClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/projects/{projectName}/pools/{poolName}/schedules/{scheduleName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if projectName == "" {
+		return nil, errors.New("parameter projectName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{projectName}", url.PathEscape(projectName))
+	if poolName == "" {
+		return nil, errors.New("parameter poolName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{poolName}", url.PathEscape(poolName))
+	if scheduleName == "" {
+		return nil, errors.New("parameter scheduleName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{scheduleName}", url.PathEscape(scheduleName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	if options != nil && options.Top != nil {
+		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+	}
+	reqQP.Set("api-version", version20260101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
 	return req, nil
 }
 
@@ -372,92 +460,4 @@ func (client *SchedulesClient) listByPoolHandleResponse(resp *http.Response, suc
 		return SchedulesClientListByPoolResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginUpdate - Partially updates a Schedule.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - projectName - The name of the project.
-//   - poolName - Name of the pool.
-//   - scheduleName - The name of the schedule that uniquely identifies it.
-//   - body - Represents a scheduled task.
-//   - options - SchedulesClientBeginUpdateOptions contains the optional parameters for the SchedulesClient.BeginUpdate method.
-func (client *SchedulesClient) BeginUpdate(ctx context.Context, resourceGroupName string, projectName string, poolName string, scheduleName string, body ScheduleUpdate, options *SchedulesClientBeginUpdateOptions) (*runtime.Poller[SchedulesClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, projectName, poolName, scheduleName, body, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SchedulesClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[SchedulesClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Partially updates a Schedule.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *SchedulesClient) update(ctx context.Context, resourceGroupName string, projectName string, poolName string, scheduleName string, body ScheduleUpdate, options *SchedulesClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "SchedulesClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, projectName, poolName, scheduleName, body, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *SchedulesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, projectName string, poolName string, scheduleName string, body ScheduleUpdate, options *SchedulesClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/projects/{projectName}/pools/{poolName}/schedules/{scheduleName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if projectName == "" {
-		return nil, errors.New("parameter projectName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{projectName}", url.PathEscape(projectName))
-	if poolName == "" {
-		return nil, errors.New("parameter poolName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{poolName}", url.PathEscape(poolName))
-	if scheduleName == "" {
-		return nil, errors.New("parameter scheduleName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{scheduleName}", url.PathEscape(scheduleName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Top != nil {
-		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
-	}
-	reqQP.Set("api-version", version20260101Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, body); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

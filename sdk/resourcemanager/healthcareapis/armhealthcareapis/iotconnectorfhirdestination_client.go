@@ -70,7 +70,7 @@ func (client *IotConnectorFhirDestinationClient) BeginCreateOrUpdate(ctx context
 	}
 }
 
-// CreateOrUpdate - Creates or updates an IoT Connector FHIR destination resource with the specified parameters.
+// createOrUpdate - Creates or updates an IoT Connector FHIR destination resource with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *IotConnectorFhirDestinationClient) createOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, iotConnectorName string, fhirDestinationName string, iotFhirDestination IotFhirDestination, options *IotConnectorFhirDestinationClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -92,7 +92,7 @@ func (client *IotConnectorFhirDestinationClient) createOrUpdate(ctx context.Cont
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *IotConnectorFhirDestinationClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, iotConnectorName string, fhirDestinationName string, iotFhirDestination IotFhirDestination, _ *IotConnectorFhirDestinationClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthcareApis/workspaces/{workspaceName}/iotconnectors/{iotConnectorName}/fhirdestinations/{fhirDestinationName}"
 	if client.subscriptionID == "" {
@@ -155,7 +155,7 @@ func (client *IotConnectorFhirDestinationClient) BeginDelete(ctx context.Context
 	}
 }
 
-// Delete - Deletes an IoT Connector FHIR destination.
+// deleteOperation - Deletes an IoT Connector FHIR destination.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *IotConnectorFhirDestinationClient) deleteOperation(ctx context.Context, resourceGroupName string, workspaceName string, iotConnectorName string, fhirDestinationName string, options *IotConnectorFhirDestinationClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -177,7 +177,7 @@ func (client *IotConnectorFhirDestinationClient) deleteOperation(ctx context.Con
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *IotConnectorFhirDestinationClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, iotConnectorName string, fhirDestinationName string, _ *IotConnectorFhirDestinationClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthcareApis/workspaces/{workspaceName}/iotconnectors/{iotConnectorName}/fhirdestinations/{fhirDestinationName}"
 	if client.subscriptionID == "" {

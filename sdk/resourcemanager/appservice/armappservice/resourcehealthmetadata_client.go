@@ -175,75 +175,6 @@ func (client *ResourceHealthMetadataClient) getBySiteSlotHandleResponse(resp *ht
 	return result, nil
 }
 
-// NewListPager - List all ResourceHealthMetadata for all sites in the subscription.
-//
-// Description for List all ResourceHealthMetadata for all sites in the subscription.
-//   - options - ResourceHealthMetadataClientListOptions contains the optional parameters for the ResourceHealthMetadataClient.NewListPager
-//     method.
-func (client *ResourceHealthMetadataClient) NewListPager(options *ResourceHealthMetadataClientListOptions) *runtime.Pager[ResourceHealthMetadataClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[ResourceHealthMetadataClientListResponse]{
-		More: func(page ResourceHealthMetadataClientListResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *ResourceHealthMetadataClientListResponse) (ResourceHealthMetadataClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ResourceHealthMetadataClient.NewListPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			req, err := client.listCreateRequest(ctx, nextLink, options)
-			if err != nil {
-				return ResourceHealthMetadataClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ResourceHealthMetadataClientListResponse{}, err
-			}
-			return client.listHandleResponse(resp, http.StatusOK)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listCreateRequest creates the List request.
-func (client *ResourceHealthMetadataClient) listCreateRequest(ctx context.Context, nextLink string, _ *ResourceHealthMetadataClientListOptions) (*policy.Request, error) {
-	firstPage := nextLink == ""
-	var req *policy.Request
-	var err error
-	if firstPage {
-		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Web/resourceHealthMetadata"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter subscriptionID cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	} else {
-		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
-	}
-	if err != nil {
-		return nil, err
-	}
-	if firstPage {
-		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250501)
-		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-		req.Raw().Header["Accept"] = []string{"application/json"}
-	}
-	return req, nil
-}
-
-// listHandleResponse handles the List response.
-func (client *ResourceHealthMetadataClient) listHandleResponse(resp *http.Response, successCodes ...int) (ResourceHealthMetadataClientListResponse, error) {
-	result := ResourceHealthMetadataClientListResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ResourceHealthMetadataCollection); err != nil {
-		return ResourceHealthMetadataClientListResponse{}, err
-	}
-	return result, nil
-}
-
 // NewListByResourceGroupPager - List all ResourceHealthMetadata for all sites in the resource group in the subscription.
 //
 // Description for List all ResourceHealthMetadata for all sites in the resource group in the subscription.
@@ -477,6 +408,75 @@ func (client *ResourceHealthMetadataClient) listBySiteSlotHandleResponse(resp *h
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ResourceHealthMetadataCollection); err != nil {
 		return ResourceHealthMetadataClientListBySiteSlotResponse{}, err
+	}
+	return result, nil
+}
+
+// NewListPager - List all ResourceHealthMetadata for all sites in the subscription.
+//
+// Description for List all ResourceHealthMetadata for all sites in the subscription.
+//   - options - ResourceHealthMetadataClientListOptions contains the optional parameters for the ResourceHealthMetadataClient.NewListPager
+//     method.
+func (client *ResourceHealthMetadataClient) NewListPager(options *ResourceHealthMetadataClientListOptions) *runtime.Pager[ResourceHealthMetadataClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[ResourceHealthMetadataClientListResponse]{
+		More: func(page ResourceHealthMetadataClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *ResourceHealthMetadataClientListResponse) (ResourceHealthMetadataClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ResourceHealthMetadataClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listCreateRequest(ctx, nextLink, options)
+			if err != nil {
+				return ResourceHealthMetadataClientListResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ResourceHealthMetadataClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listCreateRequest creates the List request.
+func (client *ResourceHealthMetadataClient) listCreateRequest(ctx context.Context, nextLink string, _ *ResourceHealthMetadataClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Web/resourceHealthMetadata"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250501)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// listHandleResponse handles the List response.
+func (client *ResourceHealthMetadataClient) listHandleResponse(resp *http.Response, successCodes ...int) (ResourceHealthMetadataClientListResponse, error) {
+	result := ResourceHealthMetadataClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ResourceHealthMetadataCollection); err != nil {
+		return ResourceHealthMetadataClientListResponse{}, err
 	}
 	return result, nil
 }

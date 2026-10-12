@@ -96,6 +96,62 @@ func ExampleStorageContainersClient_BeginDelete() {
 	}
 }
 
+// Generated from example definition: 2026-06-01/StorageContainers_Update_MaximumSet_Gen.json
+func ExampleStorageContainersClient_BeginUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdiscovery.NewClientFactory("A54D43BD-2F5F-4BB1-95D4-9A8D23CC7DD4", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewStorageContainersClient().BeginUpdate(ctx, "rgdiscovery", "75bd98e50f6a2edc55", armdiscovery.StorageContainer{
+		Properties: &armdiscovery.StorageContainerProperties{},
+		Tags: map[string]*string{
+			"key7594": to.Ptr("mpcdmayekmfvvgxevqnpybjoiwnkt"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armdiscovery.StorageContainersClientUpdateResponse{
+	// 	StorageContainer: armdiscovery.StorageContainer{
+	// 		ID: to.Ptr("/subscriptions/A54D43BD-2F5F-4BB1-95D4-9A8D23CC7DD4/resourceGroups/rgdiscovery/providers/Microsoft.Discovery/storageContainers/75bd98e50f6a2edc55"),
+	// 		Name: to.Ptr("75bd98e50f6a2edc55"),
+	// 		Tags: map[string]*string{
+	// 			"key4240": to.Ptr("omppnvnqh"),
+	// 		},
+	// 		Location: to.Ptr("uksouth"),
+	// 		Type: to.Ptr("Microsoft.Discovery/storageContainers"),
+	// 		SystemData: &armdiscovery.SystemData{
+	// 			CreatedBy: to.Ptr("uymdmmhvojuqtvvxokgefohqpcjw"),
+	// 			CreatedByType: to.Ptr(armdiscovery.CreatedByTypeUser),
+	// 			CreatedAt: to.Ptr(time.Date(2026, time.May, 4, 11, 59, 49, 804000000, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("ucuttxilomgszapozsuit"),
+	// 			LastModifiedByType: to.Ptr(armdiscovery.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2026, time.May, 4, 11, 59, 49, 804000000, time.UTC)),
+	// 		},
+	// 		Properties: &armdiscovery.StorageContainerProperties{
+	// 			ProvisioningState: to.Ptr(armdiscovery.ProvisioningStateSucceeded),
+	// 			StorageStore: &armdiscovery.AzureStorageBlobStore{
+	// 				Kind: to.Ptr(armdiscovery.StorageStoreTypeAzureStorageBlob),
+	// 				StorageAccountID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg/providers/Microsoft.Storage/storageAccounts/storageaccount"),
+	// 				MountProtocol: to.Ptr(armdiscovery.BlobStorageMountProtocolNFS),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
 // Generated from example definition: 2026-06-01/StorageContainers_Get_MaximumSet_Gen.json
 func ExampleStorageContainersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -255,60 +311,4 @@ func ExampleStorageContainersClient_NewListBySubscriptionPager() {
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2026-06-01/StorageContainers_Update_MaximumSet_Gen.json
-func ExampleStorageContainersClient_BeginUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armdiscovery.NewClientFactory("A54D43BD-2F5F-4BB1-95D4-9A8D23CC7DD4", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewStorageContainersClient().BeginUpdate(ctx, "rgdiscovery", "75bd98e50f6a2edc55", armdiscovery.StorageContainer{
-		Properties: &armdiscovery.StorageContainerProperties{},
-		Tags: map[string]*string{
-			"key7594": to.Ptr("mpcdmayekmfvvgxevqnpybjoiwnkt"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armdiscovery.StorageContainersClientUpdateResponse{
-	// 	StorageContainer: armdiscovery.StorageContainer{
-	// 		ID: to.Ptr("/subscriptions/A54D43BD-2F5F-4BB1-95D4-9A8D23CC7DD4/resourceGroups/rgdiscovery/providers/Microsoft.Discovery/storageContainers/75bd98e50f6a2edc55"),
-	// 		Name: to.Ptr("75bd98e50f6a2edc55"),
-	// 		Tags: map[string]*string{
-	// 			"key4240": to.Ptr("omppnvnqh"),
-	// 		},
-	// 		Location: to.Ptr("uksouth"),
-	// 		Type: to.Ptr("Microsoft.Discovery/storageContainers"),
-	// 		SystemData: &armdiscovery.SystemData{
-	// 			CreatedBy: to.Ptr("uymdmmhvojuqtvvxokgefohqpcjw"),
-	// 			CreatedByType: to.Ptr(armdiscovery.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(time.Date(2026, time.May, 4, 11, 59, 49, 804000000, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("ucuttxilomgszapozsuit"),
-	// 			LastModifiedByType: to.Ptr(armdiscovery.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2026, time.May, 4, 11, 59, 49, 804000000, time.UTC)),
-	// 		},
-	// 		Properties: &armdiscovery.StorageContainerProperties{
-	// 			ProvisioningState: to.Ptr(armdiscovery.ProvisioningStateSucceeded),
-	// 			StorageStore: &armdiscovery.AzureStorageBlobStore{
-	// 				Kind: to.Ptr(armdiscovery.StorageStoreTypeAzureStorageBlob),
-	// 				StorageAccountID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg/providers/Microsoft.Storage/storageAccounts/storageaccount"),
-	// 				MountProtocol: to.Ptr(armdiscovery.BlobStorageMountProtocolNFS),
-	// 			},
-	// 		},
-	// 	},
-	// }
 }

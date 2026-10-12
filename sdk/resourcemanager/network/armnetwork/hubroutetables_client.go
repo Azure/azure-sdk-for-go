@@ -69,7 +69,7 @@ func (client *HubRouteTablesClient) BeginCreateOrUpdate(ctx context.Context, res
 	}
 }
 
-// CreateOrUpdate - Creates a RouteTable resource if it doesn't exist else updates the existing RouteTable.
+// createOrUpdate - Creates a RouteTable resource if it doesn't exist else updates the existing RouteTable.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *HubRouteTablesClient) createOrUpdate(ctx context.Context, resourceGroupName string, virtualHubName string, routeTableName string, routeTableParameters HubRouteTable, options *HubRouteTablesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -91,7 +91,7 @@ func (client *HubRouteTablesClient) createOrUpdate(ctx context.Context, resource
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *HubRouteTablesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, virtualHubName string, routeTableName string, routeTableParameters HubRouteTable, _ *HubRouteTablesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs/{virtualHubName}/hubRouteTables/{routeTableName}"
 	if client.subscriptionID == "" {
@@ -149,7 +149,7 @@ func (client *HubRouteTablesClient) BeginDelete(ctx context.Context, resourceGro
 	}
 }
 
-// Delete - Deletes a RouteTable.
+// deleteOperation - Deletes a RouteTable.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *HubRouteTablesClient) deleteOperation(ctx context.Context, resourceGroupName string, virtualHubName string, routeTableName string, options *HubRouteTablesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -171,7 +171,7 @@ func (client *HubRouteTablesClient) deleteOperation(ctx context.Context, resourc
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *HubRouteTablesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, virtualHubName string, routeTableName string, _ *HubRouteTablesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs/{virtualHubName}/hubRouteTables/{routeTableName}"
 	if client.subscriptionID == "" {

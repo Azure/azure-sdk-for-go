@@ -33,13 +33,13 @@ type ServiceEndpointPoliciesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, serviceEndpointPolicyName string, options *armnetwork.ServiceEndpointPoliciesClientGetOptions) (resp azfake.Responder[armnetwork.ServiceEndpointPoliciesClientGetResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method ServiceEndpointPoliciesClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(options *armnetwork.ServiceEndpointPoliciesClientListOptions) (resp azfake.PagerResponder[armnetwork.ServiceEndpointPoliciesClientListResponse])
-
 	// NewListByResourceGroupPager is the fake for method ServiceEndpointPoliciesClient.NewListByResourceGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByResourceGroupPager func(resourceGroupName string, options *armnetwork.ServiceEndpointPoliciesClientListByResourceGroupOptions) (resp azfake.PagerResponder[armnetwork.ServiceEndpointPoliciesClientListByResourceGroupResponse])
+
+	// NewListPager is the fake for method ServiceEndpointPoliciesClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(options *armnetwork.ServiceEndpointPoliciesClientListOptions) (resp azfake.PagerResponder[armnetwork.ServiceEndpointPoliciesClientListResponse])
 
 	// UpdateTags is the fake for method ServiceEndpointPoliciesClient.UpdateTags
 	// HTTP status codes to indicate success: http.StatusOK
@@ -54,8 +54,8 @@ func NewServiceEndpointPoliciesServerTransport(srv *ServiceEndpointPoliciesServe
 		srv:                         srv,
 		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armnetwork.ServiceEndpointPoliciesClientCreateOrUpdateResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armnetwork.ServiceEndpointPoliciesClientDeleteResponse]](),
-		newListPager:                newTracker[azfake.PagerResponder[armnetwork.ServiceEndpointPoliciesClientListResponse]](),
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armnetwork.ServiceEndpointPoliciesClientListByResourceGroupResponse]](),
+		newListPager:                newTracker[azfake.PagerResponder[armnetwork.ServiceEndpointPoliciesClientListResponse]](),
 	}
 }
 
@@ -65,8 +65,8 @@ type ServiceEndpointPoliciesServerTransport struct {
 	srv                         *ServiceEndpointPoliciesServer
 	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armnetwork.ServiceEndpointPoliciesClientCreateOrUpdateResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armnetwork.ServiceEndpointPoliciesClientDeleteResponse]]
-	newListPager                *tracker[azfake.PagerResponder[armnetwork.ServiceEndpointPoliciesClientListResponse]]
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armnetwork.ServiceEndpointPoliciesClientListByResourceGroupResponse]]
+	newListPager                *tracker[azfake.PagerResponder[armnetwork.ServiceEndpointPoliciesClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for ServiceEndpointPoliciesServerTransport.
@@ -96,10 +96,10 @@ func (s *ServiceEndpointPoliciesServerTransport) dispatchToMethodFake(req *http.
 				res.resp, res.err = s.dispatchBeginDelete(req)
 			case "ServiceEndpointPoliciesClient.Get":
 				res.resp, res.err = s.dispatchGet(req)
-			case "ServiceEndpointPoliciesClient.NewListPager":
-				res.resp, res.err = s.dispatchNewListPager(req)
 			case "ServiceEndpointPoliciesClient.NewListByResourceGroupPager":
 				res.resp, res.err = s.dispatchNewListByResourceGroupPager(req)
+			case "ServiceEndpointPoliciesClient.NewListPager":
+				res.resp, res.err = s.dispatchNewListPager(req)
 			case "ServiceEndpointPoliciesClient.UpdateTags":
 				res.resp, res.err = s.dispatchUpdateTags(req)
 			default:
@@ -251,39 +251,6 @@ func (s *ServiceEndpointPoliciesServerTransport) dispatchGet(req *http.Request) 
 	return resp, nil
 }
 
-func (s *ServiceEndpointPoliciesServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if s.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := s.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/serviceEndpointPolicies`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := s.srv.NewListPager(nil)
-		newListPager = &resp
-		s.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armnetwork.ServiceEndpointPoliciesClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		s.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		s.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (s *ServiceEndpointPoliciesServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
 	if s.srv.NewListByResourceGroupPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
@@ -317,6 +284,39 @@ func (s *ServiceEndpointPoliciesServerTransport) dispatchNewListByResourceGroupP
 	}
 	if !server.PagerResponderMore(newListByResourceGroupPager) {
 		s.newListByResourceGroupPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (s *ServiceEndpointPoliciesServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if s.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := s.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/serviceEndpointPolicies`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resp := s.srv.NewListPager(nil)
+		newListPager = &resp
+		s.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armnetwork.ServiceEndpointPoliciesClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		s.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPager) {
+		s.newListPager.remove(req)
 	}
 	return resp, nil
 }

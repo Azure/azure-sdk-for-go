@@ -30,6 +30,9 @@ type AdvancedPlatformMetricsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewAdvancedPlatformMetricsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AdvancedPlatformMetricsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -71,7 +74,7 @@ func (client *AdvancedPlatformMetricsClient) CreateOrUpdate(ctx context.Context,
 func (client *AdvancedPlatformMetricsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, advancedPlatformMetricsRuleType AdvancedPlatformMetricsRuleType, resource AdvancedPlatformMetricsRule, _ *AdvancedPlatformMetricsClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/advancedPlatformMetrics/{advancedPlatformMetricsRuleType}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -145,7 +148,7 @@ func (client *AdvancedPlatformMetricsClient) Delete(ctx context.Context, resourc
 func (client *AdvancedPlatformMetricsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, advancedPlatformMetricsRuleType AdvancedPlatformMetricsRuleType, _ *AdvancedPlatformMetricsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/advancedPlatformMetrics/{advancedPlatformMetricsRuleType}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -199,7 +202,7 @@ func (client *AdvancedPlatformMetricsClient) Get(ctx context.Context, resourceGr
 func (client *AdvancedPlatformMetricsClient) getCreateRequest(ctx context.Context, resourceGroupName string, accountName string, advancedPlatformMetricsRuleType AdvancedPlatformMetricsRuleType, _ *AdvancedPlatformMetricsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/advancedPlatformMetrics/{advancedPlatformMetricsRuleType}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -276,7 +279,7 @@ func (client *AdvancedPlatformMetricsClient) listCreateRequest(ctx context.Conte
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/advancedPlatformMetrics"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {

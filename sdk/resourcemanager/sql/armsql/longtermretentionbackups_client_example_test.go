@@ -237,6 +237,354 @@ func ExampleLongTermRetentionBackupsClient_BeginDeleteByResourceGroup() {
 	// }
 }
 
+// Generated from example definition: 2026-08-01-preview/LockTimeBasedImmutabilityLongTermRetentionBackup.json
+func ExampleLongTermRetentionBackupsClient_BeginLockTimeBasedImmutability() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsql.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewLongTermRetentionBackupsClient().BeginLockTimeBasedImmutability(ctx, "japaneast", "testserver", "testDatabase", "55555555-6666-7777-8888-999999999999;131637960820000000;Hot", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armsql.LongTermRetentionBackupsClientLockTimeBasedImmutabilityResponse{
+	// 	LongTermRetentionBackup: armsql.LongTermRetentionBackup{
+	// 		Name: to.Ptr("01234567-890a-bcde-f012-34567890abcd"),
+	// 		Type: to.Ptr("Microsoft.Sql/locations/longTermRetentionBackupOperationResults"),
+	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Sql/locations/japaneast/longTermRetentionBackupOperationResults/01234567-890a-bcde-f012-34567890abcd"),
+	// 		Properties: &armsql.LongTermRetentionBackupProperties{
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-08-01-preview/ResourceGroupBasedLockTimeBasedImmutabilityLongTermRetentionBackup.json
+func ExampleLongTermRetentionBackupsClient_BeginLockTimeBasedImmutabilityByResourceGroup() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsql.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewLongTermRetentionBackupsClient().BeginLockTimeBasedImmutabilityByResourceGroup(ctx, "resourceGroupName", "japaneast", "testserver", "testDatabase", "55555555-6666-7777-8888-999999999999;131637960820000000;Hot", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armsql.LongTermRetentionBackupsClientLockTimeBasedImmutabilityByResourceGroupResponse{
+	// 	LongTermRetentionBackup: armsql.LongTermRetentionBackup{
+	// 		Name: to.Ptr("01234567-890a-bcde-f012-34567890abcd"),
+	// 		Type: to.Ptr("Microsoft.Sql/locations/longTermRetentionBackupOperationResults"),
+	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/resourceGroupName/providers/Microsoft.Sql/locations/japaneast/longTermRetentionBackupOperationResults/01234567-890a-bcde-f012-34567890abcd"),
+	// 		Properties: &armsql.LongTermRetentionBackupProperties{
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-08-01-preview/RemoveLegalHoldImmutabilityLongTermRetentionBackup.json
+func ExampleLongTermRetentionBackupsClient_BeginRemoveLegalHoldImmutability() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsql.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewLongTermRetentionBackupsClient().BeginRemoveLegalHoldImmutability(ctx, "japaneast", "testserver", "testDatabase", "55555555-6666-7777-8888-999999999999;131637960820000000;Hot", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armsql.LongTermRetentionBackupsClientRemoveLegalHoldImmutabilityResponse{
+	// 	LongTermRetentionBackup: armsql.LongTermRetentionBackup{
+	// 		Name: to.Ptr("01234567-890a-bcde-f012-34567890abcd"),
+	// 		Type: to.Ptr("Microsoft.Sql/locations/longTermRetentionBackupOperationResults"),
+	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Sql/locations/japaneast/longTermRetentionBackupOperationResults/01234567-890a-bcde-f012-34567890abcd"),
+	// 		Properties: &armsql.LongTermRetentionBackupProperties{
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-08-01-preview/ResourceGroupBasedRemoveLegalHoldImmutabilityLongTermRetentionBackup.json
+func ExampleLongTermRetentionBackupsClient_BeginRemoveLegalHoldImmutabilityByResourceGroup() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsql.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewLongTermRetentionBackupsClient().BeginRemoveLegalHoldImmutabilityByResourceGroup(ctx, "resourceGroupName", "japaneast", "testserver", "testDatabase", "55555555-6666-7777-8888-999999999999;131637960820000000;Hot", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armsql.LongTermRetentionBackupsClientRemoveLegalHoldImmutabilityByResourceGroupResponse{
+	// 	LongTermRetentionBackup: armsql.LongTermRetentionBackup{
+	// 		Name: to.Ptr("01234567-890a-bcde-f012-34567890abcd"),
+	// 		Type: to.Ptr("Microsoft.Sql/locations/longTermRetentionBackupOperationResults"),
+	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/resourceGroupName/providers/Microsoft.Sql/locations/japaneast/longTermRetentionBackupOperationResults/01234567-890a-bcde-f012-34567890abcd"),
+	// 		Properties: &armsql.LongTermRetentionBackupProperties{
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-08-01-preview/RemoveTimeBasedImmutabilityLongTermRetentionBackup.json
+func ExampleLongTermRetentionBackupsClient_BeginRemoveTimeBasedImmutability() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsql.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewLongTermRetentionBackupsClient().BeginRemoveTimeBasedImmutability(ctx, "japaneast", "testserver", "testDatabase", "55555555-6666-7777-8888-999999999999;131637960820000000;Hot", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armsql.LongTermRetentionBackupsClientRemoveTimeBasedImmutabilityResponse{
+	// 	LongTermRetentionBackup: armsql.LongTermRetentionBackup{
+	// 		Name: to.Ptr("01234567-890a-bcde-f012-34567890abcd"),
+	// 		Type: to.Ptr("Microsoft.Sql/locations/longTermRetentionBackupOperationResults"),
+	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Sql/locations/japaneast/longTermRetentionBackupOperationResults/01234567-890a-bcde-f012-34567890abcd"),
+	// 		Properties: &armsql.LongTermRetentionBackupProperties{
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-08-01-preview/ResourceGroupBasedRemoveTimeBasedImmutabilityLongTermRetentionBackup.json
+func ExampleLongTermRetentionBackupsClient_BeginRemoveTimeBasedImmutabilityByResourceGroup() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsql.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewLongTermRetentionBackupsClient().BeginRemoveTimeBasedImmutabilityByResourceGroup(ctx, "resourceGroupName", "japaneast", "testserver", "testDatabase", "55555555-6666-7777-8888-999999999999;131637960820000000;Hot", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armsql.LongTermRetentionBackupsClientRemoveTimeBasedImmutabilityByResourceGroupResponse{
+	// 	LongTermRetentionBackup: armsql.LongTermRetentionBackup{
+	// 		Name: to.Ptr("01234567-890a-bcde-f012-34567890abcd"),
+	// 		Type: to.Ptr("Microsoft.Sql/locations/longTermRetentionBackupOperationResults"),
+	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/resourceGroupName/providers/Microsoft.Sql/locations/japaneast/longTermRetentionBackupOperationResults/01234567-890a-bcde-f012-34567890abcd"),
+	// 		Properties: &armsql.LongTermRetentionBackupProperties{
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-08-01-preview/SetLegalHoldImmutabilityLongTermRetentionBackup.json
+func ExampleLongTermRetentionBackupsClient_BeginSetLegalHoldImmutability() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsql.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewLongTermRetentionBackupsClient().BeginSetLegalHoldImmutability(ctx, "japaneast", "testserver", "testDatabase", "55555555-6666-7777-8888-999999999999;131637960820000000;Hot", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armsql.LongTermRetentionBackupsClientSetLegalHoldImmutabilityResponse{
+	// 	LongTermRetentionBackup: armsql.LongTermRetentionBackup{
+	// 		Name: to.Ptr("01234567-890a-bcde-f012-34567890abcd"),
+	// 		Type: to.Ptr("Microsoft.Sql/locations/longTermRetentionBackupOperationResults"),
+	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Sql/locations/japaneast/longTermRetentionBackupOperationResults/01234567-890a-bcde-f012-34567890abcd"),
+	// 		Properties: &armsql.LongTermRetentionBackupProperties{
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-08-01-preview/ResourceGroupBasedSetLegalHoldImmutabilityLongTermRetentionBackup.json
+func ExampleLongTermRetentionBackupsClient_BeginSetLegalHoldImmutabilityByResourceGroup() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsql.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewLongTermRetentionBackupsClient().BeginSetLegalHoldImmutabilityByResourceGroup(ctx, "resourceGroupName", "japaneast", "testserver", "testDatabase", "55555555-6666-7777-8888-999999999999;131637960820000000;Hot", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armsql.LongTermRetentionBackupsClientSetLegalHoldImmutabilityByResourceGroupResponse{
+	// 	LongTermRetentionBackup: armsql.LongTermRetentionBackup{
+	// 		Name: to.Ptr("01234567-890a-bcde-f012-34567890abcd"),
+	// 		Type: to.Ptr("Microsoft.Sql/locations/longTermRetentionBackupOperationResults"),
+	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/resourceGroupName/providers/Microsoft.Sql/locations/japaneast/longTermRetentionBackupOperationResults/01234567-890a-bcde-f012-34567890abcd"),
+	// 		Properties: &armsql.LongTermRetentionBackupProperties{
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-08-01-preview/LongTermRetentionBackupUpdate.json
+func ExampleLongTermRetentionBackupsClient_BeginUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsql.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewLongTermRetentionBackupsClient().BeginUpdate(ctx, "japaneast", "testserver", "testDatabase", "55555555-6666-7777-8888-999999999999;131637960820000000", armsql.UpdateLongTermRetentionBackupParameters{
+		Properties: &armsql.UpdateLongTermRetentionBackupParametersProperties{
+			RequestedBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armsql.LongTermRetentionBackupsClientUpdateResponse{
+	// 	LongTermRetentionBackupOperationResult: armsql.LongTermRetentionBackupOperationResult{
+	// 		Name: to.Ptr("a1aa7c77-961b-4fbb-bcd6-aa9acfcd1706"),
+	// 		Type: to.Ptr("Microsoft.Sql/locations/longTermRetentionBackupOperationResults"),
+	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Sql/locations/japanEast/longTermRetentionBackupOperationResults/a1aa7c77-961b-4fbb-bcd6-aa9acfcd1706"),
+	// 		Properties: &armsql.LongTermRetentionOperationResultProperties{
+	// 			FromBackupResourceID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Sql/locations/japanEast/longTermRetentionServers/testserver/longterRetentionDatabases/testDatabase/longTermRetentionBackups/55555555-6666-7777-8888-999999999999;131637960820000000"),
+	// 			OperationType: to.Ptr("UpdateBackup"),
+	// 			RequestID: to.Ptr("a1aa7c77-961b-4fbb-bcd6-aa9acfcd1706"),
+	// 			Status: to.Ptr("Succeeded"),
+	// 			TargetBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-08-01-preview/ResourceGroupBasedLongTermRetentionBackupUpdate.json
+func ExampleLongTermRetentionBackupsClient_BeginUpdateByResourceGroup() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsql.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewLongTermRetentionBackupsClient().BeginUpdateByResourceGroup(ctx, "testResourceGroup", "japaneast", "testserver", "testDatabase", "55555555-6666-7777-8888-999999999999;131637960820000000", armsql.UpdateLongTermRetentionBackupParameters{
+		Properties: &armsql.UpdateLongTermRetentionBackupParametersProperties{
+			RequestedBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armsql.LongTermRetentionBackupsClientUpdateByResourceGroupResponse{
+	// 	LongTermRetentionBackupOperationResult: armsql.LongTermRetentionBackupOperationResult{
+	// 		Name: to.Ptr("a1aa7c77-961b-4fbb-bcd6-aa9acfcd1706"),
+	// 		Type: to.Ptr("Microsoft.Sql/locations/longTermRetentionBackupOperationResults"),
+	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testResourceGroup/providers/Microsoft.Sql/locations/japanEast/longTermRetentionBackupOperationResults/a1aa7c77-961b-4fbb-bcd6-aa9acfcd1706"),
+	// 		Properties: &armsql.LongTermRetentionOperationResultProperties{
+	// 			FromBackupResourceID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testResourceGroup/providers/Microsoft.Sql/locations/japanEast/longTermRetentionServers/testserver/longterRetentionDatabases/testDatabase/longTermRetentionBackups/55555555-6666-7777-8888-999999999999;131637960820000000"),
+	// 			OperationType: to.Ptr("UpdateBackup"),
+	// 			RequestID: to.Ptr("a1aa7c77-961b-4fbb-bcd6-aa9acfcd1706"),
+	// 			Status: to.Ptr("Succeeded"),
+	// 			TargetBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
+	// 		},
+	// 	},
+	// }
+}
+
 // Generated from example definition: 2026-08-01-preview/LongTermRetentionBackupGet.json
 func ExampleLongTermRetentionBackupsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -1101,352 +1449,4 @@ func ExampleLongTermRetentionBackupsClient_NewListByServerPager_getLongTermReten
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2026-08-01-preview/LockTimeBasedImmutabilityLongTermRetentionBackup.json
-func ExampleLongTermRetentionBackupsClient_BeginLockTimeBasedImmutability() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armsql.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewLongTermRetentionBackupsClient().BeginLockTimeBasedImmutability(ctx, "japaneast", "testserver", "testDatabase", "55555555-6666-7777-8888-999999999999;131637960820000000;Hot", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armsql.LongTermRetentionBackupsClientLockTimeBasedImmutabilityResponse{
-	// 	LongTermRetentionBackup: armsql.LongTermRetentionBackup{
-	// 		Name: to.Ptr("01234567-890a-bcde-f012-34567890abcd"),
-	// 		Type: to.Ptr("Microsoft.Sql/locations/longTermRetentionBackupOperationResults"),
-	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Sql/locations/japaneast/longTermRetentionBackupOperationResults/01234567-890a-bcde-f012-34567890abcd"),
-	// 		Properties: &armsql.LongTermRetentionBackupProperties{
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-08-01-preview/ResourceGroupBasedLockTimeBasedImmutabilityLongTermRetentionBackup.json
-func ExampleLongTermRetentionBackupsClient_BeginLockTimeBasedImmutabilityByResourceGroup() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armsql.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewLongTermRetentionBackupsClient().BeginLockTimeBasedImmutabilityByResourceGroup(ctx, "resourceGroupName", "japaneast", "testserver", "testDatabase", "55555555-6666-7777-8888-999999999999;131637960820000000;Hot", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armsql.LongTermRetentionBackupsClientLockTimeBasedImmutabilityByResourceGroupResponse{
-	// 	LongTermRetentionBackup: armsql.LongTermRetentionBackup{
-	// 		Name: to.Ptr("01234567-890a-bcde-f012-34567890abcd"),
-	// 		Type: to.Ptr("Microsoft.Sql/locations/longTermRetentionBackupOperationResults"),
-	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/resourceGroupName/providers/Microsoft.Sql/locations/japaneast/longTermRetentionBackupOperationResults/01234567-890a-bcde-f012-34567890abcd"),
-	// 		Properties: &armsql.LongTermRetentionBackupProperties{
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-08-01-preview/RemoveLegalHoldImmutabilityLongTermRetentionBackup.json
-func ExampleLongTermRetentionBackupsClient_BeginRemoveLegalHoldImmutability() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armsql.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewLongTermRetentionBackupsClient().BeginRemoveLegalHoldImmutability(ctx, "japaneast", "testserver", "testDatabase", "55555555-6666-7777-8888-999999999999;131637960820000000;Hot", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armsql.LongTermRetentionBackupsClientRemoveLegalHoldImmutabilityResponse{
-	// 	LongTermRetentionBackup: armsql.LongTermRetentionBackup{
-	// 		Name: to.Ptr("01234567-890a-bcde-f012-34567890abcd"),
-	// 		Type: to.Ptr("Microsoft.Sql/locations/longTermRetentionBackupOperationResults"),
-	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Sql/locations/japaneast/longTermRetentionBackupOperationResults/01234567-890a-bcde-f012-34567890abcd"),
-	// 		Properties: &armsql.LongTermRetentionBackupProperties{
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-08-01-preview/ResourceGroupBasedRemoveLegalHoldImmutabilityLongTermRetentionBackup.json
-func ExampleLongTermRetentionBackupsClient_BeginRemoveLegalHoldImmutabilityByResourceGroup() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armsql.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewLongTermRetentionBackupsClient().BeginRemoveLegalHoldImmutabilityByResourceGroup(ctx, "resourceGroupName", "japaneast", "testserver", "testDatabase", "55555555-6666-7777-8888-999999999999;131637960820000000;Hot", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armsql.LongTermRetentionBackupsClientRemoveLegalHoldImmutabilityByResourceGroupResponse{
-	// 	LongTermRetentionBackup: armsql.LongTermRetentionBackup{
-	// 		Name: to.Ptr("01234567-890a-bcde-f012-34567890abcd"),
-	// 		Type: to.Ptr("Microsoft.Sql/locations/longTermRetentionBackupOperationResults"),
-	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/resourceGroupName/providers/Microsoft.Sql/locations/japaneast/longTermRetentionBackupOperationResults/01234567-890a-bcde-f012-34567890abcd"),
-	// 		Properties: &armsql.LongTermRetentionBackupProperties{
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-08-01-preview/RemoveTimeBasedImmutabilityLongTermRetentionBackup.json
-func ExampleLongTermRetentionBackupsClient_BeginRemoveTimeBasedImmutability() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armsql.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewLongTermRetentionBackupsClient().BeginRemoveTimeBasedImmutability(ctx, "japaneast", "testserver", "testDatabase", "55555555-6666-7777-8888-999999999999;131637960820000000;Hot", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armsql.LongTermRetentionBackupsClientRemoveTimeBasedImmutabilityResponse{
-	// 	LongTermRetentionBackup: armsql.LongTermRetentionBackup{
-	// 		Name: to.Ptr("01234567-890a-bcde-f012-34567890abcd"),
-	// 		Type: to.Ptr("Microsoft.Sql/locations/longTermRetentionBackupOperationResults"),
-	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Sql/locations/japaneast/longTermRetentionBackupOperationResults/01234567-890a-bcde-f012-34567890abcd"),
-	// 		Properties: &armsql.LongTermRetentionBackupProperties{
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-08-01-preview/ResourceGroupBasedRemoveTimeBasedImmutabilityLongTermRetentionBackup.json
-func ExampleLongTermRetentionBackupsClient_BeginRemoveTimeBasedImmutabilityByResourceGroup() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armsql.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewLongTermRetentionBackupsClient().BeginRemoveTimeBasedImmutabilityByResourceGroup(ctx, "resourceGroupName", "japaneast", "testserver", "testDatabase", "55555555-6666-7777-8888-999999999999;131637960820000000;Hot", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armsql.LongTermRetentionBackupsClientRemoveTimeBasedImmutabilityByResourceGroupResponse{
-	// 	LongTermRetentionBackup: armsql.LongTermRetentionBackup{
-	// 		Name: to.Ptr("01234567-890a-bcde-f012-34567890abcd"),
-	// 		Type: to.Ptr("Microsoft.Sql/locations/longTermRetentionBackupOperationResults"),
-	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/resourceGroupName/providers/Microsoft.Sql/locations/japaneast/longTermRetentionBackupOperationResults/01234567-890a-bcde-f012-34567890abcd"),
-	// 		Properties: &armsql.LongTermRetentionBackupProperties{
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-08-01-preview/SetLegalHoldImmutabilityLongTermRetentionBackup.json
-func ExampleLongTermRetentionBackupsClient_BeginSetLegalHoldImmutability() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armsql.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewLongTermRetentionBackupsClient().BeginSetLegalHoldImmutability(ctx, "japaneast", "testserver", "testDatabase", "55555555-6666-7777-8888-999999999999;131637960820000000;Hot", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armsql.LongTermRetentionBackupsClientSetLegalHoldImmutabilityResponse{
-	// 	LongTermRetentionBackup: armsql.LongTermRetentionBackup{
-	// 		Name: to.Ptr("01234567-890a-bcde-f012-34567890abcd"),
-	// 		Type: to.Ptr("Microsoft.Sql/locations/longTermRetentionBackupOperationResults"),
-	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Sql/locations/japaneast/longTermRetentionBackupOperationResults/01234567-890a-bcde-f012-34567890abcd"),
-	// 		Properties: &armsql.LongTermRetentionBackupProperties{
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-08-01-preview/ResourceGroupBasedSetLegalHoldImmutabilityLongTermRetentionBackup.json
-func ExampleLongTermRetentionBackupsClient_BeginSetLegalHoldImmutabilityByResourceGroup() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armsql.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewLongTermRetentionBackupsClient().BeginSetLegalHoldImmutabilityByResourceGroup(ctx, "resourceGroupName", "japaneast", "testserver", "testDatabase", "55555555-6666-7777-8888-999999999999;131637960820000000;Hot", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armsql.LongTermRetentionBackupsClientSetLegalHoldImmutabilityByResourceGroupResponse{
-	// 	LongTermRetentionBackup: armsql.LongTermRetentionBackup{
-	// 		Name: to.Ptr("01234567-890a-bcde-f012-34567890abcd"),
-	// 		Type: to.Ptr("Microsoft.Sql/locations/longTermRetentionBackupOperationResults"),
-	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/resourceGroupName/providers/Microsoft.Sql/locations/japaneast/longTermRetentionBackupOperationResults/01234567-890a-bcde-f012-34567890abcd"),
-	// 		Properties: &armsql.LongTermRetentionBackupProperties{
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-08-01-preview/LongTermRetentionBackupUpdate.json
-func ExampleLongTermRetentionBackupsClient_BeginUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armsql.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewLongTermRetentionBackupsClient().BeginUpdate(ctx, "japaneast", "testserver", "testDatabase", "55555555-6666-7777-8888-999999999999;131637960820000000", armsql.UpdateLongTermRetentionBackupParameters{
-		Properties: &armsql.UpdateLongTermRetentionBackupParametersProperties{
-			RequestedBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armsql.LongTermRetentionBackupsClientUpdateResponse{
-	// 	LongTermRetentionBackupOperationResult: armsql.LongTermRetentionBackupOperationResult{
-	// 		Name: to.Ptr("a1aa7c77-961b-4fbb-bcd6-aa9acfcd1706"),
-	// 		Type: to.Ptr("Microsoft.Sql/locations/longTermRetentionBackupOperationResults"),
-	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Sql/locations/japanEast/longTermRetentionBackupOperationResults/a1aa7c77-961b-4fbb-bcd6-aa9acfcd1706"),
-	// 		Properties: &armsql.LongTermRetentionOperationResultProperties{
-	// 			FromBackupResourceID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Sql/locations/japanEast/longTermRetentionServers/testserver/longterRetentionDatabases/testDatabase/longTermRetentionBackups/55555555-6666-7777-8888-999999999999;131637960820000000"),
-	// 			OperationType: to.Ptr("UpdateBackup"),
-	// 			RequestID: to.Ptr("a1aa7c77-961b-4fbb-bcd6-aa9acfcd1706"),
-	// 			Status: to.Ptr("Succeeded"),
-	// 			TargetBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-08-01-preview/ResourceGroupBasedLongTermRetentionBackupUpdate.json
-func ExampleLongTermRetentionBackupsClient_BeginUpdateByResourceGroup() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armsql.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewLongTermRetentionBackupsClient().BeginUpdateByResourceGroup(ctx, "testResourceGroup", "japaneast", "testserver", "testDatabase", "55555555-6666-7777-8888-999999999999;131637960820000000", armsql.UpdateLongTermRetentionBackupParameters{
-		Properties: &armsql.UpdateLongTermRetentionBackupParametersProperties{
-			RequestedBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armsql.LongTermRetentionBackupsClientUpdateByResourceGroupResponse{
-	// 	LongTermRetentionBackupOperationResult: armsql.LongTermRetentionBackupOperationResult{
-	// 		Name: to.Ptr("a1aa7c77-961b-4fbb-bcd6-aa9acfcd1706"),
-	// 		Type: to.Ptr("Microsoft.Sql/locations/longTermRetentionBackupOperationResults"),
-	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testResourceGroup/providers/Microsoft.Sql/locations/japanEast/longTermRetentionBackupOperationResults/a1aa7c77-961b-4fbb-bcd6-aa9acfcd1706"),
-	// 		Properties: &armsql.LongTermRetentionOperationResultProperties{
-	// 			FromBackupResourceID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testResourceGroup/providers/Microsoft.Sql/locations/japanEast/longTermRetentionServers/testserver/longterRetentionDatabases/testDatabase/longTermRetentionBackups/55555555-6666-7777-8888-999999999999;131637960820000000"),
-	// 			OperationType: to.Ptr("UpdateBackup"),
-	// 			RequestID: to.Ptr("a1aa7c77-961b-4fbb-bcd6-aa9acfcd1706"),
-	// 			Status: to.Ptr("Succeeded"),
-	// 			TargetBackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
-	// 		},
-	// 	},
-	// }
 }

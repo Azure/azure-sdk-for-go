@@ -25,13 +25,13 @@ type TopLevelDomainsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, name string, options *armdomainregistration.TopLevelDomainsClientGetOptions) (resp azfake.Responder[armdomainregistration.TopLevelDomainsClientGetResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method TopLevelDomainsClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(options *armdomainregistration.TopLevelDomainsClientListOptions) (resp azfake.PagerResponder[armdomainregistration.TopLevelDomainsClientListResponse])
-
 	// NewListAgreementsPager is the fake for method TopLevelDomainsClient.NewListAgreementsPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListAgreementsPager func(name string, agreementOption armdomainregistration.TopLevelDomainAgreementOption, options *armdomainregistration.TopLevelDomainsClientListAgreementsOptions) (resp azfake.PagerResponder[armdomainregistration.TopLevelDomainsClientListAgreementsResponse])
+
+	// NewListPager is the fake for method TopLevelDomainsClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(options *armdomainregistration.TopLevelDomainsClientListOptions) (resp azfake.PagerResponder[armdomainregistration.TopLevelDomainsClientListResponse])
 }
 
 // NewTopLevelDomainsServerTransport creates a new instance of TopLevelDomainsServerTransport with the provided implementation.
@@ -40,8 +40,8 @@ type TopLevelDomainsServer struct {
 func NewTopLevelDomainsServerTransport(srv *TopLevelDomainsServer) *TopLevelDomainsServerTransport {
 	return &TopLevelDomainsServerTransport{
 		srv:                    srv,
-		newListPager:           newTracker[azfake.PagerResponder[armdomainregistration.TopLevelDomainsClientListResponse]](),
 		newListAgreementsPager: newTracker[azfake.PagerResponder[armdomainregistration.TopLevelDomainsClientListAgreementsResponse]](),
+		newListPager:           newTracker[azfake.PagerResponder[armdomainregistration.TopLevelDomainsClientListResponse]](),
 	}
 }
 
@@ -49,8 +49,8 @@ func NewTopLevelDomainsServerTransport(srv *TopLevelDomainsServer) *TopLevelDoma
 // Don't use this type directly, use NewTopLevelDomainsServerTransport instead.
 type TopLevelDomainsServerTransport struct {
 	srv                    *TopLevelDomainsServer
-	newListPager           *tracker[azfake.PagerResponder[armdomainregistration.TopLevelDomainsClientListResponse]]
 	newListAgreementsPager *tracker[azfake.PagerResponder[armdomainregistration.TopLevelDomainsClientListAgreementsResponse]]
+	newListPager           *tracker[azfake.PagerResponder[armdomainregistration.TopLevelDomainsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for TopLevelDomainsServerTransport.
@@ -76,10 +76,10 @@ func (t *TopLevelDomainsServerTransport) dispatchToMethodFake(req *http.Request,
 			switch method {
 			case "TopLevelDomainsClient.Get":
 				res.resp, res.err = t.dispatchGet(req)
-			case "TopLevelDomainsClient.NewListPager":
-				res.resp, res.err = t.dispatchNewListPager(req)
 			case "TopLevelDomainsClient.NewListAgreementsPager":
 				res.resp, res.err = t.dispatchNewListAgreementsPager(req)
+			case "TopLevelDomainsClient.NewListPager":
+				res.resp, res.err = t.dispatchNewListPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -125,39 +125,6 @@ func (t *TopLevelDomainsServerTransport) dispatchGet(req *http.Request) (*http.R
 	return resp, nil
 }
 
-func (t *TopLevelDomainsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if t.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := t.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DomainRegistration/topLevelDomains`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := t.srv.NewListPager(nil)
-		newListPager = &resp
-		t.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armdomainregistration.TopLevelDomainsClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		t.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		t.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (t *TopLevelDomainsServerTransport) dispatchNewListAgreementsPager(req *http.Request) (*http.Response, error) {
 	if t.srv.NewListAgreementsPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListAgreementsPager not implemented")}
@@ -195,6 +162,39 @@ func (t *TopLevelDomainsServerTransport) dispatchNewListAgreementsPager(req *htt
 	}
 	if !server.PagerResponderMore(newListAgreementsPager) {
 		t.newListAgreementsPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (t *TopLevelDomainsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if t.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := t.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DomainRegistration/topLevelDomains`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resp := t.srv.NewListPager(nil)
+		newListPager = &resp
+		t.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armdomainregistration.TopLevelDomainsClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		t.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPager) {
+		t.newListPager.remove(req)
 	}
 	return resp, nil
 }

@@ -68,7 +68,7 @@ func (client *SecurityPartnerProvidersClient) BeginCreateOrUpdate(ctx context.Co
 	}
 }
 
-// CreateOrUpdate - Creates or updates the specified Security Partner Provider.
+// createOrUpdate - Creates or updates the specified Security Partner Provider.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *SecurityPartnerProvidersClient) createOrUpdate(ctx context.Context, resourceGroupName string, securityPartnerProviderName string, parameters SecurityPartnerProvider, options *SecurityPartnerProvidersClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -90,7 +90,7 @@ func (client *SecurityPartnerProvidersClient) createOrUpdate(ctx context.Context
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *SecurityPartnerProvidersClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, securityPartnerProviderName string, parameters SecurityPartnerProvider, _ *SecurityPartnerProvidersClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/securityPartnerProviders/{securityPartnerProviderName}"
 	if client.subscriptionID == "" {
@@ -143,7 +143,7 @@ func (client *SecurityPartnerProvidersClient) BeginDelete(ctx context.Context, r
 	}
 }
 
-// Delete - Deletes the specified Security Partner Provider.
+// deleteOperation - Deletes the specified Security Partner Provider.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *SecurityPartnerProvidersClient) deleteOperation(ctx context.Context, resourceGroupName string, securityPartnerProviderName string, options *SecurityPartnerProvidersClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -165,7 +165,7 @@ func (client *SecurityPartnerProvidersClient) deleteOperation(ctx context.Contex
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *SecurityPartnerProvidersClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, securityPartnerProviderName string, _ *SecurityPartnerProvidersClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/securityPartnerProviders/{securityPartnerProviderName}"
 	if client.subscriptionID == "" {
@@ -251,73 +251,6 @@ func (client *SecurityPartnerProvidersClient) getHandleResponse(resp *http.Respo
 	return result, nil
 }
 
-// NewListPager - Gets all the Security Partner Providers in a subscription.
-//   - options - SecurityPartnerProvidersClientListOptions contains the optional parameters for the SecurityPartnerProvidersClient.NewListPager
-//     method.
-func (client *SecurityPartnerProvidersClient) NewListPager(options *SecurityPartnerProvidersClientListOptions) *runtime.Pager[SecurityPartnerProvidersClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[SecurityPartnerProvidersClientListResponse]{
-		More: func(page SecurityPartnerProvidersClientListResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *SecurityPartnerProvidersClientListResponse) (SecurityPartnerProvidersClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "SecurityPartnerProvidersClient.NewListPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			req, err := client.listCreateRequest(ctx, nextLink, options)
-			if err != nil {
-				return SecurityPartnerProvidersClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return SecurityPartnerProvidersClientListResponse{}, err
-			}
-			return client.listHandleResponse(resp, http.StatusOK)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listCreateRequest creates the List request.
-func (client *SecurityPartnerProvidersClient) listCreateRequest(ctx context.Context, nextLink string, _ *SecurityPartnerProvidersClientListOptions) (*policy.Request, error) {
-	firstPage := nextLink == ""
-	var req *policy.Request
-	var err error
-	if firstPage {
-		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Network/securityPartnerProviders"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter subscriptionID cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	} else {
-		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
-	}
-	if err != nil {
-		return nil, err
-	}
-	if firstPage {
-		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260101)
-		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-		req.Raw().Header["Accept"] = []string{"application/json"}
-	}
-	return req, nil
-}
-
-// listHandleResponse handles the List response.
-func (client *SecurityPartnerProvidersClient) listHandleResponse(resp *http.Response, successCodes ...int) (SecurityPartnerProvidersClientListResponse, error) {
-	result := SecurityPartnerProvidersClientListResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.SecurityPartnerProviderListResult); err != nil {
-		return SecurityPartnerProvidersClientListResponse{}, err
-	}
-	return result, nil
-}
-
 // NewListByResourceGroupPager - Lists all Security Partner Providers in a resource group.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - SecurityPartnerProvidersClientListByResourceGroupOptions contains the optional parameters for the SecurityPartnerProvidersClient.NewListByResourceGroupPager
@@ -386,6 +319,73 @@ func (client *SecurityPartnerProvidersClient) listByResourceGroupHandleResponse(
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SecurityPartnerProviderListResult); err != nil {
 		return SecurityPartnerProvidersClientListByResourceGroupResponse{}, err
+	}
+	return result, nil
+}
+
+// NewListPager - Gets all the Security Partner Providers in a subscription.
+//   - options - SecurityPartnerProvidersClientListOptions contains the optional parameters for the SecurityPartnerProvidersClient.NewListPager
+//     method.
+func (client *SecurityPartnerProvidersClient) NewListPager(options *SecurityPartnerProvidersClientListOptions) *runtime.Pager[SecurityPartnerProvidersClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[SecurityPartnerProvidersClientListResponse]{
+		More: func(page SecurityPartnerProvidersClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *SecurityPartnerProvidersClientListResponse) (SecurityPartnerProvidersClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "SecurityPartnerProvidersClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listCreateRequest(ctx, nextLink, options)
+			if err != nil {
+				return SecurityPartnerProvidersClientListResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return SecurityPartnerProvidersClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listCreateRequest creates the List request.
+func (client *SecurityPartnerProvidersClient) listCreateRequest(ctx context.Context, nextLink string, _ *SecurityPartnerProvidersClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Network/securityPartnerProviders"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260101)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// listHandleResponse handles the List response.
+func (client *SecurityPartnerProvidersClient) listHandleResponse(resp *http.Response, successCodes ...int) (SecurityPartnerProvidersClientListResponse, error) {
+	result := SecurityPartnerProvidersClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.SecurityPartnerProviderListResult); err != nil {
+		return SecurityPartnerProvidersClientListResponse{}, err
 	}
 	return result, nil
 }

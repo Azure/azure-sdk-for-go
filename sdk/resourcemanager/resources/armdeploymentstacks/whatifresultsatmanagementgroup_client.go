@@ -63,7 +63,7 @@ func (client *WhatIfResultsAtManagementGroupClient) BeginCreateOrUpdate(ctx cont
 	}
 }
 
-// CreateOrUpdate - Creates or updates a Deployment stack at the specified scope.
+// createOrUpdate - Creates or updates a Deployment stack at the specified scope.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *WhatIfResultsAtManagementGroupClient) createOrUpdate(ctx context.Context, managementGroupID string, deploymentStacksWhatIfResultName string, resource WhatIfResult, options *WhatIfResultsAtManagementGroupClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -85,7 +85,7 @@ func (client *WhatIfResultsAtManagementGroupClient) createOrUpdate(ctx context.C
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *WhatIfResultsAtManagementGroupClient) createOrUpdateCreateRequest(ctx context.Context, managementGroupID string, deploymentStacksWhatIfResultName string, resource WhatIfResult, _ *WhatIfResultsAtManagementGroupClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Management/managementGroups/{managementGroupId}/providers/Microsoft.Resources/deploymentStacksWhatIfResults/{deploymentStacksWhatIfResultName}"
 	if managementGroupID == "" {
@@ -108,6 +108,73 @@ func (client *WhatIfResultsAtManagementGroupClient) createOrUpdateCreateRequest(
 	if err := runtime.MarshalAsJSON(req, resource); err != nil {
 		return nil, err
 	}
+	return req, nil
+}
+
+// BeginWhatIf - Returns property-level changes that will be made by the deployment if executed.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - managementGroupID - The management group ID.
+//   - deploymentStacksWhatIfResultName - Name of the deployment stack what-if result.
+//   - options - WhatIfResultsAtManagementGroupClientBeginWhatIfOptions contains the optional parameters for the WhatIfResultsAtManagementGroupClient.BeginWhatIf
+//     method.
+func (client *WhatIfResultsAtManagementGroupClient) BeginWhatIf(ctx context.Context, managementGroupID string, deploymentStacksWhatIfResultName string, options *WhatIfResultsAtManagementGroupClientBeginWhatIfOptions) (*runtime.Poller[WhatIfResultsAtManagementGroupClientWhatIfResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.whatIf(ctx, managementGroupID, deploymentStacksWhatIfResultName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[WhatIfResultsAtManagementGroupClientWhatIfResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[WhatIfResultsAtManagementGroupClientWhatIfResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// whatIf - Returns property-level changes that will be made by the deployment if executed.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *WhatIfResultsAtManagementGroupClient) whatIf(ctx context.Context, managementGroupID string, deploymentStacksWhatIfResultName string, options *WhatIfResultsAtManagementGroupClientBeginWhatIfOptions) (*http.Response, error) {
+	var err error
+	const operationName = "WhatIfResultsAtManagementGroupClient.BeginWhatIf"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.whatIfCreateRequest(ctx, managementGroupID, deploymentStacksWhatIfResultName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// whatIfCreateRequest creates the whatIf request.
+func (client *WhatIfResultsAtManagementGroupClient) whatIfCreateRequest(ctx context.Context, managementGroupID string, deploymentStacksWhatIfResultName string, _ *WhatIfResultsAtManagementGroupClientBeginWhatIfOptions) (*policy.Request, error) {
+	urlPath := "/providers/Microsoft.Management/managementGroups/{managementGroupId}/providers/Microsoft.Resources/deploymentStacksWhatIfResults/{deploymentStacksWhatIfResultName}/whatIf"
+	if managementGroupID == "" {
+		return nil, errors.New("parameter managementGroupID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{managementGroupId}", url.PathEscape(managementGroupID))
+	if deploymentStacksWhatIfResultName == "" {
+		return nil, errors.New("parameter deploymentStacksWhatIfResultName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{deploymentStacksWhatIfResultName}", url.PathEscape(deploymentStacksWhatIfResultName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20250701)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -297,71 +364,4 @@ func (client *WhatIfResultsAtManagementGroupClient) listHandleResponse(resp *htt
 		return WhatIfResultsAtManagementGroupClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginWhatIf - Returns property-level changes that will be made by the deployment if executed.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - managementGroupID - The management group ID.
-//   - deploymentStacksWhatIfResultName - Name of the deployment stack what-if result.
-//   - options - WhatIfResultsAtManagementGroupClientBeginWhatIfOptions contains the optional parameters for the WhatIfResultsAtManagementGroupClient.BeginWhatIf
-//     method.
-func (client *WhatIfResultsAtManagementGroupClient) BeginWhatIf(ctx context.Context, managementGroupID string, deploymentStacksWhatIfResultName string, options *WhatIfResultsAtManagementGroupClientBeginWhatIfOptions) (*runtime.Poller[WhatIfResultsAtManagementGroupClientWhatIfResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.whatIf(ctx, managementGroupID, deploymentStacksWhatIfResultName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[WhatIfResultsAtManagementGroupClientWhatIfResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[WhatIfResultsAtManagementGroupClientWhatIfResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// WhatIf - Returns property-level changes that will be made by the deployment if executed.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *WhatIfResultsAtManagementGroupClient) whatIf(ctx context.Context, managementGroupID string, deploymentStacksWhatIfResultName string, options *WhatIfResultsAtManagementGroupClientBeginWhatIfOptions) (*http.Response, error) {
-	var err error
-	const operationName = "WhatIfResultsAtManagementGroupClient.BeginWhatIf"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.whatIfCreateRequest(ctx, managementGroupID, deploymentStacksWhatIfResultName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// whatIfCreateRequest creates the WhatIf request.
-func (client *WhatIfResultsAtManagementGroupClient) whatIfCreateRequest(ctx context.Context, managementGroupID string, deploymentStacksWhatIfResultName string, _ *WhatIfResultsAtManagementGroupClientBeginWhatIfOptions) (*policy.Request, error) {
-	urlPath := "/providers/Microsoft.Management/managementGroups/{managementGroupId}/providers/Microsoft.Resources/deploymentStacksWhatIfResults/{deploymentStacksWhatIfResultName}/whatIf"
-	if managementGroupID == "" {
-		return nil, errors.New("parameter managementGroupID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{managementGroupId}", url.PathEscape(managementGroupID))
-	if deploymentStacksWhatIfResultName == "" {
-		return nil, errors.New("parameter deploymentStacksWhatIfResultName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{deploymentStacksWhatIfResultName}", url.PathEscape(deploymentStacksWhatIfResultName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
 }

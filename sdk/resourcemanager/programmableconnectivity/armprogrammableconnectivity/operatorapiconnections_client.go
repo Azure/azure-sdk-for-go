@@ -68,7 +68,7 @@ func (client *OperatorAPIConnectionsClient) BeginCreate(ctx context.Context, res
 	}
 }
 
-// Create - Create an Operator API Connection.
+// create - Create an Operator API Connection.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *OperatorAPIConnectionsClient) create(ctx context.Context, resourceGroupName string, operatorAPIConnectionName string, resource OperatorAPIConnection, options *OperatorAPIConnectionsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
@@ -90,7 +90,7 @@ func (client *OperatorAPIConnectionsClient) create(ctx context.Context, resource
 	return httpResp, nil
 }
 
-// createCreateRequest creates the Create request.
+// createCreateRequest creates the create request.
 func (client *OperatorAPIConnectionsClient) createCreateRequest(ctx context.Context, resourceGroupName string, operatorAPIConnectionName string, resource OperatorAPIConnection, _ *OperatorAPIConnectionsClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ProgrammableConnectivity/operatorApiConnections/{operatorApiConnectionName}"
 	if client.subscriptionID == "" {
@@ -143,7 +143,7 @@ func (client *OperatorAPIConnectionsClient) BeginDelete(ctx context.Context, res
 	}
 }
 
-// Delete - Delete an Operator API Connection.
+// deleteOperation - Delete an Operator API Connection.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *OperatorAPIConnectionsClient) deleteOperation(ctx context.Context, resourceGroupName string, operatorAPIConnectionName string, options *OperatorAPIConnectionsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -165,7 +165,7 @@ func (client *OperatorAPIConnectionsClient) deleteOperation(ctx context.Context,
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *OperatorAPIConnectionsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, operatorAPIConnectionName string, _ *OperatorAPIConnectionsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ProgrammableConnectivity/operatorApiConnections/{operatorApiConnectionName}"
 	if client.subscriptionID == "" {
@@ -187,6 +187,82 @@ func (client *OperatorAPIConnectionsClient) deleteCreateRequest(ctx context.Cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", version20240115Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginUpdate - Update an Operator API Connection.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - operatorAPIConnectionName - Azure Programmable Connectivity (APC) Operator API Connection Name.
+//   - properties - The resource properties to be updated.
+//   - options - OperatorAPIConnectionsClientBeginUpdateOptions contains the optional parameters for the OperatorAPIConnectionsClient.BeginUpdate
+//     method.
+func (client *OperatorAPIConnectionsClient) BeginUpdate(ctx context.Context, resourceGroupName string, operatorAPIConnectionName string, properties OperatorAPIConnectionUpdate, options *OperatorAPIConnectionsClientBeginUpdateOptions) (*runtime.Poller[OperatorAPIConnectionsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, operatorAPIConnectionName, properties, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[OperatorAPIConnectionsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[OperatorAPIConnectionsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Update an Operator API Connection.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *OperatorAPIConnectionsClient) update(ctx context.Context, resourceGroupName string, operatorAPIConnectionName string, properties OperatorAPIConnectionUpdate, options *OperatorAPIConnectionsClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "OperatorAPIConnectionsClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, operatorAPIConnectionName, properties, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *OperatorAPIConnectionsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, operatorAPIConnectionName string, properties OperatorAPIConnectionUpdate, _ *OperatorAPIConnectionsClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ProgrammableConnectivity/operatorApiConnections/{operatorApiConnectionName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if operatorAPIConnectionName == "" {
+		return nil, errors.New("parameter operatorAPIConnectionName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{operatorApiConnectionName}", url.PathEscape(operatorAPIConnectionName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20240115Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, properties); err != nil {
+		return nil, err
+	}
 	return req, nil
 }
 
@@ -388,80 +464,4 @@ func (client *OperatorAPIConnectionsClient) listBySubscriptionHandleResponse(res
 		return OperatorAPIConnectionsClientListBySubscriptionResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginUpdate - Update an Operator API Connection.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - operatorAPIConnectionName - Azure Programmable Connectivity (APC) Operator API Connection Name.
-//   - properties - The resource properties to be updated.
-//   - options - OperatorAPIConnectionsClientBeginUpdateOptions contains the optional parameters for the OperatorAPIConnectionsClient.BeginUpdate
-//     method.
-func (client *OperatorAPIConnectionsClient) BeginUpdate(ctx context.Context, resourceGroupName string, operatorAPIConnectionName string, properties OperatorAPIConnectionUpdate, options *OperatorAPIConnectionsClientBeginUpdateOptions) (*runtime.Poller[OperatorAPIConnectionsClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, operatorAPIConnectionName, properties, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[OperatorAPIConnectionsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[OperatorAPIConnectionsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Update an Operator API Connection.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *OperatorAPIConnectionsClient) update(ctx context.Context, resourceGroupName string, operatorAPIConnectionName string, properties OperatorAPIConnectionUpdate, options *OperatorAPIConnectionsClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "OperatorAPIConnectionsClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, operatorAPIConnectionName, properties, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *OperatorAPIConnectionsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, operatorAPIConnectionName string, properties OperatorAPIConnectionUpdate, _ *OperatorAPIConnectionsClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ProgrammableConnectivity/operatorApiConnections/{operatorApiConnectionName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if operatorAPIConnectionName == "" {
-		return nil, errors.New("parameter operatorAPIConnectionName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{operatorApiConnectionName}", url.PathEscape(operatorAPIConnectionName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240115Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, properties); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

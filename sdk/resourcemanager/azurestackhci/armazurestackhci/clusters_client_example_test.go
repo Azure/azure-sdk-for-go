@@ -137,78 +137,6 @@ func ExampleClustersClient_BeginConfigureRemoteSupport() {
 	// }
 }
 
-// Generated from example definition: 2026-04-30/CreateCluster.json
-func ExampleClustersClient_Create() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armazurestackhci.NewClientFactory("fd3c3665-1729-4b7b-9a38-238e83b0f98b", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewClustersClient().Create(ctx, "test-rg", "myCluster", armazurestackhci.Cluster{
-		Identity: &armazurestackhci.ManagedServiceIdentity{
-			Type: to.Ptr(armazurestackhci.ManagedServiceIdentityTypeSystemAssigned),
-		},
-		Location: to.Ptr("East US"),
-		Properties: &armazurestackhci.ClusterProperties{
-			AADClientID:             to.Ptr("24a6e53d-04e5-44d2-b7cc-1b732a847dfc"),
-			AADTenantID:             to.Ptr("7e589cc1-a8b6-4dff-91bd-5ec0fa18db94"),
-			CloudManagementEndpoint: to.Ptr("https://98294836-31be-4668-aeae-698667faf99b.waconazure.com"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armazurestackhci.ClustersClientCreateResponse{
-	// 	Cluster: armazurestackhci.Cluster{
-	// 		Name: to.Ptr("myCluster"),
-	// 		Type: to.Ptr("Microsoft.AzureStackHCI/clusters"),
-	// 		ID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/test-rg/providers/Microsoft.AzureStackHCI/clusters/myCluster"),
-	// 		Identity: &armazurestackhci.ManagedServiceIdentity{
-	// 			Type: to.Ptr(armazurestackhci.ManagedServiceIdentityTypeSystemAssigned),
-	// 			PrincipalID: to.Ptr("87a834db-2e45-409e-911b-e16a44562ec3"),
-	// 			TenantID: to.Ptr("7e589cc1-a8b6-4dff-91bd-5ec0fa18db94"),
-	// 		},
-	// 		Location: to.Ptr("East US"),
-	// 		Properties: &armazurestackhci.ClusterProperties{
-	// 			AADClientID: to.Ptr("24a6e53d-04e5-44d2-b7cc-1b732a847dfc"),
-	// 			AADTenantID: to.Ptr("7e589cc1-a8b6-4dff-91bd-5ec0fa18db94"),
-	// 			BillingModel: to.Ptr("Trial"),
-	// 			CloudID: to.Ptr("a3c0468f-e38e-4dda-ac48-817f620536f0"),
-	// 			CloudManagementEndpoint: to.Ptr("https://98294836-31be-4668-aeae-698667faf99b.waconazure.com"),
-	// 			ConnectivityStatus: to.Ptr(armazurestackhci.ConnectivityStatusNotYetRegistered),
-	// 			DesiredProperties: &armazurestackhci.ClusterDesiredProperties{
-	// 				DiagnosticLevel: to.Ptr(armazurestackhci.DiagnosticLevelBasic),
-	// 				WindowsServerSubscription: to.Ptr(armazurestackhci.WindowsServerSubscriptionDisabled),
-	// 			},
-	// 			IsManagementCluster: to.Ptr(true),
-	// 			ProvisioningState: to.Ptr(armazurestackhci.ProvisioningStateSucceeded),
-	// 			ReportedProperties: &armazurestackhci.ClusterReportedProperties{
-	// 			},
-	// 			ServiceEndpoint: to.Ptr("https://azurestackhci.azurefd.net/eastus"),
-	// 			Status: to.Ptr(armazurestackhci.StatusNotYetRegistered),
-	// 			TrialDaysRemaining: to.Ptr[float32](30),
-	// 		},
-	// 		SystemData: &armazurestackhci.SystemData{
-	// 			CreatedAt: to.Ptr(time.Date(2020, time.January, 1, 17, 18, 19, 123456700, time.UTC)),
-	// 			CreatedBy: to.Ptr("user1"),
-	// 			CreatedByType: to.Ptr(armazurestackhci.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2020, time.January, 2, 17, 18, 19, 123456700, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("user2"),
-	// 			LastModifiedByType: to.Ptr(armazurestackhci.CreatedByTypeUser),
-	// 		},
-	// 		Tags: map[string]*string{
-	// 		},
-	// 	},
-	// }
-}
-
 // Generated from example definition: 2026-04-30/CreateClusterIdentity.json
 func ExampleClustersClient_BeginCreateIdentity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -344,6 +272,310 @@ func ExampleClustersClient_BeginExtendSoftwareAssuranceBenefit() {
 	// 				SoftwareAssuranceStatus: to.Ptr(armazurestackhci.SoftwareAssuranceStatusEnabled),
 	// 			},
 	// 			Status: to.Ptr(armazurestackhci.StatusConnectedRecently),
+	// 			TrialDaysRemaining: to.Ptr[float32](30),
+	// 		},
+	// 		SystemData: &armazurestackhci.SystemData{
+	// 			CreatedAt: to.Ptr(time.Date(2020, time.January, 1, 17, 18, 19, 123456700, time.UTC)),
+	// 			CreatedBy: to.Ptr("user1"),
+	// 			CreatedByType: to.Ptr(armazurestackhci.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2020, time.January, 2, 17, 18, 19, 123456700, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("user2"),
+	// 			LastModifiedByType: to.Ptr(armazurestackhci.CreatedByTypeUser),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-04-30/TriggerLogCollection.json
+func ExampleClustersClient_BeginTriggerLogCollection() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armazurestackhci.NewClientFactory("fd3c3665-1729-4b7b-9a38-238e83b0f98b", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewClustersClient().BeginTriggerLogCollection(ctx, "test-rg", "mycluster", armazurestackhci.LogCollectionRequest{
+		Properties: &armazurestackhci.LogCollectionRequestProperties{
+			FromDate: to.Ptr(time.Date(2020, time.January, 1, 17, 18, 19, 123456700, time.UTC)),
+			ToDate:   to.Ptr(time.Date(2021, time.January, 1, 17, 18, 19, 123456700, time.UTC)),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armazurestackhci.ClustersClientTriggerLogCollectionResponse{
+	// 	Cluster: armazurestackhci.Cluster{
+	// 		Name: to.Ptr("myCluster"),
+	// 		Type: to.Ptr("Microsoft.AzureStackHCI/clusters"),
+	// 		ID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/test-rg/providers/Microsoft.AzureStackHCI/clusters/myCluster"),
+	// 		Location: to.Ptr("East US"),
+	// 		Properties: &armazurestackhci.ClusterProperties{
+	// 			AADClientID: to.Ptr("24a6e53d-04e5-44d2-b7cc-1b732a847dfc"),
+	// 			AADTenantID: to.Ptr("7e589cc1-a8b6-4dff-91bd-5ec0fa18db94"),
+	// 			BillingModel: to.Ptr("Trial"),
+	// 			CloudID: to.Ptr("a3c0468f-e38e-4dda-ac48-817f620536f0"),
+	// 			CloudManagementEndpoint: to.Ptr("https://98294836-31be-4668-aeae-698667faf99b.waconazure.com"),
+	// 			DesiredProperties: &armazurestackhci.ClusterDesiredProperties{
+	// 				DiagnosticLevel: to.Ptr(armazurestackhci.DiagnosticLevelBasic),
+	// 				WindowsServerSubscription: to.Ptr(armazurestackhci.WindowsServerSubscriptionEnabled),
+	// 			},
+	// 			LastBillingTimestamp: to.Ptr(time.Date(2020, time.March, 12, 8, 12, 55, 231202200, time.UTC)),
+	// 			LastSyncTimestamp: to.Ptr(time.Date(2020, time.March, 11, 20, 44, 32, 562512100, time.UTC)),
+	// 			LogCollectionProperties: &armazurestackhci.LogCollectionProperties{
+	// 				FromDate: to.Ptr(time.Date(2020, time.January, 1, 17, 18, 19, 123456700, time.UTC)),
+	// 				LastLogGenerated: to.Ptr(time.Date(2020, time.January, 1, 17, 18, 19, 123456700, time.UTC)),
+	// 				LogCollectionSessionDetails: []*armazurestackhci.LogCollectionSession{
+	// 					{
+	// 						CorrelationID: to.Ptr("a76ab33a-1819-4e82-1212-e3e4ec3d1425"),
+	// 						EndTimeCollected: to.Ptr(time.Date(2020, time.January, 1, 17, 25, 19, 123456700, time.UTC)),
+	// 						LogCollectionJobType: to.Ptr(armazurestackhci.LogCollectionJobTypeOnDemand),
+	// 						LogCollectionStatus: to.Ptr(armazurestackhci.LogCollectionStatusSucceeded),
+	// 						LogEndTime: to.Ptr(time.Date(2020, time.January, 1, 17, 18, 19, 123456700, time.UTC)),
+	// 						LogSize: to.Ptr[int64](1000),
+	// 						LogStartTime: to.Ptr(time.Date(2020, time.January, 1, 17, 18, 19, 123456700, time.UTC)),
+	// 						TimeCollected: to.Ptr(time.Date(2020, time.January, 1, 17, 18, 19, 123456700, time.UTC)),
+	// 					},
+	// 				},
+	// 				ToDate: to.Ptr(time.Date(2021, time.January, 1, 17, 18, 19, 123456700, time.UTC)),
+	// 			},
+	// 			ProvisioningState: to.Ptr(armazurestackhci.ProvisioningStateSucceeded),
+	// 			RegistrationTimestamp: to.Ptr(time.Date(2020, time.March, 11, 20, 44, 32, 562512100, time.UTC)),
+	// 			ReportedProperties: &armazurestackhci.ClusterReportedProperties{
+	// 				ClusterID: to.Ptr("a76ac23a-1819-4e82-9410-e3e4ec3d1425"),
+	// 				ClusterName: to.Ptr("cluster1"),
+	// 				ClusterVersion: to.Ptr("10.0.17777"),
+	// 				DiagnosticLevel: to.Ptr(armazurestackhci.DiagnosticLevelBasic),
+	// 				ImdsAttestation: to.Ptr(armazurestackhci.ImdsAttestationDisabled),
+	// 				LastUpdated: to.Ptr(time.Date(2020, time.March, 11, 19, 24, 42, 194601700, time.UTC)),
+	// 				Nodes: []*armazurestackhci.ClusterNode{
+	// 					{
+	// 						Name: to.Ptr("Node1"),
+	// 						CoreCount: to.Ptr[float32](8),
+	// 						ID: to.Ptr[float32](1),
+	// 						Manufacturer: to.Ptr("Dell Inc."),
+	// 						MemoryInGiB: to.Ptr[float32](128),
+	// 						Model: to.Ptr("EMC AX740"),
+	// 						NodeType: to.Ptr(armazurestackhci.ClusterNodeTypeThirdParty),
+	// 						OSName: to.Ptr("Azure Stack HCI"),
+	// 						OSVersion: to.Ptr("10.0.17777.1061"),
+	// 						SerialNumber: to.Ptr("Q45CZC3"),
+	// 						WindowsServerSubscription: to.Ptr(armazurestackhci.WindowsServerSubscriptionEnabled),
+	// 					},
+	// 				},
+	// 			},
+	// 			Status: to.Ptr(armazurestackhci.StatusConnectedRecently),
+	// 			TrialDaysRemaining: to.Ptr[float32](30),
+	// 		},
+	// 		SystemData: &armazurestackhci.SystemData{
+	// 			CreatedAt: to.Ptr(time.Date(2020, time.January, 1, 17, 18, 19, 123456700, time.UTC)),
+	// 			CreatedBy: to.Ptr("user1"),
+	// 			CreatedByType: to.Ptr(armazurestackhci.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2020, time.January, 2, 17, 18, 19, 123456700, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("user2"),
+	// 			LastModifiedByType: to.Ptr(armazurestackhci.CreatedByTypeUser),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-04-30/Clusters_UpdateSecretsLocations.json
+func ExampleClustersClient_BeginUpdateSecretsLocations() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armazurestackhci.NewClientFactory("fd3c3665-1729-4b7b-9a38-238e83b0f98b", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewClustersClient().BeginUpdateSecretsLocations(ctx, "test-rg", "myCluster", armazurestackhci.SecretsLocationsChangeRequest{
+		Properties: []*armazurestackhci.SecretsLocationDetails{
+			{
+				SecretsLocation: to.Ptr("https://kvname.vault.azure.net/"),
+				SecretsType:     to.Ptr(armazurestackhci.SecretsTypeBackupSecrets),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armazurestackhci.ClustersClientUpdateSecretsLocationsResponse{
+	// 	Cluster: armazurestackhci.Cluster{
+	// 		Name: to.Ptr("myCluster"),
+	// 		Type: to.Ptr("Microsoft.AzureStackHCI/clusters"),
+	// 		ID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/test-rg/providers/Microsoft.AzureStackHCI/clusters/myCluster"),
+	// 		Location: to.Ptr("East US"),
+	// 		Properties: &armazurestackhci.ClusterProperties{
+	// 			AADClientID: to.Ptr("24a6e53d-04e5-44d2-b7cc-1b732a847dfc"),
+	// 			AADTenantID: to.Ptr("7e589cc1-a8b6-4dff-91bd-5ec0fa18db94"),
+	// 			BillingModel: to.Ptr("Trial"),
+	// 			CloudID: to.Ptr("a3c0468f-e38e-4dda-ac48-817f620536f0"),
+	// 			CloudManagementEndpoint: to.Ptr("https://98294836-31be-4668-aeae-698667faf99b.waconazure.com"),
+	// 			DesiredProperties: &armazurestackhci.ClusterDesiredProperties{
+	// 				DiagnosticLevel: to.Ptr(armazurestackhci.DiagnosticLevelBasic),
+	// 				WindowsServerSubscription: to.Ptr(armazurestackhci.WindowsServerSubscriptionEnabled),
+	// 			},
+	// 			LastBillingTimestamp: to.Ptr(time.Date(2020, time.March, 12, 8, 12, 55, 231202200, time.UTC)),
+	// 			LastSyncTimestamp: to.Ptr(time.Date(2020, time.March, 11, 20, 44, 32, 562512100, time.UTC)),
+	// 			ProvisioningState: to.Ptr(armazurestackhci.ProvisioningStateSucceeded),
+	// 			RegistrationTimestamp: to.Ptr(time.Date(2020, time.March, 11, 20, 44, 32, 562512100, time.UTC)),
+	// 			ReportedProperties: &armazurestackhci.ClusterReportedProperties{
+	// 				ClusterID: to.Ptr("a76ac23a-1819-4e82-9410-e3e4ec3d1425"),
+	// 				ClusterName: to.Ptr("cluster1"),
+	// 				ClusterVersion: to.Ptr("10.0.17777"),
+	// 				DiagnosticLevel: to.Ptr(armazurestackhci.DiagnosticLevelBasic),
+	// 				ImdsAttestation: to.Ptr(armazurestackhci.ImdsAttestationDisabled),
+	// 				LastUpdated: to.Ptr(time.Date(2020, time.March, 11, 19, 24, 42, 194601700, time.UTC)),
+	// 				Nodes: []*armazurestackhci.ClusterNode{
+	// 					{
+	// 						Name: to.Ptr("Node1"),
+	// 						CoreCount: to.Ptr[float32](8),
+	// 						ID: to.Ptr[float32](1),
+	// 						Manufacturer: to.Ptr("Dell Inc."),
+	// 						MemoryInGiB: to.Ptr[float32](128),
+	// 						Model: to.Ptr("EMC AX740"),
+	// 						NodeType: to.Ptr(armazurestackhci.ClusterNodeTypeThirdParty),
+	// 						OSName: to.Ptr("Azure Stack HCI"),
+	// 						OSVersion: to.Ptr("10.0.17777.1061"),
+	// 						SerialNumber: to.Ptr("Q45CZC3"),
+	// 						WindowsServerSubscription: to.Ptr(armazurestackhci.WindowsServerSubscriptionEnabled),
+	// 					},
+	// 				},
+	// 			},
+	// 			SecretsLocations: []*armazurestackhci.SecretsLocationDetails{
+	// 				{
+	// 					SecretsLocation: to.Ptr("https://kvname.vault.azure.net/"),
+	// 					SecretsType: to.Ptr(armazurestackhci.SecretsTypeBackupSecrets),
+	// 				},
+	// 			},
+	// 			SoftwareAssuranceProperties: &armazurestackhci.SoftwareAssuranceProperties{
+	// 				LastUpdated: to.Ptr(time.Date(2022, time.August, 18, 22, 1, 12, 419160300, time.UTC)),
+	// 				SoftwareAssuranceIntent: to.Ptr(armazurestackhci.SoftwareAssuranceIntentEnable),
+	// 				SoftwareAssuranceStatus: to.Ptr(armazurestackhci.SoftwareAssuranceStatusEnabled),
+	// 			},
+	// 			Status: to.Ptr(armazurestackhci.StatusConnectedRecently),
+	// 			TrialDaysRemaining: to.Ptr[float32](30),
+	// 		},
+	// 		SystemData: &armazurestackhci.SystemData{
+	// 			CreatedAt: to.Ptr(time.Date(2020, time.January, 1, 17, 18, 19, 123456700, time.UTC)),
+	// 			CreatedBy: to.Ptr("user1"),
+	// 			CreatedByType: to.Ptr(armazurestackhci.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2020, time.January, 2, 17, 18, 19, 123456700, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("user2"),
+	// 			LastModifiedByType: to.Ptr(armazurestackhci.CreatedByTypeUser),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-04-30/UploadCertificate.json
+func ExampleClustersClient_BeginUploadCertificate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armazurestackhci.NewClientFactory("fd3c3665-1729-4b7b-9a38-238e83b0f98b", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewClustersClient().BeginUploadCertificate(ctx, "test-rg", "myCluster", armazurestackhci.UploadCertificateRequest{
+		Properties: &armazurestackhci.RawCertificateData{
+			Certificates: []*string{
+				to.Ptr("base64cert"),
+				to.Ptr("base64cert"),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+}
+
+// Generated from example definition: 2026-04-30/CreateCluster.json
+func ExampleClustersClient_Create() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armazurestackhci.NewClientFactory("fd3c3665-1729-4b7b-9a38-238e83b0f98b", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewClustersClient().Create(ctx, "test-rg", "myCluster", armazurestackhci.Cluster{
+		Identity: &armazurestackhci.ManagedServiceIdentity{
+			Type: to.Ptr(armazurestackhci.ManagedServiceIdentityTypeSystemAssigned),
+		},
+		Location: to.Ptr("East US"),
+		Properties: &armazurestackhci.ClusterProperties{
+			AADClientID:             to.Ptr("24a6e53d-04e5-44d2-b7cc-1b732a847dfc"),
+			AADTenantID:             to.Ptr("7e589cc1-a8b6-4dff-91bd-5ec0fa18db94"),
+			CloudManagementEndpoint: to.Ptr("https://98294836-31be-4668-aeae-698667faf99b.waconazure.com"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armazurestackhci.ClustersClientCreateResponse{
+	// 	Cluster: armazurestackhci.Cluster{
+	// 		Name: to.Ptr("myCluster"),
+	// 		Type: to.Ptr("Microsoft.AzureStackHCI/clusters"),
+	// 		ID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/test-rg/providers/Microsoft.AzureStackHCI/clusters/myCluster"),
+	// 		Identity: &armazurestackhci.ManagedServiceIdentity{
+	// 			Type: to.Ptr(armazurestackhci.ManagedServiceIdentityTypeSystemAssigned),
+	// 			PrincipalID: to.Ptr("87a834db-2e45-409e-911b-e16a44562ec3"),
+	// 			TenantID: to.Ptr("7e589cc1-a8b6-4dff-91bd-5ec0fa18db94"),
+	// 		},
+	// 		Location: to.Ptr("East US"),
+	// 		Properties: &armazurestackhci.ClusterProperties{
+	// 			AADClientID: to.Ptr("24a6e53d-04e5-44d2-b7cc-1b732a847dfc"),
+	// 			AADTenantID: to.Ptr("7e589cc1-a8b6-4dff-91bd-5ec0fa18db94"),
+	// 			BillingModel: to.Ptr("Trial"),
+	// 			CloudID: to.Ptr("a3c0468f-e38e-4dda-ac48-817f620536f0"),
+	// 			CloudManagementEndpoint: to.Ptr("https://98294836-31be-4668-aeae-698667faf99b.waconazure.com"),
+	// 			ConnectivityStatus: to.Ptr(armazurestackhci.ConnectivityStatusNotYetRegistered),
+	// 			DesiredProperties: &armazurestackhci.ClusterDesiredProperties{
+	// 				DiagnosticLevel: to.Ptr(armazurestackhci.DiagnosticLevelBasic),
+	// 				WindowsServerSubscription: to.Ptr(armazurestackhci.WindowsServerSubscriptionDisabled),
+	// 			},
+	// 			IsManagementCluster: to.Ptr(true),
+	// 			ProvisioningState: to.Ptr(armazurestackhci.ProvisioningStateSucceeded),
+	// 			ReportedProperties: &armazurestackhci.ClusterReportedProperties{
+	// 			},
+	// 			ServiceEndpoint: to.Ptr("https://azurestackhci.azurefd.net/eastus"),
+	// 			Status: to.Ptr(armazurestackhci.StatusNotYetRegistered),
 	// 			TrialDaysRemaining: to.Ptr[float32](30),
 	// 		},
 	// 		SystemData: &armazurestackhci.SystemData{
@@ -834,110 +1066,6 @@ func ExampleClustersClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2026-04-30/TriggerLogCollection.json
-func ExampleClustersClient_BeginTriggerLogCollection() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armazurestackhci.NewClientFactory("fd3c3665-1729-4b7b-9a38-238e83b0f98b", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewClustersClient().BeginTriggerLogCollection(ctx, "test-rg", "mycluster", armazurestackhci.LogCollectionRequest{
-		Properties: &armazurestackhci.LogCollectionRequestProperties{
-			FromDate: to.Ptr(time.Date(2020, time.January, 1, 17, 18, 19, 123456700, time.UTC)),
-			ToDate:   to.Ptr(time.Date(2021, time.January, 1, 17, 18, 19, 123456700, time.UTC)),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armazurestackhci.ClustersClientTriggerLogCollectionResponse{
-	// 	Cluster: armazurestackhci.Cluster{
-	// 		Name: to.Ptr("myCluster"),
-	// 		Type: to.Ptr("Microsoft.AzureStackHCI/clusters"),
-	// 		ID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/test-rg/providers/Microsoft.AzureStackHCI/clusters/myCluster"),
-	// 		Location: to.Ptr("East US"),
-	// 		Properties: &armazurestackhci.ClusterProperties{
-	// 			AADClientID: to.Ptr("24a6e53d-04e5-44d2-b7cc-1b732a847dfc"),
-	// 			AADTenantID: to.Ptr("7e589cc1-a8b6-4dff-91bd-5ec0fa18db94"),
-	// 			BillingModel: to.Ptr("Trial"),
-	// 			CloudID: to.Ptr("a3c0468f-e38e-4dda-ac48-817f620536f0"),
-	// 			CloudManagementEndpoint: to.Ptr("https://98294836-31be-4668-aeae-698667faf99b.waconazure.com"),
-	// 			DesiredProperties: &armazurestackhci.ClusterDesiredProperties{
-	// 				DiagnosticLevel: to.Ptr(armazurestackhci.DiagnosticLevelBasic),
-	// 				WindowsServerSubscription: to.Ptr(armazurestackhci.WindowsServerSubscriptionEnabled),
-	// 			},
-	// 			LastBillingTimestamp: to.Ptr(time.Date(2020, time.March, 12, 8, 12, 55, 231202200, time.UTC)),
-	// 			LastSyncTimestamp: to.Ptr(time.Date(2020, time.March, 11, 20, 44, 32, 562512100, time.UTC)),
-	// 			LogCollectionProperties: &armazurestackhci.LogCollectionProperties{
-	// 				FromDate: to.Ptr(time.Date(2020, time.January, 1, 17, 18, 19, 123456700, time.UTC)),
-	// 				LastLogGenerated: to.Ptr(time.Date(2020, time.January, 1, 17, 18, 19, 123456700, time.UTC)),
-	// 				LogCollectionSessionDetails: []*armazurestackhci.LogCollectionSession{
-	// 					{
-	// 						CorrelationID: to.Ptr("a76ab33a-1819-4e82-1212-e3e4ec3d1425"),
-	// 						EndTimeCollected: to.Ptr(time.Date(2020, time.January, 1, 17, 25, 19, 123456700, time.UTC)),
-	// 						LogCollectionJobType: to.Ptr(armazurestackhci.LogCollectionJobTypeOnDemand),
-	// 						LogCollectionStatus: to.Ptr(armazurestackhci.LogCollectionStatusSucceeded),
-	// 						LogEndTime: to.Ptr(time.Date(2020, time.January, 1, 17, 18, 19, 123456700, time.UTC)),
-	// 						LogSize: to.Ptr[int64](1000),
-	// 						LogStartTime: to.Ptr(time.Date(2020, time.January, 1, 17, 18, 19, 123456700, time.UTC)),
-	// 						TimeCollected: to.Ptr(time.Date(2020, time.January, 1, 17, 18, 19, 123456700, time.UTC)),
-	// 					},
-	// 				},
-	// 				ToDate: to.Ptr(time.Date(2021, time.January, 1, 17, 18, 19, 123456700, time.UTC)),
-	// 			},
-	// 			ProvisioningState: to.Ptr(armazurestackhci.ProvisioningStateSucceeded),
-	// 			RegistrationTimestamp: to.Ptr(time.Date(2020, time.March, 11, 20, 44, 32, 562512100, time.UTC)),
-	// 			ReportedProperties: &armazurestackhci.ClusterReportedProperties{
-	// 				ClusterID: to.Ptr("a76ac23a-1819-4e82-9410-e3e4ec3d1425"),
-	// 				ClusterName: to.Ptr("cluster1"),
-	// 				ClusterVersion: to.Ptr("10.0.17777"),
-	// 				DiagnosticLevel: to.Ptr(armazurestackhci.DiagnosticLevelBasic),
-	// 				ImdsAttestation: to.Ptr(armazurestackhci.ImdsAttestationDisabled),
-	// 				LastUpdated: to.Ptr(time.Date(2020, time.March, 11, 19, 24, 42, 194601700, time.UTC)),
-	// 				Nodes: []*armazurestackhci.ClusterNode{
-	// 					{
-	// 						Name: to.Ptr("Node1"),
-	// 						CoreCount: to.Ptr[float32](8),
-	// 						ID: to.Ptr[float32](1),
-	// 						Manufacturer: to.Ptr("Dell Inc."),
-	// 						MemoryInGiB: to.Ptr[float32](128),
-	// 						Model: to.Ptr("EMC AX740"),
-	// 						NodeType: to.Ptr(armazurestackhci.ClusterNodeTypeThirdParty),
-	// 						OSName: to.Ptr("Azure Stack HCI"),
-	// 						OSVersion: to.Ptr("10.0.17777.1061"),
-	// 						SerialNumber: to.Ptr("Q45CZC3"),
-	// 						WindowsServerSubscription: to.Ptr(armazurestackhci.WindowsServerSubscriptionEnabled),
-	// 					},
-	// 				},
-	// 			},
-	// 			Status: to.Ptr(armazurestackhci.StatusConnectedRecently),
-	// 			TrialDaysRemaining: to.Ptr[float32](30),
-	// 		},
-	// 		SystemData: &armazurestackhci.SystemData{
-	// 			CreatedAt: to.Ptr(time.Date(2020, time.January, 1, 17, 18, 19, 123456700, time.UTC)),
-	// 			CreatedBy: to.Ptr("user1"),
-	// 			CreatedByType: to.Ptr(armazurestackhci.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2020, time.January, 2, 17, 18, 19, 123456700, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("user2"),
-	// 			LastModifiedByType: to.Ptr(armazurestackhci.CreatedByTypeUser),
-	// 		},
-	// 		Tags: map[string]*string{
-	// 		},
-	// 	},
-	// }
-}
-
 // Generated from example definition: 2026-04-30/UpdateCluster.json
 func ExampleClustersClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -1070,132 +1198,4 @@ func ExampleClustersClient_Update() {
 	// 		},
 	// 	},
 	// }
-}
-
-// Generated from example definition: 2026-04-30/Clusters_UpdateSecretsLocations.json
-func ExampleClustersClient_BeginUpdateSecretsLocations() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armazurestackhci.NewClientFactory("fd3c3665-1729-4b7b-9a38-238e83b0f98b", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewClustersClient().BeginUpdateSecretsLocations(ctx, "test-rg", "myCluster", armazurestackhci.SecretsLocationsChangeRequest{
-		Properties: []*armazurestackhci.SecretsLocationDetails{
-			{
-				SecretsLocation: to.Ptr("https://kvname.vault.azure.net/"),
-				SecretsType:     to.Ptr(armazurestackhci.SecretsTypeBackupSecrets),
-			},
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armazurestackhci.ClustersClientUpdateSecretsLocationsResponse{
-	// 	Cluster: armazurestackhci.Cluster{
-	// 		Name: to.Ptr("myCluster"),
-	// 		Type: to.Ptr("Microsoft.AzureStackHCI/clusters"),
-	// 		ID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/test-rg/providers/Microsoft.AzureStackHCI/clusters/myCluster"),
-	// 		Location: to.Ptr("East US"),
-	// 		Properties: &armazurestackhci.ClusterProperties{
-	// 			AADClientID: to.Ptr("24a6e53d-04e5-44d2-b7cc-1b732a847dfc"),
-	// 			AADTenantID: to.Ptr("7e589cc1-a8b6-4dff-91bd-5ec0fa18db94"),
-	// 			BillingModel: to.Ptr("Trial"),
-	// 			CloudID: to.Ptr("a3c0468f-e38e-4dda-ac48-817f620536f0"),
-	// 			CloudManagementEndpoint: to.Ptr("https://98294836-31be-4668-aeae-698667faf99b.waconazure.com"),
-	// 			DesiredProperties: &armazurestackhci.ClusterDesiredProperties{
-	// 				DiagnosticLevel: to.Ptr(armazurestackhci.DiagnosticLevelBasic),
-	// 				WindowsServerSubscription: to.Ptr(armazurestackhci.WindowsServerSubscriptionEnabled),
-	// 			},
-	// 			LastBillingTimestamp: to.Ptr(time.Date(2020, time.March, 12, 8, 12, 55, 231202200, time.UTC)),
-	// 			LastSyncTimestamp: to.Ptr(time.Date(2020, time.March, 11, 20, 44, 32, 562512100, time.UTC)),
-	// 			ProvisioningState: to.Ptr(armazurestackhci.ProvisioningStateSucceeded),
-	// 			RegistrationTimestamp: to.Ptr(time.Date(2020, time.March, 11, 20, 44, 32, 562512100, time.UTC)),
-	// 			ReportedProperties: &armazurestackhci.ClusterReportedProperties{
-	// 				ClusterID: to.Ptr("a76ac23a-1819-4e82-9410-e3e4ec3d1425"),
-	// 				ClusterName: to.Ptr("cluster1"),
-	// 				ClusterVersion: to.Ptr("10.0.17777"),
-	// 				DiagnosticLevel: to.Ptr(armazurestackhci.DiagnosticLevelBasic),
-	// 				ImdsAttestation: to.Ptr(armazurestackhci.ImdsAttestationDisabled),
-	// 				LastUpdated: to.Ptr(time.Date(2020, time.March, 11, 19, 24, 42, 194601700, time.UTC)),
-	// 				Nodes: []*armazurestackhci.ClusterNode{
-	// 					{
-	// 						Name: to.Ptr("Node1"),
-	// 						CoreCount: to.Ptr[float32](8),
-	// 						ID: to.Ptr[float32](1),
-	// 						Manufacturer: to.Ptr("Dell Inc."),
-	// 						MemoryInGiB: to.Ptr[float32](128),
-	// 						Model: to.Ptr("EMC AX740"),
-	// 						NodeType: to.Ptr(armazurestackhci.ClusterNodeTypeThirdParty),
-	// 						OSName: to.Ptr("Azure Stack HCI"),
-	// 						OSVersion: to.Ptr("10.0.17777.1061"),
-	// 						SerialNumber: to.Ptr("Q45CZC3"),
-	// 						WindowsServerSubscription: to.Ptr(armazurestackhci.WindowsServerSubscriptionEnabled),
-	// 					},
-	// 				},
-	// 			},
-	// 			SecretsLocations: []*armazurestackhci.SecretsLocationDetails{
-	// 				{
-	// 					SecretsLocation: to.Ptr("https://kvname.vault.azure.net/"),
-	// 					SecretsType: to.Ptr(armazurestackhci.SecretsTypeBackupSecrets),
-	// 				},
-	// 			},
-	// 			SoftwareAssuranceProperties: &armazurestackhci.SoftwareAssuranceProperties{
-	// 				LastUpdated: to.Ptr(time.Date(2022, time.August, 18, 22, 1, 12, 419160300, time.UTC)),
-	// 				SoftwareAssuranceIntent: to.Ptr(armazurestackhci.SoftwareAssuranceIntentEnable),
-	// 				SoftwareAssuranceStatus: to.Ptr(armazurestackhci.SoftwareAssuranceStatusEnabled),
-	// 			},
-	// 			Status: to.Ptr(armazurestackhci.StatusConnectedRecently),
-	// 			TrialDaysRemaining: to.Ptr[float32](30),
-	// 		},
-	// 		SystemData: &armazurestackhci.SystemData{
-	// 			CreatedAt: to.Ptr(time.Date(2020, time.January, 1, 17, 18, 19, 123456700, time.UTC)),
-	// 			CreatedBy: to.Ptr("user1"),
-	// 			CreatedByType: to.Ptr(armazurestackhci.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2020, time.January, 2, 17, 18, 19, 123456700, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("user2"),
-	// 			LastModifiedByType: to.Ptr(armazurestackhci.CreatedByTypeUser),
-	// 		},
-	// 		Tags: map[string]*string{
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-04-30/UploadCertificate.json
-func ExampleClustersClient_BeginUploadCertificate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armazurestackhci.NewClientFactory("fd3c3665-1729-4b7b-9a38-238e83b0f98b", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewClustersClient().BeginUploadCertificate(ctx, "test-rg", "myCluster", armazurestackhci.UploadCertificateRequest{
-		Properties: &armazurestackhci.RawCertificateData{
-			Certificates: []*string{
-				to.Ptr("base64cert"),
-				to.Ptr("base64cert"),
-			},
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
 }

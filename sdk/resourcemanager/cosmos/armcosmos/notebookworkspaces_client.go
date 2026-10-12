@@ -69,7 +69,7 @@ func (client *NotebookWorkspacesClient) BeginCreateOrUpdate(ctx context.Context,
 	}
 }
 
-// CreateOrUpdate - Creates the notebook workspace for a Cosmos DB account.
+// createOrUpdate - Creates the notebook workspace for a Cosmos DB account.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *NotebookWorkspacesClient) createOrUpdate(ctx context.Context, resourceGroupName string, accountName string, notebookWorkspaceName NotebookWorkspaceName, notebookCreateUpdateParameters NotebookWorkspaceCreateUpdateParameters, options *NotebookWorkspacesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -91,7 +91,7 @@ func (client *NotebookWorkspacesClient) createOrUpdate(ctx context.Context, reso
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *NotebookWorkspacesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, notebookWorkspaceName NotebookWorkspaceName, notebookCreateUpdateParameters NotebookWorkspaceCreateUpdateParameters, _ *NotebookWorkspacesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/notebookWorkspaces/{notebookWorkspaceName}"
 	if client.subscriptionID == "" {
@@ -149,7 +149,7 @@ func (client *NotebookWorkspacesClient) BeginDelete(ctx context.Context, resourc
 	}
 }
 
-// Delete - Deletes the notebook workspace for a Cosmos DB account.
+// deleteOperation - Deletes the notebook workspace for a Cosmos DB account.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *NotebookWorkspacesClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, notebookWorkspaceName NotebookWorkspaceName, options *NotebookWorkspacesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -171,7 +171,7 @@ func (client *NotebookWorkspacesClient) deleteOperation(ctx context.Context, res
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *NotebookWorkspacesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, notebookWorkspaceName NotebookWorkspaceName, _ *NotebookWorkspacesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/notebookWorkspaces/{notebookWorkspaceName}"
 	if client.subscriptionID == "" {
@@ -191,6 +191,156 @@ func (client *NotebookWorkspacesClient) deleteCreateRequest(ctx context.Context,
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{notebookWorkspaceName}", url.PathEscape(string(notebookWorkspaceName)))
 	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260401Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginRegenerateAuthToken - Regenerates the auth token for the notebook workspace
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accountName - Cosmos DB database account name.
+//   - notebookWorkspaceName - The name of the notebook workspace resource.
+//   - options - NotebookWorkspacesClientBeginRegenerateAuthTokenOptions contains the optional parameters for the NotebookWorkspacesClient.BeginRegenerateAuthToken
+//     method.
+func (client *NotebookWorkspacesClient) BeginRegenerateAuthToken(ctx context.Context, resourceGroupName string, accountName string, notebookWorkspaceName NotebookWorkspaceName, options *NotebookWorkspacesClientBeginRegenerateAuthTokenOptions) (*runtime.Poller[NotebookWorkspacesClientRegenerateAuthTokenResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.regenerateAuthToken(ctx, resourceGroupName, accountName, notebookWorkspaceName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[NotebookWorkspacesClientRegenerateAuthTokenResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[NotebookWorkspacesClientRegenerateAuthTokenResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// regenerateAuthToken - Regenerates the auth token for the notebook workspace
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *NotebookWorkspacesClient) regenerateAuthToken(ctx context.Context, resourceGroupName string, accountName string, notebookWorkspaceName NotebookWorkspaceName, options *NotebookWorkspacesClientBeginRegenerateAuthTokenOptions) (*http.Response, error) {
+	var err error
+	const operationName = "NotebookWorkspacesClient.BeginRegenerateAuthToken"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.regenerateAuthTokenCreateRequest(ctx, resourceGroupName, accountName, notebookWorkspaceName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// regenerateAuthTokenCreateRequest creates the regenerateAuthToken request.
+func (client *NotebookWorkspacesClient) regenerateAuthTokenCreateRequest(ctx context.Context, resourceGroupName string, accountName string, notebookWorkspaceName NotebookWorkspaceName, _ *NotebookWorkspacesClientBeginRegenerateAuthTokenOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/notebookWorkspaces/{notebookWorkspaceName}/regenerateAuthToken"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if accountName == "" {
+		return nil, errors.New("parameter accountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+	if notebookWorkspaceName == "" {
+		return nil, errors.New("parameter notebookWorkspaceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{notebookWorkspaceName}", url.PathEscape(string(notebookWorkspaceName)))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260401Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginStart - Starts the notebook workspace
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accountName - Cosmos DB database account name.
+//   - notebookWorkspaceName - The name of the notebook workspace resource.
+//   - options - NotebookWorkspacesClientBeginStartOptions contains the optional parameters for the NotebookWorkspacesClient.BeginStart
+//     method.
+func (client *NotebookWorkspacesClient) BeginStart(ctx context.Context, resourceGroupName string, accountName string, notebookWorkspaceName NotebookWorkspaceName, options *NotebookWorkspacesClientBeginStartOptions) (*runtime.Poller[NotebookWorkspacesClientStartResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.start(ctx, resourceGroupName, accountName, notebookWorkspaceName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[NotebookWorkspacesClientStartResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[NotebookWorkspacesClientStartResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// start - Starts the notebook workspace
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *NotebookWorkspacesClient) start(ctx context.Context, resourceGroupName string, accountName string, notebookWorkspaceName NotebookWorkspaceName, options *NotebookWorkspacesClientBeginStartOptions) (*http.Response, error) {
+	var err error
+	const operationName = "NotebookWorkspacesClient.BeginStart"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.startCreateRequest(ctx, resourceGroupName, accountName, notebookWorkspaceName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// startCreateRequest creates the start request.
+func (client *NotebookWorkspacesClient) startCreateRequest(ctx context.Context, resourceGroupName string, accountName string, notebookWorkspaceName NotebookWorkspaceName, _ *NotebookWorkspacesClientBeginStartOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/notebookWorkspaces/{notebookWorkspaceName}/start"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if accountName == "" {
+		return nil, errors.New("parameter accountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+	if notebookWorkspaceName == "" {
+		return nil, errors.New("parameter notebookWorkspaceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{notebookWorkspaceName}", url.PathEscape(string(notebookWorkspaceName)))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -261,6 +411,72 @@ func (client *NotebookWorkspacesClient) getHandleResponse(resp *http.Response, s
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NotebookWorkspace); err != nil {
 		return NotebookWorkspacesClientGetResponse{}, err
+	}
+	return result, nil
+}
+
+// ListConnectionInfo - Retrieves the connection info for the notebook workspace
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accountName - Cosmos DB database account name.
+//   - notebookWorkspaceName - The name of the notebook workspace resource.
+//   - options - NotebookWorkspacesClientListConnectionInfoOptions contains the optional parameters for the NotebookWorkspacesClient.ListConnectionInfo
+//     method.
+func (client *NotebookWorkspacesClient) ListConnectionInfo(ctx context.Context, resourceGroupName string, accountName string, notebookWorkspaceName NotebookWorkspaceName, options *NotebookWorkspacesClientListConnectionInfoOptions) (NotebookWorkspacesClientListConnectionInfoResponse, error) {
+	var err error
+	const operationName = "NotebookWorkspacesClient.ListConnectionInfo"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.listConnectionInfoCreateRequest(ctx, resourceGroupName, accountName, notebookWorkspaceName, options)
+	if err != nil {
+		return NotebookWorkspacesClientListConnectionInfoResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return NotebookWorkspacesClientListConnectionInfoResponse{}, err
+	}
+	return client.listConnectionInfoHandleResponse(httpResp, http.StatusOK)
+}
+
+// listConnectionInfoCreateRequest creates the ListConnectionInfo request.
+func (client *NotebookWorkspacesClient) listConnectionInfoCreateRequest(ctx context.Context, resourceGroupName string, accountName string, notebookWorkspaceName NotebookWorkspaceName, _ *NotebookWorkspacesClientListConnectionInfoOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/notebookWorkspaces/{notebookWorkspaceName}/listConnectionInfo"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if accountName == "" {
+		return nil, errors.New("parameter accountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+	if notebookWorkspaceName == "" {
+		return nil, errors.New("parameter notebookWorkspaceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{notebookWorkspaceName}", url.PathEscape(string(notebookWorkspaceName)))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260401Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// listConnectionInfoHandleResponse handles the ListConnectionInfo response.
+func (client *NotebookWorkspacesClient) listConnectionInfoHandleResponse(resp *http.Response, successCodes ...int) (NotebookWorkspacesClientListConnectionInfoResponse, error) {
+	result := NotebookWorkspacesClientListConnectionInfoResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.NotebookWorkspaceConnectionInfoResult); err != nil {
+		return NotebookWorkspacesClientListConnectionInfoResponse{}, err
 	}
 	return result, nil
 }
@@ -340,220 +556,4 @@ func (client *NotebookWorkspacesClient) listByDatabaseAccountHandleResponse(resp
 		return NotebookWorkspacesClientListByDatabaseAccountResponse{}, err
 	}
 	return result, nil
-}
-
-// ListConnectionInfo - Retrieves the connection info for the notebook workspace
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - accountName - Cosmos DB database account name.
-//   - notebookWorkspaceName - The name of the notebook workspace resource.
-//   - options - NotebookWorkspacesClientListConnectionInfoOptions contains the optional parameters for the NotebookWorkspacesClient.ListConnectionInfo
-//     method.
-func (client *NotebookWorkspacesClient) ListConnectionInfo(ctx context.Context, resourceGroupName string, accountName string, notebookWorkspaceName NotebookWorkspaceName, options *NotebookWorkspacesClientListConnectionInfoOptions) (NotebookWorkspacesClientListConnectionInfoResponse, error) {
-	var err error
-	const operationName = "NotebookWorkspacesClient.ListConnectionInfo"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.listConnectionInfoCreateRequest(ctx, resourceGroupName, accountName, notebookWorkspaceName, options)
-	if err != nil {
-		return NotebookWorkspacesClientListConnectionInfoResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return NotebookWorkspacesClientListConnectionInfoResponse{}, err
-	}
-	return client.listConnectionInfoHandleResponse(httpResp, http.StatusOK)
-}
-
-// listConnectionInfoCreateRequest creates the ListConnectionInfo request.
-func (client *NotebookWorkspacesClient) listConnectionInfoCreateRequest(ctx context.Context, resourceGroupName string, accountName string, notebookWorkspaceName NotebookWorkspaceName, _ *NotebookWorkspacesClientListConnectionInfoOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/notebookWorkspaces/{notebookWorkspaceName}/listConnectionInfo"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if accountName == "" {
-		return nil, errors.New("parameter accountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	if notebookWorkspaceName == "" {
-		return nil, errors.New("parameter notebookWorkspaceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{notebookWorkspaceName}", url.PathEscape(string(notebookWorkspaceName)))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// listConnectionInfoHandleResponse handles the ListConnectionInfo response.
-func (client *NotebookWorkspacesClient) listConnectionInfoHandleResponse(resp *http.Response, successCodes ...int) (NotebookWorkspacesClientListConnectionInfoResponse, error) {
-	result := NotebookWorkspacesClientListConnectionInfoResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.NotebookWorkspaceConnectionInfoResult); err != nil {
-		return NotebookWorkspacesClientListConnectionInfoResponse{}, err
-	}
-	return result, nil
-}
-
-// BeginRegenerateAuthToken - Regenerates the auth token for the notebook workspace
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - accountName - Cosmos DB database account name.
-//   - notebookWorkspaceName - The name of the notebook workspace resource.
-//   - options - NotebookWorkspacesClientBeginRegenerateAuthTokenOptions contains the optional parameters for the NotebookWorkspacesClient.BeginRegenerateAuthToken
-//     method.
-func (client *NotebookWorkspacesClient) BeginRegenerateAuthToken(ctx context.Context, resourceGroupName string, accountName string, notebookWorkspaceName NotebookWorkspaceName, options *NotebookWorkspacesClientBeginRegenerateAuthTokenOptions) (*runtime.Poller[NotebookWorkspacesClientRegenerateAuthTokenResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.regenerateAuthToken(ctx, resourceGroupName, accountName, notebookWorkspaceName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[NotebookWorkspacesClientRegenerateAuthTokenResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[NotebookWorkspacesClientRegenerateAuthTokenResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// RegenerateAuthToken - Regenerates the auth token for the notebook workspace
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *NotebookWorkspacesClient) regenerateAuthToken(ctx context.Context, resourceGroupName string, accountName string, notebookWorkspaceName NotebookWorkspaceName, options *NotebookWorkspacesClientBeginRegenerateAuthTokenOptions) (*http.Response, error) {
-	var err error
-	const operationName = "NotebookWorkspacesClient.BeginRegenerateAuthToken"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.regenerateAuthTokenCreateRequest(ctx, resourceGroupName, accountName, notebookWorkspaceName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// regenerateAuthTokenCreateRequest creates the RegenerateAuthToken request.
-func (client *NotebookWorkspacesClient) regenerateAuthTokenCreateRequest(ctx context.Context, resourceGroupName string, accountName string, notebookWorkspaceName NotebookWorkspaceName, _ *NotebookWorkspacesClientBeginRegenerateAuthTokenOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/notebookWorkspaces/{notebookWorkspaceName}/regenerateAuthToken"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if accountName == "" {
-		return nil, errors.New("parameter accountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	if notebookWorkspaceName == "" {
-		return nil, errors.New("parameter notebookWorkspaceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{notebookWorkspaceName}", url.PathEscape(string(notebookWorkspaceName)))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	return req, nil
-}
-
-// BeginStart - Starts the notebook workspace
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - accountName - Cosmos DB database account name.
-//   - notebookWorkspaceName - The name of the notebook workspace resource.
-//   - options - NotebookWorkspacesClientBeginStartOptions contains the optional parameters for the NotebookWorkspacesClient.BeginStart
-//     method.
-func (client *NotebookWorkspacesClient) BeginStart(ctx context.Context, resourceGroupName string, accountName string, notebookWorkspaceName NotebookWorkspaceName, options *NotebookWorkspacesClientBeginStartOptions) (*runtime.Poller[NotebookWorkspacesClientStartResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.start(ctx, resourceGroupName, accountName, notebookWorkspaceName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[NotebookWorkspacesClientStartResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[NotebookWorkspacesClientStartResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Start - Starts the notebook workspace
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *NotebookWorkspacesClient) start(ctx context.Context, resourceGroupName string, accountName string, notebookWorkspaceName NotebookWorkspaceName, options *NotebookWorkspacesClientBeginStartOptions) (*http.Response, error) {
-	var err error
-	const operationName = "NotebookWorkspacesClient.BeginStart"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.startCreateRequest(ctx, resourceGroupName, accountName, notebookWorkspaceName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// startCreateRequest creates the Start request.
-func (client *NotebookWorkspacesClient) startCreateRequest(ctx context.Context, resourceGroupName string, accountName string, notebookWorkspaceName NotebookWorkspaceName, _ *NotebookWorkspacesClientBeginStartOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/notebookWorkspaces/{notebookWorkspaceName}/start"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if accountName == "" {
-		return nil, errors.New("parameter accountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	if notebookWorkspaceName == "" {
-		return nil, errors.New("parameter notebookWorkspaceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{notebookWorkspaceName}", url.PathEscape(string(notebookWorkspaceName)))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	return req, nil
 }

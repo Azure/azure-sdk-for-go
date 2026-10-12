@@ -29,6 +29,10 @@ type FhirServicesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, fhirServiceName string, workspaceName string, options *armhealthcareapis.FhirServicesClientBeginDeleteOptions) (resp azfake.PollerResponder[armhealthcareapis.FhirServicesClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method FhirServicesClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, fhirServiceName string, workspaceName string, fhirservicePatchResource armhealthcareapis.FhirServicePatchResource, options *armhealthcareapis.FhirServicesClientBeginUpdateOptions) (resp azfake.PollerResponder[armhealthcareapis.FhirServicesClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method FhirServicesClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, workspaceName string, fhirServiceName string, options *armhealthcareapis.FhirServicesClientGetOptions) (resp azfake.Responder[armhealthcareapis.FhirServicesClientGetResponse], errResp azfake.ErrorResponder)
@@ -36,10 +40,6 @@ type FhirServicesServer struct {
 	// NewListByWorkspacePager is the fake for method FhirServicesClient.NewListByWorkspacePager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByWorkspacePager func(resourceGroupName string, workspaceName string, options *armhealthcareapis.FhirServicesClientListByWorkspaceOptions) (resp azfake.PagerResponder[armhealthcareapis.FhirServicesClientListByWorkspaceResponse])
-
-	// BeginUpdate is the fake for method FhirServicesClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, fhirServiceName string, workspaceName string, fhirservicePatchResource armhealthcareapis.FhirServicePatchResource, options *armhealthcareapis.FhirServicesClientBeginUpdateOptions) (resp azfake.PollerResponder[armhealthcareapis.FhirServicesClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewFhirServicesServerTransport creates a new instance of FhirServicesServerTransport with the provided implementation.
@@ -50,8 +50,8 @@ func NewFhirServicesServerTransport(srv *FhirServicesServer) *FhirServicesServer
 		srv:                     srv,
 		beginCreateOrUpdate:     newTracker[azfake.PollerResponder[armhealthcareapis.FhirServicesClientCreateOrUpdateResponse]](),
 		beginDelete:             newTracker[azfake.PollerResponder[armhealthcareapis.FhirServicesClientDeleteResponse]](),
-		newListByWorkspacePager: newTracker[azfake.PagerResponder[armhealthcareapis.FhirServicesClientListByWorkspaceResponse]](),
 		beginUpdate:             newTracker[azfake.PollerResponder[armhealthcareapis.FhirServicesClientUpdateResponse]](),
+		newListByWorkspacePager: newTracker[azfake.PagerResponder[armhealthcareapis.FhirServicesClientListByWorkspaceResponse]](),
 	}
 }
 
@@ -61,8 +61,8 @@ type FhirServicesServerTransport struct {
 	srv                     *FhirServicesServer
 	beginCreateOrUpdate     *tracker[azfake.PollerResponder[armhealthcareapis.FhirServicesClientCreateOrUpdateResponse]]
 	beginDelete             *tracker[azfake.PollerResponder[armhealthcareapis.FhirServicesClientDeleteResponse]]
-	newListByWorkspacePager *tracker[azfake.PagerResponder[armhealthcareapis.FhirServicesClientListByWorkspaceResponse]]
 	beginUpdate             *tracker[azfake.PollerResponder[armhealthcareapis.FhirServicesClientUpdateResponse]]
+	newListByWorkspacePager *tracker[azfake.PagerResponder[armhealthcareapis.FhirServicesClientListByWorkspaceResponse]]
 }
 
 // Do implements the policy.Transporter interface for FhirServicesServerTransport.
@@ -90,12 +90,12 @@ func (f *FhirServicesServerTransport) dispatchToMethodFake(req *http.Request, me
 				res.resp, res.err = f.dispatchBeginCreateOrUpdate(req)
 			case "FhirServicesClient.BeginDelete":
 				res.resp, res.err = f.dispatchBeginDelete(req)
+			case "FhirServicesClient.BeginUpdate":
+				res.resp, res.err = f.dispatchBeginUpdate(req)
 			case "FhirServicesClient.Get":
 				res.resp, res.err = f.dispatchGet(req)
 			case "FhirServicesClient.NewListByWorkspacePager":
 				res.resp, res.err = f.dispatchNewListByWorkspacePager(req)
-			case "FhirServicesClient.BeginUpdate":
-				res.resp, res.err = f.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -212,6 +212,58 @@ func (f *FhirServicesServerTransport) dispatchBeginDelete(req *http.Request) (*h
 	return resp, nil
 }
 
+func (f *FhirServicesServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if f.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := f.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.HealthcareApis/workspaces/(?P<workspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/fhirservices/(?P<fhirServiceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armhealthcareapis.FhirServicePatchResource](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		fhirServiceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("fhirServiceName")])
+		if err != nil {
+			return nil, err
+		}
+		workspaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("workspaceName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := f.srv.BeginUpdate(req.Context(), resourceGroupNameParam, fhirServiceNameParam, workspaceNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		f.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		f.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		f.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (f *FhirServicesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if f.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -287,58 +339,6 @@ func (f *FhirServicesServerTransport) dispatchNewListByWorkspacePager(req *http.
 	if !server.PagerResponderMore(newListByWorkspacePager) {
 		f.newListByWorkspacePager.remove(req)
 	}
-	return resp, nil
-}
-
-func (f *FhirServicesServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if f.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := f.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.HealthcareApis/workspaces/(?P<workspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/fhirservices/(?P<fhirServiceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armhealthcareapis.FhirServicePatchResource](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		fhirServiceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("fhirServiceName")])
-		if err != nil {
-			return nil, err
-		}
-		workspaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("workspaceName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := f.srv.BeginUpdate(req.Context(), resourceGroupNameParam, fhirServiceNameParam, workspaceNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		f.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		f.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		f.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

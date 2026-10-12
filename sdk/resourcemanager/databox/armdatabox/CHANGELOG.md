@@ -1,5 +1,11 @@
 # Release History
 
+## 4.0.0 (2026-10-12)
+### Breaking Changes
+
+- Type of `Preferences.StorageAccountAccessTierPreferences` has been changed from `[]*string` to `[]string`
+
+
 ## 3.0.0 (2026-06-24)
 ### Breaking Changes
 

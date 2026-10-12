@@ -69,9 +69,9 @@ func timeoutTestOperation(ctx context.Context, container *ContainerClient, write
 
 func TestClientRetryPolicyTryTimeout(t *testing.T) {
 	for _, write := range []bool{false, true} {
-		for _, failure := range []string{"transport", "networkBackoff", "ambiguousNetworkBackoff", "408Backoff"} {
-			if write && (failure == "ambiguousNetworkBackoff" || failure == "408Backoff") {
-				// Ambiguous writes and HTTP 408 writes must not enter a backoff.
+		for _, failure := range []string{"transport", "408Backoff"} {
+			if write && failure == "408Backoff" {
+				// HTTP 408 writes must not enter a backoff.
 				continue
 			}
 			for _, persistent := range []bool{false, true} {
@@ -101,10 +101,6 @@ func TestClientRetryPolicyTryTimeout(t *testing.T) {
 						case "transport":
 							<-req.Context().Done()
 							return nil, &url.Error{Op: req.Method, URL: req.URL.String(), Err: req.Context().Err()}
-						case "networkBackoff":
-							return nil, &net.DNSError{Err: "test DNS failure"}
-						case "ambiguousNetworkBackoff":
-							return nil, io.EOF
 						default:
 							return timeoutTestResponse(req, http.StatusRequestTimeout), nil
 						}
@@ -133,41 +129,6 @@ func TestClientRetryPolicyTryTimeout(t *testing.T) {
 				})
 			}
 		}
-	}
-}
-
-func TestClientRetryPolicyTryTimeoutDuringFailoverBackoff(t *testing.T) {
-	for _, write := range []bool{false, true} {
-		name := "read"
-		if write {
-			name = "write"
-		}
-		t.Run(name, func(t *testing.T) {
-			requests := 0
-			var firstTry context.Context
-			transport := timeoutTestTransport(func(req *http.Request) (*http.Response, error) {
-				requests++
-				if requests == 1 {
-					firstTry = req.Context()
-				}
-				if requests <= maxSameRegionConnectionRetries+1 {
-					assert.Equal(t, firstTry, req.Context(), "same-region retries belong to one azcore try")
-					return nil, &net.DNSError{Err: "test DNS failure"}
-				}
-				assert.NotEqual(t, firstTry, req.Context(), "interrupted failover backoff must return to azcore")
-				return timeoutTestResponse(req, http.StatusOK), nil
-			})
-			container, _ := newTimeoutTestContainer(t, transport, policy.RetryOptions{
-				MaxRetries: 1,
-				TryTimeout: maxSameRegionConnectionRetries*time.Second + 500*time.Millisecond,
-				RetryDelay: time.Millisecond,
-			})
-			ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-			defer cancel()
-			require.NoError(t, timeoutTestOperation(ctx, container, write))
-			assert.Equal(t, maxSameRegionConnectionRetries+2, requests)
-			assert.ErrorIs(t, firstTry.Err(), context.DeadlineExceeded)
-		})
 	}
 }
 
@@ -206,7 +167,7 @@ func TestClientRetryPolicyTryTimeoutPreservesWriteSafety(t *testing.T) {
 
 func TestClientRetryPolicyCallerContext(t *testing.T) {
 	for _, write := range []bool{false, true} {
-		for _, failure := range []string{"transport", "networkBackoff", "408Backoff"} {
+		for _, failure := range []string{"transport", "408Backoff"} {
 			if write && failure == "408Backoff" {
 				continue
 			}
@@ -241,8 +202,6 @@ func TestClientRetryPolicyCallerContext(t *testing.T) {
 						case "transport":
 							<-req.Context().Done()
 							return nil, req.Context().Err()
-						case "networkBackoff":
-							return nil, &net.DNSError{Err: "test DNS failure"}
 						default:
 							return timeoutTestResponse(req, http.StatusRequestTimeout), nil
 						}

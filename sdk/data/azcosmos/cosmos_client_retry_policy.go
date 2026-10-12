@@ -149,7 +149,8 @@ const maxServerErrorRetryCount = 2
 
 // sleepWithContext sleeps for d, but returns early with the context's error
 // if ctx is cancelled or its deadline expires. Use this in retry paths so
-// the policy honors both per-try timeouts and caller cancellation.
+// the policy honors caller-set context deadlines instead of consuming the
+// caller's e2e timeout budget asleep.
 func sleepWithContext(ctx context.Context, d time.Duration) error {
 	t := time.NewTimer(d)
 	defer t.Stop()
@@ -220,13 +221,6 @@ func (p *clientRetryPolicy) Do(req *policy.Request) (*http.Response, error) {
 			kind := classifyNetworkError(err)
 			if kind != connectionErrorNone {
 				shouldRetry, errRetry := p.attemptRetryOnNetworkError(req, kind, o.isWriteOperation, err, &retryContext)
-				// The try can also expire during the internal network backoff.
-				if ctxErr := req.Raw().Context().Err(); ctxErr != nil {
-					if errRetry != nil {
-						return nil, errRetry
-					}
-					return nil, fmt.Errorf("%w: underlying transport error: %v", ctxErr, err)
-				}
 				if errRetry != nil {
 					return nil, errorinfo.NonRetriableError(errRetry)
 				}
@@ -338,9 +332,10 @@ func (p *clientRetryPolicy) shouldRetryStatus(status int, subStatus string) (sho
 // it bumps retryContext.retryCount so the Do loop resolves a different
 // locationIndex on the next iteration (mirroring the 503/408 paths).
 //
-// transportErr is preserved for diagnostics alongside the current try's
-// context error when the backoff is interrupted. The context error is
-// wrapped so callers can use errors.Is to check the cancellation reason.
+// transportErr is preserved alongside the caller's context error when
+// the backoff is interrupted by ctx cancellation, so callers can
+// errors.Is against both context.DeadlineExceeded and the transport
+// error class.
 func (p *clientRetryPolicy) attemptRetryOnNetworkError(req *policy.Request, kind connectionErrorKind, isWriteOperation bool, transportErr error, retryContext *retryContext) (bool, error) {
 	if retryContext.retryCount > maxRetryCount {
 		return false, nil

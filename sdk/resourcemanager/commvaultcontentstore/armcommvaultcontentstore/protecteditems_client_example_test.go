@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-07-03-preview/ProtectedItems_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-30/ProtectedItems_Get_MaximumSet_Gen.json
 func ExampleProtectedItemsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -54,7 +54,7 @@ func ExampleProtectedItemsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-07-03-preview/ProtectedItems_GetRestorePoints_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-30/ProtectedItems_GetRestorePoints_MaximumSet_Gen.json
 func ExampleProtectedItemsClient_GetRestorePoints() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -81,7 +81,7 @@ func ExampleProtectedItemsClient_GetRestorePoints() {
 	// }
 }
 
-// Generated from example definition: 2026-07-03-preview/ProtectedItems_ListByProtectionGroup_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-30/ProtectedItems_ListByProtectionGroup_MaximumSet_Gen.json
 func ExampleProtectedItemsClient_NewListByProtectionGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -133,7 +133,7 @@ func ExampleProtectedItemsClient_NewListByProtectionGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-07-03-preview/ProtectedItems_Restore_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-30/ProtectedItems_Restore_MaximumSet_Gen.json
 func ExampleProtectedItemsClient_Restore() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

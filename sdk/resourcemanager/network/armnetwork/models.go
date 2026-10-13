@@ -10719,11 +10719,11 @@ type MoveIPConfigurationsRequest struct {
 	MoveIPConfigurationItems []*MoveIPConfigurationItem
 }
 
-// Nat64Capability - The NAT64 capability. Enables stateful NAT64 translation (IPv6-only workloads reaching IPv4
+// NAT64Capability - The NAT64 capability. Enables stateful NAT64 translation (IPv6-only workloads reaching IPv4
 // destinations) on the appliance's floating NIC; supported on a dual-stack appliance. This kind is
 // property-less: it carries no `ipVersion` (the parent appliance's dual-stack configuration is the
 // precondition, service-validated) beyond the properties common to every capability.
-type Nat64Capability struct {
+type NAT64Capability struct {
 	// CONSTANT; The NAT64 capability kind.
 	// Field has constant value VirtualNetworkApplianceCapabilityKindNAT64, any specified value is ignored.
 	Kind *VirtualNetworkApplianceCapabilityKind
@@ -10745,8 +10745,8 @@ type Nat64Capability struct {
 }
 
 // GetVirtualNetworkApplianceCapability implements the VirtualNetworkApplianceCapabilityClassification interface for type
-// Nat64Capability.
-func (n *Nat64Capability) GetVirtualNetworkApplianceCapability() *VirtualNetworkApplianceCapability {
+// NAT64Capability.
+func (n *NAT64Capability) GetVirtualNetworkApplianceCapability() *VirtualNetworkApplianceCapability {
 	return &VirtualNetworkApplianceCapability{
 		ID:         n.ID,
 		Kind:       n.Kind,

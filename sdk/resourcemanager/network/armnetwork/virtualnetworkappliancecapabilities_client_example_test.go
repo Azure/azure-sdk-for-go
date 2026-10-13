@@ -65,7 +65,7 @@ func ExampleVirtualNetworkApplianceCapabilitiesClient_BeginCreateOrUpdate_create
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewVirtualNetworkApplianceCapabilitiesClient().BeginCreateOrUpdate(ctx, "rg1", "test-vna", "nat64", &armnetwork.Nat64Capability{
+	poller, err := clientFactory.NewVirtualNetworkApplianceCapabilitiesClient().BeginCreateOrUpdate(ctx, "rg1", "test-vna", "nat64", &armnetwork.NAT64Capability{
 		Kind:       to.Ptr(armnetwork.VirtualNetworkApplianceCapabilityKindNAT64),
 		Properties: &armnetwork.VirtualNetworkApplianceCapabilityProperties{},
 	}, nil)
@@ -80,7 +80,7 @@ func ExampleVirtualNetworkApplianceCapabilitiesClient_BeginCreateOrUpdate_create
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetwork.VirtualNetworkApplianceCapabilitiesClientCreateOrUpdateResponse{
-	// 	VirtualNetworkApplianceCapabilityClassification: &armnetwork.Nat64Capability{
+	// 	VirtualNetworkApplianceCapabilityClassification: &armnetwork.NAT64Capability{
 	// 		Name: to.Ptr("nat64"),
 	// 		Type: to.Ptr("Microsoft.Network/virtualNetworkAppliances/capabilities"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworkAppliances/test-vna/capabilities/nat64"),

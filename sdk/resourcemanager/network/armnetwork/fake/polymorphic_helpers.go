@@ -43,7 +43,7 @@ func unmarshalVirtualNetworkApplianceCapabilityClassification(rawMsg json.RawMes
 	var b armnetwork.VirtualNetworkApplianceCapabilityClassification
 	switch m["kind"] {
 	case string(armnetwork.VirtualNetworkApplianceCapabilityKindNAT64):
-		b = &armnetwork.Nat64Capability{}
+		b = &armnetwork.NAT64Capability{}
 	case string(armnetwork.VirtualNetworkApplianceCapabilityKindPLGateway):
 		b = &armnetwork.PLGatewayCapability{}
 	case string(armnetwork.VirtualNetworkApplianceCapabilityKindPLGatewayFastpath):

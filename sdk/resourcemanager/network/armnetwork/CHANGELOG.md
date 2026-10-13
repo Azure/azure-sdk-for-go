@@ -1,6 +1,6 @@
 # Release History
 
-## 12.1.0 (2026-10-09)
+## 12.1.0 (2026-10-13)
 ### Features Added
 
 - New enum type `DdosContinent` with values `DdosContinentAfrica`, `DdosContinentAntarctica`, `DdosContinentAsia`, `DdosContinentEurope`, `DdosContinentNorthAmerica`, `DdosContinentOceania`, `DdosContinentSouthAmerica`
@@ -9,6 +9,7 @@
 - New enum type `ExpressRouteLagAuthorizationUseStatus` with values `ExpressRouteLagAuthorizationUseStatusAvailable`, `ExpressRouteLagAuthorizationUseStatusInUse`
 - New enum type `VirtualNetworkApplianceCapabilityIPVersion` with values `VirtualNetworkApplianceCapabilityIPVersionDualStack`, `VirtualNetworkApplianceCapabilityIPVersionIPv6`
 - New enum type `VirtualNetworkApplianceCapabilityKind` with values `VirtualNetworkApplianceCapabilityKindNAT64`, `VirtualNetworkApplianceCapabilityKindPLGateway`, `VirtualNetworkApplianceCapabilityKindPLGatewayFastpath`, `VirtualNetworkApplianceCapabilityKindPLIPForwarders`
+- New function `*NAT64Capability.GetVirtualNetworkApplianceCapability() *VirtualNetworkApplianceCapability`
 - New function `*ClientFactory.NewExpressRouteLagAuthorizationsClient() *ExpressRouteLagAuthorizationsClient`
 - New function `*ClientFactory.NewVirtualNetworkApplianceCapabilitiesClient() *VirtualNetworkApplianceCapabilitiesClient`
 - New function `NewExpressRouteLagAuthorizationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ExpressRouteLagAuthorizationsClient, error)`
@@ -26,7 +27,6 @@
 - New function `*VirtualNetworkApplianceCapabilitiesClient.Get(ctx context.Context, resourceGroupName string, virtualNetworkApplianceName string, capabilityName string, options *VirtualNetworkApplianceCapabilitiesClientGetOptions) (VirtualNetworkApplianceCapabilitiesClientGetResponse, error)`
 - New function `*VirtualNetworkApplianceCapabilitiesClient.NewListPager(resourceGroupName string, virtualNetworkApplianceName string, options *VirtualNetworkApplianceCapabilitiesClientListOptions) *runtime.Pager[VirtualNetworkApplianceCapabilitiesClientListResponse]`
 - New function `*VirtualNetworkApplianceCapability.GetVirtualNetworkApplianceCapability() *VirtualNetworkApplianceCapability`
-- New function `*Nat64Capability.GetVirtualNetworkApplianceCapability() *VirtualNetworkApplianceCapability`
 - New struct `DdosGeoMatch`
 - New struct `DdosMitigationRule`
 - New struct `DdosMitigationRulePropertiesFormat`
@@ -41,7 +41,7 @@
 - New struct `ExpressRouteLagAuthorization`
 - New struct `ExpressRouteLagAuthorizationListResult`
 - New struct `ExpressRouteLagAuthorizationPropertiesFormat`
-- New struct `Nat64Capability`
+- New struct `NAT64Capability`
 - New struct `PLGatewayCapability`
 - New struct `PLGatewayFastpathCapability`
 - New struct `PLIPForwardersCapability`

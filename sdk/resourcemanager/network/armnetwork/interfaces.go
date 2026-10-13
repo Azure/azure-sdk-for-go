@@ -52,7 +52,7 @@ type FirewallPolicyRuleCollectionClassification interface {
 // VirtualNetworkApplianceCapabilityClassification provides polymorphic access to related types.
 // Call the interface's GetVirtualNetworkApplianceCapability() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
-// - *Nat64Capability, *PLGatewayCapability, *PLGatewayFastpathCapability, *PLIPForwardersCapability, *VirtualNetworkApplianceCapability
+// - *NAT64Capability, *PLGatewayCapability, *PLGatewayFastpathCapability, *PLIPForwardersCapability, *VirtualNetworkApplianceCapability
 type VirtualNetworkApplianceCapabilityClassification interface {
 	// GetVirtualNetworkApplianceCapability returns the VirtualNetworkApplianceCapability content of the underlying type.
 	GetVirtualNetworkApplianceCapability() *VirtualNetworkApplianceCapability

@@ -26412,8 +26412,8 @@ func (m *MoveIPConfigurationsRequest) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type Nat64Capability.
-func (n Nat64Capability) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type NAT64Capability.
+func (n NAT64Capability) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "id", n.ID)
 	objectMap["kind"] = VirtualNetworkApplianceCapabilityKindNAT64
@@ -26424,8 +26424,8 @@ func (n Nat64Capability) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type Nat64Capability.
-func (n *Nat64Capability) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type NAT64Capability.
+func (n *NAT64Capability) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %s", n, err.Error())

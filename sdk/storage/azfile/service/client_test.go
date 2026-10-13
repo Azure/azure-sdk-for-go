@@ -328,6 +328,42 @@ func (s *ServiceRecordedTestsSuite) TestAccountListSharesNonDefault() {
 	}
 }
 
+func (s *ServiceRecordedTestsSuite) TestListSharesCreationTime() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareName := testcommon.GenerateShareName(testName)
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, shareName, svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	props, err := shareClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(props.CreationTime)
+
+	var shareItem *service.Share
+	pager := svcClient.NewListSharesPager(&service.ListSharesOptions{
+		Prefix: to.Ptr(shareName),
+	})
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		_require.NoError(err)
+		for _, item := range resp.Shares {
+			if item.Name != nil && *item.Name == shareName {
+				shareItem = item
+			}
+		}
+	}
+
+	_require.NotNil(shareItem)
+	_require.NotNil(shareItem.Properties)
+	_require.NotNil(shareItem.Properties.ETag)
+	_require.NotNil(shareItem.Properties.CreationTime)
+	_require.True(props.CreationTime.Equal(*shareItem.Properties.CreationTime))
+}
+
 func (s *ServiceRecordedTestsSuite) TestListSharesEnableSnapshotVirtualDirectoryAccess() {
 	_require := require.New(s.T())
 	testName := s.T().Name()

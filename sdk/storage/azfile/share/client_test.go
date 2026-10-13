@@ -763,6 +763,23 @@ func (s *ShareRecordedTestsSuite) TestShareSetQuotaNegative() {
 	testcommon.ValidateFileErrorCode(_require, err, fileerror.InvalidHeaderValue)
 }
 
+func (s *ShareRecordedTestsSuite) TestShareGetPropertiesCreationTime() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareName := testcommon.GenerateShareName(testName)
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, shareName, svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	props, err := shareClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(props.ETag)
+	_require.NotNil(props.CreationTime)
+	_require.False(props.CreationTime.IsZero())
+}
+
 func (s *ShareRecordedTestsSuite) TestShareGetPropertiesNegative() {
 	_require := require.New(s.T())
 	testName := s.T().Name()

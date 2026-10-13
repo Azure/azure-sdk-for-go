@@ -25,6 +25,10 @@ type PrivateEndpointConnectionsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, serverName string, privateEndpointConnectionName string, options *armpostgresqlflexibleservers.PrivateEndpointConnectionsClientBeginDeleteOptions) (resp azfake.PollerResponder[armpostgresqlflexibleservers.PrivateEndpointConnectionsClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method PrivateEndpointConnectionsClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, serverName string, privateEndpointConnectionName string, parameters armpostgresqlflexibleservers.PrivateEndpointConnection, options *armpostgresqlflexibleservers.PrivateEndpointConnectionsClientBeginUpdateOptions) (resp azfake.PollerResponder[armpostgresqlflexibleservers.PrivateEndpointConnectionsClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method PrivateEndpointConnectionsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, serverName string, privateEndpointConnectionName string, options *armpostgresqlflexibleservers.PrivateEndpointConnectionsClientGetOptions) (resp azfake.Responder[armpostgresqlflexibleservers.PrivateEndpointConnectionsClientGetResponse], errResp azfake.ErrorResponder)
@@ -32,10 +36,6 @@ type PrivateEndpointConnectionsServer struct {
 	// NewListByServerPager is the fake for method PrivateEndpointConnectionsClient.NewListByServerPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByServerPager func(resourceGroupName string, serverName string, options *armpostgresqlflexibleservers.PrivateEndpointConnectionsClientListByServerOptions) (resp azfake.PagerResponder[armpostgresqlflexibleservers.PrivateEndpointConnectionsClientListByServerResponse])
-
-	// BeginUpdate is the fake for method PrivateEndpointConnectionsClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, serverName string, privateEndpointConnectionName string, parameters armpostgresqlflexibleservers.PrivateEndpointConnection, options *armpostgresqlflexibleservers.PrivateEndpointConnectionsClientBeginUpdateOptions) (resp azfake.PollerResponder[armpostgresqlflexibleservers.PrivateEndpointConnectionsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewPrivateEndpointConnectionsServerTransport creates a new instance of PrivateEndpointConnectionsServerTransport with the provided implementation.
@@ -45,8 +45,8 @@ func NewPrivateEndpointConnectionsServerTransport(srv *PrivateEndpointConnection
 	return &PrivateEndpointConnectionsServerTransport{
 		srv:                  srv,
 		beginDelete:          newTracker[azfake.PollerResponder[armpostgresqlflexibleservers.PrivateEndpointConnectionsClientDeleteResponse]](),
-		newListByServerPager: newTracker[azfake.PagerResponder[armpostgresqlflexibleservers.PrivateEndpointConnectionsClientListByServerResponse]](),
 		beginUpdate:          newTracker[azfake.PollerResponder[armpostgresqlflexibleservers.PrivateEndpointConnectionsClientUpdateResponse]](),
+		newListByServerPager: newTracker[azfake.PagerResponder[armpostgresqlflexibleservers.PrivateEndpointConnectionsClientListByServerResponse]](),
 	}
 }
 
@@ -55,8 +55,8 @@ func NewPrivateEndpointConnectionsServerTransport(srv *PrivateEndpointConnection
 type PrivateEndpointConnectionsServerTransport struct {
 	srv                  *PrivateEndpointConnectionsServer
 	beginDelete          *tracker[azfake.PollerResponder[armpostgresqlflexibleservers.PrivateEndpointConnectionsClientDeleteResponse]]
-	newListByServerPager *tracker[azfake.PagerResponder[armpostgresqlflexibleservers.PrivateEndpointConnectionsClientListByServerResponse]]
 	beginUpdate          *tracker[azfake.PollerResponder[armpostgresqlflexibleservers.PrivateEndpointConnectionsClientUpdateResponse]]
+	newListByServerPager *tracker[azfake.PagerResponder[armpostgresqlflexibleservers.PrivateEndpointConnectionsClientListByServerResponse]]
 }
 
 // Do implements the policy.Transporter interface for PrivateEndpointConnectionsServerTransport.
@@ -82,12 +82,12 @@ func (p *PrivateEndpointConnectionsServerTransport) dispatchToMethodFake(req *ht
 			switch method {
 			case "PrivateEndpointConnectionsClient.BeginDelete":
 				res.resp, res.err = p.dispatchBeginDelete(req)
+			case "PrivateEndpointConnectionsClient.BeginUpdate":
+				res.resp, res.err = p.dispatchBeginUpdate(req)
 			case "PrivateEndpointConnectionsClient.Get":
 				res.resp, res.err = p.dispatchGet(req)
 			case "PrivateEndpointConnectionsClient.NewListByServerPager":
 				res.resp, res.err = p.dispatchNewListByServerPager(req)
-			case "PrivateEndpointConnectionsClient.BeginUpdate":
-				res.resp, res.err = p.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -147,6 +147,58 @@ func (p *PrivateEndpointConnectionsServerTransport) dispatchBeginDelete(req *htt
 	}
 	if !server.PollerResponderMore(beginDelete) {
 		p.beginDelete.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (p *PrivateEndpointConnectionsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if p.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := p.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DBforPostgreSQL/flexibleServers/(?P<serverName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/privateEndpointConnections/(?P<privateEndpointConnectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armpostgresqlflexibleservers.PrivateEndpointConnection](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		serverNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serverName")])
+		if err != nil {
+			return nil, err
+		}
+		privateEndpointConnectionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("privateEndpointConnectionName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := p.srv.BeginUpdate(req.Context(), resourceGroupNameParam, serverNameParam, privateEndpointConnectionNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		p.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		p.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		p.beginUpdate.remove(req)
 	}
 
 	return resp, nil
@@ -227,58 +279,6 @@ func (p *PrivateEndpointConnectionsServerTransport) dispatchNewListByServerPager
 	if !server.PagerResponderMore(newListByServerPager) {
 		p.newListByServerPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (p *PrivateEndpointConnectionsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if p.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := p.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DBforPostgreSQL/flexibleServers/(?P<serverName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/privateEndpointConnections/(?P<privateEndpointConnectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armpostgresqlflexibleservers.PrivateEndpointConnection](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		serverNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serverName")])
-		if err != nil {
-			return nil, err
-		}
-		privateEndpointConnectionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("privateEndpointConnectionName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := p.srv.BeginUpdate(req.Context(), resourceGroupNameParam, serverNameParam, privateEndpointConnectionNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		p.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		p.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		p.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

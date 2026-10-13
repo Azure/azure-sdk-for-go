@@ -403,7 +403,10 @@ func (o *GetBlockListOptions) format() *generated.BlockBlobClientGetBlockListOpt
 
 // uploadFromReaderOptions identifies options used by the UploadBuffer and UploadFile functions.
 type uploadFromReaderOptions struct {
-	// BlockSize specifies the block size to use; the default (and maximum size) is MaxStageBlockBytes.
+	// BlockSize specifies the block size to use; the maximum size is MaxStageBlockBytes.
+	// The default is blob.DefaultDownloadBlockSize, or larger when needed to fit the content in MaxBlocks blocks.
+	// Content no larger than the block size is uploaded with a single Upload request; larger content is
+	// staged in blocks of this size and committed with CommitBlockList.
 	BlockSize int64
 
 	// Progress is a function that is invoked periodically as bytes are sent to the BlockBlobClient.

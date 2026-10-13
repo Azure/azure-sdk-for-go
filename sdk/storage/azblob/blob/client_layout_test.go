@@ -52,6 +52,8 @@ type fakeLayoutResponder struct {
 	normalGets          int
 	// downloadIfMatch records the If-Match header of every chunk download request.
 	downloadIfMatch []string
+	// downloadRanges records the x-ms-range header of every chunk download request, in the order sent.
+	downloadRanges []string
 	// layoutIfMatch records the If-Match header of every get layout request.
 	layoutIfMatch []string
 	// layoutStatusOverride, when non-nil, is consulted on each layout call to override the
@@ -67,6 +69,7 @@ func (f *fakeLayoutResponder) reset() {
 	f.localityGets = 0
 	f.normalGets = 0
 	f.downloadIfMatch = nil
+	f.downloadRanges = nil
 	f.layoutIfMatch = nil
 }
 
@@ -82,6 +85,13 @@ func (f *fakeLayoutResponder) ifMatchHeaders() []string {
 	f.mu.Lock()
 	defer f.mu.Unlock()
 	return append([]string(nil), f.downloadIfMatch...)
+}
+
+// downloadRangeHeaders returns a copy of the x-ms-range header seen on each chunk download.
+func (f *fakeLayoutResponder) downloadRangeHeaders() []string {
+	f.mu.Lock()
+	defer f.mu.Unlock()
+	return append([]string(nil), f.downloadRanges...)
 }
 
 // layoutIfMatchHeaders returns a copy of the If-Match header seen on each get layout request.
@@ -145,6 +155,7 @@ func (f *fakeLayoutResponder) Do(req *http.Request) (*http.Response, error) {
 			f.normalGets++
 		}
 		f.downloadIfMatch = append(f.downloadIfMatch, req.Header.Get("If-Match"))
+		f.downloadRanges = append(f.downloadRanges, rawHeaderValue(req.Header, "x-ms-range"))
 		f.mu.Unlock()
 
 		// Download. The service clamps a requested range to the end of the blob and answers with

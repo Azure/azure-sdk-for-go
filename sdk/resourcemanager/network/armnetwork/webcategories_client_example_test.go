@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01/AzureWebCategoryGet.json
+// Generated from example definition: 2026-03-01/AzureWebCategoryGet.json
 func ExampleWebCategoriesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -42,7 +42,7 @@ func ExampleWebCategoriesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/AzureWebCategoriesListBySubscription.json
+// Generated from example definition: 2026-03-01/AzureWebCategoriesListBySubscription.json
 func ExampleWebCategoriesClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01/VirtualRouterPut.json
+// Generated from example definition: 2026-03-01/VirtualRouterPut.json
 func ExampleVirtualRoutersClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -74,7 +74,7 @@ func ExampleVirtualRoutersClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/VirtualRouterDelete.json
+// Generated from example definition: 2026-03-01/VirtualRouterDelete.json
 func ExampleVirtualRoutersClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -100,7 +100,7 @@ func ExampleVirtualRoutersClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/VirtualRouterGet.json
+// Generated from example definition: 2026-03-01/VirtualRouterGet.json
 func ExampleVirtualRoutersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -148,8 +148,8 @@ func ExampleVirtualRoutersClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/VirtualRouterListBySubscription.json
-func ExampleVirtualRoutersClient_NewListPager() {
+// Generated from example definition: 2026-03-01/VirtualRouterListByResourceGroup.json
+func ExampleVirtualRoutersClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -159,7 +159,7 @@ func ExampleVirtualRoutersClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewVirtualRoutersClient().NewListPager(nil)
+	pager := clientFactory.NewVirtualRoutersClient().NewListByResourceGroupPager("rg1", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -170,7 +170,7 @@ func ExampleVirtualRoutersClient_NewListPager() {
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armnetwork.VirtualRoutersClientListResponse{
+		// page = armnetwork.VirtualRoutersClientListByResourceGroupResponse{
 		// 	VirtualRouterListResult: armnetwork.VirtualRouterListResult{
 		// 		Value: []*armnetwork.VirtualRouter{
 		// 			{
@@ -205,8 +205,8 @@ func ExampleVirtualRoutersClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-01-01/VirtualRouterListByResourceGroup.json
-func ExampleVirtualRoutersClient_NewListByResourceGroupPager() {
+// Generated from example definition: 2026-03-01/VirtualRouterListBySubscription.json
+func ExampleVirtualRoutersClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -216,7 +216,7 @@ func ExampleVirtualRoutersClient_NewListByResourceGroupPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewVirtualRoutersClient().NewListByResourceGroupPager("rg1", nil)
+	pager := clientFactory.NewVirtualRoutersClient().NewListPager(nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -227,7 +227,7 @@ func ExampleVirtualRoutersClient_NewListByResourceGroupPager() {
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armnetwork.VirtualRoutersClientListByResourceGroupResponse{
+		// page = armnetwork.VirtualRoutersClientListResponse{
 		// 	VirtualRouterListResult: armnetwork.VirtualRouterListResult{
 		// 		Value: []*armnetwork.VirtualRouter{
 		// 			{

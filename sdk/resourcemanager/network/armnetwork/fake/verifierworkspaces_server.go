@@ -22,13 +22,13 @@ import (
 
 // VerifierWorkspacesServer is a fake server for instances of the armnetwork.VerifierWorkspacesClient type.
 type VerifierWorkspacesServer struct {
-	// Create is the fake for method VerifierWorkspacesClient.Create
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	Create func(ctx context.Context, resourceGroupName string, networkManagerName string, workspaceName string, body armnetwork.VerifierWorkspace, options *armnetwork.VerifierWorkspacesClientCreateOptions) (resp azfake.Responder[armnetwork.VerifierWorkspacesClientCreateResponse], errResp azfake.ErrorResponder)
-
 	// BeginDelete is the fake for method VerifierWorkspacesClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, networkManagerName string, workspaceName string, options *armnetwork.VerifierWorkspacesClientBeginDeleteOptions) (resp azfake.PollerResponder[armnetwork.VerifierWorkspacesClientDeleteResponse], errResp azfake.ErrorResponder)
+
+	// Create is the fake for method VerifierWorkspacesClient.Create
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
+	Create func(ctx context.Context, resourceGroupName string, networkManagerName string, workspaceName string, body armnetwork.VerifierWorkspace, options *armnetwork.VerifierWorkspacesClientCreateOptions) (resp azfake.Responder[armnetwork.VerifierWorkspacesClientCreateResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method VerifierWorkspacesClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
@@ -83,10 +83,10 @@ func (v *VerifierWorkspacesServerTransport) dispatchToMethodFake(req *http.Reque
 		}
 		if !intercepted {
 			switch method {
-			case "VerifierWorkspacesClient.Create":
-				res.resp, res.err = v.dispatchCreate(req)
 			case "VerifierWorkspacesClient.BeginDelete":
 				res.resp, res.err = v.dispatchBeginDelete(req)
+			case "VerifierWorkspacesClient.Create":
+				res.resp, res.err = v.dispatchCreate(req)
 			case "VerifierWorkspacesClient.Get":
 				res.resp, res.err = v.dispatchGet(req)
 			case "VerifierWorkspacesClient.NewListPager":
@@ -107,54 +107,6 @@ func (v *VerifierWorkspacesServerTransport) dispatchToMethodFake(req *http.Reque
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
-}
-
-func (v *VerifierWorkspacesServerTransport) dispatchCreate(req *http.Request) (*http.Response, error) {
-	if v.srv.Create == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Create not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/networkManagers/(?P<networkManagerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/verifierWorkspaces/(?P<workspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armnetwork.VerifierWorkspace](req)
-	if err != nil {
-		return nil, err
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	networkManagerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("networkManagerName")])
-	if err != nil {
-		return nil, err
-	}
-	workspaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("workspaceName")])
-	if err != nil {
-		return nil, err
-	}
-	ifMatchParam := getOptional(getHeaderValue(req.Header, "If-Match"))
-	var options *armnetwork.VerifierWorkspacesClientCreateOptions
-	if ifMatchParam != nil {
-		options = &armnetwork.VerifierWorkspacesClientCreateOptions{
-			IfMatch: ifMatchParam,
-		}
-	}
-	respr, errRespr := v.srv.Create(req.Context(), resourceGroupNameParam, networkManagerNameParam, workspaceNameParam, body, options)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).VerifierWorkspace, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
 }
 
 func (v *VerifierWorkspacesServerTransport) dispatchBeginDelete(req *http.Request) (*http.Response, error) {
@@ -209,6 +161,54 @@ func (v *VerifierWorkspacesServerTransport) dispatchBeginDelete(req *http.Reques
 		v.beginDelete.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (v *VerifierWorkspacesServerTransport) dispatchCreate(req *http.Request) (*http.Response, error) {
+	if v.srv.Create == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Create not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/networkManagers/(?P<networkManagerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/verifierWorkspaces/(?P<workspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armnetwork.VerifierWorkspace](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	networkManagerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("networkManagerName")])
+	if err != nil {
+		return nil, err
+	}
+	workspaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("workspaceName")])
+	if err != nil {
+		return nil, err
+	}
+	ifMatchParam := getOptional(getHeaderValue(req.Header, "If-Match"))
+	var options *armnetwork.VerifierWorkspacesClientCreateOptions
+	if ifMatchParam != nil {
+		options = &armnetwork.VerifierWorkspacesClientCreateOptions{
+			IfMatch: ifMatchParam,
+		}
+	}
+	respr, errRespr := v.srv.Create(req.Context(), resourceGroupNameParam, networkManagerNameParam, workspaceNameParam, body, options)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).VerifierWorkspace, req)
+	if err != nil {
+		return nil, err
+	}
 	return resp, nil
 }
 

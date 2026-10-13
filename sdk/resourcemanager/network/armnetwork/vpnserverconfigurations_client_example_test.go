@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01/VpnServerConfigurationPut.json
+// Generated from example definition: 2026-03-01/VpnServerConfigurationPut.json
 func ExampleVPNServerConfigurationsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -225,7 +225,7 @@ func ExampleVPNServerConfigurationsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/VpnServerConfigurationDelete.json
+// Generated from example definition: 2026-03-01/VpnServerConfigurationDelete.json
 func ExampleVPNServerConfigurationsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -251,7 +251,7 @@ func ExampleVPNServerConfigurationsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/VpnServerConfigurationGet.json
+// Generated from example definition: 2026-03-01/VpnServerConfigurationGet.json
 func ExampleVPNServerConfigurationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -375,7 +375,266 @@ func ExampleVPNServerConfigurationsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/VpnServerConfigurationList.json
+// Generated from example definition: 2026-03-01/AllVpnServerConfigurationRadiusServerSecretsList.json
+func ExampleVPNServerConfigurationsClient_ListRadiusSecrets() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("72f988bf-86f1-41af-91ab-2d7cd011db47", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewVPNServerConfigurationsClient().ListRadiusSecrets(ctx, "rg1", "vpnserverconfig", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armnetwork.VPNServerConfigurationsClientListRadiusSecretsResponse{
+	// 	RadiusAuthServerListResult: armnetwork.RadiusAuthServerListResult{
+	// 		Value: []*armnetwork.RadiusAuthServer{
+	// 			{
+	// 				RadiusServerAddress: to.Ptr("1.1.1.1"),
+	// 				RadiusServerSecret: to.Ptr("*****"),
+	// 			},
+	// 			{
+	// 				RadiusServerAddress: to.Ptr("2.2.2.2"),
+	// 				RadiusServerSecret: to.Ptr("*****"),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-03-01/VpnServerConfigurationListByResourceGroup.json
+func ExampleVPNServerConfigurationsClient_NewListByResourceGroupPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewVPNServerConfigurationsClient().NewListByResourceGroupPager("rg1", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armnetwork.VPNServerConfigurationsClientListByResourceGroupResponse{
+		// 	ListVPNServerConfigurationsResult: armnetwork.ListVPNServerConfigurationsResult{
+		// 		Value: []*armnetwork.VPNServerConfiguration{
+		// 			{
+		// 				Name: to.Ptr("vpnServerConfiguration1"),
+		// 				Type: to.Ptr("Microsoft.Network/vpnServerConfigurations"),
+		// 				Etag: to.Ptr("w/\\00000000-0000-0000-0000-000000000000\\"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/vpnServerConfigurations/vpnServerConfiguration1"),
+		// 				Location: to.Ptr("West US"),
+		// 				Properties: &armnetwork.VPNServerConfigurationProperties{
+		// 					ConfigurationPolicyGroups: []*armnetwork.VPNServerConfigurationPolicyGroup{
+		// 						{
+		// 							Name: to.Ptr("policyGroup1"),
+		// 							Etag: to.Ptr("w/\\00000000-0000-0000-0000-000000000000\\"),
+		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/vpnServerConfigurations/vpnServerConfiguration1/vpnServerConfigurationPolicyGroups/policyGroup1"),
+		// 							Properties: &armnetwork.VPNServerConfigurationPolicyGroupProperties{
+		// 								IsDefault: to.Ptr(true),
+		// 								P2SConnectionConfigurations: []*armnetwork.SubResource{
+		// 									{
+		// 										ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/p2sVpnGateways/p2sVpnGateway1/p2sConnectionConfigurations/P2SConnectionConfig1"),
+		// 									},
+		// 								},
+		// 								PolicyMembers: []*armnetwork.VPNServerConfigurationPolicyGroupMember{
+		// 									{
+		// 										Name: to.Ptr("policy1"),
+		// 										AttributeType: to.Ptr(armnetwork.VPNPolicyMemberAttributeTypeRadiusAzureGroupID),
+		// 										AttributeValue: to.Ptr("6ad1bd08"),
+		// 									},
+		// 								},
+		// 								Priority: to.Ptr[int32](0),
+		// 								ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+		// 							},
+		// 						},
+		// 						{
+		// 							Name: to.Ptr("policyGroup2"),
+		// 							Etag: to.Ptr("w/\\00000000-0000-0000-0000-000000000000\\"),
+		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/vpnServerConfigurations/vpnServerConfiguration1/vpnServerConfigurationPolicyGroups/policyGroup2"),
+		// 							Properties: &armnetwork.VPNServerConfigurationPolicyGroupProperties{
+		// 								IsDefault: to.Ptr(true),
+		// 								PolicyMembers: []*armnetwork.VPNServerConfigurationPolicyGroupMember{
+		// 									{
+		// 										Name: to.Ptr("policy2"),
+		// 										AttributeType: to.Ptr(armnetwork.VPNPolicyMemberAttributeTypeCertificateGroupID),
+		// 										AttributeValue: to.Ptr("red.com"),
+		// 									},
+		// 								},
+		// 								Priority: to.Ptr[int32](0),
+		// 								ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+		// 							},
+		// 						},
+		// 					},
+		// 					ProvisioningState: to.Ptr("Succeeded"),
+		// 					RadiusClientRootCertificates: []*armnetwork.VPNServerConfigRadiusClientRootCertificate{
+		// 						{
+		// 							Name: to.Ptr("vpnServerConfigRadiusClientRootCert1"),
+		// 							Thumbprint: to.Ptr("83FFBFC8848B5A5836C94D0112367E16148A286F"),
+		// 						},
+		// 					},
+		// 					RadiusServerAddress: to.Ptr("8.9.9.9"),
+		// 					RadiusServerRootCertificates: []*armnetwork.VPNServerConfigRadiusServerRootCertificate{
+		// 						{
+		// 							Name: to.Ptr("vpnServerConfigRadiusServerRootCer1"),
+		// 							PublicCertData: to.Ptr("MIIC5zCCAc+gAwIBAgIQErQ0Hk4aDJxIA+Q5RagB+jANBgkqhkiG9w0BAQsFADAWMRQwEgYDVQQDDAtQMlNSb290Q2VydDAeFw0xNzEyMTQyMTA3MzhaFw0xODEyMTQyMTI3MzhaMBYxFDASBgNVBAMMC1AyU1Jvb3RDZXJ0MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEArP7/NQXmW7cQ/ZR1mv3Y3I29Lt7HTOqzo/1KUOoVH3NItbQIRAQbwKy3UWrOFz4eGNX2GWtNRMdCyWsKeqy9Ltsdfcm1IbKXkl84DFeU/ZacXu4Dl3xX3gV5du4TLZjEowJELyur11Ea2YcjPRQ/FzAF9/hGuboS1HZQEPLx4FdUs9OxCYOtc0MxBCwLfVTTRqarb0Ne+arNYd4kCzIhAke1nOyKAJBda5ZL+VHy3S5S8qGlD46jm8HXugmAkUygS4oIIXOmj/1O9sNAi3LN60zufSzCmP8Rm/iUGX+DHAGGiXxwZOKQLEDaZXKqoHjMPP0XudmSWwOIbyeQVrLhkwIDAQABozEwLzAOBgNVHQ8BAf8EBAMCAgQwHQYDVR0OBBYEFEfeNU2trYxNLF9ONmuJUsT13pKDMA0GCSqGSIb3DQEBCwUAA4IBAQBmM6RJzsGGipxyMhimHKN2xlkejhVsgBoTAhOU0llW9aUSwINJ9zFUGgI8IzUFy1VG776fchHp0LMRmPSIUYk5btEPxbsrPtumPuMH8EQGrS+Rt4pD+78c8H1fEPkq5CmDl/PKu4JoFGv+aFcE+Od0hlILstIF10Qysf++QXDolKfzJa/56bgMeYKFiju73loiRM57ns8ddXpfLl792UVpRkFU62LNns6Y1LKTwapmUF4IvIuAIzd6LZNOQng64LAKXtKnViJ1JQiXwf4CEzhgvAti3/ejpb3U90hsrUcyZi6wBv9bZLcAJRWpz61JNYliM1d1grSwQDKGXNQE4xuM"),
+		// 						},
+		// 					},
+		// 					VPNAuthenticationTypes: []*armnetwork.VPNAuthenticationType{
+		// 						to.Ptr(armnetwork.VPNAuthenticationTypeCertificate),
+		// 					},
+		// 					VPNClientIPSecPolicies: []*armnetwork.IPSecPolicy{
+		// 						{
+		// 							DhGroup: to.Ptr(armnetwork.DhGroupDHGroup14),
+		// 							IkeEncryption: to.Ptr(armnetwork.IkeEncryptionAES256),
+		// 							IkeIntegrity: to.Ptr(armnetwork.IkeIntegritySHA384),
+		// 							IPSecEncryption: to.Ptr(armnetwork.IPSecEncryptionAES256),
+		// 							IPSecIntegrity: to.Ptr(armnetwork.IPSecIntegritySHA256),
+		// 							PfsGroup: to.Ptr(armnetwork.PfsGroupPFS14),
+		// 							SaDataSizeKilobytes: to.Ptr[int32](429497),
+		// 							SaLifeTimeSeconds: to.Ptr[int32](86472),
+		// 						},
+		// 					},
+		// 					VPNClientRevokedCertificates: []*armnetwork.VPNServerConfigVPNClientRevokedCertificate{
+		// 						{
+		// 							Name: to.Ptr("vpnServerConfigVpnClientRevokedCert1"),
+		// 							Thumbprint: to.Ptr("83FFBFC8848B5A5836C94D0112367E16148A286F"),
+		// 						},
+		// 					},
+		// 					VPNClientRootCertificates: []*armnetwork.VPNServerConfigVPNClientRootCertificate{
+		// 						{
+		// 							Name: to.Ptr("vpnServerConfigVpnClientRootCert1"),
+		// 							PublicCertData: to.Ptr("MIIC5zCCAc+gAwIBAgIQErQ0Hk4aDJxIA+Q5RagB+jANBgkqhkiG9w0BAQsFADAWMRQwEgYDVQQDDAtQMlNSb290Q2VydDAeFw0xNzEyMTQyMTA3MzhaFw0xODEyMTQyMTI3MzhaMBYxFDASBgNVBAMMC1AyU1Jvb3RDZXJ0MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEArP7/NQXmW7cQ/ZR1mv3Y3I29Lt7HTOqzo/1KUOoVH3NItbQIRAQbwKy3UWrOFz4eGNX2GWtNRMdCyWsKeqy9Ltsdfcm1IbKXkl84DFeU/ZacXu4Dl3xX3gV5du4TLZjEowJELyur11Ea2YcjPRQ/FzAF9/hGuboS1HZQEPLx4FdUs9OxCYOtc0MxBCwLfVTTRqarb0Ne+arNYd4kCzIhAke1nOyKAJBda5ZL+VHy3S5S8qGlD46jm8HXugmAkUygS4oIIXOmj/1O9sNAi3LN60zufSzCmP8Rm/iUGX+DHAGGiXxwZOKQLEDaZXKqoHjMPP0XudmSWwOIbyeQVrLhkwIDAQABozEwLzAOBgNVHQ8BAf8EBAMCAgQwHQYDVR0OBBYEFEfeNU2trYxNLF9ONmuJUsT13pKDMA0GCSqGSIb3DQEBCwUAA4IBAQBmM6RJzsGGipxyMhimHKN2xlkejhVsgBoTAhOU0llW9aUSwINJ9zFUGgI8IzUFy1VG776fchHp0LMRmPSIUYk5btEPxbsrPtumPuMH8EQGrS+Rt4pD+78c8H1fEPkq5CmDl/PKu4JoFGv+aFcE+Od0hlILstIF10Qysf++QXDolKfzJa/56bgMeYKFiju73loiRM57ns8ddXpfLl792UVpRkFU62LNns6Y1LKTwapmUF4IvIuAIzd6LZNOQng64LAKXtKnViJ1JQiXwf4CEzhgvAti3/ejpb3U90hsrUcyZi6wBv9bZLcAJRWpz61JNYliM1d1grSwQDKGXNQE4xuN"),
+		// 						},
+		// 					},
+		// 					VPNProtocols: []*armnetwork.VPNGatewayTunnelingProtocol{
+		// 						to.Ptr(armnetwork.VPNGatewayTunnelingProtocolIkeV2),
+		// 					},
+		// 				},
+		// 				Tags: map[string]*string{
+		// 					"key1": to.Ptr("value1"),
+		// 				},
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("vpnServerConfiguration2"),
+		// 				Type: to.Ptr("Microsoft.Network/vpnServerConfigurations"),
+		// 				Etag: to.Ptr("w/\\00000000-0000-0000-0000-000000000000\\"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/vpnServerConfigurations/vpnServerConfiguration2"),
+		// 				Location: to.Ptr("West US"),
+		// 				Properties: &armnetwork.VPNServerConfigurationProperties{
+		// 					ConfigurationPolicyGroups: []*armnetwork.VPNServerConfigurationPolicyGroup{
+		// 						{
+		// 							Name: to.Ptr("policyGroup1"),
+		// 							Etag: to.Ptr("w/\\00000000-0000-0000-0000-000000000000\\"),
+		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/vpnServerConfigurations/vpnServerConfiguration1/vpnServerConfigurationPolicyGroups/policyGroup1"),
+		// 							Properties: &armnetwork.VPNServerConfigurationPolicyGroupProperties{
+		// 								IsDefault: to.Ptr(true),
+		// 								P2SConnectionConfigurations: []*armnetwork.SubResource{
+		// 									{
+		// 										ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/p2sVpnGateways/p2sVpnGateway1/p2sConnectionConfigurations/P2SConnectionConfig1"),
+		// 									},
+		// 								},
+		// 								PolicyMembers: []*armnetwork.VPNServerConfigurationPolicyGroupMember{
+		// 									{
+		// 										Name: to.Ptr("policy1"),
+		// 										AttributeType: to.Ptr(armnetwork.VPNPolicyMemberAttributeTypeRadiusAzureGroupID),
+		// 										AttributeValue: to.Ptr("6ad1bd08"),
+		// 									},
+		// 								},
+		// 								Priority: to.Ptr[int32](0),
+		// 								ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+		// 							},
+		// 						},
+		// 						{
+		// 							Name: to.Ptr("policyGroup2"),
+		// 							Etag: to.Ptr("w/\\00000000-0000-0000-0000-000000000000\\"),
+		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/vpnServerConfigurations/vpnServerConfiguration1/vpnServerConfigurationPolicyGroups/policyGroup2"),
+		// 							Properties: &armnetwork.VPNServerConfigurationPolicyGroupProperties{
+		// 								IsDefault: to.Ptr(true),
+		// 								PolicyMembers: []*armnetwork.VPNServerConfigurationPolicyGroupMember{
+		// 									{
+		// 										Name: to.Ptr("policy2"),
+		// 										AttributeType: to.Ptr(armnetwork.VPNPolicyMemberAttributeTypeCertificateGroupID),
+		// 										AttributeValue: to.Ptr("red.com"),
+		// 									},
+		// 								},
+		// 								Priority: to.Ptr[int32](0),
+		// 								ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+		// 							},
+		// 						},
+		// 					},
+		// 					ProvisioningState: to.Ptr("Succeeded"),
+		// 					RadiusClientRootCertificates: []*armnetwork.VPNServerConfigRadiusClientRootCertificate{
+		// 						{
+		// 							Name: to.Ptr("vpnServerConfigRadiusClientRootCert1"),
+		// 							Thumbprint: to.Ptr("83FFBFC8848B5A5836C94D0112367E16148A286F"),
+		// 						},
+		// 					},
+		// 					RadiusServerAddress: to.Ptr("8.9.9.9"),
+		// 					RadiusServerRootCertificates: []*armnetwork.VPNServerConfigRadiusServerRootCertificate{
+		// 						{
+		// 							Name: to.Ptr("vpnServerConfigRadiusServerRootCer1"),
+		// 							PublicCertData: to.Ptr("MIIC5zCCAc+gAwIBAgIQErQ0Hk4aDJxIA+Q5RagB+jANBgkqhkiG9w0BAQsFADAWMRQwEgYDVQQDDAtQMlNSb290Q2VydDAeFw0xNzEyMTQyMTA3MzhaFw0xODEyMTQyMTI3MzhaMBYxFDASBgNVBAMMC1AyU1Jvb3RDZXJ0MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEArP7/NQXmW7cQ/ZR1mv3Y3I29Lt7HTOqzo/1KUOoVH3NItbQIRAQbwKy3UWrOFz4eGNX2GWtNRMdCyWsKeqy9Ltsdfcm1IbKXkl84DFeU/ZacXu4Dl3xX3gV5du4TLZjEowJELyur11Ea2YcjPRQ/FzAF9/hGuboS1HZQEPLx4FdUs9OxCYOtc0MxBCwLfVTTRqarb0Ne+arNYd4kCzIhAke1nOyKAJBda5ZL+VHy3S5S8qGlD46jm8HXugmAkUygS4oIIXOmj/1O9sNAi3LN60zufSzCmP8Rm/iUGX+DHAGGiXxwZOKQLEDaZXKqoHjMPP0XudmSWwOIbyeQVrLhkwIDAQABozEwLzAOBgNVHQ8BAf8EBAMCAgQwHQYDVR0OBBYEFEfeNU2trYxNLF9ONmuJUsT13pKDMA0GCSqGSIb3DQEBCwUAA4IBAQBmM6RJzsGGipxyMhimHKN2xlkejhVsgBoTAhOU0llW9aUSwINJ9zFUGgI8IzUFy1VG776fchHp0LMRmPSIUYk5btEPxbsrPtumPuMH8EQGrS+Rt4pD+78c8H1fEPkq5CmDl/PKu4JoFGv+aFcE+Od0hlILstIF10Qysf++QXDolKfzJa/56bgMeYKFiju73loiRM57ns8ddXpfLl792UVpRkFU62LNns6Y1LKTwapmUF4IvIuAIzd6LZNOQng64LAKXtKnViJ1JQiXwf4CEzhgvAti3/ejpb3U90hsrUcyZi6wBv9bZLcAJRWpz61JNYliM1d1grSwQDKGXNQE4xuM"),
+		// 						},
+		// 					},
+		// 					VPNAuthenticationTypes: []*armnetwork.VPNAuthenticationType{
+		// 						to.Ptr(armnetwork.VPNAuthenticationTypeCertificate),
+		// 					},
+		// 					VPNClientIPSecPolicies: []*armnetwork.IPSecPolicy{
+		// 						{
+		// 							DhGroup: to.Ptr(armnetwork.DhGroupDHGroup14),
+		// 							IkeEncryption: to.Ptr(armnetwork.IkeEncryptionAES256),
+		// 							IkeIntegrity: to.Ptr(armnetwork.IkeIntegritySHA384),
+		// 							IPSecEncryption: to.Ptr(armnetwork.IPSecEncryptionAES256),
+		// 							IPSecIntegrity: to.Ptr(armnetwork.IPSecIntegritySHA256),
+		// 							PfsGroup: to.Ptr(armnetwork.PfsGroupPFS14),
+		// 							SaDataSizeKilobytes: to.Ptr[int32](429497),
+		// 							SaLifeTimeSeconds: to.Ptr[int32](86472),
+		// 						},
+		// 					},
+		// 					VPNClientRevokedCertificates: []*armnetwork.VPNServerConfigVPNClientRevokedCertificate{
+		// 						{
+		// 							Name: to.Ptr("vpnServerConfigVpnClientRevokedCert1"),
+		// 							Thumbprint: to.Ptr("83FFBFC8848B5A5836C94D0112367E16148A286F"),
+		// 						},
+		// 					},
+		// 					VPNClientRootCertificates: []*armnetwork.VPNServerConfigVPNClientRootCertificate{
+		// 						{
+		// 							Name: to.Ptr("vpnServerConfigVpnClientRootCert1"),
+		// 							PublicCertData: to.Ptr("MIIC5zCCAc+gAwIBAgIQErQ0Hk4aDJxIA+Q5RagB+jANBgkqhkiG9w0BAQsFADAWMRQwEgYDVQQDDAtQMlNSb290Q2VydDAeFw0xNzEyMTQyMTA3MzhaFw0xODEyMTQyMTI3MzhaMBYxFDASBgNVBAMMC1AyU1Jvb3RDZXJ0MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEArP7/NQXmW7cQ/ZR1mv3Y3I29Lt7HTOqzo/1KUOoVH3NItbQIRAQbwKy3UWrOFz4eGNX2GWtNRMdCyWsKeqy9Ltsdfcm1IbKXkl84DFeU/ZacXu4Dl3xX3gV5du4TLZjEowJELyur11Ea2YcjPRQ/FzAF9/hGuboS1HZQEPLx4FdUs9OxCYOtc0MxBCwLfVTTRqarb0Ne+arNYd4kCzIhAke1nOyKAJBda5ZL+VHy3S5S8qGlD46jm8HXugmAkUygS4oIIXOmj/1O9sNAi3LN60zufSzCmP8Rm/iUGX+DHAGGiXxwZOKQLEDaZXKqoHjMPP0XudmSWwOIbyeQVrLhkwIDAQABozEwLzAOBgNVHQ8BAf8EBAMCAgQwHQYDVR0OBBYEFEfeNU2trYxNLF9ONmuJUsT13pKDMA0GCSqGSIb3DQEBCwUAA4IBAQBmM6RJzsGGipxyMhimHKN2xlkejhVsgBoTAhOU0llW9aUSwINJ9zFUGgI8IzUFy1VG776fchHp0LMRmPSIUYk5btEPxbsrPtumPuMH8EQGrS+Rt4pD+78c8H1fEPkq5CmDl/PKu4JoFGv+aFcE+Od0hlILstIF10Qysf++QXDolKfzJa/56bgMeYKFiju73loiRM57ns8ddXpfLl792UVpRkFU62LNns6Y1LKTwapmUF4IvIuAIzd6LZNOQng64LAKXtKnViJ1JQiXwf4CEzhgvAti3/ejpb3U90hsrUcyZi6wBv9bZLcAJRWpz61JNYliM1d1grSwQDKGXNQE4xuN"),
+		// 						},
+		// 					},
+		// 					VPNProtocols: []*armnetwork.VPNGatewayTunnelingProtocol{
+		// 						to.Ptr(armnetwork.VPNGatewayTunnelingProtocolIkeV2),
+		// 					},
+		// 				},
+		// 				Tags: map[string]*string{
+		// 					"key1": to.Ptr("value1"),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2026-03-01/VpnServerConfigurationList.json
 func ExampleVPNServerConfigurationsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -605,266 +864,7 @@ func ExampleVPNServerConfigurationsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-01-01/VpnServerConfigurationListByResourceGroup.json
-func ExampleVPNServerConfigurationsClient_NewListByResourceGroupPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewVPNServerConfigurationsClient().NewListByResourceGroupPager("rg1", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armnetwork.VPNServerConfigurationsClientListByResourceGroupResponse{
-		// 	ListVPNServerConfigurationsResult: armnetwork.ListVPNServerConfigurationsResult{
-		// 		Value: []*armnetwork.VPNServerConfiguration{
-		// 			{
-		// 				Name: to.Ptr("vpnServerConfiguration1"),
-		// 				Type: to.Ptr("Microsoft.Network/vpnServerConfigurations"),
-		// 				Etag: to.Ptr("w/\\00000000-0000-0000-0000-000000000000\\"),
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/vpnServerConfigurations/vpnServerConfiguration1"),
-		// 				Location: to.Ptr("West US"),
-		// 				Properties: &armnetwork.VPNServerConfigurationProperties{
-		// 					ConfigurationPolicyGroups: []*armnetwork.VPNServerConfigurationPolicyGroup{
-		// 						{
-		// 							Name: to.Ptr("policyGroup1"),
-		// 							Etag: to.Ptr("w/\\00000000-0000-0000-0000-000000000000\\"),
-		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/vpnServerConfigurations/vpnServerConfiguration1/vpnServerConfigurationPolicyGroups/policyGroup1"),
-		// 							Properties: &armnetwork.VPNServerConfigurationPolicyGroupProperties{
-		// 								IsDefault: to.Ptr(true),
-		// 								P2SConnectionConfigurations: []*armnetwork.SubResource{
-		// 									{
-		// 										ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/p2sVpnGateways/p2sVpnGateway1/p2sConnectionConfigurations/P2SConnectionConfig1"),
-		// 									},
-		// 								},
-		// 								PolicyMembers: []*armnetwork.VPNServerConfigurationPolicyGroupMember{
-		// 									{
-		// 										Name: to.Ptr("policy1"),
-		// 										AttributeType: to.Ptr(armnetwork.VPNPolicyMemberAttributeTypeRadiusAzureGroupID),
-		// 										AttributeValue: to.Ptr("6ad1bd08"),
-		// 									},
-		// 								},
-		// 								Priority: to.Ptr[int32](0),
-		// 								ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
-		// 							},
-		// 						},
-		// 						{
-		// 							Name: to.Ptr("policyGroup2"),
-		// 							Etag: to.Ptr("w/\\00000000-0000-0000-0000-000000000000\\"),
-		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/vpnServerConfigurations/vpnServerConfiguration1/vpnServerConfigurationPolicyGroups/policyGroup2"),
-		// 							Properties: &armnetwork.VPNServerConfigurationPolicyGroupProperties{
-		// 								IsDefault: to.Ptr(true),
-		// 								PolicyMembers: []*armnetwork.VPNServerConfigurationPolicyGroupMember{
-		// 									{
-		// 										Name: to.Ptr("policy2"),
-		// 										AttributeType: to.Ptr(armnetwork.VPNPolicyMemberAttributeTypeCertificateGroupID),
-		// 										AttributeValue: to.Ptr("red.com"),
-		// 									},
-		// 								},
-		// 								Priority: to.Ptr[int32](0),
-		// 								ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
-		// 							},
-		// 						},
-		// 					},
-		// 					ProvisioningState: to.Ptr("Succeeded"),
-		// 					RadiusClientRootCertificates: []*armnetwork.VPNServerConfigRadiusClientRootCertificate{
-		// 						{
-		// 							Name: to.Ptr("vpnServerConfigRadiusClientRootCert1"),
-		// 							Thumbprint: to.Ptr("83FFBFC8848B5A5836C94D0112367E16148A286F"),
-		// 						},
-		// 					},
-		// 					RadiusServerAddress: to.Ptr("8.9.9.9"),
-		// 					RadiusServerRootCertificates: []*armnetwork.VPNServerConfigRadiusServerRootCertificate{
-		// 						{
-		// 							Name: to.Ptr("vpnServerConfigRadiusServerRootCer1"),
-		// 							PublicCertData: to.Ptr("MIIC5zCCAc+gAwIBAgIQErQ0Hk4aDJxIA+Q5RagB+jANBgkqhkiG9w0BAQsFADAWMRQwEgYDVQQDDAtQMlNSb290Q2VydDAeFw0xNzEyMTQyMTA3MzhaFw0xODEyMTQyMTI3MzhaMBYxFDASBgNVBAMMC1AyU1Jvb3RDZXJ0MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEArP7/NQXmW7cQ/ZR1mv3Y3I29Lt7HTOqzo/1KUOoVH3NItbQIRAQbwKy3UWrOFz4eGNX2GWtNRMdCyWsKeqy9Ltsdfcm1IbKXkl84DFeU/ZacXu4Dl3xX3gV5du4TLZjEowJELyur11Ea2YcjPRQ/FzAF9/hGuboS1HZQEPLx4FdUs9OxCYOtc0MxBCwLfVTTRqarb0Ne+arNYd4kCzIhAke1nOyKAJBda5ZL+VHy3S5S8qGlD46jm8HXugmAkUygS4oIIXOmj/1O9sNAi3LN60zufSzCmP8Rm/iUGX+DHAGGiXxwZOKQLEDaZXKqoHjMPP0XudmSWwOIbyeQVrLhkwIDAQABozEwLzAOBgNVHQ8BAf8EBAMCAgQwHQYDVR0OBBYEFEfeNU2trYxNLF9ONmuJUsT13pKDMA0GCSqGSIb3DQEBCwUAA4IBAQBmM6RJzsGGipxyMhimHKN2xlkejhVsgBoTAhOU0llW9aUSwINJ9zFUGgI8IzUFy1VG776fchHp0LMRmPSIUYk5btEPxbsrPtumPuMH8EQGrS+Rt4pD+78c8H1fEPkq5CmDl/PKu4JoFGv+aFcE+Od0hlILstIF10Qysf++QXDolKfzJa/56bgMeYKFiju73loiRM57ns8ddXpfLl792UVpRkFU62LNns6Y1LKTwapmUF4IvIuAIzd6LZNOQng64LAKXtKnViJ1JQiXwf4CEzhgvAti3/ejpb3U90hsrUcyZi6wBv9bZLcAJRWpz61JNYliM1d1grSwQDKGXNQE4xuM"),
-		// 						},
-		// 					},
-		// 					VPNAuthenticationTypes: []*armnetwork.VPNAuthenticationType{
-		// 						to.Ptr(armnetwork.VPNAuthenticationTypeCertificate),
-		// 					},
-		// 					VPNClientIPSecPolicies: []*armnetwork.IPSecPolicy{
-		// 						{
-		// 							DhGroup: to.Ptr(armnetwork.DhGroupDHGroup14),
-		// 							IkeEncryption: to.Ptr(armnetwork.IkeEncryptionAES256),
-		// 							IkeIntegrity: to.Ptr(armnetwork.IkeIntegritySHA384),
-		// 							IPSecEncryption: to.Ptr(armnetwork.IPSecEncryptionAES256),
-		// 							IPSecIntegrity: to.Ptr(armnetwork.IPSecIntegritySHA256),
-		// 							PfsGroup: to.Ptr(armnetwork.PfsGroupPFS14),
-		// 							SaDataSizeKilobytes: to.Ptr[int32](429497),
-		// 							SaLifeTimeSeconds: to.Ptr[int32](86472),
-		// 						},
-		// 					},
-		// 					VPNClientRevokedCertificates: []*armnetwork.VPNServerConfigVPNClientRevokedCertificate{
-		// 						{
-		// 							Name: to.Ptr("vpnServerConfigVpnClientRevokedCert1"),
-		// 							Thumbprint: to.Ptr("83FFBFC8848B5A5836C94D0112367E16148A286F"),
-		// 						},
-		// 					},
-		// 					VPNClientRootCertificates: []*armnetwork.VPNServerConfigVPNClientRootCertificate{
-		// 						{
-		// 							Name: to.Ptr("vpnServerConfigVpnClientRootCert1"),
-		// 							PublicCertData: to.Ptr("MIIC5zCCAc+gAwIBAgIQErQ0Hk4aDJxIA+Q5RagB+jANBgkqhkiG9w0BAQsFADAWMRQwEgYDVQQDDAtQMlNSb290Q2VydDAeFw0xNzEyMTQyMTA3MzhaFw0xODEyMTQyMTI3MzhaMBYxFDASBgNVBAMMC1AyU1Jvb3RDZXJ0MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEArP7/NQXmW7cQ/ZR1mv3Y3I29Lt7HTOqzo/1KUOoVH3NItbQIRAQbwKy3UWrOFz4eGNX2GWtNRMdCyWsKeqy9Ltsdfcm1IbKXkl84DFeU/ZacXu4Dl3xX3gV5du4TLZjEowJELyur11Ea2YcjPRQ/FzAF9/hGuboS1HZQEPLx4FdUs9OxCYOtc0MxBCwLfVTTRqarb0Ne+arNYd4kCzIhAke1nOyKAJBda5ZL+VHy3S5S8qGlD46jm8HXugmAkUygS4oIIXOmj/1O9sNAi3LN60zufSzCmP8Rm/iUGX+DHAGGiXxwZOKQLEDaZXKqoHjMPP0XudmSWwOIbyeQVrLhkwIDAQABozEwLzAOBgNVHQ8BAf8EBAMCAgQwHQYDVR0OBBYEFEfeNU2trYxNLF9ONmuJUsT13pKDMA0GCSqGSIb3DQEBCwUAA4IBAQBmM6RJzsGGipxyMhimHKN2xlkejhVsgBoTAhOU0llW9aUSwINJ9zFUGgI8IzUFy1VG776fchHp0LMRmPSIUYk5btEPxbsrPtumPuMH8EQGrS+Rt4pD+78c8H1fEPkq5CmDl/PKu4JoFGv+aFcE+Od0hlILstIF10Qysf++QXDolKfzJa/56bgMeYKFiju73loiRM57ns8ddXpfLl792UVpRkFU62LNns6Y1LKTwapmUF4IvIuAIzd6LZNOQng64LAKXtKnViJ1JQiXwf4CEzhgvAti3/ejpb3U90hsrUcyZi6wBv9bZLcAJRWpz61JNYliM1d1grSwQDKGXNQE4xuN"),
-		// 						},
-		// 					},
-		// 					VPNProtocols: []*armnetwork.VPNGatewayTunnelingProtocol{
-		// 						to.Ptr(armnetwork.VPNGatewayTunnelingProtocolIkeV2),
-		// 					},
-		// 				},
-		// 				Tags: map[string]*string{
-		// 					"key1": to.Ptr("value1"),
-		// 				},
-		// 			},
-		// 			{
-		// 				Name: to.Ptr("vpnServerConfiguration2"),
-		// 				Type: to.Ptr("Microsoft.Network/vpnServerConfigurations"),
-		// 				Etag: to.Ptr("w/\\00000000-0000-0000-0000-000000000000\\"),
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/vpnServerConfigurations/vpnServerConfiguration2"),
-		// 				Location: to.Ptr("West US"),
-		// 				Properties: &armnetwork.VPNServerConfigurationProperties{
-		// 					ConfigurationPolicyGroups: []*armnetwork.VPNServerConfigurationPolicyGroup{
-		// 						{
-		// 							Name: to.Ptr("policyGroup1"),
-		// 							Etag: to.Ptr("w/\\00000000-0000-0000-0000-000000000000\\"),
-		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/vpnServerConfigurations/vpnServerConfiguration1/vpnServerConfigurationPolicyGroups/policyGroup1"),
-		// 							Properties: &armnetwork.VPNServerConfigurationPolicyGroupProperties{
-		// 								IsDefault: to.Ptr(true),
-		// 								P2SConnectionConfigurations: []*armnetwork.SubResource{
-		// 									{
-		// 										ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/p2sVpnGateways/p2sVpnGateway1/p2sConnectionConfigurations/P2SConnectionConfig1"),
-		// 									},
-		// 								},
-		// 								PolicyMembers: []*armnetwork.VPNServerConfigurationPolicyGroupMember{
-		// 									{
-		// 										Name: to.Ptr("policy1"),
-		// 										AttributeType: to.Ptr(armnetwork.VPNPolicyMemberAttributeTypeRadiusAzureGroupID),
-		// 										AttributeValue: to.Ptr("6ad1bd08"),
-		// 									},
-		// 								},
-		// 								Priority: to.Ptr[int32](0),
-		// 								ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
-		// 							},
-		// 						},
-		// 						{
-		// 							Name: to.Ptr("policyGroup2"),
-		// 							Etag: to.Ptr("w/\\00000000-0000-0000-0000-000000000000\\"),
-		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/vpnServerConfigurations/vpnServerConfiguration1/vpnServerConfigurationPolicyGroups/policyGroup2"),
-		// 							Properties: &armnetwork.VPNServerConfigurationPolicyGroupProperties{
-		// 								IsDefault: to.Ptr(true),
-		// 								PolicyMembers: []*armnetwork.VPNServerConfigurationPolicyGroupMember{
-		// 									{
-		// 										Name: to.Ptr("policy2"),
-		// 										AttributeType: to.Ptr(armnetwork.VPNPolicyMemberAttributeTypeCertificateGroupID),
-		// 										AttributeValue: to.Ptr("red.com"),
-		// 									},
-		// 								},
-		// 								Priority: to.Ptr[int32](0),
-		// 								ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
-		// 							},
-		// 						},
-		// 					},
-		// 					ProvisioningState: to.Ptr("Succeeded"),
-		// 					RadiusClientRootCertificates: []*armnetwork.VPNServerConfigRadiusClientRootCertificate{
-		// 						{
-		// 							Name: to.Ptr("vpnServerConfigRadiusClientRootCert1"),
-		// 							Thumbprint: to.Ptr("83FFBFC8848B5A5836C94D0112367E16148A286F"),
-		// 						},
-		// 					},
-		// 					RadiusServerAddress: to.Ptr("8.9.9.9"),
-		// 					RadiusServerRootCertificates: []*armnetwork.VPNServerConfigRadiusServerRootCertificate{
-		// 						{
-		// 							Name: to.Ptr("vpnServerConfigRadiusServerRootCer1"),
-		// 							PublicCertData: to.Ptr("MIIC5zCCAc+gAwIBAgIQErQ0Hk4aDJxIA+Q5RagB+jANBgkqhkiG9w0BAQsFADAWMRQwEgYDVQQDDAtQMlNSb290Q2VydDAeFw0xNzEyMTQyMTA3MzhaFw0xODEyMTQyMTI3MzhaMBYxFDASBgNVBAMMC1AyU1Jvb3RDZXJ0MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEArP7/NQXmW7cQ/ZR1mv3Y3I29Lt7HTOqzo/1KUOoVH3NItbQIRAQbwKy3UWrOFz4eGNX2GWtNRMdCyWsKeqy9Ltsdfcm1IbKXkl84DFeU/ZacXu4Dl3xX3gV5du4TLZjEowJELyur11Ea2YcjPRQ/FzAF9/hGuboS1HZQEPLx4FdUs9OxCYOtc0MxBCwLfVTTRqarb0Ne+arNYd4kCzIhAke1nOyKAJBda5ZL+VHy3S5S8qGlD46jm8HXugmAkUygS4oIIXOmj/1O9sNAi3LN60zufSzCmP8Rm/iUGX+DHAGGiXxwZOKQLEDaZXKqoHjMPP0XudmSWwOIbyeQVrLhkwIDAQABozEwLzAOBgNVHQ8BAf8EBAMCAgQwHQYDVR0OBBYEFEfeNU2trYxNLF9ONmuJUsT13pKDMA0GCSqGSIb3DQEBCwUAA4IBAQBmM6RJzsGGipxyMhimHKN2xlkejhVsgBoTAhOU0llW9aUSwINJ9zFUGgI8IzUFy1VG776fchHp0LMRmPSIUYk5btEPxbsrPtumPuMH8EQGrS+Rt4pD+78c8H1fEPkq5CmDl/PKu4JoFGv+aFcE+Od0hlILstIF10Qysf++QXDolKfzJa/56bgMeYKFiju73loiRM57ns8ddXpfLl792UVpRkFU62LNns6Y1LKTwapmUF4IvIuAIzd6LZNOQng64LAKXtKnViJ1JQiXwf4CEzhgvAti3/ejpb3U90hsrUcyZi6wBv9bZLcAJRWpz61JNYliM1d1grSwQDKGXNQE4xuM"),
-		// 						},
-		// 					},
-		// 					VPNAuthenticationTypes: []*armnetwork.VPNAuthenticationType{
-		// 						to.Ptr(armnetwork.VPNAuthenticationTypeCertificate),
-		// 					},
-		// 					VPNClientIPSecPolicies: []*armnetwork.IPSecPolicy{
-		// 						{
-		// 							DhGroup: to.Ptr(armnetwork.DhGroupDHGroup14),
-		// 							IkeEncryption: to.Ptr(armnetwork.IkeEncryptionAES256),
-		// 							IkeIntegrity: to.Ptr(armnetwork.IkeIntegritySHA384),
-		// 							IPSecEncryption: to.Ptr(armnetwork.IPSecEncryptionAES256),
-		// 							IPSecIntegrity: to.Ptr(armnetwork.IPSecIntegritySHA256),
-		// 							PfsGroup: to.Ptr(armnetwork.PfsGroupPFS14),
-		// 							SaDataSizeKilobytes: to.Ptr[int32](429497),
-		// 							SaLifeTimeSeconds: to.Ptr[int32](86472),
-		// 						},
-		// 					},
-		// 					VPNClientRevokedCertificates: []*armnetwork.VPNServerConfigVPNClientRevokedCertificate{
-		// 						{
-		// 							Name: to.Ptr("vpnServerConfigVpnClientRevokedCert1"),
-		// 							Thumbprint: to.Ptr("83FFBFC8848B5A5836C94D0112367E16148A286F"),
-		// 						},
-		// 					},
-		// 					VPNClientRootCertificates: []*armnetwork.VPNServerConfigVPNClientRootCertificate{
-		// 						{
-		// 							Name: to.Ptr("vpnServerConfigVpnClientRootCert1"),
-		// 							PublicCertData: to.Ptr("MIIC5zCCAc+gAwIBAgIQErQ0Hk4aDJxIA+Q5RagB+jANBgkqhkiG9w0BAQsFADAWMRQwEgYDVQQDDAtQMlNSb290Q2VydDAeFw0xNzEyMTQyMTA3MzhaFw0xODEyMTQyMTI3MzhaMBYxFDASBgNVBAMMC1AyU1Jvb3RDZXJ0MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEArP7/NQXmW7cQ/ZR1mv3Y3I29Lt7HTOqzo/1KUOoVH3NItbQIRAQbwKy3UWrOFz4eGNX2GWtNRMdCyWsKeqy9Ltsdfcm1IbKXkl84DFeU/ZacXu4Dl3xX3gV5du4TLZjEowJELyur11Ea2YcjPRQ/FzAF9/hGuboS1HZQEPLx4FdUs9OxCYOtc0MxBCwLfVTTRqarb0Ne+arNYd4kCzIhAke1nOyKAJBda5ZL+VHy3S5S8qGlD46jm8HXugmAkUygS4oIIXOmj/1O9sNAi3LN60zufSzCmP8Rm/iUGX+DHAGGiXxwZOKQLEDaZXKqoHjMPP0XudmSWwOIbyeQVrLhkwIDAQABozEwLzAOBgNVHQ8BAf8EBAMCAgQwHQYDVR0OBBYEFEfeNU2trYxNLF9ONmuJUsT13pKDMA0GCSqGSIb3DQEBCwUAA4IBAQBmM6RJzsGGipxyMhimHKN2xlkejhVsgBoTAhOU0llW9aUSwINJ9zFUGgI8IzUFy1VG776fchHp0LMRmPSIUYk5btEPxbsrPtumPuMH8EQGrS+Rt4pD+78c8H1fEPkq5CmDl/PKu4JoFGv+aFcE+Od0hlILstIF10Qysf++QXDolKfzJa/56bgMeYKFiju73loiRM57ns8ddXpfLl792UVpRkFU62LNns6Y1LKTwapmUF4IvIuAIzd6LZNOQng64LAKXtKnViJ1JQiXwf4CEzhgvAti3/ejpb3U90hsrUcyZi6wBv9bZLcAJRWpz61JNYliM1d1grSwQDKGXNQE4xuN"),
-		// 						},
-		// 					},
-		// 					VPNProtocols: []*armnetwork.VPNGatewayTunnelingProtocol{
-		// 						to.Ptr(armnetwork.VPNGatewayTunnelingProtocolIkeV2),
-		// 					},
-		// 				},
-		// 				Tags: map[string]*string{
-		// 					"key1": to.Ptr("value1"),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2026-01-01/AllVpnServerConfigurationRadiusServerSecretsList.json
-func ExampleVPNServerConfigurationsClient_ListRadiusSecrets() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetwork.NewClientFactory("72f988bf-86f1-41af-91ab-2d7cd011db47", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewVPNServerConfigurationsClient().ListRadiusSecrets(ctx, "rg1", "vpnserverconfig", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armnetwork.VPNServerConfigurationsClientListRadiusSecretsResponse{
-	// 	RadiusAuthServerListResult: armnetwork.RadiusAuthServerListResult{
-	// 		Value: []*armnetwork.RadiusAuthServer{
-	// 			{
-	// 				RadiusServerAddress: to.Ptr("1.1.1.1"),
-	// 				RadiusServerSecret: to.Ptr("*****"),
-	// 			},
-	// 			{
-	// 				RadiusServerAddress: to.Ptr("2.2.2.2"),
-	// 				RadiusServerSecret: to.Ptr("*****"),
-	// 			},
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-01-01/VpnServerConfigurationUpdateTags.json
+// Generated from example definition: 2026-03-01/VpnServerConfigurationUpdateTags.json
 func ExampleVPNServerConfigurationsClient_UpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

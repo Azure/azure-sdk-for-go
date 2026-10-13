@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01/ApplicationSecurityGroupCreate.json
+// Generated from example definition: 2026-03-01/ApplicationSecurityGroupCreate.json
 func ExampleApplicationSecurityGroupsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -51,7 +51,7 @@ func ExampleApplicationSecurityGroupsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/ApplicationSecurityGroupDelete.json
+// Generated from example definition: 2026-03-01/ApplicationSecurityGroupDelete.json
 func ExampleApplicationSecurityGroupsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -77,7 +77,7 @@ func ExampleApplicationSecurityGroupsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/ApplicationSecurityGroupGet.json
+// Generated from example definition: 2026-03-01/ApplicationSecurityGroupGet.json
 func ExampleApplicationSecurityGroupsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -109,58 +109,7 @@ func ExampleApplicationSecurityGroupsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/ApplicationSecurityGroupList.json
-func ExampleApplicationSecurityGroupsClient_NewListPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewApplicationSecurityGroupsClient().NewListPager("rg1", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armnetwork.ApplicationSecurityGroupsClientListResponse{
-		// 	ApplicationSecurityGroupListResult: armnetwork.ApplicationSecurityGroupListResult{
-		// 		Value: []*armnetwork.ApplicationSecurityGroup{
-		// 			{
-		// 				Name: to.Ptr("asg1"),
-		// 				Type: to.Ptr("Microsoft.Network/applicationSecurityGroups"),
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/applicationSecurityGroups/asg1"),
-		// 				Location: to.Ptr("westus"),
-		// 				Properties: &armnetwork.ApplicationSecurityGroupPropertiesFormat{
-		// 					ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
-		// 					ResourceGUID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 				},
-		// 			},
-		// 			{
-		// 				Name: to.Ptr("asg2"),
-		// 				Type: to.Ptr("Microsoft.Network/applicationSecurityGroups"),
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/applicationSecurityGroups/asg2"),
-		// 				Location: to.Ptr("westus"),
-		// 				Properties: &armnetwork.ApplicationSecurityGroupPropertiesFormat{
-		// 					ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
-		// 					ResourceGUID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2026-01-01/ApplicationSecurityGroupListAll.json
+// Generated from example definition: 2026-03-01/ApplicationSecurityGroupListAll.json
 func ExampleApplicationSecurityGroupsClient_NewListAllPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -211,7 +160,58 @@ func ExampleApplicationSecurityGroupsClient_NewListAllPager() {
 	}
 }
 
-// Generated from example definition: 2026-01-01/ApplicationSecurityGroupUpdateTags.json
+// Generated from example definition: 2026-03-01/ApplicationSecurityGroupList.json
+func ExampleApplicationSecurityGroupsClient_NewListPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewApplicationSecurityGroupsClient().NewListPager("rg1", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armnetwork.ApplicationSecurityGroupsClientListResponse{
+		// 	ApplicationSecurityGroupListResult: armnetwork.ApplicationSecurityGroupListResult{
+		// 		Value: []*armnetwork.ApplicationSecurityGroup{
+		// 			{
+		// 				Name: to.Ptr("asg1"),
+		// 				Type: to.Ptr("Microsoft.Network/applicationSecurityGroups"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/applicationSecurityGroups/asg1"),
+		// 				Location: to.Ptr("westus"),
+		// 				Properties: &armnetwork.ApplicationSecurityGroupPropertiesFormat{
+		// 					ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+		// 					ResourceGUID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+		// 				},
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("asg2"),
+		// 				Type: to.Ptr("Microsoft.Network/applicationSecurityGroups"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/applicationSecurityGroups/asg2"),
+		// 				Location: to.Ptr("westus"),
+		// 				Properties: &armnetwork.ApplicationSecurityGroupPropertiesFormat{
+		// 					ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+		// 					ResourceGUID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2026-03-01/ApplicationSecurityGroupUpdateTags.json
 func ExampleApplicationSecurityGroupsClient_UpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

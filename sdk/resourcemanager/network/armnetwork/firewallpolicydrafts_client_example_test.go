@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01/FirewallPolicyDraftPut.json
+// Generated from example definition: 2026-03-01/FirewallPolicyDraftPut.json
 func ExampleFirewallPolicyDraftsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -210,7 +210,7 @@ func ExampleFirewallPolicyDraftsClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/FirewallPolicyDraftDelete.json
+// Generated from example definition: 2026-03-01/FirewallPolicyDraftDelete.json
 func ExampleFirewallPolicyDraftsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -232,7 +232,7 @@ func ExampleFirewallPolicyDraftsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/FirewallPolicyDraftGet.json
+// Generated from example definition: 2026-03-01/FirewallPolicyDraftGet.json
 func ExampleFirewallPolicyDraftsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

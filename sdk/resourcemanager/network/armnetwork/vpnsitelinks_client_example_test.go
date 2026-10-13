@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01/VpnSiteLinkGet.json
+// Generated from example definition: 2026-03-01/VpnSiteLinkGet.json
 func ExampleVPNSiteLinksClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -50,7 +50,7 @@ func ExampleVPNSiteLinksClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/VpnSiteLinkListByVpnSite.json
+// Generated from example definition: 2026-03-01/VpnSiteLinkListByVpnSite.json
 func ExampleVPNSiteLinksClient_NewListByVPNSitePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

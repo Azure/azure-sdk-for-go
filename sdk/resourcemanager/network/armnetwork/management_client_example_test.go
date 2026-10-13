@@ -12,32 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01/CheckDnsNameAvailability.json
-func ExampleManagementClient_CheckDNSNameAvailability() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewManagementClient().CheckDNSNameAvailability(ctx, "westus", "testdns", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armnetwork.ManagementClientCheckDNSNameAvailabilityResponse{
-	// 	DNSNameAvailabilityResult: armnetwork.DNSNameAvailabilityResult{
-	// 		Available: to.Ptr(false),
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-01-01/BastionShareableLinkDelete.json
+// Generated from example definition: 2026-03-01/BastionShareableLinkDelete.json
 func ExampleManagementClient_BeginDeleteBastionShareableLink() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -76,7 +51,7 @@ func ExampleManagementClient_BeginDeleteBastionShareableLink() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/BastionShareableLinkDeleteByToken.json
+// Generated from example definition: 2026-03-01/BastionShareableLinkDeleteByToken.json
 func ExampleManagementClient_BeginDeleteBastionShareableLinkByToken() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -102,97 +77,7 @@ func ExampleManagementClient_BeginDeleteBastionShareableLinkByToken() {
 	}
 }
 
-// Generated from example definition: 2026-01-01/BastionSessionDelete.json
-func ExampleManagementClient_NewDisconnectActiveSessionsPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewManagementClient().NewDisconnectActiveSessionsPager("rg1", "bastionhosttenant", armnetwork.SessionIDs{
-		SessionIDs: []*string{
-			to.Ptr("session1"),
-			to.Ptr("session2"),
-			to.Ptr("session3"),
-		},
-	}, nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armnetwork.ManagementClientDisconnectActiveSessionsResponse{
-		// 	BastionSessionDeleteResult: armnetwork.BastionSessionDeleteResult{
-		// 		Value: []*armnetwork.BastionSessionState{
-		// 			{
-		// 				Message: to.Ptr("session session1 invalidated!"),
-		// 				SessionID: to.Ptr("session1"),
-		// 				State: to.Ptr("Disconnected"),
-		// 			},
-		// 			{
-		// 				Message: to.Ptr("session session2 could not be disconnected!"),
-		// 				SessionID: to.Ptr("session2"),
-		// 				State: to.Ptr("Failed"),
-		// 			},
-		// 			{
-		// 				Message: to.Ptr("session session3 not found!"),
-		// 				SessionID: to.Ptr("session3"),
-		// 				State: to.Ptr("NotFound"),
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2026-01-01/expressRouteProviderPort.json
-func ExampleManagementClient_ExpressRouteProviderPort() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewManagementClient().ExpressRouteProviderPort(ctx, "abc", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armnetwork.ManagementClientExpressRouteProviderPortResponse{
-	// 	ExpressRouteProviderPort: armnetwork.ExpressRouteProviderPort{
-	// 		Type: to.Ptr("Microsoft.Network/expressRouteProviderPort"),
-	// 		Etag: to.Ptr("W/\"c0e6477e-8150-4d4f-9bf6-bb10e6acb63a\""),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/ExpressRoutePortsLocations/SiliconValley/bvtazureixpportpair1"),
-	// 		Location: to.Ptr("uswest"),
-	// 		Properties: &armnetwork.ExpressRouteProviderPortProperties{
-	// 			OverprovisionFactor: to.Ptr[int32](4),
-	// 			PeeringLocation: to.Ptr("SiliconValley"),
-	// 			PortBandwidthInMbps: to.Ptr[int32](4000),
-	// 			PortPairDescriptor: to.Ptr("bvtazureixpportpair1"),
-	// 			PrimaryAzurePort: to.Ptr("bvtazureixp01"),
-	// 			RemainingBandwidthInMbps: to.Ptr[int32](1500),
-	// 			SecondaryAzurePort: to.Ptr("bvtazureixp01"),
-	// 			UsedBandwidthInMbps: to.Ptr[int32](2500),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-01-01/GenerateVirtualWanVpnServerConfigurationVpnProfile.json
+// Generated from example definition: 2026-03-01/GenerateVirtualWanVpnServerConfigurationVpnProfile.json
 func ExampleManagementClient_BeginGeneratevirtualwanvpnserverconfigurationvpnprofile() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -224,7 +109,7 @@ func ExampleManagementClient_BeginGeneratevirtualwanvpnserverconfigurationvpnpro
 	// }
 }
 
-// Generated from example definition: 2026-01-01/BastionSessionsList.json
+// Generated from example definition: 2026-03-01/BastionSessionsList.json
 func ExampleManagementClient_BeginGetActiveSessions() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -275,8 +160,8 @@ func ExampleManagementClient_BeginGetActiveSessions() {
 	}
 }
 
-// Generated from example definition: 2026-01-01/BastionShareableLinkGet.json
-func ExampleManagementClient_NewGetBastionShareableLinkPager() {
+// Generated from example definition: 2026-03-01/BastionShareableLinkCreate.json
+func ExampleManagementClient_BeginPutBastionShareableLink() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -286,7 +171,7 @@ func ExampleManagementClient_NewGetBastionShareableLinkPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewManagementClient().NewGetBastionShareableLinkPager("rg1", "bastionhosttenant", armnetwork.BastionShareableLinkListRequest{
+	poller, err := clientFactory.NewManagementClient().BeginPutBastionShareableLink(ctx, "rg1", "bastionhosttenant", armnetwork.BastionShareableLinkListRequest{
 		VMs: []*armnetwork.BastionShareableLink{
 			{
 				VM: &armnetwork.VM{
@@ -300,8 +185,15 @@ func ExampleManagementClient_NewGetBastionShareableLinkPager() {
 			},
 		},
 	}, nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	for res.More() {
+		page, err := res.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
@@ -310,7 +202,7 @@ func ExampleManagementClient_NewGetBastionShareableLinkPager() {
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armnetwork.ManagementClientGetBastionShareableLinkResponse{
+		// page = armnetwork.ManagementClientPutBastionShareableLinkResponse{
 		// 	BastionShareableLinkListResult: armnetwork.BastionShareableLinkListResult{
 		// 		Value: []*armnetwork.BastionShareableLink{
 		// 			{
@@ -333,7 +225,70 @@ func ExampleManagementClient_NewGetBastionShareableLinkPager() {
 	}
 }
 
-// Generated from example definition: 2026-01-01/NetworkManagerActiveConnectivityConfigurationsList.json
+// Generated from example definition: 2026-03-01/CheckDnsNameAvailability.json
+func ExampleManagementClient_CheckDNSNameAvailability() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewManagementClient().CheckDNSNameAvailability(ctx, "westus", "testdns", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armnetwork.ManagementClientCheckDNSNameAvailabilityResponse{
+	// 	DNSNameAvailabilityResult: armnetwork.DNSNameAvailabilityResult{
+	// 		Available: to.Ptr(false),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-03-01/expressRouteProviderPort.json
+func ExampleManagementClient_ExpressRouteProviderPort() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewManagementClient().ExpressRouteProviderPort(ctx, "abc", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armnetwork.ManagementClientExpressRouteProviderPortResponse{
+	// 	ExpressRouteProviderPort: armnetwork.ExpressRouteProviderPort{
+	// 		Type: to.Ptr("Microsoft.Network/expressRouteProviderPort"),
+	// 		Etag: to.Ptr("W/\"c0e6477e-8150-4d4f-9bf6-bb10e6acb63a\""),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/ExpressRoutePortsLocations/SiliconValley/bvtazureixpportpair1"),
+	// 		Location: to.Ptr("uswest"),
+	// 		Properties: &armnetwork.ExpressRouteProviderPortProperties{
+	// 			OverprovisionFactor: to.Ptr[int32](4),
+	// 			PeeringLocation: to.Ptr("SiliconValley"),
+	// 			PortBandwidthInMbps: to.Ptr[int32](4000),
+	// 			PortPairDescriptor: to.Ptr("bvtazureixpportpair1"),
+	// 			PrimaryAzurePort: to.Ptr("bvtazureixp01"),
+	// 			RemainingBandwidthInMbps: to.Ptr[int32](1500),
+	// 			SecondaryAzurePort: to.Ptr("bvtazureixp01"),
+	// 			UsedBandwidthInMbps: to.Ptr[int32](2500),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-03-01/NetworkManagerActiveConnectivityConfigurationsList.json
 func ExampleManagementClient_ListActiveConnectivityConfigurations() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -400,7 +355,7 @@ func ExampleManagementClient_ListActiveConnectivityConfigurations() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/NetworkManagerActiveSecurityAdminRulesList.json
+// Generated from example definition: 2026-03-01/NetworkManagerActiveSecurityAdminRulesList.json
 func ExampleManagementClient_ListActiveSecurityAdminRules() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -481,7 +436,7 @@ func ExampleManagementClient_ListActiveSecurityAdminRules() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/NetworkManagerEffectiveConnectivityConfigurationsList.json
+// Generated from example definition: 2026-03-01/NetworkManagerEffectiveConnectivityConfigurationsList.json
 func ExampleManagementClient_ListNetworkManagerEffectiveConnectivityConfigurations() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -548,7 +503,7 @@ func ExampleManagementClient_ListNetworkManagerEffectiveConnectivityConfiguratio
 	// }
 }
 
-// Generated from example definition: 2026-01-01/NetworkManagerEffectiveSecurityAdminRulesList.json
+// Generated from example definition: 2026-03-01/NetworkManagerEffectiveSecurityAdminRulesList.json
 func ExampleManagementClient_ListNetworkManagerEffectiveSecurityAdminRules() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -624,8 +579,8 @@ func ExampleManagementClient_ListNetworkManagerEffectiveSecurityAdminRules() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/BastionShareableLinkCreate.json
-func ExampleManagementClient_BeginPutBastionShareableLink() {
+// Generated from example definition: 2026-03-01/BastionSessionDelete.json
+func ExampleManagementClient_NewDisconnectActiveSessionsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -635,7 +590,59 @@ func ExampleManagementClient_BeginPutBastionShareableLink() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewManagementClient().BeginPutBastionShareableLink(ctx, "rg1", "bastionhosttenant", armnetwork.BastionShareableLinkListRequest{
+	pager := clientFactory.NewManagementClient().NewDisconnectActiveSessionsPager("rg1", "bastionhosttenant", armnetwork.SessionIDs{
+		SessionIDs: []*string{
+			to.Ptr("session1"),
+			to.Ptr("session2"),
+			to.Ptr("session3"),
+		},
+	}, nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armnetwork.ManagementClientDisconnectActiveSessionsResponse{
+		// 	BastionSessionDeleteResult: armnetwork.BastionSessionDeleteResult{
+		// 		Value: []*armnetwork.BastionSessionState{
+		// 			{
+		// 				Message: to.Ptr("session session1 invalidated!"),
+		// 				SessionID: to.Ptr("session1"),
+		// 				State: to.Ptr("Disconnected"),
+		// 			},
+		// 			{
+		// 				Message: to.Ptr("session session2 could not be disconnected!"),
+		// 				SessionID: to.Ptr("session2"),
+		// 				State: to.Ptr("Failed"),
+		// 			},
+		// 			{
+		// 				Message: to.Ptr("session session3 not found!"),
+		// 				SessionID: to.Ptr("session3"),
+		// 				State: to.Ptr("NotFound"),
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2026-03-01/BastionShareableLinkGet.json
+func ExampleManagementClient_NewGetBastionShareableLinkPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewManagementClient().NewGetBastionShareableLinkPager("rg1", "bastionhosttenant", armnetwork.BastionShareableLinkListRequest{
 		VMs: []*armnetwork.BastionShareableLink{
 			{
 				VM: &armnetwork.VM{
@@ -649,15 +656,8 @@ func ExampleManagementClient_BeginPutBastionShareableLink() {
 			},
 		},
 	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	for res.More() {
-		page, err := res.NextPage(ctx)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
 		}
@@ -666,7 +666,7 @@ func ExampleManagementClient_BeginPutBastionShareableLink() {
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armnetwork.ManagementClientPutBastionShareableLinkResponse{
+		// page = armnetwork.ManagementClientGetBastionShareableLinkResponse{
 		// 	BastionShareableLinkListResult: armnetwork.BastionShareableLinkListResult{
 		// 		Value: []*armnetwork.BastionShareableLink{
 		// 			{
@@ -689,7 +689,7 @@ func ExampleManagementClient_BeginPutBastionShareableLink() {
 	}
 }
 
-// Generated from example definition: 2026-01-01/VirtualWanSupportedSecurityProviders.json
+// Generated from example definition: 2026-03-01/VirtualWanSupportedSecurityProviders.json
 func ExampleManagementClient_SupportedSecurityProviders() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

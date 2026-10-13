@@ -29,21 +29,21 @@ type BastionHostsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, bastionHostName string, options *armnetwork.BastionHostsClientBeginDeleteOptions) (resp azfake.PollerResponder[armnetwork.BastionHostsClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method BastionHostsClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, bastionHostName string, parameters armnetwork.BastionHostUpdate, options *armnetwork.BastionHostsClientBeginUpdateOptions) (resp azfake.PollerResponder[armnetwork.BastionHostsClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method BastionHostsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, bastionHostName string, options *armnetwork.BastionHostsClientGetOptions) (resp azfake.Responder[armnetwork.BastionHostsClientGetResponse], errResp azfake.ErrorResponder)
-
-	// NewListPager is the fake for method BastionHostsClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(options *armnetwork.BastionHostsClientListOptions) (resp azfake.PagerResponder[armnetwork.BastionHostsClientListResponse])
 
 	// NewListByResourceGroupPager is the fake for method BastionHostsClient.NewListByResourceGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByResourceGroupPager func(resourceGroupName string, options *armnetwork.BastionHostsClientListByResourceGroupOptions) (resp azfake.PagerResponder[armnetwork.BastionHostsClientListByResourceGroupResponse])
 
-	// BeginUpdate is the fake for method BastionHostsClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, bastionHostName string, parameters armnetwork.BastionHostUpdate, options *armnetwork.BastionHostsClientBeginUpdateOptions) (resp azfake.PollerResponder[armnetwork.BastionHostsClientUpdateResponse], errResp azfake.ErrorResponder)
+	// NewListPager is the fake for method BastionHostsClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(options *armnetwork.BastionHostsClientListOptions) (resp azfake.PagerResponder[armnetwork.BastionHostsClientListResponse])
 }
 
 // NewBastionHostsServerTransport creates a new instance of BastionHostsServerTransport with the provided implementation.
@@ -54,9 +54,9 @@ func NewBastionHostsServerTransport(srv *BastionHostsServer) *BastionHostsServer
 		srv:                         srv,
 		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armnetwork.BastionHostsClientCreateOrUpdateResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armnetwork.BastionHostsClientDeleteResponse]](),
-		newListPager:                newTracker[azfake.PagerResponder[armnetwork.BastionHostsClientListResponse]](),
-		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armnetwork.BastionHostsClientListByResourceGroupResponse]](),
 		beginUpdate:                 newTracker[azfake.PollerResponder[armnetwork.BastionHostsClientUpdateResponse]](),
+		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armnetwork.BastionHostsClientListByResourceGroupResponse]](),
+		newListPager:                newTracker[azfake.PagerResponder[armnetwork.BastionHostsClientListResponse]](),
 	}
 }
 
@@ -66,9 +66,9 @@ type BastionHostsServerTransport struct {
 	srv                         *BastionHostsServer
 	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armnetwork.BastionHostsClientCreateOrUpdateResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armnetwork.BastionHostsClientDeleteResponse]]
-	newListPager                *tracker[azfake.PagerResponder[armnetwork.BastionHostsClientListResponse]]
-	newListByResourceGroupPager *tracker[azfake.PagerResponder[armnetwork.BastionHostsClientListByResourceGroupResponse]]
 	beginUpdate                 *tracker[azfake.PollerResponder[armnetwork.BastionHostsClientUpdateResponse]]
+	newListByResourceGroupPager *tracker[azfake.PagerResponder[armnetwork.BastionHostsClientListByResourceGroupResponse]]
+	newListPager                *tracker[azfake.PagerResponder[armnetwork.BastionHostsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for BastionHostsServerTransport.
@@ -96,14 +96,14 @@ func (b *BastionHostsServerTransport) dispatchToMethodFake(req *http.Request, me
 				res.resp, res.err = b.dispatchBeginCreateOrUpdate(req)
 			case "BastionHostsClient.BeginDelete":
 				res.resp, res.err = b.dispatchBeginDelete(req)
-			case "BastionHostsClient.Get":
-				res.resp, res.err = b.dispatchGet(req)
-			case "BastionHostsClient.NewListPager":
-				res.resp, res.err = b.dispatchNewListPager(req)
-			case "BastionHostsClient.NewListByResourceGroupPager":
-				res.resp, res.err = b.dispatchNewListByResourceGroupPager(req)
 			case "BastionHostsClient.BeginUpdate":
 				res.resp, res.err = b.dispatchBeginUpdate(req)
+			case "BastionHostsClient.Get":
+				res.resp, res.err = b.dispatchGet(req)
+			case "BastionHostsClient.NewListByResourceGroupPager":
+				res.resp, res.err = b.dispatchNewListByResourceGroupPager(req)
+			case "BastionHostsClient.NewListPager":
+				res.resp, res.err = b.dispatchNewListPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -212,109 +212,6 @@ func (b *BastionHostsServerTransport) dispatchBeginDelete(req *http.Request) (*h
 	return resp, nil
 }
 
-func (b *BastionHostsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if b.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/bastionHosts/(?P<bastionHostName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	bastionHostNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("bastionHostName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := b.srv.Get(req.Context(), resourceGroupNameParam, bastionHostNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).BastionHost, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (b *BastionHostsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if b.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := b.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/bastionHosts`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := b.srv.NewListPager(nil)
-		newListPager = &resp
-		b.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armnetwork.BastionHostsClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		b.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		b.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (b *BastionHostsServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
-	if b.srv.NewListByResourceGroupPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
-	}
-	newListByResourceGroupPager := b.newListByResourceGroupPager.get(req)
-	if newListByResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/bastionHosts`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := b.srv.NewListByResourceGroupPager(resourceGroupNameParam, nil)
-		newListByResourceGroupPager = &resp
-		b.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
-		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armnetwork.BastionHostsClientListByResourceGroupResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		b.newListByResourceGroupPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListByResourceGroupPager) {
-		b.newListByResourceGroupPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (b *BastionHostsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
 	if b.srv.BeginUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
@@ -360,6 +257,109 @@ func (b *BastionHostsServerTransport) dispatchBeginUpdate(req *http.Request) (*h
 		b.beginUpdate.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (b *BastionHostsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if b.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/bastionHosts/(?P<bastionHostName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	bastionHostNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("bastionHostName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := b.srv.Get(req.Context(), resourceGroupNameParam, bastionHostNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).BastionHost, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (b *BastionHostsServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
+	if b.srv.NewListByResourceGroupPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
+	}
+	newListByResourceGroupPager := b.newListByResourceGroupPager.get(req)
+	if newListByResourceGroupPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/bastionHosts`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := b.srv.NewListByResourceGroupPager(resourceGroupNameParam, nil)
+		newListByResourceGroupPager = &resp
+		b.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
+		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armnetwork.BastionHostsClientListByResourceGroupResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		b.newListByResourceGroupPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListByResourceGroupPager) {
+		b.newListByResourceGroupPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (b *BastionHostsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if b.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := b.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/bastionHosts`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resp := b.srv.NewListPager(nil)
+		newListPager = &resp
+		b.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armnetwork.BastionHostsClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		b.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPager) {
+		b.newListPager.remove(req)
+	}
 	return resp, nil
 }
 

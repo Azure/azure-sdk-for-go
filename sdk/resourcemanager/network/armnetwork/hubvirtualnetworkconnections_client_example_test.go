@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01/HubVirtualNetworkConnectionPut.json
+// Generated from example definition: 2026-03-01/HubVirtualNetworkConnectionPut.json
 func ExampleHubVirtualNetworkConnectionsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -155,7 +155,7 @@ func ExampleHubVirtualNetworkConnectionsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/HubVirtualNetworkConnectionDelete.json
+// Generated from example definition: 2026-03-01/HubVirtualNetworkConnectionDelete.json
 func ExampleHubVirtualNetworkConnectionsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -181,7 +181,7 @@ func ExampleHubVirtualNetworkConnectionsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/HubVirtualNetworkConnectionGet.json
+// Generated from example definition: 2026-03-01/HubVirtualNetworkConnectionGet.json
 func ExampleHubVirtualNetworkConnectionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -273,7 +273,7 @@ func ExampleHubVirtualNetworkConnectionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/HubVirtualNetworkConnectionList.json
+// Generated from example definition: 2026-03-01/HubVirtualNetworkConnectionList.json
 func ExampleHubVirtualNetworkConnectionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01/LocalNetworkGatewayCreate.json
+// Generated from example definition: 2026-03-01/LocalNetworkGatewayCreate.json
 func ExampleLocalNetworkGatewaysClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -66,7 +66,7 @@ func ExampleLocalNetworkGatewaysClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/LocalNetworkGatewayDelete.json
+// Generated from example definition: 2026-03-01/LocalNetworkGatewayDelete.json
 func ExampleLocalNetworkGatewaysClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -92,7 +92,7 @@ func ExampleLocalNetworkGatewaysClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/LocalNetworkGatewayGet.json
+// Generated from example definition: 2026-03-01/LocalNetworkGatewayGet.json
 func ExampleLocalNetworkGatewaysClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -131,7 +131,7 @@ func ExampleLocalNetworkGatewaysClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/LocalNetworkGatewayList.json
+// Generated from example definition: 2026-03-01/LocalNetworkGatewayList.json
 func ExampleLocalNetworkGatewaysClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -196,7 +196,7 @@ func ExampleLocalNetworkGatewaysClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-01-01/LocalNetworkGatewayUpdateTags.json
+// Generated from example definition: 2026-03-01/LocalNetworkGatewayUpdateTags.json
 func ExampleLocalNetworkGatewaysClient_UpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

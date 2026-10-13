@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01/NetworkInterfaceCreate.json
+// Generated from example definition: 2026-03-01/NetworkInterfaceCreate.json
 func ExampleInterfacesClient_BeginCreateOrUpdate_createNetworkInterface() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -116,7 +116,7 @@ func ExampleInterfacesClient_BeginCreateOrUpdate_createNetworkInterface() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/NetworkInterfaceCreateGatewayLoadBalancerConsumer.json
+// Generated from example definition: 2026-03-01/NetworkInterfaceCreateGatewayLoadBalancerConsumer.json
 func ExampleInterfacesClient_BeginCreateOrUpdate_createNetworkInterfaceWithGatewayLoadBalancerConsumerConfigured() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -202,7 +202,7 @@ func ExampleInterfacesClient_BeginCreateOrUpdate_createNetworkInterfaceWithGatew
 	// }
 }
 
-// Generated from example definition: 2026-01-01/NetworkInterfaceDelete.json
+// Generated from example definition: 2026-03-01/NetworkInterfaceDelete.json
 func ExampleInterfacesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -228,166 +228,7 @@ func ExampleInterfacesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/NetworkInterfaceGet.json
-func ExampleInterfacesClient_Get() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewInterfacesClient().Get(ctx, "rg1", "test-nic", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armnetwork.InterfacesClientGetResponse{
-	// 	Interface: armnetwork.Interface{
-	// 		Name: to.Ptr("test-nic"),
-	// 		Type: to.Ptr("Microsoft.Network/networkInterfaces"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/networkInterfaces/test-nic"),
-	// 		Location: to.Ptr("eastus"),
-	// 		Properties: &armnetwork.InterfacePropertiesFormat{
-	// 			DisableTCPStateTracking: to.Ptr(true),
-	// 			DNSSettings: &armnetwork.InterfaceDNSSettings{
-	// 				AppliedDNSServers: []*string{
-	// 				},
-	// 				DNSServers: []*string{
-	// 				},
-	// 				InternalDomainNameSuffix: to.Ptr("test.bx.internal.cloudapp.net"),
-	// 			},
-	// 			DscpConfiguration: &armnetwork.SubResource{
-	// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/dscpConfiguration/mydscpconfiguration"),
-	// 			},
-	// 			EnableAcceleratedNetworking: to.Ptr(true),
-	// 			EnableIPForwarding: to.Ptr(false),
-	// 			IPConfigurations: []*armnetwork.InterfaceIPConfiguration{
-	// 				{
-	// 					Name: to.Ptr("ipconfig1"),
-	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/networkInterfaces/test-nic/ipConfigurations/ipconfig1"),
-	// 					Properties: &armnetwork.InterfaceIPConfigurationPropertiesFormat{
-	// 						Primary: to.Ptr(true),
-	// 						PrivateIPAddress: to.Ptr("172.20.2.4"),
-	// 						PrivateIPAddressVersion: to.Ptr(armnetwork.IPVersionIPv4),
-	// 						PrivateIPAllocationMethod: to.Ptr(armnetwork.IPAllocationMethodDynamic),
-	// 						ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
-	// 						PublicIPAddress: &armnetwork.PublicIPAddress{
-	// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/publicIPAddresses/test-ip"),
-	// 						},
-	// 						Subnet: &armnetwork.Subnet{
-	// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/rg1-vnet/subnets/default"),
-	// 						},
-	// 					},
-	// 				},
-	// 				{
-	// 					Name: to.Ptr("ipconfig2"),
-	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/networkInterfaces/test-nic/ipConfigurations/ipconfig2"),
-	// 					Properties: &armnetwork.InterfaceIPConfigurationPropertiesFormat{
-	// 						Primary: to.Ptr(false),
-	// 						PrivateIPAddress: to.Ptr("172.20.2.16/28"),
-	// 						PrivateIPAddressPrefixLength: to.Ptr[int32](28),
-	// 						PrivateIPAddressVersion: to.Ptr(armnetwork.IPVersionIPv4),
-	// 						PrivateIPAllocationMethod: to.Ptr(armnetwork.IPAllocationMethodDynamic),
-	// 						ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
-	// 						Subnet: &armnetwork.Subnet{
-	// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/rg1-vnet/subnets/default"),
-	// 						},
-	// 					},
-	// 				},
-	// 			},
-	// 			MacAddress: to.Ptr("00-0D-3A-1B-C7-21"),
-	// 			NetworkSecurityGroup: &armnetwork.SecurityGroup{
-	// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/networkSecurityGroups/nsg"),
-	// 			},
-	// 			Primary: to.Ptr(true),
-	// 			ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
-	// 			VirtualMachine: &armnetwork.SubResource{
-	// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/virtualMachines/vm1"),
-	// 			},
-	// 			VnetEncryptionSupported: to.Ptr(false),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-01-01/CloudServiceNetworkInterfaceGet.json
-func ExampleInterfacesClient_GetCloudServiceNetworkInterface() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewInterfacesClient().GetCloudServiceNetworkInterface(ctx, "rg1", "cs1", "TestVMRole_IN_0", "nic1", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armnetwork.InterfacesClientGetCloudServiceNetworkInterfaceResponse{
-	// 	Interface: armnetwork.Interface{
-	// 		Name: to.Ptr("nic1"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/cloudServices/cs1/roleInstances/TestVMRole_IN_0/networkInterfaces/nic1"),
-	// 		Properties: &armnetwork.InterfacePropertiesFormat{
-	// 			DNSSettings: &armnetwork.InterfaceDNSSettings{
-	// 				AppliedDNSServers: []*string{
-	// 				},
-	// 				DNSServers: []*string{
-	// 				},
-	// 				InternalDomainNameSuffix: to.Ptr("dns.cdmx.internal.cloudapp.net"),
-	// 			},
-	// 			EnableAcceleratedNetworking: to.Ptr(false),
-	// 			EnableIPForwarding: to.Ptr(false),
-	// 			IPConfigurations: []*armnetwork.InterfaceIPConfiguration{
-	// 				{
-	// 					Name: to.Ptr("ip1"),
-	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/cloudServices/cs1/roleInstances/TestVMRole_IN_0/networkInterfaces/nic1/ipConfigurations/ip1"),
-	// 					Properties: &armnetwork.InterfaceIPConfigurationPropertiesFormat{
-	// 						LoadBalancerBackendAddressPools: []*armnetwork.BackendAddressPool{
-	// 							{
-	// 								ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/loadBalancers/lb1/backendAddressPools/addressPool1"),
-	// 							},
-	// 						},
-	// 						LoadBalancerInboundNatRules: []*armnetwork.InboundNatRule{
-	// 							{
-	// 								ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/loadBalancers/lb1/inboundNatRules/natPool1.1"),
-	// 							},
-	// 						},
-	// 						Primary: to.Ptr(true),
-	// 						PrivateIPAddress: to.Ptr("10.0.0.5"),
-	// 						PrivateIPAddressVersion: to.Ptr(armnetwork.IPVersionIPv4),
-	// 						PrivateIPAllocationMethod: to.Ptr(armnetwork.IPAllocationMethodDynamic),
-	// 						ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
-	// 						PublicIPAddress: &armnetwork.PublicIPAddress{
-	// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/cloudServices/cs1/roleInstances/TestVMRole_IN_0/networkInterfaces/nic1/ipConfigurations/ip1/publicIPAddresses/pub1"),
-	// 						},
-	// 						Subnet: &armnetwork.Subnet{
-	// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet1"),
-	// 						},
-	// 					},
-	// 				},
-	// 			},
-	// 			MacAddress: to.Ptr("00-00-00-00-00-00"),
-	// 			NetworkSecurityGroup: &armnetwork.SecurityGroup{
-	// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/networkSecurityGroups/nsg1"),
-	// 			},
-	// 			Primary: to.Ptr(true),
-	// 			ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-01-01/NetworkInterfaceEffectiveRouteTableList.json
+// Generated from example definition: 2026-03-01/NetworkInterfaceEffectiveRouteTableList.json
 func ExampleInterfacesClient_BeginGetEffectiveRouteTable() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -477,8 +318,8 @@ func ExampleInterfacesClient_BeginGetEffectiveRouteTable() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/NetworkInterfaceList.json
-func ExampleInterfacesClient_NewListPager() {
+// Generated from example definition: 2026-03-01/NetworkInterfaceEffectiveNSGList.json
+func ExampleInterfacesClient_BeginListEffectiveNetworkSecurityGroups() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -488,126 +329,242 @@ func ExampleInterfacesClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewInterfacesClient().NewListPager("rg1", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armnetwork.InterfacesClientListResponse{
-		// 	InterfaceListResult: armnetwork.InterfaceListResult{
-		// 		Value: []*armnetwork.Interface{
-		// 			{
-		// 				Name: to.Ptr("test-nic"),
-		// 				Type: to.Ptr("Microsoft.Network/networkInterfaces"),
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/networkInterfaces/test-nic"),
-		// 				Location: to.Ptr("eastus"),
-		// 				Properties: &armnetwork.InterfacePropertiesFormat{
-		// 					DisableTCPStateTracking: to.Ptr(true),
-		// 					DNSSettings: &armnetwork.InterfaceDNSSettings{
-		// 						AppliedDNSServers: []*string{
-		// 						},
-		// 						DNSServers: []*string{
-		// 						},
-		// 						InternalDomainNameSuffix: to.Ptr("test.bx.internal.cloudapp.net"),
-		// 					},
-		// 					EnableAcceleratedNetworking: to.Ptr(true),
-		// 					EnableIPForwarding: to.Ptr(false),
-		// 					IPConfigurations: []*armnetwork.InterfaceIPConfiguration{
-		// 						{
-		// 							Name: to.Ptr("ipconfig1"),
-		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/networkInterfaces/test-nic/ipConfigurations/ipconfig1"),
-		// 							Properties: &armnetwork.InterfaceIPConfigurationPropertiesFormat{
-		// 								Primary: to.Ptr(true),
-		// 								PrivateIPAddress: to.Ptr("172.20.2.4"),
-		// 								PrivateIPAddressVersion: to.Ptr(armnetwork.IPVersionIPv4),
-		// 								PrivateIPAllocationMethod: to.Ptr(armnetwork.IPAllocationMethodDynamic),
-		// 								ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
-		// 								PublicIPAddress: &armnetwork.PublicIPAddress{
-		// 									ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/publicIPAddresses/test-ip"),
-		// 								},
-		// 								Subnet: &armnetwork.Subnet{
-		// 									ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/rg1-vnet/subnets/default"),
-		// 								},
-		// 							},
-		// 						},
-		// 					},
-		// 					MacAddress: to.Ptr("00-0D-3A-1B-C7-21"),
-		// 					NetworkSecurityGroup: &armnetwork.SecurityGroup{
-		// 						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/networkSecurityGroups/nsg"),
-		// 					},
-		// 					Primary: to.Ptr(true),
-		// 					ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
-		// 					VirtualMachine: &armnetwork.SubResource{
-		// 						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/virtualMachines/vm1"),
-		// 					},
-		// 					VnetEncryptionSupported: to.Ptr(false),
-		// 				},
-		// 			},
-		// 			{
-		// 				Name: to.Ptr("test-nic2"),
-		// 				Type: to.Ptr("Microsoft.Network/networkInterfaces"),
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/networkInterfaces/test-nic2"),
-		// 				Location: to.Ptr("eastus"),
-		// 				Properties: &armnetwork.InterfacePropertiesFormat{
-		// 					DNSSettings: &armnetwork.InterfaceDNSSettings{
-		// 						AppliedDNSServers: []*string{
-		// 						},
-		// 						DNSServers: []*string{
-		// 						},
-		// 					},
-		// 					EnableAcceleratedNetworking: to.Ptr(true),
-		// 					EnableIPForwarding: to.Ptr(false),
-		// 					IPConfigurations: []*armnetwork.InterfaceIPConfiguration{
-		// 						{
-		// 							Name: to.Ptr("ipconfig1"),
-		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/networkInterfaces/test-nic2/ipConfigurations/ipconfig1"),
-		// 							Properties: &armnetwork.InterfaceIPConfigurationPropertiesFormat{
-		// 								Primary: to.Ptr(true),
-		// 								PrivateIPAddress: to.Ptr("172.20.2.4"),
-		// 								PrivateIPAddressVersion: to.Ptr(armnetwork.IPVersionIPv4),
-		// 								PrivateIPAllocationMethod: to.Ptr(armnetwork.IPAllocationMethodDynamic),
-		// 								ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
-		// 								PublicIPAddress: &armnetwork.PublicIPAddress{
-		// 									ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/publicIPAddresses/test-ip2"),
-		// 								},
-		// 								Subnet: &armnetwork.Subnet{
-		// 									ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/rg1-vnet2/subnets/default"),
-		// 								},
-		// 							},
-		// 						},
-		// 						{
-		// 							Name: to.Ptr("ipconfig2"),
-		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/networkInterfaces/test-nic/ipConfigurations/ipconfig2"),
-		// 							Properties: &armnetwork.InterfaceIPConfigurationPropertiesFormat{
-		// 								Primary: to.Ptr(false),
-		// 								PrivateIPAddress: to.Ptr("172.20.2.16/28"),
-		// 								PrivateIPAddressPrefixLength: to.Ptr[int32](28),
-		// 								PrivateIPAddressVersion: to.Ptr(armnetwork.IPVersionIPv4),
-		// 								PrivateIPAllocationMethod: to.Ptr(armnetwork.IPAllocationMethodDynamic),
-		// 								ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
-		// 								Subnet: &armnetwork.Subnet{
-		// 									ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/rg1-vnet/subnets/default"),
-		// 								},
-		// 							},
-		// 						},
-		// 					},
-		// 					ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
-		// 					VnetEncryptionSupported: to.Ptr(false),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
+	poller, err := clientFactory.NewInterfacesClient().BeginListEffectiveNetworkSecurityGroups(ctx, "rg1", "nic1", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
 	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armnetwork.InterfacesClientListEffectiveNetworkSecurityGroupsResponse{
+	// 	EffectiveNetworkSecurityGroupListResult: armnetwork.EffectiveNetworkSecurityGroupListResult{
+	// 		Value: []*armnetwork.EffectiveNetworkSecurityGroup{
+	// 			{
+	// 				Association: &armnetwork.EffectiveNetworkSecurityGroupAssociation{
+	// 					NetworkInterface: &armnetwork.SubResource{
+	// 						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/networkInterfaces/nic1"),
+	// 					},
+	// 					NetworkManager: &armnetwork.SubResource{
+	// 						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/networkManagers/nm1"),
+	// 					},
+	// 					Subnet: &armnetwork.SubResource{
+	// 						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/rg1-vnet/subnets/default"),
+	// 					},
+	// 				},
+	// 				EffectiveSecurityRules: []*armnetwork.EffectiveNetworkSecurityRule{
+	// 					{
+	// 						Name: to.Ptr("securityRules/rule1"),
+	// 						Access: to.Ptr(armnetwork.SecurityRuleAccessAllow),
+	// 						DestinationAddressPrefix: to.Ptr("0.0.0.0/32"),
+	// 						DestinationPortRange: to.Ptr("6579-6579"),
+	// 						Direction: to.Ptr(armnetwork.SecurityRuleDirectionInbound),
+	// 						Priority: to.Ptr[int32](234),
+	// 						SourceAddressPrefix: to.Ptr("0.0.0.0/32"),
+	// 						SourcePortRange: to.Ptr("456-456"),
+	// 						Protocol: to.Ptr(armnetwork.EffectiveSecurityRuleProtocolTCP),
+	// 					},
+	// 					{
+	// 						Name: to.Ptr("securityRules/default-allow-rdp"),
+	// 						Access: to.Ptr(armnetwork.SecurityRuleAccessAllow),
+	// 						DestinationAddressPrefix: to.Ptr("0.0.0.0/0"),
+	// 						DestinationPortRange: to.Ptr("3389-3389"),
+	// 						Direction: to.Ptr(armnetwork.SecurityRuleDirectionInbound),
+	// 						Priority: to.Ptr[int32](1000),
+	// 						SourceAddressPrefix: to.Ptr("1.1.1.1/32"),
+	// 						SourcePortRange: to.Ptr("0-65535"),
+	// 						Protocol: to.Ptr(armnetwork.EffectiveSecurityRuleProtocolTCP),
+	// 					},
+	// 					{
+	// 						Name: to.Ptr("defaultSecurityRules/AllowInternetOutBound"),
+	// 						Access: to.Ptr(armnetwork.SecurityRuleAccessAllow),
+	// 						DestinationAddressPrefix: to.Ptr("Internet"),
+	// 						DestinationPortRange: to.Ptr("0-65535"),
+	// 						Direction: to.Ptr(armnetwork.SecurityRuleDirectionOutbound),
+	// 						ExpandedDestinationAddressPrefix: []*string{
+	// 							to.Ptr("32.0.0.0/3"),
+	// 							to.Ptr("4.0.0.0/6"),
+	// 							to.Ptr("2.0.0.0/7"),
+	// 							to.Ptr("1.0.0.0/8"),
+	// 						},
+	// 						Priority: to.Ptr[int32](65001),
+	// 						SourceAddressPrefix: to.Ptr("0.0.0.0/0"),
+	// 						SourcePortRange: to.Ptr("0-65535"),
+	// 						Protocol: to.Ptr(armnetwork.EffectiveSecurityRuleProtocolAll),
+	// 					},
+	// 				},
+	// 				NetworkSecurityGroup: &armnetwork.SubResource{
+	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/networkSecurityGroups/test-nsg"),
+	// 				},
+	// 			},
+	// 		},
+	// 	},
+	// }
 }
 
-// Generated from example definition: 2026-01-01/NetworkInterfaceListAll.json
+// Generated from example definition: 2026-03-01/NetworkInterfaceGet.json
+func ExampleInterfacesClient_Get() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewInterfacesClient().Get(ctx, "rg1", "test-nic", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armnetwork.InterfacesClientGetResponse{
+	// 	Interface: armnetwork.Interface{
+	// 		Name: to.Ptr("test-nic"),
+	// 		Type: to.Ptr("Microsoft.Network/networkInterfaces"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/networkInterfaces/test-nic"),
+	// 		Location: to.Ptr("eastus"),
+	// 		Properties: &armnetwork.InterfacePropertiesFormat{
+	// 			DisableTCPStateTracking: to.Ptr(true),
+	// 			DNSSettings: &armnetwork.InterfaceDNSSettings{
+	// 				AppliedDNSServers: []*string{
+	// 				},
+	// 				DNSServers: []*string{
+	// 				},
+	// 				InternalDomainNameSuffix: to.Ptr("test.bx.internal.cloudapp.net"),
+	// 			},
+	// 			DscpConfiguration: &armnetwork.SubResource{
+	// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/dscpConfiguration/mydscpconfiguration"),
+	// 			},
+	// 			EnableAcceleratedNetworking: to.Ptr(true),
+	// 			EnableIPForwarding: to.Ptr(false),
+	// 			IPConfigurations: []*armnetwork.InterfaceIPConfiguration{
+	// 				{
+	// 					Name: to.Ptr("ipconfig1"),
+	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/networkInterfaces/test-nic/ipConfigurations/ipconfig1"),
+	// 					Properties: &armnetwork.InterfaceIPConfigurationPropertiesFormat{
+	// 						Primary: to.Ptr(true),
+	// 						PrivateIPAddress: to.Ptr("172.20.2.4"),
+	// 						PrivateIPAddressVersion: to.Ptr(armnetwork.IPVersionIPv4),
+	// 						PrivateIPAllocationMethod: to.Ptr(armnetwork.IPAllocationMethodDynamic),
+	// 						ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+	// 						PublicIPAddress: &armnetwork.PublicIPAddress{
+	// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/publicIPAddresses/test-ip"),
+	// 						},
+	// 						Subnet: &armnetwork.Subnet{
+	// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/rg1-vnet/subnets/default"),
+	// 						},
+	// 					},
+	// 				},
+	// 				{
+	// 					Name: to.Ptr("ipconfig2"),
+	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/networkInterfaces/test-nic/ipConfigurations/ipconfig2"),
+	// 					Properties: &armnetwork.InterfaceIPConfigurationPropertiesFormat{
+	// 						Primary: to.Ptr(false),
+	// 						PrivateIPAddress: to.Ptr("172.20.2.16/28"),
+	// 						PrivateIPAddressPrefixLength: to.Ptr[int32](28),
+	// 						PrivateIPAddressVersion: to.Ptr(armnetwork.IPVersionIPv4),
+	// 						PrivateIPAllocationMethod: to.Ptr(armnetwork.IPAllocationMethodDynamic),
+	// 						ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+	// 						Subnet: &armnetwork.Subnet{
+	// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/rg1-vnet/subnets/default"),
+	// 						},
+	// 					},
+	// 				},
+	// 			},
+	// 			MacAddress: to.Ptr("00-0D-3A-1B-C7-21"),
+	// 			NetworkSecurityGroup: &armnetwork.SecurityGroup{
+	// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/networkSecurityGroups/nsg"),
+	// 			},
+	// 			Primary: to.Ptr(true),
+	// 			ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+	// 			VirtualMachine: &armnetwork.SubResource{
+	// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/virtualMachines/vm1"),
+	// 			},
+	// 			VnetEncryptionSupported: to.Ptr(false),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-03-01/CloudServiceNetworkInterfaceGet.json
+func ExampleInterfacesClient_GetCloudServiceNetworkInterface() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewInterfacesClient().GetCloudServiceNetworkInterface(ctx, "rg1", "cs1", "TestVMRole_IN_0", "nic1", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armnetwork.InterfacesClientGetCloudServiceNetworkInterfaceResponse{
+	// 	Interface: armnetwork.Interface{
+	// 		Name: to.Ptr("nic1"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/cloudServices/cs1/roleInstances/TestVMRole_IN_0/networkInterfaces/nic1"),
+	// 		Properties: &armnetwork.InterfacePropertiesFormat{
+	// 			DNSSettings: &armnetwork.InterfaceDNSSettings{
+	// 				AppliedDNSServers: []*string{
+	// 				},
+	// 				DNSServers: []*string{
+	// 				},
+	// 				InternalDomainNameSuffix: to.Ptr("dns.cdmx.internal.cloudapp.net"),
+	// 			},
+	// 			EnableAcceleratedNetworking: to.Ptr(false),
+	// 			EnableIPForwarding: to.Ptr(false),
+	// 			IPConfigurations: []*armnetwork.InterfaceIPConfiguration{
+	// 				{
+	// 					Name: to.Ptr("ip1"),
+	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/cloudServices/cs1/roleInstances/TestVMRole_IN_0/networkInterfaces/nic1/ipConfigurations/ip1"),
+	// 					Properties: &armnetwork.InterfaceIPConfigurationPropertiesFormat{
+	// 						LoadBalancerBackendAddressPools: []*armnetwork.BackendAddressPool{
+	// 							{
+	// 								ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/loadBalancers/lb1/backendAddressPools/addressPool1"),
+	// 							},
+	// 						},
+	// 						LoadBalancerInboundNatRules: []*armnetwork.InboundNatRule{
+	// 							{
+	// 								ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/loadBalancers/lb1/inboundNatRules/natPool1.1"),
+	// 							},
+	// 						},
+	// 						Primary: to.Ptr(true),
+	// 						PrivateIPAddress: to.Ptr("10.0.0.5"),
+	// 						PrivateIPAddressVersion: to.Ptr(armnetwork.IPVersionIPv4),
+	// 						PrivateIPAllocationMethod: to.Ptr(armnetwork.IPAllocationMethodDynamic),
+	// 						ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+	// 						PublicIPAddress: &armnetwork.PublicIPAddress{
+	// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/cloudServices/cs1/roleInstances/TestVMRole_IN_0/networkInterfaces/nic1/ipConfigurations/ip1/publicIPAddresses/pub1"),
+	// 						},
+	// 						Subnet: &armnetwork.Subnet{
+	// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet1"),
+	// 						},
+	// 					},
+	// 				},
+	// 			},
+	// 			MacAddress: to.Ptr("00-00-00-00-00-00"),
+	// 			NetworkSecurityGroup: &armnetwork.SecurityGroup{
+	// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/networkSecurityGroups/nsg1"),
+	// 			},
+	// 			Primary: to.Ptr(true),
+	// 			ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-03-01/NetworkInterfaceListAll.json
 func ExampleInterfacesClient_NewListAllPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -723,7 +680,7 @@ func ExampleInterfacesClient_NewListAllPager() {
 	}
 }
 
-// Generated from example definition: 2026-01-01/CloudServiceNetworkInterfaceList.json
+// Generated from example definition: 2026-03-01/CloudServiceNetworkInterfaceList.json
 func ExampleInterfacesClient_NewListCloudServiceNetworkInterfacesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -854,7 +811,7 @@ func ExampleInterfacesClient_NewListCloudServiceNetworkInterfacesPager() {
 	}
 }
 
-// Generated from example definition: 2026-01-01/CloudServiceRoleInstanceNetworkInterfaceList.json
+// Generated from example definition: 2026-03-01/CloudServiceRoleInstanceNetworkInterfaceList.json
 func ExampleInterfacesClient_NewListCloudServiceRoleInstanceNetworkInterfacesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -935,8 +892,8 @@ func ExampleInterfacesClient_NewListCloudServiceRoleInstanceNetworkInterfacesPag
 	}
 }
 
-// Generated from example definition: 2026-01-01/NetworkInterfaceEffectiveNSGList.json
-func ExampleInterfacesClient_BeginListEffectiveNetworkSecurityGroups() {
+// Generated from example definition: 2026-03-01/NetworkInterfaceList.json
+func ExampleInterfacesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -946,83 +903,126 @@ func ExampleInterfacesClient_BeginListEffectiveNetworkSecurityGroups() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewInterfacesClient().BeginListEffectiveNetworkSecurityGroups(ctx, "rg1", "nic1", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
+	pager := clientFactory.NewInterfacesClient().NewListPager("rg1", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armnetwork.InterfacesClientListResponse{
+		// 	InterfaceListResult: armnetwork.InterfaceListResult{
+		// 		Value: []*armnetwork.Interface{
+		// 			{
+		// 				Name: to.Ptr("test-nic"),
+		// 				Type: to.Ptr("Microsoft.Network/networkInterfaces"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/networkInterfaces/test-nic"),
+		// 				Location: to.Ptr("eastus"),
+		// 				Properties: &armnetwork.InterfacePropertiesFormat{
+		// 					DisableTCPStateTracking: to.Ptr(true),
+		// 					DNSSettings: &armnetwork.InterfaceDNSSettings{
+		// 						AppliedDNSServers: []*string{
+		// 						},
+		// 						DNSServers: []*string{
+		// 						},
+		// 						InternalDomainNameSuffix: to.Ptr("test.bx.internal.cloudapp.net"),
+		// 					},
+		// 					EnableAcceleratedNetworking: to.Ptr(true),
+		// 					EnableIPForwarding: to.Ptr(false),
+		// 					IPConfigurations: []*armnetwork.InterfaceIPConfiguration{
+		// 						{
+		// 							Name: to.Ptr("ipconfig1"),
+		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/networkInterfaces/test-nic/ipConfigurations/ipconfig1"),
+		// 							Properties: &armnetwork.InterfaceIPConfigurationPropertiesFormat{
+		// 								Primary: to.Ptr(true),
+		// 								PrivateIPAddress: to.Ptr("172.20.2.4"),
+		// 								PrivateIPAddressVersion: to.Ptr(armnetwork.IPVersionIPv4),
+		// 								PrivateIPAllocationMethod: to.Ptr(armnetwork.IPAllocationMethodDynamic),
+		// 								ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+		// 								PublicIPAddress: &armnetwork.PublicIPAddress{
+		// 									ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/publicIPAddresses/test-ip"),
+		// 								},
+		// 								Subnet: &armnetwork.Subnet{
+		// 									ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/rg1-vnet/subnets/default"),
+		// 								},
+		// 							},
+		// 						},
+		// 					},
+		// 					MacAddress: to.Ptr("00-0D-3A-1B-C7-21"),
+		// 					NetworkSecurityGroup: &armnetwork.SecurityGroup{
+		// 						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/networkSecurityGroups/nsg"),
+		// 					},
+		// 					Primary: to.Ptr(true),
+		// 					ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+		// 					VirtualMachine: &armnetwork.SubResource{
+		// 						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/virtualMachines/vm1"),
+		// 					},
+		// 					VnetEncryptionSupported: to.Ptr(false),
+		// 				},
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("test-nic2"),
+		// 				Type: to.Ptr("Microsoft.Network/networkInterfaces"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/networkInterfaces/test-nic2"),
+		// 				Location: to.Ptr("eastus"),
+		// 				Properties: &armnetwork.InterfacePropertiesFormat{
+		// 					DNSSettings: &armnetwork.InterfaceDNSSettings{
+		// 						AppliedDNSServers: []*string{
+		// 						},
+		// 						DNSServers: []*string{
+		// 						},
+		// 					},
+		// 					EnableAcceleratedNetworking: to.Ptr(true),
+		// 					EnableIPForwarding: to.Ptr(false),
+		// 					IPConfigurations: []*armnetwork.InterfaceIPConfiguration{
+		// 						{
+		// 							Name: to.Ptr("ipconfig1"),
+		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/networkInterfaces/test-nic2/ipConfigurations/ipconfig1"),
+		// 							Properties: &armnetwork.InterfaceIPConfigurationPropertiesFormat{
+		// 								Primary: to.Ptr(true),
+		// 								PrivateIPAddress: to.Ptr("172.20.2.4"),
+		// 								PrivateIPAddressVersion: to.Ptr(armnetwork.IPVersionIPv4),
+		// 								PrivateIPAllocationMethod: to.Ptr(armnetwork.IPAllocationMethodDynamic),
+		// 								ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+		// 								PublicIPAddress: &armnetwork.PublicIPAddress{
+		// 									ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/publicIPAddresses/test-ip2"),
+		// 								},
+		// 								Subnet: &armnetwork.Subnet{
+		// 									ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/rg1-vnet2/subnets/default"),
+		// 								},
+		// 							},
+		// 						},
+		// 						{
+		// 							Name: to.Ptr("ipconfig2"),
+		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/networkInterfaces/test-nic/ipConfigurations/ipconfig2"),
+		// 							Properties: &armnetwork.InterfaceIPConfigurationPropertiesFormat{
+		// 								Primary: to.Ptr(false),
+		// 								PrivateIPAddress: to.Ptr("172.20.2.16/28"),
+		// 								PrivateIPAddressPrefixLength: to.Ptr[int32](28),
+		// 								PrivateIPAddressVersion: to.Ptr(armnetwork.IPVersionIPv4),
+		// 								PrivateIPAllocationMethod: to.Ptr(armnetwork.IPAllocationMethodDynamic),
+		// 								ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+		// 								Subnet: &armnetwork.Subnet{
+		// 									ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/rg1-vnet/subnets/default"),
+		// 								},
+		// 							},
+		// 						},
+		// 					},
+		// 					ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+		// 					VnetEncryptionSupported: to.Ptr(false),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
 	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armnetwork.InterfacesClientListEffectiveNetworkSecurityGroupsResponse{
-	// 	EffectiveNetworkSecurityGroupListResult: armnetwork.EffectiveNetworkSecurityGroupListResult{
-	// 		Value: []*armnetwork.EffectiveNetworkSecurityGroup{
-	// 			{
-	// 				Association: &armnetwork.EffectiveNetworkSecurityGroupAssociation{
-	// 					NetworkInterface: &armnetwork.SubResource{
-	// 						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/networkInterfaces/nic1"),
-	// 					},
-	// 					NetworkManager: &armnetwork.SubResource{
-	// 						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/networkManagers/nm1"),
-	// 					},
-	// 					Subnet: &armnetwork.SubResource{
-	// 						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/rg1-vnet/subnets/default"),
-	// 					},
-	// 				},
-	// 				EffectiveSecurityRules: []*armnetwork.EffectiveNetworkSecurityRule{
-	// 					{
-	// 						Name: to.Ptr("securityRules/rule1"),
-	// 						Access: to.Ptr(armnetwork.SecurityRuleAccessAllow),
-	// 						DestinationAddressPrefix: to.Ptr("0.0.0.0/32"),
-	// 						DestinationPortRange: to.Ptr("6579-6579"),
-	// 						Direction: to.Ptr(armnetwork.SecurityRuleDirectionInbound),
-	// 						Priority: to.Ptr[int32](234),
-	// 						SourceAddressPrefix: to.Ptr("0.0.0.0/32"),
-	// 						SourcePortRange: to.Ptr("456-456"),
-	// 						Protocol: to.Ptr(armnetwork.EffectiveSecurityRuleProtocolTCP),
-	// 					},
-	// 					{
-	// 						Name: to.Ptr("securityRules/default-allow-rdp"),
-	// 						Access: to.Ptr(armnetwork.SecurityRuleAccessAllow),
-	// 						DestinationAddressPrefix: to.Ptr("0.0.0.0/0"),
-	// 						DestinationPortRange: to.Ptr("3389-3389"),
-	// 						Direction: to.Ptr(armnetwork.SecurityRuleDirectionInbound),
-	// 						Priority: to.Ptr[int32](1000),
-	// 						SourceAddressPrefix: to.Ptr("1.1.1.1/32"),
-	// 						SourcePortRange: to.Ptr("0-65535"),
-	// 						Protocol: to.Ptr(armnetwork.EffectiveSecurityRuleProtocolTCP),
-	// 					},
-	// 					{
-	// 						Name: to.Ptr("defaultSecurityRules/AllowInternetOutBound"),
-	// 						Access: to.Ptr(armnetwork.SecurityRuleAccessAllow),
-	// 						DestinationAddressPrefix: to.Ptr("Internet"),
-	// 						DestinationPortRange: to.Ptr("0-65535"),
-	// 						Direction: to.Ptr(armnetwork.SecurityRuleDirectionOutbound),
-	// 						ExpandedDestinationAddressPrefix: []*string{
-	// 							to.Ptr("32.0.0.0/3"),
-	// 							to.Ptr("4.0.0.0/6"),
-	// 							to.Ptr("2.0.0.0/7"),
-	// 							to.Ptr("1.0.0.0/8"),
-	// 						},
-	// 						Priority: to.Ptr[int32](65001),
-	// 						SourceAddressPrefix: to.Ptr("0.0.0.0/0"),
-	// 						SourcePortRange: to.Ptr("0-65535"),
-	// 						Protocol: to.Ptr(armnetwork.EffectiveSecurityRuleProtocolAll),
-	// 					},
-	// 				},
-	// 				NetworkSecurityGroup: &armnetwork.SubResource{
-	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/networkSecurityGroups/test-nsg"),
-	// 				},
-	// 			},
-	// 		},
-	// 	},
-	// }
 }
 
-// Generated from example definition: 2026-01-01/NetworkInterfaceUpdateTags.json
+// Generated from example definition: 2026-03-01/NetworkInterfaceUpdateTags.json
 func ExampleInterfacesClient_UpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

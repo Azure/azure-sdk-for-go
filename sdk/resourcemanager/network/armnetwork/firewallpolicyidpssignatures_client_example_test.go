@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01/FirewallPolicyQuerySignatureOverrides.json
+// Generated from example definition: 2026-03-01/FirewallPolicyQuerySignatureOverrides.json
 func ExampleFirewallPolicyIdpsSignaturesClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

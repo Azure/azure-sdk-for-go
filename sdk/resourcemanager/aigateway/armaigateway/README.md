@@ -1,6 +1,6 @@
-# Azure AI Gateway Module for Go
+# Azure Aigateway Module for Go
 
-The `armaigateway` module provides operations for working with Azure AI Gateway.
+The `armaigateway` module provides operations for working with Azure Aigateway.
 
 [Source code](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/resourcemanager/aigateway/armaigateway)
 
@@ -15,7 +15,7 @@ The `armaigateway` module provides operations for working with Azure AI Gateway.
 
 This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for versioning and dependency management.
 
-Install the Azure AI Gateway module:
+Install the Azure Aigateway module:
 
 ```sh
 go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/aigateway/armaigateway
@@ -23,7 +23,7 @@ go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/aigateway/armaigate
 
 ## Authorization
 
-When creating a client, you will need to provide a credential for authenticating with Azure AI Gateway.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
+When creating a client, you will need to provide a credential for authenticating with Azure Aigateway.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
 
 ```go
 cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -33,7 +33,7 @@ For more information on authentication, please see the documentation for `aziden
 
 ## Client Factory
 
-Azure AI Gateway module consists of one or more clients. We provide a client factory which could be used to create any client in this module.
+Azure Aigateway module consists of one or more clients. We provide a client factory which could be used to create any client in this module.
 
 ```go
 clientFactory, err := armaigateway.NewClientFactory(<subscription ID>, cred, nil)

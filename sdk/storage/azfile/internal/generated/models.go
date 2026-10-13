@@ -152,6 +152,33 @@ func (f *File) UnmarshalXML(dec *xml.Decoder, start xml.StartElement) error {
 	return nil
 }
 
+// UnmarshalXML implements the xml.Unmarshaller interface for type HardLink.
+// The service percent-encodes a FileName that cannot be represented in XML and marks it with Encoded="true".
+func (h *HardLink) UnmarshalXML(dec *xml.Decoder, start xml.StartElement) error {
+	type alias HardLink
+	aux := &struct {
+		*alias
+		FileName *StringEncoded `xml:"FileName"`
+	}{
+		alias: (*alias)(h),
+	}
+	if err := dec.DecodeElement(aux, &start); err != nil {
+		return err
+	}
+	if aux.FileName != nil {
+		if aux.FileName.Encoded != nil && *aux.FileName.Encoded && aux.FileName.Content != nil {
+			name, err := url.QueryUnescape(*aux.FileName.Content)
+			if err != nil {
+				return err
+			}
+			h.FileName = to.Ptr(name)
+		} else {
+			h.FileName = aux.FileName.Content
+		}
+	}
+	return nil
+}
+
 // UnmarshalXML implements the xml.Unmarshaller interface for type ListFilesAndDirectoriesSegmentResponse.
 func (l *ListFilesAndDirectoriesSegmentResponse) UnmarshalXML(dec *xml.Decoder, start xml.StartElement) error {
 	type alias ListFilesAndDirectoriesSegmentResponse

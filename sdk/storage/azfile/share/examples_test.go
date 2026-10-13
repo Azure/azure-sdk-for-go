@@ -5,9 +5,11 @@ package share_test
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/fileerror"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/sas"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/service"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/share"
@@ -105,6 +107,48 @@ func Example_share_Client_NewRootDirectoryClient() {
 	dirClient := shareClient.NewRootDirectoryClient()
 
 	fmt.Println(dirClient.URL())
+}
+
+func Example_share_Client_NewFileClientByFileID() {
+	accountName, ok := os.LookupEnv("AZURE_STORAGE_ACCOUNT_NAME")
+	if !ok {
+		panic("AZURE_STORAGE_ACCOUNT_NAME could not be found")
+	}
+	accountKey, ok := os.LookupEnv("AZURE_STORAGE_ACCOUNT_KEY")
+	if !ok {
+		panic("AZURE_STORAGE_ACCOUNT_KEY could not be found")
+	}
+
+	shareName := "testshare"
+	shareURL := fmt.Sprintf("https://%s.file.core.windows.net/%s", accountName, shareName)
+
+	cred, err := service.NewSharedKeyCredential(accountName, accountKey)
+	handleError(err)
+
+	shareClient, err := share.NewClientWithSharedKeyCredential(shareURL, cred, nil)
+	handleError(err)
+
+	// the file ID of a file is returned by GetProperties, or by a change feed event
+	props, err := shareClient.NewRootDirectoryClient().NewFileClient("testfile").GetProperties(context.TODO(), nil)
+	handleError(err)
+
+	// a client that addresses the file by its file ID only supports GetProperties and GetFileLinks
+	fileClient := shareClient.NewFileClientByFileID(*props.ID)
+	fmt.Println(fileClient.URL())
+
+	fileProps, err := fileClient.GetProperties(context.TODO(), nil)
+	handleError(err)
+	fmt.Println("file name:", *fileProps.FileName, "parent ID:", *fileProps.ParentID)
+
+	links, err := fileClient.GetFileLinks(context.TODO(), nil)
+	handleError(err)
+	for _, link := range links.HardLinks {
+		fmt.Println("hard link:", *link.FileName, "parent ID:", *link.ParentID)
+	}
+
+	// other operations return an error without sending a request
+	_, err = fileClient.Delete(context.TODO(), nil)
+	fmt.Println(errors.Is(err, fileerror.ErrFileIDNotSupported))
 }
 
 func Example_share_Client_CreateSnapshot() {

@@ -24,8 +24,7 @@ func (c *Client) openQuery(ctx context.Context, req *queryRequest) (queryCursor,
 	if err != nil {
 		return nil, Response{}, err
 	}
-	// Resolve through the native cache each page: Go's lifetime-cached handle can retain a
-	// deleted container's RID and invalidate tokens issued for its replacement.
+	// Resolve through the native driver for each page so Rust owns metadata caching and refresh.
 	container, err := d.submitResolveContainer(ctx, driver, req.databaseID, req.containerID)
 	if err != nil {
 		return nil, Response{}, err

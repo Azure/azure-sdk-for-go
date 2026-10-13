@@ -47,23 +47,18 @@ func (d *nativeDriver) execute(ctx context.Context, req itemRequest) (ItemRespon
 		return ItemResponse{}, nil, err
 	}
 
-	container, err := d.resolveContainer(ctx, driver, req.databaseID, req.containerID)
+	container, err := d.submitResolveContainer(ctx, driver, req.databaseID, req.containerID)
 	if err != nil {
 		return ItemResponse{}, nil, err
 	}
-	defer container.release()
+	defer C.cosmos_container_ref_free(container)
 
 	// Initialization and resolution have already spent part of the budget, so the operation gets
 	// only what remains rather than restarting the configured duration.
 	req.options.EndToEndTimeout = endToEndTimeout(ctx, 0)
 
 	submit := func(queue *C.cosmos_completion_queue_t, cookie C.intptr_t, preError *C.cosmos_status_code_t) *C.cosmos_operation_handle_t {
-		operation := d.submit(driver, container.handle(), req, queue, cookie, preError)
-		// The native submit path synchronously clones the container reference while converting
-		// the request, so eviction may free this cache handle once the call returns. The deferred
-		// release above remains as the fallback when cancellation prevents submission entirely.
-		container.release()
-		return operation
+		return d.submit(driver, container, req, queue, cookie, preError)
 	}
 
 	// Only a write can leave a side effect that must not be misreported as cancelled after it
@@ -376,72 +371,8 @@ func inspectNativeItemRequest(req itemRequest) (nativeItemRequest, func()) {
 	return converted, release
 }
 
-// resolveContainer borrows the driver's handle for a container, resolving it on first use.
-//
-// Resolution reads the container's metadata from the gateway on a cache miss, so the handle is
-// cached per client: an item operation would otherwise pay for that lookup every call. It is
-// awaited rather than blocked on, so a miss does not make an operation ignore its context.
-//
-// The lock is not held across the resolution, so two callers can miss on the same container at
-// once. That is deliberate: holding it would serialize every miss behind one gateway round trip,
-// including misses for unrelated containers. The loser of the race frees its own handle and takes
-// the winner's, so the cache keeps exactly one handle per key.
-func (d *nativeDriver) resolveContainer(
-	ctx context.Context,
-	driver *C.cosmos_driver_t,
-	databaseID, containerID string,
-) (*containerLease, error) {
-	key := databaseID + "/" + containerID
-
-	d.mu.Lock()
-	if d.closed {
-		d.mu.Unlock()
-		return nil, errClientClosed()
-	}
-	if entry, ok := d.containers[key]; ok {
-		if !entry.state.borrow() {
-			d.mu.Unlock()
-			panic("azcosmos: retired container cache entry remained addressable")
-		}
-		d.mu.Unlock()
-		return &containerLease{driver: d, entry: entry}, nil
-	}
-	d.mu.Unlock()
-
-	handle, err := d.submitResolveContainer(ctx, driver, databaseID, containerID)
-	if err != nil {
-		return nil, err
-	}
-
-	d.mu.Lock()
-	if d.closed {
-		// Closed while the resolution was in flight, so close has already emptied the cache and
-		// this handle has no other owner.
-		d.mu.Unlock()
-		C.cosmos_container_ref_free(handle)
-		return nil, errClientClosed()
-	}
-	if existing, ok := d.containers[key]; ok {
-		if !existing.state.borrow() {
-			d.mu.Unlock()
-			C.cosmos_container_ref_free(handle)
-			panic("azcosmos: retired container cache entry remained addressable")
-		}
-		d.mu.Unlock()
-		C.cosmos_container_ref_free(handle)
-		return &containerLease{driver: d, entry: existing}, nil
-	}
-	if d.containers == nil {
-		d.containers = make(map[string]*containerCacheEntry)
-	}
-	entry := &containerCacheEntry{handle: handle}
-	entry.state.borrow()
-	d.containers[key] = entry
-	d.mu.Unlock()
-	return &containerLease{driver: d, entry: entry}, nil
-}
-
-// submitResolveContainer runs one container resolution against the driver.
+// submitResolveContainer resolves one operation-owned container handle through the native driver.
+// The driver owns metadata caching and stale-resource refresh; Go frees only the returned handle.
 func (d *nativeDriver) submitResolveContainer(
 	ctx context.Context,
 	driver *C.cosmos_driver_t,

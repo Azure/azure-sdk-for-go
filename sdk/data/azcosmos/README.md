@@ -72,8 +72,8 @@ it has not already run. The diagnostic build has no driver to initialize and rep
 `Initialize`.
 
 Container metadata is not fetched during client construction because the client does not know which
-containers the application will use. The first operation on a container resolves and caches that
-container's metadata.
+containers the application will use. Each operation resolves its container through the native
+driver, which owns metadata caching and stale-resource refresh.
 
 One limit applies to the driver-backed build today: v1's WebAssembly support does not carry over.
 

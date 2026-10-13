@@ -65,23 +65,3 @@ func TestManagementRequestLeavesUnsetScopeHandlesNil(t *testing.T) {
 	require.False(t, request.hasDatabase)
 	require.False(t, request.hasContainer)
 }
-
-func TestContainerCacheStateRetiresAfterLastBorrower(t *testing.T) {
-	var state containerCacheState
-	require.True(t, state.borrow())
-	require.True(t, state.borrow())
-
-	require.False(t, state.retire(), "a borrowed entry must not be freed during retirement")
-	require.False(t, state.borrow(), "retired entries must not admit new borrowers")
-	require.False(t, state.release(), "the first borrower must leave the handle alive")
-	require.True(t, state.release(), "the final borrower must claim the handle for freeing")
-	require.False(t, state.retire(), "retirement must be idempotent")
-	require.True(t, state.freed)
-}
-
-func TestContainerCacheStateRetiresUnborrowedEntryImmediately(t *testing.T) {
-	var state containerCacheState
-	require.True(t, state.retire())
-	require.False(t, state.retire())
-	require.True(t, state.freed)
-}

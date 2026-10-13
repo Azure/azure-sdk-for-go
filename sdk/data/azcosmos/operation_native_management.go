@@ -15,8 +15,6 @@ import "C"
 
 import (
 	"context"
-	"errors"
-	"strings"
 	"unsafe"
 )
 
@@ -38,9 +36,8 @@ func (c *Client) executeManagement(
 // executeManagement resolves the account/database/container scope the operation needs, submits
 // it, and converts the result.
 //
-// Database and container references used here are pure value-type constructions (database) or
-// gateway-metadata lookups cached per client (container, shared with item operations); neither
-// path mutates service state by itself.
+// Database references are pure value-type constructions. Container references are resolved through
+// the native driver for each operation so Rust owns metadata caching and stale-resource refresh.
 func (d *nativeDriver) executeManagement(
 	ctx context.Context,
 	kind operationKind,
@@ -57,7 +54,7 @@ func (d *nativeDriver) executeManagement(
 	}
 
 	var database *C.cosmos_database_ref_t
-	var container *containerLease
+	var container *C.cosmos_container_ref_t
 
 	switch kind {
 	case operationKindReadDatabase, operationKindDeleteDatabase, operationKindCreateContainer:
@@ -67,11 +64,11 @@ func (d *nativeDriver) executeManagement(
 		}
 		defer C.cosmos_database_ref_free(database)
 	case operationKindReadContainer, operationKindDeleteContainer:
-		container, err = d.resolveContainer(ctx, driver, databaseID, containerID)
+		container, err = d.submitResolveContainer(ctx, driver, databaseID, containerID)
 		if err != nil {
 			return ItemResponse{}, nil, err
 		}
-		defer container.release()
+		defer C.cosmos_container_ref_free(container)
 	}
 
 	// Resolution has already spent part of the budget, so the operation gets only what remains
@@ -79,14 +76,9 @@ func (d *nativeDriver) executeManagement(
 	operation.EndToEndTimeout = endToEndTimeout(ctx, 0)
 
 	submit := func(queue *C.cosmos_completion_queue_t, cookie C.intptr_t, preError *C.cosmos_status_code_t) *C.cosmos_operation_handle_t {
-		request, release := buildNativeManagementRequest(kind, d.account, database, container.handle(), body, operation)
+		request, release := buildNativeManagementRequest(kind, d.account, database, container, body, operation)
 		defer release()
-		handle := C.cosmos_submit_singleton_operation(driver, &request, queue, cookie, preError) //nolint:gocritic // dupSubExpr targets cgo-generated code.
-		// Request conversion synchronously clones the container reference, so the cache borrow is
-		// no longer needed after submission. The function-level defer remains the fallback for a
-		// context that ends before this closure is invoked.
-		container.release()
-		return handle
+		return C.cosmos_submit_singleton_operation(driver, &request, queue, cookie, preError) //nolint:gocritic // dupSubExpr targets cgo-generated code.
 	}
 
 	// Only a write can leave a side effect that must not be misreported as cancelled after it
@@ -100,29 +92,7 @@ func (d *nativeDriver) executeManagement(
 	if err != nil {
 		return ItemResponse{}, nil, err
 	}
-	switch kind {
-	case operationKindCreateContainer:
-		if result.err == nil {
-			d.evictContainer(databaseID, containerID)
-		}
-	case operationKindDeleteContainer:
-		if invalidatesContainerCache(result.err) {
-			d.evictContainer(databaseID, containerID)
-		}
-	case operationKindDeleteDatabase:
-		if invalidatesContainerCache(result.err) {
-			d.evictDatabase(databaseID)
-		}
-	}
 	return result.response, result.body, result.err
-}
-
-func invalidatesContainerCache(err error) bool {
-	if err == nil {
-		return true
-	}
-	var cosmosErr *Error
-	return errors.As(err, &cosmosErr) && cosmosErr.Code == CodeNotFound
 }
 
 // nativeManagementRequest is a converted management request in Go types, for tests that cannot
@@ -174,8 +144,7 @@ func inspectNativeManagementRequestWithOptions(
 	return converted, release
 }
 
-// createDatabaseRef builds a pure value-type database reference. It performs no network I/O, so
-// unlike resolveContainer it needs neither a cache nor a context.
+// createDatabaseRef builds a pure value-type database reference. It performs no network I/O.
 func (d *nativeDriver) createDatabaseRef(databaseID string) (*C.cosmos_database_ref_t, error) {
 	cDatabaseID, allocation := toNativeString(databaseID)
 	defer C.free(allocation)
@@ -192,46 +161,6 @@ func (d *nativeDriver) createDatabaseRef(databaseID string) (*C.cosmos_database_
 		}
 	}
 	return out, nil
-}
-
-// evictContainer removes a cached container handle from lookup immediately. It frees the handle
-// once any submission that already borrowed it has finished request conversion.
-func (d *nativeDriver) evictContainer(databaseID, containerID string) {
-	key := databaseID + "/" + containerID
-	d.mu.Lock()
-	var handle *C.cosmos_container_ref_t
-	if entry, ok := d.containers[key]; ok {
-		delete(d.containers, key)
-		if entry.state.retire() {
-			handle = entry.handle
-			entry.handle = nil
-		}
-	}
-	d.mu.Unlock()
-	if handle != nil {
-		C.cosmos_container_ref_free(handle)
-	}
-}
-
-// evictDatabase removes every cached container handle scoped to databaseID from lookup, then frees
-// each once its existing submitters have finished request conversion.
-func (d *nativeDriver) evictDatabase(databaseID string) {
-	prefix := databaseID + "/"
-	d.mu.Lock()
-	var handles []*C.cosmos_container_ref_t
-	for key, entry := range d.containers {
-		if strings.HasPrefix(key, prefix) {
-			delete(d.containers, key)
-			if entry.state.retire() {
-				handles = append(handles, entry.handle)
-				entry.handle = nil
-			}
-		}
-	}
-	d.mu.Unlock()
-	for _, handle := range handles {
-		C.cosmos_container_ref_free(handle)
-	}
 }
 
 // buildNativeManagementRequest converts a management operation into the borrowed C request passed

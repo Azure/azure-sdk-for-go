@@ -17,10 +17,9 @@ import (
 // unique key policy, read both back, use the new container for an item operation, then delete the
 // container and the database and confirm each is gone.
 //
-// This is the one place the native management dispatch path (scope resolution, response decoding,
-// and the delete-time cache eviction) is exercised as a whole rather than in pieces; the rest of
-// this package's management tests stop at validation, auth-gating, or request/response conversion
-// in isolation.
+// This is the one place the native management dispatch path (scope resolution and response
+// decoding) is exercised as a whole rather than in pieces; the rest of this package's management
+// tests stop at validation, auth-gating, or request/response conversion in isolation.
 func TestEmulatorDatabaseAndContainerLifecycle(t *testing.T) {
 	client, _, _ := emulatorClientConfigured(t, nil, false)
 	ctx := context.Background()
@@ -84,7 +83,7 @@ func TestEmulatorDatabaseAndContainerLifecycle(t *testing.T) {
 	require.Equal(t, 204, deleteContainerResp.StatusCode)
 
 	// The container is gone, so creating a fresh one under the same name and using it right away
-	// has to resolve the new container, not reuse the deleted one's cached resource id.
+	// has to resolve the replacement's resource ID through the native driver.
 	recreatedResp, err := database.CreateContainer(ctx, containerProps, nil)
 	require.NoError(t, err)
 	require.Equal(t, 201, recreatedResp.StatusCode)
@@ -106,7 +105,7 @@ func TestEmulatorDatabaseAndContainerLifecycle(t *testing.T) {
 	require.Equal(t, CodeNotFound, cosmosErr.Code)
 }
 
-func TestEmulatorDatabaseDeleteInvalidatesEveryCachedContainer(t *testing.T) {
+func TestEmulatorDatabaseRecreationResolvesReplacementContainers(t *testing.T) {
 	client, _, _ := emulatorClientConfigured(t, nil, false)
 	ctx := t.Context()
 
@@ -161,7 +160,7 @@ func TestEmulatorDatabaseDeleteInvalidatesEveryCachedContainer(t *testing.T) {
 	}
 }
 
-func TestEmulatorOutOfBandContainerRecreationInvalidatesCachedIdentity(t *testing.T) {
+func TestEmulatorOutOfBandContainerRecreationResolvesFreshIdentity(t *testing.T) {
 	clientA, _, _ := emulatorClientConfigured(t, nil, false)
 	clientB, _, _ := emulatorClientConfigured(t, nil, false)
 	ctx := t.Context()

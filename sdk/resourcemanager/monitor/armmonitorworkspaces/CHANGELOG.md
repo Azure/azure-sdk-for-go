@@ -1,6 +1,6 @@
 # Release History
 
-## 1.1.0-beta.1 (2026-10-09)
+## 1.1.0-beta.1 (2026-10-13)
 ### Features Added
 
 - New enum type `MetricConfigurationType` with values `MetricConfigurationTypeAggregated`, `MetricConfigurationTypeRaw`

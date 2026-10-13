@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-04-01-preview/NameAvailabilityCheckGlobally.json
+// Generated from example definition: 2026-07-01-preview/NameAvailabilityCheckGlobally.json
 func ExampleNameAvailabilityClient_CheckGlobally() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -43,7 +43,7 @@ func ExampleNameAvailabilityClient_CheckGlobally() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/NameAvailabilityCheckWithLocation.json
+// Generated from example definition: 2026-07-01-preview/NameAvailabilityCheckWithLocation.json
 func ExampleNameAvailabilityClient_CheckWithLocation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -132,10 +132,7 @@ func (e *EdgeDevicesServerTransport) dispatchBeginCreateOrUpdate(req *http.Reque
 		if err != nil {
 			return nil, err
 		}
-		resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
-		if err != nil {
-			return nil, err
-		}
+		resourceURIParam := matches[regex.SubexpIndex("resourceUri")]
 		edgeDeviceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("edgeDeviceName")])
 		if err != nil {
 			return nil, err
@@ -176,10 +173,7 @@ func (e *EdgeDevicesServerTransport) dispatchBeginDelete(req *http.Request) (*ht
 		if len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
-		if err != nil {
-			return nil, err
-		}
+		resourceURIParam := matches[regex.SubexpIndex("resourceUri")]
 		edgeDeviceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("edgeDeviceName")])
 		if err != nil {
 			return nil, err
@@ -218,10 +212,7 @@ func (e *EdgeDevicesServerTransport) dispatchGet(req *http.Request) (*http.Respo
 	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
-	if err != nil {
-		return nil, err
-	}
+	resourceURIParam := matches[regex.SubexpIndex("resourceUri")]
 	edgeDeviceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("edgeDeviceName")])
 	if err != nil {
 		return nil, err
@@ -253,10 +244,7 @@ func (e *EdgeDevicesServerTransport) dispatchNewListPager(req *http.Request) (*h
 		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
-		if err != nil {
-			return nil, err
-		}
+		resourceURIParam := matches[regex.SubexpIndex("resourceUri")]
 		resp := e.srv.NewListPager(resourceURIParam, nil)
 		newListPager = &resp
 		e.newListPager.add(req, newListPager)
@@ -294,10 +282,7 @@ func (e *EdgeDevicesServerTransport) dispatchBeginValidate(req *http.Request) (*
 		if err != nil {
 			return nil, err
 		}
-		resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
-		if err != nil {
-			return nil, err
-		}
+		resourceURIParam := matches[regex.SubexpIndex("resourceUri")]
 		edgeDeviceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("edgeDeviceName")])
 		if err != nil {
 			return nil, err

@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-04-01-preview/BackupsAutomaticAndOnDemandCreate.json
+// Generated from example definition: 2026-07-01-preview/BackupsAutomaticAndOnDemandCreate.json
 func ExampleBackupsAutomaticAndOnDemandClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -32,7 +32,7 @@ func ExampleBackupsAutomaticAndOnDemandClient_BeginCreate() {
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/BackupsAutomaticAndOnDemandDelete.json
+// Generated from example definition: 2026-07-01-preview/BackupsAutomaticAndOnDemandDelete.json
 func ExampleBackupsAutomaticAndOnDemandClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -53,7 +53,7 @@ func ExampleBackupsAutomaticAndOnDemandClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/BackupsAutomaticAndOnDemandGet.json
+// Generated from example definition: 2026-07-01-preview/BackupsAutomaticAndOnDemandGet.json
 func ExampleBackupsAutomaticAndOnDemandClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -85,7 +85,7 @@ func ExampleBackupsAutomaticAndOnDemandClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/BackupsAutomaticAndOnDemandListByServer.json
+// Generated from example definition: 2026-07-01-preview/BackupsAutomaticAndOnDemandListByServer.json
 func ExampleBackupsAutomaticAndOnDemandClient_NewListByServerPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -19,7 +19,7 @@ import (
 // SharedGalleryInvitesClient contains the methods for the SharedGalleryInvites group.
 // Don't use this type directly, use NewSharedGalleryInvitesClient() instead.
 //
-// Generated from API version 2025-12-03
+// Generated from API version 2026-03-03
 type SharedGalleryInvitesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -114,7 +114,7 @@ func (client *SharedGalleryInvitesClient) gallerySharingAcceptCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251203)
+	reqQP.Set("api-version", version20260303)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -189,7 +189,7 @@ func (client *SharedGalleryInvitesClient) gallerySharingRejectCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251203)
+	reqQP.Set("api-version", version20260303)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }

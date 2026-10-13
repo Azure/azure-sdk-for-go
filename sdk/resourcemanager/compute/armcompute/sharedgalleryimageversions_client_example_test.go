@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-12-03/sharedGalleryExamples/SharedGalleryImageVersion_Get.json
+// Generated from example definition: 2026-03-03/sharedGalleryExamples/SharedGalleryImageVersion_Get.json
 func ExampleSharedGalleryImageVersionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -44,6 +44,8 @@ func ExampleSharedGalleryImageVersionsClient_Get() {
 	// 			ArtifactTags: map[string]*string{
 	// 				"ShareTag-Official1PGallery": to.Ptr("Official1PGallery"),
 	// 			},
+	// 			ConsumptionEndTime: to.Ptr(time.Date(2026, time.April, 20, 9, 12, 28, 0, time.UTC)),
+	// 			ImageState: to.Ptr(armcompute.GalleryImageVersionStateSoftDeleted),
 	// 		},
 	// 		Location: to.Ptr("myLocation"),
 	// 		Name: to.Ptr("myGalleryImageVersionName"),
@@ -54,7 +56,7 @@ func ExampleSharedGalleryImageVersionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-12-03/sharedGalleryExamples/SharedGalleryImageVersions_List.json
+// Generated from example definition: 2026-03-03/sharedGalleryExamples/SharedGalleryImageVersions_List.json
 func ExampleSharedGalleryImageVersionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -93,6 +95,7 @@ func ExampleSharedGalleryImageVersionsClient_NewListPager() {
 		// 					ArtifactTags: map[string]*string{
 		// 						"ShareTag-Official1PGallery": to.Ptr("Official1PGallery"),
 		// 					},
+		// 					ImageState: to.Ptr(armcompute.GalleryImageVersionStateActive),
 		// 				},
 		// 				Location: to.Ptr("myLocation"),
 		// 				Name: to.Ptr("myGalleryImageVersionName"),

@@ -6,7 +6,7 @@ package fake
 
 import (
 	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v11"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v12"
 )
 
 func unmarshalBaseAdminRuleClassification(rawMsg json.RawMessage) (armnetwork.BaseAdminRuleClassification, error) {
@@ -25,6 +25,33 @@ func unmarshalBaseAdminRuleClassification(rawMsg json.RawMessage) (armnetwork.Ba
 		b = &armnetwork.DefaultAdminRule{}
 	default:
 		b = &armnetwork.BaseAdminRule{}
+	}
+	if err := json.Unmarshal(rawMsg, b); err != nil {
+		return nil, err
+	}
+	return b, nil
+}
+
+func unmarshalVirtualNetworkApplianceCapabilityClassification(rawMsg json.RawMessage) (armnetwork.VirtualNetworkApplianceCapabilityClassification, error) {
+	if rawMsg == nil || string(rawMsg) == "null" {
+		return nil, nil
+	}
+	var m map[string]any
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b armnetwork.VirtualNetworkApplianceCapabilityClassification
+	switch m["kind"] {
+	case string(armnetwork.VirtualNetworkApplianceCapabilityKindNAT64):
+		b = &armnetwork.NAT64Capability{}
+	case string(armnetwork.VirtualNetworkApplianceCapabilityKindPLGateway):
+		b = &armnetwork.PLGatewayCapability{}
+	case string(armnetwork.VirtualNetworkApplianceCapabilityKindPLGatewayFastpath):
+		b = &armnetwork.PLGatewayFastpathCapability{}
+	case string(armnetwork.VirtualNetworkApplianceCapabilityKindPLIPForwarders):
+		b = &armnetwork.PLIPForwardersCapability{}
+	default:
+		b = &armnetwork.VirtualNetworkApplianceCapability{}
 	}
 	if err := json.Unmarshal(rawMsg, b); err != nil {
 		return nil, err

@@ -6,13 +6,17 @@ package share_test
 import (
 	"context"
 	"fmt"
+	"io"
 	"strconv"
+	"strings"
 	"testing"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/file"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/fileerror"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/testcommon"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/sas"
@@ -1456,6 +1460,72 @@ func (s *ShareUnrecordedTestsSuite) TestShareCreateSnapshotDefault() {
 		ShareSnapshot: snapshotShare.Snapshot,
 	})
 	_require.NoError(err)
+}
+
+// TestGetSASURLShareSnapshotAgainstService is a regression test - run against the live service -
+// for a bug where GetSASURL() on a share.Client or file.Client returned by WithSnapshot()
+// concatenated a second "?" onto a URL that already carried a "sharesnapshot" query parameter,
+// producing a malformed SAS URL (e.g. "...?sharesnapshot=X?sv=...&sig=..."). It also confirms
+// end-to-end that the resulting (well-formed) SAS URL correctly authenticates against the
+// snapshot's content.
+func (s *ShareUnrecordedTestsSuite) TestGetSASURLShareSnapshotAgainstService() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareName := testcommon.GenerateShareName(testName)
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, shareName, svcClient)
+	defer deleteShare(context.Background(), _require, shareClient, &share.DeleteOptions{DeleteSnapshots: to.Ptr(share.DeleteSnapshotsOptionTypeInclude)})
+
+	fileName := testcommon.GenerateFileName(testName)
+	const oldContent = "old-snapshot-content"
+	fClient := testcommon.CreateNewFileFromShare(context.Background(), _require, fileName, int64(len(oldContent)), shareClient)
+	_, err = fClient.UploadRange(context.Background(), 0, streaming.NopCloser(strings.NewReader(oldContent)), nil)
+	_require.NoError(err)
+
+	snapResp, err := shareClient.CreateSnapshot(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(snapResp.Snapshot)
+
+	// Overwrite the live file's content after taking the snapshot.
+	const newContent = "current-live-content-longer"
+	_, err = fClient.Resize(context.Background(), int64(len(newContent)), nil)
+	_require.NoError(err)
+	_, err = fClient.UploadRange(context.Background(), 0, streaming.NopCloser(strings.NewReader(newContent)), nil)
+	_require.NoError(err)
+
+	// GetSASURL on a share client scoped to the snapshot must not produce a duplicated "?".
+	snapshotShareClient, err := shareClient.WithSnapshot(*snapResp.Snapshot)
+	_require.NoError(err)
+	_require.Contains(snapshotShareClient.URL(), "sharesnapshot=")
+	_require.Contains(snapshotShareClient.URL(), "?")
+
+	shareSASURL, err := snapshotShareClient.GetSASURL(sas.SharePermissions{Read: true, List: true}, time.Now().Add(time.Hour), nil)
+	_require.NoError(err)
+	_require.Equal(1, strings.Count(shareSASURL, "?"),
+		"share SAS URL must not contain a duplicated '?': %s", shareSASURL)
+
+	// GetSASURL on a file client derived from the snapshot-scoped share must also not produce a
+	// duplicated "?", and the resulting SAS URL must download the OLD (snapshotted) content.
+	snapshotFileClient := snapshotShareClient.NewRootDirectoryClient().NewFileClient(fileName)
+	_require.Contains(snapshotFileClient.URL(), "sharesnapshot=")
+	_require.Contains(snapshotFileClient.URL(), "?")
+
+	fileSASURL, err := snapshotFileClient.GetSASURL(sas.FilePermissions{Read: true}, time.Now().Add(time.Hour), nil)
+	_require.NoError(err)
+	_require.Equal(1, strings.Count(fileSASURL, "?"),
+		"file SAS URL must not contain a duplicated '?': %s", fileSASURL)
+
+	anonFileClient, err := file.NewClientWithNoCredential(fileSASURL, nil)
+	_require.NoError(err)
+
+	downloadResp, err := anonFileClient.DownloadStream(context.Background(), nil)
+	_require.NoError(err)
+	data, err := io.ReadAll(downloadResp.Body)
+	_require.NoError(err)
+	_require.Equal(oldContent, string(data))
 }
 
 func (s *ShareRecordedTestsSuite) TestShareCreateSnapshotNegativeShareNotExist() {

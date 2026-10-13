@@ -13,14 +13,13 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
-	"strconv"
 	"strings"
 )
 
 // ContainerAppsSourceControlsClient contains the methods for the ContainerAppsSourceControls group.
 // Don't use this type directly, use NewContainerAppsSourceControlsClient() instead.
 //
-// Generated from API version 2025-10-02-preview
+// Generated from API version 2026-07-01
 type ContainerAppsSourceControlsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -97,7 +96,7 @@ func (client *ContainerAppsSourceControlsClient) createOrUpdate(ctx context.Cont
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *ContainerAppsSourceControlsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, containerAppName string, sourceControlName string, sourceControlEnvelope SourceControl, options *ContainerAppsSourceControlsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *ContainerAppsSourceControlsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, containerAppName string, sourceControlName string, sourceControlEnvelope SourceControl, _ *ContainerAppsSourceControlsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}/sourcecontrols/{sourceControlName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")
@@ -120,12 +119,9 @@ func (client *ContainerAppsSourceControlsClient) createOrUpdateCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251002Preview)
+	reqQP.Set("api-version", version20260701)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
-	if options != nil && options.XMSGithubAuxiliary != nil {
-		req.Raw().Header["x-ms-github-auxiliary"] = []string{*options.XMSGithubAuxiliary}
-	}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, sourceControlEnvelope); err != nil {
 		return nil, err
@@ -184,7 +180,7 @@ func (client *ContainerAppsSourceControlsClient) deleteOperation(ctx context.Con
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *ContainerAppsSourceControlsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, containerAppName string, sourceControlName string, options *ContainerAppsSourceControlsClientBeginDeleteOptions) (*policy.Request, error) {
+func (client *ContainerAppsSourceControlsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, containerAppName string, sourceControlName string, _ *ContainerAppsSourceControlsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}/sourcecontrols/{sourceControlName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")
@@ -207,17 +203,8 @@ func (client *ContainerAppsSourceControlsClient) deleteCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251002Preview)
-	if options != nil && options.DeleteWorkflow != nil {
-		reqQP.Set("deleteWorkflow", strconv.FormatBool(*options.DeleteWorkflow))
-	}
-	if options != nil && options.IgnoreWorkflowDeletionFailure != nil {
-		reqQP.Set("ignoreWorkflowDeletionFailure", strconv.FormatBool(*options.IgnoreWorkflowDeletionFailure))
-	}
+	reqQP.Set("api-version", version20260701)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	if options != nil && options.XMSGithubAuxiliary != nil {
-		req.Raw().Header["x-ms-github-auxiliary"] = []string{*options.XMSGithubAuxiliary}
-	}
 	return req, nil
 }
 
@@ -271,7 +258,7 @@ func (client *ContainerAppsSourceControlsClient) getCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251002Preview)
+	reqQP.Set("api-version", version20260701)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -349,7 +336,7 @@ func (client *ContainerAppsSourceControlsClient) listByContainerAppCreateRequest
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20251002Preview)
+		reqQP.Set("api-version", version20260701)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

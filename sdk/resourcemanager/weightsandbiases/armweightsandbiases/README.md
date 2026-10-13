@@ -1,5 +1,7 @@
 # Azure Weight Sandbiases Module for Go
 
+> **DEPRECATED**: The Microsoft.WeightsAndBiases service will be retired on September 30, 2026. This package will no longer be maintained after that date. There is no replacement service or SDK module. Refer to our [deprecation policy](https://aka.ms/azsdk/support-policies) for more details.
+
 The `armweightsandbiases` module provides operations for working with Azure Weightsandbiases.
 
 [Source code](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/resourcemanager/weightsandbiases/armweightsandbiases)

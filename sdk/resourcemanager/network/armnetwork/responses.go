@@ -245,6 +245,41 @@ type ApplicationSecurityGroupsClientUpdateTagsResponse struct {
 	ApplicationSecurityGroup
 }
 
+// AuthenticationPoliciesClientCreateOrUpdateResponse contains the response from method AuthenticationPoliciesClient.BeginCreateOrUpdate.
+type AuthenticationPoliciesClientCreateOrUpdateResponse struct {
+	// Authentication policy resource for identity integration.
+	AuthenticationPolicy
+}
+
+// AuthenticationPoliciesClientDeleteResponse contains the response from method AuthenticationPoliciesClient.Delete.
+type AuthenticationPoliciesClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// AuthenticationPoliciesClientGetResponse contains the response from method AuthenticationPoliciesClient.Get.
+type AuthenticationPoliciesClientGetResponse struct {
+	// Authentication policy resource for identity integration.
+	AuthenticationPolicy
+}
+
+// AuthenticationPoliciesClientListAllResponse contains the response from method AuthenticationPoliciesClient.NewListAllPager.
+type AuthenticationPoliciesClientListAllResponse struct {
+	// The response of a AuthenticationPolicy list operation.
+	AuthenticationPolicyListResult
+}
+
+// AuthenticationPoliciesClientListResponse contains the response from method AuthenticationPoliciesClient.NewListPager.
+type AuthenticationPoliciesClientListResponse struct {
+	// The response of a AuthenticationPolicy list operation.
+	AuthenticationPolicyListResult
+}
+
+// AuthenticationPoliciesClientUpdateResponse contains the response from method AuthenticationPoliciesClient.Update.
+type AuthenticationPoliciesClientUpdateResponse struct {
+	// Authentication policy resource for identity integration.
+	AuthenticationPolicy
+}
+
 // AvailableDelegationsClientListResponse contains the response from method AvailableDelegationsClient.NewListPager.
 type AvailableDelegationsClientListResponse struct {
 	// An array of available delegations.
@@ -374,8 +409,8 @@ type BastionHostsClientListResponse struct {
 	BastionHostListResult
 }
 
-// BastionHostsClientUpdateTagsResponse contains the response from method BastionHostsClient.BeginUpdateTags.
-type BastionHostsClientUpdateTagsResponse struct {
+// BastionHostsClientUpdateResponse contains the response from method BastionHostsClient.BeginUpdate.
+type BastionHostsClientUpdateResponse struct {
 	// Bastion Host resource.
 	BastionHost
 }
@@ -676,6 +711,12 @@ type ExpressRouteCircuitAuthorizationsClientGetResponse struct {
 	ExpressRouteCircuitAuthorization
 }
 
+// ExpressRouteCircuitAuthorizationsClientListKeysResponse contains the response from method ExpressRouteCircuitAuthorizationsClient.ListKeys.
+type ExpressRouteCircuitAuthorizationsClientListKeysResponse struct {
+	// The authorization key.
+	ExpressRouteAuthorizationKey
+}
+
 // ExpressRouteCircuitAuthorizationsClientListResponse contains the response from method ExpressRouteCircuitAuthorizationsClient.NewListPager.
 type ExpressRouteCircuitAuthorizationsClientListResponse struct {
 	// Paged collection of ExpressRouteCircuitAuthorization items
@@ -859,10 +900,22 @@ type ExpressRouteCrossConnectionPeeringsClientListResponse struct {
 	ExpressRouteCrossConnectionPeeringList
 }
 
+// ExpressRouteCrossConnectionsClientCommitCircuitMigrationResponse contains the response from method ExpressRouteCrossConnectionsClient.BeginCommitCircuitMigration.
+type ExpressRouteCrossConnectionsClientCommitCircuitMigrationResponse struct {
+	// Response for express route circuit migration health check and migration operations.
+	MigrateExpressRouteCircuitHealthCheckResponse
+}
+
 // ExpressRouteCrossConnectionsClientCreateOrUpdateResponse contains the response from method ExpressRouteCrossConnectionsClient.BeginCreateOrUpdate.
 type ExpressRouteCrossConnectionsClientCreateOrUpdateResponse struct {
 	// ExpressRouteCrossConnection resource.
 	ExpressRouteCrossConnection
+}
+
+// ExpressRouteCrossConnectionsClientGetCircuitMigrationInfoResponse contains the response from method ExpressRouteCrossConnectionsClient.BeginGetCircuitMigrationInfo.
+type ExpressRouteCrossConnectionsClientGetCircuitMigrationInfoResponse struct {
+	// Response for express route circuit migration health check and migration operations.
+	MigrateExpressRouteCircuitHealthCheckResponse
 }
 
 // ExpressRouteCrossConnectionsClientGetResponse contains the response from method ExpressRouteCrossConnectionsClient.Get.
@@ -901,10 +954,46 @@ type ExpressRouteCrossConnectionsClientListRoutesTableSummaryResponse struct {
 	ExpressRouteCrossConnectionsRoutesTableSummaryListResult
 }
 
+// ExpressRouteCrossConnectionsClientMigrateCircuitResponse contains the response from method ExpressRouteCrossConnectionsClient.BeginMigrateCircuit.
+type ExpressRouteCrossConnectionsClientMigrateCircuitResponse struct {
+	// Response for express route circuit migration health check and migration operations.
+	MigrateExpressRouteCircuitHealthCheckResponse
+}
+
+// ExpressRouteCrossConnectionsClientPrepareCircuitMigrationResponse contains the response from method ExpressRouteCrossConnectionsClient.BeginPrepareCircuitMigration.
+type ExpressRouteCrossConnectionsClientPrepareCircuitMigrationResponse struct {
+	// Response for express route circuit migration health check and migration operations.
+	MigrateExpressRouteCircuitHealthCheckResponse
+}
+
+// ExpressRouteCrossConnectionsClientRestoreBgpForCircuitMigrationResponse contains the response from method ExpressRouteCrossConnectionsClient.BeginRestoreBgpForCircuitMigration.
+type ExpressRouteCrossConnectionsClientRestoreBgpForCircuitMigrationResponse struct {
+	// Response for express route circuit migration health check and migration operations.
+	MigrateExpressRouteCircuitHealthCheckResponse
+}
+
+// ExpressRouteCrossConnectionsClientRollbackCircuitMigrationResponse contains the response from method ExpressRouteCrossConnectionsClient.BeginRollbackCircuitMigration.
+type ExpressRouteCrossConnectionsClientRollbackCircuitMigrationResponse struct {
+	// Response for express route circuit migration health check and migration operations.
+	MigrateExpressRouteCircuitHealthCheckResponse
+}
+
+// ExpressRouteCrossConnectionsClientShutDownBgpForCircuitMigrationResponse contains the response from method ExpressRouteCrossConnectionsClient.BeginShutDownBgpForCircuitMigration.
+type ExpressRouteCrossConnectionsClientShutDownBgpForCircuitMigrationResponse struct {
+	// Response for express route circuit migration health check and migration operations.
+	MigrateExpressRouteCircuitHealthCheckResponse
+}
+
 // ExpressRouteCrossConnectionsClientUpdateTagsResponse contains the response from method ExpressRouteCrossConnectionsClient.UpdateTags.
 type ExpressRouteCrossConnectionsClientUpdateTagsResponse struct {
 	// ExpressRouteCrossConnection resource.
 	ExpressRouteCrossConnection
+}
+
+// ExpressRouteCrossConnectionsClientValidateCircuitMigrationResponse contains the response from method ExpressRouteCrossConnectionsClient.BeginValidateCircuitMigration.
+type ExpressRouteCrossConnectionsClientValidateCircuitMigrationResponse struct {
+	// Response for express route circuit migration validation operation.
+	MigrateExpressRouteCircuitValidateResponse
 }
 
 // ExpressRouteGatewaysClientCreateOrUpdateResponse contains the response from method ExpressRouteGatewaysClient.BeginCreateOrUpdate.
@@ -972,6 +1061,41 @@ type ExpressRouteGatewaysClientStopSiteFailoverTestResponse struct {
 type ExpressRouteGatewaysClientUpdateTagsResponse struct {
 	// ExpressRoute gateway resource.
 	ExpressRouteGateway
+}
+
+// ExpressRouteLagAuthorizationsClientCreateOrUpdateResponse contains the response from method ExpressRouteLagAuthorizationsClient.BeginCreateOrUpdate.
+type ExpressRouteLagAuthorizationsClientCreateOrUpdateResponse struct {
+	// ExpressRoute Lag Authorization
+	//
+	// ExpressRouteLag Authorization resource definition.
+	ExpressRouteLagAuthorization
+}
+
+// ExpressRouteLagAuthorizationsClientDeleteResponse contains the response from method ExpressRouteLagAuthorizationsClient.BeginDelete.
+type ExpressRouteLagAuthorizationsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// ExpressRouteLagAuthorizationsClientGetResponse contains the response from method ExpressRouteLagAuthorizationsClient.Get.
+type ExpressRouteLagAuthorizationsClientGetResponse struct {
+	// ExpressRoute Lag Authorization
+	//
+	// ExpressRouteLag Authorization resource definition.
+	ExpressRouteLagAuthorization
+}
+
+// ExpressRouteLagAuthorizationsClientListKeysResponse contains the response from method ExpressRouteLagAuthorizationsClient.ListKeys.
+type ExpressRouteLagAuthorizationsClientListKeysResponse struct {
+	// The authorization key.
+	ExpressRouteAuthorizationKey
+}
+
+// ExpressRouteLagAuthorizationsClientListResponse contains the response from method ExpressRouteLagAuthorizationsClient.NewListPager.
+type ExpressRouteLagAuthorizationsClientListResponse struct {
+	// ExpressRoute Lag Authorization List Result
+	//
+	// Paged collection of ExpressRouteLagAuthorization items
+	ExpressRouteLagAuthorizationListResult
 }
 
 // ExpressRouteLagsClientCreateOrUpdateResponse contains the response from method ExpressRouteLagsClient.BeginCreateOrUpdate.
@@ -1092,6 +1216,12 @@ type ExpressRoutePortAuthorizationsClientGetResponse struct {
 	//
 	// ExpressRoutePort Authorization resource definition.
 	ExpressRoutePortAuthorization
+}
+
+// ExpressRoutePortAuthorizationsClientListKeysResponse contains the response from method ExpressRoutePortAuthorizationsClient.ListKeys.
+type ExpressRoutePortAuthorizationsClientListKeysResponse struct {
+	// The authorization key.
+	ExpressRouteAuthorizationKey
 }
 
 // ExpressRoutePortAuthorizationsClientListResponse contains the response from method ExpressRoutePortAuthorizationsClient.NewListPager.
@@ -4067,6 +4197,33 @@ type VirtualHubsClientListResponse struct {
 type VirtualHubsClientUpdateTagsResponse struct {
 	// VirtualHub Resource.
 	VirtualHub
+}
+
+// VirtualNetworkApplianceCapabilitiesClientCreateOrUpdateResponse contains the response from method VirtualNetworkApplianceCapabilitiesClient.BeginCreateOrUpdate.
+type VirtualNetworkApplianceCapabilitiesClientCreateOrUpdateResponse struct {
+	// A capability enabled on a virtual network appliance. The top-level `kind` discriminator selects the
+	// capability family; every kind shares the same `properties` schema (see
+	// VirtualNetworkApplianceCapabilityProperties). One capability of a given kind may exist per appliance.
+	VirtualNetworkApplianceCapabilityClassification
+}
+
+// VirtualNetworkApplianceCapabilitiesClientDeleteResponse contains the response from method VirtualNetworkApplianceCapabilitiesClient.BeginDelete.
+type VirtualNetworkApplianceCapabilitiesClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// VirtualNetworkApplianceCapabilitiesClientGetResponse contains the response from method VirtualNetworkApplianceCapabilitiesClient.Get.
+type VirtualNetworkApplianceCapabilitiesClientGetResponse struct {
+	// A capability enabled on a virtual network appliance. The top-level `kind` discriminator selects the
+	// capability family; every kind shares the same `properties` schema (see
+	// VirtualNetworkApplianceCapabilityProperties). One capability of a given kind may exist per appliance.
+	VirtualNetworkApplianceCapabilityClassification
+}
+
+// VirtualNetworkApplianceCapabilitiesClientListResponse contains the response from method VirtualNetworkApplianceCapabilitiesClient.NewListPager.
+type VirtualNetworkApplianceCapabilitiesClientListResponse struct {
+	// The response of a VirtualNetworkApplianceCapability list operation.
+	VirtualNetworkApplianceCapabilityListResult
 }
 
 // VirtualNetworkAppliancesClientCreateOrUpdateResponse contains the response from method VirtualNetworkAppliancesClient.BeginCreateOrUpdate.

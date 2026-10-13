@@ -1,6 +1,6 @@
 {
   "apiVersions": {
-    "Microsoft.KeyVault": "2026-02-01"
+    "Microsoft.KeyVault": "2026-05-15"
   },
-  "emitterVersion": "0.17.3"
+  "emitterVersion": "0.17.4"
 }

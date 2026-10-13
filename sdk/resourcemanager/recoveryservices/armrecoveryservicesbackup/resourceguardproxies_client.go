@@ -19,7 +19,7 @@ import (
 // ResourceGuardProxiesClient contains the methods for the ResourceGuardProxies group.
 // Don't use this type directly, use NewResourceGuardProxiesClient() instead.
 //
-// Generated from API version 2026-07-01
+// Generated from API version 2026-08-01
 type ResourceGuardProxiesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -101,7 +101,7 @@ func (client *ResourceGuardProxiesClient) getCreateRequest(ctx context.Context, 
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260701)
+		reqQP.Set("api-version", version20260801)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

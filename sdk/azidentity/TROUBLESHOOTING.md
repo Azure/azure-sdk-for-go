@@ -20,6 +20,7 @@ This troubleshooting guide covers failure investigation techniques, common error
 - [Troubleshoot ManagedIdentityCredential authentication issues](#troubleshoot-managedidentitycredential-authentication-issues)
   - [Azure App Service and Azure Functions managed identity](#azure-app-service-and-azure-functions-managed-identity)
   - [Azure Virtual Machine managed identity](#azure-virtual-machine-managed-identity)
+  - [Azure Service Fabric managed identity](#azure-service-fabric-managed-identity)
 - [Troubleshoot WorkloadIdentityCredential authentication issues](#troubleshoot-workloadidentitycredential-authentication-issues)
 - [Get additional help](#get-additional-help)
 
@@ -121,7 +122,23 @@ azlog.SetEvents(azidentity.EventAuthentication)
 |Azure Virtual Machines and Scale Sets|[Configuration](https://learn.microsoft.com/entra/identity/managed-identities-azure-resources/qs-configure-portal-windows-vm)|[Troubleshooting](#azure-virtual-machine-managed-identity)|
 |Azure App Service and Azure Functions|[Configuration](https://learn.microsoft.com/azure/app-service/overview-managed-identity)|[Troubleshooting](#azure-app-service-and-azure-functions-managed-identity)|
 |Azure Arc|[Configuration](https://learn.microsoft.com/azure/azure-arc/servers/managed-identity-authentication)||
-|Azure Service Fabric|[Configuration](https://learn.microsoft.com/azure/service-fabric/concepts-managed-identity)||
+|Azure Service Fabric|[Configuration](https://learn.microsoft.com/azure/service-fabric/concepts-managed-identity)|[Troubleshooting](#azure-service-fabric-managed-identity)|
+
+### Azure Service Fabric managed identity
+
+The credential requires an HTTPS endpoint, pins its certificate to `IDENTITY_SERVER_THUMBPRINT`,
+and rejects redirects. It derives a pinned HTTP client without modifying a caller-supplied client.
+
+| Error Message | Description | Mitigation |
+|---|---|---|
+|Service Fabric managed identity requires ClientOptions.Transport to be an *http.Client|The configured transport can't be augmented with the required certificate pinning.|Leave `ClientOptions.Transport` `nil`, or provide an `*http.Client` with a `nil` Transport or a standard `*http.Transport`.|
+|managed identity on Service Fabric requires a standard *http.Transport|The HTTP client's underlying transport can't be augmented with certificate pinning.|Use a standard `*http.Transport`, or leave the transport `nil`.|
+|managed identity on Service Fabric does not support a transport with custom TLS dialing|A custom `DialTLS` or `DialTLSContext` callback can bypass certificate verification.|Remove the custom TLS dialing callback. Use `DialContext` if custom connection setup is needed.|
+|managed identity on Service Fabric does not support custom TLS verification|The transport has a custom `VerifyPeerCertificate` or `VerifyConnection` callback.|Remove the custom verification callback so the credential can apply the required certificate pinning.|
+|IDENTITY_SERVER_THUMBPRINT must be a SHA-1 certificate thumbprint|The configured thumbprint isn't a valid 40-digit hexadecimal SHA-1 thumbprint. Colons and whitespace are allowed.|Verify the Service Fabric environment configuration supplies the endpoint certificate's thumbprint.|
+|TLS certificate thumbprint from Service Fabric did not match IDENTITY_SERVER_THUMBPRINT|The endpoint presented a certificate that doesn't match the configured thumbprint.|Verify the endpoint and thumbprint configuration, including any certificate rotation. Don't disable certificate verification.|
+|managed identity endpoint for Service Fabric must use HTTPS|The configured endpoint isn't an absolute HTTPS URL.|Verify `IDENTITY_ENDPOINT` contains the HTTPS endpoint provided by Service Fabric.|
+|redirects are not permitted for managed identity on Service Fabric|The endpoint returned a redirect.|Verify `IDENTITY_ENDPOINT` points directly to the Service Fabric managed identity endpoint.|
 
 ### Azure Virtual Machine managed identity
 

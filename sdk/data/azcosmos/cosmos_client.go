@@ -82,12 +82,14 @@ func NewClientWithKey(endpoint string, cred KeyCredential, o *ClientOptions) (*C
 	}
 	preferredRegions := []string{}
 	enableCrossRegionRetries := true
+	disableEndpointDiscovery := false
 	if o != nil {
 		preferredRegions = o.PreferredRegions
+		disableEndpointDiscovery = o.DisableEndpointDiscovery
 	}
 	o = withDefaultTransport(o)
 
-	gem, err := newGlobalEndpointManager(endpoint, newInternalPipeline(newSharedKeyCredPolicy(cred), o), preferredRegions, 0, enableCrossRegionRetries)
+	gem, err := newGlobalEndpointManager(endpoint, newInternalPipeline(newSharedKeyCredPolicy(cred), o), preferredRegions, 0, enableCrossRegionRetries, disableEndpointDiscovery)
 	if err != nil {
 		return nil, err
 	}
@@ -130,11 +132,13 @@ func NewClient(endpoint string, cred azcore.TokenCredential, o *ClientOptions) (
 
 	preferredRegions := []string{}
 	enableCrossRegionRetries := true
+	disableEndpointDiscovery := false
 	if o != nil {
 		preferredRegions = o.PreferredRegions
+		disableEndpointDiscovery = o.DisableEndpointDiscovery
 	}
 	o = withDefaultTransport(o)
-	gem, err := newGlobalEndpointManager(endpoint, newInternalPipeline(newCosmosBearerTokenPolicy(cred, scope, nil), o), preferredRegions, 0, enableCrossRegionRetries)
+	gem, err := newGlobalEndpointManager(endpoint, newInternalPipeline(newCosmosBearerTokenPolicy(cred, scope, nil), o), preferredRegions, 0, enableCrossRegionRetries, disableEndpointDiscovery)
 	if err != nil {
 		return nil, err
 	}

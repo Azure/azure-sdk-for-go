@@ -5,14 +5,15 @@ package file
 
 import (
 	"context"
+	"io"
+	"net/http"
+	"time"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/generated"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/generated_blob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/path"
-	"io"
-	"net/http"
-	"time"
 )
 
 // SetExpiryResponse contains the response fields for the SetExpiry operation.

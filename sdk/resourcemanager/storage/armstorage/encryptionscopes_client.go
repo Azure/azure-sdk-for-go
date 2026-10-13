@@ -20,7 +20,7 @@ import (
 // EncryptionScopesClient contains the methods for the EncryptionScopes group.
 // Don't use this type directly, use NewEncryptionScopesClient() instead.
 //
-// Generated from API version 2026-04-01
+// Generated from API version 2026-06-01
 type EncryptionScopesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -65,12 +65,7 @@ func (client *EncryptionScopesClient) Get(ctx context.Context, resourceGroupName
 	if err != nil {
 		return EncryptionScopesClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return EncryptionScopesClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -97,15 +92,18 @@ func (client *EncryptionScopesClient) getCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401)
+	reqQP.Set("api-version", version20260601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *EncryptionScopesClient) getHandleResponse(resp *http.Response) (EncryptionScopesClientGetResponse, error) {
+func (client *EncryptionScopesClient) getHandleResponse(resp *http.Response, successCodes ...int) (EncryptionScopesClientGetResponse, error) {
 	result := EncryptionScopesClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EncryptionScope); err != nil {
 		return EncryptionScopesClientGetResponse{}, err
 	}
@@ -129,56 +127,70 @@ func (client *EncryptionScopesClient) NewListPager(resourceGroupName string, acc
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, resourceGroupName, accountName, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, resourceGroupName, accountName, nextLink, options)
 			if err != nil {
 				return EncryptionScopesClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return EncryptionScopesClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *EncryptionScopesClient) listCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *EncryptionScopesClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/encryptionScopes"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *EncryptionScopesClient) listCreateRequest(ctx context.Context, resourceGroupName string, accountName string, nextLink string, options *EncryptionScopesClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/encryptionScopes"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if accountName == "" {
+			return nil, errors.New("parameter accountName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if accountName == "" {
-		return nil, errors.New("parameter accountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Filter != nil {
+			reqQP.Set("$filter", *options.Filter)
+		}
+		if options != nil && options.Include != nil {
+			reqQP.Set("$include", string(*options.Include))
+		}
+		if options != nil && options.Maxpagesize != nil {
+			reqQP.Set("$maxpagesize", strconv.FormatInt(int64(*options.Maxpagesize), 10))
+		}
+		reqQP.Set("api-version", version20260601)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.Include != nil {
-		reqQP.Set("$include", string(*options.Include))
-	}
-	if options != nil && options.Maxpagesize != nil {
-		reqQP.Set("$maxpagesize", strconv.FormatInt(int64(*options.Maxpagesize), 10))
-	}
-	reqQP.Set("api-version", version20260401)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *EncryptionScopesClient) listHandleResponse(resp *http.Response) (EncryptionScopesClientListResponse, error) {
+func (client *EncryptionScopesClient) listHandleResponse(resp *http.Response, successCodes ...int) (EncryptionScopesClientListResponse, error) {
 	result := EncryptionScopesClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EncryptionScopeListResult); err != nil {
 		return EncryptionScopesClientListResponse{}, err
 	}
@@ -210,12 +222,7 @@ func (client *EncryptionScopesClient) Patch(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return EncryptionScopesClientPatchResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return EncryptionScopesClientPatchResponse{}, err
-	}
-	resp, err := client.patchHandleResponse(httpResp)
-	return resp, err
+	return client.patchHandleResponse(httpResp, http.StatusOK)
 }
 
 // patchCreateRequest creates the Patch request.
@@ -242,7 +249,7 @@ func (client *EncryptionScopesClient) patchCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401)
+	reqQP.Set("api-version", version20260601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -253,8 +260,11 @@ func (client *EncryptionScopesClient) patchCreateRequest(ctx context.Context, re
 }
 
 // patchHandleResponse handles the Patch response.
-func (client *EncryptionScopesClient) patchHandleResponse(resp *http.Response) (EncryptionScopesClientPatchResponse, error) {
+func (client *EncryptionScopesClient) patchHandleResponse(resp *http.Response, successCodes ...int) (EncryptionScopesClientPatchResponse, error) {
 	result := EncryptionScopesClientPatchResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EncryptionScope); err != nil {
 		return EncryptionScopesClientPatchResponse{}, err
 	}
@@ -287,12 +297,7 @@ func (client *EncryptionScopesClient) Put(ctx context.Context, resourceGroupName
 	if err != nil {
 		return EncryptionScopesClientPutResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return EncryptionScopesClientPutResponse{}, err
-	}
-	resp, err := client.putHandleResponse(httpResp)
-	return resp, err
+	return client.putHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // putCreateRequest creates the Put request.
@@ -319,7 +324,7 @@ func (client *EncryptionScopesClient) putCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401)
+	reqQP.Set("api-version", version20260601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -330,8 +335,11 @@ func (client *EncryptionScopesClient) putCreateRequest(ctx context.Context, reso
 }
 
 // putHandleResponse handles the Put response.
-func (client *EncryptionScopesClient) putHandleResponse(resp *http.Response) (EncryptionScopesClientPutResponse, error) {
+func (client *EncryptionScopesClient) putHandleResponse(resp *http.Response, successCodes ...int) (EncryptionScopesClientPutResponse, error) {
 	result := EncryptionScopesClientPutResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EncryptionScope); err != nil {
 		return EncryptionScopesClientPutResponse{}, err
 	}

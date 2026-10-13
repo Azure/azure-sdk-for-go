@@ -30,6 +30,9 @@ type QuotaTiersClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewQuotaTiersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*QuotaTiersClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -71,7 +74,7 @@ func (client *QuotaTiersClient) CreateOrUpdate(ctx context.Context, defaultParam
 func (client *QuotaTiersClient) createOrUpdateCreateRequest(ctx context.Context, defaultParam string, tier QuotaTier, _ *QuotaTiersClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.CognitiveServices/quotaTiers/{default}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if defaultParam == "" {
@@ -133,7 +136,7 @@ func (client *QuotaTiersClient) Get(ctx context.Context, defaultParam string, op
 func (client *QuotaTiersClient) getCreateRequest(ctx context.Context, defaultParam string, _ *QuotaTiersClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.CognitiveServices/quotaTiers/{default}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if defaultParam == "" {
@@ -199,7 +202,7 @@ func (client *QuotaTiersClient) listBySubscriptionCreateRequest(ctx context.Cont
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.CognitiveServices/quotaTiers"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
@@ -259,7 +262,7 @@ func (client *QuotaTiersClient) Update(ctx context.Context, defaultParam string,
 func (client *QuotaTiersClient) updateCreateRequest(ctx context.Context, defaultParam string, tier QuotaTier, _ *QuotaTiersClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.CognitiveServices/quotaTiers/{default}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if defaultParam == "" {

@@ -13,7 +13,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/consumption/armconsumption/v2"
 	"net/http"
-	"net/url"
 	"regexp"
 	"slices"
 )
@@ -88,10 +87,7 @@ func (r *ReservationRecommendationDetailsServerTransport) dispatchGet(req *http.
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	qp := req.URL.Query()
-	resourceScopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceScope")])
-	if err != nil {
-		return nil, err
-	}
+	resourceScopeParam := matches[regex.SubexpIndex("resourceScope")]
 	filterParam := getOptional(qp.Get("$filter"))
 	var options *armconsumption.ReservationRecommendationDetailsClientGetOptions
 	if filterParam != nil {

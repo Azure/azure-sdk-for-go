@@ -2462,6 +2462,8 @@ func (e ExpansionJobProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "newStorageCapacityTiB", e.NewStorageCapacityTiB)
 	populate(objectMap, "provisioningState", e.ProvisioningState)
+	populate(objectMap, "rebalanceJobId", e.RebalanceJobID)
+	populate(objectMap, "runRebalanceJob", e.RunRebalanceJob)
 	populate(objectMap, "status", e.Status)
 	return json.Marshal(objectMap)
 }
@@ -2480,6 +2482,12 @@ func (e *ExpansionJobProperties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "provisioningState":
 			err = unpopulate(val, "ProvisioningState", &e.ProvisioningState)
+			delete(rawMsg, key)
+		case "rebalanceJobId":
+			err = unpopulate(val, "RebalanceJobID", &e.RebalanceJobID)
+			delete(rawMsg, key)
+		case "runRebalanceJob":
+			err = unpopulate(val, "RunRebalanceJob", &e.RunRebalanceJob)
 			delete(rawMsg, key)
 		case "status":
 			err = unpopulate(val, "Status", &e.Status)
@@ -3291,6 +3299,256 @@ func (p *PrimingJobIDParameter) UnmarshalJSON(data []byte) error {
 		}
 		if err != nil {
 			return fmt.Errorf("unmarshalling type %T: %s", p, err.Error())
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type RebalanceJob.
+func (r RebalanceJob) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "id", r.ID)
+	populate(objectMap, "name", r.Name)
+	populate(objectMap, "properties", r.Properties)
+	populate(objectMap, "systemData", r.SystemData)
+	populate(objectMap, "type", r.Type)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type RebalanceJob.
+func (r *RebalanceJob) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %s", r, err.Error())
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "id":
+			err = unpopulate(val, "ID", &r.ID)
+			delete(rawMsg, key)
+		case "name":
+			err = unpopulate(val, "Name", &r.Name)
+			delete(rawMsg, key)
+		case "properties":
+			err = unpopulate(val, "Properties", &r.Properties)
+			delete(rawMsg, key)
+		case "systemData":
+			err = unpopulate(val, "SystemData", &r.SystemData)
+			delete(rawMsg, key)
+		case "type":
+			err = unpopulate(val, "Type", &r.Type)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %s", r, err.Error())
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type RebalanceJobProperties.
+func (r RebalanceJobProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "adminStatus", r.AdminStatus)
+	populate(objectMap, "expansionJobId", r.ExpansionJobID)
+	populate(objectMap, "provisioningState", r.ProvisioningState)
+	populate(objectMap, "status", r.Status)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type RebalanceJobProperties.
+func (r *RebalanceJobProperties) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %s", r, err.Error())
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "adminStatus":
+			err = unpopulate(val, "AdminStatus", &r.AdminStatus)
+			delete(rawMsg, key)
+		case "expansionJobId":
+			err = unpopulate(val, "ExpansionJobID", &r.ExpansionJobID)
+			delete(rawMsg, key)
+		case "provisioningState":
+			err = unpopulate(val, "ProvisioningState", &r.ProvisioningState)
+			delete(rawMsg, key)
+		case "status":
+			err = unpopulate(val, "Status", &r.Status)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %s", r, err.Error())
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type RebalanceJobPropertiesStatus.
+func (r RebalanceJobPropertiesStatus) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "balancePercent", r.BalancePercent)
+	populate(objectMap, "bytesMoved", r.BytesMoved)
+	populateTime[datetime.RFC3339](objectMap, "completionTimeUTC", r.CompletionTimeUTC, true)
+	populate(objectMap, "dirsMigrated", r.DirsMigrated)
+	populate(objectMap, "estimatedRemainingSeconds", r.EstimatedRemainingSeconds)
+	populate(objectMap, "filesMigrated", r.FilesMigrated)
+	populate(objectMap, "filesMovedPerSecond", r.FilesMovedPerSecond)
+	populate(objectMap, "percentComplete", r.PercentComplete)
+	populateTime[datetime.RFC3339](objectMap, "startTimeUTC", r.StartTimeUTC, true)
+	populate(objectMap, "state", r.State)
+	populate(objectMap, "statusCode", r.StatusCode)
+	populate(objectMap, "statusMessage", r.StatusMessage)
+	populate(objectMap, "throughputMiBps", r.ThroughputMiBps)
+	populate(objectMap, "totalErrors", r.TotalErrors)
+	populate(objectMap, "totalSkipped", r.TotalSkipped)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type RebalanceJobPropertiesStatus.
+func (r *RebalanceJobPropertiesStatus) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %s", r, err.Error())
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "balancePercent":
+			err = unpopulate(val, "BalancePercent", &r.BalancePercent)
+			delete(rawMsg, key)
+		case "bytesMoved":
+			err = unpopulate(val, "BytesMoved", &r.BytesMoved)
+			delete(rawMsg, key)
+		case "completionTimeUTC":
+			err = unpopulateTime[datetime.RFC3339](val, "CompletionTimeUTC", &r.CompletionTimeUTC)
+			delete(rawMsg, key)
+		case "dirsMigrated":
+			err = unpopulate(val, "DirsMigrated", &r.DirsMigrated)
+			delete(rawMsg, key)
+		case "estimatedRemainingSeconds":
+			err = unpopulate(val, "EstimatedRemainingSeconds", &r.EstimatedRemainingSeconds)
+			delete(rawMsg, key)
+		case "filesMigrated":
+			err = unpopulate(val, "FilesMigrated", &r.FilesMigrated)
+			delete(rawMsg, key)
+		case "filesMovedPerSecond":
+			err = unpopulate(val, "FilesMovedPerSecond", &r.FilesMovedPerSecond)
+			delete(rawMsg, key)
+		case "percentComplete":
+			err = unpopulate(val, "PercentComplete", &r.PercentComplete)
+			delete(rawMsg, key)
+		case "startTimeUTC":
+			err = unpopulateTime[datetime.RFC3339](val, "StartTimeUTC", &r.StartTimeUTC)
+			delete(rawMsg, key)
+		case "state":
+			err = unpopulate(val, "State", &r.State)
+			delete(rawMsg, key)
+		case "statusCode":
+			err = unpopulate(val, "StatusCode", &r.StatusCode)
+			delete(rawMsg, key)
+		case "statusMessage":
+			err = unpopulate(val, "StatusMessage", &r.StatusMessage)
+			delete(rawMsg, key)
+		case "throughputMiBps":
+			err = unpopulate(val, "ThroughputMiBps", &r.ThroughputMiBps)
+			delete(rawMsg, key)
+		case "totalErrors":
+			err = unpopulate(val, "TotalErrors", &r.TotalErrors)
+			delete(rawMsg, key)
+		case "totalSkipped":
+			err = unpopulate(val, "TotalSkipped", &r.TotalSkipped)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %s", r, err.Error())
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type RebalanceJobUpdate.
+func (r RebalanceJobUpdate) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "properties", r.Properties)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type RebalanceJobUpdate.
+func (r *RebalanceJobUpdate) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %s", r, err.Error())
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "properties":
+			err = unpopulate(val, "Properties", &r.Properties)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %s", r, err.Error())
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type RebalanceJobUpdateProperties.
+func (r RebalanceJobUpdateProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "adminStatus", r.AdminStatus)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type RebalanceJobUpdateProperties.
+func (r *RebalanceJobUpdateProperties) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %s", r, err.Error())
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "adminStatus":
+			err = unpopulate(val, "AdminStatus", &r.AdminStatus)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %s", r, err.Error())
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type RebalanceJobsListResult.
+func (r RebalanceJobsListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "nextLink", r.NextLink)
+	populate(objectMap, "value", r.Value)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type RebalanceJobsListResult.
+func (r *RebalanceJobsListResult) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %s", r, err.Error())
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "nextLink":
+			err = unpopulate(val, "NextLink", &r.NextLink)
+			delete(rawMsg, key)
+		case "value":
+			err = unpopulate(val, "Value", &r.Value)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %s", r, err.Error())
 		}
 	}
 	return nil

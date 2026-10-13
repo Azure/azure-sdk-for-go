@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-07-01-preview/repositories/GetRepositories.json
+// Generated from example definition: 2025-10-01-preview/repositories/GetRepositories.json
 func ExampleSourceControlClient_NewListRepositoriesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

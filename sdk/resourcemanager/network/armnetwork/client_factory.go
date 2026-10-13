@@ -104,6 +104,14 @@ func (c *ClientFactory) NewApplicationSecurityGroupsClient() *ApplicationSecurit
 	}
 }
 
+// NewAuthenticationPoliciesClient creates a new instance of AuthenticationPoliciesClient.
+func (c *ClientFactory) NewAuthenticationPoliciesClient() *AuthenticationPoliciesClient {
+	return &AuthenticationPoliciesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewAvailableDelegationsClient creates a new instance of AvailableDelegationsClient.
 func (c *ClientFactory) NewAvailableDelegationsClient() *AvailableDelegationsClient {
 	return &AvailableDelegationsClient{
@@ -315,6 +323,14 @@ func (c *ClientFactory) NewExpressRouteCrossConnectionsClient() *ExpressRouteCro
 // NewExpressRouteGatewaysClient creates a new instance of ExpressRouteGatewaysClient.
 func (c *ClientFactory) NewExpressRouteGatewaysClient() *ExpressRouteGatewaysClient {
 	return &ExpressRouteGatewaysClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewExpressRouteLagAuthorizationsClient creates a new instance of ExpressRouteLagAuthorizationsClient.
+func (c *ClientFactory) NewExpressRouteLagAuthorizationsClient() *ExpressRouteLagAuthorizationsClient {
+	return &ExpressRouteLagAuthorizationsClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}
@@ -1257,6 +1273,14 @@ func (c *ClientFactory) NewVirtualHubRouteTableV2SClient() *VirtualHubRouteTable
 // NewVirtualHubsClient creates a new instance of VirtualHubsClient.
 func (c *ClientFactory) NewVirtualHubsClient() *VirtualHubsClient {
 	return &VirtualHubsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewVirtualNetworkApplianceCapabilitiesClient creates a new instance of VirtualNetworkApplianceCapabilitiesClient.
+func (c *ClientFactory) NewVirtualNetworkApplianceCapabilitiesClient() *VirtualNetworkApplianceCapabilitiesClient {
+	return &VirtualNetworkApplianceCapabilitiesClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}

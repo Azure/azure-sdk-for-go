@@ -17,7 +17,7 @@ import (
 // GeographicHierarchiesClient contains the methods for the GeographicHierarchies group.
 // Don't use this type directly, use NewGeographicHierarchiesClient() instead.
 //
-// Generated from API version 2024-04-01-preview
+// Generated from API version 2026-09-01
 type GeographicHierarchiesClient struct {
 	internal *arm.Client
 }
@@ -65,7 +65,7 @@ func (client *GeographicHierarchiesClient) getDefaultCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240401Preview)
+	reqQP.Set("api-version", version20260901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

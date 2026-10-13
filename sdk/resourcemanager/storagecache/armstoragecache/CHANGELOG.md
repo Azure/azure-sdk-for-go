@@ -1,5 +1,26 @@
 # Release History
 
+## 4.3.0 (2026-09-02)
+### Features Added
+
+- New enum type `RebalanceJobAdminStatus` with values `RebalanceJobAdminStatusActive`, `RebalanceJobAdminStatusCancel`
+- New enum type `RebalanceJobPropertiesProvisioningState` with values `RebalanceJobPropertiesProvisioningStateCanceled`, `RebalanceJobPropertiesProvisioningStateCreating`, `RebalanceJobPropertiesProvisioningStateDeleting`, `RebalanceJobPropertiesProvisioningStateFailed`, `RebalanceJobPropertiesProvisioningStateSucceeded`, `RebalanceJobPropertiesProvisioningStateUpdating`
+- New enum type `RebalanceJobStatusType` with values `RebalanceJobStatusTypeCanceled`, `RebalanceJobStatusTypeCancelling`, `RebalanceJobStatusTypeCompleted`, `RebalanceJobStatusTypeDeleting`, `RebalanceJobStatusTypeFailed`, `RebalanceJobStatusTypeInProgress`, `RebalanceJobStatusTypeRollingBack`
+- New function `*ClientFactory.NewRebalanceJobsClient() *RebalanceJobsClient`
+- New function `NewRebalanceJobsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RebalanceJobsClient, error)`
+- New function `*RebalanceJobsClient.BeginDelete(ctx context.Context, resourceGroupName string, amlFilesystemName string, rebalanceJobName string, options *RebalanceJobsClientBeginDeleteOptions) (*runtime.Poller[RebalanceJobsClientDeleteResponse], error)`
+- New function `*RebalanceJobsClient.Get(ctx context.Context, resourceGroupName string, amlFilesystemName string, rebalanceJobName string, options *RebalanceJobsClientGetOptions) (RebalanceJobsClientGetResponse, error)`
+- New function `*RebalanceJobsClient.NewListByAmlFilesystemPager(resourceGroupName string, amlFilesystemName string, options *RebalanceJobsClientListByAmlFilesystemOptions) *runtime.Pager[RebalanceJobsClientListByAmlFilesystemResponse]`
+- New function `*RebalanceJobsClient.BeginUpdate(ctx context.Context, resourceGroupName string, amlFilesystemName string, rebalanceJobName string, properties RebalanceJobUpdate, options *RebalanceJobsClientBeginUpdateOptions) (*runtime.Poller[RebalanceJobsClientUpdateResponse], error)`
+- New struct `RebalanceJob`
+- New struct `RebalanceJobProperties`
+- New struct `RebalanceJobPropertiesStatus`
+- New struct `RebalanceJobUpdate`
+- New struct `RebalanceJobUpdateProperties`
+- New struct `RebalanceJobsListResult`
+- New field `RebalanceJobID`, `RunRebalanceJob` in struct `ExpansionJobProperties`
+
+
 ## 4.2.0 (2026-03-13)
 ### Features Added
 

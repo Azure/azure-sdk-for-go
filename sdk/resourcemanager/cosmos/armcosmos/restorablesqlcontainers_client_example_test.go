@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-15/CosmosDBRestorableSqlContainerList.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBRestorableSqlContainerList.json
 func ExampleRestorableSQLContainersClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -39,22 +39,30 @@ func ExampleRestorableSQLContainersClient_NewListPager() {
 		// 	RestorableSQLContainersListResult: armcosmos.RestorableSQLContainersListResult{
 		// 		Value: []*armcosmos.RestorableSQLContainerGetResult{
 		// 			{
-		// 				ID: to.Ptr("/subscriptions/subid/providers/Microsoft.DocumentDb/locations/westus/restorableDatabaseAccounts/98a570f2-63db-4117-91f0-366327b7b353/restorableSqlContainers/79609a98-3394-41f8-911f-cfab0c075c86"),
-		// 				Type: to.Ptr("Microsoft.DocumentDB/locations/restorableDatabaseAccounts/restorableSqlContainers"),
 		// 				Name: to.Ptr("79609a98-3394-41f8-911f-cfab0c075c86"),
+		// 				Type: to.Ptr("Microsoft.DocumentDB/locations/restorableDatabaseAccounts/restorableSqlContainers"),
+		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.DocumentDb/locations/westus/restorableDatabaseAccounts/98a570f2-63db-4117-91f0-366327b7b353/restorableSqlContainers/79609a98-3394-41f8-911f-cfab0c075c86"),
 		// 				Properties: &armcosmos.RestorableSQLContainerProperties{
 		// 					Resource: &armcosmos.RestorableSQLContainerPropertiesResource{
 		// 						Rid: to.Ptr("zAyAPQAAAA=="),
-		// 						EventTimestamp: to.Ptr("2020-10-13T04:56:42Z"),
-		// 						OwnerID: to.Ptr("Container1"),
-		// 						OwnerResourceID: to.Ptr("V18LoLrv-qA="),
-		// 						OperationType: to.Ptr(armcosmos.OperationTypeCreate),
 		// 						CanUndelete: to.Ptr("invalid"),
 		// 						Container: &armcosmos.RestorableSQLContainerPropertiesResourceContainer{
+		// 							Etag: to.Ptr("\"00003e00-0000-0700-0000-5f85338a0000\""),
+		// 							Rid: to.Ptr("V18LoLrv-qA="),
+		// 							Self: to.Ptr("dbs/V18LoA==/colls/V18LoLrv-qA=/"),
+		// 							ConflictResolutionPolicy: &armcosmos.ConflictResolutionPolicy{
+		// 								ConflictResolutionPath: to.Ptr("/_ts"),
+		// 								ConflictResolutionProcedure: to.Ptr(""),
+		// 								Mode: to.Ptr(armcosmos.ConflictResolutionModeLastWriterWins),
+		// 							},
 		// 							ID: to.Ptr("Container1"),
 		// 							IndexingPolicy: &armcosmos.IndexingPolicy{
-		// 								IndexingMode: to.Ptr(armcosmos.IndexingModeConsistent),
 		// 								Automatic: to.Ptr(true),
+		// 								ExcludedPaths: []*armcosmos.ExcludedPath{
+		// 									{
+		// 										Path: to.Ptr("/\"_etag\"/?"),
+		// 									},
+		// 								},
 		// 								IncludedPaths: []*armcosmos.IncludedPath{
 		// 									{
 		// 										Path: to.Ptr("/*"),
@@ -63,41 +71,42 @@ func ExampleRestorableSQLContainersClient_NewListPager() {
 		// 										Path: to.Ptr("/\"_ts\"/?"),
 		// 									},
 		// 								},
-		// 								ExcludedPaths: []*armcosmos.ExcludedPath{
-		// 									{
-		// 										Path: to.Ptr("/\"_etag\"/?"),
-		// 									},
-		// 								},
+		// 								IndexingMode: to.Ptr(armcosmos.IndexingModeConsistent),
 		// 							},
-		// 							ConflictResolutionPolicy: &armcosmos.ConflictResolutionPolicy{
-		// 								Mode: to.Ptr(armcosmos.ConflictResolutionModeLastWriterWins),
-		// 								ConflictResolutionPath: to.Ptr("/_ts"),
-		// 								ConflictResolutionProcedure: to.Ptr(""),
-		// 							},
-		// 							Rid: to.Ptr("V18LoLrv-qA="),
-		// 							Self: to.Ptr("dbs/V18LoA==/colls/V18LoLrv-qA=/"),
-		// 							Etag: to.Ptr("\"00003e00-0000-0700-0000-5f85338a0000\""),
 		// 						},
+		// 						EventTimestamp: to.Ptr("2020-10-13T04:56:42Z"),
+		// 						OperationType: to.Ptr(armcosmos.OperationTypeCreate),
+		// 						OwnerID: to.Ptr("Container1"),
+		// 						OwnerResourceID: to.Ptr("V18LoLrv-qA="),
 		// 					},
 		// 				},
 		// 			},
 		// 			{
-		// 				ID: to.Ptr("/subscriptions/subid/providers/Microsoft.DocumentDb/locations/westus/restorableDatabaseAccounts/98a570f2-63db-4117-91f0-366327b7b353/restorableSqlContainers/e85298a1-c631-4726-825e-a7ca092e9098"),
-		// 				Type: to.Ptr("Microsoft.DocumentDB/locations/restorableDatabaseAccounts/restorableSqlContainers"),
 		// 				Name: to.Ptr("e85298a1-c631-4726-825e-a7ca092e9098"),
+		// 				Type: to.Ptr("Microsoft.DocumentDB/locations/restorableDatabaseAccounts/restorableSqlContainers"),
+		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.DocumentDb/locations/westus/restorableDatabaseAccounts/98a570f2-63db-4117-91f0-366327b7b353/restorableSqlContainers/e85298a1-c631-4726-825e-a7ca092e9098"),
 		// 				Properties: &armcosmos.RestorableSQLContainerProperties{
 		// 					Resource: &armcosmos.RestorableSQLContainerPropertiesResource{
 		// 						Rid: to.Ptr("PrArcgAAAA=="),
-		// 						EventTimestamp: to.Ptr("2020-10-13T05:03:27Z"),
-		// 						OwnerID: to.Ptr("Container1"),
-		// 						OwnerResourceID: to.Ptr("V18LoLrv-qA="),
-		// 						OperationType: to.Ptr(armcosmos.OperationTypeReplace),
 		// 						CanUndelete: to.Ptr("invalid"),
 		// 						Container: &armcosmos.RestorableSQLContainerPropertiesResourceContainer{
+		// 							Etag: to.Ptr("\"00004400-0000-0700-0000-5f85351f0000\""),
+		// 							Rid: to.Ptr("V18LoLrv-qA="),
+		// 							Self: to.Ptr("dbs/V18LoA==/colls/V18LoLrv-qA=/"),
+		// 							ConflictResolutionPolicy: &armcosmos.ConflictResolutionPolicy{
+		// 								ConflictResolutionPath: to.Ptr("/_ts"),
+		// 								ConflictResolutionProcedure: to.Ptr(""),
+		// 								Mode: to.Ptr(armcosmos.ConflictResolutionModeLastWriterWins),
+		// 							},
+		// 							DefaultTTL: to.Ptr[int32](12345),
 		// 							ID: to.Ptr("Container1"),
 		// 							IndexingPolicy: &armcosmos.IndexingPolicy{
-		// 								IndexingMode: to.Ptr(armcosmos.IndexingModeConsistent),
 		// 								Automatic: to.Ptr(true),
+		// 								ExcludedPaths: []*armcosmos.ExcludedPath{
+		// 									{
+		// 										Path: to.Ptr("/\"_etag\"/?"),
+		// 									},
+		// 								},
 		// 								IncludedPaths: []*armcosmos.IncludedPath{
 		// 									{
 		// 										Path: to.Ptr("/*"),
@@ -106,22 +115,13 @@ func ExampleRestorableSQLContainersClient_NewListPager() {
 		// 										Path: to.Ptr("/\"_ts\"/?"),
 		// 									},
 		// 								},
-		// 								ExcludedPaths: []*armcosmos.ExcludedPath{
-		// 									{
-		// 										Path: to.Ptr("/\"_etag\"/?"),
-		// 									},
-		// 								},
+		// 								IndexingMode: to.Ptr(armcosmos.IndexingModeConsistent),
 		// 							},
-		// 							DefaultTTL: to.Ptr[int32](12345),
-		// 							ConflictResolutionPolicy: &armcosmos.ConflictResolutionPolicy{
-		// 								Mode: to.Ptr(armcosmos.ConflictResolutionModeLastWriterWins),
-		// 								ConflictResolutionPath: to.Ptr("/_ts"),
-		// 								ConflictResolutionProcedure: to.Ptr(""),
-		// 							},
-		// 							Rid: to.Ptr("V18LoLrv-qA="),
-		// 							Self: to.Ptr("dbs/V18LoA==/colls/V18LoLrv-qA=/"),
-		// 							Etag: to.Ptr("\"00004400-0000-0700-0000-5f85351f0000\""),
 		// 						},
+		// 						EventTimestamp: to.Ptr("2020-10-13T05:03:27Z"),
+		// 						OperationType: to.Ptr(armcosmos.OperationTypeReplace),
+		// 						OwnerID: to.Ptr("Container1"),
+		// 						OwnerResourceID: to.Ptr("V18LoLrv-qA="),
 		// 					},
 		// 				},
 		// 			},

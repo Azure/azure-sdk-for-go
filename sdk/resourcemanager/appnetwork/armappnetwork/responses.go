@@ -6,7 +6,7 @@ package armappnetwork
 
 // AppLinkMembersClientCreateOrUpdateResponse contains the response from method AppLinkMembersClient.BeginCreateOrUpdate.
 type AppLinkMembersClientCreateOrUpdateResponse struct {
-	// AppLink Member resource
+	// A member of an Azure Kubernetes Application Network resource.
 	AppLinkMember
 }
 
@@ -17,7 +17,7 @@ type AppLinkMembersClientDeleteResponse struct {
 
 // AppLinkMembersClientGetResponse contains the response from method AppLinkMembersClient.Get.
 type AppLinkMembersClientGetResponse struct {
-	// AppLink Member resource
+	// A member of an Azure Kubernetes Application Network resource.
 	AppLinkMember
 }
 
@@ -29,13 +29,13 @@ type AppLinkMembersClientListByAppLinkResponse struct {
 
 // AppLinkMembersClientUpdateResponse contains the response from method AppLinkMembersClient.BeginUpdate.
 type AppLinkMembersClientUpdateResponse struct {
-	// AppLink Member resource
+	// A member of an Azure Kubernetes Application Network resource.
 	AppLinkMember
 }
 
 // AppLinksClientCreateOrUpdateResponse contains the response from method AppLinksClient.BeginCreateOrUpdate.
 type AppLinksClientCreateOrUpdateResponse struct {
-	// AppLink resource
+	// An Azure Kubernetes Application Network resource.
 	AppLink
 }
 
@@ -46,7 +46,7 @@ type AppLinksClientDeleteResponse struct {
 
 // AppLinksClientGetResponse contains the response from method AppLinksClient.Get.
 type AppLinksClientGetResponse struct {
-	// AppLink resource
+	// An Azure Kubernetes Application Network resource.
 	AppLink
 }
 
@@ -64,7 +64,7 @@ type AppLinksClientListBySubscriptionResponse struct {
 
 // AppLinksClientUpdateResponse contains the response from method AppLinksClient.BeginUpdate.
 type AppLinksClientUpdateResponse struct {
-	// AppLink resource
+	// An Azure Kubernetes Application Network resource.
 	AppLink
 }
 

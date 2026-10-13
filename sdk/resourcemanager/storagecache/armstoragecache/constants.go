@@ -5,7 +5,7 @@
 package armstoragecache
 
 const (
-	version20260101 string = "2026-01-01"
+	version20260801 string = "2026-08-01"
 )
 
 // AmlFilesystemHealthStateType - List of AML file system health states.
@@ -660,6 +660,7 @@ func PossibleMaintenanceDayOfWeekTypeValues() []MaintenanceDayOfWeekType {
 	}
 }
 
+// MetricAggregationType - Metric aggregation type.
 type MetricAggregationType string
 
 const (
@@ -829,6 +830,92 @@ func PossibleReasonCodeValues() []ReasonCode {
 	return []ReasonCode{
 		ReasonCodeNotAvailableForSubscription,
 		ReasonCodeQuotaID,
+	}
+}
+
+// RebalanceJobAdminStatus - The administrative status of the rebalance job. Active means the job is running normally. Cancel
+// requests the job to stop.
+type RebalanceJobAdminStatus string
+
+const (
+	// RebalanceJobAdminStatusActive - The rebalance job is running normally.
+	RebalanceJobAdminStatusActive RebalanceJobAdminStatus = "Active"
+	// RebalanceJobAdminStatusCancel - Request the rebalance job to stop.
+	RebalanceJobAdminStatusCancel RebalanceJobAdminStatus = "Cancel"
+)
+
+// PossibleRebalanceJobAdminStatusValues returns the possible values for the RebalanceJobAdminStatus const type.
+func PossibleRebalanceJobAdminStatusValues() []RebalanceJobAdminStatus {
+	return []RebalanceJobAdminStatus{
+		RebalanceJobAdminStatusActive,
+		RebalanceJobAdminStatusCancel,
+	}
+}
+
+// RebalanceJobPropertiesProvisioningState - ARM provisioning state for the rebalance job.
+type RebalanceJobPropertiesProvisioningState string
+
+const (
+	// RebalanceJobPropertiesProvisioningStateCanceled - Resource creation was canceled.
+	RebalanceJobPropertiesProvisioningStateCanceled RebalanceJobPropertiesProvisioningState = "Canceled"
+	// RebalanceJobPropertiesProvisioningStateCreating - Resource is being created.
+	RebalanceJobPropertiesProvisioningStateCreating RebalanceJobPropertiesProvisioningState = "Creating"
+	// RebalanceJobPropertiesProvisioningStateDeleting - Resource is being deleted.
+	RebalanceJobPropertiesProvisioningStateDeleting RebalanceJobPropertiesProvisioningState = "Deleting"
+	// RebalanceJobPropertiesProvisioningStateFailed - Resource creation failed.
+	RebalanceJobPropertiesProvisioningStateFailed RebalanceJobPropertiesProvisioningState = "Failed"
+	// RebalanceJobPropertiesProvisioningStateSucceeded - Resource has been created.
+	RebalanceJobPropertiesProvisioningStateSucceeded RebalanceJobPropertiesProvisioningState = "Succeeded"
+	// RebalanceJobPropertiesProvisioningStateUpdating - Resource is being updated.
+	RebalanceJobPropertiesProvisioningStateUpdating RebalanceJobPropertiesProvisioningState = "Updating"
+)
+
+// PossibleRebalanceJobPropertiesProvisioningStateValues returns the possible values for the RebalanceJobPropertiesProvisioningState const type.
+func PossibleRebalanceJobPropertiesProvisioningStateValues() []RebalanceJobPropertiesProvisioningState {
+	return []RebalanceJobPropertiesProvisioningState{
+		RebalanceJobPropertiesProvisioningStateCanceled,
+		RebalanceJobPropertiesProvisioningStateCreating,
+		RebalanceJobPropertiesProvisioningStateDeleting,
+		RebalanceJobPropertiesProvisioningStateFailed,
+		RebalanceJobPropertiesProvisioningStateSucceeded,
+		RebalanceJobPropertiesProvisioningStateUpdating,
+	}
+}
+
+// RebalanceJobStatusType - The operational state of the rebalance job. InProgress indicates the rebalance is running on the
+// cluster. Cancelling indicates a cancel has been requested. Canceled indicates the rebalance was cancelled. Completed indicates
+// the rebalance finished successfully (imbalance below low watermark). Failed indicates the rebalance was unable to complete
+// due to a fatal error. Deleting indicates the job is being cleaned up during deletion. RollingBack indicates the orchestrator
+// is rolling back provisioned resources after a failure.
+type RebalanceJobStatusType string
+
+const (
+	// RebalanceJobStatusTypeCanceled - The rebalance job was canceled before completion.
+	RebalanceJobStatusTypeCanceled RebalanceJobStatusType = "Canceled"
+	// RebalanceJobStatusTypeCancelling - A cancel has been requested and the job is stopping.
+	RebalanceJobStatusTypeCancelling RebalanceJobStatusType = "Cancelling"
+	// RebalanceJobStatusTypeCompleted - The rebalance job finished successfully.
+	RebalanceJobStatusTypeCompleted RebalanceJobStatusType = "Completed"
+	// RebalanceJobStatusTypeDeleting - The job is being cleaned up during deletion.
+	RebalanceJobStatusTypeDeleting RebalanceJobStatusType = "Deleting"
+	// RebalanceJobStatusTypeFailed - The rebalance job failed due to a fatal error.
+	RebalanceJobStatusTypeFailed RebalanceJobStatusType = "Failed"
+	// RebalanceJobStatusTypeInProgress - The rebalance job is currently running on the cluster.
+	RebalanceJobStatusTypeInProgress RebalanceJobStatusType = "InProgress"
+	// RebalanceJobStatusTypeRollingBack - The orchestrator is rolling back provisioned resources after a failure.
+	RebalanceJobStatusTypeRollingBack RebalanceJobStatusType = "RollingBack"
+)
+
+// PossibleRebalanceJobStatusTypeValues returns the possible values for the RebalanceJobStatusType const type.
+func PossibleRebalanceJobStatusTypeValues() []RebalanceJobStatusType {
+	return []RebalanceJobStatusType{
+		RebalanceJobStatusTypeCanceled,
+		RebalanceJobStatusTypeCancelling,
+		RebalanceJobStatusTypeCompleted,
+		RebalanceJobStatusTypeDeleting,
+		RebalanceJobStatusTypeFailed,
+		RebalanceJobStatusTypeInProgress,
+		RebalanceJobStatusTypeRollingBack,
 	}
 }
 

@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-10-02-preview/LabelHistory_Delete.json
+// Generated from example definition: 2026-07-01/LabelHistory_Delete.json
 func ExampleContainerAppsLabelHistoryClient_DeleteLabelHistory() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -33,7 +33,7 @@ func ExampleContainerAppsLabelHistoryClient_DeleteLabelHistory() {
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/LabelHistory_Get.json
+// Generated from example definition: 2026-07-01/LabelHistory_Get.json
 func ExampleContainerAppsLabelHistoryClient_GetLabelHistory() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -54,8 +54,8 @@ func ExampleContainerAppsLabelHistoryClient_GetLabelHistory() {
 	// res = armappcontainers.ContainerAppsLabelHistoryClientGetLabelHistoryResponse{
 	// 	LabelHistory: armappcontainers.LabelHistory{
 	// 		Name: to.Ptr("dev"),
-	// 		Type: to.Ptr("Microsoft.App/containerApps/labelHistory"),
-	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.App/containerApps/testContainerApp/labelHistory/dev"),
+	// 		Type: to.Ptr("Microsoft.App/containerApps/labelHistories"),
+	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.App/containerApps/testContainerApp/labelHistories/dev"),
 	// 		Properties: &armappcontainers.LabelHistoryProperties{
 	// 			Records: []*armappcontainers.LabelHistoryRecordItem{
 	// 				{
@@ -75,7 +75,7 @@ func ExampleContainerAppsLabelHistoryClient_GetLabelHistory() {
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/LabelHistory_List.json
+// Generated from example definition: 2026-07-01/LabelHistory_List.json
 func ExampleContainerAppsLabelHistoryClient_NewListLabelHistoryPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -102,8 +102,8 @@ func ExampleContainerAppsLabelHistoryClient_NewListLabelHistoryPager() {
 		// 		Value: []*armappcontainers.LabelHistory{
 		// 			{
 		// 				Name: to.Ptr("dev"),
-		// 				Type: to.Ptr("Microsoft.App/containerApps/labelHistory"),
-		// 				ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.App/containerApps/testContainerApp/labelHistory/dev"),
+		// 				Type: to.Ptr("Microsoft.App/containerApps/labelHistories"),
+		// 				ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.App/containerApps/testContainerApp/labelHistories/dev"),
 		// 				Properties: &armappcontainers.LabelHistoryProperties{
 		// 					Records: []*armappcontainers.LabelHistoryRecordItem{
 		// 						{
@@ -122,8 +122,8 @@ func ExampleContainerAppsLabelHistoryClient_NewListLabelHistoryPager() {
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("prod"),
-		// 				Type: to.Ptr("Microsoft.App/containerApps/labelHistory"),
-		// 				ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.App/containerApps/testContainerApp/labelHistory/prod"),
+		// 				Type: to.Ptr("Microsoft.App/containerApps/labelHistories"),
+		// 				ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.App/containerApps/testContainerApp/labelHistories/prod"),
 		// 				Properties: &armappcontainers.LabelHistoryProperties{
 		// 					Records: []*armappcontainers.LabelHistoryRecordItem{
 		// 						{

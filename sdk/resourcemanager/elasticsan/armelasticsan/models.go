@@ -12,6 +12,14 @@ type AutoScaleProperties struct {
 	ScaleUpProperties *ScaleUpProperties
 }
 
+// DeleteRetentionPolicy - Response for Delete Retention Policy object
+type DeleteRetentionPolicy struct {
+	PolicyState *PolicyState
+
+	// The number of days to retain the resources after deletion.
+	RetentionPeriodDays *int32
+}
+
 // DiskSnapshotList - object to hold array of Disk Snapshot ARM IDs
 type DiskSnapshotList struct {
 	// REQUIRED; array of DiskSnapshot ARM IDs
@@ -122,10 +130,16 @@ type List struct {
 	NextLink *string
 }
 
-// ManagedByInfo - Parent resource information.
-type ManagedByInfo struct {
-	// Resource ID of the resource managing the volume, this is a restricted field and can only be set for internal use.
-	ResourceID *string
+// ManagedByResources - Information about Azure services owning the ElasticSan volume resource.
+type ManagedByResources struct {
+	// ClientId of the application managing the resource
+	ClientID *string
+
+	// ARM Resource IDs of the resources managing the volume
+	ResourceIDs []*string
+
+	// Version number to keep track of resources using the Volume
+	Version *int32
 }
 
 // NetworkRuleSet - A set of rules governing the network accessibility.
@@ -292,12 +306,6 @@ type PrivateLinkServiceConnectionState struct {
 
 // Properties - Elastic San response properties.
 type Properties struct {
-	// REQUIRED; Base size of the Elastic San appliance in TiB.
-	BaseSizeTiB *int64
-
-	// REQUIRED; Extended size of the Elastic San appliance in TiB.
-	ExtendedCapacitySizeTiB *int64
-
 	// REQUIRED; resource sku
 	SKU *SKU
 
@@ -307,8 +315,29 @@ type Properties struct {
 	// Logical zone for Elastic San resource; example: ["1"].
 	AvailabilityZones []*string
 
+	// Base size of the Elastic San appliance in TiB.
+	BaseSizeTiB *int64
+
+	// Extended size of the Elastic San appliance in TiB.
+	ExtendedCapacitySizeTiB *int64
+
 	// Allow or disallow public network access to ElasticSan. Value is optional but if passed in, must be 'Enabled' or 'Disabled'.
 	PublicNetworkAccess *PublicNetworkAccess
+
+	// Total Provisioned IOPS of the Elastic San appliance. Settable only for ElasticSanVersion V2, where it is required; read-only
+	// for V1.
+	TotalIops *int64
+
+	// Total Provisioned MBps Elastic San appliance. Settable only for ElasticSanVersion V2, where it is required; read-only for
+	// V1.
+	TotalMBps *int64
+
+	// Total size of the Elastic San appliance in TB. Settable only for ElasticSanVersion V2, where it is required; read-only
+	// for V1.
+	TotalSizeTiB *int64
+
+	// Elastic San appliance version. Defaults to V1 if not specified.
+	Version *Version
 
 	// READ-ONLY; The list of Private Endpoint Connections.
 	PrivateEndpointConnections []*PrivateEndpointConnection
@@ -316,17 +345,17 @@ type Properties struct {
 	// READ-ONLY; State of the operation on the resource.
 	ProvisioningState *ProvisioningStates
 
-	// READ-ONLY; Total Provisioned IOPS of the Elastic San appliance.
-	TotalIops *int64
+	// READ-ONLY; Total IOPS reserved by all the volume groups under an ElasticSan
+	TotalReservedIops *int32
 
-	// READ-ONLY; Total Provisioned MBps Elastic San appliance.
-	TotalMBps *int64
-
-	// READ-ONLY; Total size of the Elastic San appliance in TB.
-	TotalSizeTiB *int64
+	// READ-ONLY; Total MBps reserved by all the volume groups under an ElasticSan
+	TotalReservedMBps *int32
 
 	// READ-ONLY; Total size of the provisioned Volumes in GiB.
 	TotalVolumeSizeGiB *int64
+
+	// READ-ONLY; Used capacity in GiB.
+	UsedCapacityGiB *int64
 
 	// READ-ONLY; Total number of volume groups in this Elastic San appliance.
 	VolumeGroupCount *int64
@@ -386,8 +415,20 @@ type SKULocationInfo struct {
 	// READ-ONLY; The location.
 	Location *string
 
+	// READ-ONLY; Details of capabilities available in each zone.
+	ZoneDetails []*SKUZoneDetails
+
 	// READ-ONLY; The zones.
 	Zones []*string
+}
+
+// SKUZoneDetails - Details of capabilities available in each zone.
+type SKUZoneDetails struct {
+	// READ-ONLY; The capabilities supported in the zone(s).
+	Capabilities []*SKUCapability
+
+	// READ-ONLY; The zone(s).
+	Name []*string
 }
 
 // ScaleUpProperties - Scale up properties on Elastic San Appliance.
@@ -443,8 +484,14 @@ type SnapshotProperties struct {
 	// REQUIRED; Data used when creating a volume snapshot.
 	CreationData *SnapshotCreationData
 
+	// READ-ONLY; Percentage complete for the background copy of the snapshot when a snapshot is in InstantAccess state.
+	CompletionPercent *float32
+
 	// READ-ONLY; State of the operation on the resource.
 	ProvisioningState *ProvisioningStates
+
+	// READ-ONLY; The state of snapshot which determines the access availability of the snapshot.
+	SnapshotAccessState *SnapshotAccessState
 
 	// READ-ONLY; Size of Source Volume
 	SourceVolumeSizeGiB *int64
@@ -506,6 +553,15 @@ type UpdateProperties struct {
 	// Allow or disallow public network access to ElasticSan Account. Value is optional but if passed in, must be 'Enabled' or
 	// 'Disabled'.
 	PublicNetworkAccess *PublicNetworkAccess
+
+	// Total Provisioned IOPS of the Elastic San appliance. Supported only for ElasticSanVersion V2.
+	TotalIops *int64
+
+	// Total Provisioned MBps Elastic San appliance. Supported only for ElasticSanVersion V2.
+	TotalMBps *int64
+
+	// Total size of the Elastic San appliance in TB. Supported only for ElasticSanVersion V2.
+	TotalSizeTiB *int64
 }
 
 // UserAssignedIdentity for the resource.
@@ -576,8 +632,14 @@ type VolumeGroupList struct {
 
 // VolumeGroupProperties - VolumeGroup response properties.
 type VolumeGroupProperties struct {
+	// The retention policy for the soft deleted volume group and its associated resources.
+	DeleteRetentionPolicy *DeleteRetentionPolicy
+
 	// Type of encryption
 	Encryption *EncryptionType
+
+	// A boolean indicating whether or not Encryption in Transit is enabled, supported only for ISCSI protocol.
+	EncryptionInTransit *bool
 
 	// Encryption Properties describing Key Vault and Identity information
 	EncryptionProperties *EncryptionProperties
@@ -590,6 +652,15 @@ type VolumeGroupProperties struct {
 
 	// Type of storage target
 	ProtocolType *StorageTargetType
+
+	// Quality of Service tier for the volume group, applicable for ElasticSanVersion V2 only.
+	QualityOfService *QualityOfService
+
+	// Reserved IOPS allocated for this volume group, applicable for QualityOfService PerformanceCritical only.
+	ReservedIops *int32
+
+	// Reserved MBps allocated for this volume group, applicable for QualityOfService PerformanceCritical only.
+	ReservedMBps *int32
 
 	// READ-ONLY; The list of Private Endpoint Connections.
 	PrivateEndpointConnections []*PrivateEndpointConnection
@@ -609,6 +680,9 @@ type VolumeGroupUpdate struct {
 
 // VolumeGroupUpdateProperties - VolumeGroup response properties.
 type VolumeGroupUpdateProperties struct {
+	// The retention policy for the soft deleted volume group and its associated resources
+	DeleteRetentionPolicy *DeleteRetentionPolicy
+
 	// Type of encryption
 	Encryption *EncryptionType
 
@@ -623,6 +697,12 @@ type VolumeGroupUpdateProperties struct {
 
 	// Type of storage target
 	ProtocolType *StorageTargetType
+
+	// Reserved IOPS allocated for this volume group, applicable for QualityOfService PerformanceCritical only.
+	ReservedIops *int32
+
+	// Reserved MBps allocated for this volume group, applicable for QualityOfService PerformanceCritical only.
+	ReservedMBps *int32
 }
 
 // VolumeList - List of Volumes
@@ -648,8 +728,8 @@ type VolumeProperties struct {
 	// State of the operation on the resource.
 	CreationData *SourceCreationData
 
-	// Parent resource information.
-	ManagedBy *ManagedByInfo
+	// Information about Azure services owning the ElasticSan volume resource.
+	ManagedBy []*ManagedByResources
 
 	// READ-ONLY; State of the operation on the resource.
 	ProvisioningState *ProvisioningStates
@@ -669,8 +749,8 @@ type VolumeUpdate struct {
 
 // VolumeUpdateProperties - Volume response properties.
 type VolumeUpdateProperties struct {
-	// Parent resource information.
-	ManagedBy *ManagedByInfo
+	// Information about Azure services owning the ElasticSan volume resource.
+	ManagedBy []*ManagedByResources
 
 	// Volume size.
 	SizeGiB *int64

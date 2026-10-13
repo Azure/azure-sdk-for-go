@@ -19,7 +19,7 @@ import (
 // FunctionsExtensionClient contains the methods for the FunctionsExtension group.
 // Don't use this type directly, use NewFunctionsExtensionClient() instead.
 //
-// Generated from API version 2025-10-02-preview
+// Generated from API version 2026-07-01
 type FunctionsExtensionClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -99,7 +99,7 @@ func (client *FunctionsExtensionClient) invokeFunctionsHostCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251002Preview)
+	reqQP.Set("api-version", version20260701)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"text/plain"}
 	return req, nil

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-10-02-preview/ManagedEnvironmentsStorages_CreateOrUpdate.json
+// Generated from example definition: 2026-07-01/ManagedEnvironmentsStorages_CreateOrUpdate.json
 func ExampleManagedEnvironmentsStoragesClient_CreateOrUpdate_createOrUpdateEnvironmentsStorage() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -45,7 +45,7 @@ func ExampleManagedEnvironmentsStoragesClient_CreateOrUpdate_createOrUpdateEnvir
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/ManagedEnvironmentsStorages_CreateOrUpdate_NfsAzureFile.json
+// Generated from example definition: 2026-07-01/ManagedEnvironmentsStorages_CreateOrUpdate_NfsAzureFile.json
 func ExampleManagedEnvironmentsStoragesClient_CreateOrUpdate_createOrUpdateEnvironmentsStorageForNfsAzureFile() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -87,7 +87,7 @@ func ExampleManagedEnvironmentsStoragesClient_CreateOrUpdate_createOrUpdateEnvir
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/ManagedEnvironmentsStorages_Delete.json
+// Generated from example definition: 2026-07-01/ManagedEnvironmentsStorages_Delete.json
 func ExampleManagedEnvironmentsStoragesClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -109,7 +109,7 @@ func ExampleManagedEnvironmentsStoragesClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/ManagedEnvironmentsStorages_Get.json
+// Generated from example definition: 2026-07-01/ManagedEnvironmentsStorages_Get.json
 func ExampleManagedEnvironmentsStoragesClient_Get_getAEnvironmentsStorage() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -147,7 +147,7 @@ func ExampleManagedEnvironmentsStoragesClient_Get_getAEnvironmentsStorage() {
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/ManagedEnvironmentsStorages_Get_NfsAzureFile.json
+// Generated from example definition: 2026-07-01/ManagedEnvironmentsStorages_Get_NfsAzureFile.json
 func ExampleManagedEnvironmentsStoragesClient_Get_getAEnvironmentsStorageForNfsAzureFile() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -181,7 +181,7 @@ func ExampleManagedEnvironmentsStoragesClient_Get_getAEnvironmentsStorageForNfsA
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/ManagedEnvironmentsStorages_List.json
+// Generated from example definition: 2026-07-01/ManagedEnvironmentsStorages_List.json
 func ExampleManagedEnvironmentsStoragesClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

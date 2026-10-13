@@ -8067,6 +8067,12 @@ type InquiryValidation struct {
 	ProtectableItemCount any
 }
 
+// InstantItemRecoveryOperationResultRequest - Parameters for the listInstantItemRecoveryOperationResult action.
+type InstantItemRecoveryOperationResultRequest struct {
+	// REQUIRED; Operation ID returned by the prior provisionInstantItemRecovery action whose iSCSI mount scripts are to be retrieved.
+	ProvisionInstantItemRecoveryOperationID *string
+}
+
 // InstantItemRecoveryTarget - Target details for file / folder restore.
 type InstantItemRecoveryTarget struct {
 	// List of client scripts.

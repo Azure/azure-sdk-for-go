@@ -5,7 +5,7 @@
 package armelasticsan
 
 const (
-	version20250901 string = "2025-09-01"
+	version20260501Preview string = "2026-05-01-preview"
 )
 
 // Action - The action of virtual network rule.
@@ -76,6 +76,19 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 		CreatedByTypeKey,
 		CreatedByTypeManagedIdentity,
 		CreatedByTypeUser,
+	}
+}
+
+type DeleteType string
+
+const (
+	DeleteTypePermanent DeleteType = "permanent"
+)
+
+// PossibleDeleteTypeValues returns the possible values for the DeleteType const type.
+func PossibleDeleteTypeValues() []DeleteType {
+	return []DeleteType{
+		DeleteTypePermanent,
 	}
 }
 
@@ -167,6 +180,21 @@ func PossibleOriginValues() []Origin {
 	}
 }
 
+type PolicyState string
+
+const (
+	PolicyStateDisabled PolicyState = "Disabled"
+	PolicyStateEnabled  PolicyState = "Enabled"
+)
+
+// PossiblePolicyStateValues returns the possible values for the PolicyState const type.
+func PossiblePolicyStateValues() []PolicyState {
+	return []PolicyState{
+		PolicyStateDisabled,
+		PolicyStateEnabled,
+	}
+}
+
 // PrivateEndpointServiceConnectionStatus - The private endpoint connection status.
 type PrivateEndpointServiceConnectionStatus string
 
@@ -191,16 +219,17 @@ func PossiblePrivateEndpointServiceConnectionStatusValues() []PrivateEndpointSer
 type ProvisioningStates string
 
 const (
-	ProvisioningStatesCanceled  ProvisioningStates = "Canceled"
-	ProvisioningStatesCreating  ProvisioningStates = "Creating"
-	ProvisioningStatesDeleted   ProvisioningStates = "Deleted"
-	ProvisioningStatesDeleting  ProvisioningStates = "Deleting"
-	ProvisioningStatesFailed    ProvisioningStates = "Failed"
-	ProvisioningStatesInvalid   ProvisioningStates = "Invalid"
-	ProvisioningStatesPending   ProvisioningStates = "Pending"
-	ProvisioningStatesRestoring ProvisioningStates = "Restoring"
-	ProvisioningStatesSucceeded ProvisioningStates = "Succeeded"
-	ProvisioningStatesUpdating  ProvisioningStates = "Updating"
+	ProvisioningStatesCanceled     ProvisioningStates = "Canceled"
+	ProvisioningStatesCreating     ProvisioningStates = "Creating"
+	ProvisioningStatesDeleted      ProvisioningStates = "Deleted"
+	ProvisioningStatesDeleting     ProvisioningStates = "Deleting"
+	ProvisioningStatesFailed       ProvisioningStates = "Failed"
+	ProvisioningStatesInvalid      ProvisioningStates = "Invalid"
+	ProvisioningStatesPending      ProvisioningStates = "Pending"
+	ProvisioningStatesRestoring    ProvisioningStates = "Restoring"
+	ProvisioningStatesSoftDeleting ProvisioningStates = "SoftDeleting"
+	ProvisioningStatesSucceeded    ProvisioningStates = "Succeeded"
+	ProvisioningStatesUpdating     ProvisioningStates = "Updating"
 )
 
 // PossibleProvisioningStatesValues returns the possible values for the ProvisioningStates const type.
@@ -214,6 +243,7 @@ func PossibleProvisioningStatesValues() []ProvisioningStates {
 		ProvisioningStatesInvalid,
 		ProvisioningStatesPending,
 		ProvisioningStatesRestoring,
+		ProvisioningStatesSoftDeleting,
 		ProvisioningStatesSucceeded,
 		ProvisioningStatesUpdating,
 	}
@@ -236,10 +266,30 @@ func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
 	}
 }
 
+// QualityOfService - Quality of Service tier for the volume group, applicable for ElasticSanVersion V2 only.
+type QualityOfService string
+
+const (
+	// QualityOfServiceGeneralPurpose - General purpose tier.
+	QualityOfServiceGeneralPurpose QualityOfService = "GeneralPurpose"
+	// QualityOfServicePerformanceCritical - Performance critical tier.
+	QualityOfServicePerformanceCritical QualityOfService = "PerformanceCritical"
+)
+
+// PossibleQualityOfServiceValues returns the possible values for the QualityOfService const type.
+func PossibleQualityOfServiceValues() []QualityOfService {
+	return []QualityOfService{
+		QualityOfServiceGeneralPurpose,
+		QualityOfServicePerformanceCritical,
+	}
+}
+
 // SKUName - The sku name.
 type SKUName string
 
 const (
+	// SKUNameElasticSANLRS - Locally redundant storage. Supported only for ElasticSanVersion V2.
+	SKUNameElasticSANLRS SKUName = "ElasticSAN_LRS"
 	// SKUNamePremiumLRS - Premium locally redundant storage
 	SKUNamePremiumLRS SKUName = "Premium_LRS"
 	// SKUNamePremiumZRS - Premium zone redundant storage
@@ -249,6 +299,7 @@ const (
 // PossibleSKUNameValues returns the possible values for the SKUName const type.
 func PossibleSKUNameValues() []SKUName {
 	return []SKUName{
+		SKUNameElasticSANLRS,
 		SKUNamePremiumLRS,
 		SKUNamePremiumZRS,
 	}
@@ -269,19 +320,69 @@ func PossibleSKUTierValues() []SKUTier {
 	}
 }
 
+// SnapshotAccessState - The state of snapshot which determines the access availability of the snapshot.
+type SnapshotAccessState string
+
+const (
+	// SnapshotAccessStateAvailable - The snapshot can be used for restore, copy to different region, and download to offline.
+	SnapshotAccessStateAvailable SnapshotAccessState = "Available"
+	// SnapshotAccessStateAvailableWithInstantAccess - The snapshot can be used for restoring volumes with fast performance, copied
+	// and downloaded.
+	SnapshotAccessStateAvailableWithInstantAccess SnapshotAccessState = "AvailableWithInstantAccess"
+	// SnapshotAccessStateInstantAccess - The snapshot can be used for restoring volumes with fast performance but cannot be copied
+	// or downloaded.
+	SnapshotAccessStateInstantAccess SnapshotAccessState = "InstantAccess"
+	// SnapshotAccessStatePending - The snapshot cannot be used for restore, copy or download to offline.
+	SnapshotAccessStatePending SnapshotAccessState = "Pending"
+	// SnapshotAccessStateUnknown - Default value.
+	SnapshotAccessStateUnknown SnapshotAccessState = "Unknown"
+)
+
+// PossibleSnapshotAccessStateValues returns the possible values for the SnapshotAccessState const type.
+func PossibleSnapshotAccessStateValues() []SnapshotAccessState {
+	return []SnapshotAccessState{
+		SnapshotAccessStateAvailable,
+		SnapshotAccessStateAvailableWithInstantAccess,
+		SnapshotAccessStateInstantAccess,
+		SnapshotAccessStatePending,
+		SnapshotAccessStateUnknown,
+	}
+}
+
 // StorageTargetType - Storage Target type.
 type StorageTargetType string
 
 const (
-	StorageTargetTypeIscsi StorageTargetType = "Iscsi"
-	StorageTargetTypeNone  StorageTargetType = "None"
+	// StorageTargetTypeDirectAttach - Direct attach storage target type.
+	StorageTargetTypeDirectAttach StorageTargetType = "DirectAttach"
+	StorageTargetTypeIscsi        StorageTargetType = "Iscsi"
+	StorageTargetTypeNone         StorageTargetType = "None"
 )
 
 // PossibleStorageTargetTypeValues returns the possible values for the StorageTargetType const type.
 func PossibleStorageTargetTypeValues() []StorageTargetType {
 	return []StorageTargetType{
+		StorageTargetTypeDirectAttach,
 		StorageTargetTypeIscsi,
 		StorageTargetTypeNone,
+	}
+}
+
+// Version - Elastic San appliance version.
+type Version string
+
+const (
+	// VersionV1 - Version 1 of the Elastic San appliance.
+	VersionV1 Version = "V1"
+	// VersionV2 - Version 2 of the Elastic San appliance.
+	VersionV2 Version = "V2"
+)
+
+// PossibleVersionValues returns the possible values for the Version const type.
+func PossibleVersionValues() []Version {
+	return []Version{
+		VersionV1,
+		VersionV2,
 	}
 }
 
@@ -304,6 +405,21 @@ func PossibleVolumeCreateOptionValues() []VolumeCreateOption {
 		VolumeCreateOptionDiskSnapshot,
 		VolumeCreateOptionNone,
 		VolumeCreateOptionVolumeSnapshot,
+	}
+}
+
+type XMSAccessSoftDeletedResources string
+
+const (
+	XMSAccessSoftDeletedResourcesFalse XMSAccessSoftDeletedResources = "false"
+	XMSAccessSoftDeletedResourcesTrue  XMSAccessSoftDeletedResources = "true"
+)
+
+// PossibleXMSAccessSoftDeletedResourcesValues returns the possible values for the XMSAccessSoftDeletedResources const type.
+func PossibleXMSAccessSoftDeletedResourcesValues() []XMSAccessSoftDeletedResources {
+	return []XMSAccessSoftDeletedResources{
+		XMSAccessSoftDeletedResourcesFalse,
+		XMSAccessSoftDeletedResourcesTrue,
 	}
 }
 

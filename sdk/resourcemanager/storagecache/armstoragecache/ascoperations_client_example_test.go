@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01/AscOperations_Get.json
+// Generated from example definition: 2026-08-01/AscOperations_Get.json
 func ExampleAscOperationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -33,7 +33,7 @@ func ExampleAscOperationsClient_Get() {
 	// 	AscOperation: armstoragecache.AscOperation{
 	// 		Name: to.Ptr("testoperationid"),
 	// 		EndTime: to.Ptr("2023-01-01T16:13:13.933Z"),
-	// 		ID: to.Ptr("/subscriptions/id/locations/westus/ascOperations/testoperationid"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.StorageCache/locations/westus/ascOperations/testoperationid"),
 	// 		StartTime: to.Ptr("2023-01-01T13:13:13.933Z"),
 	// 		Status: to.Ptr("Succeeded"),
 	// 	},

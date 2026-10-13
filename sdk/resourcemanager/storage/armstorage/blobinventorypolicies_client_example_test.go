@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-04-01/StorageAccountSetBlobInventoryPolicy.json
+// Generated from example definition: 2026-06-01/StorageAccountSetBlobInventoryPolicy.json
 func ExampleBlobInventoryPoliciesClient_CreateOrUpdate_storageAccountSetBlobInventoryPolicy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -106,7 +106,7 @@ func ExampleBlobInventoryPoliciesClient_CreateOrUpdate_storageAccountSetBlobInve
 	// 		Type: to.Ptr("Microsoft.Storage/storageAccounts/inventoryPolicies"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res7687/providers/Microsoft.Storage/storageAccounts/sto9699/inventoryPolicies/default"),
 	// 		Properties: &armstorage.BlobInventoryPolicyProperties{
-	// 			LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-05T02:53:39.0932539Z"); return t}()),
+	// 			LastModifiedTime: to.Ptr(time.Date(2020, time.October, 5, 2, 53, 39, 93253900, time.UTC)),
 	// 			Policy: &armstorage.BlobInventoryPolicySchema{
 	// 				Type: to.Ptr(armstorage.InventoryRuleTypeInventory),
 	// 				Enabled: to.Ptr(true),
@@ -179,7 +179,7 @@ func ExampleBlobInventoryPoliciesClient_CreateOrUpdate_storageAccountSetBlobInve
 	// }
 }
 
-// Generated from example definition: 2026-04-01/StorageAccountSetBlobInventoryPolicyIncludeDeleteAndNewSchemaForHnsAccount.json
+// Generated from example definition: 2026-06-01/StorageAccountSetBlobInventoryPolicyIncludeDeleteAndNewSchemaForHnsAccount.json
 func ExampleBlobInventoryPoliciesClient_CreateOrUpdate_storageAccountSetBlobInventoryPolicyIncludeDeleteAndNewSchemaForHnsAccount() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -383,7 +383,7 @@ func ExampleBlobInventoryPoliciesClient_CreateOrUpdate_storageAccountSetBlobInve
 	// }
 }
 
-// Generated from example definition: 2026-04-01/StorageAccountSetBlobInventoryPolicyIncludeDeleteAndNewSchemaForNonHnsAccount.json
+// Generated from example definition: 2026-06-01/StorageAccountSetBlobInventoryPolicyIncludeDeleteAndNewSchemaForNonHnsAccount.json
 func ExampleBlobInventoryPoliciesClient_CreateOrUpdate_storageAccountSetBlobInventoryPolicyIncludeDeleteAndNewSchemaForNonHnsAccount() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -585,7 +585,7 @@ func ExampleBlobInventoryPoliciesClient_CreateOrUpdate_storageAccountSetBlobInve
 	// }
 }
 
-// Generated from example definition: 2026-04-01/StorageAccountDeleteBlobInventoryPolicy.json
+// Generated from example definition: 2026-06-01/StorageAccountDeleteBlobInventoryPolicy.json
 func ExampleBlobInventoryPoliciesClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -607,7 +607,7 @@ func ExampleBlobInventoryPoliciesClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01/StorageAccountGetBlobInventoryPolicy.json
+// Generated from example definition: 2026-06-01/StorageAccountGetBlobInventoryPolicy.json
 func ExampleBlobInventoryPoliciesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -631,7 +631,7 @@ func ExampleBlobInventoryPoliciesClient_Get() {
 	// 		Type: to.Ptr("Microsoft.Storage/storageAccounts/inventoryPolicies"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res7687/providers/Microsoft.Storage/storageAccounts/sto9699/inventoryPolicies/default"),
 	// 		Properties: &armstorage.BlobInventoryPolicyProperties{
-	// 			LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-05T02:53:39.0932539Z"); return t}()),
+	// 			LastModifiedTime: to.Ptr(time.Date(2020, time.October, 5, 2, 53, 39, 93253900, time.UTC)),
 	// 			Policy: &armstorage.BlobInventoryPolicySchema{
 	// 				Type: to.Ptr(armstorage.InventoryRuleTypeInventory),
 	// 				Enabled: to.Ptr(true),
@@ -680,7 +680,7 @@ func ExampleBlobInventoryPoliciesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01/StorageAccountListBlobInventoryPolicy.json
+// Generated from example definition: 2026-06-01/StorageAccountListBlobInventoryPolicy.json
 func ExampleBlobInventoryPoliciesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -710,7 +710,7 @@ func ExampleBlobInventoryPoliciesClient_NewListPager() {
 		// 				Type: to.Ptr("Microsoft.Storage/storageAccounts/inventoryPolicies"),
 		// 				ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res7687/providers/Microsoft.Storage/storageAccounts/sto9699/inventoryPolicies/default"),
 		// 				Properties: &armstorage.BlobInventoryPolicyProperties{
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-05T02:53:39.0932539Z"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2020, time.October, 5, 2, 53, 39, 93253900, time.UTC)),
 		// 					Policy: &armstorage.BlobInventoryPolicySchema{
 		// 						Type: to.Ptr(armstorage.InventoryRuleTypeInventory),
 		// 						Enabled: to.Ptr(true),

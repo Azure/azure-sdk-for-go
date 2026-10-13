@@ -12,7 +12,7 @@
 /sdk/samples/                                                      @jhendrixMSFT @richardpark-msft @rickwinter @xirzec
 
 # PRLabel: %App Configuration
-/sdk/data/azappconfig/                                             @jhendrixMSFT @linglingye001 @RichardChen820 @mrm9084
+/sdk/data/azappconfig/                                             @linglingye001 @mrm9084 @yuanqu72 @jimmyca15 @zhiyuanliang-ms
 
 # AzureSdkOwners:                                                  @jhendrixMSFT
 # ServiceLabel: %App Configuration
@@ -39,7 +39,7 @@
 /sdk/resourcemanager/containerservice/                             @elvazhu521 @FumingZhang
 
 # PRLabel: %Cosmos
-/sdk/data/azcosmos/                                                @Azure/azure-cosmos-go-sdk
+/sdk/data/azcosmos/                                                @Azure/azure-cosmos-sdk
 
 # AzureSdkOwners:                                                  @jhendrixMSFT
 # ServiceLabel: %Cosmos
@@ -49,11 +49,11 @@
 # ServiceOwners:                                                   @MehaKaushik @Pilchie @Wmengmsft
 
 # PRLabel: %EngSys
-/sdk/template/                                                     @benbp @mikeharder
+/sdk/template/                                                     @Azure/azure-sdk-eng
 
-# AzureSdkOwners:                                                  @benbp
+# AzureSdkOwners:                                                  @Azure/azure-sdk-eng
 # ServiceLabel: %EngSys
-# ServiceOwners:                                                   @benbp @mikeharder
+# ServiceOwners:                                                   @Azure/azure-sdk-eng
 
 # PRLabel: %Event Grid
 /sdk/messaging/eventgrid/                                          @rajeshka @shankarsama
@@ -121,7 +121,7 @@
 # ServiceOwners:                                                   @EldertGrootenboer @skarri-microsoft @j7nw4r @SwayGom @sagar0207
 
 # PRLabel: %Storage
-/sdk/storage/                                                      @gapra-msft @jhendrixMSFT @souravgupta-msft @tanyasethi-msft
+/sdk/storage/                                                      @gapra-msft @gunjansingh-msft @jhendrixMSFT @tanyasethi-msft
 
 # AzureSdkOwners:                                                  @jhendrixMSFT
 # ServiceLabel: %Storage
@@ -656,10 +656,10 @@
 ###########
 # Eng Sys
 ###########
-/eng/                              @benbp @mikeharder
+/eng/                              @Azure/azure-sdk-eng
 /eng/common/                       @Azure/azure-sdk-eng
 /eng/config.json                   @richardpark-msft @jhendrixMSFT @rickwinter @xirzec
-/.config/1espt/                    @benbp @mikeharder
+/.config/1espt/                    @Azure/azure-sdk-eng
 /.github/workflows/                @Azure/azure-sdk-eng
 /.github/CODEOWNERS                @rickwinter @xirzec @sandeep-sen @Azure/azure-sdk-eng
 /.github/copilot-instructions.md   @richardpark-msft @praveenkuttappan @maririos

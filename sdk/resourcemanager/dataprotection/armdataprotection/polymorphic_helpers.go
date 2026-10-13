@@ -131,8 +131,12 @@ func unmarshalBackupDatasourceParametersClassification(rawMsg json.RawMessage) (
 		b = &BlobBackupDatasourceParameters{}
 	case "BlobBackupDatasourceParametersForAutoProtection":
 		b = &BlobBackupDatasourceParametersForAutoProtection{}
+	case "GenericBackupDatasourceParameters":
+		b = &GenericBackupDatasourceParameters{}
 	case "KubernetesClusterBackupDatasourceParameters":
 		b = &KubernetesClusterBackupDatasourceParameters{}
+	case "PostgreSqlFlexibleServerBackupDatasourceParameters":
+		b = &PostgreSQLFlexibleServerBackupDatasourceParameters{}
 	default:
 		b = &BackupDatasourceParameters{}
 	}
@@ -383,6 +387,8 @@ func unmarshalItemLevelRestoreCriteriaClassification(rawMsg json.RawMessage) (It
 	}
 	var b ItemLevelRestoreCriteriaClassification
 	switch m["objectType"] {
+	case "GenericRestoreDatasourceCriteria":
+		b = &GenericRestoreDatasourceCriteria{}
 	case "ItemPathBasedRestoreCriteria":
 		b = &ItemPathBasedRestoreCriteria{}
 	case "KubernetesClusterRestoreCriteria":

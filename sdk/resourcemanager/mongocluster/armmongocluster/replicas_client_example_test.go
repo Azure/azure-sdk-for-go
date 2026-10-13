@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-06-01/MongoClusters_ReplicaList.json
+// Generated from example definition: 2026-06-15-preview/MongoClusters_ReplicaList.json
 func ExampleReplicasClient_NewListByParentPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

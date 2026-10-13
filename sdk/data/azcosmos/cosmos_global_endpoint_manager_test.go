@@ -39,7 +39,7 @@ func TestGlobalEndpointManagerGetWriteEndpoints(t *testing.T) {
 
 	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", azruntime.PipelineOptions{}, &policy.ClientOptions{Transport: srv})
 
-	gem, err := newGlobalEndpointManager(srv.URL(), pl, []string{"West US", "Central US"}, 5*time.Minute, true)
+	gem, err := newGlobalEndpointManager(srv.URL(), pl, []string{"West US", "Central US"}, 5*time.Minute, true, false /*disableEndpointDiscovery*/)
 	assert.NoError(t, err)
 
 	writeEndpoints, err := gem.GetWriteEndpoints()
@@ -62,7 +62,7 @@ func TestGlobalEndpointManagerGetReadEndpoints(t *testing.T) {
 
 	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", azruntime.PipelineOptions{}, &policy.ClientOptions{Transport: srv})
 
-	gem, err := newGlobalEndpointManager(srv.URL(), pl, []string{"West US", "Central US"}, 5*time.Minute, true)
+	gem, err := newGlobalEndpointManager(srv.URL(), pl, []string{"West US", "Central US"}, 5*time.Minute, true, false /*disableEndpointDiscovery*/)
 	assert.NoError(t, err)
 
 	readEndpoints, err := gem.GetReadEndpoints()
@@ -87,7 +87,7 @@ func TestGlobalEndpointManagerMarkEndpointUnavailableForRead(t *testing.T) {
 	endpoint, err := url.Parse(srv.URL())
 	assert.NoError(t, err)
 
-	gem, err := newGlobalEndpointManager(srv.URL(), pl, []string{"West US", "Central US"}, 5*time.Minute, true)
+	gem, err := newGlobalEndpointManager(srv.URL(), pl, []string{"West US", "Central US"}, 5*time.Minute, true, false /*disableEndpointDiscovery*/)
 	assert.NoError(t, err)
 
 	_, err = gem.MarkEndpointUnavailableForRead(*endpoint)
@@ -107,7 +107,7 @@ func TestGlobalEndpointManagerMarkEndpointUnavailableForWrite(t *testing.T) {
 	endpoint, err := url.Parse(srv.URL())
 	assert.NoError(t, err)
 
-	gem, err := newGlobalEndpointManager(srv.URL(), pl, []string{"West US", "Central US"}, 5*time.Minute, true)
+	gem, err := newGlobalEndpointManager(srv.URL(), pl, []string{"West US", "Central US"}, 5*time.Minute, true, false /*disableEndpointDiscovery*/)
 	assert.NoError(t, err)
 
 	_, err = gem.MarkEndpointUnavailableForWrite(*endpoint)
@@ -143,7 +143,7 @@ func TestGlobalEndpointManagerGetEndpointLocation(t *testing.T) {
 	serverEndpoint, err := url.Parse(srv.URL())
 	assert.NoError(t, err)
 
-	gem, err := newGlobalEndpointManager(srv.URL(), pl, []string{}, 5*time.Minute, true)
+	gem, err := newGlobalEndpointManager(srv.URL(), pl, []string{}, 5*time.Minute, true, false /*disableEndpointDiscovery*/)
 	assert.NoError(t, err)
 
 	err = gem.Update(context.Background(), false)
@@ -162,7 +162,7 @@ func TestGlobalEndpointManagerGetAccountProperties(t *testing.T) {
 
 	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", azruntime.PipelineOptions{}, &policy.ClientOptions{Transport: srv})
 
-	gem, err := newGlobalEndpointManager(srv.URL(), pl, []string{"West US", "Central US"}, 5*time.Minute, true)
+	gem, err := newGlobalEndpointManager(srv.URL(), pl, []string{"West US", "Central US"}, 5*time.Minute, true, false /*disableEndpointDiscovery*/)
 	assert.NoError(t, err)
 
 	accountProps, err := gem.GetAccountProperties(context.Background())
@@ -190,7 +190,7 @@ func TestGlobalEndpointManagerCanUseMultipleWriteLocations(t *testing.T) {
 	serverEndpoint, err := url.Parse(srv.URL())
 	assert.NoError(t, err)
 
-	mockLc := newLocationCache(preferredRegions, *serverEndpoint, true)
+	mockLc := newLocationCache(preferredRegions, *serverEndpoint, true, false /*disableEndpointDiscovery*/)
 	mockLc.enableMultipleWriteLocations = true
 
 	mockGem := globalEndpointManager{
@@ -200,7 +200,7 @@ func TestGlobalEndpointManagerCanUseMultipleWriteLocations(t *testing.T) {
 		refreshTimeInterval: 5 * time.Minute,
 	}
 
-	gem, err := newGlobalEndpointManager(srv.URL(), internalClient.Pipeline(), []string{}, 5*time.Minute, true)
+	gem, err := newGlobalEndpointManager(srv.URL(), internalClient.Pipeline(), []string{}, 5*time.Minute, true, false /*disableEndpointDiscovery*/)
 	assert.NoError(t, err)
 
 	// Multiple locations should be false for default GEM
@@ -237,7 +237,7 @@ func TestGlobalEndpointManagerConcurrentUpdate(t *testing.T) {
 
 	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerCall: []policy.Policy{countPolicy}}, &policy.ClientOptions{Transport: srv})
 
-	gem, err := newGlobalEndpointManager(srv.URL(), pl, []string{}, 5*time.Second, true)
+	gem, err := newGlobalEndpointManager(srv.URL(), pl, []string{}, 5*time.Second, true, false /*disableEndpointDiscovery*/)
 	assert.NoError(t, err)
 
 	// Call update concurrently and see how many times the policy gets called

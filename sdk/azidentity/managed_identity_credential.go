@@ -84,6 +84,10 @@ func (r ResourceID) String() string {
 
 // ManagedIdentityCredentialOptions contains optional parameters for ManagedIdentityCredential.
 type ManagedIdentityCredentialOptions struct {
+	// ClientOptions configures the credential's HTTP pipeline. On Service Fabric, Transport must be nil
+	// or an *http.Client whose Transport is nil or an *http.Transport. Custom TLS dialing and verification
+	// callbacks aren't supported. The credential derives a client that pins the endpoint certificate
+	// and rejects redirects without modifying the caller's client.
 	azcore.ClientOptions
 
 	// ID of a managed identity the credential should authenticate. Set this field to use a specific identity instead of

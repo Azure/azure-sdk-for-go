@@ -1021,6 +1021,7 @@ func (a AgentPoolUpgradeSettings) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "maxUnavailable", a.MaxUnavailable)
 	populate(objectMap, "nodeSoakDurationInMinutes", a.NodeSoakDurationInMinutes)
 	populate(objectMap, "undrainableNodeBehavior", a.UndrainableNodeBehavior)
+	populate(objectMap, "upgradeGateSettings", a.UpgradeGateSettings)
 	return json.Marshal(objectMap)
 }
 
@@ -1050,6 +1051,9 @@ func (a *AgentPoolUpgradeSettings) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "undrainableNodeBehavior":
 			err = unpopulate(val, "UndrainableNodeBehavior", &a.UndrainableNodeBehavior)
+			delete(rawMsg, key)
+		case "upgradeGateSettings":
+			err = unpopulate(val, "UpgradeGateSettings", &a.UpgradeGateSettings)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -1657,6 +1661,7 @@ func (c *CapacityReservationGroup) UnmarshalJSON(data []byte) error {
 func (c ClusterUpgradeSettings) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "overrideSettings", c.OverrideSettings)
+	populate(objectMap, "upgradeGateSettings", c.UpgradeGateSettings)
 	return json.Marshal(objectMap)
 }
 
@@ -1671,6 +1676,9 @@ func (c *ClusterUpgradeSettings) UnmarshalJSON(data []byte) error {
 		switch key {
 		case "overrideSettings":
 			err = unpopulate(val, "OverrideSettings", &c.OverrideSettings)
+			delete(rawMsg, key)
+		case "upgradeGateSettings":
+			err = unpopulate(val, "UpgradeGateSettings", &c.UpgradeGateSettings)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -2423,6 +2431,7 @@ func (i IdentityBinding) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "eTag", i.ETag)
 	populate(objectMap, "id", i.ID)
+	populate(objectMap, "managedBy", i.ManagedBy)
 	populate(objectMap, "name", i.Name)
 	populate(objectMap, "properties", i.Properties)
 	populate(objectMap, "systemData", i.SystemData)
@@ -2444,6 +2453,9 @@ func (i *IdentityBinding) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "id":
 			err = unpopulate(val, "ID", &i.ID)
+			delete(rawMsg, key)
+		case "managedBy":
+			err = unpopulate(val, "ManagedBy", &i.ManagedBy)
 			delete(rawMsg, key)
 		case "name":
 			err = unpopulate(val, "Name", &i.Name)
@@ -9177,6 +9189,7 @@ func (n NvidiaGPUProfile) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "driverMode", n.DriverMode)
 	populate(objectMap, "managementMode", n.ManagementMode)
+	populate(objectMap, "migProfiles", n.MigProfiles)
 	populate(objectMap, "migStrategy", n.MigStrategy)
 	return json.Marshal(objectMap)
 }
@@ -9195,6 +9208,9 @@ func (n *NvidiaGPUProfile) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "managementMode":
 			err = unpopulate(val, "ManagementMode", &n.ManagementMode)
+			delete(rawMsg, key)
+		case "migProfiles":
+			err = unpopulate(val, "MigProfiles", &n.MigProfiles)
 			delete(rawMsg, key)
 		case "migStrategy":
 			err = unpopulate(val, "MigStrategy", &n.MigStrategy)
@@ -11391,6 +11407,33 @@ func (t *TrustedAccessRoleRule) UnmarshalJSON(data []byte) error {
 		}
 		if err != nil {
 			return fmt.Errorf("unmarshalling type %T: %s", t, err.Error())
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type UpgradeGateSettings.
+func (u UpgradeGateSettings) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "enabled", u.Enabled)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type UpgradeGateSettings.
+func (u *UpgradeGateSettings) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %s", u, err.Error())
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "enabled":
+			err = unpopulate(val, "Enabled", &u.Enabled)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %s", u, err.Error())
 		}
 	}
 	return nil

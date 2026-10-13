@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-07-01-preview/workspaceManagerAssignments/CreateJob.json
+// Generated from example definition: 2025-10-01-preview/workspaceManagerAssignments/CreateJob.json
 func ExampleWorkspaceManagerAssignmentJobsClient_Create() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -36,14 +36,14 @@ func ExampleWorkspaceManagerAssignmentJobsClient_Create() {
 	// 		Etag: to.Ptr("\"f20a2523-7817-47b5-a3b2-21539c00c788\""),
 	// 		ID: to.Ptr("/subscriptions/d0cfe6b2-9ac0-4464-9919-dccaee2e48c0/resourceGroups/myRg/providers/Microsoft.OperationalInsights/workspaces/myWorkspace/providers/Microsoft.SecurityInsights/workspaceManagerAssignments/47cdc5f5-37c4-47b5-bd5f-83c84b8bdd58/jobs/cfbe1338-8276-4d5d-8b96-931117f9fa0e"),
 	// 		Properties: &armsecurityinsights.JobProperties{
-	// 			ProvisioningState: to.Ptr(armsecurityinsights.ProvisioningStateInProgress),
+	// 			ProvisioningState: to.Ptr(armsecurityinsights.JobProvisioningStateInProgress),
 	// 			StartTime: to.Ptr(time.Date(2022, time.June, 14, 4, 47, 52, 961495600, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/workspaceManagerAssignments/DeleteJob.json
+// Generated from example definition: 2025-10-01-preview/workspaceManagerAssignments/DeleteJob.json
 func ExampleWorkspaceManagerAssignmentJobsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -65,7 +65,7 @@ func ExampleWorkspaceManagerAssignmentJobsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/workspaceManagerAssignments/GetJob.json
+// Generated from example definition: 2025-10-01-preview/workspaceManagerAssignments/GetJob.json
 func ExampleWorkspaceManagerAssignmentJobsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -109,14 +109,14 @@ func ExampleWorkspaceManagerAssignmentJobsClient_Get() {
 	// 					Status: to.Ptr(armsecurityinsights.StatusFailed),
 	// 				},
 	// 			},
-	// 			ProvisioningState: to.Ptr(armsecurityinsights.ProvisioningStateFailed),
+	// 			ProvisioningState: to.Ptr(armsecurityinsights.JobProvisioningStateFailed),
 	// 			StartTime: to.Ptr(time.Date(2022, time.June, 14, 4, 47, 52, 961495600, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/workspaceManagerAssignments/GetAllJobs.json
+// Generated from example definition: 2025-10-01-preview/workspaceManagerAssignments/GetAllJobs.json
 func ExampleWorkspaceManagerAssignmentJobsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -166,7 +166,7 @@ func ExampleWorkspaceManagerAssignmentJobsClient_NewListPager() {
 		// 							Status: to.Ptr(armsecurityinsights.StatusFailed),
 		// 						},
 		// 					},
-		// 					ProvisioningState: to.Ptr(armsecurityinsights.ProvisioningStateFailed),
+		// 					ProvisioningState: to.Ptr(armsecurityinsights.JobProvisioningStateFailed),
 		// 					StartTime: to.Ptr(time.Date(2022, time.June, 14, 4, 47, 52, 961495600, time.UTC)),
 		// 				},
 		// 			},

@@ -20,7 +20,7 @@ import (
 // VMSKUsClient contains the methods for the VMSKUs group.
 // Don't use this type directly, use NewVMSKUsClient() instead.
 //
-// Generated from API version 2026-06-02-preview
+// Generated from API version 2026-07-02-preview
 type VMSKUsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -100,7 +100,7 @@ func (client *VMSKUsClient) listCreateRequest(ctx context.Context, location stri
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260602Preview)
+		reqQP.Set("api-version", version20260702Preview)
 		if options != nil && options.IncludeExtendedLocations != nil {
 			reqQP.Set("includeExtendedLocations", strconv.FormatBool(*options.IncludeExtendedLocations))
 		}

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-07-01/BackupDataMove/PrepareDataMove_Post.json
+// Generated from example definition: 2026-08-01/BackupDataMove/PrepareDataMove_Post.json
 func ExampleClient_BeginBMSPrepareDataMove() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -42,7 +42,7 @@ func ExampleClient_BeginBMSPrepareDataMove() {
 	// }
 }
 
-// Generated from example definition: 2026-07-01/BackupDataMove/TriggerDataMove_Post.json
+// Generated from example definition: 2026-08-01/BackupDataMove/TriggerDataMove_Post.json
 func ExampleClient_BeginBMSTriggerDataMove() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -73,7 +73,7 @@ func ExampleClient_BeginBMSTriggerDataMove() {
 	// }
 }
 
-// Generated from example definition: 2026-07-01/BackupDataMove/BackupDataMoveOperationStatus_Get.json
+// Generated from example definition: 2026-08-01/BackupDataMove/BackupDataMoveOperationStatus_Get.json
 func ExampleClient_GetOperationStatus() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -102,7 +102,7 @@ func ExampleClient_GetOperationStatus() {
 	// }
 }
 
-// Generated from example definition: 2026-07-01/TriggerRecoveryPointMove_Post.json
+// Generated from example definition: 2026-08-01/TriggerRecoveryPointMove_Post.json
 func ExampleClient_BeginMoveRecoveryPoint() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

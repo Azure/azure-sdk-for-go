@@ -136,10 +136,7 @@ func (a *ApprovalServerTransport) dispatchBeginCreateOrUpdate(req *http.Request)
 		if err != nil {
 			return nil, err
 		}
-		resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
-		if err != nil {
-			return nil, err
-		}
+		resourceURIParam := matches[regex.SubexpIndex("resourceUri")]
 		approvalNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("approvalName")])
 		if err != nil {
 			return nil, err
@@ -180,10 +177,7 @@ func (a *ApprovalServerTransport) dispatchBeginDelete(req *http.Request) (*http.
 		if len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
-		if err != nil {
-			return nil, err
-		}
+		resourceURIParam := matches[regex.SubexpIndex("resourceUri")]
 		approvalNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("approvalName")])
 		if err != nil {
 			return nil, err
@@ -222,10 +216,7 @@ func (a *ApprovalServerTransport) dispatchGet(req *http.Request) (*http.Response
 	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
-	if err != nil {
-		return nil, err
-	}
+	resourceURIParam := matches[regex.SubexpIndex("resourceUri")]
 	approvalNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("approvalName")])
 	if err != nil {
 		return nil, err
@@ -257,10 +248,7 @@ func (a *ApprovalServerTransport) dispatchNewListByParentPager(req *http.Request
 		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
-		if err != nil {
-			return nil, err
-		}
+		resourceURIParam := matches[regex.SubexpIndex("resourceUri")]
 		resp := a.srv.NewListByParentPager(resourceURIParam, nil)
 		newListByParentPager = &resp
 		a.newListByParentPager.add(req, newListByParentPager)
@@ -298,10 +286,7 @@ func (a *ApprovalServerTransport) dispatchBeginNotifyInitiator(req *http.Request
 		if err != nil {
 			return nil, err
 		}
-		resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
-		if err != nil {
-			return nil, err
-		}
+		resourceURIParam := matches[regex.SubexpIndex("resourceUri")]
 		approvalNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("approvalName")])
 		if err != nil {
 			return nil, err
@@ -346,10 +331,7 @@ func (a *ApprovalServerTransport) dispatchBeginUpdate(req *http.Request) (*http.
 		if err != nil {
 			return nil, err
 		}
-		resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
-		if err != nil {
-			return nil, err
-		}
+		resourceURIParam := matches[regex.SubexpIndex("resourceUri")]
 		approvalNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("approvalName")])
 		if err != nil {
 			return nil, err

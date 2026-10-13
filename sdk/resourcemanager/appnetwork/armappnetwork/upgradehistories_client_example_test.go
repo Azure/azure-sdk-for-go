@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-08-01-preview/UpgradeHistories_ListByAppLinkMember.json
+// Generated from example definition: 2026-08-01-preview/UpgradeHistories_ListByAppLinkMember.json
 func ExampleUpgradeHistoriesClient_NewListByAppLinkMemberPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -79,7 +79,7 @@ func ExampleUpgradeHistoriesClient_NewListByAppLinkMemberPager() {
 		// 				},
 		// 			},
 		// 		},
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/11809CA1-E126-4017-945E-AA795CD5C5A9/resourceGroups/test_rg/providers/Microsoft.AppLink/appLinks/applink-test-01/appLinkMembers/member-01/upgradeHistories?api-version=2025-08-01-preview&$skiptoken=eyJjb250aW51YXRpb24iOiAiMjAyMzEwMDEifQ%3D%3D"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/11809CA1-E126-4017-945E-AA795CD5C5A9/resourceGroups/test_rg/providers/Microsoft.AppLink/appLinks/applink-test-01/appLinkMembers/member-01/upgradeHistories?api-version=2026-08-01-preview&$skiptoken=eyJjb250aW51YXRpb24iOiAiMjAyMzEwMDEifQ%3D%3D"),
 		// 	},
 		// }
 	}

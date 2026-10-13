@@ -39,6 +39,12 @@ type ElasticSansClientUpdateResponse struct {
 	ElasticSan
 }
 
+// ManagementClientRestoreVolumeResponse contains the response from method ManagementClient.BeginRestoreVolume.
+type ManagementClientRestoreVolumeResponse struct {
+	// Response for Volume request.
+	Volume
+}
+
 // OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
 type OperationsClientListResponse struct {
 	// A list of REST API operations supported by an Azure Resource Provider. It contains an URL link to get the next set of results.

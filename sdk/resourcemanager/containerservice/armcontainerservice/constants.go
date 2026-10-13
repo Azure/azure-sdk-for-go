@@ -5,7 +5,7 @@
 package armcontainerservice
 
 const (
-	version20260602Preview string = "2026-06-02-preview"
+	version20260702Preview string = "2026-07-02-preview"
 )
 
 // AccelerationMode - Enable advanced network acceleration options. This allows users to configure acceleration using BPF
@@ -723,9 +723,6 @@ func PossibleIdentityBindingProvisioningStateValues() []IdentityBindingProvision
 type InfrastructureEncryption string
 
 const (
-	// InfrastructureEncryptionDisabled - Encryption at rest of Kubernetes resource objects using service-managed keys is disabled.
-	// More information on this can be found under https://aka.ms/aks/kubernetesResourceObjectEncryption.
-	InfrastructureEncryptionDisabled InfrastructureEncryption = "Disabled"
 	// InfrastructureEncryptionEnabled - Encryption at rest of Kubernetes resource objects using service-managed keys is enabled.
 	// More information on this can be found under https://aka.ms/aks/kubernetesResourceObjectEncryption.
 	InfrastructureEncryptionEnabled InfrastructureEncryption = "Enabled"
@@ -734,7 +731,6 @@ const (
 // PossibleInfrastructureEncryptionValues returns the possible values for the InfrastructureEncryption const type.
 func PossibleInfrastructureEncryptionValues() []InfrastructureEncryption {
 	return []InfrastructureEncryption{
-		InfrastructureEncryptionDisabled,
 		InfrastructureEncryptionEnabled,
 	}
 }
@@ -1222,12 +1218,14 @@ func PossibleMeshMembershipProvisioningStateValues() []MeshMembershipProvisionin
 type MigStrategy string
 
 const (
-	// MigStrategyMixed - Set the MIG strategy for managed MIG as mixed.
+	// MigStrategyMixed - Each GPU in the pool can host heterogeneous partitions of different sizes simultaneously (`nvidia.com/mig.strategy:
+	// mixed`). The exact partition mix per GPU is declared via `nvidia.migProfiles`.
 	MigStrategyMixed MigStrategy = "Mixed"
-	// MigStrategyNone - Don't set a MIG strategy. If you previously had one set, this will override it and set remove the set
-	// MIG strategy.
+	// MigStrategyNone - No MIG partitioning is applied; the GPU is exposed as a single unified whole-device instance. Specifying
+	// this value removes any previously active MIG strategy.
 	MigStrategyNone MigStrategy = "None"
-	// MigStrategySingle - Set the MIG strategy for managed MIG as single.
+	// MigStrategySingle - All MIG partitions on every GPU in the pool are the same size (`nvidia.com/mig.strategy: single`).
+	// The uniform partition size is controlled by `nvidia.migProfiles` (exactly one element required).
 	MigStrategySingle MigStrategy = "Single"
 )
 

@@ -19,7 +19,7 @@ import (
 // UpgradeHistoriesClient contains the methods for the UpgradeHistories group.
 // Don't use this type directly, use NewUpgradeHistoriesClient() instead.
 //
-// Generated from API version 2025-08-01-preview
+// Generated from API version 2026-08-01-preview
 type UpgradeHistoriesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -44,7 +44,7 @@ func NewUpgradeHistoriesClient(subscriptionID string, credential azcore.TokenCre
 	return client, nil
 }
 
-// NewListByAppLinkMemberPager - List UpgradeHistory resources by AppLinkMember.
+// NewListByAppLinkMemberPager - List the upgrade history of an Azure Kubernetes Application Network member.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - appLinkName - The name of the AppLink
 //   - appLinkMemberName - The name of the AppLinkMember
@@ -107,7 +107,7 @@ func (client *UpgradeHistoriesClient) listByAppLinkMemberCreateRequest(ctx conte
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250801Preview)
+		reqQP.Set("api-version", version20260801Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

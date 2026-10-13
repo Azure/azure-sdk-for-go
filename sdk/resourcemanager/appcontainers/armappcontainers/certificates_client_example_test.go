@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-10-02-preview/Certificate_CreateOrUpdate.json
+// Generated from example definition: 2026-07-01/Certificate_CreateOrUpdate.json
 func ExampleCertificatesClient_CreateOrUpdate_createOrUpdateCertificate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -26,9 +26,8 @@ func ExampleCertificatesClient_CreateOrUpdate_createOrUpdateCertificate() {
 	res, err := clientFactory.NewCertificatesClient().CreateOrUpdate(ctx, "examplerg", "testcontainerenv", "certificate-firendly-name", armappcontainers.Certificate{
 		Location: to.Ptr("East US"),
 		Properties: &armappcontainers.CertificateProperties{
-			CertificateType: to.Ptr(armappcontainers.CertificateTypeImagePullTrustedCA),
-			Password:        to.Ptr("private key password"),
-			Value:           []byte("Y2VydA=="),
+			Password: to.Ptr("private key password"),
+			Value:    []byte("Y2VydA=="),
 		},
 	}, nil)
 	if err != nil {
@@ -43,7 +42,6 @@ func ExampleCertificatesClient_CreateOrUpdate_createOrUpdateCertificate() {
 	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/examplerg/providers/Microsoft.App/managedEnvironments/testcontainerenv/certificates/certificate-firendly-name"),
 	// 		Location: to.Ptr("East US"),
 	// 		Properties: &armappcontainers.CertificateProperties{
-	// 			CertificateType: to.Ptr(armappcontainers.CertificateTypeImagePullTrustedCA),
 	// 			ExpirationDate: to.Ptr(time.Date(2022, time.November, 6, 4, 0, 0, 0, time.UTC)),
 	// 			IssueDate: to.Ptr(time.Date(2021, time.November, 6, 4, 0, 0, 0, time.UTC)),
 	// 			Issuer: to.Ptr("Issuer Name"),
@@ -59,7 +57,7 @@ func ExampleCertificatesClient_CreateOrUpdate_createOrUpdateCertificate() {
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/Certificate_CreateOrUpdate_FromKeyVault.json
+// Generated from example definition: 2026-07-01/Certificate_CreateOrUpdate_FromKeyVault.json
 func ExampleCertificatesClient_CreateOrUpdate_createOrUpdateCertificateUsingManagedIdentity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -77,7 +75,6 @@ func ExampleCertificatesClient_CreateOrUpdate_createOrUpdateCertificateUsingMana
 				Identity:    to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/test-rg/providers/microsoft.managedidentity/userassignedidentities/test-user-mi"),
 				KeyVaultURL: to.Ptr("https://xxxxxxxx.vault.azure.net/certificates/certName"),
 			},
-			CertificateType: to.Ptr(armappcontainers.CertificateTypeServerSSLCertificate),
 		},
 	}, nil)
 	if err != nil {
@@ -96,7 +93,6 @@ func ExampleCertificatesClient_CreateOrUpdate_createOrUpdateCertificateUsingMana
 	// 				Identity: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/test-rg/providers/microsoft.managedidentity/userassignedidentities/test-user-mi"),
 	// 				KeyVaultURL: to.Ptr("https://xxxxxxxx.vault.azure.net/certificates/certName"),
 	// 			},
-	// 			CertificateType: to.Ptr(armappcontainers.CertificateTypeServerSSLCertificate),
 	// 			ExpirationDate: to.Ptr(time.Date(2022, time.November, 6, 4, 0, 0, 0, time.UTC)),
 	// 			IssueDate: to.Ptr(time.Date(2021, time.November, 6, 4, 0, 0, 0, time.UTC)),
 	// 			Issuer: to.Ptr("Issuer Name"),
@@ -112,7 +108,7 @@ func ExampleCertificatesClient_CreateOrUpdate_createOrUpdateCertificateUsingMana
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/Certificate_Delete.json
+// Generated from example definition: 2026-07-01/Certificate_Delete.json
 func ExampleCertificatesClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -134,7 +130,7 @@ func ExampleCertificatesClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/Certificate_Get.json
+// Generated from example definition: 2026-07-01/Certificate_Get.json
 func ExampleCertificatesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -159,7 +155,6 @@ func ExampleCertificatesClient_Get() {
 	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/examplerg/providers/Microsoft.App/managedEnvironments/testcontainerenv/certificates/certificate-firendly-name"),
 	// 		Location: to.Ptr("East US"),
 	// 		Properties: &armappcontainers.CertificateProperties{
-	// 			CertificateType: to.Ptr(armappcontainers.CertificateTypeServerSSLCertificate),
 	// 			ExpirationDate: to.Ptr(time.Date(2022, time.November, 6, 4, 0, 0, 0, time.UTC)),
 	// 			IssueDate: to.Ptr(time.Date(2021, time.November, 6, 4, 0, 0, 0, time.UTC)),
 	// 			Issuer: to.Ptr("Issuer Name"),
@@ -175,7 +170,7 @@ func ExampleCertificatesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/Certificates_ListByManagedEnvironment.json
+// Generated from example definition: 2026-07-01/Certificates_ListByManagedEnvironment.json
 func ExampleCertificatesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -206,7 +201,6 @@ func ExampleCertificatesClient_NewListPager() {
 		// 				ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/examplerg/providers/Microsoft.App/managedEnvironments/testcontainerenv/certificates/certificate-firendly-name"),
 		// 				Location: to.Ptr("East US"),
 		// 				Properties: &armappcontainers.CertificateProperties{
-		// 					CertificateType: to.Ptr(armappcontainers.CertificateTypeImagePullTrustedCA),
 		// 					ExpirationDate: to.Ptr(time.Date(2022, time.November, 6, 4, 0, 0, 0, time.UTC)),
 		// 					IssueDate: to.Ptr(time.Date(2021, time.November, 6, 4, 0, 0, 0, time.UTC)),
 		// 					Issuer: to.Ptr("Issuer Name"),
@@ -225,7 +219,6 @@ func ExampleCertificatesClient_NewListPager() {
 		// 				ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/examplerg/providers/Microsoft.App/managedEnvironments/testcontainerenv/certificates/certificate-firendly-name"),
 		// 				Location: to.Ptr("East US"),
 		// 				Properties: &armappcontainers.CertificateProperties{
-		// 					CertificateType: to.Ptr(armappcontainers.CertificateTypeServerSSLCertificate),
 		// 					ExpirationDate: to.Ptr(time.Date(2022, time.November, 6, 4, 0, 0, 0, time.UTC)),
 		// 					IssueDate: to.Ptr(time.Date(2021, time.November, 6, 4, 0, 0, 0, time.UTC)),
 		// 					Issuer: to.Ptr("Issuer Name"),
@@ -244,7 +237,7 @@ func ExampleCertificatesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-10-02-preview/Certificates_Patch.json
+// Generated from example definition: 2026-07-01/Certificates_Patch.json
 func ExampleCertificatesClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -273,7 +266,6 @@ func ExampleCertificatesClient_Update() {
 	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/examplerg/providers/Microsoft.App/managedEnvironments/testcontainerenv/certificates/certificate-firendly-name"),
 	// 		Location: to.Ptr("East US"),
 	// 		Properties: &armappcontainers.CertificateProperties{
-	// 			CertificateType: to.Ptr(armappcontainers.CertificateTypeServerSSLCertificate),
 	// 			ExpirationDate: to.Ptr(time.Date(2022, time.November, 6, 4, 0, 0, 0, time.UTC)),
 	// 			IssueDate: to.Ptr(time.Date(2021, time.November, 6, 4, 0, 0, 0, time.UTC)),
 	// 			Issuer: to.Ptr("Issuer Name"),

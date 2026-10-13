@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-07-01/Common/BackupResourceVaultConfigs_Get.json
+// Generated from example definition: 2026-08-01/Common/BackupResourceVaultConfigs_Get.json
 func ExampleBackupResourceVaultConfigsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -42,7 +42,7 @@ func ExampleBackupResourceVaultConfigsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-07-01/Common/BackupResourceVaultConfigs_Put.json
+// Generated from example definition: 2026-08-01/Common/BackupResourceVaultConfigs_Put.json
 func ExampleBackupResourceVaultConfigsClient_Put() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -78,7 +78,7 @@ func ExampleBackupResourceVaultConfigsClient_Put() {
 	// }
 }
 
-// Generated from example definition: 2026-07-01/Common/BackupResourceVaultConfigs_Patch.json
+// Generated from example definition: 2026-08-01/Common/BackupResourceVaultConfigs_Patch.json
 func ExampleBackupResourceVaultConfigsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

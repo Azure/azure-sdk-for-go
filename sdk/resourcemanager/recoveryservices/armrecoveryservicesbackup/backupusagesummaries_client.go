@@ -19,7 +19,7 @@ import (
 // BackupUsageSummariesClient contains the methods for the BackupUsageSummaries group.
 // Don't use this type directly, use NewBackupUsageSummariesClient() instead.
 //
-// Generated from API version 2026-07-01
+// Generated from API version 2026-08-01
 type BackupUsageSummariesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -108,7 +108,7 @@ func (client *BackupUsageSummariesClient) listCreateRequest(ctx context.Context,
 		if options != nil && options.SkipToken != nil {
 			reqQP.Set("$skipToken", *options.SkipToken)
 		}
-		reqQP.Set("api-version", version20260701)
+		reqQP.Set("api-version", version20260801)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

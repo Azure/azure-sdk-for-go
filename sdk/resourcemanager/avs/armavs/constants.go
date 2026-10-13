@@ -5,7 +5,7 @@
 package armavs
 
 const (
-	version20250901 string = "2025-09-01"
+	version20260301 string = "2026-03-01"
 )
 
 // ActionType - Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
@@ -156,6 +156,8 @@ const (
 	BlockedDatesConstraintCategoryHiPriorityEvent BlockedDatesConstraintCategory = "HiPriorityEvent"
 	// BlockedDatesConstraintCategoryHoliday - Holidays
 	BlockedDatesConstraintCategoryHoliday BlockedDatesConstraintCategory = "Holiday"
+	// BlockedDatesConstraintCategoryOverlappingMaintenance - Constraint due to overlapping maintenance
+	BlockedDatesConstraintCategoryOverlappingMaintenance BlockedDatesConstraintCategory = "OverlappingMaintenance"
 	// BlockedDatesConstraintCategoryQuotaExhausted - Quota Exhausted
 	BlockedDatesConstraintCategoryQuotaExhausted BlockedDatesConstraintCategory = "QuotaExhausted"
 )
@@ -165,6 +167,7 @@ func PossibleBlockedDatesConstraintCategoryValues() []BlockedDatesConstraintCate
 	return []BlockedDatesConstraintCategory{
 		BlockedDatesConstraintCategoryHiPriorityEvent,
 		BlockedDatesConstraintCategoryHoliday,
+		BlockedDatesConstraintCategoryOverlappingMaintenance,
 		BlockedDatesConstraintCategoryQuotaExhausted,
 	}
 }
@@ -603,6 +606,21 @@ func PossibleHostKindValues() []HostKind {
 	}
 }
 
+// HostLicenseKind - The kind of host license.
+type HostLicenseKind string
+
+const (
+	// HostLicenseKindWindowsServer - The host is to be used with Azure Hybrid Benefit for Windows Server.
+	HostLicenseKindWindowsServer HostLicenseKind = "WindowsServer"
+)
+
+// PossibleHostLicenseKindValues returns the possible values for the HostLicenseKind const type.
+func PossibleHostLicenseKindValues() []HostLicenseKind {
+	return []HostLicenseKind{
+		HostLicenseKindWindowsServer,
+	}
+}
+
 // HostMaintenance - The reason for host maintenance.
 type HostMaintenance string
 
@@ -743,6 +761,30 @@ func PossibleLicenseProvisioningStateValues() []LicenseProvisioningState {
 	}
 }
 
+// MaintenanceActivityKind - Defines the type of maintenance activity
+type MaintenanceActivityKind string
+
+const (
+	// MaintenanceActivityKindBackup - Backup activity
+	MaintenanceActivityKindBackup MaintenanceActivityKind = "Backup"
+	// MaintenanceActivityKindCertificateRotation - Certificate rotation activity
+	MaintenanceActivityKindCertificateRotation MaintenanceActivityKind = "CertificateRotation"
+	// MaintenanceActivityKindDowngrade - Downgrade activity
+	MaintenanceActivityKindDowngrade MaintenanceActivityKind = "Downgrade"
+	// MaintenanceActivityKindUpgrade - Upgrade activity
+	MaintenanceActivityKindUpgrade MaintenanceActivityKind = "Upgrade"
+)
+
+// PossibleMaintenanceActivityKindValues returns the possible values for the MaintenanceActivityKind const type.
+func PossibleMaintenanceActivityKindValues() []MaintenanceActivityKind {
+	return []MaintenanceActivityKind{
+		MaintenanceActivityKindBackup,
+		MaintenanceActivityKindCertificateRotation,
+		MaintenanceActivityKindDowngrade,
+		MaintenanceActivityKindUpgrade,
+	}
+}
+
 // MaintenanceCheckType - Defines the type of maintenance readiness check
 type MaintenanceCheckType string
 
@@ -758,6 +800,24 @@ func PossibleMaintenanceCheckTypeValues() []MaintenanceCheckType {
 	return []MaintenanceCheckType{
 		MaintenanceCheckTypePrecheck,
 		MaintenanceCheckTypePreflight,
+	}
+}
+
+// MaintenanceGroupKind - Defines the kind of group
+type MaintenanceGroupKind string
+
+const (
+	// MaintenanceGroupKindConsolidation - Consolidation grouping of maintenance operations
+	MaintenanceGroupKindConsolidation MaintenanceGroupKind = "Consolidation"
+	// MaintenanceGroupKindLogical - Logical grouping of maintenance operations
+	MaintenanceGroupKindLogical MaintenanceGroupKind = "Logical"
+)
+
+// PossibleMaintenanceGroupKindValues returns the possible values for the MaintenanceGroupKind const type.
+func PossibleMaintenanceGroupKindValues() []MaintenanceGroupKind {
+	return []MaintenanceGroupKind{
+		MaintenanceGroupKindConsolidation,
+		MaintenanceGroupKindLogical,
 	}
 }
 
@@ -1246,6 +1306,10 @@ const (
 	RescheduleOperationConstraintKindAvailableWindowForMaintenanceWhileRescheduleOperation RescheduleOperationConstraintKind = "AvailableWindowForMaintenance"
 	// RescheduleOperationConstraintKindBlockedWhileRescheduleOperation - Blocked time range constraint
 	RescheduleOperationConstraintKindBlockedWhileRescheduleOperation RescheduleOperationConstraintKind = "Blocked"
+	// RescheduleOperationConstraintKindReschedulingWindow - Defines allowed window for rescheduling
+	RescheduleOperationConstraintKindReschedulingWindow RescheduleOperationConstraintKind = "ReschedulingWindow"
+	// RescheduleOperationConstraintKindWeekendRescheduling - Defines weekend rescheduling restriction
+	RescheduleOperationConstraintKindWeekendRescheduling RescheduleOperationConstraintKind = "WeekendRescheduling"
 )
 
 // PossibleRescheduleOperationConstraintKindValues returns the possible values for the RescheduleOperationConstraintKind const type.
@@ -1253,6 +1317,8 @@ func PossibleRescheduleOperationConstraintKindValues() []RescheduleOperationCons
 	return []RescheduleOperationConstraintKind{
 		RescheduleOperationConstraintKindAvailableWindowForMaintenanceWhileRescheduleOperation,
 		RescheduleOperationConstraintKindBlockedWhileRescheduleOperation,
+		RescheduleOperationConstraintKindReschedulingWindow,
+		RescheduleOperationConstraintKindWeekendRescheduling,
 	}
 }
 
@@ -1382,6 +1448,8 @@ const (
 	ScheduleOperationConstraintKindBlockedWhileScheduleOperation ScheduleOperationConstraintKind = "Blocked"
 	// ScheduleOperationConstraintKindSchedulingWindow - Time window in which Customer has option to schedule maintenance
 	ScheduleOperationConstraintKindSchedulingWindow ScheduleOperationConstraintKind = "SchedulingWindow"
+	// ScheduleOperationConstraintKindWeekendScheduling - Defines weekend scheduling restriction
+	ScheduleOperationConstraintKindWeekendScheduling ScheduleOperationConstraintKind = "WeekendScheduling"
 )
 
 // PossibleScheduleOperationConstraintKindValues returns the possible values for the ScheduleOperationConstraintKind const type.
@@ -1390,6 +1458,7 @@ func PossibleScheduleOperationConstraintKindValues() []ScheduleOperationConstrai
 		ScheduleOperationConstraintKindAvailableWindowForMaintenanceWhileScheduleOperation,
 		ScheduleOperationConstraintKindBlockedWhileScheduleOperation,
 		ScheduleOperationConstraintKindSchedulingWindow,
+		ScheduleOperationConstraintKindWeekendScheduling,
 	}
 }
 

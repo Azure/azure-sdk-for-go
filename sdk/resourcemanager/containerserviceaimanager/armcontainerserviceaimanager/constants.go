@@ -5,7 +5,7 @@
 package armcontainerserviceaimanager
 
 const (
-	version20260502Preview string = "2026-05-02-preview"
+	version20260902Preview string = "2026-09-02-preview"
 )
 
 // AIManagerNamespaceProvisioningState - The provisioning state of the AI Manager namespace resource.
@@ -104,6 +104,36 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 		CreatedByTypeKey,
 		CreatedByTypeManagedIdentity,
 		CreatedByTypeUser,
+	}
+}
+
+// CustomAIModelProvisioningState - Provisioning state of a CustomAIModel resource.
+type CustomAIModelProvisioningState string
+
+const (
+	// CustomAIModelProvisioningStateCanceled - Resource creation was canceled.
+	CustomAIModelProvisioningStateCanceled CustomAIModelProvisioningState = "Canceled"
+	// CustomAIModelProvisioningStateCreating - Resource is being created.
+	CustomAIModelProvisioningStateCreating CustomAIModelProvisioningState = "Creating"
+	// CustomAIModelProvisioningStateDeleting - Resource is deleting.
+	CustomAIModelProvisioningStateDeleting CustomAIModelProvisioningState = "Deleting"
+	// CustomAIModelProvisioningStateFailed - Resource creation failed.
+	CustomAIModelProvisioningStateFailed CustomAIModelProvisioningState = "Failed"
+	// CustomAIModelProvisioningStateSucceeded - Resource has been created.
+	CustomAIModelProvisioningStateSucceeded CustomAIModelProvisioningState = "Succeeded"
+	// CustomAIModelProvisioningStateUpdating - Resource is updating.
+	CustomAIModelProvisioningStateUpdating CustomAIModelProvisioningState = "Updating"
+)
+
+// PossibleCustomAIModelProvisioningStateValues returns the possible values for the CustomAIModelProvisioningState const type.
+func PossibleCustomAIModelProvisioningStateValues() []CustomAIModelProvisioningState {
+	return []CustomAIModelProvisioningState{
+		CustomAIModelProvisioningStateCanceled,
+		CustomAIModelProvisioningStateCreating,
+		CustomAIModelProvisioningStateDeleting,
+		CustomAIModelProvisioningStateFailed,
+		CustomAIModelProvisioningStateSucceeded,
+		CustomAIModelProvisioningStateUpdating,
 	}
 }
 
@@ -229,12 +259,17 @@ type ModelSourceType string
 const (
 	// ModelSourceTypeHuggingFace - A Hugging Face model registry.
 	ModelSourceTypeHuggingFace ModelSourceType = "HuggingFace"
+	// ModelSourceTypeMicrosoftFoundry - A Microsoft Foundry project. Tenant-private models produced by internal training pipelines.
+	// Authenticated via a user-assigned managed identity (referenced in the credential and granted the `Foundry User` role on
+	// the project).
+	ModelSourceTypeMicrosoftFoundry ModelSourceType = "MicrosoftFoundry"
 )
 
 // PossibleModelSourceTypeValues returns the possible values for the ModelSourceType const type.
 func PossibleModelSourceTypeValues() []ModelSourceType {
 	return []ModelSourceType{
 		ModelSourceTypeHuggingFace,
+		ModelSourceTypeMicrosoftFoundry,
 	}
 }
 

@@ -25,7 +25,7 @@ AI agents can assist with the following activities:
 #### Code Development
 - **Reading and understanding code**: Browse SDK packages, understand APIs, and explain functionality
 - **Code suggestions**: Propose improvements, bug fixes, or new features following [Azure Go SDK Guidelines](https://azure.github.io/azure-sdk/golang_introduction.html)
-- **Testing**: Write or update unit tests using `github.com/stretchr/testify/require`
+- **Testing**: Write or update unit tests using `github.com/stretchr/testify`
 - **Examples**: Create example code in `example*_test.go` files following the [Go examples guidelines](https://github.com/Azure/azure-sdk-for-go/blob/main/.github/instructions/go-examples.instructions.md)
 
 #### Documentation
@@ -136,7 +136,7 @@ sdk/<service>/<module>/
 
 ### Test Conventions
 
-- Use `github.com/stretchr/testify/require` for assertions
+- Use `github.com/stretchr/testify` for assertions (`require` when the rest of the test depends on the result, `assert` otherwise)
 - Environment variables for live testing go in `.env` files at module root
 - Look for `recording.Getenv()` or `os.Getenv()` calls to find required environment variables
 - See [Go tests guidelines](https://github.com/Azure/azure-sdk-for-go/blob/main/.github/instructions/go-tests.instructions.md)
@@ -198,7 +198,7 @@ When working with tests:
 
 1. Run tests locally before suggesting they're complete
 2. Check for required environment variables in `.env` files
-3. Use `require` package for assertions, not `assert`
+3. Use `github.com/stretchr/testify` for assertions rather than hand-rolled checks; prefer `require` when later code depends on the assertion holding, and `assert` for independent checks
 4. Ensure tests are repeatable and don't depend on external state
 5. Add error messages to assertions to help debugging
 

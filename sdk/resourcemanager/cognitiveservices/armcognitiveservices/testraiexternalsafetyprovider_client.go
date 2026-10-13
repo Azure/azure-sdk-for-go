@@ -30,6 +30,9 @@ type TestRaiExternalSafetyProviderClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewTestRaiExternalSafetyProviderClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*TestRaiExternalSafetyProviderClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -70,7 +73,7 @@ func (client *TestRaiExternalSafetyProviderClient) CreateOrUpdate(ctx context.Co
 func (client *TestRaiExternalSafetyProviderClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, safetyProviderName string, safetyProvider RaiExternalSafetyProviderSchema, _ *TestRaiExternalSafetyProviderClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/testRaiExternalSafetyProvider/{safetyProviderName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {

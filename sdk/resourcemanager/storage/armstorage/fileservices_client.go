@@ -20,7 +20,7 @@ import (
 // FileServicesClient contains the methods for the FileServices group.
 // Don't use this type directly, use NewFileServicesClient() instead.
 //
-// Generated from API version 2026-04-01
+// Generated from API version 2026-06-01
 type FileServicesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -64,12 +64,7 @@ func (client *FileServicesClient) GetServiceProperties(ctx context.Context, reso
 	if err != nil {
 		return FileServicesClientGetServicePropertiesResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return FileServicesClientGetServicePropertiesResponse{}, err
-	}
-	resp, err := client.getServicePropertiesHandleResponse(httpResp)
-	return resp, err
+	return client.getServicePropertiesHandleResponse(httpResp, http.StatusOK)
 }
 
 // getServicePropertiesCreateRequest creates the GetServiceProperties request.
@@ -92,15 +87,18 @@ func (client *FileServicesClient) getServicePropertiesCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401)
+	reqQP.Set("api-version", version20260601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getServicePropertiesHandleResponse handles the GetServiceProperties response.
-func (client *FileServicesClient) getServicePropertiesHandleResponse(resp *http.Response) (FileServicesClientGetServicePropertiesResponse, error) {
+func (client *FileServicesClient) getServicePropertiesHandleResponse(resp *http.Response, successCodes ...int) (FileServicesClientGetServicePropertiesResponse, error) {
 	result := FileServicesClientGetServicePropertiesResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.FileServiceProperties); err != nil {
 		return FileServicesClientGetServicePropertiesResponse{}, err
 	}
@@ -129,12 +127,7 @@ func (client *FileServicesClient) GetServiceUsage(ctx context.Context, resourceG
 	if err != nil {
 		return FileServicesClientGetServiceUsageResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return FileServicesClientGetServiceUsageResponse{}, err
-	}
-	resp, err := client.getServiceUsageHandleResponse(httpResp)
-	return resp, err
+	return client.getServiceUsageHandleResponse(httpResp, http.StatusOK)
 }
 
 // getServiceUsageCreateRequest creates the GetServiceUsage request.
@@ -157,15 +150,18 @@ func (client *FileServicesClient) getServiceUsageCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401)
+	reqQP.Set("api-version", version20260601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getServiceUsageHandleResponse handles the GetServiceUsage response.
-func (client *FileServicesClient) getServiceUsageHandleResponse(resp *http.Response) (FileServicesClientGetServiceUsageResponse, error) {
+func (client *FileServicesClient) getServiceUsageHandleResponse(resp *http.Response, successCodes ...int) (FileServicesClientGetServiceUsageResponse, error) {
 	result := FileServicesClientGetServiceUsageResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.FileServiceUsage); err != nil {
 		return FileServicesClientGetServiceUsageResponse{}, err
 	}
@@ -192,12 +188,7 @@ func (client *FileServicesClient) List(ctx context.Context, resourceGroupName st
 	if err != nil {
 		return FileServicesClientListResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return FileServicesClientListResponse{}, err
-	}
-	resp, err := client.listHandleResponse(httpResp)
-	return resp, err
+	return client.listHandleResponse(httpResp, http.StatusOK)
 }
 
 // listCreateRequest creates the List request.
@@ -220,15 +211,18 @@ func (client *FileServicesClient) listCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401)
+	reqQP.Set("api-version", version20260601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *FileServicesClient) listHandleResponse(resp *http.Response) (FileServicesClientListResponse, error) {
+func (client *FileServicesClient) listHandleResponse(resp *http.Response, successCodes ...int) (FileServicesClientListResponse, error) {
 	result := FileServicesClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.FileServiceItems); err != nil {
 		return FileServicesClientListResponse{}, err
 	}
@@ -252,50 +246,64 @@ func (client *FileServicesClient) NewListServiceUsagesPager(resourceGroupName st
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listServiceUsagesCreateRequest(ctx, resourceGroupName, accountName, options)
-			}, nil)
+			req, err := client.listServiceUsagesCreateRequest(ctx, resourceGroupName, accountName, nextLink, options)
 			if err != nil {
 				return FileServicesClientListServiceUsagesResponse{}, err
 			}
-			return client.listServiceUsagesHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return FileServicesClientListServiceUsagesResponse{}, err
+			}
+			return client.listServiceUsagesHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listServiceUsagesCreateRequest creates the ListServiceUsages request.
-func (client *FileServicesClient) listServiceUsagesCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *FileServicesClientListServiceUsagesOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/fileServices/default/usages"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *FileServicesClient) listServiceUsagesCreateRequest(ctx context.Context, resourceGroupName string, accountName string, nextLink string, options *FileServicesClientListServiceUsagesOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/fileServices/default/usages"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if accountName == "" {
+			return nil, errors.New("parameter accountName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if accountName == "" {
-		return nil, errors.New("parameter accountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Maxpagesize != nil {
-		reqQP.Set("$maxpagesize", strconv.FormatInt(int64(*options.Maxpagesize), 10))
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Maxpagesize != nil {
+			reqQP.Set("$maxpagesize", strconv.FormatInt(int64(*options.Maxpagesize), 10))
+		}
+		reqQP.Set("api-version", version20260601)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	reqQP.Set("api-version", version20260401)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listServiceUsagesHandleResponse handles the ListServiceUsages response.
-func (client *FileServicesClient) listServiceUsagesHandleResponse(resp *http.Response) (FileServicesClientListServiceUsagesResponse, error) {
+func (client *FileServicesClient) listServiceUsagesHandleResponse(resp *http.Response, successCodes ...int) (FileServicesClientListServiceUsagesResponse, error) {
 	result := FileServicesClientListServiceUsagesResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.FileServiceUsages); err != nil {
 		return FileServicesClientListServiceUsagesResponse{}, err
 	}
@@ -325,12 +333,7 @@ func (client *FileServicesClient) SetServiceProperties(ctx context.Context, reso
 	if err != nil {
 		return FileServicesClientSetServicePropertiesResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return FileServicesClientSetServicePropertiesResponse{}, err
-	}
-	resp, err := client.setServicePropertiesHandleResponse(httpResp)
-	return resp, err
+	return client.setServicePropertiesHandleResponse(httpResp, http.StatusOK)
 }
 
 // setServicePropertiesCreateRequest creates the SetServiceProperties request.
@@ -353,7 +356,7 @@ func (client *FileServicesClient) setServicePropertiesCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401)
+	reqQP.Set("api-version", version20260601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -364,8 +367,11 @@ func (client *FileServicesClient) setServicePropertiesCreateRequest(ctx context.
 }
 
 // setServicePropertiesHandleResponse handles the SetServiceProperties response.
-func (client *FileServicesClient) setServicePropertiesHandleResponse(resp *http.Response) (FileServicesClientSetServicePropertiesResponse, error) {
+func (client *FileServicesClient) setServicePropertiesHandleResponse(resp *http.Response, successCodes ...int) (FileServicesClientSetServicePropertiesResponse, error) {
 	result := FileServicesClientSetServicePropertiesResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.FileServiceProperties); err != nil {
 		return FileServicesClientSetServicePropertiesResponse{}, err
 	}

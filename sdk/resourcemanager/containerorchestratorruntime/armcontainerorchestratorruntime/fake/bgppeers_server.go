@@ -118,10 +118,7 @@ func (b *BgpPeersServerTransport) dispatchBeginCreateOrUpdate(req *http.Request)
 		if err != nil {
 			return nil, err
 		}
-		resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
-		if err != nil {
-			return nil, err
-		}
+		resourceURIParam := matches[regex.SubexpIndex("resourceUri")]
 		bgpPeerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("bgpPeerName")])
 		if err != nil {
 			return nil, err
@@ -160,10 +157,7 @@ func (b *BgpPeersServerTransport) dispatchDelete(req *http.Request) (*http.Respo
 	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
-	if err != nil {
-		return nil, err
-	}
+	resourceURIParam := matches[regex.SubexpIndex("resourceUri")]
 	bgpPeerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("bgpPeerName")])
 	if err != nil {
 		return nil, err
@@ -193,10 +187,7 @@ func (b *BgpPeersServerTransport) dispatchGet(req *http.Request) (*http.Response
 	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
-	if err != nil {
-		return nil, err
-	}
+	resourceURIParam := matches[regex.SubexpIndex("resourceUri")]
 	bgpPeerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("bgpPeerName")])
 	if err != nil {
 		return nil, err
@@ -228,10 +219,7 @@ func (b *BgpPeersServerTransport) dispatchNewListPager(req *http.Request) (*http
 		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
-		if err != nil {
-			return nil, err
-		}
+		resourceURIParam := matches[regex.SubexpIndex("resourceUri")]
 		resp := b.srv.NewListPager(resourceURIParam, nil)
 		newListPager = &resp
 		b.newListPager.add(req, newListPager)

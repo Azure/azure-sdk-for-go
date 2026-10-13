@@ -30,10 +30,6 @@ type VirtualMachineBulkOperationsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	BulkCancelOperations func(ctx context.Context, resourceGroupName string, location string, requestBody armbulkactions.CancelOperationsContent, options *armbulkactions.VirtualMachineBulkOperationsClientBulkCancelOperationsOptions) (resp azfake.Responder[armbulkactions.VirtualMachineBulkOperationsClientBulkCancelOperationsResponse], errResp azfake.ErrorResponder)
 
-	// BulkCreateOperation is the fake for method VirtualMachineBulkOperationsClient.BulkCreateOperation
-	// HTTP status codes to indicate success: http.StatusOK
-	BulkCreateOperation func(ctx context.Context, resourceGroupName string, location string, requestBody armbulkactions.ExecuteCreateContent, options *armbulkactions.VirtualMachineBulkOperationsClientBulkCreateOperationOptions) (resp azfake.Responder[armbulkactions.VirtualMachineBulkOperationsClientBulkCreateOperationResponse], errResp azfake.ErrorResponder)
-
 	// BulkDeallocateOperation is the fake for method VirtualMachineBulkOperationsClient.BulkDeallocateOperation
 	// HTTP status codes to indicate success: http.StatusOK
 	BulkDeallocateOperation func(ctx context.Context, resourceGroupName string, location string, requestBody armbulkactions.ExecuteDeallocateContent, options *armbulkactions.VirtualMachineBulkOperationsClientBulkDeallocateOperationOptions) (resp azfake.Responder[armbulkactions.VirtualMachineBulkOperationsClientBulkDeallocateOperationResponse], errResp azfake.ErrorResponder)
@@ -61,10 +57,6 @@ type VirtualMachineBulkOperationsServer struct {
 	// BulkStartOperation is the fake for method VirtualMachineBulkOperationsClient.BulkStartOperation
 	// HTTP status codes to indicate success: http.StatusOK
 	BulkStartOperation func(ctx context.Context, resourceGroupName string, location string, requestBody armbulkactions.ExecuteStartContent, options *armbulkactions.VirtualMachineBulkOperationsClientBulkStartOperationOptions) (resp azfake.Responder[armbulkactions.VirtualMachineBulkOperationsClientBulkStartOperationResponse], errResp azfake.ErrorResponder)
-
-	// BulkVdiFlexCreateOperation is the fake for method VirtualMachineBulkOperationsClient.BulkVdiFlexCreateOperation
-	// HTTP status codes to indicate success: http.StatusOK
-	BulkVdiFlexCreateOperation func(ctx context.Context, resourceGroupName string, location string, requestBody armbulkactions.ExecuteVdiCreateRequest, options *armbulkactions.VirtualMachineBulkOperationsClientBulkVdiFlexCreateOperationOptions) (resp azfake.Responder[armbulkactions.VirtualMachineBulkOperationsClientBulkVdiFlexCreateOperationResponse], errResp azfake.ErrorResponder)
 }
 
 // NewVirtualMachineBulkOperationsServerTransport creates a new instance of VirtualMachineBulkOperationsServerTransport with the provided implementation.
@@ -109,8 +101,6 @@ func (v *VirtualMachineBulkOperationsServerTransport) dispatchToMethodFake(req *
 				res.resp, res.err = v.dispatchBulkAcknowledgeOperationErrors(req)
 			case "VirtualMachineBulkOperationsClient.BulkCancelOperations":
 				res.resp, res.err = v.dispatchBulkCancelOperations(req)
-			case "VirtualMachineBulkOperationsClient.BulkCreateOperation":
-				res.resp, res.err = v.dispatchBulkCreateOperation(req)
 			case "VirtualMachineBulkOperationsClient.BulkDeallocateOperation":
 				res.resp, res.err = v.dispatchBulkDeallocateOperation(req)
 			case "VirtualMachineBulkOperationsClient.BulkDeleteOperation":
@@ -125,8 +115,6 @@ func (v *VirtualMachineBulkOperationsServerTransport) dispatchToMethodFake(req *
 				res.resp, res.err = v.dispatchBulkReimageOperation(req)
 			case "VirtualMachineBulkOperationsClient.BulkStartOperation":
 				res.resp, res.err = v.dispatchBulkStartOperation(req)
-			case "VirtualMachineBulkOperationsClient.BulkVdiFlexCreateOperation":
-				res.resp, res.err = v.dispatchBulkVdiFlexCreateOperation(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -211,43 +199,6 @@ func (v *VirtualMachineBulkOperationsServerTransport) dispatchBulkCancelOperatio
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CancelOperationsResponse, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (v *VirtualMachineBulkOperationsServerTransport) dispatchBulkCreateOperation(req *http.Request) (*http.Response, error) {
-	if v.srv.BulkCreateOperation == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BulkCreateOperation not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Compute/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/virtualMachinesBulkCreate`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armbulkactions.ExecuteCreateContent](req)
-	if err != nil {
-		return nil, err
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	locationParam, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := v.srv.BulkCreateOperation(req.Context(), resourceGroupNameParam, locationParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CreateResourceOperationResponse, req)
 	if err != nil {
 		return nil, err
 	}
@@ -528,43 +479,6 @@ func (v *VirtualMachineBulkOperationsServerTransport) dispatchBulkStartOperation
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).StartResourceOperationResponse, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (v *VirtualMachineBulkOperationsServerTransport) dispatchBulkVdiFlexCreateOperation(req *http.Request) (*http.Response, error) {
-	if v.srv.BulkVdiFlexCreateOperation == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BulkVdiFlexCreateOperation not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Compute/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/virtualMachinesBulkVdiFlexCreate`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armbulkactions.ExecuteVdiCreateRequest](req)
-	if err != nil {
-		return nil, err
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	locationParam, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := v.srv.BulkVdiFlexCreateOperation(req.Context(), resourceGroupNameParam, locationParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CreateResourceOperationResponse, req)
 	if err != nil {
 		return nil, err
 	}

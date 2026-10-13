@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-10-02-preview/Replicas_Get.json
+// Generated from example definition: 2026-07-01/Replicas_Get.json
 func ExampleContainerAppsRevisionReplicasClient_GetReplica() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -59,7 +59,7 @@ func ExampleContainerAppsRevisionReplicasClient_GetReplica() {
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/Replicas_List.json
+// Generated from example definition: 2026-07-01/Replicas_List.json
 func ExampleContainerAppsRevisionReplicasClient_ListReplicas() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

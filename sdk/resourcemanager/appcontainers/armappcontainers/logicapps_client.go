@@ -19,7 +19,7 @@ import (
 // LogicAppsClient contains the methods for the LogicApps group.
 // Don't use this type directly, use NewLogicAppsClient() instead.
 //
-// Generated from API version 2025-10-02-preview
+// Generated from API version 2026-07-01
 type LogicAppsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -49,7 +49,7 @@ func NewLogicAppsClient(subscriptionID string, credential azcore.TokenCredential
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - containerAppName - Name of the Container App.
 //   - logicAppName - Name of the Logic App, the extension resource.
-//   - resource - Logic app resource properties.
+//   - resource - Resource create parameters.
 //   - options - LogicAppsClientCreateOrUpdateOptions contains the optional parameters for the LogicAppsClient.CreateOrUpdate
 //     method.
 func (client *LogicAppsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, containerAppName string, logicAppName string, resource LogicApp, options *LogicAppsClientCreateOrUpdateOptions) (LogicAppsClientCreateOrUpdateResponse, error) {
@@ -93,7 +93,7 @@ func (client *LogicAppsClient) createOrUpdateCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251002Preview)
+	reqQP.Set("api-version", version20260701)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -165,71 +165,8 @@ func (client *LogicAppsClient) deleteCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251002Preview)
+	reqQP.Set("api-version", version20260701)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	return req, nil
-}
-
-// DeployWorkflowArtifacts - Creates or updates the artifacts for the logic app
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - containerAppName - Name of the Container App.
-//   - logicAppName - Name of the Logic App, the extension resource.
-//   - options - LogicAppsClientDeployWorkflowArtifactsOptions contains the optional parameters for the LogicAppsClient.DeployWorkflowArtifacts
-//     method.
-func (client *LogicAppsClient) DeployWorkflowArtifacts(ctx context.Context, resourceGroupName string, containerAppName string, logicAppName string, options *LogicAppsClientDeployWorkflowArtifactsOptions) (LogicAppsClientDeployWorkflowArtifactsResponse, error) {
-	var err error
-	const operationName = "LogicAppsClient.DeployWorkflowArtifacts"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.deployWorkflowArtifactsCreateRequest(ctx, resourceGroupName, containerAppName, logicAppName, options)
-	if err != nil {
-		return LogicAppsClientDeployWorkflowArtifactsResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return LogicAppsClientDeployWorkflowArtifactsResponse{}, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return LogicAppsClientDeployWorkflowArtifactsResponse{}, runtime.NewResponseError(httpResp)
-	}
-	return LogicAppsClientDeployWorkflowArtifactsResponse{}, nil
-}
-
-// deployWorkflowArtifactsCreateRequest creates the DeployWorkflowArtifacts request.
-func (client *LogicAppsClient) deployWorkflowArtifactsCreateRequest(ctx context.Context, resourceGroupName string, containerAppName string, logicAppName string, options *LogicAppsClientDeployWorkflowArtifactsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}/providers/Microsoft.App/logicApps/{logicAppName}/deployWorkflowArtifacts"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if containerAppName == "" {
-		return nil, errors.New("parameter containerAppName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{containerAppName}", url.PathEscape(containerAppName))
-	if logicAppName == "" {
-		return nil, errors.New("parameter logicAppName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{logicAppName}", url.PathEscape(logicAppName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251002Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	if options != nil && options.WorkflowArtifacts != nil {
-		req.Raw().Header["Content-Type"] = []string{"application/json"}
-		if err := runtime.MarshalAsJSON(req, *options.WorkflowArtifacts); err != nil {
-			return nil, err
-		}
-		return req, nil
-	}
 	return req, nil
 }
 
@@ -282,7 +219,7 @@ func (client *LogicAppsClient) getCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251002Preview)
+	reqQP.Set("api-version", version20260701)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -354,7 +291,7 @@ func (client *LogicAppsClient) getWorkflowCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251002Preview)
+	reqQP.Set("api-version", version20260701)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -368,77 +305,6 @@ func (client *LogicAppsClient) getWorkflowHandleResponse(resp *http.Response, su
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkflowEnvelope); err != nil {
 		return LogicAppsClientGetWorkflowResponse{}, err
-	}
-	return result, nil
-}
-
-// Invoke - Proxies a the API call to the logic app backed by the container app.
-//
-// Proxies a the API call to the logic app backed by the container app.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - containerAppName - Name of the Container App.
-//   - logicAppName - Name of the Logic App, the extension resource.
-//   - xMSLogicAppsProxyPath - The proxy path for the API call
-//   - xMSLogicAppsProxyMethod - The proxy method for the API call
-//   - options - LogicAppsClientInvokeOptions contains the optional parameters for the LogicAppsClient.Invoke method.
-func (client *LogicAppsClient) Invoke(ctx context.Context, resourceGroupName string, containerAppName string, logicAppName string, xMSLogicAppsProxyPath string, xMSLogicAppsProxyMethod LogicAppsProxyMethod, options *LogicAppsClientInvokeOptions) (LogicAppsClientInvokeResponse, error) {
-	var err error
-	const operationName = "LogicAppsClient.Invoke"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.invokeCreateRequest(ctx, resourceGroupName, containerAppName, logicAppName, xMSLogicAppsProxyPath, xMSLogicAppsProxyMethod, options)
-	if err != nil {
-		return LogicAppsClientInvokeResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return LogicAppsClientInvokeResponse{}, err
-	}
-	return client.invokeHandleResponse(httpResp, http.StatusOK)
-}
-
-// invokeCreateRequest creates the Invoke request.
-func (client *LogicAppsClient) invokeCreateRequest(ctx context.Context, resourceGroupName string, containerAppName string, logicAppName string, xMSLogicAppsProxyPath string, xMSLogicAppsProxyMethod LogicAppsProxyMethod, _ *LogicAppsClientInvokeOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}/providers/Microsoft.App/logicApps/{logicAppName}/invoke"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if containerAppName == "" {
-		return nil, errors.New("parameter containerAppName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{containerAppName}", url.PathEscape(containerAppName))
-	if logicAppName == "" {
-		return nil, errors.New("parameter logicAppName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{logicAppName}", url.PathEscape(logicAppName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251002Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["x-ms-logicApps-proxy-method"] = []string{string(xMSLogicAppsProxyMethod)}
-	req.Raw().Header["x-ms-logicApps-proxy-path"] = []string{xMSLogicAppsProxyPath}
-	return req, nil
-}
-
-// invokeHandleResponse handles the Invoke response.
-func (client *LogicAppsClient) invokeHandleResponse(resp *http.Response, successCodes ...int) (LogicAppsClientInvokeResponse, error) {
-	result := LogicAppsClientInvokeResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.Object); err != nil {
-		return LogicAppsClientInvokeResponse{}, err
 	}
 	return result, nil
 }
@@ -508,7 +374,7 @@ func (client *LogicAppsClient) listWorkflowsCreateRequest(ctx context.Context, r
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20251002Preview)
+		reqQP.Set("api-version", version20260701)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -577,7 +443,7 @@ func (client *LogicAppsClient) listWorkflowsConnectionsCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251002Preview)
+	reqQP.Set("api-version", version20260701)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

@@ -19,7 +19,7 @@ import (
 // ItemLevelRecoveryConnectionsClient contains the methods for the ItemLevelRecoveryConnections group.
 // Don't use this type directly, use NewItemLevelRecoveryConnectionsClient() instead.
 //
-// Generated from API version 2026-07-01
+// Generated from API version 2026-08-01
 type ItemLevelRecoveryConnectionsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -42,6 +42,94 @@ func NewItemLevelRecoveryConnectionsClient(subscriptionID string, credential azc
 		internal:       cl,
 	}
 	return client, nil
+}
+
+// ListInstantItemRecoveryOperationResult - Fetches the mount scripts (iSCSI connection details) for an active Instant Item
+// Recovery (ILR) session on the recovery point. Required from API version 2026-08-01 onwards; replaces the scripts previously
+// returned inline in the operationsStatus (ILR provision) response.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - vaultName - The name of the VaultResource
+//   - fabricName - The name of the BackupFabricResource
+//   - containerName - Name of the container whose details need to be fetched.
+//   - protectedItemName - Backed up item name whose details are to be fetched.
+//   - recoveryPointID - RecoveryPointID represents the backed up data to be fetched.
+//   - body - The content of the action request
+//   - options - ItemLevelRecoveryConnectionsClientListInstantItemRecoveryOperationResultOptions contains the optional parameters
+//     for the ItemLevelRecoveryConnectionsClient.ListInstantItemRecoveryOperationResult method.
+func (client *ItemLevelRecoveryConnectionsClient) ListInstantItemRecoveryOperationResult(ctx context.Context, resourceGroupName string, vaultName string, fabricName string, containerName string, protectedItemName string, recoveryPointID string, body InstantItemRecoveryOperationResultRequest, options *ItemLevelRecoveryConnectionsClientListInstantItemRecoveryOperationResultOptions) (ItemLevelRecoveryConnectionsClientListInstantItemRecoveryOperationResultResponse, error) {
+	var err error
+	const operationName = "ItemLevelRecoveryConnectionsClient.ListInstantItemRecoveryOperationResult"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.listInstantItemRecoveryOperationResultCreateRequest(ctx, resourceGroupName, vaultName, fabricName, containerName, protectedItemName, recoveryPointID, body, options)
+	if err != nil {
+		return ItemLevelRecoveryConnectionsClientListInstantItemRecoveryOperationResultResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return ItemLevelRecoveryConnectionsClientListInstantItemRecoveryOperationResultResponse{}, err
+	}
+	return client.listInstantItemRecoveryOperationResultHandleResponse(httpResp, http.StatusOK)
+}
+
+// listInstantItemRecoveryOperationResultCreateRequest creates the ListInstantItemRecoveryOperationResult request.
+func (client *ItemLevelRecoveryConnectionsClient) listInstantItemRecoveryOperationResultCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, fabricName string, containerName string, protectedItemName string, recoveryPointID string, body InstantItemRecoveryOperationResultRequest, _ *ItemLevelRecoveryConnectionsClientListInstantItemRecoveryOperationResultOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupFabrics/{fabricName}/protectionContainers/{containerName}/protectedItems/{protectedItemName}/recoveryPoints/{recoveryPointId}/listInstantItemRecoveryOperationResult"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if vaultName == "" {
+		return nil, errors.New("parameter vaultName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{vaultName}", url.PathEscape(vaultName))
+	if fabricName == "" {
+		return nil, errors.New("parameter fabricName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{fabricName}", url.PathEscape(fabricName))
+	if containerName == "" {
+		return nil, errors.New("parameter containerName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{containerName}", url.PathEscape(containerName))
+	if protectedItemName == "" {
+		return nil, errors.New("parameter protectedItemName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{protectedItemName}", url.PathEscape(protectedItemName))
+	if recoveryPointID == "" {
+		return nil, errors.New("parameter recoveryPointID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{recoveryPointId}", url.PathEscape(recoveryPointID))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260801)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// listInstantItemRecoveryOperationResultHandleResponse handles the ListInstantItemRecoveryOperationResult response.
+func (client *ItemLevelRecoveryConnectionsClient) listInstantItemRecoveryOperationResultHandleResponse(resp *http.Response, successCodes ...int) (ItemLevelRecoveryConnectionsClientListInstantItemRecoveryOperationResultResponse, error) {
+	result := ItemLevelRecoveryConnectionsClientListInstantItemRecoveryOperationResultResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.InstantItemRecoveryTarget); err != nil {
+		return ItemLevelRecoveryConnectionsClientListInstantItemRecoveryOperationResultResponse{}, err
+	}
+	return result, nil
 }
 
 // Provision - Provisions a script which invokes an iSCSI connection to the backup data. Executing this script opens a file
@@ -107,7 +195,7 @@ func (client *ItemLevelRecoveryConnectionsClient) provisionCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260701)
+	reqQP.Set("api-version", version20260801)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -178,7 +266,7 @@ func (client *ItemLevelRecoveryConnectionsClient) revokeCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260701)
+	reqQP.Set("api-version", version20260801)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }

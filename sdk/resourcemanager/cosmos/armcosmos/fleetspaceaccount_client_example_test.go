@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-15/fleet/CosmosDBFleetspaceAccountCreate.json
+// Generated from example definition: 2026-04-01-preview/fleet/CosmosDBFleetspaceAccountCreate.json
 func ExampleFleetspaceAccountClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -43,21 +43,21 @@ func ExampleFleetspaceAccountClient_BeginCreate() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.FleetspaceAccountClientCreateResponse{
 	// 	FleetspaceAccountResource: armcosmos.FleetspaceAccountResource{
-	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/rg1/providers/Microsoft.DocumentDB/fleets/fleet1/fleetspaces/fleetspace1/fleetspaceAccounts/db1"),
 	// 		Name: to.Ptr("db1"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/fleets/fleetspaces/fleetspaceAccounts"),
+	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/rg1/providers/Microsoft.DocumentDB/fleets/fleet1/fleetspaces/fleetspace1/fleetspaceAccounts/db1"),
 	// 		Properties: &armcosmos.FleetspaceAccountProperties{
-	// 			ProvisioningState: to.Ptr(armcosmos.StatusSucceeded),
 	// 			GlobalDatabaseAccountProperties: &armcosmos.FleetspaceAccountPropertiesGlobalDatabaseAccountProperties{
 	// 				ArmLocation: to.Ptr("West US"),
 	// 				ResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/providers/Microsoft.DocumentDB/resourceGroup/rg1/databaseAccounts/db1"),
 	// 			},
+	// 			ProvisioningState: to.Ptr(armcosmos.StatusSucceeded),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-03-15/fleet/CosmosDBFleetspaceAccountDelete.json
+// Generated from example definition: 2026-04-01-preview/fleet/CosmosDBFleetspaceAccountDelete.json
 func ExampleFleetspaceAccountClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -78,7 +78,7 @@ func ExampleFleetspaceAccountClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-03-15/fleet/CosmosDBFleetspaceAccountGet.json
+// Generated from example definition: 2026-04-01-preview/fleet/CosmosDBFleetspaceAccountGet.json
 func ExampleFleetspaceAccountClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -98,21 +98,21 @@ func ExampleFleetspaceAccountClient_Get() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.FleetspaceAccountClientGetResponse{
 	// 	FleetspaceAccountResource: armcosmos.FleetspaceAccountResource{
-	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/rg1/providers/Microsoft.DocumentDB/fleets/fleet1/fleetspaces/fleetspace1/fleetspaceAccounts/db1"),
 	// 		Name: to.Ptr("db1"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/fleets/fleetspaces/fleetspaceAccounts"),
+	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/rg1/providers/Microsoft.DocumentDB/fleets/fleet1/fleetspaces/fleetspace1/fleetspaceAccounts/db1"),
 	// 		Properties: &armcosmos.FleetspaceAccountProperties{
-	// 			ProvisioningState: to.Ptr(armcosmos.StatusSucceeded),
 	// 			GlobalDatabaseAccountProperties: &armcosmos.FleetspaceAccountPropertiesGlobalDatabaseAccountProperties{
 	// 				ArmLocation: to.Ptr("West US"),
 	// 				ResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/db1"),
 	// 			},
+	// 			ProvisioningState: to.Ptr(armcosmos.StatusSucceeded),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-03-15/fleet/CosmosDBFleetspaceAccountList.json
+// Generated from example definition: 2026-04-01-preview/fleet/CosmosDBFleetspaceAccountList.json
 func ExampleFleetspaceAccountClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -138,27 +138,27 @@ func ExampleFleetspaceAccountClient_NewListPager() {
 		// 	FleetspaceAccountListResult: armcosmos.FleetspaceAccountListResult{
 		// 		Value: []*armcosmos.FleetspaceAccountResource{
 		// 			{
-		// 				ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/rg1/providers/Microsoft.DocumentDB/fleets/fleet1/fleetspaces/fleetspace1/fleetspaceAccounts/db1"),
 		// 				Name: to.Ptr("db1"),
 		// 				Type: to.Ptr("Microsoft.DocumentDB/fleets/fleetspaces/fleetspaceAccounts"),
+		// 				ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/rg1/providers/Microsoft.DocumentDB/fleets/fleet1/fleetspaces/fleetspace1/fleetspaceAccounts/db1"),
 		// 				Properties: &armcosmos.FleetspaceAccountProperties{
-		// 					ProvisioningState: to.Ptr(armcosmos.StatusSucceeded),
 		// 					GlobalDatabaseAccountProperties: &armcosmos.FleetspaceAccountPropertiesGlobalDatabaseAccountProperties{
 		// 						ArmLocation: to.Ptr("West US"),
 		// 						ResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/providers/Microsoft.DocumentDB/resourceGroup/rg1/databaseAccounts/db1"),
 		// 					},
+		// 					ProvisioningState: to.Ptr(armcosmos.StatusSucceeded),
 		// 				},
 		// 			},
 		// 			{
-		// 				ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/rg1/providers/Microsoft.DocumentDB/fleets/fleet1/fleetspaces/fleetspace1/fleetspaceAccounts/db2"),
 		// 				Name: to.Ptr("db2"),
 		// 				Type: to.Ptr("Microsoft.DocumentDB/fleets/fleetspaces/fleetspaceAccounts"),
+		// 				ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/rg1/providers/Microsoft.DocumentDB/fleets/fleet1/fleetspaces/fleetspace1/fleetspaceAccounts/db2"),
 		// 				Properties: &armcosmos.FleetspaceAccountProperties{
-		// 					ProvisioningState: to.Ptr(armcosmos.StatusSucceeded),
 		// 					GlobalDatabaseAccountProperties: &armcosmos.FleetspaceAccountPropertiesGlobalDatabaseAccountProperties{
 		// 						ArmLocation: to.Ptr("North Central US"),
 		// 						ResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/providers/Microsoft.DocumentDB/resourceGroup/rg1/databaseAccounts/db2"),
 		// 					},
+		// 					ProvisioningState: to.Ptr(armcosmos.StatusSucceeded),
 		// 				},
 		// 			},
 		// 		},

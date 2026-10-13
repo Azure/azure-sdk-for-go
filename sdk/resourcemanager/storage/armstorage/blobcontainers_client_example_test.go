@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-04-01/BlobContainersClearLegalHold.json
+// Generated from example definition: 2026-06-01/BlobContainersClearLegalHold.json
 func ExampleBlobContainersClient_ClearLegalHold() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -45,7 +45,7 @@ func ExampleBlobContainersClient_ClearLegalHold() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01/BlobContainersPut.json
+// Generated from example definition: 2026-06-01/BlobContainersPut.json
 func ExampleBlobContainersClient_Create_putContainers() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -72,7 +72,7 @@ func ExampleBlobContainersClient_Create_putContainers() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01/BlobContainersPutDefaultEncryptionScope.json
+// Generated from example definition: 2026-06-01/BlobContainersPutDefaultEncryptionScope.json
 func ExampleBlobContainersClient_Create_putContainerWithDefaultEncryptionScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -108,7 +108,7 @@ func ExampleBlobContainersClient_Create_putContainerWithDefaultEncryptionScope()
 	// }
 }
 
-// Generated from example definition: 2026-04-01/BlobContainersPutObjectLevelWorm.json
+// Generated from example definition: 2026-06-01/BlobContainersPutObjectLevelWorm.json
 func ExampleBlobContainersClient_Create_putContainerWithObjectLevelWorm() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -146,7 +146,7 @@ func ExampleBlobContainersClient_Create_putContainerWithObjectLevelWorm() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01/BlobContainersPutImmutabilityPolicy.json
+// Generated from example definition: 2026-06-01/BlobContainersPutImmutabilityPolicy.json
 func ExampleBlobContainersClient_CreateOrUpdateImmutabilityPolicy_createOrUpdateImmutabilityPolicy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -184,7 +184,7 @@ func ExampleBlobContainersClient_CreateOrUpdateImmutabilityPolicy_createOrUpdate
 	// }
 }
 
-// Generated from example definition: 2026-04-01/BlobContainersPutImmutabilityPolicyAllowProtectedAppendWritesAll.json
+// Generated from example definition: 2026-06-01/BlobContainersPutImmutabilityPolicyAllowProtectedAppendWritesAll.json
 func ExampleBlobContainersClient_CreateOrUpdateImmutabilityPolicy_createOrUpdateImmutabilityPolicyWithAllowProtectedAppendWritesAll() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -222,7 +222,7 @@ func ExampleBlobContainersClient_CreateOrUpdateImmutabilityPolicy_createOrUpdate
 	// }
 }
 
-// Generated from example definition: 2026-04-01/BlobContainersDelete.json
+// Generated from example definition: 2026-06-01/BlobContainersDelete.json
 func ExampleBlobContainersClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -244,7 +244,7 @@ func ExampleBlobContainersClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01/BlobContainersDeleteImmutabilityPolicy.json
+// Generated from example definition: 2026-06-01/BlobContainersDeleteImmutabilityPolicy.json
 func ExampleBlobContainersClient_DeleteImmutabilityPolicy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -276,7 +276,7 @@ func ExampleBlobContainersClient_DeleteImmutabilityPolicy() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01/BlobContainersExtendImmutabilityPolicy.json
+// Generated from example definition: 2026-06-01/BlobContainersExtendImmutabilityPolicy.json
 func ExampleBlobContainersClient_ExtendImmutabilityPolicy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -313,7 +313,7 @@ func ExampleBlobContainersClient_ExtendImmutabilityPolicy() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01/BlobContainersGet.json
+// Generated from example definition: 2026-06-01/BlobContainersGet.json
 func ExampleBlobContainersClient_Get_getContainers() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -351,26 +351,26 @@ func ExampleBlobContainersClient_Get_getContainers() {
 	// 						ImmutabilityPeriodSinceCreationInDays: to.Ptr[int32](3),
 	// 						ObjectIdentifier: to.Ptr("ce7cd28a-fc25-4bf1-8fb9-e1b9833ffd4b"),
 	// 						TenantID: to.Ptr("72f988bf-86f1-41af-91ab-2d7cd011db47"),
-	// 						Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-26T05:06:11.431403Z"); return t}()),
+	// 						Timestamp: to.Ptr(time.Date(2018, time.March, 26, 5, 6, 11, 431403000, time.UTC)),
 	// 						Update: to.Ptr(armstorage.ImmutabilityPolicyUpdateTypePut),
 	// 					},
 	// 					{
 	// 						ImmutabilityPeriodSinceCreationInDays: to.Ptr[int32](3),
 	// 						ObjectIdentifier: to.Ptr("ce7cd28a-fc25-4bf1-8fb9-e1b9833ffd4b"),
 	// 						TenantID: to.Ptr("72f988bf-86f1-41af-91ab-2d7cd011db47"),
-	// 						Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-26T05:06:13.0907641Z"); return t}()),
+	// 						Timestamp: to.Ptr(time.Date(2018, time.March, 26, 5, 6, 13, 90764100, time.UTC)),
 	// 						Update: to.Ptr(armstorage.ImmutabilityPolicyUpdateTypeLock),
 	// 					},
 	// 					{
 	// 						ImmutabilityPeriodSinceCreationInDays: to.Ptr[int32](100),
 	// 						ObjectIdentifier: to.Ptr("ce7cd28a-fc25-4bf1-8fb9-e1b9833ffd4b"),
 	// 						TenantID: to.Ptr("72f988bf-86f1-41af-91ab-2d7cd011db47"),
-	// 						Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-26T05:06:14.7097716Z"); return t}()),
+	// 						Timestamp: to.Ptr(time.Date(2018, time.March, 26, 5, 6, 14, 709771600, time.UTC)),
 	// 						Update: to.Ptr(armstorage.ImmutabilityPolicyUpdateTypeExtend),
 	// 					},
 	// 				},
 	// 			},
-	// 			LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-26T05:06:14Z"); return t}()),
+	// 			LastModifiedTime: to.Ptr(time.Date(2018, time.March, 26, 5, 6, 14, 0, time.UTC)),
 	// 			LeaseState: to.Ptr(armstorage.LeaseStateAvailable),
 	// 			LeaseStatus: to.Ptr(armstorage.LeaseStatusUnlocked),
 	// 			LegalHold: &armstorage.LegalHoldProperties{
@@ -380,19 +380,19 @@ func ExampleBlobContainersClient_Get_getContainers() {
 	// 						ObjectIdentifier: to.Ptr("ce7cd28a-fc25-4bf1-8fb9-e1b9833ffd4b"),
 	// 						Tag: to.Ptr("tag1"),
 	// 						TenantID: to.Ptr("72f988bf-86f1-41af-91ab-2d7cd011db47"),
-	// 						Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-26T05:06:09.6964643Z"); return t}()),
+	// 						Timestamp: to.Ptr(time.Date(2018, time.March, 26, 5, 6, 9, 696464300, time.UTC)),
 	// 					},
 	// 					{
 	// 						ObjectIdentifier: to.Ptr("ce7cd28a-fc25-4bf1-8fb9-e1b9833ffd4b"),
 	// 						Tag: to.Ptr("tag2"),
 	// 						TenantID: to.Ptr("72f988bf-86f1-41af-91ab-2d7cd011db47"),
-	// 						Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-26T05:06:09.6964643Z"); return t}()),
+	// 						Timestamp: to.Ptr(time.Date(2018, time.March, 26, 5, 6, 9, 696464300, time.UTC)),
 	// 					},
 	// 					{
 	// 						ObjectIdentifier: to.Ptr("ce7cd28a-fc25-4bf1-8fb9-e1b9833ffd4b"),
 	// 						Tag: to.Ptr("tag3"),
 	// 						TenantID: to.Ptr("72f988bf-86f1-41af-91ab-2d7cd011db47"),
-	// 						Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-26T05:06:09.6964643Z"); return t}()),
+	// 						Timestamp: to.Ptr(time.Date(2018, time.March, 26, 5, 6, 9, 696464300, time.UTC)),
 	// 					},
 	// 				},
 	// 			},
@@ -402,7 +402,7 @@ func ExampleBlobContainersClient_Get_getContainers() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01/BlobContainersGetWithAllowProtectedAppendWritesAll.json
+// Generated from example definition: 2026-06-01/BlobContainersGetWithAllowProtectedAppendWritesAll.json
 func ExampleBlobContainersClient_Get_getBlobContainersGetWithAllowProtectedAppendWritesAll() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -442,7 +442,7 @@ func ExampleBlobContainersClient_Get_getBlobContainersGetWithAllowProtectedAppen
 	// 						ImmutabilityPeriodSinceCreationInDays: to.Ptr[int32](3),
 	// 						ObjectIdentifier: to.Ptr("ce7cd28a-fc25-4bf1-8fb9-e1b9833ffd4b"),
 	// 						TenantID: to.Ptr("72f988bf-86f1-41af-91ab-2d7cd011db47"),
-	// 						Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-26T05:06:11.431403Z"); return t}()),
+	// 						Timestamp: to.Ptr(time.Date(2018, time.March, 26, 5, 6, 11, 431403000, time.UTC)),
 	// 						Update: to.Ptr(armstorage.ImmutabilityPolicyUpdateTypePut),
 	// 					},
 	// 					{
@@ -450,7 +450,7 @@ func ExampleBlobContainersClient_Get_getBlobContainersGetWithAllowProtectedAppen
 	// 						ImmutabilityPeriodSinceCreationInDays: to.Ptr[int32](3),
 	// 						ObjectIdentifier: to.Ptr("ce7cd28a-fc25-4bf1-8fb9-e1b9833ffd4b"),
 	// 						TenantID: to.Ptr("72f988bf-86f1-41af-91ab-2d7cd011db47"),
-	// 						Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-26T05:06:13.0907641Z"); return t}()),
+	// 						Timestamp: to.Ptr(time.Date(2018, time.March, 26, 5, 6, 13, 90764100, time.UTC)),
 	// 						Update: to.Ptr(armstorage.ImmutabilityPolicyUpdateTypeLock),
 	// 					},
 	// 					{
@@ -458,38 +458,38 @@ func ExampleBlobContainersClient_Get_getBlobContainersGetWithAllowProtectedAppen
 	// 						ImmutabilityPeriodSinceCreationInDays: to.Ptr[int32](100),
 	// 						ObjectIdentifier: to.Ptr("ce7cd28a-fc25-4bf1-8fb9-e1b9833ffd4b"),
 	// 						TenantID: to.Ptr("72f988bf-86f1-41af-91ab-2d7cd011db47"),
-	// 						Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-26T05:06:14.7097716Z"); return t}()),
+	// 						Timestamp: to.Ptr(time.Date(2018, time.March, 26, 5, 6, 14, 709771600, time.UTC)),
 	// 						Update: to.Ptr(armstorage.ImmutabilityPolicyUpdateTypeExtend),
 	// 					},
 	// 				},
 	// 			},
-	// 			LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-26T05:06:14Z"); return t}()),
+	// 			LastModifiedTime: to.Ptr(time.Date(2018, time.March, 26, 5, 6, 14, 0, time.UTC)),
 	// 			LeaseState: to.Ptr(armstorage.LeaseStateAvailable),
 	// 			LeaseStatus: to.Ptr(armstorage.LeaseStatusUnlocked),
 	// 			LegalHold: &armstorage.LegalHoldProperties{
 	// 				HasLegalHold: to.Ptr(true),
 	// 				ProtectedAppendWritesHistory: &armstorage.ProtectedAppendWritesHistory{
 	// 					AllowProtectedAppendWritesAll: to.Ptr(true),
-	// 					Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-01T01:58:44.5044483Z"); return t}()),
+	// 					Timestamp: to.Ptr(time.Date(2022, time.September, 1, 1, 58, 44, 504448300, time.UTC)),
 	// 				},
 	// 				Tags: []*armstorage.TagProperty{
 	// 					{
 	// 						ObjectIdentifier: to.Ptr("ce7cd28a-fc25-4bf1-8fb9-e1b9833ffd4b"),
 	// 						Tag: to.Ptr("tag1"),
 	// 						TenantID: to.Ptr("72f988bf-86f1-41af-91ab-2d7cd011db47"),
-	// 						Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-26T05:06:09.6964643Z"); return t}()),
+	// 						Timestamp: to.Ptr(time.Date(2018, time.March, 26, 5, 6, 9, 696464300, time.UTC)),
 	// 					},
 	// 					{
 	// 						ObjectIdentifier: to.Ptr("ce7cd28a-fc25-4bf1-8fb9-e1b9833ffd4b"),
 	// 						Tag: to.Ptr("tag2"),
 	// 						TenantID: to.Ptr("72f988bf-86f1-41af-91ab-2d7cd011db47"),
-	// 						Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-26T05:06:09.6964643Z"); return t}()),
+	// 						Timestamp: to.Ptr(time.Date(2018, time.March, 26, 5, 6, 9, 696464300, time.UTC)),
 	// 					},
 	// 					{
 	// 						ObjectIdentifier: to.Ptr("ce7cd28a-fc25-4bf1-8fb9-e1b9833ffd4b"),
 	// 						Tag: to.Ptr("tag3"),
 	// 						TenantID: to.Ptr("72f988bf-86f1-41af-91ab-2d7cd011db47"),
-	// 						Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-26T05:06:09.6964643Z"); return t}()),
+	// 						Timestamp: to.Ptr(time.Date(2018, time.March, 26, 5, 6, 9, 696464300, time.UTC)),
 	// 					},
 	// 				},
 	// 			},
@@ -499,7 +499,7 @@ func ExampleBlobContainersClient_Get_getBlobContainersGetWithAllowProtectedAppen
 	// }
 }
 
-// Generated from example definition: 2026-04-01/BlobContainersGetImmutabilityPolicy.json
+// Generated from example definition: 2026-06-01/BlobContainersGetImmutabilityPolicy.json
 func ExampleBlobContainersClient_GetImmutabilityPolicy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -532,7 +532,7 @@ func ExampleBlobContainersClient_GetImmutabilityPolicy() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01/BlobContainersLease_Acquire.json
+// Generated from example definition: 2026-06-01/BlobContainersLease_Acquire.json
 func ExampleBlobContainersClient_Lease_acquireALeaseOnAContainer() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -561,7 +561,7 @@ func ExampleBlobContainersClient_Lease_acquireALeaseOnAContainer() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01/BlobContainersLease_Break.json
+// Generated from example definition: 2026-06-01/BlobContainersLease_Break.json
 func ExampleBlobContainersClient_Lease_breakALeaseOnAContainer() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -590,7 +590,7 @@ func ExampleBlobContainersClient_Lease_breakALeaseOnAContainer() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01/BlobContainersList.json
+// Generated from example definition: 2026-06-01/BlobContainersList.json
 func ExampleBlobContainersClient_NewListPager_listContainers() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -624,7 +624,7 @@ func ExampleBlobContainersClient_NewListPager_listContainers() {
 		// 				Properties: &armstorage.ContainerProperties{
 		// 					HasImmutabilityPolicy: to.Ptr(false),
 		// 					HasLegalHold: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-14T08:20:47Z"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2018, time.March, 14, 8, 20, 47, 0, time.UTC)),
 		// 					LeaseState: to.Ptr(armstorage.LeaseStateAvailable),
 		// 					LeaseStatus: to.Ptr(armstorage.LeaseStatusUnlocked),
 		// 					PublicAccess: to.Ptr(armstorage.PublicAccessContainer),
@@ -638,7 +638,7 @@ func ExampleBlobContainersClient_NewListPager_listContainers() {
 		// 				Properties: &armstorage.ContainerProperties{
 		// 					HasImmutabilityPolicy: to.Ptr(false),
 		// 					HasLegalHold: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-14T08:20:47Z"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2018, time.March, 14, 8, 20, 47, 0, time.UTC)),
 		// 					LeaseState: to.Ptr(armstorage.LeaseStateAvailable),
 		// 					LeaseStatus: to.Ptr(armstorage.LeaseStatusUnlocked),
 		// 					PublicAccess: to.Ptr(armstorage.PublicAccessNone),
@@ -650,7 +650,7 @@ func ExampleBlobContainersClient_NewListPager_listContainers() {
 	}
 }
 
-// Generated from example definition: 2026-04-01/DeletedBlobContainersList.json
+// Generated from example definition: 2026-06-01/DeletedBlobContainersList.json
 func ExampleBlobContainersClient_NewListPager_listDeletedContainers() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -684,7 +684,7 @@ func ExampleBlobContainersClient_NewListPager_listDeletedContainers() {
 		// 				Properties: &armstorage.ContainerProperties{
 		// 					HasImmutabilityPolicy: to.Ptr(false),
 		// 					HasLegalHold: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-14T08:20:47Z"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2018, time.March, 14, 8, 20, 47, 0, time.UTC)),
 		// 					LeaseState: to.Ptr(armstorage.LeaseStateAvailable),
 		// 					LeaseStatus: to.Ptr(armstorage.LeaseStatusUnlocked),
 		// 					PublicAccess: to.Ptr(armstorage.PublicAccessContainer),
@@ -697,10 +697,10 @@ func ExampleBlobContainersClient_NewListPager_listDeletedContainers() {
 		// 				ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res9290/providers/Microsoft.Storage/storageAccounts/sto1590/blobServices/default/containers/container4052"),
 		// 				Properties: &armstorage.ContainerProperties{
 		// 					Deleted: to.Ptr(true),
-		// 					DeletedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-14T08:20:47Z"); return t}()),
+		// 					DeletedTime: to.Ptr(time.Date(2019, time.December, 14, 8, 20, 47, 0, time.UTC)),
 		// 					HasImmutabilityPolicy: to.Ptr(false),
 		// 					HasLegalHold: to.Ptr(false),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-14T08:20:47Z"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2018, time.March, 14, 8, 20, 47, 0, time.UTC)),
 		// 					LeaseState: to.Ptr(armstorage.LeaseStateExpired),
 		// 					LeaseStatus: to.Ptr(armstorage.LeaseStatusUnlocked),
 		// 					PublicAccess: to.Ptr(armstorage.PublicAccessNone),
@@ -714,7 +714,7 @@ func ExampleBlobContainersClient_NewListPager_listDeletedContainers() {
 	}
 }
 
-// Generated from example definition: 2026-04-01/BlobContainersLockImmutabilityPolicy.json
+// Generated from example definition: 2026-06-01/BlobContainersLockImmutabilityPolicy.json
 func ExampleBlobContainersClient_LockImmutabilityPolicy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -746,7 +746,7 @@ func ExampleBlobContainersClient_LockImmutabilityPolicy() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01/ObjectLevelWormContainerMigration.json
+// Generated from example definition: 2026-06-01/ObjectLevelWormContainerMigration.json
 func ExampleBlobContainersClient_BeginObjectLevelWorm() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -772,7 +772,7 @@ func ExampleBlobContainersClient_BeginObjectLevelWorm() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01/BlobContainersSetLegalHold.json
+// Generated from example definition: 2026-06-01/BlobContainersSetLegalHold.json
 func ExampleBlobContainersClient_SetLegalHold_setLegalHoldContainers() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -808,7 +808,7 @@ func ExampleBlobContainersClient_SetLegalHold_setLegalHoldContainers() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01/BlobContainersSetLegalHoldAllowProtectedAppendWritesAll.json
+// Generated from example definition: 2026-06-01/BlobContainersSetLegalHoldAllowProtectedAppendWritesAll.json
 func ExampleBlobContainersClient_SetLegalHold_setLegalHoldContainersWithAllowProtectedAppendWritesAll() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -846,7 +846,7 @@ func ExampleBlobContainersClient_SetLegalHold_setLegalHoldContainersWithAllowPro
 	// }
 }
 
-// Generated from example definition: 2026-04-01/BlobContainersPatch.json
+// Generated from example definition: 2026-06-01/BlobContainersPatch.json
 func ExampleBlobContainersClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -19,7 +19,7 @@ import (
 // GetTriggeredAnalyticsRuleRunsClient contains the methods for the GetTriggeredAnalyticsRuleRuns group.
 // Don't use this type directly, use NewGetTriggeredAnalyticsRuleRunsClient() instead.
 //
-// Generated from API version 2025-07-01-preview
+// Generated from API version 2025-10-01-preview
 type GetTriggeredAnalyticsRuleRunsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -102,7 +102,7 @@ func (client *GetTriggeredAnalyticsRuleRunsClient) listCreateRequest(ctx context
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250701Preview)
+		reqQP.Set("api-version", version20251001Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

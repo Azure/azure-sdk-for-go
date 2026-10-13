@@ -4205,6 +4205,260 @@ func (s *BlobUnrecordedTestsSuite) TestSASURLBlobClient() {
 	_require.NoError(err)
 }
 
+// removeQueryParam returns rawURL with the given query parameter removed, simulating an
+// attacker who strips the "versionid" parameter from a versioned SAS URL before reattaching
+// the remaining (still-signed) query string to the plain base blob path.
+func removeQueryParam(rawURL, param string) string {
+	parsed, err := url.Parse(rawURL)
+	if err != nil {
+		return rawURL
+	}
+	q := parsed.Query()
+	q.Del(param)
+	parsed.RawQuery = q.Encode()
+	return parsed.String()
+}
+
+// TestGetSASURLVersionedVsBaseBlobAgainstService is a regression test - run against the live
+// service - for a vulnerability where GetSASURL() called on a client returned by
+// WithVersionID() ignored the pinned version when signing, generating an ordinary base-blob SAS
+// (sr=b) byte-for-byte identical to the SAS produced by the base (non-versioned) client, instead
+// of a version-scoped SAS (sr=bv). That SAS also concatenated a second "?" onto a client URL
+// that already carried a "versionid" query parameter, which allowed an attacker to strip
+// "versionid" and reattach the still-valid signed suffix to the base blob path to read current
+// content that was never delegated.
+//
+// This test creates a blob with two versions (an old, non-current version and a new, current
+// version with different content), then verifies end-to-end against the real service that:
+//  1. GetSASURL() on the WithVersionID client produces a SAS that can download the OLD content
+//     and only the OLD content (its VersionID matches the pinned version).
+//  2. Stripping "versionid" from that SAS URL and using it against the plain blob path is
+//     rejected by the service - it must NOT grant access to the current/base blob.
+//  3. GetSASURL() on the base (non-versioned) client produces a SAS that downloads the CURRENT
+//     content, proving the base and versioned SAS URLs are not interchangeable.
+func (s *BlobUnrecordedTestsSuite) TestGetSASURLVersionedVsBaseBlobAgainstService() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	cred, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	blobName := testcommon.GenerateBlobName(testName)
+	bbClient := testcommon.GetBlockBlobClient(blobName, containerClient)
+
+	// Upload an "old" version, then overwrite the blob so there is both a non-current version
+	// and a current version with distinguishable content.
+	const oldContent = "old-version-content"
+	oldResp, err := bbClient.Upload(context.Background(), streaming.NopCloser(strings.NewReader(oldContent)), nil)
+	_require.NoError(err)
+	_require.NotNil(oldResp.VersionID)
+	oldVersionID := *oldResp.VersionID
+
+	const currentContent = "current-version-content-longer"
+	_, err = bbClient.Upload(context.Background(), streaming.NopCloser(strings.NewReader(currentContent)), nil)
+	_require.NoError(err)
+
+	// Build a plain blob.Client with the account's shared key so GetSASURL can be called
+	// directly, exactly as a backend delegating access to a single historical version would.
+	blobClient, err := blob.NewClientWithSharedKeyCredential(bbClient.URL(), cred, nil)
+	_require.NoError(err)
+
+	versionedClient, err := blobClient.WithVersionID(oldVersionID)
+	_require.NoError(err)
+
+	permissions := sas.BlobPermissions{Read: true}
+	expiry := time.Now().Add(time.Hour)
+
+	versionedSASURL, err := versionedClient.GetSASURL(permissions, expiry, nil)
+	_require.NoError(err)
+	// The client URL already has "versionid" in its query string, so GetSASURL must merge the
+	// SAS parameters rather than concatenate a second "?".
+	_require.Equal(1, strings.Count(versionedSASURL, "?"),
+		"versioned SAS URL must not contain a duplicated '?': %s", versionedSASURL)
+
+	// 1) The versioned SAS URL must download the OLD content, tagged with the pinned version.
+	anonVersionedClient, err := blob.NewClientWithNoCredential(versionedSASURL, nil)
+	_require.NoError(err)
+
+	downloadResp, err := anonVersionedClient.DownloadStream(context.Background(), nil)
+	_require.NoError(err)
+	data, err := io.ReadAll(downloadResp.Body)
+	_require.NoError(err)
+	_require.Equal(oldContent, string(data))
+	_require.NotNil(downloadResp.VersionID)
+	_require.Equal(oldVersionID, *downloadResp.VersionID)
+
+	// 2) Simulate the disclosed attack: strip "versionid" from the versioned SAS URL - as an
+	// attacker reattaching the signed suffix to the plain base blob path would - and attempt to
+	// read the current blob. The service must reject this: the SAS was signed for the "bv"
+	// (blob version) resource type, not "b" (base blob), so it must not silently authorize
+	// current-blob reads.
+	strippedURL := removeQueryParam(versionedSASURL, "versionid")
+	_require.NotContains(strippedURL, "versionid=")
+
+	anonBaseClient, err := blob.NewClientWithNoCredential(strippedURL, nil)
+	_require.NoError(err)
+
+	_, err = anonBaseClient.DownloadStream(context.Background(), nil)
+	_require.Error(err, "a SAS signed for a specific blob version must not authorize reads of the base/current blob")
+
+	// 3) Control: a SAS generated directly from the base (non-versioned) client must
+	// successfully read the CURRENT content, proving the base and versioned SAS URLs are
+	// distinct and non-interchangeable.
+	baseSASURL, err := blobClient.GetSASURL(permissions, expiry, nil)
+	_require.NoError(err)
+
+	anonCurrentClient, err := blob.NewClientWithNoCredential(baseSASURL, nil)
+	_require.NoError(err)
+
+	downloadResp2, err := anonCurrentClient.DownloadStream(context.Background(), nil)
+	_require.NoError(err)
+	data2, err := io.ReadAll(downloadResp2.Body)
+	_require.NoError(err)
+	_require.Equal(currentContent, string(data2))
+}
+
+// TestGetUserDelegationSASVersionedBlobAgainstService is the user-delegation counterpart to
+// TestGetSASURLVersionedVsBaseBlobAgainstService above. GetSASURL() always signs with the
+// account's SharedKeyCredential, so it can never exercise the "sr=bv" branch of
+// SignWithUserDelegation - the only way to get real, end-to-end coverage of that branch (as
+// opposed to a deterministic unit test of the string-to-sign construction) is to call
+// SignWithUserDelegation directly, exactly as a caller authenticating with Azure AD (no shared
+// key available) would have to, and verify the real service accepts/rejects the resulting SAS
+// as expected.
+//
+// This test creates a blob with two versions (an old, non-current version and a new, current
+// version with different content), obtains a user delegation key, then verifies against the
+// real service that:
+//  1. A user-delegation SAS built with BlobVersion set to the OLD version ID (resource "bv")
+//     downloads the OLD content and only the OLD content.
+//  2. Stripping "versionid" from that SAS URL and requesting the plain blob path is rejected -
+//     the SAS was signed for resource "bv", not "b", so it must not authorize base-blob reads.
+//  3. A user-delegation SAS for the base blob (no BlobVersion, resource "b") downloads the
+//     CURRENT content, proving the versioned and base SAS URLs are not interchangeable.
+func (s *BlobUnrecordedTestsSuite) TestGetUserDelegationSASVersionedBlobAgainstService() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	_require.Greater(len(accountName), 0)
+
+	cred, err := testcommon.GetGenericTokenCredential()
+	_require.NoError(err)
+
+	svcClient, err := service.NewClient("https://"+accountName+".blob.core.windows.net/", cred, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	blobName := testcommon.GenerateBlobName(testName)
+	bbClient := testcommon.GetBlockBlobClient(blobName, containerClient)
+
+	// Upload an "old" version, then overwrite the blob so there is both a non-current version
+	// and a current version with distinguishable content.
+	const oldContent = "old-version-content"
+	oldResp, err := bbClient.Upload(context.Background(), streaming.NopCloser(strings.NewReader(oldContent)), nil)
+	_require.NoError(err)
+	_require.NotNil(oldResp.VersionID)
+	oldVersionID := *oldResp.VersionID
+
+	const currentContent = "current-version-content-longer"
+	_, err = bbClient.Upload(context.Background(), streaming.NopCloser(strings.NewReader(currentContent)), nil)
+	_require.NoError(err)
+
+	// Obtain a user delegation key from the service.
+	now := time.Now().UTC().Add(-10 * time.Second)
+	expiry := now.Add(time.Hour)
+	info := service.KeyInfo{
+		Start:  to.Ptr(now.Format(sas.TimeFormat)),
+		Expiry: to.Ptr(expiry.Format(sas.TimeFormat)),
+	}
+	udc, err := svcClient.GetUserDelegationCredential(context.Background(), info, nil)
+	_require.NoError(err)
+
+	permissions := (&sas.BlobPermissions{Read: true}).String()
+
+	// 1) A version-scoped user delegation SAS (sr=bv) must download the OLD content, tagged
+	// with the pinned version.
+	versionedQP, err := sas.BlobSignatureValues{
+		ContainerName: containerName,
+		BlobName:      blobName,
+		BlobVersion:   oldVersionID,
+		Permissions:   permissions,
+		ExpiryTime:    expiry,
+	}.SignWithUserDelegation(udc)
+	_require.NoError(err)
+	_require.Equal("bv", versionedQP.Resource())
+
+	// The request URL must itself carry "versionid=<oldVersionID>" - the service compares the
+	// request's resource level (derived from the URL) against the SAS's signed resource ("bv");
+	// a plain blob URL (no versionid) is resource level "b" and will be rejected even though the
+	// SAS was correctly signed for "bv".
+	parts, err := sas.ParseURL(bbClient.URL())
+	_require.NoError(err)
+	parts.VersionID = oldVersionID
+	parts.SAS = versionedQP
+	versionedSASURL := parts.String()
+
+	anonVersionedClient, err := blob.NewClientWithNoCredential(versionedSASURL, nil)
+	_require.NoError(err)
+
+	downloadResp, err := anonVersionedClient.DownloadStream(context.Background(), nil)
+	_require.NoError(err)
+	data, err := io.ReadAll(downloadResp.Body)
+	_require.NoError(err)
+	_require.Equal(oldContent, string(data))
+	_require.NotNil(downloadResp.VersionID)
+	_require.Equal(oldVersionID, *downloadResp.VersionID)
+
+	// 2) Stripping "versionid" from the versioned SAS URL and reattaching the signed suffix to
+	// the plain base blob path must be rejected: the SAS was signed for resource "bv" against
+	// the old version, not resource "b", so it must not silently authorize current-blob reads.
+	strippedURL := removeQueryParam(versionedSASURL, "versionid")
+	_require.NotContains(strippedURL, "versionid=")
+
+	anonBaseClient, err := blob.NewClientWithNoCredential(strippedURL, nil)
+	_require.NoError(err)
+
+	_, err = anonBaseClient.DownloadStream(context.Background(), nil)
+	_require.Error(err, "a user-delegation SAS signed for a specific blob version must not authorize reads of the base/current blob")
+
+	// 3) Control: a user-delegation SAS for the base blob (resource "b") must successfully read
+	// the CURRENT content, proving the versioned and base SAS URLs are distinct and
+	// non-interchangeable.
+	baseQP, err := sas.BlobSignatureValues{
+		ContainerName: containerName,
+		BlobName:      blobName,
+		Permissions:   permissions,
+		ExpiryTime:    expiry,
+	}.SignWithUserDelegation(udc)
+	_require.NoError(err)
+	_require.Equal("b", baseQP.Resource())
+
+	baseParts, err := sas.ParseURL(bbClient.URL())
+	_require.NoError(err)
+	baseParts.SAS = baseQP
+	baseSASURL := baseParts.String()
+
+	anonCurrentClient, err := blob.NewClientWithNoCredential(baseSASURL, nil)
+	_require.NoError(err)
+
+	downloadResp2, err := anonCurrentClient.DownloadStream(context.Background(), nil)
+	_require.NoError(err)
+	data2, err := io.ReadAll(downloadResp2.Body)
+	_require.NoError(err)
+	_require.Equal(currentContent, string(data2))
+}
+
 func (s *BlobRecordedTestsSuite) TestBlobGetAccountInfo() {
 	_require := require.New(s.T())
 	testName := s.T().Name()

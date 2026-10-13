@@ -127,10 +127,7 @@ func (o *OffersServerTransport) dispatchBeginGenerateAccessToken(req *http.Reque
 		if err != nil {
 			return nil, err
 		}
-		resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
-		if err != nil {
-			return nil, err
-		}
+		resourceURIParam := matches[regex.SubexpIndex("resourceUri")]
 		offerIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("offerId")])
 		if err != nil {
 			return nil, err
@@ -169,10 +166,7 @@ func (o *OffersServerTransport) dispatchGet(req *http.Request) (*http.Response, 
 	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
-	if err != nil {
-		return nil, err
-	}
+	resourceURIParam := matches[regex.SubexpIndex("resourceUri")]
 	offerIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("offerId")])
 	if err != nil {
 		return nil, err
@@ -206,10 +200,7 @@ func (o *OffersServerTransport) dispatchGetAccessToken(req *http.Request) (*http
 	if err != nil {
 		return nil, err
 	}
-	resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
-	if err != nil {
-		return nil, err
-	}
+	resourceURIParam := matches[regex.SubexpIndex("resourceUri")]
 	offerIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("offerId")])
 	if err != nil {
 		return nil, err
@@ -242,10 +233,7 @@ func (o *OffersServerTransport) dispatchNewListPager(req *http.Request) (*http.R
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
-		resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
-		if err != nil {
-			return nil, err
-		}
+		resourceURIParam := matches[regex.SubexpIndex("resourceUri")]
 		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
 			p, parseErr := strconv.ParseInt(v, 10, 32)
 			if parseErr != nil {

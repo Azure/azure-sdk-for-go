@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/elasticsan/armelasticsan"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/elasticsan/armelasticsan/v2"
 	"log"
 )
 
-// Generated from example definition: 2025-09-01/VolumeGroups_Create_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-01-preview/VolumeGroups_Create_MaximumSet_Gen.json
 func ExampleVolumeGroupsClient_BeginCreate_volumeGroupsCreateMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -31,6 +31,10 @@ func ExampleVolumeGroupsClient_BeginCreate_volumeGroupsCreateMaximumSetGen() {
 			},
 		},
 		Properties: &armelasticsan.VolumeGroupProperties{
+			DeleteRetentionPolicy: &armelasticsan.DeleteRetentionPolicy{
+				PolicyState:         to.Ptr(armelasticsan.PolicyStateEnabled),
+				RetentionPeriodDays: to.Ptr[int32](14),
+			},
 			Encryption: to.Ptr(armelasticsan.EncryptionTypeEncryptionAtRestWithPlatformKey),
 			EncryptionProperties: &armelasticsan.EncryptionProperties{
 				EncryptionIdentity: &armelasticsan.EncryptionIdentity{
@@ -43,6 +47,7 @@ func ExampleVolumeGroupsClient_BeginCreate_volumeGroupsCreateMaximumSetGen() {
 				},
 			},
 			EnforceDataIntegrityCheckForIscsi: to.Ptr(true),
+			EncryptionInTransit:               to.Ptr(true),
 			NetworkACLs: &armelasticsan.NetworkRuleSet{
 				VirtualNetworkRules: []*armelasticsan.VirtualNetworkRule{
 					{
@@ -81,6 +86,10 @@ func ExampleVolumeGroupsClient_BeginCreate_volumeGroupsCreateMaximumSetGen() {
 	// 			},
 	// 		},
 	// 		Properties: &armelasticsan.VolumeGroupProperties{
+	// 			DeleteRetentionPolicy: &armelasticsan.DeleteRetentionPolicy{
+	// 				PolicyState: to.Ptr(armelasticsan.PolicyStateEnabled),
+	// 				RetentionPeriodDays: to.Ptr[int32](14),
+	// 			},
 	// 			Encryption: to.Ptr(armelasticsan.EncryptionTypeEncryptionAtRestWithPlatformKey),
 	// 			EncryptionProperties: &armelasticsan.EncryptionProperties{
 	// 				EncryptionIdentity: &armelasticsan.EncryptionIdentity{
@@ -96,6 +105,7 @@ func ExampleVolumeGroupsClient_BeginCreate_volumeGroupsCreateMaximumSetGen() {
 	// 				},
 	// 			},
 	// 			EnforceDataIntegrityCheckForIscsi: to.Ptr(true),
+	// 			EncryptionInTransit: to.Ptr(true),
 	// 			NetworkACLs: &armelasticsan.NetworkRuleSet{
 	// 				VirtualNetworkRules: []*armelasticsan.VirtualNetworkRule{
 	// 					{
@@ -148,7 +158,7 @@ func ExampleVolumeGroupsClient_BeginCreate_volumeGroupsCreateMaximumSetGen() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/VolumeGroups_Create_MinimumSet_Gen.json
+// Generated from example definition: 2026-05-01-preview/VolumeGroups_Create_MinimumSet_Gen.json
 func ExampleVolumeGroupsClient_BeginCreate_volumeGroupsCreateMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -187,6 +197,10 @@ func ExampleVolumeGroupsClient_BeginCreate_volumeGroupsCreateMinimumSetGen() {
 	// 			},
 	// 		},
 	// 		Properties: &armelasticsan.VolumeGroupProperties{
+	// 			DeleteRetentionPolicy: &armelasticsan.DeleteRetentionPolicy{
+	// 				PolicyState: to.Ptr(armelasticsan.PolicyStateDisabled),
+	// 				RetentionPeriodDays: to.Ptr[int32](0),
+	// 			},
 	// 			Encryption: to.Ptr(armelasticsan.EncryptionTypeEncryptionAtRestWithPlatformKey),
 	// 			EncryptionProperties: &armelasticsan.EncryptionProperties{
 	// 				EncryptionIdentity: &armelasticsan.EncryptionIdentity{
@@ -202,6 +216,7 @@ func ExampleVolumeGroupsClient_BeginCreate_volumeGroupsCreateMinimumSetGen() {
 	// 				},
 	// 			},
 	// 			EnforceDataIntegrityCheckForIscsi: to.Ptr(true),
+	// 			EncryptionInTransit: to.Ptr(true),
 	// 			NetworkACLs: &armelasticsan.NetworkRuleSet{
 	// 				VirtualNetworkRules: []*armelasticsan.VirtualNetworkRule{
 	// 					{
@@ -254,7 +269,445 @@ func ExampleVolumeGroupsClient_BeginCreate_volumeGroupsCreateMinimumSetGen() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/VolumeGroups_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-01-preview/VolumeGroups_GeneralPurpose_Create_MaximumSet_Gen.json
+func ExampleVolumeGroupsClient_BeginCreate_volumeGroupsGeneralPurposeCreateMaximumSetGen() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armelasticsan.NewClientFactory("subscriptionid", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewVolumeGroupsClient().BeginCreate(ctx, "resourcegroupname", "elasticsanname", "volumegroupname", armelasticsan.VolumeGroup{
+		Identity: &armelasticsan.Identity{
+			Type: to.Ptr(armelasticsan.IdentityTypeNone),
+			UserAssignedIdentities: map[string]*armelasticsan.UserAssignedIdentity{
+				"key2350": {},
+			},
+		},
+		Properties: &armelasticsan.VolumeGroupProperties{
+			DeleteRetentionPolicy: &armelasticsan.DeleteRetentionPolicy{
+				PolicyState:         to.Ptr(armelasticsan.PolicyStateEnabled),
+				RetentionPeriodDays: to.Ptr[int32](14),
+			},
+			Encryption: to.Ptr(armelasticsan.EncryptionTypeEncryptionAtRestWithPlatformKey),
+			EncryptionProperties: &armelasticsan.EncryptionProperties{
+				EncryptionIdentity: &armelasticsan.EncryptionIdentity{
+					EncryptionUserAssignedIdentity: to.Ptr("vgbeephfgecgg"),
+				},
+				KeyVaultProperties: &armelasticsan.KeyVaultProperties{
+					KeyName:     to.Ptr("rommjwp"),
+					KeyVaultURI: to.Ptr("https://microsoft.com/at"),
+					KeyVersion:  to.Ptr("ulmxxgzgsuhalwesmhfslq"),
+				},
+			},
+			EnforceDataIntegrityCheckForIscsi: to.Ptr(true),
+			EncryptionInTransit:               to.Ptr(true),
+			NetworkACLs: &armelasticsan.NetworkRuleSet{
+				VirtualNetworkRules: []*armelasticsan.VirtualNetworkRule{
+					{
+						Action:                   to.Ptr(armelasticsan.ActionAllow),
+						VirtualNetworkResourceID: to.Ptr("fhhawhc"),
+					},
+				},
+			},
+			ProtocolType:     to.Ptr(armelasticsan.StorageTargetTypeIscsi),
+			QualityOfService: to.Ptr(armelasticsan.QualityOfServiceGeneralPurpose),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armelasticsan.VolumeGroupsClientCreateResponse{
+	// 	VolumeGroup: armelasticsan.VolumeGroup{
+	// 		Name: to.Ptr("dov"),
+	// 		Type: to.Ptr("kg"),
+	// 		ID: to.Ptr("hoazltxzojzwgzohjnh"),
+	// 		Identity: &armelasticsan.Identity{
+	// 			Type: to.Ptr(armelasticsan.IdentityTypeNone),
+	// 			PrincipalID: to.Ptr("zqobj"),
+	// 			TenantID: to.Ptr("douwo"),
+	// 			UserAssignedIdentities: map[string]*armelasticsan.UserAssignedIdentity{
+	// 				"key2350": &armelasticsan.UserAssignedIdentity{
+	// 					ClientID: to.Ptr("ddhoilirjxushxvxttgqh"),
+	// 					PrincipalID: to.Ptr("lmhozfpeu"),
+	// 				},
+	// 			},
+	// 		},
+	// 		Properties: &armelasticsan.VolumeGroupProperties{
+	// 			DeleteRetentionPolicy: &armelasticsan.DeleteRetentionPolicy{
+	// 				PolicyState: to.Ptr(armelasticsan.PolicyStateEnabled),
+	// 				RetentionPeriodDays: to.Ptr[int32](14),
+	// 			},
+	// 			Encryption: to.Ptr(armelasticsan.EncryptionTypeEncryptionAtRestWithPlatformKey),
+	// 			EncryptionProperties: &armelasticsan.EncryptionProperties{
+	// 				EncryptionIdentity: &armelasticsan.EncryptionIdentity{
+	// 					EncryptionUserAssignedIdentity: to.Ptr("vgbeephfgecgg"),
+	// 				},
+	// 				KeyVaultProperties: &armelasticsan.KeyVaultProperties{
+	// 					CurrentVersionedKeyExpirationTimestamp: to.Ptr(time.Date(2024, time.April, 29, 14, 22, 25, 155000000, time.UTC)),
+	// 					CurrentVersionedKeyIdentifier: to.Ptr("bqgwaoezxtvwuydxxvsecod"),
+	// 					KeyName: to.Ptr("rommjwp"),
+	// 					KeyVaultURI: to.Ptr("https://microsoft.com/at"),
+	// 					KeyVersion: to.Ptr("ulmxxgzgsuhalwesmhfslq"),
+	// 					LastKeyRotationTimestamp: to.Ptr(time.Date(2024, time.April, 29, 14, 22, 25, 155000000, time.UTC)),
+	// 				},
+	// 			},
+	// 			EnforceDataIntegrityCheckForIscsi: to.Ptr(true),
+	// 			EncryptionInTransit: to.Ptr(true),
+	// 			NetworkACLs: &armelasticsan.NetworkRuleSet{
+	// 				VirtualNetworkRules: []*armelasticsan.VirtualNetworkRule{
+	// 					{
+	// 						Action: to.Ptr(armelasticsan.ActionAllow),
+	// 						VirtualNetworkResourceID: to.Ptr("fhhawhc"),
+	// 					},
+	// 				},
+	// 			},
+	// 			PrivateEndpointConnections: []*armelasticsan.PrivateEndpointConnection{
+	// 				{
+	// 					Name: to.Ptr("qyvurspdwqwfiurkgjklvpdnoli"),
+	// 					Type: to.Ptr("qvpdadjcuxksssnjplnpv"),
+	// 					ID: to.Ptr("vdm"),
+	// 					Properties: &armelasticsan.PrivateEndpointConnectionProperties{
+	// 						GroupIDs: []*string{
+	// 							to.Ptr("f"),
+	// 						},
+	// 						PrivateEndpoint: &armelasticsan.PrivateEndpoint{
+	// 							ID: to.Ptr("jzaucqmfvqetawalnsqbisqkfokbnj"),
+	// 						},
+	// 						PrivateLinkServiceConnectionState: &armelasticsan.PrivateLinkServiceConnectionState{
+	// 							Description: to.Ptr("wflnhkypjiarhhobagelhjlcsqdtt"),
+	// 							ActionsRequired: to.Ptr("hcqnszybqdmdbtuumpvrgbggj"),
+	// 							Status: to.Ptr(armelasticsan.PrivateEndpointServiceConnectionStatusPending),
+	// 						},
+	// 						ProvisioningState: to.Ptr(armelasticsan.ProvisioningStatesInvalid),
+	// 					},
+	// 					SystemData: &armelasticsan.SystemData{
+	// 						CreatedAt: to.Ptr(time.Date(2024, time.April, 29, 14, 22, 13, 546000000, time.UTC)),
+	// 						CreatedBy: to.Ptr("bpuxtfzqwdhifevjtucoc"),
+	// 						CreatedByType: to.Ptr(armelasticsan.CreatedByTypeUser),
+	// 						LastModifiedAt: to.Ptr(time.Date(2024, time.April, 29, 14, 22, 13, 547000000, time.UTC)),
+	// 						LastModifiedBy: to.Ptr("ourjjlolgugpxnkbiegumkicksibep"),
+	// 						LastModifiedByType: to.Ptr(armelasticsan.CreatedByTypeUser),
+	// 					},
+	// 				},
+	// 			},
+	// 			ProvisioningState: to.Ptr(armelasticsan.ProvisioningStatesInvalid),
+	// 			ProtocolType: to.Ptr(armelasticsan.StorageTargetTypeIscsi),
+	// 			QualityOfService: to.Ptr(armelasticsan.QualityOfServiceGeneralPurpose),
+	// 		},
+	// 		SystemData: &armelasticsan.SystemData{
+	// 			CreatedAt: to.Ptr(time.Date(2024, time.April, 29, 14, 22, 13, 546000000, time.UTC)),
+	// 			CreatedBy: to.Ptr("bpuxtfzqwdhifevjtucoc"),
+	// 			CreatedByType: to.Ptr(armelasticsan.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.April, 29, 14, 22, 13, 547000000, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("ourjjlolgugpxnkbiegumkicksibep"),
+	// 			LastModifiedByType: to.Ptr(armelasticsan.CreatedByTypeUser),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-05-01-preview/VolumeGroups_GeneralPurpose_Create_MinimumSet_Gen.json
+func ExampleVolumeGroupsClient_BeginCreate_volumeGroupsGeneralPurposeCreateMinimumSetGen() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armelasticsan.NewClientFactory("subscriptionid", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewVolumeGroupsClient().BeginCreate(ctx, "resourcegroupname", "elasticsanname", "volumegroupname", armelasticsan.VolumeGroup{
+		Properties: &armelasticsan.VolumeGroupProperties{
+			ProtocolType:     to.Ptr(armelasticsan.StorageTargetTypeIscsi),
+			QualityOfService: to.Ptr(armelasticsan.QualityOfServiceGeneralPurpose),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armelasticsan.VolumeGroupsClientCreateResponse{
+	// 	VolumeGroup: armelasticsan.VolumeGroup{
+	// 		Name: to.Ptr("cr"),
+	// 		Type: to.Ptr("Microsoft.ElasticSan/elasticSans/volumeGroups"),
+	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ElasticSan/elasticSans/{elasticSanName}/volumegroups/{volumeGroupName}"),
+	// 		Identity: &armelasticsan.Identity{
+	// 			Type: to.Ptr(armelasticsan.IdentityTypeNone),
+	// 			PrincipalID: to.Ptr("ihsiwrwdofymkhquaxcrtfmmrsygw"),
+	// 			TenantID: to.Ptr("gtkzkjsy"),
+	// 			UserAssignedIdentities: map[string]*armelasticsan.UserAssignedIdentity{
+	// 				"key7482": &armelasticsan.UserAssignedIdentity{
+	// 					ClientID: to.Ptr("jaczsquolgxwpznljbmdupn"),
+	// 					PrincipalID: to.Ptr("vfdzizicxcfcqecgsmshz"),
+	// 				},
+	// 			},
+	// 		},
+	// 		Properties: &armelasticsan.VolumeGroupProperties{
+	// 			DeleteRetentionPolicy: &armelasticsan.DeleteRetentionPolicy{
+	// 				PolicyState: to.Ptr(armelasticsan.PolicyStateDisabled),
+	// 				RetentionPeriodDays: to.Ptr[int32](0),
+	// 			},
+	// 			Encryption: to.Ptr(armelasticsan.EncryptionTypeEncryptionAtRestWithPlatformKey),
+	// 			EncryptionProperties: &armelasticsan.EncryptionProperties{
+	// 				EncryptionIdentity: &armelasticsan.EncryptionIdentity{
+	// 					EncryptionUserAssignedIdentity: to.Ptr("im"),
+	// 				},
+	// 				KeyVaultProperties: &armelasticsan.KeyVaultProperties{
+	// 					CurrentVersionedKeyExpirationTimestamp: to.Ptr(time.Date(2023, time.August, 23, 12, 16, 11, 388000000, time.UTC)),
+	// 					CurrentVersionedKeyIdentifier: to.Ptr("rnpxhtzkquzyoepwbwktbwb"),
+	// 					KeyName: to.Ptr("sftaiernmrzypnrkpakrrawxcbsqzc"),
+	// 					KeyVaultURI: to.Ptr("https://microsoft.com/axmblwp"),
+	// 					KeyVersion: to.Ptr("c"),
+	// 					LastKeyRotationTimestamp: to.Ptr(time.Date(2023, time.August, 23, 12, 16, 11, 388000000, time.UTC)),
+	// 				},
+	// 			},
+	// 			EnforceDataIntegrityCheckForIscsi: to.Ptr(true),
+	// 			EncryptionInTransit: to.Ptr(true),
+	// 			NetworkACLs: &armelasticsan.NetworkRuleSet{
+	// 				VirtualNetworkRules: []*armelasticsan.VirtualNetworkRule{
+	// 					{
+	// 						Action: to.Ptr(armelasticsan.ActionAllow),
+	// 						VirtualNetworkResourceID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{vnetName}/subnets/{subnetName}"),
+	// 					},
+	// 				},
+	// 			},
+	// 			PrivateEndpointConnections: []*armelasticsan.PrivateEndpointConnection{
+	// 				{
+	// 					Name: to.Ptr("gewxykc"),
+	// 					Type: to.Ptr("ailymcedgvxbqklmqtlty"),
+	// 					ID: to.Ptr("opcjchensdf"),
+	// 					Properties: &armelasticsan.PrivateEndpointConnectionProperties{
+	// 						GroupIDs: []*string{
+	// 							to.Ptr("bolviufgqnyid"),
+	// 						},
+	// 						PrivateEndpoint: &armelasticsan.PrivateEndpoint{
+	// 							ID: to.Ptr("ehxmltubeltzmgcqxocakaansat"),
+	// 						},
+	// 						PrivateLinkServiceConnectionState: &armelasticsan.PrivateLinkServiceConnectionState{
+	// 							Description: to.Ptr("nahklgxicbqjbbvcdrkljqdhprruys"),
+	// 							ActionsRequired: to.Ptr("sairafcqpvucoy"),
+	// 							Status: to.Ptr(armelasticsan.PrivateEndpointServiceConnectionStatusPending),
+	// 						},
+	// 						ProvisioningState: to.Ptr(armelasticsan.ProvisioningStatesInvalid),
+	// 					},
+	// 					SystemData: &armelasticsan.SystemData{
+	// 						CreatedAt: to.Ptr(time.Date(2023, time.August, 23, 12, 16, 10, 57000000, time.UTC)),
+	// 						CreatedBy: to.Ptr("kakcyehdrphqkilgkhpbdtvpupak"),
+	// 						CreatedByType: to.Ptr(armelasticsan.CreatedByTypeUser),
+	// 						LastModifiedAt: to.Ptr(time.Date(2023, time.August, 23, 12, 16, 10, 57000000, time.UTC)),
+	// 						LastModifiedBy: to.Ptr("bcclmbseed"),
+	// 						LastModifiedByType: to.Ptr(armelasticsan.CreatedByTypeUser),
+	// 					},
+	// 				},
+	// 			},
+	// 			ProvisioningState: to.Ptr(armelasticsan.ProvisioningStatesSucceeded),
+	// 			ProtocolType: to.Ptr(armelasticsan.StorageTargetTypeIscsi),
+	// 			QualityOfService: to.Ptr(armelasticsan.QualityOfServiceGeneralPurpose),
+	// 		},
+	// 		SystemData: &armelasticsan.SystemData{
+	// 			CreatedAt: to.Ptr(time.Date(2023, time.August, 23, 12, 16, 10, 57000000, time.UTC)),
+	// 			CreatedBy: to.Ptr("kakcyehdrphqkilgkhpbdtvpupak"),
+	// 			CreatedByType: to.Ptr(armelasticsan.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.August, 23, 12, 16, 10, 57000000, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("bcclmbseed"),
+	// 			LastModifiedByType: to.Ptr(armelasticsan.CreatedByTypeUser),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-05-01-preview/VolumeGroups_PerformanceCritical_Create_MaximumSet_Gen.json
+func ExampleVolumeGroupsClient_BeginCreate_volumeGroupsPerformanceCriticalCreateMaximumSetGen() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armelasticsan.NewClientFactory("subscriptionid", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewVolumeGroupsClient().BeginCreate(ctx, "resourcegroupname", "elasticsanname", "volumegroupname", armelasticsan.VolumeGroup{
+		Identity: &armelasticsan.Identity{
+			Type: to.Ptr(armelasticsan.IdentityTypeNone),
+			UserAssignedIdentities: map[string]*armelasticsan.UserAssignedIdentity{
+				"key2350": {},
+			},
+		},
+		Properties: &armelasticsan.VolumeGroupProperties{
+			Encryption: to.Ptr(armelasticsan.EncryptionTypeEncryptionAtRestWithPlatformKey),
+			EncryptionProperties: &armelasticsan.EncryptionProperties{
+				EncryptionIdentity: &armelasticsan.EncryptionIdentity{
+					EncryptionUserAssignedIdentity: to.Ptr("vgbeephfgecgg"),
+				},
+				KeyVaultProperties: &armelasticsan.KeyVaultProperties{
+					KeyName:     to.Ptr("rommjwp"),
+					KeyVaultURI: to.Ptr("https://microsoft.com/at"),
+					KeyVersion:  to.Ptr("ulmxxgzgsuhalwesmhfslq"),
+				},
+			},
+			ProtocolType:     to.Ptr(armelasticsan.StorageTargetTypeDirectAttach),
+			QualityOfService: to.Ptr(armelasticsan.QualityOfServicePerformanceCritical),
+			ReservedIops:     to.Ptr[int32](10000),
+			ReservedMBps:     to.Ptr[int32](800),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armelasticsan.VolumeGroupsClientCreateResponse{
+	// 	VolumeGroup: armelasticsan.VolumeGroup{
+	// 		Name: to.Ptr("dov"),
+	// 		Type: to.Ptr("kg"),
+	// 		ID: to.Ptr("hoazltxzojzwgzohjnh"),
+	// 		Identity: &armelasticsan.Identity{
+	// 			Type: to.Ptr(armelasticsan.IdentityTypeNone),
+	// 			PrincipalID: to.Ptr("zqobj"),
+	// 			TenantID: to.Ptr("douwo"),
+	// 			UserAssignedIdentities: map[string]*armelasticsan.UserAssignedIdentity{
+	// 				"key2350": &armelasticsan.UserAssignedIdentity{
+	// 					ClientID: to.Ptr("ddhoilirjxushxvxttgqh"),
+	// 					PrincipalID: to.Ptr("lmhozfpeu"),
+	// 				},
+	// 			},
+	// 		},
+	// 		Properties: &armelasticsan.VolumeGroupProperties{
+	// 			Encryption: to.Ptr(armelasticsan.EncryptionTypeEncryptionAtRestWithPlatformKey),
+	// 			EncryptionProperties: &armelasticsan.EncryptionProperties{
+	// 				EncryptionIdentity: &armelasticsan.EncryptionIdentity{
+	// 					EncryptionUserAssignedIdentity: to.Ptr("vgbeephfgecgg"),
+	// 				},
+	// 				KeyVaultProperties: &armelasticsan.KeyVaultProperties{
+	// 					CurrentVersionedKeyExpirationTimestamp: to.Ptr(time.Date(2024, time.April, 29, 14, 22, 25, 155000000, time.UTC)),
+	// 					CurrentVersionedKeyIdentifier: to.Ptr("bqgwaoezxtvwuydxxvsecod"),
+	// 					KeyName: to.Ptr("rommjwp"),
+	// 					KeyVaultURI: to.Ptr("https://microsoft.com/at"),
+	// 					KeyVersion: to.Ptr("ulmxxgzgsuhalwesmhfslq"),
+	// 					LastKeyRotationTimestamp: to.Ptr(time.Date(2024, time.April, 29, 14, 22, 25, 155000000, time.UTC)),
+	// 				},
+	// 			},
+	// 			ProvisioningState: to.Ptr(armelasticsan.ProvisioningStatesInvalid),
+	// 			ProtocolType: to.Ptr(armelasticsan.StorageTargetTypeDirectAttach),
+	// 			QualityOfService: to.Ptr(armelasticsan.QualityOfServicePerformanceCritical),
+	// 			ReservedIops: to.Ptr[int32](10000),
+	// 			ReservedMBps: to.Ptr[int32](800),
+	// 		},
+	// 		SystemData: &armelasticsan.SystemData{
+	// 			CreatedAt: to.Ptr(time.Date(2024, time.April, 29, 14, 22, 13, 546000000, time.UTC)),
+	// 			CreatedBy: to.Ptr("bpuxtfzqwdhifevjtucoc"),
+	// 			CreatedByType: to.Ptr(armelasticsan.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.April, 29, 14, 22, 13, 547000000, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("ourjjlolgugpxnkbiegumkicksibep"),
+	// 			LastModifiedByType: to.Ptr(armelasticsan.CreatedByTypeUser),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-05-01-preview/VolumeGroups_PerformanceCritical_Create_MinimumSet_Gen.json
+func ExampleVolumeGroupsClient_BeginCreate_volumeGroupsPerformanceCriticalCreateMinimumSetGen() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armelasticsan.NewClientFactory("subscriptionid", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewVolumeGroupsClient().BeginCreate(ctx, "resourcegroupname", "elasticsanname", "volumegroupname", armelasticsan.VolumeGroup{
+		Properties: &armelasticsan.VolumeGroupProperties{
+			ProtocolType:     to.Ptr(armelasticsan.StorageTargetTypeDirectAttach),
+			QualityOfService: to.Ptr(armelasticsan.QualityOfServicePerformanceCritical),
+			ReservedIops:     to.Ptr[int32](10000),
+			ReservedMBps:     to.Ptr[int32](800),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armelasticsan.VolumeGroupsClientCreateResponse{
+	// 	VolumeGroup: armelasticsan.VolumeGroup{
+	// 		Name: to.Ptr("cr"),
+	// 		Type: to.Ptr("Microsoft.ElasticSan/elasticSans/volumeGroups"),
+	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ElasticSan/elasticSans/{elasticSanName}/volumegroups/{volumeGroupName}"),
+	// 		Identity: &armelasticsan.Identity{
+	// 			Type: to.Ptr(armelasticsan.IdentityTypeNone),
+	// 			PrincipalID: to.Ptr("ihsiwrwdofymkhquaxcrtfmmrsygw"),
+	// 			TenantID: to.Ptr("gtkzkjsy"),
+	// 			UserAssignedIdentities: map[string]*armelasticsan.UserAssignedIdentity{
+	// 				"key7482": &armelasticsan.UserAssignedIdentity{
+	// 					ClientID: to.Ptr("jaczsquolgxwpznljbmdupn"),
+	// 					PrincipalID: to.Ptr("vfdzizicxcfcqecgsmshz"),
+	// 				},
+	// 			},
+	// 		},
+	// 		Properties: &armelasticsan.VolumeGroupProperties{
+	// 			Encryption: to.Ptr(armelasticsan.EncryptionTypeEncryptionAtRestWithPlatformKey),
+	// 			EncryptionProperties: &armelasticsan.EncryptionProperties{
+	// 				EncryptionIdentity: &armelasticsan.EncryptionIdentity{
+	// 					EncryptionUserAssignedIdentity: to.Ptr("im"),
+	// 				},
+	// 				KeyVaultProperties: &armelasticsan.KeyVaultProperties{
+	// 					CurrentVersionedKeyExpirationTimestamp: to.Ptr(time.Date(2023, time.August, 23, 12, 16, 11, 388000000, time.UTC)),
+	// 					CurrentVersionedKeyIdentifier: to.Ptr("rnpxhtzkquzyoepwbwktbwb"),
+	// 					KeyName: to.Ptr("sftaiernmrzypnrkpakrrawxcbsqzc"),
+	// 					KeyVaultURI: to.Ptr("https://microsoft.com/axmblwp"),
+	// 					KeyVersion: to.Ptr("c"),
+	// 					LastKeyRotationTimestamp: to.Ptr(time.Date(2023, time.August, 23, 12, 16, 11, 388000000, time.UTC)),
+	// 				},
+	// 			},
+	// 			ProvisioningState: to.Ptr(armelasticsan.ProvisioningStatesSucceeded),
+	// 			ProtocolType: to.Ptr(armelasticsan.StorageTargetTypeDirectAttach),
+	// 			QualityOfService: to.Ptr(armelasticsan.QualityOfServicePerformanceCritical),
+	// 			ReservedIops: to.Ptr[int32](10000),
+	// 			ReservedMBps: to.Ptr[int32](800),
+	// 		},
+	// 		SystemData: &armelasticsan.SystemData{
+	// 			CreatedAt: to.Ptr(time.Date(2023, time.August, 23, 12, 16, 10, 57000000, time.UTC)),
+	// 			CreatedBy: to.Ptr("kakcyehdrphqkilgkhpbdtvpupak"),
+	// 			CreatedByType: to.Ptr(armelasticsan.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.August, 23, 12, 16, 10, 57000000, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("bcclmbseed"),
+	// 			LastModifiedByType: to.Ptr(armelasticsan.CreatedByTypeUser),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-05-01-preview/VolumeGroups_Delete_MaximumSet_Gen.json
 func ExampleVolumeGroupsClient_BeginDelete_volumeGroupsDeleteMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -280,7 +733,7 @@ func ExampleVolumeGroupsClient_BeginDelete_volumeGroupsDeleteMaximumSetGen() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/VolumeGroups_Delete_MinimumSet_Gen.json
+// Generated from example definition: 2026-05-01-preview/VolumeGroups_Delete_MinimumSet_Gen.json
 func ExampleVolumeGroupsClient_BeginDelete_volumeGroupsDeleteMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -306,7 +759,115 @@ func ExampleVolumeGroupsClient_BeginDelete_volumeGroupsDeleteMinimumSetGen() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/VolumeGroups_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-01-preview/VolumeGroups_GeneralPurpose_Get_MaximumSet_Gen.json
+func ExampleVolumeGroupsClient_Get_volumeGroupsGeneralPurposeGetMaximumSetGen() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armelasticsan.NewClientFactory("subscriptionid", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewVolumeGroupsClient().Get(ctx, "resourcegroupname", "elasticsanname", "volumegroupname", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armelasticsan.VolumeGroupsClientGetResponse{
+	// 	VolumeGroup: armelasticsan.VolumeGroup{
+	// 		Name: to.Ptr("dov"),
+	// 		Type: to.Ptr("kg"),
+	// 		ID: to.Ptr("hoazltxzojzwgzohjnh"),
+	// 		Identity: &armelasticsan.Identity{
+	// 			Type: to.Ptr(armelasticsan.IdentityTypeNone),
+	// 			PrincipalID: to.Ptr("zqobj"),
+	// 			TenantID: to.Ptr("douwo"),
+	// 			UserAssignedIdentities: map[string]*armelasticsan.UserAssignedIdentity{
+	// 				"key2350": &armelasticsan.UserAssignedIdentity{
+	// 					ClientID: to.Ptr("ddhoilirjxushxvxttgqh"),
+	// 					PrincipalID: to.Ptr("lmhozfpeu"),
+	// 				},
+	// 			},
+	// 		},
+	// 		Properties: &armelasticsan.VolumeGroupProperties{
+	// 			DeleteRetentionPolicy: &armelasticsan.DeleteRetentionPolicy{
+	// 				PolicyState: to.Ptr(armelasticsan.PolicyStateEnabled),
+	// 				RetentionPeriodDays: to.Ptr[int32](14),
+	// 			},
+	// 			Encryption: to.Ptr(armelasticsan.EncryptionTypeEncryptionAtRestWithPlatformKey),
+	// 			EncryptionProperties: &armelasticsan.EncryptionProperties{
+	// 				EncryptionIdentity: &armelasticsan.EncryptionIdentity{
+	// 					EncryptionUserAssignedIdentity: to.Ptr("vgbeephfgecgg"),
+	// 				},
+	// 				KeyVaultProperties: &armelasticsan.KeyVaultProperties{
+	// 					CurrentVersionedKeyExpirationTimestamp: to.Ptr(time.Date(2024, time.April, 29, 14, 22, 25, 155000000, time.UTC)),
+	// 					CurrentVersionedKeyIdentifier: to.Ptr("bqgwaoezxtvwuydxxvsecod"),
+	// 					KeyName: to.Ptr("rommjwp"),
+	// 					KeyVaultURI: to.Ptr("https://microsoft.com/at"),
+	// 					KeyVersion: to.Ptr("ulmxxgzgsuhalwesmhfslq"),
+	// 					LastKeyRotationTimestamp: to.Ptr(time.Date(2024, time.April, 29, 14, 22, 25, 155000000, time.UTC)),
+	// 				},
+	// 			},
+	// 			EnforceDataIntegrityCheckForIscsi: to.Ptr(true),
+	// 			EncryptionInTransit: to.Ptr(true),
+	// 			NetworkACLs: &armelasticsan.NetworkRuleSet{
+	// 				VirtualNetworkRules: []*armelasticsan.VirtualNetworkRule{
+	// 					{
+	// 						Action: to.Ptr(armelasticsan.ActionAllow),
+	// 						VirtualNetworkResourceID: to.Ptr("fhhawhc"),
+	// 					},
+	// 				},
+	// 			},
+	// 			PrivateEndpointConnections: []*armelasticsan.PrivateEndpointConnection{
+	// 				{
+	// 					Name: to.Ptr("qyvurspdwqwfiurkgjklvpdnoli"),
+	// 					Type: to.Ptr("qvpdadjcuxksssnjplnpv"),
+	// 					ID: to.Ptr("vdm"),
+	// 					Properties: &armelasticsan.PrivateEndpointConnectionProperties{
+	// 						GroupIDs: []*string{
+	// 							to.Ptr("f"),
+	// 						},
+	// 						PrivateEndpoint: &armelasticsan.PrivateEndpoint{
+	// 							ID: to.Ptr("jzaucqmfvqetawalnsqbisqkfokbnj"),
+	// 						},
+	// 						PrivateLinkServiceConnectionState: &armelasticsan.PrivateLinkServiceConnectionState{
+	// 							Description: to.Ptr("wflnhkypjiarhhobagelhjlcsqdtt"),
+	// 							ActionsRequired: to.Ptr("hcqnszybqdmdbtuumpvrgbggj"),
+	// 							Status: to.Ptr(armelasticsan.PrivateEndpointServiceConnectionStatusPending),
+	// 						},
+	// 						ProvisioningState: to.Ptr(armelasticsan.ProvisioningStatesInvalid),
+	// 					},
+	// 					SystemData: &armelasticsan.SystemData{
+	// 						CreatedAt: to.Ptr(time.Date(2024, time.April, 29, 14, 22, 13, 546000000, time.UTC)),
+	// 						CreatedBy: to.Ptr("bpuxtfzqwdhifevjtucoc"),
+	// 						CreatedByType: to.Ptr(armelasticsan.CreatedByTypeUser),
+	// 						LastModifiedAt: to.Ptr(time.Date(2024, time.April, 29, 14, 22, 13, 547000000, time.UTC)),
+	// 						LastModifiedBy: to.Ptr("ourjjlolgugpxnkbiegumkicksibep"),
+	// 						LastModifiedByType: to.Ptr(armelasticsan.CreatedByTypeUser),
+	// 					},
+	// 				},
+	// 			},
+	// 			ProvisioningState: to.Ptr(armelasticsan.ProvisioningStatesInvalid),
+	// 			ProtocolType: to.Ptr(armelasticsan.StorageTargetTypeIscsi),
+	// 			QualityOfService: to.Ptr(armelasticsan.QualityOfServiceGeneralPurpose),
+	// 		},
+	// 		SystemData: &armelasticsan.SystemData{
+	// 			CreatedAt: to.Ptr(time.Date(2024, time.April, 29, 14, 22, 13, 546000000, time.UTC)),
+	// 			CreatedBy: to.Ptr("bpuxtfzqwdhifevjtucoc"),
+	// 			CreatedByType: to.Ptr(armelasticsan.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.April, 29, 14, 22, 13, 547000000, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("ourjjlolgugpxnkbiegumkicksibep"),
+	// 			LastModifiedByType: to.Ptr(armelasticsan.CreatedByTypeUser),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-05-01-preview/VolumeGroups_Get_MaximumSet_Gen.json
 func ExampleVolumeGroupsClient_Get_volumeGroupsGetMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -341,6 +902,10 @@ func ExampleVolumeGroupsClient_Get_volumeGroupsGetMaximumSetGen() {
 	// 			},
 	// 		},
 	// 		Properties: &armelasticsan.VolumeGroupProperties{
+	// 			DeleteRetentionPolicy: &armelasticsan.DeleteRetentionPolicy{
+	// 				PolicyState: to.Ptr(armelasticsan.PolicyStateEnabled),
+	// 				RetentionPeriodDays: to.Ptr[int32](14),
+	// 			},
 	// 			Encryption: to.Ptr(armelasticsan.EncryptionTypeEncryptionAtRestWithPlatformKey),
 	// 			EncryptionProperties: &armelasticsan.EncryptionProperties{
 	// 				EncryptionIdentity: &armelasticsan.EncryptionIdentity{
@@ -356,6 +921,7 @@ func ExampleVolumeGroupsClient_Get_volumeGroupsGetMaximumSetGen() {
 	// 				},
 	// 			},
 	// 			EnforceDataIntegrityCheckForIscsi: to.Ptr(true),
+	// 			EncryptionInTransit: to.Ptr(true),
 	// 			NetworkACLs: &armelasticsan.NetworkRuleSet{
 	// 				VirtualNetworkRules: []*armelasticsan.VirtualNetworkRule{
 	// 					{
@@ -408,7 +974,7 @@ func ExampleVolumeGroupsClient_Get_volumeGroupsGetMaximumSetGen() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/VolumeGroups_Get_MinimumSet_Gen.json
+// Generated from example definition: 2026-05-01-preview/VolumeGroups_Get_MinimumSet_Gen.json
 func ExampleVolumeGroupsClient_Get_volumeGroupsGetMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -432,8 +998,8 @@ func ExampleVolumeGroupsClient_Get_volumeGroupsGetMinimumSetGen() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/VolumeGroups_ListByElasticSan_MaximumSet_Gen.json
-func ExampleVolumeGroupsClient_NewListByElasticSanPager_volumeGroupsListByElasticSanMaximumSetGen() {
+// Generated from example definition: 2026-05-01-preview/VolumeGroups_PerformanceCritical_Get_MaximumSet_Gen.json
+func ExampleVolumeGroupsClient_Get_volumeGroupsPerformanceCriticalGetMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -443,7 +1009,75 @@ func ExampleVolumeGroupsClient_NewListByElasticSanPager_volumeGroupsListByElasti
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewVolumeGroupsClient().NewListByElasticSanPager("resourcegroupname", "elasticsanname", nil)
+	res, err := clientFactory.NewVolumeGroupsClient().Get(ctx, "resourcegroupname", "elasticsanname", "volumegroupname", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armelasticsan.VolumeGroupsClientGetResponse{
+	// 	VolumeGroup: armelasticsan.VolumeGroup{
+	// 		Name: to.Ptr("dov"),
+	// 		Type: to.Ptr("kg"),
+	// 		ID: to.Ptr("hoazltxzojzwgzohjnh"),
+	// 		Identity: &armelasticsan.Identity{
+	// 			Type: to.Ptr(armelasticsan.IdentityTypeNone),
+	// 			PrincipalID: to.Ptr("zqobj"),
+	// 			TenantID: to.Ptr("douwo"),
+	// 			UserAssignedIdentities: map[string]*armelasticsan.UserAssignedIdentity{
+	// 				"key2350": &armelasticsan.UserAssignedIdentity{
+	// 					ClientID: to.Ptr("ddhoilirjxushxvxttgqh"),
+	// 					PrincipalID: to.Ptr("lmhozfpeu"),
+	// 				},
+	// 			},
+	// 		},
+	// 		Properties: &armelasticsan.VolumeGroupProperties{
+	// 			Encryption: to.Ptr(armelasticsan.EncryptionTypeEncryptionAtRestWithPlatformKey),
+	// 			EncryptionProperties: &armelasticsan.EncryptionProperties{
+	// 				EncryptionIdentity: &armelasticsan.EncryptionIdentity{
+	// 					EncryptionUserAssignedIdentity: to.Ptr("vgbeephfgecgg"),
+	// 				},
+	// 				KeyVaultProperties: &armelasticsan.KeyVaultProperties{
+	// 					CurrentVersionedKeyExpirationTimestamp: to.Ptr(time.Date(2024, time.April, 29, 14, 22, 25, 155000000, time.UTC)),
+	// 					CurrentVersionedKeyIdentifier: to.Ptr("bqgwaoezxtvwuydxxvsecod"),
+	// 					KeyName: to.Ptr("rommjwp"),
+	// 					KeyVaultURI: to.Ptr("https://microsoft.com/at"),
+	// 					KeyVersion: to.Ptr("ulmxxgzgsuhalwesmhfslq"),
+	// 					LastKeyRotationTimestamp: to.Ptr(time.Date(2024, time.April, 29, 14, 22, 25, 155000000, time.UTC)),
+	// 				},
+	// 			},
+	// 			ProvisioningState: to.Ptr(armelasticsan.ProvisioningStatesInvalid),
+	// 			ProtocolType: to.Ptr(armelasticsan.StorageTargetTypeDirectAttach),
+	// 			QualityOfService: to.Ptr(armelasticsan.QualityOfServicePerformanceCritical),
+	// 			ReservedIops: to.Ptr[int32](10000),
+	// 			ReservedMBps: to.Ptr[int32](800),
+	// 		},
+	// 		SystemData: &armelasticsan.SystemData{
+	// 			CreatedAt: to.Ptr(time.Date(2024, time.April, 29, 14, 22, 13, 546000000, time.UTC)),
+	// 			CreatedBy: to.Ptr("bpuxtfzqwdhifevjtucoc"),
+	// 			CreatedByType: to.Ptr(armelasticsan.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.April, 29, 14, 22, 13, 547000000, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("ourjjlolgugpxnkbiegumkicksibep"),
+	// 			LastModifiedByType: to.Ptr(armelasticsan.CreatedByTypeUser),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-05-01-preview/VolumeGroups_GeneralPurpose_ListByElasticSan_MaximumSet_Gen.json
+func ExampleVolumeGroupsClient_NewListByElasticSanPager_volumeGroupsGeneralPurposeListByElasticSanMaximumSetGen() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armelasticsan.NewClientFactory("subscriptionid", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewVolumeGroupsClient().NewListByElasticSanPager("resourcegroupname", "elasticsanname", &armelasticsan.VolumeGroupsClientListByElasticSanOptions{
+		XMSAccessSoftDeletedResources: to.Ptr(armelasticsan.XMSAccessSoftDeletedResourcesTrue)})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -456,7 +1090,7 @@ func ExampleVolumeGroupsClient_NewListByElasticSanPager_volumeGroupsListByElasti
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page = armelasticsan.VolumeGroupsClientListByElasticSanResponse{
 		// 	VolumeGroupList: armelasticsan.VolumeGroupList{
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/subscriptionid/resourceGroups/resourcegroupname/providers/Microsoft.ElasticSan/elasticSans/elasticsanname/volumegroups?api-version=2024-07-01-preview&%24skiptoken=xyz567abc890"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/subscriptionid/resourceGroups/resourcegroupname/providers/Microsoft.ElasticSan/elasticSans/elasticsanname/volumegroups?api-version=2026-05-01-preview&%24skiptoken=xyz567abc890"),
 		// 		Value: []*armelasticsan.VolumeGroup{
 		// 			{
 		// 				Name: to.Ptr("dov"),
@@ -474,6 +1108,10 @@ func ExampleVolumeGroupsClient_NewListByElasticSanPager_volumeGroupsListByElasti
 		// 					},
 		// 				},
 		// 				Properties: &armelasticsan.VolumeGroupProperties{
+		// 					DeleteRetentionPolicy: &armelasticsan.DeleteRetentionPolicy{
+		// 						PolicyState: to.Ptr(armelasticsan.PolicyStateEnabled),
+		// 						RetentionPeriodDays: to.Ptr[int32](14),
+		// 					},
 		// 					Encryption: to.Ptr(armelasticsan.EncryptionTypeEncryptionAtRestWithPlatformKey),
 		// 					EncryptionProperties: &armelasticsan.EncryptionProperties{
 		// 						EncryptionIdentity: &armelasticsan.EncryptionIdentity{
@@ -489,6 +1127,126 @@ func ExampleVolumeGroupsClient_NewListByElasticSanPager_volumeGroupsListByElasti
 		// 						},
 		// 					},
 		// 					EnforceDataIntegrityCheckForIscsi: to.Ptr(true),
+		// 					EncryptionInTransit: to.Ptr(true),
+		// 					NetworkACLs: &armelasticsan.NetworkRuleSet{
+		// 						VirtualNetworkRules: []*armelasticsan.VirtualNetworkRule{
+		// 							{
+		// 								Action: to.Ptr(armelasticsan.ActionAllow),
+		// 								VirtualNetworkResourceID: to.Ptr("fhhawhc"),
+		// 							},
+		// 						},
+		// 					},
+		// 					PrivateEndpointConnections: []*armelasticsan.PrivateEndpointConnection{
+		// 						{
+		// 							Name: to.Ptr("qyvurspdwqwfiurkgjklvpdnoli"),
+		// 							Type: to.Ptr("qvpdadjcuxksssnjplnpv"),
+		// 							ID: to.Ptr("vdm"),
+		// 							Properties: &armelasticsan.PrivateEndpointConnectionProperties{
+		// 								GroupIDs: []*string{
+		// 									to.Ptr("f"),
+		// 								},
+		// 								PrivateEndpoint: &armelasticsan.PrivateEndpoint{
+		// 									ID: to.Ptr("jzaucqmfvqetawalnsqbisqkfokbnj"),
+		// 								},
+		// 								PrivateLinkServiceConnectionState: &armelasticsan.PrivateLinkServiceConnectionState{
+		// 									Description: to.Ptr("wflnhkypjiarhhobagelhjlcsqdtt"),
+		// 									ActionsRequired: to.Ptr("hcqnszybqdmdbtuumpvrgbggj"),
+		// 									Status: to.Ptr(armelasticsan.PrivateEndpointServiceConnectionStatusPending),
+		// 								},
+		// 								ProvisioningState: to.Ptr(armelasticsan.ProvisioningStatesInvalid),
+		// 							},
+		// 							SystemData: &armelasticsan.SystemData{
+		// 								CreatedAt: to.Ptr(time.Date(2024, time.April, 29, 14, 22, 13, 546000000, time.UTC)),
+		// 								CreatedBy: to.Ptr("bpuxtfzqwdhifevjtucoc"),
+		// 								CreatedByType: to.Ptr(armelasticsan.CreatedByTypeUser),
+		// 								LastModifiedAt: to.Ptr(time.Date(2024, time.April, 29, 14, 22, 13, 547000000, time.UTC)),
+		// 								LastModifiedBy: to.Ptr("ourjjlolgugpxnkbiegumkicksibep"),
+		// 								LastModifiedByType: to.Ptr(armelasticsan.CreatedByTypeUser),
+		// 							},
+		// 						},
+		// 					},
+		// 					ProvisioningState: to.Ptr(armelasticsan.ProvisioningStatesInvalid),
+		// 					ProtocolType: to.Ptr(armelasticsan.StorageTargetTypeIscsi),
+		// 					QualityOfService: to.Ptr(armelasticsan.QualityOfServiceGeneralPurpose),
+		// 				},
+		// 				SystemData: &armelasticsan.SystemData{
+		// 					CreatedAt: to.Ptr(time.Date(2024, time.April, 29, 14, 22, 13, 546000000, time.UTC)),
+		// 					CreatedBy: to.Ptr("bpuxtfzqwdhifevjtucoc"),
+		// 					CreatedByType: to.Ptr(armelasticsan.CreatedByTypeUser),
+		// 					LastModifiedAt: to.Ptr(time.Date(2024, time.April, 29, 14, 22, 13, 547000000, time.UTC)),
+		// 					LastModifiedBy: to.Ptr("ourjjlolgugpxnkbiegumkicksibep"),
+		// 					LastModifiedByType: to.Ptr(armelasticsan.CreatedByTypeUser),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2026-05-01-preview/VolumeGroups_ListByElasticSan_MaximumSet_Gen.json
+func ExampleVolumeGroupsClient_NewListByElasticSanPager_volumeGroupsListByElasticSanMaximumSetGen() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armelasticsan.NewClientFactory("subscriptionid", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewVolumeGroupsClient().NewListByElasticSanPager("resourcegroupname", "elasticsanname", &armelasticsan.VolumeGroupsClientListByElasticSanOptions{
+		XMSAccessSoftDeletedResources: to.Ptr(armelasticsan.XMSAccessSoftDeletedResourcesTrue)})
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armelasticsan.VolumeGroupsClientListByElasticSanResponse{
+		// 	VolumeGroupList: armelasticsan.VolumeGroupList{
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/subscriptionid/resourceGroups/resourcegroupname/providers/Microsoft.ElasticSan/elasticSans/elasticsanname/volumegroups?api-version=2026-05-01-preview&%24skiptoken=xyz567abc890"),
+		// 		Value: []*armelasticsan.VolumeGroup{
+		// 			{
+		// 				Name: to.Ptr("dov"),
+		// 				Type: to.Ptr("kg"),
+		// 				ID: to.Ptr("hoazltxzojzwgzohjnh"),
+		// 				Identity: &armelasticsan.Identity{
+		// 					Type: to.Ptr(armelasticsan.IdentityTypeNone),
+		// 					PrincipalID: to.Ptr("zqobj"),
+		// 					TenantID: to.Ptr("douwo"),
+		// 					UserAssignedIdentities: map[string]*armelasticsan.UserAssignedIdentity{
+		// 						"key2350": &armelasticsan.UserAssignedIdentity{
+		// 							ClientID: to.Ptr("ddhoilirjxushxvxttgqh"),
+		// 							PrincipalID: to.Ptr("lmhozfpeu"),
+		// 						},
+		// 					},
+		// 				},
+		// 				Properties: &armelasticsan.VolumeGroupProperties{
+		// 					DeleteRetentionPolicy: &armelasticsan.DeleteRetentionPolicy{
+		// 						PolicyState: to.Ptr(armelasticsan.PolicyStateEnabled),
+		// 						RetentionPeriodDays: to.Ptr[int32](14),
+		// 					},
+		// 					Encryption: to.Ptr(armelasticsan.EncryptionTypeEncryptionAtRestWithPlatformKey),
+		// 					EncryptionProperties: &armelasticsan.EncryptionProperties{
+		// 						EncryptionIdentity: &armelasticsan.EncryptionIdentity{
+		// 							EncryptionUserAssignedIdentity: to.Ptr("vgbeephfgecgg"),
+		// 						},
+		// 						KeyVaultProperties: &armelasticsan.KeyVaultProperties{
+		// 							CurrentVersionedKeyExpirationTimestamp: to.Ptr(time.Date(2024, time.April, 29, 14, 22, 25, 155000000, time.UTC)),
+		// 							CurrentVersionedKeyIdentifier: to.Ptr("bqgwaoezxtvwuydxxvsecod"),
+		// 							KeyName: to.Ptr("rommjwp"),
+		// 							KeyVaultURI: to.Ptr("https://microsoft.com/at"),
+		// 							KeyVersion: to.Ptr("ulmxxgzgsuhalwesmhfslq"),
+		// 							LastKeyRotationTimestamp: to.Ptr(time.Date(2024, time.April, 29, 14, 22, 25, 155000000, time.UTC)),
+		// 						},
+		// 					},
+		// 					EnforceDataIntegrityCheckForIscsi: to.Ptr(true),
+		// 					EncryptionInTransit: to.Ptr(true),
 		// 					NetworkACLs: &armelasticsan.NetworkRuleSet{
 		// 						VirtualNetworkRules: []*armelasticsan.VirtualNetworkRule{
 		// 							{
@@ -544,7 +1302,7 @@ func ExampleVolumeGroupsClient_NewListByElasticSanPager_volumeGroupsListByElasti
 	}
 }
 
-// Generated from example definition: 2025-09-01/VolumeGroups_ListByElasticSan_MinimumSet_Gen.json
+// Generated from example definition: 2026-05-01-preview/VolumeGroups_ListByElasticSan_MinimumSet_Gen.json
 func ExampleVolumeGroupsClient_NewListByElasticSanPager_volumeGroupsListByElasticSanMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -555,7 +1313,8 @@ func ExampleVolumeGroupsClient_NewListByElasticSanPager_volumeGroupsListByElasti
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewVolumeGroupsClient().NewListByElasticSanPager("resourcegroupname", "elasticsanname", nil)
+	pager := clientFactory.NewVolumeGroupsClient().NewListByElasticSanPager("resourcegroupname", "elasticsanname", &armelasticsan.VolumeGroupsClientListByElasticSanOptions{
+		XMSAccessSoftDeletedResources: to.Ptr(armelasticsan.XMSAccessSoftDeletedResourcesTrue)})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -575,8 +1334,86 @@ func ExampleVolumeGroupsClient_NewListByElasticSanPager_volumeGroupsListByElasti
 	}
 }
 
-// Generated from example definition: 2025-09-01/VolumeGroups_Update_MaximumSet_Gen.json
-func ExampleVolumeGroupsClient_BeginUpdate_volumeGroupsUpdateMaximumSetGen() {
+// Generated from example definition: 2026-05-01-preview/VolumeGroups_PerformanceCritical_ListByElasticSan_MaximumSet_Gen.json
+func ExampleVolumeGroupsClient_NewListByElasticSanPager_volumeGroupsPerformanceCriticalListByElasticSanMaximumSetGen() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armelasticsan.NewClientFactory("subscriptionid", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewVolumeGroupsClient().NewListByElasticSanPager("resourcegroupname", "elasticsanname", &armelasticsan.VolumeGroupsClientListByElasticSanOptions{
+		XMSAccessSoftDeletedResources: to.Ptr(armelasticsan.XMSAccessSoftDeletedResourcesTrue)})
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armelasticsan.VolumeGroupsClientListByElasticSanResponse{
+		// 	VolumeGroupList: armelasticsan.VolumeGroupList{
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/subscriptionid/resourceGroups/resourcegroupname/providers/Microsoft.ElasticSan/elasticSans/elasticsanname/volumegroups?api-version=2026-05-01-preview&%24skiptoken=xyz567abc890"),
+		// 		Value: []*armelasticsan.VolumeGroup{
+		// 			{
+		// 				Name: to.Ptr("dov"),
+		// 				Type: to.Ptr("kg"),
+		// 				ID: to.Ptr("hoazltxzojzwgzohjnh"),
+		// 				Identity: &armelasticsan.Identity{
+		// 					Type: to.Ptr(armelasticsan.IdentityTypeNone),
+		// 					PrincipalID: to.Ptr("zqobj"),
+		// 					TenantID: to.Ptr("douwo"),
+		// 					UserAssignedIdentities: map[string]*armelasticsan.UserAssignedIdentity{
+		// 						"key2350": &armelasticsan.UserAssignedIdentity{
+		// 							ClientID: to.Ptr("ddhoilirjxushxvxttgqh"),
+		// 							PrincipalID: to.Ptr("lmhozfpeu"),
+		// 						},
+		// 					},
+		// 				},
+		// 				Properties: &armelasticsan.VolumeGroupProperties{
+		// 					Encryption: to.Ptr(armelasticsan.EncryptionTypeEncryptionAtRestWithPlatformKey),
+		// 					EncryptionProperties: &armelasticsan.EncryptionProperties{
+		// 						EncryptionIdentity: &armelasticsan.EncryptionIdentity{
+		// 							EncryptionUserAssignedIdentity: to.Ptr("vgbeephfgecgg"),
+		// 						},
+		// 						KeyVaultProperties: &armelasticsan.KeyVaultProperties{
+		// 							CurrentVersionedKeyExpirationTimestamp: to.Ptr(time.Date(2024, time.April, 29, 14, 22, 25, 155000000, time.UTC)),
+		// 							CurrentVersionedKeyIdentifier: to.Ptr("bqgwaoezxtvwuydxxvsecod"),
+		// 							KeyName: to.Ptr("rommjwp"),
+		// 							KeyVaultURI: to.Ptr("https://microsoft.com/at"),
+		// 							KeyVersion: to.Ptr("ulmxxgzgsuhalwesmhfslq"),
+		// 							LastKeyRotationTimestamp: to.Ptr(time.Date(2024, time.April, 29, 14, 22, 25, 155000000, time.UTC)),
+		// 						},
+		// 					},
+		// 					ProvisioningState: to.Ptr(armelasticsan.ProvisioningStatesInvalid),
+		// 					ProtocolType: to.Ptr(armelasticsan.StorageTargetTypeDirectAttach),
+		// 					QualityOfService: to.Ptr(armelasticsan.QualityOfServicePerformanceCritical),
+		// 					ReservedIops: to.Ptr[int32](10000),
+		// 					ReservedMBps: to.Ptr[int32](800),
+		// 				},
+		// 				SystemData: &armelasticsan.SystemData{
+		// 					CreatedAt: to.Ptr(time.Date(2024, time.April, 29, 14, 22, 13, 546000000, time.UTC)),
+		// 					CreatedBy: to.Ptr("bpuxtfzqwdhifevjtucoc"),
+		// 					CreatedByType: to.Ptr(armelasticsan.CreatedByTypeUser),
+		// 					LastModifiedAt: to.Ptr(time.Date(2024, time.April, 29, 14, 22, 13, 547000000, time.UTC)),
+		// 					LastModifiedBy: to.Ptr("ourjjlolgugpxnkbiegumkicksibep"),
+		// 					LastModifiedByType: to.Ptr(armelasticsan.CreatedByTypeUser),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2026-05-01-preview/VolumeGroups_GeneralPurpose_Update_MaximumSet_Gen.json
+func ExampleVolumeGroupsClient_BeginUpdate_volumeGroupsGeneralPurposeUpdateMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -594,6 +1431,10 @@ func ExampleVolumeGroupsClient_BeginUpdate_volumeGroupsUpdateMaximumSetGen() {
 			},
 		},
 		Properties: &armelasticsan.VolumeGroupUpdateProperties{
+			DeleteRetentionPolicy: &armelasticsan.DeleteRetentionPolicy{
+				PolicyState:         to.Ptr(armelasticsan.PolicyStateEnabled),
+				RetentionPeriodDays: to.Ptr[int32](14),
+			},
 			Encryption: to.Ptr(armelasticsan.EncryptionTypeEncryptionAtRestWithPlatformKey),
 			EncryptionProperties: &armelasticsan.EncryptionProperties{
 				EncryptionIdentity: &armelasticsan.EncryptionIdentity{
@@ -644,6 +1485,10 @@ func ExampleVolumeGroupsClient_BeginUpdate_volumeGroupsUpdateMaximumSetGen() {
 	// 			},
 	// 		},
 	// 		Properties: &armelasticsan.VolumeGroupProperties{
+	// 			DeleteRetentionPolicy: &armelasticsan.DeleteRetentionPolicy{
+	// 				PolicyState: to.Ptr(armelasticsan.PolicyStateEnabled),
+	// 				RetentionPeriodDays: to.Ptr[int32](14),
+	// 			},
 	// 			Encryption: to.Ptr(armelasticsan.EncryptionTypeEncryptionAtRestWithPlatformKey),
 	// 			EncryptionProperties: &armelasticsan.EncryptionProperties{
 	// 				EncryptionIdentity: &armelasticsan.EncryptionIdentity{
@@ -659,6 +1504,246 @@ func ExampleVolumeGroupsClient_BeginUpdate_volumeGroupsUpdateMaximumSetGen() {
 	// 				},
 	// 			},
 	// 			EnforceDataIntegrityCheckForIscsi: to.Ptr(true),
+	// 			EncryptionInTransit: to.Ptr(true),
+	// 			NetworkACLs: &armelasticsan.NetworkRuleSet{
+	// 				VirtualNetworkRules: []*armelasticsan.VirtualNetworkRule{
+	// 					{
+	// 						Action: to.Ptr(armelasticsan.ActionAllow),
+	// 						VirtualNetworkResourceID: to.Ptr("fhhawhc"),
+	// 					},
+	// 				},
+	// 			},
+	// 			PrivateEndpointConnections: []*armelasticsan.PrivateEndpointConnection{
+	// 				{
+	// 					Name: to.Ptr("qyvurspdwqwfiurkgjklvpdnoli"),
+	// 					Type: to.Ptr("qvpdadjcuxksssnjplnpv"),
+	// 					ID: to.Ptr("vdm"),
+	// 					Properties: &armelasticsan.PrivateEndpointConnectionProperties{
+	// 						GroupIDs: []*string{
+	// 							to.Ptr("f"),
+	// 						},
+	// 						PrivateEndpoint: &armelasticsan.PrivateEndpoint{
+	// 							ID: to.Ptr("jzaucqmfvqetawalnsqbisqkfokbnj"),
+	// 						},
+	// 						PrivateLinkServiceConnectionState: &armelasticsan.PrivateLinkServiceConnectionState{
+	// 							Description: to.Ptr("wflnhkypjiarhhobagelhjlcsqdtt"),
+	// 							ActionsRequired: to.Ptr("hcqnszybqdmdbtuumpvrgbggj"),
+	// 							Status: to.Ptr(armelasticsan.PrivateEndpointServiceConnectionStatusPending),
+	// 						},
+	// 						ProvisioningState: to.Ptr(armelasticsan.ProvisioningStatesInvalid),
+	// 					},
+	// 					SystemData: &armelasticsan.SystemData{
+	// 						CreatedAt: to.Ptr(time.Date(2024, time.April, 29, 14, 22, 13, 546000000, time.UTC)),
+	// 						CreatedBy: to.Ptr("bpuxtfzqwdhifevjtucoc"),
+	// 						CreatedByType: to.Ptr(armelasticsan.CreatedByTypeUser),
+	// 						LastModifiedAt: to.Ptr(time.Date(2024, time.April, 29, 14, 22, 13, 547000000, time.UTC)),
+	// 						LastModifiedBy: to.Ptr("ourjjlolgugpxnkbiegumkicksibep"),
+	// 						LastModifiedByType: to.Ptr(armelasticsan.CreatedByTypeUser),
+	// 					},
+	// 				},
+	// 			},
+	// 			ProtocolType: to.Ptr(armelasticsan.StorageTargetTypeIscsi),
+	// 			QualityOfService: to.Ptr(armelasticsan.QualityOfServiceGeneralPurpose),
+	// 			ProvisioningState: to.Ptr(armelasticsan.ProvisioningStatesInvalid),
+	// 		},
+	// 		SystemData: &armelasticsan.SystemData{
+	// 			CreatedAt: to.Ptr(time.Date(2024, time.April, 29, 14, 22, 13, 546000000, time.UTC)),
+	// 			CreatedBy: to.Ptr("bpuxtfzqwdhifevjtucoc"),
+	// 			CreatedByType: to.Ptr(armelasticsan.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.April, 29, 14, 22, 13, 547000000, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("ourjjlolgugpxnkbiegumkicksibep"),
+	// 			LastModifiedByType: to.Ptr(armelasticsan.CreatedByTypeUser),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-05-01-preview/VolumeGroups_PerformanceCritical_Update_MaximumSet_Gen.json
+func ExampleVolumeGroupsClient_BeginUpdate_volumeGroupsPerformanceCriticalUpdateMaximumSetGen() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armelasticsan.NewClientFactory("subscriptionid", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewVolumeGroupsClient().BeginUpdate(ctx, "resourcegroupname", "elasticsanname", "volumegroupname", armelasticsan.VolumeGroupUpdate{
+		Identity: &armelasticsan.Identity{
+			Type: to.Ptr(armelasticsan.IdentityTypeNone),
+			UserAssignedIdentities: map[string]*armelasticsan.UserAssignedIdentity{
+				"key2350": {},
+			},
+		},
+		Properties: &armelasticsan.VolumeGroupUpdateProperties{
+			Encryption: to.Ptr(armelasticsan.EncryptionTypeEncryptionAtRestWithPlatformKey),
+			EncryptionProperties: &armelasticsan.EncryptionProperties{
+				EncryptionIdentity: &armelasticsan.EncryptionIdentity{
+					EncryptionUserAssignedIdentity: to.Ptr("vgbeephfgecgg"),
+				},
+				KeyVaultProperties: &armelasticsan.KeyVaultProperties{
+					KeyName:     to.Ptr("rommjwp"),
+					KeyVaultURI: to.Ptr("https://microsoft.com/at"),
+					KeyVersion:  to.Ptr("ulmxxgzgsuhalwesmhfslq"),
+				},
+			},
+			ReservedIops: to.Ptr[int32](10000),
+			ReservedMBps: to.Ptr[int32](800),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armelasticsan.VolumeGroupsClientUpdateResponse{
+	// 	VolumeGroup: armelasticsan.VolumeGroup{
+	// 		Name: to.Ptr("dov"),
+	// 		Type: to.Ptr("kg"),
+	// 		ID: to.Ptr("hoazltxzojzwgzohjnh"),
+	// 		Identity: &armelasticsan.Identity{
+	// 			Type: to.Ptr(armelasticsan.IdentityTypeNone),
+	// 			PrincipalID: to.Ptr("zqobj"),
+	// 			TenantID: to.Ptr("douwo"),
+	// 			UserAssignedIdentities: map[string]*armelasticsan.UserAssignedIdentity{
+	// 				"key2350": &armelasticsan.UserAssignedIdentity{
+	// 					ClientID: to.Ptr("ddhoilirjxushxvxttgqh"),
+	// 					PrincipalID: to.Ptr("lmhozfpeu"),
+	// 				},
+	// 			},
+	// 		},
+	// 		Properties: &armelasticsan.VolumeGroupProperties{
+	// 			Encryption: to.Ptr(armelasticsan.EncryptionTypeEncryptionAtRestWithPlatformKey),
+	// 			EncryptionProperties: &armelasticsan.EncryptionProperties{
+	// 				EncryptionIdentity: &armelasticsan.EncryptionIdentity{
+	// 					EncryptionUserAssignedIdentity: to.Ptr("vgbeephfgecgg"),
+	// 				},
+	// 				KeyVaultProperties: &armelasticsan.KeyVaultProperties{
+	// 					CurrentVersionedKeyExpirationTimestamp: to.Ptr(time.Date(2024, time.April, 29, 14, 22, 25, 155000000, time.UTC)),
+	// 					CurrentVersionedKeyIdentifier: to.Ptr("bqgwaoezxtvwuydxxvsecod"),
+	// 					KeyName: to.Ptr("rommjwp"),
+	// 					KeyVaultURI: to.Ptr("https://microsoft.com/at"),
+	// 					KeyVersion: to.Ptr("ulmxxgzgsuhalwesmhfslq"),
+	// 					LastKeyRotationTimestamp: to.Ptr(time.Date(2024, time.April, 29, 14, 22, 25, 155000000, time.UTC)),
+	// 				},
+	// 			},
+	// 			ProtocolType: to.Ptr(armelasticsan.StorageTargetTypeDirectAttach),
+	// 			QualityOfService: to.Ptr(armelasticsan.QualityOfServicePerformanceCritical),
+	// 			ProvisioningState: to.Ptr(armelasticsan.ProvisioningStatesInvalid),
+	// 			ReservedIops: to.Ptr[int32](10000),
+	// 			ReservedMBps: to.Ptr[int32](800),
+	// 		},
+	// 		SystemData: &armelasticsan.SystemData{
+	// 			CreatedAt: to.Ptr(time.Date(2024, time.April, 29, 14, 22, 13, 546000000, time.UTC)),
+	// 			CreatedBy: to.Ptr("bpuxtfzqwdhifevjtucoc"),
+	// 			CreatedByType: to.Ptr(armelasticsan.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.April, 29, 14, 22, 13, 547000000, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("ourjjlolgugpxnkbiegumkicksibep"),
+	// 			LastModifiedByType: to.Ptr(armelasticsan.CreatedByTypeUser),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-05-01-preview/VolumeGroups_Update_MaximumSet_Gen.json
+func ExampleVolumeGroupsClient_BeginUpdate_volumeGroupsUpdateMaximumSetGen() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armelasticsan.NewClientFactory("subscriptionid", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewVolumeGroupsClient().BeginUpdate(ctx, "resourcegroupname", "elasticsanname", "volumegroupname", armelasticsan.VolumeGroupUpdate{
+		Identity: &armelasticsan.Identity{
+			Type: to.Ptr(armelasticsan.IdentityTypeNone),
+			UserAssignedIdentities: map[string]*armelasticsan.UserAssignedIdentity{
+				"key2350": {},
+			},
+		},
+		Properties: &armelasticsan.VolumeGroupUpdateProperties{
+			DeleteRetentionPolicy: &armelasticsan.DeleteRetentionPolicy{
+				PolicyState:         to.Ptr(armelasticsan.PolicyStateEnabled),
+				RetentionPeriodDays: to.Ptr[int32](14),
+			},
+			Encryption: to.Ptr(armelasticsan.EncryptionTypeEncryptionAtRestWithPlatformKey),
+			EncryptionProperties: &armelasticsan.EncryptionProperties{
+				EncryptionIdentity: &armelasticsan.EncryptionIdentity{
+					EncryptionUserAssignedIdentity: to.Ptr("vgbeephfgecgg"),
+				},
+				KeyVaultProperties: &armelasticsan.KeyVaultProperties{
+					KeyName:     to.Ptr("rommjwp"),
+					KeyVaultURI: to.Ptr("https://microsoft.com/at"),
+					KeyVersion:  to.Ptr("ulmxxgzgsuhalwesmhfslq"),
+				},
+			},
+			EnforceDataIntegrityCheckForIscsi: to.Ptr(true),
+			NetworkACLs: &armelasticsan.NetworkRuleSet{
+				VirtualNetworkRules: []*armelasticsan.VirtualNetworkRule{
+					{
+						Action:                   to.Ptr(armelasticsan.ActionAllow),
+						VirtualNetworkResourceID: to.Ptr("fhhawhc"),
+					},
+				},
+			},
+			ProtocolType: to.Ptr(armelasticsan.StorageTargetTypeIscsi),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armelasticsan.VolumeGroupsClientUpdateResponse{
+	// 	VolumeGroup: armelasticsan.VolumeGroup{
+	// 		Name: to.Ptr("dov"),
+	// 		Type: to.Ptr("kg"),
+	// 		ID: to.Ptr("hoazltxzojzwgzohjnh"),
+	// 		Identity: &armelasticsan.Identity{
+	// 			Type: to.Ptr(armelasticsan.IdentityTypeNone),
+	// 			PrincipalID: to.Ptr("zqobj"),
+	// 			TenantID: to.Ptr("douwo"),
+	// 			UserAssignedIdentities: map[string]*armelasticsan.UserAssignedIdentity{
+	// 				"key2350": &armelasticsan.UserAssignedIdentity{
+	// 					ClientID: to.Ptr("ddhoilirjxushxvxttgqh"),
+	// 					PrincipalID: to.Ptr("lmhozfpeu"),
+	// 				},
+	// 			},
+	// 		},
+	// 		Properties: &armelasticsan.VolumeGroupProperties{
+	// 			DeleteRetentionPolicy: &armelasticsan.DeleteRetentionPolicy{
+	// 				PolicyState: to.Ptr(armelasticsan.PolicyStateEnabled),
+	// 				RetentionPeriodDays: to.Ptr[int32](14),
+	// 			},
+	// 			Encryption: to.Ptr(armelasticsan.EncryptionTypeEncryptionAtRestWithPlatformKey),
+	// 			EncryptionProperties: &armelasticsan.EncryptionProperties{
+	// 				EncryptionIdentity: &armelasticsan.EncryptionIdentity{
+	// 					EncryptionUserAssignedIdentity: to.Ptr("vgbeephfgecgg"),
+	// 				},
+	// 				KeyVaultProperties: &armelasticsan.KeyVaultProperties{
+	// 					CurrentVersionedKeyExpirationTimestamp: to.Ptr(time.Date(2024, time.April, 29, 14, 22, 25, 155000000, time.UTC)),
+	// 					CurrentVersionedKeyIdentifier: to.Ptr("bqgwaoezxtvwuydxxvsecod"),
+	// 					KeyName: to.Ptr("rommjwp"),
+	// 					KeyVaultURI: to.Ptr("https://microsoft.com/at"),
+	// 					KeyVersion: to.Ptr("ulmxxgzgsuhalwesmhfslq"),
+	// 					LastKeyRotationTimestamp: to.Ptr(time.Date(2024, time.April, 29, 14, 22, 25, 155000000, time.UTC)),
+	// 				},
+	// 			},
+	// 			EnforceDataIntegrityCheckForIscsi: to.Ptr(true),
+	// 			EncryptionInTransit: to.Ptr(true),
 	// 			NetworkACLs: &armelasticsan.NetworkRuleSet{
 	// 				VirtualNetworkRules: []*armelasticsan.VirtualNetworkRule{
 	// 					{
@@ -711,7 +1796,7 @@ func ExampleVolumeGroupsClient_BeginUpdate_volumeGroupsUpdateMaximumSetGen() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/VolumeGroups_Update_MinimumSet_Gen.json
+// Generated from example definition: 2026-05-01-preview/VolumeGroups_Update_MinimumSet_Gen.json
 func ExampleVolumeGroupsClient_BeginUpdate_volumeGroupsUpdateMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

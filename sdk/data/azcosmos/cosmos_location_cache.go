@@ -64,6 +64,7 @@ type locationCache struct {
 	locationInfo                      databaseAccountLocationsInfo
 	defaultEndpoint                   url.URL
 	enableCrossRegionRetries          bool
+	disableEndpointDiscovery          bool
 	locationUnavailabilityInfoMap     map[url.URL]locationUnavailabilityInfo
 	mapMutex                          sync.RWMutex
 	lastUpdateTime                    time.Time
@@ -71,7 +72,7 @@ type locationCache struct {
 	unavailableLocationExpirationTime time.Duration
 }
 
-func newLocationCache(prefLocations []string, defaultEndpoint url.URL, enableCrossRegionRetries bool) *locationCache {
+func newLocationCache(prefLocations []string, defaultEndpoint url.URL, enableCrossRegionRetries bool, disableEndpointDiscovery bool) *locationCache {
 	prefRegions := make([]regionId, len(prefLocations))
 	for i, loc := range prefLocations {
 		prefRegions[i] = newRegionId(loc)
@@ -82,6 +83,7 @@ func newLocationCache(prefLocations []string, defaultEndpoint url.URL, enableCro
 		locationUnavailabilityInfoMap:     make(map[url.URL]locationUnavailabilityInfo),
 		unavailableLocationExpirationTime: defaultExpirationTime,
 		enableCrossRegionRetries:          enableCrossRegionRetries,
+		disableEndpointDiscovery:          disableEndpointDiscovery,
 	}
 }
 
@@ -184,6 +186,14 @@ func (lc *locationCache) resolveServiceEndpoint(locationIndex int, resourceType 
 	// race with us without this lock.
 	lc.mapMutex.RLock()
 	defer lc.mapMutex.RUnlock()
+	// When endpoint discovery is disabled, ignore the account's advertised
+	// regional endpoints entirely and always route to the endpoint the client
+	// was constructed with. This keeps all traffic on the externally-routable
+	// endpoint even though the account advertises an internal document endpoint
+	// that is unreachable from this network.
+	if lc.disableEndpointDiscovery {
+		return lc.defaultEndpoint
+	}
 	if (isWriteOperation || useWriteEndpoint) && !lc.canUseMultipleWriteLocsToRoute(resourceType) {
 		if lc.enableCrossRegionRetries && len(lc.locationInfo.availWriteLocations) > 0 {
 			locationIndex = min(locationIndex%2, len(lc.locationInfo.availWriteLocations)-1)

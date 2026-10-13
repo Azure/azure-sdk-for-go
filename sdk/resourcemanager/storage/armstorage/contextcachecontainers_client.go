@@ -19,7 +19,7 @@ import (
 // ContextCacheContainersClient contains the methods for the ContextCacheContainers group.
 // Don't use this type directly, use NewContextCacheContainersClient() instead.
 //
-// Generated from API version 2026-06-01
+// Generated from API version 2026-09-01
 type ContextCacheContainersClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -30,6 +30,9 @@ type ContextCacheContainersClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewContextCacheContainersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ContextCacheContainersClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -66,7 +69,7 @@ func (client *ContextCacheContainersClient) BeginCreateOrUpdate(ctx context.Cont
 	}
 }
 
-// CreateOrUpdate - Create or update a container in a Context Cache.
+// createOrUpdate - Create or update a container in a Context Cache.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ContextCacheContainersClient) createOrUpdate(ctx context.Context, resourceGroupName string, contextCacheName string, contextCacheContainerName string, resource ContextCacheContainer, options *ContextCacheContainersClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -88,11 +91,11 @@ func (client *ContextCacheContainersClient) createOrUpdate(ctx context.Context, 
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *ContextCacheContainersClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, contextCacheName string, contextCacheContainerName string, resource ContextCacheContainer, _ *ContextCacheContainersClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/contextCaches/{contextCacheName}/contextCacheContainers/{contextCacheContainerName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -112,7 +115,7 @@ func (client *ContextCacheContainersClient) createOrUpdateCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260601)
+	reqQP.Set("api-version", version20260901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -146,7 +149,7 @@ func (client *ContextCacheContainersClient) BeginDelete(ctx context.Context, res
 	}
 }
 
-// Delete - Delete a container from a Context Cache.
+// deleteOperation - Delete a container from a Context Cache.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ContextCacheContainersClient) deleteOperation(ctx context.Context, resourceGroupName string, contextCacheName string, contextCacheContainerName string, options *ContextCacheContainersClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -168,11 +171,11 @@ func (client *ContextCacheContainersClient) deleteOperation(ctx context.Context,
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *ContextCacheContainersClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, contextCacheName string, contextCacheContainerName string, _ *ContextCacheContainersClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/contextCaches/{contextCacheName}/contextCacheContainers/{contextCacheContainerName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -192,8 +195,89 @@ func (client *ContextCacheContainersClient) deleteCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260601)
+	reqQP.Set("api-version", version20260901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginUpdate - Update a container in a Context Cache.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - contextCacheName - The name of the context cache
+//   - contextCacheContainerName - The name of the context cache container
+//   - properties - The resource properties to be updated.
+//   - options - ContextCacheContainersClientBeginUpdateOptions contains the optional parameters for the ContextCacheContainersClient.BeginUpdate
+//     method.
+func (client *ContextCacheContainersClient) BeginUpdate(ctx context.Context, resourceGroupName string, contextCacheName string, contextCacheContainerName string, properties ContextCacheContainerUpdate, options *ContextCacheContainersClientBeginUpdateOptions) (*runtime.Poller[ContextCacheContainersClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, contextCacheName, contextCacheContainerName, properties, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ContextCacheContainersClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ContextCacheContainersClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Update a container in a Context Cache.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ContextCacheContainersClient) update(ctx context.Context, resourceGroupName string, contextCacheName string, contextCacheContainerName string, properties ContextCacheContainerUpdate, options *ContextCacheContainersClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "ContextCacheContainersClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, contextCacheName, contextCacheContainerName, properties, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *ContextCacheContainersClient) updateCreateRequest(ctx context.Context, resourceGroupName string, contextCacheName string, contextCacheContainerName string, properties ContextCacheContainerUpdate, _ *ContextCacheContainersClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/contextCaches/{contextCacheName}/contextCacheContainers/{contextCacheContainerName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if contextCacheName == "" {
+		return nil, errors.New("parameter contextCacheName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{contextCacheName}", url.PathEscape(contextCacheName))
+	if contextCacheContainerName == "" {
+		return nil, errors.New("parameter contextCacheContainerName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{contextCacheContainerName}", url.PathEscape(contextCacheContainerName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, properties); err != nil {
+		return nil, err
+	}
 	return req, nil
 }
 
@@ -225,7 +309,7 @@ func (client *ContextCacheContainersClient) Get(ctx context.Context, resourceGro
 func (client *ContextCacheContainersClient) getCreateRequest(ctx context.Context, resourceGroupName string, contextCacheName string, contextCacheContainerName string, _ *ContextCacheContainersClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/contextCaches/{contextCacheName}/contextCacheContainers/{contextCacheContainerName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -245,7 +329,7 @@ func (client *ContextCacheContainersClient) getCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260601)
+	reqQP.Set("api-version", version20260901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -301,7 +385,7 @@ func (client *ContextCacheContainersClient) listByContextCacheCreateRequest(ctx 
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/contextCaches/{contextCacheName}/contextCacheContainers"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -321,7 +405,7 @@ func (client *ContextCacheContainersClient) listByContextCacheCreateRequest(ctx 
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260601)
+		reqQP.Set("api-version", version20260901)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -338,85 +422,4 @@ func (client *ContextCacheContainersClient) listByContextCacheHandleResponse(res
 		return ContextCacheContainersClientListByContextCacheResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginUpdate - Update a container in a Context Cache.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - contextCacheName - The name of the context cache
-//   - contextCacheContainerName - The name of the context cache container
-//   - properties - The resource properties to be updated.
-//   - options - ContextCacheContainersClientBeginUpdateOptions contains the optional parameters for the ContextCacheContainersClient.BeginUpdate
-//     method.
-func (client *ContextCacheContainersClient) BeginUpdate(ctx context.Context, resourceGroupName string, contextCacheName string, contextCacheContainerName string, properties ContextCacheContainerUpdate, options *ContextCacheContainersClientBeginUpdateOptions) (*runtime.Poller[ContextCacheContainersClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, contextCacheName, contextCacheContainerName, properties, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ContextCacheContainersClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ContextCacheContainersClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Update a container in a Context Cache.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *ContextCacheContainersClient) update(ctx context.Context, resourceGroupName string, contextCacheName string, contextCacheContainerName string, properties ContextCacheContainerUpdate, options *ContextCacheContainersClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "ContextCacheContainersClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, contextCacheName, contextCacheContainerName, properties, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *ContextCacheContainersClient) updateCreateRequest(ctx context.Context, resourceGroupName string, contextCacheName string, contextCacheContainerName string, properties ContextCacheContainerUpdate, _ *ContextCacheContainersClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/contextCaches/{contextCacheName}/contextCacheContainers/{contextCacheContainerName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if contextCacheName == "" {
-		return nil, errors.New("parameter contextCacheName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{contextCacheName}", url.PathEscape(contextCacheName))
-	if contextCacheContainerName == "" {
-		return nil, errors.New("parameter contextCacheContainerName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{contextCacheContainerName}", url.PathEscape(contextCacheContainerName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, properties); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

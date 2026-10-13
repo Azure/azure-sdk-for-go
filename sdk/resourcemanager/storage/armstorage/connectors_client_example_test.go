@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-06-01/StorageConnectorCRUD/StorageConnectors_Create.json
+// Generated from example definition: 2026-09-01/StorageConnectorCRUD/StorageConnectors_Create.json
 func ExampleConnectorsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -81,7 +81,7 @@ func ExampleConnectorsClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2026-06-01/StorageConnectorCRUD/StorageConnectors_Delete.json
+// Generated from example definition: 2026-09-01/StorageConnectorCRUD/StorageConnectors_Delete.json
 func ExampleConnectorsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -102,7 +102,100 @@ func ExampleConnectorsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-06-01/StorageConnectorCRUD/StorageConnectors_Get.json
+// Generated from example definition: 2026-09-01/StorageConnectorCRUD/StorageConnectors_TestExistingConnection.json
+func ExampleConnectorsClient_BeginTestExistingConnection() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armstorage.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewConnectorsClient().BeginTestExistingConnection(ctx, "testrg", "teststorageaccount", "testconnector", armstorage.TestExistingConnectionRequest{
+		UniqueID: to.Ptr("12345678-1234-1234-1234-12345678912"),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armstorage.ConnectorsClientTestExistingConnectionResponse{
+	// 	TestConnectionResponse: armstorage.TestConnectionResponse{
+	// 		StorageConnectorMethodName: to.Ptr("TestExistingConnection"),
+	// 		StorageConnectorRequestID: to.Ptr("request-id-123"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-09-01/StorageConnectorCRUD/StorageConnectors_Update.json
+func ExampleConnectorsClient_BeginUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armstorage.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewConnectorsClient().BeginUpdate(ctx, "testrg", "teststorageaccount", "testconnector", armstorage.ConnectorUpdate{
+		Properties: &armstorage.ConnectorPropertiesUpdate{
+			Source: &armstorage.DataShareSourceUpdate{
+				Type: to.Ptr(armstorage.StorageConnectorSourceTypeDataShare),
+				AuthProperties: &armstorage.ManagedIdentityAuthPropertiesUpdate{
+					Type:               to.Ptr(armstorage.StorageConnectorAuthTypeManagedIdentity),
+					IdentityResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/newTestIdentity"),
+				},
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armstorage.ConnectorsClientUpdateResponse{
+	// 	Connector: armstorage.Connector{
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testrg/providers/Microsoft.Storage/storageAccounts/teststorageaccount/connectors/testconnector"),
+	// 		Name: to.Ptr("testconnector"),
+	// 		Type: to.Ptr("Microsoft.Storage/storageAccounts/connectors"),
+	// 		Location: to.Ptr("eastus"),
+	// 		Properties: &armstorage.ConnectorProperties{
+	// 			UniqueID: to.Ptr("12345678-1234-1234-1234-12345678912"),
+	// 			State: to.Ptr(armstorage.StorageConnectorStateActive),
+	// 			CreationTime: to.Ptr("2023-04-01T00:00:00Z"),
+	// 			Description: to.Ptr("Example connector"),
+	// 			DataSourceType: to.Ptr(armstorage.StorageConnectorDataSourceTypeAzureDataShare),
+	// 			Source: &armstorage.DataShareSource{
+	// 				Type: to.Ptr(armstorage.StorageConnectorSourceTypeDataShare),
+	// 				Connection: &armstorage.DataShareConnection{
+	// 					Type: to.Ptr(armstorage.StorageConnectorConnectionTypeDataShare),
+	// 					DataShareURI: to.Ptr("azds://eastus:datashare1:12345678-1234-1234-1234-123456789123"),
+	// 				},
+	// 				AuthProperties: &armstorage.ManagedIdentityAuthProperties{
+	// 					Type: to.Ptr(armstorage.StorageConnectorAuthTypeManagedIdentity),
+	// 					IdentityResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/newTestIdentity"),
+	// 				},
+	// 			},
+	// 			ProvisioningState: to.Ptr(armstorage.NativeDataSharingProvisioningStateSucceeded),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-09-01/StorageConnectorCRUD/StorageConnectors_Get.json
 func ExampleConnectorsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -149,7 +242,7 @@ func ExampleConnectorsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-06-01/StorageConnectorCRUD/StorageConnectors_ListByStorageAccount.json
+// Generated from example definition: 2026-09-01/StorageConnectorCRUD/StorageConnectors_ListByStorageAccount.json
 func ExampleConnectorsClient_NewListByStorageAccountPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -228,97 +321,4 @@ func ExampleConnectorsClient_NewListByStorageAccountPager() {
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2026-06-01/StorageConnectorCRUD/StorageConnectors_TestExistingConnection.json
-func ExampleConnectorsClient_BeginTestExistingConnection() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armstorage.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewConnectorsClient().BeginTestExistingConnection(ctx, "testrg", "teststorageaccount", "testconnector", armstorage.TestExistingConnectionRequest{
-		UniqueID: to.Ptr("12345678-1234-1234-1234-12345678912"),
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armstorage.ConnectorsClientTestExistingConnectionResponse{
-	// 	TestConnectionResponse: armstorage.TestConnectionResponse{
-	// 		StorageConnectorMethodName: to.Ptr("TestExistingConnection"),
-	// 		StorageConnectorRequestID: to.Ptr("request-id-123"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-06-01/StorageConnectorCRUD/StorageConnectors_Update.json
-func ExampleConnectorsClient_BeginUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armstorage.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewConnectorsClient().BeginUpdate(ctx, "testrg", "teststorageaccount", "testconnector", armstorage.ConnectorUpdate{
-		Properties: &armstorage.ConnectorPropertiesUpdate{
-			Source: &armstorage.DataShareSourceUpdate{
-				Type: to.Ptr(armstorage.StorageConnectorSourceTypeDataShare),
-				AuthProperties: &armstorage.ManagedIdentityAuthPropertiesUpdate{
-					Type:               to.Ptr(armstorage.StorageConnectorAuthTypeManagedIdentity),
-					IdentityResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/newTestIdentity"),
-				},
-			},
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armstorage.ConnectorsClientUpdateResponse{
-	// 	Connector: armstorage.Connector{
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testrg/providers/Microsoft.Storage/storageAccounts/teststorageaccount/connectors/testconnector"),
-	// 		Name: to.Ptr("testconnector"),
-	// 		Type: to.Ptr("Microsoft.Storage/storageAccounts/connectors"),
-	// 		Location: to.Ptr("eastus"),
-	// 		Properties: &armstorage.ConnectorProperties{
-	// 			UniqueID: to.Ptr("12345678-1234-1234-1234-12345678912"),
-	// 			State: to.Ptr(armstorage.StorageConnectorStateActive),
-	// 			CreationTime: to.Ptr("2023-04-01T00:00:00Z"),
-	// 			Description: to.Ptr("Example connector"),
-	// 			DataSourceType: to.Ptr(armstorage.StorageConnectorDataSourceTypeAzureDataShare),
-	// 			Source: &armstorage.DataShareSource{
-	// 				Type: to.Ptr(armstorage.StorageConnectorSourceTypeDataShare),
-	// 				Connection: &armstorage.DataShareConnection{
-	// 					Type: to.Ptr(armstorage.StorageConnectorConnectionTypeDataShare),
-	// 					DataShareURI: to.Ptr("azds://eastus:datashare1:12345678-1234-1234-1234-123456789123"),
-	// 				},
-	// 				AuthProperties: &armstorage.ManagedIdentityAuthProperties{
-	// 					Type: to.Ptr(armstorage.StorageConnectorAuthTypeManagedIdentity),
-	// 					IdentityResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/newTestIdentity"),
-	// 				},
-	// 			},
-	// 			ProvisioningState: to.Ptr(armstorage.NativeDataSharingProvisioningStateSucceeded),
-	// 		},
-	// 	},
-	// }
 }

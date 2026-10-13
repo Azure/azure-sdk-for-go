@@ -137,6 +137,53 @@ type AdvancedPlatformMetricsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
+// BlobAccessPointConfigurationsClientBeginCreateOptions contains the optional parameters for the BlobAccessPointConfigurationsClient.BeginCreate
+// method.
+type BlobAccessPointConfigurationsClientBeginCreateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// BlobAccessPointConfigurationsClientBeginDeleteOptions contains the optional parameters for the BlobAccessPointConfigurationsClient.BeginDelete
+// method.
+type BlobAccessPointConfigurationsClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// BlobAccessPointConfigurationsClientBeginTestExistingConnectionOptions contains the optional parameters for the BlobAccessPointConfigurationsClient.BeginTestExistingConnection
+// method.
+type BlobAccessPointConfigurationsClientBeginTestExistingConnectionOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// BlobAccessPointConfigurationsClientBeginUpdateOptions contains the optional parameters for the BlobAccessPointConfigurationsClient.BeginUpdate
+// method.
+type BlobAccessPointConfigurationsClientBeginUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// BlobAccessPointConfigurationsClientGetOptions contains the optional parameters for the BlobAccessPointConfigurationsClient.Get
+// method.
+type BlobAccessPointConfigurationsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// BlobAccessPointConfigurationsClientListByStorageAccountOptions contains the optional parameters for the BlobAccessPointConfigurationsClient.NewListByStorageAccountPager
+// method.
+type BlobAccessPointConfigurationsClientListByStorageAccountOptions struct {
+	// placeholder for future optional parameters
+}
+
+// BlobAccessPointConnectionTestsClientBeginTestProposedConnectionOptions contains the optional parameters for the BlobAccessPointConnectionTestsClient.BeginTestProposedConnection
+// method.
+type BlobAccessPointConnectionTestsClientBeginTestProposedConnectionOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
 // BlobContainersClientBeginObjectLevelWormOptions contains the optional parameters for the BlobContainersClient.BeginObjectLevelWorm
 // method.
 type BlobContainersClientBeginObjectLevelWormOptions struct {
@@ -352,6 +399,12 @@ type ContextCachesClientBeginDeleteOptions struct {
 type ContextCachesClientBeginUpdateOptions struct {
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
+}
+
+// ContextCachesClientCheckNameAvailabilityOptions contains the optional parameters for the ContextCachesClient.CheckNameAvailability
+// method.
+type ContextCachesClientCheckNameAvailabilityOptions struct {
+	// placeholder for future optional parameters
 }
 
 // ContextCachesClientGetOptions contains the optional parameters for the ContextCachesClient.Get method.

@@ -5,7 +5,7 @@
 package armstorage
 
 const (
-	version20260601 string = "2026-06-01"
+	version20260901 string = "2026-09-01"
 )
 
 // AccessTier - The default access tier for block blobs in the storage account. Required for storage accounts where kind =
@@ -156,6 +156,142 @@ func PossibleAllowedCopyScopeValues() []AllowedCopyScope {
 	}
 }
 
+// BlobAccessPointConfigurationState - The state of a Blob Access Point configuration.
+type BlobAccessPointConfigurationState string
+
+const (
+	// BlobAccessPointConfigurationStateActive - The Blob Access Point configuration is active.
+	BlobAccessPointConfigurationStateActive BlobAccessPointConfigurationState = "Active"
+	// BlobAccessPointConfigurationStateInactive - The Blob Access Point configuration is inactive.
+	BlobAccessPointConfigurationStateInactive BlobAccessPointConfigurationState = "Inactive"
+)
+
+// PossibleBlobAccessPointConfigurationStateValues returns the possible values for the BlobAccessPointConfigurationState const type.
+func PossibleBlobAccessPointConfigurationStateValues() []BlobAccessPointConfigurationState {
+	return []BlobAccessPointConfigurationState{
+		BlobAccessPointConfigurationStateActive,
+		BlobAccessPointConfigurationStateInactive,
+	}
+}
+
+// BlobAccessPointConnectionTestStatus - The status of the most recent connection test.
+type BlobAccessPointConnectionTestStatus string
+
+const (
+	// BlobAccessPointConnectionTestStatusFailed - The connection test failed.
+	BlobAccessPointConnectionTestStatusFailed BlobAccessPointConnectionTestStatus = "Failed"
+	// BlobAccessPointConnectionTestStatusSucceeded - The connection test succeeded.
+	BlobAccessPointConnectionTestStatusSucceeded BlobAccessPointConnectionTestStatus = "Succeeded"
+)
+
+// PossibleBlobAccessPointConnectionTestStatusValues returns the possible values for the BlobAccessPointConnectionTestStatus const type.
+func PossibleBlobAccessPointConnectionTestStatusValues() []BlobAccessPointConnectionTestStatus {
+	return []BlobAccessPointConnectionTestStatus{
+		BlobAccessPointConnectionTestStatusFailed,
+		BlobAccessPointConnectionTestStatusSucceeded,
+	}
+}
+
+// BlobAccessPointConnectionType - The connection type used to reach a non-Azure backing data source.
+type BlobAccessPointConnectionType string
+
+const (
+	// BlobAccessPointConnectionTypeEndpoint - Connect directly to a public or otherwise routable endpoint.
+	BlobAccessPointConnectionTypeEndpoint BlobAccessPointConnectionType = "Endpoint"
+	// BlobAccessPointConnectionTypePrivateLink - Connect through Azure Private Link.
+	BlobAccessPointConnectionTypePrivateLink BlobAccessPointConnectionType = "PrivateLink"
+)
+
+// PossibleBlobAccessPointConnectionTypeValues returns the possible values for the BlobAccessPointConnectionType const type.
+func PossibleBlobAccessPointConnectionTypeValues() []BlobAccessPointConnectionType {
+	return []BlobAccessPointConnectionType{
+		BlobAccessPointConnectionTypeEndpoint,
+		BlobAccessPointConnectionTypePrivateLink,
+	}
+}
+
+// BlobAccessPointPrivateLinkIDType - The format used by a Private Link identifier.
+type BlobAccessPointPrivateLinkIDType string
+
+const (
+	// BlobAccessPointPrivateLinkIDTypeResourceID - The identifier is an Azure resource ID.
+	BlobAccessPointPrivateLinkIDTypeResourceID BlobAccessPointPrivateLinkIDType = "ResourceId"
+)
+
+// PossibleBlobAccessPointPrivateLinkIDTypeValues returns the possible values for the BlobAccessPointPrivateLinkIDType const type.
+func PossibleBlobAccessPointPrivateLinkIDTypeValues() []BlobAccessPointPrivateLinkIDType {
+	return []BlobAccessPointPrivateLinkIDType{
+		BlobAccessPointPrivateLinkIDTypeResourceID,
+	}
+}
+
+// BlobAccessPointRemoteAuthType - How Azure Storage authenticates to a non-Azure S3-compatible source.
+type BlobAccessPointRemoteAuthType string
+
+const (
+	// BlobAccessPointRemoteAuthTypeAccessKey - Authenticate with an S3 access key and secret access key.
+	BlobAccessPointRemoteAuthTypeAccessKey BlobAccessPointRemoteAuthType = "AccessKey"
+)
+
+// PossibleBlobAccessPointRemoteAuthTypeValues returns the possible values for the BlobAccessPointRemoteAuthType const type.
+func PossibleBlobAccessPointRemoteAuthTypeValues() []BlobAccessPointRemoteAuthType {
+	return []BlobAccessPointRemoteAuthType{
+		BlobAccessPointRemoteAuthTypeAccessKey,
+	}
+}
+
+// BlobAccessPointSourceType - The type of the non-Azure S3-compatible data source exposed through the Blob Access Point.
+type BlobAccessPointSourceType string
+
+const (
+	// BlobAccessPointSourceTypeAzureNetAppFiles - Azure NetApp Files.
+	BlobAccessPointSourceTypeAzureNetAppFiles BlobAccessPointSourceType = "AzureNetAppFiles"
+	// BlobAccessPointSourceTypeCommvault - Commvault S3-compatible data source.
+	BlobAccessPointSourceTypeCommvault BlobAccessPointSourceType = "Commvault"
+	// BlobAccessPointSourceTypeDellOneFs - Dell OneFS.
+	BlobAccessPointSourceTypeDellOneFs BlobAccessPointSourceType = "DellOneFs"
+	// BlobAccessPointSourceTypeNasuni - Nasuni S3-compatible data source.
+	BlobAccessPointSourceTypeNasuni BlobAccessPointSourceType = "Nasuni"
+	// BlobAccessPointSourceTypeNetAppOntap - NetApp ONTAP.
+	BlobAccessPointSourceTypeNetAppOntap BlobAccessPointSourceType = "NetAppOntap"
+	// BlobAccessPointSourceTypeQumulo - Qumulo S3-compatible data source.
+	BlobAccessPointSourceTypeQumulo BlobAccessPointSourceType = "Qumulo"
+	// BlobAccessPointSourceTypeS3Compatible - Another S3-compatible data source.
+	BlobAccessPointSourceTypeS3Compatible BlobAccessPointSourceType = "S3Compatible"
+)
+
+// PossibleBlobAccessPointSourceTypeValues returns the possible values for the BlobAccessPointSourceType const type.
+func PossibleBlobAccessPointSourceTypeValues() []BlobAccessPointSourceType {
+	return []BlobAccessPointSourceType{
+		BlobAccessPointSourceTypeAzureNetAppFiles,
+		BlobAccessPointSourceTypeCommvault,
+		BlobAccessPointSourceTypeDellOneFs,
+		BlobAccessPointSourceTypeNasuni,
+		BlobAccessPointSourceTypeNetAppOntap,
+		BlobAccessPointSourceTypeQumulo,
+		BlobAccessPointSourceTypeS3Compatible,
+	}
+}
+
+// BlobAccessPointTLSVerification - TLS certificate verification behavior.
+type BlobAccessPointTLSVerification string
+
+const (
+	// BlobAccessPointTLSVerificationPerform - Verify the TLS certificate chain.
+	BlobAccessPointTLSVerificationPerform BlobAccessPointTLSVerification = "Perform"
+	// BlobAccessPointTLSVerificationSkip - Skip TLS certificate-chain verification. Use only when the backing source uses a certificate
+	// that cannot be validated against a trusted root. Skipping verification exposes credentials and data to an on-path attacker.
+	BlobAccessPointTLSVerificationSkip BlobAccessPointTLSVerification = "Skip"
+)
+
+// PossibleBlobAccessPointTLSVerificationValues returns the possible values for the BlobAccessPointTLSVerification const type.
+func PossibleBlobAccessPointTLSVerificationValues() []BlobAccessPointTLSVerification {
+	return []BlobAccessPointTLSVerification{
+		BlobAccessPointTLSVerificationPerform,
+		BlobAccessPointTLSVerificationSkip,
+	}
+}
+
 type BlobInventoryPolicyName string
 
 const (
@@ -228,6 +364,25 @@ func PossibleContextCacheAccountKindValues() []ContextCacheAccountKind {
 		ContextCacheAccountKindDataZone,
 		ContextCacheAccountKindGlobal,
 		ContextCacheAccountKindRegional,
+	}
+}
+
+// ContextCacheCheckNameAvailabilityFailureReason - The reason why the context cache name is not available. The Reason element
+// is only returned if NameAvailable is false.
+type ContextCacheCheckNameAvailabilityFailureReason string
+
+const (
+	// ContextCacheCheckNameAvailabilityFailureReasonAlreadyExists - The context cache name is already in use.
+	ContextCacheCheckNameAvailabilityFailureReasonAlreadyExists ContextCacheCheckNameAvailabilityFailureReason = "AlreadyExists"
+	// ContextCacheCheckNameAvailabilityFailureReasonContextCacheNameInvalid - The context cache name is invalid.
+	ContextCacheCheckNameAvailabilityFailureReasonContextCacheNameInvalid ContextCacheCheckNameAvailabilityFailureReason = "ContextCacheNameInvalid"
+)
+
+// PossibleContextCacheCheckNameAvailabilityFailureReasonValues returns the possible values for the ContextCacheCheckNameAvailabilityFailureReason const type.
+func PossibleContextCacheCheckNameAvailabilityFailureReasonValues() []ContextCacheCheckNameAvailabilityFailureReason {
+	return []ContextCacheCheckNameAvailabilityFailureReason{
+		ContextCacheCheckNameAvailabilityFailureReasonAlreadyExists,
+		ContextCacheCheckNameAvailabilityFailureReasonContextCacheNameInvalid,
 	}
 }
 
@@ -1355,6 +1510,27 @@ func PossibleResourceAssociationAccessModeValues() []ResourceAssociationAccessMo
 	}
 }
 
+// ResourceProvisioningState - The provisioning state of a resource type.
+type ResourceProvisioningState string
+
+const (
+	// ResourceProvisioningStateCanceled - Resource creation was canceled.
+	ResourceProvisioningStateCanceled ResourceProvisioningState = "Canceled"
+	// ResourceProvisioningStateFailed - Resource creation failed.
+	ResourceProvisioningStateFailed ResourceProvisioningState = "Failed"
+	// ResourceProvisioningStateSucceeded - Resource has been created.
+	ResourceProvisioningStateSucceeded ResourceProvisioningState = "Succeeded"
+)
+
+// PossibleResourceProvisioningStateValues returns the possible values for the ResourceProvisioningState const type.
+func PossibleResourceProvisioningStateValues() []ResourceProvisioningState {
+	return []ResourceProvisioningState{
+		ResourceProvisioningStateCanceled,
+		ResourceProvisioningStateFailed,
+		ResourceProvisioningStateSucceeded,
+	}
+}
+
 // RootSquashType - The property is for NFS share only. The default is NoRootSquash.
 type RootSquashType string
 
@@ -1802,6 +1978,24 @@ func PossibleTriggerTypeValues() []TriggerType {
 		TriggerTypeMockRun,
 		TriggerTypeOnSchedule,
 		TriggerTypeRunOnce,
+	}
+}
+
+// TurboTierStatus - Indicates whether Turbo Tier is enabled or disabled.
+type TurboTierStatus string
+
+const (
+	// TurboTierStatusDisabled - Turbo Tier is disabled.
+	TurboTierStatusDisabled TurboTierStatus = "Disabled"
+	// TurboTierStatusEnabled - Turbo Tier is enabled.
+	TurboTierStatusEnabled TurboTierStatus = "Enabled"
+)
+
+// PossibleTurboTierStatusValues returns the possible values for the TurboTierStatus const type.
+func PossibleTurboTierStatusValues() []TurboTierStatus {
+	return []TurboTierStatus{
+		TurboTierStatusDisabled,
+		TurboTierStatusEnabled,
 	}
 }
 

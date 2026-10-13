@@ -29,6 +29,10 @@ type ContextCacheContainersServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, contextCacheName string, contextCacheContainerName string, options *armstorage.ContextCacheContainersClientBeginDeleteOptions) (resp azfake.PollerResponder[armstorage.ContextCacheContainersClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method ContextCacheContainersClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, contextCacheName string, contextCacheContainerName string, properties armstorage.ContextCacheContainerUpdate, options *armstorage.ContextCacheContainersClientBeginUpdateOptions) (resp azfake.PollerResponder[armstorage.ContextCacheContainersClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method ContextCacheContainersClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, contextCacheName string, contextCacheContainerName string, options *armstorage.ContextCacheContainersClientGetOptions) (resp azfake.Responder[armstorage.ContextCacheContainersClientGetResponse], errResp azfake.ErrorResponder)
@@ -36,10 +40,6 @@ type ContextCacheContainersServer struct {
 	// NewListByContextCachePager is the fake for method ContextCacheContainersClient.NewListByContextCachePager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByContextCachePager func(resourceGroupName string, contextCacheName string, options *armstorage.ContextCacheContainersClientListByContextCacheOptions) (resp azfake.PagerResponder[armstorage.ContextCacheContainersClientListByContextCacheResponse])
-
-	// BeginUpdate is the fake for method ContextCacheContainersClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, contextCacheName string, contextCacheContainerName string, properties armstorage.ContextCacheContainerUpdate, options *armstorage.ContextCacheContainersClientBeginUpdateOptions) (resp azfake.PollerResponder[armstorage.ContextCacheContainersClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewContextCacheContainersServerTransport creates a new instance of ContextCacheContainersServerTransport with the provided implementation.
@@ -50,8 +50,8 @@ func NewContextCacheContainersServerTransport(srv *ContextCacheContainersServer)
 		srv:                        srv,
 		beginCreateOrUpdate:        newTracker[azfake.PollerResponder[armstorage.ContextCacheContainersClientCreateOrUpdateResponse]](),
 		beginDelete:                newTracker[azfake.PollerResponder[armstorage.ContextCacheContainersClientDeleteResponse]](),
-		newListByContextCachePager: newTracker[azfake.PagerResponder[armstorage.ContextCacheContainersClientListByContextCacheResponse]](),
 		beginUpdate:                newTracker[azfake.PollerResponder[armstorage.ContextCacheContainersClientUpdateResponse]](),
+		newListByContextCachePager: newTracker[azfake.PagerResponder[armstorage.ContextCacheContainersClientListByContextCacheResponse]](),
 	}
 }
 
@@ -61,8 +61,8 @@ type ContextCacheContainersServerTransport struct {
 	srv                        *ContextCacheContainersServer
 	beginCreateOrUpdate        *tracker[azfake.PollerResponder[armstorage.ContextCacheContainersClientCreateOrUpdateResponse]]
 	beginDelete                *tracker[azfake.PollerResponder[armstorage.ContextCacheContainersClientDeleteResponse]]
-	newListByContextCachePager *tracker[azfake.PagerResponder[armstorage.ContextCacheContainersClientListByContextCacheResponse]]
 	beginUpdate                *tracker[azfake.PollerResponder[armstorage.ContextCacheContainersClientUpdateResponse]]
+	newListByContextCachePager *tracker[azfake.PagerResponder[armstorage.ContextCacheContainersClientListByContextCacheResponse]]
 }
 
 // Do implements the policy.Transporter interface for ContextCacheContainersServerTransport.
@@ -90,12 +90,12 @@ func (c *ContextCacheContainersServerTransport) dispatchToMethodFake(req *http.R
 				res.resp, res.err = c.dispatchBeginCreateOrUpdate(req)
 			case "ContextCacheContainersClient.BeginDelete":
 				res.resp, res.err = c.dispatchBeginDelete(req)
+			case "ContextCacheContainersClient.BeginUpdate":
+				res.resp, res.err = c.dispatchBeginUpdate(req)
 			case "ContextCacheContainersClient.Get":
 				res.resp, res.err = c.dispatchGet(req)
 			case "ContextCacheContainersClient.NewListByContextCachePager":
 				res.resp, res.err = c.dispatchNewListByContextCachePager(req)
-			case "ContextCacheContainersClient.BeginUpdate":
-				res.resp, res.err = c.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -118,7 +118,7 @@ func (c *ContextCacheContainersServerTransport) dispatchBeginCreateOrUpdate(req 
 	}
 	beginCreateOrUpdate := c.beginCreateOrUpdate.get(req)
 	if beginCreateOrUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Storage/contextCaches/(?P<contextCacheName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/contextCacheContainers/(?P<contextCacheContainerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Storage/contextCaches/(?P<contextCacheName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/contextCacheContainers/(?P<contextCacheContainerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -170,7 +170,7 @@ func (c *ContextCacheContainersServerTransport) dispatchBeginDelete(req *http.Re
 	}
 	beginDelete := c.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Storage/contextCaches/(?P<contextCacheName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/contextCacheContainers/(?P<contextCacheContainerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Storage/contextCaches/(?P<contextCacheName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/contextCacheContainers/(?P<contextCacheContainerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -212,91 +212,13 @@ func (c *ContextCacheContainersServerTransport) dispatchBeginDelete(req *http.Re
 	return resp, nil
 }
 
-func (c *ContextCacheContainersServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if c.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Storage/contextCaches/(?P<contextCacheName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/contextCacheContainers/(?P<contextCacheContainerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	contextCacheNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("contextCacheName")])
-	if err != nil {
-		return nil, err
-	}
-	contextCacheContainerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("contextCacheContainerName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := c.srv.Get(req.Context(), resourceGroupNameParam, contextCacheNameParam, contextCacheContainerNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ContextCacheContainer, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (c *ContextCacheContainersServerTransport) dispatchNewListByContextCachePager(req *http.Request) (*http.Response, error) {
-	if c.srv.NewListByContextCachePager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListByContextCachePager not implemented")}
-	}
-	newListByContextCachePager := c.newListByContextCachePager.get(req)
-	if newListByContextCachePager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Storage/contextCaches/(?P<contextCacheName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/contextCacheContainers`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		contextCacheNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("contextCacheName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := c.srv.NewListByContextCachePager(resourceGroupNameParam, contextCacheNameParam, nil)
-		newListByContextCachePager = &resp
-		c.newListByContextCachePager.add(req, newListByContextCachePager)
-		server.PagerResponderInjectNextLinks(newListByContextCachePager, req, func(page *armstorage.ContextCacheContainersClientListByContextCacheResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListByContextCachePager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		c.newListByContextCachePager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListByContextCachePager) {
-		c.newListByContextCachePager.remove(req)
-	}
-	return resp, nil
-}
-
 func (c *ContextCacheContainersServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
 	if c.srv.BeginUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
 	}
 	beginUpdate := c.beginUpdate.get(req)
 	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Storage/contextCaches/(?P<contextCacheName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/contextCacheContainers/(?P<contextCacheContainerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Storage/contextCaches/(?P<contextCacheName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/contextCacheContainers/(?P<contextCacheContainerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -339,6 +261,84 @@ func (c *ContextCacheContainersServerTransport) dispatchBeginUpdate(req *http.Re
 		c.beginUpdate.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (c *ContextCacheContainersServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if c.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Storage/contextCaches/(?P<contextCacheName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/contextCacheContainers/(?P<contextCacheContainerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	contextCacheNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("contextCacheName")])
+	if err != nil {
+		return nil, err
+	}
+	contextCacheContainerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("contextCacheContainerName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := c.srv.Get(req.Context(), resourceGroupNameParam, contextCacheNameParam, contextCacheContainerNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ContextCacheContainer, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (c *ContextCacheContainersServerTransport) dispatchNewListByContextCachePager(req *http.Request) (*http.Response, error) {
+	if c.srv.NewListByContextCachePager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListByContextCachePager not implemented")}
+	}
+	newListByContextCachePager := c.newListByContextCachePager.get(req)
+	if newListByContextCachePager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Storage/contextCaches/(?P<contextCacheName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/contextCacheContainers`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		contextCacheNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("contextCacheName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := c.srv.NewListByContextCachePager(resourceGroupNameParam, contextCacheNameParam, nil)
+		newListByContextCachePager = &resp
+		c.newListByContextCachePager.add(req, newListByContextCachePager)
+		server.PagerResponderInjectNextLinks(newListByContextCachePager, req, func(page *armstorage.ContextCacheContainersClientListByContextCacheResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListByContextCachePager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		c.newListByContextCachePager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListByContextCachePager) {
+		c.newListByContextCachePager.remove(req)
+	}
 	return resp, nil
 }
 

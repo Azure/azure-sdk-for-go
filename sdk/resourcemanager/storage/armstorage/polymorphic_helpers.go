@@ -6,6 +6,160 @@ package armstorage
 
 import "encoding/json"
 
+func unmarshalBlobAccessPointConnectionPropertiesClassification(rawMsg json.RawMessage) (BlobAccessPointConnectionPropertiesClassification, error) {
+	if rawMsg == nil || string(rawMsg) == "null" {
+		return nil, nil
+	}
+	var m map[string]any
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b BlobAccessPointConnectionPropertiesClassification
+	switch m["connectionType"] {
+	case string(BlobAccessPointConnectionTypeEndpoint):
+		b = &BlobAccessPointEndpointConnectionProperties{}
+	case string(BlobAccessPointConnectionTypePrivateLink):
+		b = &BlobAccessPointPrivateLinkConnectionProperties{}
+	default:
+		b = &BlobAccessPointConnectionProperties{}
+	}
+	if err := json.Unmarshal(rawMsg, b); err != nil {
+		return nil, err
+	}
+	return b, nil
+}
+
+func unmarshalBlobAccessPointConnectionPropertiesUpdateClassification(rawMsg json.RawMessage) (BlobAccessPointConnectionPropertiesUpdateClassification, error) {
+	if rawMsg == nil || string(rawMsg) == "null" {
+		return nil, nil
+	}
+	var m map[string]any
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b BlobAccessPointConnectionPropertiesUpdateClassification
+	switch m["connectionType"] {
+	case string(BlobAccessPointConnectionTypeEndpoint):
+		b = &BlobAccessPointEndpointConnectionPropertiesUpdate{}
+	case string(BlobAccessPointConnectionTypePrivateLink):
+		b = &BlobAccessPointPrivateLinkConnectionPropertiesUpdate{}
+	default:
+		b = &BlobAccessPointConnectionPropertiesUpdate{}
+	}
+	if err := json.Unmarshal(rawMsg, b); err != nil {
+		return nil, err
+	}
+	return b, nil
+}
+
+func unmarshalBlobAccessPointRemoteAuthPropertiesClassification(rawMsg json.RawMessage) (BlobAccessPointRemoteAuthPropertiesClassification, error) {
+	if rawMsg == nil || string(rawMsg) == "null" {
+		return nil, nil
+	}
+	var m map[string]any
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b BlobAccessPointRemoteAuthPropertiesClassification
+	switch m["authType"] {
+	case string(BlobAccessPointRemoteAuthTypeAccessKey):
+		b = &BlobAccessPointAccessKeyAuthProperties{}
+	default:
+		b = &BlobAccessPointRemoteAuthProperties{}
+	}
+	if err := json.Unmarshal(rawMsg, b); err != nil {
+		return nil, err
+	}
+	return b, nil
+}
+
+func unmarshalBlobAccessPointRemoteAuthPropertiesUpdateClassification(rawMsg json.RawMessage) (BlobAccessPointRemoteAuthPropertiesUpdateClassification, error) {
+	if rawMsg == nil || string(rawMsg) == "null" {
+		return nil, nil
+	}
+	var m map[string]any
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b BlobAccessPointRemoteAuthPropertiesUpdateClassification
+	switch m["authType"] {
+	case string(BlobAccessPointRemoteAuthTypeAccessKey):
+		b = &BlobAccessPointAccessKeyAuthPropertiesUpdate{}
+	default:
+		b = &BlobAccessPointRemoteAuthPropertiesUpdate{}
+	}
+	if err := json.Unmarshal(rawMsg, b); err != nil {
+		return nil, err
+	}
+	return b, nil
+}
+
+func unmarshalBlobAccessPointSourcePropertiesClassification(rawMsg json.RawMessage) (BlobAccessPointSourcePropertiesClassification, error) {
+	if rawMsg == nil || string(rawMsg) == "null" {
+		return nil, nil
+	}
+	var m map[string]any
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b BlobAccessPointSourcePropertiesClassification
+	switch m["sourceType"] {
+	case string(BlobAccessPointSourceTypeAzureNetAppFiles):
+		b = &BlobAccessPointAzureNetAppFilesSourceProperties{}
+	case string(BlobAccessPointSourceTypeCommvault):
+		b = &BlobAccessPointCommvaultSourceProperties{}
+	case string(BlobAccessPointSourceTypeDellOneFs):
+		b = &BlobAccessPointDellOneFsSourceProperties{}
+	case string(BlobAccessPointSourceTypeNasuni):
+		b = &BlobAccessPointNasuniSourceProperties{}
+	case string(BlobAccessPointSourceTypeNetAppOntap):
+		b = &BlobAccessPointNetAppOntapSourceProperties{}
+	case string(BlobAccessPointSourceTypeQumulo):
+		b = &BlobAccessPointQumuloSourceProperties{}
+	case string(BlobAccessPointSourceTypeS3Compatible):
+		b = &BlobAccessPointGenericS3SourceProperties{}
+	default:
+		b = &BlobAccessPointSourceProperties{}
+	}
+	if err := json.Unmarshal(rawMsg, b); err != nil {
+		return nil, err
+	}
+	return b, nil
+}
+
+func unmarshalBlobAccessPointSourcePropertiesUpdateClassification(rawMsg json.RawMessage) (BlobAccessPointSourcePropertiesUpdateClassification, error) {
+	if rawMsg == nil || string(rawMsg) == "null" {
+		return nil, nil
+	}
+	var m map[string]any
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b BlobAccessPointSourcePropertiesUpdateClassification
+	switch m["sourceType"] {
+	case string(BlobAccessPointSourceTypeAzureNetAppFiles):
+		b = &BlobAccessPointAzureNetAppFilesSourcePropertiesUpdate{}
+	case string(BlobAccessPointSourceTypeCommvault):
+		b = &BlobAccessPointCommvaultSourcePropertiesUpdate{}
+	case string(BlobAccessPointSourceTypeDellOneFs):
+		b = &BlobAccessPointDellOneFsSourcePropertiesUpdate{}
+	case string(BlobAccessPointSourceTypeNasuni):
+		b = &BlobAccessPointNasuniSourcePropertiesUpdate{}
+	case string(BlobAccessPointSourceTypeNetAppOntap):
+		b = &BlobAccessPointNetAppOntapSourcePropertiesUpdate{}
+	case string(BlobAccessPointSourceTypeQumulo):
+		b = &BlobAccessPointQumuloSourcePropertiesUpdate{}
+	case string(BlobAccessPointSourceTypeS3Compatible):
+		b = &BlobAccessPointGenericS3SourcePropertiesUpdate{}
+	default:
+		b = &BlobAccessPointSourcePropertiesUpdate{}
+	}
+	if err := json.Unmarshal(rawMsg, b); err != nil {
+		return nil, err
+	}
+	return b, nil
+}
+
 func unmarshalConnectorAuthPropertiesClassification(rawMsg json.RawMessage) (ConnectorAuthPropertiesClassification, error) {
 	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil

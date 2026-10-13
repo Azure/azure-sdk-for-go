@@ -29,6 +29,10 @@ type DataSharesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, accountName string, dataShareName string, options *armstorage.DataSharesClientBeginDeleteOptions) (resp azfake.PollerResponder[armstorage.DataSharesClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method DataSharesClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, accountName string, dataShareName string, properties armstorage.DataShareUpdate, options *armstorage.DataSharesClientBeginUpdateOptions) (resp azfake.PollerResponder[armstorage.DataSharesClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method DataSharesClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, accountName string, dataShareName string, options *armstorage.DataSharesClientGetOptions) (resp azfake.Responder[armstorage.DataSharesClientGetResponse], errResp azfake.ErrorResponder)
@@ -36,10 +40,6 @@ type DataSharesServer struct {
 	// NewListByStorageAccountPager is the fake for method DataSharesClient.NewListByStorageAccountPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByStorageAccountPager func(resourceGroupName string, accountName string, options *armstorage.DataSharesClientListByStorageAccountOptions) (resp azfake.PagerResponder[armstorage.DataSharesClientListByStorageAccountResponse])
-
-	// BeginUpdate is the fake for method DataSharesClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, accountName string, dataShareName string, properties armstorage.DataShareUpdate, options *armstorage.DataSharesClientBeginUpdateOptions) (resp azfake.PollerResponder[armstorage.DataSharesClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewDataSharesServerTransport creates a new instance of DataSharesServerTransport with the provided implementation.
@@ -50,8 +50,8 @@ func NewDataSharesServerTransport(srv *DataSharesServer) *DataSharesServerTransp
 		srv:                          srv,
 		beginCreate:                  newTracker[azfake.PollerResponder[armstorage.DataSharesClientCreateResponse]](),
 		beginDelete:                  newTracker[azfake.PollerResponder[armstorage.DataSharesClientDeleteResponse]](),
-		newListByStorageAccountPager: newTracker[azfake.PagerResponder[armstorage.DataSharesClientListByStorageAccountResponse]](),
 		beginUpdate:                  newTracker[azfake.PollerResponder[armstorage.DataSharesClientUpdateResponse]](),
+		newListByStorageAccountPager: newTracker[azfake.PagerResponder[armstorage.DataSharesClientListByStorageAccountResponse]](),
 	}
 }
 
@@ -61,8 +61,8 @@ type DataSharesServerTransport struct {
 	srv                          *DataSharesServer
 	beginCreate                  *tracker[azfake.PollerResponder[armstorage.DataSharesClientCreateResponse]]
 	beginDelete                  *tracker[azfake.PollerResponder[armstorage.DataSharesClientDeleteResponse]]
-	newListByStorageAccountPager *tracker[azfake.PagerResponder[armstorage.DataSharesClientListByStorageAccountResponse]]
 	beginUpdate                  *tracker[azfake.PollerResponder[armstorage.DataSharesClientUpdateResponse]]
+	newListByStorageAccountPager *tracker[azfake.PagerResponder[armstorage.DataSharesClientListByStorageAccountResponse]]
 }
 
 // Do implements the policy.Transporter interface for DataSharesServerTransport.
@@ -90,12 +90,12 @@ func (d *DataSharesServerTransport) dispatchToMethodFake(req *http.Request, meth
 				res.resp, res.err = d.dispatchBeginCreate(req)
 			case "DataSharesClient.BeginDelete":
 				res.resp, res.err = d.dispatchBeginDelete(req)
+			case "DataSharesClient.BeginUpdate":
+				res.resp, res.err = d.dispatchBeginUpdate(req)
 			case "DataSharesClient.Get":
 				res.resp, res.err = d.dispatchGet(req)
 			case "DataSharesClient.NewListByStorageAccountPager":
 				res.resp, res.err = d.dispatchNewListByStorageAccountPager(req)
-			case "DataSharesClient.BeginUpdate":
-				res.resp, res.err = d.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -118,7 +118,7 @@ func (d *DataSharesServerTransport) dispatchBeginCreate(req *http.Request) (*htt
 	}
 	beginCreate := d.beginCreate.get(req)
 	if beginCreate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Storage/storageAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/dataShares/(?P<dataShareName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Storage/storageAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/dataShares/(?P<dataShareName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -170,7 +170,7 @@ func (d *DataSharesServerTransport) dispatchBeginDelete(req *http.Request) (*htt
 	}
 	beginDelete := d.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Storage/storageAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/dataShares/(?P<dataShareName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Storage/storageAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/dataShares/(?P<dataShareName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -212,91 +212,13 @@ func (d *DataSharesServerTransport) dispatchBeginDelete(req *http.Request) (*htt
 	return resp, nil
 }
 
-func (d *DataSharesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if d.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Storage/storageAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/dataShares/(?P<dataShareName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
-	if err != nil {
-		return nil, err
-	}
-	dataShareNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("dataShareName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := d.srv.Get(req.Context(), resourceGroupNameParam, accountNameParam, dataShareNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DataShare, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (d *DataSharesServerTransport) dispatchNewListByStorageAccountPager(req *http.Request) (*http.Response, error) {
-	if d.srv.NewListByStorageAccountPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListByStorageAccountPager not implemented")}
-	}
-	newListByStorageAccountPager := d.newListByStorageAccountPager.get(req)
-	if newListByStorageAccountPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Storage/storageAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/dataShares`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := d.srv.NewListByStorageAccountPager(resourceGroupNameParam, accountNameParam, nil)
-		newListByStorageAccountPager = &resp
-		d.newListByStorageAccountPager.add(req, newListByStorageAccountPager)
-		server.PagerResponderInjectNextLinks(newListByStorageAccountPager, req, func(page *armstorage.DataSharesClientListByStorageAccountResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListByStorageAccountPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		d.newListByStorageAccountPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListByStorageAccountPager) {
-		d.newListByStorageAccountPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (d *DataSharesServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
 	if d.srv.BeginUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
 	}
 	beginUpdate := d.beginUpdate.get(req)
 	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Storage/storageAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/dataShares/(?P<dataShareName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Storage/storageAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/dataShares/(?P<dataShareName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -339,6 +261,84 @@ func (d *DataSharesServerTransport) dispatchBeginUpdate(req *http.Request) (*htt
 		d.beginUpdate.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (d *DataSharesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if d.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Storage/storageAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/dataShares/(?P<dataShareName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+	if err != nil {
+		return nil, err
+	}
+	dataShareNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("dataShareName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := d.srv.Get(req.Context(), resourceGroupNameParam, accountNameParam, dataShareNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DataShare, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (d *DataSharesServerTransport) dispatchNewListByStorageAccountPager(req *http.Request) (*http.Response, error) {
+	if d.srv.NewListByStorageAccountPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListByStorageAccountPager not implemented")}
+	}
+	newListByStorageAccountPager := d.newListByStorageAccountPager.get(req)
+	if newListByStorageAccountPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Storage/storageAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/dataShares`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := d.srv.NewListByStorageAccountPager(resourceGroupNameParam, accountNameParam, nil)
+		newListByStorageAccountPager = &resp
+		d.newListByStorageAccountPager.add(req, newListByStorageAccountPager)
+		server.PagerResponderInjectNextLinks(newListByStorageAccountPager, req, func(page *armstorage.DataSharesClientListByStorageAccountResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListByStorageAccountPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		d.newListByStorageAccountPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListByStorageAccountPager) {
+		d.newListByStorageAccountPager.remove(req)
+	}
 	return resp, nil
 }
 

@@ -4,6 +4,64 @@
 
 package armstorage
 
+// BlobAccessPointConnectionPropertiesClassification provides polymorphic access to related types.
+// Call the interface's GetBlobAccessPointConnectionProperties() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *BlobAccessPointConnectionProperties, *BlobAccessPointEndpointConnectionProperties, *BlobAccessPointPrivateLinkConnectionProperties
+type BlobAccessPointConnectionPropertiesClassification interface {
+	// GetBlobAccessPointConnectionProperties returns the BlobAccessPointConnectionProperties content of the underlying type.
+	GetBlobAccessPointConnectionProperties() *BlobAccessPointConnectionProperties
+}
+
+// BlobAccessPointConnectionPropertiesUpdateClassification provides polymorphic access to related types.
+// Call the interface's GetBlobAccessPointConnectionPropertiesUpdate() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *BlobAccessPointConnectionPropertiesUpdate, *BlobAccessPointEndpointConnectionPropertiesUpdate, *BlobAccessPointPrivateLinkConnectionPropertiesUpdate
+type BlobAccessPointConnectionPropertiesUpdateClassification interface {
+	// GetBlobAccessPointConnectionPropertiesUpdate returns the BlobAccessPointConnectionPropertiesUpdate content of the underlying type.
+	GetBlobAccessPointConnectionPropertiesUpdate() *BlobAccessPointConnectionPropertiesUpdate
+}
+
+// BlobAccessPointRemoteAuthPropertiesClassification provides polymorphic access to related types.
+// Call the interface's GetBlobAccessPointRemoteAuthProperties() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *BlobAccessPointAccessKeyAuthProperties, *BlobAccessPointRemoteAuthProperties
+type BlobAccessPointRemoteAuthPropertiesClassification interface {
+	// GetBlobAccessPointRemoteAuthProperties returns the BlobAccessPointRemoteAuthProperties content of the underlying type.
+	GetBlobAccessPointRemoteAuthProperties() *BlobAccessPointRemoteAuthProperties
+}
+
+// BlobAccessPointRemoteAuthPropertiesUpdateClassification provides polymorphic access to related types.
+// Call the interface's GetBlobAccessPointRemoteAuthPropertiesUpdate() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *BlobAccessPointAccessKeyAuthPropertiesUpdate, *BlobAccessPointRemoteAuthPropertiesUpdate
+type BlobAccessPointRemoteAuthPropertiesUpdateClassification interface {
+	// GetBlobAccessPointRemoteAuthPropertiesUpdate returns the BlobAccessPointRemoteAuthPropertiesUpdate content of the underlying type.
+	GetBlobAccessPointRemoteAuthPropertiesUpdate() *BlobAccessPointRemoteAuthPropertiesUpdate
+}
+
+// BlobAccessPointSourcePropertiesClassification provides polymorphic access to related types.
+// Call the interface's GetBlobAccessPointSourceProperties() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *BlobAccessPointAzureNetAppFilesSourceProperties, *BlobAccessPointCommvaultSourceProperties, *BlobAccessPointDellOneFsSourceProperties,
+// - *BlobAccessPointGenericS3SourceProperties, *BlobAccessPointNasuniSourceProperties, *BlobAccessPointNetAppOntapSourceProperties,
+// - *BlobAccessPointQumuloSourceProperties, *BlobAccessPointSourceProperties
+type BlobAccessPointSourcePropertiesClassification interface {
+	// GetBlobAccessPointSourceProperties returns the BlobAccessPointSourceProperties content of the underlying type.
+	GetBlobAccessPointSourceProperties() *BlobAccessPointSourceProperties
+}
+
+// BlobAccessPointSourcePropertiesUpdateClassification provides polymorphic access to related types.
+// Call the interface's GetBlobAccessPointSourcePropertiesUpdate() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *BlobAccessPointAzureNetAppFilesSourcePropertiesUpdate, *BlobAccessPointCommvaultSourcePropertiesUpdate, *BlobAccessPointDellOneFsSourcePropertiesUpdate,
+// - *BlobAccessPointGenericS3SourcePropertiesUpdate, *BlobAccessPointNasuniSourcePropertiesUpdate, *BlobAccessPointNetAppOntapSourcePropertiesUpdate,
+// - *BlobAccessPointQumuloSourcePropertiesUpdate, *BlobAccessPointSourcePropertiesUpdate
+type BlobAccessPointSourcePropertiesUpdateClassification interface {
+	// GetBlobAccessPointSourcePropertiesUpdate returns the BlobAccessPointSourcePropertiesUpdate content of the underlying type.
+	GetBlobAccessPointSourcePropertiesUpdate() *BlobAccessPointSourcePropertiesUpdate
+}
+
 // ConnectorAuthPropertiesClassification provides polymorphic access to related types.
 // Call the interface's GetConnectorAuthProperties() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:

@@ -20,7 +20,7 @@ import (
 // TaskAssignmentsClient contains the methods for the TaskAssignments group.
 // Don't use this type directly, use NewTaskAssignmentsClient() instead.
 //
-// Generated from API version 2026-06-01
+// Generated from API version 2026-09-01
 type TaskAssignmentsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -31,6 +31,9 @@ type TaskAssignmentsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewTaskAssignmentsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*TaskAssignmentsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -73,7 +76,7 @@ func (client *TaskAssignmentsClient) BeginCreate(ctx context.Context, resourceGr
 	}
 }
 
-// Create - Asynchronously creates a new storage task assignment sub-resource with the specified parameters. If a storage
+// create - Asynchronously creates a new storage task assignment sub-resource with the specified parameters. If a storage
 // task assignment is already created and a subsequent create request is issued with different properties, the storage task
 // assignment properties will be updated. If a storage task assignment is already created and a subsequent create or update
 // request is issued with the exact same set of properties, the request will succeed.
@@ -98,11 +101,11 @@ func (client *TaskAssignmentsClient) create(ctx context.Context, resourceGroupNa
 	return httpResp, nil
 }
 
-// createCreateRequest creates the Create request.
+// createCreateRequest creates the create request.
 func (client *TaskAssignmentsClient) createCreateRequest(ctx context.Context, resourceGroupName string, accountName string, storageTaskAssignmentName string, parameters TaskAssignment, _ *TaskAssignmentsClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/storageTaskAssignments/{storageTaskAssignmentName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -122,7 +125,7 @@ func (client *TaskAssignmentsClient) createCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260601)
+	reqQP.Set("api-version", version20260901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -158,7 +161,7 @@ func (client *TaskAssignmentsClient) BeginDelete(ctx context.Context, resourceGr
 	}
 }
 
-// Delete - Delete the storage task assignment sub-resource
+// deleteOperation - Delete the storage task assignment sub-resource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *TaskAssignmentsClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, storageTaskAssignmentName string, options *TaskAssignmentsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -180,11 +183,11 @@ func (client *TaskAssignmentsClient) deleteOperation(ctx context.Context, resour
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *TaskAssignmentsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, storageTaskAssignmentName string, _ *TaskAssignmentsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/storageTaskAssignments/{storageTaskAssignmentName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -204,8 +207,170 @@ func (client *TaskAssignmentsClient) deleteCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260601)
+	reqQP.Set("api-version", version20260901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginStopAssignment - Stops any active running storage action for the storage task assignment
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
+//     3 and 24 characters in length and use numbers and lower-case letters only.
+//   - storageTaskAssignmentName - The name of the storage task assignment within the specified resource group. Storage task assignment
+//     names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+//   - options - TaskAssignmentsClientBeginStopAssignmentOptions contains the optional parameters for the TaskAssignmentsClient.BeginStopAssignment
+//     method.
+func (client *TaskAssignmentsClient) BeginStopAssignment(ctx context.Context, resourceGroupName string, accountName string, storageTaskAssignmentName string, options *TaskAssignmentsClientBeginStopAssignmentOptions) (*runtime.Poller[TaskAssignmentsClientStopAssignmentResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.stopAssignment(ctx, resourceGroupName, accountName, storageTaskAssignmentName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[TaskAssignmentsClientStopAssignmentResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[TaskAssignmentsClientStopAssignmentResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// stopAssignment - Stops any active running storage action for the storage task assignment
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *TaskAssignmentsClient) stopAssignment(ctx context.Context, resourceGroupName string, accountName string, storageTaskAssignmentName string, options *TaskAssignmentsClientBeginStopAssignmentOptions) (*http.Response, error) {
+	var err error
+	const operationName = "TaskAssignmentsClient.BeginStopAssignment"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.stopAssignmentCreateRequest(ctx, resourceGroupName, accountName, storageTaskAssignmentName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// stopAssignmentCreateRequest creates the stopAssignment request.
+func (client *TaskAssignmentsClient) stopAssignmentCreateRequest(ctx context.Context, resourceGroupName string, accountName string, storageTaskAssignmentName string, _ *TaskAssignmentsClientBeginStopAssignmentOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/storageTaskAssignments/{storageTaskAssignmentName}/stopAssignment"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if accountName == "" {
+		return nil, errors.New("parameter accountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+	if storageTaskAssignmentName == "" {
+		return nil, errors.New("parameter storageTaskAssignmentName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{storageTaskAssignmentName}", url.PathEscape(storageTaskAssignmentName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginUpdate - Update storage task assignment properties
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
+//     3 and 24 characters in length and use numbers and lower-case letters only.
+//   - storageTaskAssignmentName - The name of the storage task assignment within the specified resource group. Storage task assignment
+//     names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+//   - parameters - The parameters to update a Storage Task Assignment.
+//   - options - TaskAssignmentsClientBeginUpdateOptions contains the optional parameters for the TaskAssignmentsClient.BeginUpdate
+//     method.
+func (client *TaskAssignmentsClient) BeginUpdate(ctx context.Context, resourceGroupName string, accountName string, storageTaskAssignmentName string, parameters TaskAssignmentUpdateParameters, options *TaskAssignmentsClientBeginUpdateOptions) (*runtime.Poller[TaskAssignmentsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, accountName, storageTaskAssignmentName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[TaskAssignmentsClientUpdateResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[TaskAssignmentsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Update storage task assignment properties
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *TaskAssignmentsClient) update(ctx context.Context, resourceGroupName string, accountName string, storageTaskAssignmentName string, parameters TaskAssignmentUpdateParameters, options *TaskAssignmentsClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "TaskAssignmentsClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, accountName, storageTaskAssignmentName, parameters, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *TaskAssignmentsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, storageTaskAssignmentName string, parameters TaskAssignmentUpdateParameters, _ *TaskAssignmentsClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/storageTaskAssignments/{storageTaskAssignmentName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if accountName == "" {
+		return nil, errors.New("parameter accountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+	if storageTaskAssignmentName == "" {
+		return nil, errors.New("parameter storageTaskAssignmentName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{storageTaskAssignmentName}", url.PathEscape(storageTaskAssignmentName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
+		return nil, err
+	}
 	return req, nil
 }
 
@@ -238,7 +403,7 @@ func (client *TaskAssignmentsClient) Get(ctx context.Context, resourceGroupName 
 func (client *TaskAssignmentsClient) getCreateRequest(ctx context.Context, resourceGroupName string, accountName string, storageTaskAssignmentName string, _ *TaskAssignmentsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/storageTaskAssignments/{storageTaskAssignmentName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -258,7 +423,7 @@ func (client *TaskAssignmentsClient) getCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260601)
+	reqQP.Set("api-version", version20260901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -315,7 +480,7 @@ func (client *TaskAssignmentsClient) listCreateRequest(ctx context.Context, reso
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/storageTaskAssignments"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -338,7 +503,7 @@ func (client *TaskAssignmentsClient) listCreateRequest(ctx context.Context, reso
 		if options != nil && options.Top != nil {
 			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 		}
-		reqQP.Set("api-version", version20260601)
+		reqQP.Set("api-version", version20260901)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -355,166 +520,4 @@ func (client *TaskAssignmentsClient) listHandleResponse(resp *http.Response, suc
 		return TaskAssignmentsClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginStopAssignment - Stops any active running storage action for the storage task assignment
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
-//     3 and 24 characters in length and use numbers and lower-case letters only.
-//   - storageTaskAssignmentName - The name of the storage task assignment within the specified resource group. Storage task assignment
-//     names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-//   - options - TaskAssignmentsClientBeginStopAssignmentOptions contains the optional parameters for the TaskAssignmentsClient.BeginStopAssignment
-//     method.
-func (client *TaskAssignmentsClient) BeginStopAssignment(ctx context.Context, resourceGroupName string, accountName string, storageTaskAssignmentName string, options *TaskAssignmentsClientBeginStopAssignmentOptions) (*runtime.Poller[TaskAssignmentsClientStopAssignmentResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.stopAssignment(ctx, resourceGroupName, accountName, storageTaskAssignmentName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[TaskAssignmentsClientStopAssignmentResponse]{
-			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
-			Tracer:        client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[TaskAssignmentsClientStopAssignmentResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// StopAssignment - Stops any active running storage action for the storage task assignment
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *TaskAssignmentsClient) stopAssignment(ctx context.Context, resourceGroupName string, accountName string, storageTaskAssignmentName string, options *TaskAssignmentsClientBeginStopAssignmentOptions) (*http.Response, error) {
-	var err error
-	const operationName = "TaskAssignmentsClient.BeginStopAssignment"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.stopAssignmentCreateRequest(ctx, resourceGroupName, accountName, storageTaskAssignmentName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// stopAssignmentCreateRequest creates the StopAssignment request.
-func (client *TaskAssignmentsClient) stopAssignmentCreateRequest(ctx context.Context, resourceGroupName string, accountName string, storageTaskAssignmentName string, _ *TaskAssignmentsClientBeginStopAssignmentOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/storageTaskAssignments/{storageTaskAssignmentName}/stopAssignment"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if accountName == "" {
-		return nil, errors.New("parameter accountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	if storageTaskAssignmentName == "" {
-		return nil, errors.New("parameter storageTaskAssignmentName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{storageTaskAssignmentName}", url.PathEscape(storageTaskAssignmentName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	return req, nil
-}
-
-// BeginUpdate - Update storage task assignment properties
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
-//     3 and 24 characters in length and use numbers and lower-case letters only.
-//   - storageTaskAssignmentName - The name of the storage task assignment within the specified resource group. Storage task assignment
-//     names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-//   - parameters - The parameters to update a Storage Task Assignment.
-//   - options - TaskAssignmentsClientBeginUpdateOptions contains the optional parameters for the TaskAssignmentsClient.BeginUpdate
-//     method.
-func (client *TaskAssignmentsClient) BeginUpdate(ctx context.Context, resourceGroupName string, accountName string, storageTaskAssignmentName string, parameters TaskAssignmentUpdateParameters, options *TaskAssignmentsClientBeginUpdateOptions) (*runtime.Poller[TaskAssignmentsClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, accountName, storageTaskAssignmentName, parameters, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[TaskAssignmentsClientUpdateResponse]{
-			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
-			Tracer:        client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[TaskAssignmentsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Update storage task assignment properties
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *TaskAssignmentsClient) update(ctx context.Context, resourceGroupName string, accountName string, storageTaskAssignmentName string, parameters TaskAssignmentUpdateParameters, options *TaskAssignmentsClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "TaskAssignmentsClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, accountName, storageTaskAssignmentName, parameters, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *TaskAssignmentsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, storageTaskAssignmentName string, parameters TaskAssignmentUpdateParameters, _ *TaskAssignmentsClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/storageTaskAssignments/{storageTaskAssignmentName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if accountName == "" {
-		return nil, errors.New("parameter accountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	if storageTaskAssignmentName == "" {
-		return nil, errors.New("parameter storageTaskAssignmentName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{storageTaskAssignmentName}", url.PathEscape(storageTaskAssignmentName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

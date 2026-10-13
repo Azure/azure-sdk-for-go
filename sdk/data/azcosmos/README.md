@@ -166,9 +166,9 @@ the Go binding preserves that error rather than computing aggregates itself.
 Contexts bound query waits; canceling an admitted page or checkpoint terminates that pager
 without claiming to cancel native work. Late completions are drained safely, and client
 shutdown waits for their cleanup. Native per-page timeouts retain the configured duration
-(the driver clamps positive values below one second); subsequent page contexts do not inherit
-the first page's remaining deadline. With `EndToEndTimeout == 0`, no explicit native query
-timeout is added: native defaults apply, and a context deadline limits only the Go wait.
+(the driver clamps explicit values below one second, including zero); subsequent page contexts
+do not inherit the first page's remaining deadline. With `EndToEndTimeout == nil`, timeout
+settings are inherited, and a context deadline limits only the Go wait.
 Per-page context deadlines cannot bound native execution with the pinned ABI. Stronger
 guarantees require cooperative cancellation
 ([Azure/azure-sdk-for-rust#5358](https://github.com/Azure/azure-sdk-for-rust/issues/5358))

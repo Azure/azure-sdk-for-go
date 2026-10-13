@@ -11,6 +11,8 @@
 
 ### Bugs Fixed
 
+* Restored eligible read retries when a per-attempt timeout expires. Interrupted connection-error and HTTP 408 retries retain their internal budgets, routing state, and remaining backoff. Caller cancellation, independent retry vetoes, and write protection are unchanged.
+
 ### Other Changes
 
 ## 1.6.0-beta.3 (2026-09-01)

@@ -196,6 +196,7 @@ func newClient(authPolicy policy.Policy, gem *globalEndpointManager, options *Cl
 	return azcore.NewClient(moduleName, serviceLibVersion,
 		azruntime.PipelineOptions{
 			PerCall: []policy.Policy{
+				&retryCallerContextPolicy{},
 				&headerPolicies{
 					enableContentResponseOnWrite: options.EnableContentResponseOnWrite,
 					priorityLevel:                options.PriorityLevel,

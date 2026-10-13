@@ -137,6 +137,51 @@ type retryContext struct {
 	// demote-to-tail (MarkEndpointUnavailable* moves the bad endpoint
 	// to the tail of the route list).
 	resolveFromHead bool
+	retryNotBefore  time.Time
+}
+
+type interruptedReadRetry struct {
+	state retryContext
+	err   error
+}
+
+type retryCallerContext struct{ context.Context }
+
+type retryCallerContextPolicy struct{}
+
+func (*retryCallerContextPolicy) Do(req *policy.Request) (*http.Response, error) {
+	// Capture the caller before azcore creates its per-attempt context.
+	req.SetOperationValue(retryCallerContext{req.Raw().Context()})
+	return req.Next()
+}
+
+// Retain the reservation and the remaining backoff across attempt deadlines.
+func sleepBeforeRetry(req *policy.Request, isWriteOperation bool, state *retryContext) error {
+	if isWriteOperation {
+		return sleepWithContext(req.Raw().Context(), defaultBackoff*time.Second)
+	}
+	state.retryNotBefore = time.Now().Add(defaultBackoff * time.Second)
+	err := sleepWithContext(req.Raw().Context(), time.Until(state.retryNotBefore))
+	if err == nil {
+		state.retryNotBefore = time.Time{}
+	}
+	return err
+}
+
+func handoffReadRetry(req *policy.Request, state retryContext, err error) error {
+	req.SetOperationValue(interruptedReadRetry{state: state, err: err})
+	return err
+}
+
+func isReadAttemptDeadline(req *policy.Request, isWriteOperation bool) bool {
+	var caller retryCallerContext
+	return !isWriteOperation && req.OperationValue(&caller) && caller.Err() == nil &&
+		req.Raw().Context().Err() == context.DeadlineExceeded
+}
+
+func canHandoffReadRetry(req *policy.Request, isWriteOperation bool, err error) bool {
+	var veto errorinfo.NonRetriable
+	return isReadAttemptDeadline(req, isWriteOperation) && !errors.As(err, &veto)
 }
 
 const maxRetryCount = 120
@@ -193,6 +238,23 @@ func (p *clientRetryPolicy) Do(req *policy.Request) (*http.Response, error) {
 	}
 
 	retryContext := retryContext{}
+	var interrupted interruptedReadRetry
+	if req.OperationValue(&interrupted) && interrupted.err != nil {
+		req.SetOperationValue(interruptedReadRetry{})
+		retryContext = interrupted.state
+		err := req.Raw().Context().Err()
+		if remaining := time.Until(retryContext.retryNotBefore); err == nil && remaining > 0 {
+			err = sleepWithContext(req.Raw().Context(), remaining)
+		}
+		if err != nil {
+			err = fmt.Errorf("%w: underlying transport error: %w", err, interrupted.err)
+			if canHandoffReadRetry(req, o.isWriteOperation, err) {
+				return nil, handoffReadRetry(req, retryContext, interrupted.err)
+			}
+			return nil, errorinfo.NonRetriableError(err)
+		}
+		retryContext.retryNotBefore = time.Time{}
+	}
 	for {
 		// Update the retry context with the latest retry values
 		req.SetOperationValue(retryContext)
@@ -212,18 +274,28 @@ func (p *clientRetryPolicy) Do(req *policy.Request) (*http.Response, error) {
 			if state := requestDiagnosticsStateFromContext(req.Raw().Context()); state != nil && state.clientSideStats != nil {
 				state.clientSideStats.recordHTTPError(attemptStartTime, req.Raw(), err, o.resourceType, regionName.String())
 			}
-			// Honor the caller's context: if their deadline expired or
-			// they cancelled the request, do not consume their budget
-			// with our retries. Preserve both the cancellation reason
-			// (so errors.Is(returned, context.DeadlineExceeded) works)
-			// and the underlying transport error for diagnostics.
+			// azcore checks the original caller context. Only eligible
+			// reads may hand an attempt deadline back to its outer loop.
 			if ctxErr := req.Raw().Context().Err(); ctxErr != nil {
-				return nil, errorinfo.NonRetriableError(fmt.Errorf("%w: underlying transport error: %v", ctxErr, err))
+				if !canHandoffReadRetry(req, o.isWriteOperation, err) {
+					if isReadAttemptDeadline(req, o.isWriteOperation) {
+						return nil, errorinfo.NonRetriableError(fmt.Errorf("%w: underlying transport error: %w", ctxErr, err))
+					}
+					return nil, errorinfo.NonRetriableError(fmt.Errorf("%w: underlying transport error: %v", ctxErr, err))
+				}
+				err = fmt.Errorf("%w: underlying transport error: %w", ctxErr, err)
 			}
 			kind := classifyNetworkError(err)
 			if kind != connectionErrorNone {
 				shouldRetry, errRetry := p.attemptRetryOnNetworkError(req, kind, o.isWriteOperation, err, &retryContext)
 				if errRetry != nil {
+					if isReadAttemptDeadline(req, o.isWriteOperation) && errors.Is(errRetry, context.DeadlineExceeded) && !retryContext.retryNotBefore.IsZero() {
+						preserved := fmt.Errorf("%w: underlying transport error: %w", req.Raw().Context().Err(), err)
+						if canHandoffReadRetry(req, o.isWriteOperation, err) {
+							return nil, handoffReadRetry(req, retryContext, preserved)
+						}
+						return nil, errorinfo.NonRetriableError(preserved)
+					}
 					return nil, errorinfo.NonRetriableError(errRetry)
 				}
 				if !shouldRetry {
@@ -268,6 +340,11 @@ func (p *clientRetryPolicy) Do(req *policy.Request) (*http.Response, error) {
 			case http.StatusRequestTimeout:
 				shouldRetry, err := p.attemptRetryOnRequestTimeout(req, o.isWriteOperation, &retryContext)
 				if err != nil {
+					if canHandoffReadRetry(req, o.isWriteOperation, err) && !retryContext.retryNotBefore.IsZero() {
+						retryContext.retryCount += 1
+						retryContext.sameRegionRetryCount = 0
+						return nil, handoffReadRetry(req, retryContext, err)
+					}
 					return nil, errorinfo.NonRetriableError(err)
 				}
 				if !shouldRetry {
@@ -352,7 +429,7 @@ func (p *clientRetryPolicy) attemptRetryOnNetworkError(req *policy.Request, kind
 		retryContext.sameRegionRetryCount < maxSameRegionConnectionRetries &&
 		(!isWriteOperation || kind == connectionErrorNotSent) {
 		retryContext.sameRegionRetryCount += 1
-		if sleepErr := sleepWithContext(req.Raw().Context(), defaultBackoff*time.Second); sleepErr != nil {
+		if sleepErr := sleepBeforeRetry(req, isWriteOperation, retryContext); sleepErr != nil {
 			return false, fmt.Errorf("%w: underlying transport error: %v", sleepErr, transportErr)
 		}
 		return true, nil
@@ -413,7 +490,7 @@ func (p *clientRetryPolicy) attemptRetryOnNetworkError(req *policy.Request, kind
 
 	retryContext.sameRegionRetryCount = 0
 	retryContext.crossRegionFailoverDone = true
-	if sleepErr := sleepWithContext(req.Raw().Context(), defaultBackoff*time.Second); sleepErr != nil {
+	if sleepErr := sleepBeforeRetry(req, isWriteOperation, retryContext); sleepErr != nil {
 		return false, fmt.Errorf("%w: underlying transport error: %v", sleepErr, transportErr)
 	}
 	return true, nil
@@ -588,7 +665,7 @@ func (p *clientRetryPolicy) attemptRetryOnRequestTimeout(req *policy.Request, is
 	// works at the call site. There is no transport error to compose
 	// with here (the 408 path is reached from a successful HTTP
 	// exchange), so the bare sleep error is sufficient.
-	if sleepErr := sleepWithContext(req.Raw().Context(), defaultBackoff*time.Second); sleepErr != nil {
+	if sleepErr := sleepBeforeRetry(req, isWriteOperation, retryContext); sleepErr != nil {
 		return false, sleepErr
 	}
 	return true, nil

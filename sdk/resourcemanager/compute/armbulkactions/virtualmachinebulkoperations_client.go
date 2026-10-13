@@ -447,86 +447,6 @@ func (client *VirtualMachineBulkOperationsClient) bulkHibernateOperationHandleRe
 	return result, nil
 }
 
-// NewBulkListOperationErrorsPager - List recent errors for operations in a resource group.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - location - The location name.
-//   - options - VirtualMachineBulkOperationsClientBulkListOperationErrorsOptions contains the optional parameters for the VirtualMachineBulkOperationsClient.NewBulkListOperationErrorsPager
-//     method.
-func (client *VirtualMachineBulkOperationsClient) NewBulkListOperationErrorsPager(resourceGroupName string, location string, options *VirtualMachineBulkOperationsClientBulkListOperationErrorsOptions) *runtime.Pager[VirtualMachineBulkOperationsClientBulkListOperationErrorsResponse] {
-	return runtime.NewPager(runtime.PagingHandler[VirtualMachineBulkOperationsClientBulkListOperationErrorsResponse]{
-		More: func(page VirtualMachineBulkOperationsClientBulkListOperationErrorsResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *VirtualMachineBulkOperationsClientBulkListOperationErrorsResponse) (VirtualMachineBulkOperationsClientBulkListOperationErrorsResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "VirtualMachineBulkOperationsClient.NewBulkListOperationErrorsPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			req, err := client.bulkListOperationErrorsCreateRequest(ctx, resourceGroupName, location, nextLink, options)
-			if err != nil {
-				return VirtualMachineBulkOperationsClientBulkListOperationErrorsResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return VirtualMachineBulkOperationsClientBulkListOperationErrorsResponse{}, err
-			}
-			return client.bulkListOperationErrorsHandleResponse(resp, http.StatusOK)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// bulkListOperationErrorsCreateRequest creates the BulkListOperationErrors request.
-func (client *VirtualMachineBulkOperationsClient) bulkListOperationErrorsCreateRequest(ctx context.Context, resourceGroupName string, location string, nextLink string, options *VirtualMachineBulkOperationsClientBulkListOperationErrorsOptions) (*policy.Request, error) {
-	firstPage := nextLink == ""
-	var req *policy.Request
-	var err error
-	if firstPage {
-		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/locations/{location}/listBulkOperationErrors"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter subscriptionID cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-		if resourceGroupName == "" {
-			return nil, errors.New("parameter resourceGroupName cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-		if location == "" {
-			return nil, errors.New("parameter location cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
-		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	} else {
-		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
-	}
-	if err != nil {
-		return nil, err
-	}
-	if firstPage {
-		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20261006Preview)
-		if options != nil && options.LookbackInMinutes != nil {
-			reqQP.Set("lookbackInMinutes", strconv.FormatInt(int64(*options.LookbackInMinutes), 10))
-		}
-		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-		req.Raw().Header["Accept"] = []string{"application/json"}
-	}
-	return req, nil
-}
-
-// bulkListOperationErrorsHandleResponse handles the BulkListOperationErrors response.
-func (client *VirtualMachineBulkOperationsClient) bulkListOperationErrorsHandleResponse(resp *http.Response, successCodes ...int) (VirtualMachineBulkOperationsClientBulkListOperationErrorsResponse, error) {
-	result := VirtualMachineBulkOperationsClientBulkListOperationErrorsResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ListBulkOperationErrorsResponse); err != nil {
-		return VirtualMachineBulkOperationsClientBulkListOperationErrorsResponse{}, err
-	}
-	return result, nil
-}
-
 // BulkReimageOperation - This feature is currently in preview.
 // Reimage one or more virtual machines. Reimaging is destructive and can replace operating system disk contents. Bulk Actions
 // begins processing the request immediately and returns a Bulk Action Operation Id for each virtual machine. Use the returned
@@ -659,6 +579,86 @@ func (client *VirtualMachineBulkOperationsClient) bulkStartOperationHandleRespon
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StartResourceOperationResponse); err != nil {
 		return VirtualMachineBulkOperationsClientBulkStartOperationResponse{}, err
+	}
+	return result, nil
+}
+
+// NewBulkListOperationErrorsPager - List recent errors for operations in a resource group.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - location - The location name.
+//   - options - VirtualMachineBulkOperationsClientBulkListOperationErrorsOptions contains the optional parameters for the VirtualMachineBulkOperationsClient.NewBulkListOperationErrorsPager
+//     method.
+func (client *VirtualMachineBulkOperationsClient) NewBulkListOperationErrorsPager(resourceGroupName string, location string, options *VirtualMachineBulkOperationsClientBulkListOperationErrorsOptions) *runtime.Pager[VirtualMachineBulkOperationsClientBulkListOperationErrorsResponse] {
+	return runtime.NewPager(runtime.PagingHandler[VirtualMachineBulkOperationsClientBulkListOperationErrorsResponse]{
+		More: func(page VirtualMachineBulkOperationsClientBulkListOperationErrorsResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *VirtualMachineBulkOperationsClientBulkListOperationErrorsResponse) (VirtualMachineBulkOperationsClientBulkListOperationErrorsResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "VirtualMachineBulkOperationsClient.NewBulkListOperationErrorsPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.bulkListOperationErrorsCreateRequest(ctx, resourceGroupName, location, nextLink, options)
+			if err != nil {
+				return VirtualMachineBulkOperationsClientBulkListOperationErrorsResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return VirtualMachineBulkOperationsClientBulkListOperationErrorsResponse{}, err
+			}
+			return client.bulkListOperationErrorsHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// bulkListOperationErrorsCreateRequest creates the BulkListOperationErrors request.
+func (client *VirtualMachineBulkOperationsClient) bulkListOperationErrorsCreateRequest(ctx context.Context, resourceGroupName string, location string, nextLink string, options *VirtualMachineBulkOperationsClientBulkListOperationErrorsOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/locations/{location}/listBulkOperationErrors"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if location == "" {
+			return nil, errors.New("parameter location cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20261006Preview)
+		if options != nil && options.LookbackInMinutes != nil {
+			reqQP.Set("lookbackInMinutes", strconv.FormatInt(int64(*options.LookbackInMinutes), 10))
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// bulkListOperationErrorsHandleResponse handles the BulkListOperationErrors response.
+func (client *VirtualMachineBulkOperationsClient) bulkListOperationErrorsHandleResponse(resp *http.Response, successCodes ...int) (VirtualMachineBulkOperationsClientBulkListOperationErrorsResponse, error) {
+	result := VirtualMachineBulkOperationsClientBulkListOperationErrorsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ListBulkOperationErrorsResponse); err != nil {
+		return VirtualMachineBulkOperationsClientBulkListOperationErrorsResponse{}, err
 	}
 	return result, nil
 }

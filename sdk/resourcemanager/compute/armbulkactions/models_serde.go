@@ -230,6 +230,33 @@ func (a *ApplicationProfile) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// MarshalJSON implements the json.Marshaller interface for type BillingProfile.
+func (b BillingProfile) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "maxPrice", b.MaxPrice)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type BillingProfile.
+func (b *BillingProfile) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %s", b, err.Error())
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "maxPrice":
+			err = unpopulate(val, "MaxPrice", &b.MaxPrice)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %s", b, err.Error())
+		}
+	}
+	return nil
+}
+
 // MarshalJSON implements the json.Marshaller interface for type BootDiagnostics.
 func (b BootDiagnostics) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
@@ -393,12 +420,15 @@ func (b *BulkCreateCustomOperationStatusListResult) UnmarshalJSON(data []byte) e
 // MarshalJSON implements the json.Marshaller interface for type BulkCreateCustomOverride.
 func (b BulkCreateCustomOverride) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
+	populate(objectMap, "extendedLocation", b.ExtendedLocation)
 	populate(objectMap, "extensions", b.Extensions)
 	populate(objectMap, "identity", b.Identity)
+	populate(objectMap, "placement", b.Placement)
 	populate(objectMap, "plan", b.Plan)
 	populate(objectMap, "tags", b.Tags)
 	populate(objectMap, "virtualMachineName", b.VirtualMachineName)
 	populate(objectMap, "virtualMachineProfile", b.VirtualMachineProfile)
+	populate(objectMap, "zone", b.Zone)
 	return json.Marshal(objectMap)
 }
 
@@ -411,11 +441,17 @@ func (b *BulkCreateCustomOverride) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "extendedLocation":
+			err = unpopulate(val, "ExtendedLocation", &b.ExtendedLocation)
+			delete(rawMsg, key)
 		case "extensions":
 			err = unpopulate(val, "Extensions", &b.Extensions)
 			delete(rawMsg, key)
 		case "identity":
 			err = unpopulate(val, "Identity", &b.Identity)
+			delete(rawMsg, key)
+		case "placement":
+			err = unpopulate(val, "Placement", &b.Placement)
 			delete(rawMsg, key)
 		case "plan":
 			err = unpopulate(val, "Plan", &b.Plan)
@@ -428,6 +464,9 @@ func (b *BulkCreateCustomOverride) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "virtualMachineProfile":
 			err = unpopulate(val, "VirtualMachineProfile", &b.VirtualMachineProfile)
+			delete(rawMsg, key)
+		case "zone":
+			err = unpopulate(val, "Zone", &b.Zone)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -468,41 +507,6 @@ func (b *BulkCreateCustomOverridesProfile) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type BulkCreateCustomPriorityProfile.
-func (b BulkCreateCustomPriorityProfile) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]any)
-	populate(objectMap, "evictionPolicy", b.EvictionPolicy)
-	populate(objectMap, "maxPricePerVM", b.MaxPricePerVM)
-	populate(objectMap, "type", b.Type)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type BulkCreateCustomPriorityProfile.
-func (b *BulkCreateCustomPriorityProfile) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %s", b, err.Error())
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "evictionPolicy":
-			err = unpopulate(val, "EvictionPolicy", &b.EvictionPolicy)
-			delete(rawMsg, key)
-		case "maxPricePerVM":
-			err = unpopulate(val, "MaxPricePerVM", &b.MaxPricePerVM)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, "Type", &b.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return fmt.Errorf("unmarshalling type %T: %s", b, err.Error())
-		}
-	}
-	return nil
-}
-
 // MarshalJSON implements the json.Marshaller interface for type BulkCreateCustomProperties.
 func (b BulkCreateCustomProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
@@ -511,10 +515,7 @@ func (b BulkCreateCustomProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "computeProfile", b.ComputeProfile)
 	populateTime[datetime.RFC3339](objectMap, "createdTime", b.CreatedTime, true)
 	populate(objectMap, "executionParameters", b.ExecutionParameters)
-	populate(objectMap, "minCapacity", b.MinCapacity)
 	populate(objectMap, "overridesProfile", b.OverridesProfile)
-	populate(objectMap, "partialFulfillmentPolicy", b.PartialFulfillmentPolicy)
-	populate(objectMap, "priorityProfile", b.PriorityProfile)
 	populate(objectMap, "provisioningState", b.ProvisioningState)
 	populate(objectMap, "resources", b.Resources)
 	return json.Marshal(objectMap)
@@ -544,17 +545,8 @@ func (b *BulkCreateCustomProperties) UnmarshalJSON(data []byte) error {
 		case "executionParameters":
 			err = unpopulate(val, "ExecutionParameters", &b.ExecutionParameters)
 			delete(rawMsg, key)
-		case "minCapacity":
-			err = unpopulate(val, "MinCapacity", &b.MinCapacity)
-			delete(rawMsg, key)
 		case "overridesProfile":
 			err = unpopulate(val, "OverridesProfile", &b.OverridesProfile)
-			delete(rawMsg, key)
-		case "partialFulfillmentPolicy":
-			err = unpopulate(val, "PartialFulfillmentPolicy", &b.PartialFulfillmentPolicy)
-			delete(rawMsg, key)
-		case "priorityProfile":
-			err = unpopulate(val, "PriorityProfile", &b.PriorityProfile)
 			delete(rawMsg, key)
 		case "provisioningState":
 			err = unpopulate(val, "ProvisioningState", &b.ProvisioningState)
@@ -702,9 +694,6 @@ func (b BulkCreateProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "computeProfile", b.ComputeProfile)
 	populateTime[datetime.RFC3339](objectMap, "createdTime", b.CreatedTime, true)
 	populate(objectMap, "executionParameters", b.ExecutionParameters)
-	populate(objectMap, "minCapacity", b.MinCapacity)
-	populate(objectMap, "partialFulfillmentPolicy", b.PartialFulfillmentPolicy)
-	populate(objectMap, "priorityProfile", b.PriorityProfile)
 	populate(objectMap, "provisioningState", b.ProvisioningState)
 	return json.Marshal(objectMap)
 }
@@ -732,15 +721,6 @@ func (b *BulkCreateProperties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "executionParameters":
 			err = unpopulate(val, "ExecutionParameters", &b.ExecutionParameters)
-			delete(rawMsg, key)
-		case "minCapacity":
-			err = unpopulate(val, "MinCapacity", &b.MinCapacity)
-			delete(rawMsg, key)
-		case "partialFulfillmentPolicy":
-			err = unpopulate(val, "PartialFulfillmentPolicy", &b.PartialFulfillmentPolicy)
-			delete(rawMsg, key)
-		case "priorityProfile":
-			err = unpopulate(val, "PriorityProfile", &b.PriorityProfile)
 			delete(rawMsg, key)
 		case "provisioningState":
 			err = unpopulate(val, "ProvisioningState", &b.ProvisioningState)
@@ -789,13 +769,16 @@ func (b BulkactionVMProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "additionalCapabilities", b.AdditionalCapabilities)
 	populate(objectMap, "applicationProfile", b.ApplicationProfile)
+	populate(objectMap, "billingProfile", b.BillingProfile)
 	populate(objectMap, "capacityReservation", b.CapacityReservation)
 	populate(objectMap, "diagnosticsProfile", b.DiagnosticsProfile)
+	populate(objectMap, "evictionPolicy", b.EvictionPolicy)
 	populate(objectMap, "extensionsTimeBudget", b.ExtensionsTimeBudget)
 	populate(objectMap, "hardwareProfile", b.HardwareProfile)
 	populate(objectMap, "licenseType", b.LicenseType)
 	populate(objectMap, "networkProfile", b.NetworkProfile)
 	populate(objectMap, "osProfile", b.OSProfile)
+	populate(objectMap, "priority", b.Priority)
 	populate(objectMap, "scheduledEventsPolicy", b.ScheduledEventsPolicy)
 	populate(objectMap, "scheduledEventsProfile", b.ScheduledEventsProfile)
 	populate(objectMap, "securityProfile", b.SecurityProfile)
@@ -820,11 +803,17 @@ func (b *BulkactionVMProperties) UnmarshalJSON(data []byte) error {
 		case "applicationProfile":
 			err = unpopulate(val, "ApplicationProfile", &b.ApplicationProfile)
 			delete(rawMsg, key)
+		case "billingProfile":
+			err = unpopulate(val, "BillingProfile", &b.BillingProfile)
+			delete(rawMsg, key)
 		case "capacityReservation":
 			err = unpopulate(val, "CapacityReservation", &b.CapacityReservation)
 			delete(rawMsg, key)
 		case "diagnosticsProfile":
 			err = unpopulate(val, "DiagnosticsProfile", &b.DiagnosticsProfile)
+			delete(rawMsg, key)
+		case "evictionPolicy":
+			err = unpopulate(val, "EvictionPolicy", &b.EvictionPolicy)
 			delete(rawMsg, key)
 		case "extensionsTimeBudget":
 			err = unpopulate(val, "ExtensionsTimeBudget", &b.ExtensionsTimeBudget)
@@ -840,6 +829,9 @@ func (b *BulkactionVMProperties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "osProfile":
 			err = unpopulate(val, "OSProfile", &b.OSProfile)
+			delete(rawMsg, key)
+		case "priority":
+			err = unpopulate(val, "Priority", &b.Priority)
 			delete(rawMsg, key)
 		case "scheduledEventsPolicy":
 			err = unpopulate(val, "ScheduledEventsPolicy", &b.ScheduledEventsPolicy)
@@ -1898,6 +1890,37 @@ func (e *ExecutionParameters) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// MarshalJSON implements the json.Marshaller interface for type ExtendedLocation.
+func (e ExtendedLocation) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "name", e.Name)
+	populate(objectMap, "type", e.Type)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type ExtendedLocation.
+func (e *ExtendedLocation) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %s", e, err.Error())
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "name":
+			err = unpopulate(val, "Name", &e.Name)
+			delete(rawMsg, key)
+		case "type":
+			err = unpopulate(val, "Type", &e.Type)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %s", e, err.Error())
+		}
+	}
+	return nil
+}
+
 // MarshalJSON implements the json.Marshaller interface for type FallbackOperationInfo.
 func (f FallbackOperationInfo) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
@@ -2375,9 +2398,11 @@ func (l *ListBulkOperationErrorsResponse) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type LocationBasedBulkCreate.
 func (l LocationBasedBulkCreate) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
+	populate(objectMap, "extendedLocation", l.ExtendedLocation)
 	populate(objectMap, "id", l.ID)
 	populate(objectMap, "identity", l.Identity)
 	populate(objectMap, "name", l.Name)
+	populate(objectMap, "placement", l.Placement)
 	populate(objectMap, "plan", l.Plan)
 	populate(objectMap, "properties", l.Properties)
 	populate(objectMap, "systemData", l.SystemData)
@@ -2396,6 +2421,9 @@ func (l *LocationBasedBulkCreate) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "extendedLocation":
+			err = unpopulate(val, "ExtendedLocation", &l.ExtendedLocation)
+			delete(rawMsg, key)
 		case "id":
 			err = unpopulate(val, "ID", &l.ID)
 			delete(rawMsg, key)
@@ -2404,6 +2432,9 @@ func (l *LocationBasedBulkCreate) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "name":
 			err = unpopulate(val, "Name", &l.Name)
+			delete(rawMsg, key)
+		case "placement":
+			err = unpopulate(val, "Placement", &l.Placement)
 			delete(rawMsg, key)
 		case "plan":
 			err = unpopulate(val, "Plan", &l.Plan)
@@ -2434,9 +2465,11 @@ func (l *LocationBasedBulkCreate) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type LocationBasedBulkCreateCustom.
 func (l LocationBasedBulkCreateCustom) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
+	populate(objectMap, "extendedLocation", l.ExtendedLocation)
 	populate(objectMap, "id", l.ID)
 	populate(objectMap, "identity", l.Identity)
 	populate(objectMap, "name", l.Name)
+	populate(objectMap, "placement", l.Placement)
 	populate(objectMap, "plan", l.Plan)
 	populate(objectMap, "properties", l.Properties)
 	populate(objectMap, "systemData", l.SystemData)
@@ -2455,6 +2488,9 @@ func (l *LocationBasedBulkCreateCustom) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "extendedLocation":
+			err = unpopulate(val, "ExtendedLocation", &l.ExtendedLocation)
+			delete(rawMsg, key)
 		case "id":
 			err = unpopulate(val, "ID", &l.ID)
 			delete(rawMsg, key)
@@ -2463,6 +2499,9 @@ func (l *LocationBasedBulkCreateCustom) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "name":
 			err = unpopulate(val, "Name", &l.Name)
+			delete(rawMsg, key)
+		case "placement":
+			err = unpopulate(val, "Placement", &l.Placement)
 			delete(rawMsg, key)
 		case "plan":
 			err = unpopulate(val, "Plan", &l.Plan)
@@ -3415,41 +3454,6 @@ func (o *OperationStatusResult) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type PartialFulfillmentPolicy.
-func (p PartialFulfillmentPolicy) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]any)
-	populate(objectMap, "fulfilledCapacity", p.FulfilledCapacity)
-	populate(objectMap, "mode", p.Mode)
-	populate(objectMap, "reason", p.Reason)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type PartialFulfillmentPolicy.
-func (p *PartialFulfillmentPolicy) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %s", p, err.Error())
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "fulfilledCapacity":
-			err = unpopulate(val, "FulfilledCapacity", &p.FulfilledCapacity)
-			delete(rawMsg, key)
-		case "mode":
-			err = unpopulate(val, "Mode", &p.Mode)
-			delete(rawMsg, key)
-		case "reason":
-			err = unpopulate(val, "Reason", &p.Reason)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return fmt.Errorf("unmarshalling type %T: %s", p, err.Error())
-		}
-	}
-	return nil
-}
-
 // MarshalJSON implements the json.Marshaller interface for type PatchSettings.
 func (p PatchSettings) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
@@ -3480,6 +3484,41 @@ func (p *PatchSettings) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "patchMode":
 			err = unpopulate(val, "PatchMode", &p.PatchMode)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %s", p, err.Error())
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type Placement.
+func (p Placement) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "excludeZones", p.ExcludeZones)
+	populate(objectMap, "includeZones", p.IncludeZones)
+	populate(objectMap, "zonePlacementPolicy", p.ZonePlacementPolicy)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type Placement.
+func (p *Placement) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %s", p, err.Error())
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "excludeZones":
+			err = unpopulate(val, "ExcludeZones", &p.ExcludeZones)
+			delete(rawMsg, key)
+		case "includeZones":
+			err = unpopulate(val, "IncludeZones", &p.IncludeZones)
+			delete(rawMsg, key)
+		case "zonePlacementPolicy":
+			err = unpopulate(val, "ZonePlacementPolicy", &p.ZonePlacementPolicy)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -3523,41 +3562,6 @@ func (p *Plan) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "version":
 			err = unpopulate(val, "Version", &p.Version)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return fmt.Errorf("unmarshalling type %T: %s", p, err.Error())
-		}
-	}
-	return nil
-}
-
-// MarshalJSON implements the json.Marshaller interface for type PriorityProfile.
-func (p PriorityProfile) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]any)
-	populate(objectMap, "evictionPolicy", p.EvictionPolicy)
-	populate(objectMap, "maxPricePerVM", p.MaxPricePerVM)
-	populate(objectMap, "type", p.Type)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type PriorityProfile.
-func (p *PriorityProfile) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %s", p, err.Error())
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "evictionPolicy":
-			err = unpopulate(val, "EvictionPolicy", &p.EvictionPolicy)
-			delete(rawMsg, key)
-		case "maxPricePerVM":
-			err = unpopulate(val, "MaxPricePerVM", &p.MaxPricePerVM)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, "Type", &p.Type)
 			delete(rawMsg, key)
 		}
 		if err != nil {

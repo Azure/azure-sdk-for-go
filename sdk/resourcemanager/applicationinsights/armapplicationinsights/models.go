@@ -586,13 +586,13 @@ type ComponentProperties struct {
 	Name *string
 
 	// READ-ONLY; The OTLP endpoint to which OpenTelemetry logs for this component are sent.
-	OtlpLogsEndpoint *string
+	OTLPLogsEndpoint *string
 
 	// READ-ONLY; The OTLP endpoint to which OpenTelemetry metrics for this component are sent.
-	OtlpMetricsEndpoint *string
+	OTLPMetricsEndpoint *string
 
 	// READ-ONLY; The OTLP endpoint to which OpenTelemetry traces for this component are sent.
-	OtlpTracesEndpoint *string
+	OTLPTracesEndpoint *string
 
 	// READ-ONLY; List of linked private link scope resources.
 	PrivateLinkScopedResources []*PrivateLinkScopedResource

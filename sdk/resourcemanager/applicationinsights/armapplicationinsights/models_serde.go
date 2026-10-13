@@ -1093,9 +1093,9 @@ func (c ComponentProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "InstrumentationKey", c.InstrumentationKey)
 	populateTime[datetime.RFC3339](objectMap, "LaMigrationDate", c.LaMigrationDate, true)
 	populate(objectMap, "Name", c.Name)
-	populate(objectMap, "OTLPLogsEndpoint", c.OtlpLogsEndpoint)
-	populate(objectMap, "OTLPMetricsEndpoint", c.OtlpMetricsEndpoint)
-	populate(objectMap, "OTLPTracesEndpoint", c.OtlpTracesEndpoint)
+	populate(objectMap, "OTLPLogsEndpoint", c.OTLPLogsEndpoint)
+	populate(objectMap, "OTLPMetricsEndpoint", c.OTLPMetricsEndpoint)
+	populate(objectMap, "OTLPTracesEndpoint", c.OTLPTracesEndpoint)
 	populate(objectMap, "PrivateLinkScopedResources", c.PrivateLinkScopedResources)
 	populate(objectMap, "provisioningState", c.ProvisioningState)
 	populate(objectMap, "publicNetworkAccessForIngestion", c.PublicNetworkAccessForIngestion)
@@ -1175,13 +1175,13 @@ func (c *ComponentProperties) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "Name", &c.Name)
 			delete(rawMsg, key)
 		case "OTLPLogsEndpoint":
-			err = unpopulate(val, "OtlpLogsEndpoint", &c.OtlpLogsEndpoint)
+			err = unpopulate(val, "OTLPLogsEndpoint", &c.OTLPLogsEndpoint)
 			delete(rawMsg, key)
 		case "OTLPMetricsEndpoint":
-			err = unpopulate(val, "OtlpMetricsEndpoint", &c.OtlpMetricsEndpoint)
+			err = unpopulate(val, "OTLPMetricsEndpoint", &c.OTLPMetricsEndpoint)
 			delete(rawMsg, key)
 		case "OTLPTracesEndpoint":
-			err = unpopulate(val, "OtlpTracesEndpoint", &c.OtlpTracesEndpoint)
+			err = unpopulate(val, "OTLPTracesEndpoint", &c.OTLPTracesEndpoint)
 			delete(rawMsg, key)
 		case "PrivateLinkScopedResources":
 			err = unpopulate(val, "PrivateLinkScopedResources", &c.PrivateLinkScopedResources)

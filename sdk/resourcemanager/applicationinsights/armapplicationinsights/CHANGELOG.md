@@ -1,10 +1,10 @@
 # Release History
 
-## 2.0.0-beta.5 (2026-10-08)
+## 2.0.0-beta.5 (2026-10-13)
 ### Features Added
 
 - New enum type `AzureMonitorWorkspaceIngestionMode` with values `AzureMonitorWorkspaceIngestionModeDisabled`, `AzureMonitorWorkspaceIngestionModeEnabled`, `AzureMonitorWorkspaceIngestionModeNotOptedIn`
-- New field `AzureMonitorWorkspaceIngestionMode`, `AzureMonitorWorkspaceResourceID`, `DataCollectionRuleResourceID`, `OtlpLogsEndpoint`, `OtlpMetricsEndpoint`, `OtlpTracesEndpoint` in struct `ComponentProperties`
+- New field `AzureMonitorWorkspaceIngestionMode`, `AzureMonitorWorkspaceResourceID`, `DataCollectionRuleResourceID`, `OTLPLogsEndpoint`, `OTLPMetricsEndpoint`, `OTLPTracesEndpoint` in struct `ComponentProperties`
 
 
 ## 2.0.0-beta.4 (2026-05-27)

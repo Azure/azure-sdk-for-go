@@ -46,17 +46,17 @@ func TestItemOptimisticConcurrencyStaleETag(t *testing.T) {
 	require.Equal(t, item(id, "A", 2), mustUnmarshalItem(t, read.Value))
 }
 
-// TestItemScalarPartitionKeysRemainDistinct ports Rust scenario item.scalar-partition-keys: every
-// scalar partition-key kind round-trips independently under the same shared item id without the
-// kinds colliding with each other.
-//
-// Rust's version also covers "undefined" (a header value of {}, meaning "no partition key
-// property"). That case is omitted here: the pinned in-memory emulator's own header parser
+// TestItemScalarPartitionKeysRemainDistinct is a supplementary regression test for
+// item.scalar-partition-keys: every scalar partition-key kind round-trips independently under
+// the same shared item id without the kinds colliding with each other. It is not registered as
+// certification evidence for that scenario (see internal/e2e.Implementations) because the
+// catalog also requires an "undefined" case (a header value of {}, meaning "no partition key
+// property"), which this test omits: the pinned in-memory emulator's own header parser
 // (azure_data_cosmos_driver::in_memory_emulator::epk::json_to_pk_component) rejects any JSON
 // object/array component - including the driver's own {} wire encoding for Undefined
 // (partition_key.rs's Serialize impl emits "{}" for InnerPartitionKeyValue::Undefined) - with
-// "partition key components must be scalar". This is a gap in the pinned emulator build, not a Go
-// SDK defect; bumping the emulator pin is a separate decision (see catalog/README.md).
+// "partition key components must be scalar", for any client against this emulator build, not
+// just Go. Bumping the emulator pin is a separate decision (see catalog/README.md).
 func TestItemScalarPartitionKeysRemainDistinct(t *testing.T) {
 	fx := newFixture(t, "item.scalar-partition-keys", "")
 	ctx := context.Background()

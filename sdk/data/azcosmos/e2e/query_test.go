@@ -127,10 +127,13 @@ func TestQueryPaginationResumesWithoutLossOrDuplication(t *testing.T) {
 		}
 	}
 
-	require.Len(t, values, itemCount, "resumed query must deliver every item exactly once")
-	seen := make(map[int64]bool, itemCount)
-	for _, v := range values {
-		require.Falsef(t, seen[v], "value %d delivered more than once", v)
-		seen[v] = true
+	// Each item's value is its unique creation index, and the query is ORDER BY c.value ASC, so
+	// the only sequence that satisfies "every item exactly once, in order" is 0..itemCount-1.
+	// Asserting that exact sequence (rather than count + a set) also catches a resume that
+	// reorders results, which a count/uniqueness check alone would miss.
+	expected := make([]int64, itemCount)
+	for i := range expected {
+		expected[i] = int64(i)
 	}
+	require.Equal(t, expected, values, "resumed query must deliver every item exactly once, in ORDER BY sequence")
 }

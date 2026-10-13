@@ -67,7 +67,7 @@ func selectedProfile(t *testing.T, scenarioID string) string {
 		profileID = scenario.Profiles[0]
 	}
 
-	_, known = catalog.Profiles[profileID]
+	profile, known := catalog.Profiles[profileID]
 	require.Truef(t, known, "AZURE_COSMOS_E2E_PROFILE=%q is not a profile in the pinned catalog", profileID)
 
 	found := false
@@ -89,7 +89,36 @@ func selectedProfile(t *testing.T, scenarioID string) string {
 		}
 	}
 
+	// The profile itself - not just an env override - can also select a non-default account,
+	// runtime, or client axis (for example configurationResilience's two-region, 750ms-delay
+	// account). This fixture only ever constructs the single pre-provisioned sessionSingleRegion
+	// account with default client/runtime options, so fail loudly here instead of silently
+	// running that mismatched infrastructure while a scenario claims the stricter profile.
+	requireSingleAxisID(t, profileID, "account", profile.Accounts, supportedAccountID)
+	requireSingleAxisID(t, profileID, "runtime", profile.Runtimes, supportedRuntimeID)
+	requireSingleAxisID(t, profileID, "client", profile.Clients, supportedClientID)
+
 	return profileID
+}
+
+// The only account/runtime/client axis definitions this fixture actually realizes: the
+// pre-provisioned, single East US region, zero-replication-delay emulator account constructed
+// with default azcosmos/v2 client options (see ../internal/testdata/emulator-config.json).
+const (
+	supportedAccountID = "sessionSingleRegion"
+	supportedRuntimeID = "sdkDefault"
+	supportedClientID  = "sdkDefault"
+)
+
+// requireSingleAxisID fails the test configuration unless axis declares exactly one definition
+// and it is wantID, matching the single account/runtime/client shape this fixture builds.
+func requireSingleAxisID(t *testing.T, profileID, axisName string, axis []map[string]any, wantID string) {
+	t.Helper()
+	require.Lenf(t, axis, 1, "profile %q declares %d %s definitions; this fixture only realizes a single default definition", profileID, len(axis), axisName)
+	gotID, _ := axis[0]["id"].(string)
+	if gotID != wantID {
+		t.Fatalf("profile %q selects %s %q, which this fixture cannot construct through the public azcosmos/v2 API; only %q is realized by the pinned emulator config, so scenarios needing this axis must be reclassified as blocked rather than run against mismatched infrastructure", profileID, axisName, gotID, wantID)
+	}
 }
 
 // requireEmulator skips (not fails) when EMULATOR is unset, matching the rest of the package's
@@ -126,7 +155,17 @@ type fixture struct {
 func newFixture(t *testing.T, scenarioID string, containerIDOverride string) fixture {
 	t.Helper()
 	selectedProfile(t, scenarioID)
+	return newRawFixture(t, containerIDOverride)
+}
 
+// newRawFixture builds a client/container pair against the pinned single-region emulator account
+// without validating any catalog scenario ID or profile. Use this only for a supplementary
+// regression test that is not registered as scenario certification evidence in
+// internal/e2e.Implementations (for example, TestSessionTokenExplicitManagement, whose declared
+// scenario profile needs infrastructure this fixture cannot build); every scenario-certifying
+// test must go through newFixture instead so its profile is validated.
+func newRawFixture(t *testing.T, containerIDOverride string) fixture {
+	t.Helper()
 	endpoint, databaseID, containerID := requireEmulator(t)
 	if containerIDOverride != "" {
 		containerID = containerIDOverride

@@ -25,15 +25,15 @@ func buildImplementations() []Implementation {
 		{ScenarioID: "item.create-conflict", Status: StatusActive, Test: "TestItemCreateConflictPreservesOriginal"},
 		{ScenarioID: "item.not-found-wrong-partition-key", Status: StatusActive, Test: "TestItemNotFoundDoesNotCrossPartitionKeys"},
 		{ScenarioID: "item.optimistic-concurrency", Status: StatusActive, Test: "TestItemOptimisticConcurrencyStaleETag"},
-		{ScenarioID: "item.scalar-partition-keys", Status: StatusActive, Test: "TestItemScalarPartitionKeysRemainDistinct"},
 		{ScenarioID: "item.hierarchical-partition-key", Status: StatusActive, Test: "TestItemHierarchicalPartitionKeyPointAndPrefix"},
 		{ScenarioID: "query.parameterized-filter", Status: StatusActive, Test: "TestQueryParameterizedFilterAndOrder"},
 		{ScenarioID: "query.invalid-syntax", Status: StatusActive, Test: "TestQueryInvalidSyntaxIsNotAnEmptyFeed"},
 		{ScenarioID: "query.pagination-resume", Status: StatusActive, Test: "TestQueryPaginationResumesWithoutLossOrDuplication"},
 		{ScenarioID: "diagnostics.success-and-error", Status: StatusActive, Test: "TestDiagnosticsCoverSuccessAndError"},
-		{ScenarioID: "consistency.session-management", Status: StatusActive, Test: "TestSessionTokenExplicitManagement"},
 
 		// --- Blocked: missing Go product capability ---
+		{ScenarioID: "item.scalar-partition-keys", Status: StatusBlocked, Reason: "the pinned in-memory emulator's header parser (azure_data_cosmos_driver::in_memory_emulator::epk::json_to_pk_component) rejects any JSON-object-shaped partition-key component with \"partition key components must be scalar\" - including the driver's own \"{}\" wire encoding for an Undefined partition key - so the catalog's required undefined-key case cannot be exercised through any client against this emulator build, not just Go. A TestItemScalarPartitionKeysRemainDistinct test still exists exercising the other four kinds (string/numeric/boolean/null) as supplementary regression coverage, but is not registered as certification evidence for this scenario; bumping the emulator pin is a separate decision (see catalog/README.md)."},
+		{ScenarioID: "consistency.session-management", Status: StatusBlocked, Reason: "the catalog requires disabling automatic session-token capture and exercising continuation-based queries alongside the explicit token; azcosmos/v2 has no public option to disable automatic session capture (see OperationOptions/ClientOptions), so the full contract cannot be certified through the public API. A TestSessionTokenExplicitManagement test still exists verifying the narrower claim that an explicitly supplied session token is honored, but is not registered as certification evidence for this scenario."},
 		{ScenarioID: "management.capabilities", Status: StatusBlocked, Reason: noManagementAPI},
 		{ScenarioID: "management.resource-lifecycle", Status: StatusBlocked, Reason: noManagementAPI},
 		{ScenarioID: "bootstrap.backup-fallback", Status: StatusBlocked, Reason: "NewClient/NewClientWithKey accept a single endpoint; azcosmos/v2 has no multi-endpoint/backup-bootstrap API yet."},

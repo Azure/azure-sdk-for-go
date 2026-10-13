@@ -108,7 +108,8 @@ func TestReadAttemptTimeoutTLS(t *testing.T) {
 			server = httptest.NewTLSServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 				w.Header().Set("Content-Type", "application/json")
 				if r.URL.Path == "/" {
-					fmt.Fprintf(w, `{"writableLocations":[{"name":"East US","databaseAccountEndpoint":%q}],"readableLocations":[{"name":"East US","databaseAccountEndpoint":%q}]}`, server.URL+"/", server.URL+"/")
+					_, err := fmt.Fprintf(w, `{"writableLocations":[{"name":"East US","databaseAccountEndpoint":%q}],"readableLocations":[{"name":"East US","databaseAccountEndpoint":%q}]}`, server.URL+"/", server.URL+"/")
+					assert.NoError(t, err)
 					return
 				}
 				if sends.Add(1) == 1 {
@@ -127,9 +128,11 @@ func TestReadAttemptTimeoutTLS(t *testing.T) {
 					return
 				}
 				if tc.op == "query" {
-					fmt.Fprint(w, `{"Documents":[{"id":"item"}]}`)
+					_, err := fmt.Fprint(w, `{"Documents":[{"id":"item"}]}`)
+					assert.NoError(t, err)
 				} else {
-					fmt.Fprint(w, `{"id":"item"}`)
+					_, err := fmt.Fprint(w, `{"id":"item"}`)
+					assert.NoError(t, err)
 				}
 			}))
 			defer func() { close(stop); server.Close() }()

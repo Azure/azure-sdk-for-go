@@ -364,6 +364,47 @@ func (s *ServiceRecordedTestsSuite) TestListSharesCreationTime() {
 	_require.True(props.CreationTime.Equal(*shareItem.Properties.CreationTime))
 }
 
+func TestListSharesCreationTimeMocked(t *testing.T) {
+	_require := require.New(t)
+	client, err := service.NewClientWithNoCredential("https://account.file.core.windows.net/", &service.ClientOptions{
+		ClientOptions: testcommon.MockClientOptions(testcommon.NewMockTransport(testcommon.MockResponse{StatusCode: http.StatusOK, Body: `<?xml version="1.0" encoding="utf-8"?>
+<EnumerationResults ServiceEndpoint="https://account.file.core.windows.net/">
+  <Shares>
+    <Share>
+      <Name>withcreationtime</Name>
+      <Properties>
+        <Last-Modified>Tue, 13 Oct 2026 10:20:31 GMT</Last-Modified>
+        <Etag>"0x8DE0000000000001"</Etag>
+        <Quota>100</Quota>
+        <Creation-Time>Tue, 13 Oct 2026 10:20:30 GMT</Creation-Time>
+      </Properties>
+    </Share>
+    <Share>
+      <Name>withoutcreationtime</Name>
+      <Properties>
+        <Last-Modified>Tue, 13 Oct 2026 10:20:31 GMT</Last-Modified>
+        <Etag>"0x8DE0000000000002"</Etag>
+        <Quota>100</Quota>
+      </Properties>
+    </Share>
+  </Shares>
+  <NextMarker />
+</EnumerationResults>`})),
+	})
+	_require.NoError(err)
+
+	resp, err := client.NewListSharesPager(nil).NextPage(context.Background())
+	_require.NoError(err)
+	_require.Len(resp.Shares, 2)
+
+	_require.Equal("withcreationtime", *resp.Shares[0].Name)
+	_require.NotNil(resp.Shares[0].Properties.CreationTime)
+	_require.True(time.Date(2026, time.October, 13, 10, 20, 30, 0, time.UTC).Equal(*resp.Shares[0].Properties.CreationTime))
+
+	_require.Equal("withoutcreationtime", *resp.Shares[1].Name)
+	_require.Nil(resp.Shares[1].Properties.CreationTime)
+}
+
 func (s *ServiceRecordedTestsSuite) TestListSharesEnableSnapshotVirtualDirectoryAccess() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -1011,45 +1052,4 @@ func TestServiceGetSASURLNoTrailingSlashBeforeQuery(t *testing.T) {
 	_require.Contains(sasURL, "customparam=value&", "query value must not be corrupted with an appended slash: %s", sasURL)
 	_require.NotContains(sasURL, "customparam=value/", "query value must not have a trailing slash appended: %s", sasURL)
 	_require.True(strings.HasPrefix(sasURL, fmt.Sprintf("https://%s.file.core.windows.net/?", accountName)), "trailing slash must be appended to the account path: %s", sasURL)
-}
-
-func TestListSharesCreationTimeMocked(t *testing.T) {
-	_require := require.New(t)
-	client, err := service.NewClientWithNoCredential("https://account.file.core.windows.net/", &service.ClientOptions{
-		ClientOptions: testcommon.MockClientOptions(testcommon.NewMockTransport(testcommon.MockResponse{StatusCode: http.StatusOK, Body: `<?xml version="1.0" encoding="utf-8"?>
-<EnumerationResults ServiceEndpoint="https://account.file.core.windows.net/">
-  <Shares>
-    <Share>
-      <Name>withcreationtime</Name>
-      <Properties>
-        <Last-Modified>Tue, 13 Oct 2026 10:20:31 GMT</Last-Modified>
-        <Etag>"0x8DE0000000000001"</Etag>
-        <Quota>100</Quota>
-        <Creation-Time>Tue, 13 Oct 2026 10:20:30 GMT</Creation-Time>
-      </Properties>
-    </Share>
-    <Share>
-      <Name>withoutcreationtime</Name>
-      <Properties>
-        <Last-Modified>Tue, 13 Oct 2026 10:20:31 GMT</Last-Modified>
-        <Etag>"0x8DE0000000000002"</Etag>
-        <Quota>100</Quota>
-      </Properties>
-    </Share>
-  </Shares>
-  <NextMarker />
-</EnumerationResults>`})),
-	})
-	_require.NoError(err)
-
-	resp, err := client.NewListSharesPager(nil).NextPage(context.Background())
-	_require.NoError(err)
-	_require.Len(resp.Shares, 2)
-
-	_require.Equal("withcreationtime", *resp.Shares[0].Name)
-	_require.NotNil(resp.Shares[0].Properties.CreationTime)
-	_require.True(time.Date(2026, time.October, 13, 10, 20, 30, 0, time.UTC).Equal(*resp.Shares[0].Properties.CreationTime))
-
-	_require.Equal("withoutcreationtime", *resp.Shares[1].Name)
-	_require.Nil(resp.Shares[1].Properties.CreationTime)
 }

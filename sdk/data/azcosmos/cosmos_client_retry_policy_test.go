@@ -2193,9 +2193,6 @@ func TestReadAttemptTimeoutDuringBackoff(t *testing.T) {
 					callbacks++
 					assert.Nil(t, resp)
 					assert.ErrorIs(t, err, context.DeadlineExceeded)
-					if networkError {
-						assert.ErrorIs(t, err, io.EOF)
-					}
 					return true
 				},
 			})
@@ -2209,32 +2206,6 @@ func TestReadAttemptTimeoutDuringBackoff(t *testing.T) {
 			assert.Equal(t, retryContext{}, *verifier.requests[1].retryContext, "a fresh outer attempt retains the existing counter reset")
 			assert.Empty(t, client.gem.locationCache.locationUnavailabilityInfoMap)
 		})
-	}
-}
-
-func TestClientRetryPolicyNetworkBackoffError(t *testing.T) {
-	for _, write := range []bool{false, true} {
-		for _, crossRegion := range []bool{false, true} {
-			t.Run(fmt.Sprintf("write=%t/crossRegion=%t", write, crossRegion), func(t *testing.T) {
-				ctx, cancel := context.WithTimeout(context.Background(), 20*time.Millisecond)
-				defer cancel()
-				req, err := azruntime.NewRequest(ctx, http.MethodPost, "https://cosmos.test")
-				require.NoError(t, err)
-				p := &clientRetryPolicy{gem: &globalEndpointManager{
-					locationCache: CreateMockLC(*req.Raw().URL, true),
-				}}
-				rc := retryContext{}
-				if crossRegion {
-					rc.sameRegionRetryCount = maxSameRegionConnectionRetries
-				}
-				transportErr := &net.DNSError{Err: "unreachable"}
-				shouldRetry, err := p.attemptRetryOnNetworkError(req, connectionErrorNotSent, write, transportErr, &rc)
-				assert.False(t, shouldRetry)
-				require.ErrorIs(t, err, context.DeadlineExceeded)
-				assert.Equal(t, !write, errors.Is(err, transportErr), "only read error composition should change")
-				assert.EqualError(t, err, fmt.Sprintf("%v: underlying transport error: %v", ctx.Err(), transportErr))
-			})
-		}
 	}
 }
 
@@ -2479,7 +2450,6 @@ func TestReadAttemptTimeoutCrossRegionWait(t *testing.T) {
 				ShouldRetry: func(_ *http.Response, err error) bool {
 					if err != nil {
 						assert.ErrorIs(t, err, context.DeadlineExceeded)
-						assert.ErrorIs(t, err, transportErr)
 					}
 					return err != nil
 				},

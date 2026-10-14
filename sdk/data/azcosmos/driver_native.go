@@ -21,6 +21,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"net/http"
 	"sync"
 	"time"
 	"unsafe"
@@ -98,13 +99,28 @@ type nativeDriver struct {
 }
 
 type nativeFaultRule struct {
-	id         string
-	kind       int32
-	errorType  int32
-	hitLimit   int64
-	delayMS    int64
-	retryAfter int64
+	id               string
+	kind             int32
+	region           string
+	containerID      string
+	transportKind    int32
+	errorType        int32
+	hitLimit         *int64
+	delay            *time.Duration
+	customStatusCode *int32
+	customSubStatus  *int32
+	retryAfter       *time.Duration
+	startDelay       *time.Duration
+	expireAfter      *time.Duration
 }
+
+const (
+	nativeFaultOperationReadItem            = int32(C.COSMOS_FAULT_INJECTION_OPERATION_TYPE_READ_ITEM)
+	nativeFaultErrorTooManyRequests         = int32(C.COSMOS_FAULT_INJECTION_ERROR_TYPE_TOO_MANY_REQUESTS)
+	nativeFaultErrorReadSessionNotAvailable = int32(C.COSMOS_FAULT_INJECTION_ERROR_TYPE_READ_SESSION_NOT_AVAILABLE)
+	nativeFaultTransportGatewayV2           = int32(C.COSMOS_FAULT_INJECTION_TRANSPORT_KIND_GATEWAY_V2)
+	nativeFaultThrottleSubStatus            = int32(3200)
+)
 
 type driverCreation struct {
 	done   chan struct{}
@@ -314,47 +330,132 @@ func freeNativeDriverOptions(options *C.cosmos_driver_options_t) {
 	C.cosmos_driver_options_free(options)
 }
 
+func nativeOptionalFaultMilliseconds(duration *time.Duration) C.int64_t {
+	if duration == nil {
+		return -1
+	}
+	return C.int64_t(duration.Milliseconds())
+}
+
+func nativeOptionalFaultInt64(value *int64) C.int64_t {
+	if value == nil {
+		return -1
+	}
+	return C.int64_t(*value)
+}
+
+func nativeFaultInjectionRules(rules []nativeFaultRule) (*C.cosmos_fault_injection_rule_t, func()) {
+	if len(rules) == 0 {
+		return nil, func() {}
+	}
+
+	array := (*C.cosmos_fault_injection_rule_t)(C.malloc(
+		C.size_t(len(rules)) * C.size_t(unsafe.Sizeof(C.cosmos_fault_injection_rule_t{}))))
+	releases := []func(){func() { C.free(unsafe.Pointer(array)) }}
+	stringView := func(value string) C.cosmos_string_view_t {
+		if value == "" {
+			return C.cosmos_string_view_t{}
+		}
+		view, allocation := toNativeString(value)
+		releases = append(releases, func() { C.free(allocation) })
+		return view
+	}
+
+	for i, rule := range rules {
+		nativeRule := &unsafe.Slice(array, len(rules))[i]
+		*nativeRule = C.cosmos_fault_injection_rule_default()
+		nativeRule.id = stringView(rule.id)
+		nativeRule.hit_limit = nativeOptionalFaultInt64(rule.hitLimit)
+		nativeRule.start_delay_ms = nativeOptionalFaultMilliseconds(rule.startDelay)
+		nativeRule.expire_after_ms = nativeOptionalFaultMilliseconds(rule.expireAfter)
+
+		condition := (*C.cosmos_fault_injection_condition_t)(C.malloc(
+			C.size_t(unsafe.Sizeof(C.cosmos_fault_injection_condition_t{}))))
+		*condition = C.cosmos_fault_injection_condition_default()
+		releases = append(releases, func() { C.free(unsafe.Pointer(condition)) })
+		condition.operation_type = C.int32_t(rule.kind)
+		condition.region = stringView(rule.region)
+		condition.container_id = stringView(rule.containerID)
+		condition.transport_kind = C.int32_t(rule.transportKind)
+		nativeRule.condition = condition
+
+		result := (*C.cosmos_fault_injection_result_t)(C.malloc(
+			C.size_t(unsafe.Sizeof(C.cosmos_fault_injection_result_t{}))))
+		*result = C.cosmos_fault_injection_result_default()
+		releases = append(releases, func() { C.free(unsafe.Pointer(result)) })
+		result.error_type = C.int32_t(rule.errorType)
+		result.probability = 1
+		result.delay_ms = nativeOptionalFaultMilliseconds(rule.delay)
+		result.retry_after_ms = nativeOptionalFaultMilliseconds(rule.retryAfter)
+		if rule.retryAfter != nil {
+			result.custom_status_code = http.StatusTooManyRequests
+			result.custom_sub_status = C.int32_t(nativeFaultThrottleSubStatus)
+		}
+		if rule.customStatusCode != nil {
+			result.custom_status_code = C.int32_t(*rule.customStatusCode)
+		}
+		if rule.customSubStatus != nil {
+			result.custom_sub_status = C.int32_t(*rule.customSubStatus)
+		}
+		nativeRule.result = result
+	}
+
+	return array, func() {
+		for i := len(releases) - 1; i >= 0; i-- {
+			releases[i]()
+		}
+	}
+}
+
+type nativeFaultRuleValues struct {
+	id               string
+	kind             int32
+	region           string
+	containerID      string
+	transportKind    int32
+	errorType        int32
+	hitLimit         int64
+	delayMS          int64
+	probability      float32
+	customStatusCode int32
+	customSubStatus  int32
+	retryAfterMS     int64
+	startDelayMS     int64
+	expireAfterMS    int64
+}
+
+// inspectNativeFaultRule converts one rule and reads it back in Go types for ABI mapping tests.
+func inspectNativeFaultRule(rule nativeFaultRule) nativeFaultRuleValues {
+	rules, release := nativeFaultInjectionRules([]nativeFaultRule{rule})
+	defer release()
+
+	nativeRule := unsafe.Slice(rules, 1)[0]
+	return nativeFaultRuleValues{
+		id:               fromNativeString(nativeRule.id),
+		kind:             int32(nativeRule.condition.operation_type),
+		region:           fromNativeString(nativeRule.condition.region),
+		containerID:      fromNativeString(nativeRule.condition.container_id),
+		transportKind:    int32(nativeRule.condition.transport_kind),
+		errorType:        int32(nativeRule.result.error_type),
+		hitLimit:         int64(nativeRule.hit_limit),
+		delayMS:          int64(nativeRule.result.delay_ms),
+		probability:      float32(nativeRule.result.probability),
+		customStatusCode: int32(nativeRule.result.custom_status_code),
+		customSubStatus:  int32(nativeRule.result.custom_sub_status),
+		retryAfterMS:     int64(nativeRule.result.retry_after_ms),
+		startDelayMS:     int64(nativeRule.start_delay_ms),
+		expireAfterMS:    int64(nativeRule.expire_after_ms),
+	}
+}
+
 // buildFaultInjectionOptions uses the versioned ABI only for native integration tests.
 // The driver copies all rule memory before this call returns.
 func (d *nativeDriver) buildFaultInjectionOptions(
 	config *C.cosmos_driver_options_config_t,
 	out **C.cosmos_driver_options_t,
 ) C.cosmos_status_code_t {
-	rules := (*C.cosmos_fault_injection_rule_t)(C.malloc(
-		C.size_t(len(d.faultRules)) * C.size_t(unsafe.Sizeof(C.cosmos_fault_injection_rule_t{}))))
-	defer C.free(unsafe.Pointer(rules))
-	var allocations []unsafe.Pointer
-	defer func() {
-		for _, allocation := range allocations {
-			C.free(allocation)
-		}
-	}()
-	for i, rule := range d.faultRules {
-		condition := (*C.cosmos_fault_injection_condition_t)(C.malloc(
-			C.size_t(unsafe.Sizeof(C.cosmos_fault_injection_condition_t{}))))
-		result := (*C.cosmos_fault_injection_result_t)(C.malloc(
-			C.size_t(unsafe.Sizeof(C.cosmos_fault_injection_result_t{}))))
-		allocations = append(allocations, unsafe.Pointer(condition), unsafe.Pointer(result))
-		*condition = C.cosmos_fault_injection_condition_default()
-		condition.operation_type = C.int32_t(rule.kind)
-		*result = C.cosmos_fault_injection_result_default()
-		result.error_type = C.int32_t(rule.errorType)
-		result.probability = 1
-		result.delay_ms = C.int64_t(rule.delayMS)
-		result.retry_after_ms = C.int64_t(rule.retryAfter)
-		if rule.retryAfter >= 0 {
-			result.custom_status_code = 429
-			result.custom_sub_status = 3200
-		}
-		id, allocation := toNativeString(rule.id)
-		allocations = append(allocations, allocation)
-		nativeRule := C.cosmos_fault_injection_rule_default()
-		nativeRule.id = id
-		nativeRule.condition = condition
-		nativeRule.result = result
-		nativeRule.hit_limit = C.int64_t(rule.hitLimit)
-		unsafe.Slice(rules, len(d.faultRules))[i] = nativeRule
-	}
+	rules, releaseRules := nativeFaultInjectionRules(d.faultRules)
+	defer releaseRules()
 	v2 := C.cosmos_driver_options_config_v2_default()
 	v2.preferred_regions = config.preferred_regions
 	v2.preferred_regions_len = config.preferred_regions_len

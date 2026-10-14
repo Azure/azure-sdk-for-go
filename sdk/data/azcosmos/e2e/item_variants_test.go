@@ -17,36 +17,38 @@ import (
 // IfMatch precondition built from the current ETag permits a replace, but reusing the now-stale
 // ETag fails with CodePreconditionFailed and leaves the successful update intact.
 func TestItemOptimisticConcurrencyStaleETag(t *testing.T) {
-	fx := newFixture(t, "item.optimistic-concurrency", "")
-	ctx := context.Background()
-	id := uniqueID(t)
-	pk := azcosmos.NewPartitionKeyString("A")
+	t.Run("item.optimistic-concurrency", func(t *testing.T) {
+		fx := newFixture(t, "item.optimistic-concurrency", "")
+		ctx := context.Background()
+		id := uniqueID(t)
+		pk := azcosmos.NewPartitionKeyString("A")
 
-	created, err := fx.Container.CreateItem(ctx, pk, id, mustMarshalItem(t, item(id, "A", 1)), nil)
-	require.NoError(t, err)
-	trackItem(t, fx.Container, pk, id)
-	initialETag := created.ETag
+		created, err := fx.Container.CreateItem(ctx, pk, id, mustMarshalItem(t, item(id, "A", 1)), nil)
+		require.NoError(t, err)
+		trackItem(t, fx.Container, pk, id)
+		initialETag := created.ETag
 
-	initialPrecondition, err := azcosmos.IfMatch(initialETag)
-	require.NoError(t, err)
-	replaced, err := fx.Container.ReplaceItem(ctx, pk, id, mustMarshalItem(t, item(id, "A", 2)), &azcosmos.ReplaceItemOptions{
-		Precondition: initialPrecondition,
+		initialPrecondition, err := azcosmos.IfMatch(initialETag)
+		require.NoError(t, err)
+		replaced, err := fx.Container.ReplaceItem(ctx, pk, id, mustMarshalItem(t, item(id, "A", 2)), &azcosmos.ReplaceItemOptions{
+			Precondition: initialPrecondition,
+		})
+		require.NoError(t, err)
+		require.Equal(t, 200, replaced.StatusCode)
+
+		stalePrecondition, err := azcosmos.IfMatch(initialETag)
+		require.NoError(t, err)
+		_, err = fx.Container.ReplaceItem(ctx, pk, id, mustMarshalItem(t, item(id, "A", 3)), &azcosmos.ReplaceItemOptions{
+			Precondition: stalePrecondition,
+		})
+		cosmosErr := requireCode(t, err, azcosmos.CodePreconditionFailed)
+		require.Zero(t, cosmosErr.SubStatus)
+		requireCriticalDiagnostics(t, cosmosErr.Diagnostics, 412)
+
+		read, err := fx.Container.ReadItem(ctx, pk, id, nil)
+		require.NoError(t, err)
+		require.Equal(t, item(id, "A", 2), mustUnmarshalItem(t, read.Value))
 	})
-	require.NoError(t, err)
-	require.Equal(t, 200, replaced.StatusCode)
-
-	stalePrecondition, err := azcosmos.IfMatch(initialETag)
-	require.NoError(t, err)
-	_, err = fx.Container.ReplaceItem(ctx, pk, id, mustMarshalItem(t, item(id, "A", 3)), &azcosmos.ReplaceItemOptions{
-		Precondition: stalePrecondition,
-	})
-	cosmosErr := requireCode(t, err, azcosmos.CodePreconditionFailed)
-	require.Zero(t, cosmosErr.SubStatus)
-	requireCriticalDiagnostics(t, cosmosErr.Diagnostics, 412)
-
-	read, err := fx.Container.ReadItem(ctx, pk, id, nil)
-	require.NoError(t, err)
-	require.Equal(t, item(id, "A", 2), mustUnmarshalItem(t, read.Value))
 }
 
 // TestItemScalarPartitionKeysRemainDistinct is a supplementary regression test for
@@ -107,62 +109,76 @@ func TestItemScalarPartitionKeysRemainDistinct(t *testing.T) {
 // partition under a two-level key, and a partition-key prefix query returns every logical
 // partition sharing the leading component without crossing into a sibling top-level value.
 func TestItemHierarchicalPartitionKeyPointAndPrefix(t *testing.T) {
-	fx := newFixture(t, "item.hierarchical-partition-key", "query-hierarchical")
-	ctx := context.Background()
-	tenant := uniqueID(t)
+	t.Run("item.hierarchical-partition-key", func(t *testing.T) {
+		fx := newFixture(t, "item.hierarchical-partition-key", "query-hierarchical")
+		ctx := context.Background()
+		tenant := uniqueID(t)
 
-	firstID, secondID := tenant+"-1", tenant+"-2"
-	firstPK := azcosmos.NewPartitionKeyString(tenant).AppendString("user-1")
-	secondPK := azcosmos.NewPartitionKeyString(tenant).AppendString("user-2")
+		firstID, secondID := tenant+"-1", tenant+"-2"
+		firstPK := azcosmos.NewPartitionKeyString(tenant).AppendString("user-1")
+		secondPK := azcosmos.NewPartitionKeyString(tenant).AppendString("user-2")
 
-	for _, c := range []struct {
-		pk    azcosmos.PartitionKey
-		id    string
-		child string
-		value int64
-	}{{firstPK, firstID, "user-1", 1}, {secondPK, secondID, "user-2", 2}} {
-		body, err := jsonMarshalTenantItem(c.id, tenant, c.child, c.value)
-		require.NoError(t, err)
-		_, err = fx.Container.CreateItem(ctx, c.pk, c.id, body, nil)
-		require.NoError(t, err)
-		trackItem(t, fx.Container, c.pk, c.id)
-	}
+		// siblingTenant shares no leading component with tenant; its item must never appear in a
+		// prefix query scoped to tenant, otherwise a prefix query that incorrectly scans the
+		// whole container would still pass this test.
+		siblingTenant := uniqueID(t) + "-sibling"
+		siblingID := siblingTenant + "-1"
+		siblingPK := azcosmos.NewPartitionKeyString(siblingTenant).AppendString("user-1")
 
-	replaced, err := fx.Container.ReplaceItem(ctx, firstPK, firstID, func() []byte {
-		b, err := jsonMarshalTenantItem(firstID, tenant, "user-1", 10)
-		require.NoError(t, err)
-		return b
-	}(), nil)
-	require.NoError(t, err)
-	require.Equal(t, 200, replaced.StatusCode)
-
-	read, err := fx.Container.ReadItem(ctx, firstPK, firstID, nil)
-	require.NoError(t, err)
-	require.Equal(t, int64(10), mustUnmarshalTenantItem(t, read.Value).Value)
-
-	prefix := azcosmos.NewPartitionKeyString(tenant)
-	pager := fx.Container.NewQueryItemsPager(
-		azcosmos.NewQuery("SELECT VALUE c.id FROM c ORDER BY c.id ASC"),
-		azcosmos.NewFeedScopeForPartitionKey(prefix), nil)
-	defer func() { require.NoError(t, pager.Close()) }()
-	var ids []string
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		require.NoError(t, err)
-		for _, raw := range page.Items {
-			var id string
-			mustUnmarshalInto(t, raw, &id)
-			ids = append(ids, id)
+		for _, c := range []struct {
+			pk    azcosmos.PartitionKey
+			id    string
+			top   string
+			child string
+			value int64
+		}{
+			{firstPK, firstID, tenant, "user-1", 1},
+			{secondPK, secondID, tenant, "user-2", 2},
+			{siblingPK, siblingID, siblingTenant, "user-1", 1},
+		} {
+			body, err := jsonMarshalTenantItem(c.id, c.top, c.child, c.value)
+			require.NoError(t, err)
+			_, err = fx.Container.CreateItem(ctx, c.pk, c.id, body, nil)
+			require.NoError(t, err)
+			trackItem(t, fx.Container, c.pk, c.id)
 		}
-	}
-	require.ElementsMatch(t, []string{firstID, secondID}, ids)
 
-	deleted, err := fx.Container.DeleteItem(ctx, firstPK, firstID, nil)
-	require.NoError(t, err)
-	require.Equal(t, 204, deleted.StatusCode)
+		replaced, err := fx.Container.ReplaceItem(ctx, firstPK, firstID, func() []byte {
+			b, err := jsonMarshalTenantItem(firstID, tenant, "user-1", 10)
+			require.NoError(t, err)
+			return b
+		}(), nil)
+		require.NoError(t, err)
+		require.Equal(t, 200, replaced.StatusCode)
 
-	_, err = fx.Container.ReadItem(ctx, firstPK, firstID, nil)
-	_ = requireCode(t, err, azcosmos.CodeNotFound)
+		read, err := fx.Container.ReadItem(ctx, firstPK, firstID, nil)
+		require.NoError(t, err)
+		require.Equal(t, int64(10), mustUnmarshalTenantItem(t, read.Value).Value)
+
+		prefix := azcosmos.NewPartitionKeyString(tenant)
+		pager := fx.Container.NewQueryItemsPager(
+			azcosmos.NewQuery("SELECT VALUE c.id FROM c ORDER BY c.id ASC"),
+			azcosmos.NewFeedScopeForPartitionKey(prefix), nil)
+		defer func() { require.NoError(t, pager.Close()) }()
+		var ids []string
+		for pager.More() {
+			page, err := pager.NextPage(ctx)
+			require.NoError(t, err)
+			for _, raw := range page.Items {
+				var id string
+				mustUnmarshalInto(t, raw, &id)
+				ids = append(ids, id)
+			}
+		}
+		require.ElementsMatch(t, []string{firstID, secondID}, ids)
+
+		deleted, err := fx.Container.DeleteItem(ctx, firstPK, firstID, nil)
+		require.NoError(t, err)
+		require.Equal(t, 204, deleted.StatusCode)
+
+		_, err = fx.Container.ReadItem(ctx, firstPK, firstID, nil)
+		_ = requireCode(t, err, azcosmos.CodeNotFound)
+	})
 }
 
 func mustUnmarshalTenantItem(t *testing.T, body []byte) TenantItem {

@@ -27,6 +27,12 @@
 // Context cancellation stops waiting, not submitted native work; writes may still commit.
 // Close waits for native work to finish, including operations whose callers stopped waiting.
 //
+// # Advanced availability
+//
+// The native driver owns per-partition automatic failover and circuit-breaker routing; read
+// hedging is configured through OperationOptions. See the module README's "Advanced availability"
+// section for applicability, environment configuration, initialization timing, and diagnostics.
+//
 // # Response encoding
 //
 // Binary wire encoding is enabled by default; native code converts responses to text JSON.

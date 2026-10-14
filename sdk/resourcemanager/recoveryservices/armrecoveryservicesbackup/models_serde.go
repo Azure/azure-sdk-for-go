@@ -4864,7 +4864,7 @@ func (a AzureVMWorkloadSQLInstanceProtectedItem) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "backupManagementType", a.BackupManagementType)
 	populate(objectMap, "backupSetName", a.BackupSetName)
-	populate(objectMap, "childDBNames", a.ChildDBNames)
+	populate(objectMap, "childDatabaseNameList", a.ChildDatabaseNameList)
 	populate(objectMap, "containerName", a.ContainerName)
 	populate(objectMap, "createMode", a.CreateMode)
 	populateTime[datetime.RFC3339](objectMap, "deferredDeleteTimeInUTC", a.DeferredDeleteTimeInUTC, true)
@@ -4917,8 +4917,8 @@ func (a *AzureVMWorkloadSQLInstanceProtectedItem) UnmarshalJSON(data []byte) err
 		case "backupSetName":
 			err = unpopulate(val, "BackupSetName", &a.BackupSetName)
 			delete(rawMsg, key)
-		case "childDBNames":
-			err = unpopulate(val, "ChildDBNames", &a.ChildDBNames)
+		case "childDatabaseNameList":
+			err = unpopulate(val, "ChildDatabaseNameList", &a.ChildDatabaseNameList)
 			delete(rawMsg, key)
 		case "containerName":
 			err = unpopulate(val, "ContainerName", &a.ContainerName)
@@ -8705,7 +8705,7 @@ func (d DiskInfo) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "diskNumber", d.DiskNumber)
 	populate(objectMap, "diskUniqueId", d.DiskUniqueID)
 	populate(objectMap, "friendlyName", d.FriendlyName)
-	populate(objectMap, "lun", d.Lun)
+	populate(objectMap, "lun", d.LUN)
 	populate(objectMap, "managedDiskId", d.ManagedDiskID)
 	populate(objectMap, "sizeInBytes", d.SizeInBytes)
 	return json.Marshal(objectMap)
@@ -8736,7 +8736,7 @@ func (d *DiskInfo) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "FriendlyName", &d.FriendlyName)
 			delete(rawMsg, key)
 		case "lun":
-			err = unpopulate(val, "Lun", &d.Lun)
+			err = unpopulate(val, "LUN", &d.LUN)
 			delete(rawMsg, key)
 		case "managedDiskId":
 			err = unpopulate(val, "ManagedDiskID", &d.ManagedDiskID)
@@ -8755,7 +8755,7 @@ func (d *DiskInfo) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type DiskInformation.
 func (d DiskInformation) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "diskSizeInGb", d.DiskSizeInGb)
+	populate(objectMap, "diskSizeInGb", d.DiskSizeInGB)
 	populate(objectMap, "lun", d.Lun)
 	populate(objectMap, "name", d.Name)
 	populate(objectMap, "storageType", d.StorageType)
@@ -8772,7 +8772,7 @@ func (d *DiskInformation) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "diskSizeInGb":
-			err = unpopulate(val, "DiskSizeInGb", &d.DiskSizeInGb)
+			err = unpopulate(val, "DiskSizeInGB", &d.DiskSizeInGB)
 			delete(rawMsg, key)
 		case "lun":
 			err = unpopulate(val, "Lun", &d.Lun)
@@ -10357,6 +10357,41 @@ func (i *IaasVMILRRegistrationRequest) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "virtualMachineId":
 			err = unpopulate(val, "VirtualMachineID", &i.VirtualMachineID)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %s", i, err.Error())
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type IaasVMRPExtendedInfo.
+func (i IaasVMRPExtendedInfo) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "dataDisks", i.DataDisks)
+	populate(objectMap, "osDisk", i.OSDisk)
+	objectMap["objectType"] = "IaasVMRPExtendedInfo"
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type IaasVMRPExtendedInfo.
+func (i *IaasVMRPExtendedInfo) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %s", i, err.Error())
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "dataDisks":
+			err = unpopulate(val, "DataDisks", &i.DataDisks)
+			delete(rawMsg, key)
+		case "osDisk":
+			err = unpopulate(val, "OSDisk", &i.OSDisk)
+			delete(rawMsg, key)
+		case "objectType":
+			err = unpopulate(val, "ObjectType", &i.ObjectType)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -13494,6 +13529,119 @@ func (p *ProtectionPolicyResourceList) UnmarshalJSON(data []byte) error {
 		}
 		if err != nil {
 			return fmt.Errorf("unmarshalling type %T: %s", p, err.Error())
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type RPExtendedInfo.
+func (r RPExtendedInfo) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "objectType", r.ObjectType)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type RPExtendedInfo.
+func (r *RPExtendedInfo) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %s", r, err.Error())
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "objectType":
+			err = unpopulate(val, "ObjectType", &r.ObjectType)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %s", r, err.Error())
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type RPExtendedInfoResource.
+func (r RPExtendedInfoResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "eTag", r.ETag)
+	populate(objectMap, "id", r.ID)
+	populate(objectMap, "location", r.Location)
+	populate(objectMap, "name", r.Name)
+	populate(objectMap, "properties", r.Properties)
+	populate(objectMap, "systemData", r.SystemData)
+	populate(objectMap, "tags", r.Tags)
+	populate(objectMap, "type", r.Type)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type RPExtendedInfoResource.
+func (r *RPExtendedInfoResource) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %s", r, err.Error())
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "eTag":
+			err = unpopulate(val, "ETag", &r.ETag)
+			delete(rawMsg, key)
+		case "id":
+			err = unpopulate(val, "ID", &r.ID)
+			delete(rawMsg, key)
+		case "location":
+			err = unpopulate(val, "Location", &r.Location)
+			delete(rawMsg, key)
+		case "name":
+			err = unpopulate(val, "Name", &r.Name)
+			delete(rawMsg, key)
+		case "properties":
+			r.Properties, err = unmarshalRPExtendedInfoClassification(val)
+			delete(rawMsg, key)
+		case "systemData":
+			err = unpopulate(val, "SystemData", &r.SystemData)
+			delete(rawMsg, key)
+		case "tags":
+			err = unpopulate(val, "Tags", &r.Tags)
+			delete(rawMsg, key)
+		case "type":
+			err = unpopulate(val, "Type", &r.Type)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %s", r, err.Error())
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type RPExtendedInfoResourceList.
+func (r RPExtendedInfoResourceList) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "nextLink", r.NextLink)
+	populate(objectMap, "value", r.Value)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type RPExtendedInfoResourceList.
+func (r *RPExtendedInfoResourceList) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %s", r, err.Error())
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "nextLink":
+			err = unpopulate(val, "NextLink", &r.NextLink)
+			delete(rawMsg, key)
+		case "value":
+			err = unpopulate(val, "Value", &r.Value)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %s", r, err.Error())
 		}
 	}
 	return nil

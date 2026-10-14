@@ -395,14 +395,27 @@ type ProtectionPolicyOperationStatusesClientGetResponse struct {
 	OperationStatus
 }
 
-// RecoveryPointsClientGetRPExtendedInfoOperationResultResponse contains the response from method RecoveryPointsClient.BeginGetRPExtendedInfoOperationResult.
+// RecoveryPointsClientGetRPExtendedInfoOperationResultResponse contains the response from method RecoveryPointsClient.GetRPExtendedInfoOperationResult.
 type RecoveryPointsClientGetRPExtendedInfoOperationResultResponse struct {
-	// placeholder for future response values
+	// List of the additional details of recovery points.
+	RPExtendedInfoResourceList
+
+	// A link to the shared fabric level operation status endpoint, which reports the status of the long
+	// running operation whose result this endpoint returns.
+	AzureAsyncOperation *string
+
+	// A link to this endpoint, which a caller polling for the result of the prior getRPExtendedInfo
+	// operation can keep using while that operation is still running.
+	Location *string
+
+	// The Retry-After header can indicate how long the client should wait before polling the operation status.
+	RetryAfter *int32
 }
 
 // RecoveryPointsClientGetRPExtendedInfoResponse contains the response from method RecoveryPointsClient.BeginGetRPExtendedInfo.
 type RecoveryPointsClientGetRPExtendedInfoResponse struct {
-	// placeholder for future response values
+	// List of the additional details of recovery points.
+	RPExtendedInfoResourceList
 }
 
 // RecoveryPointsClientGetResponse contains the response from method RecoveryPointsClient.Get.

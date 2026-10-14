@@ -13,6 +13,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
+	"strconv"
 	"strings"
 )
 
@@ -207,7 +208,7 @@ func (client *RecoveryPointsClient) getRPExtendedInfoCreateRequest(ctx context.C
 	return req, nil
 }
 
-// BeginGetRPExtendedInfoOperationResult - Returns the additional details of the recovery points fetched by a prior getRPExtendedInfo
+// GetRPExtendedInfoOperationResult - Returns the additional details of the recovery points fetched by a prior getRPExtendedInfo
 // operation. Returns
 // 202 Accepted while the operation is still running.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -215,51 +216,27 @@ func (client *RecoveryPointsClient) getRPExtendedInfoCreateRequest(ctx context.C
 //   - vaultName - The name of the recovery services vault.
 //   - fabricName - Fabric name associated with the backed up items.
 //   - operationID - OperationID which represents the prior getRPExtendedInfo operation whose result needs to be fetched.
-//   - options - RecoveryPointsClientBeginGetRPExtendedInfoOperationResultOptions contains the optional parameters for the RecoveryPointsClient.BeginGetRPExtendedInfoOperationResult
+//   - options - RecoveryPointsClientGetRPExtendedInfoOperationResultOptions contains the optional parameters for the RecoveryPointsClient.GetRPExtendedInfoOperationResult
 //     method.
-func (client *RecoveryPointsClient) BeginGetRPExtendedInfoOperationResult(ctx context.Context, resourceGroupName string, vaultName string, fabricName string, operationID string, options *RecoveryPointsClientBeginGetRPExtendedInfoOperationResultOptions) (*runtime.Poller[RecoveryPointsClientGetRPExtendedInfoOperationResultResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.getRPExtendedInfoOperationResult(ctx, resourceGroupName, vaultName, fabricName, operationID, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[RecoveryPointsClientGetRPExtendedInfoOperationResultResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[RecoveryPointsClientGetRPExtendedInfoOperationResultResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// GetRPExtendedInfoOperationResult - Returns the additional details of the recovery points fetched by a prior getRPExtendedInfo
-// operation. Returns
-// 202 Accepted while the operation is still running.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *RecoveryPointsClient) getRPExtendedInfoOperationResult(ctx context.Context, resourceGroupName string, vaultName string, fabricName string, operationID string, options *RecoveryPointsClientBeginGetRPExtendedInfoOperationResultOptions) (*http.Response, error) {
+func (client *RecoveryPointsClient) GetRPExtendedInfoOperationResult(ctx context.Context, resourceGroupName string, vaultName string, fabricName string, operationID string, options *RecoveryPointsClientGetRPExtendedInfoOperationResultOptions) (RecoveryPointsClientGetRPExtendedInfoOperationResultResponse, error) {
 	var err error
-	const operationName = "RecoveryPointsClient.BeginGetRPExtendedInfoOperationResult"
+	const operationName = "RecoveryPointsClient.GetRPExtendedInfoOperationResult"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	req, err := client.getRPExtendedInfoOperationResultCreateRequest(ctx, resourceGroupName, vaultName, fabricName, operationID, options)
 	if err != nil {
-		return nil, err
+		return RecoveryPointsClientGetRPExtendedInfoOperationResultResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return RecoveryPointsClientGetRPExtendedInfoOperationResultResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
+	return client.getRPExtendedInfoOperationResultHandleResponse(httpResp, http.StatusOK, http.StatusAccepted)
 }
 
 // getRPExtendedInfoOperationResultCreateRequest creates the GetRPExtendedInfoOperationResult request.
-func (client *RecoveryPointsClient) getRPExtendedInfoOperationResultCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, fabricName string, operationID string, _ *RecoveryPointsClientBeginGetRPExtendedInfoOperationResultOptions) (*policy.Request, error) {
+func (client *RecoveryPointsClient) getRPExtendedInfoOperationResultCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, fabricName string, operationID string, _ *RecoveryPointsClientGetRPExtendedInfoOperationResultOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupFabrics/{fabricName}/getRPExtendedInfoOperationResult/{operationId}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")
@@ -290,6 +267,32 @@ func (client *RecoveryPointsClient) getRPExtendedInfoOperationResultCreateReques
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
+}
+
+// getRPExtendedInfoOperationResultHandleResponse handles the GetRPExtendedInfoOperationResult response.
+func (client *RecoveryPointsClient) getRPExtendedInfoOperationResultHandleResponse(resp *http.Response, successCodes ...int) (RecoveryPointsClientGetRPExtendedInfoOperationResultResponse, error) {
+	result := RecoveryPointsClientGetRPExtendedInfoOperationResultResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Azure-Asyncoperation"); val != "" {
+		result.AzureAsyncOperation = &val
+	}
+	if val := resp.Header.Get("Location"); val != "" {
+		result.Location = &val
+	}
+	if val := resp.Header.Get("Retry-After"); val != "" {
+		retryAfter32, err := strconv.ParseInt(val, 10, 32)
+		retryAfter := int32(retryAfter32)
+		if err != nil {
+			return RecoveryPointsClientGetRPExtendedInfoOperationResultResponse{}, err
+		}
+		result.RetryAfter = &retryAfter
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.RPExtendedInfoResourceList); err != nil {
+		return RecoveryPointsClientGetRPExtendedInfoOperationResultResponse{}, err
+	}
+	return result, nil
 }
 
 // NewListPager - Lists the backup copies for the backed up item.

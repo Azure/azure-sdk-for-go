@@ -342,6 +342,15 @@ type ProtectionPolicyClassification interface {
 	GetProtectionPolicy() *ProtectionPolicy
 }
 
+// RPExtendedInfoClassification provides polymorphic access to related types.
+// Call the interface's GetRPExtendedInfo() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *IaasVMRPExtendedInfo, *RPExtendedInfo
+type RPExtendedInfoClassification interface {
+	// GetRPExtendedInfo returns the RPExtendedInfo content of the underlying type.
+	GetRPExtendedInfo() *RPExtendedInfo
+}
+
 // RecoveryPointClassification provides polymorphic access to related types.
 // Call the interface's GetRecoveryPoint() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:

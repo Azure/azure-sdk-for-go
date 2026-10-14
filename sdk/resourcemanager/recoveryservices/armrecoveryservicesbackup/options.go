@@ -424,13 +424,6 @@ type ProtectionPolicyOperationStatusesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RecoveryPointsClientBeginGetRPExtendedInfoOperationResultOptions contains the optional parameters for the RecoveryPointsClient.BeginGetRPExtendedInfoOperationResult
-// method.
-type RecoveryPointsClientBeginGetRPExtendedInfoOperationResultOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
 // RecoveryPointsClientBeginGetRPExtendedInfoOptions contains the optional parameters for the RecoveryPointsClient.BeginGetRPExtendedInfo
 // method.
 type RecoveryPointsClientBeginGetRPExtendedInfoOptions struct {
@@ -440,6 +433,12 @@ type RecoveryPointsClientBeginGetRPExtendedInfoOptions struct {
 
 // RecoveryPointsClientGetOptions contains the optional parameters for the RecoveryPointsClient.Get method.
 type RecoveryPointsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// RecoveryPointsClientGetRPExtendedInfoOperationResultOptions contains the optional parameters for the RecoveryPointsClient.GetRPExtendedInfoOperationResult
+// method.
+type RecoveryPointsClientGetRPExtendedInfoOperationResultOptions struct {
 	// placeholder for future optional parameters
 }
 

@@ -94,10 +94,12 @@ const (
 	BackupItemTypeSAPHanaDatabase   BackupItemType = "SAPHanaDatabase"
 	BackupItemTypeSQLDB             BackupItemType = "SQLDB"
 	BackupItemTypeSQLDataBase       BackupItemType = "SQLDataBase"
-	BackupItemTypeSharepoint        BackupItemType = "Sharepoint"
-	BackupItemTypeSystemState       BackupItemType = "SystemState"
-	BackupItemTypeVM                BackupItemType = "VM"
-	BackupItemTypeVMwareVM          BackupItemType = "VMwareVM"
+	// BackupItemTypeSQLInstance - A SQL Server instance.
+	BackupItemTypeSQLInstance BackupItemType = "SQLInstance"
+	BackupItemTypeSharepoint  BackupItemType = "Sharepoint"
+	BackupItemTypeSystemState BackupItemType = "SystemState"
+	BackupItemTypeVM          BackupItemType = "VM"
+	BackupItemTypeVMwareVM    BackupItemType = "VMwareVM"
 )
 
 // PossibleBackupItemTypeValues returns the possible values for the BackupItemType const type.
@@ -115,6 +117,7 @@ func PossibleBackupItemTypeValues() []BackupItemType {
 		BackupItemTypeSAPHanaDatabase,
 		BackupItemTypeSQLDB,
 		BackupItemTypeSQLDataBase,
+		BackupItemTypeSQLInstance,
 		BackupItemTypeSharepoint,
 		BackupItemTypeSystemState,
 		BackupItemTypeVM,
@@ -278,10 +281,12 @@ const (
 	DataSourceTypeSAPHanaDatabase   DataSourceType = "SAPHanaDatabase"
 	DataSourceTypeSQLDB             DataSourceType = "SQLDB"
 	DataSourceTypeSQLDataBase       DataSourceType = "SQLDataBase"
-	DataSourceTypeSharepoint        DataSourceType = "Sharepoint"
-	DataSourceTypeSystemState       DataSourceType = "SystemState"
-	DataSourceTypeVM                DataSourceType = "VM"
-	DataSourceTypeVMwareVM          DataSourceType = "VMwareVM"
+	// DataSourceTypeSQLInstance - A SQL Server instance.
+	DataSourceTypeSQLInstance DataSourceType = "SQLInstance"
+	DataSourceTypeSharepoint  DataSourceType = "Sharepoint"
+	DataSourceTypeSystemState DataSourceType = "SystemState"
+	DataSourceTypeVM          DataSourceType = "VM"
+	DataSourceTypeVMwareVM    DataSourceType = "VMwareVM"
 )
 
 // PossibleDataSourceTypeValues returns the possible values for the DataSourceType const type.
@@ -299,6 +304,7 @@ func PossibleDataSourceTypeValues() []DataSourceType {
 		DataSourceTypeSAPHanaDatabase,
 		DataSourceTypeSQLDB,
 		DataSourceTypeSQLDataBase,
+		DataSourceTypeSQLInstance,
 		DataSourceTypeSharepoint,
 		DataSourceTypeSystemState,
 		DataSourceTypeVM,
@@ -1768,10 +1774,12 @@ const (
 	WorkloadTypeSAPHanaDatabase   WorkloadType = "SAPHanaDatabase"
 	WorkloadTypeSQLDB             WorkloadType = "SQLDB"
 	WorkloadTypeSQLDataBase       WorkloadType = "SQLDataBase"
-	WorkloadTypeSharepoint        WorkloadType = "Sharepoint"
-	WorkloadTypeSystemState       WorkloadType = "SystemState"
-	WorkloadTypeVM                WorkloadType = "VM"
-	WorkloadTypeVMwareVM          WorkloadType = "VMwareVM"
+	// WorkloadTypeSQLInstance - A SQL Server instance.
+	WorkloadTypeSQLInstance WorkloadType = "SQLInstance"
+	WorkloadTypeSharepoint  WorkloadType = "Sharepoint"
+	WorkloadTypeSystemState WorkloadType = "SystemState"
+	WorkloadTypeVM          WorkloadType = "VM"
+	WorkloadTypeVMwareVM    WorkloadType = "VMwareVM"
 )
 
 // PossibleWorkloadTypeValues returns the possible values for the WorkloadType const type.
@@ -1789,6 +1797,7 @@ func PossibleWorkloadTypeValues() []WorkloadType {
 		WorkloadTypeSAPHanaDatabase,
 		WorkloadTypeSQLDB,
 		WorkloadTypeSQLDataBase,
+		WorkloadTypeSQLInstance,
 		WorkloadTypeSharepoint,
 		WorkloadTypeSystemState,
 		WorkloadTypeVM,

@@ -17,6 +17,7 @@ import (
 	"net/url"
 	"regexp"
 	"slices"
+	"strconv"
 )
 
 // RecoveryPointsServer is a fake server for instances of the armrecoveryservicesbackup.RecoveryPointsClient type.
@@ -26,12 +27,12 @@ type RecoveryPointsServer struct {
 	Get func(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, recoveryPointID string, options *armrecoveryservicesbackup.RecoveryPointsClientGetOptions) (resp azfake.Responder[armrecoveryservicesbackup.RecoveryPointsClientGetResponse], errResp azfake.ErrorResponder)
 
 	// BeginGetRPExtendedInfo is the fake for method RecoveryPointsClient.BeginGetRPExtendedInfo
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginGetRPExtendedInfo func(ctx context.Context, resourceGroupName string, vaultName string, fabricName string, parameters armrecoveryservicesbackup.GetRPExtendedInfoRequestResource, options *armrecoveryservicesbackup.RecoveryPointsClientBeginGetRPExtendedInfoOptions) (resp azfake.PollerResponder[armrecoveryservicesbackup.RecoveryPointsClientGetRPExtendedInfoResponse], errResp azfake.ErrorResponder)
 
-	// BeginGetRPExtendedInfoOperationResult is the fake for method RecoveryPointsClient.BeginGetRPExtendedInfoOperationResult
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginGetRPExtendedInfoOperationResult func(ctx context.Context, resourceGroupName string, vaultName string, fabricName string, operationID string, options *armrecoveryservicesbackup.RecoveryPointsClientBeginGetRPExtendedInfoOperationResultOptions) (resp azfake.PollerResponder[armrecoveryservicesbackup.RecoveryPointsClientGetRPExtendedInfoOperationResultResponse], errResp azfake.ErrorResponder)
+	// GetRPExtendedInfoOperationResult is the fake for method RecoveryPointsClient.GetRPExtendedInfoOperationResult
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	GetRPExtendedInfoOperationResult func(ctx context.Context, resourceGroupName string, vaultName string, fabricName string, operationID string, options *armrecoveryservicesbackup.RecoveryPointsClientGetRPExtendedInfoOperationResultOptions) (resp azfake.Responder[armrecoveryservicesbackup.RecoveryPointsClientGetRPExtendedInfoOperationResultResponse], errResp azfake.ErrorResponder)
 
 	// NewListPager is the fake for method RecoveryPointsClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
@@ -43,20 +44,18 @@ type RecoveryPointsServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewRecoveryPointsServerTransport(srv *RecoveryPointsServer) *RecoveryPointsServerTransport {
 	return &RecoveryPointsServerTransport{
-		srv:                                   srv,
-		beginGetRPExtendedInfo:                newTracker[azfake.PollerResponder[armrecoveryservicesbackup.RecoveryPointsClientGetRPExtendedInfoResponse]](),
-		beginGetRPExtendedInfoOperationResult: newTracker[azfake.PollerResponder[armrecoveryservicesbackup.RecoveryPointsClientGetRPExtendedInfoOperationResultResponse]](),
-		newListPager:                          newTracker[azfake.PagerResponder[armrecoveryservicesbackup.RecoveryPointsClientListResponse]](),
+		srv:                    srv,
+		beginGetRPExtendedInfo: newTracker[azfake.PollerResponder[armrecoveryservicesbackup.RecoveryPointsClientGetRPExtendedInfoResponse]](),
+		newListPager:           newTracker[azfake.PagerResponder[armrecoveryservicesbackup.RecoveryPointsClientListResponse]](),
 	}
 }
 
 // RecoveryPointsServerTransport connects instances of armrecoveryservicesbackup.RecoveryPointsClient to instances of RecoveryPointsServer.
 // Don't use this type directly, use NewRecoveryPointsServerTransport instead.
 type RecoveryPointsServerTransport struct {
-	srv                                   *RecoveryPointsServer
-	beginGetRPExtendedInfo                *tracker[azfake.PollerResponder[armrecoveryservicesbackup.RecoveryPointsClientGetRPExtendedInfoResponse]]
-	beginGetRPExtendedInfoOperationResult *tracker[azfake.PollerResponder[armrecoveryservicesbackup.RecoveryPointsClientGetRPExtendedInfoOperationResultResponse]]
-	newListPager                          *tracker[azfake.PagerResponder[armrecoveryservicesbackup.RecoveryPointsClientListResponse]]
+	srv                    *RecoveryPointsServer
+	beginGetRPExtendedInfo *tracker[azfake.PollerResponder[armrecoveryservicesbackup.RecoveryPointsClientGetRPExtendedInfoResponse]]
+	newListPager           *tracker[azfake.PagerResponder[armrecoveryservicesbackup.RecoveryPointsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for RecoveryPointsServerTransport.
@@ -84,8 +83,8 @@ func (r *RecoveryPointsServerTransport) dispatchToMethodFake(req *http.Request, 
 				res.resp, res.err = r.dispatchGet(req)
 			case "RecoveryPointsClient.BeginGetRPExtendedInfo":
 				res.resp, res.err = r.dispatchBeginGetRPExtendedInfo(req)
-			case "RecoveryPointsClient.BeginGetRPExtendedInfoOperationResult":
-				res.resp, res.err = r.dispatchBeginGetRPExtendedInfoOperationResult(req)
+			case "RecoveryPointsClient.GetRPExtendedInfoOperationResult":
+				res.resp, res.err = r.dispatchGetRPExtendedInfoOperationResult(req)
 			case "RecoveryPointsClient.NewListPager":
 				res.resp, res.err = r.dispatchNewListPager(req)
 			default:
@@ -194,9 +193,9 @@ func (r *RecoveryPointsServerTransport) dispatchBeginGetRPExtendedInfo(req *http
 		return nil, err
 	}
 
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		r.beginGetRPExtendedInfo.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginGetRPExtendedInfo) {
 		r.beginGetRPExtendedInfo.remove(req)
@@ -205,55 +204,53 @@ func (r *RecoveryPointsServerTransport) dispatchBeginGetRPExtendedInfo(req *http
 	return resp, nil
 }
 
-func (r *RecoveryPointsServerTransport) dispatchBeginGetRPExtendedInfoOperationResult(req *http.Request) (*http.Response, error) {
-	if r.srv.BeginGetRPExtendedInfoOperationResult == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginGetRPExtendedInfoOperationResult not implemented")}
+func (r *RecoveryPointsServerTransport) dispatchGetRPExtendedInfoOperationResult(req *http.Request) (*http.Response, error) {
+	if r.srv.GetRPExtendedInfoOperationResult == nil {
+		return nil, &nonRetriableError{errors.New("fake for method GetRPExtendedInfoOperationResult not implemented")}
 	}
-	beginGetRPExtendedInfoOperationResult := r.beginGetRPExtendedInfoOperationResult.get(req)
-	if beginGetRPExtendedInfoOperationResult == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.RecoveryServices/vaults/(?P<vaultName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/backupFabrics/(?P<fabricName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/getRPExtendedInfoOperationResult/(?P<operationId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 6 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		vaultNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("vaultName")])
-		if err != nil {
-			return nil, err
-		}
-		fabricNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("fabricName")])
-		if err != nil {
-			return nil, err
-		}
-		operationIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("operationId")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := r.srv.BeginGetRPExtendedInfoOperationResult(req.Context(), resourceGroupNameParam, vaultNameParam, fabricNameParam, operationIDParam, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginGetRPExtendedInfoOperationResult = &respr
-		r.beginGetRPExtendedInfoOperationResult.add(req, beginGetRPExtendedInfoOperationResult)
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.RecoveryServices/vaults/(?P<vaultName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/backupFabrics/(?P<fabricName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/getRPExtendedInfoOperationResult/(?P<operationId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 6 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-
-	resp, err := server.PollerResponderNext(beginGetRPExtendedInfoOperationResult, req)
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 	if err != nil {
 		return nil, err
 	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
-		r.beginGetRPExtendedInfoOperationResult.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+	vaultNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("vaultName")])
+	if err != nil {
+		return nil, err
 	}
-	if !server.PollerResponderMore(beginGetRPExtendedInfoOperationResult) {
-		r.beginGetRPExtendedInfoOperationResult.remove(req)
+	fabricNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("fabricName")])
+	if err != nil {
+		return nil, err
 	}
-
+	operationIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("operationId")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := r.srv.GetRPExtendedInfoOperationResult(req.Context(), resourceGroupNameParam, vaultNameParam, fabricNameParam, operationIDParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).RPExtendedInfoResourceList, req)
+	if err != nil {
+		return nil, err
+	}
+	if val := server.GetResponse(respr).AzureAsyncOperation; val != nil {
+		resp.Header.Set("Azure-Asyncoperation", *val)
+	}
+	if val := server.GetResponse(respr).Location; val != nil {
+		resp.Header.Set("Location", *val)
+	}
+	if val := server.GetResponse(respr).RetryAfter; val != nil {
+		resp.Header.Set("Retry-After", strconv.FormatInt(int64(*val), 10))
+	}
 	return resp, nil
 }
 

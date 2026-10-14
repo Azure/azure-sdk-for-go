@@ -4188,7 +4188,7 @@ type AzureVMWorkloadSQLInstanceProtectedItem struct {
 	BackupSetName *string
 
 	// Name of Child Dbs protected under this parent.
-	ChildDBNames []*string
+	ChildDatabaseNameList []*string
 
 	// Unique name of container
 	ContainerName *string
@@ -7066,7 +7066,7 @@ type DiskInfo struct {
 	FriendlyName *string
 
 	// LUN of the disk.
-	Lun *int32
+	LUN *int32
 
 	// ARM ID of the managed disk.
 	ManagedDiskID *string
@@ -7078,7 +7078,7 @@ type DiskInfo struct {
 // DiskInformation - Disk information
 type DiskInformation struct {
 	// Size of the disk in GB.
-	DiskSizeInGb *int32
+	DiskSizeInGB *int32
 	Lun          *int32
 	Name         *string
 
@@ -8025,6 +8025,26 @@ type IaasVMILRRegistrationRequest struct {
 // GetILRRequest implements the ILRRequestClassification interface for type IaasVMILRRegistrationRequest.
 func (i *IaasVMILRRegistrationRequest) GetILRRequest() *ILRRequest {
 	return &ILRRequest{
+		ObjectType: i.ObjectType,
+	}
+}
+
+// IaasVMRPExtendedInfo - Additional details of an IaaS VM recovery point.
+type IaasVMRPExtendedInfo struct {
+	// REQUIRED
+	ObjectType *string
+
+	// Data disks of the backed up virtual machine.
+	DataDisks []*DiskInformation
+
+	// OS disk of the backed up virtual machine. The lun of the OS disk is always -1, since a logical unit number is
+	// only assigned to data disks.
+	OSDisk *DiskInformation
+}
+
+// GetRPExtendedInfo implements the RPExtendedInfoClassification interface for type IaasVMRPExtendedInfo.
+func (i *IaasVMRPExtendedInfo) GetRPExtendedInfo() *RPExtendedInfo {
+	return &RPExtendedInfo{
 		ObjectType: i.ObjectType,
 	}
 }
@@ -9642,6 +9662,54 @@ type ProtectionPolicyResourceList struct {
 
 	// List of resources.
 	Value []*ProtectionPolicyResource
+}
+
+// RPExtendedInfo - Base class for additional details of a recovery point. Workload-specific additional details are derived
+// from
+// this class.
+type RPExtendedInfo struct {
+	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
+	ObjectType *string
+}
+
+// GetRPExtendedInfo implements the RPExtendedInfoClassification interface for type RPExtendedInfo.
+func (r *RPExtendedInfo) GetRPExtendedInfo() *RPExtendedInfo { return r }
+
+// RPExtendedInfoResource - Additional details of a recovery point, wrapped in a resource envelope.
+type RPExtendedInfoResource struct {
+	// Optional ETag.
+	ETag *string
+
+	// Resource location.
+	Location *string
+
+	// RPExtendedInfoResource properties
+	Properties RPExtendedInfoClassification
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// RPExtendedInfoResourceList - List of the additional details of recovery points.
+type RPExtendedInfoResourceList struct {
+	// The URI to fetch the next page of resources, with each API call returning up to 200 resources per page. Use ListNext()
+	// to fetch the next page if the total number of resources exceeds 200.
+	NextLink *string
+
+	// List of resources.
+	Value []*RPExtendedInfoResource
 }
 
 // RecoveryPoint - Base class for backup copies. Workload-specific backup copies are derived from this class.

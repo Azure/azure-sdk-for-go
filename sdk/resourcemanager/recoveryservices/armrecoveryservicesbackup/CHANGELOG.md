@@ -1,9 +1,12 @@
 # Release History
 
-## 5.2.0 (2026-10-08)
+## 5.2.0 (2026-10-14)
 ### Features Added
 
+- New value `BackupItemTypeSQLInstance` added to enum type `BackupItemType`
+- New value `DataSourceTypeSQLInstance` added to enum type `DataSourceType`
 - New value `RecoveryPointTierTypeIASnapshotRP` added to enum type `RecoveryPointTierType`
+- New value `WorkloadTypeSQLInstance` added to enum type `WorkloadType`
 - New enum type `ExistingBasicVMProtection` with values `ExistingBasicVMProtectionDisableWithDeleteRPsNow`
 - New enum type `InstanceProtectionReadiness` with values `InstanceProtectionReadinessPartialProtection`, `InstanceProtectionReadinessProtectionError`, `InstanceProtectionReadinessReady`, `InstanceProtectionReadinessScheduleDisabled`, `InstanceProtectionReadinessUnknown`
 - New enum type `ProtectionLevel` with values `ProtectionLevelDatabase`, `ProtectionLevelDatabaseUnderInstance`
@@ -11,10 +14,12 @@
 - New function `*AzureVMWorkloadSQLInstanceProtectedItem.GetAzureVMWorkloadProtectedItem() *AzureVMWorkloadProtectedItem`
 - New function `*AzureVMWorkloadSQLInstanceProtectedItem.GetProtectedItem() *ProtectedItem`
 - New function `*ClientFactory.NewProtectionContainerRefreshOperationStatusesClient() *ProtectionContainerRefreshOperationStatusesClient`
+- New function `*IaasVMRPExtendedInfo.GetRPExtendedInfo() *RPExtendedInfo`
 - New function `NewProtectionContainerRefreshOperationStatusesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ProtectionContainerRefreshOperationStatusesClient, error)`
 - New function `*ProtectionContainerRefreshOperationStatusesClient.Get(ctx context.Context, resourceGroupName string, vaultName string, fabricName string, operationID string, options *ProtectionContainerRefreshOperationStatusesClientGetOptions) (ProtectionContainerRefreshOperationStatusesClientGetResponse, error)`
+- New function `*RPExtendedInfo.GetRPExtendedInfo() *RPExtendedInfo`
 - New function `*RecoveryPointsClient.BeginGetRPExtendedInfo(ctx context.Context, resourceGroupName string, vaultName string, fabricName string, parameters GetRPExtendedInfoRequestResource, options *RecoveryPointsClientBeginGetRPExtendedInfoOptions) (*runtime.Poller[RecoveryPointsClientGetRPExtendedInfoResponse], error)`
-- New function `*RecoveryPointsClient.BeginGetRPExtendedInfoOperationResult(ctx context.Context, resourceGroupName string, vaultName string, fabricName string, operationID string, options *RecoveryPointsClientBeginGetRPExtendedInfoOperationResultOptions) (*runtime.Poller[RecoveryPointsClientGetRPExtendedInfoOperationResultResponse], error)`
+- New function `*RecoveryPointsClient.GetRPExtendedInfoOperationResult(ctx context.Context, resourceGroupName string, vaultName string, fabricName string, operationID string, options *RecoveryPointsClientGetRPExtendedInfoOperationResultOptions) (RecoveryPointsClientGetRPExtendedInfoOperationResultResponse, error)`
 - New function `*ValidateAzureWorkloadRestoreOperationRequest.GetValidateOperationRequest() *ValidateOperationRequest`
 - New struct `AzureVMWorkloadSQLInstanceProtectedItem`
 - New struct `DatabaseInRP`
@@ -22,6 +27,9 @@
 - New struct `FilesystemInfo`
 - New struct `GetRPExtendedInfoRequest`
 - New struct `GetRPExtendedInfoRequestResource`
+- New struct `IaasVMRPExtendedInfo`
+- New struct `RPExtendedInfoResource`
+- New struct `RPExtendedInfoResourceList`
 - New struct `SnapshotRecoveryPointInfo`
 - New struct `StorageSpaceInfo`
 - New struct `ValidateAzureWorkloadRestoreOperationRequest`
@@ -32,7 +40,7 @@
 - New field `VMWorkloadPolicyType` in struct `AzureVMWorkloadProtectionPolicy`
 - New field `ParentProtectedItem`, `ProtectionLevel` in struct `AzureVMWorkloadSQLDatabaseProtectedItem`
 - New field `IncludedDatabases`, `SnapshotRecoveryPointInfo` in struct `AzureWorkloadSQLRecoveryPointExtendedInfo`
-- New field `DiskSizeInGb`, `StorageType` in struct `DiskInformation`
+- New field `DiskSizeInGB`, `StorageType` in struct `DiskInformation`
 - New field `DisksToDetachOnClash` in struct `SnapshotRestoreParameters`
 
 

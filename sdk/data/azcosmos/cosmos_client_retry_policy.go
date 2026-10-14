@@ -216,11 +216,12 @@ func (p *clientRetryPolicy) Do(req *policy.Request) (*http.Response, error) {
 			if errors.As(err, new(errorinfo.NonRetriable)) {
 				return nil, err
 			}
-			// This can be azcore's per-attempt context, not the caller's.
-			// Let azcore decide whether another read attempt is allowed.
 			if ctxErr := req.Raw().Context().Err(); ctxErr != nil {
 				if !o.isWriteOperation {
-					return nil, fmt.Errorf("%w: underlying transport error: %w", ctxErr, err)
+					// A send or body read failed with a done request context
+					// (attempt timeout or caller cancellation/deadline). Let
+					// azcore check the caller and decide on a fresh attempt.
+					return nil, err
 				}
 				return nil, errorinfo.NonRetriableError(fmt.Errorf("%w: underlying transport error: %v", ctxErr, err))
 			}

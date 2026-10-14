@@ -2096,20 +2096,25 @@ func readAttemptTimeoutResponse(req *http.Request, status int) *http.Response {
 
 func TestReadAttemptTimeoutRetryOptions(t *testing.T) {
 	for _, tt := range []struct {
-		name       string
-		maxRetries int32
-		override   bool
-		reject     bool
-		wantTries  int
+		name         string
+		maxRetries   int32
+		override     bool
+		reject       bool
+		contextCause bool
+		wantTries    int
 	}{
 		{name: "explicit limit", maxRetries: 2, wantTries: 3},
 		{name: "disabled", maxRetries: -1, wantTries: 1},
 		{name: "zero selects default", wantTries: 4},
 		{name: "per-call override", maxRetries: -1, override: true, wantTries: 3},
 		{name: "ShouldRetry rejects", maxRetries: 3, reject: true, wantTries: 1},
+		{name: "transport includes context cause", maxRetries: 1, contextCause: true, wantTries: 2},
 	} {
 		t.Run(tt.name, func(t *testing.T) {
-			transportErr := &net.OpError{Op: "read", Err: errors.New("transport failed")}
+			transportErr := &net.OpError{Op: "read", Err: errors.New("transport omitted context cause")}
+			if tt.contextCause {
+				transportErr.Err = context.DeadlineExceeded
+			}
 			sends, callbacks := 0, 0
 			transport := retryPolicyTransportFunc(func(req *http.Request) (*http.Response, error) {
 				sends++
@@ -2124,8 +2129,8 @@ func TestReadAttemptTimeoutRetryOptions(t *testing.T) {
 				ShouldRetry: func(resp *http.Response, err error) bool {
 					callbacks++
 					assert.Nil(t, resp)
-					assert.ErrorIs(t, err, context.DeadlineExceeded)
-					assert.ErrorIs(t, err, transportErr)
+					assert.Same(t, transportErr, err)
+					assert.Equal(t, tt.contextCause, errors.Is(err, context.DeadlineExceeded))
 					var opErr *net.OpError
 					assert.ErrorAs(t, err, &opErr)
 					return !tt.reject
@@ -2143,11 +2148,13 @@ func TestReadAttemptTimeoutRetryOptions(t *testing.T) {
 				}
 			}
 			client, verifier := newReadAttemptTimeoutTestClient(t, "https://cosmos.test", transport, options)
-			container, err := client.NewContainer("db", "container")
+			req, err := azruntime.NewRequest(ctx, http.MethodGet, client.endpoint)
 			require.NoError(t, err)
-			_, err = container.ReadItem(ctx, NewPartitionKeyString("pk"), "item", nil)
-			require.ErrorIs(t, err, context.DeadlineExceeded)
-			assert.ErrorIs(t, err, transportErr)
+			req.SetOperationValue(pipelineRequestOptions{resourceType: resourceTypeDocument})
+			_, err = client.internal.Pipeline().Do(req)
+			require.Error(t, err)
+			assert.Same(t, transportErr, err)
+			assert.Equal(t, tt.contextCause, errors.Is(err, context.DeadlineExceeded))
 			assert.Equal(t, tt.wantTries, sends)
 			assert.Len(t, verifier.requests, tt.wantTries)
 			assert.Equal(t, tt.wantTries, callbacks)

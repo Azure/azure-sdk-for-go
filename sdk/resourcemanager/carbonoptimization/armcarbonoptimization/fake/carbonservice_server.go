@@ -11,33 +11,42 @@ import (
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/carbonoptimization/armcarbonoptimization"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/carbonoptimization/armcarbonoptimization/v2"
 	"net/http"
+	"regexp"
 	"slices"
 )
 
 // CarbonServiceServer is a fake server for instances of the armcarbonoptimization.CarbonServiceClient type.
 type CarbonServiceServer struct {
+	// NewQueryCarbonEmissionReportsPager is the fake for method CarbonServiceClient.NewQueryCarbonEmissionReportsPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewQueryCarbonEmissionReportsPager func(queryParameters armcarbonoptimization.QueryFilterClassification, options *armcarbonoptimization.CarbonServiceClientQueryCarbonEmissionReportsOptions) (resp azfake.PagerResponder[armcarbonoptimization.CarbonServiceClientQueryCarbonEmissionReportsResponse])
+
 	// QueryCarbonEmissionDataAvailableDateRange is the fake for method CarbonServiceClient.QueryCarbonEmissionDataAvailableDateRange
 	// HTTP status codes to indicate success: http.StatusOK
 	QueryCarbonEmissionDataAvailableDateRange func(ctx context.Context, options *armcarbonoptimization.CarbonServiceClientQueryCarbonEmissionDataAvailableDateRangeOptions) (resp azfake.Responder[armcarbonoptimization.CarbonServiceClientQueryCarbonEmissionDataAvailableDateRangeResponse], errResp azfake.ErrorResponder)
 
-	// QueryCarbonEmissionReports is the fake for method CarbonServiceClient.QueryCarbonEmissionReports
+	// QueryCarbonEmissionReportsByBillingAccount is the fake for method CarbonServiceClient.QueryCarbonEmissionReportsByBillingAccount
 	// HTTP status codes to indicate success: http.StatusOK
-	QueryCarbonEmissionReports func(ctx context.Context, queryParameters armcarbonoptimization.QueryFilterClassification, options *armcarbonoptimization.CarbonServiceClientQueryCarbonEmissionReportsOptions) (resp azfake.Responder[armcarbonoptimization.CarbonServiceClientQueryCarbonEmissionReportsResponse], errResp azfake.ErrorResponder)
+	QueryCarbonEmissionReportsByBillingAccount func(ctx context.Context, scope string, queryParameters armcarbonoptimization.BillingAccountQueryFilterClassification, options *armcarbonoptimization.CarbonServiceClientQueryCarbonEmissionReportsByBillingAccountOptions) (resp azfake.Responder[armcarbonoptimization.CarbonServiceClientQueryCarbonEmissionReportsByBillingAccountResponse], errResp azfake.ErrorResponder)
 }
 
 // NewCarbonServiceServerTransport creates a new instance of CarbonServiceServerTransport with the provided implementation.
 // The returned CarbonServiceServerTransport instance is connected to an instance of armcarbonoptimization.CarbonServiceClient via the
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewCarbonServiceServerTransport(srv *CarbonServiceServer) *CarbonServiceServerTransport {
-	return &CarbonServiceServerTransport{srv: srv}
+	return &CarbonServiceServerTransport{
+		srv:                                srv,
+		newQueryCarbonEmissionReportsPager: newTracker[azfake.PagerResponder[armcarbonoptimization.CarbonServiceClientQueryCarbonEmissionReportsResponse]](),
+	}
 }
 
 // CarbonServiceServerTransport connects instances of armcarbonoptimization.CarbonServiceClient to instances of CarbonServiceServer.
 // Don't use this type directly, use NewCarbonServiceServerTransport instead.
 type CarbonServiceServerTransport struct {
-	srv *CarbonServiceServer
+	srv                                *CarbonServiceServer
+	newQueryCarbonEmissionReportsPager *tracker[azfake.PagerResponder[armcarbonoptimization.CarbonServiceClientQueryCarbonEmissionReportsResponse]]
 }
 
 // Do implements the policy.Transporter interface for CarbonServiceServerTransport.
@@ -61,10 +70,12 @@ func (c *CarbonServiceServerTransport) dispatchToMethodFake(req *http.Request, m
 		}
 		if !intercepted {
 			switch method {
+			case "CarbonServiceClient.NewQueryCarbonEmissionReportsPager":
+				res.resp, res.err = c.dispatchNewQueryCarbonEmissionReportsPager(req)
 			case "CarbonServiceClient.QueryCarbonEmissionDataAvailableDateRange":
 				res.resp, res.err = c.dispatchQueryCarbonEmissionDataAvailableDateRange(req)
-			case "CarbonServiceClient.QueryCarbonEmissionReports":
-				res.resp, res.err = c.dispatchQueryCarbonEmissionReports(req)
+			case "CarbonServiceClient.QueryCarbonEmissionReportsByBillingAccount":
+				res.resp, res.err = c.dispatchQueryCarbonEmissionReportsByBillingAccount(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -79,6 +90,38 @@ func (c *CarbonServiceServerTransport) dispatchToMethodFake(req *http.Request, m
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
+}
+
+func (c *CarbonServiceServerTransport) dispatchNewQueryCarbonEmissionReportsPager(req *http.Request) (*http.Response, error) {
+	if c.srv.NewQueryCarbonEmissionReportsPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewQueryCarbonEmissionReportsPager not implemented")}
+	}
+	newQueryCarbonEmissionReportsPager := c.newQueryCarbonEmissionReportsPager.get(req)
+	if newQueryCarbonEmissionReportsPager == nil {
+		raw, err := readRequestBody(req)
+		if err != nil {
+			return nil, err
+		}
+		body, err := unmarshalQueryFilterClassification(raw)
+		if err != nil {
+			return nil, err
+		}
+		resp := c.srv.NewQueryCarbonEmissionReportsPager(body, nil)
+		newQueryCarbonEmissionReportsPager = &resp
+		c.newQueryCarbonEmissionReportsPager.add(req, newQueryCarbonEmissionReportsPager)
+	}
+	resp, err := server.PagerResponderNext(newQueryCarbonEmissionReportsPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		c.newQueryCarbonEmissionReportsPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newQueryCarbonEmissionReportsPager) {
+		c.newQueryCarbonEmissionReportsPager.remove(req)
+	}
+	return resp, nil
 }
 
 func (c *CarbonServiceServerTransport) dispatchQueryCarbonEmissionDataAvailableDateRange(req *http.Request) (*http.Response, error) {
@@ -100,19 +143,26 @@ func (c *CarbonServiceServerTransport) dispatchQueryCarbonEmissionDataAvailableD
 	return resp, nil
 }
 
-func (c *CarbonServiceServerTransport) dispatchQueryCarbonEmissionReports(req *http.Request) (*http.Response, error) {
-	if c.srv.QueryCarbonEmissionReports == nil {
-		return nil, &nonRetriableError{errors.New("fake for method QueryCarbonEmissionReports not implemented")}
+func (c *CarbonServiceServerTransport) dispatchQueryCarbonEmissionReportsByBillingAccount(req *http.Request) (*http.Response, error) {
+	if c.srv.QueryCarbonEmissionReportsByBillingAccount == nil {
+		return nil, &nonRetriableError{errors.New("fake for method QueryCarbonEmissionReportsByBillingAccount not implemented")}
+	}
+	const regexStr = `/(?P<scope>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/providers/Microsoft\.Carbon/carbonEmissionReports`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 2 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	raw, err := readRequestBody(req)
 	if err != nil {
 		return nil, err
 	}
-	body, err := unmarshalQueryFilterClassification(raw)
+	body, err := unmarshalBillingAccountQueryFilterClassification(raw)
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := c.srv.QueryCarbonEmissionReports(req.Context(), body, nil)
+	scopeParam := matches[regex.SubexpIndex("scope")]
+	respr, errRespr := c.srv.QueryCarbonEmissionReportsByBillingAccount(req.Context(), scopeParam, body, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}

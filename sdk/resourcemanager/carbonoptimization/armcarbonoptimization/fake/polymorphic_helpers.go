@@ -6,8 +6,37 @@ package fake
 
 import (
 	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/carbonoptimization/armcarbonoptimization"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/carbonoptimization/armcarbonoptimization/v2"
 )
+
+func unmarshalBillingAccountQueryFilterClassification(rawMsg json.RawMessage) (armcarbonoptimization.BillingAccountQueryFilterClassification, error) {
+	if rawMsg == nil || string(rawMsg) == "null" {
+		return nil, nil
+	}
+	var m map[string]any
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b armcarbonoptimization.BillingAccountQueryFilterClassification
+	switch m["reportType"] {
+	case string(armcarbonoptimization.ReportTypeEnumItemDetailsReport):
+		b = &armcarbonoptimization.BillingAccountItemDetailsReportQueryFilter{}
+	case string(armcarbonoptimization.ReportTypeEnumMonthlySummaryReport):
+		b = &armcarbonoptimization.BillingAccountMonthlySummaryReportQueryFilter{}
+	case string(armcarbonoptimization.ReportTypeEnumOverallSummaryReport):
+		b = &armcarbonoptimization.BillingAccountOverallSummaryReportQueryFilter{}
+	case string(armcarbonoptimization.ReportTypeEnumTopItemsMonthlySummaryReport):
+		b = &armcarbonoptimization.BillingAccountTopItemsMonthlySummaryReportQueryFilter{}
+	case string(armcarbonoptimization.ReportTypeEnumTopItemsSummaryReport):
+		b = &armcarbonoptimization.BillingAccountTopItemsSummaryReportQueryFilter{}
+	default:
+		b = &armcarbonoptimization.BillingAccountQueryFilter{}
+	}
+	if err := json.Unmarshal(rawMsg, b); err != nil {
+		return nil, err
+	}
+	return b, nil
+}
 
 func unmarshalQueryFilterClassification(rawMsg json.RawMessage) (armcarbonoptimization.QueryFilterClassification, error) {
 	if rawMsg == nil || string(rawMsg) == "null" {

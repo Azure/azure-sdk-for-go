@@ -6,6 +6,7 @@ package armcarbonoptimization
 
 import (
 	"context"
+	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
@@ -17,7 +18,7 @@ import (
 // CarbonServiceClient contains the methods for the CarbonService group.
 // Don't use this type directly, use NewCarbonServiceClient() instead.
 //
-// Generated from API version 2025-04-01
+// Generated from API version 2026-05-01-preview
 type CarbonServiceClient struct {
 	internal *arm.Client
 }
@@ -34,6 +35,61 @@ func NewCarbonServiceClient(credential azcore.TokenCredential, options *arm.Clie
 		internal: cl,
 	}
 	return client, nil
+}
+
+// NewQueryCarbonEmissionReportsPager - API for Carbon Emissions Reports
+//   - queryParameters - Query parameters
+//   - options - CarbonServiceClientQueryCarbonEmissionReportsOptions contains the optional parameters for the CarbonServiceClient.NewQueryCarbonEmissionReportsPager
+//     method.
+func (client *CarbonServiceClient) NewQueryCarbonEmissionReportsPager(queryParameters QueryFilterClassification, options *CarbonServiceClientQueryCarbonEmissionReportsOptions) *runtime.Pager[CarbonServiceClientQueryCarbonEmissionReportsResponse] {
+	return runtime.NewPager(runtime.PagingHandler[CarbonServiceClientQueryCarbonEmissionReportsResponse]{
+		More: func(page CarbonServiceClientQueryCarbonEmissionReportsResponse) bool {
+			return false
+		},
+		Fetcher: func(ctx context.Context, page *CarbonServiceClientQueryCarbonEmissionReportsResponse) (CarbonServiceClientQueryCarbonEmissionReportsResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "CarbonServiceClient.NewQueryCarbonEmissionReportsPager")
+			req, err := client.queryCarbonEmissionReportsCreateRequest(ctx, queryParameters, options)
+			if err != nil {
+				return CarbonServiceClientQueryCarbonEmissionReportsResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return CarbonServiceClientQueryCarbonEmissionReportsResponse{}, err
+			}
+			return client.queryCarbonEmissionReportsHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// queryCarbonEmissionReportsCreateRequest creates the QueryCarbonEmissionReports request.
+func (client *CarbonServiceClient) queryCarbonEmissionReportsCreateRequest(ctx context.Context, queryParameters QueryFilterClassification, _ *CarbonServiceClientQueryCarbonEmissionReportsOptions) (*policy.Request, error) {
+	urlPath := "/providers/Microsoft.Carbon/carbonEmissionReports"
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260501Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, queryParameters); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// queryCarbonEmissionReportsHandleResponse handles the QueryCarbonEmissionReports response.
+func (client *CarbonServiceClient) queryCarbonEmissionReportsHandleResponse(resp *http.Response, successCodes ...int) (CarbonServiceClientQueryCarbonEmissionReportsResponse, error) {
+	result := CarbonServiceClientQueryCarbonEmissionReportsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.CarbonEmissionDataListResult); err != nil {
+		return CarbonServiceClientQueryCarbonEmissionReportsResponse{}, err
+	}
+	return result, nil
 }
 
 // QueryCarbonEmissionDataAvailableDateRange - API for query carbon emission data available date range
@@ -65,7 +121,7 @@ func (client *CarbonServiceClient) queryCarbonEmissionDataAvailableDateRangeCrea
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250401)
+	reqQP.Set("api-version", version20260501Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -83,37 +139,43 @@ func (client *CarbonServiceClient) queryCarbonEmissionDataAvailableDateRangeHand
 	return result, nil
 }
 
-// QueryCarbonEmissionReports - API for Carbon Emissions Reports
+// QueryCarbonEmissionReportsByBillingAccount - API for Carbon Emissions Reports scoped to a billing account.
 // If the operation fails it returns an *azcore.ResponseError type.
+//   - scope - The scope associated with carbon emission report operations. This includes '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}'
+//     for Billing Account scope.
 //   - queryParameters - Query parameters
-//   - options - CarbonServiceClientQueryCarbonEmissionReportsOptions contains the optional parameters for the CarbonServiceClient.QueryCarbonEmissionReports
-//     method.
-func (client *CarbonServiceClient) QueryCarbonEmissionReports(ctx context.Context, queryParameters QueryFilterClassification, options *CarbonServiceClientQueryCarbonEmissionReportsOptions) (CarbonServiceClientQueryCarbonEmissionReportsResponse, error) {
+//   - options - CarbonServiceClientQueryCarbonEmissionReportsByBillingAccountOptions contains the optional parameters for the
+//     CarbonServiceClient.QueryCarbonEmissionReportsByBillingAccount method.
+func (client *CarbonServiceClient) QueryCarbonEmissionReportsByBillingAccount(ctx context.Context, scope string, queryParameters BillingAccountQueryFilterClassification, options *CarbonServiceClientQueryCarbonEmissionReportsByBillingAccountOptions) (CarbonServiceClientQueryCarbonEmissionReportsByBillingAccountResponse, error) {
 	var err error
-	const operationName = "CarbonServiceClient.QueryCarbonEmissionReports"
+	const operationName = "CarbonServiceClient.QueryCarbonEmissionReportsByBillingAccount"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.queryCarbonEmissionReportsCreateRequest(ctx, queryParameters, options)
+	req, err := client.queryCarbonEmissionReportsByBillingAccountCreateRequest(ctx, scope, queryParameters, options)
 	if err != nil {
-		return CarbonServiceClientQueryCarbonEmissionReportsResponse{}, err
+		return CarbonServiceClientQueryCarbonEmissionReportsByBillingAccountResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return CarbonServiceClientQueryCarbonEmissionReportsResponse{}, err
+		return CarbonServiceClientQueryCarbonEmissionReportsByBillingAccountResponse{}, err
 	}
-	return client.queryCarbonEmissionReportsHandleResponse(httpResp, http.StatusOK)
+	return client.queryCarbonEmissionReportsByBillingAccountHandleResponse(httpResp, http.StatusOK)
 }
 
-// queryCarbonEmissionReportsCreateRequest creates the QueryCarbonEmissionReports request.
-func (client *CarbonServiceClient) queryCarbonEmissionReportsCreateRequest(ctx context.Context, queryParameters QueryFilterClassification, _ *CarbonServiceClientQueryCarbonEmissionReportsOptions) (*policy.Request, error) {
-	urlPath := "/providers/Microsoft.Carbon/carbonEmissionReports"
+// queryCarbonEmissionReportsByBillingAccountCreateRequest creates the QueryCarbonEmissionReportsByBillingAccount request.
+func (client *CarbonServiceClient) queryCarbonEmissionReportsByBillingAccountCreateRequest(ctx context.Context, scope string, queryParameters BillingAccountQueryFilterClassification, _ *CarbonServiceClientQueryCarbonEmissionReportsByBillingAccountOptions) (*policy.Request, error) {
+	urlPath := "/{scope}/providers/Microsoft.Carbon/carbonEmissionReports"
+	if scope == "" {
+		return nil, errors.New("parameter scope cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250401)
+	reqQP.Set("api-version", version20260501Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -123,14 +185,14 @@ func (client *CarbonServiceClient) queryCarbonEmissionReportsCreateRequest(ctx c
 	return req, nil
 }
 
-// queryCarbonEmissionReportsHandleResponse handles the QueryCarbonEmissionReports response.
-func (client *CarbonServiceClient) queryCarbonEmissionReportsHandleResponse(resp *http.Response, successCodes ...int) (CarbonServiceClientQueryCarbonEmissionReportsResponse, error) {
-	result := CarbonServiceClientQueryCarbonEmissionReportsResponse{}
+// queryCarbonEmissionReportsByBillingAccountHandleResponse handles the QueryCarbonEmissionReportsByBillingAccount response.
+func (client *CarbonServiceClient) queryCarbonEmissionReportsByBillingAccountHandleResponse(resp *http.Response, successCodes ...int) (CarbonServiceClientQueryCarbonEmissionReportsByBillingAccountResponse, error) {
+	result := CarbonServiceClientQueryCarbonEmissionReportsByBillingAccountResponse{}
 	if !runtime.HasStatusCode(resp, successCodes...) {
 		return result, runtime.NewResponseError(resp)
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CarbonEmissionDataListResult); err != nil {
-		return CarbonServiceClientQueryCarbonEmissionReportsResponse{}, err
+		return CarbonServiceClientQueryCarbonEmissionReportsByBillingAccountResponse{}, err
 	}
 	return result, nil
 }

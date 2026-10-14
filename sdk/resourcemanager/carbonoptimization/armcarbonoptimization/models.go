@@ -6,6 +6,272 @@ package armcarbonoptimization
 
 import "time"
 
+// BillingAccountItemDetailsReportQueryFilter - Query filter parameter to configure ItemDetailsReport queries scoped to a
+// billing account.
+type BillingAccountItemDetailsReportQueryFilter struct {
+	// REQUIRED; List of carbon emission scopes. Required. Accepts one or more values from EmissionScopeEnum (e.g., Scope1, Scope2,
+	// Scope3) in list form. The output will include the total emissions for the specified scopes.
+	CarbonScopeList []*EmissionScopeEnum
+
+	// REQUIRED; Specifies the category type for item details.
+	CategoryType *BillingAccountCategoryTypeEnum
+
+	// REQUIRED; The start and end dates for carbon emissions data. Required. For ItemDetailsReport and TopItemsSummaryReport,
+	// only one month of data is supported at a time, so start and end dates should be equal within DateRange (e.g., start: 2024-06-01
+	// and end: 2024-06-01).
+	DateRange *DateRange
+
+	// REQUIRED; Page size for server paging. Optional. Default value is 1000 items per page.
+	PageSize *int32
+
+	// CONSTANT; Specifies that the report type is an item details report for carbon emissions data.
+	// Field has constant value ReportTypeEnumItemDetailsReport, any specified value is ignored.
+	ReportType *ReportTypeEnum
+
+	// List of locations(Azure Region Display Name) for carbon emissions data, with each location specified in lowercase (e.g.,
+	// 'east us'). Optional. You can use the command 'az account list-locations -o table' to find Azure Region Display Names.
+	LocationList []*string
+
+	// The column name to order the results by. See supported values in BillingAccountOrderByColumnEnum.
+	OrderBy *BillingAccountOrderByColumnEnum
+
+	// List of resource types for carbon emissions data. Optional. Each resource type should be specified in lowercase, following
+	// the format 'microsoft.{service}/{resourceType}', e.g., 'microsoft.storage/storageaccounts'.
+	ResourceTypeList []*string
+
+	// Pagination token for fetching the next page of data. Optional.
+	SkipToken *string
+
+	// Sort direction.
+	SortDirection *SortDirectionEnum
+
+	// List of subscription IDs for which carbon emissions data is requested. Optional. Each subscription ID should be in lowercase
+	// format. If not provided, data for all subscriptions under the billing account will be returned.
+	SubscriptionList []*string
+}
+
+// GetBillingAccountQueryFilter implements the BillingAccountQueryFilterClassification interface for type BillingAccountItemDetailsReportQueryFilter.
+func (b *BillingAccountItemDetailsReportQueryFilter) GetBillingAccountQueryFilter() *BillingAccountQueryFilter {
+	return &BillingAccountQueryFilter{
+		CarbonScopeList:  b.CarbonScopeList,
+		DateRange:        b.DateRange,
+		LocationList:     b.LocationList,
+		ReportType:       b.ReportType,
+		ResourceTypeList: b.ResourceTypeList,
+		SubscriptionList: b.SubscriptionList,
+	}
+}
+
+// BillingAccountMonthlySummaryReportQueryFilter - Query filter parameter to configure MonthlySummaryReport queries scoped
+// to a billing account.
+type BillingAccountMonthlySummaryReportQueryFilter struct {
+	// REQUIRED; List of carbon emission scopes. Required. Accepts one or more values from EmissionScopeEnum (e.g., Scope1, Scope2,
+	// Scope3) in list form. The output will include the total emissions for the specified scopes.
+	CarbonScopeList []*EmissionScopeEnum
+
+	// REQUIRED; The start and end dates for carbon emissions data. Required. For ItemDetailsReport and TopItemsSummaryReport,
+	// only one month of data is supported at a time, so start and end dates should be equal within DateRange (e.g., start: 2024-06-01
+	// and end: 2024-06-01).
+	DateRange *DateRange
+
+	// CONSTANT; Specifies that the report type is a monthly summary report for carbon emissions data.
+	// Field has constant value ReportTypeEnumMonthlySummaryReport, any specified value is ignored.
+	ReportType *ReportTypeEnum
+
+	// List of locations(Azure Region Display Name) for carbon emissions data, with each location specified in lowercase (e.g.,
+	// 'east us'). Optional. You can use the command 'az account list-locations -o table' to find Azure Region Display Names.
+	LocationList []*string
+
+	// List of resource types for carbon emissions data. Optional. Each resource type should be specified in lowercase, following
+	// the format 'microsoft.{service}/{resourceType}', e.g., 'microsoft.storage/storageaccounts'.
+	ResourceTypeList []*string
+
+	// List of subscription IDs for which carbon emissions data is requested. Optional. Each subscription ID should be in lowercase
+	// format. If not provided, data for all subscriptions under the billing account will be returned.
+	SubscriptionList []*string
+}
+
+// GetBillingAccountQueryFilter implements the BillingAccountQueryFilterClassification interface for type BillingAccountMonthlySummaryReportQueryFilter.
+func (b *BillingAccountMonthlySummaryReportQueryFilter) GetBillingAccountQueryFilter() *BillingAccountQueryFilter {
+	return &BillingAccountQueryFilter{
+		CarbonScopeList:  b.CarbonScopeList,
+		DateRange:        b.DateRange,
+		LocationList:     b.LocationList,
+		ReportType:       b.ReportType,
+		ResourceTypeList: b.ResourceTypeList,
+		SubscriptionList: b.SubscriptionList,
+	}
+}
+
+// BillingAccountOverallSummaryReportQueryFilter - Query filter parameter to configure OverallSummaryReport queries scoped
+// to a billing account.
+type BillingAccountOverallSummaryReportQueryFilter struct {
+	// REQUIRED; List of carbon emission scopes. Required. Accepts one or more values from EmissionScopeEnum (e.g., Scope1, Scope2,
+	// Scope3) in list form. The output will include the total emissions for the specified scopes.
+	CarbonScopeList []*EmissionScopeEnum
+
+	// REQUIRED; The start and end dates for carbon emissions data. Required. For ItemDetailsReport and TopItemsSummaryReport,
+	// only one month of data is supported at a time, so start and end dates should be equal within DateRange (e.g., start: 2024-06-01
+	// and end: 2024-06-01).
+	DateRange *DateRange
+
+	// CONSTANT; Specifies that the report type is an overall summary report for carbon emissions data.
+	// Field has constant value ReportTypeEnumOverallSummaryReport, any specified value is ignored.
+	ReportType *ReportTypeEnum
+
+	// List of locations(Azure Region Display Name) for carbon emissions data, with each location specified in lowercase (e.g.,
+	// 'east us'). Optional. You can use the command 'az account list-locations -o table' to find Azure Region Display Names.
+	LocationList []*string
+
+	// List of resource types for carbon emissions data. Optional. Each resource type should be specified in lowercase, following
+	// the format 'microsoft.{service}/{resourceType}', e.g., 'microsoft.storage/storageaccounts'.
+	ResourceTypeList []*string
+
+	// List of subscription IDs for which carbon emissions data is requested. Optional. Each subscription ID should be in lowercase
+	// format. If not provided, data for all subscriptions under the billing account will be returned.
+	SubscriptionList []*string
+}
+
+// GetBillingAccountQueryFilter implements the BillingAccountQueryFilterClassification interface for type BillingAccountOverallSummaryReportQueryFilter.
+func (b *BillingAccountOverallSummaryReportQueryFilter) GetBillingAccountQueryFilter() *BillingAccountQueryFilter {
+	return &BillingAccountQueryFilter{
+		CarbonScopeList:  b.CarbonScopeList,
+		DateRange:        b.DateRange,
+		LocationList:     b.LocationList,
+		ReportType:       b.ReportType,
+		ResourceTypeList: b.ResourceTypeList,
+		SubscriptionList: b.SubscriptionList,
+	}
+}
+
+// BillingAccountQueryFilter - Query filter parameter for billing account scoped carbon emissions queries. The billing account
+// ID is derived from the URL scope parameter.
+type BillingAccountQueryFilter struct {
+	// REQUIRED; List of carbon emission scopes. Required. Accepts one or more values from EmissionScopeEnum (e.g., Scope1, Scope2,
+	// Scope3) in list form. The output will include the total emissions for the specified scopes.
+	CarbonScopeList []*EmissionScopeEnum
+
+	// REQUIRED; The start and end dates for carbon emissions data. Required. For ItemDetailsReport and TopItemsSummaryReport,
+	// only one month of data is supported at a time, so start and end dates should be equal within DateRange (e.g., start: 2024-06-01
+	// and end: 2024-06-01).
+	DateRange *DateRange
+
+	// REQUIRED; The ReportType requested for carbon emissions data. Required. Specifies how data is aggregated and displayed
+	// in the output, as explained in the ReportTypeEnum.
+	ReportType *ReportTypeEnum
+
+	// List of locations(Azure Region Display Name) for carbon emissions data, with each location specified in lowercase (e.g.,
+	// 'east us'). Optional. You can use the command 'az account list-locations -o table' to find Azure Region Display Names.
+	LocationList []*string
+
+	// List of resource types for carbon emissions data. Optional. Each resource type should be specified in lowercase, following
+	// the format 'microsoft.{service}/{resourceType}', e.g., 'microsoft.storage/storageaccounts'.
+	ResourceTypeList []*string
+
+	// List of subscription IDs for which carbon emissions data is requested. Optional. Each subscription ID should be in lowercase
+	// format. If not provided, data for all subscriptions under the billing account will be returned.
+	SubscriptionList []*string
+}
+
+// GetBillingAccountQueryFilter implements the BillingAccountQueryFilterClassification interface for type BillingAccountQueryFilter.
+func (b *BillingAccountQueryFilter) GetBillingAccountQueryFilter() *BillingAccountQueryFilter {
+	return b
+}
+
+// BillingAccountTopItemsMonthlySummaryReportQueryFilter - Query filter parameter to configure TopItemsMonthlySummaryReport
+// queries scoped to a billing account.
+type BillingAccountTopItemsMonthlySummaryReportQueryFilter struct {
+	// REQUIRED; List of carbon emission scopes. Required. Accepts one or more values from EmissionScopeEnum (e.g., Scope1, Scope2,
+	// Scope3) in list form. The output will include the total emissions for the specified scopes.
+	CarbonScopeList []*EmissionScopeEnum
+
+	// REQUIRED; Specifies the category type to retrieve top-emitting items, aggregated by month.
+	CategoryType *BillingAccountCategoryTypeEnum
+
+	// REQUIRED; The start and end dates for carbon emissions data. Required. For ItemDetailsReport and TopItemsSummaryReport,
+	// only one month of data is supported at a time, so start and end dates should be equal within DateRange (e.g., start: 2024-06-01
+	// and end: 2024-06-01).
+	DateRange *DateRange
+
+	// CONSTANT; Specifies that the report type is a top items monthly summary report for carbon emissions data.
+	// Field has constant value ReportTypeEnumTopItemsMonthlySummaryReport, any specified value is ignored.
+	ReportType *ReportTypeEnum
+
+	// REQUIRED; The number of top items to return, based on emissions. Must be between 1 and 10.
+	TopItems *int32
+
+	// List of locations(Azure Region Display Name) for carbon emissions data, with each location specified in lowercase (e.g.,
+	// 'east us'). Optional. You can use the command 'az account list-locations -o table' to find Azure Region Display Names.
+	LocationList []*string
+
+	// List of resource types for carbon emissions data. Optional. Each resource type should be specified in lowercase, following
+	// the format 'microsoft.{service}/{resourceType}', e.g., 'microsoft.storage/storageaccounts'.
+	ResourceTypeList []*string
+
+	// List of subscription IDs for which carbon emissions data is requested. Optional. Each subscription ID should be in lowercase
+	// format. If not provided, data for all subscriptions under the billing account will be returned.
+	SubscriptionList []*string
+}
+
+// GetBillingAccountQueryFilter implements the BillingAccountQueryFilterClassification interface for type BillingAccountTopItemsMonthlySummaryReportQueryFilter.
+func (b *BillingAccountTopItemsMonthlySummaryReportQueryFilter) GetBillingAccountQueryFilter() *BillingAccountQueryFilter {
+	return &BillingAccountQueryFilter{
+		CarbonScopeList:  b.CarbonScopeList,
+		DateRange:        b.DateRange,
+		LocationList:     b.LocationList,
+		ReportType:       b.ReportType,
+		ResourceTypeList: b.ResourceTypeList,
+		SubscriptionList: b.SubscriptionList,
+	}
+}
+
+// BillingAccountTopItemsSummaryReportQueryFilter - Query filter parameter to configure TopItemsSummaryReport queries scoped
+// to a billing account.
+type BillingAccountTopItemsSummaryReportQueryFilter struct {
+	// REQUIRED; List of carbon emission scopes. Required. Accepts one or more values from EmissionScopeEnum (e.g., Scope1, Scope2,
+	// Scope3) in list form. The output will include the total emissions for the specified scopes.
+	CarbonScopeList []*EmissionScopeEnum
+
+	// REQUIRED; Specifies the category type for which to retrieve top-emitting items.
+	CategoryType *BillingAccountCategoryTypeEnum
+
+	// REQUIRED; The start and end dates for carbon emissions data. Required. For ItemDetailsReport and TopItemsSummaryReport,
+	// only one month of data is supported at a time, so start and end dates should be equal within DateRange (e.g., start: 2024-06-01
+	// and end: 2024-06-01).
+	DateRange *DateRange
+
+	// CONSTANT; Specifies that the report type is a top items summary report for carbon emissions data.
+	// Field has constant value ReportTypeEnumTopItemsSummaryReport, any specified value is ignored.
+	ReportType *ReportTypeEnum
+
+	// REQUIRED; The number of top items to return, based on emissions. This value must be between 1 and 10.
+	TopItems *int32
+
+	// List of locations(Azure Region Display Name) for carbon emissions data, with each location specified in lowercase (e.g.,
+	// 'east us'). Optional. You can use the command 'az account list-locations -o table' to find Azure Region Display Names.
+	LocationList []*string
+
+	// List of resource types for carbon emissions data. Optional. Each resource type should be specified in lowercase, following
+	// the format 'microsoft.{service}/{resourceType}', e.g., 'microsoft.storage/storageaccounts'.
+	ResourceTypeList []*string
+
+	// List of subscription IDs for which carbon emissions data is requested. Optional. Each subscription ID should be in lowercase
+	// format. If not provided, data for all subscriptions under the billing account will be returned.
+	SubscriptionList []*string
+}
+
+// GetBillingAccountQueryFilter implements the BillingAccountQueryFilterClassification interface for type BillingAccountTopItemsSummaryReportQueryFilter.
+func (b *BillingAccountTopItemsSummaryReportQueryFilter) GetBillingAccountQueryFilter() *BillingAccountQueryFilter {
+	return &BillingAccountQueryFilter{
+		CarbonScopeList:  b.CarbonScopeList,
+		DateRange:        b.DateRange,
+		LocationList:     b.LocationList,
+		ReportType:       b.ReportType,
+		ResourceTypeList: b.ResourceTypeList,
+		SubscriptionList: b.SubscriptionList,
+	}
+}
+
 // CarbonEmissionData - The basic response for different query report, all query report result will have these information
 type CarbonEmissionData struct {
 	// REQUIRED; The data type of the query result, indicating the format of the returned response.

@@ -10,6 +10,8 @@
 
 ### Bugs Fixed
 
+* Fixed eligible read requests not retrying after `RetryOptions.TryTimeout` expires. The existing azcore retry policy continues to control caller cancellation, retry limits, and delays. Downstream non-retriable errors are preserved for all operations without enabling additional write retries. See [PR 27753](https://github.com/Azure/azure-sdk-for-go/pull/27753).
+
 ### Other Changes
 
 ## 1.6.0-beta.3 (2026-09-01)

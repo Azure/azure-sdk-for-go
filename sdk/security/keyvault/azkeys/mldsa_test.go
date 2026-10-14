@@ -169,14 +169,18 @@ func TestSignVerifyMLDSA_Fake(t *testing.T) {
 	signature := []byte("ML-DSA signature")
 	mu := mlDSAExternalMu(t, pub, nil, msg)
 
+	// The fake server runs these callbacks on its own goroutine, where a failing require would call
+	// FailNow and leave the client call waiting forever. So the callbacks only record their arguments,
+	// and the test goroutine asserts on them after each call returns.
+	var (
+		gotName, gotVersion string
+		gotCreate           azkeys.CreateKeyParameters
+		gotSign             azkeys.SignParameters
+		gotVerify           azkeys.VerifyParameters
+	)
 	server := fake.Server{
 		CreateKey: func(ctx context.Context, name string, parameters azkeys.CreateKeyParameters, options *azkeys.CreateKeyOptions) (resp azfake.Responder[azkeys.CreateKeyResponse], errResp azfake.ErrorResponder) {
-			require.Equal(t, keyName, name)
-			require.NotNil(t, parameters.Kty)
-			require.Equal(t, azkeys.KeyTypeAKP, *parameters.Kty)
-			require.NotNil(t, parameters.Alg)
-			require.Equal(t, azkeys.AKPAlgorithmMLDSA65, *parameters.Alg)
-			require.Equal(t, to.SliceOfPtrs(azkeys.KeyOperationSign, azkeys.KeyOperationVerify), parameters.KeyOps)
+			gotName, gotCreate = name, parameters
 			resp.SetResponse(http.StatusOK, azkeys.CreateKeyResponse{
 				KeyBundle: azkeys.KeyBundle{
 					Key: &azkeys.JSONWebKey{
@@ -191,34 +195,14 @@ func TestSignVerifyMLDSA_Fake(t *testing.T) {
 			return
 		},
 		Sign: func(ctx context.Context, name string, version string, parameters azkeys.SignParameters, options *azkeys.SignOptions) (resp azfake.Responder[azkeys.SignResponse], errResp azfake.ErrorResponder) {
-			require.Equal(t, keyName, name)
-			require.Equal(t, keyVersion, version)
-			require.Nil(t, parameters.Algorithm, "ML-DSA signing doesn't take an algorithm")
-			if parameters.ExternalMu != nil {
-				require.Equal(t, mu, parameters.ExternalMu)
-				require.Nil(t, parameters.Value)
-				require.Nil(t, parameters.Context)
-			} else {
-				require.Equal(t, msg, parameters.Value)
-				require.Equal(t, mlDSAContext, parameters.Context)
-			}
+			gotName, gotVersion, gotSign = name, version, parameters
 			resp.SetResponse(http.StatusOK, azkeys.SignResponse{
 				KeyOperationResult: azkeys.KeyOperationResult{KID: to.Ptr(kid), Result: signature},
 			}, nil)
 			return
 		},
 		Verify: func(ctx context.Context, name string, version string, parameters azkeys.VerifyParameters, options *azkeys.VerifyOptions) (resp azfake.Responder[azkeys.VerifyResponse], errResp azfake.ErrorResponder) {
-			require.Equal(t, keyName, name)
-			require.Equal(t, keyVersion, version)
-			require.Nil(t, parameters.Algorithm)
-			require.Equal(t, signature, parameters.Signature)
-			if parameters.ExternalMu != nil {
-				require.Equal(t, mu, parameters.ExternalMu)
-				require.Nil(t, parameters.Digest)
-			} else {
-				require.Equal(t, msg, parameters.Digest)
-				require.Equal(t, mlDSAContext, parameters.Context)
-			}
+			gotName, gotVersion, gotVerify = name, version, parameters
 			resp.SetResponse(http.StatusOK, azkeys.VerifyResponse{
 				KeyVerifyResult: azkeys.KeyVerifyResult{Value: to.Ptr(true)},
 			}, nil)
@@ -237,25 +221,56 @@ func TestSignVerifyMLDSA_Fake(t *testing.T) {
 		Kty:    to.Ptr(azkeys.KeyTypeAKP),
 	}, nil)
 	require.NoError(t, err)
+	require.Equal(t, keyName, gotName)
+	require.Equal(t, to.Ptr(azkeys.KeyTypeAKP), gotCreate.Kty)
+	require.Equal(t, to.Ptr(azkeys.AKPAlgorithmMLDSA65), gotCreate.Alg)
+	require.Equal(t, to.SliceOfPtrs(azkeys.KeyOperationSign, azkeys.KeyOperationVerify), gotCreate.KeyOps)
 	require.Equal(t, azkeys.KeyTypeAKPHSM, *createResp.Key.Kty)
 	require.Equal(t, azkeys.AKPAlgorithmMLDSA65, *createResp.Key.Alg)
 	require.Equal(t, pub, createResp.Key.Pub)
 	require.Equal(t, keyName, createResp.Key.KID.Name())
 	require.Equal(t, keyVersion, createResp.Key.KID.Version())
 
+	requireKey := func() {
+		t.Helper()
+		require.Equal(t, keyName, gotName)
+		require.Equal(t, keyVersion, gotVersion)
+	}
+
 	signResp, err := client.Sign(context.Background(), keyName, keyVersion, azkeys.SignParameters{Context: mlDSAContext, Value: msg}, nil)
 	require.NoError(t, err)
+	requireKey()
+	require.Nil(t, gotSign.Algorithm, "ML-DSA signing doesn't take an algorithm")
+	require.Equal(t, msg, gotSign.Value)
+	require.Equal(t, mlDSAContext, gotSign.Context)
+	require.Nil(t, gotSign.ExternalMu)
 	require.Equal(t, signature, signResp.Result)
 
 	verifyResp, err := client.Verify(context.Background(), keyName, keyVersion, azkeys.VerifyParameters{Context: mlDSAContext, Digest: msg, Signature: signResp.Result}, nil)
 	require.NoError(t, err)
+	requireKey()
+	require.Nil(t, gotVerify.Algorithm)
+	require.Equal(t, signature, gotVerify.Signature)
+	require.Equal(t, msg, gotVerify.Digest)
+	require.Equal(t, mlDSAContext, gotVerify.Context)
+	require.Nil(t, gotVerify.ExternalMu)
 	require.True(t, *verifyResp.Value)
 
 	signResp, err = client.Sign(context.Background(), keyName, keyVersion, azkeys.SignParameters{ExternalMu: mu}, nil)
 	require.NoError(t, err)
+	requireKey()
+	require.Nil(t, gotSign.Algorithm, "ML-DSA signing doesn't take an algorithm")
+	require.Equal(t, mu, gotSign.ExternalMu)
+	require.Nil(t, gotSign.Value)
+	require.Nil(t, gotSign.Context)
 	require.Equal(t, signature, signResp.Result)
 
 	verifyResp, err = client.Verify(context.Background(), keyName, keyVersion, azkeys.VerifyParameters{ExternalMu: mu, Signature: signResp.Result}, nil)
 	require.NoError(t, err)
+	requireKey()
+	require.Nil(t, gotVerify.Algorithm)
+	require.Equal(t, signature, gotVerify.Signature)
+	require.Equal(t, mu, gotVerify.ExternalMu)
+	require.Nil(t, gotVerify.Digest)
 	require.True(t, *verifyResp.Value)
 }

@@ -2286,10 +2286,8 @@ func TestReadAttemptTimeoutHTTP(t *testing.T) {
 						w.WriteHeader(http.StatusOK)
 						assert.NoError(t, http.NewResponseController(w).Flush())
 					}
-					select {
-					case <-req.Context().Done():
-					case <-release:
-					}
+					// Keep the response incomplete until the client has returned.
+					<-release
 					return
 				}
 				w.Header().Set("Content-Type", "application/json")

@@ -8,6 +8,7 @@ import (
 	"crypto/sha1"
 	"crypto/tls"
 	"encoding/hex"
+	"encoding/json"
 	"fmt"
 	"net/http"
 	"net/url"
@@ -26,6 +27,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
+	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
@@ -156,6 +158,107 @@ func TestManagedIdentityCredential_AzureArc(t *testing.T) {
 		t.Fatal(err)
 	}
 	testGetTokenSuccess(t, cred, expectedScope)
+}
+
+func newAzureArcUserAssignedTestServer(t *testing.T, id ManagedIDKind, selector, echo string) *mock.Server {
+	t.Helper()
+	expectedKey := "expected-key"
+	keyFile := writeArcKeyFile(t, expectedKey)
+	body := map[string]any{
+		"access_token": tokenValue,
+		"expires_in":   tokenExpiresIn,
+		"token_type":   "Bearer",
+	}
+	if echo != "" {
+		body[selector] = echo
+	}
+	response, err := json.Marshal(body)
+	require.NoError(t, err)
+
+	var requests atomic.Int32
+	validateReq := func(req *http.Request) bool {
+		assert.Equal(t, "/foo/token", req.URL.Path)
+		query := req.URL.Query()
+		assert.Equal(t, azureArcAPIVersion, query.Get("api-version"))
+		assert.Equal(t, t.Name(), query.Get("resource"))
+		assert.Equal(t, id.String(), query.Get(selector))
+		for _, other := range []string{qpClientID, "object_id", "msi_res_id"} {
+			if other != selector {
+				assert.False(t, query.Has(other), "unexpected identity selector %s", other)
+			}
+		}
+		assert.Equal(t, "true", req.Header.Get(headerMetadata))
+		if requests.Add(1) == 1 {
+			assert.Empty(t, req.Header.Get("Authorization"))
+		} else {
+			assert.Equal(t, "Basic "+expectedKey, req.Header.Get("Authorization"))
+		}
+		return true
+	}
+	srv, close := mock.NewServer()
+	t.Cleanup(close)
+	srv.AppendResponse(
+		mock.WithPredicate(validateReq),
+		mock.WithHeader("WWW-Authenticate", "Basic realm="+keyFile),
+		mock.WithStatusCode(http.StatusUnauthorized),
+	)
+	srv.AppendResponse()
+	srv.AppendResponse(mock.WithPredicate(validateReq), mock.WithBody(response))
+	srv.AppendResponse()
+	setEnvironmentVariables(t, map[string]string{
+		arcIMDSEndpoint:          srv.URL(),
+		identityEndpoint:         srv.URL() + "/foo/token",
+		identityHeader:           "",
+		identityServerThumbprint: "",
+		msiEndpoint:              "",
+		msiSecret:                "",
+	})
+	return srv
+}
+
+func TestManagedIdentityCredential_AzureArcUserAssigned(t *testing.T) {
+	for _, identity := range []struct {
+		name, selector string
+		id             ManagedIDKind
+	}{
+		{name: "ClientID", selector: qpClientID, id: ClientID(fakeClientID)},
+		{name: "ObjectID", selector: "object_id", id: ObjectID(fakeObjectID)},
+		{name: "ResourceID", selector: "msi_res_id", id: ResourceID(fakeResourceID)},
+	} {
+		t.Run(identity.name, func(t *testing.T) {
+			for _, response := range []struct {
+				name, echo string
+				success    bool
+			}{
+				{name: "matching identity", echo: identity.id.String(), success: true},
+				{name: "missing identity"},
+				{name: "mismatched identity", echo: "unexpected-" + identity.id.String()},
+			} {
+				t.Run(response.name, func(t *testing.T) {
+					srv := newAzureArcUserAssignedTestServer(t, identity.id, identity.selector, response.echo)
+					cred, err := NewManagedIdentityCredential(&ManagedIdentityCredentialOptions{
+						ClientOptions: azcore.ClientOptions{
+							Retry:     policy.RetryOptions{MaxRetries: -1},
+							Transport: srv,
+						},
+						ID: identity.id,
+					})
+					require.NoError(t, err)
+					token, err := cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{t.Name() + defaultSuffix}})
+					if response.success {
+						require.NoError(t, err)
+						require.Equal(t, tokenValue, token.Token)
+					} else {
+						var authErr *AuthenticationFailedError
+						require.ErrorAs(t, err, &authErr)
+						require.ErrorContains(t, err, "azure arc did not confirm the requested user-assigned managed identity")
+						require.Equal(t, azcore.AccessToken{}, token)
+					}
+					require.Equal(t, 2, srv.Requests(), "both requests in the Arc challenge flow must be sent")
+				})
+			}
+		})
+	}
 }
 
 func TestManagedIdentityCredential_AzureArcErrors(t *testing.T) {

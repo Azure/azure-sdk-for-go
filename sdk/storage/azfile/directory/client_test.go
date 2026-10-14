@@ -2595,8 +2595,8 @@ func (d *DirectoryRecordedTestsSuite) TestDirCreateDirPropertySemantics() {
 	}
 }
 
-// NFS List V2 requires service version 2027-03-07. These tests are unrecorded until the feature is available in a
-// recordable environment, so they run in live mode only.
+// NFS List V2 requires service version 2027-03-07. This test is unrecorded until it can be recorded against an NFS
+// share in a canary environment, so it runs in live mode only.
 func (d *DirectoryUnrecordedTestsSuite) TestDirListFilesAndDirsNFS() {
 	_require := require.New(d.T())
 	testName := d.T().Name()
@@ -2688,7 +2688,7 @@ func (d *DirectoryUnrecordedTestsSuite) TestDirListFilesAndDirsNFS() {
 	_require.NotNil(symlink.Properties.FileMode)
 }
 
-func (d *DirectoryUnrecordedTestsSuite) TestDirListFilesAndDirsIncludeAllSMB() {
+func (d *DirectoryRecordedTestsSuite) TestDirListFilesAndDirsIncludeAllSMB() {
 	_require := require.New(d.T())
 	testName := d.T().Name()
 

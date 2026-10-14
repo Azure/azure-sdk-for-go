@@ -8,8 +8,6 @@
   on Azure Arc when the agent supports them
 - `WorkloadIdentityCredential` supports identity binding mode via `WorkloadIdentityCredentialOptions.EnableAzureProxy`
 
-### Breaking Changes
-
 ### Bugs Fixed
 
 - `ManagedIdentityCredential` verifies the Service Fabric endpoint's certificate against

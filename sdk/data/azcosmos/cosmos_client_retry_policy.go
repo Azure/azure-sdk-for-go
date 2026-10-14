@@ -229,6 +229,8 @@ func (p *clientRetryPolicy) Do(req *policy.Request) (*http.Response, error) {
 			if kind != connectionErrorNone {
 				shouldRetry, errRetry := p.attemptRetryOnNetworkError(req, kind, o.isWriteOperation, err, &retryContext)
 				if errRetry != nil {
+					// The internal retry wait may have been interrupted by context expiry.
+					// Let azcore decide whether another read attempt is allowed.
 					if !o.isWriteOperation {
 						return nil, errRetry
 					}
@@ -276,6 +278,8 @@ func (p *clientRetryPolicy) Do(req *policy.Request) (*http.Response, error) {
 			case http.StatusRequestTimeout:
 				shouldRetry, err := p.attemptRetryOnRequestTimeout(req, o.isWriteOperation, &retryContext)
 				if err != nil {
+					// The HTTP 408 retry wait was interrupted by context expiry.
+					// Let azcore decide whether another read attempt is allowed.
 					if !o.isWriteOperation {
 						return nil, err
 					}

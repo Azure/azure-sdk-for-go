@@ -1,6 +1,6 @@
 # Release History
 
-## 4.3.0 (2026-10-13)
+## 4.3.0 (2026-10-14)
 ### Features Added
 
 - New enum type `BlobAccessPointConfigurationState` with values `BlobAccessPointConfigurationStateActive`, `BlobAccessPointConfigurationStateInactive`

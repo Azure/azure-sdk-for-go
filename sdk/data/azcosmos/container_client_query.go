@@ -8,7 +8,6 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"slices"
 	"strings"
 	"sync"
 )
@@ -22,6 +21,9 @@ func (c *ContainerClient) NewQueryItemsPager[T any](query Query, scope FeedScope
 	req, err := newQueryRequest(query, scope, options)
 	req.databaseID = c.database.id
 	req.containerID = c.id
+	if req.options.Operation.BinaryEncoding == nil {
+		req.options.Operation.BinaryEncoding = c.database.client.binaryEncoding.clone()
+	}
 	return &QueryItemsPager[T]{client: c.database.client, req: req, validationErr: err}
 }
 
@@ -61,6 +63,9 @@ func (p *QueryItemsPager[T]) NextPage(ctx context.Context) (QueryItemsResponse[T
 	if p.validationErr != nil {
 		return QueryItemsResponse[T]{}, p.validationErr
 	}
+	if ctx == nil {
+		return QueryItemsResponse[T]{}, errors.New("azcosmos: context must not be nil")
+	}
 	release, err := p.client.acquire()
 	if err != nil {
 		return QueryItemsResponse[T]{}, err
@@ -72,7 +77,10 @@ func (p *QueryItemsPager[T]) NextPage(ctx context.Context) (QueryItemsResponse[T
 	if err := ctx.Err(); err != nil {
 		return QueryItemsResponse[T]{}, err
 	}
-	ctx, cancel := contextWithEndToEndTimeout(ctx, p.req.options.Operation.EndToEndTimeout)
+	ctx, cancel, err := p.client.queryContext(ctx, p.req.options.Operation)
+	if err != nil {
+		return QueryItemsResponse[T]{}, err
+	}
 	defer cancel()
 	var setup Response
 	if p.cursor == nil {
@@ -142,6 +150,9 @@ func (p *QueryItemsPager[T]) ContinuationToken(ctx context.Context) (string, err
 	if p.validationErr != nil {
 		return "", p.validationErr
 	}
+	if ctx == nil {
+		return "", errors.New("azcosmos: context must not be nil")
+	}
 	release, err := p.client.acquire()
 	if err != nil {
 		return "", err
@@ -153,7 +164,10 @@ func (p *QueryItemsPager[T]) ContinuationToken(ctx context.Context) (string, err
 	if err := ctx.Err(); err != nil {
 		return "", err
 	}
-	ctx, cancel := contextWithEndToEndTimeout(ctx, p.req.options.Operation.EndToEndTimeout)
+	ctx, cancel, err := p.client.queryContext(ctx, p.req.options.Operation)
+	if err != nil {
+		return "", err
+	}
 	defer cancel()
 	token, err := p.cursor.checkpoint(ctx)
 	if err != nil && !unsupportedQueryCheckpoint(err) {
@@ -209,11 +223,7 @@ func newQueryRequest(query Query, scope FeedScope, options *QueryOptions) (query
 	}
 	if options != nil {
 		req.options = *options
-		req.options.Operation.ExcludedRegions = slices.Clone(options.Operation.ExcludedRegions)
-		if value := options.Operation.EnableContentResponseOnWrite; value != nil {
-			copied := *value
-			req.options.Operation.EnableContentResponseOnWrite = &copied
-		}
+		req.options.Operation = options.Operation.clone()
 		if value := options.PopulateIndexMetrics; value != nil {
 			copied := *value
 			req.options.PopulateIndexMetrics = &copied
@@ -228,7 +238,7 @@ func newQueryRequest(query Query, scope FeedScope, options *QueryOptions) (query
 	default:
 		return req, errors.New("azcosmos: invalid query plan mode")
 	}
-	if err := req.options.Operation.ConsistencyStrategy.validate(); err != nil {
+	if err := req.options.Operation.validate(); err != nil {
 		return req, err
 	}
 	if err := req.options.SessionToken.validate(); err != nil {

@@ -36,6 +36,8 @@ type Response struct {
 type ItemResponse struct {
 	Response
 	serializer Serializer
+	// PatchTrackingID is the effective client-side patch identity, when tracking was used.
+	PatchTrackingID PatchTrackingID
 
 	// ETag is the entity tag of the item the operation addressed (`etag`). Use it to make a later
 	// write conditional on the item not having changed.
@@ -45,8 +47,10 @@ type ItemResponse struct {
 	// a later operation to read your own writes under session consistency.
 	SessionToken SessionToken
 
-	// Value is the raw item content the service returned. It is nil when the operation did not
+	// Value is the item's text JSON content. It is nil when the operation did not
 	// request a content response, and for operations that do not return an item.
+	// Native binary-to-text conversion can change property order, whitespace, and numeric
+	// formatting; the bytes are not guaranteed to match the submitted JSON.
 	Value []byte
 }
 

@@ -71,8 +71,10 @@ func TestEmulatorModelWorkflow(t *testing.T) {
 			require.NoError(t, err)
 			require.Equal(t, item, model)
 			item.Value = 2
+			readCondition, err := IfMatch(read.ETag)
+			require.NoError(t, err)
 			replaced, err := container.ReplaceItem(t.Context(), pk, id, item, &ReplaceItemOptions{
-				Operation: write, IfMatchETag: &read.ETag,
+				Operation: write, Precondition: readCondition,
 			})
 			require.NoError(t, err)
 			model, err = replaced.IntoModel[document]()

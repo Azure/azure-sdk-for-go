@@ -60,14 +60,21 @@ type reactor struct {
 // The channel is buffered so the reactor never blocks delivering a result, even if the submitting
 // goroutine has already abandoned the wait because its context was cancelled.
 type pendingOperation struct {
-	result chan completionResult
-	mu     sync.Mutex
-	closed bool
+	result       chan completionResult
+	delivered    chan struct{}
+	deliveryOnce sync.Once
+	mu           sync.Mutex
+	closed       bool
 }
 
 func (p *pendingOperation) deliver(result completionResult) {
 	p.mu.Lock()
 	defer p.mu.Unlock()
+	defer p.deliveryOnce.Do(func() {
+		if p.delivered != nil {
+			close(p.delivered)
+		}
+	})
 	if p.closed {
 		result.release()
 		return
@@ -210,8 +217,7 @@ func (r *reactor) deliver(completion *C.cosmos_completion_t) {
 // close stops the reactor and releases the queue. It is idempotent.
 //
 // Shutting the queue down first unblocks its wait call and rejects new submissions; it does not
-// cancel operations already in flight. Client.Close reaches this path only after its lifetime lock
-// has drained every operation.
+// cancel operations already in flight. Client.Close drains callers and pending native work first.
 func (r *reactor) close() {
 	if r == nil {
 		return

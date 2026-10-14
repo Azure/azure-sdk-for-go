@@ -18,13 +18,23 @@ import (
 	"unsafe"
 )
 
+func (c *Client) queryContext(ctx context.Context, options OperationOptions) (context.Context, func(), error) {
+	ctx, _, release, err := c.driver.snapshot(ctx, options)
+	return ctx, release, err
+}
+
 func (c *Client) openQuery(ctx context.Context, req *queryRequest) (queryCursor, Response, error) {
 	d := c.driver
+	ctx, snapshot, releaseSnapshot, err := d.snapshot(ctx, req.options.Operation)
+	if err != nil {
+		return nil, Response{}, err
+	}
+	defer releaseSnapshot()
 	driver, err := d.ensureDriver(ctx)
 	if err != nil {
 		return nil, Response{}, err
 	}
-	// Resolve through the native cache each page: Go's lifetime-cached handle can retain a
+	// Resolve through the native cache for each pager: Go's lifetime-cached handle can retain a
 	// deleted container's RID and invalidate tokens issued for its replacement.
 	container, err := d.submitResolveContainer(ctx, driver, req.databaseID, req.containerID)
 	if err != nil {
@@ -34,13 +44,13 @@ func (c *Client) openQuery(ctx context.Context, req *queryRequest) (queryCursor,
 	options := req.options.Operation
 	var setup Response
 	if !req.fullContainer {
-		options.EndToEndTimeout = endToEndTimeout(ctx, 0)
 		metadata, err := d.awaitCompletion(ctx, "reading query scope metadata",
 			func(queue *C.cosmos_completion_queue_t, cookie C.intptr_t, preError *C.cosmos_status_code_t) *C.cosmos_operation_handle_t {
 				request := newOperationRequest(operationKind(C.COSMOS_OPERATION_KIND_READ_CONTAINER), container)
 				nativeOptions, freeOptions := options.toNative()
 				defer freeOptions()
 				request.options = nativeOptions
+				request.options_snapshot = snapshot
 				return C.cosmos_submit_singleton_operation(driver, &request, queue, cookie, preError) //nolint:gocritic // dupSubExpr targets cgo-generated code.
 			})
 		if err != nil {
@@ -55,8 +65,7 @@ func (c *Client) openQuery(ctx context.Context, req *queryRequest) (queryCursor,
 		}
 	}
 	// Retained options apply afresh to every native page; do not retain the first
-	// caller's remaining context deadline as the budget for all future pages.
-	options.EndToEndTimeout = req.options.Operation.EndToEndTimeout
+	// caller's snapshot deadline as the budget for all future pages.
 	request, release, status := buildNativeQueryRequest(req, options, container)
 	defer release()
 	if status != 0 {

@@ -103,8 +103,9 @@ type FeedOptions struct {
 
 // QueryOptions configures item queries. A nil *QueryOptions selects defaults.
 type QueryOptions struct {
-	// Operation holds shared settings. An explicit timeout applies to each native page fetch.
-	// With zero timeout, the context bounds only the Go wait and native defaults still apply.
+	// Operation holds shared settings. Its timeout applies separately to each page fetch.
+	// Query encoding follows an explicit request preference or ClientOptions.BinaryEncoding.
+	// Native code converts binary responses to text JSON items automatically.
 	Operation OperationOptions
 
 	// Feed controls page size and resumption.

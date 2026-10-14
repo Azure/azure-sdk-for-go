@@ -8,7 +8,6 @@ import (
 	"errors"
 	"fmt"
 	"net/url"
-	"strings"
 	"sync"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -27,26 +26,26 @@ type ClientOptions struct {
 	// The client retains, but does not own or close, this concurrency-safe implementation.
 	// It is not used for query parameters, PATCH values, or protocol metadata.
 	Serializer Serializer
-
+	// Runtime shares execution resources and same-account caches, including credentials.
+	// Nil uses the process-wide runtime. Supply separate runtimes for identity isolation.
+	Runtime *Runtime
+	// Operation supplies account-level defaults for item operations and query page fetches.
+	Operation OperationOptions
 	// Routing decides the order in which the client considers the account's regions. The zero
 	// value leaves the order to the account; prefer setting it with [PreferredRegions].
 	//
 	// [ProximityTo] expands a known application region to the SDK's estimated proximity order.
 	Routing RoutingStrategy
 
-	// ApplicationID is an application-specific identifier appended to the user agent sent with
-	// every request. Keep it free of personally identifiable information.
-	//
-	// The value is passed unchanged to the driver, which validates it when the client is
-	// constructed. Prefer a stable, low-cardinality name such as "order-service" over anything
-	// per instance.
-	ApplicationID string
-
-	// EnableContentResponseOnWrite controls whether writes return the resulting item. Nil inherits
-	// the driver's operation-specific default; a non-nil value explicitly enables or disables
-	// content responses. It can be overridden per operation.
-	EnableContentResponseOnWrite *bool
-
+	// BinaryEncoding sets the SDK's client wire-encoding default for create/read/replace/upsert and queries.
+	// Nil resolves AZURE_COSMOS_BINARY_ENCODING_ENABLED at construction; if unset, common
+	// client/runtime Operation options apply, ultimately defaulting to enabled.
+	// Explicit request encoding overrides this value. Responses are text JSON.
+	// PATCH and delete use Operation inheritance.
+	BinaryEncoding *BinaryEncodingOptions
+	// DiagnosticsHandler observes completed item calls after their lifetime guard is released.
+	// It must be safe for concurrent calls. Query-specific diagnostics are not configured here.
+	DiagnosticsHandler func(context.Context, OperationDiagnostic)
 	// DiagnosticsVerbosity controls how much detail every completion's [Diagnostics.JSON] renders.
 	// The zero value, DiagnosticsVerbosityDefault, resolves to DiagnosticsVerbositySummary. It
 	// applies to every operation on the client; there is no per-operation override.
@@ -60,8 +59,10 @@ type ClientOptions struct {
 // resources backing it, along with the routing and metadata caches that make requests cheap, so
 // creating one per operation is expensive and defeats them. Call [Client.Close] when done.
 type Client struct {
-	endpoint string
-	options  ClientOptions
+	endpoint       string
+	options        ClientOptions
+	runtime        *Runtime
+	binaryEncoding *BinaryEncodingOptions
 	// mu guards the client's lifetime rather than its fields. Operations hold it for read while
 	// they run, so Close taking it for write is exactly "wait for in-flight operations to
 	// finish". That matters more here than it would in a pure-Go client: closing releases handles
@@ -85,6 +86,11 @@ type Client struct {
 // endpoint is the Cosmos DB account endpoint. cred is any [azcore.TokenCredential], such as the
 // implementations in the azidentity module. options may be nil to accept the defaults. Construction
 // performs no network I/O; call [Client.Initialize] to fill account-level caches eagerly.
+//
+// Clients sharing a runtime and account also share native authentication state; cached resources
+// may use a credential supplied by another client, even after that client closes. This reuse
+// reduces duplicate token requests and authentication-service load. A nil Runtime uses the
+// process-wide runtime; supply separate runtimes when credential identities must be isolated.
 func NewClient(endpoint string, cred azcore.TokenCredential, options *ClientOptions) (*Client, error) {
 	if cred == nil {
 		return nil, errors.New("azcosmos: credential must not be nil")
@@ -137,13 +143,27 @@ func newClient(
 	if options != nil {
 		client.options = *options
 		client.options.Routing = options.Routing.clone()
-		if options.EnableContentResponseOnWrite != nil {
-			enabled := *options.EnableContentResponseOnWrite
-			client.options.EnableContentResponseOnWrite = &enabled
-		}
+		client.options.Operation = options.Operation.clone()
+		client.options.BinaryEncoding = options.BinaryEncoding.clone()
 	}
 	if err := client.options.validate(); err != nil {
 		return nil, err
+	}
+	client.binaryEncoding = resolveClientBinaryEncoding(client.options.BinaryEncoding)
+	client.runtime = client.options.Runtime
+	if client.runtime == nil && driverAvailable {
+		client.runtime, err = defaultRuntime()
+		if err != nil {
+			return nil, err
+		}
+	}
+	// Registration and local handle construction are one transaction against runtime shutdown.
+	if client.runtime != nil {
+		client.runtime.mu.Lock()
+		if client.runtime.closed || client.runtime.native == nil {
+			client.runtime.mu.Unlock()
+			return nil, &Error{Code: CodeClientClosed, Message: "the runtime is closed or uninitialized"}
+		}
 	}
 
 	driver, err := openDriver(driverConfig{
@@ -151,11 +171,18 @@ func newClient(
 		accountKey:      accountKey,
 		tokenCredential: tokenCredential,
 		options:         client.options,
+		runtime:         client.runtime,
 	})
+	client.driver = driver
+	if client.runtime != nil {
+		if err == nil {
+			client.runtime.clients++
+		}
+		client.runtime.mu.Unlock()
+	}
 	if err != nil {
 		return nil, err
 	}
-	client.driver = driver
 	return client, nil
 }
 
@@ -184,9 +211,9 @@ func (c *Client) Endpoint() string {
 	return c.endpoint
 }
 
-// Close releases the driver resources the client owns. It cancels active token acquisition, then
-// waits for Go operations to return. The v0.2 native driver does not cancel requests already
-// submitted, which may continue under their native budget after a Go context is cancelled.
+// Close releases this client's driver resources after all submitted native work finishes.
+// Cached credentials remain alive with the runtime and are not cancelled by closing one client.
+// Each token acquisition has a 60-second timeout; custom credentials must honor context cancellation.
 // Afterwards every operation on the client
 // fails with [CodeClientClosed] rather than reaching the driver.
 //
@@ -194,10 +221,11 @@ func (c *Client) Endpoint() string {
 // returns an error only when the client could not be torn down cleanly, in which case the
 // resources are released anyway, so there is nothing to retry.
 func (c *Client) Close() error {
+	return c.close()
+}
+
+func (c *Client) close() error {
 	c.closeOnce.Do(func() {
-		// Signal host token acquisition before waiting for operations. Initialize can be holding
-		// the read lock while GetToken waits on this cancellation.
-		c.driver.cancel()
 		// Taking the write lock blocks until every operation holding it for read has finished,
 		// and keeps later operations out once closed is set.
 		c.mu.Lock()
@@ -207,6 +235,9 @@ func (c *Client) Close() error {
 		// subsequent callers see it too.
 		c.closeErr = c.driver.close()
 		c.driver = nil
+		if c.runtime != nil {
+			c.runtime.detach()
+		}
 	})
 	return c.closeErr
 }
@@ -247,14 +278,10 @@ func (o ClientOptions) validate() error {
 	if err := validateSerializer(o.Serializer); err != nil {
 		return err
 	}
-	// The driver rejects embedded NUL bytes in this counted UTF-8 field.
-	if strings.IndexByte(o.ApplicationID, 0) >= 0 {
-		return errors.New("azcosmos: ClientOptions.ApplicationID must not contain a NUL byte")
-	}
 	switch o.DiagnosticsVerbosity {
 	case DiagnosticsVerbosityDefault, DiagnosticsVerbositySummary, DiagnosticsVerbosityDetailed:
 	default:
 		return fmt.Errorf("azcosmos: ClientOptions.DiagnosticsVerbosity: unrecognized %s", o.DiagnosticsVerbosity)
 	}
-	return nil
+	return o.Operation.validate()
 }

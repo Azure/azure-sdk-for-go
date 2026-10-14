@@ -2206,38 +2206,51 @@ func TestReadAttemptTimeoutDuringBackoff(t *testing.T) {
 }
 
 func TestReadAttemptTimeoutNestedVeto(t *testing.T) {
-	for _, expired := range []bool{false, true} {
-		t.Run(fmt.Sprintf("expired=%t", expired), func(t *testing.T) {
-			veto := fmt.Errorf("downstream: %w", errorinfo.NonRetriableError(io.EOF))
-			sends := 0
-			transport := retryPolicyTransportFunc(func(req *http.Request) (*http.Response, error) {
-				sends++
-				if sends > 1 {
-					return readAttemptTimeoutResponse(req, http.StatusOK), nil
-				}
-				if expired {
-					<-req.Context().Done()
-				}
-				return nil, veto
-			})
-			client, verifier := newReadAttemptTimeoutTestClient(t, "https://cosmos.test", transport, policy.RetryOptions{
-				MaxRetries: 3, TryTimeout: 20 * time.Millisecond, RetryDelay: time.Millisecond,
-				ShouldRetry: func(*http.Response, error) bool {
-					t.Error("ShouldRetry must not override an independent veto")
-					return true
-				},
-			})
-			container, err := client.NewContainer("db", "container")
-			require.NoError(t, err)
-			_, err = container.ReadItem(context.Background(), NewPartitionKeyString("pk"), "item", nil)
-			require.Error(t, err)
-			assert.ErrorIs(t, err, veto)
-			assert.ErrorIs(t, err, io.EOF)
-			var nre errorinfo.NonRetriable
-			assert.ErrorAs(t, err, &nre)
-			assert.Equal(t, 1, sends)
-			assert.Len(t, verifier.requests, 1)
-		})
+	for _, write := range []bool{false, true} {
+		for _, expired := range []bool{false, true} {
+			for _, cause := range []error{io.EOF, &net.DNSError{Err: "unreachable"}} {
+				t.Run(fmt.Sprintf("write=%t/expired=%t/%T", write, expired, cause), func(t *testing.T) {
+					veto := fmt.Errorf("downstream: %w", errorinfo.NonRetriableError(cause))
+					sends := 0
+					transport := retryPolicyTransportFunc(func(req *http.Request) (*http.Response, error) {
+						sends++
+						if sends > 1 {
+							return readAttemptTimeoutResponse(req, http.StatusOK), nil
+						}
+						if expired {
+							<-req.Context().Done()
+						}
+						return nil, veto
+					})
+					timeout := 2 * time.Second
+					if expired {
+						timeout = 20 * time.Millisecond
+					}
+					client, verifier := newReadAttemptTimeoutTestClient(t, "https://cosmos.test", transport, policy.RetryOptions{
+						MaxRetries: 3, TryTimeout: timeout, RetryDelay: time.Millisecond,
+						ShouldRetry: func(*http.Response, error) bool {
+							t.Error("ShouldRetry must not override an independent veto")
+							return true
+						},
+					})
+					method := http.MethodGet
+					if write {
+						method = http.MethodPost
+					}
+					req, err := azruntime.NewRequest(context.Background(), method, client.endpoint)
+					require.NoError(t, err)
+					req.SetOperationValue(pipelineRequestOptions{resourceType: resourceTypeDocument, isWriteOperation: write})
+					_, err = client.internal.Pipeline().Do(req)
+					require.Error(t, err)
+					assert.Same(t, veto, err, "the downstream error must be returned unchanged")
+					assert.ErrorIs(t, err, cause)
+					var nre errorinfo.NonRetriable
+					assert.ErrorAs(t, err, &nre)
+					assert.Equal(t, 1, sends)
+					assert.Len(t, verifier.requests, 1)
+				})
+			}
+		}
 	}
 }
 

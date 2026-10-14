@@ -11,7 +11,7 @@
 
 ### Bugs Fixed
 
-* Fixed eligible read requests not retrying after `RetryOptions.TryTimeout` expires. The existing azcore retry policy continues to control caller cancellation, retry limits, and delays; write protections and independent non-retriable errors are unchanged.
+* Fixed eligible read requests not retrying after `RetryOptions.TryTimeout` expires. The existing azcore retry policy continues to control caller cancellation, retry limits, and delays. Downstream non-retriable errors are preserved for all operations without enabling additional write retries.
 
 ### Other Changes
 

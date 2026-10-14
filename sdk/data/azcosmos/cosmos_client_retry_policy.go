@@ -212,7 +212,8 @@ func (p *clientRetryPolicy) Do(req *policy.Request) (*http.Response, error) {
 			if state := requestDiagnosticsStateFromContext(req.Raw().Context()); state != nil && state.clientSideStats != nil {
 				state.clientSideStats.recordHTTPError(attemptStartTime, req.Raw(), err, o.resourceType, regionName.String())
 			}
-			if !o.isWriteOperation && errors.As(err, new(errorinfo.NonRetriable)) {
+			// Preserve downstream non-retriable errors instead of retrying them internally.
+			if errors.As(err, new(errorinfo.NonRetriable)) {
 				return nil, err
 			}
 			// This can be azcore's per-attempt context, not the caller's.

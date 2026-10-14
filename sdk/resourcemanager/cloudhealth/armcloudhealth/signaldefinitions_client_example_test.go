@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-09-01-preview/SignalDefinitions_CreateOrUpdate.json
+// Generated from example definition: 2026-10-01-preview/SignalDefinitions_CreateOrUpdate.json
 func ExampleSignalDefinitionsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -101,7 +101,7 @@ func ExampleSignalDefinitionsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-09-01-preview/SignalDefinitions_Delete.json
+// Generated from example definition: 2026-10-01-preview/SignalDefinitions_Delete.json
 func ExampleSignalDefinitionsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -122,7 +122,7 @@ func ExampleSignalDefinitionsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-09-01-preview/SignalDefinitions_Get.json
+// Generated from example definition: 2026-10-01-preview/SignalDefinitions_Get.json
 func ExampleSignalDefinitionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -182,7 +182,7 @@ func ExampleSignalDefinitionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-09-01-preview/SignalDefinitions_ListByHealthModel.json
+// Generated from example definition: 2026-10-01-preview/SignalDefinitions_ListByHealthModel.json
 func ExampleSignalDefinitionsClient_NewListByHealthModelPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

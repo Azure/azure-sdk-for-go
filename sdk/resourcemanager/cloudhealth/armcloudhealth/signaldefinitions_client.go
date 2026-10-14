@@ -20,7 +20,7 @@ import (
 // SignalDefinitionsClient contains the methods for the SignalDefinitions group.
 // Don't use this type directly, use NewSignalDefinitionsClient() instead.
 //
-// Generated from API version 2026-09-01-preview
+// Generated from API version 2026-10-01-preview
 type SignalDefinitionsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -116,7 +116,7 @@ func (client *SignalDefinitionsClient) createOrUpdateCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260901Preview)
+	reqQP.Set("api-version", version20261001Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -196,7 +196,7 @@ func (client *SignalDefinitionsClient) deleteCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260901Preview)
+	reqQP.Set("api-version", version20261001Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -248,7 +248,7 @@ func (client *SignalDefinitionsClient) getCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260901Preview)
+	reqQP.Set("api-version", version20261001Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -324,7 +324,7 @@ func (client *SignalDefinitionsClient) listByHealthModelCreateRequest(ctx contex
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260901Preview)
+		reqQP.Set("api-version", version20261001Preview)
 		if options != nil && options.Timestamp != nil {
 			reqQP.Set("timestamp", datetime.RFC3339((*options.Timestamp).UTC()).String())
 		}

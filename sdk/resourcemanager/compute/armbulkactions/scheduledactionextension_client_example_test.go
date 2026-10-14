@@ -80,9 +80,9 @@ func ExampleScheduledActionExtensionClient_NewListByVMsPager() {
 		// 						},
 		// 					},
 		// 				},
-		// 				ID: to.Ptr("/subscriptions/CB26D7CB-3E27-465F-99C8-EAF7A4118245/resourceGroups/myRg/providers/Microsoft.Compute/scheduledActions/myScheduledAction"),
+		// 				ID: to.Ptr("/subscriptions/CB26D7CB-3E27-465F-99C8-EAF7A4118245/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVm/providers/Microsoft.Compute/associatedScheduledActions/myScheduledAction"),
 		// 				Name: to.Ptr("myScheduledAction"),
-		// 				Type: to.Ptr("Microsoft.Compute/scheduledActions"),
+		// 				Type: to.Ptr("microsoft.compute/associatedScheduledActions"),
 		// 				SystemData: &armbulkactions.SystemData{
 		// 					CreatedBy: to.Ptr("user@contoso.com"),
 		// 					CreatedByType: to.Ptr(armbulkactions.CreatedByTypeUser),
@@ -93,7 +93,6 @@ func ExampleScheduledActionExtensionClient_NewListByVMsPager() {
 		// 				},
 		// 			},
 		// 		},
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/CB26D7CB-3E27-465F-99C8-EAF7A4118245/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVm/providers/Microsoft.Compute/associatedScheduledActions?api-version=2026-10-06-preview&$skiptoken=page2"),
 		// 	},
 		// }
 	}

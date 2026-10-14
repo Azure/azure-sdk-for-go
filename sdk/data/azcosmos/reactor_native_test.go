@@ -64,6 +64,28 @@ func TestAbandonReportsNothingBufferedWhenNoResultArrivedYet(t *testing.T) {
 	require.Zero(t, result)
 }
 
+func TestAbandonedNativeDeliverySignalsCleanup(t *testing.T) {
+	pending := &pendingOperation{
+		result:    make(chan completionResult, 1),
+		delivered: make(chan struct{}),
+	}
+	_, buffered := pending.abandon()
+	require.False(t, buffered)
+	select {
+	case <-pending.delivered:
+		t.Fatal("abandonment must not signal native completion")
+	default:
+	}
+	pending.deliver(completionResult{body: []byte("late completion")})
+	select {
+	case <-pending.delivered:
+	default:
+		t.Fatal("native delivery must unblock resource cleanup")
+	}
+	require.Empty(t, pending.result)
+	require.NotPanics(t, func() { pending.deliver(completionResult{}) })
+}
+
 // The reactor owns a completion queue and a goroutine blocked in C. These cover its lifetime
 // without a service, which the emulator tests cannot: they need an account to talk to, and a leak
 // or a hang here would show up there as a timeout rather than as itself.

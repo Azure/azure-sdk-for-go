@@ -9,6 +9,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/azcore"
 // driver implementations, the native binding and the stub, share one input type and client.go
 // stays free of build tags.
 type driverConfig struct {
+	runtime *Runtime
 	// endpoint is the account endpoint, already validated by newClient.
 	endpoint string
 

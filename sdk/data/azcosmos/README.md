@@ -58,6 +58,11 @@ later request. The v0.2 native ABI does not support on-demand operation cancella
 a Go context returns promptly and releases its Go-side resources, but the native request can
 continue until its own timeout or retry budget ends. Avoid assuming a cancelled write did not
 reach the service.
+If an item operation's native completion is already available when cancellation is observed,
+the SDK returns that outcome, including its response body and ETag, rather than a cancellation error.
+When no end-to-end timeout is configured or inherited for an item operation, the remaining context
+deadline supplies its native timeout, subject to its one-second minimum. Explicit and inherited timeouts
+remain unchanged; an earlier context deadline still limits the Go wait.
 
 ### Client initialization
 
@@ -79,8 +84,9 @@ One limit applies to the driver-backed build today: v1's WebAssembly support doe
 ### SDK identity
 
 Service requests include `azsdk-go-azcosmos/<version>` in the User-Agent header alongside the native
-Cosmos driver identity and feature flags. `ClientOptions.ApplicationID` remains an optional,
-unchanged application suffix; SDK identity does not consume its length allowance.
+Cosmos driver identity and feature flags. Configure an application suffix through
+`RuntimeOptions.ApplicationID`, then supply that runtime in `ClientOptions.Runtime`.
+SDK identity does not consume the suffix's length allowance.
 
 ### Patching items
 
@@ -160,15 +166,15 @@ the Go binding preserves that error rather than computing aggregates itself.
 Contexts bound query waits; canceling an admitted page or checkpoint terminates that pager
 without claiming to cancel native work. Late completions are drained safely, and client
 shutdown waits for their cleanup. Native per-page timeouts retain the configured duration
-(the driver clamps positive values below one second); subsequent page contexts do not inherit
-the first page's remaining deadline. With `EndToEndTimeout == 0`, no explicit native query
-timeout is added: native defaults apply, and a context deadline limits only the Go wait.
+(the driver clamps explicit values below one second, including zero); subsequent page contexts
+do not inherit the first page's remaining deadline. With `EndToEndTimeout == nil`, timeout
+settings are inherited, and a context deadline limits only the Go wait.
 Per-page context deadlines cannot bound native execution with the pinned ABI. Stronger
 guarantees require cooperative cancellation
 ([Azure/azure-sdk-for-rust#5358](https://github.com/Azure/azure-sdk-for-rust/issues/5358))
 or per-page deadline support in a future native release.
-Point operations continue to await authoritative native
-outcomes after admission, so a committed write is not mislabeled as canceled.
+Item operations also stop waiting when their context ends. Submitted writes may still commit;
+a cancellation error is not evidence that a write was rolled back or never reached the service.
 
 #### Rust query-option parity
 
@@ -180,15 +186,13 @@ Against the Rust revision used to publish native v0.2.0, query-option coverage i
 | Query-plan mode, session token, index/query metric flags | Corresponding `QueryOptions` fields |
 | Buffered-query window limit | Not exposed by the native ABI; native default of 1000 applies |
 | Explicit `MaxItemCountHint::ServerDecides` | Not independently expressible through this ABI; Go zero selects the native unset/default behavior |
-| Common per-operation settings | Only a subset: consistency strategy, excluded regions, content response on writes, and end-to-end timeout |
+| Common per-operation settings | `OperationOptions` exposes consistency, excluded regions, content response on writes, end-to-end timeout, PATCH strategy, throughput bucket/priority, throttle/session/failover retry controls, endpoint-unavailability TTL, session-capture control, hedging/availability strategy, custom headers, and binary encoding |
 
-The shared per-operation surface is not yet at full Rust parity. Go does not expose Rust's
-throughput bucket/priority, throttle/session/failover retry controls, endpoint-unavailability
-TTL, session-capture disable flag, hedging/availability strategy, custom headers, or configurable
-binary encoding. Go requests text JSON. Not all of these gaps require a new native release;
-the buffered-window and explicit server-decides gaps do require a native contract change.
-Rust also distinguishes inherited versus explicitly cleared region exclusions; Go currently
-maps both nil and empty exclusion slices to inheritance.
+Common operation settings inherit across runtime, client, and request scopes; their applicability
+depends on the operation. Binary wire encoding is enabled by default, with native conversion
+returning text JSON to Go. A nil `ExcludedRegions` slice inherits exclusions, while a non-nil
+empty slice explicitly clears them. The buffered-window and explicit server-decides gaps
+still require a native contract change.
 
 ### Running the end-to-end tests
 

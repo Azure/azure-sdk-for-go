@@ -2325,7 +2325,7 @@ func TestReadAttemptTimeoutCrossRegionWait(t *testing.T) {
 					return err != nil
 				},
 			})
-			lc := newLocationCache([]string{"East US", "Central US"}, *client.endpointUrl, true, false)
+			lc := newLocationCache([]string{"East US", "Central US"}, *client.endpointUrl, true)
 			require.NoError(t, lc.update(
 				[]accountRegion{{Name: "East US", Endpoint: endpointA}},
 				[]accountRegion{{Name: "East US", Endpoint: endpointA}, {Name: "Central US", Endpoint: endpointB}},

@@ -37,5 +37,5 @@ func (client *ServiceClient) ListSharesSegmentCreateRequest(ctx context.Context,
 
 // ListSharesSegmentHandleResponse handles the ListSharesSegment response.
 func (client *ServiceClient) ListSharesSegmentHandleResponse(resp *http.Response) (ServiceClientListSharesSegmentResponse, error) {
-	return client.listSharesSegmentHandleResponse(resp)
+	return client.listSharesSegmentHandleResponse(resp, http.StatusOK)
 }

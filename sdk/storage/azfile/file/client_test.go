@@ -15,6 +15,7 @@ import (
 	"net/http"
 	"net/url"
 	"os"
+	"path"
 	"strconv"
 	"strings"
 	"sync/atomic"
@@ -27,8 +28,10 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/directory"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/file"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/fileerror"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/base"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/generated"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/shared"
@@ -6281,4 +6284,893 @@ func (f *FileUnrecordedTestsSuite) TestFileCreateDataMultiSegmentWithSMCRC64() {
 	downloaded, err := io.ReadAll(downloadResp.Body)
 	_require.NoError(err)
 	_require.EqualValues(data, downloaded)
+}
+
+const (
+	fakeFileID      = "12384898975283830"
+	fakeShareURL    = "https://account.file.core.windows.net/share"
+	fakeFileIDURL   = fakeShareURL + "?fileid=" + fakeFileID
+	fakeShareSnap   = "2011-03-09T01:42:34.9360000Z"
+	fakeParentID    = "13835128424026341376"
+	fakeFileName    = "file.txt"
+	fakeHardLinkXML = `<?xml version="1.0" encoding="utf-8"?><HardLinks>` +
+		`<HardLink><ParentId>` + fakeParentID + `</ParentId><FileName>` + fakeFileName + `</FileName></HardLink>` +
+		`<HardLink><ParentId>0</ParentId><FileName Encoded="true">link%EF%BF%BE</FileName></HardLink>` +
+		`</HardLinks>`
+)
+
+// fileIDTransport records the requests it handles and answers each with the configured response.
+type fileIDTransport struct {
+	requests []*http.Request
+	status   int
+	header   http.Header
+	body     string
+}
+
+func (f *fileIDTransport) Do(req *http.Request) (*http.Response, error) {
+	f.requests = append(f.requests, req)
+	status := f.status
+	if status == 0 {
+		status = http.StatusOK
+	}
+	header := f.header
+	if header == nil {
+		header = http.Header{}
+	}
+	return &http.Response{
+		Request:    req,
+		StatusCode: status,
+		Status:     http.StatusText(status),
+		Header:     header.Clone(),
+		Body:       io.NopCloser(strings.NewReader(f.body)),
+	}, nil
+}
+
+func fileIDClientOptions(transport policy.Transporter) *share.ClientOptions {
+	return &share.ClientOptions{ClientOptions: policy.ClientOptions{
+		Transport: transport,
+		Retry:     policy.RetryOptions{MaxRetries: -1},
+	}}
+}
+
+func newFakeShareClient(t *testing.T, shareURL string, transport policy.Transporter) *share.Client {
+	shareClient, err := share.NewClientWithNoCredential(shareURL, fileIDClientOptions(transport))
+	require.NoError(t, err)
+	return shareClient
+}
+
+func TestNewFileClientByFileIDURL(t *testing.T) {
+	fileClient := newFakeShareClient(t, fakeShareURL, &fileIDTransport{}).NewFileClientByFileID(fakeFileID)
+
+	require.Equal(t, fakeFileIDURL, fileClient.URL())
+	require.Equal(t, fakeFileID, fileClient.FileID())
+
+	urlParts, err := file.ParseURL(fileClient.URL())
+	require.NoError(t, err)
+	require.Equal(t, "share", urlParts.ShareName)
+	require.Equal(t, fakeFileID, urlParts.FileID)
+	require.Empty(t, urlParts.DirectoryOrFilePath)
+}
+
+func TestNewFileClientByFileIDPreservesShareSnapshot(t *testing.T) {
+	shareClient, err := newFakeShareClient(t, fakeShareURL, &fileIDTransport{}).WithSnapshot(fakeShareSnap)
+	require.NoError(t, err)
+
+	fileClient := shareClient.NewFileClientByFileID(fakeFileID)
+	urlParts, err := file.ParseURL(fileClient.URL())
+	require.NoError(t, err)
+	require.Equal(t, fakeFileID, urlParts.FileID)
+	require.Equal(t, fakeShareSnap, urlParts.ShareSnapshot)
+	require.Equal(t, fakeFileID, fileClient.FileID())
+}
+
+func TestNewFileClientByFileIDPreservesSAS(t *testing.T) {
+	const sasQuery = "se=2015-04-30T02%3A23%3A26Z&sig=Z%2FRHIX5Xcg0Mq2rqI3OlWTjEg2tYkboXr1P9ZUXDtkk%3D&sp=r&sr=s&sv=2015-04-05"
+	fileClient := newFakeShareClient(t, fakeShareURL+"?"+sasQuery, &fileIDTransport{}).NewFileClientByFileID(fakeFileID)
+
+	require.Equal(t, fakeFileIDURL+"&"+sasQuery, fileClient.URL())
+	require.Equal(t, fakeFileID, fileClient.FileID())
+}
+
+func TestFileClientFileIDFromConstructorURL(t *testing.T) {
+	// a URL that already contains a file ID produces a client that addresses the file by its file ID
+	fileClient, err := file.NewClientWithNoCredential(fakeShareURL+"?FileId="+fakeFileID, nil)
+	require.NoError(t, err)
+	require.Equal(t, fakeFileID, fileClient.FileID())
+
+	cred, err := file.NewSharedKeyCredential("account", "ZmFrZQ==")
+	require.NoError(t, err)
+	fileClient, err = file.NewClientWithSharedKeyCredential(fakeFileIDURL, cred, nil)
+	require.NoError(t, err)
+	require.Equal(t, fakeFileID, fileClient.FileID())
+}
+
+func TestFileClientFileIDEmptyForPathBasedClient(t *testing.T) {
+	fileClient, err := file.NewClientWithNoCredential(fakeShareURL+"/directory/file", nil)
+	require.NoError(t, err)
+	require.Empty(t, fileClient.FileID())
+
+	fileClient = newFakeShareClient(t, fakeShareURL, &fileIDTransport{}).NewRootDirectoryClient().NewFileClient("file")
+	require.Empty(t, fileClient.FileID())
+}
+
+func TestFileClientByFileIDGetProperties(t *testing.T) {
+	_require := require.New(t)
+	transport := &fileIDTransport{header: http.Header{
+		"X-Ms-File-Id":        []string{fakeFileID},
+		"X-Ms-File-Parent-Id": []string{fakeParentID},
+		"X-Ms-File-Name":      []string{fakeFileName},
+		"Content-Length":      []string{"1024"},
+		"Content-Type":        []string{"application/octet-stream"},
+		"X-Ms-Type":           []string{"File"},
+	}}
+	fileClient := newFakeShareClient(t, fakeShareURL, transport).NewFileClientByFileID(fakeFileID)
+
+	resp, err := fileClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.Equal(fakeFileID, *resp.ID)
+	_require.Equal(fakeParentID, *resp.ParentID)
+	_require.Equal(fakeFileName, *resp.FileName)
+	_require.Equal(int64(1024), *resp.ContentLength)
+
+	_require.Len(transport.requests, 1)
+	req := transport.requests[0]
+	_require.Equal(http.MethodHead, req.Method)
+	_require.Equal("/share", req.URL.Path)
+	_require.Equal(fakeFileID, req.URL.Query().Get("fileid"))
+	_require.Empty(req.URL.Query().Get("comp"))
+}
+
+func TestFileClientByFileIDGetPropertiesSharedKey(t *testing.T) {
+	_require := require.New(t)
+	transport := &fileIDTransport{}
+	cred, err := share.NewSharedKeyCredential("account", "ZmFrZQ==")
+	_require.NoError(err)
+	shareClient, err := share.NewClientWithSharedKeyCredential(fakeShareURL, cred, fileIDClientOptions(transport))
+	_require.NoError(err)
+
+	_, err = shareClient.NewFileClientByFileID(fakeFileID).GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.Len(transport.requests, 1)
+	_require.True(strings.HasPrefix(transport.requests[0].Header.Get("Authorization"), "SharedKey account:"))
+	_require.Equal(fakeFileID, transport.requests[0].URL.Query().Get("fileid"))
+}
+
+func TestFileClientByFileIDGetPropertiesError(t *testing.T) {
+	transport := &fileIDTransport{
+		status: http.StatusNotFound,
+		header: http.Header{"X-Ms-Error-Code": []string{string(fileerror.ResourceNotFound)}},
+	}
+	fileClient := newFakeShareClient(t, fakeShareURL, transport).NewFileClientByFileID("11111111111111111111")
+
+	_, err := fileClient.GetProperties(context.Background(), nil)
+	require.Error(t, err)
+	require.True(t, fileerror.HasCode(err, fileerror.ResourceNotFound))
+}
+
+func TestFileClientByFileIDGetFileLinks(t *testing.T) {
+	_require := require.New(t)
+	transport := &fileIDTransport{
+		header: http.Header{
+			"Content-Type":             []string{"application/xml"},
+			"X-Ms-File-Id":             []string{fakeFileID},
+			"X-Ms-File-Parent-Id":      []string{fakeParentID},
+			"X-Ms-File-Name":           []string{fakeFileName},
+			"X-Ms-Content-Length":      []string{"1024"},
+			"X-Ms-Content-Type":        []string{"text/plain"},
+			"X-Ms-Cache-Control":       []string{"no-cache"},
+			"X-Ms-Content-Disposition": []string{"attachment"},
+			"X-Ms-Content-Encoding":    []string{"gzip"},
+			"X-Ms-Content-Language":    []string{"en-US"},
+			"X-Ms-Content-Md5":         []string{"MDAwMDAwMDAwMDAwMDAwMA=="},
+			"X-Ms-Link-Count":          []string{"2"},
+			"X-Ms-Type":                []string{"File"},
+		},
+		body: fakeHardLinkXML,
+	}
+	fileClient := newFakeShareClient(t, fakeShareURL, transport).NewFileClientByFileID(fakeFileID)
+
+	resp, err := fileClient.GetFileLinks(context.Background(), nil)
+	_require.NoError(err)
+
+	// properties of the file are returned with an x-ms- prefix, since the response has a body
+	_require.Equal(fakeFileID, *resp.ID)
+	_require.Equal(fakeParentID, *resp.ParentID)
+	_require.Equal(fakeFileName, *resp.FileName)
+	_require.Equal(int64(1024), *resp.FileContentLength)
+	_require.Equal("text/plain", *resp.FileContentType)
+	_require.Equal("no-cache", *resp.FileCacheControl)
+	_require.Equal("attachment", *resp.FileContentDisposition)
+	_require.Equal("gzip", *resp.FileContentEncoding)
+	_require.Equal("en-US", *resp.FileContentLanguage)
+	_require.Equal([]byte("0000000000000000"), resp.FileContentMD5)
+	_require.Equal(int64(2), *resp.LinkCount)
+
+	_require.Len(resp.HardLinks, 2)
+	_require.Equal(fakeParentID, *resp.HardLinks[0].ParentID)
+	_require.Equal(fakeFileName, *resp.HardLinks[0].FileName)
+	_require.Equal("0", *resp.HardLinks[1].ParentID)
+	_require.Equal("link￾", *resp.HardLinks[1].FileName)
+
+	_require.Len(transport.requests, 1)
+	req := transport.requests[0]
+	_require.Equal(http.MethodGet, req.Method)
+	_require.Equal("/share", req.URL.Path)
+	_require.Equal("hardlinks", req.URL.Query().Get("comp"))
+	_require.Equal(fakeFileID, req.URL.Query().Get("fileid"))
+	_require.Empty(foldedHeaderValues(req.Header, "x-ms-lease-id"))
+}
+
+func TestFileClientByFileIDGetFileLinksOptions(t *testing.T) {
+	_require := require.New(t)
+	transport := &fileIDTransport{body: `<HardLinks />`}
+	fileClient := newFakeShareClient(t, fakeShareURL, transport).NewFileClientByFileID(fakeFileID)
+
+	resp, err := fileClient.GetFileLinks(context.Background(), &file.GetFileLinksOptions{
+		LeaseAccessConditions: &file.LeaseAccessConditions{LeaseID: to.Ptr("lease-id")},
+		ShareSnapshot:         to.Ptr(fakeShareSnap),
+	})
+	_require.NoError(err)
+	_require.Empty(resp.HardLinks)
+
+	_require.Len(transport.requests, 1)
+	req := transport.requests[0]
+	_require.Equal([]string{"lease-id"}, foldedHeaderValues(req.Header, "x-ms-lease-id"))
+	_require.Equal(fakeShareSnap, req.URL.Query().Get("sharesnapshot"))
+	_require.Equal(fakeFileID, req.URL.Query().Get("fileid"))
+}
+
+func TestFileClientByFileIDGetFileLinksShareSnapshotClient(t *testing.T) {
+	_require := require.New(t)
+	transport := &fileIDTransport{body: `<HardLinks />`}
+	shareClient, err := newFakeShareClient(t, fakeShareURL, transport).WithSnapshot(fakeShareSnap)
+	_require.NoError(err)
+
+	_, err = shareClient.NewFileClientByFileID(fakeFileID).GetFileLinks(context.Background(), nil)
+	_require.NoError(err)
+	_require.Len(transport.requests, 1)
+	_require.Equal(fakeShareSnap, transport.requests[0].URL.Query().Get("sharesnapshot"))
+	_require.Equal(fakeFileID, transport.requests[0].URL.Query().Get("fileid"))
+	_require.Equal("hardlinks", transport.requests[0].URL.Query().Get("comp"))
+}
+
+func TestFileClientByFileIDGetFileLinksError(t *testing.T) {
+	transport := &fileIDTransport{
+		status: http.StatusNotFound,
+		header: http.Header{"X-Ms-Error-Code": []string{string(fileerror.ResourceNotFound)}},
+	}
+	fileClient := newFakeShareClient(t, fakeShareURL, transport).NewFileClientByFileID("11111111111111111111")
+
+	_, err := fileClient.GetFileLinks(context.Background(), nil)
+	require.Error(t, err)
+	require.True(t, fileerror.HasCode(err, fileerror.ResourceNotFound))
+}
+
+func TestFileClientByFileIDGetFileLinksFileNameEncoding(t *testing.T) {
+	_require := require.New(t)
+	transport := &fileIDTransport{body: `<?xml version="1.0" encoding="utf-8"?><HardLinks>` +
+		`<HardLink><ParentId>0</ParentId><FileName Encoded="false">not%20decoded</FileName></HardLink>` +
+		`<HardLink><ParentId>1</ParentId><FileName Encoded="true"></FileName></HardLink>` +
+		`</HardLinks>`}
+	fileClient := newFakeShareClient(t, fakeShareURL, transport).NewFileClientByFileID(fakeFileID)
+
+	resp, err := fileClient.GetFileLinks(context.Background(), nil)
+	_require.NoError(err)
+	_require.Len(resp.HardLinks, 2)
+
+	// a name is only decoded when the service marks it as encoded
+	_require.Equal("0", *resp.HardLinks[0].ParentID)
+	_require.Equal("not%20decoded", *resp.HardLinks[0].FileName)
+	_require.Equal("1", *resp.HardLinks[1].ParentID)
+}
+
+func TestFileClientByFileIDGetFileLinksInvalidFileNameEncoding(t *testing.T) {
+	transport := &fileIDTransport{body: `<HardLinks><HardLink><ParentId>1</ParentId>` +
+		`<FileName Encoded="true">%ZZ</FileName></HardLink></HardLinks>`}
+	fileClient := newFakeShareClient(t, fakeShareURL, transport).NewFileClientByFileID(fakeFileID)
+
+	_, err := fileClient.GetFileLinks(context.Background(), nil)
+	require.Error(t, err)
+}
+
+func TestFileClientGetFileLinksPathBasedClient(t *testing.T) {
+	// GetFileLinks is only supported when the file is addressed by its file ID; the request is never sent
+	transport := &fileIDTransport{}
+	fileClient := newFakeShareClient(t, fakeShareURL, transport).NewDirectoryClient("directory").NewFileClient("file")
+
+	_, err := fileClient.GetFileLinks(context.Background(), nil)
+	require.ErrorIs(t, err, fileerror.ErrFileIDRequired)
+	require.Contains(t, err.Error(), "GetFileLinks")
+	require.Empty(t, transport.requests)
+}
+
+func TestFileClientByFileIDUnsupportedOperations(t *testing.T) {
+	ctx := context.Background()
+	transport := &fileIDTransport{}
+	fileClient := newFakeShareClient(t, fakeShareURL, transport).NewFileClientByFileID(fakeFileID)
+
+	tmpFile, err := os.CreateTemp(t.TempDir(), "fileid")
+	require.NoError(t, err)
+	defer func() { _ = tmpFile.Close() }()
+
+	body := func() io.ReadSeekCloser { return streaming.NopCloser(bytes.NewReader([]byte("data"))) }
+
+	operations := map[string]func() error{
+		"Create": func() error { _, err := fileClient.Create(ctx, 1024, nil); return err },
+		"Delete": func() error { _, err := fileClient.Delete(ctx, nil); return err },
+		"Rename": func() error { _, err := fileClient.Rename(ctx, "destination", nil); return err },
+		"SetHTTPHeaders": func() error {
+			_, err := fileClient.SetHTTPHeaders(ctx, nil)
+			return err
+		},
+		"SetMetadata": func() error { _, err := fileClient.SetMetadata(ctx, nil); return err },
+		"StartCopyFromURL": func() error {
+			_, err := fileClient.StartCopyFromURL(ctx, fakeShareURL+"/source", nil)
+			return err
+		},
+		"AbortCopy":   func() error { _, err := fileClient.AbortCopy(ctx, "copy-id", nil); return err },
+		"Resize":      func() error { _, err := fileClient.Resize(ctx, 1024, nil); return err },
+		"UploadRange": func() error { _, err := fileClient.UploadRange(ctx, 0, body(), nil); return err },
+		"ClearRange": func() error {
+			_, err := fileClient.ClearRange(ctx, file.HTTPRange{Offset: 0, Count: 512}, nil)
+			return err
+		},
+		"UploadRangeFromURL": func() error {
+			_, err := fileClient.UploadRangeFromURL(ctx, fakeShareURL+"/source", 0, 0, 512, nil)
+			return err
+		},
+		"GetRangeList": func() error { _, err := fileClient.GetRangeList(ctx, nil); return err },
+		"NewListRangesPager": func() error {
+			_, err := fileClient.NewListRangesPager(nil).NextPage(ctx)
+			return err
+		},
+		"ForceCloseHandles": func() error {
+			_, err := fileClient.ForceCloseHandles(ctx, "*", nil)
+			return err
+		},
+		"ListHandles": func() error { _, err := fileClient.ListHandles(ctx, nil); return err },
+		"CreateHardLink": func() error {
+			_, err := fileClient.CreateHardLink(ctx, "directory/target", nil)
+			return err
+		},
+		"CreateSymbolicLink": func() error {
+			_, err := fileClient.CreateSymbolicLink(ctx, "target", nil)
+			return err
+		},
+		"GetSymbolicLink": func() error { _, err := fileClient.GetSymbolicLink(ctx, nil); return err },
+		"GetSASURL": func() error {
+			_, err := fileClient.GetSASURL(sas.FilePermissions{Read: true}, time.Now().Add(time.Hour), nil)
+			return err
+		},
+		"UploadBuffer":   func() error { return fileClient.UploadBuffer(ctx, []byte("data"), nil) },
+		"UploadFile":     func() error { return fileClient.UploadFile(ctx, tmpFile, nil) },
+		"UploadStream":   func() error { return fileClient.UploadStream(ctx, strings.NewReader("data"), nil) },
+		"DownloadStream": func() error { _, err := fileClient.DownloadStream(ctx, nil); return err },
+		"DownloadBuffer": func() error {
+			_, err := fileClient.DownloadBuffer(ctx, make([]byte, 4), nil)
+			return err
+		},
+		"DownloadFile": func() error { _, err := fileClient.DownloadFile(ctx, tmpFile, nil); return err },
+	}
+
+	for name, operation := range operations {
+		t.Run(name, func(t *testing.T) {
+			err := operation()
+			require.ErrorIs(t, err, fileerror.ErrFileIDNotSupported)
+			require.Contains(t, err.Error(), "file.Client."+name)
+		})
+	}
+	require.Empty(t, transport.requests, "unsupported operations must fail before a request is sent")
+}
+
+func TestFileClientByFileIDGetSASURLWithSharedKey(t *testing.T) {
+	// a file ID addressed request has no path to sign, so a file SAS cannot be generated even with a shared key
+	cred, err := share.NewSharedKeyCredential("account", "ZmFrZQ==")
+	require.NoError(t, err)
+	shareClient, err := share.NewClientWithSharedKeyCredential(fakeShareURL, cred, nil)
+	require.NoError(t, err)
+
+	_, err = shareClient.NewFileClientByFileID(fakeFileID).GetSASURL(sas.FilePermissions{Read: true}, time.Now().Add(time.Hour), nil)
+	require.ErrorIs(t, err, fileerror.ErrFileIDNotSupported)
+
+	// the share is still known, so a share SAS can be generated as before
+	_, err = shareClient.GetSASURL(sas.SharePermissions{Read: true}, time.Now().Add(time.Hour), nil)
+	require.NoError(t, err)
+}
+
+func TestFileClientByFileIDLeaseOperations(t *testing.T) {
+	ctx := context.Background()
+	transport := &fileIDTransport{}
+	fileClient := newFakeShareClient(t, fakeShareURL, transport).NewFileClientByFileID(fakeFileID)
+
+	leaseClient, err := lease.NewFileClient(fileClient, &lease.FileClientOptions{LeaseID: to.Ptr("c820a799-76d7-4ee2-6e15-546f19325c2c")})
+	require.NoError(t, err)
+
+	_, err = leaseClient.Acquire(ctx, nil)
+	require.ErrorIs(t, err, fileerror.ErrFileIDNotSupported)
+	_, err = leaseClient.Release(ctx, nil)
+	require.ErrorIs(t, err, fileerror.ErrFileIDNotSupported)
+	_, err = leaseClient.Change(ctx, "6b3e65e5-e1bb-4a3f-8b72-13e9bc9cd3bf", nil)
+	require.ErrorIs(t, err, fileerror.ErrFileIDNotSupported)
+	_, err = leaseClient.Break(ctx, nil)
+	require.ErrorIs(t, err, fileerror.ErrFileIDNotSupported)
+
+	require.Empty(t, transport.requests)
+}
+
+func TestFileClientPathBasedOperationsUnaffected(t *testing.T) {
+	// path based clients keep sending requests for the operations that file ID addressed clients reject
+	transport := &fileIDTransport{}
+	fileClient := newFakeShareClient(t, fakeShareURL, transport).NewDirectoryClient("directory").NewFileClient("file")
+
+	_, err := fileClient.GetProperties(context.Background(), nil)
+	require.NoError(t, err)
+	_, err = fileClient.SetMetadata(context.Background(), nil)
+	require.NoError(t, err)
+
+	require.Len(t, transport.requests, 2)
+	for _, req := range transport.requests {
+		require.Equal(t, "/share/directory/file", req.URL.Path)
+		require.Empty(t, req.URL.Query().Get("fileid"))
+	}
+}
+
+// createFileForFileIDTest creates a directory and a 1 KiB file in a new share, and returns the share client, the
+// directory client, the path based file client and the properties of the file. The caller deletes the share.
+func createFileForFileIDTest(s *suite.Suite) (*share.Client, *directory.Client, *file.Client, file.GetPropertiesResponse) {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, testcommon.GenerateShareName(testName), svcClient)
+
+	dirClient := testcommon.CreateNewDirectory(context.Background(), _require, testcommon.GenerateDirectoryName(testName), shareClient)
+	fClient := dirClient.NewFileClient(testcommon.GenerateFileName(testName))
+	_, err = fClient.Create(context.Background(), 1024, nil)
+	_require.NoError(err)
+
+	props, err := fClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(props.ID)
+	_require.NotNil(props.ParentID)
+	return shareClient, dirClient, fClient, props
+}
+
+func fileNameOf(_require *require.Assertions, fClient *file.Client) string {
+	urlParts, err := file.ParseURL(fClient.URL())
+	_require.NoError(err)
+	return path.Base(urlParts.DirectoryOrFilePath)
+}
+
+func (f *FileRecordedTestsSuite) TestFileGetPropertiesByFileID() {
+	_require := require.New(f.T())
+	shareClient, _, fClient, pathProps := createFileForFileIDTest(&f.Suite)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	fileIDClient := shareClient.NewFileClientByFileID(*pathProps.ID)
+	_require.Equal(*pathProps.ID, fileIDClient.FileID())
+
+	resp, err := fileIDClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.Equal(*pathProps.ID, *resp.ID)
+	_require.Equal(*pathProps.ParentID, *resp.ParentID)
+	_require.Equal(fileNameOf(_require, fClient), *resp.FileName)
+	_require.Equal(*pathProps.ContentLength, *resp.ContentLength)
+
+	// the name of the file is only returned when the file is addressed by its file ID
+	_require.Nil(pathProps.FileName)
+}
+
+func (f *FileRecordedTestsSuite) TestFileGetPropertiesByFileIDError() {
+	_require := require.New(f.T())
+
+	svcClient, err := testcommon.GetServiceClient(f.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, testcommon.GenerateShareName(f.T().Name()), svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	_, err = shareClient.NewFileClientByFileID("11111111111111111111").GetProperties(context.Background(), nil)
+	_require.Error(err)
+}
+
+func (f *FileRecordedTestsSuite) TestFileGetFileLinks() {
+	_require := require.New(f.T())
+	shareClient, _, fClient, pathProps := createFileForFileIDTest(&f.Suite)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	resp, err := shareClient.NewFileClientByFileID(*pathProps.ID).GetFileLinks(context.Background(), nil)
+	_require.NoError(err)
+
+	_require.Equal(*pathProps.ID, *resp.ID)
+	_require.Equal(*pathProps.ParentID, *resp.ParentID)
+	_require.Equal(int64(1024), *resp.FileContentLength)
+	_require.Equal("application/octet-stream", *resp.FileContentType)
+	_require.Equal(*pathProps.FileAttributes, *resp.FileAttributes)
+	_require.Equal(*pathProps.FilePermissionKey, *resp.FilePermissionKey)
+	_require.Equal(*pathProps.FileCreationTime, *resp.FileCreationTime)
+	_require.Equal(*pathProps.FileLastWriteTime, *resp.FileLastWriteTime)
+	_require.Equal(*pathProps.FileChangeTime, *resp.FileChangeTime)
+
+	_require.Len(resp.HardLinks, 1)
+	_require.Equal(fileNameOf(_require, fClient), *resp.HardLinks[0].FileName)
+	_require.Equal(*pathProps.ParentID, *resp.HardLinks[0].ParentID)
+}
+
+func (f *FileRecordedTestsSuite) TestFileGetFileLinksRootDirectory() {
+	_require := require.New(f.T())
+	testName := f.T().Name()
+
+	svcClient, err := testcommon.GetServiceClient(f.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, testcommon.GenerateShareName(testName), svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	rootDirClient := shareClient.NewRootDirectoryClient()
+	fileName := testcommon.GenerateFileName(testName)
+	fClient := rootDirClient.NewFileClient(fileName)
+	_, err = fClient.Create(context.Background(), 1024, nil)
+	_require.NoError(err)
+
+	rootProps, err := rootDirClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	fileProps, err := fClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+
+	resp, err := shareClient.NewFileClientByFileID(*fileProps.ID).GetFileLinks(context.Background(), nil)
+	_require.NoError(err)
+	_require.Len(resp.HardLinks, 1)
+	_require.Equal(fileName, *resp.HardLinks[0].FileName)
+	_require.Equal(*rootProps.ID, *resp.HardLinks[0].ParentID)
+}
+
+func (f *FileRecordedTestsSuite) TestFileGetFileLinksContentHeaders() {
+	_require := require.New(f.T())
+	shareClient, _, fClient, _ := createFileForFileIDTest(&f.Suite)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	md5 := []byte("0123456789abcdef")
+	httpHeaders := file.HTTPHeaders{
+		ContentType:        to.Ptr("text/html"),
+		ContentEncoding:    to.Ptr("gzip"),
+		ContentLanguage:    to.Ptr("en-US"),
+		ContentDisposition: to.Ptr("attachment"),
+		CacheControl:       to.Ptr("no-transform"),
+		ContentMD5:         md5,
+	}
+	_, err := fClient.SetHTTPHeaders(context.Background(), &file.SetHTTPHeadersOptions{HTTPHeaders: &httpHeaders})
+	_require.NoError(err)
+
+	pathProps, err := fClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+
+	resp, err := shareClient.NewFileClientByFileID(*pathProps.ID).GetFileLinks(context.Background(), nil)
+	_require.NoError(err)
+
+	// content properties are returned with an x-ms- prefix, since the response has a body
+	_require.Equal(*httpHeaders.ContentType, *resp.FileContentType)
+	_require.Equal(*httpHeaders.ContentEncoding, *resp.FileContentEncoding)
+	_require.Equal(*httpHeaders.ContentLanguage, *resp.FileContentLanguage)
+	_require.Equal(*httpHeaders.ContentDisposition, *resp.FileContentDisposition)
+	_require.Equal(*httpHeaders.CacheControl, *resp.FileCacheControl)
+	_require.Equal(md5, resp.FileContentMD5)
+
+	_require.Equal(*pathProps.FileAttributes, *resp.FileAttributes)
+	_require.Equal(*pathProps.FilePermissionKey, *resp.FilePermissionKey)
+	_require.Equal(*pathProps.FileCreationTime, *resp.FileCreationTime)
+	_require.Equal(*pathProps.FileLastWriteTime, *resp.FileLastWriteTime)
+	_require.Equal(*pathProps.FileChangeTime, *resp.FileChangeTime)
+}
+
+func (f *FileRecordedTestsSuite) TestFileGetFileLinksEncoded() {
+	_require := require.New(f.T())
+	testName := f.T().Name()
+
+	svcClient, err := testcommon.GetServiceClient(f.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, testcommon.GenerateShareName(testName), svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	dirClient := testcommon.CreateNewDirectory(context.Background(), _require, testcommon.GenerateDirectoryName(testName), shareClient)
+
+	// ￾ cannot be represented in XML, so the service percent-encodes the FileName element and marks it with
+	// Encoded="true"
+	fileName := testcommon.GenerateFileName(testName) + "￾"
+	fClient := dirClient.NewFileClient(fileName)
+	_, err = fClient.Create(context.Background(), 1024, nil)
+	_require.NoError(err)
+
+	pathProps, err := fClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+
+	resp, err := shareClient.NewFileClientByFileID(*pathProps.ID).GetFileLinks(context.Background(), nil)
+	_require.NoError(err)
+	_require.Len(resp.HardLinks, 1)
+	_require.Equal(fileName, *resp.HardLinks[0].FileName)
+	_require.Equal(*pathProps.ParentID, *resp.HardLinks[0].ParentID)
+}
+
+func (f *FileRecordedTestsSuite) TestFileGetFileLinksShareSnapshot() {
+	_require := require.New(f.T())
+	shareClient, _, fClient, pathProps := createFileForFileIDTest(&f.Suite)
+
+	snapshotResp, err := shareClient.CreateSnapshot(context.Background(), nil)
+	_require.NoError(err)
+	defer func() {
+		_, _ = shareClient.Delete(context.Background(), &share.DeleteOptions{DeleteSnapshots: to.Ptr(share.DeleteSnapshotsOptionTypeInclude)})
+	}()
+
+	snapshotShareClient, err := shareClient.WithSnapshot(*snapshotResp.Snapshot)
+	_require.NoError(err)
+
+	resp, err := snapshotShareClient.NewFileClientByFileID(*pathProps.ID).GetFileLinks(context.Background(), nil)
+	_require.NoError(err)
+	_require.Len(resp.HardLinks, 1)
+	_require.Equal(fileNameOf(_require, fClient), *resp.HardLinks[0].FileName)
+
+	resp, err = shareClient.NewFileClientByFileID(*pathProps.ID).GetFileLinks(context.Background(), &file.GetFileLinksOptions{
+		ShareSnapshot: snapshotResp.Snapshot,
+	})
+	_require.NoError(err)
+	_require.Len(resp.HardLinks, 1)
+}
+
+func (f *FileRecordedTestsSuite) TestFileGetFileLinksLease() {
+	_require := require.New(f.T())
+	shareClient, _, fClient, pathProps := createFileForFileIDTest(&f.Suite)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	proposedLeaseID := to.Ptr("c820a799-76d7-4ee2-6e15-546f19325c2c")
+	leaseClient, err := lease.NewFileClient(fClient, &lease.FileClientOptions{LeaseID: proposedLeaseID})
+	_require.NoError(err)
+	_, err = leaseClient.Acquire(context.Background(), nil)
+	_require.NoError(err)
+	defer func() { _, _ = leaseClient.Release(context.Background(), nil) }()
+
+	resp, err := shareClient.NewFileClientByFileID(*pathProps.ID).GetFileLinks(context.Background(), &file.GetFileLinksOptions{
+		LeaseAccessConditions: &file.LeaseAccessConditions{LeaseID: proposedLeaseID},
+	})
+	_require.NoError(err)
+	_require.Len(resp.HardLinks, 1)
+	_require.Equal(lease.StateTypeLeased, *resp.LeaseState)
+}
+
+func (f *FileRecordedTestsSuite) TestFileGetFileLinksError() {
+	_require := require.New(f.T())
+
+	svcClient, err := testcommon.GetServiceClient(f.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, testcommon.GenerateShareName(f.T().Name()), svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	_, err = shareClient.NewFileClientByFileID("11111111111111111111").GetFileLinks(context.Background(), nil)
+	_require.Error(err)
+}
+
+func (f *FileUnrecordedTestsSuite) TestFileGetFileLinksNFSHardLinks() {
+	_require := require.New(f.T())
+	testName := f.T().Name()
+
+	cred, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountPremium)
+	_require.NoError(err)
+
+	options := &share.ClientOptions{}
+	testcommon.SetClientOptions(f.T(), &options.ClientOptions)
+	shareClient, err := share.NewClientWithSharedKeyCredential(
+		"https://"+cred.AccountName()+".file.core.windows.net/"+testcommon.GenerateShareName(testName), cred, options)
+	_require.NoError(err)
+	_, err = shareClient.Create(context.Background(), &share.CreateOptions{EnabledProtocols: to.Ptr("NFS")})
+	_require.NoError(err)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	directoryName := testcommon.GenerateDirectoryName(testName)
+	dirClient := shareClient.NewRootDirectoryClient().NewSubdirectoryClient(directoryName)
+	_, err = dirClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	sourceFileName := testcommon.GenerateFileName("file1")
+	_, err = dirClient.NewFileClient(sourceFileName).Create(context.Background(), 1024, nil)
+	_require.NoError(err)
+
+	hardLinkFileName := testcommon.GenerateFileName("file2")
+	_, err = dirClient.NewFileClient(hardLinkFileName).CreateHardLink(context.Background(), fmt.Sprintf("/%s/%s", directoryName, sourceFileName), nil)
+	_require.NoError(err)
+
+	dirProps, err := dirClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	fileProps, err := dirClient.NewFileClient(sourceFileName).GetProperties(context.Background(), nil)
+	_require.NoError(err)
+
+	resp, err := shareClient.NewFileClientByFileID(*fileProps.ID).GetFileLinks(context.Background(), nil)
+	_require.NoError(err)
+	_require.Equal(int64(2), *resp.LinkCount)
+	_require.Len(resp.HardLinks, 2)
+
+	names := make([]string, 0, len(resp.HardLinks))
+	for _, link := range resp.HardLinks {
+		names = append(names, *link.FileName)
+		_require.Equal(*dirProps.ID, *link.ParentID)
+	}
+	_require.ElementsMatch([]string{sourceFileName, hardLinkFileName}, names)
+}
+
+func (f *FileRecordedTestsSuite) TestFileClientByFileIDSharedKeyConstructor() {
+	_require := require.New(f.T())
+	shareClient, dirClient, fClient, fileProps := createFileForFileIDTest(&f.Suite)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	dirProps, err := dirClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+
+	cred, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)
+	_require.NoError(err)
+
+	urlParts, err := sas.ParseURL(shareClient.URL())
+	_require.NoError(err)
+
+	urlParts.FileID = *fileProps.ID
+	fileOptions := &file.ClientOptions{}
+	testcommon.SetClientOptions(f.T(), &fileOptions.ClientOptions)
+	fileIDClient, err := file.NewClientWithSharedKeyCredential(urlParts.String(), cred, fileOptions)
+	_require.NoError(err)
+
+	urlParts.FileID = *dirProps.ID
+	dirOptions := &directory.ClientOptions{}
+	testcommon.SetClientOptions(f.T(), &dirOptions.ClientOptions)
+	dirIDClient, err := directory.NewClientWithSharedKeyCredential(urlParts.String(), cred, dirOptions)
+	_require.NoError(err)
+
+	resp, err := fileIDClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.Equal(*fileProps.ID, *resp.ID)
+	_require.Equal(fileNameOf(_require, fClient), *resp.FileName)
+
+	dirResp, err := dirIDClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.Equal(*dirProps.ID, *dirResp.ID)
+	_require.Equal(path.Base(mustDirectoryPath(_require, dirClient)), *dirResp.FileName)
+}
+
+func (f *FileRecordedTestsSuite) TestFileClientByFileIDConnectionString() {
+	_require := require.New(f.T())
+	shareClient, dirClient, fClient, fileProps := createFileForFileIDTest(&f.Suite)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	dirProps, err := dirClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+
+	connString, err := testcommon.GetGenericConnectionString(testcommon.TestAccountDefault)
+	_require.NoError(err)
+	urlParts, err := sas.ParseURL(shareClient.URL())
+	_require.NoError(err)
+
+	options := &share.ClientOptions{}
+	testcommon.SetClientOptions(f.T(), &options.ClientOptions)
+	connShareClient, err := share.NewClientFromConnectionString(*connString, urlParts.ShareName, options)
+	_require.NoError(err)
+
+	resp, err := connShareClient.NewFileClientByFileID(*fileProps.ID).GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.Equal(*fileProps.ID, *resp.ID)
+	_require.Equal(fileNameOf(_require, fClient), *resp.FileName)
+
+	dirResp, err := connShareClient.NewDirectoryClientByFileID(*dirProps.ID).GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.Equal(*dirProps.ID, *dirResp.ID)
+	_require.Equal(path.Base(mustDirectoryPath(_require, dirClient)), *dirResp.FileName)
+}
+
+func mustDirectoryPath(_require *require.Assertions, dirClient *directory.Client) string {
+	urlParts, err := sas.ParseURL(dirClient.URL())
+	_require.NoError(err)
+	return urlParts.DirectoryOrFilePath
+}
+
+func (f *FileUnrecordedTestsSuite) TestFileClientByFileIDSASInURL() {
+	_require := require.New(f.T())
+	shareClient, _, fClient, fileProps := createFileForFileIDTest(&f.Suite)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	// a file ID addressed request has no path to sign, so a share SAS is used
+	shareSASURL, err := shareClient.GetSASURL(sas.SharePermissions{Read: true}, time.Now().Add(time.Hour), nil)
+	_require.NoError(err)
+
+	urlParts, err := sas.ParseURL(shareSASURL)
+	_require.NoError(err)
+	urlParts.FileID = *fileProps.ID
+
+	fileIDClient, err := file.NewClientWithNoCredential(urlParts.String(), nil)
+	_require.NoError(err)
+	_require.Equal(*fileProps.ID, fileIDClient.FileID())
+
+	resp, err := fileIDClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.Equal(*fileProps.ID, *resp.ID)
+	_require.Equal(fileNameOf(_require, fClient), *resp.FileName)
+
+	// navigation from a share client created from a SAS URL keeps the SAS
+	sasShareClient, err := share.NewClientWithNoCredential(shareSASURL, nil)
+	_require.NoError(err)
+	links, err := sasShareClient.NewFileClientByFileID(*fileProps.ID).GetFileLinks(context.Background(), nil)
+	_require.NoError(err)
+	_require.Len(links.HardLinks, 1)
+}
+
+func (f *FileUnrecordedTestsSuite) TestFileClientByFileIDOAuth() {
+	_require := require.New(f.T())
+	shareClient, dirClient, fClient, fileProps := createFileForFileIDTest(&f.Suite)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	dirProps, err := dirClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+
+	cred, err := testcommon.GetGenericTokenCredential()
+	_require.NoError(err)
+
+	oauthShareClient, err := share.NewClient(shareClient.URL(), cred, &share.ClientOptions{FileRequestIntent: to.Ptr(share.TokenIntentBackup)})
+	_require.NoError(err)
+
+	resp, err := oauthShareClient.NewFileClientByFileID(*fileProps.ID).GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.Equal(*fileProps.ID, *resp.ID)
+	_require.Equal(fileNameOf(_require, fClient), *resp.FileName)
+
+	links, err := oauthShareClient.NewFileClientByFileID(*fileProps.ID).GetFileLinks(context.Background(), nil)
+	_require.NoError(err)
+	_require.Len(links.HardLinks, 1)
+	_require.Equal(fileNameOf(_require, fClient), *links.HardLinks[0].FileName)
+
+	dirResp, err := oauthShareClient.NewDirectoryClientByFileID(*dirProps.ID).GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.Equal(*dirProps.ID, *dirResp.ID)
+
+	// the file ID client still rejects unsupported operations before sending a request
+	_, err = oauthShareClient.NewFileClientByFileID(*fileProps.ID).Delete(context.Background(), nil)
+	_require.ErrorIs(err, fileerror.ErrFileIDNotSupported)
+}
+
+func TestBaseFileID(t *testing.T) {
+	require.Equal(t, "123", base.FileID("https://account.file.core.windows.net/share?fileid=123"))
+	require.Equal(t, "123", base.FileID("https://account.file.core.windows.net/share?sharesnapshot=2011-03-09T01:42:34.9360000Z&FileId=123"))
+	require.Empty(t, base.FileID("https://account.file.core.windows.net/share/dir/file"))
+	require.Empty(t, base.FileID("https://account.file.core.windows.net/share"))
+	require.Empty(t, base.FileID("://not a url"))
+}
+
+func TestBaseCheckAddressing(t *testing.T) {
+	const (
+		pathURL       = "https://account.file.core.windows.net/share/dir/file"
+		fileIDURL     = "https://account.file.core.windows.net/share?fileid=123"
+		pathAndFileID = "https://account.file.core.windows.net/share/dir/file?fileid=123"
+	)
+
+	for _, tc := range []struct {
+		name       string
+		url        string
+		addressing base.Addressing
+		wantErr    error
+	}{
+		{"path/base.PathOnly", pathURL, base.PathOnly, nil},
+		{"path/base.PathOrFileID", pathURL, base.PathOrFileID, nil},
+		{"path/base.FileIDOnly", pathURL, base.FileIDOnly, fileerror.ErrFileIDRequired},
+		{"fileID/base.PathOnly", fileIDURL, base.PathOnly, fileerror.ErrFileIDNotSupported},
+		{"fileID/base.PathOrFileID", fileIDURL, base.PathOrFileID, nil},
+		{"fileID/base.FileIDOnly", fileIDURL, base.FileIDOnly, nil},
+		{"pathAndFileID/base.PathOnly", pathAndFileID, base.PathOnly, fileerror.ErrFileIDNotSupported},
+		{"pathAndFileID/base.PathOrFileID", pathAndFileID, base.PathOrFileID, fileerror.ErrFileIDNotSupported},
+		{"pathAndFileID/base.FileIDOnly", pathAndFileID, base.FileIDOnly, fileerror.ErrFileIDNotSupported},
+		// an unparsable URL is left for the request to report, as before file ID support
+		{"invalid/base.PathOnly", "://not a url", base.PathOnly, nil},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			err := base.CheckAddressing(tc.url, "file.Client.Op", tc.addressing)
+			if tc.wantErr == nil {
+				require.NoError(t, err)
+				return
+			}
+			require.ErrorIs(t, err, tc.wantErr)
+			require.Contains(t, err.Error(), "file.Client.Op")
+		})
+	}
 }

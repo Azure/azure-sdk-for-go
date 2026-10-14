@@ -42,14 +42,26 @@ type Backend struct {
 	Requires      []string             `json:"requires,omitempty"`
 }
 
+// Reference is one precedent pointing at the sdk/test/path this scenario's contract came from,
+// mirroring the shared schema's "reference" $def.
+type Reference struct {
+	SDK  string `json:"sdk"`
+	Path string `json:"path"`
+	Test string `json:"test"`
+}
+
 // Scenario is one permanent, language-neutral shared scenario definition.
 type Scenario struct {
-	ID       string   `json:"id"`
-	Title    string   `json:"title"`
-	Maturity string   `json:"maturity"`
-	Profiles []string `json:"profiles"`
-	Tags     []string `json:"tags"`
-	Backends struct {
+	Schema      string      `json:"$schema"`
+	SpecVersion string      `json:"specVersion"`
+	ID          string      `json:"id"`
+	Title       string      `json:"title"`
+	Requirement string      `json:"requirement"`
+	Maturity    string      `json:"maturity"`
+	Precedents  []Reference `json:"precedents"`
+	Profiles    []string    `json:"profiles"`
+	Tags        []string    `json:"tags"`
+	Backends    struct {
 		HostedEmulatorGatewayV1 Backend `json:"hostedEmulatorGatewayV1"`
 		HostedEmulatorGatewayV2 Backend `json:"hostedEmulatorGatewayV2"`
 		AzureLive               Backend `json:"azureLive"`
@@ -58,10 +70,12 @@ type Scenario struct {
 
 // Profile is one reusable account/runtime/client setup definition.
 type Profile struct {
-	ID       string           `json:"id"`
-	Accounts []map[string]any `json:"accounts"`
-	Runtimes []map[string]any `json:"runtimes"`
-	Clients  []map[string]any `json:"clients"`
+	Schema      string           `json:"$schema"`
+	SpecVersion string           `json:"specVersion"`
+	ID          string           `json:"id"`
+	Accounts    []map[string]any `json:"accounts"`
+	Runtimes    []map[string]any `json:"runtimes"`
+	Clients     []map[string]any `json:"clients"`
 }
 
 // Catalog is the loaded, parsed set of shared scenario and profile documents.
@@ -132,9 +146,19 @@ func loadProfile(file string) (Profile, error) {
 	if err != nil {
 		return Profile{}, fmt.Errorf("e2e: reading %s: %w", file, err)
 	}
+	return parseProfile(data, file)
+}
+
+func parseProfile(data []byte, file string) (Profile, error) {
 	var p Profile
 	if err := json.Unmarshal(data, &p); err != nil {
 		return Profile{}, fmt.Errorf("e2e: parsing %s: %w", file, err)
+	}
+	if p.Schema == "" {
+		return Profile{}, fmt.Errorf("e2e: %s is missing required field \"$schema\"", file)
+	}
+	if p.SpecVersion == "" {
+		return Profile{}, fmt.Errorf("e2e: %s is missing required field \"specVersion\"", file)
 	}
 	if p.ID == "" {
 		return Profile{}, fmt.Errorf("e2e: %s is missing required field \"id\"", file)
@@ -150,17 +174,29 @@ func loadScenario(file string) (Scenario, error) {
 	if err != nil {
 		return Scenario{}, fmt.Errorf("e2e: reading %s: %w", file, err)
 	}
+	return parseScenario(data, file)
+}
+
+func parseScenario(data []byte, file string) (Scenario, error) {
 	var s Scenario
 	if err := json.Unmarshal(data, &s); err != nil {
 		return Scenario{}, fmt.Errorf("e2e: parsing %s: %w", file, err)
 	}
 	switch {
+	case s.Schema == "":
+		return Scenario{}, fmt.Errorf("e2e: %s is missing required field \"$schema\"", file)
+	case s.SpecVersion == "":
+		return Scenario{}, fmt.Errorf("e2e: %s is missing required field \"specVersion\"", file)
 	case s.ID == "":
 		return Scenario{}, fmt.Errorf("e2e: %s is missing required field \"id\"", file)
 	case s.Title == "":
 		return Scenario{}, fmt.Errorf("e2e: scenario %q (%s) is missing required field \"title\"", s.ID, file)
+	case s.Requirement == "":
+		return Scenario{}, fmt.Errorf("e2e: scenario %q (%s) is missing required field \"requirement\"", s.ID, file)
 	case s.Maturity == "":
 		return Scenario{}, fmt.Errorf("e2e: scenario %q (%s) is missing required field \"maturity\"", s.ID, file)
+	case len(s.Precedents) == 0:
+		return Scenario{}, fmt.Errorf("e2e: scenario %q (%s) must declare at least one precedent", s.ID, file)
 	case len(s.Profiles) == 0:
 		return Scenario{}, fmt.Errorf("e2e: scenario %q (%s) must declare at least one profile", s.ID, file)
 	case len(s.Tags) == 0:

@@ -4,6 +4,7 @@
 package e2e
 
 import (
+	"encoding/json"
 	"testing"
 
 	"github.com/stretchr/testify/require"
@@ -37,4 +38,72 @@ func TestLoadCatalogScenarioCountMatchesVendoredSnapshot(t *testing.T) {
 	require.NoError(t, err)
 	require.Len(t, catalog.Scenarios, 44)
 	require.Len(t, catalog.Profiles, 6)
+}
+
+// validScenarioJSON and validProfileJSON are minimal documents satisfying every field this
+// package's parseScenario/parseProfile require, used as a base for the drift-detection tests
+// below so each test removes exactly one field instead of hand-maintaining a full fixture twice.
+const (
+	validScenarioJSON = `{
+		"$schema": "../../schema/scenario.v1.json",
+		"specVersion": "1.0",
+		"id": "test.drift",
+		"title": "t",
+		"requirement": "r",
+		"maturity": "stable",
+		"precedents": [{"sdk": "rust", "path": "p", "test": "t"}],
+		"profiles": ["smokeTests"],
+		"tags": ["t"],
+		"backends": {
+			"hostedEmulatorGatewayV1": {"applicability": "required", "fidelity": "exact"},
+			"hostedEmulatorGatewayV2": {"applicability": "required", "fidelity": "exact"},
+			"azureLive": {"applicability": "required", "fidelity": "exact"}
+		}
+	}`
+	validProfileJSON = `{
+		"$schema": "../schema/profile.v1.json",
+		"specVersion": "1.0",
+		"id": "test.profile",
+		"accounts": [{"id": "a"}],
+		"runtimes": [{"id": "r"}],
+		"clients": [{"id": "c"}]
+	}`
+)
+
+// TestLoadCatalogRejectsScenarioMissingSchemaFields verifies that parseScenario genuinely fails
+// -- not silently succeeds -- when a required shared-schema field (requirement, precedents,
+// specVersion, $schema) is absent, so a vendored-snapshot refresh that drops one of these fields
+// is caught here instead of only showing up as a quieter downstream behavior change.
+func TestLoadCatalogRejectsScenarioMissingSchemaFields(t *testing.T) {
+	_, err := parseScenario([]byte(validScenarioJSON), "fixture.json")
+	require.NoError(t, err, "the base fixture itself must be valid")
+
+	for _, field := range []string{"$schema", "specVersion", "requirement", "precedents"} {
+		var doc map[string]any
+		require.NoError(t, json.Unmarshal([]byte(validScenarioJSON), &doc))
+		delete(doc, field)
+		data, err := json.Marshal(doc)
+		require.NoError(t, err)
+
+		_, err = parseScenario(data, "fixture.json")
+		require.Errorf(t, err, "removing required field %q must fail scenario parsing", field)
+	}
+}
+
+// TestLoadCatalogRejectsProfileMissingSchemaFields is TestLoadCatalogRejectsScenarioMissingSchemaFields's
+// counterpart for Profile's required $schema/specVersion fields.
+func TestLoadCatalogRejectsProfileMissingSchemaFields(t *testing.T) {
+	_, err := parseProfile([]byte(validProfileJSON), "fixture.json")
+	require.NoError(t, err, "the base fixture itself must be valid")
+
+	for _, field := range []string{"$schema", "specVersion"} {
+		var doc map[string]any
+		require.NoError(t, json.Unmarshal([]byte(validProfileJSON), &doc))
+		delete(doc, field)
+		data, err := json.Marshal(doc)
+		require.NoError(t, err)
+
+		_, err = parseProfile(data, "fixture.json")
+		require.Errorf(t, err, "removing required field %q must fail profile parsing", field)
+	}
 }

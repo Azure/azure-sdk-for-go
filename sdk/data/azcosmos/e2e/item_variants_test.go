@@ -14,8 +14,8 @@ import (
 )
 
 // TestItemOptimisticConcurrencyStaleETag ports Rust scenario item.optimistic-concurrency: an
-// IfMatchETag precondition built from the current ETag permits a replace, but reusing the
-// now-stale ETag fails with CodePreconditionFailed and leaves the successful update intact.
+// IfMatch precondition built from the current ETag permits a replace, but reusing the now-stale
+// ETag fails with CodePreconditionFailed and leaves the successful update intact.
 func TestItemOptimisticConcurrencyStaleETag(t *testing.T) {
 	fx := newFixture(t, "item.optimistic-concurrency", "")
 	ctx := context.Background()
@@ -27,15 +27,18 @@ func TestItemOptimisticConcurrencyStaleETag(t *testing.T) {
 	trackItem(t, fx.Container, pk, id)
 	initialETag := created.ETag
 
+	initialPrecondition, err := azcosmos.IfMatch(initialETag)
+	require.NoError(t, err)
 	replaced, err := fx.Container.ReplaceItem(ctx, pk, id, mustMarshalItem(t, item(id, "A", 2)), &azcosmos.ReplaceItemOptions{
-		IfMatchETag: &initialETag,
+		Precondition: initialPrecondition,
 	})
 	require.NoError(t, err)
 	require.Equal(t, 200, replaced.StatusCode)
 
-	staleETag := initialETag
+	stalePrecondition, err := azcosmos.IfMatch(initialETag)
+	require.NoError(t, err)
 	_, err = fx.Container.ReplaceItem(ctx, pk, id, mustMarshalItem(t, item(id, "A", 3)), &azcosmos.ReplaceItemOptions{
-		IfMatchETag: &staleETag,
+		Precondition: stalePrecondition,
 	})
 	cosmosErr := requireCode(t, err, azcosmos.CodePreconditionFailed)
 	require.Zero(t, cosmosErr.SubStatus)

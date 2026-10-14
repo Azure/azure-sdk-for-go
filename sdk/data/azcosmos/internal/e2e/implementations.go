@@ -20,6 +20,11 @@ func buildImplementations() []Implementation {
 	return []Implementation{
 		// --- Active: implemented against the public azcosmos/v2 API and the pinned emulator ---
 		{ScenarioID: "bootstrap.primary-success", Status: StatusActive, Test: "TestBootstrapPrimarySuccess"},
+		// item.lifecycle declares three profiles (smokeTests, lifecycleConsistencyMatrix,
+		// readConsistencyOverrideMatrix); only the first (its resolved default) is certified
+		// here. The other two need a multi-consistency-level account matrix this fixture cannot
+		// build (same gap as consistency.feed-read-strategies below), so Active here means the
+		// smokeTests-profile CRUD round trip is certified, not the full declared profile matrix.
 		{ScenarioID: "item.lifecycle", Status: StatusActive, Test: "TestItemLifecycleSmoke"},
 		{ScenarioID: "item.upsert-create-update", Status: StatusActive, Test: "TestItemUpsertCreateThenUpdate"},
 		{ScenarioID: "item.create-conflict", Status: StatusActive, Test: "TestItemCreateConflictPreservesOriginal"},

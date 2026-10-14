@@ -11,7 +11,11 @@
 //
 // Scope and known limitations of this port (see internal/e2e's implementation map for the exact
 // per-scenario reasons): every active scenario here uses only the "sdkDefault"/single-definition
-// account, runtime, and client axis of the smokeTests/coreOperations profiles. Go has no
+// account, runtime, and client axis of the smokeTests/coreOperations profiles - and, for a
+// scenario that declares additional profiles beyond the one it is actually certified under (for
+// example item.lifecycle also declares lifecycleConsistencyMatrix/readConsistencyOverrideMatrix),
+// Active status here certifies only that one resolved default profile, not every profile the
+// scenario declares; see selectedProfile's doc comment for how the default is picked. Go has no
 // database/container management API, so fixtures reuse the pre-provisioned emulator-config.json
 // fixture (../internal/testdata/emulator-config.json) rather than provisioning isolated
 // resources per scenario; tests instead use unique item IDs/partition keys per case to avoid
@@ -102,8 +106,20 @@ func selectedProfile(t *testing.T, scenarioID string) string {
 }
 
 // The only account/runtime/client axis definitions this fixture actually realizes: the
-// pre-provisioned, single East US region, zero-replication-delay emulator account constructed
-// with default azcosmos/v2 client options (see ../internal/testdata/emulator-config.json).
+// pre-provisioned emulator account constructed with default azcosmos/v2 client options (see
+// ../internal/testdata/emulator-config.json).
+//
+// That underlying account does not literally match the pinned catalog's sessionSingleRegion
+// definition: the catalog declares exactly one region (East US, zero replication delay), but
+// emulator-config.json is shared, non-e2e-specific test infrastructure this port does not own or
+// vary per scenario, and it always provisions two region endpoints (East US, West US; zero
+// replication delay). This fixture never sets PreferredRegions, so every client built here only
+// ever talks to the first-listed (East US) endpoint - observably single-region behavior for the
+// CRUD/query scenarios this pass certifies - but that is an accepted approximation of
+// sessionSingleRegion, not a byte-for-byte match. A scenario whose contract depends on the
+// account genuinely having only one reachable region endpoint (rather than one endpoint this
+// fixture happens to use) would need isolated per-scenario provisioning this fixture does not
+// yet have.
 const (
 	supportedAccountID = "sessionSingleRegion"
 	supportedRuntimeID = "sdkDefault"

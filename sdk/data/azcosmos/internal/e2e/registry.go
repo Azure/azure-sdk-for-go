@@ -9,6 +9,11 @@ type ImplementationStatus string
 
 const (
 	// StatusActive means Test names a compiled Go test function that exercises this scenario.
+	// "Active" certifies only the profile that scenario is actually run under (its resolved
+	// default profile - see e2e.selectedProfile), not necessarily every profile the scenario
+	// declares in the shared catalog; a scenario that also declares profiles this port cannot
+	// construct (for example a consistency-level or multi-region matrix) must say so in a
+	// comment next to its Implementation entry rather than implying full matrix coverage.
 	StatusActive ImplementationStatus = "active"
 	// StatusBlocked means the scenario is in scope but cannot be implemented yet; Reason must
 	// explain the missing Go API or emulator capability. Blocked scenarios must never be

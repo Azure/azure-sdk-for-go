@@ -156,6 +156,13 @@ az keyvault role assignment create `
     --assignee-object-id "$TestApplicationOid" `
     --scope "/"
 if ($LASTEXITCODE) { exit $LASTEXITCODE }
+# Required by the ekm tests to create, read, check, and delete the EKM connection.
+az keyvault role assignment create `
+    --hsm-name "$hsmName" `
+    --role "Managed HSM EKM Administrator" `
+    --assignee-object-id "$TestApplicationOid" `
+    --scope "/"
+if ($LASTEXITCODE) { exit $LASTEXITCODE }
 
 
 Log "Role assignments created for '$TestApplicationOid'"

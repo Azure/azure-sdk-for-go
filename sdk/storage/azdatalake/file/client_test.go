@@ -16,6 +16,7 @@ import (
 	"os"
 	"strconv"
 	"strings"
+	"sync"
 	"sync/atomic"
 	"testing"
 	"time"
@@ -5613,6 +5614,10 @@ func (s *UnrecordedTestSuite) TestFileCreateDeleteUsingOAuth() {
 
 type fakeUploadBlob struct {
 	numChunks uint64
+
+	// appendSizes records the size of each append, keyed by its position.
+	mu          sync.Mutex
+	appendSizes map[int64]int64
 }
 
 // nolint
@@ -5624,6 +5629,21 @@ func (f *fakeUploadBlob) Do(req *http.Request) (*http.Response, error) {
 		if val[0] == "append" {
 			statusCode = http.StatusAccepted
 			atomic.AddUint64(&f.numChunks, 1)
+
+			n, err := io.Copy(io.Discard, req.Body)
+			if err != nil {
+				return nil, err
+			}
+			position, err := strconv.ParseInt(req.URL.Query().Get("position"), 10, 64)
+			if err != nil {
+				return nil, err
+			}
+			f.mu.Lock()
+			if f.appendSizes == nil {
+				f.appendSizes = map[int64]int64{}
+			}
+			f.appendSizes[position] = n
+			f.mu.Unlock()
 		}
 	}
 
@@ -5684,6 +5704,108 @@ func TestUploadSmallChunkSize(t *testing.T) {
 	_require.NoError(err)
 
 	_require.Equal(atomic.LoadUint64(&fbb.numChunks), numChunks)
+}
+
+// TestUploadDefaultInitialChunkSize verifies the first append of an upload is the same size as the
+// subsequent ones, whether that's the default chunk size or an explicitly set ChunkSize.
+func TestUploadDefaultInitialChunkSize(t *testing.T) {
+	const chunkSize = 1024 * 1024
+	tests := map[string]struct {
+		contentSize int64
+		chunkSize   int64
+		expected    map[int64]int64
+	}{
+		"DefaultSingle":      {contentSize: file.MaxAppendBytes, expected: map[int64]int64{0: file.MaxAppendBytes}},
+		"DefaultPartitioned": {contentSize: file.MaxAppendBytes + 1, expected: map[int64]int64{0: file.MaxAppendBytes, file.MaxAppendBytes: 1}},
+		"Explicit":           {contentSize: 2*chunkSize + 1, chunkSize: chunkSize, expected: map[int64]int64{0: chunkSize, chunkSize: chunkSize, 2 * chunkSize: 1}},
+	}
+	for name, tc := range tests {
+		t.Run(name, func(t *testing.T) {
+			_require := require.New(t)
+			fbb := &fakeUploadBlob{}
+
+			fClient, err := file.NewClientWithNoCredential("https://fake/blob/path", &file.ClientOptions{
+				ClientOptions: policy.ClientOptions{Transport: fbb},
+			})
+			_require.NoError(err)
+
+			err = fClient.UploadBuffer(context.Background(), make([]byte, tc.contentSize), &file.UploadBufferOptions{ChunkSize: tc.chunkSize})
+			_require.NoError(err)
+			_require.Equal(tc.expected, fbb.appendSizes)
+		})
+	}
+}
+
+type fakeDownloadFile struct {
+	contentSize int64
+
+	// ranges records the x-ms-range header of each request, in the order sent.
+	mu     sync.Mutex
+	ranges []string
+}
+
+// nolint
+func (f *fakeDownloadFile) Do(req *http.Request) (*http.Response, error) {
+	rangeValues := req.Header["x-ms-range"]
+	if len(rangeValues) == 0 {
+		return nil, fmt.Errorf("expected a ranged read, got %s %s", req.Method, req.URL)
+	}
+	f.mu.Lock()
+	f.ranges = append(f.ranges, rangeValues[0])
+	f.mu.Unlock()
+
+	var start, end int64
+	if _, err := fmt.Sscanf(rangeValues[0], "bytes=%d-%d", &start, &end); err != nil {
+		return nil, err
+	}
+	if end >= f.contentSize {
+		end = f.contentSize - 1
+	}
+	chunkLen := end - start + 1
+	return &http.Response{
+		Request:    req,
+		Status:     "Partial Content",
+		StatusCode: http.StatusPartialContent,
+		Header: http.Header{
+			"Content-Length": []string{strconv.FormatInt(chunkLen, 10)},
+			"Content-Range":  []string{fmt.Sprintf("bytes %d-%d/%d", start, end, f.contentSize)},
+			"Etag":           []string{`"test-etag-12345"`},
+		},
+		Body: io.NopCloser(bytes.NewReader(make([]byte, chunkLen))),
+	}, nil
+}
+
+// TestDownloadDefaultInitialChunkSize verifies the initial read of a download is the same size as the
+// subsequent reads, whether that's the default chunk size or an explicitly set ChunkSize.
+func TestDownloadDefaultInitialChunkSize(t *testing.T) {
+	const defaultChunkSize = 4 * 1024 * 1024
+	const chunkSize = 1024 * 1024
+	tests := map[string]struct {
+		contentSize   int64
+		chunkSize     int64
+		expectedFirst string
+		expectedGets  int
+	}{
+		"Default":  {contentSize: 2*defaultChunkSize + 1, expectedFirst: fmt.Sprintf("bytes=0-%d", defaultChunkSize-1), expectedGets: 3},
+		"Explicit": {contentSize: 2*chunkSize + 1, chunkSize: chunkSize, expectedFirst: fmt.Sprintf("bytes=0-%d", chunkSize-1), expectedGets: 3},
+	}
+	for name, tc := range tests {
+		t.Run(name, func(t *testing.T) {
+			_require := require.New(t)
+			fbb := &fakeDownloadFile{contentSize: tc.contentSize}
+
+			fClient, err := file.NewClientWithNoCredential("https://fake/blob/path", &file.ClientOptions{
+				ClientOptions: policy.ClientOptions{Transport: fbb},
+			})
+			_require.NoError(err)
+
+			n, err := fClient.DownloadBuffer(context.Background(), make([]byte, tc.contentSize), &file.DownloadBufferOptions{ChunkSize: tc.chunkSize})
+			_require.NoError(err)
+			_require.Equal(tc.contentSize, n)
+			_require.Len(fbb.ranges, tc.expectedGets)
+			_require.Equal(tc.expectedFirst, fbb.ranges[0])
+		})
+	}
 }
 
 func (s *RecordedTestSuite) TestFileClientCustomAudience() {

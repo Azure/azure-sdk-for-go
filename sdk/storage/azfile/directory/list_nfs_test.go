@@ -224,6 +224,40 @@ func TestListFilesAndDirectoriesNFSMalformedEncodedNameMocked(t *testing.T) {
 	_require.False(*fifoName.Encoded)
 }
 
+func TestListFilesAndDirectoriesSMBMalformedEncodedNameMocked(t *testing.T) {
+	_require := require.New(t)
+	client, _ := newMockListClient(t, `<?xml version="1.0" encoding="utf-8"?>
+<EnumerationResults ServiceEndpoint="https://account.file.core.windows.net/" ShareName="smbshare" DirectoryPath="dir">
+	<Prefix Encoded="true">bad%zzprefix</Prefix>
+	<Entries>
+		<File>
+			<Name Encoded="true">bad%zzfile</Name>
+			<Properties><Content-Length>0</Content-Length></Properties>
+		</File>
+		<Directory>
+			<Name Encoded="true">bad%zzdir</Name>
+			<Properties />
+		</Directory>
+		<File>
+			<Name Encoded="true">file%EF%BF%BF</Name>
+			<Properties><Content-Length>0</Content-Length></Properties>
+		</File>
+	</Entries>
+	<NextMarker />
+</EnumerationResults>`)
+
+	// A malformed encoding does not fail the page; the value is returned as sent.
+	resp := listFirstPage(t, client, nil)
+	_require.Equal("bad%zzprefix", *resp.Prefix)
+	_require.Len(resp.Segment.Files, 2)
+	_require.Equal("bad%zzfile", *resp.Segment.Files[0].Name)
+	_require.Len(resp.Segment.Directories, 1)
+	_require.Equal("bad%zzdir", *resp.Segment.Directories[0].Name)
+
+	// Other items on the page are still decoded.
+	_require.Equal("file￿", *resp.Segment.Files[1].Name)
+}
+
 func TestListFilesAndDirectoriesSMBMocked(t *testing.T) {
 	_require := require.New(t)
 	client, _ := newMockListClient(t, `<?xml version="1.0" encoding="utf-8"?>

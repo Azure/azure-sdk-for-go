@@ -175,6 +175,11 @@ func newManagementSerializationError(response ItemResponse, body []byte, resourc
 
 // read implements [DatabaseClient.Read].
 func (d *DatabaseClient) read(ctx context.Context, options *ReadDatabaseOptions) (DatabaseResponse, error) {
+	if options != nil {
+		if err := options.Operation.ConsistencyStrategy.validate(); err != nil {
+			return DatabaseResponse{}, err
+		}
+	}
 	release, err := d.client.acquire()
 	if err != nil {
 		return DatabaseResponse{}, err
@@ -264,6 +269,11 @@ func (d *DatabaseClient) createContainer(ctx context.Context, properties Contain
 
 // readContainer implements [ContainerClient.Read].
 func (c *ContainerClient) readContainer(ctx context.Context, options *ReadContainerOptions) (ContainerResponse, error) {
+	if options != nil {
+		if err := options.Operation.ConsistencyStrategy.validate(); err != nil {
+			return ContainerResponse{}, err
+		}
+	}
 	release, err := c.database.client.acquire()
 	if err != nil {
 		return ContainerResponse{}, err

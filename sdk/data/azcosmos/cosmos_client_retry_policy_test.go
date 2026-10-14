@@ -2430,7 +2430,7 @@ func TestReadAttemptTimeoutCrossRegionWait(t *testing.T) {
 			const endpointA = "https://region-a.test"
 			const endpointB = "https://region-b.test"
 			sends := 0
-			var transportErr error = io.EOF
+			transportErr := io.EOF
 			if notSent {
 				transportErr = &net.DNSError{Err: "unreachable"}
 			}

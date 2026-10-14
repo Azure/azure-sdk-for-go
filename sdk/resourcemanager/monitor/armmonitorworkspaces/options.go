@@ -110,6 +110,47 @@ type IssueClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
+// MetricConfigurationsClientCreateOrUpdateOptions contains the optional parameters for the MetricConfigurationsClient.CreateOrUpdate
+// method.
+type MetricConfigurationsClientCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// MetricConfigurationsClientDeleteOptions contains the optional parameters for the MetricConfigurationsClient.Delete method.
+type MetricConfigurationsClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// MetricConfigurationsClientGetOptions contains the optional parameters for the MetricConfigurationsClient.Get method.
+type MetricConfigurationsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// MetricConfigurationsClientListByMetricNamespaceOptions contains the optional parameters for the MetricConfigurationsClient.NewListByMetricNamespacePager
+// method.
+type MetricConfigurationsClientListByMetricNamespaceOptions struct {
+	// An OData filter for source metric resource IDs.
+	Filter *string
+}
+
+// MetricConfigurationsClientListByMetricsContainerOptions contains the optional parameters for the MetricConfigurationsClient.NewListByMetricsContainerPager
+// method.
+type MetricConfigurationsClientListByMetricsContainerOptions struct {
+	// An OData filter for source metric resource IDs.
+	Filter *string
+}
+
+// MetricNamespacesClientGetOptions contains the optional parameters for the MetricNamespacesClient.Get method.
+type MetricNamespacesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// MetricNamespacesClientListByMetricsContainerOptions contains the optional parameters for the MetricNamespacesClient.NewListByMetricsContainerPager
+// method.
+type MetricNamespacesClientListByMetricsContainerOptions struct {
+	// placeholder for future optional parameters
+}
+
 // MetricsContainersClientCreateOrUpdateOptions contains the optional parameters for the MetricsContainersClient.CreateOrUpdate
 // method.
 type MetricsContainersClientCreateOrUpdateOptions struct {
@@ -129,5 +170,97 @@ type MetricsContainersClientListByAzureMonitorWorkspaceOptions struct {
 
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 type OperationsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// TraceAssociationsAtResourceGroupClientCreateOrUpdateOptions contains the optional parameters for the TraceAssociationsAtResourceGroupClient.CreateOrUpdate
+// method.
+type TraceAssociationsAtResourceGroupClientCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// TraceAssociationsAtResourceGroupClientDeleteOptions contains the optional parameters for the TraceAssociationsAtResourceGroupClient.Delete
+// method.
+type TraceAssociationsAtResourceGroupClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// TraceAssociationsAtResourceGroupClientGetOptions contains the optional parameters for the TraceAssociationsAtResourceGroupClient.Get
+// method.
+type TraceAssociationsAtResourceGroupClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// TraceAssociationsAtResourceGroupClientListOptions contains the optional parameters for the TraceAssociationsAtResourceGroupClient.NewListPager
+// method.
+type TraceAssociationsAtResourceGroupClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// TraceAssociationsAtSubscriptionClientCreateOrUpdateOptions contains the optional parameters for the TraceAssociationsAtSubscriptionClient.CreateOrUpdate
+// method.
+type TraceAssociationsAtSubscriptionClientCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// TraceAssociationsAtSubscriptionClientDeleteOptions contains the optional parameters for the TraceAssociationsAtSubscriptionClient.Delete
+// method.
+type TraceAssociationsAtSubscriptionClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// TraceAssociationsAtSubscriptionClientGetOptions contains the optional parameters for the TraceAssociationsAtSubscriptionClient.Get
+// method.
+type TraceAssociationsAtSubscriptionClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// TraceAssociationsAtSubscriptionClientListOptions contains the optional parameters for the TraceAssociationsAtSubscriptionClient.NewListPager
+// method.
+type TraceAssociationsAtSubscriptionClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// TraceAssociationsClientCreateOrUpdateOptions contains the optional parameters for the TraceAssociationsClient.CreateOrUpdate
+// method.
+type TraceAssociationsClientCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// TraceAssociationsClientDeleteOptions contains the optional parameters for the TraceAssociationsClient.Delete method.
+type TraceAssociationsClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// TraceAssociationsClientGetOptions contains the optional parameters for the TraceAssociationsClient.Get method.
+type TraceAssociationsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// TraceAssociationsClientListOptions contains the optional parameters for the TraceAssociationsClient.NewListPager method.
+type TraceAssociationsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// TraceContainersClientBeginCreateOrUpdateOptions contains the optional parameters for the TraceContainersClient.BeginCreateOrUpdate
+// method.
+type TraceContainersClientBeginCreateOrUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// TraceContainersClientDeleteOptions contains the optional parameters for the TraceContainersClient.Delete method.
+type TraceContainersClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// TraceContainersClientGetOptions contains the optional parameters for the TraceContainersClient.Get method.
+type TraceContainersClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// TraceContainersClientListByAzureMonitorWorkspaceOptions contains the optional parameters for the TraceContainersClient.NewListByAzureMonitorWorkspacePager
+// method.
+type TraceContainersClientListByAzureMonitorWorkspaceOptions struct {
 	// placeholder for future optional parameters
 }

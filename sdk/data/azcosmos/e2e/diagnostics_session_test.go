@@ -29,28 +29,30 @@ import (
 // here, so this port checks only that RegionsContacted is non-empty rather than asserting an
 // exact region name, to avoid over-claiming an untested contract.
 func TestDiagnosticsCoverSuccessAndError(t *testing.T) {
-	fx := newFixture(t, "diagnostics.success-and-error", "")
-	ctx := context.Background()
-	id := uniqueID(t)
-	pk := azcosmos.NewPartitionKeyString("A")
+	t.Run("diagnostics.success-and-error", func(t *testing.T) {
+		fx := newFixture(t, "diagnostics.success-and-error", "")
+		ctx := context.Background()
+		id := uniqueID(t)
+		pk := azcosmos.NewPartitionKeyString("A")
 
-	_, err := fx.Container.CreateItem(ctx, pk, id, mustMarshalItem(t, item(id, "A", 1)), nil)
-	require.NoError(t, err)
-	trackItem(t, fx.Container, pk, id)
+		_, err := fx.Container.CreateItem(ctx, pk, id, mustMarshalItem(t, item(id, "A", 1)), nil)
+		require.NoError(t, err)
+		trackItem(t, fx.Container, pk, id)
 
-	success, err := fx.Container.ReadItem(ctx, pk, id, nil)
-	require.NoError(t, err)
-	require.Equal(t, 200, success.StatusCode)
-	requireCriticalDiagnostics(t, success.Diagnostics, 200)
-	require.NotEmpty(t, success.Diagnostics.RegionsContacted)
-	require.NotEmptyf(t, success.ActivityID, "successful operation must carry an activity id")
+		success, err := fx.Container.ReadItem(ctx, pk, id, nil)
+		require.NoError(t, err)
+		require.Equal(t, 200, success.StatusCode)
+		requireCriticalDiagnostics(t, success.Diagnostics, 200)
+		require.NotEmpty(t, success.Diagnostics.RegionsContacted)
+		require.NotEmptyf(t, success.ActivityID, "successful operation must carry an activity id")
 
-	_, err = fx.Container.ReadItem(ctx, pk, uniqueID(t), nil)
-	cosmosErr := requireCode(t, err, azcosmos.CodeNotFound)
-	require.Zero(t, cosmosErr.SubStatus)
-	requireCriticalDiagnostics(t, cosmosErr.Diagnostics, 404)
-	require.NotEmpty(t, cosmosErr.Diagnostics.RegionsContacted)
-	require.NotEmptyf(t, cosmosErr.ActivityID, "failed operation must carry an activity id")
+		_, err = fx.Container.ReadItem(ctx, pk, uniqueID(t), nil)
+		cosmosErr := requireCode(t, err, azcosmos.CodeNotFound)
+		require.Zero(t, cosmosErr.SubStatus)
+		requireCriticalDiagnostics(t, cosmosErr.Diagnostics, 404)
+		require.NotEmpty(t, cosmosErr.Diagnostics.RegionsContacted)
+		require.NotEmptyf(t, cosmosErr.ActivityID, "failed operation must carry an activity id")
+	})
 }
 
 // TestSessionTokenExplicitManagement is a supplementary regression test for consistency.session-

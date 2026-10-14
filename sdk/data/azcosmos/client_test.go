@@ -174,14 +174,14 @@ func TestNewClientCopiesRoutingRegions(t *testing.T) {
 func TestNewClientCopiesContentResponseOption(t *testing.T) {
 	enabled := true
 	client, err := newClient("https://myaccount.documents.azure.com", testAccountKey, nil, &ClientOptions{
-		EnableContentResponseOnWrite: &enabled,
+		Operation: OperationOptions{EnableContentResponseOnWrite: &enabled},
 	})
 	require.NoError(t, err)
 	t.Cleanup(func() { require.NoError(t, client.Close()) })
 
 	enabled = false
-	require.NotNil(t, client.options.EnableContentResponseOnWrite)
-	require.True(t, *client.options.EnableContentResponseOnWrite)
+	require.NotNil(t, client.options.Operation.EnableContentResponseOnWrite)
+	require.True(t, *client.options.Operation.EnableContentResponseOnWrite)
 }
 
 // Close is documented as idempotent, safe to call concurrently, and as reporting the same result
@@ -317,9 +317,9 @@ func TestNewClientWithKeyRejectsInvalidOptions(t *testing.T) {
 	client, err := NewClientWithKey(
 		"https://myaccount.documents.azure.com",
 		credential,
-		&ClientOptions{ApplicationID: "order\x00service"})
+		&ClientOptions{Operation: OperationOptions{CustomHeaders: map[string]string{"x-test": "\x00"}}})
 
-	require.ErrorContains(t, err, "must not contain a NUL byte")
+	require.ErrorContains(t, err, "custom header")
 	require.Nil(t, client)
 }
 

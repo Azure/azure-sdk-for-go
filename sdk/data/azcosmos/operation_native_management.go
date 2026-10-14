@@ -67,8 +67,11 @@ func (d *nativeDriver) executeManagement(
 	body []byte,
 	operation OperationOptions,
 ) (ItemResponse, []byte, error) {
-	ctx, cancel := contextWithEndToEndTimeout(ctx, operation.EndToEndTimeout)
-	defer cancel()
+	ctx, snapshot, releaseSnapshot, err := d.snapshot(ctx, operation)
+	if err != nil {
+		return ItemResponse{}, nil, err
+	}
+	defer releaseSnapshot()
 
 	driver, err := d.ensureDriver(ctx)
 	if err != nil {
@@ -96,24 +99,14 @@ func (d *nativeDriver) executeManagement(
 		defer C.cosmos_container_ref_free(container)
 	}
 
-	// Resolution has already spent part of the budget, so the operation gets only what remains
-	// rather than restarting the configured duration.
-	operation.EndToEndTimeout = endToEndTimeout(ctx, 0)
-
 	submit := func(queue *C.cosmos_completion_queue_t, cookie C.intptr_t, preError *C.cosmos_status_code_t) *C.cosmos_operation_handle_t {
 		request, release := buildNativeManagementRequest(kind, account, database, container, body, operation)
 		defer release()
+		request.options_snapshot = snapshot
 		return C.cosmos_submit_singleton_operation(driver, &request, queue, cookie, preError) //nolint:gocritic // dupSubExpr targets cgo-generated code.
 	}
 
-	// Only a write can leave a side effect that must not be misreported as cancelled after it
-	// already committed, so only a read pays for the cheaper, non-authoritative wait.
-	var result completionResult
-	if kind == operationKindReadDatabase || kind == operationKindReadContainer {
-		result, err = d.awaitCompletion(ctx, "submitting the operation", submit)
-	} else {
-		result, err = d.awaitAuthoritativeCompletion(ctx, "submitting the operation", submit)
-	}
+	result, err := d.awaitCompletion(ctx, "submitting the operation", submit)
 	if err != nil {
 		return ItemResponse{}, nil, err
 	}

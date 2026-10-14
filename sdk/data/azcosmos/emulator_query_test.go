@@ -465,9 +465,15 @@ func TestEmulatorQueryCancellationAndClose(t *testing.T) {
 	for _, action := range []string{"cancel", "close"} {
 		t.Run(action, func(t *testing.T) {
 			credential := &delayedTokenCredential{started: make(chan struct{}), release: make(chan struct{})}
-			client, err := NewClient(endpoint, credential, nil)
+			runtime, err := NewRuntime(nil)
+			require.NoError(t, err)
+			t.Cleanup(func() { require.NoError(t, runtime.Close()) })
+			client, err := NewClient(endpoint, credential, &ClientOptions{Runtime: runtime})
 			require.NoError(t, err)
 			t.Cleanup(func() { require.NoError(t, client.Close()) })
+			var releaseOnce sync.Once
+			unblock := func() { releaseOnce.Do(func() { close(credential.release) }) }
+			t.Cleanup(unblock)
 			container, err := client.NewContainer(databaseID, containerID)
 			require.NoError(t, err)
 			ctx, cancel := context.WithCancel(t.Context())
@@ -493,6 +499,8 @@ func TestEmulatorQueryCancellationAndClose(t *testing.T) {
 			} else {
 				closed := make(chan error, 1)
 				go func() { closed <- client.Close() }()
+				// Runtime-cached credentials outlive an individual client.
+				unblock()
 				select {
 				case err := <-closed:
 					require.NoError(t, err)
@@ -502,15 +510,45 @@ func TestEmulatorQueryCancellationAndClose(t *testing.T) {
 			}
 			select {
 			case got := <-results:
-				require.Error(t, got.err)
-				require.Zero(t, got.page)
 				if action == "cancel" {
+					require.Error(t, got.err)
+					require.Zero(t, got.page)
 					require.ErrorIs(t, got.err, context.Canceled)
+					unblock()
+				} else {
+					require.NoError(t, got.err, "Close drains admitted work rather than cancelling it")
 				}
 			case <-time.After(10 * time.Second):
 				t.Fatal("query did not finish after cancellation")
 			}
 		})
+	}
+}
+
+func TestEmulatorQueryEncodingAndRuntimeDefaults(t *testing.T) {
+	shared, err := NewRuntime(&RuntimeOptions{Operation: OperationOptions{
+		BinaryEncoding:  &BinaryEncodingOptions{Enabled: to(true)},
+		EndToEndTimeout: to(time.Duration(10 * time.Second)),
+	}})
+	require.NoError(t, err)
+	t.Cleanup(func() { require.NoError(t, shared.Close()) })
+	container := runtimeEmulatorContainer(t, shared, OperationOptions{})
+	id := uniqueItemID(t)
+	pk := NewPartitionKeyString(id)
+	_, err = container.CreateItem(t.Context(), pk, id, []byte(fmt.Sprintf(`{"id":%q,"pk":%q,"value":42}`, id, id)), nil)
+	require.NoError(t, err)
+	trackEmulatorItem(t, container, pk, id)
+	for _, encoding := range []*BinaryEncodingOptions{
+		nil,
+		{Enabled: to(false)},
+		{Enabled: to(true)},
+	} {
+		pager := container.NewQueryItemsPager(NewQuery("SELECT VALUE c.value FROM c"),
+			NewFeedScopeForPartitionKey(pk), &QueryOptions{Operation: OperationOptions{BinaryEncoding: encoding}})
+		t.Cleanup(func() { require.NoError(t, pager.Close()) })
+		page, err := pager.NextPage(t.Context())
+		require.NoError(t, err)
+		require.Equal(t, [][]byte{[]byte("42")}, page.Items)
 	}
 }
 

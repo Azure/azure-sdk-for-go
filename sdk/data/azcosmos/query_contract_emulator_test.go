@@ -221,6 +221,28 @@ func isQueryDataRequest(r *http.Request) bool {
 		!strings.EqualFold(r.Header.Get("x-ms-cosmos-is-query-plan-request"), "true")
 }
 
+func TestEmulatorCursorTimeoutDoesNotExpireBetweenPages(t *testing.T) {
+	endpoint, database, containerID := emulatorConfiguration(t)
+	shared, err := NewRuntime(&RuntimeOptions{Operation: OperationOptions{EndToEndTimeout: to(time.Second)}})
+	require.NoError(t, err)
+	t.Cleanup(func() { require.NoError(t, shared.Close()) })
+	client, err := NewClientWithKey(endpoint, KeyCredential{accountKey: emulatorKey}, &ClientOptions{Runtime: shared})
+	require.NoError(t, err)
+	t.Cleanup(func() { require.NoError(t, client.Close()) })
+	container, err := client.NewContainer(database, containerID)
+	require.NoError(t, err)
+	key, query, _ := seedQueryContractItems(t, container)
+	pager := container.NewQueryItemsPager(query, NewFeedScopeForPartitionKey(key), &QueryOptions{Feed: FeedOptions{PageSizeHint: 1}})
+	defer func() { require.NoError(t, pager.Close()) }()
+	first, err := pager.NextPage(t.Context())
+	require.NoError(t, err)
+	require.Equal(t, [][]byte{[]byte("0")}, first.Items)
+	time.Sleep(1100 * time.Millisecond)
+	second, err := pager.NextPage(t.Context())
+	require.NoError(t, err, "cursor must not retain its admission snapshot's absolute deadline")
+	require.Equal(t, [][]byte{[]byte("1")}, second.Items)
+}
+
 func TestEmulatorQueryMidPaginationFailureMetadata(t *testing.T) {
 	key, query, _ := seedQueryContractItems(t, emulatorContainer(t))
 	const failureBody = `{"code":"BadRequest","message":"synthetic query page failure"}`

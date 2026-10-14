@@ -7,6 +7,7 @@ import (
 	"context"
 	"fmt"
 	"io"
+	"net/http"
 	"strconv"
 	"strings"
 	"testing"
@@ -2159,4 +2160,44 @@ func (s *ShareUnrecordedTestsSuite) TestShareClientAudienceNegative() {
 	_, err = shareClientAudience.CreatePermission(context.Background(), testcommon.SampleSDDL, nil)
 	_require.Error(err)
 	testcommon.ValidateFileErrorCode(_require, err, fileerror.InvalidAuthenticationInfo)
+}
+
+func newMockShareClient(t *testing.T, responses ...testcommon.MockResponse) *share.Client {
+	client, err := share.NewClientWithNoCredential("https://account.file.core.windows.net/share", &share.ClientOptions{
+		ClientOptions: testcommon.MockClientOptions(testcommon.NewMockTransport(responses...)),
+	})
+	require.NoError(t, err)
+	return client
+}
+
+func TestShareGetPropertiesCreationTimeMocked(t *testing.T) {
+	_require := require.New(t)
+	client := newMockShareClient(t, testcommon.MockResponse{
+		StatusCode: http.StatusOK,
+		Header:     http.Header{"X-Ms-Share-Creation-Time": []string{"Tue, 13 Oct 2026 10:20:30 GMT"}},
+	})
+
+	props, err := client.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(props.CreationTime)
+	_require.True(time.Date(2026, time.October, 13, 10, 20, 30, 0, time.UTC).Equal(*props.CreationTime))
+}
+
+func TestShareGetPropertiesCreationTimeMissingMocked(t *testing.T) {
+	_require := require.New(t)
+	client := newMockShareClient(t, testcommon.MockResponse{StatusCode: http.StatusOK})
+
+	props, err := client.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.Nil(props.CreationTime)
+}
+
+func TestShareGetPropertiesCreationTimeInvalidMocked(t *testing.T) {
+	client := newMockShareClient(t, testcommon.MockResponse{
+		StatusCode: http.StatusOK,
+		Header:     http.Header{"X-Ms-Share-Creation-Time": []string{"not a date"}},
+	})
+
+	_, err := client.GetProperties(context.Background(), nil)
+	require.Error(t, err)
 }

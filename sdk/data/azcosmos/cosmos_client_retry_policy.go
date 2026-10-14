@@ -212,18 +212,25 @@ func (p *clientRetryPolicy) Do(req *policy.Request) (*http.Response, error) {
 			if state := requestDiagnosticsStateFromContext(req.Raw().Context()); state != nil && state.clientSideStats != nil {
 				state.clientSideStats.recordHTTPError(attemptStartTime, req.Raw(), err, o.resourceType, regionName.String())
 			}
-			// Honor the caller's context: if their deadline expired or
-			// they cancelled the request, do not consume their budget
-			// with our retries. Preserve both the cancellation reason
-			// (so errors.Is(returned, context.DeadlineExceeded) works)
-			// and the underlying transport error for diagnostics.
+			if !o.isWriteOperation && errors.As(err, new(errorinfo.NonRetriable)) {
+				return nil, err
+			}
+			// This can be azcore's per-attempt context, not the caller's.
+			// Let azcore decide whether another read attempt is allowed.
 			if ctxErr := req.Raw().Context().Err(); ctxErr != nil {
+				if !o.isWriteOperation {
+					return nil, fmt.Errorf("%w: underlying transport error: %w", ctxErr, err)
+				}
 				return nil, errorinfo.NonRetriableError(fmt.Errorf("%w: underlying transport error: %v", ctxErr, err))
 			}
 			kind := classifyNetworkError(err)
 			if kind != connectionErrorNone {
 				shouldRetry, errRetry := p.attemptRetryOnNetworkError(req, kind, o.isWriteOperation, err, &retryContext)
 				if errRetry != nil {
+					if ctxErr := req.Raw().Context().Err(); !o.isWriteOperation && ctxErr != nil &&
+						errors.Is(errRetry, ctxErr) && !errors.As(errRetry, new(errorinfo.NonRetriable)) {
+						return nil, fmt.Errorf("%w: underlying transport error: %w", ctxErr, err)
+					}
 					return nil, errorinfo.NonRetriableError(errRetry)
 				}
 				if !shouldRetry {
@@ -268,6 +275,10 @@ func (p *clientRetryPolicy) Do(req *policy.Request) (*http.Response, error) {
 			case http.StatusRequestTimeout:
 				shouldRetry, err := p.attemptRetryOnRequestTimeout(req, o.isWriteOperation, &retryContext)
 				if err != nil {
+					if ctxErr := req.Raw().Context().Err(); !o.isWriteOperation && ctxErr != nil &&
+						errors.Is(err, ctxErr) && !errors.As(err, new(errorinfo.NonRetriable)) {
+						return nil, err
+					}
 					return nil, errorinfo.NonRetriableError(err)
 				}
 				if !shouldRetry {

@@ -13,7 +13,10 @@ import (
 	"io"
 	"net"
 	"net/http"
+	"net/http/httptest"
 	"net/url"
+	"strings"
+	"sync/atomic"
 	"syscall"
 	"testing"
 	"time"
@@ -21,6 +24,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	azruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/errorinfo"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -2055,4 +2059,502 @@ func TestReadServerError_SingleReadEndpoint(t *testing.T) {
 	assert.Equal(t, 1, verifier.requests[0].retryContext.serverErrorRetryCount)
 	assert.Equal(t, 0, verifier.requests[0].retryContext.retryCount)
 	assert.Equal(t, 0, verifier.requests[0].retryContext.preferredLocationIndex)
+}
+
+type retryPolicyTransportFunc func(*http.Request) (*http.Response, error)
+
+func (f retryPolicyTransportFunc) Do(req *http.Request) (*http.Response, error) {
+	return f(req)
+}
+
+func newReadAttemptTimeoutTestClient(t *testing.T, endpoint string, transport policy.Transporter, retry policy.RetryOptions) (*Client, *clientRetryPolicyVerifier) {
+	t.Helper()
+	endpointURL, err := url.Parse(endpoint)
+	require.NoError(t, err)
+	gem := &globalEndpointManager{
+		clientEndpoint:      endpoint,
+		locationCache:       CreateMockLC(*endpointURL, true),
+		refreshTimeInterval: defaultExpirationTime,
+		lastUpdateTime:      time.Now(),
+	}
+	verifier := &clientRetryPolicyVerifier{}
+	internal, err := azcore.NewClient("azcosmostest", "v1.0.0",
+		azruntime.PipelineOptions{PerRetry: []policy.Policy{verifier, &clientRetryPolicy{gem: gem}}},
+		&policy.ClientOptions{Transport: transport, Retry: retry})
+	require.NoError(t, err)
+	return &Client{endpoint: endpoint, endpointUrl: endpointURL, internal: internal, gem: gem}, verifier
+}
+
+func readAttemptTimeoutResponse(req *http.Request, status int) *http.Response {
+	return &http.Response{
+		StatusCode: status,
+		Header:     http.Header{},
+		Body:       io.NopCloser(strings.NewReader("{}")),
+		Request:    req,
+	}
+}
+
+func TestReadAttemptTimeoutRetryOptions(t *testing.T) {
+	for _, tt := range []struct {
+		name       string
+		maxRetries int32
+		override   bool
+		reject     bool
+		wantTries  int
+	}{
+		{name: "explicit limit", maxRetries: 2, wantTries: 3},
+		{name: "disabled", maxRetries: -1, wantTries: 1},
+		{name: "zero selects default", wantTries: 4},
+		{name: "per-call override", maxRetries: -1, override: true, wantTries: 3},
+		{name: "ShouldRetry rejects", maxRetries: 3, reject: true, wantTries: 1},
+	} {
+		t.Run(tt.name, func(t *testing.T) {
+			transportErr := &net.OpError{Op: "read", Err: errors.New("transport failed")}
+			sends, callbacks := 0, 0
+			transport := retryPolicyTransportFunc(func(req *http.Request) (*http.Response, error) {
+				sends++
+				<-req.Context().Done()
+				return nil, transportErr
+			})
+			options := policy.RetryOptions{
+				MaxRetries:  tt.maxRetries,
+				TryTimeout:  10 * time.Millisecond,
+				RetryDelay:  time.Millisecond,
+				StatusCodes: []int{},
+				ShouldRetry: func(resp *http.Response, err error) bool {
+					callbacks++
+					assert.Nil(t, resp)
+					assert.ErrorIs(t, err, context.DeadlineExceeded)
+					assert.ErrorIs(t, err, transportErr)
+					var opErr *net.OpError
+					assert.ErrorAs(t, err, &opErr)
+					return !tt.reject
+				},
+			}
+			ctx := context.Background()
+			if tt.override {
+				override := options
+				override.MaxRetries = 2
+				ctx = policy.WithRetryOptions(ctx, override)
+				options.TryTimeout = time.Hour
+				options.ShouldRetry = func(*http.Response, error) bool {
+					t.Error("client retry options should be overridden")
+					return false
+				}
+			}
+			client, verifier := newReadAttemptTimeoutTestClient(t, "https://cosmos.test", transport, options)
+			container, err := client.NewContainer("db", "container")
+			require.NoError(t, err)
+			_, err = container.ReadItem(ctx, NewPartitionKeyString("pk"), "item", nil)
+			require.ErrorIs(t, err, context.DeadlineExceeded)
+			assert.ErrorIs(t, err, transportErr)
+			assert.Equal(t, tt.wantTries, sends)
+			assert.Len(t, verifier.requests, tt.wantTries)
+			assert.Equal(t, tt.wantTries, callbacks)
+			assert.NoError(t, ctx.Err())
+			assert.Empty(t, client.gem.locationCache.locationUnavailabilityInfoMap)
+		})
+	}
+}
+
+func TestReadAttemptTimeoutDuringBackoff(t *testing.T) {
+	for _, networkError := range []bool{true, false} {
+		name := "408"
+		if networkError {
+			name = "network"
+		}
+		t.Run(name, func(t *testing.T) {
+			sends, callbacks := 0, 0
+			transport := retryPolicyTransportFunc(func(req *http.Request) (*http.Response, error) {
+				sends++
+				if sends == 1 {
+					if networkError {
+						return nil, io.EOF
+					}
+					return readAttemptTimeoutResponse(req, http.StatusRequestTimeout), nil
+				}
+				return readAttemptTimeoutResponse(req, http.StatusOK), nil
+			})
+			client, verifier := newReadAttemptTimeoutTestClient(t, "https://cosmos.test", transport, policy.RetryOptions{
+				MaxRetries: 1,
+				TryTimeout: 20 * time.Millisecond,
+				RetryDelay: time.Millisecond,
+				ShouldRetry: func(resp *http.Response, err error) bool {
+					if err == nil {
+						return false
+					}
+					callbacks++
+					assert.Nil(t, resp)
+					assert.ErrorIs(t, err, context.DeadlineExceeded)
+					if networkError {
+						assert.ErrorIs(t, err, io.EOF)
+					}
+					return true
+				},
+			})
+			container, err := client.NewContainer("db", "container")
+			require.NoError(t, err)
+			_, err = container.ReadItem(context.Background(), NewPartitionKeyString("pk"), "item", nil)
+			require.NoError(t, err)
+			assert.Equal(t, 2, sends)
+			assert.Equal(t, 1, callbacks)
+			require.Len(t, verifier.requests, 2)
+			assert.Equal(t, retryContext{}, *verifier.requests[1].retryContext, "a fresh outer attempt retains the existing counter reset")
+			assert.Empty(t, client.gem.locationCache.locationUnavailabilityInfoMap)
+		})
+	}
+}
+
+func TestReadAttemptTimeoutNestedVeto(t *testing.T) {
+	for _, expired := range []bool{false, true} {
+		t.Run(fmt.Sprintf("expired=%t", expired), func(t *testing.T) {
+			veto := fmt.Errorf("downstream: %w", errorinfo.NonRetriableError(io.EOF))
+			sends := 0
+			transport := retryPolicyTransportFunc(func(req *http.Request) (*http.Response, error) {
+				sends++
+				if sends > 1 {
+					return readAttemptTimeoutResponse(req, http.StatusOK), nil
+				}
+				if expired {
+					<-req.Context().Done()
+				}
+				return nil, veto
+			})
+			client, verifier := newReadAttemptTimeoutTestClient(t, "https://cosmos.test", transport, policy.RetryOptions{
+				MaxRetries: 3, TryTimeout: 20 * time.Millisecond, RetryDelay: time.Millisecond,
+				ShouldRetry: func(*http.Response, error) bool {
+					t.Error("ShouldRetry must not override an independent veto")
+					return true
+				},
+			})
+			container, err := client.NewContainer("db", "container")
+			require.NoError(t, err)
+			_, err = container.ReadItem(context.Background(), NewPartitionKeyString("pk"), "item", nil)
+			require.Error(t, err)
+			assert.ErrorIs(t, err, veto)
+			assert.ErrorIs(t, err, io.EOF)
+			var nre errorinfo.NonRetriable
+			assert.ErrorAs(t, err, &nre)
+			assert.Equal(t, 1, sends)
+			assert.Len(t, verifier.requests, 1)
+		})
+	}
+}
+
+func TestReadAttemptTimeoutHTTP(t *testing.T) {
+	for _, tt := range []struct {
+		name  string
+		query bool
+		body  bool
+		write bool
+	}{
+		{name: "point headers"},
+		{name: "point body", body: true},
+		{name: "query headers", query: true},
+		{name: "query body veto", query: true, body: true},
+		{name: "write headers veto", write: true},
+		{name: "write body veto", write: true, body: true},
+	} {
+		t.Run(tt.name, func(t *testing.T) {
+			var sends atomic.Int32
+			bodies := make(chan string, 4)
+			release := make(chan struct{})
+			server := httptest.NewTLSServer(http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
+				body, err := io.ReadAll(req.Body)
+				assert.NoError(t, err)
+				bodies <- string(body)
+				if sends.Add(1) == 1 {
+					if tt.body {
+						w.Header().Set("Content-Type", "application/json")
+						w.WriteHeader(http.StatusOK)
+						assert.NoError(t, http.NewResponseController(w).Flush())
+					}
+					select {
+					case <-req.Context().Done():
+					case <-release:
+					}
+					return
+				}
+				w.Header().Set("Content-Type", "application/json")
+				if tt.query {
+					_, err = io.WriteString(w, `{"Documents":[]}`)
+				} else {
+					_, err = io.WriteString(w, `{"id":"item"}`)
+				}
+				assert.NoError(t, err)
+			}))
+			t.Cleanup(func() {
+				close(release)
+				server.Close()
+			})
+			options := policy.RetryOptions{MaxRetries: 1, TryTimeout: 200 * time.Millisecond, RetryDelay: time.Millisecond}
+			if tt.name == "point headers" {
+				options = policy.RetryOptions{
+					MaxRetries: 3, TryTimeout: 3 * time.Second,
+					RetryDelay: 500 * time.Millisecond, MaxRetryDelay: 3 * time.Second,
+				}
+			}
+			client, verifier := newReadAttemptTimeoutTestClient(t, server.URL, server.Client(), options)
+			container, err := client.NewContainer("db", "container")
+			require.NoError(t, err)
+			ctx := context.Background()
+			if tt.write {
+				_, err = container.CreateItem(ctx, NewPartitionKeyString("pk"), []byte(`{"id":"item"}`), nil)
+			} else if tt.query {
+				_, err = container.NewQueryItemsPager("SELECT * FROM c", NewPartitionKeyString("pk"), nil).NextPage(ctx)
+			} else {
+				_, err = container.ReadItem(ctx, NewPartitionKeyString("pk"), "item", nil)
+			}
+			wantTries := 2
+			if tt.write || (tt.query && tt.body) {
+				require.ErrorIs(t, err, context.DeadlineExceeded)
+				var nre errorinfo.NonRetriable
+				assert.ErrorAs(t, err, &nre)
+				wantTries = 1
+			} else {
+				require.NoError(t, err)
+			}
+			assert.NoError(t, ctx.Err())
+			assert.Equal(t, int32(wantTries), sends.Load())
+			assert.Len(t, verifier.requests, wantTries)
+			if tt.query && !tt.body && sends.Load() == 2 {
+				firstBody, secondBody := <-bodies, <-bodies
+				assert.JSONEq(t, `{"query":"SELECT * FROM c"}`, firstBody)
+				assert.Equal(t, firstBody, secondBody, "the query body must be rewound for the outer retry")
+			}
+		})
+	}
+}
+
+func TestReadAttemptTimeoutCallerContext(t *testing.T) {
+	for _, phase := range []string{"send", "network wait", "408 wait", "outer wait"} {
+		for _, deadline := range []bool{false, true} {
+			t.Run(fmt.Sprintf("%s/deadline=%t", phase, deadline), func(t *testing.T) {
+				var ctx context.Context
+				var cancel context.CancelFunc
+				if deadline {
+					ctx, cancel = context.WithTimeout(context.Background(), 50*time.Millisecond)
+				} else {
+					ctx, cancel = context.WithCancel(context.Background())
+					if phase != "outer wait" {
+						timer := time.AfterFunc(50*time.Millisecond, cancel)
+						t.Cleanup(func() { timer.Stop() })
+					}
+				}
+				defer cancel()
+				sends := 0
+				transport := retryPolicyTransportFunc(func(req *http.Request) (*http.Response, error) {
+					sends++
+					switch phase {
+					case "network wait":
+						return nil, io.EOF
+					case "408 wait":
+						return readAttemptTimeoutResponse(req, http.StatusRequestTimeout), nil
+					default:
+						<-req.Context().Done()
+						return nil, req.Context().Err()
+					}
+				})
+				options := policy.RetryOptions{MaxRetries: 3, TryTimeout: time.Second, RetryDelay: time.Millisecond}
+				if phase == "outer wait" {
+					options.TryTimeout = 10 * time.Millisecond
+					options.RetryDelay = time.Second
+					options.ShouldRetry = func(*http.Response, error) bool {
+						if !deadline {
+							cancel()
+						}
+						return true
+					}
+				}
+				client, verifier := newReadAttemptTimeoutTestClient(t, "https://cosmos.test", transport, options)
+				container, err := client.NewContainer("db", "container")
+				require.NoError(t, err)
+				_, err = container.ReadItem(ctx, NewPartitionKeyString("pk"), "item", nil)
+				require.Error(t, ctx.Err())
+				assert.ErrorIs(t, err, ctx.Err())
+				assert.Equal(t, 1, sends)
+				assert.Len(t, verifier.requests, 1)
+			})
+		}
+	}
+}
+
+func TestReadAttemptTimeoutOuterDelay(t *testing.T) {
+	sends := 0
+	var previousFailure time.Time
+	delay := 10 * time.Millisecond
+	transport := retryPolicyTransportFunc(func(req *http.Request) (*http.Response, error) {
+		sends++
+		if sends > 1 {
+			assert.GreaterOrEqual(t, time.Since(previousFailure), delay)
+		}
+		if sends <= 2 {
+			<-req.Context().Done()
+			previousFailure = time.Now()
+			return nil, req.Context().Err()
+		}
+		return readAttemptTimeoutResponse(req, http.StatusOK), nil
+	})
+	client, verifier := newReadAttemptTimeoutTestClient(t, "https://cosmos.test", transport, policy.RetryOptions{
+		MaxRetries: 2, TryTimeout: 10 * time.Millisecond,
+		RetryDelay: time.Hour, MaxRetryDelay: delay,
+	})
+	container, err := client.NewContainer("db", "container")
+	require.NoError(t, err)
+	_, err = container.ReadItem(context.Background(), NewPartitionKeyString("pk"), "item", nil)
+	require.NoError(t, err)
+	assert.Equal(t, 3, sends)
+	assert.Len(t, verifier.requests, 3)
+}
+
+func TestReadAttemptTimeoutCrossRegionWait(t *testing.T) {
+	for _, notSent := range []bool{false, true} {
+		t.Run(fmt.Sprintf("notSent=%t", notSent), func(t *testing.T) {
+			const endpointA = "https://region-a.test"
+			const endpointB = "https://region-b.test"
+			sends := 0
+			var transportErr error = io.EOF
+			if notSent {
+				transportErr = &net.DNSError{Err: "unreachable"}
+			}
+			transport := retryPolicyTransportFunc(func(req *http.Request) (*http.Response, error) {
+				sends++
+				if sends <= maxSameRegionConnectionRetries+1 {
+					return nil, transportErr
+				}
+				return readAttemptTimeoutResponse(req, http.StatusOK), nil
+			})
+			routing := &hostRoutingTransport{routes: map[string]policy.Transporter{
+				"region-a.test": transport,
+				"region-b.test": transport,
+			}}
+			client, verifier := newReadAttemptTimeoutTestClient(t, endpointA, routing, policy.RetryOptions{
+				MaxRetries: 1, TryTimeout: 3200 * time.Millisecond, RetryDelay: time.Millisecond,
+				ShouldRetry: func(_ *http.Response, err error) bool {
+					if err != nil {
+						assert.ErrorIs(t, err, context.DeadlineExceeded)
+						assert.ErrorIs(t, err, transportErr)
+					}
+					return err != nil
+				},
+			})
+			lc := newLocationCache([]string{"East US", "Central US"}, *client.endpointUrl, true, false)
+			require.NoError(t, lc.update(
+				[]accountRegion{{Name: "East US", Endpoint: endpointA}},
+				[]accountRegion{{Name: "East US", Endpoint: endpointA}, {Name: "Central US", Endpoint: endpointB}},
+				[]string{"East US", "Central US"}, nil))
+			client.gem.locationCache = lc
+			container, err := client.NewContainer("db", "container")
+			require.NoError(t, err)
+			_, err = container.ReadItem(context.Background(), NewPartitionKeyString("pk"), "item", nil)
+			require.NoError(t, err)
+			lastHost := "region-a.test"
+			if notSent {
+				lastHost = "region-b.test"
+				assert.Len(t, lc.locationUnavailabilityInfoMap, 1, "the existing cache demotion must survive an outer retry")
+			} else {
+				assert.Empty(t, lc.locationUnavailabilityInfoMap)
+			}
+			assert.Equal(t, []string{"region-a.test", "region-a.test", "region-a.test", "region-a.test", lastHost}, routing.seenHosts)
+			require.Len(t, verifier.requests, 2)
+			assert.Equal(t, retryContext{}, *verifier.requests[1].retryContext)
+		})
+	}
+}
+
+func TestReadAttemptTimeoutThenInternalBudget(t *testing.T) {
+	for _, status := range []int{http.StatusRequestTimeout, http.StatusInternalServerError} {
+		t.Run(http.StatusText(status), func(t *testing.T) {
+			sends, callbacks := 0, 0
+			transport := retryPolicyTransportFunc(func(req *http.Request) (*http.Response, error) {
+				sends++
+				if sends == 1 {
+					<-req.Context().Done()
+					return nil, req.Context().Err()
+				}
+				return readAttemptTimeoutResponse(req, status), nil
+			})
+			client, verifier := newReadAttemptTimeoutTestClient(t, "https://cosmos.test", transport, policy.RetryOptions{
+				MaxRetries: 3, TryTimeout: 1500 * time.Millisecond, RetryDelay: time.Millisecond,
+				ShouldRetry: func(*http.Response, error) bool {
+					callbacks++
+					return true
+				},
+			})
+			client.gem.locationCache.locationInfo.readEndpoints = []url.URL{*client.endpointUrl, *client.endpointUrl}
+			client.gem.preferredLocations = []string{"East US", "Central US"}
+			container, err := client.NewContainer("db", "container")
+			require.NoError(t, err)
+			_, err = container.ReadItem(context.Background(), NewPartitionKeyString("pk"), "item", nil)
+			require.Error(t, err)
+			var responseErr *azcore.ResponseError
+			require.ErrorAs(t, err, &responseErr)
+			assert.Equal(t, status, responseErr.StatusCode)
+			var nre errorinfo.NonRetriable
+			assert.ErrorAs(t, err, &nre)
+			wantSends := 4
+			if status == http.StatusRequestTimeout {
+				wantSends = 3
+			}
+			assert.Equal(t, wantSends, sends)
+			assert.Equal(t, 1, callbacks, "ShouldRetry must not override internal exhaustion")
+			assert.Len(t, verifier.requests, 2)
+		})
+	}
+}
+
+func TestReadAttemptTimeoutWritesRemainProtected(t *testing.T) {
+	for _, failure := range []string{"timeout", "EOF", "408"} {
+		for _, operation := range []string{"create", "upsert", "patch", "read-only batch"} {
+			t.Run(failure+"/"+operation, func(t *testing.T) {
+				sends := 0
+				transport := retryPolicyTransportFunc(func(req *http.Request) (*http.Response, error) {
+					sends++
+					switch failure {
+					case "timeout":
+						<-req.Context().Done()
+						return nil, req.Context().Err()
+					case "EOF":
+						return nil, io.EOF
+					default:
+						return readAttemptTimeoutResponse(req, http.StatusRequestTimeout), nil
+					}
+				})
+				client, verifier := newReadAttemptTimeoutTestClient(t, "https://cosmos.test", transport, policy.RetryOptions{
+					MaxRetries: 3, TryTimeout: 20 * time.Millisecond, RetryDelay: time.Millisecond,
+					ShouldRetry: func(*http.Response, error) bool {
+						t.Error("a protected write must not reach ShouldRetry")
+						return true
+					},
+				})
+				container, err := client.NewContainer("db", "container")
+				require.NoError(t, err)
+				ctx, pk := context.Background(), NewPartitionKeyString("pk")
+				item := []byte(`{"id":"item"}`)
+				switch operation {
+				case "create":
+					_, err = container.CreateItem(ctx, pk, item, nil)
+				case "upsert":
+					_, err = container.UpsertItem(ctx, pk, item, nil)
+				case "patch":
+					patch := PatchOperations{}
+					patch.AppendIncrement("/value", 1)
+					_, err = container.PatchItem(ctx, pk, "item", patch, nil)
+				case "read-only batch":
+					batch := container.NewTransactionalBatch(pk)
+					batch.ReadItem("item", nil)
+					_, err = container.ExecuteTransactionalBatch(ctx, batch, nil)
+				}
+				require.Error(t, err)
+				var nre errorinfo.NonRetriable
+				assert.ErrorAs(t, err, &nre)
+				if failure == "timeout" {
+					assert.ErrorIs(t, err, context.DeadlineExceeded)
+				}
+				assert.Equal(t, 1, sends)
+				assert.Len(t, verifier.requests, 1)
+				assert.Empty(t, client.gem.locationCache.locationUnavailabilityInfoMap)
+			})
+		}
+	}
 }

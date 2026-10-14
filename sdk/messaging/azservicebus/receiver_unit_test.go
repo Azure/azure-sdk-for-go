@@ -269,7 +269,7 @@ func TestSessionReceiverPurgeMessagesRefreshesLinksBetweenBatches(t *testing.T) 
 	sessionReceiver := &SessionReceiver{inner: receiver, sessionID: &sessionID}
 	oldRPC.onRPC = func() {
 		oldRPC.err = &amqp.LinkError{}
-		links.FakeAMQPLinks.RPC = newRPC
+		links.RPC = newRPC
 	}
 
 	result, err := sessionReceiver.PurgeMessages(context.Background(), &PurgeMessagesOptions{

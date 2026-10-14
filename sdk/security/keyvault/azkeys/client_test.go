@@ -714,6 +714,12 @@ func TestSignVerify(t *testing.T) {
 }
 
 func TestSignVerifyMLDSA(t *testing.T) {
+	// The service doesn't yet accept ML-DSA (AKP) keys in the regions available to
+	// test-resources.json, so there's no recording for this test. Skip it in every
+	// mode unless explicitly enabled; remove this gate once a recording exists.
+	if os.Getenv("AZURE_KEYVAULT_ENABLE_MLDSA") == "" {
+		t.Skip("skipping ML-DSA test: set AZURE_KEYVAULT_ENABLE_MLDSA to run against a vault that supports ML-DSA keys")
+	}
 	// ML-DSA (AKP) keys are HSM-protected, so this test requires a premium vault (the default for test-resources.json)
 	client := startTest(t, false)
 
@@ -816,7 +822,7 @@ func TestSecureWrapUnwrap(t *testing.T) {
 		// The service enforces a specific shape for keys used with the secure variants:
 		//   - the secure ops must be granted explicitly (the MHSM default key_ops doesn't include them)
 		//   - the key cannot be Exportable
-		//   - the key MUST have a release policy
+		//   - the key MUST have a release policy, and that policy can't be immutable
 		params := azkeys.CreateKeyParameters{
 			Kty: to.Ptr(azkeys.KeyTypeRSAHSM),
 			KeyOps: to.SliceOfPtrs(
@@ -825,7 +831,6 @@ func TestSecureWrapUnwrap(t *testing.T) {
 			),
 			ReleasePolicy: &azkeys.KeyReleasePolicy{
 				EncodedPolicy: getMarshalledReleasePolicy(attestationURL),
-				Immutable:     to.Ptr(true),
 			},
 		}
 		createResp, err = client.CreateKey(context.Background(), keyName, params, nil)

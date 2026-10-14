@@ -16,6 +16,8 @@ import (
 // MockResponse is a canned HTTP response returned by MockTransport.
 type MockResponse struct {
 	StatusCode int
+	// Header, if set, is added to the response headers.
+	Header http.Header
 	// ErrorCode, if set, is returned in the x-ms-error-code header.
 	ErrorCode string
 	Body      string
@@ -40,6 +42,9 @@ func (m *MockTransport) Do(req *http.Request) (*http.Response, error) {
 	r := m.Responses[len(m.Requests)]
 	m.Requests = append(m.Requests, req)
 	header := http.Header{"Content-Type": []string{"application/xml"}}
+	for k, v := range r.Header {
+		header[k] = v
+	}
 	if r.ErrorCode != "" {
 		header.Set("x-ms-error-code", r.ErrorCode)
 	}

@@ -102,7 +102,7 @@ func TestEmulatorQueryPaginationAfterContainerRecreation(t *testing.T) {
 			require.NoError(t, err)
 		}
 	}
-	seed(container) // Populate the original client's Go handle cache.
+	seed(container) // Populate the native driver's metadata and routing caches.
 	query := NewQuery("SELECT VALUE c.value FROM c ORDER BY c.value")
 	scope := NewFeedScopeForPartitionKey(key)
 	options := &QueryOptions{Feed: FeedOptions{PageSizeHint: 2}}

@@ -62,9 +62,9 @@ type nativeDriver struct {
 	// pending retains resources for submitted work after its Go caller stops waiting.
 	pending sync.WaitGroup
 
-	// mu guards everything below it. It is deliberately not held across driver creation or
-	// container resolution: both wait on the network, and holding it there would make a second
-	// caller block on the mutex where it cannot honor its own context.
+	// mu guards everything below it. It is deliberately not held across driver creation because
+	// that waits on the network, and holding it there would make a second caller block on the mutex
+	// where it cannot honor its own context.
 	//
 	// Client.mu protects active callers; pending protects native submissions whose callers
 	// have stopped waiting. Close drains both before freeing handles.
@@ -90,10 +90,6 @@ type nativeDriver struct {
 	// driver creation itself awaitable.
 	reactor *reactor
 
-	// containers caches resolved container handles by "database/container". Resolving reads
-	// container metadata from the gateway on a miss, so an item operation would otherwise pay
-	// for that lookup on every call.
-	containers    map[string]*C.cosmos_container_ref_t
 	cursors       map[*nativeQueryCursor]struct{}
 	cursorReactor *cursorReactor
 
@@ -435,11 +431,6 @@ func (d *nativeDriver) close() error {
 	// no thread is still reading completions that reference the driver.
 	d.reactor.close()
 	d.reactor = nil
-
-	for key, container := range d.containers {
-		C.cosmos_container_ref_free(container)
-		delete(d.containers, key)
-	}
 
 	C.cosmos_driver_free(d.driver)
 	d.driver = nil

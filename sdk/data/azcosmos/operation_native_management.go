@@ -18,6 +18,28 @@ import (
 	"unsafe"
 )
 
+type managementOperationScope uint8
+
+const (
+	managementOperationScopeInvalid managementOperationScope = iota
+	managementOperationScopeAccount
+	managementOperationScopeDatabase
+	managementOperationScopeContainer
+)
+
+func scopeForManagementOperation(kind operationKind) managementOperationScope {
+	switch kind {
+	case operationKindCreateDatabase:
+		return managementOperationScopeAccount
+	case operationKindReadDatabase, operationKindDeleteDatabase, operationKindCreateContainer:
+		return managementOperationScopeDatabase
+	case operationKindReadContainer, operationKindDeleteContainer:
+		return managementOperationScopeContainer
+	default:
+		return managementOperationScopeInvalid
+	}
+}
+
 // execute runs one management operation (database or container lifecycle) against the driver.
 //
 // The caller already holds the client's read lock through acquire, which is what keeps the driver
@@ -53,17 +75,20 @@ func (d *nativeDriver) executeManagement(
 		return ItemResponse{}, nil, err
 	}
 
+	var account *C.cosmos_account_ref_t
 	var database *C.cosmos_database_ref_t
 	var container *C.cosmos_container_ref_t
 
-	switch kind {
-	case operationKindReadDatabase, operationKindDeleteDatabase, operationKindCreateContainer:
+	switch scopeForManagementOperation(kind) {
+	case managementOperationScopeAccount:
+		account = d.account
+	case managementOperationScopeDatabase:
 		database, err = d.createDatabaseRef(databaseID)
 		if err != nil {
 			return ItemResponse{}, nil, err
 		}
 		defer C.cosmos_database_ref_free(database)
-	case operationKindReadContainer, operationKindDeleteContainer:
+	case managementOperationScopeContainer:
 		container, err = d.submitResolveContainer(ctx, driver, databaseID, containerID)
 		if err != nil {
 			return ItemResponse{}, nil, err
@@ -76,7 +101,7 @@ func (d *nativeDriver) executeManagement(
 	operation.EndToEndTimeout = endToEndTimeout(ctx, 0)
 
 	submit := func(queue *C.cosmos_completion_queue_t, cookie C.intptr_t, preError *C.cosmos_status_code_t) *C.cosmos_operation_handle_t {
-		request, release := buildNativeManagementRequest(kind, d.account, database, container, body, operation)
+		request, release := buildNativeManagementRequest(kind, account, database, container, body, operation)
 		defer release()
 		return C.cosmos_submit_singleton_operation(driver, &request, queue, cookie, preError) //nolint:gocritic // dupSubExpr targets cgo-generated code.
 	}
@@ -144,6 +169,23 @@ func inspectNativeManagementRequestWithOptions(
 	return converted, release
 }
 
+// inspectNativeManagementRequestWithAllScopes supplies a non-nil candidate for every scope so
+// tests can verify that request construction keeps only the handle required by the operation.
+func inspectNativeManagementRequestWithAllScopes(kind operationKind) (nativeManagementRequest, func()) {
+	handle := C.malloc(1)
+	request, release := inspectNativeManagementRequest(
+		kind,
+		(*C.cosmos_account_ref_t)(handle),
+		(*C.cosmos_database_ref_t)(handle),
+		(*C.cosmos_container_ref_t)(handle),
+		nil,
+	)
+	return request, func() {
+		release()
+		C.free(handle)
+	}
+}
+
 // createDatabaseRef builds a pure value-type database reference. It performs no network I/O.
 func (d *nativeDriver) createDatabaseRef(databaseID string) (*C.cosmos_database_ref_t, error) {
 	cDatabaseID, allocation := toNativeString(databaseID)
@@ -176,11 +218,17 @@ func buildNativeManagementRequest(
 ) (C.cosmos_operation_request_t, func()) {
 	request := C.cosmos_operation_request_t{
 		kind:           C.int32_t(kind),
-		account:        account,
-		database:       database,
-		container:      container,
 		max_item_count: unsetMaxItemCount,
 	}
+	switch scopeForManagementOperation(kind) {
+	case managementOperationScopeAccount:
+		request.account = account
+	case managementOperationScopeDatabase:
+		request.database = database
+	case managementOperationScopeContainer:
+		request.container = container
+	}
+
 	var releases []func()
 
 	if len(body) > 0 {

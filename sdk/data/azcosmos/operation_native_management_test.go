@@ -11,6 +11,33 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+func TestManagementOperationUsesRequiredScope(t *testing.T) {
+	tests := []struct {
+		name         string
+		kind         operationKind
+		hasAccount   bool
+		hasDatabase  bool
+		hasContainer bool
+	}{
+		{name: "create database", kind: operationKindCreateDatabase, hasAccount: true},
+		{name: "read database", kind: operationKindReadDatabase, hasDatabase: true},
+		{name: "delete database", kind: operationKindDeleteDatabase, hasDatabase: true},
+		{name: "create container", kind: operationKindCreateContainer, hasDatabase: true},
+		{name: "read container", kind: operationKindReadContainer, hasContainer: true},
+		{name: "delete container", kind: operationKindDeleteContainer, hasContainer: true},
+	}
+
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			request, release := inspectNativeManagementRequestWithAllScopes(test.kind)
+			t.Cleanup(release)
+			require.Equal(t, test.hasAccount, request.hasAccount)
+			require.Equal(t, test.hasDatabase, request.hasDatabase)
+			require.Equal(t, test.hasContainer, request.hasContainer)
+		})
+	}
+}
+
 // Pins the request's unset max-item-count sentinel for every management kind, the same hazard
 // TestOperationRequestUsesTheDriversUnsetSentinels pins for item kinds: the driver rejects a zero
 // hint outright, so a composite literal that leaves this zero would fail every operation.

@@ -186,15 +186,13 @@ Against the Rust revision used to publish native v0.2.0, query-option coverage i
 | Query-plan mode, session token, index/query metric flags | Corresponding `QueryOptions` fields |
 | Buffered-query window limit | Not exposed by the native ABI; native default of 1000 applies |
 | Explicit `MaxItemCountHint::ServerDecides` | Not independently expressible through this ABI; Go zero selects the native unset/default behavior |
-| Common per-operation settings | Only a subset: consistency strategy, excluded regions, content response on writes, and end-to-end timeout |
+| Common per-operation settings | `OperationOptions` exposes consistency, excluded regions, content response on writes, end-to-end timeout, PATCH strategy, throughput bucket/priority, throttle/session/failover retry controls, endpoint-unavailability TTL, session-capture control, hedging/availability strategy, custom headers, and binary encoding |
 
-The shared per-operation surface is not yet at full Rust parity. Go does not expose Rust's
-throughput bucket/priority, throttle/session/failover retry controls, endpoint-unavailability
-TTL, session-capture disable flag, hedging/availability strategy, custom headers, or configurable
-binary encoding. Go requests text JSON. Not all of these gaps require a new native release;
-the buffered-window and explicit server-decides gaps do require a native contract change.
-Rust also distinguishes inherited versus explicitly cleared region exclusions; Go currently
-maps both nil and empty exclusion slices to inheritance.
+Common operation settings inherit across runtime, client, and request scopes; their applicability
+depends on the operation. Binary wire encoding is enabled by default, with native conversion
+returning text JSON to Go. A nil `ExcludedRegions` slice inherits exclusions, while a non-nil
+empty slice explicitly clears them. The buffered-window and explicit server-decides gaps
+still require a native contract change.
 
 ### Running the end-to-end tests
 

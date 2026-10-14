@@ -14,7 +14,8 @@ import (
 type RuntimeOptions struct {
 	// Operation supplies defaults below client and request options.
 	Operation OperationOptions
-	// ApplicationID is the application identifier shared by attached clients.
+	// ApplicationID is appended to the User-Agent and shared by attached clients.
+	// It must not contain personally identifiable information.
 	ApplicationID string
 	// CPURefreshInterval controls CPU/memory sampling. Nil inherits the native default;
 	// explicit intervals must be between one and sixty seconds.

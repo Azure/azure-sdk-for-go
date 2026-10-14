@@ -2594,3 +2594,169 @@ func (d *DirectoryRecordedTestsSuite) TestDirCreateDirPropertySemantics() {
 		}
 	}
 }
+
+// NFS List V2 requires service version 2027-03-07. These tests are unrecorded until the feature is available in a
+// recordable environment, so they run in live mode only.
+func (d *DirectoryUnrecordedTestsSuite) TestDirListFilesAndDirsNFS() {
+	_require := require.New(d.T())
+	testName := d.T().Name()
+
+	cred, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountPremium)
+	_require.NoError(err)
+	shareName := testcommon.GenerateShareName(testName)
+	shareURL := "https://" + cred.AccountName() + ".file.core.windows.net/" + shareName
+
+	premiumShareClient, err := share.NewClientWithSharedKeyCredential(shareURL, cred, nil)
+	_require.NoError(err)
+
+	_, err = premiumShareClient.Create(context.Background(), &share.CreateOptions{
+		EnabledProtocols: to.Ptr("NFS"),
+	})
+	_require.NoError(err)
+	defer testcommon.DeleteShare(context.Background(), _require, premiumShareClient)
+
+	parentName := testcommon.GenerateDirectoryName(testName)
+	parentClient := premiumShareClient.NewDirectoryClient(parentName)
+	_, err = parentClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	owner := "345"
+	group := "123"
+	mode := "0777"
+	nfsProperties := &file.NFSProperties{Owner: to.Ptr(owner), Group: to.Ptr(group), FileMode: to.Ptr(mode)}
+
+	fileName := testcommon.GenerateFileName(testName)
+	fileClient := parentClient.NewFileClient(fileName)
+	_, err = fileClient.Create(context.Background(), 1024, &file.CreateOptions{NFSProperties: nfsProperties})
+	_require.NoError(err)
+
+	subdirName := testcommon.GenerateDirectoryName("subdir")
+	_, err = parentClient.NewSubdirectoryClient(subdirName).Create(context.Background(), &directory.CreateOptions{FileNFSProperties: nfsProperties})
+	_require.NoError(err)
+
+	symlinkName := testcommon.GenerateFileName("symlink")
+	linkText := "/" + parentName + "/" + fileName
+	_, err = parentClient.NewFileClient(symlinkName).CreateSymbolicLink(context.Background(), linkText, &file.CreateSymbolicLinkOptions{
+		FileNFSProperties: &file.NFSProperties{Owner: to.Ptr(owner), Group: to.Ptr(group)},
+	})
+	_require.NoError(err)
+
+	pager := parentClient.NewListFilesAndDirectoriesPager(&directory.ListFilesAndDirectoriesOptions{
+		Include:             directory.ListFilesInclude{Timestamps: true, ETag: true, Permissions: true, LinkCount: true, NfsAttributes: true},
+		IncludeExtendedInfo: to.Ptr(true),
+	})
+	var files []*directory.File
+	var dirs []*directory.Directory
+	var symlinks []*directory.SymLinkItem
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		_require.NoError(err)
+		files = append(files, resp.Segment.Files...)
+		dirs = append(dirs, resp.Segment.Directories...)
+		symlinks = append(symlinks, resp.Segment.SymLinkItems...)
+	}
+
+	_require.Len(files, 1)
+	f := files[0]
+	_require.Equal(fileName, *f.Name)
+	_require.Equal(directory.FileTypeRegular, f.FileType())
+	_require.NotNil(f.LinkCount)
+	_require.NotNil(f.Properties)
+	_require.Equal(owner, *f.Properties.Owner)
+	_require.Equal(group, *f.Properties.Group)
+	_require.Equal(mode, *f.Properties.FileMode)
+
+	_require.Len(dirs, 1)
+	dir := dirs[0]
+	_require.Equal(subdirName, *dir.Name)
+	_require.Equal(directory.FileTypeDirectory, dir.FileType())
+	_require.NotNil(dir.LinkCount)
+	_require.NotNil(dir.Properties)
+	_require.Equal(owner, *dir.Properties.Owner)
+	_require.Equal(group, *dir.Properties.Group)
+	_require.Equal(mode, *dir.Properties.FileMode)
+
+	_require.Len(symlinks, 1)
+	symlink := symlinks[0]
+	_require.Equal(symlinkName, *symlink.Name.Content)
+	_require.Equal(directory.FileTypeSymLink, symlink.FileType())
+	_require.NotNil(symlink.LinkCount)
+	_require.NotEmpty(*symlink.LinkText)
+	_require.NotNil(symlink.Properties)
+	_require.Equal(owner, *symlink.Properties.Owner)
+	_require.Equal(group, *symlink.Properties.Group)
+	_require.NotNil(symlink.Properties.FileMode)
+}
+
+func (d *DirectoryUnrecordedTestsSuite) TestDirListFilesAndDirsIncludeAllSMB() {
+	_require := require.New(d.T())
+	testName := d.T().Name()
+
+	svcClient, err := testcommon.GetServiceClient(d.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, testcommon.GenerateShareName(testName), svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	parentClient := testcommon.CreateNewDirectory(context.Background(), _require, testcommon.GenerateDirectoryName(testName), shareClient)
+
+	fileName := testcommon.GenerateFileName(testName)
+	_, err = parentClient.NewFileClient(fileName).Create(context.Background(), 1024, nil)
+	_require.NoError(err)
+
+	subdirName := testcommon.GenerateDirectoryName("subdir")
+	_, err = parentClient.NewSubdirectoryClient(subdirName).Create(context.Background(), nil)
+	_require.NoError(err)
+
+	// ListFilesInclude.All is sent to the service as the literal "All".
+	pager := parentClient.NewListFilesAndDirectoriesPager(&directory.ListFilesAndDirectoriesOptions{
+		Include:             directory.ListFilesInclude{All: true},
+		IncludeExtendedInfo: to.Ptr(true),
+	})
+	var files []*directory.File
+	var dirs []*directory.Directory
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		_require.NoError(err)
+		files = append(files, resp.Segment.Files...)
+		dirs = append(dirs, resp.Segment.Directories...)
+	}
+
+	_require.Len(files, 1)
+	f := files[0]
+	_require.Equal(fileName, *f.Name)
+	_require.Equal(directory.FileTypeRegular, f.FileType())
+	_require.NotNil(f.ID)
+	_require.Equal("Archive", *f.Attributes)
+	_require.NotNil(f.PermissionKey)
+	_require.NotNil(f.Properties.CreationTime)
+	_require.NotNil(f.Properties.LastAccessTime)
+	_require.NotNil(f.Properties.LastWriteTime)
+	_require.NotNil(f.Properties.ChangeTime)
+	_require.NotNil(f.Properties.LastModified)
+	_require.NotNil(f.Properties.ETag)
+	// NFS-only fields stay nil on SMB
+	_require.Nil(f.LinkCount)
+	_require.Nil(f.Properties.Owner)
+	_require.Nil(f.Properties.Group)
+	_require.Nil(f.Properties.FileMode)
+
+	_require.Len(dirs, 1)
+	dir := dirs[0]
+	_require.Equal(subdirName, *dir.Name)
+	_require.Equal(directory.FileTypeDirectory, dir.FileType())
+	_require.NotNil(dir.ID)
+	_require.Equal("Directory", *dir.Attributes)
+	_require.NotNil(dir.PermissionKey)
+	_require.NotNil(dir.Properties.CreationTime)
+	_require.NotNil(dir.Properties.LastAccessTime)
+	_require.NotNil(dir.Properties.LastWriteTime)
+	_require.NotNil(dir.Properties.ChangeTime)
+	_require.NotNil(dir.Properties.LastModified)
+	_require.NotNil(dir.Properties.ETag)
+	// NFS-only fields stay nil on SMB
+	_require.Nil(dir.LinkCount)
+	_require.Nil(dir.Properties.Owner)
+	_require.Nil(dir.Properties.Group)
+	_require.Nil(dir.Properties.FileMode)
+}

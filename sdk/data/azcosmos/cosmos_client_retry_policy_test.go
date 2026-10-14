@@ -2205,6 +2205,32 @@ func TestReadAttemptTimeoutDuringBackoff(t *testing.T) {
 	}
 }
 
+func TestClientRetryPolicyNetworkBackoffError(t *testing.T) {
+	for _, write := range []bool{false, true} {
+		for _, crossRegion := range []bool{false, true} {
+			t.Run(fmt.Sprintf("write=%t/crossRegion=%t", write, crossRegion), func(t *testing.T) {
+				ctx, cancel := context.WithTimeout(context.Background(), 20*time.Millisecond)
+				defer cancel()
+				req, err := azruntime.NewRequest(ctx, http.MethodPost, "https://cosmos.test")
+				require.NoError(t, err)
+				p := &clientRetryPolicy{gem: &globalEndpointManager{
+					locationCache: CreateMockLC(*req.Raw().URL, true),
+				}}
+				rc := retryContext{}
+				if crossRegion {
+					rc.sameRegionRetryCount = maxSameRegionConnectionRetries
+				}
+				transportErr := &net.DNSError{Err: "unreachable"}
+				shouldRetry, err := p.attemptRetryOnNetworkError(req, connectionErrorNotSent, write, transportErr, &rc)
+				assert.False(t, shouldRetry)
+				require.ErrorIs(t, err, context.DeadlineExceeded)
+				assert.Equal(t, !write, errors.Is(err, transportErr), "only read error composition should change")
+				assert.EqualError(t, err, fmt.Sprintf("%v: underlying transport error: %v", ctx.Err(), transportErr))
+			})
+		}
+	}
+}
+
 func TestReadAttemptTimeoutNestedVeto(t *testing.T) {
 	for _, write := range []bool{false, true} {
 		for _, expired := range []bool{false, true} {

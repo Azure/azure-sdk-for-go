@@ -228,9 +228,8 @@ func (p *clientRetryPolicy) Do(req *policy.Request) (*http.Response, error) {
 			if kind != connectionErrorNone {
 				shouldRetry, errRetry := p.attemptRetryOnNetworkError(req, kind, o.isWriteOperation, err, &retryContext)
 				if errRetry != nil {
-					if ctxErr := req.Raw().Context().Err(); !o.isWriteOperation && ctxErr != nil &&
-						errors.Is(errRetry, ctxErr) && !errors.As(errRetry, new(errorinfo.NonRetriable)) {
-						return nil, fmt.Errorf("%w: underlying transport error: %w", ctxErr, err)
+					if !o.isWriteOperation {
+						return nil, errRetry
 					}
 					return nil, errorinfo.NonRetriableError(errRetry)
 				}
@@ -276,8 +275,7 @@ func (p *clientRetryPolicy) Do(req *policy.Request) (*http.Response, error) {
 			case http.StatusRequestTimeout:
 				shouldRetry, err := p.attemptRetryOnRequestTimeout(req, o.isWriteOperation, &retryContext)
 				if err != nil {
-					if ctxErr := req.Raw().Context().Err(); !o.isWriteOperation && ctxErr != nil &&
-						errors.Is(err, ctxErr) && !errors.As(err, new(errorinfo.NonRetriable)) {
+					if !o.isWriteOperation {
 						return nil, err
 					}
 					return nil, errorinfo.NonRetriableError(err)
@@ -344,10 +342,9 @@ func (p *clientRetryPolicy) shouldRetryStatus(status int, subStatus string) (sho
 // it bumps retryContext.retryCount so the Do loop resolves a different
 // locationIndex on the next iteration (mirroring the 503/408 paths).
 //
-// transportErr is preserved alongside the caller's context error when
-// the backoff is interrupted by ctx cancellation, so callers can
-// errors.Is against both context.DeadlineExceeded and the transport
-// error class.
+// For reads, transportErr is preserved alongside the attempt context's
+// error when the backoff is interrupted, so callers can use errors.Is
+// against both errors.
 func (p *clientRetryPolicy) attemptRetryOnNetworkError(req *policy.Request, kind connectionErrorKind, isWriteOperation bool, transportErr error, retryContext *retryContext) (bool, error) {
 	if retryContext.retryCount > maxRetryCount {
 		return false, nil
@@ -365,6 +362,9 @@ func (p *clientRetryPolicy) attemptRetryOnNetworkError(req *policy.Request, kind
 		(!isWriteOperation || kind == connectionErrorNotSent) {
 		retryContext.sameRegionRetryCount += 1
 		if sleepErr := sleepWithContext(req.Raw().Context(), defaultBackoff*time.Second); sleepErr != nil {
+			if !isWriteOperation {
+				return false, fmt.Errorf("%w: underlying transport error: %w", sleepErr, transportErr)
+			}
 			return false, fmt.Errorf("%w: underlying transport error: %v", sleepErr, transportErr)
 		}
 		return true, nil
@@ -426,6 +426,9 @@ func (p *clientRetryPolicy) attemptRetryOnNetworkError(req *policy.Request, kind
 	retryContext.sameRegionRetryCount = 0
 	retryContext.crossRegionFailoverDone = true
 	if sleepErr := sleepWithContext(req.Raw().Context(), defaultBackoff*time.Second); sleepErr != nil {
+		if !isWriteOperation {
+			return false, fmt.Errorf("%w: underlying transport error: %w", sleepErr, transportErr)
+		}
 		return false, fmt.Errorf("%w: underlying transport error: %v", sleepErr, transportErr)
 	}
 	return true, nil

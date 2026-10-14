@@ -111,6 +111,7 @@ type batchDeleteRPCLink struct {
 	responses []int32
 	sent      []*amqp.Message
 	err       error
+	onRPC     func()
 }
 
 func (l *batchDeleteRPCLink) Close(ctx context.Context) error { return nil }
@@ -123,6 +124,9 @@ func (l *batchDeleteRPCLink) RPC(ctx context.Context, msg *amqp.Message) (*amqpw
 	responseIndex := len(l.sent) - 1
 	if responseIndex >= len(l.responses) {
 		return nil, fmt.Errorf("unexpected batch delete call %d", responseIndex+1)
+	}
+	if l.onRPC != nil {
+		l.onRPC()
 	}
 
 	return &amqpwrap.RPCResponse{
@@ -229,8 +233,8 @@ func TestReceiverPurgeMessagesUsesFixedCutoffAndStopsOnZero(t *testing.T) {
 	require.NoError(t, err)
 	require.EqualValues(t, 502, result.DeletedCount)
 	require.Len(t, rpcLink.sent, 3)
-	require.Equal(t, 1, links.getCalls)
-	require.Equal(t, 1, links.retryCalls)
+	require.Equal(t, 3, links.getCalls)
+	require.Equal(t, 3, links.retryCalls)
 
 	for _, sent := range rpcLink.sent {
 		body := sent.Value.(map[string]any)
@@ -249,11 +253,38 @@ func TestReceiverPurgeMessagesSupportsPremiumBatchSize(t *testing.T) {
 	require.NoError(t, err)
 	require.EqualValues(t, 4002, result.DeletedCount)
 	require.Len(t, rpcLink.sent, 3)
-	require.Equal(t, 1, links.getCalls)
+	require.Equal(t, 3, links.getCalls)
 
 	for _, sent := range rpcLink.sent {
 		body := sent.Value.(map[string]any)
 		require.Equal(t, int32(4000), body["message-count"])
+	}
+}
+
+func TestSessionReceiverPurgeMessagesRefreshesLinksBetweenBatches(t *testing.T) {
+	receiver, oldRPC, links := newBatchDeleteReceiver(2)
+	newRPC := &batchDeleteRPCLink{responses: []int32{0}}
+	cutoff := time.Date(2026, time.August, 21, 12, 30, 0, 0, time.UTC)
+	sessionID := "session-1"
+	sessionReceiver := &SessionReceiver{inner: receiver, sessionID: &sessionID}
+	oldRPC.onRPC = func() {
+		oldRPC.err = &amqp.LinkError{}
+		links.FakeAMQPLinks.RPC = newRPC
+	}
+
+	result, err := sessionReceiver.PurgeMessages(context.Background(), &PurgeMessagesOptions{
+		BeforeEnqueueTime: &cutoff,
+	})
+	require.NoError(t, err)
+	require.EqualValues(t, 2, result.DeletedCount)
+	require.Len(t, oldRPC.sent, 1)
+	require.Len(t, newRPC.sent, 1)
+	require.Equal(t, 2, links.getCalls)
+	require.Equal(t, 2, links.retryCalls)
+	for _, sent := range []*amqp.Message{oldRPC.sent[0], newRPC.sent[0]} {
+		body := sent.Value.(map[string]any)
+		require.Equal(t, sessionID, body["session-id"])
+		require.Equal(t, cutoff, body["enqueued-time-utc"])
 	}
 }
 

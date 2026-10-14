@@ -153,7 +153,10 @@ func TestBatchDeleteMessages(t *testing.T) {
 }
 
 func TestBatchDeleteMessagesNoMessages(t *testing.T) {
-	link := &capturingRPCLink{}
+	link := &capturingRPCLink{Response: &amqpwrap.RPCResponse{
+		Code:    200,
+		Message: &amqp.Message{Value: map[string]any{"message-count": int32(0)}},
+	}}
 
 	deletedCount, err := BatchDeleteMessages(context.Background(), link, "receiver-link", 1, time.Now().UTC(), nil)
 	require.NoError(t, err)
@@ -211,6 +214,13 @@ func TestBatchDeleteMessagesRejectsUnexpectedStatus(t *testing.T) {
 		Code:    201,
 		Message: &amqp.Message{Value: map[string]any{"message-count": int32(1)}},
 	}}
+
+	_, err := BatchDeleteMessages(context.Background(), link, "receiver-link", 10, time.Now().UTC(), nil)
+	require.Error(t, err)
+}
+
+func TestBatchDeleteMessagesRejectsUncountedNoContent(t *testing.T) {
+	link := &capturingRPCLink{}
 
 	_, err := BatchDeleteMessages(context.Background(), link, "receiver-link", 10, time.Now().UTC(), nil)
 	require.Error(t, err)

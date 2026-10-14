@@ -290,9 +290,6 @@ func BatchDeleteMessages(ctx context.Context, rpcLink amqpwrap.RPCLink, linkName
 		}
 		resp = rpcErr.Resp
 	}
-	if resp.Code == 204 {
-		return 0, nil
-	}
 	messageNotFound := resp.Code == 404 && responseErrorCondition(resp) == "com.microsoft:message-not-found"
 	if resp.Code != 200 && !messageNotFound {
 		return 0, ErrAMQP(*resp)

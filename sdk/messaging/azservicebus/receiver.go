@@ -378,18 +378,18 @@ func (r *Receiver) purgeMessages(ctx context.Context, options *PurgeMessagesOpti
 			fmt.Sprintf("MaxMessageCountPerBatch must be between 1 and %d", maxDirectDeleteMessageCount))
 	}
 
-	links, err := r.getBatchDeleteLinks(ctx)
-	if err != nil {
-		return nil, internal.TransformError(err)
-	}
-
-	var sessionID *string
-	if getSessionID != nil {
-		sessionID = getSessionID()
-	}
-
 	var totalDeleted int64
 	for {
+		links, err := r.getBatchDeleteLinks(ctx)
+		if err != nil {
+			return nil, internal.TransformError(err)
+		}
+
+		var sessionID *string
+		if getSessionID != nil {
+			sessionID = getSessionID()
+		}
+
 		deletedCount, err := r.executeBatchDelete(
 			ctx, links, int32(maxMessageCountPerBatch), cutoff, sessionID)
 		if err != nil {

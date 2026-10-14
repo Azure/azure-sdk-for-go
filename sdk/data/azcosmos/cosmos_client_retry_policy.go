@@ -347,8 +347,10 @@ func (p *clientRetryPolicy) shouldRetryStatus(status int, subStatus string) (sho
 // it bumps retryContext.retryCount so the Do loop resolves a different
 // locationIndex on the next iteration (mirroring the 503/408 paths).
 //
-// If a backoff is interrupted, the context error is wrapped and
-// transportErr is included in the message for diagnostics.
+// transportErr is preserved alongside the caller's context error when
+// the backoff is interrupted by ctx cancellation, so callers can
+// errors.Is against both context.DeadlineExceeded and the transport
+// error class.
 func (p *clientRetryPolicy) attemptRetryOnNetworkError(req *policy.Request, kind connectionErrorKind, isWriteOperation bool, transportErr error, retryContext *retryContext) (bool, error) {
 	if retryContext.retryCount > maxRetryCount {
 		return false, nil

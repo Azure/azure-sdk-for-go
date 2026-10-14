@@ -17,4 +17,19 @@
 // v2 replaces the v1 pure-Go implementation with a binding to the shared Rust Cosmos driver, so
 // that routing, retries, session handling, failover behavior and query fan-out are consistent
 // across the Cosmos DB SDKs.
+//
+// # Options and lifetime
+//
+// OperationOptions applies at runtime, client, and request scope, with requests taking precedence.
+// Rust owns resolution and supported environment overrides; defaults are fixed at construction.
+// Clients without an explicit Runtime use a process-wide runtime and share native account caches.
+// Client.Close closes only that client; Runtime.Close releases ownership without closing attached clients.
+// Context cancellation stops waiting, not submitted native work; writes may still commit.
+// Close waits for native work to finish, including operations whose callers stopped waiting.
+//
+// # Response encoding
+//
+// Binary wire encoding is enabled by default; native code converts responses to text JSON.
+// Set BinaryEncodingOptions.Enabled to false to disable binary wire encoding.
+// ItemResponse.Value and QueryItemsResponse.Items contain text JSON, not decoded application models.
 package azcosmos

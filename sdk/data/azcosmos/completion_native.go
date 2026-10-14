@@ -93,6 +93,10 @@ var copyDiagnosticsForCompletion = copyDiagnostics
 // translateCompletion.
 func translateCompletionOutcome(completion *C.cosmos_completion_t, verbosity DiagnosticsVerbosity) completionResult {
 	headers := readCompletionHeaders(completion)
+	var trackingID PatchTrackingID
+	if id := C.cosmos_completion_patch_tracking_id(completion); id != nil {
+		trackingID = PatchTrackingID(C.GoString(id))
+	}
 	diagnostics, diagnosticsErr := copyDiagnosticsForCompletion(completion.diagnostics, verbosity)
 	subStatus := headers.subStatus
 	if completion.outcome != C.COSMOS_COMPLETION_OUTCOME_OK {
@@ -113,8 +117,9 @@ func translateCompletionOutcome(completion *C.cosmos_completion_t, verbosity Dia
 			StatusCode:    int(completion.http_status_code),
 			SubStatus:     subStatus,
 		},
-		ETag:         headers.etag,
-		SessionToken: headers.sessionToken,
+		ETag:            headers.etag,
+		SessionToken:    headers.sessionToken,
+		PatchTrackingID: trackingID,
 	}
 	if diagnostics != nil {
 		response.AttemptCount = diagnostics.AttemptCount
@@ -143,12 +148,13 @@ func translateCompletionOutcome(completion *C.cosmos_completion_t, verbosity Dia
 		return completionResult{
 			cancelled: true,
 			err: &Error{
-				Code:          CodeOperationCancelled,
-				Message:       "azcosmos: the operation was cancelled",
-				RequestCharge: headers.requestCharge,
-				ActivityID:    headers.activityID,
-				AttemptCount:  response.AttemptCount,
-				Diagnostics:   diagnostics,
+				Code:            CodeOperationCancelled,
+				Message:         "azcosmos: the operation was cancelled",
+				RequestCharge:   headers.requestCharge,
+				ActivityID:      headers.activityID,
+				AttemptCount:    response.AttemptCount,
+				Diagnostics:     diagnostics,
+				PatchTrackingID: trackingID,
 			},
 		}
 
@@ -156,6 +162,7 @@ func translateCompletionOutcome(completion *C.cosmos_completion_t, verbosity Dia
 		// ERROR, and UNKNOWN, which the driver documents as a state the host should treat as a
 		// failure rather than assume anything about.
 		operationErr := completionError(completion, headers, diagnostics)
+		operationErr.PatchTrackingID = trackingID
 		if diagnosticsErr != nil {
 			operationErr.Message += "; " + diagnosticsErr.Error()
 		}
@@ -437,14 +444,16 @@ func stubCopyDiagnosticsForCompletionCapturing(diagnostics *Diagnostics, err err
 func syntheticSessionCompletion() ItemResponse {
 	token := C.CString("0:-1#43")
 	defer C.free(unsafe.Pointer(token))
-	header := C.cosmos_response_header_t{
+	header := (*C.cosmos_response_header_t)(C.malloc(C.size_t(unsafe.Sizeof(C.cosmos_response_header_t{}))))
+	defer C.free(unsafe.Pointer(header))
+	*header = C.cosmos_response_header_t{
 		id:    C.COSMOS_HEADER_ID_SESSION_TOKEN,
 		value: C.cosmos_test_string_value(token),
 	}
 	completion := C.cosmos_completion_t{
 		outcome:          C.COSMOS_COMPLETION_OUTCOME_OK,
 		http_status_code: 200,
-		headers:          &header,
+		headers:          header,
 		headers_len:      1,
 	}
 	return translateCompletionOutcome(&completion, DiagnosticsVerbosityDefault).response

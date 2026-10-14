@@ -6,16 +6,54 @@
 package azcosmos
 
 import (
+	"context"
+	"errors"
 	"testing"
 	"time"
 
 	"github.com/stretchr/testify/require"
 )
 
+func TestQuerySnapshotTimeoutIncludesLazyInitialization(t *testing.T) {
+	shared, err := NewRuntime(&RuntimeOptions{Operation: OperationOptions{EndToEndTimeout: to(time.Duration(time.Second))}})
+	require.NoError(t, err)
+	t.Cleanup(func() { require.NoError(t, shared.Close()) })
+	credential := &blockingTokenCredential{started: make(chan struct{}), stopped: make(chan struct{})}
+	client, err := NewClient("https://myaccount.documents.azure.com", credential, &ClientOptions{Runtime: shared})
+	require.NoError(t, err)
+	t.Cleanup(func() { client.driver.tokenProvider.cancel(); require.NoError(t, client.Close()) })
+	container, err := client.NewContainer("db", "items")
+	require.NoError(t, err)
+	pager := container.NewQueryItemsPager(NewQuery("SELECT * FROM c"),
+		NewFeedScopeForPartitionKey(NewPartitionKeyString("pk")), nil)
+	done := make(chan error, 1)
+	start := time.Now()
+	go func() {
+		page, err := pager.NextPage(context.Background())
+		if len(page.Items) != 0 {
+			done <- errors.New("failed query returned items")
+			return
+		}
+		done <- err
+	}()
+	select {
+	case <-credential.started:
+	case <-time.After(3 * time.Second):
+		t.Fatal("query did not reach lazy initialization")
+	}
+	select {
+	case err := <-done:
+		require.ErrorIs(t, err, context.DeadlineExceeded)
+		require.Less(t, time.Since(start), 3*time.Second)
+	case <-time.After(3 * time.Second):
+		t.Fatal("query did not honor its runtime budget")
+	}
+}
+
 func TestQueryNativeOptions(t *testing.T) {
 	yes, no := true, false
 	req, err := newQueryRequest(NewQuery("SELECT * FROM c"), NewFeedScopeForFullContainer(), &QueryOptions{
-		Operation:     OperationOptions{EndToEndTimeout: 5 * time.Second},
+		Operation:     OperationOptions{EndToEndTimeout: to(5 * time.Second)},
 		Feed:          FeedOptions{MaxFanOut: 250, PageSizeHint: 17},
 		QueryPlanMode: QueryPlanModeGatewayOnly, PopulateIndexMetrics: &yes, PopulateQueryMetrics: &no,
 	})
@@ -34,6 +72,33 @@ func TestQueryNativeOptions(t *testing.T) {
 	require.Zero(t, got.mode)
 	require.Zero(t, got.indexMetrics)
 	require.Zero(t, got.queryMetrics)
+}
+
+func TestQueryContextInheritsTimeoutAndPreservesCallerDeadline(t *testing.T) {
+	shared, err := NewRuntime(&RuntimeOptions{Operation: OperationOptions{EndToEndTimeout: to(3 * time.Second)}})
+	require.NoError(t, err)
+	t.Cleanup(func() { require.NoError(t, shared.Close()) })
+	client := sharedTestClient(t, shared, OperationOptions{EndToEndTimeout: to(2 * time.Second)})
+	for _, options := range []OperationOptions{{}, {EndToEndTimeout: to(time.Duration(0))}} {
+		ctx, release, err := client.queryContext(context.Background(), options)
+		require.NoError(t, err)
+		deadline, bounded := ctx.Deadline()
+		require.True(t, bounded)
+		want := 2 * time.Second
+		if options.EndToEndTimeout != nil {
+			want = time.Second
+		}
+		require.InDelta(t, float64(want), float64(time.Until(deadline)), float64(200*time.Millisecond))
+		release()
+	}
+	parent, cancel := context.WithTimeout(context.Background(), 50*time.Millisecond)
+	defer cancel()
+	ctx, release, err := client.queryContext(parent, OperationOptions{})
+	require.NoError(t, err)
+	defer release()
+	want, _ := parent.Deadline()
+	got, _ := ctx.Deadline()
+	require.Equal(t, want, got)
 }
 
 func TestQueryCompletionCopiesPageAndPlannerToken(t *testing.T) {

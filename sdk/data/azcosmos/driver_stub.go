@@ -7,6 +7,10 @@ package azcosmos
 
 import "context"
 
+func (c *Client) queryContext(ctx context.Context, _ OperationOptions) (context.Context, func(), error) {
+	return ctx, func() {}, nil
+}
+
 // This is the build of the package that is not bound to the Cosmos driver. It is a diagnostic
 // path, not an alternative implementation: v2 executes every operation through the driver, so
 // there is no pure-Go mode, no degraded mode and no fallback.

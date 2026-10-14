@@ -58,14 +58,25 @@ COSMOS_ASSERT_OFFSET(cosmos_runtime_options_t, correlation_id, 8);
 COSMOS_ASSERT_OFFSET(cosmos_runtime_options_t, user_agent_suffix, 24);
 COSMOS_ASSERT_OFFSET(cosmos_runtime_options_t, wrapping_sdk_identifier, 40);
 COSMOS_ASSERT_OFFSET(cosmos_runtime_options_t, cpu_refresh_interval_ms, 56);
+COSMOS_ASSERT_OFFSET(cosmos_runtime_options_t, operation_options, 64);
 
 _Static_assert(sizeof(cosmos_operation_options_t) == 136, "operation options ABI size changed");
 _Static_assert(_Alignof(cosmos_operation_options_t) == 8, "operation options ABI alignment changed");
+COSMOS_ASSERT_OFFSET(cosmos_operation_options_t, max_failover_retry_count, 16);
+COSMOS_ASSERT_OFFSET(cosmos_operation_options_t, max_session_retry_count, 24);
 COSMOS_ASSERT_OFFSET(cosmos_operation_options_t, end_to_end_timeout_ms, 32);
+COSMOS_ASSERT_OFFSET(cosmos_operation_options_t, endpoint_unavailability_ttl_ms, 40);
 COSMOS_ASSERT_OFFSET(cosmos_operation_options_t, excluded_regions, 48);
 COSMOS_ASSERT_OFFSET(cosmos_operation_options_t, excluded_regions_len, 56);
+COSMOS_ASSERT_OFFSET(cosmos_operation_options_t, custom_headers, 64);
 COSMOS_ASSERT_OFFSET(cosmos_operation_options_t, binary_encoding_request_text_response, 81);
+COSMOS_ASSERT_OFFSET(cosmos_operation_options_t, throughput_bucket, 88);
+COSMOS_ASSERT_OFFSET(cosmos_operation_options_t, priority_level, 96);
 COSMOS_ASSERT_OFFSET(cosmos_operation_options_t, max_throttle_retry_count, 104);
+COSMOS_ASSERT_OFFSET(cosmos_operation_options_t, max_throttle_retry_wait_time_ms, 112);
+COSMOS_ASSERT_OFFSET(cosmos_operation_options_t, hedging_enabled, 120);
+COSMOS_ASSERT_OFFSET(cosmos_operation_options_t, availability_strategy, 124);
+COSMOS_ASSERT_OFFSET(cosmos_operation_options_t, hedge_threshold_ms, 128);
 
 _Static_assert(sizeof(cosmos_driver_options_config_t) == 24, "driver options ABI size changed");
 _Static_assert(_Alignof(cosmos_driver_options_config_t) == 8, "driver options ABI alignment changed");

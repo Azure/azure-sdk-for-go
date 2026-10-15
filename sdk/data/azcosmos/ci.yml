@@ -187,6 +187,7 @@ extends:
             displayName: 'Start the in-memory Cosmos emulator'
 
           - script: |
+              # cSpell:ignore ppaf PPAF
               set -euo pipefail
               config='sdk/data/azcosmos/internal/testdata/emulator-ppaf-config.json'
               nohup "$(EmulatorBinDir)/azure_data_cosmos_emulator" --config "$config" \

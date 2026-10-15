@@ -66,8 +66,8 @@ func TestWrapTracerForwarding(t *testing.T) {
 	wrapped.SetAttributes(tracing.Attribute{Key: "span", Value: true})
 	require.Equal(t, []tracing.Attribute{
 		{Key: "call", Value: true},
-		{Key: "wrapper", Value: true},
 		{Key: "original", Value: true},
+		{Key: "wrapper", Value: true},
 		{Key: "span", Value: true},
 	}, attrs)
 	wrapped.AddEvent("event", tracing.Attribute{Key: "event", Value: true})
@@ -86,6 +86,29 @@ func TestWrapTracerForwarding(t *testing.T) {
 	require.Equal(t, "unknown: https://other.com?sig=secret", description)
 	wrapped.End()
 	require.True(t, ended)
+}
+
+func TestWrapTracerAttributeOverrides(t *testing.T) {
+	var attrs []tracing.Attribute
+	tr := tracing.NewTracer(func(ctx context.Context, _ string, options *tracing.SpanOptions) (context.Context, tracing.Span) {
+		attrs = options.Attributes
+		return ctx, tracing.Span{}
+	}, nil)
+	tr.SetAttributes(tracing.Attribute{Key: "az.namespace", Value: "original"})
+	original := tr
+	tr = WrapTracer(tr, New(Options{}))
+	tr.SetAttributes(tracing.Attribute{Key: "az.namespace", Value: "override"})
+	options := &tracing.SpanOptions{
+		Attributes: []tracing.Attribute{{Key: "az.namespace", Value: "call"}},
+	}
+	tr.Start(context.Background(), "operation", options)
+	require.Equal(t, []tracing.Attribute{
+		{Key: "az.namespace", Value: "call"},
+		{Key: "az.namespace", Value: "original"},
+		{Key: "az.namespace", Value: "override"},
+	}, attrs)
+	original.Start(context.Background(), "original", nil)
+	require.Equal(t, []tracing.Attribute{{Key: "az.namespace", Value: "original"}}, attrs)
 }
 
 func TestWrapTracerLatestRequestURL(t *testing.T) {

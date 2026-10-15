@@ -17,6 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/directory"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/file"
@@ -1343,33 +1344,36 @@ func (d *DirectoryRecordedTestsSuite) TestDirListFilesAndDirsMaxResultsAndMarker
 	_require.Equal(fileCtr, 5)
 }
 
-func newMockDirectoryClient(t *testing.T, responses ...testcommon.MockResponse) (*directory.Client, *testcommon.MockTransport) {
-	transport := testcommon.NewMockTransport(responses...)
+func newMockDirectoryClient(t *testing.T) (*directory.Client, *mock.Server) {
+	srv, clientOptions := testcommon.NewMockServer(t)
 	client, err := directory.NewClientWithNoCredential("https://account.file.core.windows.net/share/dir", &directory.ClientOptions{
-		ClientOptions: testcommon.MockClientOptions(transport),
+		ClientOptions: clientOptions,
 	})
 	require.NoError(t, err)
-	return client, transport
+	return client, srv
 }
 
 func TestListFilesAndDirectoriesPagerMocked(t *testing.T) {
 	_require := require.New(t)
-	client, transport := newMockDirectoryClient(t,
-		testcommon.MockResponse{StatusCode: http.StatusOK, Body: `<?xml version="1.0" encoding="utf-8"?>
+	client, srv := newMockDirectoryClient(t)
+	srv.AppendResponse(mock.WithStatusCode(http.StatusOK), mock.WithBody([]byte(`<?xml version="1.0" encoding="utf-8"?>
 <EnumerationResults ServiceEndpoint="https://account.file.core.windows.net/" ShareName="share" DirectoryPath="dir">
 	<Entries>
 		<File><Name>file.txt</Name><Properties><Content-Length>5</Content-Length></Properties></File>
 	</Entries>
 	<NextMarker>marker1</NextMarker>
-</EnumerationResults>`},
-		testcommon.MockResponse{StatusCode: http.StatusOK, Body: `<?xml version="1.0" encoding="utf-8"?>
+</EnumerationResults>`)))
+	// the second page is only returned for a request that continues from the marker of the first page
+	srv.AppendResponse(mock.WithStatusCode(http.StatusOK), mock.WithBody([]byte(`<?xml version="1.0" encoding="utf-8"?>
 <EnumerationResults ServiceEndpoint="https://account.file.core.windows.net/" ShareName="share" DirectoryPath="dir">
 	<Entries>
 		<Directory><Name>subdir</Name><Properties /></Directory>
 	</Entries>
 	<NextMarker />
-</EnumerationResults>`},
-	)
+</EnumerationResults>`)), mock.WithPredicate(func(req *http.Request) bool {
+		return req.URL.Query().Get("marker") == "marker1"
+	}))
+	srv.AppendResponse(mock.WithStatusCode(http.StatusBadRequest))
 
 	var files, dirs []string
 	pager := client.NewListFilesAndDirectoriesPager(nil)
@@ -1385,17 +1389,15 @@ func TestListFilesAndDirectoriesPagerMocked(t *testing.T) {
 	}
 	_require.Equal([]string{"file.txt"}, files)
 	_require.Equal([]string{"subdir"}, dirs)
-	_require.Len(transport.Requests, 2)
-	_require.Equal("marker1", transport.Requests[1].URL.Query().Get("marker"))
+	_require.Equal(2, srv.Requests())
 }
 
 func TestListFilesAndDirectoriesPagerErrorMocked(t *testing.T) {
 	_require := require.New(t)
-	client, _ := newMockDirectoryClient(t, testcommon.MockResponse{
-		StatusCode: http.StatusNotFound,
-		ErrorCode:  string(fileerror.ParentNotFound),
-		Body:       `<?xml version="1.0" encoding="utf-8"?><Error><Code>ParentNotFound</Code><Message>The specified parent path does not exist.</Message></Error>`,
-	})
+	client, srv := newMockDirectoryClient(t)
+	srv.AppendResponse(mock.WithStatusCode(http.StatusNotFound),
+		mock.WithHeader("x-ms-error-code", string(fileerror.ParentNotFound)),
+		mock.WithBody([]byte(`<?xml version="1.0" encoding="utf-8"?><Error><Code>ParentNotFound</Code><Message>The specified parent path does not exist.</Message></Error>`)))
 
 	_, err := client.NewListFilesAndDirectoriesPager(nil).NextPage(context.Background())
 	var respErr *azcore.ResponseError

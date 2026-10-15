@@ -28,6 +28,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/directory"
@@ -6287,30 +6288,36 @@ func (f *FileUnrecordedTestsSuite) TestFileCreateDataMultiSegmentWithSMCRC64() {
 	_require.EqualValues(data, downloaded)
 }
 
-func newMockFileClient(t *testing.T, responses ...testcommon.MockResponse) (*file.Client, *testcommon.MockTransport) {
-	transport := testcommon.NewMockTransport(responses...)
+func newMockFileClient(t *testing.T) (*file.Client, *mock.Server) {
+	srv, clientOptions := testcommon.NewMockServer(t)
 	client, err := file.NewClientWithNoCredential("https://account.file.core.windows.net/share/dir/file.txt", &file.ClientOptions{
-		ClientOptions: testcommon.MockClientOptions(transport),
+		ClientOptions: clientOptions,
 	})
 	require.NoError(t, err)
-	return client, transport
+	return client, srv
 }
 
 func TestListRangesPagerMocked(t *testing.T) {
 	_require := require.New(t)
-	client, transport := newMockFileClient(t,
-		testcommon.MockResponse{StatusCode: http.StatusOK, Body: `<?xml version="1.0" encoding="utf-8"?>
+	client, srv := newMockFileClient(t)
+	// each page is only returned for a request with the expected maxresults and marker
+	srv.AppendResponse(mock.WithStatusCode(http.StatusOK), mock.WithBody([]byte(`<?xml version="1.0" encoding="utf-8"?>
 <Ranges>
 	<Range><Start>0</Start><End>511</End></Range>
 	<ClearRange><Start>512</Start><End>1023</End></ClearRange>
 	<NextMarker>marker1</NextMarker>
-</Ranges>`},
-		testcommon.MockResponse{StatusCode: http.StatusOK, Body: `<?xml version="1.0" encoding="utf-8"?>
+</Ranges>`)), mock.WithPredicate(func(req *http.Request) bool {
+		return req.URL.Query().Get("maxresults") == "1" && !req.URL.Query().Has("marker")
+	}))
+	srv.AppendResponse(mock.WithStatusCode(http.StatusBadRequest))
+	srv.AppendResponse(mock.WithStatusCode(http.StatusOK), mock.WithBody([]byte(`<?xml version="1.0" encoding="utf-8"?>
 <Ranges>
 	<Range><Start>1024</Start><End>2047</End></Range>
 	<NextMarker />
-</Ranges>`},
-	)
+</Ranges>`)), mock.WithPredicate(func(req *http.Request) bool {
+		return req.URL.Query().Get("maxresults") == "1" && req.URL.Query().Get("marker") == "marker1"
+	}))
+	srv.AppendResponse(mock.WithStatusCode(http.StatusBadRequest))
 
 	pager := client.NewListRangesPager(&file.ListRangesOptions{MaxResults: to.Ptr(int32(1))})
 
@@ -6334,19 +6341,15 @@ func TestListRangesPagerMocked(t *testing.T) {
 	_require.Empty(page.ClearRanges)
 	_require.False(pager.More())
 
-	_require.Len(transport.Requests, 2)
-	_require.Equal("1", transport.Requests[0].URL.Query().Get("maxresults"))
-	_require.Empty(transport.Requests[0].URL.Query().Get("marker"))
-	_require.Equal("marker1", transport.Requests[1].URL.Query().Get("marker"))
+	_require.Equal(2, srv.Requests())
 }
 
 func TestListRangesPagerErrorMocked(t *testing.T) {
 	_require := require.New(t)
-	client, _ := newMockFileClient(t, testcommon.MockResponse{
-		StatusCode: http.StatusNotFound,
-		ErrorCode:  string(fileerror.ResourceNotFound),
-		Body:       `<?xml version="1.0" encoding="utf-8"?><Error><Code>ResourceNotFound</Code><Message>The specified resource does not exist.</Message></Error>`,
-	})
+	client, srv := newMockFileClient(t)
+	srv.AppendResponse(mock.WithStatusCode(http.StatusNotFound),
+		mock.WithHeader("x-ms-error-code", string(fileerror.ResourceNotFound)),
+		mock.WithBody([]byte(`<?xml version="1.0" encoding="utf-8"?><Error><Code>ResourceNotFound</Code><Message>The specified resource does not exist.</Message></Error>`)))
 
 	_, err := client.NewListRangesPager(nil).NextPage(context.Background())
 	var respErr *azcore.ResponseError
@@ -6355,18 +6358,23 @@ func TestListRangesPagerErrorMocked(t *testing.T) {
 	_require.True(fileerror.HasCode(err, fileerror.ResourceNotFound))
 }
 
-func newMockFileClientByFileID(t *testing.T, body string) (*file.Client, *testcommon.MockTransport) {
-	transport := testcommon.NewMockTransport(testcommon.MockResponse{StatusCode: http.StatusOK, Body: body})
+// newMockFileClientByFileID returns a file client addressed by file ID, whose GetFileLinks request returns body.
+func newMockFileClientByFileID(t *testing.T, body string) (*file.Client, *mock.Server) {
+	srv, clientOptions := testcommon.NewMockServer(t)
 	shareClient, err := share.NewClientWithNoCredential("https://account.file.core.windows.net/share", &share.ClientOptions{
-		ClientOptions: testcommon.MockClientOptions(transport),
+		ClientOptions: clientOptions,
 	})
 	require.NoError(t, err)
-	return shareClient.NewFileClientByFileID("13835128424026341376"), transport
+	srv.AppendResponse(mock.WithStatusCode(http.StatusOK), mock.WithBody([]byte(body)), mock.WithPredicate(func(req *http.Request) bool {
+		return req.URL.Query().Get("comp") == "hardlinks" && req.URL.Query().Get("fileid") == "13835128424026341376"
+	}))
+	srv.AppendResponse(mock.WithStatusCode(http.StatusBadRequest))
+	return shareClient.NewFileClientByFileID("13835128424026341376"), srv
 }
 
 func TestGetFileLinksMocked(t *testing.T) {
 	_require := require.New(t)
-	client, transport := newMockFileClientByFileID(t, `<?xml version="1.0" encoding="utf-8"?>
+	client, srv := newMockFileClientByFileID(t, `<?xml version="1.0" encoding="utf-8"?>
 <HardLinks>
   <HardLink><ParentId>13835128424026341376</ParentId><FileName>plain.txt</FileName></HardLink>
   <HardLink><ParentId>0</ParentId><FileName Encoded="false">not%20decoded</FileName></HardLink>
@@ -6387,8 +6395,7 @@ func TestGetFileLinksMocked(t *testing.T) {
 	// ￾ cannot be represented in XML, so the service percent-encodes it
 	_require.Equal("file￾", *resp.HardLinks[2].FileName)
 
-	_require.Len(transport.Requests, 1)
-	_require.Equal("13835128424026341376", transport.Requests[0].URL.Query().Get("fileid"))
+	_require.Equal(1, srv.Requests())
 }
 
 func TestGetFileLinksEmptyMocked(t *testing.T) {

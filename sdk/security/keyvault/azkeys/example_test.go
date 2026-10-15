@@ -5,9 +5,7 @@ package azkeys_test
 
 import (
 	"context"
-	"crypto/sha3"
 	"fmt"
-	"log"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
@@ -241,92 +239,4 @@ func ExampleClient_SecureUnwrapKey() {
 	}
 	// resp.Value contains the unwrapped key material
 	fmt.Printf("Unwrapped a key with %s", *resp.Kid)
-}
-
-// ML-DSA (FIPS 204) is a post-quantum digital signature algorithm. To create an ML-DSA key, set
-// [CreateKeyParameters.Kty] to [KeyTypeAKP] (Algorithm Key Pair) and choose an ML-DSA parameter
-// set with [CreateKeyParameters.Alg].
-func ExampleClient_CreateKey_mldsa() {
-	params := azkeys.CreateKeyParameters{
-		Alg:    to.Ptr(azkeys.AKPAlgorithmMLDSA65),
-		KeyOps: to.SliceOfPtrs(azkeys.KeyOperationSign, azkeys.KeyOperationVerify),
-		Kty:    to.Ptr(azkeys.KeyTypeAKP),
-	}
-	// if a key with the same name already exists, a new version of that key is created
-	resp, err := client.CreateKey(context.TODO(), "mldsa-key-name", params, nil)
-	if err != nil {
-		// TODO: Update the following line with your application specific error handling logic
-		log.Fatalf("ERROR: %s", err)
-	}
-	// resp.Key.Pub contains the ML-DSA public key
-	fmt.Printf("Created %s key %s\n", *resp.Key.Alg, *resp.Key.KID)
-}
-
-// ML-DSA signs the message itself rather than a digest of it. Leave [SignParameters.Algorithm] unset
-// because the key's ML-DSA parameter set determines the algorithm. [SignParameters.Context] optionally
-// binds the signature to an application-specific context of at most 255 bytes. Verification requires
-// the same context, and takes the message in [VerifyParameters.Digest].
-func ExampleClient_Sign_mldsa() {
-	msg := []byte("message to sign")
-	mlDSAContext := []byte("my-application-v1")
-
-	// passing an empty string for the version parameter uses the latest version of the key
-	signResp, err := client.Sign(context.TODO(), "mldsa-key-name", "", azkeys.SignParameters{
-		Context: mlDSAContext,
-		Value:   msg,
-	}, nil)
-	if err != nil {
-		// TODO: Update the following line with your application specific error handling logic
-		log.Fatalf("ERROR: %s", err)
-	}
-
-	verifyResp, err := client.Verify(context.TODO(), "mldsa-key-name", signResp.KID.Version(), azkeys.VerifyParameters{
-		Context:   mlDSAContext,
-		Digest:    msg,
-		Signature: signResp.Result,
-	}, nil)
-	if err != nil {
-		// TODO: Update the following line with your application specific error handling logic
-		log.Fatalf("ERROR: %s", err)
-	}
-	fmt.Printf("Signature is valid: %t\n", *verifyResp.Value)
-}
-
-// In ML-DSA external mu mode (FIPS 204 Section 6.2), the application computes the 64-byte message
-// representative mu, so the message itself is never sent to the service. The service returns a standard
-// ML-DSA signature over the message. Set only [SignParameters.ExternalMu]; Algorithm, Value and Context
-// must not be set.
-func ExampleClient_Sign_mldsaExternalMu() {
-	// mu depends on the public key, so get the key version that will sign
-	keyResp, err := client.GetKey(context.TODO(), "mldsa-key-name", "", nil)
-	if err != nil {
-		// TODO: Update the following line with your application specific error handling logic
-		log.Fatalf("ERROR: %s", err)
-	}
-	version := keyResp.Key.KID.Version()
-
-	// mu = SHAKE256(SHAKE256(publicKey, 64) || 0 || len(context) || context || message, 64)
-	msg := []byte("message to sign")
-	mlDSAContext := []byte("my-application-v1")
-	input := sha3.SumSHAKE256(keyResp.Key.Pub, 64)
-	input = append(input, 0, byte(len(mlDSAContext)))
-	input = append(input, mlDSAContext...)
-	input = append(input, msg...)
-	mu := sha3.SumSHAKE256(input, 64)
-
-	signResp, err := client.Sign(context.TODO(), "mldsa-key-name", version, azkeys.SignParameters{ExternalMu: mu}, nil)
-	if err != nil {
-		// TODO: Update the following line with your application specific error handling logic
-		log.Fatalf("ERROR: %s", err)
-	}
-
-	verifyResp, err := client.Verify(context.TODO(), "mldsa-key-name", version, azkeys.VerifyParameters{
-		ExternalMu: mu,
-		Signature:  signResp.Result,
-	}, nil)
-	if err != nil {
-		// TODO: Update the following line with your application specific error handling logic
-		log.Fatalf("ERROR: %s", err)
-	}
-	fmt.Printf("Signature is valid: %t\n", *verifyResp.Value)
 }

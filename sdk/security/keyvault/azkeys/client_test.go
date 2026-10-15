@@ -713,73 +713,6 @@ func TestSignVerify(t *testing.T) {
 	}
 }
 
-func TestSignVerifyMLDSA(t *testing.T) {
-	// The service doesn't yet accept ML-DSA (AKP) keys in the regions available to
-	// test-resources.json, so there's no recording for this test. Skip it in every
-	// mode unless explicitly enabled; remove this gate once a recording exists.
-	if os.Getenv("AZURE_KEYVAULT_ENABLE_MLDSA") == "" {
-		t.Skip("skipping ML-DSA test: set AZURE_KEYVAULT_ENABLE_MLDSA to run against a vault that supports ML-DSA keys")
-	}
-	// ML-DSA (AKP) keys are HSM-protected, so this test requires a premium vault (the default for test-resources.json)
-	client := startTest(t, false)
-
-	keyName := createRandomName(t, "mldsa")
-
-	createParams := azkeys.CreateKeyParameters{
-		Alg:    to.Ptr(azkeys.AKPAlgorithmMLDSA65),
-		KeyOps: to.SliceOfPtrs(azkeys.KeyOperationSign, azkeys.KeyOperationVerify),
-		Kty:    to.Ptr(azkeys.KeyTypeAKP),
-	}
-	testSerde(t, &createParams)
-	createResp, err := client.CreateKey(context.Background(), keyName, createParams, nil)
-	require.NoError(t, err)
-	require.NotNil(t, createResp.Key)
-	require.NotNil(t, createResp.Key.KID)
-	defer cleanUpKey(t, client, createResp.Key.KID)
-	require.NotNil(t, createResp.Key.Kty)
-	require.Contains(t, []azkeys.KeyType{azkeys.KeyTypeAKP, azkeys.KeyTypeAKPHSM}, *createResp.Key.Kty)
-	require.NotNil(t, createResp.Key.Alg)
-	require.Equal(t, azkeys.AKPAlgorithmMLDSA65, *createResp.Key.Alg)
-	require.NotEmpty(t, createResp.Key.Pub)
-	testSerde(t, &createResp.KeyBundle)
-	version := createResp.Key.KID.Version()
-
-	// ML-DSA signs the message itself (not a digest), and the key's algorithm is implied
-	msg := []byte("plaintext")
-	mlDSAContext := []byte("azkeys-test")
-	signParams := azkeys.SignParameters{Context: mlDSAContext, Value: msg}
-	testSerde(t, &signParams)
-	signResp, err := client.Sign(context.Background(), keyName, version, signParams, nil)
-	require.NoError(t, err)
-	require.NotEmpty(t, signResp.Result)
-	testSerde(t, &signResp.KeyOperationResult)
-
-	verifyParams := azkeys.VerifyParameters{Context: mlDSAContext, Digest: msg, Signature: signResp.Result}
-	testSerde(t, &verifyParams)
-	verifyResp, err := client.Verify(context.Background(), keyName, version, verifyParams, nil)
-	require.NoError(t, err)
-	require.True(t, *verifyResp.Value)
-
-	// external mu mode: the client computes mu from the public key, context and message, and the
-	// service signs it directly. The result is a standard ML-DSA signature over the message.
-	mu := mlDSAExternalMu(t, createResp.Key.Pub, nil, msg)
-	signParams = azkeys.SignParameters{ExternalMu: mu}
-	testSerde(t, &signParams)
-	signResp, err = client.Sign(context.Background(), keyName, version, signParams, nil)
-	require.NoError(t, err)
-	require.NotEmpty(t, signResp.Result)
-
-	verifyResp, err = client.Verify(context.Background(), keyName, version, azkeys.VerifyParameters{Digest: msg, Signature: signResp.Result}, nil)
-	require.NoError(t, err)
-	require.True(t, *verifyResp.Value)
-
-	verifyParams = azkeys.VerifyParameters{ExternalMu: mu, Signature: signResp.Result}
-	testSerde(t, &verifyParams)
-	verifyResp, err = client.Verify(context.Background(), keyName, version, verifyParams, nil)
-	require.NoError(t, err)
-	require.True(t, *verifyResp.Value)
-}
-
 func TestWrapUnwrap(t *testing.T) {
 	for _, mhsm := range []bool{false, true} {
 		name := "KV"
@@ -822,7 +755,7 @@ func TestSecureWrapUnwrap(t *testing.T) {
 		// The service enforces a specific shape for keys used with the secure variants:
 		//   - the secure ops must be granted explicitly (the MHSM default key_ops doesn't include them)
 		//   - the key cannot be Exportable
-		//   - the key MUST have a release policy, and that policy can't be immutable
+		//   - the key MUST have a release policy
 		params := azkeys.CreateKeyParameters{
 			Kty: to.Ptr(azkeys.KeyTypeRSAHSM),
 			KeyOps: to.SliceOfPtrs(
@@ -831,6 +764,7 @@ func TestSecureWrapUnwrap(t *testing.T) {
 			),
 			ReleasePolicy: &azkeys.KeyReleasePolicy{
 				EncodedPolicy: getMarshalledReleasePolicy(attestationURL),
+				Immutable:     to.Ptr(true),
 			},
 		}
 		createResp, err = client.CreateKey(context.Background(), keyName, params, nil)

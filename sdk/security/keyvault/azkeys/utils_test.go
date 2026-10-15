@@ -234,27 +234,21 @@ type serdeModel interface {
 	json.Unmarshaler
 }
 
-// testSerde round-trips model through JSON and verifies malformed input is rejected. Unmarshaling
-// targets fresh values so the caller's model isn't modified: on error, json v2 may overwrite data
-// shared with the model, such as a slice's backing array.
-func testSerde[T any, PT interface {
-	*T
-	serdeModel
-}](t *testing.T, model PT) {
+func testSerde[T serdeModel](t *testing.T, model T) {
 	data, err := model.MarshalJSON()
 	require.NoError(t, err)
-	err = PT(new(T)).UnmarshalJSON(data)
+	err = model.UnmarshalJSON(data)
 	require.NoError(t, err)
 
 	// testing unmarshal error scenarios
-	err = PT(new(T)).UnmarshalJSON(nil)
+	err = model.UnmarshalJSON(nil)
 	require.Error(t, err)
 
 	m := regexp.MustCompile(":.*$")
 	modifiedData := m.ReplaceAllString(string(data), `:["test", "test1", "test2"]}`)
 	if modifiedData != "{}" {
 		data3 := []byte(modifiedData)
-		err = PT(new(T)).UnmarshalJSON(data3)
+		err = model.UnmarshalJSON(data3)
 		require.Error(t, err)
 	}
 }

@@ -18,6 +18,7 @@
   * Added `LinkCount` to `directory.File` and `directory.Directory`, and `Owner`, `Group` and `FileMode` to `directory.FileProperty`.
   * Added `directory.FileType` (`Regular`, `Directory`, `SymLink`, `BlockDevice`, `CharacterDevice`, `Socket`, `Fifo`) and a `FileType()` method on each listed item type.
   * URL-encoded names of NFS items (`Encoded="true"`) are decoded before being returned.
+* Added Files Change Feed support on shares: `EnableChangeFeed` and `ChangeFeedRetentionInDays` in share `CreateOptions` and `SetPropertiesOptions`, and `EnableChangeFeed`, `ChangeFeedRetentionInDays` and `ChangeFeedBlobContainerName` in the share `GetProperties` response.
 
 ### Breaking Changes
 

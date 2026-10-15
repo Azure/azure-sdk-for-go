@@ -6,5 +6,5 @@ package armagricultureplatform
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/agricultureplatform/armagricultureplatform"
-	moduleVersion = "v0.1.0"
+	moduleVersion = "v0.1.1"
 )

@@ -19,7 +19,7 @@ import (
 // ModelsClient contains the methods for the Models group.
 // Don't use this type directly, use NewModelsClient() instead.
 //
-// Generated from API version 2026-07-15-preview
+// Generated from API version 2026-09-15-preview
 type ModelsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -96,7 +96,7 @@ func (client *ModelsClient) listCreateRequest(ctx context.Context, location stri
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260715Preview)
+		reqQP.Set("api-version", version20260915Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

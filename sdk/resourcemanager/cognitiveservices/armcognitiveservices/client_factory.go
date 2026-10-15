@@ -56,6 +56,14 @@ func (c *ClientFactory) NewAccountsClient() *AccountsClient {
 	}
 }
 
+// NewAdapterDeploymentsClient creates a new instance of AdapterDeploymentsClient.
+func (c *ClientFactory) NewAdapterDeploymentsClient() *AdapterDeploymentsClient {
+	return &AdapterDeploymentsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewAgentApplicationsClient creates a new instance of AgentApplicationsClient.
 func (c *ClientFactory) NewAgentApplicationsClient() *AgentApplicationsClient {
 	return &AgentApplicationsClient{
@@ -107,6 +115,14 @@ func (c *ClientFactory) NewComputeOperationsClient() *ComputeOperationsClient {
 // NewComputesClient creates a new instance of ComputesClient.
 func (c *ClientFactory) NewComputesClient() *ComputesClient {
 	return &ComputesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewCostControlsClient creates a new instance of CostControlsClient.
+func (c *ClientFactory) NewCostControlsClient() *CostControlsClient {
+	return &CostControlsClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}
@@ -295,6 +311,14 @@ func (c *ClientFactory) NewQuotaTiersClient() *QuotaTiersClient {
 	}
 }
 
+// NewRaiBindingsClient creates a new instance of RaiBindingsClient.
+func (c *ClientFactory) NewRaiBindingsClient() *RaiBindingsClient {
+	return &RaiBindingsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewRaiBlocklistItemsClient creates a new instance of RaiBlocklistItemsClient.
 func (c *ClientFactory) NewRaiBlocklistItemsClient() *RaiBlocklistItemsClient {
 	return &RaiBlocklistItemsClient{
@@ -338,6 +362,14 @@ func (c *ClientFactory) NewRaiExternalSafetyProvidersClient() *RaiExternalSafety
 // NewRaiPoliciesClient creates a new instance of RaiPoliciesClient.
 func (c *ClientFactory) NewRaiPoliciesClient() *RaiPoliciesClient {
 	return &RaiPoliciesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewRaiRegosClient creates a new instance of RaiRegosClient.
+func (c *ClientFactory) NewRaiRegosClient() *RaiRegosClient {
+	return &RaiRegosClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}

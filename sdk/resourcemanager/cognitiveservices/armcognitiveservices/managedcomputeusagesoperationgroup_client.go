@@ -19,7 +19,7 @@ import (
 // ManagedComputeUsagesOperationGroupClient contains the methods for the ManagedComputeUsagesOperationGroup group.
 // Don't use this type directly, use NewManagedComputeUsagesOperationGroupClient() instead.
 //
-// Generated from API version 2026-07-15-preview
+// Generated from API version 2026-09-15-preview
 type ManagedComputeUsagesOperationGroupClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -97,7 +97,7 @@ func (client *ManagedComputeUsagesOperationGroupClient) listCreateRequest(ctx co
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260715Preview)
+		reqQP.Set("api-version", version20260915Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

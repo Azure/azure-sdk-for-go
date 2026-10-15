@@ -29,6 +29,10 @@ type ManagedComputeDeploymentsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, accountName string, deploymentName string, options *armcognitiveservices.ManagedComputeDeploymentsClientBeginDeleteOptions) (resp azfake.PollerResponder[armcognitiveservices.ManagedComputeDeploymentsClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method ManagedComputeDeploymentsClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, accountName string, deploymentName string, properties armcognitiveservices.PatchResourceSKU, options *armcognitiveservices.ManagedComputeDeploymentsClientBeginUpdateOptions) (resp azfake.PollerResponder[armcognitiveservices.ManagedComputeDeploymentsClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method ManagedComputeDeploymentsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, accountName string, deploymentName string, options *armcognitiveservices.ManagedComputeDeploymentsClientGetOptions) (resp azfake.Responder[armcognitiveservices.ManagedComputeDeploymentsClientGetResponse], errResp azfake.ErrorResponder)
@@ -36,10 +40,6 @@ type ManagedComputeDeploymentsServer struct {
 	// NewListPager is the fake for method ManagedComputeDeploymentsClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListPager func(resourceGroupName string, accountName string, options *armcognitiveservices.ManagedComputeDeploymentsClientListOptions) (resp azfake.PagerResponder[armcognitiveservices.ManagedComputeDeploymentsClientListResponse])
-
-	// BeginUpdate is the fake for method ManagedComputeDeploymentsClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, accountName string, deploymentName string, properties armcognitiveservices.PatchResourceSKU, options *armcognitiveservices.ManagedComputeDeploymentsClientBeginUpdateOptions) (resp azfake.PollerResponder[armcognitiveservices.ManagedComputeDeploymentsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewManagedComputeDeploymentsServerTransport creates a new instance of ManagedComputeDeploymentsServerTransport with the provided implementation.
@@ -50,8 +50,8 @@ func NewManagedComputeDeploymentsServerTransport(srv *ManagedComputeDeploymentsS
 		srv:                 srv,
 		beginCreateOrUpdate: newTracker[azfake.PollerResponder[armcognitiveservices.ManagedComputeDeploymentsClientCreateOrUpdateResponse]](),
 		beginDelete:         newTracker[azfake.PollerResponder[armcognitiveservices.ManagedComputeDeploymentsClientDeleteResponse]](),
-		newListPager:        newTracker[azfake.PagerResponder[armcognitiveservices.ManagedComputeDeploymentsClientListResponse]](),
 		beginUpdate:         newTracker[azfake.PollerResponder[armcognitiveservices.ManagedComputeDeploymentsClientUpdateResponse]](),
+		newListPager:        newTracker[azfake.PagerResponder[armcognitiveservices.ManagedComputeDeploymentsClientListResponse]](),
 	}
 }
 
@@ -61,8 +61,8 @@ type ManagedComputeDeploymentsServerTransport struct {
 	srv                 *ManagedComputeDeploymentsServer
 	beginCreateOrUpdate *tracker[azfake.PollerResponder[armcognitiveservices.ManagedComputeDeploymentsClientCreateOrUpdateResponse]]
 	beginDelete         *tracker[azfake.PollerResponder[armcognitiveservices.ManagedComputeDeploymentsClientDeleteResponse]]
-	newListPager        *tracker[azfake.PagerResponder[armcognitiveservices.ManagedComputeDeploymentsClientListResponse]]
 	beginUpdate         *tracker[azfake.PollerResponder[armcognitiveservices.ManagedComputeDeploymentsClientUpdateResponse]]
+	newListPager        *tracker[azfake.PagerResponder[armcognitiveservices.ManagedComputeDeploymentsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for ManagedComputeDeploymentsServerTransport.
@@ -90,12 +90,12 @@ func (m *ManagedComputeDeploymentsServerTransport) dispatchToMethodFake(req *htt
 				res.resp, res.err = m.dispatchBeginCreateOrUpdate(req)
 			case "ManagedComputeDeploymentsClient.BeginDelete":
 				res.resp, res.err = m.dispatchBeginDelete(req)
+			case "ManagedComputeDeploymentsClient.BeginUpdate":
+				res.resp, res.err = m.dispatchBeginUpdate(req)
 			case "ManagedComputeDeploymentsClient.Get":
 				res.resp, res.err = m.dispatchGet(req)
 			case "ManagedComputeDeploymentsClient.NewListPager":
 				res.resp, res.err = m.dispatchNewListPager(req)
-			case "ManagedComputeDeploymentsClient.BeginUpdate":
-				res.resp, res.err = m.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -212,6 +212,58 @@ func (m *ManagedComputeDeploymentsServerTransport) dispatchBeginDelete(req *http
 	return resp, nil
 }
 
+func (m *ManagedComputeDeploymentsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if m.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := m.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.CognitiveServices/accounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/managedComputeDeployments/(?P<deploymentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armcognitiveservices.PatchResourceSKU](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+		if err != nil {
+			return nil, err
+		}
+		deploymentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := m.srv.BeginUpdate(req.Context(), resourceGroupNameParam, accountNameParam, deploymentNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		m.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		m.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		m.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (m *ManagedComputeDeploymentsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if m.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -287,58 +339,6 @@ func (m *ManagedComputeDeploymentsServerTransport) dispatchNewListPager(req *htt
 	if !server.PagerResponderMore(newListPager) {
 		m.newListPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (m *ManagedComputeDeploymentsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if m.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := m.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.CognitiveServices/accounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/managedComputeDeployments/(?P<deploymentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armcognitiveservices.PatchResourceSKU](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
-		if err != nil {
-			return nil, err
-		}
-		deploymentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := m.srv.BeginUpdate(req.Context(), resourceGroupNameParam, accountNameParam, deploymentNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		m.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		m.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		m.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

@@ -12,11 +12,18 @@
   * Added `GetFileLinks` method on file `Client` that returns the hard links of a file. It is only supported on a file `Client` that addresses the file by file ID.
   * `GetProperties` on file and directory `Client` returns the name of the resource in `FileName` when it is addressed by file ID.
   * A file or directory `Client` that addresses the resource by file ID only supports `GetProperties` and `GetFileLinks` (files only). All other operations, including lease operations and `GetSASURL`, return an error wrapping the new `fileerror.ErrFileIDNotSupported` without sending a request. `GetFileLinks` on a path based file `Client` returns an error wrapping the new `fileerror.ErrFileIDRequired`.
+* Added NFS List V2 Files and Directories support for service version `2027-03-07`:
+  * Added `Permissions`, `LinkCount`, `NfsAttributes` and `All` to `directory.ListFilesInclude`. `All` is sent to the service as the literal value `All`.
+  * Added `SymLinkItems`, `BlockDeviceItems`, `CharDeviceItems`, `FifoItems` and `SocketItems` to `directory.FilesAndDirectoriesListSegment`, with new types `directory.SymLinkItem` (including `LinkText`), `directory.BlockDeviceItem` and `directory.CharDeviceItem` (including `DeviceMajor` and `DeviceMinor`), `directory.FifoItem` and `directory.SocketItem`.
+  * Added `LinkCount` to `directory.File` and `directory.Directory`, and `Owner`, `Group` and `FileMode` to `directory.FileProperty`.
+  * Added `directory.FileType` (`Regular`, `Directory`, `SymLink`, `BlockDevice`, `CharacterDevice`, `Socket`, `Fifo`) and a `FileType()` method on each listed item type.
+  * URL-encoded names of NFS items (`Encoded="true"`) are decoded before being returned.
 
 ### Breaking Changes
 
 ### Bugs Fixed
 * Fixed `GetSASURL()` on `share.Client`, `file.Client`, and `service.Client` appending a duplicated `?` to the resulting URL when called on a client whose URL already contained a query string (e.g. a client returned by `WithSnapshot`, a file client derived from a share snapshot, or a custom endpoint with pre-existing query parameters), which produced a malformed SAS URL.
+* Fixed `NewListFilesAndDirectoriesPager` failing the whole page when the service returned a file name, directory name or prefix with a malformed URL encoding. The value is now returned as sent by the service.
 
 ### Other Changes
 * Updated `azcore` version to `1.23.2`

@@ -12,14 +12,14 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-06-15-preview/VolumeQuotaRules_Create.json
+// Generated from example definition: 2026-07-01/VolumeQuotaRules_Create.json
 func ExampleVolumeQuotaRulesClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armnetapp.NewClientFactory("5275316f-a498-48d6-b324-2cbfdc4311b9", cred, nil)
+	clientFactory, err := armnetapp.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -45,7 +45,7 @@ func ExampleVolumeQuotaRulesClient_BeginCreate() {
 	// 	VolumeQuotaRule: armnetapp.VolumeQuotaRule{
 	// 		Name: to.Ptr("account-9957/pool-5210/volume-6387/rule-0004"),
 	// 		Type: to.Ptr("Microsoft.NetApp/netAppAccounts/capacityPools/volumes/volumeQuotaRules"),
-	// 		ID: to.Ptr("/subscriptions/5275316f-a498-48d6-b324-2cbfdc4311b9/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account-9957/capacityPools/pool-5210/volumes/volume-6387/volumeQuotaRules/rule-0004"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account-9957/capacityPools/pool-5210/volumes/volume-6387/volumeQuotaRules/rule-0004"),
 	// 		Location: to.Ptr("westus"),
 	// 		Properties: &armnetapp.VolumeQuotaRulesProperties{
 	// 			ProvisioningState: to.Ptr(armnetapp.ProvisioningStateSucceeded),
@@ -57,14 +57,14 @@ func ExampleVolumeQuotaRulesClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2026-06-15-preview/VolumeQuotaRules_Delete.json
+// Generated from example definition: 2026-07-01/VolumeQuotaRules_Delete.json
 func ExampleVolumeQuotaRulesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armnetapp.NewClientFactory("5275316f-a498-48d6-b324-2cbfdc4311b9", cred, nil)
+	clientFactory, err := armnetapp.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -83,91 +83,14 @@ func ExampleVolumeQuotaRulesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-06-15-preview/VolumeQuotaRules_Get.json
-func ExampleVolumeQuotaRulesClient_Get() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetapp.NewClientFactory("5275316f-a498-48d6-b324-2cbfdc4311b9", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewVolumeQuotaRulesClient().Get(ctx, "myRG", "account-9957", "pool-5210", "volume-6387", "rule-0004", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armnetapp.VolumeQuotaRulesClientGetResponse{
-	// 	VolumeQuotaRule: armnetapp.VolumeQuotaRule{
-	// 		Name: to.Ptr("account-9957/pool-5210/volume-6387/rule-0004"),
-	// 		Type: to.Ptr("Microsoft.NetApp/netAppAccounts/capacityPools/volumes/volumeQuotaRules"),
-	// 		ID: to.Ptr("/subscriptions/5275316f-a498-48d6-b324-2cbfdc4311b9/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account-9957/capacityPools/pool-5210/volumes/volume-6387/volumeQuotaRules/rule-0004"),
-	// 		Location: to.Ptr("westus"),
-	// 		Properties: &armnetapp.VolumeQuotaRulesProperties{
-	// 			ProvisioningState: to.Ptr(armnetapp.ProvisioningStateSucceeded),
-	// 			QuotaSizeInKiBs: to.Ptr[int64](100005),
-	// 			QuotaTarget: to.Ptr("1821"),
-	// 			QuotaType: to.Ptr(armnetapp.QuotaTypeIndividualUserQuota),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-06-15-preview/VolumeQuotaRules_List.json
-func ExampleVolumeQuotaRulesClient_NewListByVolumePager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetapp.NewClientFactory("5275316f-a498-48d6-b324-2cbfdc4311b9", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewVolumeQuotaRulesClient().NewListByVolumePager("myRG", "account-9957", "pool-5210", "volume-6387", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armnetapp.VolumeQuotaRulesClientListByVolumeResponse{
-		// 	VolumeQuotaRulesList: armnetapp.VolumeQuotaRulesList{
-		// 		Value: []*armnetapp.VolumeQuotaRule{
-		// 			{
-		// 				Name: to.Ptr("account-9957/pool-5210/volume-6387/rule-0004"),
-		// 				Type: to.Ptr("Microsoft.NetApp/netAppAccounts/capacityPools/volumes/volumeQuotaRules"),
-		// 				ID: to.Ptr("/subscriptions/5275316f-a498-48d6-b324-2cbfdc4311b9/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account-9957/capacityPools/pool-5210/volumes/volume-6387/volumeQuotaRules/rule-0004"),
-		// 				Location: to.Ptr("westus"),
-		// 				Properties: &armnetapp.VolumeQuotaRulesProperties{
-		// 					ProvisioningState: to.Ptr(armnetapp.ProvisioningStateSucceeded),
-		// 					QuotaSizeInKiBs: to.Ptr[int64](100005),
-		// 					QuotaTarget: to.Ptr("1821"),
-		// 					QuotaType: to.Ptr(armnetapp.QuotaTypeIndividualUserQuota),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2026-06-15-preview/VolumeQuotaRules_Update.json
+// Generated from example definition: 2026-07-01/VolumeQuotaRules_Update.json
 func ExampleVolumeQuotaRulesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armnetapp.NewClientFactory("5275316f-a498-48d6-b324-2cbfdc4311b9", cred, nil)
+	clientFactory, err := armnetapp.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -190,7 +113,7 @@ func ExampleVolumeQuotaRulesClient_BeginUpdate() {
 	// 	VolumeQuotaRule: armnetapp.VolumeQuotaRule{
 	// 		Name: to.Ptr("account-9957/pool-5210/volume-6387/rule-0004"),
 	// 		Type: to.Ptr("Microsoft.NetApp/netAppAccounts/capacityPools/volumes/volumeQuotaRules"),
-	// 		ID: to.Ptr("/subscriptions/5275316f-a498-48d6-b324-2cbfdc4311b9/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account-9957/capacityPools/pool-5210/volumes/volume-6387/volumeQuotaRules/rule-0004"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account-9957/capacityPools/pool-5210/volumes/volume-6387/volumeQuotaRules/rule-0004"),
 	// 		Location: to.Ptr("westus"),
 	// 		Properties: &armnetapp.VolumeQuotaRulesProperties{
 	// 			ProvisioningState: to.Ptr(armnetapp.ProvisioningStatePatching),
@@ -200,4 +123,81 @@ func ExampleVolumeQuotaRulesClient_BeginUpdate() {
 	// 		},
 	// 	},
 	// }
+}
+
+// Generated from example definition: 2026-07-01/VolumeQuotaRules_Get.json
+func ExampleVolumeQuotaRulesClient_Get() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetapp.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewVolumeQuotaRulesClient().Get(ctx, "myRG", "account-9957", "pool-5210", "volume-6387", "rule-0004", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armnetapp.VolumeQuotaRulesClientGetResponse{
+	// 	VolumeQuotaRule: armnetapp.VolumeQuotaRule{
+	// 		Name: to.Ptr("account-9957/pool-5210/volume-6387/rule-0004"),
+	// 		Type: to.Ptr("Microsoft.NetApp/netAppAccounts/capacityPools/volumes/volumeQuotaRules"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account-9957/capacityPools/pool-5210/volumes/volume-6387/volumeQuotaRules/rule-0004"),
+	// 		Location: to.Ptr("westus"),
+	// 		Properties: &armnetapp.VolumeQuotaRulesProperties{
+	// 			ProvisioningState: to.Ptr(armnetapp.ProvisioningStateSucceeded),
+	// 			QuotaSizeInKiBs: to.Ptr[int64](100005),
+	// 			QuotaTarget: to.Ptr("1821"),
+	// 			QuotaType: to.Ptr(armnetapp.QuotaTypeIndividualUserQuota),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-07-01/VolumeQuotaRules_List.json
+func ExampleVolumeQuotaRulesClient_NewListByVolumePager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetapp.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewVolumeQuotaRulesClient().NewListByVolumePager("myRG", "account-9957", "pool-5210", "volume-6387", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armnetapp.VolumeQuotaRulesClientListByVolumeResponse{
+		// 	VolumeQuotaRulesList: armnetapp.VolumeQuotaRulesList{
+		// 		Value: []*armnetapp.VolumeQuotaRule{
+		// 			{
+		// 				Name: to.Ptr("account-9957/pool-5210/volume-6387/rule-0004"),
+		// 				Type: to.Ptr("Microsoft.NetApp/netAppAccounts/capacityPools/volumes/volumeQuotaRules"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account-9957/capacityPools/pool-5210/volumes/volume-6387/volumeQuotaRules/rule-0004"),
+		// 				Location: to.Ptr("westus"),
+		// 				Properties: &armnetapp.VolumeQuotaRulesProperties{
+		// 					ProvisioningState: to.Ptr(armnetapp.ProvisioningStateSucceeded),
+		// 					QuotaSizeInKiBs: to.Ptr[int64](100005),
+		// 					QuotaTarget: to.Ptr("1821"),
+		// 					QuotaType: to.Ptr(armnetapp.QuotaTypeIndividualUserQuota),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
 }

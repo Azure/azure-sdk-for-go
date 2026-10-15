@@ -19,7 +19,7 @@ import (
 // RansomwareReportsClient contains the methods for the RansomwareReports group.
 // Don't use this type directly, use NewRansomwareReportsClient() instead.
 //
-// Generated from API version 2026-06-15-preview
+// Generated from API version 2026-07-01
 type RansomwareReportsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -74,7 +74,7 @@ func (client *RansomwareReportsClient) BeginClearSuspects(ctx context.Context, r
 	}
 }
 
-// ClearSuspects - Clear ransomware suspects for the given Advanced Ransomware Protection report. You should evaluate the
+// clearSuspects - Clear ransomware suspects for the given Advanced Ransomware Protection report. You should evaluate the
 // report to determine whether the activity is acceptable (false positive) or whether an attack seems malicious.
 // ARP creates snapshots named Anti_ransomware_backup when it detects a potential ransomware threat. You can use one of these
 // ARP snapshots or another snapshot of your volume to restore data",
@@ -99,7 +99,7 @@ func (client *RansomwareReportsClient) clearSuspects(ctx context.Context, resour
 	return httpResp, nil
 }
 
-// clearSuspectsCreateRequest creates the ClearSuspects request.
+// clearSuspectsCreateRequest creates the clearSuspects request.
 func (client *RansomwareReportsClient) clearSuspectsCreateRequest(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, ransomwareReportName string, body RansomwareSuspectsClearRequest, _ *RansomwareReportsClientBeginClearSuspectsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/ransomwareReports/{ransomwareReportName}/clearSuspects"
 	if client.subscriptionID == "" {
@@ -131,7 +131,7 @@ func (client *RansomwareReportsClient) clearSuspectsCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260615Preview)
+	reqQP.Set("api-version", version20260701)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -201,7 +201,7 @@ func (client *RansomwareReportsClient) getCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260615Preview)
+	reqQP.Set("api-version", version20260701)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -292,7 +292,7 @@ func (client *RansomwareReportsClient) listCreateRequest(ctx context.Context, re
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260615Preview)
+		reqQP.Set("api-version", version20260701)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

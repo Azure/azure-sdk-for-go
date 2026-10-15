@@ -20,13 +20,6 @@ go get github.com/Azure/azure-sdk-for-go/sdk/azcore
 
 General documentation and examples can be found on [pkg.go.dev](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azcore).
 
-### Decorating tracers
-
-Use [`tracing.WrapTracer`](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azcore/tracing#WrapTracer)
-to customize tracer callbacks while preserving attributes. The decorator receives a tracer
-without attributes; the returned tracer applies the original attributes before attributes
-added during or after decoration, preserving last-set-wins ordering.
-
 ## Contributing
 This project welcomes contributions and suggestions. Most contributions require
 you to agree to a Contributor License Agreement (CLA) declaring that you have

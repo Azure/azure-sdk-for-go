@@ -11,6 +11,7 @@ import (
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	azcred "github.com/Azure/azure-sdk-for-go/sdk/internal/test/credential"
 	"github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azadmin/backup"
@@ -22,7 +23,6 @@ const recordingDirectory = "sdk/security/keyvault/azadmin/testdata"
 var (
 	credential azcore.TokenCredential
 	hsmURL     string
-	token      string
 	blobURL    string
 
 	fakeHsmURL  = fmt.Sprintf("https://%s.managedhsm.azure.net/", recording.SanitizedValue)
@@ -57,7 +57,6 @@ func run(m *testing.M) int {
 
 	hsmURL = recording.GetEnvVariable("AZURE_MANAGEDHSM_URL", fakeHsmURL)
 	blobURL = recording.GetEnvVariable("BLOB_CONTAINER_URL", fakeBlobURL)
-	token = recording.GetEnvVariable("BLOB_STORAGE_SAS_TOKEN", recording.SanitizedValue)
 
 	if recording.GetRecordMode() == recording.RecordingMode {
 		err = recording.AddGeneralRegexSanitizer(fakeHsmURL, hsmURL, nil)
@@ -89,9 +88,10 @@ func startBackupTest(t *testing.T) (*backup.Client, backup.SASTokenParameters) {
 	opts := &backup.ClientOptions{ClientOptions: azcore.ClientOptions{Transport: transport}}
 	client, err := backup.NewClient(hsmURL, credential, opts)
 	require.NoError(t, err)
+	// the test HSM authenticates to storage with its user-assigned managed identity
 	sasToken := backup.SASTokenParameters{
 		StorageResourceURI: &blobURL,
-		Token:              &token,
+		UseManagedIdentity: to.Ptr(true),
 	}
 
 	return client, sasToken

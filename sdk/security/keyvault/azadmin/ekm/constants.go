@@ -5,5 +5,117 @@
 package ekm
 
 const (
-	version20260101Preview string = "2026-01-01-preview"
+	version20260701Preview string = "2026-07-01-preview"
 )
+
+// EkmConnectivityMode - The connectivity mode used to reach the EKM proxy.
+type EkmConnectivityMode string
+
+const (
+	// EkmConnectivityModePrivateEndpoint - The EKM proxy is reachable through a private endpoint; host is the name of a private
+	// endpoint (peName).
+	EkmConnectivityModePrivateEndpoint EkmConnectivityMode = "PrivateEndpoint"
+	// EkmConnectivityModePublic - The EKM proxy is reachable over the public internet; host is a DNS name or IP address.
+	EkmConnectivityModePublic EkmConnectivityMode = "Public"
+)
+
+// PossibleEkmConnectivityModeValues returns the possible values for the EkmConnectivityMode const type.
+func PossibleEkmConnectivityModeValues() []EkmConnectivityMode {
+	return []EkmConnectivityMode{
+		EkmConnectivityModePrivateEndpoint,
+		EkmConnectivityModePublic,
+	}
+}
+
+// EkmPrivateEndpointConnectionStatus - The status of the connection between the private endpoint and the Private Link Service.
+type EkmPrivateEndpointConnectionStatus string
+
+const (
+	// EkmPrivateEndpointConnectionStatusApproved - The connection has been approved by the Private Link Service owner.
+	EkmPrivateEndpointConnectionStatusApproved EkmPrivateEndpointConnectionStatus = "Approved"
+	// EkmPrivateEndpointConnectionStatusDisconnected - The connection has been disconnected by the Private Link Service owner.
+	EkmPrivateEndpointConnectionStatusDisconnected EkmPrivateEndpointConnectionStatus = "Disconnected"
+	// EkmPrivateEndpointConnectionStatusPending - The connection is awaiting approval by the Private Link Service owner.
+	EkmPrivateEndpointConnectionStatusPending EkmPrivateEndpointConnectionStatus = "Pending"
+	// EkmPrivateEndpointConnectionStatusRejected - The connection has been rejected by the Private Link Service owner.
+	EkmPrivateEndpointConnectionStatusRejected EkmPrivateEndpointConnectionStatus = "Rejected"
+)
+
+// PossibleEkmPrivateEndpointConnectionStatusValues returns the possible values for the EkmPrivateEndpointConnectionStatus const type.
+func PossibleEkmPrivateEndpointConnectionStatusValues() []EkmPrivateEndpointConnectionStatus {
+	return []EkmPrivateEndpointConnectionStatus{
+		EkmPrivateEndpointConnectionStatusApproved,
+		EkmPrivateEndpointConnectionStatusDisconnected,
+		EkmPrivateEndpointConnectionStatusPending,
+		EkmPrivateEndpointConnectionStatusRejected,
+	}
+}
+
+// EkmPrivateEndpointOperationType - The type of a long-running EKM proxy private endpoint operation.
+type EkmPrivateEndpointOperationType string
+
+const (
+	// EkmPrivateEndpointOperationTypeCreate - A private endpoint create operation.
+	EkmPrivateEndpointOperationTypeCreate EkmPrivateEndpointOperationType = "Create"
+	// EkmPrivateEndpointOperationTypeDelete - A private endpoint delete operation.
+	EkmPrivateEndpointOperationTypeDelete EkmPrivateEndpointOperationType = "Delete"
+)
+
+// PossibleEkmPrivateEndpointOperationTypeValues returns the possible values for the EkmPrivateEndpointOperationType const type.
+func PossibleEkmPrivateEndpointOperationTypeValues() []EkmPrivateEndpointOperationType {
+	return []EkmPrivateEndpointOperationType{
+		EkmPrivateEndpointOperationTypeCreate,
+		EkmPrivateEndpointOperationTypeDelete,
+	}
+}
+
+// EkmPrivateEndpointProvisioningState - The provisioning state of the EKM proxy private endpoint.
+type EkmPrivateEndpointProvisioningState string
+
+const (
+	// EkmPrivateEndpointProvisioningStateDeleting - The private endpoint is being deleted.
+	EkmPrivateEndpointProvisioningStateDeleting EkmPrivateEndpointProvisioningState = "Deleting"
+	// EkmPrivateEndpointProvisioningStateFailed - The private endpoint provisioning failed.
+	EkmPrivateEndpointProvisioningStateFailed EkmPrivateEndpointProvisioningState = "Failed"
+	// EkmPrivateEndpointProvisioningStateSucceeded - The private endpoint has been successfully provisioned.
+	EkmPrivateEndpointProvisioningStateSucceeded EkmPrivateEndpointProvisioningState = "Succeeded"
+	// EkmPrivateEndpointProvisioningStateUpdating - The private endpoint is being updated.
+	EkmPrivateEndpointProvisioningStateUpdating EkmPrivateEndpointProvisioningState = "Updating"
+)
+
+// PossibleEkmPrivateEndpointProvisioningStateValues returns the possible values for the EkmPrivateEndpointProvisioningState const type.
+func PossibleEkmPrivateEndpointProvisioningStateValues() []EkmPrivateEndpointProvisioningState {
+	return []EkmPrivateEndpointProvisioningState{
+		EkmPrivateEndpointProvisioningStateDeleting,
+		EkmPrivateEndpointProvisioningStateFailed,
+		EkmPrivateEndpointProvisioningStateSucceeded,
+		EkmPrivateEndpointProvisioningStateUpdating,
+	}
+}
+
+// OperationState - Enum describing allowed operation states.
+type OperationState string
+
+const (
+	// OperationStateCanceled - The operation has been canceled by the user.
+	OperationStateCanceled OperationState = "Canceled"
+	// OperationStateFailed - The operation has failed.
+	OperationStateFailed OperationState = "Failed"
+	// OperationStateNotStarted - The operation has not started.
+	OperationStateNotStarted OperationState = "NotStarted"
+	// OperationStateRunning - The operation is in progress.
+	OperationStateRunning OperationState = "Running"
+	// OperationStateSucceeded - The operation has completed successfully.
+	OperationStateSucceeded OperationState = "Succeeded"
+)
+
+// PossibleOperationStateValues returns the possible values for the OperationState const type.
+func PossibleOperationStateValues() []OperationState {
+	return []OperationState{
+		OperationStateCanceled,
+		OperationStateFailed,
+		OperationStateNotStarted,
+		OperationStateRunning,
+		OperationStateSucceeded,
+	}
+}

@@ -6,10 +6,12 @@ package ekm
 
 import (
 	"context"
+	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
+	"net/url"
 	"strings"
 )
 
@@ -18,10 +20,154 @@ import (
 // against the Azure Key Vault service.
 // Don't use this type directly, use a constructor function instead.
 //
-// Generated from API version 2026-01-01-preview
+// Generated from API version 2026-07-01-preview
 type KeyVaultClient struct {
 	internal     *azcore.Client
 	vaultBaseUrl string
+}
+
+// BeginCreateEkmPrivateEndpoint - Creates an EKM proxy private endpoint.
+//
+// The External Key Manager (EKM) creates a private endpoint to the EKM proxy Private Link Service. A pool may have up to
+// two private endpoints. This operation requires ekm/write permission.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - peName - The name of the private endpoint. Must be 1-24 characters, start and end with an alphanumeric character, and contain
+//     only alphanumeric characters and hyphens.
+//   - parameters - The parameters to create the private endpoint.
+//   - options - BeginCreateEkmPrivateEndpointOptions contains the optional parameters for the KeyVaultClient.BeginCreateEkmPrivateEndpoint
+//     method.
+func (client *KeyVaultClient) BeginCreateEkmPrivateEndpoint(ctx context.Context, peName string, parameters PrivateEndpointCreateParameters, options *BeginCreateEkmPrivateEndpointOptions) (*runtime.Poller[CreateEkmPrivateEndpointResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createEkmPrivateEndpoint(ctx, peName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[CreateEkmPrivateEndpointResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[CreateEkmPrivateEndpointResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// createEkmPrivateEndpoint - Creates an EKM proxy private endpoint.
+//
+// The External Key Manager (EKM) creates a private endpoint to the EKM proxy Private Link Service. A pool may have up to
+// two private endpoints. This operation requires ekm/write permission.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *KeyVaultClient) createEkmPrivateEndpoint(ctx context.Context, peName string, parameters PrivateEndpointCreateParameters, options *BeginCreateEkmPrivateEndpointOptions) (*http.Response, error) {
+	var err error
+	const operationName = "KeyVaultClient.BeginCreateEkmPrivateEndpoint"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.createEkmPrivateEndpointCreateRequest(ctx, peName, parameters, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// createEkmPrivateEndpointCreateRequest creates the createEkmPrivateEndpoint request.
+func (client *KeyVaultClient) createEkmPrivateEndpointCreateRequest(ctx context.Context, peName string, parameters PrivateEndpointCreateParameters, _ *BeginCreateEkmPrivateEndpointOptions) (*policy.Request, error) {
+	urlPath := "/ekm/privateendpoint/{peName}"
+	if peName == "" {
+		return nil, errors.New("parameter peName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{peName}", url.PathEscape(peName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.vaultBaseUrl, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260701Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginDeleteEkmPrivateEndpoint - Deletes an EKM proxy private endpoint.
+//
+// The External Key Manager (EKM) deletes an existing EKM proxy private endpoint. The operation is rejected while an EKM connection
+// still references the private endpoint. This operation requires ekm/write permission.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - peName - The name of the private endpoint to delete.
+//   - options - BeginDeleteEkmPrivateEndpointOptions contains the optional parameters for the KeyVaultClient.BeginDeleteEkmPrivateEndpoint
+//     method.
+func (client *KeyVaultClient) BeginDeleteEkmPrivateEndpoint(ctx context.Context, peName string, options *BeginDeleteEkmPrivateEndpointOptions) (*runtime.Poller[DeleteEkmPrivateEndpointResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteEkmPrivateEndpoint(ctx, peName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DeleteEkmPrivateEndpointResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[DeleteEkmPrivateEndpointResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// deleteEkmPrivateEndpoint - Deletes an EKM proxy private endpoint.
+//
+// The External Key Manager (EKM) deletes an existing EKM proxy private endpoint. The operation is rejected while an EKM connection
+// still references the private endpoint. This operation requires ekm/write permission.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *KeyVaultClient) deleteEkmPrivateEndpoint(ctx context.Context, peName string, options *BeginDeleteEkmPrivateEndpointOptions) (*http.Response, error) {
+	var err error
+	const operationName = "KeyVaultClient.BeginDeleteEkmPrivateEndpoint"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.deleteEkmPrivateEndpointCreateRequest(ctx, peName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// deleteEkmPrivateEndpointCreateRequest creates the deleteEkmPrivateEndpoint request.
+func (client *KeyVaultClient) deleteEkmPrivateEndpointCreateRequest(ctx context.Context, peName string, _ *BeginDeleteEkmPrivateEndpointOptions) (*policy.Request, error) {
+	urlPath := "/ekm/privateendpoint/{peName}"
+	if peName == "" {
+		return nil, errors.New("parameter peName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{peName}", url.PathEscape(peName))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.vaultBaseUrl, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260701Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
 }
 
 // CheckEkmConnection - Checks the connectivity and authentication with the EKM proxy.
@@ -44,12 +190,7 @@ func (client *KeyVaultClient) CheckEkmConnection(ctx context.Context, options *C
 	if err != nil {
 		return CheckEkmConnectionResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return CheckEkmConnectionResponse{}, err
-	}
-	resp, err := client.checkEkmConnectionHandleResponse(httpResp)
-	return resp, err
+	return client.checkEkmConnectionHandleResponse(httpResp, http.StatusOK)
 }
 
 // checkEkmConnectionCreateRequest creates the CheckEkmConnection request.
@@ -60,15 +201,18 @@ func (client *KeyVaultClient) checkEkmConnectionCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101Preview)
+	reqQP.Set("api-version", version20260701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // checkEkmConnectionHandleResponse handles the CheckEkmConnection response.
-func (client *KeyVaultClient) checkEkmConnectionHandleResponse(resp *http.Response) (CheckEkmConnectionResponse, error) {
+func (client *KeyVaultClient) checkEkmConnectionHandleResponse(resp *http.Response, successCodes ...int) (CheckEkmConnectionResponse, error) {
 	result := CheckEkmConnectionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProxyInfo); err != nil {
 		return CheckEkmConnectionResponse{}, err
 	}
@@ -96,12 +240,7 @@ func (client *KeyVaultClient) CreateEkmConnection(ctx context.Context, ekmConnec
 	if err != nil {
 		return CreateEkmConnectionResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return CreateEkmConnectionResponse{}, err
-	}
-	resp, err := client.createEkmConnectionHandleResponse(httpResp)
-	return resp, err
+	return client.createEkmConnectionHandleResponse(httpResp, http.StatusOK)
 }
 
 // createEkmConnectionCreateRequest creates the CreateEkmConnection request.
@@ -112,7 +251,7 @@ func (client *KeyVaultClient) createEkmConnectionCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101Preview)
+	reqQP.Set("api-version", version20260701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -123,8 +262,11 @@ func (client *KeyVaultClient) createEkmConnectionCreateRequest(ctx context.Conte
 }
 
 // createEkmConnectionHandleResponse handles the CreateEkmConnection response.
-func (client *KeyVaultClient) createEkmConnectionHandleResponse(resp *http.Response) (CreateEkmConnectionResponse, error) {
+func (client *KeyVaultClient) createEkmConnectionHandleResponse(resp *http.Response, successCodes ...int) (CreateEkmConnectionResponse, error) {
 	result := CreateEkmConnectionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Connection); err != nil {
 		return CreateEkmConnectionResponse{}, err
 	}
@@ -151,12 +293,7 @@ func (client *KeyVaultClient) DeleteEkmConnection(ctx context.Context, options *
 	if err != nil {
 		return DeleteEkmConnectionResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DeleteEkmConnectionResponse{}, err
-	}
-	resp, err := client.deleteEkmConnectionHandleResponse(httpResp)
-	return resp, err
+	return client.deleteEkmConnectionHandleResponse(httpResp, http.StatusOK)
 }
 
 // deleteEkmConnectionCreateRequest creates the DeleteEkmConnection request.
@@ -167,15 +304,18 @@ func (client *KeyVaultClient) deleteEkmConnectionCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101Preview)
+	reqQP.Set("api-version", version20260701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // deleteEkmConnectionHandleResponse handles the DeleteEkmConnection response.
-func (client *KeyVaultClient) deleteEkmConnectionHandleResponse(resp *http.Response) (DeleteEkmConnectionResponse, error) {
+func (client *KeyVaultClient) deleteEkmConnectionHandleResponse(resp *http.Response, successCodes ...int) (DeleteEkmConnectionResponse, error) {
 	result := DeleteEkmConnectionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Connection); err != nil {
 		return DeleteEkmConnectionResponse{}, err
 	}
@@ -202,12 +342,7 @@ func (client *KeyVaultClient) GetEkmCertificate(ctx context.Context, options *Ge
 	if err != nil {
 		return GetEkmCertificateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return GetEkmCertificateResponse{}, err
-	}
-	resp, err := client.getEkmCertificateHandleResponse(httpResp)
-	return resp, err
+	return client.getEkmCertificateHandleResponse(httpResp, http.StatusOK)
 }
 
 // getEkmCertificateCreateRequest creates the GetEkmCertificate request.
@@ -218,15 +353,18 @@ func (client *KeyVaultClient) getEkmCertificateCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101Preview)
+	reqQP.Set("api-version", version20260701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getEkmCertificateHandleResponse handles the GetEkmCertificate response.
-func (client *KeyVaultClient) getEkmCertificateHandleResponse(resp *http.Response) (GetEkmCertificateResponse, error) {
+func (client *KeyVaultClient) getEkmCertificateHandleResponse(resp *http.Response, successCodes ...int) (GetEkmCertificateResponse, error) {
 	result := GetEkmCertificateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProxyClientCertificateInfo); err != nil {
 		return GetEkmCertificateResponse{}, err
 	}
@@ -252,12 +390,7 @@ func (client *KeyVaultClient) GetEkmConnection(ctx context.Context, options *Get
 	if err != nil {
 		return GetEkmConnectionResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return GetEkmConnectionResponse{}, err
-	}
-	resp, err := client.getEkmConnectionHandleResponse(httpResp)
-	return resp, err
+	return client.getEkmConnectionHandleResponse(httpResp, http.StatusOK)
 }
 
 // getEkmConnectionCreateRequest creates the GetEkmConnection request.
@@ -268,17 +401,177 @@ func (client *KeyVaultClient) getEkmConnectionCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101Preview)
+	reqQP.Set("api-version", version20260701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getEkmConnectionHandleResponse handles the GetEkmConnection response.
-func (client *KeyVaultClient) getEkmConnectionHandleResponse(resp *http.Response) (GetEkmConnectionResponse, error) {
+func (client *KeyVaultClient) getEkmConnectionHandleResponse(resp *http.Response, successCodes ...int) (GetEkmConnectionResponse, error) {
 	result := GetEkmConnectionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Connection); err != nil {
 		return GetEkmConnectionResponse{}, err
+	}
+	return result, nil
+}
+
+// GetEkmPrivateEndpoint - Gets an EKM proxy private endpoint.
+//
+// The External Key Manager (EKM) gets an existing EKM proxy private endpoint. This operation requires ekm/read permission.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - peName - The name of the private endpoint to get.
+//   - options - GetEkmPrivateEndpointOptions contains the optional parameters for the KeyVaultClient.GetEkmPrivateEndpoint method.
+func (client *KeyVaultClient) GetEkmPrivateEndpoint(ctx context.Context, peName string, options *GetEkmPrivateEndpointOptions) (GetEkmPrivateEndpointResponse, error) {
+	var err error
+	const operationName = "KeyVaultClient.GetEkmPrivateEndpoint"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.getEkmPrivateEndpointCreateRequest(ctx, peName, options)
+	if err != nil {
+		return GetEkmPrivateEndpointResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return GetEkmPrivateEndpointResponse{}, err
+	}
+	return client.getEkmPrivateEndpointHandleResponse(httpResp, http.StatusOK)
+}
+
+// getEkmPrivateEndpointCreateRequest creates the GetEkmPrivateEndpoint request.
+func (client *KeyVaultClient) getEkmPrivateEndpointCreateRequest(ctx context.Context, peName string, _ *GetEkmPrivateEndpointOptions) (*policy.Request, error) {
+	urlPath := "/ekm/privateendpoint/{peName}"
+	if peName == "" {
+		return nil, errors.New("parameter peName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{peName}", url.PathEscape(peName))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.vaultBaseUrl, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260701Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// getEkmPrivateEndpointHandleResponse handles the GetEkmPrivateEndpoint response.
+func (client *KeyVaultClient) getEkmPrivateEndpointHandleResponse(resp *http.Response, successCodes ...int) (GetEkmPrivateEndpointResponse, error) {
+	result := GetEkmPrivateEndpointResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateEndpoint); err != nil {
+		return GetEkmPrivateEndpointResponse{}, err
+	}
+	return result, nil
+}
+
+// GetEkmPrivateEndpointOperationStatus - Gets the status of an EKM proxy private endpoint operation.
+//
+// The External Key Manager (EKM) private endpoint operation status. Returns the status of a private endpoint create or delete
+// operation. This operation requires ekm/read permission.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - operationID - The identifier of the private endpoint operation.
+//   - options - GetEkmPrivateEndpointOperationStatusOptions contains the optional parameters for the KeyVaultClient.GetEkmPrivateEndpointOperationStatus
+//     method.
+func (client *KeyVaultClient) GetEkmPrivateEndpointOperationStatus(ctx context.Context, operationID string, options *GetEkmPrivateEndpointOperationStatusOptions) (GetEkmPrivateEndpointOperationStatusResponse, error) {
+	var err error
+	const operationName = "KeyVaultClient.GetEkmPrivateEndpointOperationStatus"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.getEkmPrivateEndpointOperationStatusCreateRequest(ctx, operationID, options)
+	if err != nil {
+		return GetEkmPrivateEndpointOperationStatusResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return GetEkmPrivateEndpointOperationStatusResponse{}, err
+	}
+	return client.getEkmPrivateEndpointOperationStatusHandleResponse(httpResp, http.StatusOK)
+}
+
+// getEkmPrivateEndpointOperationStatusCreateRequest creates the GetEkmPrivateEndpointOperationStatus request.
+func (client *KeyVaultClient) getEkmPrivateEndpointOperationStatusCreateRequest(ctx context.Context, operationID string, _ *GetEkmPrivateEndpointOperationStatusOptions) (*policy.Request, error) {
+	urlPath := "/ekm/privateendpoint/operations/{operationId}"
+	if operationID == "" {
+		return nil, errors.New("parameter operationID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{operationId}", url.PathEscape(operationID))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.vaultBaseUrl, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260701Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// getEkmPrivateEndpointOperationStatusHandleResponse handles the GetEkmPrivateEndpointOperationStatus response.
+func (client *KeyVaultClient) getEkmPrivateEndpointOperationStatusHandleResponse(resp *http.Response, successCodes ...int) (GetEkmPrivateEndpointOperationStatusResponse, error) {
+	result := GetEkmPrivateEndpointOperationStatusResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateEndpointOperation); err != nil {
+		return GetEkmPrivateEndpointOperationStatusResponse{}, err
+	}
+	return result, nil
+}
+
+// ListEkmPrivateEndpoints - Lists the EKM proxy private endpoints.
+//
+// The External Key Manager (EKM) lists all EKM proxy private endpoints on the pool. This operation requires ekm/read permission.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - options - ListEkmPrivateEndpointsOptions contains the optional parameters for the KeyVaultClient.ListEkmPrivateEndpoints
+//     method.
+func (client *KeyVaultClient) ListEkmPrivateEndpoints(ctx context.Context, options *ListEkmPrivateEndpointsOptions) (ListEkmPrivateEndpointsResponse, error) {
+	var err error
+	const operationName = "KeyVaultClient.ListEkmPrivateEndpoints"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.listEkmPrivateEndpointsCreateRequest(ctx, options)
+	if err != nil {
+		return ListEkmPrivateEndpointsResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return ListEkmPrivateEndpointsResponse{}, err
+	}
+	return client.listEkmPrivateEndpointsHandleResponse(httpResp, http.StatusOK)
+}
+
+// listEkmPrivateEndpointsCreateRequest creates the ListEkmPrivateEndpoints request.
+func (client *KeyVaultClient) listEkmPrivateEndpointsCreateRequest(ctx context.Context, _ *ListEkmPrivateEndpointsOptions) (*policy.Request, error) {
+	urlPath := "/ekm/privateendpoint"
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.vaultBaseUrl, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260701Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// listEkmPrivateEndpointsHandleResponse handles the ListEkmPrivateEndpoints response.
+func (client *KeyVaultClient) listEkmPrivateEndpointsHandleResponse(resp *http.Response, successCodes ...int) (ListEkmPrivateEndpointsResponse, error) {
+	result := ListEkmPrivateEndpointsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateEndpointListResult); err != nil {
+		return ListEkmPrivateEndpointsResponse{}, err
 	}
 	return result, nil
 }
@@ -304,12 +597,7 @@ func (client *KeyVaultClient) UpdateEkmConnection(ctx context.Context, ekmConnec
 	if err != nil {
 		return UpdateEkmConnectionResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return UpdateEkmConnectionResponse{}, err
-	}
-	resp, err := client.updateEkmConnectionHandleResponse(httpResp)
-	return resp, err
+	return client.updateEkmConnectionHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateEkmConnectionCreateRequest creates the UpdateEkmConnection request.
@@ -320,7 +608,7 @@ func (client *KeyVaultClient) updateEkmConnectionCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101Preview)
+	reqQP.Set("api-version", version20260701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -331,8 +619,11 @@ func (client *KeyVaultClient) updateEkmConnectionCreateRequest(ctx context.Conte
 }
 
 // updateEkmConnectionHandleResponse handles the UpdateEkmConnection response.
-func (client *KeyVaultClient) updateEkmConnectionHandleResponse(resp *http.Response) (UpdateEkmConnectionResponse, error) {
+func (client *KeyVaultClient) updateEkmConnectionHandleResponse(resp *http.Response, successCodes ...int) (UpdateEkmConnectionResponse, error) {
 	result := UpdateEkmConnectionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Connection); err != nil {
 		return UpdateEkmConnectionResponse{}, err
 	}

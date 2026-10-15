@@ -16,10 +16,22 @@ type CreateEkmConnectionResponse struct {
 	Connection
 }
 
+// CreateEkmPrivateEndpointResponse contains the response from method KeyVaultClient.BeginCreateEkmPrivateEndpoint.
+type CreateEkmPrivateEndpointResponse struct {
+	// A long-running operation on an EKM proxy private endpoint.
+	PrivateEndpointOperation
+}
+
 // DeleteEkmConnectionResponse contains the response from method KeyVaultClient.DeleteEkmConnection.
 type DeleteEkmConnectionResponse struct {
 	// A EkmConnection model object.
 	Connection
+}
+
+// DeleteEkmPrivateEndpointResponse contains the response from method KeyVaultClient.BeginDeleteEkmPrivateEndpoint.
+type DeleteEkmPrivateEndpointResponse struct {
+	// A long-running operation on an EKM proxy private endpoint.
+	PrivateEndpointOperation
 }
 
 // GetEkmCertificateResponse contains the response from method KeyVaultClient.GetEkmCertificate.
@@ -32,6 +44,24 @@ type GetEkmCertificateResponse struct {
 type GetEkmConnectionResponse struct {
 	// A EkmConnection model object.
 	Connection
+}
+
+// GetEkmPrivateEndpointOperationStatusResponse contains the response from method KeyVaultClient.GetEkmPrivateEndpointOperationStatus.
+type GetEkmPrivateEndpointOperationStatusResponse struct {
+	// A long-running operation on an EKM proxy private endpoint.
+	PrivateEndpointOperation
+}
+
+// GetEkmPrivateEndpointResponse contains the response from method KeyVaultClient.GetEkmPrivateEndpoint.
+type GetEkmPrivateEndpointResponse struct {
+	// An EKM proxy private endpoint.
+	PrivateEndpoint
+}
+
+// ListEkmPrivateEndpointsResponse contains the response from method KeyVaultClient.ListEkmPrivateEndpoints.
+type ListEkmPrivateEndpointsResponse struct {
+	// The result of a request to list EKM proxy private endpoints.
+	PrivateEndpointListResult
 }
 
 // UpdateEkmConnectionResponse contains the response from method KeyVaultClient.UpdateEkmConnection.

@@ -127,3 +127,105 @@ func ExampleKeyVaultClient_CheckEkmConnection() {
 		*info.ProxyVendor, *info.ProxyName, *info.APIVersion,
 		*info.EkmVendor, *info.EkmProduct)
 }
+
+func ExampleKeyVaultClient_BeginCreateEkmPrivateEndpoint() {
+	// Create a private endpoint from the Managed HSM to the EKM proxy's Private Link Service.
+	// The Private Link Service owner must approve the connection before the endpoint can be used.
+	params := ekm.PrivateEndpointCreateParameters{
+		PrivateLinkServiceID: to.Ptr("<TODO: alias of the EKM proxy's Private Link Service>"),
+		RequestMessage:       to.Ptr("Please approve this private endpoint connection for the EKM proxy."),
+	}
+	poller, err := ekmClient.BeginCreateEkmPrivateEndpoint(context.TODO(), "my-ekm-pe", params, nil)
+	if err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+	op, err := poller.PollUntilDone(context.TODO(), nil)
+	if err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+
+	fmt.Printf("Private endpoint %s operation %s finished with status %s",
+		*op.PrivateEndpointName, *op.JobID, *op.Status)
+}
+
+func ExampleKeyVaultClient_GetEkmPrivateEndpoint() {
+	pe, err := ekmClient.GetEkmPrivateEndpoint(context.TODO(), "my-ekm-pe", nil)
+	if err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+
+	fmt.Printf("Private endpoint %s: provisioning state %s, connection status %s",
+		*pe.Name, *pe.ProvisioningState, *pe.PrivateLinkServiceConnectionState.Status)
+}
+
+func ExampleKeyVaultClient_ListEkmPrivateEndpoints() {
+	list, err := ekmClient.ListEkmPrivateEndpoints(context.TODO(), nil)
+	if err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+
+	for _, pe := range list.Value {
+		fmt.Printf("Private endpoint: %s (%s)\n", *pe.Name, *pe.ProvisioningState)
+	}
+}
+
+func ExampleKeyVaultClient_GetEkmPrivateEndpointOperationStatus() {
+	// Poll an operation by its job ID, for example one started by another process.
+	op, err := ekmClient.GetEkmPrivateEndpointOperationStatus(context.TODO(), "<TODO: operation job ID>", nil)
+	if err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+
+	if op.Error != nil {
+		fmt.Printf("Operation failed: %s: %s", *op.Error.Code, *op.Error.Message)
+		return
+	}
+	fmt.Printf("%s operation on %s is %s", *op.OperationType, *op.PrivateEndpointName, *op.Status)
+}
+
+func ExampleKeyVaultClient_BeginDeleteEkmPrivateEndpoint() {
+	// The service rejects this operation while an EKM connection references the private endpoint.
+	poller, err := ekmClient.BeginDeleteEkmPrivateEndpoint(context.TODO(), "my-ekm-pe", nil)
+	if err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+	op, err := poller.PollUntilDone(context.TODO(), nil)
+	if err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+
+	fmt.Printf("Delete operation finished with status %s", *op.Status)
+}
+
+func ExampleKeyVaultClient_CreateEkmConnection_privateEndpoint() {
+	caCert, err := os.ReadFile("ekm-proxy-ca.der")
+	if err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+
+	// In PrivateEndpoint connectivity mode, Host is the name of a private endpoint
+	// created with BeginCreateEkmPrivateEndpoint rather than a DNS name or IP address.
+	conn := ekm.Connection{
+		Host:                    to.Ptr("my-ekm-pe"),
+		ConnectivityMode:        to.Ptr(ekm.EkmConnectivityModePrivateEndpoint),
+		ServerCaCertificates:    [][]byte{caCert},
+		ServerSubjectCommonName: to.Ptr("ekm-proxy.example.com"),
+		PathPrefix:              to.Ptr("/v1"),
+	}
+
+	created, err := ekmClient.CreateEkmConnection(context.TODO(), conn, nil)
+	if err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+
+	fmt.Printf("Created EKM connection through private endpoint: %s", *created.Host)
+}

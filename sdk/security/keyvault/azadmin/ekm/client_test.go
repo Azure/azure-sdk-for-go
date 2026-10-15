@@ -199,6 +199,7 @@ func TestConnectionSerde(t *testing.T) {
 		ServerCaCertificates:    [][]byte{ekmCACert, []byte("second-cert")},
 		ServerSubjectCommonName: to.Ptr(serverSubjectCommonNameFor(host)),
 		PathPrefix:              to.Ptr("/api/v1"),
+		ConnectivityMode:        to.Ptr(ekm.EkmConnectivityModePublic),
 	}
 	testSerde(t, &conn)
 

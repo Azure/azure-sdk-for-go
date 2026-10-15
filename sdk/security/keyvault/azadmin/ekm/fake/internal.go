@@ -4,7 +4,11 @@
 
 package fake
 
-import "net/http"
+import (
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
+	"net/http"
+	"sync"
+)
 
 type result struct {
 	resp *http.Response
@@ -17,4 +21,36 @@ type nonRetriableError struct {
 
 func (nonRetriableError) NonRetriable() {
 	// marker method
+}
+
+func newTracker[T any]() *tracker[T] {
+	return &tracker[T]{
+		items: map[string]*T{},
+	}
+}
+
+type tracker[T any] struct {
+	items map[string]*T
+	mu    sync.Mutex
+}
+
+func (p *tracker[T]) get(req *http.Request) *T {
+	p.mu.Lock()
+	defer p.mu.Unlock()
+	if item, ok := p.items[server.SanitizePagerPollerPath(req.URL.Path)]; ok {
+		return item
+	}
+	return nil
+}
+
+func (p *tracker[T]) add(req *http.Request, item *T) {
+	p.mu.Lock()
+	defer p.mu.Unlock()
+	p.items[server.SanitizePagerPollerPath(req.URL.Path)] = item
+}
+
+func (p *tracker[T]) remove(req *http.Request) {
+	p.mu.Lock()
+	defer p.mu.Unlock()
+	delete(p.items, server.SanitizePagerPollerPath(req.URL.Path))
 }

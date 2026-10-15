@@ -344,6 +344,33 @@ func TestEkmRequestRouting(t *testing.T) {
 			body: mockEKMConnectionBody,
 		},
 		{
+			name: "GetEkmPrivateEndpoint",
+			invoke: func(t *testing.T, c *ekm.KeyVaultClient) {
+				_, err := c.GetEkmPrivateEndpoint(context.Background(), mockPEName, nil)
+				require.NoError(t, err)
+			},
+			want: call{http.MethodGet, "/ekm/privateendpoint/" + mockPEName},
+			body: mockPrivateEndpointBody,
+		},
+		{
+			name: "GetEkmPrivateEndpointOperationStatus",
+			invoke: func(t *testing.T, c *ekm.KeyVaultClient) {
+				_, err := c.GetEkmPrivateEndpointOperationStatus(context.Background(), mockPEOperationID, nil)
+				require.NoError(t, err)
+			},
+			want: call{http.MethodGet, "/ekm/privateendpoint/operations/" + mockPEOperationID},
+			body: mockPECreateSucceededBody,
+		},
+		{
+			name: "ListEkmPrivateEndpoints",
+			invoke: func(t *testing.T, c *ekm.KeyVaultClient) {
+				_, err := c.ListEkmPrivateEndpoints(context.Background(), nil)
+				require.NoError(t, err)
+			},
+			want: call{http.MethodGet, "/ekm/privateendpoint"},
+			body: `{"value":[]}`,
+		},
+		{
 			name: "UpdateEkmConnection",
 			invoke: func(t *testing.T, c *ekm.KeyVaultClient) {
 				_, err := c.UpdateEkmConnection(context.Background(), sampleConnection(), nil)

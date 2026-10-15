@@ -33,7 +33,7 @@ func TestBackupRestore(t *testing.T) {
 	// backup the vault
 	preBackupParameters := backup.PreBackupOperationParameters{
 		StorageResourceURI: sasToken.StorageResourceURI,
-		Token:              sasToken.Token,
+		UseManagedIdentity: sasToken.UseManagedIdentity,
 	}
 	preBackupPoller, err := client.BeginPreFullBackup(context.Background(), preBackupParameters, nil)
 	require.NoError(t, err)

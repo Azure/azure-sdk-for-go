@@ -20,7 +20,7 @@ import (
 // against the Azure Key Vault service.
 // Don't use this type directly, use a constructor function instead.
 //
-// Generated from API version 2026-01-01-preview
+// Generated from API version 2026-07-01-preview
 type Client struct {
 	internal     *azcore.Client
 	vaultBaseUrl string
@@ -46,12 +46,7 @@ func (client *Client) GetSetting(ctx context.Context, settingName string, option
 	if err != nil {
 		return GetSettingResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return GetSettingResponse{}, err
-	}
-	resp, err := client.getSettingHandleResponse(httpResp)
-	return resp, err
+	return client.getSettingHandleResponse(httpResp, http.StatusOK)
 }
 
 // getSettingCreateRequest creates the GetSetting request.
@@ -66,15 +61,18 @@ func (client *Client) getSettingCreateRequest(ctx context.Context, settingName s
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101Preview)
+	reqQP.Set("api-version", version20260701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getSettingHandleResponse handles the GetSetting response.
-func (client *Client) getSettingHandleResponse(resp *http.Response) (GetSettingResponse, error) {
+func (client *Client) getSettingHandleResponse(resp *http.Response, successCodes ...int) (GetSettingResponse, error) {
 	result := GetSettingResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Setting); err != nil {
 		return GetSettingResponse{}, err
 	}
@@ -100,12 +98,7 @@ func (client *Client) GetSettings(ctx context.Context, options *GetSettingsOptio
 	if err != nil {
 		return GetSettingsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return GetSettingsResponse{}, err
-	}
-	resp, err := client.getSettingsHandleResponse(httpResp)
-	return resp, err
+	return client.getSettingsHandleResponse(httpResp, http.StatusOK)
 }
 
 // getSettingsCreateRequest creates the GetSettings request.
@@ -116,15 +109,18 @@ func (client *Client) getSettingsCreateRequest(ctx context.Context, _ *GetSettin
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101Preview)
+	reqQP.Set("api-version", version20260701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getSettingsHandleResponse handles the GetSettings response.
-func (client *Client) getSettingsHandleResponse(resp *http.Response) (GetSettingsResponse, error) {
+func (client *Client) getSettingsHandleResponse(resp *http.Response, successCodes ...int) (GetSettingsResponse, error) {
 	result := GetSettingsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ListResult); err != nil {
 		return GetSettingsResponse{}, err
 	}
@@ -152,12 +148,7 @@ func (client *Client) UpdateSetting(ctx context.Context, settingName string, par
 	if err != nil {
 		return UpdateSettingResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return UpdateSettingResponse{}, err
-	}
-	resp, err := client.updateSettingHandleResponse(httpResp)
-	return resp, err
+	return client.updateSettingHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateSettingCreateRequest creates the UpdateSetting request.
@@ -172,7 +163,7 @@ func (client *Client) updateSettingCreateRequest(ctx context.Context, settingNam
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101Preview)
+	reqQP.Set("api-version", version20260701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -183,8 +174,11 @@ func (client *Client) updateSettingCreateRequest(ctx context.Context, settingNam
 }
 
 // updateSettingHandleResponse handles the UpdateSetting response.
-func (client *Client) updateSettingHandleResponse(resp *http.Response) (UpdateSettingResponse, error) {
+func (client *Client) updateSettingHandleResponse(resp *http.Response, successCodes ...int) (UpdateSettingResponse, error) {
 	result := UpdateSettingResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Setting); err != nil {
 		return UpdateSettingResponse{}, err
 	}

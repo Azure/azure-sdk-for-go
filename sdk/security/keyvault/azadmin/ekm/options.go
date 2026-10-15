@@ -4,6 +4,20 @@
 
 package ekm
 
+// BeginCreateEkmPrivateEndpointOptions contains the optional parameters for the KeyVaultClient.BeginCreateEkmPrivateEndpoint
+// method.
+type BeginCreateEkmPrivateEndpointOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// BeginDeleteEkmPrivateEndpointOptions contains the optional parameters for the KeyVaultClient.BeginDeleteEkmPrivateEndpoint
+// method.
+type BeginDeleteEkmPrivateEndpointOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
 // CheckEkmConnectionOptions contains the optional parameters for the KeyVaultClient.CheckEkmConnection method.
 type CheckEkmConnectionOptions struct {
 	// placeholder for future optional parameters
@@ -26,6 +40,22 @@ type GetEkmCertificateOptions struct {
 
 // GetEkmConnectionOptions contains the optional parameters for the KeyVaultClient.GetEkmConnection method.
 type GetEkmConnectionOptions struct {
+	// placeholder for future optional parameters
+}
+
+// GetEkmPrivateEndpointOperationStatusOptions contains the optional parameters for the KeyVaultClient.GetEkmPrivateEndpointOperationStatus
+// method.
+type GetEkmPrivateEndpointOperationStatusOptions struct {
+	// placeholder for future optional parameters
+}
+
+// GetEkmPrivateEndpointOptions contains the optional parameters for the KeyVaultClient.GetEkmPrivateEndpoint method.
+type GetEkmPrivateEndpointOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ListEkmPrivateEndpointsOptions contains the optional parameters for the KeyVaultClient.ListEkmPrivateEndpoints method.
+type ListEkmPrivateEndpointsOptions struct {
 	// placeholder for future optional parameters
 }
 

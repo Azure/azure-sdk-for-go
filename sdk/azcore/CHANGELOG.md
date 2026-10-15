@@ -8,6 +8,9 @@
 
 ### Bugs Fixed
 
+* Client tracing spans now redact the request URL in error descriptions using the pipeline's query parameter allow list.
+* Retry logging now uses the pipeline's query parameter allow list and redacts request URLs in errors.
+
 ### Other Changes
 
 ## 1.23.3 (2026-10-06)

@@ -5,13 +5,17 @@ package runtime
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"net/http"
+	"net/url"
 	"strings"
 	"sync"
 	"testing"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/exported"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
@@ -22,6 +26,49 @@ import (
 type countingPolicy struct {
 	count    int
 	callback func()
+}
+
+func TestPipelineSanitizer(t *testing.T) {
+	srv, close := mock.NewServer()
+	defer close()
+	endpoint := srv.URL() + "?client=visible&pipeline=visible&sig=secret"
+	expectedErr := &url.Error{Op: "Get", URL: endpoint, Err: errors.New("failed")}
+	srv.SetError(expectedErr)
+	messages := map[log.Event]string{}
+	log.SetListener(func(event log.Event, message string) { messages[event] += message })
+	t.Cleanup(func() { log.SetListener(nil) })
+	options := policy.ClientOptions{
+		Transport: srv,
+		Retry:     policy.RetryOptions{MaxRetries: -1},
+		Logging: policy.LogOptions{
+			AllowedHeaders:     []string{"Client-Header"},
+			AllowedQueryParams: []string{"client"},
+		},
+	}
+	pl := NewPipeline("module", "v1.0.0", PipelineOptions{
+		AllowedHeaders:         []string{"Pipeline-Header"},
+		AllowedQueryParameters: []string{"pipeline"},
+	}, &options)
+	s := exported.PipelineSanitizer(pl)
+	require.NotNil(t, s)
+	require.Same(t, s, newRetryPolicy(&options.Retry, s).(*retryPolicy).sanitizer)
+	require.Same(t, s, newLogPolicy(&options.Logging, s).(*logPolicy).sanitizer)
+	require.Same(t, s, newHTTPTracePolicy(s).(*httpTracePolicy).sanitizer)
+	req, err := NewRequest(context.Background(), http.MethodGet, endpoint)
+	require.NoError(t, err)
+	req.Raw().Header.Set("Client-Header", "client-value")
+	req.Raw().Header.Set("Pipeline-Header", "pipeline-value")
+	req.Raw().Header.Set("Secret-Header", "header-secret")
+	_, err = pl.Do(req)
+	require.Same(t, expectedErr, err)
+	for _, event := range []log.Event{log.EventRetryPolicy, log.EventRequest, log.EventResponse} {
+		require.Contains(t, messages[event], "client=visible&pipeline=visible&sig=REDACTED")
+		require.NotContains(t, messages[event], "secret")
+	}
+	require.Contains(t, messages[log.EventRequest], "Client-Header: client-value")
+	require.Contains(t, messages[log.EventRequest], "Pipeline-Header: pipeline-value")
+	require.Equal(t, []string{"client"}, options.Logging.AllowedQueryParams)
+	require.Equal(t, []string{"Client-Header"}, options.Logging.AllowedHeaders)
 }
 
 func (p *countingPolicy) Do(req *policy.Request) (*http.Response, error) {

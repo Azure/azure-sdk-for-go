@@ -40,5 +40,10 @@ JSON ready record as `AZCOSMOS_ENDPOINT`, and set `EMULATOR=true` for the Go tes
 When running in Docker, keep the emulator and Go tests in the same network namespace:
 the configured listeners bind loopback.
 
+The native availability tests also start
+[`emulator-ppaf-config.json`](emulator-ppaf-config.json) as a separate single-write account
+with per-partition failover enabled. Set its `accountEndpoint` as `AZCOSMOS_PPAF_ENDPOINT`;
+tests that require that account skip when the variable is absent.
+
 When updating the emulator, change the pins in CI and this document together, then rerun
 the Go emulator suite. A successful source build alone is not a compatibility check.

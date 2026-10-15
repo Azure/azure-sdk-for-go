@@ -2107,6 +2107,17 @@ type ExternalHealthPolicy struct {
 	GracePeriod *string
 }
 
+// FlexProfile - Specifies the FlexProfile for a virtual machine. When set, Azure may deploy a compatible alternative VM size
+// based on capacity and placement considerations, and the deployed size is returned in hardwareProfile.vmSize. See the properties.flexProfile
+// description for the full usage rules, including how it interacts with hardwareProfile.vmSize.
+type FlexProfile struct {
+	// REQUIRED; Specifies the preferred VM size, for example Standard_D4s_v5. Azure may deploy a compatible alternative size
+	// based on capacity and placement considerations. Supported VM families for FlexProfile may vary by region. The recommended
+	// way to get the list of available sizes is using these APIs: [List all available virtual machine sizes in a region](https://docs.microsoft.com/rest/api/compute/resourceskus/list),
+	// [List all available virtual machine sizes for resizing](https://docs.microsoft.com/rest/api/compute/virtualmachines/listavailablesizes).
+	PreferredVMSize *string
+}
+
 // Gallery - Specifies information about the Shared Image Gallery that you want to create or update.
 type Gallery struct {
 	// REQUIRED; The geo-location where the resource lives
@@ -4999,7 +5010,9 @@ type RestorePointInstanceView struct {
 	// The disk restore points information.
 	DiskRestorePoints []*DiskRestorePointInstanceView
 
-	// The resource status information.
+	// The aggregate status information for the restore point. The list may include separate aggregate entries for replication
+	// and, in supported API versions, Instant Access, as applicable. For more information about Instant Access, see [Use virtual
+	// machine restore points](https://learn.microsoft.com/azure/virtual-machines/virtual-machines-create-restore-points#instant-access).
 	Statuses []*InstanceViewStatus
 }
 
@@ -7394,6 +7407,10 @@ type VirtualMachineNetworkInterfaceIPConfigurationProperties struct {
 	// Specifies the primary network interface in case the virtual machine has more than 1 network interface.
 	Primary *bool
 
+	// The private IP address prefix length. If specified and the allocation method is dynamic, the service will allocate a CIDR
+	// block instead of a single IP address.
+	PrivateIPAddressPrefixLength *int32
+
 	// Available from Api-Version 2017-03-30 onwards, it represents whether the specific ipconfiguration is IPv4 or IPv6. Default
 	// is taken as IPv4. Possible values are: 'IPv4' and 'IPv6'.
 	PrivateIPAddressVersion *IPVersions
@@ -7452,6 +7469,14 @@ type VirtualMachineProperties struct {
 	// (inclusive) and should be specified in ISO 8601 format. The default value is 90 minutes (PT1H30M). Minimum api-version:
 	// 2020-06-01.
 	ExtensionsTimeBudget *string
+
+	// [Preview Feature] Specifies a FlexProfile for VM size. Azure may deploy a compatible alternative VM size based on capacity
+	// and placement considerations, and returns the deployed size in hardwareProfile.vmSize. A request that adds flexProfile
+	// must omit hardwareProfile.vmSize. For a virtual machine that uses FlexProfile, a hardwareProfile.vmSize equal to the deployed
+	// size is ignored, so a GET response can be sent back unchanged. A PATCH request that omits flexProfile keeps it. A PUT request
+	// that omits flexProfile and sets hardwareProfile.vmSize clears it. This property cannot exist along with a non-null properties.availabilitySet,
+	// properties.capacityReservation, properties.host, properties.hostGroup, properties.proximityPlacementGroup or properties.virtualMachineScaleSet.
+	FlexProfile *FlexProfile
 
 	// Specifies the hardware settings for the virtual machine.
 	HardwareProfile *HardwareProfile
@@ -7990,6 +8015,10 @@ type VirtualMachineScaleSetIPConfigurationProperties struct {
 
 	// Specifies the primary network interface in case the virtual machine has more than 1 network interface.
 	Primary *bool
+
+	// The private IP address prefix length. If specified and the allocation method is dynamic, the service will allocate a CIDR
+	// block instead of a single IP address.
+	PrivateIPAddressPrefixLength *int32
 
 	// Available from Api-Version 2017-03-30 onwards, it represents whether the specific ipconfiguration is IPv4 or IPv6. Default
 	// is taken as IPv4. Possible values are: 'IPv4' and 'IPv6'.
@@ -8555,6 +8584,10 @@ type VirtualMachineScaleSetUpdateIPConfigurationProperties struct {
 
 	// Specifies the primary IP Configuration in case the network interface has more than one IP Configuration.
 	Primary *bool
+
+	// The private IP address prefix length. If specified and the allocation method is dynamic, the service will allocate a CIDR
+	// block instead of a single IP address.
+	PrivateIPAddressPrefixLength *int32
 
 	// Available from Api-Version 2017-03-30 onwards, it represents whether the specific ipconfiguration is IPv4 or IPv6. Default
 	// is taken as IPv4. Possible values are: 'IPv4' and 'IPv6'.

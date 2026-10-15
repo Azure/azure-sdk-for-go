@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01/NspLoggingConfigurationPut.json
+// Generated from example definition: 2026-03-01/NspLoggingConfigurationPut.json
 func ExampleSecurityPerimeterLoggingConfigurationsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -61,7 +61,7 @@ func ExampleSecurityPerimeterLoggingConfigurationsClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/NspLoggingConfigurationDelete.json
+// Generated from example definition: 2026-03-01/NspLoggingConfigurationDelete.json
 func ExampleSecurityPerimeterLoggingConfigurationsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -83,7 +83,7 @@ func ExampleSecurityPerimeterLoggingConfigurationsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/NspLoggingConfigurationGet.json
+// Generated from example definition: 2026-03-01/NspLoggingConfigurationGet.json
 func ExampleSecurityPerimeterLoggingConfigurationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -125,7 +125,7 @@ func ExampleSecurityPerimeterLoggingConfigurationsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/NspLoggingConfigurationList.json
+// Generated from example definition: 2026-03-01/NspLoggingConfigurationList.json
 func ExampleSecurityPerimeterLoggingConfigurationsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

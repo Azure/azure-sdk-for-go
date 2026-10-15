@@ -20,6 +20,7 @@ This troubleshooting guide covers failure investigation techniques, common error
 - [Troubleshoot ManagedIdentityCredential authentication issues](#troubleshoot-managedidentitycredential-authentication-issues)
   - [Azure App Service and Azure Functions managed identity](#azure-app-service-and-azure-functions-managed-identity)
   - [Azure Virtual Machine managed identity](#azure-virtual-machine-managed-identity)
+  - [Azure Arc managed identity](#azure-arc-managed-identity)
   - [Azure Service Fabric managed identity](#azure-service-fabric-managed-identity)
 - [Troubleshoot WorkloadIdentityCredential authentication issues](#troubleshoot-workloadidentitycredential-authentication-issues)
 - [Get additional help](#get-additional-help)
@@ -121,8 +122,19 @@ azlog.SetEvents(azidentity.EventAuthentication)
 |---|---|---|
 |Azure Virtual Machines and Scale Sets|[Configuration](https://learn.microsoft.com/entra/identity/managed-identities-azure-resources/qs-configure-portal-windows-vm)|[Troubleshooting](#azure-virtual-machine-managed-identity)|
 |Azure App Service and Azure Functions|[Configuration](https://learn.microsoft.com/azure/app-service/overview-managed-identity)|[Troubleshooting](#azure-app-service-and-azure-functions-managed-identity)|
-|Azure Arc|[Configuration](https://learn.microsoft.com/azure/azure-arc/servers/managed-identity-authentication)||
+|Azure Arc|[Configuration](https://learn.microsoft.com/azure/azure-arc/servers/managed-identity-authentication)|[Troubleshooting](#azure-arc-managed-identity)|
 |Azure Service Fabric|[Configuration](https://learn.microsoft.com/azure/service-fabric/concepts-managed-identity)|[Troubleshooting](#azure-service-fabric-managed-identity)|
+
+### Azure Arc managed identity
+
+User-assigned identities require an Azure Arc agent that supports selecting an identity by client,
+object, or resource ID. `NewManagedIdentityCredential` accepts these IDs, but token acquisition
+fails if the agent doesn't confirm the requested identity. This prevents an older agent from
+silently authenticating the machine's system-assigned identity instead.
+
+| Error Message | Description | Mitigation |
+|---|---|---|
+|azure arc did not confirm the requested user-assigned managed identity in the token response|The agent's response omitted the requested identity selector or returned a different identity.|Ensure the Azure Arc agent supports user-assigned identities, the identity is assigned to the resource, and the configured ID is correct. Upgrade the agent if necessary. Only omit the ID if the application intends to authenticate the system-assigned identity.|
 
 ### Azure Service Fabric managed identity
 
@@ -266,6 +278,7 @@ Get-AzAccessToken -ResourceUrl "https://management.core.windows.net"
 | Error Message |Description| Mitigation |
 |---|---|---|
 |no client ID/tenant ID/token file specified|Incomplete configuration|In most cases these values are provided via environment variables set by Azure Workload Identity.<ul><li>If your application runs on Azure Kubernetes Service (AKS) or a cluster that has deployed the Azure Workload Identity admission webhook, check pod labels and service account configuration. See the [AKS documentation](https://learn.microsoft.com/azure/aks/workload-identity-deploy-cluster#disable-workload-identity) and [Azure Workload Identity troubleshooting guide](https://azure.github.io/azure-workload-identity/docs/troubleshooting.html) for more details.</li><li>If your application isn't running on AKS or your cluster hasn't deployed the Workload Identity admission webhook, set these values in `WorkloadIdentityCredentialOptions`</li></ul>
+|In an application using [Azure Kubernetes Service identity bindings](https://learn.microsoft.com/azure/aks/identity-bindings-concepts): <ul><li>AADSTS700211: No matching federated identity record found for presented assertion issuer ...</li><li>AADSTS700212: No matching federated identity record found for presented assertion audience 'api://AKSIdentityBinding'.</li></ul> |`WorkloadIdentityCredential` isn't configured to use the identity binding proxy|Set `WorkloadIdentityCredentialOptions.EnableAzureProxy` to `true`
 
 <a id="apc"></a>
 ## Troubleshoot AzurePipelinesCredential authentication issues

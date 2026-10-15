@@ -5,7 +5,7 @@
 package armcloudhealth
 
 const (
-	version20260901Preview string = "2026-09-01-preview"
+	version20261001Preview string = "2026-10-01-preview"
 )
 
 // ActionType - Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
@@ -530,5 +530,26 @@ func PossibleSignalOperatorValues() []SignalOperator {
 		SignalOperatorLessThan,
 		SignalOperatorLessThanOrEqual,
 		SignalOperatorNotEqual,
+	}
+}
+
+// SignalRecommendationKind - Supported signal recommendation kinds.
+type SignalRecommendationKind string
+
+const (
+	// SignalRecommendationKindAzureResourceMetric - Azure Resource Metric recommendation.
+	SignalRecommendationKindAzureResourceMetric SignalRecommendationKind = "AzureResourceMetric"
+	// SignalRecommendationKindLogAnalyticsQuery - Log Analytics Query recommendation.
+	SignalRecommendationKindLogAnalyticsQuery SignalRecommendationKind = "LogAnalyticsQuery"
+	// SignalRecommendationKindPrometheusMetricsQuery - Prometheus Metrics Query recommendation.
+	SignalRecommendationKindPrometheusMetricsQuery SignalRecommendationKind = "PrometheusMetricsQuery"
+)
+
+// PossibleSignalRecommendationKindValues returns the possible values for the SignalRecommendationKind const type.
+func PossibleSignalRecommendationKindValues() []SignalRecommendationKind {
+	return []SignalRecommendationKind{
+		SignalRecommendationKindAzureResourceMetric,
+		SignalRecommendationKindLogAnalyticsQuery,
+		SignalRecommendationKindPrometheusMetricsQuery,
 	}
 }

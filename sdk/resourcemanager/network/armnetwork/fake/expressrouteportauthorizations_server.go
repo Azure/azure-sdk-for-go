@@ -33,13 +33,13 @@ type ExpressRoutePortAuthorizationsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, expressRoutePortName string, authorizationName string, options *armnetwork.ExpressRoutePortAuthorizationsClientGetOptions) (resp azfake.Responder[armnetwork.ExpressRoutePortAuthorizationsClientGetResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method ExpressRoutePortAuthorizationsClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(resourceGroupName string, expressRoutePortName string, options *armnetwork.ExpressRoutePortAuthorizationsClientListOptions) (resp azfake.PagerResponder[armnetwork.ExpressRoutePortAuthorizationsClientListResponse])
-
 	// ListKeys is the fake for method ExpressRoutePortAuthorizationsClient.ListKeys
 	// HTTP status codes to indicate success: http.StatusOK
 	ListKeys func(ctx context.Context, resourceGroupName string, expressRoutePortName string, authorizationName string, options *armnetwork.ExpressRoutePortAuthorizationsClientListKeysOptions) (resp azfake.Responder[armnetwork.ExpressRoutePortAuthorizationsClientListKeysResponse], errResp azfake.ErrorResponder)
+
+	// NewListPager is the fake for method ExpressRoutePortAuthorizationsClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(resourceGroupName string, expressRoutePortName string, options *armnetwork.ExpressRoutePortAuthorizationsClientListOptions) (resp azfake.PagerResponder[armnetwork.ExpressRoutePortAuthorizationsClientListResponse])
 }
 
 // NewExpressRoutePortAuthorizationsServerTransport creates a new instance of ExpressRoutePortAuthorizationsServerTransport with the provided implementation.
@@ -90,10 +90,10 @@ func (e *ExpressRoutePortAuthorizationsServerTransport) dispatchToMethodFake(req
 				res.resp, res.err = e.dispatchBeginDelete(req)
 			case "ExpressRoutePortAuthorizationsClient.Get":
 				res.resp, res.err = e.dispatchGet(req)
-			case "ExpressRoutePortAuthorizationsClient.NewListPager":
-				res.resp, res.err = e.dispatchNewListPager(req)
 			case "ExpressRoutePortAuthorizationsClient.ListKeys":
 				res.resp, res.err = e.dispatchListKeys(req)
+			case "ExpressRoutePortAuthorizationsClient.NewListPager":
+				res.resp, res.err = e.dispatchNewListPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -247,6 +247,43 @@ func (e *ExpressRoutePortAuthorizationsServerTransport) dispatchGet(req *http.Re
 	return resp, nil
 }
 
+func (e *ExpressRoutePortAuthorizationsServerTransport) dispatchListKeys(req *http.Request) (*http.Response, error) {
+	if e.srv.ListKeys == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListKeys not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/expressRoutePorts/(?P<expressRoutePortName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/authorizations/(?P<authorizationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listKeys`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	expressRoutePortNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("expressRoutePortName")])
+	if err != nil {
+		return nil, err
+	}
+	authorizationNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("authorizationName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := e.srv.ListKeys(req.Context(), resourceGroupNameParam, expressRoutePortNameParam, authorizationNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ExpressRouteAuthorizationKey, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
 func (e *ExpressRoutePortAuthorizationsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
 	if e.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
@@ -284,43 +321,6 @@ func (e *ExpressRoutePortAuthorizationsServerTransport) dispatchNewListPager(req
 	}
 	if !server.PagerResponderMore(newListPager) {
 		e.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (e *ExpressRoutePortAuthorizationsServerTransport) dispatchListKeys(req *http.Request) (*http.Response, error) {
-	if e.srv.ListKeys == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ListKeys not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/expressRoutePorts/(?P<expressRoutePortName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/authorizations/(?P<authorizationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listKeys`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	expressRoutePortNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("expressRoutePortName")])
-	if err != nil {
-		return nil, err
-	}
-	authorizationNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("authorizationName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := e.srv.ListKeys(req.Context(), resourceGroupNameParam, expressRoutePortNameParam, authorizationNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ExpressRouteAuthorizationKey, req)
-	if err != nil {
-		return nil, err
 	}
 	return resp, nil
 }

@@ -212,18 +212,28 @@ func (p *clientRetryPolicy) Do(req *policy.Request) (*http.Response, error) {
 			if state := requestDiagnosticsStateFromContext(req.Raw().Context()); state != nil && state.clientSideStats != nil {
 				state.clientSideStats.recordHTTPError(attemptStartTime, req.Raw(), err, o.resourceType, regionName.String())
 			}
-			// Honor the caller's context: if their deadline expired or
-			// they cancelled the request, do not consume their budget
-			// with our retries. Preserve both the cancellation reason
-			// (so errors.Is(returned, context.DeadlineExceeded) works)
-			// and the underlying transport error for diagnostics.
+			// Preserve downstream non-retriable errors instead of retrying them internally.
+			if errors.As(err, new(errorinfo.NonRetriable)) {
+				return nil, err
+			}
 			if ctxErr := req.Raw().Context().Err(); ctxErr != nil {
+				if !o.isWriteOperation {
+					// A send or body read failed with a done request context
+					// (attempt timeout or caller cancellation/deadline). Let
+					// azcore check the caller and decide on a fresh attempt.
+					return nil, err
+				}
 				return nil, errorinfo.NonRetriableError(fmt.Errorf("%w: underlying transport error: %v", ctxErr, err))
 			}
 			kind := classifyNetworkError(err)
 			if kind != connectionErrorNone {
 				shouldRetry, errRetry := p.attemptRetryOnNetworkError(req, kind, o.isWriteOperation, err, &retryContext)
 				if errRetry != nil {
+					// The internal retry wait may have been interrupted by context expiry.
+					// Let azcore decide whether another read attempt is allowed.
+					if !o.isWriteOperation {
+						return nil, errRetry
+					}
 					return nil, errorinfo.NonRetriableError(errRetry)
 				}
 				if !shouldRetry {
@@ -268,6 +278,11 @@ func (p *clientRetryPolicy) Do(req *policy.Request) (*http.Response, error) {
 			case http.StatusRequestTimeout:
 				shouldRetry, err := p.attemptRetryOnRequestTimeout(req, o.isWriteOperation, &retryContext)
 				if err != nil {
+					// The HTTP 408 retry wait was interrupted by context expiry.
+					// Let azcore decide whether another read attempt is allowed.
+					if !o.isWriteOperation {
+						return nil, err
+					}
 					return nil, errorinfo.NonRetriableError(err)
 				}
 				if !shouldRetry {
@@ -358,14 +373,6 @@ func (p *clientRetryPolicy) attemptRetryOnNetworkError(req *policy.Request, kind
 		return true, nil
 	}
 
-	// Cross-region failover is an endpoint-changing operation. When endpoint
-	// discovery is disabled every request is pinned to the client endpoint,
-	// so a "failover" would only resolve back to the same endpoint. Suppress
-	// it here while preserving the same-region retries budgeted above.
-	if p.gem.locationCache.disableEndpointDiscovery {
-		return false, nil
-	}
-
 	// At most one cross-region failover per request.
 	if retryContext.crossRegionFailoverDone {
 		return false, nil
@@ -420,7 +427,7 @@ func (p *clientRetryPolicy) attemptRetryOnNetworkError(req *policy.Request, kind
 }
 
 func (p *clientRetryPolicy) attemptRetryOnEndpointFailure(req *policy.Request, isWriteOperation bool, retryContext *retryContext) (bool, error) {
-	if (retryContext.retryCount > maxRetryCount) || !p.gem.locationCache.enableCrossRegionRetries || p.gem.locationCache.disableEndpointDiscovery {
+	if (retryContext.retryCount > maxRetryCount) || !p.gem.locationCache.enableCrossRegionRetries {
 		return false, nil
 	}
 	var wasAlreadyUnavailable bool
@@ -487,13 +494,6 @@ func (p *clientRetryPolicy) attemptRetryOnEndpointFailure(req *policy.Request, i
 }
 
 func (p *clientRetryPolicy) attemptRetryOnSessionUnavailable(isWriteOperation bool, retryContext *retryContext) bool {
-	// Session-unavailable retries reroute to another region (multi-write) or
-	// to the write endpoint (single-master). With endpoint discovery disabled
-	// every request is pinned to the client endpoint, so there is nowhere to
-	// reroute; suppress the session failover entirely (matching Python).
-	if p.gem.locationCache.disableEndpointDiscovery {
-		return false
-	}
 	// Snapshot multi-write capability AND the relevant slice length
 	// under a single RLock. The async refresh paths (in this file and
 	// in globalEndpointManagerPolicy) can call locationCache.update
@@ -522,7 +522,7 @@ func (p *clientRetryPolicy) attemptRetryOnSessionUnavailable(isWriteOperation bo
 }
 
 func (p *clientRetryPolicy) attemptRetryOnServiceUnavailable(isWriteOperation bool, retryContext *retryContext) bool {
-	if !p.gem.locationCache.enableCrossRegionRetries || p.gem.locationCache.disableEndpointDiscovery || retryContext.preferredLocationIndex >= len(p.gem.preferredLocations) {
+	if !p.gem.locationCache.enableCrossRegionRetries || retryContext.preferredLocationIndex >= len(p.gem.preferredLocations) {
 		return false
 	}
 	if isWriteOperation && !p.gem.CanUseMultipleWriteLocations() {
@@ -554,7 +554,7 @@ func (p *clientRetryPolicy) attemptRetryOnServerError(isWriteOperation bool, ret
 		retryContext.serverErrorRetryCount += 1
 		return true, true
 	}
-	if !p.gem.locationCache.enableCrossRegionRetries || p.gem.locationCache.disableEndpointDiscovery || retryContext.preferredLocationIndex >= len(p.gem.preferredLocations) {
+	if !p.gem.locationCache.enableCrossRegionRetries || retryContext.preferredLocationIndex >= len(p.gem.preferredLocations) {
 		return false, false
 	}
 	if p.gem.locationCache.readEndpointCount() <= 1 {
@@ -575,7 +575,7 @@ func (p *clientRetryPolicy) attemptRetryOnRequestTimeout(req *policy.Request, is
 	if isWriteOperation {
 		return false, nil
 	}
-	if !p.gem.locationCache.enableCrossRegionRetries || p.gem.locationCache.disableEndpointDiscovery {
+	if !p.gem.locationCache.enableCrossRegionRetries {
 		return false, nil
 	}
 	if retryContext.requestTimeoutRetryDone {

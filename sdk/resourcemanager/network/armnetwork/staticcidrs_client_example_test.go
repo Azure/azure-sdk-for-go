@@ -11,7 +11,28 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01/StaticCidrs_Create.json
+// Generated from example definition: 2026-03-01/StaticCidrs_Delete.json
+func ExampleStaticCidrsClient_BeginDelete() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("11111111-1111-1111-1111-111111111111", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewStaticCidrsClient().BeginDelete(ctx, "rg1", "TestNetworkManager", "TestPool", "TestStaticCidr", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+}
+
+// Generated from example definition: 2026-03-01/StaticCidrs_Create.json
 func ExampleStaticCidrsClient_Create() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -54,28 +75,7 @@ func ExampleStaticCidrsClient_Create() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/StaticCidrs_Delete.json
-func ExampleStaticCidrsClient_BeginDelete() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetwork.NewClientFactory("11111111-1111-1111-1111-111111111111", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewStaticCidrsClient().BeginDelete(ctx, "rg1", "TestNetworkManager", "TestPool", "TestStaticCidr", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-}
-
-// Generated from example definition: 2026-01-01/StaticCidrs_Get.json
+// Generated from example definition: 2026-03-01/StaticCidrs_Get.json
 func ExampleStaticCidrsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -119,7 +119,7 @@ func ExampleStaticCidrsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/StaticCidrs_List.json
+// Generated from example definition: 2026-03-01/StaticCidrs_List.json
 func ExampleStaticCidrsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

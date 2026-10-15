@@ -37,7 +37,7 @@ func NewOccurrenceExtensionClient(credential azcore.TokenCredential, options *ar
 	return client, nil
 }
 
-// NewListOccurrenceByVMsPager - Lists scheduled action occurrences associated with the specified VM.
+// NewListOccurrenceByVMsPager - Lists recurring bulk action occurrences associated with the specified VM.
 //   - resourceURI - The fully qualified Azure resource ID of the compute resource.
 //   - options - OccurrenceExtensionClientListOccurrenceByVMsOptions contains the optional parameters for the OccurrenceExtensionClient.NewListOccurrenceByVMsPager
 //     method.

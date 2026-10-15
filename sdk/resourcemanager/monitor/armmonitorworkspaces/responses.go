@@ -115,6 +115,47 @@ type IssueClientUpdateResponse struct {
 	IssueResource
 }
 
+// MetricConfigurationsClientCreateOrUpdateResponse contains the response from method MetricConfigurationsClient.CreateOrUpdate.
+type MetricConfigurationsClientCreateOrUpdateResponse struct {
+	// A metric configuration in an Azure Monitor Workspace metric namespace.
+	MetricConfigurationResource
+}
+
+// MetricConfigurationsClientDeleteResponse contains the response from method MetricConfigurationsClient.Delete.
+type MetricConfigurationsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// MetricConfigurationsClientGetResponse contains the response from method MetricConfigurationsClient.Get.
+type MetricConfigurationsClientGetResponse struct {
+	// A metric configuration in an Azure Monitor Workspace metric namespace.
+	MetricConfigurationResource
+}
+
+// MetricConfigurationsClientListByMetricNamespaceResponse contains the response from method MetricConfigurationsClient.NewListByMetricNamespacePager.
+type MetricConfigurationsClientListByMetricNamespaceResponse struct {
+	// The response of a MetricConfigurationResource list operation.
+	MetricConfigurationResourceListResult
+}
+
+// MetricConfigurationsClientListByMetricsContainerResponse contains the response from method MetricConfigurationsClient.NewListByMetricsContainerPager.
+type MetricConfigurationsClientListByMetricsContainerResponse struct {
+	// Paged collection of MetricConfigurationResource items
+	PagedMetricConfigurationResource
+}
+
+// MetricNamespacesClientGetResponse contains the response from method MetricNamespacesClient.Get.
+type MetricNamespacesClientGetResponse struct {
+	// A metric namespace in an Azure Monitor Workspace metrics container.
+	MetricNamespaceResource
+}
+
+// MetricNamespacesClientListByMetricsContainerResponse contains the response from method MetricNamespacesClient.NewListByMetricsContainerPager.
+type MetricNamespacesClientListByMetricsContainerResponse struct {
+	// The response of a MetricNamespaceResource list operation.
+	MetricNamespaceResourceListResult
+}
+
 // MetricsContainersClientCreateOrUpdateResponse contains the response from method MetricsContainersClient.CreateOrUpdate.
 type MetricsContainersClientCreateOrUpdateResponse struct {
 	// Metrics container resource for an Azure Monitor Workspace.
@@ -137,4 +178,96 @@ type MetricsContainersClientListByAzureMonitorWorkspaceResponse struct {
 type OperationsClientListResponse struct {
 	// A list of REST API operations supported by an Azure Resource Provider. It contains an URL link to get the next set of results.
 	OperationListResult
+}
+
+// TraceAssociationsAtResourceGroupClientCreateOrUpdateResponse contains the response from method TraceAssociationsAtResourceGroupClient.CreateOrUpdate.
+type TraceAssociationsAtResourceGroupClientCreateOrUpdateResponse struct {
+	// An association between an Azure resource scope and an Azure Monitor Workspace.
+	TraceAssociationResource
+}
+
+// TraceAssociationsAtResourceGroupClientDeleteResponse contains the response from method TraceAssociationsAtResourceGroupClient.Delete.
+type TraceAssociationsAtResourceGroupClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// TraceAssociationsAtResourceGroupClientGetResponse contains the response from method TraceAssociationsAtResourceGroupClient.Get.
+type TraceAssociationsAtResourceGroupClientGetResponse struct {
+	// An association between an Azure resource scope and an Azure Monitor Workspace.
+	TraceAssociationResource
+}
+
+// TraceAssociationsAtResourceGroupClientListResponse contains the response from method TraceAssociationsAtResourceGroupClient.NewListPager.
+type TraceAssociationsAtResourceGroupClientListResponse struct {
+	// The response of a TraceAssociationResource list operation.
+	TraceAssociationResourceListResult
+}
+
+// TraceAssociationsAtSubscriptionClientCreateOrUpdateResponse contains the response from method TraceAssociationsAtSubscriptionClient.CreateOrUpdate.
+type TraceAssociationsAtSubscriptionClientCreateOrUpdateResponse struct {
+	// An association between an Azure resource scope and an Azure Monitor Workspace.
+	TraceAssociationResource
+}
+
+// TraceAssociationsAtSubscriptionClientDeleteResponse contains the response from method TraceAssociationsAtSubscriptionClient.Delete.
+type TraceAssociationsAtSubscriptionClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// TraceAssociationsAtSubscriptionClientGetResponse contains the response from method TraceAssociationsAtSubscriptionClient.Get.
+type TraceAssociationsAtSubscriptionClientGetResponse struct {
+	// An association between an Azure resource scope and an Azure Monitor Workspace.
+	TraceAssociationResource
+}
+
+// TraceAssociationsAtSubscriptionClientListResponse contains the response from method TraceAssociationsAtSubscriptionClient.NewListPager.
+type TraceAssociationsAtSubscriptionClientListResponse struct {
+	// The response of a TraceAssociationResource list operation.
+	TraceAssociationResourceListResult
+}
+
+// TraceAssociationsClientCreateOrUpdateResponse contains the response from method TraceAssociationsClient.CreateOrUpdate.
+type TraceAssociationsClientCreateOrUpdateResponse struct {
+	// An association between an Azure resource scope and an Azure Monitor Workspace.
+	TraceAssociationResource
+}
+
+// TraceAssociationsClientDeleteResponse contains the response from method TraceAssociationsClient.Delete.
+type TraceAssociationsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// TraceAssociationsClientGetResponse contains the response from method TraceAssociationsClient.Get.
+type TraceAssociationsClientGetResponse struct {
+	// An association between an Azure resource scope and an Azure Monitor Workspace.
+	TraceAssociationResource
+}
+
+// TraceAssociationsClientListResponse contains the response from method TraceAssociationsClient.NewListPager.
+type TraceAssociationsClientListResponse struct {
+	// The response of a TraceAssociationResource list operation.
+	TraceAssociationResourceListResult
+}
+
+// TraceContainersClientCreateOrUpdateResponse contains the response from method TraceContainersClient.BeginCreateOrUpdate.
+type TraceContainersClientCreateOrUpdateResponse struct {
+	// The trace container for an Azure Monitor Workspace.
+	TraceContainerResource
+}
+
+// TraceContainersClientDeleteResponse contains the response from method TraceContainersClient.Delete.
+type TraceContainersClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// TraceContainersClientGetResponse contains the response from method TraceContainersClient.Get.
+type TraceContainersClientGetResponse struct {
+	// The trace container for an Azure Monitor Workspace.
+	TraceContainerResource
+}
+
+// TraceContainersClientListByAzureMonitorWorkspaceResponse contains the response from method TraceContainersClient.NewListByAzureMonitorWorkspacePager.
+type TraceContainersClientListByAzureMonitorWorkspaceResponse struct {
+	// The response of a TraceContainerResource list operation.
+	TraceContainerResourceListResult
 }

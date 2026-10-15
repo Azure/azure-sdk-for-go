@@ -22,13 +22,13 @@ import (
 
 // SecurityPerimeterLinksServer is a fake server for instances of the armnetwork.SecurityPerimeterLinksClient type.
 type SecurityPerimeterLinksServer struct {
-	// CreateOrUpdate is the fake for method SecurityPerimeterLinksClient.CreateOrUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	CreateOrUpdate func(ctx context.Context, resourceGroupName string, networkSecurityPerimeterName string, linkName string, parameters armnetwork.NspLink, options *armnetwork.SecurityPerimeterLinksClientCreateOrUpdateOptions) (resp azfake.Responder[armnetwork.SecurityPerimeterLinksClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
-
 	// BeginDelete is the fake for method SecurityPerimeterLinksClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, networkSecurityPerimeterName string, linkName string, options *armnetwork.SecurityPerimeterLinksClientBeginDeleteOptions) (resp azfake.PollerResponder[armnetwork.SecurityPerimeterLinksClientDeleteResponse], errResp azfake.ErrorResponder)
+
+	// CreateOrUpdate is the fake for method SecurityPerimeterLinksClient.CreateOrUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
+	CreateOrUpdate func(ctx context.Context, resourceGroupName string, networkSecurityPerimeterName string, linkName string, parameters armnetwork.NspLink, options *armnetwork.SecurityPerimeterLinksClientCreateOrUpdateOptions) (resp azfake.Responder[armnetwork.SecurityPerimeterLinksClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method SecurityPerimeterLinksClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
@@ -79,10 +79,10 @@ func (s *SecurityPerimeterLinksServerTransport) dispatchToMethodFake(req *http.R
 		}
 		if !intercepted {
 			switch method {
-			case "SecurityPerimeterLinksClient.CreateOrUpdate":
-				res.resp, res.err = s.dispatchCreateOrUpdate(req)
 			case "SecurityPerimeterLinksClient.BeginDelete":
 				res.resp, res.err = s.dispatchBeginDelete(req)
+			case "SecurityPerimeterLinksClient.CreateOrUpdate":
+				res.resp, res.err = s.dispatchCreateOrUpdate(req)
 			case "SecurityPerimeterLinksClient.Get":
 				res.resp, res.err = s.dispatchGet(req)
 			case "SecurityPerimeterLinksClient.NewListPager":
@@ -101,47 +101,6 @@ func (s *SecurityPerimeterLinksServerTransport) dispatchToMethodFake(req *http.R
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
-}
-
-func (s *SecurityPerimeterLinksServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Response, error) {
-	if s.srv.CreateOrUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/networkSecurityPerimeters/(?P<networkSecurityPerimeterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/links/(?P<linkName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armnetwork.NspLink](req)
-	if err != nil {
-		return nil, err
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	networkSecurityPerimeterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("networkSecurityPerimeterName")])
-	if err != nil {
-		return nil, err
-	}
-	linkNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("linkName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := s.srv.CreateOrUpdate(req.Context(), resourceGroupNameParam, networkSecurityPerimeterNameParam, linkNameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).NspLink, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
 }
 
 func (s *SecurityPerimeterLinksServerTransport) dispatchBeginDelete(req *http.Request) (*http.Response, error) {
@@ -189,6 +148,47 @@ func (s *SecurityPerimeterLinksServerTransport) dispatchBeginDelete(req *http.Re
 		s.beginDelete.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (s *SecurityPerimeterLinksServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Response, error) {
+	if s.srv.CreateOrUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/networkSecurityPerimeters/(?P<networkSecurityPerimeterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/links/(?P<linkName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armnetwork.NspLink](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	networkSecurityPerimeterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("networkSecurityPerimeterName")])
+	if err != nil {
+		return nil, err
+	}
+	linkNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("linkName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := s.srv.CreateOrUpdate(req.Context(), resourceGroupNameParam, networkSecurityPerimeterNameParam, linkNameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).NspLink, req)
+	if err != nil {
+		return nil, err
+	}
 	return resp, nil
 }
 

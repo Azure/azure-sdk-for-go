@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01/RouteTableRouteCreate.json
+// Generated from example definition: 2026-03-01/RouteTableRouteCreate.json
 func ExampleRoutesClient_BeginCreateOrUpdate_createRoute() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -52,7 +52,7 @@ func ExampleRoutesClient_BeginCreateOrUpdate_createRoute() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/RouteTableRouteCreateEcmp.json
+// Generated from example definition: 2026-03-01/RouteTableRouteCreateEcmp.json
 func ExampleRoutesClient_BeginCreateOrUpdate_createEcmpRoute() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -106,7 +106,7 @@ func ExampleRoutesClient_BeginCreateOrUpdate_createEcmpRoute() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/RouteTableRouteDelete.json
+// Generated from example definition: 2026-03-01/RouteTableRouteDelete.json
 func ExampleRoutesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -132,7 +132,7 @@ func ExampleRoutesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/RouteTableRouteGet.json
+// Generated from example definition: 2026-03-01/RouteTableRouteGet.json
 func ExampleRoutesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -163,7 +163,7 @@ func ExampleRoutesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/RouteTableRouteList.json
+// Generated from example definition: 2026-03-01/RouteTableRouteList.json
 func ExampleRoutesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

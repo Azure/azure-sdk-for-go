@@ -33,13 +33,13 @@ type VPNSitesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, vpnSiteName string, options *armnetwork.VPNSitesClientGetOptions) (resp azfake.Responder[armnetwork.VPNSitesClientGetResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method VPNSitesClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(options *armnetwork.VPNSitesClientListOptions) (resp azfake.PagerResponder[armnetwork.VPNSitesClientListResponse])
-
 	// NewListByResourceGroupPager is the fake for method VPNSitesClient.NewListByResourceGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByResourceGroupPager func(resourceGroupName string, options *armnetwork.VPNSitesClientListByResourceGroupOptions) (resp azfake.PagerResponder[armnetwork.VPNSitesClientListByResourceGroupResponse])
+
+	// NewListPager is the fake for method VPNSitesClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(options *armnetwork.VPNSitesClientListOptions) (resp azfake.PagerResponder[armnetwork.VPNSitesClientListResponse])
 
 	// UpdateTags is the fake for method VPNSitesClient.UpdateTags
 	// HTTP status codes to indicate success: http.StatusOK
@@ -54,8 +54,8 @@ func NewVPNSitesServerTransport(srv *VPNSitesServer) *VPNSitesServerTransport {
 		srv:                         srv,
 		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armnetwork.VPNSitesClientCreateOrUpdateResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armnetwork.VPNSitesClientDeleteResponse]](),
-		newListPager:                newTracker[azfake.PagerResponder[armnetwork.VPNSitesClientListResponse]](),
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armnetwork.VPNSitesClientListByResourceGroupResponse]](),
+		newListPager:                newTracker[azfake.PagerResponder[armnetwork.VPNSitesClientListResponse]](),
 	}
 }
 
@@ -65,8 +65,8 @@ type VPNSitesServerTransport struct {
 	srv                         *VPNSitesServer
 	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armnetwork.VPNSitesClientCreateOrUpdateResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armnetwork.VPNSitesClientDeleteResponse]]
-	newListPager                *tracker[azfake.PagerResponder[armnetwork.VPNSitesClientListResponse]]
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armnetwork.VPNSitesClientListByResourceGroupResponse]]
+	newListPager                *tracker[azfake.PagerResponder[armnetwork.VPNSitesClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for VPNSitesServerTransport.
@@ -96,10 +96,10 @@ func (v *VPNSitesServerTransport) dispatchToMethodFake(req *http.Request, method
 				res.resp, res.err = v.dispatchBeginDelete(req)
 			case "VPNSitesClient.Get":
 				res.resp, res.err = v.dispatchGet(req)
-			case "VPNSitesClient.NewListPager":
-				res.resp, res.err = v.dispatchNewListPager(req)
 			case "VPNSitesClient.NewListByResourceGroupPager":
 				res.resp, res.err = v.dispatchNewListByResourceGroupPager(req)
+			case "VPNSitesClient.NewListPager":
+				res.resp, res.err = v.dispatchNewListPager(req)
 			case "VPNSitesClient.UpdateTags":
 				res.resp, res.err = v.dispatchUpdateTags(req)
 			default:
@@ -243,39 +243,6 @@ func (v *VPNSitesServerTransport) dispatchGet(req *http.Request) (*http.Response
 	return resp, nil
 }
 
-func (v *VPNSitesServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if v.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := v.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/vpnSites`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := v.srv.NewListPager(nil)
-		newListPager = &resp
-		v.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armnetwork.VPNSitesClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		v.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		v.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (v *VPNSitesServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
 	if v.srv.NewListByResourceGroupPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
@@ -309,6 +276,39 @@ func (v *VPNSitesServerTransport) dispatchNewListByResourceGroupPager(req *http.
 	}
 	if !server.PagerResponderMore(newListByResourceGroupPager) {
 		v.newListByResourceGroupPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (v *VPNSitesServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if v.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := v.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/vpnSites`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resp := v.srv.NewListPager(nil)
+		newListPager = &resp
+		v.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armnetwork.VPNSitesClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		v.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPager) {
+		v.newListPager.remove(req)
 	}
 	return resp, nil
 }

@@ -68,6 +68,15 @@ in any hosting environment which supports managed identities, such as (this list
 * [Azure Service Fabric](https://learn.microsoft.com/azure/service-fabric/concepts-managed-identity)
 * [Azure Virtual Machines](https://learn.microsoft.com/entra/identity/managed-identities-azure-resources/how-to-use-vm-token)
 
+### Azure Arc user-assigned identities
+
+On Azure Arc, `ManagedIdentityCredential` supports selecting a user-assigned identity by client,
+object, or resource ID through `ManagedIdentityCredentialOptions.ID`. `DefaultAzureCredential`
+supports selecting one by client ID through the `AZURE_CLIENT_ID` environment variable.
+The Azure Arc agent must support user-assigned
+identities and confirm the requested identity in its token response. Otherwise, token acquisition
+fails rather than authenticating the machine's system-assigned identity.
+
 ### Service Fabric transport requirements
 
 On Service Fabric, `ManagedIdentityCredential` pins the endpoint certificate to

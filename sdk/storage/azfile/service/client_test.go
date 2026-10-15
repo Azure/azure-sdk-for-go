@@ -5,6 +5,7 @@ package service_test
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"net/http"
 	"strconv"
@@ -12,8 +13,10 @@ import (
 	"testing"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/fileerror"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/exported"
@@ -975,4 +978,62 @@ func TestServiceGetSASURLNoTrailingSlashBeforeQuery(t *testing.T) {
 	_require.Contains(sasURL, "customparam=value&", "query value must not be corrupted with an appended slash: %s", sasURL)
 	_require.NotContains(sasURL, "customparam=value/", "query value must not have a trailing slash appended: %s", sasURL)
 	_require.True(strings.HasPrefix(sasURL, fmt.Sprintf("https://%s.file.core.windows.net/?", accountName)), "trailing slash must be appended to the account path: %s", sasURL)
+}
+
+func newMockServiceClient(t *testing.T) (*service.Client, *mock.Server) {
+	srv, clientOptions := testcommon.NewMockServer(t)
+	client, err := service.NewClientWithNoCredential("https://account.file.core.windows.net/", &service.ClientOptions{
+		ClientOptions: clientOptions,
+	})
+	require.NoError(t, err)
+	return client, srv
+}
+
+func TestListSharesPagerMocked(t *testing.T) {
+	_require := require.New(t)
+	client, srv := newMockServiceClient(t)
+	srv.AppendResponse(mock.WithStatusCode(http.StatusOK), mock.WithBody([]byte(`<?xml version="1.0" encoding="utf-8"?>
+<EnumerationResults ServiceEndpoint="https://account.file.core.windows.net/">
+	<Shares>
+		<Share><Name>share1</Name><Properties><Last-Modified>Mon, 11 May 2026 04:19:33 GMT</Last-Modified><Etag>"0x8DEAF1480FD31EF"</Etag><Quota>100</Quota></Properties></Share>
+	</Shares>
+	<NextMarker>marker1</NextMarker>
+</EnumerationResults>`)))
+	// the second page is only returned for a request that continues from the marker of the first page
+	srv.AppendResponse(mock.WithStatusCode(http.StatusOK), mock.WithBody([]byte(`<?xml version="1.0" encoding="utf-8"?>
+<EnumerationResults ServiceEndpoint="https://account.file.core.windows.net/">
+	<Shares>
+		<Share><Name>share2</Name><Properties><Last-Modified>Mon, 11 May 2026 04:19:33 GMT</Last-Modified><Etag>"0x8DEAF1480FD31F0"</Etag><Quota>200</Quota></Properties></Share>
+	</Shares>
+	<NextMarker />
+</EnumerationResults>`)), mock.WithPredicate(func(req *http.Request) bool {
+		return req.URL.Query().Get("marker") == "marker1"
+	}))
+	srv.AppendResponse(mock.WithStatusCode(http.StatusBadRequest))
+
+	var names []string
+	pager := client.NewListSharesPager(nil)
+	for pager.More() {
+		page, err := pager.NextPage(context.Background())
+		_require.NoError(err)
+		for _, s := range page.Shares {
+			names = append(names, *s.Name)
+		}
+	}
+	_require.Equal([]string{"share1", "share2"}, names)
+	_require.Equal(2, srv.Requests())
+}
+
+func TestListSharesPagerErrorMocked(t *testing.T) {
+	_require := require.New(t)
+	client, srv := newMockServiceClient(t)
+	srv.AppendResponse(mock.WithStatusCode(http.StatusForbidden),
+		mock.WithHeader("x-ms-error-code", string(fileerror.AuthorizationFailure)),
+		mock.WithBody([]byte(`<?xml version="1.0" encoding="utf-8"?><Error><Code>AuthorizationFailure</Code><Message>This request is not authorized to perform this operation.</Message></Error>`)))
+
+	_, err := client.NewListSharesPager(nil).NextPage(context.Background())
+	var respErr *azcore.ResponseError
+	_require.True(errors.As(err, &respErr))
+	_require.Equal(http.StatusForbidden, respErr.StatusCode)
+	_require.True(fileerror.HasCode(err, fileerror.AuthorizationFailure))
 }

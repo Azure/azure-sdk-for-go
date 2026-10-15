@@ -15,6 +15,7 @@ import (
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/exported"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/sanitizer"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/tracing"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
@@ -25,7 +26,7 @@ func TestHTTPTracePolicy(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
 
-	pl := exported.NewPipeline(srv, newHTTPTracePolicy([]string{"visibleqp"}))
+	pl := exported.NewPipeline(nil, srv, newHTTPTracePolicy(sanitizer.New(sanitizer.Options{AllowedQueryParams: []string{"visibleqp"}})))
 
 	// no tracer
 	req, err := exported.NewRequest(context.Background(), http.MethodGet, srv.URL())
@@ -181,7 +182,7 @@ func TestStartSpansDontNest(t *testing.T) {
 	srv.SetResponse() // always return http.StatusOK
 	defer close()
 
-	pl := exported.NewPipeline(srv, newHTTPTracePolicy(nil))
+	pl := exported.NewPipeline(nil, srv, newHTTPTracePolicy(sanitizer.New(sanitizer.Options{})))
 
 	apiSpanCount := 0
 	httpSpanCount := 0

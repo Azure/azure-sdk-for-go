@@ -1,5 +1,7 @@
 # Building the test emulator
 
+<!-- cSpell:ignore PPAF ppaf -->
+
 The Go native-driver tests use `azure_data_cosmos_emulator` from
 [Azure/azure-sdk-for-rust](https://github.com/Azure/azure-sdk-for-rust).
 This crate is not published to crates.io. Build it from source; it is separate from the

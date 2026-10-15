@@ -137,6 +137,10 @@ func TestItemCreateConflictPreservesOriginal(t *testing.T) {
 			_, err = fx.Container.CreateItem(ctx, pk, id, body(2), nil)
 			cosmosErr := requireCode(t, err, azcosmos.CodeConflict)
 			require.Zero(t, cosmosErr.SubStatus)
+
+			read, err := fx.Container.ReadItem(ctx, pk, id, nil)
+			require.NoError(t, err)
+			require.Equal(t, int64(1), mustUnmarshalTenantItem(t, read.Value).Value)
 		})
 	})
 }

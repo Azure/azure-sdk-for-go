@@ -68,14 +68,16 @@ func TestItemScalarPartitionKeysRemainDistinct(t *testing.T) {
 	const sharedID = "same-id"
 
 	cases := []struct {
-		name string
-		pk   azcosmos.PartitionKey
-		body []byte
+		name      string
+		pk        azcosmos.PartitionKey
+		body      []byte
+		wantPK    any // the "pk" field decoded from JSON, for comparing read.Value back
+		wantValue float64
 	}{
-		{"string", azcosmos.NewPartitionKeyString("A"), []byte(`{"id":"same-id","pk":"A","value":1}`)},
-		{"number", azcosmos.NewPartitionKeyNumber(42), []byte(`{"id":"same-id","pk":42,"value":2}`)},
-		{"bool", azcosmos.NewPartitionKeyBool(true), []byte(`{"id":"same-id","pk":true,"value":3}`)},
-		{"null", azcosmos.NewPartitionKeyNull(), []byte(`{"id":"same-id","pk":null,"value":4}`)},
+		{"string", azcosmos.NewPartitionKeyString("A"), []byte(`{"id":"same-id","pk":"A","value":1}`), "A", 1},
+		{"number", azcosmos.NewPartitionKeyNumber(42), []byte(`{"id":"same-id","pk":42,"value":2}`), float64(42), 2},
+		{"bool", azcosmos.NewPartitionKeyBool(true), []byte(`{"id":"same-id","pk":true,"value":3}`), true, 3},
+		{"null", azcosmos.NewPartitionKeyNull(), []byte(`{"id":"same-id","pk":null,"value":4}`), nil, 4},
 	}
 
 	for _, c := range cases {
@@ -100,7 +102,12 @@ func TestItemScalarPartitionKeysRemainDistinct(t *testing.T) {
 		require.NoErrorf(t, err, "case %s", c.name)
 		var stored map[string]any
 		mustUnmarshalInto(t, read.Value, &stored)
+		// Every case shares the same id, so this has to compare pk/value too - otherwise a read
+		// that crossed into a sibling case's document (same id, wrong partition key) would still
+		// pass this assertion.
 		require.Equalf(t, sharedID, stored["id"], "case %s", c.name)
+		require.Equalf(t, c.wantPK, stored["pk"], "case %s", c.name)
+		require.Equalf(t, c.wantValue, stored["value"], "case %s", c.name)
 	}
 }
 

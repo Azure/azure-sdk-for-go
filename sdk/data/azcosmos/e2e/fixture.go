@@ -54,9 +54,12 @@ type Item struct {
 
 // selectedProfile validates and returns the profile to run scenarioID under. AZURE_COSMOS_E2E_PROFILE
 // selects it explicitly; unset, it defaults to the scenario's own first declared profile, since
-// not every scenario applies to "smokeTests" (several apply only to "coreOperations"). Either way
-// this fails the test configuration - not silently skips - if the resolved profile is unknown to
-// the pinned catalog or is not one scenarioID actually declares.
+// not every scenario applies to "smokeTests" (several apply only to "coreOperations"). An unknown
+// profile, or applicable-but-unsupported setup (the axis checks below), still fails the test
+// configuration outright. But an explicitly-selected profile that scenarioID simply does not
+// declare is a valid profile selection per the shared catalog contract (running the whole package
+// with AZURE_COSMOS_E2E_PROFILE=smokeTests is expected to skip, not fail, every coreOperations-only
+// scenario, and vice versa), so that case skips the test instead of failing it.
 func selectedProfile(t *testing.T, scenarioID string) string {
 	t.Helper()
 
@@ -66,6 +69,7 @@ func selectedProfile(t *testing.T, scenarioID string) string {
 	require.Truef(t, known, "scenario %q is not in the pinned catalog", scenarioID)
 	require.NotEmptyf(t, scenario.Profiles, "scenario %q declares no profiles", scenarioID)
 
+	explicitProfile := os.Getenv("AZURE_COSMOS_E2E_PROFILE") != ""
 	profileID := os.Getenv("AZURE_COSMOS_E2E_PROFILE")
 	if profileID == "" {
 		profileID = scenario.Profiles[0]
@@ -81,7 +85,14 @@ func selectedProfile(t *testing.T, scenarioID string) string {
 			break
 		}
 	}
-	require.Truef(t, found, "scenario %q does not declare profile %q; selected profiles were %v", scenarioID, profileID, scenario.Profiles)
+	if !found {
+		if explicitProfile {
+			t.Skipf("scenario %q does not declare profile %q; selected profiles were %v", scenarioID, profileID, scenario.Profiles)
+		}
+		// Unreachable in practice: the default profileID is always scenario.Profiles[0], so this
+		// only guards a future bug in that default-selection logic.
+		t.Fatalf("scenario %q does not declare its own default profile %q; selected profiles were %v", scenarioID, profileID, scenario.Profiles)
+	}
 
 	// Every active scenario in this pass only has a single ("sdkDefault"-equivalent) account,
 	// runtime, and client definition in its applicable profiles. Go cannot yet translate any

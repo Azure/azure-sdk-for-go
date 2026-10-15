@@ -32,6 +32,22 @@ func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, 
 	}, nil
 }
 
+// NewDetectorsClient creates a new instance of DetectorsClient.
+func (c *ClientFactory) NewDetectorsClient() *DetectorsClient {
+	return &DetectorsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewFailoverInstancesClient creates a new instance of FailoverInstancesClient.
+func (c *ClientFactory) NewFailoverInstancesClient() *FailoverInstancesClient {
+	return &FailoverInstancesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewOperationsClient creates a new instance of OperationsClient.
 func (c *ClientFactory) NewOperationsClient() *OperationsClient {
 	return &OperationsClient{
@@ -58,6 +74,22 @@ func (c *ClientFactory) NewSchedulersClient() *SchedulersClient {
 // NewTaskHubsClient creates a new instance of TaskHubsClient.
 func (c *ClientFactory) NewTaskHubsClient() *TaskHubsClient {
 	return &TaskHubsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewTaskQueuesClient creates a new instance of TaskQueuesClient.
+func (c *ClientFactory) NewTaskQueuesClient() *TaskQueuesClient {
+	return &TaskQueuesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewTransparentDataEncryptionsClient creates a new instance of TransparentDataEncryptionsClient.
+func (c *ClientFactory) NewTransparentDataEncryptionsClient() *TransparentDataEncryptionsClient {
+	return &TransparentDataEncryptionsClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}

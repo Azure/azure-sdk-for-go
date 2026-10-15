@@ -60,7 +60,7 @@ func (h *httpTracePolicy) Do(req *policy.Request) (resp *http.Response, err erro
 			Kind:       tracing.SpanKindClient,
 			Attributes: attributes,
 		})
-		sanitizer.RecordURL(ctx, *req.Raw().URL)
+		sanitizer.RecordURL(ctx, *req.Raw().URL, h.sanitizer)
 
 		defer func() {
 			if resp != nil {

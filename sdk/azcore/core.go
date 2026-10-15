@@ -139,7 +139,7 @@ func NewClient(moduleName, moduleVersion string, plOpts runtime.PipelineOptions,
 	if tr.Enabled() && plOpts.Tracing.Namespace != "" {
 		tr.SetAttributes(tracing.Attribute{Key: shared.TracingNamespaceAttrName, Value: plOpts.Tracing.Namespace})
 	}
-	tr = sanitizer.WrapTracer(tr, exported.PipelineSanitizer(pl))
+	tr = sanitizer.WrapTracer(tr)
 
 	return &Client{
 		pl:        pl,
@@ -168,6 +168,6 @@ func (c *Client) WithClientName(clientName string) *Client {
 	if tr.Enabled() && c.namespace != "" {
 		tr.SetAttributes(tracing.Attribute{Key: shared.TracingNamespaceAttrName, Value: c.namespace})
 	}
-	tr = sanitizer.WrapTracer(tr, exported.PipelineSanitizer(c.pl))
+	tr = sanitizer.WrapTracer(tr)
 	return &Client{pl: c.pl, tr: tr, tp: c.tp, modVer: c.modVer, namespace: c.namespace}
 }

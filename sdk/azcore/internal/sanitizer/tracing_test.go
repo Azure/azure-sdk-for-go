@@ -8,12 +8,13 @@ import (
 	"net/url"
 	"testing"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/tracing"
 	"github.com/stretchr/testify/require"
 )
 
 func TestWrapTracerDisabled(t *testing.T) {
-	tr := WrapTracer(tracing.Tracer{}, New(Options{}))
+	tr := WrapTracer(tracing.Tracer{})
 	require.Zero(t, tr)
 	ctx := context.Background()
 	got, span := tr.Start(ctx, "disabled", nil)
@@ -55,7 +56,7 @@ func TestWrapTracerForwarding(t *testing.T) {
 		},
 	})
 	tr.SetAttributes(tracing.Attribute{Key: "original", Value: true})
-	tr = WrapTracer(tr, New(Options{AllowedQueryParams: []string{"visible"}}))
+	tr = WrapTracer(tr)
 	tr.SetAttributes(tracing.Attribute{Key: "wrapper", Value: true})
 	require.Zero(t, tr.SpanFromContext(context.Background()))
 	ctx, wrapped := tr.Start(context.Background(), "operation", &tracing.SpanOptions{
@@ -76,7 +77,7 @@ func TestWrapTracerForwarding(t *testing.T) {
 
 	u, err := url.Parse("https://example.com?sig=secret&visible=value")
 	require.NoError(t, err)
-	RecordURL(ctx, *u)
+	RecordURL(ctx, *u, New(Options{AllowedQueryParams: []string{"visible"}}))
 	// Recording takes a snapshot rather than keeping a mutable request URL.
 	u.RawQuery = "sig=changed"
 	tr.SpanFromContext(ctx).SetStatus(tracing.SpanStatusError, "failed: https://example.com?sig=secret&visible=value")
@@ -96,7 +97,7 @@ func TestWrapTracerAttributeOverrides(t *testing.T) {
 	}, nil)
 	tr.SetAttributes(tracing.Attribute{Key: "az.namespace", Value: "original"})
 	original := tr
-	tr = WrapTracer(tr, New(Options{}))
+	tr = WrapTracer(tr)
 	tr.SetAttributes(tracing.Attribute{Key: "az.namespace", Value: "override"})
 	options := &tracing.SpanOptions{
 		Attributes: []tracing.Attribute{{Key: "az.namespace", Value: "call"}},
@@ -111,13 +112,48 @@ func TestWrapTracerAttributeOverrides(t *testing.T) {
 	require.Equal(t, []tracing.Attribute{{Key: "az.namespace", Value: "original"}}, attrs)
 }
 
+func TestWrapTracerCredentialRequestURL(t *testing.T) {
+	descriptions := map[string]string{}
+	tr := WrapTracer(tracing.NewTracer(func(ctx context.Context, name string, _ *tracing.SpanOptions) (context.Context, tracing.Span) {
+		return ctx, tracing.NewSpan(tracing.SpanImpl{
+			SetStatus: func(_ tracing.SpanStatus, description string) { descriptions[name] = description },
+		})
+	}, nil))
+	ctx, operation := tr.Start(context.Background(), "operation", nil)
+	serviceSanitizer := New(Options{AllowedQueryParams: []string{"service"}})
+	tokenSanitizer := New(Options{AllowedQueryParams: []string{"token"}})
+	serviceURL, err := url.Parse("https://service.example.com?service=visible&token=service-secret")
+	require.NoError(t, err)
+	RecordURL(ctx, *serviceURL, serviceSanitizer)
+
+	isolated := &shared.ContextWithDeniedValues{Context: ctx}
+	tokenURL, err := url.Parse("https://identity.example.com?service=token-secret&token=visible")
+	require.NoError(t, err)
+	tokenCtx, token := tr.Start(isolated, "token", nil)
+	tokenCtx, httpSpan := tr.Start(tokenCtx, "HTTP GET", nil)
+	RecordURL(tokenCtx, *tokenURL, tokenSanitizer)
+
+	description := "failed: " + tokenURL.String()
+	token.SetStatus(tracing.SpanStatusError, description)
+	httpSpan.SetStatus(tracing.SpanStatusError, description)
+	operation.SetStatus(tracing.SpanStatusError, description)
+	require.Equal(t, "failed: https://identity.example.com?service=REDACTED&token=visible", descriptions["token"])
+	require.Equal(t, descriptions["token"], descriptions["HTTP GET"])
+	require.Equal(t, descriptions["token"], descriptions["operation"])
+
+	RecordURL(ctx, *serviceURL, serviceSanitizer)
+	operation.SetStatus(tracing.SpanStatusError, "failed: "+serviceURL.String())
+	require.Equal(t, "failed: https://service.example.com?service=visible&token=REDACTED", descriptions["operation"])
+}
+
 func TestWrapTracerLatestRequestURL(t *testing.T) {
 	descriptions := map[string]string{}
 	tr := WrapTracer(tracing.NewTracer(func(ctx context.Context, name string, options *tracing.SpanOptions) (context.Context, tracing.Span) {
 		return ctx, tracing.NewSpan(tracing.SpanImpl{
 			SetStatus: func(_ tracing.SpanStatus, desc string) { descriptions[name] = desc },
 		})
-	}, nil), New(Options{}))
+	}, nil))
+	s := New(Options{})
 	ctx, parent := tr.Start(context.Background(), "parent", nil)
 	ctx, child := tr.Start(ctx, "child", nil)
 	_, unrelated := tr.Start(context.Background(), "unrelated", nil)
@@ -129,8 +165,8 @@ func TestWrapTracerLatestRequestURL(t *testing.T) {
 	parent.SetStatus(tracing.SpanStatusError, description)
 	require.Equal(t, description, descriptions["parent"])
 
-	RecordURL(ctx, *short)
-	RecordURL(ctx, *long)
+	RecordURL(ctx, *short, s)
+	RecordURL(ctx, *long, s)
 	child.SetStatus(tracing.SpanStatusError, description)
 	parent.SetStatus(tracing.SpanStatusError, description)
 	unrelated.SetStatus(tracing.SpanStatusError, description)
@@ -138,7 +174,7 @@ func TestWrapTracerLatestRequestURL(t *testing.T) {
 	require.Equal(t, descriptions["child"], descriptions["parent"])
 	require.Equal(t, description, descriptions["unrelated"])
 
-	RecordURL(ctx, *short)
+	RecordURL(ctx, *short, s)
 	description = "failed: " + short.String()
 	child.SetStatus(tracing.SpanStatusError, description)
 	parent.SetStatus(tracing.SpanStatusError, description)
@@ -147,15 +183,15 @@ func TestWrapTracerLatestRequestURL(t *testing.T) {
 
 	previous, err := url.Parse("https://previous.example.com?sig=previous-secret")
 	require.NoError(t, err)
-	RecordURL(ctx, *previous)
-	RecordURL(ctx, *short)
+	RecordURL(ctx, *previous, s)
+	RecordURL(ctx, *short, s)
 	description = "failed: " + previous.String()
 	parent.SetStatus(tracing.SpanStatusError, description)
 	require.Equal(t, description, descriptions["parent"])
 
-	RecordURL(ctx, url.URL{Scheme: "https", Host: "example.com"})
+	RecordURL(ctx, url.URL{Scheme: "https", Host: "example.com"}, s)
 	description = "failed: " + short.String()
 	parent.SetStatus(tracing.SpanStatusError, description)
 	require.Equal(t, description, descriptions["parent"])
-	RecordURL(context.Background(), *short)
+	RecordURL(context.Background(), *short, s)
 }

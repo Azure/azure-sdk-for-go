@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2024-08-01/Tags.json
+// Generated from example definition: 2026-06-01/Tags.json
 func ExampleTagsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -23,6 +23,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/lease"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/path"
 
@@ -5778,7 +5779,8 @@ func (f *fakeDownloadFile) Do(req *http.Request) (*http.Response, error) {
 // TestDownloadDefaultInitialChunkSize verifies the initial read of a download is the same size as the
 // subsequent reads, whether that's the default chunk size or an explicitly set ChunkSize.
 func TestDownloadDefaultInitialChunkSize(t *testing.T) {
-	const defaultChunkSize = 4 * 1024 * 1024
+	// DownloadBuffer delegates to the blob client, so the default chunk size is the blob default.
+	const defaultChunkSize = blob.DefaultDownloadBlockSize
 	const chunkSize = 1024 * 1024
 	tests := map[string]struct {
 		contentSize   int64

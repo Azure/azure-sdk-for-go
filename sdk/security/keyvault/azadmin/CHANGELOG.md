@@ -1,6 +1,6 @@
 ## Release History
 
-### 1.6.0-beta.2 (Unreleased)
+### 1.6.0-beta.2 (2026-10-15)
 
 #### Features Added
 * Added EKM private endpoint operations to the `ekm` package: `BeginCreateEkmPrivateEndpoint`,
@@ -9,13 +9,12 @@
   `ErrorInfo`, etc.) and enums
 * Added the `ConnectivityMode` field to `ekm.Connection`
 
-#### Breaking Changes
-
 #### Bugs Fixed
 * Fixed the `ekm/fake` server not passing request bodies to fake handlers
 
 #### Other Changes
 * Upgraded to API service version `2026-07-01-preview`
+* Upgraded dependencies
 
 ### 1.6.0-beta.1 (2026-06-09)
 

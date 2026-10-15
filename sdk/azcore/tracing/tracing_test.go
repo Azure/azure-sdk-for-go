@@ -73,3 +73,33 @@ func TestProvider(t *testing.T) {
 	require.True(t, setStatusCalled)
 	require.True(t, spanFromContextCalled)
 }
+
+func TestWrapTracer(t *testing.T) {
+	var attrs []Attribute
+	tr := NewTracer(func(ctx context.Context, _ string, options *SpanOptions) (context.Context, Span) {
+		attrs = options.Attributes
+		return ctx, Span{}
+	}, nil)
+	tr.SetAttributes(Attribute{Key: "key", Value: "original"})
+	original := tr
+	decorate := func(inner Tracer) Tracer {
+		wrapped := NewTracer(inner.Start, &TracerOptions{SpanFromContext: inner.SpanFromContext})
+		wrapped.SetAttributes(Attribute{Key: "key", Value: "wrapper"})
+		return wrapped
+	}
+	tr = WrapTracer(tr, decorate)
+	tr.SetAttributes(Attribute{Key: "key", Value: "override"})
+	tr = WrapTracer(tr, decorate)
+	tr.Start(context.Background(), "wrapped", &SpanOptions{
+		Attributes: []Attribute{{Key: "key", Value: "call"}},
+	})
+	require.Equal(t, []Attribute{
+		{Key: "key", Value: "call"},
+		{Key: "key", Value: "original"},
+		{Key: "key", Value: "wrapper"},
+		{Key: "key", Value: "override"},
+		{Key: "key", Value: "wrapper"},
+	}, attrs)
+	original.Start(context.Background(), "original", nil)
+	require.Equal(t, []Attribute{{Key: "key", Value: "original"}}, attrs)
+}

@@ -32,26 +32,28 @@ func WrapTracer(tracer tracing.Tracer, s *Sanitizer) tracing.Tracer {
 	if !tracer.Enabled() {
 		return tracer
 	}
-	return tracing.NewTracer(func(ctx context.Context, name string, options *tracing.SpanOptions) (context.Context, tracing.Span) {
-		// Reuse the parent's state so child HTTP spans update the URL used by
-		// the operation span, which was created before the request existed.
-		state, ok := ctx.Value(requestURLKey{}).(*requestURL)
-		if !ok {
-			state = &requestURL{}
-		}
-		ctx, span := tracer.Start(ctx, name, options)
-		ctx = context.WithValue(ctx, requestURLKey{}, state)
-		return ctx, wrapSpan(span, s, state)
-	}, &tracing.TracerOptions{
-		SpanFromContext: func(ctx context.Context) tracing.Span {
-			span := tracer.SpanFromContext(ctx)
-			// The underlying tracer stores its own span in the context, so
-			// retrieving it must apply the sanitizing wrapper again.
-			if state, ok := ctx.Value(requestURLKey{}).(*requestURL); ok {
-				return wrapSpan(span, s, state)
+	return tracing.WrapTracer(tracer, func(tracer tracing.Tracer) tracing.Tracer {
+		return tracing.NewTracer(func(ctx context.Context, name string, options *tracing.SpanOptions) (context.Context, tracing.Span) {
+			// Reuse the parent's state so child HTTP spans update the URL used by
+			// the operation span, which was created before the request existed.
+			state, ok := ctx.Value(requestURLKey{}).(*requestURL)
+			if !ok {
+				state = &requestURL{}
 			}
-			return span
-		},
+			ctx, span := tracer.Start(ctx, name, options)
+			ctx = context.WithValue(ctx, requestURLKey{}, state)
+			return ctx, wrapSpan(span, s, state)
+		}, &tracing.TracerOptions{
+			SpanFromContext: func(ctx context.Context) tracing.Span {
+				span := tracer.SpanFromContext(ctx)
+				// The underlying tracer stores its own span in the context, so
+				// retrieving it must apply the sanitizing wrapper again.
+				if state, ok := ctx.Value(requestURLKey{}).(*requestURL); ok {
+					return wrapSpan(span, s, state)
+				}
+				return span
+			},
+		})
 	})
 }
 

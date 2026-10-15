@@ -4,6 +4,8 @@
 
 ### Features Added
 
+* Added `tracing.WrapTracer` to decorate a tracer while preserving attribute override ordering.
+
 ### Breaking Changes
 
 ### Bugs Fixed

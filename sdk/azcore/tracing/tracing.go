@@ -59,6 +59,19 @@ func NewTracer(newSpanFn func(ctx context.Context, spanName string, options *Spa
 	}
 }
 
+// WrapTracer decorates tracer using wrap while preserving its attributes.
+// The tracer passed to wrap has no attributes, so its Start method can be called
+// without applying them twice. The returned tracer applies the original attributes
+// before any attributes added by wrap or subsequent calls to SetAttributes.
+// The original tracer is not modified. wrap must not be nil.
+func WrapTracer(tracer Tracer, wrap func(Tracer) Tracer) Tracer {
+	attrs := tracer.attrs
+	tracer.attrs = nil
+	wrapped := wrap(tracer)
+	wrapped.attrs = append(append([]Attribute(nil), attrs...), wrapped.attrs...)
+	return wrapped
+}
+
 // Tracer is the factory that creates Span instances.
 type Tracer struct {
 	attrs             []Attribute

@@ -8,6 +8,14 @@
 
 * Added optional `ClientOptions.Serializer`, generic item writes, `ItemResponse.IntoModel[T]()`,
   and generic query results with metadata-preserving model conversion errors.
+* Added database/container management: `Client.CreateDatabase`;
+  `DatabaseClient.Read`, `DatabaseClient.Delete`, `DatabaseClient.CreateContainer`;
+  `ContainerClient.Read`, `ContainerClient.Delete`; and the
+  `DatabaseProperties`/`ContainerProperties` model types, including `IndexingPolicy` and
+  `UniqueKeyPolicy`. Creates and deletes require a key-credential client (`NewClientWithKey`);
+  reads also support Microsoft Entra ID identities with the `readMetadata` data action. Container
+  creates infer the partition-key kind and default to partition-key version 2.
+  See [PR 27700](https://github.com/Azure/azure-sdk-for-go/pull/27700).
 * Added all 15 shared driver operation settings through request `OperationOptions`,
   `ClientOptions.Operation`, and `RuntimeOptions.Operation`, including throughput controls, retry
   budgets, hedging, session capture, custom headers, and binary encoding.

@@ -11,7 +11,8 @@ This client library enables client applications to connect to Azure Cosmos DB vi
 This is the v2 major version of the module and it is **not usable yet**. The v2 surface is being
 assembled incrementally so that it can be reviewed as it lands. This release covers the error and
 response model, partition keys, client construction, and creating, reading, replacing, upserting,
-deleting, and patching single items, plus paged queries within a complete logical partition.
+deleting, and patching single items, database and container lifecycle operations, plus paged
+queries within a complete logical partition.
 
 v2 replaces the v1 pure-Go implementation with a binding to the shared Rust Cosmos driver, so that
 routing, retries, session handling, failover behavior and query fan-out are consistent across the
@@ -81,10 +82,29 @@ it has not already run. The diagnostic build has no driver to initialize and rep
 `Initialize`.
 
 Container metadata is not fetched during client construction because the client does not know which
-containers the application will use. The first operation on a container resolves and caches that
-container's metadata.
+containers the application will use. Each operation resolves its container through the native
+driver, which owns metadata caching and stale-resource refresh.
 
 One limit applies to the driver-backed build today: v1's WebAssembly support does not carry over.
+
+### Managing databases and containers
+
+Use `Client.CreateDatabase`, `DatabaseClient.CreateContainer`, and the resource clients' `Read` and
+`Delete` methods to manage databases and containers. Creates and deletes require a client created
+with `NewClientWithKey`. Metadata reads also support Microsoft Entra ID through `NewClient` when
+the identity has the `Microsoft.DocumentDB/databaseAccounts/readMetadata` data action.
+
+Container creates require at least one partition key path. An omitted partition key kind is inferred
+as `Hash` for one path and `MultiHash` for multiple paths. An omitted partition key version creates
+the container with version 2. The definition is immutable after creation.
+
+Database and container creates always request the response body so the returned properties include
+the service-assigned resource ID, self-link, ETag, and last-modified time. For these operations,
+`OperationOptions.EnableContentResponseOnWrite` is ignored. Deleting a database also deletes every
+container and item in it; deleting a container deletes every item in it.
+
+Provisioned-throughput creation and throughput read/replace APIs are not included yet. Configure
+throughput separately until the follow-up throughput surface lands.
 
 ### SDK identity
 

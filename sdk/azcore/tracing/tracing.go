@@ -6,6 +6,7 @@ package tracing
 
 import (
 	"context"
+	"net/http"
 )
 
 // ProviderOptions contains the optional values when creating a Provider.
@@ -44,6 +45,8 @@ func (p Provider) NewTracer(module, version string) (tracer Tracer) {
 type TracerOptions struct {
 	// SpanFromContext contains the implementation for the Tracer.SpanFromContext method.
 	SpanFromContext func(context.Context) Span
+	// InjectHeaders propagates the active span context into outgoing HTTP request headers.
+	InjectHeaders HeaderInjector
 }
 
 // NewTracer creates a Tracer with the specified values.
@@ -56,6 +59,7 @@ func NewTracer(newSpanFn func(ctx context.Context, spanName string, options *Spa
 	return Tracer{
 		newSpanFn:         newSpanFn,
 		spanFromContextFn: options.SpanFromContext,
+		injectHeadersFn:   options.InjectHeaders,
 	}
 }
 
@@ -64,6 +68,7 @@ type Tracer struct {
 	attrs             []Attribute
 	newSpanFn         func(ctx context.Context, spanName string, options *SpanOptions) (context.Context, Span)
 	spanFromContextFn func(ctx context.Context) Span
+	injectHeadersFn   HeaderInjector
 }
 
 // Start creates a new span and a context.Context that contains it.
@@ -92,6 +97,14 @@ func (t *Tracer) SetAttributes(attrs ...Attribute) {
 // Enabled returns true if this Tracer is capable of creating Spans.
 func (t Tracer) Enabled() bool {
 	return t.newSpanFn != nil
+}
+
+// InjectHeaders propagates the active span context into header.
+// It is a no-op if no HeaderInjector was configured.
+func (t Tracer) InjectHeaders(ctx context.Context, header http.Header) {
+	if t.injectHeadersFn != nil {
+		t.injectHeadersFn(ctx, header)
+	}
 }
 
 // SpanFromContext returns the Span associated with the current context.

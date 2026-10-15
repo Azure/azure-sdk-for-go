@@ -21,6 +21,22 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+// captureTransport captures request headers sent through the pipeline.
+type captureTransport struct {
+	hdr http.Header
+}
+
+func (c *captureTransport) Do(req *http.Request) (*http.Response, error) {
+	c.hdr = req.Header.Clone()
+	return &http.Response{
+		StatusCode: http.StatusOK,
+		Status:     "200 OK",
+		Header:     make(http.Header),
+		Body:       io.NopCloser(strings.NewReader("")),
+		Request:    req,
+	}, nil
+}
+
 func TestHTTPTracePolicy(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
@@ -230,14 +246,8 @@ func TestStartSpansDontNest(t *testing.T) {
 
 func TestStartSpanWithAttributes(t *testing.T) {
 	spanAttrs := []tracing.Attribute{
-		{
-			Key:   "int_attr",
-			Value: 12345,
-		},
-		{
-			Key:   "string_attr",
-			Value: "foo",
-		},
+		{Key: "int_attr", Value: 12345},
+		{Key: "string_attr", Value: "foo"},
 	}
 
 	// span no error
@@ -249,9 +259,7 @@ func TestStartSpanWithAttributes(t *testing.T) {
 		require.NotNil(t, options)
 		require.EqualValues(t, tracing.SpanKindInternal, options.Kind)
 		require.EqualValues(t, spanAttrs, options.Attributes)
-		spanImpl := tracing.SpanImpl{
-			End: func() { endCalled = true },
-		}
+		spanImpl := tracing.SpanImpl{End: func() { endCalled = true }}
 		return ctx, tracing.NewSpan(spanImpl)
 	}, nil)
 	ctx, end := StartSpan(context.Background(), "TestStartSpan", tr, &StartSpanOptions{
@@ -274,11 +282,8 @@ func TestStartSpanWithKind(t *testing.T) {
 		startCalled = true
 		require.EqualValues(t, "TestStartSpan", spanName)
 		require.NotNil(t, options)
-		// The span kind should be passed through
 		require.EqualValues(t, tracing.SpanKindClient, options.Kind)
-		spanImpl := tracing.SpanImpl{
-			End: func() { endCalled = true },
-		}
+		spanImpl := tracing.SpanImpl{End: func() { endCalled = true }}
 		return ctx, tracing.NewSpan(spanImpl)
 	}, nil)
 	ctx, end := StartSpan(context.Background(), "TestStartSpan", tr, &StartSpanOptions{
@@ -291,4 +296,34 @@ func TestStartSpanWithKind(t *testing.T) {
 	require.True(t, ok)
 	require.True(t, startCalled)
 	require.True(t, endCalled)
+}
+
+func TestHTTPTracePolicyCallsTracerInjectHeaders(t *testing.T) {
+	const sentinel = "00-0af7651916cd43dd8448eb211c80319c-b7ad6b7169203331-01"
+
+	var injectorCalled bool
+	tr := tracing.NewTracer(
+		func(ctx context.Context, spanName string, options *tracing.SpanOptions) (context.Context, tracing.Span) {
+			return ctx, tracing.NewSpan(tracing.SpanImpl{})
+		},
+		&tracing.TracerOptions{
+			InjectHeaders: func(ctx context.Context, header http.Header) {
+				injectorCalled = true
+				header.Set("traceparent", sentinel)
+			},
+		},
+	)
+
+	ctx := context.WithValue(context.Background(), shared.CtxWithTracingTracer{}, tr)
+	cap := &captureTransport{}
+	pl := exported.NewPipeline(cap, newHTTPTracePolicy(nil))
+
+	req, err := exported.NewRequest(ctx, http.MethodGet, "https://example.com")
+	require.NoError(t, err)
+
+	_, err = pl.Do(req)
+	require.NoError(t, err)
+
+	require.True(t, injectorCalled, "policy must call tracer.InjectHeaders")
+	require.Equal(t, sentinel, cap.hdr.Get("traceparent"))
 }

@@ -1,6 +1,6 @@
 {
   "account": {
-    "id": "azcosmos-go-v2-ppaf",
+    "id": "azcosmos-go-v2-availability",
     "writeMode": "single",
     "consistency": "session",
     "perPartitionFailover": true,

@@ -2,7 +2,7 @@
 
 ## 1.0.0 (2026-10-15)
 ### Other Changes
-
+- Release stable version.
 
 ## 0.5.0 (2026-09-25)
 ### Breaking Changes

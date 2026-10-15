@@ -27,6 +27,14 @@
   client's configured endpoint.
 
 ### Breaking Changes
+* `UploadBuffer` and `UploadFile` on `blockblob.Client` and `azblob.Client` now size the initial request the same as
+  subsequent blocks. Content is uploaded with a single Put Blob request only if it is no larger than the block size:
+  the explicitly set `BlockSize`, or by default `blob.DefaultDownloadBlockSize` (4MB), raised as needed to fit the
+  content in `blockblob.MaxBlocks` blocks. Previously, content of up to 256MB was uploaded with a single request,
+  whatever the `BlockSize`. Uploads may now be partitioned more often, leading to more requests.
+  * To keep uploading content of up to 256MB with a single request, set `BlockSize` to `blockblob.MaxUploadBlobBytes`
+    for that content. Don't set it for larger content, which would then be staged in 256MB blocks instead of the
+    default block size.
 
 ### Bugs Fixed
 

@@ -16,6 +16,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
@@ -925,6 +926,12 @@ func (s *AZBlobRecordedTestsSuite) TestDownloadBufferWithLargeData() {
 	downloadOffset := 0
 	downloadCount := 7 * 1024 * 1024
 	_require := require.New(s.T())
+	// The blob is larger than the block size, so it's uploaded in blocks whose IDs are random UUIDs.
+	// Ignore them, in the URL and in the Put Block List body, so the upload matches its recording.
+	_require.NoError(recording.SetDefaultMatcher(s.T(), &recording.SetDefaultMatcherOptions{
+		CompareBodies:          to.Ptr(false),
+		IgnoredQueryParameters: []string{"blockid"},
+	}))
 	testName := s.T().Name()
 	performUploadAndDownloadBufferTest(s.T(), _require, testName, blobSize, blockSize, concurrency, downloadOffset, downloadCount)
 }

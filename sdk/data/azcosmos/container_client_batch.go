@@ -3,10 +3,7 @@
 
 package azcosmos
 
-import (
-	"context"
-	"slices"
-)
+import "context"
 
 // TransactionalBatchOptions configures [ContainerClient.ExecuteTransactionalBatch].
 // A nil options pointer selects defaults.
@@ -65,18 +62,13 @@ func newTransactionalBatchRequest(batch TransactionalBatch, options *Transaction
 		body:         body,
 	}
 	if options != nil {
-		if err := options.Operation.ConsistencyStrategy.validate(); err != nil {
+		if err := options.Operation.validate(); err != nil {
 			return itemRequest{}, err
 		}
 		if err := options.SessionToken.validate(); err != nil {
 			return itemRequest{}, err
 		}
-		req.options = options.Operation
-		req.options.ExcludedRegions = slices.Clone(options.Operation.ExcludedRegions)
-		if enabled := options.Operation.EnableContentResponseOnWrite; enabled != nil {
-			copied := *enabled
-			req.options.EnableContentResponseOnWrite = &copied
-		}
+		req.options = options.Operation.clone()
 		req.sessionToken = options.SessionToken
 	}
 	return req, nil

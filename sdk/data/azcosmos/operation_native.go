@@ -16,7 +16,9 @@ import "C"
 import (
 	"context"
 	"errors"
+	"math"
 	"runtime/cgo"
+	"time"
 	"unsafe"
 )
 
@@ -34,61 +36,68 @@ const unsetMaxItemCount = -1
 // handles alive for the operation's duration: Close cannot take the write lock until every
 // operation has released it.
 func (c *Client) execute(ctx context.Context, req itemRequest) (ItemResponse, []byte, error) {
+	switch req.kind {
+	case operationKindCreateItem, operationKindReadItem, operationKindReplaceItem, operationKindUpsertItem:
+		if req.options.BinaryEncoding == nil {
+			req.options.BinaryEncoding = c.binaryEncoding.clone()
+		}
+	}
 	return c.driver.execute(ctx, req)
 }
 
 // execute runs one operation to completion and returns its result.
 func (d *nativeDriver) execute(ctx context.Context, req itemRequest) (ItemResponse, []byte, error) {
-	ctx, cancel := contextWithEndToEndTimeout(ctx, req.options.EndToEndTimeout)
-	defer cancel()
+	if req.patchStrategy != PatchStrategyUnset {
+		req.options.PatchStrategy = req.patchStrategy
+	}
+	ctx, snapshot, releaseSnapshot, err := d.snapshot(ctx, req.options)
+	if err != nil {
+		return ItemResponse{}, nil, err
+	}
+	defer releaseSnapshot()
 
 	driver, err := d.ensureDriver(ctx)
 	if err != nil {
 		return ItemResponse{}, nil, err
 	}
 
-	container, err := d.resolveContainer(ctx, driver, req.databaseID, req.containerID)
+	container, err := d.submitResolveContainer(ctx, driver, req.databaseID, req.containerID)
 	if err != nil {
 		return ItemResponse{}, nil, err
 	}
-
-	// Initialization and resolution have already spent part of the budget, so the operation gets
-	// only what remains rather than restarting the configured duration.
-	req.options.EndToEndTimeout = endToEndTimeout(ctx, 0)
+	defer C.cosmos_container_ref_free(container)
 
 	submit := func(queue *C.cosmos_completion_queue_t, cookie C.intptr_t, preError *C.cosmos_status_code_t) *C.cosmos_operation_handle_t {
-		return d.submit(driver, container, req, queue, cookie, preError)
+		request, release := buildNativeItemRequest(req, container)
+		defer release()
+		request.options_snapshot = snapshot
+		return C.cosmos_submit_singleton_operation(driver, &request, queue, cookie, preError) //nolint:gocritic // dupSubExpr is reported against cgo-generated code.
 	}
 
-	// Only a write can leave a side effect that must not be misreported as cancelled after it
-	// already committed, so only writes pay for an authoritative wait. A read has nothing to
-	// protect: abandoning it the moment ctx ends, rather than waiting out the native driver's own
-	// retry budget, is what keeps cancellation prompt.
-	var result completionResult
-	if req.kind == operationKindReadItem {
-		result, err = d.awaitCompletion(ctx, "submitting the operation", submit)
-	} else {
-		result, err = d.awaitAuthoritativeCompletion(ctx, "submitting the operation", submit)
-	}
+	result, err := d.awaitCompletion(ctx, "submitting the operation", submit)
 	if err != nil {
-		return ItemResponse{}, nil, err
+		return ItemResponse{}, nil, patchCancellationError(err, req.patchTrackingID)
 	}
 	return result.response, result.body, result.err
 }
 
+func patchCancellationError(err error, requestedID PatchTrackingID) error {
+	var cancelled *Error
+	if errors.As(err, &cancelled) && cancelled.Code == CodeOperationCancelled && cancelled.PatchTrackingID == "" {
+		cancelled.PatchTrackingID = requestedID
+	}
+	return err
+}
+
 // awaitCompletion submits one operation and waits for its completion or the caller's context,
-// whichever comes first. Driver creation, container resolution and reads all go through it, so
-// all three honor a context the same way.
+// whichever comes first. Driver creation, container resolution, and item operations use it.
 //
 // The submit closure receives what the driver needs to answer: the queue to post the completion
 // to, the cookie to round-trip onto it, and somewhere to report a pre-flight rejection. It returns
 // NULL when the operation was rejected before it started, which posts no completion.
 //
-// Non-authoritative waits may return on cancellation without the native operation's result; the
-// handle and cookie are released immediately regardless, since a completion that arrives after is
-// safely dropped by the reactor. Writes separately await authoritative results instead, since a
-// write may have already committed by the time the context ends and must not be misreported as
-// cancelled.
+// Cancellation stops waiting, not native execution: writes may still commit.
+// Close drains late deliveries before freeing resources.
 func (d *nativeDriver) awaitCompletion(
 	ctx context.Context,
 	doing string,
@@ -116,18 +125,13 @@ func (d *nativeDriver) awaitOperation(
 	}
 
 	// Buffered so the reactor can deliver without blocking after cancellation.
-	pending := &pendingOperation{result: make(chan completionResult, 1)}
+	pending := &pendingOperation{result: make(chan completionResult, 1), delivered: make(chan struct{})}
 	handle := cgo.NewHandle(pending)
-	// cosmos_operation_handle_free only drops this handle's Arc reference; the driver keeps the
-	// operation alive through its own reference until the completion is posted. Freeing the
-	// handle and deleting the cookie here, rather than waiting for a late completion, is therefore
-	// always safe: a completion that arrives afterward finds its cookie invalid and is dropped by
-	// the reactor before translation, so nothing it carries is ever leaked.
-	defer handle.Delete()
 
 	var preError C.cosmos_status_code_t
 	op := submit(d.reactor.queue, C.intptr_t(handle), &preError)
 	if op == nil {
+		handle.Delete()
 		// A pre-flight rejection posts no completion, so it is reported here rather than through
 		// the queue.
 		httpStatus, subStatus := unpackStatus(preError)
@@ -138,57 +142,51 @@ func (d *nativeDriver) awaitOperation(
 			Message:    "azcosmos: " + doing,
 		}
 	}
-	defer C.cosmos_operation_handle_free(op)
+	defer func() {
+		release := func() {
+			C.cosmos_operation_handle_free(op)
+			handle.Delete()
+		}
+		select {
+		case <-pending.delivered:
+			release()
+		default:
+			d.pending.Add(1)
+			go func() {
+				defer d.pending.Done()
+				<-pending.delivered
+				release()
+			}()
+		}
+	}()
 
-	return awaitOperationResult(ctx, pending, authoritative)
+	if authoritative {
+		return awaitAuthoritativeOperationResult(ctx, pending)
+	}
+	return awaitOperationResult(ctx, pending)
 }
 
-func awaitOperationResult(ctx context.Context, pending *pendingOperation, authoritative bool) (completionResult, error) {
-	finish := func(result completionResult) (completionResult, error) {
-		if cause := ctx.Err(); cause != nil {
-			if !authoritative {
-				defer result.release()
-				return completionResult{}, completionCancellationError(cause, result)
-			}
-			terminal, err := resultAfterCancellation(cause, result)
-			if err != nil {
-				result.release()
-			}
-			return terminal, err
-		}
-		return result, nil
-	}
+func awaitOperationResult(ctx context.Context, pending *pendingOperation) (completionResult, error) {
 	select {
 	case result := <-pending.result:
-		return finish(result)
+		return result, nil
 	case <-ctx.Done():
-		if !authoritative {
-			// abandon() marks the pending operation closed and claims whatever result is buffered
-			// atomically, under its own lock, so this cannot race with the reactor's concurrent
-			// deliver(): either the result was already delivered and abandon() hands it back here,
-			// or deliver() observes closed and releases it itself. A result that lands in that
-			// exact instant is never silently discarded in favor of a cancellation error.
-			if result, ok := pending.abandon(); ok {
-				return finish(result)
-			}
-			return completionResult{}, newOperationCancelledError(ctx.Err(), 0, "")
+		// Preserve an available outcome; otherwise let late delivery release the result.
+		if result, ok := pending.abandon(); ok {
+			return result, nil
 		}
-		// The terminal result is authoritative when completion and cancellation race. In
-		// particular, a successful write must not be reported as cancelled after it committed.
-		result := <-pending.result
-		terminal, err := resultAfterCancellation(ctx.Err(), result)
-		if err != nil {
-			result.release()
-		}
-		return terminal, err
+		return completionResult{}, newOperationCancelledError(ctx.Err(), 0, "")
 	}
 }
 
-func resultAfterCancellation(cause error, result completionResult) (completionResult, error) {
-	if !result.cancelled && !isClientOperationTimeout(result.err) {
-		return result, nil
+func awaitAuthoritativeOperationResult(ctx context.Context, pending *pendingOperation) (completionResult, error) {
+	// Once admitted, a batch may commit despite cancellation. Always consume its native result.
+	result := <-pending.result
+	if cause := ctx.Err(); cause != nil && (result.cancelled || isClientOperationTimeout(result.err)) {
+		result.release()
+		return completionResult{}, completionCancellationError(cause, result)
 	}
-	return completionResult{}, completionCancellationError(cause, result)
+	return result, nil
 }
 
 // isClientOperationTimeout reports whether err is the native driver's own end-to-end budget
@@ -208,17 +206,18 @@ func isClientOperationTimeout(err error) bool {
 
 func completionCancellationError(cause error, result completionResult) error {
 	metadata := Error{
-		RequestCharge: result.response.RequestCharge,
-		ActivityID:    result.response.ActivityID,
-		Diagnostics:   result.response.Diagnostics,
-		AttemptCount:  result.response.AttemptCount,
-		StatusCode:    result.response.StatusCode,
-		SubStatus:     result.response.SubStatus,
-		SessionToken:  result.response.SessionToken,
-		ETag:          result.response.ETag,
-		RetryAfter:    result.retryAfter,
-		FromWire:      result.fromWire,
-		Body:          result.body,
+		RequestCharge:   result.response.RequestCharge,
+		ActivityID:      result.response.ActivityID,
+		Diagnostics:     result.response.Diagnostics,
+		AttemptCount:    result.response.AttemptCount,
+		StatusCode:      result.response.StatusCode,
+		SubStatus:       result.response.SubStatus,
+		SessionToken:    result.response.SessionToken,
+		ETag:            result.response.ETag,
+		RetryAfter:      result.retryAfter,
+		FromWire:        result.fromWire,
+		Body:            result.body,
+		PatchTrackingID: result.response.PatchTrackingID,
 	}
 	var completionErr *Error
 	if errors.As(result.err, &completionErr) {
@@ -287,6 +286,20 @@ func (d *nativeDriver) submit(
 func buildNativeItemRequest(req itemRequest, container *C.cosmos_container_ref_t) (C.cosmos_operation_request_t, func()) {
 	request := newOperationRequest(req.kind, container)
 	var releases []func()
+	if req.patchMaxAttempts != nil {
+		request.patch_max_attempts = C.uint8_t(*req.patchMaxAttempts)
+	}
+	if req.patchTrackingCapacity != nil {
+		request.patch_tracking_capacity = C.uint16_t(*req.patchTrackingCapacity)
+	}
+	if req.patchTrackingRetention != nil {
+		request.patch_tracking_retention_seconds = C.uint32_t(min(math.MaxUint32, max(1, *req.patchTrackingRetention/time.Second)))
+	}
+	if req.patchTrackingID != "" {
+		id, allocation := toNativeString(string(req.patchTrackingID))
+		releases = append(releases, func() { C.free(allocation) })
+		request.patch_tracking_id = id
+	}
 
 	if req.itemID != "" {
 		itemID, allocation := toNativeString(req.itemID)
@@ -336,29 +349,37 @@ func buildNativeItemRequest(req itemRequest, container *C.cosmos_container_ref_t
 
 // nativeItemRequest is a converted request in Go types, for tests that cannot import C.
 type nativeItemRequest struct {
-	kind                 int32
-	itemID               string
-	partitionKeyLen      int
-	body                 []byte
-	sessionToken         string
-	maxItemCount         int32
-	preconditionKind     int32
-	preconditionETag     string
-	contentResponseWrite int32
-	patchStrategy        int32
+	kind                   int32
+	itemID                 string
+	partitionKeyLen        int
+	body                   []byte
+	sessionToken           string
+	maxItemCount           int32
+	preconditionKind       int32
+	preconditionETag       string
+	contentResponseWrite   int32
+	patchStrategy          int32
+	patchMaxAttempts       uint8
+	patchTrackingID        string
+	patchTrackingCapacity  uint16
+	patchTrackingRetention uint32
 }
 
 // inspectNativeItemRequest converts a request and reads it back before releasing its C memory.
 func inspectNativeItemRequest(req itemRequest) (nativeItemRequest, func()) {
 	request, release := buildNativeItemRequest(req, nil)
 	converted := nativeItemRequest{
-		kind:             int32(request.kind),
-		itemID:           fromNativeString(request.item_id),
-		partitionKeyLen:  int(request.partition_key_len),
-		sessionToken:     fromNativeString(request.session_token),
-		maxItemCount:     int32(request.max_item_count),
-		preconditionKind: int32(request.precondition_kind),
-		preconditionETag: fromNativeString(request.precondition_etag),
+		kind:                   int32(request.kind),
+		itemID:                 fromNativeString(request.item_id),
+		partitionKeyLen:        int(request.partition_key_len),
+		sessionToken:           fromNativeString(request.session_token),
+		maxItemCount:           int32(request.max_item_count),
+		preconditionKind:       int32(request.precondition_kind),
+		preconditionETag:       fromNativeString(request.precondition_etag),
+		patchMaxAttempts:       uint8(request.patch_max_attempts),
+		patchTrackingID:        fromNativeString(request.patch_tracking_id),
+		patchTrackingCapacity:  uint16(request.patch_tracking_capacity),
+		patchTrackingRetention: uint32(request.patch_tracking_retention_seconds),
 	}
 	if request.body != nil {
 		converted.body = C.GoBytes(unsafe.Pointer(request.body), C.int(request.body_len))
@@ -370,60 +391,8 @@ func inspectNativeItemRequest(req itemRequest) (nativeItemRequest, func()) {
 	return converted, release
 }
 
-// resolveContainer returns the driver's handle for a container, resolving it on first use.
-//
-// Resolution reads the container's metadata from the gateway on a cache miss, so the handle is
-// cached per client: an item operation would otherwise pay for that lookup every call. It is
-// awaited rather than blocked on, so a miss does not make an operation ignore its context.
-//
-// The lock is not held across the resolution, so two callers can miss on the same container at
-// once. That is deliberate: holding it would serialize every miss behind one gateway round trip,
-// including misses for unrelated containers. The loser of the race frees its own handle and takes
-// the winner's, so the cache keeps exactly one handle per key.
-func (d *nativeDriver) resolveContainer(
-	ctx context.Context,
-	driver *C.cosmos_driver_t,
-	databaseID, containerID string,
-) (*C.cosmos_container_ref_t, error) {
-	key := databaseID + "/" + containerID
-
-	d.mu.Lock()
-	if d.closed {
-		d.mu.Unlock()
-		return nil, errClientClosed()
-	}
-	if container, ok := d.containers[key]; ok {
-		d.mu.Unlock()
-		return container, nil
-	}
-	d.mu.Unlock()
-
-	container, err := d.submitResolveContainer(ctx, driver, databaseID, containerID)
-	if err != nil {
-		return nil, err
-	}
-
-	d.mu.Lock()
-	defer d.mu.Unlock()
-
-	if d.closed {
-		// Closed while the resolution was in flight, so close has already emptied the cache and
-		// this handle has no other owner.
-		C.cosmos_container_ref_free(container)
-		return nil, errClientClosed()
-	}
-	if existing, ok := d.containers[key]; ok {
-		C.cosmos_container_ref_free(container)
-		return existing, nil
-	}
-	if d.containers == nil {
-		d.containers = make(map[string]*C.cosmos_container_ref_t)
-	}
-	d.containers[key] = container
-	return container, nil
-}
-
-// submitResolveContainer runs one container resolution against the driver.
+// submitResolveContainer resolves one operation-owned container handle through the native driver.
+// The driver owns metadata caching and stale-resource refresh; Go frees only the returned handle.
 func (d *nativeDriver) submitResolveContainer(
 	ctx context.Context,
 	driver *C.cosmos_driver_t,

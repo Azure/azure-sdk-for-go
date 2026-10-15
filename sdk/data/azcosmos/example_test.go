@@ -10,7 +10,9 @@ import (
 	"encoding/json"
 	"errors"
 	"log"
+	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/data/azcosmos/v2"
 )
@@ -147,6 +149,64 @@ func ExampleNewClientWithKey() {
 	}
 }
 
+func ExampleClient_CreateDatabase() {
+	cred, err := azcosmos.NewKeyCredential("bXktYWNjb3VudC1rZXk=")
+	if err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+	client, err := azcosmos.NewClientWithKey("https://myaccount.documents.azure.com", cred, nil)
+	if err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+
+	databaseResponse, err := client.CreateDatabase(context.TODO(), azcosmos.DatabaseProperties{
+		ID: "catalog",
+	}, nil)
+	if err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+	database, err := client.NewDatabase(databaseResponse.DatabaseProperties.ID)
+	if err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+
+	containerResponse, err := database.CreateContainer(context.TODO(), azcosmos.ContainerProperties{
+		ID: "products",
+		PartitionKeyDefinition: azcosmos.PartitionKeyDefinition{
+			Paths: []string{"/category"},
+		},
+	}, nil)
+	if err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+	container, err := database.NewContainer(containerResponse.ContainerProperties.ID)
+	if err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+	if _, err := container.Read(context.TODO(), nil); err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+	if _, err := container.Delete(context.TODO(), nil); err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+	if _, err := database.Delete(context.TODO(), nil); err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+	if err := client.Close(); err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+}
+
 // When the regions to prefer are known ahead of time, give them explicitly. The order is a
 // preference, not a restriction: once it is exhausted the client may still use other regions.
 func ExamplePreferredRegions() {
@@ -197,8 +257,51 @@ func ExampleContainerClient_ReadItem() {
 		log.Fatalf("ERROR: %s", err)
 	}
 	log.Printf("read item %v, charged %v RU", item["id"], response.RequestCharge)
-
 	closeClient()
+}
+
+func ExampleNewRuntime() {
+	runtime, err := azcosmos.NewRuntime(&azcosmos.RuntimeOptions{
+		ApplicationID: "order-service",
+		Operation:     azcosmos.OperationOptions{EndToEndTimeout: to.Ptr(10 * time.Second)},
+	})
+	if err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+	credential, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+	client, err := azcosmos.NewClient("https://myaccount.documents.azure.com", credential, &azcosmos.ClientOptions{
+		Runtime:        runtime,
+		BinaryEncoding: &azcosmos.BinaryEncodingOptions{},
+	})
+	if err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+	container, err := client.NewContainer("database", "container")
+	if err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+	_, err = container.ReadItem(context.TODO(), azcosmos.NewPartitionKeyString("partition"), "item", &azcosmos.ReadItemOptions{
+		Operation: azcosmos.OperationOptions{EndToEndTimeout: to.Ptr(2 * time.Second)},
+	})
+	if err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+	if err := client.Close(); err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+	if err := runtime.Close(); err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
 }
 
 func ExampleContainerClient_ReplaceItem() {

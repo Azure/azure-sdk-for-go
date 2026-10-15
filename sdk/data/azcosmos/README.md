@@ -11,8 +11,8 @@ This client library enables client applications to connect to Azure Cosmos DB vi
 This is the v2 major version of the module and it is **not usable yet**. The v2 surface is being
 assembled incrementally so that it can be reviewed as it lands. This release covers the error and
 response model, partition keys, client construction, and creating, reading, replacing, upserting,
-deleting, and patching single items, transactional batches with complete hierarchical partition
-keys, and paged queries.
+deleting, and patching single items, database and container lifecycle operations, transactional
+batches with complete hierarchical partition keys, and paged queries.
 
 v2 replaces the v1 pure-Go implementation with a binding to the shared Rust Cosmos driver, so that
 routing, retries, session handling, failover behavior and query fan-out are consistent across the
@@ -55,11 +55,18 @@ remains the total even when `len(Diagnostics.Attempts)` is smaller. Diagnostics 
 when cancellation returns before a native completion.
 
 The caller's session token is forwarded unchanged, and the returned token can be supplied on a
-later request. The v0.2 native ABI does not support on-demand operation cancellation. Reads and
-setup operations can stop waiting promptly, but an admitted write or transactional batch waits
-for its authoritative native outcome, even after context cancellation. The native request
-continues until completion or its own timeout/retry budget ends. A cancellation or execution
-error is not proof that a write did not reach the service.
+later request. The v0.2 native ABI does not support on-demand operation cancellation: cancelling
+a Go context returns promptly and releases its Go-side resources, but the native request can
+continue until its own timeout or retry budget ends. Avoid assuming a cancelled write did not
+reach the service.
+If an item operation's native completion is already available when cancellation is observed,
+the SDK returns that outcome, including its response body and ETag, rather than a cancellation error.
+When no end-to-end timeout is configured or inherited for an item operation, the remaining context
+deadline supplies its native timeout, subject to its one-second minimum. Explicit and inherited timeouts
+remain unchanged; an earlier context deadline still limits the Go wait.
+Transactional batches instead wait for authoritative native completion after admission, even
+after context cancellation. A cancellation or execution error is not proof that writes did not
+reach the service.
 
 ### Client initialization
 
@@ -73,16 +80,36 @@ it has not already run. The diagnostic build has no driver to initialize and rep
 `Initialize`.
 
 Container metadata is not fetched during client construction because the client does not know which
-containers the application will use. The first operation on a container resolves and caches that
-container's metadata.
+containers the application will use. Each operation resolves its container through the native
+driver, which owns metadata caching and stale-resource refresh.
 
 One limit applies to the driver-backed build today: v1's WebAssembly support does not carry over.
+
+### Managing databases and containers
+
+Use `Client.CreateDatabase`, `DatabaseClient.CreateContainer`, and the resource clients' `Read` and
+`Delete` methods to manage databases and containers. Creates and deletes require a client created
+with `NewClientWithKey`. Metadata reads also support Microsoft Entra ID through `NewClient` when
+the identity has the `Microsoft.DocumentDB/databaseAccounts/readMetadata` data action.
+
+Container creates require at least one partition key path. An omitted partition key kind is inferred
+as `Hash` for one path and `MultiHash` for multiple paths. An omitted partition key version creates
+the container with version 2. The definition is immutable after creation.
+
+Database and container creates always request the response body so the returned properties include
+the service-assigned resource ID, self-link, ETag, and last-modified time. For these operations,
+`OperationOptions.EnableContentResponseOnWrite` is ignored. Deleting a database also deletes every
+container and item in it; deleting a container deletes every item in it.
+
+Provisioned-throughput creation and throughput read/replace APIs are not included yet. Configure
+throughput separately until the follow-up throughput surface lands.
 
 ### SDK identity
 
 Service requests include `azsdk-go-azcosmos/<version>` in the User-Agent header alongside the native
-Cosmos driver identity and feature flags. `ClientOptions.ApplicationID` remains an optional,
-unchanged application suffix; SDK identity does not consume its length allowance.
+Cosmos driver identity and feature flags. Configure an application suffix through
+`RuntimeOptions.ApplicationID`, then supply that runtime in `ClientOptions.Runtime`.
+SDK identity does not consume the suffix's length allowance.
 
 ### Patching items
 
@@ -207,15 +234,15 @@ the Go binding preserves that error rather than computing aggregates itself.
 Contexts bound query waits; canceling an admitted page or checkpoint terminates that pager
 without claiming to cancel native work. Late completions are drained safely, and client
 shutdown waits for their cleanup. Native per-page timeouts retain the configured duration
-(the driver clamps positive values below one second); subsequent page contexts do not inherit
-the first page's remaining deadline. With `EndToEndTimeout == 0`, no explicit native query
-timeout is added: native defaults apply, and a context deadline limits only the Go wait.
+(the driver clamps explicit values below one second, including zero); subsequent page contexts
+do not inherit the first page's remaining deadline. With `EndToEndTimeout == nil`, timeout
+settings are inherited, and a context deadline limits only the Go wait.
 Per-page context deadlines cannot bound native execution with the pinned ABI. Stronger
 guarantees require cooperative cancellation
 ([Azure/azure-sdk-for-rust#5358](https://github.com/Azure/azure-sdk-for-rust/issues/5358))
 or per-page deadline support in a future native release.
-Point operations continue to await authoritative native
-outcomes after admission, so a committed write is not mislabeled as canceled.
+Item operations also stop waiting when their context ends. Submitted writes may still commit;
+a cancellation error is not evidence that a write was rolled back or never reached the service.
 
 #### Rust query-option parity
 
@@ -227,15 +254,13 @@ Against the Rust revision used to publish native v0.2.0, query-option coverage i
 | Query-plan mode, session token, index/query metric flags | Corresponding `QueryOptions` fields |
 | Buffered-query window limit | Not exposed by the native ABI; native default of 1000 applies |
 | Explicit `MaxItemCountHint::ServerDecides` | Not independently expressible through this ABI; Go zero selects the native unset/default behavior |
-| Common per-operation settings | Only a subset: consistency strategy, excluded regions, content response on writes, and end-to-end timeout |
+| Common per-operation settings | `OperationOptions` exposes consistency, excluded regions, content response on writes, end-to-end timeout, PATCH strategy, throughput bucket/priority, throttle/session/failover retry controls, endpoint-unavailability TTL, session-capture control, hedging/availability strategy, custom headers, and binary encoding |
 
-The shared per-operation surface is not yet at full Rust parity. Go does not expose Rust's
-throughput bucket/priority, throttle/session/failover retry controls, endpoint-unavailability
-TTL, session-capture disable flag, hedging/availability strategy, custom headers, or configurable
-binary encoding. Go requests text JSON. Not all of these gaps require a new native release;
-the buffered-window and explicit server-decides gaps do require a native contract change.
-Rust also distinguishes inherited versus explicitly cleared region exclusions; Go currently
-maps both nil and empty exclusion slices to inheritance.
+Common operation settings inherit across runtime, client, and request scopes; their applicability
+depends on the operation. Binary wire encoding is enabled by default, with native conversion
+returning text JSON to Go. A nil `ExcludedRegions` slice inherits exclusions, while a non-nil
+empty slice explicitly clears them. The buffered-window and explicit server-decides gaps
+still require a native contract change.
 
 ### Running the end-to-end tests
 

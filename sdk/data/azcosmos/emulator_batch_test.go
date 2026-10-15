@@ -232,7 +232,9 @@ func TestEmulatorTransactionalBatchCompleteHierarchicalKeysAndIsolation(t *testi
 func TestEmulatorTransactionalBatchContentResponsesAndLifetime(t *testing.T) {
 	disabled, enabled := false, true
 	for _, setting := range []*bool{nil, &disabled, &enabled} {
-		client, databaseID, containerID := emulatorClientWithOptions(t, &ClientOptions{EnableContentResponseOnWrite: &disabled})
+		client, databaseID, containerID := emulatorClientWithOptions(t, &ClientOptions{
+			Operation: OperationOptions{EnableContentResponseOnWrite: &disabled},
+		})
 		container, err := client.NewContainer(databaseID, containerID)
 		require.NoError(t, err)
 		id := uniqueItemID(t)
@@ -264,5 +266,50 @@ func TestEmulatorTransactionalBatchContentResponsesAndLifetime(t *testing.T) {
 		require.NoError(t, json.Unmarshal(response.OperationResults[1].ResourceBody, &document))
 		require.Equal(t, "owned", document["value"], "reads and Go-owned results must survive disabled write bodies and client shutdown")
 		require.NotEmpty(t, response.Body)
+	}
+}
+
+func TestEmulatorTransactionalBatchOperationDefaults(t *testing.T) {
+	for _, test := range []struct {
+		name           string
+		runtimeDefault bool
+		clientDefault  *bool
+		request        *bool
+		wantContent    bool
+	}{
+		{"runtime default", false, nil, nil, false},
+		{"client override", false, to(true), nil, true},
+		{"client disables runtime", true, to(false), nil, false},
+		{"request override", true, to(false), to(true), true},
+	} {
+		t.Run(test.name, func(t *testing.T) {
+			shared, err := NewRuntime(&RuntimeOptions{Operation: OperationOptions{
+				EnableContentResponseOnWrite: &test.runtimeDefault,
+			}})
+			require.NoError(t, err)
+			t.Cleanup(func() { require.NoError(t, shared.Close()) })
+			container := runtimeEmulatorContainer(t, shared, OperationOptions{
+				EnableContentResponseOnWrite: test.clientDefault,
+			})
+			id := uniqueItemID(t)
+			body, err := json.Marshal(map[string]any{"id": id, "pk": id})
+			require.NoError(t, err)
+			batch := NewTransactionalBatch(NewPartitionKeyString(id))
+			require.NoError(t, batch.CreateItem(body, nil))
+			require.NoError(t, batch.DeleteItem(id, nil))
+			response, err := container.ExecuteTransactionalBatch(t.Context(), batch, &TransactionalBatchOptions{
+				Operation: OperationOptions{EnableContentResponseOnWrite: test.request},
+			})
+			require.NoError(t, err)
+			require.Equal(t, http.StatusOK, response.StatusCode)
+			require.Len(t, response.OperationResults, 2)
+			require.Equal(t, http.StatusCreated, response.OperationResults[0].StatusCode)
+			require.Equal(t, http.StatusNoContent, response.OperationResults[1].StatusCode)
+			if test.wantContent {
+				require.NotEmpty(t, response.OperationResults[0].ResourceBody)
+			} else {
+				require.Contains(t, []string{"", "null"}, string(response.OperationResults[0].ResourceBody))
+			}
+		})
 	}
 }

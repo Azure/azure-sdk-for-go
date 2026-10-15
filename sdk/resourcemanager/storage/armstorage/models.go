@@ -1156,8 +1156,8 @@ type BlobAccessPointConnectionTestResponse struct {
 	ErrorMessage *string
 }
 
-// BlobAccessPointDellOneFsSourceProperties - A Dell OneFS backing source.
-type BlobAccessPointDellOneFsSourceProperties struct {
+// BlobAccessPointDellOneFSSourceProperties - A Dell OneFS backing source.
+type BlobAccessPointDellOneFSSourceProperties struct {
 	// REQUIRED; Details for authenticating to the backing data source.
 	Auth BlobAccessPointRemoteAuthPropertiesClassification
 
@@ -1165,20 +1165,20 @@ type BlobAccessPointDellOneFsSourceProperties struct {
 	// only the TLS verification behavior can be changed afterwards.
 	Connection BlobAccessPointConnectionPropertiesClassification
 
-	// CONSTANT; Field has constant value BlobAccessPointSourceTypeDellOneFs, any specified value is ignored.
+	// CONSTANT; Field has constant value BlobAccessPointSourceTypeDellOneFS, any specified value is ignored.
 	SourceType *BlobAccessPointSourceType
 }
 
-// GetBlobAccessPointSourceProperties implements the BlobAccessPointSourcePropertiesClassification interface for type BlobAccessPointDellOneFsSourceProperties.
-func (b *BlobAccessPointDellOneFsSourceProperties) GetBlobAccessPointSourceProperties() *BlobAccessPointSourceProperties {
+// GetBlobAccessPointSourceProperties implements the BlobAccessPointSourcePropertiesClassification interface for type BlobAccessPointDellOneFSSourceProperties.
+func (b *BlobAccessPointDellOneFSSourceProperties) GetBlobAccessPointSourceProperties() *BlobAccessPointSourceProperties {
 	return &BlobAccessPointSourceProperties{
 		SourceType: b.SourceType,
 	}
 }
 
-// BlobAccessPointDellOneFsSourcePropertiesUpdate - A Dell OneFS backing source.
-type BlobAccessPointDellOneFsSourcePropertiesUpdate struct {
-	// CONSTANT; Field has constant value BlobAccessPointSourceTypeDellOneFs, any specified value is ignored.
+// BlobAccessPointDellOneFSSourcePropertiesUpdate - A Dell OneFS backing source.
+type BlobAccessPointDellOneFSSourcePropertiesUpdate struct {
+	// CONSTANT; Field has constant value BlobAccessPointSourceTypeDellOneFS, any specified value is ignored.
 	SourceType *BlobAccessPointSourceType
 
 	// Details for authenticating to the backing data source.
@@ -1190,8 +1190,8 @@ type BlobAccessPointDellOneFsSourcePropertiesUpdate struct {
 }
 
 // GetBlobAccessPointSourcePropertiesUpdate implements the BlobAccessPointSourcePropertiesUpdateClassification interface for
-// type BlobAccessPointDellOneFsSourcePropertiesUpdate.
-func (b *BlobAccessPointDellOneFsSourcePropertiesUpdate) GetBlobAccessPointSourcePropertiesUpdate() *BlobAccessPointSourcePropertiesUpdate {
+// type BlobAccessPointDellOneFSSourcePropertiesUpdate.
+func (b *BlobAccessPointDellOneFSSourcePropertiesUpdate) GetBlobAccessPointSourcePropertiesUpdate() *BlobAccessPointSourcePropertiesUpdate {
 	return &BlobAccessPointSourcePropertiesUpdate{
 		SourceType: b.SourceType,
 	}
@@ -1316,8 +1316,8 @@ func (b *BlobAccessPointNasuniSourcePropertiesUpdate) GetBlobAccessPointSourcePr
 	}
 }
 
-// BlobAccessPointNetAppOntapSourceProperties - A NetApp ONTAP backing source.
-type BlobAccessPointNetAppOntapSourceProperties struct {
+// BlobAccessPointNetAppONTAPSourceProperties - A NetApp ONTAP backing source.
+type BlobAccessPointNetAppONTAPSourceProperties struct {
 	// REQUIRED; Details for authenticating to the backing data source.
 	Auth BlobAccessPointRemoteAuthPropertiesClassification
 
@@ -1325,20 +1325,20 @@ type BlobAccessPointNetAppOntapSourceProperties struct {
 	// only the TLS verification behavior can be changed afterwards.
 	Connection BlobAccessPointConnectionPropertiesClassification
 
-	// CONSTANT; Field has constant value BlobAccessPointSourceTypeNetAppOntap, any specified value is ignored.
+	// CONSTANT; Field has constant value BlobAccessPointSourceTypeNetAppONTAP, any specified value is ignored.
 	SourceType *BlobAccessPointSourceType
 }
 
-// GetBlobAccessPointSourceProperties implements the BlobAccessPointSourcePropertiesClassification interface for type BlobAccessPointNetAppOntapSourceProperties.
-func (b *BlobAccessPointNetAppOntapSourceProperties) GetBlobAccessPointSourceProperties() *BlobAccessPointSourceProperties {
+// GetBlobAccessPointSourceProperties implements the BlobAccessPointSourcePropertiesClassification interface for type BlobAccessPointNetAppONTAPSourceProperties.
+func (b *BlobAccessPointNetAppONTAPSourceProperties) GetBlobAccessPointSourceProperties() *BlobAccessPointSourceProperties {
 	return &BlobAccessPointSourceProperties{
 		SourceType: b.SourceType,
 	}
 }
 
-// BlobAccessPointNetAppOntapSourcePropertiesUpdate - A NetApp ONTAP backing source.
-type BlobAccessPointNetAppOntapSourcePropertiesUpdate struct {
-	// CONSTANT; Field has constant value BlobAccessPointSourceTypeNetAppOntap, any specified value is ignored.
+// BlobAccessPointNetAppONTAPSourcePropertiesUpdate - A NetApp ONTAP backing source.
+type BlobAccessPointNetAppONTAPSourcePropertiesUpdate struct {
+	// CONSTANT; Field has constant value BlobAccessPointSourceTypeNetAppONTAP, any specified value is ignored.
 	SourceType *BlobAccessPointSourceType
 
 	// Details for authenticating to the backing data source.
@@ -1350,8 +1350,8 @@ type BlobAccessPointNetAppOntapSourcePropertiesUpdate struct {
 }
 
 // GetBlobAccessPointSourcePropertiesUpdate implements the BlobAccessPointSourcePropertiesUpdateClassification interface for
-// type BlobAccessPointNetAppOntapSourcePropertiesUpdate.
-func (b *BlobAccessPointNetAppOntapSourcePropertiesUpdate) GetBlobAccessPointSourcePropertiesUpdate() *BlobAccessPointSourcePropertiesUpdate {
+// type BlobAccessPointNetAppONTAPSourcePropertiesUpdate.
+func (b *BlobAccessPointNetAppONTAPSourcePropertiesUpdate) GetBlobAccessPointSourcePropertiesUpdate() *BlobAccessPointSourcePropertiesUpdate {
 	return &BlobAccessPointSourcePropertiesUpdate{
 		SourceType: b.SourceType,
 	}

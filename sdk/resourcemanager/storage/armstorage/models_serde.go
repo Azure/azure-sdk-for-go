@@ -2226,17 +2226,17 @@ func (b *BlobAccessPointConnectionTestResponse) UnmarshalJSON(data []byte) error
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type BlobAccessPointDellOneFsSourceProperties.
-func (b BlobAccessPointDellOneFsSourceProperties) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type BlobAccessPointDellOneFSSourceProperties.
+func (b BlobAccessPointDellOneFSSourceProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "auth", b.Auth)
 	populate(objectMap, "connection", b.Connection)
-	objectMap["sourceType"] = BlobAccessPointSourceTypeDellOneFs
+	objectMap["sourceType"] = BlobAccessPointSourceTypeDellOneFS
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type BlobAccessPointDellOneFsSourceProperties.
-func (b *BlobAccessPointDellOneFsSourceProperties) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type BlobAccessPointDellOneFSSourceProperties.
+func (b *BlobAccessPointDellOneFSSourceProperties) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %s", b, err.Error())
@@ -2261,17 +2261,17 @@ func (b *BlobAccessPointDellOneFsSourceProperties) UnmarshalJSON(data []byte) er
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type BlobAccessPointDellOneFsSourcePropertiesUpdate.
-func (b BlobAccessPointDellOneFsSourcePropertiesUpdate) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type BlobAccessPointDellOneFSSourcePropertiesUpdate.
+func (b BlobAccessPointDellOneFSSourcePropertiesUpdate) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "auth", b.Auth)
 	populate(objectMap, "connection", b.Connection)
-	objectMap["sourceType"] = BlobAccessPointSourceTypeDellOneFs
+	objectMap["sourceType"] = BlobAccessPointSourceTypeDellOneFS
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type BlobAccessPointDellOneFsSourcePropertiesUpdate.
-func (b *BlobAccessPointDellOneFsSourcePropertiesUpdate) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type BlobAccessPointDellOneFSSourcePropertiesUpdate.
+func (b *BlobAccessPointDellOneFSSourcePropertiesUpdate) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %s", b, err.Error())
@@ -2502,17 +2502,17 @@ func (b *BlobAccessPointNasuniSourcePropertiesUpdate) UnmarshalJSON(data []byte)
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type BlobAccessPointNetAppOntapSourceProperties.
-func (b BlobAccessPointNetAppOntapSourceProperties) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type BlobAccessPointNetAppONTAPSourceProperties.
+func (b BlobAccessPointNetAppONTAPSourceProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "auth", b.Auth)
 	populate(objectMap, "connection", b.Connection)
-	objectMap["sourceType"] = BlobAccessPointSourceTypeNetAppOntap
+	objectMap["sourceType"] = BlobAccessPointSourceTypeNetAppONTAP
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type BlobAccessPointNetAppOntapSourceProperties.
-func (b *BlobAccessPointNetAppOntapSourceProperties) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type BlobAccessPointNetAppONTAPSourceProperties.
+func (b *BlobAccessPointNetAppONTAPSourceProperties) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %s", b, err.Error())
@@ -2537,17 +2537,17 @@ func (b *BlobAccessPointNetAppOntapSourceProperties) UnmarshalJSON(data []byte) 
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type BlobAccessPointNetAppOntapSourcePropertiesUpdate.
-func (b BlobAccessPointNetAppOntapSourcePropertiesUpdate) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type BlobAccessPointNetAppONTAPSourcePropertiesUpdate.
+func (b BlobAccessPointNetAppONTAPSourcePropertiesUpdate) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "auth", b.Auth)
 	populate(objectMap, "connection", b.Connection)
-	objectMap["sourceType"] = BlobAccessPointSourceTypeNetAppOntap
+	objectMap["sourceType"] = BlobAccessPointSourceTypeNetAppONTAP
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type BlobAccessPointNetAppOntapSourcePropertiesUpdate.
-func (b *BlobAccessPointNetAppOntapSourcePropertiesUpdate) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type BlobAccessPointNetAppONTAPSourcePropertiesUpdate.
+func (b *BlobAccessPointNetAppONTAPSourcePropertiesUpdate) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %s", b, err.Error())

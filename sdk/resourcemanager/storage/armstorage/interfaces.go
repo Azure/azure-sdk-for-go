@@ -43,8 +43,8 @@ type BlobAccessPointRemoteAuthPropertiesUpdateClassification interface {
 // BlobAccessPointSourcePropertiesClassification provides polymorphic access to related types.
 // Call the interface's GetBlobAccessPointSourceProperties() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
-// - *BlobAccessPointAzureNetAppFilesSourceProperties, *BlobAccessPointCommvaultSourceProperties, *BlobAccessPointDellOneFsSourceProperties,
-// - *BlobAccessPointGenericS3SourceProperties, *BlobAccessPointNasuniSourceProperties, *BlobAccessPointNetAppOntapSourceProperties,
+// - *BlobAccessPointAzureNetAppFilesSourceProperties, *BlobAccessPointCommvaultSourceProperties, *BlobAccessPointDellOneFSSourceProperties,
+// - *BlobAccessPointGenericS3SourceProperties, *BlobAccessPointNasuniSourceProperties, *BlobAccessPointNetAppONTAPSourceProperties,
 // - *BlobAccessPointQumuloSourceProperties, *BlobAccessPointSourceProperties
 type BlobAccessPointSourcePropertiesClassification interface {
 	// GetBlobAccessPointSourceProperties returns the BlobAccessPointSourceProperties content of the underlying type.
@@ -54,8 +54,8 @@ type BlobAccessPointSourcePropertiesClassification interface {
 // BlobAccessPointSourcePropertiesUpdateClassification provides polymorphic access to related types.
 // Call the interface's GetBlobAccessPointSourcePropertiesUpdate() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
-// - *BlobAccessPointAzureNetAppFilesSourcePropertiesUpdate, *BlobAccessPointCommvaultSourcePropertiesUpdate, *BlobAccessPointDellOneFsSourcePropertiesUpdate,
-// - *BlobAccessPointGenericS3SourcePropertiesUpdate, *BlobAccessPointNasuniSourcePropertiesUpdate, *BlobAccessPointNetAppOntapSourcePropertiesUpdate,
+// - *BlobAccessPointAzureNetAppFilesSourcePropertiesUpdate, *BlobAccessPointCommvaultSourcePropertiesUpdate, *BlobAccessPointDellOneFSSourcePropertiesUpdate,
+// - *BlobAccessPointGenericS3SourcePropertiesUpdate, *BlobAccessPointNasuniSourcePropertiesUpdate, *BlobAccessPointNetAppONTAPSourcePropertiesUpdate,
 // - *BlobAccessPointQumuloSourcePropertiesUpdate, *BlobAccessPointSourcePropertiesUpdate
 type BlobAccessPointSourcePropertiesUpdateClassification interface {
 	// GetBlobAccessPointSourcePropertiesUpdate returns the BlobAccessPointSourcePropertiesUpdate content of the underlying type.

@@ -1,6 +1,6 @@
 # Release History
 
-## 4.3.0 (2026-10-14)
+## 4.3.0 (2026-10-15)
 ### Features Added
 
 - New enum type `BlobAccessPointConfigurationState` with values `BlobAccessPointConfigurationStateActive`, `BlobAccessPointConfigurationStateInactive`
@@ -8,7 +8,7 @@
 - New enum type `BlobAccessPointConnectionType` with values `BlobAccessPointConnectionTypeEndpoint`, `BlobAccessPointConnectionTypePrivateLink`
 - New enum type `BlobAccessPointPrivateLinkIDType` with values `BlobAccessPointPrivateLinkIDTypeResourceID`
 - New enum type `BlobAccessPointRemoteAuthType` with values `BlobAccessPointRemoteAuthTypeAccessKey`
-- New enum type `BlobAccessPointSourceType` with values `BlobAccessPointSourceTypeAzureNetAppFiles`, `BlobAccessPointSourceTypeCommvault`, `BlobAccessPointSourceTypeDellOneFs`, `BlobAccessPointSourceTypeNasuni`, `BlobAccessPointSourceTypeNetAppOntap`, `BlobAccessPointSourceTypeQumulo`, `BlobAccessPointSourceTypeS3Compatible`
+- New enum type `BlobAccessPointSourceType` with values `BlobAccessPointSourceTypeAzureNetAppFiles`, `BlobAccessPointSourceTypeCommvault`, `BlobAccessPointSourceTypeDellOneFS`, `BlobAccessPointSourceTypeNasuni`, `BlobAccessPointSourceTypeNetAppONTAP`, `BlobAccessPointSourceTypeQumulo`, `BlobAccessPointSourceTypeS3Compatible`
 - New enum type `BlobAccessPointTLSVerification` with values `BlobAccessPointTLSVerificationPerform`, `BlobAccessPointTLSVerificationSkip`
 - New enum type `ContextCacheCheckNameAvailabilityFailureReason` with values `ContextCacheCheckNameAvailabilityFailureReasonAlreadyExists`, `ContextCacheCheckNameAvailabilityFailureReasonContextCacheNameInvalid`
 - New enum type `ResourceProvisioningState` with values `ResourceProvisioningStateCanceled`, `ResourceProvisioningStateFailed`, `ResourceProvisioningStateSucceeded`
@@ -30,16 +30,16 @@
 - New function `*BlobAccessPointConnectionPropertiesUpdate.GetBlobAccessPointConnectionPropertiesUpdate() *BlobAccessPointConnectionPropertiesUpdate`
 - New function `NewBlobAccessPointConnectionTestsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*BlobAccessPointConnectionTestsClient, error)`
 - New function `*BlobAccessPointConnectionTestsClient.BeginTestProposedConnection(ctx context.Context, resourceGroupName string, accountName string, body BlobAccessPointProposedConnectionTestRequest, options *BlobAccessPointConnectionTestsClientBeginTestProposedConnectionOptions) (*runtime.Poller[BlobAccessPointConnectionTestsClientTestProposedConnectionResponse], error)`
-- New function `*BlobAccessPointDellOneFsSourceProperties.GetBlobAccessPointSourceProperties() *BlobAccessPointSourceProperties`
-- New function `*BlobAccessPointDellOneFsSourcePropertiesUpdate.GetBlobAccessPointSourcePropertiesUpdate() *BlobAccessPointSourcePropertiesUpdate`
+- New function `*BlobAccessPointDellOneFSSourceProperties.GetBlobAccessPointSourceProperties() *BlobAccessPointSourceProperties`
+- New function `*BlobAccessPointDellOneFSSourcePropertiesUpdate.GetBlobAccessPointSourcePropertiesUpdate() *BlobAccessPointSourcePropertiesUpdate`
 - New function `*BlobAccessPointEndpointConnectionProperties.GetBlobAccessPointConnectionProperties() *BlobAccessPointConnectionProperties`
 - New function `*BlobAccessPointEndpointConnectionPropertiesUpdate.GetBlobAccessPointConnectionPropertiesUpdate() *BlobAccessPointConnectionPropertiesUpdate`
 - New function `*BlobAccessPointGenericS3SourceProperties.GetBlobAccessPointSourceProperties() *BlobAccessPointSourceProperties`
 - New function `*BlobAccessPointGenericS3SourcePropertiesUpdate.GetBlobAccessPointSourcePropertiesUpdate() *BlobAccessPointSourcePropertiesUpdate`
 - New function `*BlobAccessPointNasuniSourceProperties.GetBlobAccessPointSourceProperties() *BlobAccessPointSourceProperties`
 - New function `*BlobAccessPointNasuniSourcePropertiesUpdate.GetBlobAccessPointSourcePropertiesUpdate() *BlobAccessPointSourcePropertiesUpdate`
-- New function `*BlobAccessPointNetAppOntapSourceProperties.GetBlobAccessPointSourceProperties() *BlobAccessPointSourceProperties`
-- New function `*BlobAccessPointNetAppOntapSourcePropertiesUpdate.GetBlobAccessPointSourcePropertiesUpdate() *BlobAccessPointSourcePropertiesUpdate`
+- New function `*BlobAccessPointNetAppONTAPSourceProperties.GetBlobAccessPointSourceProperties() *BlobAccessPointSourceProperties`
+- New function `*BlobAccessPointNetAppONTAPSourcePropertiesUpdate.GetBlobAccessPointSourcePropertiesUpdate() *BlobAccessPointSourcePropertiesUpdate`
 - New function `*BlobAccessPointPrivateLinkConnectionProperties.GetBlobAccessPointConnectionProperties() *BlobAccessPointConnectionProperties`
 - New function `*BlobAccessPointPrivateLinkConnectionPropertiesUpdate.GetBlobAccessPointConnectionPropertiesUpdate() *BlobAccessPointConnectionPropertiesUpdate`
 - New function `*BlobAccessPointQumuloSourceProperties.GetBlobAccessPointSourceProperties() *BlobAccessPointSourceProperties`
@@ -65,16 +65,16 @@
 - New struct `BlobAccessPointConfigurationUpdate`
 - New struct `BlobAccessPointConnectionTestRequest`
 - New struct `BlobAccessPointConnectionTestResponse`
-- New struct `BlobAccessPointDellOneFsSourceProperties`
-- New struct `BlobAccessPointDellOneFsSourcePropertiesUpdate`
+- New struct `BlobAccessPointDellOneFSSourceProperties`
+- New struct `BlobAccessPointDellOneFSSourcePropertiesUpdate`
 - New struct `BlobAccessPointEndpointConnectionProperties`
 - New struct `BlobAccessPointEndpointConnectionPropertiesUpdate`
 - New struct `BlobAccessPointGenericS3SourceProperties`
 - New struct `BlobAccessPointGenericS3SourcePropertiesUpdate`
 - New struct `BlobAccessPointNasuniSourceProperties`
 - New struct `BlobAccessPointNasuniSourcePropertiesUpdate`
-- New struct `BlobAccessPointNetAppOntapSourceProperties`
-- New struct `BlobAccessPointNetAppOntapSourcePropertiesUpdate`
+- New struct `BlobAccessPointNetAppONTAPSourceProperties`
+- New struct `BlobAccessPointNetAppONTAPSourcePropertiesUpdate`
 - New struct `BlobAccessPointPrivateLinkConnectionProperties`
 - New struct `BlobAccessPointPrivateLinkConnectionPropertiesUpdate`
 - New struct `BlobAccessPointProposedConnectionTestRequest`

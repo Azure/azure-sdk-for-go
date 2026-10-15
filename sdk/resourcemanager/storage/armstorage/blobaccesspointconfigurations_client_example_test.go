@@ -28,8 +28,8 @@ func ExampleBlobAccessPointConfigurationsClient_BeginCreate_createBlobAccessPoin
 		Properties: &armstorage.BlobAccessPointConfigurationProperties{
 			State:       to.Ptr(armstorage.BlobAccessPointConfigurationStateActive),
 			Description: to.Ptr("NetApp ONTAP S3-compatible source"),
-			Source: &armstorage.BlobAccessPointNetAppOntapSourceProperties{
-				SourceType: to.Ptr(armstorage.BlobAccessPointSourceTypeNetAppOntap),
+			Source: &armstorage.BlobAccessPointNetAppONTAPSourceProperties{
+				SourceType: to.Ptr(armstorage.BlobAccessPointSourceTypeNetAppONTAP),
 				Connection: &armstorage.BlobAccessPointEndpointConnectionProperties{
 					ConnectionType:  to.Ptr(armstorage.BlobAccessPointConnectionTypeEndpoint),
 					Endpoint:        to.Ptr("https://netapp.contoso.com/bucket1"),
@@ -67,8 +67,8 @@ func ExampleBlobAccessPointConfigurationsClient_BeginCreate_createBlobAccessPoin
 	// 			UniqueID: to.Ptr("11111111-2222-3333-4444-555555555555"),
 	// 			State: to.Ptr(armstorage.BlobAccessPointConfigurationStateActive),
 	// 			Description: to.Ptr("NetApp ONTAP S3-compatible source"),
-	// 			Source: &armstorage.BlobAccessPointNetAppOntapSourceProperties{
-	// 				SourceType: to.Ptr(armstorage.BlobAccessPointSourceTypeNetAppOntap),
+	// 			Source: &armstorage.BlobAccessPointNetAppONTAPSourceProperties{
+	// 				SourceType: to.Ptr(armstorage.BlobAccessPointSourceTypeNetAppONTAP),
 	// 				Connection: &armstorage.BlobAccessPointEndpointConnectionProperties{
 	// 					ConnectionType: to.Ptr(armstorage.BlobAccessPointConnectionTypeEndpoint),
 	// 					Endpoint: to.Ptr("https://netapp.contoso.com/bucket1"),
@@ -239,8 +239,8 @@ func ExampleBlobAccessPointConfigurationsClient_BeginUpdate() {
 		Properties: &armstorage.BlobAccessPointConfigurationPropertiesUpdate{
 			State:       to.Ptr(armstorage.BlobAccessPointConfigurationStateInactive),
 			Description: to.Ptr("Updated NetApp ONTAP S3-compatible source"),
-			Source: &armstorage.BlobAccessPointNetAppOntapSourcePropertiesUpdate{
-				SourceType: to.Ptr(armstorage.BlobAccessPointSourceTypeNetAppOntap),
+			Source: &armstorage.BlobAccessPointNetAppONTAPSourcePropertiesUpdate{
+				SourceType: to.Ptr(armstorage.BlobAccessPointSourceTypeNetAppONTAP),
 				Auth: &armstorage.BlobAccessPointAccessKeyAuthPropertiesUpdate{
 					AuthType:        to.Ptr(armstorage.BlobAccessPointRemoteAuthTypeAccessKey),
 					SecretAccessKey: to.Ptr("rotated-secret-key"),
@@ -271,8 +271,8 @@ func ExampleBlobAccessPointConfigurationsClient_BeginUpdate() {
 	// 			UniqueID: to.Ptr("11111111-2222-3333-4444-555555555555"),
 	// 			State: to.Ptr(armstorage.BlobAccessPointConfigurationStateInactive),
 	// 			Description: to.Ptr("Updated NetApp ONTAP S3-compatible source"),
-	// 			Source: &armstorage.BlobAccessPointNetAppOntapSourceProperties{
-	// 				SourceType: to.Ptr(armstorage.BlobAccessPointSourceTypeNetAppOntap),
+	// 			Source: &armstorage.BlobAccessPointNetAppONTAPSourceProperties{
+	// 				SourceType: to.Ptr(armstorage.BlobAccessPointSourceTypeNetAppONTAP),
 	// 				Connection: &armstorage.BlobAccessPointEndpointConnectionProperties{
 	// 					ConnectionType: to.Ptr(armstorage.BlobAccessPointConnectionTypeEndpoint),
 	// 					Endpoint: to.Ptr("https://netapp.contoso.com/bucket1"),
@@ -323,8 +323,8 @@ func ExampleBlobAccessPointConfigurationsClient_Get() {
 	// 			Description: to.Ptr("NetApp ONTAP S3-compatible source"),
 	// 			LastConnectionTestStatus: to.Ptr(armstorage.BlobAccessPointConnectionTestStatusSucceeded),
 	// 			LastConnectionTestTimestamp: to.Ptr(time.Date(2026, time.September, 1, 1, 0, 0, 0, time.UTC)),
-	// 			Source: &armstorage.BlobAccessPointNetAppOntapSourceProperties{
-	// 				SourceType: to.Ptr(armstorage.BlobAccessPointSourceTypeNetAppOntap),
+	// 			Source: &armstorage.BlobAccessPointNetAppONTAPSourceProperties{
+	// 				SourceType: to.Ptr(armstorage.BlobAccessPointSourceTypeNetAppONTAP),
 	// 				Connection: &armstorage.BlobAccessPointEndpointConnectionProperties{
 	// 					ConnectionType: to.Ptr(armstorage.BlobAccessPointConnectionTypeEndpoint),
 	// 					Endpoint: to.Ptr("https://netapp.contoso.com/bucket1"),
@@ -379,8 +379,8 @@ func ExampleBlobAccessPointConfigurationsClient_NewListByStorageAccountPager() {
 		// 					UniqueID: to.Ptr("11111111-2222-3333-4444-555555555555"),
 		// 					State: to.Ptr(armstorage.BlobAccessPointConfigurationStateActive),
 		// 					Description: to.Ptr("NetApp ONTAP S3-compatible source"),
-		// 					Source: &armstorage.BlobAccessPointNetAppOntapSourceProperties{
-		// 						SourceType: to.Ptr(armstorage.BlobAccessPointSourceTypeNetAppOntap),
+		// 					Source: &armstorage.BlobAccessPointNetAppONTAPSourceProperties{
+		// 						SourceType: to.Ptr(armstorage.BlobAccessPointSourceTypeNetAppONTAP),
 		// 						Connection: &armstorage.BlobAccessPointEndpointConnectionProperties{
 		// 							ConnectionType: to.Ptr(armstorage.BlobAccessPointConnectionTypeEndpoint),
 		// 							Endpoint: to.Ptr("https://netapp.contoso.com/bucket1"),
@@ -407,8 +407,8 @@ func ExampleBlobAccessPointConfigurationsClient_NewListByStorageAccountPager() {
 		// 					UniqueID: to.Ptr("22222222-3333-4444-5555-666666666666"),
 		// 					State: to.Ptr(armstorage.BlobAccessPointConfigurationStateActive),
 		// 					Description: to.Ptr("Private-link-backed S3-compatible source"),
-		// 					Source: &armstorage.BlobAccessPointDellOneFsSourceProperties{
-		// 						SourceType: to.Ptr(armstorage.BlobAccessPointSourceTypeDellOneFs),
+		// 					Source: &armstorage.BlobAccessPointDellOneFSSourceProperties{
+		// 						SourceType: to.Ptr(armstorage.BlobAccessPointSourceTypeDellOneFS),
 		// 						Connection: &armstorage.BlobAccessPointPrivateLinkConnectionProperties{
 		// 							ConnectionType: to.Ptr(armstorage.BlobAccessPointConnectionTypePrivateLink),
 		// 							PrivateLinkIDType: to.Ptr(armstorage.BlobAccessPointPrivateLinkIDTypeResourceID),

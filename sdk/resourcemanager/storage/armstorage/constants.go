@@ -248,12 +248,12 @@ const (
 	BlobAccessPointSourceTypeAzureNetAppFiles BlobAccessPointSourceType = "AzureNetAppFiles"
 	// BlobAccessPointSourceTypeCommvault - Commvault S3-compatible data source.
 	BlobAccessPointSourceTypeCommvault BlobAccessPointSourceType = "Commvault"
-	// BlobAccessPointSourceTypeDellOneFs - Dell OneFS.
-	BlobAccessPointSourceTypeDellOneFs BlobAccessPointSourceType = "DellOneFs"
+	// BlobAccessPointSourceTypeDellOneFS - Dell OneFS.
+	BlobAccessPointSourceTypeDellOneFS BlobAccessPointSourceType = "DellOneFs"
 	// BlobAccessPointSourceTypeNasuni - Nasuni S3-compatible data source.
 	BlobAccessPointSourceTypeNasuni BlobAccessPointSourceType = "Nasuni"
-	// BlobAccessPointSourceTypeNetAppOntap - NetApp ONTAP.
-	BlobAccessPointSourceTypeNetAppOntap BlobAccessPointSourceType = "NetAppOntap"
+	// BlobAccessPointSourceTypeNetAppONTAP - NetApp ONTAP.
+	BlobAccessPointSourceTypeNetAppONTAP BlobAccessPointSourceType = "NetAppOntap"
 	// BlobAccessPointSourceTypeQumulo - Qumulo S3-compatible data source.
 	BlobAccessPointSourceTypeQumulo BlobAccessPointSourceType = "Qumulo"
 	// BlobAccessPointSourceTypeS3Compatible - Another S3-compatible data source.
@@ -265,9 +265,9 @@ func PossibleBlobAccessPointSourceTypeValues() []BlobAccessPointSourceType {
 	return []BlobAccessPointSourceType{
 		BlobAccessPointSourceTypeAzureNetAppFiles,
 		BlobAccessPointSourceTypeCommvault,
-		BlobAccessPointSourceTypeDellOneFs,
+		BlobAccessPointSourceTypeDellOneFS,
 		BlobAccessPointSourceTypeNasuni,
-		BlobAccessPointSourceTypeNetAppOntap,
+		BlobAccessPointSourceTypeNetAppONTAP,
 		BlobAccessPointSourceTypeQumulo,
 		BlobAccessPointSourceTypeS3Compatible,
 	}

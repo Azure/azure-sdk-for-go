@@ -108,12 +108,12 @@ func unmarshalBlobAccessPointSourcePropertiesClassification(rawMsg json.RawMessa
 		b = &BlobAccessPointAzureNetAppFilesSourceProperties{}
 	case string(BlobAccessPointSourceTypeCommvault):
 		b = &BlobAccessPointCommvaultSourceProperties{}
-	case string(BlobAccessPointSourceTypeDellOneFs):
-		b = &BlobAccessPointDellOneFsSourceProperties{}
+	case string(BlobAccessPointSourceTypeDellOneFS):
+		b = &BlobAccessPointDellOneFSSourceProperties{}
 	case string(BlobAccessPointSourceTypeNasuni):
 		b = &BlobAccessPointNasuniSourceProperties{}
-	case string(BlobAccessPointSourceTypeNetAppOntap):
-		b = &BlobAccessPointNetAppOntapSourceProperties{}
+	case string(BlobAccessPointSourceTypeNetAppONTAP):
+		b = &BlobAccessPointNetAppONTAPSourceProperties{}
 	case string(BlobAccessPointSourceTypeQumulo):
 		b = &BlobAccessPointQumuloSourceProperties{}
 	case string(BlobAccessPointSourceTypeS3Compatible):
@@ -141,12 +141,12 @@ func unmarshalBlobAccessPointSourcePropertiesUpdateClassification(rawMsg json.Ra
 		b = &BlobAccessPointAzureNetAppFilesSourcePropertiesUpdate{}
 	case string(BlobAccessPointSourceTypeCommvault):
 		b = &BlobAccessPointCommvaultSourcePropertiesUpdate{}
-	case string(BlobAccessPointSourceTypeDellOneFs):
-		b = &BlobAccessPointDellOneFsSourcePropertiesUpdate{}
+	case string(BlobAccessPointSourceTypeDellOneFS):
+		b = &BlobAccessPointDellOneFSSourcePropertiesUpdate{}
 	case string(BlobAccessPointSourceTypeNasuni):
 		b = &BlobAccessPointNasuniSourcePropertiesUpdate{}
-	case string(BlobAccessPointSourceTypeNetAppOntap):
-		b = &BlobAccessPointNetAppOntapSourcePropertiesUpdate{}
+	case string(BlobAccessPointSourceTypeNetAppONTAP):
+		b = &BlobAccessPointNetAppONTAPSourcePropertiesUpdate{}
 	case string(BlobAccessPointSourceTypeQumulo):
 		b = &BlobAccessPointQumuloSourcePropertiesUpdate{}
 	case string(BlobAccessPointSourceTypeS3Compatible):

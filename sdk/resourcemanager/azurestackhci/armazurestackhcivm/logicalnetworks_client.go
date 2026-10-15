@@ -19,7 +19,7 @@ import (
 // LogicalNetworksClient contains the methods for the LogicalNetworks group.
 // Don't use this type directly, use NewLogicalNetworksClient() instead.
 //
-// Generated from API version 2025-06-01-preview
+// Generated from API version 2026-07-01-preview
 type LogicalNetworksClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -30,6 +30,9 @@ type LogicalNetworksClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewLogicalNetworksClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*LogicalNetworksClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -67,7 +70,7 @@ func (client *LogicalNetworksClient) BeginCreateOrUpdate(ctx context.Context, re
 	}
 }
 
-// CreateOrUpdate - The operation to create or update a logical network. Please note some properties can be set only during
+// createOrUpdate - The operation to create or update a logical network. Please note some properties can be set only during
 // logical network creation.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *LogicalNetworksClient) createOrUpdate(ctx context.Context, resourceGroupName string, logicalNetworkName string, resource LogicalNetwork, options *LogicalNetworksClientBeginCreateOrUpdateOptions) (*http.Response, error) {
@@ -85,17 +88,16 @@ func (client *LogicalNetworksClient) createOrUpdate(ctx context.Context, resourc
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *LogicalNetworksClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, logicalNetworkName string, resource LogicalNetwork, _ *LogicalNetworksClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/logicalNetworks/{logicalNetworkName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -111,7 +113,7 @@ func (client *LogicalNetworksClient) createOrUpdateCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601Preview)
+	reqQP.Set("api-version", version20260701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -144,7 +146,7 @@ func (client *LogicalNetworksClient) BeginDelete(ctx context.Context, resourceGr
 	}
 }
 
-// Delete - The operation to delete a logical network.
+// deleteOperation - The operation to delete a logical network.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *LogicalNetworksClient) deleteOperation(ctx context.Context, resourceGroupName string, logicalNetworkName string, options *LogicalNetworksClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -161,17 +163,16 @@ func (client *LogicalNetworksClient) deleteOperation(ctx context.Context, resour
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *LogicalNetworksClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, logicalNetworkName string, _ *LogicalNetworksClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/logicalNetworks/{logicalNetworkName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -187,184 +188,9 @@ func (client *LogicalNetworksClient) deleteCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601Preview)
+	reqQP.Set("api-version", version20260701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
-}
-
-// Get - The operation to get a logical network.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - logicalNetworkName - Name of the logical network
-//   - options - LogicalNetworksClientGetOptions contains the optional parameters for the LogicalNetworksClient.Get method.
-func (client *LogicalNetworksClient) Get(ctx context.Context, resourceGroupName string, logicalNetworkName string, options *LogicalNetworksClientGetOptions) (LogicalNetworksClientGetResponse, error) {
-	var err error
-	const operationName = "LogicalNetworksClient.Get"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.getCreateRequest(ctx, resourceGroupName, logicalNetworkName, options)
-	if err != nil {
-		return LogicalNetworksClientGetResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return LogicalNetworksClientGetResponse{}, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return LogicalNetworksClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
-}
-
-// getCreateRequest creates the Get request.
-func (client *LogicalNetworksClient) getCreateRequest(ctx context.Context, resourceGroupName string, logicalNetworkName string, _ *LogicalNetworksClientGetOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/logicalNetworks/{logicalNetworkName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if logicalNetworkName == "" {
-		return nil, errors.New("parameter logicalNetworkName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{logicalNetworkName}", url.PathEscape(logicalNetworkName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// getHandleResponse handles the Get response.
-func (client *LogicalNetworksClient) getHandleResponse(resp *http.Response) (LogicalNetworksClientGetResponse, error) {
-	result := LogicalNetworksClientGetResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.LogicalNetwork); err != nil {
-		return LogicalNetworksClientGetResponse{}, err
-	}
-	return result, nil
-}
-
-// NewListAllPager - Lists all of the logical networks in the specified subscription. Use the nextLink property in the response
-// to get the next page of logical networks.
-//   - options - LogicalNetworksClientListAllOptions contains the optional parameters for the LogicalNetworksClient.NewListAllPager
-//     method.
-func (client *LogicalNetworksClient) NewListAllPager(options *LogicalNetworksClientListAllOptions) *runtime.Pager[LogicalNetworksClientListAllResponse] {
-	return runtime.NewPager(runtime.PagingHandler[LogicalNetworksClientListAllResponse]{
-		More: func(page LogicalNetworksClientListAllResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *LogicalNetworksClientListAllResponse) (LogicalNetworksClientListAllResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "LogicalNetworksClient.NewListAllPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listAllCreateRequest(ctx, options)
-			}, nil)
-			if err != nil {
-				return LogicalNetworksClientListAllResponse{}, err
-			}
-			return client.listAllHandleResponse(resp)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listAllCreateRequest creates the ListAll request.
-func (client *LogicalNetworksClient) listAllCreateRequest(ctx context.Context, _ *LogicalNetworksClientListAllOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.AzureStackHCI/logicalNetworks"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// listAllHandleResponse handles the ListAll response.
-func (client *LogicalNetworksClient) listAllHandleResponse(resp *http.Response) (LogicalNetworksClientListAllResponse, error) {
-	result := LogicalNetworksClientListAllResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.LogicalNetworkListResult); err != nil {
-		return LogicalNetworksClientListAllResponse{}, err
-	}
-	return result, nil
-}
-
-// NewListByResourceGroupPager - Lists all of the logical networks in the specified resource group. Use the nextLink property
-// in the response to get the next page of logical networks.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - options - LogicalNetworksClientListByResourceGroupOptions contains the optional parameters for the LogicalNetworksClient.NewListByResourceGroupPager
-//     method.
-func (client *LogicalNetworksClient) NewListByResourceGroupPager(resourceGroupName string, options *LogicalNetworksClientListByResourceGroupOptions) *runtime.Pager[LogicalNetworksClientListByResourceGroupResponse] {
-	return runtime.NewPager(runtime.PagingHandler[LogicalNetworksClientListByResourceGroupResponse]{
-		More: func(page LogicalNetworksClientListByResourceGroupResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *LogicalNetworksClientListByResourceGroupResponse) (LogicalNetworksClientListByResourceGroupResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "LogicalNetworksClient.NewListByResourceGroupPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
-			}, nil)
-			if err != nil {
-				return LogicalNetworksClientListByResourceGroupResponse{}, err
-			}
-			return client.listByResourceGroupHandleResponse(resp)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *LogicalNetworksClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, _ *LogicalNetworksClientListByResourceGroupOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/logicalNetworks"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *LogicalNetworksClient) listByResourceGroupHandleResponse(resp *http.Response) (LogicalNetworksClientListByResourceGroupResponse, error) {
-	result := LogicalNetworksClientListByResourceGroupResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.LogicalNetworkListResult); err != nil {
-		return LogicalNetworksClientListByResourceGroupResponse{}, err
-	}
-	return result, nil
 }
 
 // BeginUpdate - The operation to update a logical network.
@@ -391,7 +217,7 @@ func (client *LogicalNetworksClient) BeginUpdate(ctx context.Context, resourceGr
 	}
 }
 
-// Update - The operation to update a logical network.
+// update - The operation to update a logical network.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *LogicalNetworksClient) update(ctx context.Context, resourceGroupName string, logicalNetworkName string, properties LogicalNetworksUpdateRequest, options *LogicalNetworksClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
@@ -408,17 +234,16 @@ func (client *LogicalNetworksClient) update(ctx context.Context, resourceGroupNa
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
 
-// updateCreateRequest creates the Update request.
+// updateCreateRequest creates the update request.
 func (client *LogicalNetworksClient) updateCreateRequest(ctx context.Context, resourceGroupName string, logicalNetworkName string, properties LogicalNetworksUpdateRequest, _ *LogicalNetworksClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/logicalNetworks/{logicalNetworkName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -434,7 +259,7 @@ func (client *LogicalNetworksClient) updateCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601Preview)
+	reqQP.Set("api-version", version20260701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -442,4 +267,205 @@ func (client *LogicalNetworksClient) updateCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	return req, nil
+}
+
+// Get - The operation to get a logical network.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - logicalNetworkName - Name of the logical network
+//   - options - LogicalNetworksClientGetOptions contains the optional parameters for the LogicalNetworksClient.Get method.
+func (client *LogicalNetworksClient) Get(ctx context.Context, resourceGroupName string, logicalNetworkName string, options *LogicalNetworksClientGetOptions) (LogicalNetworksClientGetResponse, error) {
+	var err error
+	const operationName = "LogicalNetworksClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.getCreateRequest(ctx, resourceGroupName, logicalNetworkName, options)
+	if err != nil {
+		return LogicalNetworksClientGetResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return LogicalNetworksClientGetResponse{}, err
+	}
+	return client.getHandleResponse(httpResp, http.StatusOK)
+}
+
+// getCreateRequest creates the Get request.
+func (client *LogicalNetworksClient) getCreateRequest(ctx context.Context, resourceGroupName string, logicalNetworkName string, _ *LogicalNetworksClientGetOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/logicalNetworks/{logicalNetworkName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if logicalNetworkName == "" {
+		return nil, errors.New("parameter logicalNetworkName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{logicalNetworkName}", url.PathEscape(logicalNetworkName))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260701Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// getHandleResponse handles the Get response.
+func (client *LogicalNetworksClient) getHandleResponse(resp *http.Response, successCodes ...int) (LogicalNetworksClientGetResponse, error) {
+	result := LogicalNetworksClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.LogicalNetwork); err != nil {
+		return LogicalNetworksClientGetResponse{}, err
+	}
+	return result, nil
+}
+
+// NewListAllPager - Lists all of the logical networks in the specified subscription. Use the nextLink property in the response
+// to get the next page of logical networks.
+//   - options - LogicalNetworksClientListAllOptions contains the optional parameters for the LogicalNetworksClient.NewListAllPager
+//     method.
+func (client *LogicalNetworksClient) NewListAllPager(options *LogicalNetworksClientListAllOptions) *runtime.Pager[LogicalNetworksClientListAllResponse] {
+	return runtime.NewPager(runtime.PagingHandler[LogicalNetworksClientListAllResponse]{
+		More: func(page LogicalNetworksClientListAllResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *LogicalNetworksClientListAllResponse) (LogicalNetworksClientListAllResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "LogicalNetworksClient.NewListAllPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listAllCreateRequest(ctx, nextLink, options)
+			if err != nil {
+				return LogicalNetworksClientListAllResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return LogicalNetworksClientListAllResponse{}, err
+			}
+			return client.listAllHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listAllCreateRequest creates the ListAll request.
+func (client *LogicalNetworksClient) listAllCreateRequest(ctx context.Context, nextLink string, _ *LogicalNetworksClientListAllOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.AzureStackHCI/logicalNetworks"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260701Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// listAllHandleResponse handles the ListAll response.
+func (client *LogicalNetworksClient) listAllHandleResponse(resp *http.Response, successCodes ...int) (LogicalNetworksClientListAllResponse, error) {
+	result := LogicalNetworksClientListAllResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.LogicalNetworkListResult); err != nil {
+		return LogicalNetworksClientListAllResponse{}, err
+	}
+	return result, nil
+}
+
+// NewListByResourceGroupPager - Lists all of the logical networks in the specified resource group. Use the nextLink property
+// in the response to get the next page of logical networks.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - options - LogicalNetworksClientListByResourceGroupOptions contains the optional parameters for the LogicalNetworksClient.NewListByResourceGroupPager
+//     method.
+func (client *LogicalNetworksClient) NewListByResourceGroupPager(resourceGroupName string, options *LogicalNetworksClientListByResourceGroupOptions) *runtime.Pager[LogicalNetworksClientListByResourceGroupResponse] {
+	return runtime.NewPager(runtime.PagingHandler[LogicalNetworksClientListByResourceGroupResponse]{
+		More: func(page LogicalNetworksClientListByResourceGroupResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *LogicalNetworksClientListByResourceGroupResponse) (LogicalNetworksClientListByResourceGroupResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "LogicalNetworksClient.NewListByResourceGroupPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listByResourceGroupCreateRequest(ctx, resourceGroupName, nextLink, options)
+			if err != nil {
+				return LogicalNetworksClientListByResourceGroupResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return LogicalNetworksClientListByResourceGroupResponse{}, err
+			}
+			return client.listByResourceGroupHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listByResourceGroupCreateRequest creates the ListByResourceGroup request.
+func (client *LogicalNetworksClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, nextLink string, _ *LogicalNetworksClientListByResourceGroupOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/logicalNetworks"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260701Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// listByResourceGroupHandleResponse handles the ListByResourceGroup response.
+func (client *LogicalNetworksClient) listByResourceGroupHandleResponse(resp *http.Response, successCodes ...int) (LogicalNetworksClientListByResourceGroupResponse, error) {
+	result := LogicalNetworksClientListByResourceGroupResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.LogicalNetworkListResult); err != nil {
+		return LogicalNetworksClientListByResourceGroupResponse{}, err
+	}
+	return result, nil
 }

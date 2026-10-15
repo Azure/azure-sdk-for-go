@@ -19,7 +19,7 @@ import (
 // StorageContainersClient contains the methods for the StorageContainers group.
 // Don't use this type directly, use NewStorageContainersClient() instead.
 //
-// Generated from API version 2025-06-01-preview
+// Generated from API version 2026-07-01-preview
 type StorageContainersClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -30,6 +30,9 @@ type StorageContainersClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewStorageContainersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*StorageContainersClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -67,7 +70,7 @@ func (client *StorageContainersClient) BeginCreateOrUpdate(ctx context.Context, 
 	}
 }
 
-// CreateOrUpdate - The operation to create or update a storage container. Please note some properties can be set only during
+// createOrUpdate - The operation to create or update a storage container. Please note some properties can be set only during
 // storage container creation.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *StorageContainersClient) createOrUpdate(ctx context.Context, resourceGroupName string, storageContainerName string, resource StorageContainer, options *StorageContainersClientBeginCreateOrUpdateOptions) (*http.Response, error) {
@@ -85,17 +88,16 @@ func (client *StorageContainersClient) createOrUpdate(ctx context.Context, resou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *StorageContainersClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, storageContainerName string, resource StorageContainer, _ *StorageContainersClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/storageContainers/{storageContainerName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -111,7 +113,7 @@ func (client *StorageContainersClient) createOrUpdateCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601Preview)
+	reqQP.Set("api-version", version20260701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -144,7 +146,7 @@ func (client *StorageContainersClient) BeginDelete(ctx context.Context, resource
 	}
 }
 
-// Delete - The operation to delete a storage container.
+// deleteOperation - The operation to delete a storage container.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *StorageContainersClient) deleteOperation(ctx context.Context, resourceGroupName string, storageContainerName string, options *StorageContainersClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -161,17 +163,16 @@ func (client *StorageContainersClient) deleteOperation(ctx context.Context, reso
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *StorageContainersClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, storageContainerName string, _ *StorageContainersClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/storageContainers/{storageContainerName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -187,184 +188,9 @@ func (client *StorageContainersClient) deleteCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601Preview)
+	reqQP.Set("api-version", version20260701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
-}
-
-// Get - Gets a storage container
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - storageContainerName - Name of the storage container
-//   - options - StorageContainersClientGetOptions contains the optional parameters for the StorageContainersClient.Get method.
-func (client *StorageContainersClient) Get(ctx context.Context, resourceGroupName string, storageContainerName string, options *StorageContainersClientGetOptions) (StorageContainersClientGetResponse, error) {
-	var err error
-	const operationName = "StorageContainersClient.Get"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.getCreateRequest(ctx, resourceGroupName, storageContainerName, options)
-	if err != nil {
-		return StorageContainersClientGetResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return StorageContainersClientGetResponse{}, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return StorageContainersClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
-}
-
-// getCreateRequest creates the Get request.
-func (client *StorageContainersClient) getCreateRequest(ctx context.Context, resourceGroupName string, storageContainerName string, _ *StorageContainersClientGetOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/storageContainers/{storageContainerName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if storageContainerName == "" {
-		return nil, errors.New("parameter storageContainerName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{storageContainerName}", url.PathEscape(storageContainerName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// getHandleResponse handles the Get response.
-func (client *StorageContainersClient) getHandleResponse(resp *http.Response) (StorageContainersClientGetResponse, error) {
-	result := StorageContainersClientGetResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.StorageContainer); err != nil {
-		return StorageContainersClientGetResponse{}, err
-	}
-	return result, nil
-}
-
-// NewListAllPager - Lists all of the storage containers in the specified subscription. Use the nextLink property in the response
-// to get the next page of storage containers.
-//   - options - StorageContainersClientListAllOptions contains the optional parameters for the StorageContainersClient.NewListAllPager
-//     method.
-func (client *StorageContainersClient) NewListAllPager(options *StorageContainersClientListAllOptions) *runtime.Pager[StorageContainersClientListAllResponse] {
-	return runtime.NewPager(runtime.PagingHandler[StorageContainersClientListAllResponse]{
-		More: func(page StorageContainersClientListAllResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *StorageContainersClientListAllResponse) (StorageContainersClientListAllResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "StorageContainersClient.NewListAllPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listAllCreateRequest(ctx, options)
-			}, nil)
-			if err != nil {
-				return StorageContainersClientListAllResponse{}, err
-			}
-			return client.listAllHandleResponse(resp)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listAllCreateRequest creates the ListAll request.
-func (client *StorageContainersClient) listAllCreateRequest(ctx context.Context, _ *StorageContainersClientListAllOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.AzureStackHCI/storageContainers"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// listAllHandleResponse handles the ListAll response.
-func (client *StorageContainersClient) listAllHandleResponse(resp *http.Response) (StorageContainersClientListAllResponse, error) {
-	result := StorageContainersClientListAllResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.StorageContainerListResult); err != nil {
-		return StorageContainersClientListAllResponse{}, err
-	}
-	return result, nil
-}
-
-// NewListByResourceGroupPager - Lists all of the storage containers in the specified resource group. Use the nextLink property
-// in the response to get the next page of storage containers.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - options - StorageContainersClientListByResourceGroupOptions contains the optional parameters for the StorageContainersClient.NewListByResourceGroupPager
-//     method.
-func (client *StorageContainersClient) NewListByResourceGroupPager(resourceGroupName string, options *StorageContainersClientListByResourceGroupOptions) *runtime.Pager[StorageContainersClientListByResourceGroupResponse] {
-	return runtime.NewPager(runtime.PagingHandler[StorageContainersClientListByResourceGroupResponse]{
-		More: func(page StorageContainersClientListByResourceGroupResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *StorageContainersClientListByResourceGroupResponse) (StorageContainersClientListByResourceGroupResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "StorageContainersClient.NewListByResourceGroupPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
-			}, nil)
-			if err != nil {
-				return StorageContainersClientListByResourceGroupResponse{}, err
-			}
-			return client.listByResourceGroupHandleResponse(resp)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *StorageContainersClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, _ *StorageContainersClientListByResourceGroupOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/storageContainers"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *StorageContainersClient) listByResourceGroupHandleResponse(resp *http.Response) (StorageContainersClientListByResourceGroupResponse, error) {
-	result := StorageContainersClientListByResourceGroupResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.StorageContainerListResult); err != nil {
-		return StorageContainersClientListByResourceGroupResponse{}, err
-	}
-	return result, nil
 }
 
 // BeginUpdate - The operation to update a storage container.
@@ -391,7 +217,7 @@ func (client *StorageContainersClient) BeginUpdate(ctx context.Context, resource
 	}
 }
 
-// Update - The operation to update a storage container.
+// update - The operation to update a storage container.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *StorageContainersClient) update(ctx context.Context, resourceGroupName string, storageContainerName string, properties StorageContainerTagsUpdate, options *StorageContainersClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
@@ -408,17 +234,16 @@ func (client *StorageContainersClient) update(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
 
-// updateCreateRequest creates the Update request.
+// updateCreateRequest creates the update request.
 func (client *StorageContainersClient) updateCreateRequest(ctx context.Context, resourceGroupName string, storageContainerName string, properties StorageContainerTagsUpdate, _ *StorageContainersClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/storageContainers/{storageContainerName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -434,7 +259,7 @@ func (client *StorageContainersClient) updateCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601Preview)
+	reqQP.Set("api-version", version20260701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -442,4 +267,205 @@ func (client *StorageContainersClient) updateCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	return req, nil
+}
+
+// Get - Gets a storage container
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - storageContainerName - Name of the storage container
+//   - options - StorageContainersClientGetOptions contains the optional parameters for the StorageContainersClient.Get method.
+func (client *StorageContainersClient) Get(ctx context.Context, resourceGroupName string, storageContainerName string, options *StorageContainersClientGetOptions) (StorageContainersClientGetResponse, error) {
+	var err error
+	const operationName = "StorageContainersClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.getCreateRequest(ctx, resourceGroupName, storageContainerName, options)
+	if err != nil {
+		return StorageContainersClientGetResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return StorageContainersClientGetResponse{}, err
+	}
+	return client.getHandleResponse(httpResp, http.StatusOK)
+}
+
+// getCreateRequest creates the Get request.
+func (client *StorageContainersClient) getCreateRequest(ctx context.Context, resourceGroupName string, storageContainerName string, _ *StorageContainersClientGetOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/storageContainers/{storageContainerName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if storageContainerName == "" {
+		return nil, errors.New("parameter storageContainerName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{storageContainerName}", url.PathEscape(storageContainerName))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260701Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// getHandleResponse handles the Get response.
+func (client *StorageContainersClient) getHandleResponse(resp *http.Response, successCodes ...int) (StorageContainersClientGetResponse, error) {
+	result := StorageContainersClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.StorageContainer); err != nil {
+		return StorageContainersClientGetResponse{}, err
+	}
+	return result, nil
+}
+
+// NewListAllPager - Lists all of the storage containers in the specified subscription. Use the nextLink property in the response
+// to get the next page of storage containers.
+//   - options - StorageContainersClientListAllOptions contains the optional parameters for the StorageContainersClient.NewListAllPager
+//     method.
+func (client *StorageContainersClient) NewListAllPager(options *StorageContainersClientListAllOptions) *runtime.Pager[StorageContainersClientListAllResponse] {
+	return runtime.NewPager(runtime.PagingHandler[StorageContainersClientListAllResponse]{
+		More: func(page StorageContainersClientListAllResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *StorageContainersClientListAllResponse) (StorageContainersClientListAllResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "StorageContainersClient.NewListAllPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listAllCreateRequest(ctx, nextLink, options)
+			if err != nil {
+				return StorageContainersClientListAllResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return StorageContainersClientListAllResponse{}, err
+			}
+			return client.listAllHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listAllCreateRequest creates the ListAll request.
+func (client *StorageContainersClient) listAllCreateRequest(ctx context.Context, nextLink string, _ *StorageContainersClientListAllOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.AzureStackHCI/storageContainers"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260701Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// listAllHandleResponse handles the ListAll response.
+func (client *StorageContainersClient) listAllHandleResponse(resp *http.Response, successCodes ...int) (StorageContainersClientListAllResponse, error) {
+	result := StorageContainersClientListAllResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.StorageContainerListResult); err != nil {
+		return StorageContainersClientListAllResponse{}, err
+	}
+	return result, nil
+}
+
+// NewListByResourceGroupPager - Lists all of the storage containers in the specified resource group. Use the nextLink property
+// in the response to get the next page of storage containers.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - options - StorageContainersClientListByResourceGroupOptions contains the optional parameters for the StorageContainersClient.NewListByResourceGroupPager
+//     method.
+func (client *StorageContainersClient) NewListByResourceGroupPager(resourceGroupName string, options *StorageContainersClientListByResourceGroupOptions) *runtime.Pager[StorageContainersClientListByResourceGroupResponse] {
+	return runtime.NewPager(runtime.PagingHandler[StorageContainersClientListByResourceGroupResponse]{
+		More: func(page StorageContainersClientListByResourceGroupResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *StorageContainersClientListByResourceGroupResponse) (StorageContainersClientListByResourceGroupResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "StorageContainersClient.NewListByResourceGroupPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listByResourceGroupCreateRequest(ctx, resourceGroupName, nextLink, options)
+			if err != nil {
+				return StorageContainersClientListByResourceGroupResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return StorageContainersClientListByResourceGroupResponse{}, err
+			}
+			return client.listByResourceGroupHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listByResourceGroupCreateRequest creates the ListByResourceGroup request.
+func (client *StorageContainersClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, nextLink string, _ *StorageContainersClientListByResourceGroupOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/storageContainers"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260701Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// listByResourceGroupHandleResponse handles the ListByResourceGroup response.
+func (client *StorageContainersClient) listByResourceGroupHandleResponse(resp *http.Response, successCodes ...int) (StorageContainersClientListByResourceGroupResponse, error) {
+	result := StorageContainersClientListByResourceGroupResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.StorageContainerListResult); err != nil {
+		return StorageContainersClientListByResourceGroupResponse{}, err
+	}
+	return result, nil
 }

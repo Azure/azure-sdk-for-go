@@ -1,5 +1,166 @@
 # Release History
 
+## 0.2.0 (2026-10-15)
+### Breaking Changes
+
+- Struct `VMImageRepositoryCredentials` has been removed
+- Field `VMImageRepositoryCredentials` of struct `GalleryImageProperties` has been removed
+
+### Features Added
+
+- New value `HyperVGenerationNA` added to enum type `HyperVGeneration`
+- New enum type `ActionType` with values `ActionTypeInternal`
+- New enum type `DiskCreateOption` with values `DiskCreateOptionCopy`, `DiskCreateOptionEmpty`
+- New enum type `FabricConnectionHealthEnum` with values `FabricConnectionHealthEnumError`, `FabricConnectionHealthEnumHealthy`, `FabricConnectionHealthEnumUnknown`, `FabricConnectionHealthEnumWarning`
+- New enum type `FabricIntegrationStateEnum` with values `FabricIntegrationStateEnumConnected`, `FabricIntegrationStateEnumConnecting`, `FabricIntegrationStateEnumDisconnected`, `FabricIntegrationStateEnumMisconfigured`, `FabricIntegrationStateEnumNotApplicable`
+- New enum type `FabricResourceTypeEnum` with values `FabricResourceTypeEnumL2IsolationDomain`, `FabricResourceTypeEnumL3InternalNetwork`
+- New enum type `InboundNATRuleProtocol` with values `InboundNATRuleProtocolTCP`, `InboundNATRuleProtocolUDP`
+- New enum type `LoadBalancerBackendAddressAdminState` with values `LoadBalancerBackendAddressAdminStateDown`, `LoadBalancerBackendAddressAdminStateUp`
+- New enum type `LoadBalancerProbeProtocol` with values `LoadBalancerProbeProtocolHTTP`, `LoadBalancerProbeProtocolTCP`
+- New enum type `LoadBalancerRuleSessionPersistenceType` with values `LoadBalancerRuleSessionPersistenceTypeDefault`, `LoadBalancerRuleSessionPersistenceTypeSourceIP`, `LoadBalancerRuleSessionPersistenceTypeSourceIPProtocol`
+- New enum type `LoadBalancerRuleTransportProtocol` with values `LoadBalancerRuleTransportProtocolAll`, `LoadBalancerRuleTransportProtocolTCP`, `LoadBalancerRuleTransportProtocolUDP`
+- New enum type `Origin` with values `OriginSystem`, `OriginUser`, `OriginUserSystem`
+- New enum type `PublicIPAddressType` with values `PublicIPAddressTypeIPv4`, `PublicIPAddressTypeIPv6`
+- New function `*ClientFactory.NewInboundRulesClient() *InboundRulesClient`
+- New function `*ClientFactory.NewLoadBalancersClient() *LoadBalancersClient`
+- New function `*ClientFactory.NewNatGatewaysClient() *NatGatewaysClient`
+- New function `*ClientFactory.NewOperationsClient() *OperationsClient`
+- New function `*ClientFactory.NewPublicIPAddressesClient() *PublicIPAddressesClient`
+- New function `*ClientFactory.NewSnapshotsClient() *SnapshotsClient`
+- New function `*ClientFactory.NewVirtualNetworkSubnetsClient() *VirtualNetworkSubnetsClient`
+- New function `*ClientFactory.NewVirtualNetworksClient() *VirtualNetworksClient`
+- New function `NewInboundRulesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*InboundRulesClient, error)`
+- New function `*InboundRulesClient.BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, natGatewayName string, inboundRuleName string, resource InboundRule, options *InboundRulesClientBeginCreateOrUpdateOptions) (*runtime.Poller[InboundRulesClientCreateOrUpdateResponse], error)`
+- New function `*InboundRulesClient.BeginDelete(ctx context.Context, resourceGroupName string, natGatewayName string, inboundRuleName string, options *InboundRulesClientBeginDeleteOptions) (*runtime.Poller[InboundRulesClientDeleteResponse], error)`
+- New function `*InboundRulesClient.Get(ctx context.Context, resourceGroupName string, natGatewayName string, inboundRuleName string, options *InboundRulesClientGetOptions) (InboundRulesClientGetResponse, error)`
+- New function `*InboundRulesClient.NewListByNatGatewayPager(resourceGroupName string, natGatewayName string, options *InboundRulesClientListByNatGatewayOptions) *runtime.Pager[InboundRulesClientListByNatGatewayResponse]`
+- New function `NewLoadBalancersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*LoadBalancersClient, error)`
+- New function `*LoadBalancersClient.BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, loadBalancerName string, resource LoadBalancer, options *LoadBalancersClientBeginCreateOrUpdateOptions) (*runtime.Poller[LoadBalancersClientCreateOrUpdateResponse], error)`
+- New function `*LoadBalancersClient.BeginDelete(ctx context.Context, resourceGroupName string, loadBalancerName string, options *LoadBalancersClientBeginDeleteOptions) (*runtime.Poller[LoadBalancersClientDeleteResponse], error)`
+- New function `*LoadBalancersClient.Get(ctx context.Context, resourceGroupName string, loadBalancerName string, options *LoadBalancersClientGetOptions) (LoadBalancersClientGetResponse, error)`
+- New function `*LoadBalancersClient.NewListAllPager(options *LoadBalancersClientListAllOptions) *runtime.Pager[LoadBalancersClientListAllResponse]`
+- New function `*LoadBalancersClient.NewListByResourceGroupPager(resourceGroupName string, options *LoadBalancersClientListByResourceGroupOptions) *runtime.Pager[LoadBalancersClientListByResourceGroupResponse]`
+- New function `*LoadBalancersClient.BeginUpdateTags(ctx context.Context, resourceGroupName string, loadBalancerName string, properties LoadBalancerTagsUpdate, options *LoadBalancersClientBeginUpdateTagsOptions) (*runtime.Poller[LoadBalancersClientUpdateTagsResponse], error)`
+- New function `NewOperationsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*OperationsClient, error)`
+- New function `*OperationsClient.NewListPager(options *OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse]`
+- New function `NewPublicIPAddressesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PublicIPAddressesClient, error)`
+- New function `*PublicIPAddressesClient.BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, publicIPAddressName string, resource PublicIPAddress, options *PublicIPAddressesClientBeginCreateOrUpdateOptions) (*runtime.Poller[PublicIPAddressesClientCreateOrUpdateResponse], error)`
+- New function `*PublicIPAddressesClient.BeginDelete(ctx context.Context, resourceGroupName string, publicIPAddressName string, options *PublicIPAddressesClientBeginDeleteOptions) (*runtime.Poller[PublicIPAddressesClientDeleteResponse], error)`
+- New function `*PublicIPAddressesClient.Get(ctx context.Context, resourceGroupName string, publicIPAddressName string, options *PublicIPAddressesClientGetOptions) (PublicIPAddressesClientGetResponse, error)`
+- New function `*PublicIPAddressesClient.NewListAllPager(options *PublicIPAddressesClientListAllOptions) *runtime.Pager[PublicIPAddressesClientListAllResponse]`
+- New function `*PublicIPAddressesClient.NewListByResourceGroupPager(resourceGroupName string, options *PublicIPAddressesClientListByResourceGroupOptions) *runtime.Pager[PublicIPAddressesClientListByResourceGroupResponse]`
+- New function `*PublicIPAddressesClient.BeginUpdateTags(ctx context.Context, resourceGroupName string, publicIPAddressName string, properties PublicIPAddressTagsUpdate, options *PublicIPAddressesClientBeginUpdateTagsOptions) (*runtime.Poller[PublicIPAddressesClientUpdateTagsResponse], error)`
+- New function `NewSnapshotsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SnapshotsClient, error)`
+- New function `*SnapshotsClient.BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, snapshotName string, resource Snapshot, options *SnapshotsClientBeginCreateOrUpdateOptions) (*runtime.Poller[SnapshotsClientCreateOrUpdateResponse], error)`
+- New function `*SnapshotsClient.BeginDelete(ctx context.Context, resourceGroupName string, snapshotName string, options *SnapshotsClientBeginDeleteOptions) (*runtime.Poller[SnapshotsClientDeleteResponse], error)`
+- New function `*SnapshotsClient.Get(ctx context.Context, resourceGroupName string, snapshotName string, options *SnapshotsClientGetOptions) (SnapshotsClientGetResponse, error)`
+- New function `*SnapshotsClient.NewListAllPager(options *SnapshotsClientListAllOptions) *runtime.Pager[SnapshotsClientListAllResponse]`
+- New function `*SnapshotsClient.NewListByResourceGroupPager(resourceGroupName string, options *SnapshotsClientListByResourceGroupOptions) *runtime.Pager[SnapshotsClientListByResourceGroupResponse]`
+- New function `*SnapshotsClient.BeginUpdate(ctx context.Context, resourceGroupName string, snapshotName string, properties SnapshotTagsUpdate, options *SnapshotsClientBeginUpdateOptions) (*runtime.Poller[SnapshotsClientUpdateResponse], error)`
+- New function `*VirtualMachineInstancesClient.BeginPowerOff(ctx context.Context, resourceURI string, body PowerOffVirtualMachineOptions, options *VirtualMachineInstancesClientBeginPowerOffOptions) (*runtime.Poller[VirtualMachineInstancesClientPowerOffResponse], error)`
+- New function `NewVirtualNetworkSubnetsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*VirtualNetworkSubnetsClient, error)`
+- New function `*VirtualNetworkSubnetsClient.BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, virtualNetworkName string, subnetName string, resource VirtualNetworkSubnet, options *VirtualNetworkSubnetsClientBeginCreateOrUpdateOptions) (*runtime.Poller[VirtualNetworkSubnetsClientCreateOrUpdateResponse], error)`
+- New function `*VirtualNetworkSubnetsClient.BeginDelete(ctx context.Context, resourceGroupName string, virtualNetworkName string, subnetName string, options *VirtualNetworkSubnetsClientBeginDeleteOptions) (*runtime.Poller[VirtualNetworkSubnetsClientDeleteResponse], error)`
+- New function `*VirtualNetworkSubnetsClient.Get(ctx context.Context, resourceGroupName string, virtualNetworkName string, subnetName string, options *VirtualNetworkSubnetsClientGetOptions) (VirtualNetworkSubnetsClientGetResponse, error)`
+- New function `*VirtualNetworkSubnetsClient.NewListByVirtualNetworkPager(resourceGroupName string, virtualNetworkName string, options *VirtualNetworkSubnetsClientListByVirtualNetworkOptions) *runtime.Pager[VirtualNetworkSubnetsClientListByVirtualNetworkResponse]`
+- New function `*VirtualNetworkSubnetsClient.BeginUpdate(ctx context.Context, resourceGroupName string, virtualNetworkName string, subnetName string, properties VirtualNetworkSubnetUpdateRequest, options *VirtualNetworkSubnetsClientBeginUpdateOptions) (*runtime.Poller[VirtualNetworkSubnetsClientUpdateResponse], error)`
+- New function `NewVirtualNetworksClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*VirtualNetworksClient, error)`
+- New function `*VirtualNetworksClient.BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, virtualNetworkName string, resource VirtualNetwork, options *VirtualNetworksClientBeginCreateOrUpdateOptions) (*runtime.Poller[VirtualNetworksClientCreateOrUpdateResponse], error)`
+- New function `*VirtualNetworksClient.BeginDelete(ctx context.Context, resourceGroupName string, virtualNetworkName string, options *VirtualNetworksClientBeginDeleteOptions) (*runtime.Poller[VirtualNetworksClientDeleteResponse], error)`
+- New function `*VirtualNetworksClient.Get(ctx context.Context, resourceGroupName string, virtualNetworkName string, options *VirtualNetworksClientGetOptions) (VirtualNetworksClientGetResponse, error)`
+- New function `*VirtualNetworksClient.NewListAllPager(options *VirtualNetworksClientListAllOptions) *runtime.Pager[VirtualNetworksClientListAllResponse]`
+- New function `*VirtualNetworksClient.NewListByResourceGroupPager(resourceGroupName string, options *VirtualNetworksClientListByResourceGroupOptions) *runtime.Pager[VirtualNetworksClientListByResourceGroupResponse]`
+- New function `*VirtualNetworksClient.BeginUpdateTags(ctx context.Context, resourceGroupName string, virtualNetworkName string, properties VirtualNetworkTagsUpdate, options *VirtualNetworksClientBeginUpdateTagsOptions) (*runtime.Poller[VirtualNetworksClientUpdateTagsResponse], error)`
+- New function `NewNatGatewaysClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*NatGatewaysClient, error)`
+- New function `*NatGatewaysClient.BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, natGatewayName string, resource NatGateway, options *NatGatewaysClientBeginCreateOrUpdateOptions) (*runtime.Poller[NatGatewaysClientCreateOrUpdateResponse], error)`
+- New function `*NatGatewaysClient.BeginDelete(ctx context.Context, resourceGroupName string, natGatewayName string, options *NatGatewaysClientBeginDeleteOptions) (*runtime.Poller[NatGatewaysClientDeleteResponse], error)`
+- New function `*NatGatewaysClient.Get(ctx context.Context, resourceGroupName string, natGatewayName string, options *NatGatewaysClientGetOptions) (NatGatewaysClientGetResponse, error)`
+- New function `*NatGatewaysClient.NewListAllPager(options *NatGatewaysClientListAllOptions) *runtime.Pager[NatGatewaysClientListAllResponse]`
+- New function `*NatGatewaysClient.NewListByResourceGroupPager(resourceGroupName string, options *NatGatewaysClientListByResourceGroupOptions) *runtime.Pager[NatGatewaysClientListByResourceGroupResponse]`
+- New function `*NatGatewaysClient.BeginUpdateTags(ctx context.Context, resourceGroupName string, natGatewayName string, properties NatGatewayTagsUpdate, options *NatGatewaysClientBeginUpdateTagsOptions) (*runtime.Poller[NatGatewaysClientUpdateTagsResponse], error)`
+- New struct `BackendAddressPool`
+- New struct `BackendAddressPoolProperties`
+- New struct `CreationData`
+- New struct `FabricIntegrationStatus`
+- New struct `FabricIssue`
+- New struct `FrontendIPConfiguration`
+- New struct `FrontendIPConfigurationProperties`
+- New struct `IPConfigurationArmReference`
+- New struct `InboundRule`
+- New struct `InboundRuleListResult`
+- New struct `InboundRuleProperties`
+- New struct `InboundRuleStatus`
+- New struct `InboundRuleStatusProvisioningStatus`
+- New struct `LoadBalancer`
+- New struct `LoadBalancerBackendAddress`
+- New struct `LoadBalancerBackendAddressPoolReference`
+- New struct `LoadBalancerBackendAddressProperties`
+- New struct `LoadBalancerFrontendIPConfigurationReference`
+- New struct `LoadBalancerListResult`
+- New struct `LoadBalancerProbeReference`
+- New struct `LoadBalancerProperties`
+- New struct `LoadBalancerRule`
+- New struct `LoadBalancerRuleProperties`
+- New struct `LoadBalancerStatus`
+- New struct `LoadBalancerStatusProvisioningStatus`
+- New struct `LoadBalancerTagsUpdate`
+- New struct `ManagedNetworkFabricArmReference`
+- New struct `NatGateway`
+- New struct `NatGatewayArmReference`
+- New struct `NatGatewayListResult`
+- New struct `NatGatewayProperties`
+- New struct `NatGatewayStatus`
+- New struct `NatGatewayStatusProvisioningStatus`
+- New struct `NatGatewayTagsUpdate`
+- New struct `Operation`
+- New struct `OperationDisplay`
+- New struct `OperationListResult`
+- New struct `OperationStatusResult`
+- New struct `OperationStepResult`
+- New struct `PowerOffVirtualMachineOptions`
+- New struct `Probe`
+- New struct `ProbeProperties`
+- New struct `PublicIPAddress`
+- New struct `PublicIPAddressArmReference`
+- New struct `PublicIPAddressListResult`
+- New struct `PublicIPAddressProperties`
+- New struct `PublicIPAddressTagsUpdate`
+- New struct `Snapshot`
+- New struct `SnapshotListResult`
+- New struct `SnapshotProperties`
+- New struct `SnapshotStatus`
+- New struct `SnapshotStatusProvisioningStatus`
+- New struct `SnapshotTagsUpdate`
+- New struct `VirtualNetwork`
+- New struct `VirtualNetworkAddressSpace`
+- New struct `VirtualNetworkArmReference`
+- New struct `VirtualNetworkDhcpOptions`
+- New struct `VirtualNetworkListResult`
+- New struct `VirtualNetworkProperties`
+- New struct `VirtualNetworkStatus`
+- New struct `VirtualNetworkStatusProvisioningStatus`
+- New struct `VirtualNetworkSubnet`
+- New struct `VirtualNetworkSubnetArmReference`
+- New struct `VirtualNetworkSubnetIPConfigurationReference`
+- New struct `VirtualNetworkSubnetListResult`
+- New struct `VirtualNetworkSubnetProperties`
+- New struct `VirtualNetworkSubnetStatus`
+- New struct `VirtualNetworkSubnetStatusProvisioningStatus`
+- New struct `VirtualNetworkSubnetUpdateProperties`
+- New struct `VirtualNetworkSubnetUpdateRequest`
+- New struct `VirtualNetworkTagsUpdate`
+- New field `DynamicMemoryConfig` in struct `HardwareProfileUpdate`
+- New field `FabricNetworkConfiguration` in struct `LogicalNetworkProperties`
+- New field `FabricIntegration` in struct `LogicalNetworkStatus`
+- New field `BypassSdnPolicies` in struct `NetworkInterfaceProperties`
+- New field `BypassSdnPolicies` in struct `NetworkInterfacesUpdateProperties`
+- New field `ProvisioningState` in struct `SubnetProperties`
+- New field `CreationData`, `LocalVhdPath` in struct `VirtualHardDiskProperties`
+- New field `LocalVMName` in struct `VirtualMachineInstanceProperties`
+- New field `Enabled` in struct `VirtualMachineInstancePropertiesHardwareProfileDynamicMemoryConfig`
+- New field `OperationDetails` in struct `VirtualMachineInstanceStatus`
+
+
 ## 0.1.0 (2025-08-07)
 ### Other Changes
 

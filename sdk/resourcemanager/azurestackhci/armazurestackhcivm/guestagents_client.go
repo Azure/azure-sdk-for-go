@@ -18,7 +18,7 @@ import (
 // GuestAgentsClient contains the methods for the GuestAgents group.
 // Don't use this type directly, use NewGuestAgentsClient() instead.
 //
-// Generated from API version 2025-06-01-preview
+// Generated from API version 2026-07-01-preview
 type GuestAgentsClient struct {
 	internal *arm.Client
 }
@@ -60,7 +60,7 @@ func (client *GuestAgentsClient) BeginCreate(ctx context.Context, resourceURI st
 	}
 }
 
-// Create - Create Or Update GuestAgent.
+// create - Create Or Update GuestAgent.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *GuestAgentsClient) create(ctx context.Context, resourceURI string, resource GuestAgent, options *GuestAgentsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
@@ -77,13 +77,12 @@ func (client *GuestAgentsClient) create(ctx context.Context, resourceURI string,
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
 
-// createCreateRequest creates the Create request.
+// createCreateRequest creates the create request.
 func (client *GuestAgentsClient) createCreateRequest(ctx context.Context, resourceURI string, resource GuestAgent, _ *GuestAgentsClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.AzureStackHCI/virtualMachineInstances/default/guestAgents/default"
 	if resourceURI == "" {
@@ -95,7 +94,7 @@ func (client *GuestAgentsClient) createCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601Preview)
+	reqQP.Set("api-version", version20260701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -126,7 +125,7 @@ func (client *GuestAgentsClient) BeginDelete(ctx context.Context, resourceURI st
 	}
 }
 
-// Delete - Implements GuestAgent DELETE method.
+// deleteOperation - Implements GuestAgent DELETE method.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *GuestAgentsClient) deleteOperation(ctx context.Context, resourceURI string, options *GuestAgentsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -143,13 +142,12 @@ func (client *GuestAgentsClient) deleteOperation(ctx context.Context, resourceUR
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *GuestAgentsClient) deleteCreateRequest(ctx context.Context, resourceURI string, _ *GuestAgentsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.AzureStackHCI/virtualMachineInstances/default/guestAgents/default"
 	if resourceURI == "" {
@@ -161,7 +159,7 @@ func (client *GuestAgentsClient) deleteCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601Preview)
+	reqQP.Set("api-version", version20260701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -184,12 +182,7 @@ func (client *GuestAgentsClient) Get(ctx context.Context, resourceURI string, op
 	if err != nil {
 		return GuestAgentsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return GuestAgentsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -204,15 +197,18 @@ func (client *GuestAgentsClient) getCreateRequest(ctx context.Context, resourceU
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601Preview)
+	reqQP.Set("api-version", version20260701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *GuestAgentsClient) getHandleResponse(resp *http.Response) (GuestAgentsClientGetResponse, error) {
+func (client *GuestAgentsClient) getHandleResponse(resp *http.Response, successCodes ...int) (GuestAgentsClientGetResponse, error) {
 	result := GuestAgentsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GuestAgent); err != nil {
 		return GuestAgentsClientGetResponse{}, err
 	}
@@ -234,39 +230,53 @@ func (client *GuestAgentsClient) NewListByVirtualMachineInstancePager(resourceUR
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByVirtualMachineInstanceCreateRequest(ctx, resourceURI, options)
-			}, nil)
+			req, err := client.listByVirtualMachineInstanceCreateRequest(ctx, resourceURI, nextLink, options)
 			if err != nil {
 				return GuestAgentsClientListByVirtualMachineInstanceResponse{}, err
 			}
-			return client.listByVirtualMachineInstanceHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return GuestAgentsClientListByVirtualMachineInstanceResponse{}, err
+			}
+			return client.listByVirtualMachineInstanceHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByVirtualMachineInstanceCreateRequest creates the ListByVirtualMachineInstance request.
-func (client *GuestAgentsClient) listByVirtualMachineInstanceCreateRequest(ctx context.Context, resourceURI string, _ *GuestAgentsClientListByVirtualMachineInstanceOptions) (*policy.Request, error) {
-	urlPath := "/{resourceUri}/providers/Microsoft.AzureStackHCI/virtualMachineInstances/default/guestAgents"
-	if resourceURI == "" {
-		return nil, errors.New("parameter resourceURI cannot be empty")
+func (client *GuestAgentsClient) listByVirtualMachineInstanceCreateRequest(ctx context.Context, resourceURI string, nextLink string, _ *GuestAgentsClientListByVirtualMachineInstanceOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/{resourceUri}/providers/Microsoft.AzureStackHCI/virtualMachineInstances/default/guestAgents"
+		if resourceURI == "" {
+			return nil, errors.New("parameter resourceURI cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260701Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByVirtualMachineInstanceHandleResponse handles the ListByVirtualMachineInstance response.
-func (client *GuestAgentsClient) listByVirtualMachineInstanceHandleResponse(resp *http.Response) (GuestAgentsClientListByVirtualMachineInstanceResponse, error) {
+func (client *GuestAgentsClient) listByVirtualMachineInstanceHandleResponse(resp *http.Response, successCodes ...int) (GuestAgentsClientListByVirtualMachineInstanceResponse, error) {
 	result := GuestAgentsClientListByVirtualMachineInstanceResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GuestAgentListResult); err != nil {
 		return GuestAgentsClientListByVirtualMachineInstanceResponse{}, err
 	}

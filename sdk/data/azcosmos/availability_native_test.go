@@ -3,6 +3,8 @@
 
 //go:build cgo && ((darwin && !ios && arm64) || (linux && !android && amd64))
 
+// cSpell:ignore Failf PPAF PPCB ppaf ppcb
+
 package azcosmos
 
 import (

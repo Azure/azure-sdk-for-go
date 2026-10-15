@@ -19,7 +19,7 @@ import (
 // UpdateSummariesClient contains the methods for the UpdateSummaries group.
 // Don't use this type directly, use NewUpdateSummariesClient() instead.
 //
-// Generated from API version 2026-04-30
+// Generated from API version 2026-10-01
 type UpdateSummariesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -67,7 +67,7 @@ func (client *UpdateSummariesClient) BeginDelete(ctx context.Context, resourceGr
 	}
 }
 
-// Delete - Delete Update Summaries
+// deleteOperation - Delete Update Summaries
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *UpdateSummariesClient) deleteOperation(ctx context.Context, resourceGroupName string, clusterName string, options *UpdateSummariesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -89,7 +89,7 @@ func (client *UpdateSummariesClient) deleteOperation(ctx context.Context, resour
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *UpdateSummariesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, _ *UpdateSummariesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/clusters/{clusterName}/updateSummaries/default"
 	if client.subscriptionID == "" {
@@ -109,7 +109,7 @@ func (client *UpdateSummariesClient) deleteCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260430)
+	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -156,7 +156,7 @@ func (client *UpdateSummariesClient) getCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260430)
+	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -232,7 +232,7 @@ func (client *UpdateSummariesClient) listCreateRequest(ctx context.Context, reso
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260430)
+		reqQP.Set("api-version", version20261001)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -294,7 +294,7 @@ func (client *UpdateSummariesClient) putCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260430)
+	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

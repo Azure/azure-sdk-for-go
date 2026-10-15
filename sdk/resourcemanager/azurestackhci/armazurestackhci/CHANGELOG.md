@@ -1,5 +1,270 @@
 # Release History
 
+## 3.2.0 (2026-10-15)
+### Features Added
+
+- New value `EceSecretsChapCredential`, `EceSecretsMutualChapCredential` added to enum type `EceSecrets`
+- New enum type `Architecture` with values `ArchitectureAmd64`, `ArchitectureArm64`
+- New enum type `AuthenticationType` with values `AuthenticationTypeOpen`, `AuthenticationTypeWPA2Enterprise`, `AuthenticationTypeWPA2Personal`, `AuthenticationTypeWPA3Enterprise`, `AuthenticationTypeWPA3Personal`
+- New enum type `ConnectionState` with values `ConnectionStateAuthenticationFailed`, `ConnectionStateConnected`, `ConnectionStateConnecting`, `ConnectionStateDisconnected`, `ConnectionStateDisconnecting`, `ConnectionStateNotConfigured`
+- New enum type `DiskFileSystemType` with values `DiskFileSystemTypeExt4`, `DiskFileSystemTypeFat`, `DiskFileSystemTypeFat32`, `DiskFileSystemTypeNTFS`, `DiskFileSystemTypeReFS`, `DiskFileSystemTypeVfat`, `DiskFileSystemTypeXfs`
+- New enum type `DiskJobType` with values `DiskJobTypeCreateVolume`, `DiskJobTypeSyncConfiguration`
+- New enum type `DiskState` with values `DiskStateFailed`, `DiskStateMissing`, `DiskStateOffline`, `DiskStateOnline`, `DiskStateUnknown`
+- New enum type `DiskStorageType` with values `DiskStorageTypeS2D`, `DiskStorageTypeSAN`
+- New enum type `DiskType` with values `DiskTypeHDD`, `DiskTypeNVMe`, `DiskTypeOther`, `DiskTypeSATA`, `DiskTypeSCM`, `DiskTypeSSD`, `DiskTypeUnknown`, `DiskTypeVirtual`
+- New enum type `EAPMethod` with values `EAPMethodEAPFAST`, `EAPMethodEAPTLS`, `EAPMethodEAPTTLS`, `EAPMethodPEAP`
+- New enum type `EdgeMachineConnectivityStatus` with values `EdgeMachineConnectivityStatusConnected`, `EdgeMachineConnectivityStatusDisconnected`, `EdgeMachineConnectivityStatusNotSpecified`
+- New enum type `EdgeMachineJobType` with values `EdgeMachineJobTypeCollectLog`, `EdgeMachineJobTypeDownloadOs`, `EdgeMachineJobTypeProvisionOs`, `EdgeMachineJobTypeRemoteSupport`
+- New enum type `EdgeMachineKind` with values `EdgeMachineKindDedicated`, `EdgeMachineKindStandard`
+- New enum type `EdgeMachineLifecycleStatus` with values `EdgeMachineLifecycleStatusAwaitingConnection`, `EdgeMachineLifecycleStatusCreating`, `EdgeMachineLifecycleStatusDeleting`, `EdgeMachineLifecycleStatusFailed`, `EdgeMachineLifecycleStatusInstallingOs`, `EdgeMachineLifecycleStatusProvisioned`, `EdgeMachineLifecycleStatusProvisioning`, `EdgeMachineLifecycleStatusReadyForOs`, `EdgeMachineLifecycleStatusResettingOs`, `EdgeMachineLifecycleStatusUpdatingOs`
+- New enum type `EdgeMachineState` with values `EdgeMachineStateCreated`, `EdgeMachineStateFailed`, `EdgeMachineStatePreparing`, `EdgeMachineStatePurposed`, `EdgeMachineStateRegistering`, `EdgeMachineStateResetting`, `EdgeMachineStateTransitioning`, `EdgeMachineStateUnpurposed`, `EdgeMachineStateUpdating`
+- New enum type `HciJobType` with values `HciJobTypeAddServer`, `HciJobTypeConfigureSdnIntegration`, `HciJobTypeRepairServer`
+- New enum type `IPAssignmentType` with values `IPAssignmentTypeAutomatic`, `IPAssignmentTypeManual`
+- New enum type `IPInterfaceType` with values `IPInterfaceTypeDhcp`, `IPInterfaceTypeStatic`
+- New enum type `InterfaceState` with values `InterfaceStateDown`, `InterfaceStateUp`
+- New enum type `IscsiChapType` with values `IscsiChapTypeBidirectional`, `IscsiChapTypeNoChap`, `IscsiChapTypeOneWay`
+- New enum type `LifecycleOperationStatus` with values `LifecycleOperationStatusCompleted`, `LifecycleOperationStatusFailed`, `LifecycleOperationStatusInProgress`, `LifecycleOperationStatusNotStarted`
+- New enum type `NetworkAdapterJobType` with values `NetworkAdapterJobTypeApplyConfiguration`, `NetworkAdapterJobTypeForcePush`, `NetworkAdapterJobTypeSyncConfiguration`
+- New enum type `NetworkAdapterOperationStatus` with values `NetworkAdapterOperationStatusFailed`, `NetworkAdapterOperationStatusInProgress`, `NetworkAdapterOperationStatusSucceeded`
+- New enum type `NetworkInterfaceType` with values `NetworkInterfaceTypeEth`, `NetworkInterfaceTypeWifi`
+- New enum type `NodeStorageType` with values `NodeStorageTypeS2D`, `NodeStorageTypeSanFc`, `NodeStorageTypeSanIscsi`
+- New enum type `OSOperationType` with values `OSOperationTypeProvision`, `OSOperationTypeReImage`, `OSOperationTypeReset`, `OSOperationTypeUpdate`
+- New enum type `OnboardingResourceType` with values `OnboardingResourceTypeHybridComputeMachine`
+- New enum type `OwnerKeyType` with values `OwnerKeyTypeMicrosoftManaged`
+- New enum type `OwnershipVoucherValidationStatus` with values `OwnershipVoucherValidationStatusInvalid`, `OwnershipVoucherValidationStatusValid`
+- New enum type `PrivilegedJobType` with values `PrivilegedJobTypeDeleteVolume`
+- New enum type `ProvisioningOsType` with values `ProvisioningOsTypeAzureLinux`, `ProvisioningOsTypeHCI`
+- New enum type `ResolutionStrategy` with values `ResolutionStrategyAcceptReported`, `ResolutionStrategyApplyDesired`
+- New enum type `SdnIntegrationIntent` with values `SdnIntegrationIntentDisable`, `SdnIntegrationIntentEnable`
+- New enum type `SdnStatus` with values `SdnStatusDisabled`, `SdnStatusEnabled`, `SdnStatusUnknown`
+- New enum type `SecretType` with values `SecretTypeKeyVault`, `SecretTypeSSHPubKey`
+- New enum type `SolutionType` with values `SolutionTypeAzureLinux`, `SolutionTypeHCI`
+- New enum type `StorageInitiatorType` with values `StorageInitiatorTypeFibreChannel`, `StorageInitiatorTypeISCSI`, `StorageInitiatorTypeUnknown`
+- New enum type `WifiSecretType` with values `WifiSecretTypeWiFiCACertificate`, `WifiSecretTypeWiFiCertificate`, `WifiSecretTypeWiFiPassword`
+- New function `*ApplyConfigurationNetworkAdapterJobProperties.GetEdgeMachineNetworkAdapterJobProperties() *EdgeMachineNetworkAdapterJobProperties`
+- New function `*ClientFactory.NewClusterJobsClient() *ClusterJobsClient`
+- New function `*ClientFactory.NewEdgeMachineDeploymentSettingsClient() *EdgeMachineDeploymentSettingsClient`
+- New function `*ClientFactory.NewEdgeMachineDiskJobsClient() *EdgeMachineDiskJobsClient`
+- New function `*ClientFactory.NewEdgeMachineDiskPrivilegedJobsClient() *EdgeMachineDiskPrivilegedJobsClient`
+- New function `*ClientFactory.NewEdgeMachineDisksClient() *EdgeMachineDisksClient`
+- New function `*ClientFactory.NewEdgeMachineJobsClient() *EdgeMachineJobsClient`
+- New function `*ClientFactory.NewEdgeMachineNetworkAdapterJobsClient() *EdgeMachineNetworkAdapterJobsClient`
+- New function `*ClientFactory.NewEdgeMachineNetworkAdaptersClient() *EdgeMachineNetworkAdaptersClient`
+- New function `*ClientFactory.NewEdgeMachineSecuritySettingsOperationsClient() *EdgeMachineSecuritySettingsOperationsClient`
+- New function `*ClientFactory.NewEdgeMachineVolumesClient() *EdgeMachineVolumesClient`
+- New function `*ClientFactory.NewEdgeMachinesClient() *EdgeMachinesClient`
+- New function `*ClientFactory.NewOsImagesClient() *OsImagesClient`
+- New function `*ClientFactory.NewOwnershipVouchersClient() *OwnershipVouchersClient`
+- New function `*ClusterJobProperties.GetClusterJobProperties() *ClusterJobProperties`
+- New function `NewClusterJobsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ClusterJobsClient, error)`
+- New function `*ClusterJobsClient.BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, clusterName string, jobsName string, resource ClusterJob, options *ClusterJobsClientBeginCreateOrUpdateOptions) (*runtime.Poller[ClusterJobsClientCreateOrUpdateResponse], error)`
+- New function `*ClusterJobsClient.BeginDelete(ctx context.Context, resourceGroupName string, clusterName string, jobsName string, options *ClusterJobsClientBeginDeleteOptions) (*runtime.Poller[ClusterJobsClientDeleteResponse], error)`
+- New function `*ClusterJobsClient.Get(ctx context.Context, resourceGroupName string, clusterName string, jobsName string, options *ClusterJobsClientGetOptions) (ClusterJobsClientGetResponse, error)`
+- New function `*ClusterJobsClient.NewListPager(resourceGroupName string, clusterName string, options *ClusterJobsClientListOptions) *runtime.Pager[ClusterJobsClientListResponse]`
+- New function `*CreateVolumeJobProperties.GetEdgeMachineDiskJobProperties() *EdgeMachineDiskJobProperties`
+- New function `*DeleteVolumeJobProperties.GetEdgeMachineDiskPrivilegedJobProperties() *EdgeMachineDiskPrivilegedJobProperties`
+- New function `*DownloadOsJobProperties.GetEdgeMachineJobProperties() *EdgeMachineJobProperties`
+- New function `*EdgeMachineCollectLogJobProperties.GetEdgeMachineJobProperties() *EdgeMachineJobProperties`
+- New function `NewEdgeMachineDeploymentSettingsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*EdgeMachineDeploymentSettingsClient, error)`
+- New function `*EdgeMachineDeploymentSettingsClient.BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, edgeMachineName string, deploymentSettingName string, resource EdgeMachineDeploymentSetting, options *EdgeMachineDeploymentSettingsClientBeginCreateOrUpdateOptions) (*runtime.Poller[EdgeMachineDeploymentSettingsClientCreateOrUpdateResponse], error)`
+- New function `*EdgeMachineDeploymentSettingsClient.BeginDelete(ctx context.Context, resourceGroupName string, edgeMachineName string, deploymentSettingName string, options *EdgeMachineDeploymentSettingsClientBeginDeleteOptions) (*runtime.Poller[EdgeMachineDeploymentSettingsClientDeleteResponse], error)`
+- New function `*EdgeMachineDeploymentSettingsClient.Get(ctx context.Context, resourceGroupName string, edgeMachineName string, deploymentSettingName string, options *EdgeMachineDeploymentSettingsClientGetOptions) (EdgeMachineDeploymentSettingsClientGetResponse, error)`
+- New function `*EdgeMachineDeploymentSettingsClient.NewListByEdgeMachinePager(resourceGroupName string, edgeMachineName string, options *EdgeMachineDeploymentSettingsClientListByEdgeMachineOptions) *runtime.Pager[EdgeMachineDeploymentSettingsClientListByEdgeMachineResponse]`
+- New function `*EdgeMachineDiskJobProperties.GetEdgeMachineDiskJobProperties() *EdgeMachineDiskJobProperties`
+- New function `NewEdgeMachineDiskJobsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*EdgeMachineDiskJobsClient, error)`
+- New function `*EdgeMachineDiskJobsClient.BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, edgeMachineName string, diskName string, jobName string, resource EdgeMachineDiskJob, options *EdgeMachineDiskJobsClientBeginCreateOrUpdateOptions) (*runtime.Poller[EdgeMachineDiskJobsClientCreateOrUpdateResponse], error)`
+- New function `*EdgeMachineDiskJobsClient.BeginDelete(ctx context.Context, resourceGroupName string, edgeMachineName string, diskName string, jobName string, options *EdgeMachineDiskJobsClientBeginDeleteOptions) (*runtime.Poller[EdgeMachineDiskJobsClientDeleteResponse], error)`
+- New function `*EdgeMachineDiskJobsClient.Get(ctx context.Context, resourceGroupName string, edgeMachineName string, diskName string, jobName string, options *EdgeMachineDiskJobsClientGetOptions) (EdgeMachineDiskJobsClientGetResponse, error)`
+- New function `*EdgeMachineDiskJobsClient.NewListPager(resourceGroupName string, edgeMachineName string, diskName string, options *EdgeMachineDiskJobsClientListOptions) *runtime.Pager[EdgeMachineDiskJobsClientListResponse]`
+- New function `*EdgeMachineDiskPrivilegedJobProperties.GetEdgeMachineDiskPrivilegedJobProperties() *EdgeMachineDiskPrivilegedJobProperties`
+- New function `NewEdgeMachineDiskPrivilegedJobsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*EdgeMachineDiskPrivilegedJobsClient, error)`
+- New function `*EdgeMachineDiskPrivilegedJobsClient.BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, edgeMachineName string, diskName string, privilegedJobName string, resource EdgeMachineDiskPrivilegedJob, options *EdgeMachineDiskPrivilegedJobsClientBeginCreateOrUpdateOptions) (*runtime.Poller[EdgeMachineDiskPrivilegedJobsClientCreateOrUpdateResponse], error)`
+- New function `*EdgeMachineDiskPrivilegedJobsClient.BeginDelete(ctx context.Context, resourceGroupName string, edgeMachineName string, diskName string, privilegedJobName string, options *EdgeMachineDiskPrivilegedJobsClientBeginDeleteOptions) (*runtime.Poller[EdgeMachineDiskPrivilegedJobsClientDeleteResponse], error)`
+- New function `*EdgeMachineDiskPrivilegedJobsClient.Get(ctx context.Context, resourceGroupName string, edgeMachineName string, diskName string, privilegedJobName string, options *EdgeMachineDiskPrivilegedJobsClientGetOptions) (EdgeMachineDiskPrivilegedJobsClientGetResponse, error)`
+- New function `*EdgeMachineDiskPrivilegedJobsClient.NewListPager(resourceGroupName string, edgeMachineName string, diskName string, options *EdgeMachineDiskPrivilegedJobsClientListOptions) *runtime.Pager[EdgeMachineDiskPrivilegedJobsClientListResponse]`
+- New function `NewEdgeMachineDisksClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*EdgeMachineDisksClient, error)`
+- New function `*EdgeMachineDisksClient.BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, edgeMachineName string, diskName string, resource EdgeMachineDisk, options *EdgeMachineDisksClientBeginCreateOrUpdateOptions) (*runtime.Poller[EdgeMachineDisksClientCreateOrUpdateResponse], error)`
+- New function `*EdgeMachineDisksClient.BeginDelete(ctx context.Context, resourceGroupName string, edgeMachineName string, diskName string, options *EdgeMachineDisksClientBeginDeleteOptions) (*runtime.Poller[EdgeMachineDisksClientDeleteResponse], error)`
+- New function `*EdgeMachineDisksClient.Get(ctx context.Context, resourceGroupName string, edgeMachineName string, diskName string, options *EdgeMachineDisksClientGetOptions) (EdgeMachineDisksClientGetResponse, error)`
+- New function `*EdgeMachineDisksClient.NewListPager(resourceGroupName string, edgeMachineName string, options *EdgeMachineDisksClientListOptions) *runtime.Pager[EdgeMachineDisksClientListResponse]`
+- New function `*EdgeMachineJobProperties.GetEdgeMachineJobProperties() *EdgeMachineJobProperties`
+- New function `NewEdgeMachineJobsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*EdgeMachineJobsClient, error)`
+- New function `*EdgeMachineJobsClient.BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, edgeMachineName string, jobsName string, resource EdgeMachineJob, options *EdgeMachineJobsClientBeginCreateOrUpdateOptions) (*runtime.Poller[EdgeMachineJobsClientCreateOrUpdateResponse], error)`
+- New function `*EdgeMachineJobsClient.BeginDelete(ctx context.Context, resourceGroupName string, edgeMachineName string, jobsName string, options *EdgeMachineJobsClientBeginDeleteOptions) (*runtime.Poller[EdgeMachineJobsClientDeleteResponse], error)`
+- New function `*EdgeMachineJobsClient.Get(ctx context.Context, resourceGroupName string, edgeMachineName string, jobsName string, options *EdgeMachineJobsClientGetOptions) (EdgeMachineJobsClientGetResponse, error)`
+- New function `*EdgeMachineJobsClient.NewListPager(resourceGroupName string, edgeMachineName string, options *EdgeMachineJobsClientListOptions) *runtime.Pager[EdgeMachineJobsClientListResponse]`
+- New function `*EdgeMachineNetworkAdapterJobProperties.GetEdgeMachineNetworkAdapterJobProperties() *EdgeMachineNetworkAdapterJobProperties`
+- New function `NewEdgeMachineNetworkAdapterJobsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*EdgeMachineNetworkAdapterJobsClient, error)`
+- New function `*EdgeMachineNetworkAdapterJobsClient.BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, edgeMachineName string, networkAdapterName string, jobName string, resource EdgeMachineNetworkAdapterJob, options *EdgeMachineNetworkAdapterJobsClientBeginCreateOrUpdateOptions) (*runtime.Poller[EdgeMachineNetworkAdapterJobsClientCreateOrUpdateResponse], error)`
+- New function `*EdgeMachineNetworkAdapterJobsClient.BeginDelete(ctx context.Context, resourceGroupName string, edgeMachineName string, networkAdapterName string, jobName string, options *EdgeMachineNetworkAdapterJobsClientBeginDeleteOptions) (*runtime.Poller[EdgeMachineNetworkAdapterJobsClientDeleteResponse], error)`
+- New function `*EdgeMachineNetworkAdapterJobsClient.Get(ctx context.Context, resourceGroupName string, edgeMachineName string, networkAdapterName string, jobName string, options *EdgeMachineNetworkAdapterJobsClientGetOptions) (EdgeMachineNetworkAdapterJobsClientGetResponse, error)`
+- New function `*EdgeMachineNetworkAdapterJobsClient.NewListPager(resourceGroupName string, edgeMachineName string, networkAdapterName string, options *EdgeMachineNetworkAdapterJobsClientListOptions) *runtime.Pager[EdgeMachineNetworkAdapterJobsClientListResponse]`
+- New function `NewEdgeMachineNetworkAdaptersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*EdgeMachineNetworkAdaptersClient, error)`
+- New function `*EdgeMachineNetworkAdaptersClient.Get(ctx context.Context, resourceGroupName string, edgeMachineName string, networkAdapterName string, options *EdgeMachineNetworkAdaptersClientGetOptions) (EdgeMachineNetworkAdaptersClientGetResponse, error)`
+- New function `*EdgeMachineNetworkAdaptersClient.NewListPager(resourceGroupName string, edgeMachineName string, options *EdgeMachineNetworkAdaptersClientListOptions) *runtime.Pager[EdgeMachineNetworkAdaptersClientListResponse]`
+- New function `*EdgeMachineRemoteSupportJobProperties.GetEdgeMachineJobProperties() *EdgeMachineJobProperties`
+- New function `NewEdgeMachineSecuritySettingsOperationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*EdgeMachineSecuritySettingsOperationsClient, error)`
+- New function `*EdgeMachineSecuritySettingsOperationsClient.BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, edgeMachineName string, securitySettingsName string, resource EdgeMachineSecuritySettings, options *EdgeMachineSecuritySettingsOperationsClientBeginCreateOrUpdateOptions) (*runtime.Poller[EdgeMachineSecuritySettingsOperationsClientCreateOrUpdateResponse], error)`
+- New function `*EdgeMachineSecuritySettingsOperationsClient.BeginDelete(ctx context.Context, resourceGroupName string, edgeMachineName string, securitySettingsName string, options *EdgeMachineSecuritySettingsOperationsClientBeginDeleteOptions) (*runtime.Poller[EdgeMachineSecuritySettingsOperationsClientDeleteResponse], error)`
+- New function `*EdgeMachineSecuritySettingsOperationsClient.Get(ctx context.Context, resourceGroupName string, edgeMachineName string, securitySettingsName string, options *EdgeMachineSecuritySettingsOperationsClientGetOptions) (EdgeMachineSecuritySettingsOperationsClientGetResponse, error)`
+- New function `*EdgeMachineSecuritySettingsOperationsClient.NewListByEdgeMachinePager(resourceGroupName string, edgeMachineName string, options *EdgeMachineSecuritySettingsOperationsClientListByEdgeMachineOptions) *runtime.Pager[EdgeMachineSecuritySettingsOperationsClientListByEdgeMachineResponse]`
+- New function `NewEdgeMachineVolumesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*EdgeMachineVolumesClient, error)`
+- New function `*EdgeMachineVolumesClient.BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, edgeMachineName string, volumeName string, resource EdgeMachineVolume, options *EdgeMachineVolumesClientBeginCreateOrUpdateOptions) (*runtime.Poller[EdgeMachineVolumesClientCreateOrUpdateResponse], error)`
+- New function `*EdgeMachineVolumesClient.BeginDelete(ctx context.Context, resourceGroupName string, edgeMachineName string, volumeName string, options *EdgeMachineVolumesClientBeginDeleteOptions) (*runtime.Poller[EdgeMachineVolumesClientDeleteResponse], error)`
+- New function `*EdgeMachineVolumesClient.Get(ctx context.Context, resourceGroupName string, edgeMachineName string, volumeName string, options *EdgeMachineVolumesClientGetOptions) (EdgeMachineVolumesClientGetResponse, error)`
+- New function `*EdgeMachineVolumesClient.NewListPager(resourceGroupName string, edgeMachineName string, options *EdgeMachineVolumesClientListOptions) *runtime.Pager[EdgeMachineVolumesClientListResponse]`
+- New function `NewEdgeMachinesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*EdgeMachinesClient, error)`
+- New function `*EdgeMachinesClient.BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, edgeMachineName string, resource EdgeMachine, options *EdgeMachinesClientBeginCreateOrUpdateOptions) (*runtime.Poller[EdgeMachinesClientCreateOrUpdateResponse], error)`
+- New function `*EdgeMachinesClient.BeginDelete(ctx context.Context, resourceGroupName string, edgeMachineName string, options *EdgeMachinesClientBeginDeleteOptions) (*runtime.Poller[EdgeMachinesClientDeleteResponse], error)`
+- New function `*EdgeMachinesClient.Get(ctx context.Context, resourceGroupName string, edgeMachineName string, options *EdgeMachinesClientGetOptions) (EdgeMachinesClientGetResponse, error)`
+- New function `*EdgeMachinesClient.NewListByResourceGroupPager(resourceGroupName string, options *EdgeMachinesClientListByResourceGroupOptions) *runtime.Pager[EdgeMachinesClientListByResourceGroupResponse]`
+- New function `*EdgeMachinesClient.NewListBySubscriptionPager(options *EdgeMachinesClientListBySubscriptionOptions) *runtime.Pager[EdgeMachinesClientListBySubscriptionResponse]`
+- New function `*EdgeMachinesClient.BeginRefreshApplicableUpdates(ctx context.Context, resourceGroupName string, edgeMachineName string, options *EdgeMachinesClientBeginRefreshApplicableUpdatesOptions) (*runtime.Poller[EdgeMachinesClientRefreshApplicableUpdatesResponse], error)`
+- New function `*EdgeMachinesClient.BeginRefreshSecuritySettings(ctx context.Context, resourceGroupName string, edgeMachineName string, options *EdgeMachinesClientBeginRefreshSecuritySettingsOptions) (*runtime.Poller[EdgeMachinesClientRefreshSecuritySettingsResponse], error)`
+- New function `*EdgeMachinesClient.BeginUpdate(ctx context.Context, resourceGroupName string, edgeMachineName string, properties EdgeMachinePatch, options *EdgeMachinesClientBeginUpdateOptions) (*runtime.Poller[EdgeMachinesClientUpdateResponse], error)`
+- New function `*EdgeMachinesClient.BeginValidate(ctx context.Context, resourceGroupName string, edgeMachineName string, body EdgeMachineValidateRequest, options *EdgeMachinesClientBeginValidateOptions) (*runtime.Poller[EdgeMachinesClientValidateResponse], error)`
+- New function `*ForcePushNetworkAdapterJobProperties.GetEdgeMachineNetworkAdapterJobProperties() *EdgeMachineNetworkAdapterJobProperties`
+- New function `*HciAddServerJobProperties.GetClusterJobProperties() *ClusterJobProperties`
+- New function `*HciConfigureSdnIntegrationJobProperties.GetClusterJobProperties() *ClusterJobProperties`
+- New function `*HciRepairServerJobProperties.GetClusterJobProperties() *ClusterJobProperties`
+- New function `NewOsImagesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*OsImagesClient, error)`
+- New function `*OsImagesClient.Get(ctx context.Context, location string, osImageName string, options *OsImagesClientGetOptions) (OsImagesClientGetResponse, error)`
+- New function `*OsImagesClient.NewListBySubscriptionLocationResourcePager(location string, options *OsImagesClientListBySubscriptionLocationResourceOptions) *runtime.Pager[OsImagesClientListBySubscriptionLocationResourceResponse]`
+- New function `NewOwnershipVouchersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*OwnershipVouchersClient, error)`
+- New function `*OwnershipVouchersClient.Validate(ctx context.Context, resourceGroupName string, location string, validationRequest ValidateOwnershipVouchersRequest, options *OwnershipVouchersClientValidateOptions) (OwnershipVouchersClientValidateResponse, error)`
+- New function `*ProvisionOsJobProperties.GetEdgeMachineJobProperties() *EdgeMachineJobProperties`
+- New function `*SyncConfigurationJobProperties.GetEdgeMachineDiskJobProperties() *EdgeMachineDiskJobProperties`
+- New function `*SyncConfigurationNetworkAdapterJobProperties.GetEdgeMachineNetworkAdapterJobProperties() *EdgeMachineNetworkAdapterJobProperties`
+- New struct `AddServerJobServerDetails`
+- New struct `ApplyConfigurationNetworkAdapterJobProperties`
+- New struct `ClusterJob`
+- New struct `ClusterJobListResult`
+- New struct `ClusterSdnProperties`
+- New struct `CreateVolumeJobProperties`
+- New struct `DeleteVolumeJobProperties`
+- New struct `DiskActionStatus`
+- New struct `DiskConfiguration`
+- New struct `DiskDeploymentStep`
+- New struct `DiskJobReportedProperties`
+- New struct `DiskReportedProperties`
+- New struct `DiskVolumeConfiguration`
+- New struct `DiskVolumeReportedProperties`
+- New struct `DownloadOsJobProperties`
+- New struct `DownloadOsProfile`
+- New struct `DownloadRequest`
+- New struct `EdgeMachine`
+- New struct `EdgeMachineAdapterPropertyOverrides`
+- New struct `EdgeMachineCollectLogJobProperties`
+- New struct `EdgeMachineCollectLogJobReportedProperties`
+- New struct `EdgeMachineDeploymentConfiguration`
+- New struct `EdgeMachineDeploymentData`
+- New struct `EdgeMachineDeploymentSetting`
+- New struct `EdgeMachineDeploymentSettingListResult`
+- New struct `EdgeMachineDeploymentSettingProperties`
+- New struct `EdgeMachineDisk`
+- New struct `EdgeMachineDiskJob`
+- New struct `EdgeMachineDiskJobListResult`
+- New struct `EdgeMachineDiskListResult`
+- New struct `EdgeMachineDiskPrivilegedJob`
+- New struct `EdgeMachineDiskPrivilegedJobListResult`
+- New struct `EdgeMachineDiskProperties`
+- New struct `EdgeMachineHostNetwork`
+- New struct `EdgeMachineHostNetworkIntent`
+- New struct `EdgeMachineJob`
+- New struct `EdgeMachineJobListResult`
+- New struct `EdgeMachineListResult`
+- New struct `EdgeMachineNetworkAdapter`
+- New struct `EdgeMachineNetworkAdapterJob`
+- New struct `EdgeMachineNetworkAdapterJobListResult`
+- New struct `EdgeMachineNetworkAdapterListResult`
+- New struct `EdgeMachineNetworkAdapterProperties`
+- New struct `EdgeMachineNetworkProfile`
+- New struct `EdgeMachineNicDetail`
+- New struct `EdgeMachinePatch`
+- New struct `EdgeMachineProperties`
+- New struct `EdgeMachineRemoteSupportJobProperties`
+- New struct `EdgeMachineRemoteSupportJobReportedProperties`
+- New struct `EdgeMachineRemoteSupportNodeSettings`
+- New struct `EdgeMachineReportedProperties`
+- New struct `EdgeMachineScaleUnits`
+- New struct `EdgeMachineSecurityComplianceStatus`
+- New struct `EdgeMachineSecurityProperties`
+- New struct `EdgeMachineSecuritySettings`
+- New struct `EdgeMachineSecuritySettingsListResult`
+- New struct `EdgeMachineStorageAdapterIPInfo`
+- New struct `EdgeMachineStorageNetwork`
+- New struct `EdgeMachineValidateRequest`
+- New struct `EdgeMachineValidateResponse`
+- New struct `EdgeMachineVirtualSwitchConfigurationOverrides`
+- New struct `EdgeMachineVolume`
+- New struct `EdgeMachineVolumeListResult`
+- New struct `EdgeMachineVolumeProperties`
+- New struct `EdgeMachineWorkloadInventoryItem`
+- New struct `ErrorAdditionalInfo`
+- New struct `ErrorDetail`
+- New struct `ForcePushNetworkAdapterJobProperties`
+- New struct `HardwareProfile`
+- New struct `HciAddServerJobProperties`
+- New struct `HciConfigureSdnIntegrationJobProperties`
+- New struct `HciRepairServerJobProperties`
+- New struct `IPAddressRange`
+- New struct `IscsiAdapterIPConfig`
+- New struct `IscsiAdapterProperties`
+- New struct `IscsiChapSettings`
+- New struct `IscsiConfig`
+- New struct `IscsiNetworkConfig`
+- New struct `IscsiTargetPortalAddress`
+- New struct `JobReportedProperties`
+- New struct `LifecycleDetails`
+- New struct `LifecycleStage`
+- New struct `LifecycleStatus`
+- New struct `Metadata`
+- New struct `NetworkAdapter`
+- New struct `NetworkAdapterActionStatus`
+- New struct `NetworkAdapterConfiguration`
+- New struct `NetworkAdapterDeploymentStep`
+- New struct `NetworkAdapterJobReportedProperties`
+- New struct `NetworkAdapterProvisioningStatus`
+- New struct `NetworkAdapterReportedProperties`
+- New struct `NetworkAdapterStatus`
+- New struct `NetworkConfiguration`
+- New struct `OnboardingConfiguration`
+- New struct `OperationDetail`
+- New struct `OsImage`
+- New struct `OsImageListResult`
+- New struct `OsImageProperties`
+- New struct `OsProfile`
+- New struct `OsProvisionProfile`
+- New struct `OwnershipVoucherDetails`
+- New struct `OwnershipVoucherValidationDetails`
+- New struct `ProvisionOsJobProperties`
+- New struct `ProvisionOsReportedProperties`
+- New struct `ProvisioningDetails`
+- New struct `ProvisioningRequest`
+- New struct `RepairServerJobServerDetails`
+- New struct `SdnProperties`
+- New struct `SiteDetails`
+- New struct `StorageConfiguration`
+- New struct `StorageInitiator`
+- New struct `StorageProfile`
+- New struct `SyncConfigurationJobProperties`
+- New struct `SyncConfigurationNetworkAdapterJobProperties`
+- New struct `TargetDeviceConfiguration`
+- New struct `TimeConfiguration`
+- New struct `UserDetails`
+- New struct `ValidateOwnershipVouchersRequest`
+- New struct `ValidateOwnershipVouchersResponse`
+- New struct `VolumeConfiguration`
+- New struct `VolumeReportedProperties`
+- New struct `WebProxyConfiguration`
+- New struct `WifiConfigurationDesiredProperties`
+- New struct `WifiConfigurationReportedProperties`
+- New struct `WifiSecret`
+- New field `SdnProperties` in struct `ClusterProperties`
+- New field `AdditionalData`, `Error`, `PercentComplete`, `RecommendedSteps` in struct `DeploymentStep`
+- New field `SdnProperties` in struct `HciNetworkProfile`
+
+
 ## 3.1.0 (2026-05-15)
 ### Features Added
 

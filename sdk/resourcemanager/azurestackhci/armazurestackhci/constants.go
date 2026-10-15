@@ -5,7 +5,7 @@
 package armazurestackhci
 
 const (
-	version20260430 string = "2026-04-30"
+	version20261001 string = "2026-10-01"
 )
 
 // AccessLevel - Remote Support Access Level
@@ -149,6 +149,51 @@ func PossibleArcSettingAggregateStateValues() []ArcSettingAggregateState {
 	}
 }
 
+// Architecture - Represents the CPU architecture of a machine or an OS image.
+type Architecture string
+
+const (
+	// ArchitectureAmd64 - 64-bit x86 architecture.
+	ArchitectureAmd64 Architecture = "amd64"
+	// ArchitectureArm64 - 64-bit Arm architecture.
+	ArchitectureArm64 Architecture = "arm64"
+)
+
+// PossibleArchitectureValues returns the possible values for the Architecture const type.
+func PossibleArchitectureValues() []Architecture {
+	return []Architecture{
+		ArchitectureAmd64,
+		ArchitectureArm64,
+	}
+}
+
+// AuthenticationType - WiFi authentication type.
+type AuthenticationType string
+
+const (
+	// AuthenticationTypeOpen - Open network.
+	AuthenticationTypeOpen AuthenticationType = "Open"
+	// AuthenticationTypeWPA2Enterprise - WPA2 Enterprise.
+	AuthenticationTypeWPA2Enterprise AuthenticationType = "WPA2-Enterprise"
+	// AuthenticationTypeWPA2Personal - WPA2 Personal.
+	AuthenticationTypeWPA2Personal AuthenticationType = "WPA2-Personal"
+	// AuthenticationTypeWPA3Enterprise - WPA3 Enterprise.
+	AuthenticationTypeWPA3Enterprise AuthenticationType = "WPA3-Enterprise"
+	// AuthenticationTypeWPA3Personal - WPA3 Personal.
+	AuthenticationTypeWPA3Personal AuthenticationType = "WPA3-Personal"
+)
+
+// PossibleAuthenticationTypeValues returns the possible values for the AuthenticationType const type.
+func PossibleAuthenticationTypeValues() []AuthenticationType {
+	return []AuthenticationType{
+		AuthenticationTypeOpen,
+		AuthenticationTypeWPA2Enterprise,
+		AuthenticationTypeWPA2Personal,
+		AuthenticationTypeWPA3Enterprise,
+		AuthenticationTypeWPA3Personal,
+	}
+}
+
 // AvailabilityType - Indicates how the update content is made available for download. This determines whether the update
 // is sourced locally, from an online repository, or requires user notification.
 type AvailabilityType string
@@ -245,6 +290,36 @@ func PossibleComplianceStatusValues() []ComplianceStatus {
 		ComplianceStatusCompliant,
 		ComplianceStatusNonCompliant,
 		ComplianceStatusPending,
+	}
+}
+
+// ConnectionState - WiFi connection state.
+type ConnectionState string
+
+const (
+	// ConnectionStateAuthenticationFailed - WiFi authentication failed.
+	ConnectionStateAuthenticationFailed ConnectionState = "AuthenticationFailed"
+	// ConnectionStateConnected - WiFi is connected.
+	ConnectionStateConnected ConnectionState = "Connected"
+	// ConnectionStateConnecting - WiFi is connecting.
+	ConnectionStateConnecting ConnectionState = "Connecting"
+	// ConnectionStateDisconnected - WiFi is disconnected.
+	ConnectionStateDisconnected ConnectionState = "Disconnected"
+	// ConnectionStateDisconnecting - WiFi is disconnecting.
+	ConnectionStateDisconnecting ConnectionState = "Disconnecting"
+	// ConnectionStateNotConfigured - WiFi is not configured.
+	ConnectionStateNotConfigured ConnectionState = "NotConfigured"
+)
+
+// PossibleConnectionStateValues returns the possible values for the ConnectionState const type.
+func PossibleConnectionStateValues() []ConnectionState {
+	return []ConnectionState{
+		ConnectionStateAuthenticationFailed,
+		ConnectionStateConnected,
+		ConnectionStateConnecting,
+		ConnectionStateDisconnected,
+		ConnectionStateDisconnecting,
+		ConnectionStateNotConfigured,
 	}
 }
 
@@ -439,17 +514,178 @@ func PossibleDiagnosticLevelValues() []DiagnosticLevel {
 	}
 }
 
+// DiskFileSystemType - File system types supported for volumes.
+type DiskFileSystemType string
+
+const (
+	// DiskFileSystemTypeExt4 - ext4 file system (Linux).
+	DiskFileSystemTypeExt4 DiskFileSystemType = "ext4"
+	// DiskFileSystemTypeFat - FAT file system.
+	DiskFileSystemTypeFat DiskFileSystemType = "fat"
+	// DiskFileSystemTypeFat32 - FAT32 file system.
+	DiskFileSystemTypeFat32 DiskFileSystemType = "fat32"
+	// DiskFileSystemTypeNTFS - NTFS file system (Windows).
+	DiskFileSystemTypeNTFS DiskFileSystemType = "NTFS"
+	// DiskFileSystemTypeReFS - ReFS file system (Windows).
+	DiskFileSystemTypeReFS DiskFileSystemType = "ReFS"
+	// DiskFileSystemTypeVfat - vfat file system (Linux/cross-platform).
+	DiskFileSystemTypeVfat DiskFileSystemType = "vfat"
+	// DiskFileSystemTypeXfs - xfs file system (Linux).
+	DiskFileSystemTypeXfs DiskFileSystemType = "xfs"
+)
+
+// PossibleDiskFileSystemTypeValues returns the possible values for the DiskFileSystemType const type.
+func PossibleDiskFileSystemTypeValues() []DiskFileSystemType {
+	return []DiskFileSystemType{
+		DiskFileSystemTypeExt4,
+		DiskFileSystemTypeFat,
+		DiskFileSystemTypeFat32,
+		DiskFileSystemTypeNTFS,
+		DiskFileSystemTypeReFS,
+		DiskFileSystemTypeVfat,
+		DiskFileSystemTypeXfs,
+	}
+}
+
+// DiskJobType - Job Type supported for disk operations.
+type DiskJobType string
+
+const (
+	// DiskJobTypeCreateVolume - Job to create a volume on the disk.
+	DiskJobTypeCreateVolume DiskJobType = "CreateVolume"
+	// DiskJobTypeSyncConfiguration - Job to resolve configuration drift between desired and reported state.
+	DiskJobTypeSyncConfiguration DiskJobType = "SyncConfiguration"
+)
+
+// PossibleDiskJobTypeValues returns the possible values for the DiskJobType const type.
+func PossibleDiskJobTypeValues() []DiskJobType {
+	return []DiskJobType{
+		DiskJobTypeCreateVolume,
+		DiskJobTypeSyncConfiguration,
+	}
+}
+
+// DiskState - State of the disk.
+type DiskState string
+
+const (
+	// DiskStateFailed - Disk has failed.
+	DiskStateFailed DiskState = "Failed"
+	// DiskStateMissing - Disk is missing.
+	DiskStateMissing DiskState = "Missing"
+	// DiskStateOffline - Disk is offline.
+	DiskStateOffline DiskState = "Offline"
+	// DiskStateOnline - Disk is online and available.
+	DiskStateOnline DiskState = "Online"
+	// DiskStateUnknown - Disk state is unknown.
+	DiskStateUnknown DiskState = "Unknown"
+)
+
+// PossibleDiskStateValues returns the possible values for the DiskState const type.
+func PossibleDiskStateValues() []DiskState {
+	return []DiskState{
+		DiskStateFailed,
+		DiskStateMissing,
+		DiskStateOffline,
+		DiskStateOnline,
+		DiskStateUnknown,
+	}
+}
+
+// DiskStorageType - Storage type of the disk.
+type DiskStorageType string
+
+const (
+	// DiskStorageTypeS2D - Storage Spaces Direct storage.
+	DiskStorageTypeS2D DiskStorageType = "S2D"
+	// DiskStorageTypeSAN - SAN storage.
+	DiskStorageTypeSAN DiskStorageType = "SAN"
+)
+
+// PossibleDiskStorageTypeValues returns the possible values for the DiskStorageType const type.
+func PossibleDiskStorageTypeValues() []DiskStorageType {
+	return []DiskStorageType{
+		DiskStorageTypeS2D,
+		DiskStorageTypeSAN,
+	}
+}
+
+// DiskType - Type of disk.
+type DiskType string
+
+const (
+	// DiskTypeHDD - Hard Disk Drive.
+	DiskTypeHDD DiskType = "HDD"
+	// DiskTypeNVMe - NVMe disk.
+	DiskTypeNVMe DiskType = "NVMe"
+	// DiskTypeOther - Other disk type.
+	DiskTypeOther DiskType = "Other"
+	// DiskTypeSATA - SATA disk.
+	DiskTypeSATA DiskType = "SATA"
+	// DiskTypeSCM - Storage Class Memory disk.
+	DiskTypeSCM DiskType = "SCM"
+	// DiskTypeSSD - Solid State Drive.
+	DiskTypeSSD DiskType = "SSD"
+	// DiskTypeUnknown - Unknown disk type.
+	DiskTypeUnknown DiskType = "Unknown"
+	// DiskTypeVirtual - Virtual disk.
+	DiskTypeVirtual DiskType = "Virtual"
+)
+
+// PossibleDiskTypeValues returns the possible values for the DiskType const type.
+func PossibleDiskTypeValues() []DiskType {
+	return []DiskType{
+		DiskTypeHDD,
+		DiskTypeNVMe,
+		DiskTypeOther,
+		DiskTypeSATA,
+		DiskTypeSCM,
+		DiskTypeSSD,
+		DiskTypeUnknown,
+		DiskTypeVirtual,
+	}
+}
+
+// EAPMethod - EAP authentication method.
+type EAPMethod string
+
+const (
+	// EAPMethodEAPFAST - EAP-FAST authentication.
+	EAPMethodEAPFAST EAPMethod = "EAP-FAST"
+	// EAPMethodEAPTLS - EAP-TLS authentication.
+	EAPMethodEAPTLS EAPMethod = "EAP-TLS"
+	// EAPMethodEAPTTLS - EAP-TTLS authentication.
+	EAPMethodEAPTTLS EAPMethod = "EAP-TTLS"
+	// EAPMethodPEAP - PEAP authentication.
+	EAPMethodPEAP EAPMethod = "PEAP"
+)
+
+// PossibleEAPMethodValues returns the possible values for the EAPMethod const type.
+func PossibleEAPMethodValues() []EAPMethod {
+	return []EAPMethod{
+		EAPMethodEAPFAST,
+		EAPMethodEAPTLS,
+		EAPMethodEAPTTLS,
+		EAPMethodPEAP,
+	}
+}
+
 // EceSecrets - Secret names allowed for Enterprise Cloud Engine (ECE) deployment.
 type EceSecrets string
 
 const (
 	// EceSecretsAzureStackLCMUserCredential - AzureStackLCMUserCredential used for LCM operations for AzureStackHCI cluster.
 	EceSecretsAzureStackLCMUserCredential EceSecrets = "AzureStackLCMUserCredential"
+	// EceSecretsChapCredential - chapCredential used for iSCSI CHAP authentication during edge machine node preparation.
+	EceSecretsChapCredential EceSecrets = "chapCredential"
 	// EceSecretsDefaultARBApplication - DefaultARBApplication used to manage Azure Arc resource bridge (ARB) for AzureStackHCI
 	// cluster.
 	EceSecretsDefaultARBApplication EceSecrets = "DefaultARBApplication"
 	// EceSecretsLocalAdminCredential - LocalAdminCredential used for admin operations for AzureStackHCI cluster.
 	EceSecretsLocalAdminCredential EceSecrets = "LocalAdminCredential"
+	// EceSecretsMutualChapCredential - mutualChapCredential used for iSCSI mutual (bidirectional) CHAP authentication during
+	// edge machine node preparation.
+	EceSecretsMutualChapCredential EceSecrets = "mutualChapCredential"
 	// EceSecretsWitnessStorageKey - WitnessStorageKey used for setting up a cloud witness for AzureStackHCI cluster.
 	EceSecretsWitnessStorageKey EceSecrets = "WitnessStorageKey"
 )
@@ -458,8 +694,10 @@ const (
 func PossibleEceSecretsValues() []EceSecrets {
 	return []EceSecrets{
 		EceSecretsAzureStackLCMUserCredential,
+		EceSecretsChapCredential,
 		EceSecretsDefaultARBApplication,
 		EceSecretsLocalAdminCredential,
+		EceSecretsMutualChapCredential,
 		EceSecretsWitnessStorageKey,
 	}
 }
@@ -476,6 +714,151 @@ const (
 func PossibleEdgeDeviceKindValues() []EdgeDeviceKind {
 	return []EdgeDeviceKind{
 		EdgeDeviceKindHCI,
+	}
+}
+
+// EdgeMachineConnectivityStatus - Overall connectivity status for the machine resource.
+type EdgeMachineConnectivityStatus string
+
+const (
+	// EdgeMachineConnectivityStatusConnected - The machine resource is connected.
+	EdgeMachineConnectivityStatusConnected EdgeMachineConnectivityStatus = "Connected"
+	// EdgeMachineConnectivityStatusDisconnected - The machine resource is disconnected.
+	EdgeMachineConnectivityStatusDisconnected EdgeMachineConnectivityStatus = "Disconnected"
+	// EdgeMachineConnectivityStatusNotSpecified - The connectivity status of the machine resource is not specified.
+	EdgeMachineConnectivityStatusNotSpecified EdgeMachineConnectivityStatus = "NotSpecified"
+)
+
+// PossibleEdgeMachineConnectivityStatusValues returns the possible values for the EdgeMachineConnectivityStatus const type.
+func PossibleEdgeMachineConnectivityStatusValues() []EdgeMachineConnectivityStatus {
+	return []EdgeMachineConnectivityStatus{
+		EdgeMachineConnectivityStatusConnected,
+		EdgeMachineConnectivityStatusDisconnected,
+		EdgeMachineConnectivityStatusNotSpecified,
+	}
+}
+
+// EdgeMachineJobType - Job Type supported.
+type EdgeMachineJobType string
+
+const (
+	// EdgeMachineJobTypeCollectLog - Job to collect logs from the device.
+	EdgeMachineJobTypeCollectLog EdgeMachineJobType = "CollectLog"
+	// EdgeMachineJobTypeDownloadOs - Job to download OS packages on to the device
+	EdgeMachineJobTypeDownloadOs EdgeMachineJobType = "DownloadOs"
+	// EdgeMachineJobTypeProvisionOs - Job to provision operating system in the device.
+	EdgeMachineJobTypeProvisionOs EdgeMachineJobType = "ProvisionOs"
+	// EdgeMachineJobTypeRemoteSupport - Job to provide remote support to the device.
+	EdgeMachineJobTypeRemoteSupport EdgeMachineJobType = "RemoteSupport"
+)
+
+// PossibleEdgeMachineJobTypeValues returns the possible values for the EdgeMachineJobType const type.
+func PossibleEdgeMachineJobTypeValues() []EdgeMachineJobType {
+	return []EdgeMachineJobType{
+		EdgeMachineJobTypeCollectLog,
+		EdgeMachineJobTypeDownloadOs,
+		EdgeMachineJobTypeProvisionOs,
+		EdgeMachineJobTypeRemoteSupport,
+	}
+}
+
+// EdgeMachineKind - Edge Machine Kind.
+type EdgeMachineKind string
+
+const (
+	// EdgeMachineKindDedicated - EdgeMachine resource created for brownfield HCI customers without zero touch provisioning.
+	EdgeMachineKindDedicated EdgeMachineKind = "Dedicated"
+	// EdgeMachineKindStandard - EdgeMachine resource created using Zero-touch provisioning.
+	EdgeMachineKindStandard EdgeMachineKind = "Standard"
+)
+
+// PossibleEdgeMachineKindValues returns the possible values for the EdgeMachineKind const type.
+func PossibleEdgeMachineKindValues() []EdgeMachineKind {
+	return []EdgeMachineKind{
+		EdgeMachineKindDedicated,
+		EdgeMachineKindStandard,
+	}
+}
+
+// EdgeMachineLifecycleStatus - Lifecycle status of an Edge Machine.
+type EdgeMachineLifecycleStatus string
+
+const (
+	// EdgeMachineLifecycleStatusAwaitingConnection - Machine is awaiting connection.
+	EdgeMachineLifecycleStatusAwaitingConnection EdgeMachineLifecycleStatus = "AwaitingConnection"
+	// EdgeMachineLifecycleStatusCreating - Machine is being created.
+	EdgeMachineLifecycleStatusCreating EdgeMachineLifecycleStatus = "Creating"
+	// EdgeMachineLifecycleStatusDeleting - Machine is being deleted.
+	EdgeMachineLifecycleStatusDeleting EdgeMachineLifecycleStatus = "Deleting"
+	// EdgeMachineLifecycleStatusFailed - Machine is in a failed state.
+	EdgeMachineLifecycleStatusFailed EdgeMachineLifecycleStatus = "Failed"
+	// EdgeMachineLifecycleStatusInstallingOs - Machine is installing the OS.
+	EdgeMachineLifecycleStatusInstallingOs EdgeMachineLifecycleStatus = "InstallingOs"
+	// EdgeMachineLifecycleStatusProvisioned - Machine has been provisioned.
+	EdgeMachineLifecycleStatusProvisioned EdgeMachineLifecycleStatus = "Provisioned"
+	// EdgeMachineLifecycleStatusProvisioning - Machine is being provisioned.
+	EdgeMachineLifecycleStatusProvisioning EdgeMachineLifecycleStatus = "Provisioning"
+	// EdgeMachineLifecycleStatusReadyForOs - Machine is ready for OS installation.
+	EdgeMachineLifecycleStatusReadyForOs EdgeMachineLifecycleStatus = "ReadyForOs"
+	// EdgeMachineLifecycleStatusResettingOs - Machine OS is being reset.
+	EdgeMachineLifecycleStatusResettingOs EdgeMachineLifecycleStatus = "ResettingOs"
+	// EdgeMachineLifecycleStatusUpdatingOs - Machine OS is being updated.
+	EdgeMachineLifecycleStatusUpdatingOs EdgeMachineLifecycleStatus = "UpdatingOs"
+)
+
+// PossibleEdgeMachineLifecycleStatusValues returns the possible values for the EdgeMachineLifecycleStatus const type.
+func PossibleEdgeMachineLifecycleStatusValues() []EdgeMachineLifecycleStatus {
+	return []EdgeMachineLifecycleStatus{
+		EdgeMachineLifecycleStatusAwaitingConnection,
+		EdgeMachineLifecycleStatusCreating,
+		EdgeMachineLifecycleStatusDeleting,
+		EdgeMachineLifecycleStatusFailed,
+		EdgeMachineLifecycleStatusInstallingOs,
+		EdgeMachineLifecycleStatusProvisioned,
+		EdgeMachineLifecycleStatusProvisioning,
+		EdgeMachineLifecycleStatusReadyForOs,
+		EdgeMachineLifecycleStatusResettingOs,
+		EdgeMachineLifecycleStatusUpdatingOs,
+	}
+}
+
+// EdgeMachineState - OS State
+type EdgeMachineState string
+
+const (
+	// EdgeMachineStateCreated - Created when EdgeMachine resource created
+	EdgeMachineStateCreated EdgeMachineState = "Created"
+	// EdgeMachineStateFailed - EdgeMachine failed state and only option to recover is to re-provisioning machine
+	EdgeMachineStateFailed EdgeMachineState = "Failed"
+	// EdgeMachineStatePreparing - Preparing EdgeMachine
+	EdgeMachineStatePreparing EdgeMachineState = "Preparing"
+	// EdgeMachineStatePurposed - EdgeMachine state when machine configured with target OS to deploy workloads
+	EdgeMachineStatePurposed EdgeMachineState = "Purposed"
+	// EdgeMachineStateRegistering - EdgeMachine state during device discovery and registration
+	EdgeMachineStateRegistering EdgeMachineState = "Registering"
+	// EdgeMachineStateResetting - EdgeMachine state when transitioning from target OS to restricted OS
+	EdgeMachineStateResetting EdgeMachineState = "Resetting"
+	// EdgeMachineStateTransitioning - EdgeMachine state when transitioning from initial OS to target OS
+	EdgeMachineStateTransitioning EdgeMachineState = "Transitioning"
+	// EdgeMachineStateUnpurposed - EdgeMachine state when machine configured with restricted OS and not provisioned to deploy
+	// workloads
+	EdgeMachineStateUnpurposed EdgeMachineState = "Unpurposed"
+	// EdgeMachineStateUpdating - EdgeMachine state when OS updates are in-progress
+	EdgeMachineStateUpdating EdgeMachineState = "Updating"
+)
+
+// PossibleEdgeMachineStateValues returns the possible values for the EdgeMachineState const type.
+func PossibleEdgeMachineStateValues() []EdgeMachineState {
+	return []EdgeMachineState{
+		EdgeMachineStateCreated,
+		EdgeMachineStateFailed,
+		EdgeMachineStatePreparing,
+		EdgeMachineStatePurposed,
+		EdgeMachineStateRegistering,
+		EdgeMachineStateResetting,
+		EdgeMachineStateTransitioning,
+		EdgeMachineStateUnpurposed,
+		EdgeMachineStateUpdating,
 	}
 }
 
@@ -603,6 +986,27 @@ func PossibleHciEdgeDeviceJobTypeValues() []HciEdgeDeviceJobType {
 	}
 }
 
+// HciJobType - ClusterJob Type supported.
+type HciJobType string
+
+const (
+	// HciJobTypeAddServer - Job to add a server to the cluster.
+	HciJobTypeAddServer HciJobType = "AddServer"
+	// HciJobTypeConfigureSdnIntegration - Job to configure SDN (Software Defined Networking) integration for the cluster.
+	HciJobTypeConfigureSdnIntegration HciJobType = "ConfigureSdnIntegration"
+	// HciJobTypeRepairServer - Job to repair a server in the cluster.
+	HciJobTypeRepairServer HciJobType = "RepairServer"
+)
+
+// PossibleHciJobTypeValues returns the possible values for the HciJobType const type.
+func PossibleHciJobTypeValues() []HciJobType {
+	return []HciJobType{
+		HciJobTypeAddServer,
+		HciJobTypeConfigureSdnIntegration,
+		HciJobTypeRepairServer,
+	}
+}
+
 // HealthState - Overall health state for update-specific health checks. Indicates whether the system is functioning correctly,
 // has warnings or errors, or is undergoing a health evaluation.
 type HealthState string
@@ -631,6 +1035,42 @@ func PossibleHealthStateValues() []HealthState {
 		HealthStateSuccess,
 		HealthStateUnknown,
 		HealthStateWarning,
+	}
+}
+
+// IPAssignmentType - IP assignment types
+type IPAssignmentType string
+
+const (
+	// IPAssignmentTypeAutomatic - Automatic IP assignment
+	IPAssignmentTypeAutomatic IPAssignmentType = "Automatic"
+	// IPAssignmentTypeManual - Manual IP assignment
+	IPAssignmentTypeManual IPAssignmentType = "Manual"
+)
+
+// PossibleIPAssignmentTypeValues returns the possible values for the IPAssignmentType const type.
+func PossibleIPAssignmentTypeValues() []IPAssignmentType {
+	return []IPAssignmentType{
+		IPAssignmentTypeAutomatic,
+		IPAssignmentTypeManual,
+	}
+}
+
+// IPInterfaceType - IP configuration type.
+type IPInterfaceType string
+
+const (
+	// IPInterfaceTypeDhcp - DHCP configuration.
+	IPInterfaceTypeDhcp IPInterfaceType = "Dhcp"
+	// IPInterfaceTypeStatic - Static configuration.
+	IPInterfaceTypeStatic IPInterfaceType = "Static"
+)
+
+// PossibleIPInterfaceTypeValues returns the possible values for the IPInterfaceType const type.
+func PossibleIPInterfaceTypeValues() []IPInterfaceType {
+	return []IPInterfaceType{
+		IPInterfaceTypeDhcp,
+		IPInterfaceTypeStatic,
 	}
 }
 
@@ -669,6 +1109,45 @@ func PossibleImdsAttestationValues() []ImdsAttestation {
 	return []ImdsAttestation{
 		ImdsAttestationDisabled,
 		ImdsAttestationEnabled,
+	}
+}
+
+// InterfaceState - Current state of the interface.
+type InterfaceState string
+
+const (
+	// InterfaceStateDown - Interface is down.
+	InterfaceStateDown InterfaceState = "down"
+	// InterfaceStateUp - Interface is up.
+	InterfaceStateUp InterfaceState = "up"
+)
+
+// PossibleInterfaceStateValues returns the possible values for the InterfaceState const type.
+func PossibleInterfaceStateValues() []InterfaceState {
+	return []InterfaceState{
+		InterfaceStateDown,
+		InterfaceStateUp,
+	}
+}
+
+// IscsiChapType - The CHAP authentication mode for an iSCSI connection.
+type IscsiChapType string
+
+const (
+	// IscsiChapTypeBidirectional - The initiator and target authenticate each other.
+	IscsiChapTypeBidirectional IscsiChapType = "Bidirectional"
+	// IscsiChapTypeNoChap - No CHAP authentication is used.
+	IscsiChapTypeNoChap IscsiChapType = "NoChap"
+	// IscsiChapTypeOneWay - The target authenticates the initiator.
+	IscsiChapTypeOneWay IscsiChapType = "OneWay"
+)
+
+// PossibleIscsiChapTypeValues returns the possible values for the IscsiChapType const type.
+func PossibleIscsiChapTypeValues() []IscsiChapType {
+	return []IscsiChapType{
+		IscsiChapTypeBidirectional,
+		IscsiChapTypeNoChap,
+		IscsiChapTypeOneWay,
 	}
 }
 
@@ -717,6 +1196,30 @@ func PossibleJobStatusValues() []JobStatus {
 		JobStatusValidationFailed,
 		JobStatusValidationInProgress,
 		JobStatusValidationSuccess,
+	}
+}
+
+// LifecycleOperationStatus - Status of an operation. Maps to Steps.Status / SubSteps.Status.
+type LifecycleOperationStatus string
+
+const (
+	// LifecycleOperationStatusCompleted - Operation has completed successfully.
+	LifecycleOperationStatusCompleted LifecycleOperationStatus = "Completed"
+	// LifecycleOperationStatusFailed - Operation has failed.
+	LifecycleOperationStatusFailed LifecycleOperationStatus = "Failed"
+	// LifecycleOperationStatusInProgress - Operation is in progress.
+	LifecycleOperationStatusInProgress LifecycleOperationStatus = "InProgress"
+	// LifecycleOperationStatusNotStarted - Operation has not started.
+	LifecycleOperationStatusNotStarted LifecycleOperationStatus = "NotStarted"
+)
+
+// PossibleLifecycleOperationStatusValues returns the possible values for the LifecycleOperationStatus const type.
+func PossibleLifecycleOperationStatusValues() []LifecycleOperationStatus {
+	return []LifecycleOperationStatus{
+		LifecycleOperationStatusCompleted,
+		LifecycleOperationStatusFailed,
+		LifecycleOperationStatusInProgress,
+		LifecycleOperationStatusNotStarted,
 	}
 }
 
@@ -784,6 +1287,66 @@ func PossibleManagedServiceIdentityTypeValues() []ManagedServiceIdentityType {
 		ManagedServiceIdentityTypeSystemAssigned,
 		ManagedServiceIdentityTypeSystemAssignedUserAssigned,
 		ManagedServiceIdentityTypeUserAssigned,
+	}
+}
+
+// NetworkAdapterJobType - Type of network adapter job operation.
+type NetworkAdapterJobType string
+
+const (
+	// NetworkAdapterJobTypeApplyConfiguration - Apply configuration to the network adapter.
+	NetworkAdapterJobTypeApplyConfiguration NetworkAdapterJobType = "ApplyConfiguration"
+	// NetworkAdapterJobTypeForcePush - Force push configuration to the network adapter.
+	NetworkAdapterJobTypeForcePush NetworkAdapterJobType = "ForcePush"
+	// NetworkAdapterJobTypeSyncConfiguration - Job to resolve configuration drift between desired and reported state.
+	NetworkAdapterJobTypeSyncConfiguration NetworkAdapterJobType = "SyncConfiguration"
+)
+
+// PossibleNetworkAdapterJobTypeValues returns the possible values for the NetworkAdapterJobType const type.
+func PossibleNetworkAdapterJobTypeValues() []NetworkAdapterJobType {
+	return []NetworkAdapterJobType{
+		NetworkAdapterJobTypeApplyConfiguration,
+		NetworkAdapterJobTypeForcePush,
+		NetworkAdapterJobTypeSyncConfiguration,
+	}
+}
+
+// NetworkAdapterOperationStatus - Status of network adapter operation.
+type NetworkAdapterOperationStatus string
+
+const (
+	// NetworkAdapterOperationStatusFailed - Operation failed.
+	NetworkAdapterOperationStatusFailed NetworkAdapterOperationStatus = "Failed"
+	// NetworkAdapterOperationStatusInProgress - Operation in progress.
+	NetworkAdapterOperationStatusInProgress NetworkAdapterOperationStatus = "InProgress"
+	// NetworkAdapterOperationStatusSucceeded - Operation succeeded.
+	NetworkAdapterOperationStatusSucceeded NetworkAdapterOperationStatus = "Succeeded"
+)
+
+// PossibleNetworkAdapterOperationStatusValues returns the possible values for the NetworkAdapterOperationStatus const type.
+func PossibleNetworkAdapterOperationStatusValues() []NetworkAdapterOperationStatus {
+	return []NetworkAdapterOperationStatus{
+		NetworkAdapterOperationStatusFailed,
+		NetworkAdapterOperationStatusInProgress,
+		NetworkAdapterOperationStatusSucceeded,
+	}
+}
+
+// NetworkInterfaceType - Type of network interface.
+type NetworkInterfaceType string
+
+const (
+	// NetworkInterfaceTypeEth - Ethernet interface.
+	NetworkInterfaceTypeEth NetworkInterfaceType = "Eth"
+	// NetworkInterfaceTypeWifi - Wi-Fi interface.
+	NetworkInterfaceTypeWifi NetworkInterfaceType = "wifi"
+)
+
+// PossibleNetworkInterfaceTypeValues returns the possible values for the NetworkInterfaceType const type.
+func PossibleNetworkInterfaceTypeValues() []NetworkInterfaceType {
+	return []NetworkInterfaceType{
+		NetworkInterfaceTypeEth,
+		NetworkInterfaceTypeWifi,
 	}
 }
 
@@ -918,6 +1481,51 @@ func PossibleNodeExtensionStateValues() []NodeExtensionState {
 	}
 }
 
+// NodeStorageType - Node storage type for an edge machine.
+type NodeStorageType string
+
+const (
+	// NodeStorageTypeS2D - Storage Spaces Direct (S2D) storage type.
+	NodeStorageTypeS2D NodeStorageType = "S2D"
+	// NodeStorageTypeSanFc - SAN Fibre Channel storage type.
+	NodeStorageTypeSanFc NodeStorageType = "SANFC"
+	// NodeStorageTypeSanIscsi - SAN iSCSI storage type.
+	NodeStorageTypeSanIscsi NodeStorageType = "SANISCSI"
+)
+
+// PossibleNodeStorageTypeValues returns the possible values for the NodeStorageType const type.
+func PossibleNodeStorageTypeValues() []NodeStorageType {
+	return []NodeStorageType{
+		NodeStorageTypeS2D,
+		NodeStorageTypeSanFc,
+		NodeStorageTypeSanIscsi,
+	}
+}
+
+// OSOperationType - OS Provision Operation type
+type OSOperationType string
+
+const (
+	// OSOperationTypeProvision - OS Provisioning operation
+	OSOperationTypeProvision OSOperationType = "Provision"
+	// OSOperationTypeReImage - OS ReImage operation
+	OSOperationTypeReImage OSOperationType = "ReImage"
+	// OSOperationTypeReset - OS Reset operation
+	OSOperationTypeReset OSOperationType = "Reset"
+	// OSOperationTypeUpdate - OS Update operation
+	OSOperationTypeUpdate OSOperationType = "Update"
+)
+
+// PossibleOSOperationTypeValues returns the possible values for the OSOperationType const type.
+func PossibleOSOperationTypeValues() []OSOperationType {
+	return []OSOperationType{
+		OSOperationTypeProvision,
+		OSOperationTypeReImage,
+		OSOperationTypeReset,
+		OSOperationTypeUpdate,
+	}
+}
+
 // OemActivation - OEM activation status of the cluster.
 type OemActivation string
 
@@ -933,6 +1541,21 @@ func PossibleOemActivationValues() []OemActivation {
 	return []OemActivation{
 		OemActivationDisabled,
 		OemActivationEnabled,
+	}
+}
+
+// OnboardingResourceType - Onboarding resource type.
+type OnboardingResourceType string
+
+const (
+	// OnboardingResourceTypeHybridComputeMachine - Hybrid Compute Machine.
+	OnboardingResourceTypeHybridComputeMachine OnboardingResourceType = "HybridComputeMachine"
+)
+
+// PossibleOnboardingResourceTypeValues returns the possible values for the OnboardingResourceType const type.
+func PossibleOnboardingResourceTypeValues() []OnboardingResourceType {
+	return []OnboardingResourceType{
+		OnboardingResourceTypeHybridComputeMachine,
 	}
 }
 
@@ -994,6 +1617,72 @@ func PossibleOverprovisioningRatioValues() []OverprovisioningRatio {
 		OverprovisioningRatioOne,
 		OverprovisioningRatioTwo,
 		OverprovisioningRatioZero,
+	}
+}
+
+// OwnerKeyType - Type of owner key in the voucher
+type OwnerKeyType string
+
+const (
+	// OwnerKeyTypeMicrosoftManaged - Owner is Microsoft managed key
+	OwnerKeyTypeMicrosoftManaged OwnerKeyType = "MicrosoftManaged"
+)
+
+// PossibleOwnerKeyTypeValues returns the possible values for the OwnerKeyType const type.
+func PossibleOwnerKeyTypeValues() []OwnerKeyType {
+	return []OwnerKeyType{
+		OwnerKeyTypeMicrosoftManaged,
+	}
+}
+
+// OwnershipVoucherValidationStatus - Ownership Voucher validation Status.
+type OwnershipVoucherValidationStatus string
+
+const (
+	// OwnershipVoucherValidationStatusInvalid - Voucher evaluated as invalid.
+	OwnershipVoucherValidationStatusInvalid OwnershipVoucherValidationStatus = "Invalid"
+	// OwnershipVoucherValidationStatusValid - Voucher evaluated as valid.
+	OwnershipVoucherValidationStatusValid OwnershipVoucherValidationStatus = "Valid"
+)
+
+// PossibleOwnershipVoucherValidationStatusValues returns the possible values for the OwnershipVoucherValidationStatus const type.
+func PossibleOwnershipVoucherValidationStatusValues() []OwnershipVoucherValidationStatus {
+	return []OwnershipVoucherValidationStatus{
+		OwnershipVoucherValidationStatusInvalid,
+		OwnershipVoucherValidationStatusValid,
+	}
+}
+
+// PrivilegedJobType - Job Type supported for disk privileged operations.
+type PrivilegedJobType string
+
+const (
+	// PrivilegedJobTypeDeleteVolume - Job to delete a volume from the disk.
+	PrivilegedJobTypeDeleteVolume PrivilegedJobType = "DeleteVolume"
+)
+
+// PossiblePrivilegedJobTypeValues returns the possible values for the PrivilegedJobType const type.
+func PossiblePrivilegedJobTypeValues() []PrivilegedJobType {
+	return []PrivilegedJobType{
+		PrivilegedJobTypeDeleteVolume,
+	}
+}
+
+// ProvisioningOsType - Represents the provisioning operating system type.
+type ProvisioningOsType string
+
+const (
+	// ProvisioningOsTypeAzureLinux - AzureLinux OS.
+	ProvisioningOsTypeAzureLinux ProvisioningOsType = "AzureLinux"
+	// ProvisioningOsTypeHCI - HCI OS.
+	ProvisioningOsTypeHCI ProvisioningOsType = "HCI"
+)
+
+// PossibleProvisioningOsTypeValues returns the possible values for the ProvisioningOsType const type.
+func PossibleProvisioningOsTypeValues() []ProvisioningOsType {
+	return []ProvisioningOsType{
+		ProvisioningOsTypeAzureLinux,
+		ProvisioningOsTypeHCI,
 	}
 }
 
@@ -1169,6 +1858,86 @@ func PossibleRemoteSupportTypeValues() []RemoteSupportType {
 	}
 }
 
+// ResolutionStrategy - Strategy for resolving configuration drift.
+type ResolutionStrategy string
+
+const (
+	// ResolutionStrategyAcceptReported - Trust Device. Update the desiredConfiguration in ARM to match the reported state.
+	ResolutionStrategyAcceptReported ResolutionStrategy = "AcceptReported"
+	// ResolutionStrategyApplyDesired - Trust Cloud. Push the desiredConfiguration down to the device.
+	ResolutionStrategyApplyDesired ResolutionStrategy = "ApplyDesired"
+)
+
+// PossibleResolutionStrategyValues returns the possible values for the ResolutionStrategy const type.
+func PossibleResolutionStrategyValues() []ResolutionStrategy {
+	return []ResolutionStrategy{
+		ResolutionStrategyAcceptReported,
+		ResolutionStrategyApplyDesired,
+	}
+}
+
+// SdnIntegrationIntent - Indicates whether Software Defined Networking (SDN) integration should be enabled or disabled for
+// this deployment.
+type SdnIntegrationIntent string
+
+const (
+	// SdnIntegrationIntentDisable - Disable SDN integration for the deployment.
+	SdnIntegrationIntentDisable SdnIntegrationIntent = "Disable"
+	// SdnIntegrationIntentEnable - Enable SDN integration for the deployment.
+	SdnIntegrationIntentEnable SdnIntegrationIntent = "Enable"
+)
+
+// PossibleSdnIntegrationIntentValues returns the possible values for the SdnIntegrationIntent const type.
+func PossibleSdnIntegrationIntentValues() []SdnIntegrationIntent {
+	return []SdnIntegrationIntent{
+		SdnIntegrationIntentDisable,
+		SdnIntegrationIntentEnable,
+	}
+}
+
+// SdnStatus - Indicates the current Software Defined Networking (SDN) status of the resource, which may be an individual
+// device or a cluster.
+type SdnStatus string
+
+const (
+	// SdnStatusDisabled - SDN is not enabled on the resource. The domain name will be null. This is the default state when SDN
+	// has not been configured.
+	SdnStatusDisabled SdnStatus = "Disabled"
+	// SdnStatusEnabled - SDN is successfully enabled on the resource. The domain name will be populated in the format `<sdnPrefix>-nc.<domain>`.
+	// Customers may need to manage DNS settings to ensure proper resolution.
+	SdnStatusEnabled SdnStatus = "Enabled"
+	// SdnStatusUnknown - The SDN status could not be determined due to a failure in querying the SDN API service. This may occur
+	// if the query script fails or if the system is in an inconsistent state. The domain name will be null in this case.
+	SdnStatusUnknown SdnStatus = "Unknown"
+)
+
+// PossibleSdnStatusValues returns the possible values for the SdnStatus const type.
+func PossibleSdnStatusValues() []SdnStatus {
+	return []SdnStatus{
+		SdnStatusDisabled,
+		SdnStatusEnabled,
+		SdnStatusUnknown,
+	}
+}
+
+// SecretType - Type of secret used for authentication.
+type SecretType string
+
+const (
+	// SecretTypeKeyVault - Key Vault based authentication
+	SecretTypeKeyVault SecretType = "KeyVault"
+	// SecretTypeSSHPubKey - SSH Public Key based authentication
+	SecretTypeSSHPubKey SecretType = "SshPubKey"
+)
+
+// PossibleSecretTypeValues returns the possible values for the SecretType const type.
+func PossibleSecretTypeValues() []SecretType {
+	return []SecretType{
+		SecretTypeKeyVault,
+		SecretTypeSSHPubKey,
+	}
+}
+
 // SecretsType - Type of secrets to store
 type SecretsType string
 
@@ -1258,6 +2027,24 @@ func PossibleSoftwareAssuranceStatusValues() []SoftwareAssuranceStatus {
 	return []SoftwareAssuranceStatus{
 		SoftwareAssuranceStatusDisabled,
 		SoftwareAssuranceStatusEnabled,
+	}
+}
+
+// SolutionType - Represents the solution type (OS family) of an OS image.
+type SolutionType string
+
+const (
+	// SolutionTypeAzureLinux - AzureLinux OS.
+	SolutionTypeAzureLinux SolutionType = "AzureLinux"
+	// SolutionTypeHCI - HCI OS.
+	SolutionTypeHCI SolutionType = "HCI"
+)
+
+// PossibleSolutionTypeValues returns the possible values for the SolutionType const type.
+func PossibleSolutionTypeValues() []SolutionType {
+	return []SolutionType{
+		SolutionTypeAzureLinux,
+		SolutionTypeHCI,
 	}
 }
 
@@ -1408,6 +2195,28 @@ func PossibleStatusLevelTypesValues() []StatusLevelTypes {
 	}
 }
 
+// StorageInitiatorType - Transport type of a storage fabric initiator port on the edge machine.
+type StorageInitiatorType string
+
+const (
+	// StorageInitiatorTypeFibreChannel - Fibre Channel initiator. The initiator identifier is the node WWN (WWNN); the port is
+	// identified by its WWPN.
+	StorageInitiatorTypeFibreChannel StorageInitiatorType = "FibreChannel"
+	// StorageInitiatorTypeISCSI - iSCSI initiator. The initiator identifier is an IQN (iSCSI Qualified Name).
+	StorageInitiatorTypeISCSI StorageInitiatorType = "iSCSI"
+	// StorageInitiatorTypeUnknown - The initiator transport type could not be determined.
+	StorageInitiatorTypeUnknown StorageInitiatorType = "Unknown"
+)
+
+// PossibleStorageInitiatorTypeValues returns the possible values for the StorageInitiatorType const type.
+func PossibleStorageInitiatorTypeValues() []StorageInitiatorType {
+	return []StorageInitiatorType{
+		StorageInitiatorTypeFibreChannel,
+		StorageInitiatorTypeISCSI,
+		StorageInitiatorTypeUnknown,
+	}
+}
+
 // StorageType - Storage type supported for HCI Cluster.
 type StorageType string
 
@@ -1507,6 +2316,27 @@ func PossibleVolumeTypeValues() []VolumeType {
 	return []VolumeType{
 		VolumeTypeFixed,
 		VolumeTypeThinProvisioned,
+	}
+}
+
+// WifiSecretType - Type of WiFi secret.
+type WifiSecretType string
+
+const (
+	// WifiSecretTypeWiFiCACertificate - WiFi CA certificate.
+	WifiSecretTypeWiFiCACertificate WifiSecretType = "WiFiCACertificate"
+	// WifiSecretTypeWiFiCertificate - WiFi certificate.
+	WifiSecretTypeWiFiCertificate WifiSecretType = "WiFiCertificate"
+	// WifiSecretTypeWiFiPassword - WiFi password.
+	WifiSecretTypeWiFiPassword WifiSecretType = "WiFiPassword"
+)
+
+// PossibleWifiSecretTypeValues returns the possible values for the WifiSecretType const type.
+func PossibleWifiSecretTypeValues() []WifiSecretType {
+	return []WifiSecretType{
+		WifiSecretTypeWiFiCACertificate,
+		WifiSecretTypeWiFiCertificate,
+		WifiSecretTypeWiFiPassword,
 	}
 }
 

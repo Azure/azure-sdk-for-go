@@ -19,7 +19,7 @@ import (
 // ValidatedSolutionRecipesClient contains the methods for the ValidatedSolutionRecipes group.
 // Don't use this type directly, use NewValidatedSolutionRecipesClient() instead.
 //
-// Generated from API version 2026-04-30
+// Generated from API version 2026-10-01
 type ValidatedSolutionRecipesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -87,7 +87,7 @@ func (client *ValidatedSolutionRecipesClient) getCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260430)
+	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -158,7 +158,7 @@ func (client *ValidatedSolutionRecipesClient) listBySubscriptionLocationResource
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260430)
+		reqQP.Set("api-version", version20261001)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

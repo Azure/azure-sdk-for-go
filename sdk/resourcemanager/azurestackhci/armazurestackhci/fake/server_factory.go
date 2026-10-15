@@ -18,6 +18,9 @@ type ServerFactory struct {
 	// ArcSettingsServer contains the fakes for client ArcSettingsClient
 	ArcSettingsServer ArcSettingsServer
 
+	// ClusterJobsServer contains the fakes for client ClusterJobsClient
+	ClusterJobsServer ClusterJobsServer
+
 	// ClustersServer contains the fakes for client ClustersClient
 	ClustersServer ClustersServer
 
@@ -30,6 +33,36 @@ type ServerFactory struct {
 	// EdgeDevicesServer contains the fakes for client EdgeDevicesClient
 	EdgeDevicesServer EdgeDevicesServer
 
+	// EdgeMachineDeploymentSettingsServer contains the fakes for client EdgeMachineDeploymentSettingsClient
+	EdgeMachineDeploymentSettingsServer EdgeMachineDeploymentSettingsServer
+
+	// EdgeMachineDiskJobsServer contains the fakes for client EdgeMachineDiskJobsClient
+	EdgeMachineDiskJobsServer EdgeMachineDiskJobsServer
+
+	// EdgeMachineDiskPrivilegedJobsServer contains the fakes for client EdgeMachineDiskPrivilegedJobsClient
+	EdgeMachineDiskPrivilegedJobsServer EdgeMachineDiskPrivilegedJobsServer
+
+	// EdgeMachineDisksServer contains the fakes for client EdgeMachineDisksClient
+	EdgeMachineDisksServer EdgeMachineDisksServer
+
+	// EdgeMachineJobsServer contains the fakes for client EdgeMachineJobsClient
+	EdgeMachineJobsServer EdgeMachineJobsServer
+
+	// EdgeMachineNetworkAdapterJobsServer contains the fakes for client EdgeMachineNetworkAdapterJobsClient
+	EdgeMachineNetworkAdapterJobsServer EdgeMachineNetworkAdapterJobsServer
+
+	// EdgeMachineNetworkAdaptersServer contains the fakes for client EdgeMachineNetworkAdaptersClient
+	EdgeMachineNetworkAdaptersServer EdgeMachineNetworkAdaptersServer
+
+	// EdgeMachineSecuritySettingsOperationsServer contains the fakes for client EdgeMachineSecuritySettingsOperationsClient
+	EdgeMachineSecuritySettingsOperationsServer EdgeMachineSecuritySettingsOperationsServer
+
+	// EdgeMachineVolumesServer contains the fakes for client EdgeMachineVolumesClient
+	EdgeMachineVolumesServer EdgeMachineVolumesServer
+
+	// EdgeMachinesServer contains the fakes for client EdgeMachinesClient
+	EdgeMachinesServer EdgeMachinesServer
+
 	// ExtensionsServer contains the fakes for client ExtensionsClient
 	ExtensionsServer ExtensionsServer
 
@@ -38,6 +71,12 @@ type ServerFactory struct {
 
 	// OperationsServer contains the fakes for client OperationsClient
 	OperationsServer OperationsServer
+
+	// OsImagesServer contains the fakes for client OsImagesClient
+	OsImagesServer OsImagesServer
+
+	// OwnershipVouchersServer contains the fakes for client OwnershipVouchersClient
+	OwnershipVouchersServer OwnershipVouchersServer
 
 	// SKUsServer contains the fakes for client SKUsClient
 	SKUsServer SKUsServer
@@ -73,23 +112,36 @@ func NewServerFactoryTransport(srv *ServerFactory) *ServerFactoryTransport {
 // ServerFactoryTransport connects instances of armazurestackhci.ClientFactory to instances of ServerFactory.
 // Don't use this type directly, use NewServerFactoryTransport instead.
 type ServerFactoryTransport struct {
-	srv                                   *ServerFactory
-	trMu                                  sync.Mutex
-	trArcSettingsServer                   *ArcSettingsServerTransport
-	trClustersServer                      *ClustersServerTransport
-	trDeploymentSettingsServer            *DeploymentSettingsServerTransport
-	trEdgeDeviceJobsServer                *EdgeDeviceJobsServerTransport
-	trEdgeDevicesServer                   *EdgeDevicesServerTransport
-	trExtensionsServer                    *ExtensionsServerTransport
-	trOffersServer                        *OffersServerTransport
-	trOperationsServer                    *OperationsServerTransport
-	trSKUsServer                          *SKUsServerTransport
-	trSecuritySettingsServer              *SecuritySettingsServerTransport
-	trUpdateRunsServer                    *UpdateRunsServerTransport
-	trUpdateSummariesServer               *UpdateSummariesServerTransport
-	trUpdateSummariesOperationGroupServer *UpdateSummariesOperationGroupServerTransport
-	trUpdatesServer                       *UpdatesServerTransport
-	trValidatedSolutionRecipesServer      *ValidatedSolutionRecipesServerTransport
+	srv                                           *ServerFactory
+	trMu                                          sync.Mutex
+	trArcSettingsServer                           *ArcSettingsServerTransport
+	trClusterJobsServer                           *ClusterJobsServerTransport
+	trClustersServer                              *ClustersServerTransport
+	trDeploymentSettingsServer                    *DeploymentSettingsServerTransport
+	trEdgeDeviceJobsServer                        *EdgeDeviceJobsServerTransport
+	trEdgeDevicesServer                           *EdgeDevicesServerTransport
+	trEdgeMachineDeploymentSettingsServer         *EdgeMachineDeploymentSettingsServerTransport
+	trEdgeMachineDiskJobsServer                   *EdgeMachineDiskJobsServerTransport
+	trEdgeMachineDiskPrivilegedJobsServer         *EdgeMachineDiskPrivilegedJobsServerTransport
+	trEdgeMachineDisksServer                      *EdgeMachineDisksServerTransport
+	trEdgeMachineJobsServer                       *EdgeMachineJobsServerTransport
+	trEdgeMachineNetworkAdapterJobsServer         *EdgeMachineNetworkAdapterJobsServerTransport
+	trEdgeMachineNetworkAdaptersServer            *EdgeMachineNetworkAdaptersServerTransport
+	trEdgeMachineSecuritySettingsOperationsServer *EdgeMachineSecuritySettingsOperationsServerTransport
+	trEdgeMachineVolumesServer                    *EdgeMachineVolumesServerTransport
+	trEdgeMachinesServer                          *EdgeMachinesServerTransport
+	trExtensionsServer                            *ExtensionsServerTransport
+	trOffersServer                                *OffersServerTransport
+	trOperationsServer                            *OperationsServerTransport
+	trOsImagesServer                              *OsImagesServerTransport
+	trOwnershipVouchersServer                     *OwnershipVouchersServerTransport
+	trSKUsServer                                  *SKUsServerTransport
+	trSecuritySettingsServer                      *SecuritySettingsServerTransport
+	trUpdateRunsServer                            *UpdateRunsServerTransport
+	trUpdateSummariesServer                       *UpdateSummariesServerTransport
+	trUpdateSummariesOperationGroupServer         *UpdateSummariesOperationGroupServerTransport
+	trUpdatesServer                               *UpdatesServerTransport
+	trValidatedSolutionRecipesServer              *ValidatedSolutionRecipesServerTransport
 }
 
 // Do implements the policy.Transporter interface for ServerFactoryTransport.
@@ -108,6 +160,9 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "ArcSettingsClient":
 		initServer(&s.trMu, &s.trArcSettingsServer, func() *ArcSettingsServerTransport { return NewArcSettingsServerTransport(&s.srv.ArcSettingsServer) })
 		resp, err = s.trArcSettingsServer.Do(req)
+	case "ClusterJobsClient":
+		initServer(&s.trMu, &s.trClusterJobsServer, func() *ClusterJobsServerTransport { return NewClusterJobsServerTransport(&s.srv.ClusterJobsServer) })
+		resp, err = s.trClusterJobsServer.Do(req)
 	case "ClustersClient":
 		initServer(&s.trMu, &s.trClustersServer, func() *ClustersServerTransport { return NewClustersServerTransport(&s.srv.ClustersServer) })
 		resp, err = s.trClustersServer.Do(req)
@@ -124,6 +179,54 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "EdgeDevicesClient":
 		initServer(&s.trMu, &s.trEdgeDevicesServer, func() *EdgeDevicesServerTransport { return NewEdgeDevicesServerTransport(&s.srv.EdgeDevicesServer) })
 		resp, err = s.trEdgeDevicesServer.Do(req)
+	case "EdgeMachineDeploymentSettingsClient":
+		initServer(&s.trMu, &s.trEdgeMachineDeploymentSettingsServer, func() *EdgeMachineDeploymentSettingsServerTransport {
+			return NewEdgeMachineDeploymentSettingsServerTransport(&s.srv.EdgeMachineDeploymentSettingsServer)
+		})
+		resp, err = s.trEdgeMachineDeploymentSettingsServer.Do(req)
+	case "EdgeMachineDiskJobsClient":
+		initServer(&s.trMu, &s.trEdgeMachineDiskJobsServer, func() *EdgeMachineDiskJobsServerTransport {
+			return NewEdgeMachineDiskJobsServerTransport(&s.srv.EdgeMachineDiskJobsServer)
+		})
+		resp, err = s.trEdgeMachineDiskJobsServer.Do(req)
+	case "EdgeMachineDiskPrivilegedJobsClient":
+		initServer(&s.trMu, &s.trEdgeMachineDiskPrivilegedJobsServer, func() *EdgeMachineDiskPrivilegedJobsServerTransport {
+			return NewEdgeMachineDiskPrivilegedJobsServerTransport(&s.srv.EdgeMachineDiskPrivilegedJobsServer)
+		})
+		resp, err = s.trEdgeMachineDiskPrivilegedJobsServer.Do(req)
+	case "EdgeMachineDisksClient":
+		initServer(&s.trMu, &s.trEdgeMachineDisksServer, func() *EdgeMachineDisksServerTransport {
+			return NewEdgeMachineDisksServerTransport(&s.srv.EdgeMachineDisksServer)
+		})
+		resp, err = s.trEdgeMachineDisksServer.Do(req)
+	case "EdgeMachineJobsClient":
+		initServer(&s.trMu, &s.trEdgeMachineJobsServer, func() *EdgeMachineJobsServerTransport {
+			return NewEdgeMachineJobsServerTransport(&s.srv.EdgeMachineJobsServer)
+		})
+		resp, err = s.trEdgeMachineJobsServer.Do(req)
+	case "EdgeMachineNetworkAdapterJobsClient":
+		initServer(&s.trMu, &s.trEdgeMachineNetworkAdapterJobsServer, func() *EdgeMachineNetworkAdapterJobsServerTransport {
+			return NewEdgeMachineNetworkAdapterJobsServerTransport(&s.srv.EdgeMachineNetworkAdapterJobsServer)
+		})
+		resp, err = s.trEdgeMachineNetworkAdapterJobsServer.Do(req)
+	case "EdgeMachineNetworkAdaptersClient":
+		initServer(&s.trMu, &s.trEdgeMachineNetworkAdaptersServer, func() *EdgeMachineNetworkAdaptersServerTransport {
+			return NewEdgeMachineNetworkAdaptersServerTransport(&s.srv.EdgeMachineNetworkAdaptersServer)
+		})
+		resp, err = s.trEdgeMachineNetworkAdaptersServer.Do(req)
+	case "EdgeMachineSecuritySettingsOperationsClient":
+		initServer(&s.trMu, &s.trEdgeMachineSecuritySettingsOperationsServer, func() *EdgeMachineSecuritySettingsOperationsServerTransport {
+			return NewEdgeMachineSecuritySettingsOperationsServerTransport(&s.srv.EdgeMachineSecuritySettingsOperationsServer)
+		})
+		resp, err = s.trEdgeMachineSecuritySettingsOperationsServer.Do(req)
+	case "EdgeMachineVolumesClient":
+		initServer(&s.trMu, &s.trEdgeMachineVolumesServer, func() *EdgeMachineVolumesServerTransport {
+			return NewEdgeMachineVolumesServerTransport(&s.srv.EdgeMachineVolumesServer)
+		})
+		resp, err = s.trEdgeMachineVolumesServer.Do(req)
+	case "EdgeMachinesClient":
+		initServer(&s.trMu, &s.trEdgeMachinesServer, func() *EdgeMachinesServerTransport { return NewEdgeMachinesServerTransport(&s.srv.EdgeMachinesServer) })
+		resp, err = s.trEdgeMachinesServer.Do(req)
 	case "ExtensionsClient":
 		initServer(&s.trMu, &s.trExtensionsServer, func() *ExtensionsServerTransport { return NewExtensionsServerTransport(&s.srv.ExtensionsServer) })
 		resp, err = s.trExtensionsServer.Do(req)
@@ -133,6 +236,14 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "OperationsClient":
 		initServer(&s.trMu, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)
+	case "OsImagesClient":
+		initServer(&s.trMu, &s.trOsImagesServer, func() *OsImagesServerTransport { return NewOsImagesServerTransport(&s.srv.OsImagesServer) })
+		resp, err = s.trOsImagesServer.Do(req)
+	case "OwnershipVouchersClient":
+		initServer(&s.trMu, &s.trOwnershipVouchersServer, func() *OwnershipVouchersServerTransport {
+			return NewOwnershipVouchersServerTransport(&s.srv.OwnershipVouchersServer)
+		})
+		resp, err = s.trOwnershipVouchersServer.Do(req)
 	case "SKUsClient":
 		initServer(&s.trMu, &s.trSKUsServer, func() *SKUsServerTransport { return NewSKUsServerTransport(&s.srv.SKUsServer) })
 		resp, err = s.trSKUsServer.Do(req)

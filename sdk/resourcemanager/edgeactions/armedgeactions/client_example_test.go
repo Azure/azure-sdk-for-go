@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-12-01-preview/EdgeActions_Create.json
+// Generated from example definition: 2026-10-01/EdgeActions_Create.json
 func ExampleClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -59,7 +59,7 @@ func ExampleClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2025-12-01-preview/EdgeActions_Delete.json
+// Generated from example definition: 2026-10-01/EdgeActions_Delete.json
 func ExampleClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -85,7 +85,55 @@ func ExampleClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-12-01-preview/EdgeActions_Get.json
+// Generated from example definition: 2026-10-01/EdgeActions_Update.json
+func ExampleClient_BeginUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armedgeactions.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewClient().BeginUpdate(ctx, "testrg", "edgeAction1", armedgeactions.EdgeActionUpdate{
+		Tags: map[string]*string{
+			"environment": to.Ptr("production"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armedgeactions.ClientUpdateResponse{
+	// 	EdgeAction: armedgeactions.EdgeAction{
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testrg/providers/Microsoft.Cdn/edgeActions/edgeAction1"),
+	// 		Name: to.Ptr("edgeAction1"),
+	// 		Type: to.Ptr("Microsoft.Cdn/edgeActions"),
+	// 		Location: to.Ptr("global"),
+	// 		Tags: map[string]*string{
+	// 			"environment": to.Ptr("production"),
+	// 		},
+	// 		SKU: &armedgeactions.SKUType{
+	// 			Name: to.Ptr("Standard"),
+	// 			Tier: to.Ptr("Standard"),
+	// 		},
+	// 		Properties: &armedgeactions.EdgeActionProperties{
+	// 			ProvisioningState: to.Ptr(armedgeactions.ProvisioningStateSucceeded),
+	// 			Attachments: []*armedgeactions.EdgeActionAttachment{
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-10-01/EdgeActions_Get.json
 func ExampleClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -122,7 +170,7 @@ func ExampleClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-12-01-preview/EdgeActions_ListByResourceGroup.json
+// Generated from example definition: 2026-10-01/EdgeActions_ListByResourceGroup.json
 func ExampleClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -183,7 +231,7 @@ func ExampleClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-12-01-preview/EdgeActions_ListBySubscription.json
+// Generated from example definition: 2026-10-01/EdgeActions_ListBySubscription.json
 func ExampleClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -242,50 +290,4 @@ func ExampleClient_NewListBySubscriptionPager() {
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2025-12-01-preview/EdgeActions_Update.json
-func ExampleClient_BeginUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armedgeactions.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewClient().BeginUpdate(ctx, "testrg", "edgeAction1", armedgeactions.EdgeActionUpdate{
-		SKU: &armedgeactions.SKUTypeUpdate{
-			Name: to.Ptr("Standard"),
-			Tier: to.Ptr("Standard"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armedgeactions.ClientUpdateResponse{
-	// 	EdgeAction: armedgeactions.EdgeAction{
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testrg/providers/Microsoft.Cdn/edgeActions/edgeAction1"),
-	// 		Name: to.Ptr("edgeAction1"),
-	// 		Type: to.Ptr("Microsoft.Cdn/edgeActions"),
-	// 		Location: to.Ptr("global"),
-	// 		SKU: &armedgeactions.SKUType{
-	// 			Name: to.Ptr("Standard"),
-	// 			Tier: to.Ptr("Standard"),
-	// 		},
-	// 		Properties: &armedgeactions.EdgeActionProperties{
-	// 			ProvisioningState: to.Ptr(armedgeactions.ProvisioningStateSucceeded),
-	// 			Attachments: []*armedgeactions.EdgeActionAttachment{
-	// 			},
-	// 		},
-	// 	},
-	// }
 }

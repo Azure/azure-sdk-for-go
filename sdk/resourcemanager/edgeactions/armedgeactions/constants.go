@@ -5,7 +5,7 @@
 package armedgeactions
 
 const (
-	version20251201Preview string = "2025-12-01-preview"
+	version20261001 string = "2026-10-01"
 )
 
 // CreatedByType - The kind of entity that created the resource.

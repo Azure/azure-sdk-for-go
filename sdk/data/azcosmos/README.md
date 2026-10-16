@@ -11,8 +11,8 @@ This client library enables client applications to connect to Azure Cosmos DB vi
 This is the v2 major version of the module and it is **not usable yet**. The v2 surface is being
 assembled incrementally so that it can be reviewed as it lands. This release covers the error and
 response model, partition keys, client construction, and creating, reading, replacing, upserting,
-deleting, and patching single items, database and container lifecycle operations, plus paged
-queries within a complete logical partition.
+deleting, and patching single items, database and container lifecycle operations, transactional
+batches with complete hierarchical partition keys, and paged queries.
 
 v2 replaces the v1 pure-Go implementation with a binding to the shared Rust Cosmos driver, so that
 routing, retries, session handling, failover behavior and query fan-out are consistent across the
@@ -64,6 +64,9 @@ the SDK returns that outcome, including its response body and ETag, rather than 
 When no end-to-end timeout is configured or inherited for an item operation, the remaining context
 deadline supplies its native timeout, subject to its one-second minimum. Explicit and inherited timeouts
 remain unchanged; an earlier context deadline still limits the Go wait.
+Transactional batches instead wait for authoritative native completion after admission, even
+after context cancellation. A cancellation or execution error is not proof that writes did not
+reach the service.
 
 ### Client initialization
 
@@ -125,6 +128,69 @@ back to read-modify-write when a request exceeds the service limit.
 Client-side execution of a patch that is not intrinsically retry-safe permanently adds the
 `_azsdkPatchTracking` property to the item. The driver uses it to deduplicate retries within one
 `PatchItem` call. Supplying a stable tracking ID across separate calls is not exposed yet.
+
+### Transactional batches
+
+Build a `TransactionalBatch` with `NewTransactionalBatch(partitionKey)` and append `CreateItem`,
+`ReadItem`, `UpsertItem`, `ReplaceItem`, or `DeleteItem` operations. Execute it with
+`ContainerClient.ExecuteTransactionalBatch(ctx, batch, options)`. A nil options pointer selects
+defaults. Transactional PATCH is not exposed.
+
+The key must be complete: include every component of a hierarchical partition key. Unlike query
+scopes, batches cannot use a prefix or span logical partitions. Execution reads the container's
+partition key definition before native submission and rejects an incomplete key. This metadata
+validation can consume RUs; its charge is included in the returned response or error.
+An error can contain setup metadata before the batch itself is submitted; these fields do not
+establish that any writes were admitted.
+The driver/service checks application-defined item IDs and partition key fields; Go does not
+parse these fields or implement a separate transaction transport.
+
+Append methods copy item JSON and conditional options. Extending a copied builder does not modify
+the original. Any append error makes that builder unusable, preventing an ignored error from
+silently submitting only part of a transaction. A batch must contain 1-100 operations; the encoded
+JSON operation envelope sent to the native driver must be at most 2 MiB. Reusing a batch executes
+a new transaction. A finished builder can be executed concurrently, but must not be mutated
+concurrently.
+
+Read, upsert, replace, and delete accept If-Match; read and upsert also accept If-None-Match.
+The two conditions are mutually exclusive. Go forwards these options using the same operation
+envelope as the Rust SDK; it does not independently enforce them or rewrite the returned statuses.
+
+**Live-account conditional behavior with native driver v0.2.0:**
+
+| Batch option | Observed result |
+| --- | --- |
+| Read `IfMatchETag` | A matching ETag returned HTTP 304; a different ETag returned HTTP 200. Accompanying writes committed in both cases. |
+| Read `IfNoneMatchETag` | Matching and different ETags both returned HTTP 200. A matching point-read control returned HTTP 304. |
+| Upsert `IfNoneMatchETag` | Existing items were replaced, including when the condition was `"*"`. Accompanying writes committed. |
+
+Do not use these batch-read conditions to guard other writes, or upsert If-None-Match to require
+creation. Use `TransactionalBatch.CreateItem` for creation-only behavior; an existing item then
+causes a conflict and rolls back the batch. These live observations do not establish intended
+service guarantees or a Rust-specific defect. Emulator conditional-read behavior differs and
+does not establish the live-service contract.
+
+`TransactionalBatchOptions.Operation.EnableContentResponseOnWrite` is request-wide: nil inherits
+runtime/client/native defaults, false suppresses write bodies, and true requests them. Native
+driver v0.2.0 defaults to false. **Live-account content behavior:** explicit or inherited false
+can also suppress HTTP 200 read bodies. Set this option explicitly to true when read bodies
+are required; this also requests write bodies. Go preserves absent content rather than fetching
+it with a separate request. Emulator read-content behavior differs and does not establish the
+live-service contract. `SessionToken` and other shared operation settings are forwarded to the driver.
+
+A received response can contain non-2xx operation statuses without an execution error.
+Like the Rust SDK, Go does not promote an individual operation's failure to a batch-level error.
+Neither `err == nil` nor a 2xx outer status means every operation succeeded.
+`OperationResults` is ordered exactly like the builder and preserves statuses, substatuses,
+charges, raw JSON, ETags, and retry delays. Batch-level headers and the raw result envelope are
+also retained. HTTP 304 reports a not-modified read; HTTP 424 reports a dependency failure.
+HTTP 207 alone does not establish rollback, and mixed results such as `[201, 304]` are preserved
+without inferring whether writes committed. Malformed result envelopes return an explicit
+decoding error with the native body and metadata.
+
+Admitted batches wait for authoritative native completion, including cancellation and shutdown
+races. `Client.Close` waits before freeing native resources. Responses and errors own their
+payloads and remain usable after the client closes.
 
 ### Querying items
 

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-06-15-preview/Accounts_ChangeKeyVault.json
+// Generated from example definition: 2026-07-01/Accounts_ChangeKeyVault.json
 func ExampleAccountsClient_BeginChangeKeyVault() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -44,7 +44,7 @@ func ExampleAccountsClient_BeginChangeKeyVault() {
 	}
 }
 
-// Generated from example definition: 2026-06-15-preview/Accounts_CreateOrUpdate.json
+// Generated from example definition: 2026-07-01/Accounts_CreateOrUpdate.json
 func ExampleAccountsClient_BeginCreateOrUpdate_accountsCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -82,7 +82,7 @@ func ExampleAccountsClient_BeginCreateOrUpdate_accountsCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-06-15-preview/Accounts_CreateOrUpdateAD.json
+// Generated from example definition: 2026-07-01/Accounts_CreateOrUpdateAD.json
 func ExampleAccountsClient_BeginCreateOrUpdate_accountsCreateOrUpdateWithActiveDirectory() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -149,7 +149,7 @@ func ExampleAccountsClient_BeginCreateOrUpdate_accountsCreateOrUpdateWithActiveD
 	// }
 }
 
-// Generated from example definition: 2026-06-15-preview/Accounts_CreateOrUpdateLdapConfig.json
+// Generated from example definition: 2026-07-01/Accounts_CreateOrUpdateLdapConfig.json
 func ExampleAccountsClient_BeginCreateOrUpdate_accountsCreateOrUpdateLdapConfig() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -229,7 +229,7 @@ func ExampleAccountsClient_BeginCreateOrUpdate_accountsCreateOrUpdateLdapConfig(
 	// }
 }
 
-// Generated from example definition: 2026-06-15-preview/Accounts_Delete.json
+// Generated from example definition: 2026-07-01/Accounts_Delete.json
 func ExampleAccountsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -250,7 +250,177 @@ func ExampleAccountsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-06-15-preview/Accounts_Get.json
+// Generated from example definition: 2026-07-01/Accounts_GetChangeKeyVaultInformation.json
+func ExampleAccountsClient_BeginGetChangeKeyVaultInformation() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetapp.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewAccountsClient().BeginGetChangeKeyVaultInformation(ctx, "myRG", "account1", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armnetapp.AccountsClientGetChangeKeyVaultInformationResponse{
+	// 	GetKeyVaultStatusResponse: armnetapp.GetKeyVaultStatusResponse{
+	// 		Properties: &armnetapp.GetKeyVaultStatusResponseProperties{
+	// 			KeyName: to.Ptr("rsakey"),
+	// 			KeyVaultPrivateEndpoints: []*armnetapp.KeyVaultPrivateEndpoint{
+	// 				{
+	// 					PrivateEndpointID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.Network/privateEndpoints/privip1"),
+	// 					VirtualNetworkID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.Network/virtualNetworks/vnet1"),
+	// 				},
+	// 			},
+	// 			KeyVaultResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.KeyVault/managedHSMs/my-hsm"),
+	// 			KeyVaultURI: to.Ptr("https://my-key-vault.managedhsm.azure.net"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-07-01/Accounts_RefreshLdapBindPassword.json
+func ExampleAccountsClient_BeginRefreshLdapBindPassword() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetapp.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewAccountsClient().BeginRefreshLdapBindPassword(ctx, "myRG", "account1", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+}
+
+// Generated from example definition: 2026-07-01/Accounts_RenewCredentials.json
+func ExampleAccountsClient_BeginRenewCredentials() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetapp.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewAccountsClient().BeginRenewCredentials(ctx, "myRG", "account1", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armnetapp.AccountsClientRenewCredentialsResponse{
+	// }
+}
+
+// Generated from example definition: 2026-07-01/Accounts_TransitionEncryptionKey.json
+func ExampleAccountsClient_BeginTransitionToCmk() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetapp.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewAccountsClient().BeginTransitionToCmk(ctx, "myRG", "account1", &armnetapp.AccountsClientBeginTransitionToCmkOptions{
+		Body: &armnetapp.EncryptionTransitionRequest{
+			PrivateEndpointID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.Network/privateEndpoints/privip1"),
+			VirtualNetworkID:  to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.Network/virtualNetworks/vnet1"),
+		}})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+}
+
+// Generated from example definition: 2026-07-01/Accounts_Update.json
+func ExampleAccountsClient_BeginUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetapp.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewAccountsClient().BeginUpdate(ctx, "myRG", "account1", armnetapp.AccountPatch{
+		Tags: map[string]*string{
+			"Tag1": to.Ptr("Value1"),
+		},
+		Properties: &armnetapp.AccountPropertiesPatch{
+			LdapConfiguration: &armnetapp.LdapConfigurationPatch{
+				Domain: to.Ptr("example.com"),
+				LdapServers: []*string{
+					to.Ptr("192.0.2.1"),
+					to.Ptr("192.0.2.2"),
+				},
+				SecureLdapType: to.Ptr(armnetapp.SecureLdapTypeLdapOverTLS),
+				LdapPort:       to.Ptr[int32](636),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armnetapp.AccountsClientUpdateResponse{
+	// 	Account: armnetapp.Account{
+	// 		Name: to.Ptr("account1"),
+	// 		Type: to.Ptr("Microsoft.NetApp/netAppAccounts"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1"),
+	// 		Location: to.Ptr("eastus"),
+	// 		Properties: &armnetapp.AccountProperties{
+	// 			ProvisioningState: to.Ptr("Succeeded"),
+	// 			LdapConfiguration: &armnetapp.LdapConfiguration{
+	// 				Domain: to.Ptr("example.com"),
+	// 				LdapServers: []*string{
+	// 					to.Ptr("192.0.2.1"),
+	// 					to.Ptr("192.0.2.2"),
+	// 				},
+	// 				SecureLdapType: to.Ptr(armnetapp.SecureLdapTypeLdapOverTLS),
+	// 				LdapPort: to.Ptr[int32](636),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-07-01/Accounts_Get.json
 func ExampleAccountsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -296,86 +466,7 @@ func ExampleAccountsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-06-15-preview/Accounts_GetChangeKeyVaultInformation.json
-func ExampleAccountsClient_BeginGetChangeKeyVaultInformation() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetapp.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewAccountsClient().BeginGetChangeKeyVaultInformation(ctx, "myRG", "account1", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armnetapp.AccountsClientGetChangeKeyVaultInformationResponse{
-	// 	GetKeyVaultStatusResponse: armnetapp.GetKeyVaultStatusResponse{
-	// 		Properties: &armnetapp.GetKeyVaultStatusResponseProperties{
-	// 			KeyName: to.Ptr("rsakey"),
-	// 			KeyVaultPrivateEndpoints: []*armnetapp.KeyVaultPrivateEndpoint{
-	// 				{
-	// 					PrivateEndpointID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.Network/privateEndpoints/privip1"),
-	// 					VirtualNetworkID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.Network/virtualNetworks/vnet1"),
-	// 				},
-	// 			},
-	// 			KeyVaultResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.KeyVault/managedHSMs/my-hsm"),
-	// 			KeyVaultURI: to.Ptr("https://my-key-vault.managedhsm.azure.net"),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-06-15-preview/Accounts_List.json
-func ExampleAccountsClient_NewListPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetapp.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewAccountsClient().NewListPager("myRG", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armnetapp.AccountsClientListResponse{
-		// 	AccountList: armnetapp.AccountList{
-		// 		Value: []*armnetapp.Account{
-		// 			{
-		// 				Name: to.Ptr("account1"),
-		// 				Type: to.Ptr("Microsoft.NetApp/netAppAccounts"),
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1"),
-		// 				Location: to.Ptr("eastus"),
-		// 				Properties: &armnetapp.AccountProperties{
-		// 					ProvisioningState: to.Ptr("Succeeded"),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2026-06-15-preview/Accounts_ListBySubscription.json
+// Generated from example definition: 2026-07-01/Accounts_ListBySubscription.json
 func ExampleAccountsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -415,8 +506,8 @@ func ExampleAccountsClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2026-06-15-preview/Accounts_RefreshLdapBindPassword.json
-func ExampleAccountsClient_BeginRefreshLdapBindPassword() {
+// Generated from example definition: 2026-07-01/Accounts_List.json
+func ExampleAccountsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -426,102 +517,31 @@ func ExampleAccountsClient_BeginRefreshLdapBindPassword() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewAccountsClient().BeginRefreshLdapBindPassword(ctx, "myRG", "account1", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
+	pager := clientFactory.NewAccountsClient().NewListPager("myRG", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armnetapp.AccountsClientListResponse{
+		// 	AccountList: armnetapp.AccountList{
+		// 		Value: []*armnetapp.Account{
+		// 			{
+		// 				Name: to.Ptr("account1"),
+		// 				Type: to.Ptr("Microsoft.NetApp/netAppAccounts"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1"),
+		// 				Location: to.Ptr("eastus"),
+		// 				Properties: &armnetapp.AccountProperties{
+		// 					ProvisioningState: to.Ptr("Succeeded"),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
 	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-}
-
-// Generated from example definition: 2026-06-15-preview/Accounts_RenewCredentials.json
-func ExampleAccountsClient_BeginRenewCredentials() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetapp.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewAccountsClient().BeginRenewCredentials(ctx, "myRG", "account1", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armnetapp.AccountsClientRenewCredentialsResponse{
-	// }
-}
-
-// Generated from example definition: 2026-06-15-preview/Accounts_TransitionEncryptionKey.json
-func ExampleAccountsClient_BeginTransitionToCmk() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetapp.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewAccountsClient().BeginTransitionToCmk(ctx, "myRG", "account1", &armnetapp.AccountsClientBeginTransitionToCmkOptions{
-		Body: &armnetapp.EncryptionTransitionRequest{
-			PrivateEndpointID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.Network/privateEndpoints/privip1"),
-			VirtualNetworkID:  to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.Network/virtualNetworks/vnet1"),
-		}})
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-}
-
-// Generated from example definition: 2026-06-15-preview/Accounts_Update.json
-func ExampleAccountsClient_BeginUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetapp.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewAccountsClient().BeginUpdate(ctx, "myRG", "account1", armnetapp.AccountPatch{
-		Tags: map[string]*string{
-			"Tag1": to.Ptr("Value1"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armnetapp.AccountsClientUpdateResponse{
-	// 	Account: armnetapp.Account{
-	// 		Name: to.Ptr("account1"),
-	// 		Type: to.Ptr("Microsoft.NetApp/netAppAccounts"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1"),
-	// 		Location: to.Ptr("eastus"),
-	// 		Properties: &armnetapp.AccountProperties{
-	// 			ProvisioningState: to.Ptr("Succeeded"),
-	// 		},
-	// 	},
-	// }
 }

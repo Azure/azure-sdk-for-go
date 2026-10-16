@@ -19,7 +19,7 @@ import (
 // BackupsUnderAccountClient contains the methods for the BackupsUnderAccount group.
 // Don't use this type directly, use NewBackupsUnderAccountClient() instead.
 //
-// Generated from API version 2026-06-15-preview
+// Generated from API version 2026-07-01
 type BackupsUnderAccountClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -68,7 +68,7 @@ func (client *BackupsUnderAccountClient) BeginMigrateBackups(ctx context.Context
 	}
 }
 
-// MigrateBackups - Migrate the backups under a NetApp account to backup vault
+// migrateBackups - Migrate the backups under a NetApp account to backup vault
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *BackupsUnderAccountClient) migrateBackups(ctx context.Context, resourceGroupName string, accountName string, body BackupsMigrationRequest, options *BackupsUnderAccountClientBeginMigrateBackupsOptions) (*http.Response, error) {
 	var err error
@@ -90,7 +90,7 @@ func (client *BackupsUnderAccountClient) migrateBackups(ctx context.Context, res
 	return httpResp, nil
 }
 
-// migrateBackupsCreateRequest creates the MigrateBackups request.
+// migrateBackupsCreateRequest creates the migrateBackups request.
 func (client *BackupsUnderAccountClient) migrateBackupsCreateRequest(ctx context.Context, resourceGroupName string, accountName string, body BackupsMigrationRequest, _ *BackupsUnderAccountClientBeginMigrateBackupsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/migrateBackups"
 	if client.subscriptionID == "" {
@@ -110,7 +110,7 @@ func (client *BackupsUnderAccountClient) migrateBackupsCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260615Preview)
+	reqQP.Set("api-version", version20260701)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {

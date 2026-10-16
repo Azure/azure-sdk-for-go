@@ -19,7 +19,7 @@ import (
 // BackupsUnderVolumeClient contains the methods for the BackupsUnderVolume group.
 // Don't use this type directly, use NewBackupsUnderVolumeClient() instead.
 //
-// Generated from API version 2026-06-15-preview
+// Generated from API version 2026-07-01
 type BackupsUnderVolumeClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -70,7 +70,7 @@ func (client *BackupsUnderVolumeClient) BeginMigrateBackups(ctx context.Context,
 	}
 }
 
-// MigrateBackups - Migrate the backups under volume to backup vault
+// migrateBackups - Migrate the backups under volume to backup vault
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *BackupsUnderVolumeClient) migrateBackups(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, body BackupsMigrationRequest, options *BackupsUnderVolumeClientBeginMigrateBackupsOptions) (*http.Response, error) {
 	var err error
@@ -92,7 +92,7 @@ func (client *BackupsUnderVolumeClient) migrateBackups(ctx context.Context, reso
 	return httpResp, nil
 }
 
-// migrateBackupsCreateRequest creates the MigrateBackups request.
+// migrateBackupsCreateRequest creates the migrateBackups request.
 func (client *BackupsUnderVolumeClient) migrateBackupsCreateRequest(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, body BackupsMigrationRequest, _ *BackupsUnderVolumeClientBeginMigrateBackupsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/migrateBackups"
 	if client.subscriptionID == "" {
@@ -120,7 +120,7 @@ func (client *BackupsUnderVolumeClient) migrateBackupsCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260615Preview)
+	reqQP.Set("api-version", version20260701)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {

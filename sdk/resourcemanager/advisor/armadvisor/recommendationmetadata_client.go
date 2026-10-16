@@ -19,7 +19,7 @@ import (
 // RecommendationMetadataClient contains the methods for the RecommendationMetadata group.
 // Don't use this type directly, use NewRecommendationMetadataClient() instead.
 //
-// Generated from API version 2025-05-01-preview
+// Generated from API version 2026-08-01-preview
 type RecommendationMetadataClient struct {
 	internal *arm.Client
 }
@@ -72,7 +72,7 @@ func (client *RecommendationMetadataClient) getCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501Preview)
+	reqQP.Set("api-version", version20260801Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -119,7 +119,7 @@ func (client *RecommendationMetadataClient) NewListPager(options *Recommendation
 }
 
 // listCreateRequest creates the List request.
-func (client *RecommendationMetadataClient) listCreateRequest(ctx context.Context, nextLink string, _ *RecommendationMetadataClientListOptions) (*policy.Request, error) {
+func (client *RecommendationMetadataClient) listCreateRequest(ctx context.Context, nextLink string, options *RecommendationMetadataClientListOptions) (*policy.Request, error) {
 	firstPage := nextLink == ""
 	var req *policy.Request
 	var err error
@@ -134,7 +134,10 @@ func (client *RecommendationMetadataClient) listCreateRequest(ctx context.Contex
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250501Preview)
+		if options != nil && options.Filter != nil {
+			reqQP.Set("$filter", *options.Filter)
+		}
+		reqQP.Set("api-version", version20260801Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

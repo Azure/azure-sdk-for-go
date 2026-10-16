@@ -110,22 +110,6 @@ func (c *ClientFactory) NewSuppressionsClient() *SuppressionsClient {
 	}
 }
 
-// NewTriageRecommendationsClient creates a new instance of TriageRecommendationsClient.
-func (c *ClientFactory) NewTriageRecommendationsClient() *TriageRecommendationsClient {
-	return &TriageRecommendationsClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
-// NewTriageResourcesClient creates a new instance of TriageResourcesClient.
-func (c *ClientFactory) NewTriageResourcesClient() *TriageResourcesClient {
-	return &TriageResourcesClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
 // NewWorkloadsClient creates a new instance of WorkloadsClient.
 func (c *ClientFactory) NewWorkloadsClient() *WorkloadsClient {
 	return &WorkloadsClient{

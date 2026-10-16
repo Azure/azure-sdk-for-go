@@ -1,5 +1,11 @@
 # Release History
 
+## 1.12.0-beta.1 (Unreleased)
+
+### Features Added
+
+- Added `DeleteMessages` and `PurgeMessages` to `Receiver` and `SessionReceiver`. Basic and Standard support up to 500 messages per request, Premium supports up to 4,000, and purge handles smaller batches caused by large messages.
+
 ## 1.11.0 (2026-10-06)
 
 ### Features Added

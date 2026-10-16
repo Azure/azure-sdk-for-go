@@ -240,6 +240,11 @@ type WorkspaceProperties struct {
 	// The URI of the Azure storage account used to store workspace artifacts, test results, and reports.
 	StorageURI *string
 
+	// The ARM resource ID of the virtual network subnet to inject the workspace into for private network connectivity. This is
+	// of the form '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Network/virtualNetworks/{virtualNetwork}/subnets/{subnet}'.
+	// This value cannot be changed after the workspace is created.
+	SubnetID *string
+
 	// READ-ONLY; The workspace data plane service API URI.
 	DataplaneURI *string
 

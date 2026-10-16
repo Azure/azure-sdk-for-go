@@ -6,7 +6,6 @@ package armapplicationinsights
 
 const (
 	version20150501        string = "2015-05-01"
-	version20200202        string = "2020-02-02"
 	version20200301Preview string = "2020-03-01-preview"
 	version20201120        string = "2020-11-20"
 	version20210308        string = "2021-03-08"
@@ -14,6 +13,7 @@ const (
 	version20220615        string = "2022-06-15"
 	version20230601        string = "2023-06-01"
 	version20240201Preview string = "2024-02-01-preview"
+	version20250123Preview string = "2025-01-23-preview"
 )
 
 // ApplicationType - Type of application being monitored.
@@ -31,6 +31,32 @@ func PossibleApplicationTypeValues() []ApplicationType {
 	return []ApplicationType{
 		ApplicationTypeOther,
 		ApplicationTypeWeb,
+	}
+}
+
+// AzureMonitorWorkspaceIngestionMode - Indicates the state of the OpenTelemetry ingestion into the Azure Monitor workspace
+// that is linked to the Application Insights component.
+type AzureMonitorWorkspaceIngestionMode string
+
+const (
+	// AzureMonitorWorkspaceIngestionModeDisabled - Azure Monitor workspace ingestion is disabled for the component because the
+	// link to the Azure Monitor workspace is broken. This value is set only by the service and is rejected if specified by a
+	// client.
+	AzureMonitorWorkspaceIngestionModeDisabled AzureMonitorWorkspaceIngestionMode = "Disabled"
+	// AzureMonitorWorkspaceIngestionModeEnabled - Azure Monitor workspace ingestion is enabled for the component. Clients may
+	// specify this value to opt in. Opting back out after ingestion has been enabled is not supported.
+	AzureMonitorWorkspaceIngestionModeEnabled AzureMonitorWorkspaceIngestionMode = "Enabled"
+	// AzureMonitorWorkspaceIngestionModeNotOptedIn - The component has not been opted in to Azure Monitor workspace ingestion.
+	// Clients may specify this value on create to decline Azure Monitor workspace ingestion.
+	AzureMonitorWorkspaceIngestionModeNotOptedIn AzureMonitorWorkspaceIngestionMode = "NotOptedIn"
+)
+
+// PossibleAzureMonitorWorkspaceIngestionModeValues returns the possible values for the AzureMonitorWorkspaceIngestionMode const type.
+func PossibleAzureMonitorWorkspaceIngestionModeValues() []AzureMonitorWorkspaceIngestionMode {
+	return []AzureMonitorWorkspaceIngestionMode{
+		AzureMonitorWorkspaceIngestionModeDisabled,
+		AzureMonitorWorkspaceIngestionModeEnabled,
+		AzureMonitorWorkspaceIngestionModeNotOptedIn,
 	}
 }
 

@@ -31,6 +31,9 @@ type AnalyticsItemsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewAnalyticsItemsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AnalyticsItemsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -64,8 +67,7 @@ func (client *AnalyticsItemsClient) Delete(ctx context.Context, resourceGroupNam
 		return AnalyticsItemsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return AnalyticsItemsClientDeleteResponse{}, err
+		return AnalyticsItemsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return AnalyticsItemsClientDeleteResponse{}, nil
 }
@@ -74,7 +76,7 @@ func (client *AnalyticsItemsClient) Delete(ctx context.Context, resourceGroupNam
 func (client *AnalyticsItemsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, scopePath ItemScopePath, options *AnalyticsItemsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.insights/components/{resourceName}/{scopePath}/item"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -126,19 +128,14 @@ func (client *AnalyticsItemsClient) Get(ctx context.Context, resourceGroupName s
 	if err != nil {
 		return AnalyticsItemsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return AnalyticsItemsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *AnalyticsItemsClient) getCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, scopePath ItemScopePath, options *AnalyticsItemsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.insights/components/{resourceName}/{scopePath}/item"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -171,8 +168,11 @@ func (client *AnalyticsItemsClient) getCreateRequest(ctx context.Context, resour
 }
 
 // getHandleResponse handles the Get response.
-func (client *AnalyticsItemsClient) getHandleResponse(resp *http.Response) (AnalyticsItemsClientGetResponse, error) {
+func (client *AnalyticsItemsClient) getHandleResponse(resp *http.Response, successCodes ...int) (AnalyticsItemsClientGetResponse, error) {
 	result := AnalyticsItemsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ComponentAnalyticsItem); err != nil {
 		return AnalyticsItemsClientGetResponse{}, err
 	}
@@ -200,19 +200,14 @@ func (client *AnalyticsItemsClient) List(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return AnalyticsItemsClientListResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return AnalyticsItemsClientListResponse{}, err
-	}
-	resp, err := client.listHandleResponse(httpResp)
-	return resp, err
+	return client.listHandleResponse(httpResp, http.StatusOK)
 }
 
 // listCreateRequest creates the List request.
 func (client *AnalyticsItemsClient) listCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, scopePath ItemScopePath, options *AnalyticsItemsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.insights/components/{resourceName}/{scopePath}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -248,8 +243,11 @@ func (client *AnalyticsItemsClient) listCreateRequest(ctx context.Context, resou
 }
 
 // listHandleResponse handles the List response.
-func (client *AnalyticsItemsClient) listHandleResponse(resp *http.Response) (AnalyticsItemsClientListResponse, error) {
+func (client *AnalyticsItemsClient) listHandleResponse(resp *http.Response, successCodes ...int) (AnalyticsItemsClientListResponse, error) {
 	result := AnalyticsItemsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ComponentAnalyticsItemArray); err != nil {
 		return AnalyticsItemsClientListResponse{}, err
 	}
@@ -278,19 +276,14 @@ func (client *AnalyticsItemsClient) Put(ctx context.Context, resourceGroupName s
 	if err != nil {
 		return AnalyticsItemsClientPutResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return AnalyticsItemsClientPutResponse{}, err
-	}
-	resp, err := client.putHandleResponse(httpResp)
-	return resp, err
+	return client.putHandleResponse(httpResp, http.StatusOK)
 }
 
 // putCreateRequest creates the Put request.
 func (client *AnalyticsItemsClient) putCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, scopePath ItemScopePath, itemProperties ComponentAnalyticsItem, options *AnalyticsItemsClientPutOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.insights/components/{resourceName}/{scopePath}/item"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -324,8 +317,11 @@ func (client *AnalyticsItemsClient) putCreateRequest(ctx context.Context, resour
 }
 
 // putHandleResponse handles the Put response.
-func (client *AnalyticsItemsClient) putHandleResponse(resp *http.Response) (AnalyticsItemsClientPutResponse, error) {
+func (client *AnalyticsItemsClient) putHandleResponse(resp *http.Response, successCodes ...int) (AnalyticsItemsClientPutResponse, error) {
 	result := AnalyticsItemsClientPutResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ComponentAnalyticsItem); err != nil {
 		return AnalyticsItemsClientPutResponse{}, err
 	}

@@ -19,7 +19,7 @@ import (
 // ComponentsClient contains the methods for the Components group.
 // Don't use this type directly, use NewComponentsClient() instead.
 //
-// Generated from API version 2020-02-02
+// Generated from API version 2025-01-23-preview
 type ComponentsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -30,6 +30,9 @@ type ComponentsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewComponentsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ComponentsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -63,19 +66,14 @@ func (client *ComponentsClient) CreateOrUpdate(ctx context.Context, resourceGrou
 	if err != nil {
 		return ComponentsClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ComponentsClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
 func (client *ComponentsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, insightProperties Component, _ *ComponentsClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -91,7 +89,7 @@ func (client *ComponentsClient) createOrUpdateCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20200202)
+	reqQP.Set("api-version", version20250123Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -102,8 +100,11 @@ func (client *ComponentsClient) createOrUpdateCreateRequest(ctx context.Context,
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *ComponentsClient) createOrUpdateHandleResponse(resp *http.Response) (ComponentsClientCreateOrUpdateResponse, error) {
+func (client *ComponentsClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (ComponentsClientCreateOrUpdateResponse, error) {
 	result := ComponentsClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Component); err != nil {
 		return ComponentsClientCreateOrUpdateResponse{}, err
 	}
@@ -130,8 +131,7 @@ func (client *ComponentsClient) Delete(ctx context.Context, resourceGroupName st
 		return ComponentsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return ComponentsClientDeleteResponse{}, err
+		return ComponentsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return ComponentsClientDeleteResponse{}, nil
 }
@@ -140,7 +140,7 @@ func (client *ComponentsClient) Delete(ctx context.Context, resourceGroupName st
 func (client *ComponentsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, _ *ComponentsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -156,7 +156,7 @@ func (client *ComponentsClient) deleteCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20200202)
+	reqQP.Set("api-version", version20250123Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -180,19 +180,14 @@ func (client *ComponentsClient) Get(ctx context.Context, resourceGroupName strin
 	if err != nil {
 		return ComponentsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ComponentsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *ComponentsClient) getCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, _ *ComponentsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -208,15 +203,18 @@ func (client *ComponentsClient) getCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20200202)
+	reqQP.Set("api-version", version20250123Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *ComponentsClient) getHandleResponse(resp *http.Response) (ComponentsClientGetResponse, error) {
+func (client *ComponentsClient) getHandleResponse(resp *http.Response, successCodes ...int) (ComponentsClientGetResponse, error) {
 	result := ComponentsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Component); err != nil {
 		return ComponentsClientGetResponse{}, err
 	}
@@ -244,19 +242,14 @@ func (client *ComponentsClient) GetPurgeStatus(ctx context.Context, resourceGrou
 	if err != nil {
 		return ComponentsClientGetPurgeStatusResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ComponentsClientGetPurgeStatusResponse{}, err
-	}
-	resp, err := client.getPurgeStatusHandleResponse(httpResp)
-	return resp, err
+	return client.getPurgeStatusHandleResponse(httpResp, http.StatusOK)
 }
 
 // getPurgeStatusCreateRequest creates the GetPurgeStatus request.
 func (client *ComponentsClient) getPurgeStatusCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, purgeID string, _ *ComponentsClientGetPurgeStatusOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/operations/{purgeId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -276,69 +269,20 @@ func (client *ComponentsClient) getPurgeStatusCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20200202)
+	reqQP.Set("api-version", version20250123Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getPurgeStatusHandleResponse handles the GetPurgeStatus response.
-func (client *ComponentsClient) getPurgeStatusHandleResponse(resp *http.Response) (ComponentsClientGetPurgeStatusResponse, error) {
+func (client *ComponentsClient) getPurgeStatusHandleResponse(resp *http.Response, successCodes ...int) (ComponentsClientGetPurgeStatusResponse, error) {
 	result := ComponentsClientGetPurgeStatusResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ComponentPurgeStatusResponse); err != nil {
 		return ComponentsClientGetPurgeStatusResponse{}, err
-	}
-	return result, nil
-}
-
-// NewListPager - Gets a list of all Application Insights components within a subscription.
-//   - options - ComponentsClientListOptions contains the optional parameters for the ComponentsClient.NewListPager method.
-func (client *ComponentsClient) NewListPager(options *ComponentsClientListOptions) *runtime.Pager[ComponentsClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[ComponentsClientListResponse]{
-		More: func(page ComponentsClientListResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *ComponentsClientListResponse) (ComponentsClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ComponentsClient.NewListPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, options)
-			}, nil)
-			if err != nil {
-				return ComponentsClientListResponse{}, err
-			}
-			return client.listHandleResponse(resp)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listCreateRequest creates the List request.
-func (client *ComponentsClient) listCreateRequest(ctx context.Context, _ *ComponentsClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Insights/components"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20200202)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// listHandleResponse handles the List response.
-func (client *ComponentsClient) listHandleResponse(resp *http.Response) (ComponentsClientListResponse, error) {
-	result := ComponentsClientListResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ComponentListResult); err != nil {
-		return ComponentsClientListResponse{}, err
 	}
 	return result, nil
 }
@@ -358,45 +302,125 @@ func (client *ComponentsClient) NewListByResourceGroupPager(resourceGroupName st
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
-			}, nil)
+			req, err := client.listByResourceGroupCreateRequest(ctx, resourceGroupName, nextLink, options)
 			if err != nil {
 				return ComponentsClientListByResourceGroupResponse{}, err
 			}
-			return client.listByResourceGroupHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ComponentsClientListByResourceGroupResponse{}, err
+			}
+			return client.listByResourceGroupHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *ComponentsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, _ *ComponentsClientListByResourceGroupOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ComponentsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, nextLink string, _ *ComponentsClientListByResourceGroupOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20200202)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250123Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *ComponentsClient) listByResourceGroupHandleResponse(resp *http.Response) (ComponentsClientListByResourceGroupResponse, error) {
+func (client *ComponentsClient) listByResourceGroupHandleResponse(resp *http.Response, successCodes ...int) (ComponentsClientListByResourceGroupResponse, error) {
 	result := ComponentsClientListByResourceGroupResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ComponentListResult); err != nil {
 		return ComponentsClientListByResourceGroupResponse{}, err
+	}
+	return result, nil
+}
+
+// NewListPager - Gets a list of all Application Insights components within a subscription.
+//   - options - ComponentsClientListOptions contains the optional parameters for the ComponentsClient.NewListPager method.
+func (client *ComponentsClient) NewListPager(options *ComponentsClientListOptions) *runtime.Pager[ComponentsClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[ComponentsClientListResponse]{
+		More: func(page ComponentsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *ComponentsClientListResponse) (ComponentsClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ComponentsClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listCreateRequest(ctx, nextLink, options)
+			if err != nil {
+				return ComponentsClientListResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ComponentsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listCreateRequest creates the List request.
+func (client *ComponentsClient) listCreateRequest(ctx context.Context, nextLink string, _ *ComponentsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Insights/components"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250123Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// listHandleResponse handles the List response.
+func (client *ComponentsClient) listHandleResponse(resp *http.Response, successCodes ...int) (ComponentsClientListResponse, error) {
+	result := ComponentsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ComponentListResult); err != nil {
+		return ComponentsClientListResponse{}, err
 	}
 	return result, nil
 }
@@ -428,19 +452,14 @@ func (client *ComponentsClient) Purge(ctx context.Context, resourceGroupName str
 	if err != nil {
 		return ComponentsClientPurgeResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return ComponentsClientPurgeResponse{}, err
-	}
-	resp, err := client.purgeHandleResponse(httpResp)
-	return resp, err
+	return client.purgeHandleResponse(httpResp, http.StatusAccepted)
 }
 
 // purgeCreateRequest creates the Purge request.
 func (client *ComponentsClient) purgeCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, body ComponentPurgeBody, _ *ComponentsClientPurgeOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/purge"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -456,7 +475,7 @@ func (client *ComponentsClient) purgeCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20200202)
+	reqQP.Set("api-version", version20250123Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -467,8 +486,11 @@ func (client *ComponentsClient) purgeCreateRequest(ctx context.Context, resource
 }
 
 // purgeHandleResponse handles the Purge response.
-func (client *ComponentsClient) purgeHandleResponse(resp *http.Response) (ComponentsClientPurgeResponse, error) {
+func (client *ComponentsClient) purgeHandleResponse(resp *http.Response, successCodes ...int) (ComponentsClientPurgeResponse, error) {
 	result := ComponentsClientPurgeResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ComponentPurgeResponse); err != nil {
 		return ComponentsClientPurgeResponse{}, err
 	}
@@ -495,19 +517,14 @@ func (client *ComponentsClient) UpdateTags(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return ComponentsClientUpdateTagsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ComponentsClientUpdateTagsResponse{}, err
-	}
-	resp, err := client.updateTagsHandleResponse(httpResp)
-	return resp, err
+	return client.updateTagsHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateTagsCreateRequest creates the UpdateTags request.
 func (client *ComponentsClient) updateTagsCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, componentTags TagsResource, _ *ComponentsClientUpdateTagsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -523,7 +540,7 @@ func (client *ComponentsClient) updateTagsCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20200202)
+	reqQP.Set("api-version", version20250123Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -534,8 +551,11 @@ func (client *ComponentsClient) updateTagsCreateRequest(ctx context.Context, res
 }
 
 // updateTagsHandleResponse handles the UpdateTags response.
-func (client *ComponentsClient) updateTagsHandleResponse(resp *http.Response) (ComponentsClientUpdateTagsResponse, error) {
+func (client *ComponentsClient) updateTagsHandleResponse(resp *http.Response, successCodes ...int) (ComponentsClientUpdateTagsResponse, error) {
 	result := ComponentsClientUpdateTagsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Component); err != nil {
 		return ComponentsClientUpdateTagsResponse{}, err
 	}

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-15-preview/Workspace/FeaturestoreEntityVersion/createOrUpdate.json
+// Generated from example definition: 2026-07-01/Workspace/FeaturestoreEntityVersion/createOrUpdate.json
 func ExampleFeaturestoreEntityVersionsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -87,7 +87,7 @@ func ExampleFeaturestoreEntityVersionsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Workspace/FeaturestoreEntityVersion/delete.json
+// Generated from example definition: 2026-07-01/Workspace/FeaturestoreEntityVersion/delete.json
 func ExampleFeaturestoreEntityVersionsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -113,7 +113,7 @@ func ExampleFeaturestoreEntityVersionsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Workspace/FeaturestoreEntityVersion/get.json
+// Generated from example definition: 2026-07-01/Workspace/FeaturestoreEntityVersion/get.json
 func ExampleFeaturestoreEntityVersionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -166,7 +166,7 @@ func ExampleFeaturestoreEntityVersionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Workspace/FeaturestoreEntityVersion/list.json
+// Generated from example definition: 2026-07-01/Workspace/FeaturestoreEntityVersion/list.json
 func ExampleFeaturestoreEntityVersionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -192,7 +192,7 @@ func ExampleFeaturestoreEntityVersionsClient_NewListPager() {
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page = armmachinelearning.FeaturestoreEntityVersionsClientListResponse{
 		// 	FeaturestoreEntityVersionResourceArmPaginatedResult: armmachinelearning.FeaturestoreEntityVersionResourceArmPaginatedResult{
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.MachineLearningServices/workspaces/my-aml-workspace/featurestoreEntities/string/versions?api-version=2025-07-01-preview&$skip=2"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.MachineLearningServices/workspaces/my-aml-workspace/featurestoreEntities/string/versions?api-version=2026-07-01&$skip=2"),
 		// 		Value: []*armmachinelearning.FeaturestoreEntityVersion{
 		// 			{
 		// 				Name: to.Ptr("string"),

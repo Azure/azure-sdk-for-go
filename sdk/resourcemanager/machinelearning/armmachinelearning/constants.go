@@ -5,7 +5,7 @@
 package armmachinelearning
 
 const (
-	version20260315Preview string = "2026-03-15-preview"
+	version20260701 string = "2026-07-01"
 )
 
 // ActionType - Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
@@ -39,24 +39,6 @@ func PossibleAllocationStateValues() []AllocationState {
 	return []AllocationState{
 		AllocationStateResizing,
 		AllocationStateSteady,
-	}
-}
-
-// AllowedContentLevel - Level at which content is filtered.
-type AllowedContentLevel string
-
-const (
-	AllowedContentLevelHigh   AllowedContentLevel = "High"
-	AllowedContentLevelLow    AllowedContentLevel = "Low"
-	AllowedContentLevelMedium AllowedContentLevel = "Medium"
-)
-
-// PossibleAllowedContentLevelValues returns the possible values for the AllowedContentLevel const type.
-func PossibleAllowedContentLevelValues() []AllowedContentLevel {
-	return []AllowedContentLevel{
-		AllowedContentLevelHigh,
-		AllowedContentLevelLow,
-		AllowedContentLevelMedium,
 	}
 }
 
@@ -99,20 +81,6 @@ func PossibleAssetProvisioningStateValues() []AssetProvisioningState {
 		AssetProvisioningStateFailed,
 		AssetProvisioningStateSucceeded,
 		AssetProvisioningStateUpdating,
-	}
-}
-
-// AuthMode - Enum to determine endpoint authentication mode.
-type AuthMode string
-
-const (
-	AuthModeAAD AuthMode = "AAD"
-)
-
-// PossibleAuthModeValues returns the possible values for the AuthMode const type.
-func PossibleAuthModeValues() []AuthMode {
-	return []AuthMode{
-		AuthModeAAD,
 	}
 }
 
@@ -1066,22 +1034,6 @@ func PossibleContainerTypeValues() []ContainerType {
 	}
 }
 
-// ContentSafetyLevel - Specifies the current safety level for content safety.
-type ContentSafetyLevel string
-
-const (
-	ContentSafetyLevelBlocking ContentSafetyLevel = "Blocking"
-	ContentSafetyLevelDeferred ContentSafetyLevel = "Deferred"
-)
-
-// PossibleContentSafetyLevelValues returns the possible values for the ContentSafetyLevel const type.
-func PossibleContentSafetyLevelValues() []ContentSafetyLevel {
-	return []ContentSafetyLevel{
-		ContentSafetyLevelBlocking,
-		ContentSafetyLevelDeferred,
-	}
-}
-
 // ContentSafetyStatus - Specifies the status of content safety.
 type ContentSafetyStatus string
 
@@ -1178,51 +1130,6 @@ func PossibleDataCollectionModeValues() []DataCollectionMode {
 	}
 }
 
-// DataGenerationTaskType - Enum to determine the type of Data Generation Task.
-type DataGenerationTaskType string
-
-const (
-	// DataGenerationTaskTypeConversation - Generate conversational data (multi/single turn)
-	DataGenerationTaskTypeConversation DataGenerationTaskType = "Conversation"
-	// DataGenerationTaskTypeMath - Generate Math data for numerical responses
-	DataGenerationTaskTypeMath DataGenerationTaskType = "Math"
-	// DataGenerationTaskTypeNli - Generate Natural Language Inference data
-	DataGenerationTaskTypeNli DataGenerationTaskType = "Nli"
-	// DataGenerationTaskTypeNluQa - Generate Natural Language Understanding data for Question Answering data
-	DataGenerationTaskTypeNluQa DataGenerationTaskType = "NluQa"
-	// DataGenerationTaskTypeSummarization - Generate Key Summary for an Article
-	DataGenerationTaskTypeSummarization DataGenerationTaskType = "Summarization"
-)
-
-// PossibleDataGenerationTaskTypeValues returns the possible values for the DataGenerationTaskType const type.
-func PossibleDataGenerationTaskTypeValues() []DataGenerationTaskType {
-	return []DataGenerationTaskType{
-		DataGenerationTaskTypeConversation,
-		DataGenerationTaskTypeMath,
-		DataGenerationTaskTypeNli,
-		DataGenerationTaskTypeNluQa,
-		DataGenerationTaskTypeSummarization,
-	}
-}
-
-// DataGenerationType - Enum to determine the type of Data Generation.
-type DataGenerationType string
-
-const (
-	// DataGenerationTypeDataGeneration - Synthetic Data Generation
-	DataGenerationTypeDataGeneration DataGenerationType = "DataGeneration"
-	// DataGenerationTypeLabelGeneration - Label Generation by Teacher Model Inferencing
-	DataGenerationTypeLabelGeneration DataGenerationType = "LabelGeneration"
-)
-
-// PossibleDataGenerationTypeValues returns the possible values for the DataGenerationType const type.
-func PossibleDataGenerationTypeValues() []DataGenerationType {
-	return []DataGenerationType{
-		DataGenerationTypeDataGeneration,
-		DataGenerationTypeLabelGeneration,
-	}
-}
-
 // DataReferenceCredentialType - Enum to determine the DataReference credentials type.
 type DataReferenceCredentialType string
 
@@ -1283,70 +1190,6 @@ func PossibleDatastoreTypeValues() []DatastoreType {
 	}
 }
 
-type DefaultActionType string
-
-const (
-	DefaultActionTypeAllow DefaultActionType = "Allow"
-	DefaultActionTypeDeny  DefaultActionType = "Deny"
-)
-
-// PossibleDefaultActionTypeValues returns the possible values for the DefaultActionType const type.
-func PossibleDefaultActionTypeValues() []DefaultActionType {
-	return []DefaultActionType{
-		DefaultActionTypeAllow,
-		DefaultActionTypeDeny,
-	}
-}
-
-type DefaultResourceProvisioningState string
-
-const (
-	DefaultResourceProvisioningStateAccepted   DefaultResourceProvisioningState = "Accepted"
-	DefaultResourceProvisioningStateCanceled   DefaultResourceProvisioningState = "Canceled"
-	DefaultResourceProvisioningStateCreating   DefaultResourceProvisioningState = "Creating"
-	DefaultResourceProvisioningStateDeleting   DefaultResourceProvisioningState = "Deleting"
-	DefaultResourceProvisioningStateDisabled   DefaultResourceProvisioningState = "Disabled"
-	DefaultResourceProvisioningStateFailed     DefaultResourceProvisioningState = "Failed"
-	DefaultResourceProvisioningStateNotStarted DefaultResourceProvisioningState = "NotStarted"
-	DefaultResourceProvisioningStateScaling    DefaultResourceProvisioningState = "Scaling"
-	DefaultResourceProvisioningStateSucceeded  DefaultResourceProvisioningState = "Succeeded"
-	DefaultResourceProvisioningStateUpdating   DefaultResourceProvisioningState = "Updating"
-)
-
-// PossibleDefaultResourceProvisioningStateValues returns the possible values for the DefaultResourceProvisioningState const type.
-func PossibleDefaultResourceProvisioningStateValues() []DefaultResourceProvisioningState {
-	return []DefaultResourceProvisioningState{
-		DefaultResourceProvisioningStateAccepted,
-		DefaultResourceProvisioningStateCanceled,
-		DefaultResourceProvisioningStateCreating,
-		DefaultResourceProvisioningStateDeleting,
-		DefaultResourceProvisioningStateDisabled,
-		DefaultResourceProvisioningStateFailed,
-		DefaultResourceProvisioningStateNotStarted,
-		DefaultResourceProvisioningStateScaling,
-		DefaultResourceProvisioningStateSucceeded,
-		DefaultResourceProvisioningStateUpdating,
-	}
-}
-
-// DeploymentModelVersionUpgradeOption - Deployment model version upgrade option.
-type DeploymentModelVersionUpgradeOption string
-
-const (
-	DeploymentModelVersionUpgradeOptionNoAutoUpgrade                  DeploymentModelVersionUpgradeOption = "NoAutoUpgrade"
-	DeploymentModelVersionUpgradeOptionOnceCurrentVersionExpired      DeploymentModelVersionUpgradeOption = "OnceCurrentVersionExpired"
-	DeploymentModelVersionUpgradeOptionOnceNewDefaultVersionAvailable DeploymentModelVersionUpgradeOption = "OnceNewDefaultVersionAvailable"
-)
-
-// PossibleDeploymentModelVersionUpgradeOptionValues returns the possible values for the DeploymentModelVersionUpgradeOption const type.
-func PossibleDeploymentModelVersionUpgradeOptionValues() []DeploymentModelVersionUpgradeOption {
-	return []DeploymentModelVersionUpgradeOption{
-		DeploymentModelVersionUpgradeOptionNoAutoUpgrade,
-		DeploymentModelVersionUpgradeOptionOnceCurrentVersionExpired,
-		DeploymentModelVersionUpgradeOptionOnceNewDefaultVersionAvailable,
-	}
-}
-
 // DeploymentProvisioningState - Possible values for DeploymentProvisioningState.
 type DeploymentProvisioningState string
 
@@ -1395,10 +1238,8 @@ func PossibleDiagnoseResultLevelValues() []DiagnoseResultLevel {
 type DistributionType string
 
 const (
-	DistributionTypeMpi     DistributionType = "Mpi"
-	DistributionTypePyTorch DistributionType = "PyTorch"
-	// DistributionTypeRay - Ray distribution type.
-	DistributionTypeRay        DistributionType = "Ray"
+	DistributionTypeMpi        DistributionType = "Mpi"
+	DistributionTypePyTorch    DistributionType = "PyTorch"
 	DistributionTypeTensorFlow DistributionType = "TensorFlow"
 )
 
@@ -1407,7 +1248,6 @@ func PossibleDistributionTypeValues() []DistributionType {
 	return []DistributionType{
 		DistributionTypeMpi,
 		DistributionTypePyTorch,
-		DistributionTypeRay,
 		DistributionTypeTensorFlow,
 	}
 }
@@ -1561,30 +1401,6 @@ func PossibleEndpointServiceConnectionStatusValues() []EndpointServiceConnection
 	}
 }
 
-// EndpointType - Type of the endpoint.
-type EndpointType string
-
-const (
-	EndpointTypeAzureContentSafety    EndpointType = "Azure.ContentSafety"
-	EndpointTypeAzureLlama            EndpointType = "Azure.Llama"
-	EndpointTypeAzureOpenAI           EndpointType = "Azure.OpenAI"
-	EndpointTypeAzureSpeech           EndpointType = "Azure.Speech"
-	EndpointTypeManagedOnlineEndpoint EndpointType = "managedOnlineEndpoint"
-	EndpointTypeServerlessEndpoint    EndpointType = "serverlessEndpoint"
-)
-
-// PossibleEndpointTypeValues returns the possible values for the EndpointType const type.
-func PossibleEndpointTypeValues() []EndpointType {
-	return []EndpointType{
-		EndpointTypeAzureContentSafety,
-		EndpointTypeAzureLlama,
-		EndpointTypeAzureOpenAI,
-		EndpointTypeAzureSpeech,
-		EndpointTypeManagedOnlineEndpoint,
-		EndpointTypeServerlessEndpoint,
-	}
-}
-
 // EnvironmentType - Environment type is either user created or curated by Azure ML service
 type EnvironmentType string
 
@@ -1710,39 +1526,6 @@ func PossibleFeaturizationModeValues() []FeaturizationMode {
 		FeaturizationModeAuto,
 		FeaturizationModeCustom,
 		FeaturizationModeOff,
-	}
-}
-
-type FineTuningTaskType string
-
-const (
-	FineTuningTaskTypeChatCompletion            FineTuningTaskType = "ChatCompletion"
-	FineTuningTaskTypeImageClassification       FineTuningTaskType = "ImageClassification"
-	FineTuningTaskTypeImageInstanceSegmentation FineTuningTaskType = "ImageInstanceSegmentation"
-	FineTuningTaskTypeImageObjectDetection      FineTuningTaskType = "ImageObjectDetection"
-	FineTuningTaskTypeQuestionAnswering         FineTuningTaskType = "QuestionAnswering"
-	FineTuningTaskTypeTextClassification        FineTuningTaskType = "TextClassification"
-	FineTuningTaskTypeTextCompletion            FineTuningTaskType = "TextCompletion"
-	FineTuningTaskTypeTextSummarization         FineTuningTaskType = "TextSummarization"
-	FineTuningTaskTypeTextTranslation           FineTuningTaskType = "TextTranslation"
-	FineTuningTaskTypeTokenClassification       FineTuningTaskType = "TokenClassification"
-	FineTuningTaskTypeVideoMultiObjectTracking  FineTuningTaskType = "VideoMultiObjectTracking"
-)
-
-// PossibleFineTuningTaskTypeValues returns the possible values for the FineTuningTaskType const type.
-func PossibleFineTuningTaskTypeValues() []FineTuningTaskType {
-	return []FineTuningTaskType{
-		FineTuningTaskTypeChatCompletion,
-		FineTuningTaskTypeImageClassification,
-		FineTuningTaskTypeImageInstanceSegmentation,
-		FineTuningTaskTypeImageObjectDetection,
-		FineTuningTaskTypeQuestionAnswering,
-		FineTuningTaskTypeTextClassification,
-		FineTuningTaskTypeTextCompletion,
-		FineTuningTaskTypeTextSummarization,
-		FineTuningTaskTypeTextTranslation,
-		FineTuningTaskTypeTokenClassification,
-		FineTuningTaskTypeVideoMultiObjectTracking,
 	}
 }
 
@@ -2164,13 +1947,11 @@ func PossibleJobTierValues() []JobTier {
 type JobType string
 
 const (
-	JobTypeAutoML       JobType = "AutoML"
-	JobTypeCommand      JobType = "Command"
-	JobTypeDistillation JobType = "Distillation"
-	JobTypeFineTuning   JobType = "FineTuning"
-	JobTypePipeline     JobType = "Pipeline"
-	JobTypeSpark        JobType = "Spark"
-	JobTypeSweep        JobType = "Sweep"
+	JobTypeAutoML   JobType = "AutoML"
+	JobTypeCommand  JobType = "Command"
+	JobTypePipeline JobType = "Pipeline"
+	JobTypeSpark    JobType = "Spark"
+	JobTypeSweep    JobType = "Sweep"
 )
 
 // PossibleJobTypeValues returns the possible values for the JobType const type.
@@ -2178,8 +1959,6 @@ func PossibleJobTypeValues() []JobType {
 	return []JobType{
 		JobTypeAutoML,
 		JobTypeCommand,
-		JobTypeDistillation,
-		JobTypeFineTuning,
 		JobTypePipeline,
 		JobTypeSpark,
 		JobTypeSweep,
@@ -2299,29 +2078,6 @@ func PossibleManagedNetworkKindValues() []ManagedNetworkKind {
 	return []ManagedNetworkKind{
 		ManagedNetworkKindV1,
 		ManagedNetworkKindV2,
-	}
-}
-
-type ManagedNetworkProvisioningState string
-
-const (
-	ManagedNetworkProvisioningStateDeferred  ManagedNetworkProvisioningState = "Deferred"
-	ManagedNetworkProvisioningStateDeleted   ManagedNetworkProvisioningState = "Deleted"
-	ManagedNetworkProvisioningStateDeleting  ManagedNetworkProvisioningState = "Deleting"
-	ManagedNetworkProvisioningStateFailed    ManagedNetworkProvisioningState = "Failed"
-	ManagedNetworkProvisioningStateSucceeded ManagedNetworkProvisioningState = "Succeeded"
-	ManagedNetworkProvisioningStateUpdating  ManagedNetworkProvisioningState = "Updating"
-)
-
-// PossibleManagedNetworkProvisioningStateValues returns the possible values for the ManagedNetworkProvisioningState const type.
-func PossibleManagedNetworkProvisioningStateValues() []ManagedNetworkProvisioningState {
-	return []ManagedNetworkProvisioningState{
-		ManagedNetworkProvisioningStateDeferred,
-		ManagedNetworkProvisioningStateDeleted,
-		ManagedNetworkProvisioningStateDeleting,
-		ManagedNetworkProvisioningStateFailed,
-		ManagedNetworkProvisioningStateSucceeded,
-		ManagedNetworkProvisioningStateUpdating,
 	}
 }
 
@@ -2468,56 +2224,6 @@ func PossibleMaterializationStoreTypeValues() []MaterializationStoreType {
 		MaterializationStoreTypeOffline,
 		MaterializationStoreTypeOnline,
 		MaterializationStoreTypeOnlineAndOffline,
-	}
-}
-
-// MlflowAutologger - Indicates whether mlflow autologger is enabled for notebooks.
-type MlflowAutologger string
-
-const (
-	MlflowAutologgerDisabled MlflowAutologger = "Disabled"
-	MlflowAutologgerEnabled  MlflowAutologger = "Enabled"
-)
-
-// PossibleMlflowAutologgerValues returns the possible values for the MlflowAutologger const type.
-func PossibleMlflowAutologgerValues() []MlflowAutologger {
-	return []MlflowAutologger{
-		MlflowAutologgerDisabled,
-		MlflowAutologgerEnabled,
-	}
-}
-
-// ModelLifecycleStatus - Model lifecycle status.
-type ModelLifecycleStatus string
-
-const (
-	ModelLifecycleStatusGenerallyAvailable ModelLifecycleStatus = "GenerallyAvailable"
-	ModelLifecycleStatusPreview            ModelLifecycleStatus = "Preview"
-)
-
-// PossibleModelLifecycleStatusValues returns the possible values for the ModelLifecycleStatus const type.
-func PossibleModelLifecycleStatusValues() []ModelLifecycleStatus {
-	return []ModelLifecycleStatus{
-		ModelLifecycleStatusGenerallyAvailable,
-		ModelLifecycleStatusPreview,
-	}
-}
-
-// ModelProvider - Enum to determine the type of fine tuning.
-type ModelProvider string
-
-const (
-	// ModelProviderAzureOpenAI - Fine tuning using Azure Open AI model.
-	ModelProviderAzureOpenAI ModelProvider = "AzureOpenAI"
-	// ModelProviderCustom - Fine tuning using custom model.
-	ModelProviderCustom ModelProvider = "Custom"
-)
-
-// PossibleModelProviderValues returns the possible values for the ModelProvider const type.
-func PossibleModelProviderValues() []ModelProvider {
-	return []ModelProvider{
-		ModelProviderAzureOpenAI,
-		ModelProviderCustom,
 	}
 }
 
@@ -3141,30 +2847,6 @@ func PossiblePendingUploadTypeValues() []PendingUploadType {
 	}
 }
 
-// PoolProvisioningState - State of pool related resources provisioning.
-type PoolProvisioningState string
-
-const (
-	PoolProvisioningStateCanceled  PoolProvisioningState = "Canceled"
-	PoolProvisioningStateCreating  PoolProvisioningState = "Creating"
-	PoolProvisioningStateDeleting  PoolProvisioningState = "Deleting"
-	PoolProvisioningStateFailed    PoolProvisioningState = "Failed"
-	PoolProvisioningStateSucceeded PoolProvisioningState = "Succeeded"
-	PoolProvisioningStateUpdating  PoolProvisioningState = "Updating"
-)
-
-// PossiblePoolProvisioningStateValues returns the possible values for the PoolProvisioningState const type.
-func PossiblePoolProvisioningStateValues() []PoolProvisioningState {
-	return []PoolProvisioningState{
-		PoolProvisioningStateCanceled,
-		PoolProvisioningStateCreating,
-		PoolProvisioningStateDeleting,
-		PoolProvisioningStateFailed,
-		PoolProvisioningStateSucceeded,
-		PoolProvisioningStateUpdating,
-	}
-}
-
 // PrivateEndpointConnectionProvisioningState - The current provisioning state.
 type PrivateEndpointConnectionProvisioningState string
 
@@ -3275,56 +2957,6 @@ const (
 func PossibleQuotaUnitValues() []QuotaUnit {
 	return []QuotaUnit{
 		QuotaUnitCount,
-	}
-}
-
-// RaiPolicyContentSource - Content source to apply the Content Filters.
-type RaiPolicyContentSource string
-
-const (
-	RaiPolicyContentSourceCompletion RaiPolicyContentSource = "Completion"
-	RaiPolicyContentSourcePrompt     RaiPolicyContentSource = "Prompt"
-)
-
-// PossibleRaiPolicyContentSourceValues returns the possible values for the RaiPolicyContentSource const type.
-func PossibleRaiPolicyContentSourceValues() []RaiPolicyContentSource {
-	return []RaiPolicyContentSource{
-		RaiPolicyContentSourceCompletion,
-		RaiPolicyContentSourcePrompt,
-	}
-}
-
-// RaiPolicyMode - Content Filters mode.
-type RaiPolicyMode string
-
-const (
-	RaiPolicyModeBlocking RaiPolicyMode = "Blocking"
-	RaiPolicyModeDefault  RaiPolicyMode = "Default"
-	RaiPolicyModeDeferred RaiPolicyMode = "Deferred"
-)
-
-// PossibleRaiPolicyModeValues returns the possible values for the RaiPolicyMode const type.
-func PossibleRaiPolicyModeValues() []RaiPolicyMode {
-	return []RaiPolicyMode{
-		RaiPolicyModeBlocking,
-		RaiPolicyModeDefault,
-		RaiPolicyModeDeferred,
-	}
-}
-
-// RaiPolicyType - Content Filters policy type.
-type RaiPolicyType string
-
-const (
-	RaiPolicyTypeSystemManaged RaiPolicyType = "SystemManaged"
-	RaiPolicyTypeUserManaged   RaiPolicyType = "UserManaged"
-)
-
-// PossibleRaiPolicyTypeValues returns the possible values for the RaiPolicyType const type.
-func PossibleRaiPolicyTypeValues() []RaiPolicyType {
-	return []RaiPolicyType{
-		RaiPolicyTypeSystemManaged,
-		RaiPolicyTypeUserManaged,
 	}
 }
 
@@ -3881,21 +3513,6 @@ func PossibleServerlessInferenceEndpointAuthModeValues() []ServerlessInferenceEn
 	}
 }
 
-type ServiceAccountKeyName string
-
-const (
-	ServiceAccountKeyNameKey1 ServiceAccountKeyName = "Key1"
-	ServiceAccountKeyNameKey2 ServiceAccountKeyName = "Key2"
-)
-
-// PossibleServiceAccountKeyNameValues returns the possible values for the ServiceAccountKeyName const type.
-func PossibleServiceAccountKeyNameValues() []ServiceAccountKeyName {
-	return []ServiceAccountKeyName{
-		ServiceAccountKeyNameKey1,
-		ServiceAccountKeyNameKey2,
-	}
-}
-
 type ServiceDataAccessAuthIdentity string
 
 const (
@@ -4386,27 +4003,6 @@ func PossibleVolumeDefinitionTypeValues() []VolumeDefinitionType {
 		VolumeDefinitionTypeNpipe,
 		VolumeDefinitionTypeTmpfs,
 		VolumeDefinitionTypeVolume,
-	}
-}
-
-type VulnerabilityRisk string
-
-const (
-	VulnerabilityRiskCRITICAL VulnerabilityRisk = "CRITICAL"
-	VulnerabilityRiskHIGH     VulnerabilityRisk = "HIGH"
-	VulnerabilityRiskLOW      VulnerabilityRisk = "LOW"
-	VulnerabilityRiskMEDIUM   VulnerabilityRisk = "MEDIUM"
-	VulnerabilityRiskUNKNOWN  VulnerabilityRisk = "UNKNOWN"
-)
-
-// PossibleVulnerabilityRiskValues returns the possible values for the VulnerabilityRisk const type.
-func PossibleVulnerabilityRiskValues() []VulnerabilityRisk {
-	return []VulnerabilityRisk{
-		VulnerabilityRiskCRITICAL,
-		VulnerabilityRiskHIGH,
-		VulnerabilityRiskLOW,
-		VulnerabilityRiskMEDIUM,
-		VulnerabilityRiskUNKNOWN,
 	}
 }
 

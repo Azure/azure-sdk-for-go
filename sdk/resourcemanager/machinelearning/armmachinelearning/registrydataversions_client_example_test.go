@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-15-preview/Registry/DataVersionBase/createOrGetStartPendingUpload.json
+// Generated from example definition: 2026-07-01/Registry/DataVersionBase/createOrGetStartPendingUpload.json
 func ExampleRegistryDataVersionsClient_CreateOrGetStartPendingUpload() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -49,7 +49,7 @@ func ExampleRegistryDataVersionsClient_CreateOrGetStartPendingUpload() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Registry/DataVersionBase/createOrUpdate.json
+// Generated from example definition: 2026-07-01/Registry/DataVersionBase/createOrUpdate.json
 func ExampleRegistryDataVersionsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -121,7 +121,7 @@ func ExampleRegistryDataVersionsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Registry/DataVersionBase/delete.json
+// Generated from example definition: 2026-07-01/Registry/DataVersionBase/delete.json
 func ExampleRegistryDataVersionsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -147,7 +147,7 @@ func ExampleRegistryDataVersionsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Registry/DataVersionBase/get.json
+// Generated from example definition: 2026-07-01/Registry/DataVersionBase/get.json
 func ExampleRegistryDataVersionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -198,7 +198,7 @@ func ExampleRegistryDataVersionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Registry/DataVersionBase/registryList.json
+// Generated from example definition: 2026-07-01/Registry/DataVersionBase/registryList.json
 func ExampleRegistryDataVersionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -226,7 +226,7 @@ func ExampleRegistryDataVersionsClient_NewListPager() {
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page = armmachinelearning.RegistryDataVersionsClientListResponse{
 		// 	DataVersionBaseResourceArmPaginatedResult: armmachinelearning.DataVersionBaseResourceArmPaginatedResult{
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.MachineLearningServices/registries/registries123/data/string/versions?api-version=2025-07-01-preview&$skip=2"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.MachineLearningServices/registries/registries123/data/string/versions?api-version=2026-07-01&$skip=2"),
 		// 		Value: []*armmachinelearning.DataVersionBase{
 		// 			{
 		// 				Name: to.Ptr("string"),

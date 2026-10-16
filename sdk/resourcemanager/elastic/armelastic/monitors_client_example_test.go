@@ -6,12 +6,13 @@ package armelastic_test
 
 import (
 	"context"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/elastic/armelastic/v3"
 	"log"
 )
 
-// Generated from example definition: 2025-06-01/Monitors_Create.json
+// Generated from example definition: 2026-03-15-preview/Monitors_Create.json
 func ExampleMonitorsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -69,8 +70,8 @@ func ExampleMonitorsClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/Monitors_Delete.json
-func ExampleMonitorsClient_BeginDelete() {
+// Generated from example definition: 2026-03-15-preview/Monitors_Delete.json
+func ExampleMonitorsClient_BeginDelete_monitorsDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -80,7 +81,8 @@ func ExampleMonitorsClient_BeginDelete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewMonitorsClient().BeginDelete(ctx, "myResourceGroup", "myMonitor", nil)
+	poller, err := clientFactory.NewMonitorsClient().BeginDelete(ctx, "myResourceGroup", "myMonitor", &armelastic.MonitorsClientBeginDeleteOptions{
+		SoftDelete: to.Ptr(false)})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -95,7 +97,34 @@ func ExampleMonitorsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/Monitors_Get.json
+// Generated from example definition: 2026-03-15-preview/Monitors_Delete_SoftDelete.json
+func ExampleMonitorsClient_BeginDelete_monitorsDeleteSoftDelete() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armelastic.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewMonitorsClient().BeginDelete(ctx, "myResourceGroup", "myMonitor", &armelastic.MonitorsClientBeginDeleteOptions{
+		SoftDelete: to.Ptr(true)})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armelastic.MonitorsClientDeleteResponse{
+	// }
+}
+
+// Generated from example definition: 2026-03-15-preview/Monitors_Get.json
 func ExampleMonitorsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -154,7 +183,7 @@ func ExampleMonitorsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/Monitors_List.json
+// Generated from example definition: 2026-03-15-preview/Monitors_List.json
 func ExampleMonitorsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -216,7 +245,7 @@ func ExampleMonitorsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-06-01/Monitors_ListByResourceGroup.json
+// Generated from example definition: 2026-03-15-preview/Monitors_ListByResourceGroup.json
 func ExampleMonitorsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -278,7 +307,7 @@ func ExampleMonitorsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-06-01/Monitors_Update.json
+// Generated from example definition: 2026-03-15-preview/Monitors_Update.json
 func ExampleMonitorsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

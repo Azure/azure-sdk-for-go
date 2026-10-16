@@ -6,6 +6,31 @@ package armazurestackhci
 
 import "encoding/json"
 
+func unmarshalClusterJobPropertiesClassification(rawMsg json.RawMessage) (ClusterJobPropertiesClassification, error) {
+	if rawMsg == nil || string(rawMsg) == "null" {
+		return nil, nil
+	}
+	var m map[string]any
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b ClusterJobPropertiesClassification
+	switch m["jobType"] {
+	case string(HciJobTypeAddServer):
+		b = &HciAddServerJobProperties{}
+	case string(HciJobTypeConfigureSdnIntegration):
+		b = &HciConfigureSdnIntegrationJobProperties{}
+	case string(HciJobTypeRepairServer):
+		b = &HciRepairServerJobProperties{}
+	default:
+		b = &ClusterJobProperties{}
+	}
+	if err := json.Unmarshal(rawMsg, b); err != nil {
+		return nil, err
+	}
+	return b, nil
+}
+
 func unmarshalEdgeDeviceClassification(rawMsg json.RawMessage) (EdgeDeviceClassification, error) {
 	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
@@ -84,6 +109,102 @@ func unmarshalEdgeDeviceJobClassificationArray(rawMsg json.RawMessage) ([]EdgeDe
 		fArray[index] = f
 	}
 	return fArray, nil
+}
+
+func unmarshalEdgeMachineDiskJobPropertiesClassification(rawMsg json.RawMessage) (EdgeMachineDiskJobPropertiesClassification, error) {
+	if rawMsg == nil || string(rawMsg) == "null" {
+		return nil, nil
+	}
+	var m map[string]any
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b EdgeMachineDiskJobPropertiesClassification
+	switch m["jobType"] {
+	case string(DiskJobTypeCreateVolume):
+		b = &CreateVolumeJobProperties{}
+	case string(DiskJobTypeSyncConfiguration):
+		b = &SyncConfigurationJobProperties{}
+	default:
+		b = &EdgeMachineDiskJobProperties{}
+	}
+	if err := json.Unmarshal(rawMsg, b); err != nil {
+		return nil, err
+	}
+	return b, nil
+}
+
+func unmarshalEdgeMachineDiskPrivilegedJobPropertiesClassification(rawMsg json.RawMessage) (EdgeMachineDiskPrivilegedJobPropertiesClassification, error) {
+	if rawMsg == nil || string(rawMsg) == "null" {
+		return nil, nil
+	}
+	var m map[string]any
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b EdgeMachineDiskPrivilegedJobPropertiesClassification
+	switch m["jobType"] {
+	case string(PrivilegedJobTypeDeleteVolume):
+		b = &DeleteVolumeJobProperties{}
+	default:
+		b = &EdgeMachineDiskPrivilegedJobProperties{}
+	}
+	if err := json.Unmarshal(rawMsg, b); err != nil {
+		return nil, err
+	}
+	return b, nil
+}
+
+func unmarshalEdgeMachineJobPropertiesClassification(rawMsg json.RawMessage) (EdgeMachineJobPropertiesClassification, error) {
+	if rawMsg == nil || string(rawMsg) == "null" {
+		return nil, nil
+	}
+	var m map[string]any
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b EdgeMachineJobPropertiesClassification
+	switch m["jobType"] {
+	case string(EdgeMachineJobTypeCollectLog):
+		b = &EdgeMachineCollectLogJobProperties{}
+	case string(EdgeMachineJobTypeDownloadOs):
+		b = &DownloadOsJobProperties{}
+	case string(EdgeMachineJobTypeProvisionOs):
+		b = &ProvisionOsJobProperties{}
+	case string(EdgeMachineJobTypeRemoteSupport):
+		b = &EdgeMachineRemoteSupportJobProperties{}
+	default:
+		b = &EdgeMachineJobProperties{}
+	}
+	if err := json.Unmarshal(rawMsg, b); err != nil {
+		return nil, err
+	}
+	return b, nil
+}
+
+func unmarshalEdgeMachineNetworkAdapterJobPropertiesClassification(rawMsg json.RawMessage) (EdgeMachineNetworkAdapterJobPropertiesClassification, error) {
+	if rawMsg == nil || string(rawMsg) == "null" {
+		return nil, nil
+	}
+	var m map[string]any
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b EdgeMachineNetworkAdapterJobPropertiesClassification
+	switch m["jobType"] {
+	case string(NetworkAdapterJobTypeApplyConfiguration):
+		b = &ApplyConfigurationNetworkAdapterJobProperties{}
+	case string(NetworkAdapterJobTypeForcePush):
+		b = &ForcePushNetworkAdapterJobProperties{}
+	case string(NetworkAdapterJobTypeSyncConfiguration):
+		b = &SyncConfigurationNetworkAdapterJobProperties{}
+	default:
+		b = &EdgeMachineNetworkAdapterJobProperties{}
+	}
+	if err := json.Unmarshal(rawMsg, b); err != nil {
+		return nil, err
+	}
+	return b, nil
 }
 
 func unmarshalHciEdgeDeviceJobPropertiesClassification(rawMsg json.RawMessage) (HciEdgeDeviceJobPropertiesClassification, error) {

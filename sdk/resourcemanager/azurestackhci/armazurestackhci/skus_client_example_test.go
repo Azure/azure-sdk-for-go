@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-04-30/GetSku.json
+// Generated from example definition: 2026-10-01/GetSku.json
 func ExampleSKUsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -54,7 +54,7 @@ func ExampleSKUsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-04-30/ListSkusByOffer.json
+// Generated from example definition: 2026-10-01/ListSkusByOffer.json
 func ExampleSKUsClient_NewListByOfferPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

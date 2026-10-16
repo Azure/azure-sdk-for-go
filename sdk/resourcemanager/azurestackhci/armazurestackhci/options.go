@@ -62,6 +62,29 @@ type ArcSettingsClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
+// ClusterJobsClientBeginCreateOrUpdateOptions contains the optional parameters for the ClusterJobsClient.BeginCreateOrUpdate
+// method.
+type ClusterJobsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ClusterJobsClientBeginDeleteOptions contains the optional parameters for the ClusterJobsClient.BeginDelete method.
+type ClusterJobsClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ClusterJobsClientGetOptions contains the optional parameters for the ClusterJobsClient.Get method.
+type ClusterJobsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ClusterJobsClientListOptions contains the optional parameters for the ClusterJobsClient.NewListPager method.
+type ClusterJobsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
 // ClustersClientBeginConfigureRemoteSupportOptions contains the optional parameters for the ClustersClient.BeginConfigureRemoteSupport
 // method.
 type ClustersClientBeginConfigureRemoteSupportOptions struct {
@@ -214,6 +237,272 @@ type EdgeDevicesClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
+// EdgeMachineDeploymentSettingsClientBeginCreateOrUpdateOptions contains the optional parameters for the EdgeMachineDeploymentSettingsClient.BeginCreateOrUpdate
+// method.
+type EdgeMachineDeploymentSettingsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// EdgeMachineDeploymentSettingsClientBeginDeleteOptions contains the optional parameters for the EdgeMachineDeploymentSettingsClient.BeginDelete
+// method.
+type EdgeMachineDeploymentSettingsClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// EdgeMachineDeploymentSettingsClientGetOptions contains the optional parameters for the EdgeMachineDeploymentSettingsClient.Get
+// method.
+type EdgeMachineDeploymentSettingsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// EdgeMachineDeploymentSettingsClientListByEdgeMachineOptions contains the optional parameters for the EdgeMachineDeploymentSettingsClient.NewListByEdgeMachinePager
+// method.
+type EdgeMachineDeploymentSettingsClientListByEdgeMachineOptions struct {
+	// placeholder for future optional parameters
+}
+
+// EdgeMachineDiskJobsClientBeginCreateOrUpdateOptions contains the optional parameters for the EdgeMachineDiskJobsClient.BeginCreateOrUpdate
+// method.
+type EdgeMachineDiskJobsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// EdgeMachineDiskJobsClientBeginDeleteOptions contains the optional parameters for the EdgeMachineDiskJobsClient.BeginDelete
+// method.
+type EdgeMachineDiskJobsClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// EdgeMachineDiskJobsClientGetOptions contains the optional parameters for the EdgeMachineDiskJobsClient.Get method.
+type EdgeMachineDiskJobsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// EdgeMachineDiskJobsClientListOptions contains the optional parameters for the EdgeMachineDiskJobsClient.NewListPager method.
+type EdgeMachineDiskJobsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// EdgeMachineDiskPrivilegedJobsClientBeginCreateOrUpdateOptions contains the optional parameters for the EdgeMachineDiskPrivilegedJobsClient.BeginCreateOrUpdate
+// method.
+type EdgeMachineDiskPrivilegedJobsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// EdgeMachineDiskPrivilegedJobsClientBeginDeleteOptions contains the optional parameters for the EdgeMachineDiskPrivilegedJobsClient.BeginDelete
+// method.
+type EdgeMachineDiskPrivilegedJobsClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// EdgeMachineDiskPrivilegedJobsClientGetOptions contains the optional parameters for the EdgeMachineDiskPrivilegedJobsClient.Get
+// method.
+type EdgeMachineDiskPrivilegedJobsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// EdgeMachineDiskPrivilegedJobsClientListOptions contains the optional parameters for the EdgeMachineDiskPrivilegedJobsClient.NewListPager
+// method.
+type EdgeMachineDiskPrivilegedJobsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// EdgeMachineDisksClientBeginCreateOrUpdateOptions contains the optional parameters for the EdgeMachineDisksClient.BeginCreateOrUpdate
+// method.
+type EdgeMachineDisksClientBeginCreateOrUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// EdgeMachineDisksClientBeginDeleteOptions contains the optional parameters for the EdgeMachineDisksClient.BeginDelete method.
+type EdgeMachineDisksClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// EdgeMachineDisksClientGetOptions contains the optional parameters for the EdgeMachineDisksClient.Get method.
+type EdgeMachineDisksClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// EdgeMachineDisksClientListOptions contains the optional parameters for the EdgeMachineDisksClient.NewListPager method.
+type EdgeMachineDisksClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// EdgeMachineJobsClientBeginCreateOrUpdateOptions contains the optional parameters for the EdgeMachineJobsClient.BeginCreateOrUpdate
+// method.
+type EdgeMachineJobsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// EdgeMachineJobsClientBeginDeleteOptions contains the optional parameters for the EdgeMachineJobsClient.BeginDelete method.
+type EdgeMachineJobsClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// EdgeMachineJobsClientGetOptions contains the optional parameters for the EdgeMachineJobsClient.Get method.
+type EdgeMachineJobsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// EdgeMachineJobsClientListOptions contains the optional parameters for the EdgeMachineJobsClient.NewListPager method.
+type EdgeMachineJobsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// EdgeMachineNetworkAdapterJobsClientBeginCreateOrUpdateOptions contains the optional parameters for the EdgeMachineNetworkAdapterJobsClient.BeginCreateOrUpdate
+// method.
+type EdgeMachineNetworkAdapterJobsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// EdgeMachineNetworkAdapterJobsClientBeginDeleteOptions contains the optional parameters for the EdgeMachineNetworkAdapterJobsClient.BeginDelete
+// method.
+type EdgeMachineNetworkAdapterJobsClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// EdgeMachineNetworkAdapterJobsClientGetOptions contains the optional parameters for the EdgeMachineNetworkAdapterJobsClient.Get
+// method.
+type EdgeMachineNetworkAdapterJobsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// EdgeMachineNetworkAdapterJobsClientListOptions contains the optional parameters for the EdgeMachineNetworkAdapterJobsClient.NewListPager
+// method.
+type EdgeMachineNetworkAdapterJobsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// EdgeMachineNetworkAdaptersClientGetOptions contains the optional parameters for the EdgeMachineNetworkAdaptersClient.Get
+// method.
+type EdgeMachineNetworkAdaptersClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// EdgeMachineNetworkAdaptersClientListOptions contains the optional parameters for the EdgeMachineNetworkAdaptersClient.NewListPager
+// method.
+type EdgeMachineNetworkAdaptersClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// EdgeMachineSecuritySettingsOperationsClientBeginCreateOrUpdateOptions contains the optional parameters for the EdgeMachineSecuritySettingsOperationsClient.BeginCreateOrUpdate
+// method.
+type EdgeMachineSecuritySettingsOperationsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// EdgeMachineSecuritySettingsOperationsClientBeginDeleteOptions contains the optional parameters for the EdgeMachineSecuritySettingsOperationsClient.BeginDelete
+// method.
+type EdgeMachineSecuritySettingsOperationsClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// EdgeMachineSecuritySettingsOperationsClientGetOptions contains the optional parameters for the EdgeMachineSecuritySettingsOperationsClient.Get
+// method.
+type EdgeMachineSecuritySettingsOperationsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// EdgeMachineSecuritySettingsOperationsClientListByEdgeMachineOptions contains the optional parameters for the EdgeMachineSecuritySettingsOperationsClient.NewListByEdgeMachinePager
+// method.
+type EdgeMachineSecuritySettingsOperationsClientListByEdgeMachineOptions struct {
+	// placeholder for future optional parameters
+}
+
+// EdgeMachineVolumesClientBeginCreateOrUpdateOptions contains the optional parameters for the EdgeMachineVolumesClient.BeginCreateOrUpdate
+// method.
+type EdgeMachineVolumesClientBeginCreateOrUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// EdgeMachineVolumesClientBeginDeleteOptions contains the optional parameters for the EdgeMachineVolumesClient.BeginDelete
+// method.
+type EdgeMachineVolumesClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// EdgeMachineVolumesClientGetOptions contains the optional parameters for the EdgeMachineVolumesClient.Get method.
+type EdgeMachineVolumesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// EdgeMachineVolumesClientListOptions contains the optional parameters for the EdgeMachineVolumesClient.NewListPager method.
+type EdgeMachineVolumesClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// EdgeMachinesClientBeginCreateOrUpdateOptions contains the optional parameters for the EdgeMachinesClient.BeginCreateOrUpdate
+// method.
+type EdgeMachinesClientBeginCreateOrUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// EdgeMachinesClientBeginDeleteOptions contains the optional parameters for the EdgeMachinesClient.BeginDelete method.
+type EdgeMachinesClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// EdgeMachinesClientBeginRefreshApplicableUpdatesOptions contains the optional parameters for the EdgeMachinesClient.BeginRefreshApplicableUpdates
+// method.
+type EdgeMachinesClientBeginRefreshApplicableUpdatesOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// EdgeMachinesClientBeginRefreshSecuritySettingsOptions contains the optional parameters for the EdgeMachinesClient.BeginRefreshSecuritySettings
+// method.
+type EdgeMachinesClientBeginRefreshSecuritySettingsOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// EdgeMachinesClientBeginUpdateOptions contains the optional parameters for the EdgeMachinesClient.BeginUpdate method.
+type EdgeMachinesClientBeginUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// EdgeMachinesClientBeginValidateOptions contains the optional parameters for the EdgeMachinesClient.BeginValidate method.
+type EdgeMachinesClientBeginValidateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// EdgeMachinesClientGetOptions contains the optional parameters for the EdgeMachinesClient.Get method.
+type EdgeMachinesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// EdgeMachinesClientListByResourceGroupOptions contains the optional parameters for the EdgeMachinesClient.NewListByResourceGroupPager
+// method.
+type EdgeMachinesClientListByResourceGroupOptions struct {
+	// placeholder for future optional parameters
+}
+
+// EdgeMachinesClientListBySubscriptionOptions contains the optional parameters for the EdgeMachinesClient.NewListBySubscriptionPager
+// method.
+type EdgeMachinesClientListBySubscriptionOptions struct {
+	// placeholder for future optional parameters
+}
+
 // ExtensionsClientBeginCreateOptions contains the optional parameters for the ExtensionsClient.BeginCreate method.
 type ExtensionsClientBeginCreateOptions struct {
 	// Resumes the long-running operation from the provided token.
@@ -269,6 +558,22 @@ type OffersClientListByPublisherOptions struct {
 
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 type OperationsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// OsImagesClientGetOptions contains the optional parameters for the OsImagesClient.Get method.
+type OsImagesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// OsImagesClientListBySubscriptionLocationResourceOptions contains the optional parameters for the OsImagesClient.NewListBySubscriptionLocationResourcePager
+// method.
+type OsImagesClientListBySubscriptionLocationResourceOptions struct {
+	// placeholder for future optional parameters
+}
+
+// OwnershipVouchersClientValidateOptions contains the optional parameters for the OwnershipVouchersClient.Validate method.
+type OwnershipVouchersClientValidateOptions struct {
 	// placeholder for future optional parameters
 }
 

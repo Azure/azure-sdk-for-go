@@ -25,10 +25,6 @@ type ClustersServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginConfigureRemoteSupport func(ctx context.Context, resourceGroupName string, clusterName string, remoteSupportRequest armazurestackhci.RemoteSupportRequest, options *armazurestackhci.ClustersClientBeginConfigureRemoteSupportOptions) (resp azfake.PollerResponder[armazurestackhci.ClustersClientConfigureRemoteSupportResponse], errResp azfake.ErrorResponder)
 
-	// Create is the fake for method ClustersClient.Create
-	// HTTP status codes to indicate success: http.StatusOK
-	Create func(ctx context.Context, resourceGroupName string, clusterName string, cluster armazurestackhci.Cluster, options *armazurestackhci.ClustersClientCreateOptions) (resp azfake.Responder[armazurestackhci.ClustersClientCreateResponse], errResp azfake.ErrorResponder)
-
 	// BeginCreateIdentity is the fake for method ClustersClient.BeginCreateIdentity
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginCreateIdentity func(ctx context.Context, resourceGroupName string, clusterName string, options *armazurestackhci.ClustersClientBeginCreateIdentityOptions) (resp azfake.PollerResponder[armazurestackhci.ClustersClientCreateIdentityResponse], errResp azfake.ErrorResponder)
@@ -40,6 +36,22 @@ type ClustersServer struct {
 	// BeginExtendSoftwareAssuranceBenefit is the fake for method ClustersClient.BeginExtendSoftwareAssuranceBenefit
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginExtendSoftwareAssuranceBenefit func(ctx context.Context, resourceGroupName string, clusterName string, softwareAssuranceChangeRequest armazurestackhci.SoftwareAssuranceChangeRequest, options *armazurestackhci.ClustersClientBeginExtendSoftwareAssuranceBenefitOptions) (resp azfake.PollerResponder[armazurestackhci.ClustersClientExtendSoftwareAssuranceBenefitResponse], errResp azfake.ErrorResponder)
+
+	// BeginTriggerLogCollection is the fake for method ClustersClient.BeginTriggerLogCollection
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginTriggerLogCollection func(ctx context.Context, resourceGroupName string, clusterName string, logCollectionRequest armazurestackhci.LogCollectionRequest, options *armazurestackhci.ClustersClientBeginTriggerLogCollectionOptions) (resp azfake.PollerResponder[armazurestackhci.ClustersClientTriggerLogCollectionResponse], errResp azfake.ErrorResponder)
+
+	// BeginUpdateSecretsLocations is the fake for method ClustersClient.BeginUpdateSecretsLocations
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdateSecretsLocations func(ctx context.Context, resourceGroupName string, clusterName string, body armazurestackhci.SecretsLocationsChangeRequest, options *armazurestackhci.ClustersClientBeginUpdateSecretsLocationsOptions) (resp azfake.PollerResponder[armazurestackhci.ClustersClientUpdateSecretsLocationsResponse], errResp azfake.ErrorResponder)
+
+	// BeginUploadCertificate is the fake for method ClustersClient.BeginUploadCertificate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	BeginUploadCertificate func(ctx context.Context, resourceGroupName string, clusterName string, uploadCertificateRequest armazurestackhci.UploadCertificateRequest, options *armazurestackhci.ClustersClientBeginUploadCertificateOptions) (resp azfake.PollerResponder[armazurestackhci.ClustersClientUploadCertificateResponse], errResp azfake.ErrorResponder)
+
+	// Create is the fake for method ClustersClient.Create
+	// HTTP status codes to indicate success: http.StatusOK
+	Create func(ctx context.Context, resourceGroupName string, clusterName string, cluster armazurestackhci.Cluster, options *armazurestackhci.ClustersClientCreateOptions) (resp azfake.Responder[armazurestackhci.ClustersClientCreateResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method ClustersClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
@@ -53,21 +65,9 @@ type ClustersServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListBySubscriptionPager func(options *armazurestackhci.ClustersClientListBySubscriptionOptions) (resp azfake.PagerResponder[armazurestackhci.ClustersClientListBySubscriptionResponse])
 
-	// BeginTriggerLogCollection is the fake for method ClustersClient.BeginTriggerLogCollection
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginTriggerLogCollection func(ctx context.Context, resourceGroupName string, clusterName string, logCollectionRequest armazurestackhci.LogCollectionRequest, options *armazurestackhci.ClustersClientBeginTriggerLogCollectionOptions) (resp azfake.PollerResponder[armazurestackhci.ClustersClientTriggerLogCollectionResponse], errResp azfake.ErrorResponder)
-
 	// Update is the fake for method ClustersClient.Update
 	// HTTP status codes to indicate success: http.StatusOK
 	Update func(ctx context.Context, resourceGroupName string, clusterName string, cluster armazurestackhci.ClusterPatch, options *armazurestackhci.ClustersClientUpdateOptions) (resp azfake.Responder[armazurestackhci.ClustersClientUpdateResponse], errResp azfake.ErrorResponder)
-
-	// BeginUpdateSecretsLocations is the fake for method ClustersClient.BeginUpdateSecretsLocations
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdateSecretsLocations func(ctx context.Context, resourceGroupName string, clusterName string, body armazurestackhci.SecretsLocationsChangeRequest, options *armazurestackhci.ClustersClientBeginUpdateSecretsLocationsOptions) (resp azfake.PollerResponder[armazurestackhci.ClustersClientUpdateSecretsLocationsResponse], errResp azfake.ErrorResponder)
-
-	// BeginUploadCertificate is the fake for method ClustersClient.BeginUploadCertificate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginUploadCertificate func(ctx context.Context, resourceGroupName string, clusterName string, uploadCertificateRequest armazurestackhci.UploadCertificateRequest, options *armazurestackhci.ClustersClientBeginUploadCertificateOptions) (resp azfake.PollerResponder[armazurestackhci.ClustersClientUploadCertificateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewClustersServerTransport creates a new instance of ClustersServerTransport with the provided implementation.
@@ -80,11 +80,11 @@ func NewClustersServerTransport(srv *ClustersServer) *ClustersServerTransport {
 		beginCreateIdentity:                 newTracker[azfake.PollerResponder[armazurestackhci.ClustersClientCreateIdentityResponse]](),
 		beginDelete:                         newTracker[azfake.PollerResponder[armazurestackhci.ClustersClientDeleteResponse]](),
 		beginExtendSoftwareAssuranceBenefit: newTracker[azfake.PollerResponder[armazurestackhci.ClustersClientExtendSoftwareAssuranceBenefitResponse]](),
-		newListByResourceGroupPager:         newTracker[azfake.PagerResponder[armazurestackhci.ClustersClientListByResourceGroupResponse]](),
-		newListBySubscriptionPager:          newTracker[azfake.PagerResponder[armazurestackhci.ClustersClientListBySubscriptionResponse]](),
 		beginTriggerLogCollection:           newTracker[azfake.PollerResponder[armazurestackhci.ClustersClientTriggerLogCollectionResponse]](),
 		beginUpdateSecretsLocations:         newTracker[azfake.PollerResponder[armazurestackhci.ClustersClientUpdateSecretsLocationsResponse]](),
 		beginUploadCertificate:              newTracker[azfake.PollerResponder[armazurestackhci.ClustersClientUploadCertificateResponse]](),
+		newListByResourceGroupPager:         newTracker[azfake.PagerResponder[armazurestackhci.ClustersClientListByResourceGroupResponse]](),
+		newListBySubscriptionPager:          newTracker[azfake.PagerResponder[armazurestackhci.ClustersClientListBySubscriptionResponse]](),
 	}
 }
 
@@ -96,11 +96,11 @@ type ClustersServerTransport struct {
 	beginCreateIdentity                 *tracker[azfake.PollerResponder[armazurestackhci.ClustersClientCreateIdentityResponse]]
 	beginDelete                         *tracker[azfake.PollerResponder[armazurestackhci.ClustersClientDeleteResponse]]
 	beginExtendSoftwareAssuranceBenefit *tracker[azfake.PollerResponder[armazurestackhci.ClustersClientExtendSoftwareAssuranceBenefitResponse]]
-	newListByResourceGroupPager         *tracker[azfake.PagerResponder[armazurestackhci.ClustersClientListByResourceGroupResponse]]
-	newListBySubscriptionPager          *tracker[azfake.PagerResponder[armazurestackhci.ClustersClientListBySubscriptionResponse]]
 	beginTriggerLogCollection           *tracker[azfake.PollerResponder[armazurestackhci.ClustersClientTriggerLogCollectionResponse]]
 	beginUpdateSecretsLocations         *tracker[azfake.PollerResponder[armazurestackhci.ClustersClientUpdateSecretsLocationsResponse]]
 	beginUploadCertificate              *tracker[azfake.PollerResponder[armazurestackhci.ClustersClientUploadCertificateResponse]]
+	newListByResourceGroupPager         *tracker[azfake.PagerResponder[armazurestackhci.ClustersClientListByResourceGroupResponse]]
+	newListBySubscriptionPager          *tracker[azfake.PagerResponder[armazurestackhci.ClustersClientListBySubscriptionResponse]]
 }
 
 // Do implements the policy.Transporter interface for ClustersServerTransport.
@@ -126,28 +126,28 @@ func (c *ClustersServerTransport) dispatchToMethodFake(req *http.Request, method
 			switch method {
 			case "ClustersClient.BeginConfigureRemoteSupport":
 				res.resp, res.err = c.dispatchBeginConfigureRemoteSupport(req)
-			case "ClustersClient.Create":
-				res.resp, res.err = c.dispatchCreate(req)
 			case "ClustersClient.BeginCreateIdentity":
 				res.resp, res.err = c.dispatchBeginCreateIdentity(req)
 			case "ClustersClient.BeginDelete":
 				res.resp, res.err = c.dispatchBeginDelete(req)
 			case "ClustersClient.BeginExtendSoftwareAssuranceBenefit":
 				res.resp, res.err = c.dispatchBeginExtendSoftwareAssuranceBenefit(req)
+			case "ClustersClient.BeginTriggerLogCollection":
+				res.resp, res.err = c.dispatchBeginTriggerLogCollection(req)
+			case "ClustersClient.BeginUpdateSecretsLocations":
+				res.resp, res.err = c.dispatchBeginUpdateSecretsLocations(req)
+			case "ClustersClient.BeginUploadCertificate":
+				res.resp, res.err = c.dispatchBeginUploadCertificate(req)
+			case "ClustersClient.Create":
+				res.resp, res.err = c.dispatchCreate(req)
 			case "ClustersClient.Get":
 				res.resp, res.err = c.dispatchGet(req)
 			case "ClustersClient.NewListByResourceGroupPager":
 				res.resp, res.err = c.dispatchNewListByResourceGroupPager(req)
 			case "ClustersClient.NewListBySubscriptionPager":
 				res.resp, res.err = c.dispatchNewListBySubscriptionPager(req)
-			case "ClustersClient.BeginTriggerLogCollection":
-				res.resp, res.err = c.dispatchBeginTriggerLogCollection(req)
 			case "ClustersClient.Update":
 				res.resp, res.err = c.dispatchUpdate(req)
-			case "ClustersClient.BeginUpdateSecretsLocations":
-				res.resp, res.err = c.dispatchBeginUpdateSecretsLocations(req)
-			case "ClustersClient.BeginUploadCertificate":
-				res.resp, res.err = c.dispatchBeginUploadCertificate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -209,43 +209,6 @@ func (c *ClustersServerTransport) dispatchBeginConfigureRemoteSupport(req *http.
 		c.beginConfigureRemoteSupport.remove(req)
 	}
 
-	return resp, nil
-}
-
-func (c *ClustersServerTransport) dispatchCreate(req *http.Request) (*http.Response, error) {
-	if c.srv.Create == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Create not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AzureStackHCI/clusters/(?P<clusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armazurestackhci.Cluster](req)
-	if err != nil {
-		return nil, err
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := c.srv.Create(req.Context(), resourceGroupNameParam, clusterNameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Cluster, req)
-	if err != nil {
-		return nil, err
-	}
 	return resp, nil
 }
 
@@ -385,6 +348,187 @@ func (c *ClustersServerTransport) dispatchBeginExtendSoftwareAssuranceBenefit(re
 	return resp, nil
 }
 
+func (c *ClustersServerTransport) dispatchBeginTriggerLogCollection(req *http.Request) (*http.Response, error) {
+	if c.srv.BeginTriggerLogCollection == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginTriggerLogCollection not implemented")}
+	}
+	beginTriggerLogCollection := c.beginTriggerLogCollection.get(req)
+	if beginTriggerLogCollection == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AzureStackHCI/clusters/(?P<clusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/triggerLogCollection`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armazurestackhci.LogCollectionRequest](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := c.srv.BeginTriggerLogCollection(req.Context(), resourceGroupNameParam, clusterNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginTriggerLogCollection = &respr
+		c.beginTriggerLogCollection.add(req, beginTriggerLogCollection)
+	}
+
+	resp, err := server.PollerResponderNext(beginTriggerLogCollection, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		c.beginTriggerLogCollection.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginTriggerLogCollection) {
+		c.beginTriggerLogCollection.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (c *ClustersServerTransport) dispatchBeginUpdateSecretsLocations(req *http.Request) (*http.Response, error) {
+	if c.srv.BeginUpdateSecretsLocations == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdateSecretsLocations not implemented")}
+	}
+	beginUpdateSecretsLocations := c.beginUpdateSecretsLocations.get(req)
+	if beginUpdateSecretsLocations == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AzureStackHCI/clusters/(?P<clusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/updateSecretsLocations`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armazurestackhci.SecretsLocationsChangeRequest](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := c.srv.BeginUpdateSecretsLocations(req.Context(), resourceGroupNameParam, clusterNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdateSecretsLocations = &respr
+		c.beginUpdateSecretsLocations.add(req, beginUpdateSecretsLocations)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdateSecretsLocations, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		c.beginUpdateSecretsLocations.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdateSecretsLocations) {
+		c.beginUpdateSecretsLocations.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (c *ClustersServerTransport) dispatchBeginUploadCertificate(req *http.Request) (*http.Response, error) {
+	if c.srv.BeginUploadCertificate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUploadCertificate not implemented")}
+	}
+	beginUploadCertificate := c.beginUploadCertificate.get(req)
+	if beginUploadCertificate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AzureStackHCI/clusters/(?P<clusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/uploadCertificate`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armazurestackhci.UploadCertificateRequest](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := c.srv.BeginUploadCertificate(req.Context(), resourceGroupNameParam, clusterNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUploadCertificate = &respr
+		c.beginUploadCertificate.add(req, beginUploadCertificate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUploadCertificate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		c.beginUploadCertificate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUploadCertificate) {
+		c.beginUploadCertificate.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (c *ClustersServerTransport) dispatchCreate(req *http.Request) (*http.Response, error) {
+	if c.srv.Create == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Create not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AzureStackHCI/clusters/(?P<clusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armazurestackhci.Cluster](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := c.srv.Create(req.Context(), resourceGroupNameParam, clusterNameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Cluster, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
 func (c *ClustersServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if c.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -488,54 +632,6 @@ func (c *ClustersServerTransport) dispatchNewListBySubscriptionPager(req *http.R
 	return resp, nil
 }
 
-func (c *ClustersServerTransport) dispatchBeginTriggerLogCollection(req *http.Request) (*http.Response, error) {
-	if c.srv.BeginTriggerLogCollection == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginTriggerLogCollection not implemented")}
-	}
-	beginTriggerLogCollection := c.beginTriggerLogCollection.get(req)
-	if beginTriggerLogCollection == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AzureStackHCI/clusters/(?P<clusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/triggerLogCollection`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armazurestackhci.LogCollectionRequest](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := c.srv.BeginTriggerLogCollection(req.Context(), resourceGroupNameParam, clusterNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginTriggerLogCollection = &respr
-		c.beginTriggerLogCollection.add(req, beginTriggerLogCollection)
-	}
-
-	resp, err := server.PollerResponderNext(beginTriggerLogCollection, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		c.beginTriggerLogCollection.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginTriggerLogCollection) {
-		c.beginTriggerLogCollection.remove(req)
-	}
-
-	return resp, nil
-}
-
 func (c *ClustersServerTransport) dispatchUpdate(req *http.Request) (*http.Response, error) {
 	if c.srv.Update == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Update not implemented")}
@@ -570,102 +666,6 @@ func (c *ClustersServerTransport) dispatchUpdate(req *http.Request) (*http.Respo
 	if err != nil {
 		return nil, err
 	}
-	return resp, nil
-}
-
-func (c *ClustersServerTransport) dispatchBeginUpdateSecretsLocations(req *http.Request) (*http.Response, error) {
-	if c.srv.BeginUpdateSecretsLocations == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdateSecretsLocations not implemented")}
-	}
-	beginUpdateSecretsLocations := c.beginUpdateSecretsLocations.get(req)
-	if beginUpdateSecretsLocations == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AzureStackHCI/clusters/(?P<clusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/updateSecretsLocations`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armazurestackhci.SecretsLocationsChangeRequest](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := c.srv.BeginUpdateSecretsLocations(req.Context(), resourceGroupNameParam, clusterNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdateSecretsLocations = &respr
-		c.beginUpdateSecretsLocations.add(req, beginUpdateSecretsLocations)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdateSecretsLocations, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		c.beginUpdateSecretsLocations.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdateSecretsLocations) {
-		c.beginUpdateSecretsLocations.remove(req)
-	}
-
-	return resp, nil
-}
-
-func (c *ClustersServerTransport) dispatchBeginUploadCertificate(req *http.Request) (*http.Response, error) {
-	if c.srv.BeginUploadCertificate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUploadCertificate not implemented")}
-	}
-	beginUploadCertificate := c.beginUploadCertificate.get(req)
-	if beginUploadCertificate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AzureStackHCI/clusters/(?P<clusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/uploadCertificate`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armazurestackhci.UploadCertificateRequest](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := c.srv.BeginUploadCertificate(req.Context(), resourceGroupNameParam, clusterNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUploadCertificate = &respr
-		c.beginUploadCertificate.add(req, beginUploadCertificate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUploadCertificate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
-		c.beginUploadCertificate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUploadCertificate) {
-		c.beginUploadCertificate.remove(req)
-	}
-
 	return resp, nil
 }
 

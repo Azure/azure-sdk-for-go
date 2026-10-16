@@ -25,14 +25,6 @@ type UpdatesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, clusterName string, updateName string, options *armazurestackhci.UpdatesClientBeginDeleteOptions) (resp azfake.PollerResponder[armazurestackhci.UpdatesClientDeleteResponse], errResp azfake.ErrorResponder)
 
-	// Get is the fake for method UpdatesClient.Get
-	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, clusterName string, updateName string, options *armazurestackhci.UpdatesClientGetOptions) (resp azfake.Responder[armazurestackhci.UpdatesClientGetResponse], errResp azfake.ErrorResponder)
-
-	// NewListPager is the fake for method UpdatesClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(resourceGroupName string, clusterName string, options *armazurestackhci.UpdatesClientListOptions) (resp azfake.PagerResponder[armazurestackhci.UpdatesClientListResponse])
-
 	// BeginPost is the fake for method UpdatesClient.BeginPost
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginPost func(ctx context.Context, resourceGroupName string, clusterName string, updateName string, options *armazurestackhci.UpdatesClientBeginPostOptions) (resp azfake.PollerResponder[armazurestackhci.UpdatesClientPostResponse], errResp azfake.ErrorResponder)
@@ -40,6 +32,14 @@ type UpdatesServer struct {
 	// BeginPrepare is the fake for method UpdatesClient.BeginPrepare
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginPrepare func(ctx context.Context, resourceGroupName string, clusterName string, updateName string, options *armazurestackhci.UpdatesClientBeginPrepareOptions) (resp azfake.PollerResponder[armazurestackhci.UpdatesClientPrepareResponse], errResp azfake.ErrorResponder)
+
+	// Get is the fake for method UpdatesClient.Get
+	// HTTP status codes to indicate success: http.StatusOK
+	Get func(ctx context.Context, resourceGroupName string, clusterName string, updateName string, options *armazurestackhci.UpdatesClientGetOptions) (resp azfake.Responder[armazurestackhci.UpdatesClientGetResponse], errResp azfake.ErrorResponder)
+
+	// NewListPager is the fake for method UpdatesClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(resourceGroupName string, clusterName string, options *armazurestackhci.UpdatesClientListOptions) (resp azfake.PagerResponder[armazurestackhci.UpdatesClientListResponse])
 
 	// Put is the fake for method UpdatesClient.Put
 	// HTTP status codes to indicate success: http.StatusOK
@@ -53,9 +53,9 @@ func NewUpdatesServerTransport(srv *UpdatesServer) *UpdatesServerTransport {
 	return &UpdatesServerTransport{
 		srv:          srv,
 		beginDelete:  newTracker[azfake.PollerResponder[armazurestackhci.UpdatesClientDeleteResponse]](),
-		newListPager: newTracker[azfake.PagerResponder[armazurestackhci.UpdatesClientListResponse]](),
 		beginPost:    newTracker[azfake.PollerResponder[armazurestackhci.UpdatesClientPostResponse]](),
 		beginPrepare: newTracker[azfake.PollerResponder[armazurestackhci.UpdatesClientPrepareResponse]](),
+		newListPager: newTracker[azfake.PagerResponder[armazurestackhci.UpdatesClientListResponse]](),
 	}
 }
 
@@ -64,9 +64,9 @@ func NewUpdatesServerTransport(srv *UpdatesServer) *UpdatesServerTransport {
 type UpdatesServerTransport struct {
 	srv          *UpdatesServer
 	beginDelete  *tracker[azfake.PollerResponder[armazurestackhci.UpdatesClientDeleteResponse]]
-	newListPager *tracker[azfake.PagerResponder[armazurestackhci.UpdatesClientListResponse]]
 	beginPost    *tracker[azfake.PollerResponder[armazurestackhci.UpdatesClientPostResponse]]
 	beginPrepare *tracker[azfake.PollerResponder[armazurestackhci.UpdatesClientPrepareResponse]]
+	newListPager *tracker[azfake.PagerResponder[armazurestackhci.UpdatesClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for UpdatesServerTransport.
@@ -92,14 +92,14 @@ func (u *UpdatesServerTransport) dispatchToMethodFake(req *http.Request, method 
 			switch method {
 			case "UpdatesClient.BeginDelete":
 				res.resp, res.err = u.dispatchBeginDelete(req)
-			case "UpdatesClient.Get":
-				res.resp, res.err = u.dispatchGet(req)
-			case "UpdatesClient.NewListPager":
-				res.resp, res.err = u.dispatchNewListPager(req)
 			case "UpdatesClient.BeginPost":
 				res.resp, res.err = u.dispatchBeginPost(req)
 			case "UpdatesClient.BeginPrepare":
 				res.resp, res.err = u.dispatchBeginPrepare(req)
+			case "UpdatesClient.Get":
+				res.resp, res.err = u.dispatchGet(req)
+			case "UpdatesClient.NewListPager":
+				res.resp, res.err = u.dispatchNewListPager(req)
 			case "UpdatesClient.Put":
 				res.resp, res.err = u.dispatchPut(req)
 			default:
@@ -163,84 +163,6 @@ func (u *UpdatesServerTransport) dispatchBeginDelete(req *http.Request) (*http.R
 		u.beginDelete.remove(req)
 	}
 
-	return resp, nil
-}
-
-func (u *UpdatesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if u.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AzureStackHCI/clusters/(?P<clusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/updates/(?P<updateName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
-	if err != nil {
-		return nil, err
-	}
-	updateNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("updateName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := u.srv.Get(req.Context(), resourceGroupNameParam, clusterNameParam, updateNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Update, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (u *UpdatesServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if u.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := u.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AzureStackHCI/clusters/(?P<clusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/updates`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := u.srv.NewListPager(resourceGroupNameParam, clusterNameParam, nil)
-		newListPager = &resp
-		u.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armazurestackhci.UpdatesClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		u.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		u.newListPager.remove(req)
-	}
 	return resp, nil
 }
 
@@ -337,6 +259,84 @@ func (u *UpdatesServerTransport) dispatchBeginPrepare(req *http.Request) (*http.
 		u.beginPrepare.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (u *UpdatesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if u.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AzureStackHCI/clusters/(?P<clusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/updates/(?P<updateName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
+	if err != nil {
+		return nil, err
+	}
+	updateNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("updateName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := u.srv.Get(req.Context(), resourceGroupNameParam, clusterNameParam, updateNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Update, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (u *UpdatesServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if u.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := u.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AzureStackHCI/clusters/(?P<clusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/updates`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := u.srv.NewListPager(resourceGroupNameParam, clusterNameParam, nil)
+		newListPager = &resp
+		u.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armazurestackhci.UpdatesClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		u.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPager) {
+		u.newListPager.remove(req)
+	}
 	return resp, nil
 }
 

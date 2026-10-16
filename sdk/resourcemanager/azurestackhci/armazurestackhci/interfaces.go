@@ -4,6 +4,15 @@
 
 package armazurestackhci
 
+// ClusterJobPropertiesClassification provides polymorphic access to related types.
+// Call the interface's GetClusterJobProperties() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *ClusterJobProperties, *HciAddServerJobProperties, *HciConfigureSdnIntegrationJobProperties, *HciRepairServerJobProperties
+type ClusterJobPropertiesClassification interface {
+	// GetClusterJobProperties returns the ClusterJobProperties content of the underlying type.
+	GetClusterJobProperties() *ClusterJobProperties
+}
+
 // EdgeDeviceClassification provides polymorphic access to related types.
 // Call the interface's GetEdgeDevice() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -20,6 +29,44 @@ type EdgeDeviceClassification interface {
 type EdgeDeviceJobClassification interface {
 	// GetEdgeDeviceJob returns the EdgeDeviceJob content of the underlying type.
 	GetEdgeDeviceJob() *EdgeDeviceJob
+}
+
+// EdgeMachineDiskJobPropertiesClassification provides polymorphic access to related types.
+// Call the interface's GetEdgeMachineDiskJobProperties() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *CreateVolumeJobProperties, *EdgeMachineDiskJobProperties, *SyncConfigurationJobProperties
+type EdgeMachineDiskJobPropertiesClassification interface {
+	// GetEdgeMachineDiskJobProperties returns the EdgeMachineDiskJobProperties content of the underlying type.
+	GetEdgeMachineDiskJobProperties() *EdgeMachineDiskJobProperties
+}
+
+// EdgeMachineDiskPrivilegedJobPropertiesClassification provides polymorphic access to related types.
+// Call the interface's GetEdgeMachineDiskPrivilegedJobProperties() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *DeleteVolumeJobProperties, *EdgeMachineDiskPrivilegedJobProperties
+type EdgeMachineDiskPrivilegedJobPropertiesClassification interface {
+	// GetEdgeMachineDiskPrivilegedJobProperties returns the EdgeMachineDiskPrivilegedJobProperties content of the underlying type.
+	GetEdgeMachineDiskPrivilegedJobProperties() *EdgeMachineDiskPrivilegedJobProperties
+}
+
+// EdgeMachineJobPropertiesClassification provides polymorphic access to related types.
+// Call the interface's GetEdgeMachineJobProperties() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *DownloadOsJobProperties, *EdgeMachineCollectLogJobProperties, *EdgeMachineJobProperties, *EdgeMachineRemoteSupportJobProperties,
+// - *ProvisionOsJobProperties
+type EdgeMachineJobPropertiesClassification interface {
+	// GetEdgeMachineJobProperties returns the EdgeMachineJobProperties content of the underlying type.
+	GetEdgeMachineJobProperties() *EdgeMachineJobProperties
+}
+
+// EdgeMachineNetworkAdapterJobPropertiesClassification provides polymorphic access to related types.
+// Call the interface's GetEdgeMachineNetworkAdapterJobProperties() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *ApplyConfigurationNetworkAdapterJobProperties, *EdgeMachineNetworkAdapterJobProperties, *ForcePushNetworkAdapterJobProperties,
+// - *SyncConfigurationNetworkAdapterJobProperties
+type EdgeMachineNetworkAdapterJobPropertiesClassification interface {
+	// GetEdgeMachineNetworkAdapterJobProperties returns the EdgeMachineNetworkAdapterJobProperties content of the underlying type.
+	GetEdgeMachineNetworkAdapterJobProperties() *EdgeMachineNetworkAdapterJobProperties
 }
 
 // HciEdgeDeviceJobPropertiesClassification provides polymorphic access to related types.

@@ -198,6 +198,47 @@ type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
+// SandboxGroupsClientBeginCreateOrUpdateOptions contains the optional parameters for the SandboxGroupsClient.BeginCreateOrUpdate
+// method.
+type SandboxGroupsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// SandboxGroupsClientBeginDeleteOptions contains the optional parameters for the SandboxGroupsClient.BeginDelete method.
+type SandboxGroupsClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// SandboxGroupsClientBeginUpdateOptions contains the optional parameters for the SandboxGroupsClient.BeginUpdate method.
+type SandboxGroupsClientBeginUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// SandboxGroupsClientConnectOptions contains the optional parameters for the SandboxGroupsClient.Connect method.
+type SandboxGroupsClientConnectOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SandboxGroupsClientGetOptions contains the optional parameters for the SandboxGroupsClient.Get method.
+type SandboxGroupsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SandboxGroupsClientListByResourceGroupOptions contains the optional parameters for the SandboxGroupsClient.NewListByResourceGroupPager
+// method.
+type SandboxGroupsClientListByResourceGroupOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SandboxGroupsClientListBySubscriptionOptions contains the optional parameters for the SandboxGroupsClient.NewListBySubscriptionPager
+// method.
+type SandboxGroupsClientListBySubscriptionOptions struct {
+	// placeholder for future optional parameters
+}
+
 // SubnetServiceAssociationLinkClientBeginDeleteOptions contains the optional parameters for the SubnetServiceAssociationLinkClient.BeginDelete
 // method.
 type SubnetServiceAssociationLinkClientBeginDeleteOptions struct {

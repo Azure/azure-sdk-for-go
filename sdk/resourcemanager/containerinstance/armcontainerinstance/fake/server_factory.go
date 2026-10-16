@@ -15,6 +15,9 @@ import (
 
 // ServerFactory is a fake server for instances of the armcontainerinstance.ClientFactory type.
 type ServerFactory struct {
+	// AiAgentsGroupsServer contains the fakes for client AiAgentsGroupsClient
+	AiAgentsGroupsServer AiAgentsGroupsServer
+
 	// CGProfileServer contains the fakes for client CGProfileClient
 	CGProfileServer CGProfileServer
 
@@ -29,6 +32,9 @@ type ServerFactory struct {
 
 	// LocationServer contains the fakes for client LocationClient
 	LocationServer LocationServer
+
+	// ManagedVirtualNodePoolsServer contains the fakes for client ManagedVirtualNodePoolsClient
+	ManagedVirtualNodePoolsServer ManagedVirtualNodePoolsServer
 
 	// NGroupsServer contains the fakes for client NGroupsClient
 	NGroupsServer NGroupsServer
@@ -54,11 +60,13 @@ func NewServerFactoryTransport(srv *ServerFactory) *ServerFactoryTransport {
 type ServerFactoryTransport struct {
 	srv                                  *ServerFactory
 	trMu                                 sync.Mutex
+	trAiAgentsGroupsServer               *AiAgentsGroupsServerTransport
 	trCGProfileServer                    *CGProfileServerTransport
 	trCGProfilesServer                   *CGProfilesServerTransport
 	trContainerGroupsServer              *ContainerGroupsServerTransport
 	trContainersServer                   *ContainersServerTransport
 	trLocationServer                     *LocationServerTransport
+	trManagedVirtualNodePoolsServer      *ManagedVirtualNodePoolsServerTransport
 	trNGroupsServer                      *NGroupsServerTransport
 	trOperationsServer                   *OperationsServerTransport
 	trSubnetServiceAssociationLinkServer *SubnetServiceAssociationLinkServerTransport
@@ -77,6 +85,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	var err error
 
 	switch client {
+	case "AiAgentsGroupsClient":
+		initServer(&s.trMu, &s.trAiAgentsGroupsServer, func() *AiAgentsGroupsServerTransport {
+			return NewAiAgentsGroupsServerTransport(&s.srv.AiAgentsGroupsServer)
+		})
+		resp, err = s.trAiAgentsGroupsServer.Do(req)
 	case "CGProfileClient":
 		initServer(&s.trMu, &s.trCGProfileServer, func() *CGProfileServerTransport { return NewCGProfileServerTransport(&s.srv.CGProfileServer) })
 		resp, err = s.trCGProfileServer.Do(req)
@@ -94,6 +107,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "LocationClient":
 		initServer(&s.trMu, &s.trLocationServer, func() *LocationServerTransport { return NewLocationServerTransport(&s.srv.LocationServer) })
 		resp, err = s.trLocationServer.Do(req)
+	case "ManagedVirtualNodePoolsClient":
+		initServer(&s.trMu, &s.trManagedVirtualNodePoolsServer, func() *ManagedVirtualNodePoolsServerTransport {
+			return NewManagedVirtualNodePoolsServerTransport(&s.srv.ManagedVirtualNodePoolsServer)
+		})
+		resp, err = s.trManagedVirtualNodePoolsServer.Do(req)
 	case "NGroupsClient":
 		initServer(&s.trMu, &s.trNGroupsServer, func() *NGroupsServerTransport { return NewNGroupsServerTransport(&s.srv.NGroupsServer) })
 		resp, err = s.trNGroupsServer.Do(req)

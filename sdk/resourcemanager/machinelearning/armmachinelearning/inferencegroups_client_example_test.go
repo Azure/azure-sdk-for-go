@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-15-preview/Workspace/InferenceGroup/createOrUpdate.json
+// Generated from example definition: 2026-05-15-preview/Workspace/InferenceGroup/createOrUpdate.json
 func ExampleInferenceGroupsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -179,7 +179,7 @@ func ExampleInferenceGroupsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Workspace/InferenceGroup/delete.json
+// Generated from example definition: 2026-05-15-preview/Workspace/InferenceGroup/delete.json
 func ExampleInferenceGroupsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -205,7 +205,7 @@ func ExampleInferenceGroupsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Workspace/InferenceGroup/get.json
+// Generated from example definition: 2026-05-15-preview/Workspace/InferenceGroup/get.json
 func ExampleInferenceGroupsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -307,7 +307,7 @@ func ExampleInferenceGroupsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/InferenceGroup/getDeltaModelsStatusAsync.json
+// Generated from example definition: 2026-05-15-preview/InferenceGroup/getDeltaModelsStatusAsync.json
 func ExampleInferenceGroupsClient_GetDeltaModelsStatusAsync() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -349,7 +349,7 @@ func ExampleInferenceGroupsClient_GetDeltaModelsStatusAsync() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Workspace/InferenceGroup/getStatus.json
+// Generated from example definition: 2026-05-15-preview/Workspace/InferenceGroup/getStatus.json
 func ExampleInferenceGroupsClient_GetStatus() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -382,7 +382,7 @@ func ExampleInferenceGroupsClient_GetStatus() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Workspace/InferenceGroup/list.json
+// Generated from example definition: 2026-05-15-preview/Workspace/InferenceGroup/list.json
 func ExampleInferenceGroupsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -498,7 +498,7 @@ func ExampleInferenceGroupsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-15-preview/InferenceGroup/listDeltaModelsAsync.json
+// Generated from example definition: 2026-05-15-preview/InferenceGroup/listDeltaModelsAsync.json
 func ExampleInferenceGroupsClient_NewListDeltaModelsAsyncPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -535,7 +535,7 @@ func ExampleInferenceGroupsClient_NewListDeltaModelsAsyncPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-15-preview/Workspace/InferenceGroup/listSkus.json
+// Generated from example definition: 2026-05-15-preview/Workspace/InferenceGroup/listSkus.json
 func ExampleInferenceGroupsClient_NewListSKUsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -581,7 +581,7 @@ func ExampleInferenceGroupsClient_NewListSKUsPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-15-preview/InferenceGroup/modifyDeltaModelsAsync.json
+// Generated from example definition: 2026-05-15-preview/InferenceGroup/modifyDeltaModelsAsync.json
 func ExampleInferenceGroupsClient_BeginModifyDeltaModelsAsync() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -610,7 +610,7 @@ func ExampleInferenceGroupsClient_BeginModifyDeltaModelsAsync() {
 	}
 }
 
-// Generated from example definition: 2026-03-15-preview/Workspace/InferenceGroup/update.json
+// Generated from example definition: 2026-05-15-preview/Workspace/InferenceGroup/update.json
 func ExampleInferenceGroupsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

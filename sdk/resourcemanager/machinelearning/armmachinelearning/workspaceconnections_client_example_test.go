@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-// Generated from example definition: 2026-03-15-preview/WorkspaceConnection/create.json
+// Generated from example definition: 2026-05-15-preview/WorkspaceConnection/create.json
 func ExampleWorkspaceConnectionsClient_Create() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -53,7 +53,7 @@ func ExampleWorkspaceConnectionsClient_Create() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/WorkspaceConnection/delete.json
+// Generated from example definition: 2026-05-15-preview/WorkspaceConnection/delete.json
 func ExampleWorkspaceConnectionsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -75,7 +75,7 @@ func ExampleWorkspaceConnectionsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/WorkspaceConnection/get.json
+// Generated from example definition: 2026-05-15-preview/WorkspaceConnection/get.json
 func ExampleWorkspaceConnectionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -108,7 +108,7 @@ func ExampleWorkspaceConnectionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/WorkspaceConnection/list.json
+// Generated from example definition: 2026-05-15-preview/WorkspaceConnection/list.json
 func ExampleWorkspaceConnectionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -162,7 +162,7 @@ func ExampleWorkspaceConnectionsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-15-preview/WorkspaceConnection/listSecrets.json
+// Generated from example definition: 2026-05-15-preview/WorkspaceConnection/listSecrets.json
 func ExampleWorkspaceConnectionsClient_ListSecrets() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -209,7 +209,7 @@ func ExampleWorkspaceConnectionsClient_ListSecrets() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/WorkspaceConnection/testConnection.json
+// Generated from example definition: 2026-05-15-preview/WorkspaceConnection/testConnection.json
 func ExampleWorkspaceConnectionsClient_BeginTestConnection() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -238,7 +238,7 @@ func ExampleWorkspaceConnectionsClient_BeginTestConnection() {
 	}
 }
 
-// Generated from example definition: 2026-03-15-preview/WorkspaceConnection/update.json
+// Generated from example definition: 2026-05-15-preview/WorkspaceConnection/update.json
 func ExampleWorkspaceConnectionsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

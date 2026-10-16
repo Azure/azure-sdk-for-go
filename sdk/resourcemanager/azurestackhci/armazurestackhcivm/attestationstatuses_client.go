@@ -18,7 +18,7 @@ import (
 // AttestationStatusesClient contains the methods for the AttestationStatuses group.
 // Don't use this type directly, use NewAttestationStatusesClient() instead.
 //
-// Generated from API version 2025-06-01-preview
+// Generated from API version 2026-07-01-preview
 type AttestationStatusesClient struct {
 	internal *arm.Client
 }
@@ -55,12 +55,7 @@ func (client *AttestationStatusesClient) Get(ctx context.Context, resourceURI st
 	if err != nil {
 		return AttestationStatusesClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return AttestationStatusesClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -75,15 +70,18 @@ func (client *AttestationStatusesClient) getCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601Preview)
+	reqQP.Set("api-version", version20260701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *AttestationStatusesClient) getHandleResponse(resp *http.Response) (AttestationStatusesClientGetResponse, error) {
+func (client *AttestationStatusesClient) getHandleResponse(resp *http.Response, successCodes ...int) (AttestationStatusesClientGetResponse, error) {
 	result := AttestationStatusesClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AttestationStatus); err != nil {
 		return AttestationStatusesClientGetResponse{}, err
 	}

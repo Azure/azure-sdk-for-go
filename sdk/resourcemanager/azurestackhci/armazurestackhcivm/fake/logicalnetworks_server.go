@@ -29,6 +29,10 @@ type LogicalNetworksServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, logicalNetworkName string, options *armazurestackhcivm.LogicalNetworksClientBeginDeleteOptions) (resp azfake.PollerResponder[armazurestackhcivm.LogicalNetworksClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method LogicalNetworksClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, logicalNetworkName string, properties armazurestackhcivm.LogicalNetworksUpdateRequest, options *armazurestackhcivm.LogicalNetworksClientBeginUpdateOptions) (resp azfake.PollerResponder[armazurestackhcivm.LogicalNetworksClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method LogicalNetworksClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, logicalNetworkName string, options *armazurestackhcivm.LogicalNetworksClientGetOptions) (resp azfake.Responder[armazurestackhcivm.LogicalNetworksClientGetResponse], errResp azfake.ErrorResponder)
@@ -40,10 +44,6 @@ type LogicalNetworksServer struct {
 	// NewListByResourceGroupPager is the fake for method LogicalNetworksClient.NewListByResourceGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByResourceGroupPager func(resourceGroupName string, options *armazurestackhcivm.LogicalNetworksClientListByResourceGroupOptions) (resp azfake.PagerResponder[armazurestackhcivm.LogicalNetworksClientListByResourceGroupResponse])
-
-	// BeginUpdate is the fake for method LogicalNetworksClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, logicalNetworkName string, properties armazurestackhcivm.LogicalNetworksUpdateRequest, options *armazurestackhcivm.LogicalNetworksClientBeginUpdateOptions) (resp azfake.PollerResponder[armazurestackhcivm.LogicalNetworksClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewLogicalNetworksServerTransport creates a new instance of LogicalNetworksServerTransport with the provided implementation.
@@ -54,9 +54,9 @@ func NewLogicalNetworksServerTransport(srv *LogicalNetworksServer) *LogicalNetwo
 		srv:                         srv,
 		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armazurestackhcivm.LogicalNetworksClientCreateOrUpdateResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armazurestackhcivm.LogicalNetworksClientDeleteResponse]](),
+		beginUpdate:                 newTracker[azfake.PollerResponder[armazurestackhcivm.LogicalNetworksClientUpdateResponse]](),
 		newListAllPager:             newTracker[azfake.PagerResponder[armazurestackhcivm.LogicalNetworksClientListAllResponse]](),
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armazurestackhcivm.LogicalNetworksClientListByResourceGroupResponse]](),
-		beginUpdate:                 newTracker[azfake.PollerResponder[armazurestackhcivm.LogicalNetworksClientUpdateResponse]](),
 	}
 }
 
@@ -66,9 +66,9 @@ type LogicalNetworksServerTransport struct {
 	srv                         *LogicalNetworksServer
 	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armazurestackhcivm.LogicalNetworksClientCreateOrUpdateResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armazurestackhcivm.LogicalNetworksClientDeleteResponse]]
+	beginUpdate                 *tracker[azfake.PollerResponder[armazurestackhcivm.LogicalNetworksClientUpdateResponse]]
 	newListAllPager             *tracker[azfake.PagerResponder[armazurestackhcivm.LogicalNetworksClientListAllResponse]]
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armazurestackhcivm.LogicalNetworksClientListByResourceGroupResponse]]
-	beginUpdate                 *tracker[azfake.PollerResponder[armazurestackhcivm.LogicalNetworksClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for LogicalNetworksServerTransport.
@@ -96,14 +96,14 @@ func (l *LogicalNetworksServerTransport) dispatchToMethodFake(req *http.Request,
 				res.resp, res.err = l.dispatchBeginCreateOrUpdate(req)
 			case "LogicalNetworksClient.BeginDelete":
 				res.resp, res.err = l.dispatchBeginDelete(req)
+			case "LogicalNetworksClient.BeginUpdate":
+				res.resp, res.err = l.dispatchBeginUpdate(req)
 			case "LogicalNetworksClient.Get":
 				res.resp, res.err = l.dispatchGet(req)
 			case "LogicalNetworksClient.NewListAllPager":
 				res.resp, res.err = l.dispatchNewListAllPager(req)
 			case "LogicalNetworksClient.NewListByResourceGroupPager":
 				res.resp, res.err = l.dispatchNewListByResourceGroupPager(req)
-			case "LogicalNetworksClient.BeginUpdate":
-				res.resp, res.err = l.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -126,7 +126,7 @@ func (l *LogicalNetworksServerTransport) dispatchBeginCreateOrUpdate(req *http.R
 	}
 	beginCreateOrUpdate := l.beginCreateOrUpdate.get(req)
 	if beginCreateOrUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureStackHCI/logicalNetworks/(?P<logicalNetworkName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AzureStackHCI/logicalNetworks/(?P<logicalNetworkName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -174,7 +174,7 @@ func (l *LogicalNetworksServerTransport) dispatchBeginDelete(req *http.Request) 
 	}
 	beginDelete := l.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureStackHCI/logicalNetworks/(?P<logicalNetworkName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AzureStackHCI/logicalNetworks/(?P<logicalNetworkName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -212,116 +212,13 @@ func (l *LogicalNetworksServerTransport) dispatchBeginDelete(req *http.Request) 
 	return resp, nil
 }
 
-func (l *LogicalNetworksServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if l.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureStackHCI/logicalNetworks/(?P<logicalNetworkName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	logicalNetworkNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("logicalNetworkName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := l.srv.Get(req.Context(), resourceGroupNameParam, logicalNetworkNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).LogicalNetwork, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (l *LogicalNetworksServerTransport) dispatchNewListAllPager(req *http.Request) (*http.Response, error) {
-	if l.srv.NewListAllPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListAllPager not implemented")}
-	}
-	newListAllPager := l.newListAllPager.get(req)
-	if newListAllPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureStackHCI/logicalNetworks`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := l.srv.NewListAllPager(nil)
-		newListAllPager = &resp
-		l.newListAllPager.add(req, newListAllPager)
-		server.PagerResponderInjectNextLinks(newListAllPager, req, func(page *armazurestackhcivm.LogicalNetworksClientListAllResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListAllPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		l.newListAllPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListAllPager) {
-		l.newListAllPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (l *LogicalNetworksServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
-	if l.srv.NewListByResourceGroupPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
-	}
-	newListByResourceGroupPager := l.newListByResourceGroupPager.get(req)
-	if newListByResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureStackHCI/logicalNetworks`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := l.srv.NewListByResourceGroupPager(resourceGroupNameParam, nil)
-		newListByResourceGroupPager = &resp
-		l.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
-		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armazurestackhcivm.LogicalNetworksClientListByResourceGroupResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		l.newListByResourceGroupPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListByResourceGroupPager) {
-		l.newListByResourceGroupPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (l *LogicalNetworksServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
 	if l.srv.BeginUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
 	}
 	beginUpdate := l.beginUpdate.get(req)
 	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureStackHCI/logicalNetworks/(?P<logicalNetworkName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AzureStackHCI/logicalNetworks/(?P<logicalNetworkName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -360,6 +257,109 @@ func (l *LogicalNetworksServerTransport) dispatchBeginUpdate(req *http.Request) 
 		l.beginUpdate.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (l *LogicalNetworksServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if l.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AzureStackHCI/logicalNetworks/(?P<logicalNetworkName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	logicalNetworkNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("logicalNetworkName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := l.srv.Get(req.Context(), resourceGroupNameParam, logicalNetworkNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).LogicalNetwork, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (l *LogicalNetworksServerTransport) dispatchNewListAllPager(req *http.Request) (*http.Response, error) {
+	if l.srv.NewListAllPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListAllPager not implemented")}
+	}
+	newListAllPager := l.newListAllPager.get(req)
+	if newListAllPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AzureStackHCI/logicalNetworks`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resp := l.srv.NewListAllPager(nil)
+		newListAllPager = &resp
+		l.newListAllPager.add(req, newListAllPager)
+		server.PagerResponderInjectNextLinks(newListAllPager, req, func(page *armazurestackhcivm.LogicalNetworksClientListAllResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListAllPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		l.newListAllPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListAllPager) {
+		l.newListAllPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (l *LogicalNetworksServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
+	if l.srv.NewListByResourceGroupPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
+	}
+	newListByResourceGroupPager := l.newListByResourceGroupPager.get(req)
+	if newListByResourceGroupPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AzureStackHCI/logicalNetworks`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := l.srv.NewListByResourceGroupPager(resourceGroupNameParam, nil)
+		newListByResourceGroupPager = &resp
+		l.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
+		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armazurestackhcivm.LogicalNetworksClientListByResourceGroupResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		l.newListByResourceGroupPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListByResourceGroupPager) {
+		l.newListByResourceGroupPager.remove(req)
+	}
 	return resp, nil
 }
 

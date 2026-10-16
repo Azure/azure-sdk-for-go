@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-// Generated from example definition: 2026-10-01-preview/Entities_AddDataAnnotation.json
+// Generated from example definition: 2026-11-01/Entities_AddDataAnnotation.json
 func ExampleEntitiesClient_AddDataAnnotation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -52,7 +52,7 @@ func ExampleEntitiesClient_AddDataAnnotation() {
 	// }
 }
 
-// Generated from example definition: 2026-10-01-preview/Entities_CreateOrUpdate.json
+// Generated from example definition: 2026-11-01/Entities_CreateOrUpdate.json
 func ExampleEntitiesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -498,7 +498,7 @@ func ExampleEntitiesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-10-01-preview/Entities_Delete.json
+// Generated from example definition: 2026-11-01/Entities_Delete.json
 func ExampleEntitiesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -519,7 +519,7 @@ func ExampleEntitiesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-10-01-preview/Entities_Get.json
+// Generated from example definition: 2026-11-01/Entities_Get.json
 func ExampleEntitiesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -658,7 +658,7 @@ func ExampleEntitiesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-10-01-preview/Entities_GetDataAnnotations.json
+// Generated from example definition: 2026-11-01/Entities_GetDataAnnotations.json
 func ExampleEntitiesClient_GetDataAnnotations() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -707,7 +707,7 @@ func ExampleEntitiesClient_GetDataAnnotations() {
 	// }
 }
 
-// Generated from example definition: 2026-10-01-preview/Entities_GetHistory.json
+// Generated from example definition: 2026-11-01/Entities_GetHistory.json
 func ExampleEntitiesClient_GetHistory() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -763,7 +763,7 @@ func ExampleEntitiesClient_GetHistory() {
 	// }
 }
 
-// Generated from example definition: 2026-10-01-preview/Entities_GetSignalHistory.json
+// Generated from example definition: 2026-11-01/Entities_GetSignalHistory.json
 func ExampleEntitiesClient_GetSignalHistory() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -832,7 +832,7 @@ func ExampleEntitiesClient_GetSignalHistory() {
 	// }
 }
 
-// Generated from example definition: 2026-10-01-preview/Entities_GetSignalRecommendations.json
+// Generated from example definition: 2026-11-01/Entities_GetSignalRecommendations.json
 func ExampleEntitiesClient_GetSignalRecommendations() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -951,7 +951,7 @@ func ExampleEntitiesClient_GetSignalRecommendations() {
 	// }
 }
 
-// Generated from example definition: 2026-10-01-preview/Entities_IngestHealthReport.json
+// Generated from example definition: 2026-11-01/Entities_IngestHealthReport.json
 func ExampleEntitiesClient_IngestHealthReport() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -984,7 +984,7 @@ func ExampleEntitiesClient_IngestHealthReport() {
 	}
 }
 
-// Generated from example definition: 2026-10-01-preview/Entities_ListByHealthModel.json
+// Generated from example definition: 2026-11-01/Entities_ListByHealthModel.json
 func ExampleEntitiesClient_NewListByHealthModelPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1272,7 +1272,7 @@ func ExampleEntitiesClient_NewListByHealthModelPager() {
 		// 									DisplayName: to.Ptr("HTTP 5xx error rate"),
 		// 									RefreshInterval: to.Ptr(armcloudhealth.RefreshIntervalPT1M),
 		// 									DataUnit: to.Ptr("Percent"),
-		// 									QueryText: to.Ptr("sum(rate(http_requests_total{job=\"orders-api\", code=~\"5..\"}[5m])) / sum(rate(http_requests_total{job=\"orders-api\"}[5m])) * 100"),
+		// 									QueryText: to.Ptr("sum(rate(http_requests_total{job='orders-api', code=~'5..'}[5m])) / sum(rate(http_requests_total{job='orders-api'}[5m])) * 100"),
 		// 									TimeGrain: to.Ptr("PT5M"),
 		// 									EvaluationRules: &armcloudhealth.EvaluationRule{
 		// 										DegradedRule: &armcloudhealth.ThresholdRuleV2{
@@ -1296,7 +1296,7 @@ func ExampleEntitiesClient_NewListByHealthModelPager() {
 		// 									DisplayName: to.Ptr("p95 request latency"),
 		// 									RefreshInterval: to.Ptr(armcloudhealth.RefreshIntervalPT1M),
 		// 									DataUnit: to.Ptr("MilliSeconds"),
-		// 									QueryText: to.Ptr("histogram_quantile(0.95, sum by (le) (rate(http_request_duration_seconds_bucket{job=\"orders-api\"}[5m]))) * 1000"),
+		// 									QueryText: to.Ptr("histogram_quantile(0.95, sum by (le) (rate(http_request_duration_seconds_bucket{job='orders-api'}[5m]))) * 1000"),
 		// 									TimeGrain: to.Ptr("PT5M"),
 		// 									EvaluationRules: &armcloudhealth.EvaluationRule{
 		// 										DegradedRule: &armcloudhealth.ThresholdRuleV2{
@@ -1321,7 +1321,7 @@ func ExampleEntitiesClient_NewListByHealthModelPager() {
 		// 									DisplayName: to.Ptr("Pod CPU utilization"),
 		// 									RefreshInterval: to.Ptr(armcloudhealth.RefreshIntervalPT1M),
 		// 									DataUnit: to.Ptr("Percent"),
-		// 									QueryText: to.Ptr("sum(rate(container_cpu_usage_seconds_total{namespace=\"online-store\", pod=~\"orders-api-.*\"}[5m])) * 100"),
+		// 									QueryText: to.Ptr("sum(rate(container_cpu_usage_seconds_total{namespace='online-store', pod=~'orders-api-.*'}[5m])) * 100"),
 		// 									TimeGrain: to.Ptr("PT5M"),
 		// 									EvaluationRules: &armcloudhealth.EvaluationRule{
 		// 										DegradedRule: &armcloudhealth.ThresholdRuleV2{

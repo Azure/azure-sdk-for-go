@@ -3,14 +3,18 @@
 
 package azcosmos
 
-import "context"
+import (
+	"context"
+	"errors"
+)
 
 // TransactionalBatchOptions configures [ContainerClient.ExecuteTransactionalBatch].
 // A nil options pointer selects defaults.
 type TransactionalBatchOptions struct {
-	// Operation contains request-wide native settings. Content-response settings apply to
-	// write operations, not reads. Nil inherits the client/native default; false suppresses
-	// write bodies, and true requests them.
+	// Operation contains request-wide native settings. EnableContentResponseOnWrite inherits
+	// runtime/client/native defaults when nil. With native driver v0.2.0, explicit or inherited
+	// false can also suppress HTTP 200 read bodies. Set it explicitly to true when read bodies
+	// are required; this also requests write bodies.
 	Operation OperationOptions
 
 	// SessionToken supplies the session for this request. Empty uses the client's captured token.
@@ -33,11 +37,15 @@ type TransactionalBatchOptions struct {
 //
 // After admission, this method waits for authoritative native completion, even if ctx ends.
 // The released native ABI cannot cancel an admitted operation. [Client.Close] waits for the operation
-// before releasing its resources. options may be nil. Do not mutate batch while it is executing.
+// before releasing its resources. ctx must not be nil; options may be nil.
+// Do not mutate batch while it is executing.
 func (c *ContainerClient) ExecuteTransactionalBatch(ctx context.Context, batch TransactionalBatch, options *TransactionalBatchOptions) (TransactionalBatchResponse, error) {
 	req, err := newTransactionalBatchRequest(batch, options)
 	if err != nil {
 		return TransactionalBatchResponse{}, err
+	}
+	if ctx == nil {
+		return TransactionalBatchResponse{}, errors.New("azcosmos: context must not be nil")
 	}
 	req.databaseID, req.containerID = c.database.id, c.id
 	release, err := c.database.client.acquire()

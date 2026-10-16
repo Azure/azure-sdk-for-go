@@ -158,9 +158,12 @@ validation: a matching ETag is reported as HTTP 304 without an item body. Like t
 Go preserves the reported results without deriving a batch commitment or rollback verdict.
 
 `TransactionalBatchOptions.Operation.EnableContentResponseOnWrite` is request-wide: nil inherits
-the client/native default, false suppresses write bodies, and true requests them. Reads returning
-HTTP 200 still include content. `SessionToken` and other shared operation settings are forwarded
-to the driver.
+runtime/client/native defaults, false suppresses write bodies, and true requests them. **Known
+limitation with native driver v0.2.0:** live-account checks show that explicit or inherited false
+can also suppress HTTP 200 read bodies. Set this option explicitly to true when read bodies are
+required; this also requests write bodies. Go preserves absent content rather than fetching it
+with a separate request. Emulator read-content behavior differs and does not establish the
+live-service contract. `SessionToken` and other shared operation settings are forwarded to the driver.
 
 A received response can contain non-2xx operation statuses without an execution error.
 `OperationResults` is ordered exactly like the builder and preserves statuses, substatuses,

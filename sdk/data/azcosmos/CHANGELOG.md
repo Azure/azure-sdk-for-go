@@ -95,6 +95,7 @@
 
 ### Bugs Fixed
 
+* Fixed transactional batch execution panicking on a nil context; it now returns an argument error.
 * Fixed `ReadItem` (and other reads) waiting out the native driver's own retry budget before
   returning on context cancellation, instead of returning promptly. Reads now abandon immediately
   once the context ends. Write calls also stop waiting when their context ends, but submitted
@@ -102,6 +103,9 @@
   See [PR 27662](https://github.com/Azure/azure-sdk-for-go/pull/27662).
 
 ### Other Changes
+
+* Documented the native driver v0.2.0 batch content-response limitation: disabling write content
+  can also suppress HTTP 200 read bodies. Batch examples explicitly enable content when needed.
 
 ## 1.6.0-beta.2 (2026-08-03)
 

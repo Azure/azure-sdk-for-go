@@ -61,3 +61,9 @@ Batch Read If-None-Match tests check matching (304) and different (200) ETags wi
 commitment from the outer status. The pinned emulator can commit writes around a conditional
 304 read and then report HTTP 207. Go preserves such raw results, like the Rust SDK; emulator
 behavior does not establish real-service commit/rollback semantics.
+
+The emulator also retains batch read bodies when write content is disabled, unlike observed
+live-account behavior with native driver v0.2.0. Explicit or inherited false can suppress both
+read and write bodies on a live account; explicitly set
+`TransactionalBatchOptions.Operation.EnableContentResponseOnWrite` to true when read bodies are
+required. Passing emulator content-response tests does not certify this live-service behavior.

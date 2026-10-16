@@ -340,3 +340,32 @@ func TestTransactionalBatchArgumentLifetimeAndContextOrdering(t *testing.T) {
 		require.Contains(t, cosmosErr.Message, "this build cannot reach the Cosmos driver")
 	}
 }
+
+func TestTransactionalBatchRejectsNilContextAfterArgumentValidation(t *testing.T) {
+	valid := NewTransactionalBatch(NewPartitionKeyString("pk"))
+	require.NoError(t, valid.ReadItem("item", nil))
+	for _, test := range []struct {
+		name    string
+		batch   TransactionalBatch
+		options *TransactionalBatchOptions
+		closed  bool
+		want    string
+	}{
+		{name: "open client", batch: valid, want: "context must not be nil"},
+		{name: "closed client", batch: valid, closed: true, want: "context must not be nil"},
+		{name: "invalid batch", batch: NewTransactionalBatch(NewPartitionKeyString("pk")), want: "between 1 and 100"},
+		{name: "invalid options", batch: valid,
+			options: &TransactionalBatchOptions{Operation: OperationOptions{EndToEndTimeout: to(-time.Second)}},
+			want:    "EndToEndTimeout must not be negative"},
+	} {
+		t.Run(test.name, func(t *testing.T) {
+			container := newTestContainer(t)
+			if test.closed {
+				require.NoError(t, container.database.client.Close())
+			}
+			response, err := container.ExecuteTransactionalBatch(nil, test.batch, test.options) //nolint:staticcheck // verifies the boundary guard
+			require.Zero(t, response)
+			require.ErrorContains(t, err, test.want)
+		})
+	}
+}

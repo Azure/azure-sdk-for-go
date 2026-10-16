@@ -106,8 +106,9 @@ func (b *TransactionalBatch) CreateItem(item []byte, options *TransactionalBatch
 
 // ReadItem appends a read operation. itemID must not be empty. options may be nil.
 //
-// Reads return item bodies even when write content responses are disabled, except for
-// a conditional read reported as HTTP 304. Operation statuses do not establish batch commitment.
+// With native driver v0.2.0, disabling write content responses can also suppress HTTP 200 read
+// bodies. Explicitly enable TransactionalBatchOptions.Operation.EnableContentResponseOnWrite
+// when read bodies are required. HTTP 304 has no item body. Statuses do not establish batch commitment.
 func (b *TransactionalBatch) ReadItem(itemID string, options *TransactionalBatchReadItemOptions) error {
 	var ifMatch, ifNoneMatch *azcore.ETag
 	if options != nil {

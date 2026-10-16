@@ -50,7 +50,9 @@ type TransactionalBatchResult struct {
 	RequestCharge float64
 
 	// ResourceBody is owned raw JSON returned for this operation. It is nil when absent.
-	// Reads returning HTTP 200 include bodies regardless of the write-content-response option.
+	// With native driver v0.2.0, explicit or inherited disabled write content can also suppress
+	// HTTP 200 read bodies. Explicitly enable TransactionalBatchOptions.Operation.EnableContentResponseOnWrite
+	// when read bodies are required.
 	ResourceBody []byte
 
 	// ETag is the item ETag reported for this operation, when supplied.

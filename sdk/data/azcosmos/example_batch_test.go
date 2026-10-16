@@ -28,7 +28,10 @@ func ExampleContainerClient_ExecuteTransactionalBatch() {
 		// TODO: Update the following line with your application specific error handling logic
 		log.Fatalf("ERROR: %s", err)
 	}
-	response, err := container.ExecuteTransactionalBatch(context.TODO(), batch, nil)
+	enabled := true
+	response, err := container.ExecuteTransactionalBatch(context.TODO(), batch, &azcosmos.TransactionalBatchOptions{
+		Operation: azcosmos.OperationOptions{EnableContentResponseOnWrite: &enabled},
+	})
 	if err != nil {
 		closeClient()
 		// An execution error is not proof that writes did not commit.
@@ -53,7 +56,10 @@ func ExampleTransactionalBatch_ReadItem() {
 		// TODO: Update the following line with your application specific error handling logic
 		log.Fatalf("ERROR: %s", err)
 	}
-	response, err := container.ExecuteTransactionalBatch(context.TODO(), batch, nil)
+	enabled := true
+	response, err := container.ExecuteTransactionalBatch(context.TODO(), batch, &azcosmos.TransactionalBatchOptions{
+		Operation: azcosmos.OperationOptions{EnableContentResponseOnWrite: &enabled},
+	})
 	if err != nil {
 		closeClient()
 		// TODO: Update the following line with your application specific error handling logic

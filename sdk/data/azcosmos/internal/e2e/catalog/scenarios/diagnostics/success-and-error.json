@@ -1,0 +1,39 @@
+{
+    "$schema": "../../schema/scenario.v1.json",
+    "specVersion": "1.0",
+    "id": "diagnostics.success-and-error",
+    "title": "Success and error paths expose critical diagnostics",
+    "requirement": "Public diagnostics identify the logical operation, effective status, activity, attempts, and contacted region on successful and failed operations.",
+    "maturity": "candidate",
+    "precedents": [
+        {
+            "sdk": "java",
+            "path": "sdk/cosmos/azure-cosmos-tests/src/test/java/com/azure/cosmos/CosmosDiagnosticsE2ETest.java",
+            "test": "onlyCustomDiagnosticsHandler"
+        }
+    ],
+    "profiles": [
+        "smokeTests"
+    ],
+    "tags": [
+        "prSmoke",
+        "diagnostics"
+    ],
+    "backends": {
+        "hostedEmulatorGatewayV1": {
+            "applicability": "required",
+            "fidelity": "full"
+        },
+        "hostedEmulatorGatewayV2": {
+            "applicability": "required",
+            "fidelity": "full",
+            "requires": [
+                "gatewayV2"
+            ]
+        },
+        "azureLive": {
+            "applicability": "supported",
+            "fidelity": "full"
+        }
+    }
+}

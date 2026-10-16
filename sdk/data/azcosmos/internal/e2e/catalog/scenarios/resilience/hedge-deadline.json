@@ -1,0 +1,46 @@
+{
+    "$schema": "../../schema/scenario.v1.json",
+    "specVersion": "1.0",
+    "id": "resilience.hedge-deadline",
+    "title": "An operation deadline cancels an active hedge race",
+    "requirement": "After an alternate-region hedge is dispatched, a transient primary followed by an operation deadline while the alternate remains pending returns a client timeout with both regions, applied faults, and cancelled-awaiting-partner state retained in diagnostics.",
+    "maturity": "candidate",
+    "precedents": [
+        {
+            "sdk": "rust",
+            "path": "sdk/cosmos/azure_data_cosmos_driver/src/driver/pipeline/operation_pipeline.rs",
+            "test": "primary transient awaiting secondary deadline branch"
+        }
+    ],
+    "profiles": [
+        "configurationResilience"
+    ],
+    "tags": [
+        "resilience",
+        "hedging",
+        "deadline",
+        "diagnostics"
+    ],
+    "backends": {
+        "hostedEmulatorGatewayV1": {
+            "applicability": "required",
+            "fidelity": "full",
+            "requires": [
+                "item"
+            ]
+        },
+        "hostedEmulatorGatewayV2": {
+            "applicability": "required",
+            "fidelity": "full",
+            "requires": [
+                "item",
+                "gatewayV2"
+            ]
+        },
+        "azureLive": {
+            "applicability": "notApplicable",
+            "fidelity": "none",
+            "reason": "The scenario uses deterministic regional fault injection to hold both hedge legs across the operation deadline."
+        }
+    }
+}

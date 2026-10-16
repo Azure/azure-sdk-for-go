@@ -1,0 +1,46 @@
+{
+    "$schema": "../../schema/scenario.v1.json",
+    "specVersion": "1.0",
+    "id": "item.patch-state",
+    "title": "Patch strategies persist the exact post-image",
+    "requirement": "Safe server-side and read-modify-write patch paths return and persist the same exact post-image, while attempts to patch the item ID fail without changing its addressability or stored state.",
+    "maturity": "candidate",
+    "precedents": [
+        {
+            "sdk": "rust",
+            "path": "sdk/cosmos/azure_data_cosmos/tests/emulator_tests/cosmos_patch.rs",
+            "test": "patch_item_auto_commits_safe_list_server_side/patch_item_round_trip"
+        }
+    ],
+    "profiles": [
+        "coreOperations"
+    ],
+    "tags": [
+        "item",
+        "patch",
+        "coreOperations"
+    ],
+    "backends": {
+        "hostedEmulatorGatewayV1": {
+            "applicability": "required",
+            "fidelity": "full",
+            "requires": [
+                "item",
+                "patch"
+            ]
+        },
+        "hostedEmulatorGatewayV2": {
+            "applicability": "required",
+            "fidelity": "full",
+            "requires": [
+                "item",
+                "patch",
+                "gatewayV2"
+            ]
+        },
+        "azureLive": {
+            "applicability": "supported",
+            "fidelity": "full"
+        }
+    }
+}

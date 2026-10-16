@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-// Generated from example definition: 2026-07-01/Consoles_Create.json
+// Generated from example definition: 2026-08-01-preview/Consoles_Create.json
 func ExampleConsolesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -90,7 +90,7 @@ func ExampleConsolesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-07-01/Consoles_Delete.json
+// Generated from example definition: 2026-08-01-preview/Consoles_Delete.json
 func ExampleConsolesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -111,7 +111,7 @@ func ExampleConsolesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-07-01/Consoles_Get.json
+// Generated from example definition: 2026-08-01-preview/Consoles_Get.json
 func ExampleConsolesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -167,7 +167,7 @@ func ExampleConsolesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-07-01/Consoles_ListByVirtualMachine.json
+// Generated from example definition: 2026-08-01-preview/Consoles_ListByVirtualMachine.json
 func ExampleConsolesClient_NewListByVirtualMachinePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -233,7 +233,7 @@ func ExampleConsolesClient_NewListByVirtualMachinePager() {
 	}
 }
 
-// Generated from example definition: 2026-07-01/Consoles_Patch.json
+// Generated from example definition: 2026-08-01-preview/Consoles_Patch.json
 func ExampleConsolesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

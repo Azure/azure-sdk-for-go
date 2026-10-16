@@ -1,0 +1,44 @@
+{
+    "$schema": "../../schema/scenario.v1.json",
+    "specVersion": "1.0",
+    "id": "management.capabilities",
+    "title": "The emulator advertises a versioned capability document",
+    "requirement": "An external SDK runner can discover protocol and management capabilities without using Rust internals.",
+    "maturity": "candidate",
+    "precedents": [
+        {
+            "sdk": "rust",
+            "path": "sdk/cosmos/azure_data_cosmos_emulator/src/management.rs",
+            "test": "capabilities_report_configured_protocols"
+        }
+    ],
+    "profiles": [
+        "smokeTests"
+    ],
+    "tags": [
+        "prSmoke",
+        "management"
+    ],
+    "backends": {
+        "hostedEmulatorGatewayV1": {
+            "applicability": "required",
+            "fidelity": "full",
+            "requires": [
+                "capabilities"
+            ]
+        },
+        "hostedEmulatorGatewayV2": {
+            "applicability": "required",
+            "fidelity": "full",
+            "requires": [
+                "capabilities",
+                "gatewayV2"
+            ]
+        },
+        "azureLive": {
+            "applicability": "notApplicable",
+            "fidelity": "none",
+            "reason": "The capability document is specific to emulator E2E test orchestration."
+        }
+    }
+}

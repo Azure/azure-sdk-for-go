@@ -1,0 +1,45 @@
+{
+  "$schema": "../../schema/scenario.v1.json",
+  "specVersion": "1.0",
+  "id": "configuration.binary-routing",
+  "title": "Binary encoding and routing options preserve typed behavior",
+  "requirement": "Client and operation binary-encoding choices, including text-response transcoding, preserve item state while preferred-region and account-order routing remain observable in diagnostics.",
+  "maturity": "candidate",
+  "precedents": [
+    {
+      "sdk": "rust",
+      "path": "sdk/cosmos/azure_data_cosmos/tests/in_memory_emulator_tests/binary_round_trip.rs",
+      "test": "request_text_response_keeps_wire_binary_and_returns_data"
+    }
+  ],
+  "profiles": [
+    "configurationResilience"
+  ],
+  "tags": [
+    "configuration",
+    "binaryEncoding",
+    "routing"
+  ],
+  "backends": {
+    "hostedEmulatorGatewayV1": {
+      "applicability": "required",
+      "fidelity": "full",
+      "requires": [
+        "item"
+      ]
+    },
+    "hostedEmulatorGatewayV2": {
+      "applicability": "required",
+      "fidelity": "full",
+      "requires": [
+        "item",
+        "gatewayV2"
+      ]
+    },
+    "azureLive": {
+      "applicability": "notApplicable",
+      "fidelity": "none",
+      "reason": "Azure Live does not expose the hosted emulator's binary wire-audit counters."
+    }
+  }
+}

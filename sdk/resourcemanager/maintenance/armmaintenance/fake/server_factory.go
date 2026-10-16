@@ -45,8 +45,8 @@ type ServerFactory struct {
 	// PublicMaintenanceConfigurationsServer contains the fakes for client PublicMaintenanceConfigurationsClient
 	PublicMaintenanceConfigurationsServer PublicMaintenanceConfigurationsServer
 
-	// ScheduledEventServer contains the fakes for client ScheduledEventClient
-	ScheduledEventServer ScheduledEventServer
+	// ScheduledEventsServer contains the fakes for client ScheduledEventsClient
+	ScheduledEventsServer ScheduledEventsServer
 
 	// UpdatesServer contains the fakes for client UpdatesClient
 	UpdatesServer UpdatesServer
@@ -76,7 +76,7 @@ type ServerFactoryTransport struct {
 	trConfigurationsForResourceGroupServer             *ConfigurationsForResourceGroupServerTransport
 	trOperationsServer                                 *OperationsServerTransport
 	trPublicMaintenanceConfigurationsServer            *PublicMaintenanceConfigurationsServerTransport
-	trScheduledEventServer                             *ScheduledEventServerTransport
+	trScheduledEventsServer                            *ScheduledEventsServerTransport
 	trUpdatesServer                                    *UpdatesServerTransport
 }
 
@@ -139,11 +139,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewPublicMaintenanceConfigurationsServerTransport(&s.srv.PublicMaintenanceConfigurationsServer)
 		})
 		resp, err = s.trPublicMaintenanceConfigurationsServer.Do(req)
-	case "ScheduledEventClient":
-		initServer(&s.trMu, &s.trScheduledEventServer, func() *ScheduledEventServerTransport {
-			return NewScheduledEventServerTransport(&s.srv.ScheduledEventServer)
+	case "ScheduledEventsClient":
+		initServer(&s.trMu, &s.trScheduledEventsServer, func() *ScheduledEventsServerTransport {
+			return NewScheduledEventsServerTransport(&s.srv.ScheduledEventsServer)
 		})
-		resp, err = s.trScheduledEventServer.Do(req)
+		resp, err = s.trScheduledEventsServer.Do(req)
 	case "UpdatesClient":
 		initServer(&s.trMu, &s.trUpdatesServer, func() *UpdatesServerTransport { return NewUpdatesServerTransport(&s.srv.UpdatesServer) })
 		resp, err = s.trUpdatesServer.Do(req)

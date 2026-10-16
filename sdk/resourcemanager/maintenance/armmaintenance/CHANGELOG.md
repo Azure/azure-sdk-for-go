@@ -1,5 +1,23 @@
 # Release History
 
+## 2.0.0-beta.1 (2026-09-23)
+### Breaking Changes
+
+- Function `*ClientFactory.NewScheduledEventClient` has been removed
+- Function `NewScheduledEventClient` has been removed
+- Function `*ScheduledEventClient.Acknowledge` has been removed
+- Struct `ScheduledEventApproveResponse` has been removed
+
+### Features Added
+
+- New function `*ClientFactory.NewScheduledEventsClient() *ScheduledEventsClient`
+- New function `NewScheduledEventsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ScheduledEventsClient, error)`
+- New function `*ScheduledEventsClient.Acknowledge(ctx context.Context, resourceGroupName string, resourceType string, resourceName string, scheduledEventID string, options *ScheduledEventsClientAcknowledgeOptions) (ScheduledEventsClientAcknowledgeResponse, error)`
+- New function `*ScheduledEventsClient.AcknowledgeList(ctx context.Context, resourceGroupName string, resourceType string, resourceName string, scheduledEventsIDList ScheduledEventsIDList, options *ScheduledEventsClientAcknowledgeListOptions) (ScheduledEventsClientAcknowledgeListResponse, error)`
+- New struct `ScheduledEventsApproveResponse`
+- New struct `ScheduledEventsIDList`
+
+
 ## 1.4.0-beta.2 (2026-03-16)
 ### Breaking Changes
 

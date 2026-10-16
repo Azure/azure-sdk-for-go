@@ -20,7 +20,7 @@ import (
 // ClientsClient contains the methods for the Clients group.
 // Don't use this type directly, use NewClientsClient() instead.
 //
-// Generated from API version 2025-07-15-preview
+// Generated from API version 2026-06-15-preview
 type ClientsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -72,7 +72,7 @@ func (client *ClientsClient) BeginCreateOrUpdate(ctx context.Context, resourceGr
 	}
 }
 
-// CreateOrUpdate - Create or update a client.
+// createOrUpdate - Create or update a client.
 //
 // Create or update a client with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -96,7 +96,7 @@ func (client *ClientsClient) createOrUpdate(ctx context.Context, resourceGroupNa
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *ClientsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, clientName string, clientInfo Client, _ *ClientsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/namespaces/{namespaceName}/clients/{clientName}"
 	if client.subscriptionID == "" {
@@ -120,7 +120,7 @@ func (client *ClientsClient) createOrUpdateCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250715Preview)
+	reqQP.Set("api-version", version20260615Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -140,7 +140,7 @@ func (client *ClientsClient) createOrUpdateCreateRequest(ctx context.Context, re
 //   - options - ClientsClientBeginDeleteOptions contains the optional parameters for the ClientsClient.BeginDelete method.
 func (client *ClientsClient) BeginDelete(ctx context.Context, resourceGroupName string, namespaceName string, clientName string, options *ClientsClientBeginDeleteOptions) (*runtime.Poller[ClientsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.deleteOperation(ctx, resourceGroupName, namespaceName, clientName, options)
+		resp, err := client.delete(ctx, resourceGroupName, namespaceName, clientName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -155,11 +155,11 @@ func (client *ClientsClient) BeginDelete(ctx context.Context, resourceGroupName 
 	}
 }
 
-// Delete - Delete a client.
+// delete - Delete a client.
 //
 // Delete an existing client.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *ClientsClient) deleteOperation(ctx context.Context, resourceGroupName string, namespaceName string, clientName string, options *ClientsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *ClientsClient) delete(ctx context.Context, resourceGroupName string, namespaceName string, clientName string, options *ClientsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ClientsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -179,7 +179,7 @@ func (client *ClientsClient) deleteOperation(ctx context.Context, resourceGroupN
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *ClientsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, clientName string, _ *ClientsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/namespaces/{namespaceName}/clients/{clientName}"
 	if client.subscriptionID == "" {
@@ -203,7 +203,7 @@ func (client *ClientsClient) deleteCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250715Preview)
+	reqQP.Set("api-version", version20260615Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -257,7 +257,7 @@ func (client *ClientsClient) getCreateRequest(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250715Preview)
+	reqQP.Set("api-version", version20260615Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -341,7 +341,7 @@ func (client *ClientsClient) listByNamespaceCreateRequest(ctx context.Context, r
 		if options != nil && options.Top != nil {
 			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 		}
-		reqQP.Set("api-version", version20250715Preview)
+		reqQP.Set("api-version", version20260615Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

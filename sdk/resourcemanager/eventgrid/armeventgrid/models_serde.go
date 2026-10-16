@@ -44,6 +44,41 @@ func (a *AdvancedFilter) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// MarshalJSON implements the json.Marshaller interface for type AutoScaleConfiguration.
+func (a AutoScaleConfiguration) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "enableAutoScale", a.EnableAutoScale)
+	populate(objectMap, "maximumThroughputUnits", a.MaximumThroughputUnits)
+	populate(objectMap, "minimumThroughputUnits", a.MinimumThroughputUnits)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type AutoScaleConfiguration.
+func (a *AutoScaleConfiguration) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %s", a, err.Error())
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "enableAutoScale":
+			err = unpopulate(val, "EnableAutoScale", &a.EnableAutoScale)
+			delete(rawMsg, key)
+		case "maximumThroughputUnits":
+			err = unpopulate(val, "MaximumThroughputUnits", &a.MaximumThroughputUnits)
+			delete(rawMsg, key)
+		case "minimumThroughputUnits":
+			err = unpopulate(val, "MinimumThroughputUnits", &a.MinimumThroughputUnits)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %s", a, err.Error())
+		}
+	}
+	return nil
+}
+
 // MarshalJSON implements the json.Marshaller interface for type AzureADPartnerClientAuthentication.
 func (a AzureADPartnerClientAuthentication) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
@@ -3292,6 +3327,8 @@ func (n *Namespace) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type NamespaceProperties.
 func (n NamespaceProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
+	populate(objectMap, "autoScaleConfiguration", n.AutoScaleConfiguration)
+	populate(objectMap, "ipAddressType", n.IPAddressType)
 	populate(objectMap, "inboundIpRules", n.InboundIPRules)
 	populate(objectMap, "isZoneRedundant", n.IsZoneRedundant)
 	populate(objectMap, "minimumTlsVersionAllowed", n.MinimumTLSVersionAllowed)
@@ -3312,6 +3349,12 @@ func (n *NamespaceProperties) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "autoScaleConfiguration":
+			err = unpopulate(val, "AutoScaleConfiguration", &n.AutoScaleConfiguration)
+			delete(rawMsg, key)
+		case "ipAddressType":
+			err = unpopulate(val, "IPAddressType", &n.IPAddressType)
+			delete(rawMsg, key)
 		case "inboundIpRules":
 			err = unpopulate(val, "InboundIPRules", &n.InboundIPRules)
 			delete(rawMsg, key)
@@ -3661,6 +3704,8 @@ func (n *NamespaceTopicsListResult) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type NamespaceUpdateParameterProperties.
 func (n NamespaceUpdateParameterProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
+	populate(objectMap, "autoScaleConfiguration", n.AutoScaleConfiguration)
+	populate(objectMap, "ipAddressType", n.IPAddressType)
 	populate(objectMap, "inboundIpRules", n.InboundIPRules)
 	populate(objectMap, "publicNetworkAccess", n.PublicNetworkAccess)
 	populate(objectMap, "topicSpacesConfiguration", n.TopicSpacesConfiguration)
@@ -3677,6 +3722,12 @@ func (n *NamespaceUpdateParameterProperties) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "autoScaleConfiguration":
+			err = unpopulate(val, "AutoScaleConfiguration", &n.AutoScaleConfiguration)
+			delete(rawMsg, key)
+		case "ipAddressType":
+			err = unpopulate(val, "IPAddressType", &n.IPAddressType)
+			delete(rawMsg, key)
 		case "inboundIpRules":
 			err = unpopulate(val, "InboundIPRules", &n.InboundIPRules)
 			delete(rawMsg, key)
@@ -8785,6 +8836,41 @@ func (t *TopicsListResult) UnmarshalJSON(data []byte) error {
 		}
 		if err != nil {
 			return fmt.Errorf("unmarshalling type %T: %s", t, err.Error())
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type UpdateAutoScaleConfiguration.
+func (u UpdateAutoScaleConfiguration) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "enableAutoScale", u.EnableAutoScale)
+	populate(objectMap, "maximumThroughputUnits", u.MaximumThroughputUnits)
+	populate(objectMap, "minimumThroughputUnits", u.MinimumThroughputUnits)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type UpdateAutoScaleConfiguration.
+func (u *UpdateAutoScaleConfiguration) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %s", u, err.Error())
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "enableAutoScale":
+			err = unpopulate(val, "EnableAutoScale", &u.EnableAutoScale)
+			delete(rawMsg, key)
+		case "maximumThroughputUnits":
+			err = unpopulate(val, "MaximumThroughputUnits", &u.MaximumThroughputUnits)
+			delete(rawMsg, key)
+		case "minimumThroughputUnits":
+			err = unpopulate(val, "MinimumThroughputUnits", &u.MinimumThroughputUnits)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %s", u, err.Error())
 		}
 	}
 	return nil

@@ -5,7 +5,7 @@
 package armeventgrid
 
 const (
-	version20250715Preview string = "2025-07-15-preview"
+	version20260615Preview string = "2026-06-15-preview"
 )
 
 // AdvancedFilterOperatorType - The operator type used for filtering, e.g., NumberIn, StringContains, BoolEquals and others.
@@ -797,6 +797,24 @@ const (
 func PossibleIPActionTypeValues() []IPActionType {
 	return []IPActionType{
 		IPActionTypeAllow,
+	}
+}
+
+// IPAddressType - IP address type for the namespace resource.
+type IPAddressType string
+
+const (
+	// IPAddressTypeDualStack - Both IPv4 and IPv6 addresses are supported.
+	IPAddressTypeDualStack IPAddressType = "DualStack"
+	// IPAddressTypeIPv4 - Only IPv4 addresses are supported.
+	IPAddressTypeIPv4 IPAddressType = "IPv4"
+)
+
+// PossibleIPAddressTypeValues returns the possible values for the IPAddressType const type.
+func PossibleIPAddressTypeValues() []IPAddressType {
+	return []IPAddressType{
+		IPAddressTypeDualStack,
+		IPAddressTypeIPv4,
 	}
 }
 
@@ -1739,6 +1757,8 @@ const (
 	TLSVersionOne1 TLSVersion = "1.1"
 	// TLSVersionOne2 - 1.2
 	TLSVersionOne2 TLSVersion = "1.2"
+	// TLSVersionOne3 - TLS version 1.3.
+	TLSVersionOne3 TLSVersion = "1.3"
 )
 
 // PossibleTLSVersionValues returns the possible values for the TLSVersion const type.
@@ -1747,6 +1767,7 @@ func PossibleTLSVersionValues() []TLSVersion {
 		TLSVersionOne0,
 		TLSVersionOne1,
 		TLSVersionOne2,
+		TLSVersionOne3,
 	}
 }
 

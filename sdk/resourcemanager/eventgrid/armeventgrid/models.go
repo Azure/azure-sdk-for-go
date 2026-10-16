@@ -20,6 +20,19 @@ type AdvancedFilter struct {
 // GetAdvancedFilter implements the AdvancedFilterClassification interface for type AdvancedFilter.
 func (a *AdvancedFilter) GetAdvancedFilter() *AdvancedFilter { return a }
 
+// AutoScaleConfiguration - Auto-scale configuration for the namespace resource.
+type AutoScaleConfiguration struct {
+	// Indicates whether auto-scaling is enabled for the namespace. When enabled, the namespace will automatically scale
+	// between minimumThroughputUnits and maximumThroughputUnits based on usage patterns.
+	EnableAutoScale *bool
+
+	// Maximum number of Throughput Units for auto-scaling. Valid only when EnableAutoScale is true.
+	MaximumThroughputUnits *int32
+
+	// Minimum number of Throughput Units for auto-scaling. Valid only when EnableAutoScale is true.
+	MinimumThroughputUnits *int32
+}
+
 // AzureADPartnerClientAuthentication - Microsoft Entra ID Partner Client Authentication
 type AzureADPartnerClientAuthentication struct {
 	// CONSTANT; Type of client authentication
@@ -1433,6 +1446,12 @@ type Namespace struct {
 
 // NamespaceProperties - Properties of the namespace resource.
 type NamespaceProperties struct {
+	// Auto-scale configuration for the namespace resource
+	AutoScaleConfiguration *AutoScaleConfiguration
+
+	// IP address type for the namespace resource.
+	IPAddressType *IPAddressType
+
 	// This can be used to restrict traffic from specific IPs instead of all IPs. Note: These are considered only if PublicNetworkAccess
 	// is enabled.
 	InboundIPRules []*InboundIPRule
@@ -1445,7 +1464,8 @@ type NamespaceProperties struct {
 	// Once specified, this property cannot be updated.
 	IsZoneRedundant *bool
 
-	// Minimum TLS version of the publisher allowed to publish to this namespace. Only TLS version 1.2 is supported.
+	// Minimum TLS version of the publisher allowed to publish to this namespace. The TlsVersion values are shared with topics
+	// and domains; for namespaces, only TLS version 1.2 is currently supported.
 	MinimumTLSVersionAllowed *TLSVersion
 
 	// List of private endpoint connections.
@@ -1576,6 +1596,12 @@ type NamespaceTopicsListResult struct {
 
 // NamespaceUpdateParameterProperties - Information of namespace update parameter properties.
 type NamespaceUpdateParameterProperties struct {
+	// Auto-scale configuration for the namespace resource
+	AutoScaleConfiguration *UpdateAutoScaleConfiguration
+
+	// IP address type for the namespace resource.
+	IPAddressType *IPAddressType
+
 	// This can be used to restrict traffic from specific IPs instead of all IPs. Note: These are considered only if PublicNetworkAccess
 	// is enabled.
 	InboundIPRules []*InboundIPRule
@@ -3883,6 +3909,19 @@ type TopicsListResult struct {
 
 	// The link to the next page of items
 	NextLink *string
+}
+
+// UpdateAutoScaleConfiguration definition.
+type UpdateAutoScaleConfiguration struct {
+	// Indicates whether auto-scaling is enabled for the namespace. When enabled, the namespace will automatically scale
+	// between minimumThroughputUnits and maximumThroughputUnits based on usage patterns.
+	EnableAutoScale *bool
+
+	// Maximum number of Throughput Units for auto-scaling. Valid only when EnableAutoScale is true.
+	MaximumThroughputUnits *int32
+
+	// Minimum number of Throughput Units for auto-scaling. Valid only when EnableAutoScale is true.
+	MinimumThroughputUnits *int32
 }
 
 // UpdateTopicSpacesConfigurationInfo - Properties of the topic spaces configuration info of a namespace.

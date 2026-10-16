@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-07-15-preview/Clients_CreateOrUpdate.json
+// Generated from example definition: 2026-06-15-preview/Clients_CreateOrUpdate.json
 func ExampleClientsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -76,7 +76,7 @@ func ExampleClientsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15-preview/Clients_Delete.json
+// Generated from example definition: 2026-06-15-preview/Clients_Delete.json
 func ExampleClientsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -102,7 +102,7 @@ func ExampleClientsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15-preview/Clients_Get.json
+// Generated from example definition: 2026-06-15-preview/Clients_Get.json
 func ExampleClientsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -145,7 +145,7 @@ func ExampleClientsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15-preview/Clients_ListByNamespace.json
+// Generated from example definition: 2026-06-15-preview/Clients_ListByNamespace.json
 func ExampleClientsClient_NewListByNamespacePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-07-15-preview/PartnerNamespaces_CreateOrUpdate.json
+// Generated from example definition: 2026-06-15-preview/PartnerNamespaces_CreateOrUpdate.json
 func ExamplePartnerNamespacesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -42,7 +42,7 @@ func ExamplePartnerNamespacesClient_BeginCreateOrUpdate() {
 	}
 }
 
-// Generated from example definition: 2025-07-15-preview/PartnerNamespaces_Delete.json
+// Generated from example definition: 2026-06-15-preview/PartnerNamespaces_Delete.json
 func ExamplePartnerNamespacesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -68,7 +68,37 @@ func ExamplePartnerNamespacesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15-preview/PartnerNamespaces_Get.json
+// Generated from example definition: 2026-06-15-preview/PartnerNamespaces_Update.json
+func ExamplePartnerNamespacesClient_BeginUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armeventgrid.NewClientFactory("8f6b6269-84f2-4d09-9e31-1127efcd1e40", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewPartnerNamespacesClient().BeginUpdate(ctx, "examplerg", "examplePartnerNamespaceName1", armeventgrid.PartnerNamespaceUpdateParameters{
+		Tags: map[string]*string{
+			"tag1": to.Ptr("value1"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armeventgrid.PartnerNamespacesClientUpdateResponse{
+	// }
+}
+
+// Generated from example definition: 2026-06-15-preview/PartnerNamespaces_Get.json
 func ExamplePartnerNamespacesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -106,7 +136,33 @@ func ExamplePartnerNamespacesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15-preview/PartnerNamespaces_ListByResourceGroup.json
+// Generated from example definition: 2026-06-15-preview/PartnerNamespaces_ListSharedAccessKeys.json
+func ExamplePartnerNamespacesClient_ListSharedAccessKeys() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armeventgrid.NewClientFactory("8f6b6269-84f2-4d09-9e31-1127efcd1e40", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewPartnerNamespacesClient().ListSharedAccessKeys(ctx, "examplerg", "examplePartnerNamespaceName1", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armeventgrid.PartnerNamespacesClientListSharedAccessKeysResponse{
+	// 	PartnerNamespaceSharedAccessKeys: armeventgrid.PartnerNamespaceSharedAccessKeys{
+	// 		Key1: to.Ptr("testKey1Value"),
+	// 		Key2: to.Ptr("testKey2Value"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-06-15-preview/PartnerNamespaces_ListByResourceGroup.json
 func ExamplePartnerNamespacesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -153,7 +209,7 @@ func ExamplePartnerNamespacesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-15-preview/PartnerNamespaces_ListBySubscription.json
+// Generated from example definition: 2026-06-15-preview/PartnerNamespaces_ListBySubscription.json
 func ExamplePartnerNamespacesClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -200,33 +256,7 @@ func ExamplePartnerNamespacesClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-15-preview/PartnerNamespaces_ListSharedAccessKeys.json
-func ExamplePartnerNamespacesClient_ListSharedAccessKeys() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armeventgrid.NewClientFactory("8f6b6269-84f2-4d09-9e31-1127efcd1e40", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewPartnerNamespacesClient().ListSharedAccessKeys(ctx, "examplerg", "examplePartnerNamespaceName1", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armeventgrid.PartnerNamespacesClientListSharedAccessKeysResponse{
-	// 	PartnerNamespaceSharedAccessKeys: armeventgrid.PartnerNamespaceSharedAccessKeys{
-	// 		Key1: to.Ptr("testKey1Value"),
-	// 		Key2: to.Ptr("testKey2Value"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-07-15-preview/PartnerNamespaces_RegenerateKey.json
+// Generated from example definition: 2026-06-15-preview/PartnerNamespaces_RegenerateKey.json
 func ExamplePartnerNamespacesClient_RegenerateKey() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -251,35 +281,5 @@ func ExamplePartnerNamespacesClient_RegenerateKey() {
 	// 		Key1: to.Ptr("testKey1Value"),
 	// 		Key2: to.Ptr("testKey2Value"),
 	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-07-15-preview/PartnerNamespaces_Update.json
-func ExamplePartnerNamespacesClient_BeginUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armeventgrid.NewClientFactory("8f6b6269-84f2-4d09-9e31-1127efcd1e40", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewPartnerNamespacesClient().BeginUpdate(ctx, "examplerg", "examplePartnerNamespaceName1", armeventgrid.PartnerNamespaceUpdateParameters{
-		Tags: map[string]*string{
-			"tag1": to.Ptr("value1"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armeventgrid.PartnerNamespacesClientUpdateResponse{
 	// }
 }

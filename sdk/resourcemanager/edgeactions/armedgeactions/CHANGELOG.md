@@ -1,9 +1,14 @@
 # Release History
 
-## 1.0.0 (2026-10-10)
-### Other Changes
+## 1.0.0 (2026-10-16)
+### Breaking Changes
 
-- Released the stable `v1.0.0` client using service API version `2026-10-01`.
+- Field `EdgeActionVersionProperties` of struct `EdgeActionVersionsClientDeployVersionCodeResponse` has been removed
+
+### Features Added
+
+- New anonymous field `EdgeActionVersion` in struct `EdgeActionVersionsClientDeployVersionCodeResponse`
+
 
 ## 0.1.0 (2026-02-07)
 ### Other Changes

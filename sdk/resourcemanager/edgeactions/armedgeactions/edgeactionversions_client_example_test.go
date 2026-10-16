@@ -109,12 +109,18 @@ func ExampleEdgeActionVersionsClient_BeginDeployVersionCode() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armedgeactions.EdgeActionVersionsClientDeployVersionCodeResponse{
-	// 	EdgeActionVersionProperties: armedgeactions.EdgeActionVersionProperties{
-	// 		ProvisioningState: to.Ptr(armedgeactions.ProvisioningStateSucceeded),
-	// 		DeploymentType: to.Ptr(armedgeactions.EdgeActionVersionDeploymentTypeZip),
-	// 		ValidationStatus: to.Ptr(armedgeactions.EdgeActionVersionValidationStatusSucceeded),
-	// 		IsDefaultVersion: to.Ptr(armedgeactions.EdgeActionIsDefaultVersionTrue),
-	// 		LastPackageUpdateTime: to.Ptr(time.Date(2024, time.May, 25, 16, 19, 23, 0, time.UTC)),
+	// 	EdgeActionVersion: armedgeactions.EdgeActionVersion{
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testrg/providers/Microsoft.Cdn/edgeActions/edgeAction1/versions/version2"),
+	// 		Name: to.Ptr("version2"),
+	// 		Type: to.Ptr("Microsoft.Cdn/edgeActions/versions"),
+	// 		Location: to.Ptr("global"),
+	// 		Properties: &armedgeactions.EdgeActionVersionProperties{
+	// 			ProvisioningState: to.Ptr(armedgeactions.ProvisioningStateSucceeded),
+	// 			DeploymentType: to.Ptr(armedgeactions.EdgeActionVersionDeploymentTypeZip),
+	// 			ValidationStatus: to.Ptr(armedgeactions.EdgeActionVersionValidationStatusSucceeded),
+	// 			IsDefaultVersion: to.Ptr(armedgeactions.EdgeActionIsDefaultVersionTrue),
+	// 			LastPackageUpdateTime: to.Ptr(time.Date(2024, time.May, 25, 16, 19, 23, 0, time.UTC)),
+	// 		},
 	// 	},
 	// }
 }

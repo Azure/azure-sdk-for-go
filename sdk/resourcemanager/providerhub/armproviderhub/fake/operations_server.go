@@ -29,13 +29,13 @@ type OperationsServer struct {
 	// HTTP status codes to indicate success: http.StatusNoContent
 	Delete func(ctx context.Context, providerNamespace string, options *armproviderhub.OperationsClientDeleteOptions) (resp azfake.Responder[armproviderhub.OperationsClientDeleteResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method OperationsClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(options *armproviderhub.OperationsClientListOptions) (resp azfake.PagerResponder[armproviderhub.OperationsClientListResponse])
-
 	// ListByProviderRegistration is the fake for method OperationsClient.ListByProviderRegistration
 	// HTTP status codes to indicate success: http.StatusOK
 	ListByProviderRegistration func(ctx context.Context, providerNamespace string, options *armproviderhub.OperationsClientListByProviderRegistrationOptions) (resp azfake.Responder[armproviderhub.OperationsClientListByProviderRegistrationResponse], errResp azfake.ErrorResponder)
+
+	// NewListPager is the fake for method OperationsClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(options *armproviderhub.OperationsClientListOptions) (resp azfake.PagerResponder[armproviderhub.OperationsClientListResponse])
 }
 
 // NewOperationsServerTransport creates a new instance of OperationsServerTransport with the provided implementation.
@@ -80,10 +80,10 @@ func (o *OperationsServerTransport) dispatchToMethodFake(req *http.Request, meth
 				res.resp, res.err = o.dispatchCreateOrUpdate(req)
 			case "OperationsClient.Delete":
 				res.resp, res.err = o.dispatchDelete(req)
-			case "OperationsClient.NewListPager":
-				res.resp, res.err = o.dispatchNewListPager(req)
 			case "OperationsClient.ListByProviderRegistration":
 				res.resp, res.err = o.dispatchListByProviderRegistration(req)
+			case "OperationsClient.NewListPager":
+				res.resp, res.err = o.dispatchNewListPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -162,33 +162,6 @@ func (o *OperationsServerTransport) dispatchDelete(req *http.Request) (*http.Res
 	return resp, nil
 }
 
-func (o *OperationsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if o.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := o.newListPager.get(req)
-	if newListPager == nil {
-		resp := o.srv.NewListPager(nil)
-		newListPager = &resp
-		o.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armproviderhub.OperationsClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		o.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		o.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (o *OperationsServerTransport) dispatchListByProviderRegistration(req *http.Request) (*http.Response, error) {
 	if o.srv.ListByProviderRegistration == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ListByProviderRegistration not implemented")}
@@ -214,6 +187,33 @@ func (o *OperationsServerTransport) dispatchListByProviderRegistration(req *http
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).OperationsPutContent, req)
 	if err != nil {
 		return nil, err
+	}
+	return resp, nil
+}
+
+func (o *OperationsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if o.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := o.newListPager.get(req)
+	if newListPager == nil {
+		resp := o.srv.NewListPager(nil)
+		newListPager = &resp
+		o.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armproviderhub.OperationsClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		o.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPager) {
+		o.newListPager.remove(req)
 	}
 	return resp, nil
 }

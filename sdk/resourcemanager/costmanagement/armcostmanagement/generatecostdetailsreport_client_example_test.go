@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-03-01/GenerateCostDetailsReportByBillingAccountEnterpriseAgreementCustomerAndBillingPeriod.json
+// Generated from example definition: 2026-06-01/GenerateCostDetailsReportByBillingAccountEnterpriseAgreementCustomerAndBillingPeriod.json
 func ExampleGenerateCostDetailsReportClient_BeginCreateOperation_generateCostDetailsReportByBillingAccountEnterpriseAgreementCustomerAndBillingPeriod() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -67,7 +67,7 @@ func ExampleGenerateCostDetailsReportClient_BeginCreateOperation_generateCostDet
 	// }
 }
 
-// Generated from example definition: 2025-03-01/GenerateCostDetailsReportByBillingProfileAndInvoiceId.json
+// Generated from example definition: 2026-06-01/GenerateCostDetailsReportByBillingProfileAndInvoiceId.json
 func ExampleGenerateCostDetailsReportClient_BeginCreateOperation_generateCostDetailsReportByBillingProfileAndInvoiceId() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -122,7 +122,7 @@ func ExampleGenerateCostDetailsReportClient_BeginCreateOperation_generateCostDet
 	// }
 }
 
-// Generated from example definition: 2025-03-01/GenerateCostDetailsReportByBillingProfileAndInvoiceIdAndCustomerId.json
+// Generated from example definition: 2026-06-01/GenerateCostDetailsReportByBillingProfileAndInvoiceIdAndCustomerId.json
 func ExampleGenerateCostDetailsReportClient_BeginCreateOperation_generateCostDetailsReportByBillingProfileAndInvoiceIdAndCustomerId() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -177,7 +177,7 @@ func ExampleGenerateCostDetailsReportClient_BeginCreateOperation_generateCostDet
 	// }
 }
 
-// Generated from example definition: 2025-03-01/GenerateCostDetailsReportByCustomerAndTimePeriod.json
+// Generated from example definition: 2026-06-01/GenerateCostDetailsReportByCustomerAndTimePeriod.json
 func ExampleGenerateCostDetailsReportClient_BeginCreateOperation_generateCostDetailsReportByCustomerAndTimePeriod() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -238,7 +238,7 @@ func ExampleGenerateCostDetailsReportClient_BeginCreateOperation_generateCostDet
 	// }
 }
 
-// Generated from example definition: 2025-03-01/GenerateCostDetailsReportByDepartmentsAndTimePeriod.json
+// Generated from example definition: 2026-06-01/GenerateCostDetailsReportByDepartmentsAndTimePeriod.json
 func ExampleGenerateCostDetailsReportClient_BeginCreateOperation_generateCostDetailsReportByDepartmentsAndTimePeriod() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -299,7 +299,7 @@ func ExampleGenerateCostDetailsReportClient_BeginCreateOperation_generateCostDet
 	// }
 }
 
-// Generated from example definition: 2025-03-01/GenerateCostDetailsReportByEnrollmentAccountsAndTimePeriod.json
+// Generated from example definition: 2026-06-01/GenerateCostDetailsReportByEnrollmentAccountsAndTimePeriod.json
 func ExampleGenerateCostDetailsReportClient_BeginCreateOperation_generateCostDetailsReportByEnrollmentAccountsAndTimePeriod() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -360,7 +360,7 @@ func ExampleGenerateCostDetailsReportClient_BeginCreateOperation_generateCostDet
 	// }
 }
 
-// Generated from example definition: 2025-03-01/GenerateCostDetailsReportBySubscriptionAndTimePeriod.json
+// Generated from example definition: 2026-06-01/GenerateCostDetailsReportBySubscriptionAndTimePeriod.json
 func ExampleGenerateCostDetailsReportClient_BeginCreateOperation_generateCostDetailsReportBySubscriptionAndTimePeriod() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -421,7 +421,7 @@ func ExampleGenerateCostDetailsReportClient_BeginCreateOperation_generateCostDet
 	// }
 }
 
-// Generated from example definition: 2025-03-01/CostDetailsOperationResultsBySubscriptionScope.json
+// Generated from example definition: 2026-06-01/CostDetailsOperationResultsBySubscriptionScope.json
 func ExampleGenerateCostDetailsReportClient_BeginGetOperationResults() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

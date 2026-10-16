@@ -306,6 +306,26 @@ type GenerateReservationDetailsReportClientBeginByBillingProfileIDOptions struct
 	ResumeToken string
 }
 
+// MarkupRulesClientCreateOrUpdateOptions contains the optional parameters for the MarkupRulesClient.CreateOrUpdate method.
+type MarkupRulesClientCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// MarkupRulesClientDeleteOptions contains the optional parameters for the MarkupRulesClient.Delete method.
+type MarkupRulesClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// MarkupRulesClientGetOptions contains the optional parameters for the MarkupRulesClient.Get method.
+type MarkupRulesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// MarkupRulesClientListOptions contains the optional parameters for the MarkupRulesClient.NewListPager method.
+type MarkupRulesClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 type OperationsClientListOptions struct {
 	// placeholder for future optional parameters

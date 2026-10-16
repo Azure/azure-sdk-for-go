@@ -45,11 +45,6 @@ type NetworkSecurityPerimeterConfigurationsClientListByServiceOptions struct {
 	// placeholder for future optional parameters
 }
 
-// OfferingsClientFetchOptions contains the optional parameters for the OfferingsClient.Fetch method.
-type OfferingsClientFetchOptions struct {
-	// placeholder for future optional parameters
-}
-
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 type OperationsClientListOptions struct {
 	// placeholder for future optional parameters

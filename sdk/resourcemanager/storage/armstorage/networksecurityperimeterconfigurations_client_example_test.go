@@ -11,7 +11,28 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-06-01/NetworkSecurityPerimeterConfigurationGet.json
+// Generated from example definition: 2026-09-01/NetworkSecurityPerimeterConfigurationReconcile.json
+func ExampleNetworkSecurityPerimeterConfigurationsClient_BeginReconcile() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armstorage.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewNetworkSecurityPerimeterConfigurationsClient().BeginReconcile(ctx, "res4410", "sto8607", "dbedb4e0-40e6-4145-81f3-f1314c150774.resourceAssociation1", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+}
+
+// Generated from example definition: 2026-09-01/NetworkSecurityPerimeterConfigurationGet.json
 func ExampleNetworkSecurityPerimeterConfigurationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -54,6 +75,16 @@ func ExampleNetworkSecurityPerimeterConfigurationsClient_Get() {
 	// 							},
 	// 						},
 	// 					},
+	// 					{
+	// 						Name: to.Ptr("allowedServiceTags"),
+	// 						Properties: &armstorage.NspAccessRuleProperties{
+	// 							Direction: to.Ptr(armstorage.NspAccessRuleDirectionInbound),
+	// 							ServiceTags: []*string{
+	// 								to.Ptr("AzureCloud"),
+	// 								to.Ptr("Storage"),
+	// 							},
+	// 						},
+	// 					},
 	// 				},
 	// 				AccessRulesVersion: to.Ptr[float32](10),
 	// 				DiagnosticSettingsVersion: to.Ptr[float32](5),
@@ -82,7 +113,7 @@ func ExampleNetworkSecurityPerimeterConfigurationsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-06-01/NetworkSecurityPerimeterConfigurationList.json
+// Generated from example definition: 2026-09-01/NetworkSecurityPerimeterConfigurationList.json
 func ExampleNetworkSecurityPerimeterConfigurationsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -130,6 +161,16 @@ func ExampleNetworkSecurityPerimeterConfigurationsClient_NewListPager() {
 		// 									Direction: to.Ptr(armstorage.NspAccessRuleDirectionInbound),
 		// 								},
 		// 							},
+		// 							{
+		// 								Name: to.Ptr("allowedServiceTags"),
+		// 								Properties: &armstorage.NspAccessRuleProperties{
+		// 									Direction: to.Ptr(armstorage.NspAccessRuleDirectionInbound),
+		// 									ServiceTags: []*string{
+		// 										to.Ptr("AzureCloud"),
+		// 										to.Ptr("Storage"),
+		// 									},
+		// 								},
+		// 							},
 		// 						},
 		// 						AccessRulesVersion: to.Ptr[float32](10),
 		// 						DiagnosticSettingsVersion: to.Ptr[float32](5),
@@ -148,26 +189,5 @@ func ExampleNetworkSecurityPerimeterConfigurationsClient_NewListPager() {
 		// 		},
 		// 	},
 		// }
-	}
-}
-
-// Generated from example definition: 2026-06-01/NetworkSecurityPerimeterConfigurationReconcile.json
-func ExampleNetworkSecurityPerimeterConfigurationsClient_BeginReconcile() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armstorage.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewNetworkSecurityPerimeterConfigurationsClient().BeginReconcile(ctx, "res4410", "sto8607", "dbedb4e0-40e6-4145-81f3-f1314c150774.resourceAssociation1", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
 	}
 }

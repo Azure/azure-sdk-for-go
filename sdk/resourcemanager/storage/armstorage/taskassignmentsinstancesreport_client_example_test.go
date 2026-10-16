@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-06-01/storageTaskAssignmentsList/ListStorageTaskAssignmentsInstancesReportSummary.json
+// Generated from example definition: 2026-09-01/storageTaskAssignmentsList/ListStorageTaskAssignmentsInstancesReportSummary.json
 func ExampleTaskAssignmentsInstancesReportClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

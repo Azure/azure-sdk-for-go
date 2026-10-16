@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-06-01/AdvancedPlatformMetricsCRUD/AdvancedPlatformMetricsRules_CreateOrUpdate_AllContainers.json
+// Generated from example definition: 2026-09-01/AdvancedPlatformMetricsCRUD/AdvancedPlatformMetricsRules_CreateOrUpdate_AllContainers.json
 func ExampleAdvancedPlatformMetricsClient_CreateOrUpdate_advancedPlatformMetricsRulesCreateOrUpdateAllContainersCreateAdvancedPlatformMetricsRuleWithAllContainersFilter() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -58,7 +58,7 @@ func ExampleAdvancedPlatformMetricsClient_CreateOrUpdate_advancedPlatformMetrics
 	// }
 }
 
-// Generated from example definition: 2026-06-01/AdvancedPlatformMetricsCRUD/AdvancedPlatformMetricsRules_CreateOrUpdate_ContainerList.json
+// Generated from example definition: 2026-09-01/AdvancedPlatformMetricsCRUD/AdvancedPlatformMetricsRules_CreateOrUpdate_ContainerList.json
 func ExampleAdvancedPlatformMetricsClient_CreateOrUpdate_advancedPlatformMetricsRulesCreateOrUpdateContainerListCreateAdvancedPlatformMetricsRuleWithContainerListFilter() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -114,7 +114,7 @@ func ExampleAdvancedPlatformMetricsClient_CreateOrUpdate_advancedPlatformMetrics
 	// }
 }
 
-// Generated from example definition: 2026-06-01/AdvancedPlatformMetricsCRUD/AdvancedPlatformMetricsRules_CreateOrUpdate_ContainerPrefix.json
+// Generated from example definition: 2026-09-01/AdvancedPlatformMetricsCRUD/AdvancedPlatformMetricsRules_CreateOrUpdate_ContainerPrefix.json
 func ExampleAdvancedPlatformMetricsClient_CreateOrUpdate_advancedPlatformMetricsRulesCreateOrUpdateContainerPrefixCreateAdvancedPlatformMetricsRuleWithContainerPrefixFilter() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -168,7 +168,7 @@ func ExampleAdvancedPlatformMetricsClient_CreateOrUpdate_advancedPlatformMetrics
 	// }
 }
 
-// Generated from example definition: 2026-06-01/AdvancedPlatformMetricsCRUD/AdvancedPlatformMetricsRules_Delete.json
+// Generated from example definition: 2026-09-01/AdvancedPlatformMetricsCRUD/AdvancedPlatformMetricsRules_Delete.json
 func ExampleAdvancedPlatformMetricsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -190,7 +190,7 @@ func ExampleAdvancedPlatformMetricsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2026-06-01/AdvancedPlatformMetricsCRUD/AdvancedPlatformMetricsRules_Get.json
+// Generated from example definition: 2026-09-01/AdvancedPlatformMetricsCRUD/AdvancedPlatformMetricsRules_Get.json
 func ExampleAdvancedPlatformMetricsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -229,7 +229,7 @@ func ExampleAdvancedPlatformMetricsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-06-01/AdvancedPlatformMetricsCRUD/AdvancedPlatformMetricsRules_List.json
+// Generated from example definition: 2026-09-01/AdvancedPlatformMetricsCRUD/AdvancedPlatformMetricsRules_List.json
 func ExampleAdvancedPlatformMetricsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-08-02/UsageMetrics_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-01-preview/UsageMetrics_Get_MaximumSet_Gen.json
 func ExampleUsageMetricsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -51,7 +51,7 @@ func ExampleUsageMetricsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-08-02/UsageMetrics_ListByWorkspace_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-01-preview/UsageMetrics_ListByWorkspace_MaximumSet_Gen.json
 func ExampleUsageMetricsClient_NewListByWorkspacePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -5,7 +5,7 @@
 package armiotfirmwaredefense
 
 const (
-	version20250802 string = "2025-08-02"
+	version20260601Preview string = "2026-06-01-preview"
 )
 
 // ActionType - Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
@@ -145,6 +145,38 @@ func PossibleExecutableClassValues() []ExecutableClass {
 	}
 }
 
+// ExploitMaturityLevel - String to indicate the exploit maturity of a CVE for the given CVSS score.
+type ExploitMaturityLevel string
+
+const (
+	// ExploitMaturityLevelAttacked - Based on available threat intelligence either of the following must apply: attacks targeting
+	// this vulnerability (attempted or successful) have been reported, or solutions to simplify attempts to exploit the vulnerability
+	// are publicly or privately available.
+	ExploitMaturityLevelAttacked ExploitMaturityLevel = "ATTACKED"
+	// ExploitMaturityLevelNotDefined - Reliable threat intelligence is not available to determine Exploit Maturity characteristics.
+	// This is the default value and is equivalent to Attacked (A) for the purposes of the calculation of the score by assuming
+	// the worst case.
+	ExploitMaturityLevelNotDefined ExploitMaturityLevel = "NOT_DEFINED"
+	// ExploitMaturityLevelProofOfConcept - Based on available threat intelligence each of the following must apply: proof-of-concept
+	// exploit code is publicly available, no knowledge of reported attempts to exploit this vulnerability, and no knowledge of
+	// publicly available solutions used to simplify attempts to exploit the vulnerability
+	ExploitMaturityLevelProofOfConcept ExploitMaturityLevel = "PROOF_OF_CONCEPT"
+	// ExploitMaturityLevelUnreported - Based on available threat intelligence each of the following must apply: no knowledge
+	// of publicly available proof-of-concept exploit code, no knowledge of reported attempts to exploit this vulnerability, and
+	// no knowledge of publicly available solutions used to simplify attempts to exploit the vulnerability.
+	ExploitMaturityLevelUnreported ExploitMaturityLevel = "UNREPORTED"
+)
+
+// PossibleExploitMaturityLevelValues returns the possible values for the ExploitMaturityLevel const type.
+func PossibleExploitMaturityLevelValues() []ExploitMaturityLevel {
+	return []ExploitMaturityLevel{
+		ExploitMaturityLevelAttacked,
+		ExploitMaturityLevelNotDefined,
+		ExploitMaturityLevelProofOfConcept,
+		ExploitMaturityLevelUnreported,
+	}
+}
+
 // Origin - The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default
 // value is "user,system"
 type Origin string
@@ -194,6 +226,24 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 		ProvisioningStateFailed,
 		ProvisioningStatePending,
 		ProvisioningStateSucceeded,
+	}
+}
+
+// RansomwareCampaignUse - String to indicate if a vulnerability is known to have been leveraged as part of a ransomware campaign.
+type RansomwareCampaignUse string
+
+const (
+	// RansomwareCampaignUseKnown - CISA knows the vulnerability to have been leveraged in a ransomware campaign.
+	RansomwareCampaignUseKnown RansomwareCampaignUse = "Known"
+	// RansomwareCampaignUseUnknown - CISA lacks confirmation the vulnerability has been utilized for ransomware.
+	RansomwareCampaignUseUnknown RansomwareCampaignUse = "Unknown"
+)
+
+// PossibleRansomwareCampaignUseValues returns the possible values for the RansomwareCampaignUse const type.
+func PossibleRansomwareCampaignUseValues() []RansomwareCampaignUse {
+	return []RansomwareCampaignUse{
+		RansomwareCampaignUseKnown,
+		RansomwareCampaignUseUnknown,
 	}
 }
 
@@ -255,15 +305,23 @@ type SummaryType string
 const (
 	// SummaryTypeBinaryHardening - The summary contains information about the binary hardening analysis results
 	SummaryTypeBinaryHardening SummaryType = "BinaryHardening"
-	// SummaryTypeCommonVulnerabilitiesAndExposures - The summary contains information about the Common Vulnerabilities and Exposures
-	// analysis results
+	// SummaryTypeCommonVulnerabilitiesAndExposures - The summary contains information about the CVE (Common Vulnerabilities and
+	// Exposures) analysis results (deprecated)
 	SummaryTypeCommonVulnerabilitiesAndExposures SummaryType = "CommonVulnerabilitiesAndExposures"
 	// SummaryTypeCryptoCertificate - The summary contains information about the cryptographic certificate analysis results
 	SummaryTypeCryptoCertificate SummaryType = "CryptoCertificate"
 	// SummaryTypeCryptoKey - The summary contains information about the cryptographic key analysis results
 	SummaryTypeCryptoKey SummaryType = "CryptoKey"
+	// SummaryTypeCve - The summary contains information about the CVE analysis results
+	SummaryTypeCve SummaryType = "CVE"
 	// SummaryTypeFirmware - The summary contains information about the submitted firmware
 	SummaryTypeFirmware SummaryType = "Firmware"
+	// SummaryTypePasswordHash - The summary contains information about the password hash analysis results
+	SummaryTypePasswordHash SummaryType = "PasswordHash"
+	// SummaryTypeSbom - The summary contains information about the SBOM (Software Bill of Materials) analysis results
+	SummaryTypeSbom SummaryType = "SBOM"
+	// SummaryTypeUnsafeFunctionCalls - The summary contains information about the unsafe function call analysis results
+	SummaryTypeUnsafeFunctionCalls SummaryType = "UnsafeFunctionCalls"
 )
 
 // PossibleSummaryTypeValues returns the possible values for the SummaryType const type.
@@ -273,6 +331,10 @@ func PossibleSummaryTypeValues() []SummaryType {
 		SummaryTypeCommonVulnerabilitiesAndExposures,
 		SummaryTypeCryptoCertificate,
 		SummaryTypeCryptoKey,
+		SummaryTypeCve,
 		SummaryTypeFirmware,
+		SummaryTypePasswordHash,
+		SummaryTypeSbom,
+		SummaryTypeUnsafeFunctionCalls,
 	}
 }

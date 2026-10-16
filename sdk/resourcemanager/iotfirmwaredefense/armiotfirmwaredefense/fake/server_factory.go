@@ -42,6 +42,9 @@ type ServerFactory struct {
 	// SummariesServer contains the fakes for client SummariesClient
 	SummariesServer SummariesServer
 
+	// UnsafeFunctionCallsServer contains the fakes for client UnsafeFunctionCallsClient
+	UnsafeFunctionCallsServer UnsafeFunctionCallsServer
+
 	// UsageMetricsServer contains the fakes for client UsageMetricsClient
 	UsageMetricsServer UsageMetricsServer
 
@@ -61,19 +64,20 @@ func NewServerFactoryTransport(srv *ServerFactory) *ServerFactoryTransport {
 // ServerFactoryTransport connects instances of armiotfirmwaredefense.ClientFactory to instances of ServerFactory.
 // Don't use this type directly, use NewServerFactoryTransport instead.
 type ServerFactoryTransport struct {
-	srv                        *ServerFactory
-	trMu                       sync.Mutex
-	trBinaryHardeningServer    *BinaryHardeningServerTransport
-	trCryptoCertificatesServer *CryptoCertificatesServerTransport
-	trCryptoKeysServer         *CryptoKeysServerTransport
-	trCvesServer               *CvesServerTransport
-	trFirmwaresServer          *FirmwaresServerTransport
-	trOperationsServer         *OperationsServerTransport
-	trPasswordHashesServer     *PasswordHashesServerTransport
-	trSbomComponentsServer     *SbomComponentsServerTransport
-	trSummariesServer          *SummariesServerTransport
-	trUsageMetricsServer       *UsageMetricsServerTransport
-	trWorkspacesServer         *WorkspacesServerTransport
+	srv                         *ServerFactory
+	trMu                        sync.Mutex
+	trBinaryHardeningServer     *BinaryHardeningServerTransport
+	trCryptoCertificatesServer  *CryptoCertificatesServerTransport
+	trCryptoKeysServer          *CryptoKeysServerTransport
+	trCvesServer                *CvesServerTransport
+	trFirmwaresServer           *FirmwaresServerTransport
+	trOperationsServer          *OperationsServerTransport
+	trPasswordHashesServer      *PasswordHashesServerTransport
+	trSbomComponentsServer      *SbomComponentsServerTransport
+	trSummariesServer           *SummariesServerTransport
+	trUnsafeFunctionCallsServer *UnsafeFunctionCallsServerTransport
+	trUsageMetricsServer        *UsageMetricsServerTransport
+	trWorkspacesServer          *WorkspacesServerTransport
 }
 
 // Do implements the policy.Transporter interface for ServerFactoryTransport.
@@ -124,6 +128,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "SummariesClient":
 		initServer(&s.trMu, &s.trSummariesServer, func() *SummariesServerTransport { return NewSummariesServerTransport(&s.srv.SummariesServer) })
 		resp, err = s.trSummariesServer.Do(req)
+	case "UnsafeFunctionCallsClient":
+		initServer(&s.trMu, &s.trUnsafeFunctionCallsServer, func() *UnsafeFunctionCallsServerTransport {
+			return NewUnsafeFunctionCallsServerTransport(&s.srv.UnsafeFunctionCallsServer)
+		})
+		resp, err = s.trUnsafeFunctionCallsServer.Do(req)
 	case "UsageMetricsClient":
 		initServer(&s.trMu, &s.trUsageMetricsServer, func() *UsageMetricsServerTransport { return NewUsageMetricsServerTransport(&s.srv.UsageMetricsServer) })
 		resp, err = s.trUsageMetricsServer.Do(req)

@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-08-02/Summaries_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-01-preview/Summaries_Get_MaximumSet_Gen.json
 func ExampleSummariesClient_Get_summariesGetMaximumSetGenGeneratedByMaximumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -50,7 +50,7 @@ func ExampleSummariesClient_Get_summariesGetMaximumSetGenGeneratedByMaximumSetRu
 	// }
 }
 
-// Generated from example definition: 2025-08-02/Summaries_Get_MinimumSet_Gen.json
+// Generated from example definition: 2026-06-01-preview/Summaries_Get_MinimumSet_Gen.json
 func ExampleSummariesClient_Get_summariesGetMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -74,7 +74,7 @@ func ExampleSummariesClient_Get_summariesGetMinimumSetGen() {
 	// }
 }
 
-// Generated from example definition: 2025-08-02/Summaries_ListByFirmware_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-01-preview/Summaries_ListByFirmware_MaximumSet_Gen.json
 func ExampleSummariesClient_NewListByFirmwarePager_summariesListByFirmwareMaximumSetGenGeneratedByMaximumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -123,7 +123,7 @@ func ExampleSummariesClient_NewListByFirmwarePager_summariesListByFirmwareMaximu
 	}
 }
 
-// Generated from example definition: 2025-08-02/Summaries_ListByFirmware_MinimumSet_Gen.json
+// Generated from example definition: 2026-06-01-preview/Summaries_ListByFirmware_MinimumSet_Gen.json
 func ExampleSummariesClient_NewListByFirmwarePager_summariesListByFirmwareMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

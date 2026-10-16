@@ -1,4 +1,4 @@
-directory: specification/carbon/Carbon.Management
-commit: 217f332d35760fbe2034475504284f5d84bdd968
+directory: specification/carbon/resource-manager/Microsoft.Carbon/Carbon
+commit: ae348cc71f54a61f5d17472052cfef279a23db6b
 repo: Azure/azure-rest-api-specs
 additionalDirectories: 

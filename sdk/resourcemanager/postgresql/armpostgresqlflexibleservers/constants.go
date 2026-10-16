@@ -5,7 +5,7 @@
 package armpostgresqlflexibleservers
 
 const (
-	version20260701Preview string = "2026-07-01-preview"
+	version20261001 string = "2026-10-01"
 )
 
 // AzureManagedDiskPerformanceTier - Storage tier of a server.
@@ -267,75 +267,6 @@ func PossibleDataEncryptionTypeValues() []DataEncryptionType {
 	return []DataEncryptionType{
 		DataEncryptionTypeAzureKeyVault,
 		DataEncryptionTypeSystemManaged,
-	}
-}
-
-// DbAgentForUpdateState - The database agent states accepted in a write request.
-type DbAgentForUpdateState string
-
-const (
-	// DbAgentForUpdateStateDisabled - Disable the database agent.
-	DbAgentForUpdateStateDisabled DbAgentForUpdateState = "Disabled"
-	// DbAgentForUpdateStateEnabled - Enable the database agent.
-	DbAgentForUpdateStateEnabled DbAgentForUpdateState = "Enabled"
-)
-
-// PossibleDbAgentForUpdateStateValues returns the possible values for the DbAgentForUpdateState const type.
-func PossibleDbAgentForUpdateStateValues() []DbAgentForUpdateState {
-	return []DbAgentForUpdateState{
-		DbAgentForUpdateStateDisabled,
-		DbAgentForUpdateStateEnabled,
-	}
-}
-
-// DbAgentProvisioningState - The provisioning state of the database agent resource.
-type DbAgentProvisioningState string
-
-const (
-	// DbAgentProvisioningStateCanceled - Resource creation was canceled.
-	DbAgentProvisioningStateCanceled DbAgentProvisioningState = "Canceled"
-	// DbAgentProvisioningStateFailed - Resource creation failed.
-	DbAgentProvisioningStateFailed DbAgentProvisioningState = "Failed"
-	// DbAgentProvisioningStateInProgress - The database agent lifecycle operation is in progress.
-	DbAgentProvisioningStateInProgress DbAgentProvisioningState = "InProgress"
-	// DbAgentProvisioningStateSucceeded - Resource has been created.
-	DbAgentProvisioningStateSucceeded DbAgentProvisioningState = "Succeeded"
-)
-
-// PossibleDbAgentProvisioningStateValues returns the possible values for the DbAgentProvisioningState const type.
-func PossibleDbAgentProvisioningStateValues() []DbAgentProvisioningState {
-	return []DbAgentProvisioningState{
-		DbAgentProvisioningStateCanceled,
-		DbAgentProvisioningStateFailed,
-		DbAgentProvisioningStateInProgress,
-		DbAgentProvisioningStateSucceeded,
-	}
-}
-
-// DbAgentState - The state of the database agent.
-type DbAgentState string
-
-const (
-	// DbAgentStateDisabled - The database agent is disabled.
-	DbAgentStateDisabled DbAgentState = "Disabled"
-	// DbAgentStateDisabling - The database agent is being disabled.
-	DbAgentStateDisabling DbAgentState = "Disabling"
-	// DbAgentStateEnabled - The database agent is enabled.
-	DbAgentStateEnabled DbAgentState = "Enabled"
-	// DbAgentStateEnabling - The database agent is being enabled.
-	DbAgentStateEnabling DbAgentState = "Enabling"
-	// DbAgentStateFailed - The database agent lifecycle operation failed.
-	DbAgentStateFailed DbAgentState = "Failed"
-)
-
-// PossibleDbAgentStateValues returns the possible values for the DbAgentState const type.
-func PossibleDbAgentStateValues() []DbAgentState {
-	return []DbAgentState{
-		DbAgentStateDisabled,
-		DbAgentStateDisabling,
-		DbAgentStateEnabled,
-		DbAgentStateEnabling,
-		DbAgentStateFailed,
 	}
 }
 
@@ -1053,45 +984,6 @@ func PossiblePasswordBasedAuthValues() []PasswordBasedAuth {
 	return []PasswordBasedAuth{
 		PasswordBasedAuthDisabled,
 		PasswordBasedAuthEnabled,
-	}
-}
-
-// PostgresMajorVersion - Major version of PostgreSQL database engine.
-type PostgresMajorVersion string
-
-const (
-	// PostgresMajorVersion19 - PostgreSQL 19.
-	PostgresMajorVersion19 PostgresMajorVersion = "19"
-	// PostgresMajorVersionEighteen - PostgreSQL 18.
-	PostgresMajorVersionEighteen PostgresMajorVersion = "18"
-	// PostgresMajorVersionEleven - PostgreSQL 11.
-	PostgresMajorVersionEleven PostgresMajorVersion = "11"
-	// PostgresMajorVersionFifteen - PostgreSQL 15.
-	PostgresMajorVersionFifteen PostgresMajorVersion = "15"
-	// PostgresMajorVersionFourteen - PostgreSQL 14.
-	PostgresMajorVersionFourteen PostgresMajorVersion = "14"
-	// PostgresMajorVersionSeventeen - PostgreSQL 17.
-	PostgresMajorVersionSeventeen PostgresMajorVersion = "17"
-	// PostgresMajorVersionSixteen - PostgreSQL 16.
-	PostgresMajorVersionSixteen PostgresMajorVersion = "16"
-	// PostgresMajorVersionThirteen - PostgreSQL 13.
-	PostgresMajorVersionThirteen PostgresMajorVersion = "13"
-	// PostgresMajorVersionTwelve - PostgreSQL 12.
-	PostgresMajorVersionTwelve PostgresMajorVersion = "12"
-)
-
-// PossiblePostgresMajorVersionValues returns the possible values for the PostgresMajorVersion const type.
-func PossiblePostgresMajorVersionValues() []PostgresMajorVersion {
-	return []PostgresMajorVersion{
-		PostgresMajorVersion19,
-		PostgresMajorVersionEighteen,
-		PostgresMajorVersionEleven,
-		PostgresMajorVersionFifteen,
-		PostgresMajorVersionFourteen,
-		PostgresMajorVersionSeventeen,
-		PostgresMajorVersionSixteen,
-		PostgresMajorVersionThirteen,
-		PostgresMajorVersionTwelve,
 	}
 }
 

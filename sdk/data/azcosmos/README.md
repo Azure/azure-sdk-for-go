@@ -96,9 +96,10 @@ server properties advertise the capability; Go has no PPAF enable/disable option
 PPAF uses service-directed, success-time discovery. A failed attempt can move the current write
 through other regions, but the driver does not persist a per-partition routing override from the
 failure alone. It records the override only after a later region definitively processes the write,
-shown by an HTTP 2xx, 409 Conflict, or 412 Precondition Failed response. Subsequent writes to that
-physical partition route directly to the discovered region. PPAF overrides are not governed by
-PPCB's timer-based probe and failback sweep.
+shown by an HTTP 2xx, 409 Conflict, or 412 Precondition Failed response. The confirming response
+causes the driver to apply the deferred failed-region effects and record an override past those
+endpoints. Subsequent writes to that physical partition use the recorded override. PPAF overrides
+are not governed by PPCB's timer-based probe and failback sweep.
 
 ### Per-partition circuit breaker (PPCB)
 
@@ -107,31 +108,33 @@ it and enables it by default. Health and failure counts are tracked independentl
 partition and region, so a problem with one partition does not move unrelated partitions away from
 their preferred region.
 
-The circuit trips after the configured read or write failure threshold is reached within the
-counter-reset window. After the configured unavailability duration and a bounded background sweep,
-one request probes the original region. A successful probe restores preferred routing; a failed
-probe keeps that partition routed away until a later probe is eligible.
+The circuit trips after the configured read or write failure threshold is reached. Its counters
+reset when the gap since the last recorded failure exceeds the counter-reset window; failures spaced
+closer than that can accumulate toward the threshold over a longer period. After the configured
+unavailability duration and a bounded background sweep, one request probes the original region. A
+successful probe restores preferred routing; a failed probe keeps that partition routed away until
+a later probe is eligible.
 
 ### Read hedging
 
-Hedging starts an additional regional read when the preferred attempt exceeds a threshold. Configure
-the master switch and strategy through `OperationOptions.HedgingEnabled` and
-`OperationOptions.AvailabilityStrategy`; use `HedgingAvailability` for a threshold-based strategy.
-Set `ClientOptions.Routing` with `PreferredRegions` so the driver has an explicit preferred order:
+Hedging is enabled by default for eligible reads. The built-in threshold is the lesser of one second
+and half the request timeout, falling back to one second when no request timeout is available. No
+option is needed for this default behavior. Use `OperationOptions.HedgingEnabled` to override the
+master switch, or `OperationOptions.AvailabilityStrategy` with `HedgingAvailability` to change the
+threshold. Set `ClientOptions.Routing` with `PreferredRegions` so the driver has an explicit
+preferred order. For example, this client uses a 500 ms threshold:
 
 ```go
 func newHedgedClient(
 	endpoint string,
 	credential azcore.TokenCredential,
 ) (*azcosmos.Client, error) {
-	hedgingEnabled := true
 	return azcosmos.NewClient(endpoint, credential, &azcosmos.ClientOptions{
 		Routing: azcosmos.PreferredRegions(
 			azcosmos.RegionWestUS,
 			azcosmos.RegionEastUS,
 		),
 		Operation: azcosmos.OperationOptions{
-			HedgingEnabled:      &hedgingEnabled,
 			AvailabilityStrategy: azcosmos.HedgingAvailability(500 * time.Millisecond),
 		},
 	})

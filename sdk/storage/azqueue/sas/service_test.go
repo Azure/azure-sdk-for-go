@@ -121,3 +121,68 @@ func TestQueueSignatureValues_SignWithSharedKey(t *testing.T) {
 		require.Equal(t, c.expectedError, err)
 	}
 }
+
+func TestQueueSignatureValues_SignWithSharedKeyNonUTCTimes(t *testing.T) {
+	cred, err := exported.NewSharedKeyCredential("fakeaccountname", "AKIAIOSFODNN7EXAMPLE")
+	require.NoError(t, err)
+
+	sign := func(t *testing.T, start, expiry time.Time) QueryParameters {
+		t.Helper()
+		qp, err := QueueSignatureValues{
+			Version:     "2020-10-02",
+			Protocol:    ProtocolHTTPS,
+			StartTime:   start,
+			ExpiryTime:  expiry,
+			Permissions: "r",
+			QueueName:   "fakestoragequeue",
+		}.SignWithSharedKey(cred)
+		require.NoError(t, err)
+		return qp
+	}
+
+	start := time.Date(2026, 10, 15, 11, 0, 0, 0, time.UTC)
+	expiry := start.Add(time.Hour)
+	expected := sign(t, start, expiry)
+	for _, loc := range []*time.Location{time.FixedZone("UTC+09:00", 9*60*60), time.FixedZone("UTC-05:00", -5*60*60)} {
+		t.Run(loc.String(), func(t *testing.T) {
+			actual := sign(t, start.In(loc), expiry.In(loc))
+			require.Equal(t, expected.Encode(), actual.Encode())
+		})
+	}
+}
+
+func TestQueueSignatureValues_SignWithUserDelegationNonUTCTimes(t *testing.T) {
+	sign := func(t *testing.T, loc *time.Location) QueryParameters {
+		t.Helper()
+		start := time.Date(2026, 10, 15, 11, 0, 0, 0, time.UTC).In(loc)
+		expiry := start.Add(time.Hour)
+		oid, tid, svc, ver, val := "fakeoid", "faketid", "q", "2020-02-10", "AKIAIOSFODNN7EXAMPLE"
+		udc := exported.NewUserDelegationCredential("fakeaccountname", exported.UserDelegationKey{
+			SignedOID:     &oid,
+			SignedTID:     &tid,
+			SignedStart:   &start,
+			SignedExpiry:  &expiry,
+			SignedService: &svc,
+			SignedVersion: &ver,
+			Value:         &val,
+		})
+		qp, err := QueueSignatureValues{
+			Version:     "2020-10-02",
+			Protocol:    ProtocolHTTPS,
+			StartTime:   start,
+			ExpiryTime:  expiry,
+			Permissions: "r",
+			QueueName:   "fakestoragequeue",
+		}.SignWithUserDelegation(udc)
+		require.NoError(t, err)
+		return qp
+	}
+
+	expected := sign(t, time.UTC)
+	for _, loc := range []*time.Location{time.FixedZone("UTC+09:00", 9*60*60), time.FixedZone("UTC-05:00", -5*60*60)} {
+		t.Run(loc.String(), func(t *testing.T) {
+			actual := sign(t, loc)
+			require.Equal(t, expected.Encode(), actual.Encode())
+		})
+	}
+}

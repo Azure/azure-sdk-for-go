@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn/v4"
 	"log"
 )
 
-// Generated from example definition: 2025-06-01/CheckEndpointNameAvailability.json
+// Generated from example definition: 2026-07-01/CheckEndpointNameAvailability.json
 func ExampleManagementClient_CheckEndpointNameAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -44,7 +44,7 @@ func ExampleManagementClient_CheckEndpointNameAvailability() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/CheckNameAvailability.json
+// Generated from example definition: 2026-07-01/CheckNameAvailability.json
 func ExampleManagementClient_CheckNameAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -74,7 +74,7 @@ func ExampleManagementClient_CheckNameAvailability() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/CheckNameAvailabilityWithSubscription.json
+// Generated from example definition: 2026-07-01/CheckNameAvailabilityWithSubscription.json
 func ExampleManagementClient_CheckNameAvailabilityWithSubscription() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -104,7 +104,7 @@ func ExampleManagementClient_CheckNameAvailabilityWithSubscription() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/ValidateProbe.json
+// Generated from example definition: 2026-07-01/ValidateProbe.json
 func ExampleManagementClient_ValidateProbe() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -17,7 +17,7 @@ import (
 // EdgeNodesClient contains the methods for the EdgeNodes group.
 // Don't use this type directly, use NewEdgeNodesClient() instead.
 //
-// Generated from API version 2025-06-01
+// Generated from API version 2026-07-01
 type EdgeNodesClient struct {
 	internal *arm.Client
 }
@@ -79,7 +79,7 @@ func (client *EdgeNodesClient) listCreateRequest(ctx context.Context, nextLink s
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250601)
+		reqQP.Set("api-version", version20260701)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
